@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="FSWidget.App.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?android:attr/actionBarSize</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="FSWidget.App.PopupWindow" parent="@style/Widget.AppCompat.PopupWindow">
+        <item name="android:background">?android:attr/background</item>
+        <item name="android:textColor">?android:attr/textColor</item>
+        <!--设置不遮盖toolbar-->
+        <item name="overlapAnchor">?android:attr/overlapAnchor</item>
+    </style>
+
+    <style name="FSWidget.App.DrawerArrowToggle" parent="@style/Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/fs_white</item>
+    </style>
+
+</resources>

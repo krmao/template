@@ -1,0 +1,12 @@
+//app
+include(":app-fruitshop"); project(":app-fruitshop").projectDir = new File(settingsDir, "arsenal/apps/app-fruitshop")
+
+//libraries
+include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "arsenal/libraries/library-base")
+include(":library-hybird"); project(":library-hybird").projectDir = new File(settingsDir, "arsenal/libraries/library-hybird")
+include(":library-fruitshop-base"); project(":library-fruitshop-base").projectDir = new File(settingsDir, "arsenal/libraries/library-fruitshop-base")
+
+//thirdparty
+
+//modules
+include(":module-fruitshop-home"); project(":module-fruitshop-home").projectDir = new File(settingsDir, "arsenal/modules/module-fruitshop-home")

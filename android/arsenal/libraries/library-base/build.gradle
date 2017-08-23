@@ -1,0 +1,120 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    resourcePrefix "fs_"
+}
+
+dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+    /******* 官方支持库 ****************************************************************************/
+    compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
+    //compile "com.android.support:multidex:$rootProject.ext.multidex"
+    //compile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
+    //compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    //compile "com.android.support:leanback-v17:$rootProject.ext.supportLibraryVersion"
+
+    /******* kotlin支持 ***************************************************************************/
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+    compile "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
+
+    /******* 必备工具库 ****************************************************************************/
+    compile "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
+    compile "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
+    compile "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.ext.rxbindingVersion"
+    compile "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rootProject.ext.rxbindingVersion"
+    compile "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxbindingVersion"
+    compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
+    compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
+
+    /******* 应用权限库 ****************************************************************************/
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+
+    /******* 数据库管理 ****************************************************************************/
+    //compile "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
+
+    /******* 网络请求库 ****************************************************************************/
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    //compile "org.ligboy.retrofit2:converter-fastjson-android:$rootProject.ext.converterfastjsonandroidVersion"
+    //compile "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
+
+    /******* 网络图片库 ****************************************************************************/
+    compile "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
+    compile "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    /******* 其它常用库 ****************************************************************************/
+    compile "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
+}
+
+/*外部依赖方式
+compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
+    transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
+    *//*contains:
+      <p>
+        compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+        compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+        compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+        compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+        compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+        compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+        compile "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
+        compile "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
+        compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
+        compile "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
+        compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
+        compile "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.ext.rxbindingVersion"
+        compile "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rootProject.ext.rxbindingVersion"
+        compile "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxbindingVersion"
+        compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
+        compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
+        compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
+        compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+        compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+        compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+        compile "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
+      </p>
+    *//*
+}
+*/
+
+apply plugin: 'maven'
+
+group = "com.xixi.android"
+def artifactID = "library-base"
+version = rootProject.ext.libraryBaseVersion
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: rootProject.ext.prepository_url_snapshot) {
+                authentication(userName: rootProject.ext.prepository_username, password: rootProject.ext.prepository_password)
+            }
+            repository(url: rootProject.ext.prepository_url) {
+                authentication(userName: rootProject.ext.prepository_username, password: rootProject.ext.prepository_password)
+            }
+            pom.packaging = 'aar'
+            pom.groupId = project.group
+            pom.artifactId = artifactID
+            pom.version = project.version
+        }
+    }
+}

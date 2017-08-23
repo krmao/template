@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.GridView
 
-class CXGridView : GridView {
+class FSGridView : GridView {
 
     constructor(context: Context) : super(context) {}
 

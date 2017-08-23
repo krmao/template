@@ -1,6 +1,6 @@
 package com.xixi.library.android.util.network
 
-enum class CXNetworkSwitchState {
+enum class FSNetworkSwitchState {
     WIFI_TO_NONE,
     WIFI_TO_MOBILE,
     NONE_TO_MOBILE,

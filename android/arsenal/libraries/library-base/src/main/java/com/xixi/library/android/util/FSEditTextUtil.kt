@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.widget.EditText
 
 @Suppress("unused")
-object CXEditTextUtil {
+object FSEditTextUtil {
 
     fun setTextWithLastCursor(editText: EditText?, text: String) {
         if (editText == null || TextUtils.isEmpty(text))

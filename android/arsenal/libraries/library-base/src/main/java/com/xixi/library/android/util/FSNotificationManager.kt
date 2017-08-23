@@ -12,10 +12,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.NotificationCompat
 
-import com.xixi.library.android.base.CXActivity
+import com.xixi.library.android.base.FSActivity
 
 
-object CXNotificationManager {
+object FSNotificationManager {
     fun showNotify(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder) {
         showNotify(context, notificationId, notificationFlags, notificationBuilder, null)
     }
@@ -37,7 +37,7 @@ object CXNotificationManager {
     }
 
     fun showNotifyToFragment(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, fragmentClass: Class<out Fragment>, bundle: Bundle?) {
-        val intent = CXActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
+        val intent = FSActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
         if (bundle != null)
             intent.putExtras(bundle)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -45,7 +45,7 @@ object CXNotificationManager {
     }
 
     fun showNotifyToFragment(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, fragmentClass: Class<out Fragment>, bundle: Bundle?, pendingIntentFlags: Int) {
-        val intent = CXActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
+        val intent = FSActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
         if (bundle != null)
             intent.putExtras(bundle)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK

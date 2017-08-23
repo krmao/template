@@ -2,15 +2,15 @@ package com.xixi.library.android.util.cache
 
 import android.os.Environment
 import android.text.TextUtils
-import com.xixi.library.android.base.CXBaseApplication
-import com.xixi.library.android.util.CXSystemUtil
+import com.xixi.library.android.base.FSBaseApplication
+import com.xixi.library.android.util.FSSystemUtil
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 管理应用程序全局的 entity cache
  */
-object CXCacheManager {
+object FSCacheManager {
 
     interface Callback<T> {
         fun onSuccess(successObject: T?)
@@ -23,10 +23,10 @@ object CXCacheManager {
     // 荣耀6 会有很多警告
     fun getPackageDir(): File {
         val cacheDir: File?
-        if (CXSystemUtil.isSdCardExist) {
-            cacheDir = File(Environment.getExternalStorageDirectory().absolutePath + "/Android/data/" + CXBaseApplication.INSTANCE.packageName)
+        if (FSSystemUtil.isSdCardExist) {
+            cacheDir = File(Environment.getExternalStorageDirectory().absolutePath + "/Android/data/" + FSBaseApplication.INSTANCE.packageName)
         } else {
-            cacheDir = File(CXBaseApplication.INSTANCE.filesDir.absolutePath)
+            cacheDir = File(FSBaseApplication.INSTANCE.filesDir.absolutePath)
         }
         if (!cacheDir.exists())
             cacheDir.mkdirs()

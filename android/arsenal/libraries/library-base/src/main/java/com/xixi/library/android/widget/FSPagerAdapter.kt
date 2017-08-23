@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import java.util.*
 
-abstract class CXPagerAdapter<ItemEntity> : PagerAdapter {
+abstract class FSPagerAdapter<ItemEntity> : PagerAdapter {
 
     protected var TAG = javaClass.simpleName
 

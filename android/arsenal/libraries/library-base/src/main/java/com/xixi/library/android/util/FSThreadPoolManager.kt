@@ -4,7 +4,7 @@ import java.util.concurrent.*
 
 
 @Suppress("unused")
-open class CXThreadPoolManager {
+open class FSThreadPoolManager {
 
     private var blockingQueue: BlockingQueue<Runnable>
     private var executorService: ThreadPoolExecutor

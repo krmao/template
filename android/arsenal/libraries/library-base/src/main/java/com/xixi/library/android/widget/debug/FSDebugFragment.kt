@@ -12,18 +12,18 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.RadioButton
 import android.widget.TextView
-import com.xixi.library.R
-import com.xixi.library.android.base.CXBaseApplication
-import com.xixi.library.android.base.CXBaseFragment
+import com.xixi.library.android.R
+import com.xixi.library.android.base.FSBaseApplication
+import com.xixi.library.android.base.FSBaseFragment
 import com.xixi.library.android.util.*
 import com.xixi.library.android.util.rx.RxBus
 import kotlinx.android.synthetic.main.fs_fragment_debug.*
 
 @Suppress("unused")
-open class CXDebugFragment : CXBaseFragment() {
+open class FSDebugFragment : FSBaseFragment() {
     companion object {
         val KEY_CUSTOM_LIST = "KEY_CUSTOM_LIST"
-        private var serverList: MutableList<ServerModel> = CXPreferencesUtil.getList(KEY_CUSTOM_LIST, ServerModel::class.java)
+        private var serverList: MutableList<ServerModel> = FSPreferencesUtil.getList(KEY_CUSTOM_LIST, ServerModel::class.java)
 
         fun addUrl(vararg serverModels: ServerModel) {
             if (serverModels.isNotEmpty()) {
@@ -40,7 +40,7 @@ open class CXDebugFragment : CXBaseFragment() {
         }
 
         fun saveUrlList() {
-            CXPreferencesUtil.putList(KEY_CUSTOM_LIST, serverList)
+            FSPreferencesUtil.putList(KEY_CUSTOM_LIST, serverList)
         }
 
         fun getCurrentUrl(): String {
@@ -56,18 +56,18 @@ open class CXDebugFragment : CXBaseFragment() {
         }
 
         fun showDebugNotification(notificationId: Int) {
-            val builder = android.support.v7.app.NotificationCompat.Builder(CXBaseApplication.INSTANCE)
+            val builder = android.support.v7.app.NotificationCompat.Builder(FSBaseApplication.INSTANCE)
                     .setSmallIcon(R.drawable.fs_emo_im_happy)
                     .setContentTitle("车享家环境切换")
                     .setContentText("点击跳转到环境切换页面")
                     .setAutoCancel(false)
                     .setDefaults(Notification.DEFAULT_LIGHTS)
                     .setOngoing(true)
-            CXNotificationManager.showNotifyToFragment(CXBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, CXDebugFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
+            FSNotificationManager.showNotifyToFragment(FSBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, FSDebugFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
         fun cancelDebugNotification(notificationId: Int) {
-            CXNotificationManager.cancelNotify(CXBaseApplication.INSTANCE, notificationId)
+            FSNotificationManager.cancelNotify(FSBaseApplication.INSTANCE, notificationId)
         }
     }
 
@@ -84,11 +84,11 @@ open class CXDebugFragment : CXBaseFragment() {
         addCustom.setOnClickListener(View.OnClickListener {
             val newEntity = ServerModel(editLabel.text.toString(), editUrl.text.toString(), false)
             if (TextUtils.isEmpty(newEntity.label)) {
-                CXToastUtil.show("请填写标签")
+                FSToastUtil.show("请填写标签")
                 return@OnClickListener
             }
             if (TextUtils.isEmpty(newEntity.url)) {
-                CXToastUtil.show("请填写服务地址")
+                FSToastUtil.show("请填写服务地址")
                 return@OnClickListener
             }
             editLabel.text = null
@@ -99,10 +99,10 @@ open class CXDebugFragment : CXBaseFragment() {
                 RxBus.post(ServerChangeEvent(newEntity))
                 adapter.notifyDataSetChanged()
             }
-            CXSystemUtil.hideKeyboard(activity)
+            FSSystemUtil.hideKeyboard(activity)
         })
 
-        clearCacheTV.setOnClickListener { CXIntentUtil.goToAppDetails(activity) }
+        clearCacheTV.setOnClickListener { FSIntentUtil.goToAppDetails(activity) }
     }
 
     class DebugAdapter(var list: List<ServerModel>, private val context: Context) : BaseAdapter() {
@@ -138,10 +138,10 @@ open class CXDebugFragment : CXBaseFragment() {
             }
             radioButton.isChecked = urlEntity.isSelected
             textView.text = urlEntity.url
-            textView.setOnClickListener { CXToastUtil.show("长按复制") }
+            textView.setOnClickListener { FSToastUtil.show("长按复制") }
             textView.setOnLongClickListener {
-                CXSystemUtil.copyToClipboard(urlEntity.label, urlEntity.url)
-                CXToastUtil.show("已复制")
+                FSSystemUtil.copyToClipboard(urlEntity.label, urlEntity.url)
+                FSToastUtil.show("已复制")
                 true
             }
             return convertView

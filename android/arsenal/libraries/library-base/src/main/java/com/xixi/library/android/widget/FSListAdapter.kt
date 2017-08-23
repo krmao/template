@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 
-abstract class CXListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> : BaseAdapter {
+abstract class FSListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> : BaseAdapter {
 
     protected var TAG = javaClass.simpleName
 

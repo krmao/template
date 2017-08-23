@@ -12,48 +12,73 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.xixi.library.R
-import com.xixi.library.android.util.CXCustomViewUtil
+import com.xixi.library.android.R
+import com.xixi.library.android.util.FSCustomViewUtil
 import java.util.*
 
 /**
- * 继承该类,在构造函数中添加 resetWithCustomViews,实现自定义布局
+ * @example:
+ *  <p>
+ *      <com.xixi.library.android.widget.loading.FSFrameLoadingLayout
+ *          android:id="@+id/loading_view"
+ *          android:layout_width="match_parent"
+ *          android:layout_height="0dp"
+ *          android:layout_weight="1"
+ *          app:cxAllBackground="#eeeeee"   //三个view的背景
+ *          app:cxCenterInParent="true"     //绝对居中，默认是向上一点点(因为加了titlebar居中看起来其实是向下一点点的)
+ *          app:cxEmptyView="@layout/fs_widget_frameloading_empty"      //自定义布局 -> 没有数据
+ *          app:cxFailureView="@layout/fs_widget_frameloading_failure"  //自定义布局 -> 网络异常
+ *          app:cxLoadingView="@layout/fs_widget_frameloading_loading"  //自定义布局 -> 正在加载
+ *          app:cxScaleFactor="1.0"                                     //缩放因子
+ *          app:cxUseSmallStyle="false">                                //使用小一点的样式，例如放在 imageView 加载时使用
+ *
+ *          <WebView
+ *               android:id="@+id/web_view"
+ *               android:layout_width="match_parent"
+ *               android:layout_height="match_parent"/>
+ *      </com.xixi.library.android.widget.loading.FSFrameLoadingLayout>
+ *  </p>
+ *
  * 默认要向上一点点不是居中的,因为titlebar占有一定的高度 宽高必须大于等于 120dp
  */
-class CXFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
+@Suppress("unused")
+class FSFrameLoadingLayout : FrameLayout {
 
     enum class ViewType {
-        //没有数据
-        NODATA,
-        //加载中
-        LOADING,
-        //网络异常
-        NETWORK_EXCEPTION
+        NODATA, //没有数据
+        LOADING, //加载中
+        NETWORK_EXCEPTION//网络异常
     }
 
-    protected var mViewMaps = HashMap<ViewType, View>()
+    companion object {
+        var LAYOUT_ID_LOADING = R.layout.fs_widget_frameloading_loading
+        var LAYOUT_ID_NO_DATA = R.layout.fs_widget_frameloading_empty
+        var LAYOUT_ID_NET_WORK_EXCEPTION = R.layout.fs_widget_frameloading_failure
+    }
 
-    protected var mInflater: LayoutInflater
+    private var mViewMaps = HashMap<ViewType, View>()
 
-    init {
-        mInflater = LayoutInflater.from(context)
+    constructor(context: Context) : this(context, null)
 
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
         if (attrs != null) {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CXFrameLoadingLayout)
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FSFrameLoadingLayout)
             if (typedArray != null) {
-                val loadingLayoutId = typedArray.getResourceId(R.styleable.CXFrameLoadingLayout_fsLoadingView, R.layout.fs_widget_frameloading_loading)
-                val networkExceptionLayoutId = typedArray.getResourceId(R.styleable.CXFrameLoadingLayout_fsFailureView, R.layout.fs_widget_frameloading_failure)
-                val nodataLayoutId = typedArray.getResourceId(R.styleable.CXFrameLoadingLayout_fsEmptyView, R.layout.fs_widget_frameloading_empty)
-                val centerInParent = CXCustomViewUtil.getBoolean(typedArray, R.styleable.CXFrameLoadingLayout_fsCenterInParent, false)
-                val useSmallStyle = CXCustomViewUtil.getBoolean(typedArray, R.styleable.CXFrameLoadingLayout_fsUseSmallStyle, false)
+                val loadingLayoutId = typedArray.getResourceId(R.styleable.FSFrameLoadingLayout_fsLoadingView, LAYOUT_ID_LOADING)
+                val networkExceptionLayoutId = typedArray.getResourceId(R.styleable.FSFrameLoadingLayout_fsFailureView, LAYOUT_ID_NET_WORK_EXCEPTION)
+                val nodataLayoutId = typedArray.getResourceId(R.styleable.FSFrameLoadingLayout_fsEmptyView, LAYOUT_ID_NO_DATA)
+                val centerInParent = FSCustomViewUtil.getBoolean(typedArray, R.styleable.FSFrameLoadingLayout_fsCenterInParent, false)
+                val useSmallStyle = FSCustomViewUtil.getBoolean(typedArray, R.styleable.FSFrameLoadingLayout_fsUseSmallStyle, false)
                 val defaultScaleFactor = 0.6f
-                var scaleFactor = CXCustomViewUtil.getFloat(typedArray, R.styleable.CXFrameLoadingLayout_fsScaleFactor, defaultScaleFactor)
+                var scaleFactor = FSCustomViewUtil.getFloat(typedArray, R.styleable.FSFrameLoadingLayout_fsScaleFactor, defaultScaleFactor)
                 if (scaleFactor <= 0 || scaleFactor > 1)
                     scaleFactor = defaultScaleFactor
-                val drawable = CXCustomViewUtil.getDrawable(typedArray, R.styleable.CXFrameLoadingLayout_fsAllBackground, Color.parseColor("#FFFFFFFE"), -1)
+                val drawable = FSCustomViewUtil.getDrawable(typedArray, R.styleable.FSFrameLoadingLayout_fsAllBackground, Color.parseColor("#FFFFFFFE"), -1)
                 typedArray.recycle()
 
-                resetWithCustomViews(loadingLayoutId, networkExceptionLayoutId, nodataLayoutId)
+                resetWithCustomViews(LayoutInflater.from(context), loadingLayoutId, networkExceptionLayoutId, nodataLayoutId)
                 enableCenterInParent(centerInParent)
                 enableUseSmallStyle(useSmallStyle, scaleFactor)
                 setViewsBackground(drawable)
@@ -62,15 +87,15 @@ class CXFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: At
     }
 
     //在构造函数最后
-    fun resetWithCustomViews(loadingLayoutId: Int, networkExceptionLayoutId: Int, nodataLayoutId: Int) {
+    fun resetWithCustomViews(inflater: LayoutInflater, loadingLayoutId: Int, networkExceptionLayoutId: Int, nodataLayoutId: Int) {
         //remove oldViews
         removeView(mViewMaps[ViewType.LOADING])
         removeView(mViewMaps[ViewType.NETWORK_EXCEPTION])
         removeView(mViewMaps[ViewType.NODATA])
         //add newViews
-        mViewMaps.put(ViewType.LOADING, mInflater.inflate(loadingLayoutId, null))
-        mViewMaps.put(ViewType.NETWORK_EXCEPTION, mInflater.inflate(networkExceptionLayoutId, null))
-        mViewMaps.put(ViewType.NODATA, mInflater.inflate(nodataLayoutId, null))
+        mViewMaps.put(ViewType.LOADING, inflater.inflate(loadingLayoutId, null))
+        mViewMaps.put(ViewType.NETWORK_EXCEPTION, inflater.inflate(networkExceptionLayoutId, null))
+        mViewMaps.put(ViewType.NODATA, inflater.inflate(nodataLayoutId, null))
         addView(mViewMaps[ViewType.LOADING], FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
         addView(mViewMaps[ViewType.NETWORK_EXCEPTION], FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
         addView(mViewMaps[ViewType.NODATA], FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
@@ -94,7 +119,7 @@ class CXFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: At
         return null
     }
 
-    @JvmOverloads fun showView(viewType: ViewType, text: String, appendToNewLine: Boolean = false, removeOldAppend: Boolean = true) {
+    fun showView(viewType: ViewType, text: String, appendToNewLine: Boolean = false, removeOldAppend: Boolean = true) {
         val view = processViewToFrontByType(viewType)
         if (view != null) {
             try {

@@ -10,24 +10,24 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
-import com.xixi.library.R
-import com.xixi.library.android.base.CXBaseApplication
-import com.xixi.library.android.util.CXPreferencesUtil
-import com.xixi.library.android.util.CXSystemUtil
+import com.xixi.library.android.R
+import com.xixi.library.android.base.FSBaseApplication
+import com.xixi.library.android.util.FSPreferencesUtil
+import com.xixi.library.android.util.FSSystemUtil
 
 /*
 <!--悬浮窗-->
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
 @Suppress("DEPRECATION")
-@Deprecated("@see CXDebugFragment.showDebugNotification")
-enum class CXFloatViewUtil {
+@Deprecated("@see FSDebugFragment.showDebugNotification")
+enum class FSFloatViewUtil {
     instance;
 
     private val KEY_LAST_X = "M_FLOAT_VIEW_LAST_X"
     private val KEY_LAST_Y = "M_FLOAT_VIEW_LAST_Y"
     private val KEY_HIDE_ALWAYS = "KEY_HIDE_ALWAYS"
-    private val defaultWH = CXSystemUtil.getPxFromDp(42f).toInt()
+    private val defaultWH = FSSystemUtil.getPxFromDp(42f).toInt()
     private val defaultX = 0
     private val defaultY = defaultWH * 5
 
@@ -37,9 +37,9 @@ enum class CXFloatViewUtil {
     private var listener: View.OnClickListener? = null
 
     init {
-        floatView = ImageView(CXBaseApplication.INSTANCE)
+        floatView = ImageView(FSBaseApplication.INSTANCE)
         floatView.setImageResource(R.drawable.fs_emo_im_happy)
-        windowManager = CXBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager = FSBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowLayoutParams = WindowManager.LayoutParams()
         windowLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST
         windowLayoutParams.format = PixelFormat.RGBA_8888
@@ -48,8 +48,8 @@ enum class CXFloatViewUtil {
         windowLayoutParams.width = defaultWH
         windowLayoutParams.height = defaultWH
         windowLayoutParams.gravity = Gravity.START or Gravity.TOP
-        windowLayoutParams.x = CXPreferencesUtil.getInt(KEY_LAST_X, defaultX)
-        windowLayoutParams.y = CXPreferencesUtil.getInt(KEY_LAST_Y, defaultY)
+        windowLayoutParams.x = FSPreferencesUtil.getInt(KEY_LAST_X, defaultX)
+        windowLayoutParams.y = FSPreferencesUtil.getInt(KEY_LAST_Y, defaultY)
         floatView.setOnTouchListener(object : View.OnTouchListener {
             private var x: Float = 0.toFloat()
             private var y: Float = 0.toFloat()
@@ -67,13 +67,13 @@ enum class CXFloatViewUtil {
                     }
                     MotionEvent.ACTION_MOVE -> {
                         windowLayoutParams.x = (event.rawX - x).toInt()
-                        windowLayoutParams.y = (event.rawY - CXSystemUtil.statusBarHeight2.toFloat() - y).toInt()
+                        windowLayoutParams.y = (event.rawY - FSSystemUtil.statusBarHeight2.toFloat() - y).toInt()
                         windowManager.updateViewLayout(v, windowLayoutParams)
                     }
                     MotionEvent.ACTION_UP -> {
                         floatView.setImageResource(R.drawable.fs_emo_im_happy)
-                        CXPreferencesUtil.putInt(KEY_LAST_X, windowLayoutParams.x)
-                        CXPreferencesUtil.putInt(KEY_LAST_Y, windowLayoutParams.y)
+                        FSPreferencesUtil.putInt(KEY_LAST_X, windowLayoutParams.x)
+                        FSPreferencesUtil.putInt(KEY_LAST_Y, windowLayoutParams.y)
                         if (Math.abs(event.rawX - rawX) < 5 && Math.abs(event.rawY - rawY) < 5) {
                             if (listener != null)
                                 listener?.onClick(floatView)
@@ -89,9 +89,9 @@ enum class CXFloatViewUtil {
     }
 
     var isAwaysHide: Boolean
-        get() = CXPreferencesUtil.getBoolean(KEY_HIDE_ALWAYS, false)
+        get() = FSPreferencesUtil.getBoolean(KEY_HIDE_ALWAYS, false)
         set(isAwaysHide) {
-            CXPreferencesUtil.putBoolean(KEY_HIDE_ALWAYS, isAwaysHide)
+            FSPreferencesUtil.putBoolean(KEY_HIDE_ALWAYS, isAwaysHide)
             if (isAwaysHide)
                 hide()
         }
@@ -117,8 +117,8 @@ enum class CXFloatViewUtil {
 
 
     fun clearLocationCatch() {
-        CXPreferencesUtil.putInt(KEY_LAST_X, defaultX)
-        CXPreferencesUtil.putInt(KEY_LAST_Y, defaultY)
+        FSPreferencesUtil.putInt(KEY_LAST_X, defaultX)
+        FSPreferencesUtil.putInt(KEY_LAST_Y, defaultY)
     }
 
     fun hide() {

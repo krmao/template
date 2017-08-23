@@ -8,7 +8,7 @@ import shutil
 # 批量处理文件名称前缀，代码也会相应修改
 # 只需要修改这里...                            ---- by michael.mao at 20170703
 # ======================================================================================================================
-OLD_FILE_PATH = "/Users/maokangren/workspace/fruit-shop/fruit-shop-android"
+OLD_FILE_PATH = "/Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/libraries/library-base"
 NEW_FILE_PATH = OLD_FILE_PATH + "-new"
 OLD_CODE_FILE_PREFIX = "CX"
 NEW_CODE_FILE_PREFIX = "FS"
@@ -16,9 +16,7 @@ OLD_RES_FILE_PREFIX = "fs"
 NEW_RES_FILE_PREFIX = "fs"
 
 REPLACE_PACkAGE_NAMES = collections.OrderedDict((
-    ("com.xixi.library.android.util", "com.xixi.library.android.util"),
-    ("com.xixi.library.android.base", "com.xixi.library.android.base"),
-    ("com.xixi.library.android.widget", "com.xixi.library.android.widget"),
+    # ("com.xixi.library.android.util", "com.xixi.library.android.util"),
 ))
 
 # ======================================================================================================================
@@ -31,6 +29,7 @@ suffix_source = ["java", "kt", "xml", "pro", "text", "txt", "md", "c", "cpp", "g
                  "html", "js", "css"]
 
 replace_map = {
+    "name=\"" + OLD_CODE_FILE_PREFIX: "name=\"" + NEW_CODE_FILE_PREFIX,
     OLD_CODE_FILE_PREFIX + "AppTheme": NEW_CODE_FILE_PREFIX + "AppTheme",
     OLD_CODE_FILE_PREFIX + "Widget": NEW_CODE_FILE_PREFIX + "Widget",
     OLD_CODE_FILE_PREFIX + "Dialog": NEW_CODE_FILE_PREFIX + "Dialog",
@@ -81,16 +80,18 @@ def reformat_prefix(filepath):
                             if key in each_line:
                                 each_line = each_line.replace(key,
                                                               key
-                                                              .replace(" " + OLD_CODE_FILE_PREFIX,
-                                                                       " " + NEW_CODE_FILE_PREFIX)
+                                                              .replace(OLD_CODE_FILE_PREFIX,
+                                                                       NEW_CODE_FILE_PREFIX)
                                                               .replace(OLD_RES_FILE_PREFIX + "_",
                                                                        NEW_RES_FILE_PREFIX + "_")
                                                               )
                                 modified = True
                         for k, v in replace_map.items():
                             each_line = each_line.replace(k, v)
+                            modified = True
                         for k, v in REPLACE_PACkAGE_NAMES.items():
                             each_line = each_line.replace(k, v)
+                            modified = True
                         new_lines.append(each_line)
                     fopen.close()
                     if modified:
@@ -154,5 +155,6 @@ if __name__ == '__main__':
         print "生成新项目文件夹:", NEW_FILE_PATH
 
     init_names(OLD_FILE_PATH)
+    print nameList
     reformat_prefix(OLD_FILE_PATH)
     print "reformat prefix success !!!"

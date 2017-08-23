@@ -24,7 +24,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 
  * @author Paul Burke (ipaulpro)
  */
-interface CXRecyclerViewItemTouchHelperAdapter {
+interface FSRecyclerViewItemTouchHelperAdapter {
 
     /**
      * Called when an item has been dragged far enough to trigger a move. This is called every time

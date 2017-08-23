@@ -18,12 +18,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.xixi.library.android.widget.titlebar.CXTitleBar
+            <com.xixi.library.android.widget.titlebar.FSTitleBar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fs_titlebar_height"
                 app:fsTitleText="配置环境" />
 
-            <com.xixi.library.android.widget.CXListView
+            <com.xixi.library.android.widget.FSListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:scrollbars="none">
 
                 <requestFocus />
-            </com.xixi.library.android.widget.CXListView>
+            </com.xixi.library.android.widget.FSListView>
 
             <LinearLayout
                 android:layout_width="match_parent"

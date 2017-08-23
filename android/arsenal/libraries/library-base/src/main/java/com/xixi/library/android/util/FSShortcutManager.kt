@@ -8,7 +8,7 @@ import android.content.Intent
  * 创建快捷方式
  */
 @Suppress("unused")
-object CXShortcutManager {
+object FSShortcutManager {
     fun createShortCut(activity: Activity, name: String, ic_launcher: Int) {
         val shortcutIntent = Intent("com.android.launcher.action.INSTALL_SHORTCUT")
         // 快捷方式的名称

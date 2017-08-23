@@ -1,6 +1,12 @@
+//apply plugin: "com.taobao.atlas.library"
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
+
+//atlas {
+//    //声明为awb 即bundle工程
+//    bundleConfig { awbBundle true }
+//}
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion

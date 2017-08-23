@@ -6,8 +6,8 @@ import java.io.File
 import java.io.IOException
 import java.security.MessageDigest
 
-object CXChecksumUtil {
-    @Deprecated("use @see CXChecksumUtil#genMD5Checksum(charSequence: CharSequence)")
+object FSChecksumUtil {
+    @Deprecated("use @see FSChecksumUtil#genMD5Checksum(charSequence: CharSequence)")
     fun genMD5Checksum(buffer: ByteArray): String {
         val hexDigits = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
         try {

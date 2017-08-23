@@ -11,7 +11,7 @@ import java.util.*
  * </pre>
  */
 @Suppress("unused")
-object CXRandomUtil {
+object FSRandomUtil {
     /**
      * must be start>0 end>0
      */

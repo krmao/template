@@ -4,16 +4,16 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.telephony.TelephonyManager
 import android.text.TextUtils
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSBaseApplication
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.*
 
-object CXNetworkUtil {
+object FSNetworkUtil {
 
     fun isNetworkAvailable(): Boolean {
         var isNetworkAvailable = false
-        val application = CXBaseApplication.INSTANCE
+        val application = FSBaseApplication.INSTANCE
         val conManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val networkInfo = conManager?.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnectedOrConnecting) {
@@ -51,7 +51,7 @@ object CXNetworkUtil {
     }
 
     fun getNetType(): MNetworkType {
-        return getNetType(CXBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        return getNetType(FSBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
     }
 
     fun getNetType(connectivityManager: ConnectivityManager?): MNetworkType {
@@ -85,7 +85,7 @@ object CXNetworkUtil {
 
     private fun updateNetProvider(type: Int): MNetworkType {
         var networkType = MNetworkType.NONE
-        val application = CXBaseApplication.INSTANCE
+        val application = FSBaseApplication.INSTANCE
         val tempType = getSwitchedType(type)
         val telephonyManager = application.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
         var IMSI: String? = null

@@ -2,14 +2,14 @@ package com.xixi.library.android.util
 
 import android.database.sqlite.SQLiteDatabase
 import android.text.TextUtils
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSBaseApplication
 import java.io.File
 import java.io.FileOutputStream
 
-object CXDatabaseUtil {
+object FSDatabaseUtil {
 
     fun getDatabase(dbName: String): File {
-        return CXBaseApplication.INSTANCE.getDatabasePath(dbName)
+        return FSBaseApplication.INSTANCE.getDatabasePath(dbName)
     }
 
     fun copyDBFile(dbName: String, dbResId: Int, destDBDir: File?) {
@@ -24,7 +24,7 @@ object CXDatabaseUtil {
                 destDBFile.delete()
             SQLiteDatabase.openOrCreateDatabase(destDBFile, null)
 
-            val inputStream = CXBaseApplication.INSTANCE.resources.openRawResource(dbResId)
+            val inputStream = FSBaseApplication.INSTANCE.resources.openRawResource(dbResId)
             val outputStream = FileOutputStream(destDBFile)
 
             val buffer = ByteArray(1024)

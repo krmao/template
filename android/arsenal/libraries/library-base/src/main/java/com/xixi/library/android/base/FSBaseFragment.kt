@@ -2,7 +2,7 @@ package com.xixi.library.android.base
 
 import android.support.v4.app.Fragment
 
-open class CXBaseFragment : Fragment() {
+open class FSBaseFragment : Fragment() {
 
     interface OnBackPressedListener {
         /**

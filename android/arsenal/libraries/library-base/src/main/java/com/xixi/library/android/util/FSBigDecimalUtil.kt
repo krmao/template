@@ -3,7 +3,7 @@ package com.xixi.library.android.util
 import java.math.BigDecimal
 
 @Suppress("unused")
-object CXBigDecimalUtil {
+object FSBigDecimalUtil {
 
     //四舍五入 decimalLength：小数位数
     fun formatValue(value: Double, decimalLength: Int): Double {

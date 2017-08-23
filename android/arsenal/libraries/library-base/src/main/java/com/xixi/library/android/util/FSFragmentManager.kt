@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.Window
 
-object CXFragmentManager {
+object FSFragmentManager {
 
     fun addFragment(fm: FragmentManager?, fragment: Fragment?) {
         if (fm == null || fragment == null)

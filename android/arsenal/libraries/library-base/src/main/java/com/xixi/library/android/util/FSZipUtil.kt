@@ -13,7 +13,7 @@ import java.util.zip.ZipOutputStream
  * desc   :
  * </pre> *
  */
-object CXZipUtil {
+object FSZipUtil {
     private val BUFFER = 2048
 
     /**

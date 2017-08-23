@@ -3,10 +3,11 @@ package com.xixi.library.android.base
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.xixi.library.android.util.FSLogUtil
 import com.xixi.library.android.util.rx.RxBus
 import kotlin.properties.Delegates
 
-class CXActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+class FSActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     // I use four separate variables here. You can, of course, just use two and
     // increment/decrement them instead of using four and incrementing them all.
     /*private int resumed;
@@ -24,7 +25,7 @@ class CXActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityPaused(activity: Activity) {
         ++paused
-        android.util.Log.w("test", "application is in foreground: " + (resumed > paused))
+        FSLogUtil.w("test", "application is in foreground: " + (resumed > paused))
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {}
@@ -35,7 +36,7 @@ class CXActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStopped(activity: Activity) {
         ++stopped
-        android.util.Log.w("test", "application is visible: " + (started > stopped))
+        FSLogUtil.w("test", "application is visible: " + (started > stopped))
     }
 
     companion object {

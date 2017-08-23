@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 
-class CXHomeKeyUtil(private val context: Context, listener: OnClickListener) {
+class FSHomeKeyUtil(private val context: Context, listener: OnClickListener) {
     private val intentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
     private val innerReceiver: InnerReceiver?
 

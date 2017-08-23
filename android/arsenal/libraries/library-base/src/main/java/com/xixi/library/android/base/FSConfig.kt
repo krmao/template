@@ -10,12 +10,13 @@ import java.util.*
  * desc   : 基础类库全局配置文件
  * </pre>
  */
-object CXConfig {
+object FSConfig {
     var NAME_SHARED_PREFERENCES = "com.xixi.shared_preferences"
 
-    val NAME_LOG_DIR: String = "LOG"
+    val NAME_CACHE_WEB_DIR: String = "cache_web"
+    val NAME_LOG_DIR: String = "log"
 
     val NAME_NEW_LOG: String
-        get() = "Log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
+        get() = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 
 }

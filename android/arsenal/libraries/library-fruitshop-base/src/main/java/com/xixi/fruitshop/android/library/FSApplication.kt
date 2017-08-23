@@ -1,7 +1,7 @@
 package com.xixi.fruitshop.android.library
 
 import com.meituan.android.walle.WalleChannelReader
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSBaseApplication
 
 /**
  * <pre>
@@ -11,7 +11,7 @@ import com.xixi.library.android.base.CXBaseApplication
  * </pre>
  */
 @Suppress("unused")
-open class FSApplication : CXBaseApplication() {
+open class FSApplication : FSBaseApplication() {
 
     companion object {
         lateinit var INSTANCE: FSApplication

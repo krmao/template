@@ -2,7 +2,7 @@ package com.xixi.library.android.util.rx
 
 import android.app.Activity
 import android.os.Bundle
-import com.xixi.library.android.util.CXLogUtil
+import com.xixi.library.android.util.FSLogUtil
 
 /**
  * RxRouteEvent作为总线间的通信载体
@@ -19,6 +19,6 @@ open class RxRouteEvent {
     var bundle: Bundle? = null
 
     init {
-        CXLogUtil.w(javaClass.name, "[路由事件]-> activity=${activity?.javaClass?.name}, id='$id', targetUrl='$targetUrl', bundle='$bundle'")
+        FSLogUtil.w(javaClass.name, "[路由事件]-> activity=${activity?.javaClass?.name}, id='$id', targetUrl='$targetUrl', bundle='$bundle'")
     }
 }

@@ -10,7 +10,7 @@ import android.text.TextUtils
 import android.view.View
 
 @Suppress("unused")
-object CXCustomViewUtil {
+object FSCustomViewUtil {
 
     fun getBoolean(typedArray: TypedArray, index: Int, defaultValue: Boolean): Boolean {
         var result: Boolean

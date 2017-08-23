@@ -2,9 +2,9 @@ package com.xixi.library.android.util
 
 import android.text.TextUtils
 import android.util.Log
-import com.xixi.library.android.base.CXBaseApplication
-import com.xixi.library.android.base.CXConfig
-import com.xixi.library.android.util.cache.CXCacheManager
+import com.xixi.library.android.base.FSBaseApplication
+import com.xixi.library.android.base.FSConfig
+import com.xixi.library.android.util.cache.FSCacheManager
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -20,25 +20,25 @@ import java.util.*
  * 1:打印格式化后的 json
  * 2:写日志文件到 sdcard 缓存目录
  *
- *      CXLogUtil.open()        使用之前打开开关[优先级是以包范围越大为主控制]
- *      CXLogUtil.openPage()    页面级别的控制，在所在模块级别开启的情况下才起作用，开启本页面日志
+ *      FSLogUtil.open()        使用之前打开开关[优先级是以包范围越大为主控制]
+ *      FSLogUtil.openPage()    页面级别的控制，在所在模块级别开启的情况下才起作用，开启本页面日志
  *
- *          CXLogUtil.v()
- *          CXLogUtil.d()
- *          CXLogUtil.e()
+ *          FSLogUtil.v()
+ *          FSLogUtil.d()
+ *          FSLogUtil.e()
  *
- *      CXLogUtil.closePage()   页面级别的控制，在所在模块级别开启的情况下才起作用，关闭本页面日志
- *      CXLogUtil.close()       使用之后关闭开关
+ *      FSLogUtil.closePage()   页面级别的控制，在所在模块级别开启的情况下才起作用，关闭本页面日志
+ *      FSLogUtil.close()       使用之后关闭开关
  *
  * </p>
  */
 @Suppress("unused")
-object CXLogUtil {
+object FSLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
     private val PAGE_SUFFIX = "#_PAGE_#"
 
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
-    private var debug = CXBaseApplication.DEBUG
+    private var debug = FSBaseApplication.DEBUG
 
     fun setDebug(debug: Boolean) {
         this.debug = debug
@@ -174,7 +174,7 @@ object CXLogUtil {
     }
 
     fun getCacheDir(): File {
-        val cacheDir = File(CXCacheManager.getCacheDir(), if (debug) CXConfig.NAME_LOG_DIR else CXChecksumUtil.genMD5Checksum(CXConfig.NAME_LOG_DIR))
+        val cacheDir = File(FSCacheManager.getCacheDir(), if (debug) FSConfig.NAME_LOG_DIR else FSChecksumUtil.genMD5Checksum(FSConfig.NAME_LOG_DIR))
         if (!cacheDir.exists())
             cacheDir.mkdirs()
         return cacheDir
@@ -190,12 +190,12 @@ object CXLogUtil {
 
     fun write(tag: String? = null, msg: String, throwable: Throwable? = null, isForce: Boolean? = false) {
         if (debug || isForce ?: false) {
-            CXFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), CXConfig.NAME_NEW_LOG))
+            FSFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), FSConfig.NAME_NEW_LOG))
         }
     }
 
     private fun getStackTraceElement(): StackTraceElement? {
-        val className = CXLogUtil::class.java.name
+        val className = FSLogUtil::class.java.name
         var found = false
         for (trace in Thread.currentThread().stackTrace) {
             try {

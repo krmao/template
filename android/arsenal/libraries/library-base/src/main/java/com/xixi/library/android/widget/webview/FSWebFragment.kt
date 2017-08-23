@@ -11,13 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import com.xixi.library.R
-import com.xixi.library.android.base.CXActivity
-import com.xixi.library.android.base.CXBaseFragment
-import com.xixi.library.android.widget.loading.CXFrameLoadingLayout
+import com.xixi.library.android.R
+import com.xixi.library.android.base.FSActivity
+import com.xixi.library.android.base.FSBaseFragment
+import com.xixi.library.android.widget.loading.FSFrameLoadingLayout
 import kotlinx.android.synthetic.main.fs_fragment_webview.*
 
-open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListener {
+open class FSWebFragment : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
     companion object {
         protected var TAG = "HTML5"
         protected val KEY_URL = "key_url"
@@ -32,19 +32,19 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
         var defaultTitleBarTextSize = 16
 
         fun goToCompleteHttpUrl(activity: Activity, url: String) {
-            goTo(activity, CXWebViewUtil.getCompleteHttpUrl(url), false)
+            goTo(activity, FSWebViewUtil.getCompleteHttpUrl(url), false)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, title: String) {
-            goTo(activity, CXWebViewUtil.getCompleteHttpUrl(url), title, null)
+            goTo(activity, FSWebViewUtil.getCompleteHttpUrl(url), title, null)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, title: String, failureUrl: String) {
-            goTo(activity, CXWebViewUtil.getCompleteHttpUrl(url), false, title, 0, 0, 0, 0, failureUrl)
+            goTo(activity, FSWebViewUtil.getCompleteHttpUrl(url), false, title, 0, 0, 0, 0, failureUrl)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean) {
-            goTo(activity, CXWebViewUtil.getCompleteHttpUrl(url), isHideTitle, null)
+            goTo(activity, FSWebViewUtil.getCompleteHttpUrl(url), isHideTitle, null)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean, title: String,
@@ -54,7 +54,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
                                 titleBarTextSize: Int,
                                 failureUrl: String
         ) {
-            goTo(activity, CXWebViewUtil.getCompleteHttpUrl(url), isHideTitle, title, titleBarBgColor, titleBarBgRes, titleBarTextColor, titleBarTextSize, failureUrl)
+            goTo(activity, FSWebViewUtil.getCompleteHttpUrl(url), isHideTitle, title, titleBarBgColor, titleBarBgRes, titleBarTextColor, titleBarTextSize, failureUrl)
         }
 
         fun goTo(activity: Activity, url: String, title: String, failureUrl: String? = null) {
@@ -85,7 +85,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             bundle.putInt("titleBarBgRes", titleBarBgRes)
             bundle.putInt("titleBarTextColor", titleBarTextColor)
             bundle.putInt("titleBarTextSize", titleBarTextSize)
-            CXActivity.start(activity, CXWebFragment::class.java, bundle)
+            FSActivity.start(activity, FSWebFragment::class.java, bundle)
         }
 
         fun goToWithData(activity: Activity, htmlStr: String, isHideTitle: Boolean, title: String,
@@ -108,21 +108,21 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             bundle.putInt("titleBarBgRes", titleBarBgRes)
             bundle.putInt("titleBarTextColor", titleBarTextColor)
             bundle.putInt("titleBarTextSize", titleBarTextSize)
-            CXActivity.start(activity, CXWebFragment::class.java, bundle)
+            FSActivity.start(activity, FSWebFragment::class.java, bundle)
         }
     }
 
     protected val SCHEME = "native"
     protected val HOST = "home"
 
-    protected lateinit var mUrl: String
-    protected lateinit var mHtmlData: String
-    protected lateinit var mTitle: String
-    protected var mFailureUrl: String? = null
+    protected var mUrl: String? = "http://www.baidu.com"
+    protected var mHtmlData: String? = null
+    protected var mTitle: String? = "美丽人生"
+    protected var mFailureUrl: String? = "http://www.baidu.com"
     protected var mIsHideTitle = true
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(activity).inflate(R.layout.fs_fragment_webview, container, false)
+        return inflater?.inflate(R.layout.fs_fragment_webview, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -163,7 +163,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
     }
 
     protected fun initWebView(webView: WebView) {
-        CXWebViewUtil.initWebView(webView)
+        FSWebViewUtil.initWebView(webView)
 
         webView.setWebViewClient(object : WebViewClient() {
 
@@ -172,7 +172,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
                 view.stopLoading()
                 if (TextUtils.isEmpty(mFailureUrl)) {
                     webView.goBack()
-                    loading_view.showView(CXFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, if (error == null) loading_view.getDefaultText(CXFrameLoadingLayout.ViewType.NETWORK_EXCEPTION) else "error", false, true)
+                    loading_view.showView(FSFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, if (error == null) loading_view.getDefaultText(FSFrameLoadingLayout.ViewType.NETWORK_EXCEPTION) else "error", false, true)
                 } else {
                     view.loadUrl(mFailureUrl)
                 }
@@ -185,9 +185,9 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             }
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
-                super.onPageStarted(view, url, favicon)
                 Log.d(TAG, "onPageStarted:" + url)
-                loading_view.showView(CXFrameLoadingLayout.ViewType.LOADING)
+                super.onPageStarted(view, url, favicon)
+                loading_view.showView(FSFrameLoadingLayout.ViewType.LOADING)
             }
 
             override fun onPageFinished(view: WebView, url: String) {
@@ -200,7 +200,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
                 Log.d(TAG, "onProgressChanged:" + newProgress)
-                loading_view.updateText(CXFrameLoadingLayout.ViewType.LOADING, loading_view.getDefaultText(CXFrameLoadingLayout.ViewType.NODATA) + " " + newProgress + "%", false, true)
+                loading_view.updateText(FSFrameLoadingLayout.ViewType.LOADING, loading_view.getDefaultText(FSFrameLoadingLayout.ViewType.NODATA) + " " + newProgress + "%", false, true)
             }
 
             @Suppress("OverridingDeprecatedMember")
@@ -228,18 +228,18 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
     protected fun addJavascriptInterface(webview: WebView) {
     }
 
-    protected fun loadUrl(webView: WebView, url: String, failureUrl: String?) {
-        if (!URLUtil.isValidUrl(url)) {
+    protected fun loadUrl(webView: WebView, url: String?, failureUrl: String?) {
+        if (URLUtil.isValidUrl(url)) {
+            loading_view.setOnRefreshClickListener(View.OnClickListener { webView.loadUrl(url) })
+            /*if (!TextUtils.isEmpty(mHtmlData)) {
+                webView.loadDataWithBaseURL(null, mHtmlData, "text/html", "utf-8", null)
+            } else*/
+            webView.loadUrl(url)
+        } else {
             if (URLUtil.isValidUrl(failureUrl))
                 webView.loadUrl(failureUrl)
             else
-                loading_view.showView(CXFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, "加载失败,Url不正确:\n" + url, false, true)
-        } else {
-            loading_view.setOnRefreshClickListener(View.OnClickListener { webView.loadUrl(url) })
-            if (!TextUtils.isEmpty(mHtmlData)) {
-                webView.loadDataWithBaseURL(null, mHtmlData, "text/html", "utf-8", null)
-            } else
-                webView.loadUrl(url)
+                loading_view.showView(FSFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, "加载失败,Url不正确:\n" + url, false, true)
         }
     }
 

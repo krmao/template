@@ -7,7 +7,7 @@ import java.nio.channels.FileChannel
 import java.util.*
 
 @Suppress("unused")
-object CXFileUtil {
+object FSFileUtil {
 
     val ENCODING_UTF8 = "UTF-8"
 

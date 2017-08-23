@@ -16,15 +16,15 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import com.xixi.library.android.base.CXActivityLifecycleCallbacks
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSActivityLifecycleCallbacks
+import com.xixi.library.android.base.FSBaseApplication
 import java.lang.reflect.Method
 
 /**
  * 所有与系统相关的方法
  */
 @Suppress("unused")
-object CXSystemUtil {
+object FSSystemUtil {
 
     val isSdCardExist: Boolean
         get() = Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
@@ -105,13 +105,13 @@ object CXSystemUtil {
     }
 
     val displayMetrics: DisplayMetrics
-        get() = CXBaseApplication.INSTANCE.resources.displayMetrics
+        get() = FSBaseApplication.INSTANCE.resources.displayMetrics
 
     val screenWidth: Int
-        get() = CXBaseApplication.INSTANCE.resources.displayMetrics.widthPixels
+        get() = FSBaseApplication.INSTANCE.resources.displayMetrics.widthPixels
 
     val screenHeight: Int
-        get() = CXBaseApplication.INSTANCE.resources.displayMetrics.heightPixels
+        get() = FSBaseApplication.INSTANCE.resources.displayMetrics.heightPixels
 
 
     fun getPxFromDp(value: Float): Float {
@@ -129,9 +129,9 @@ object CXSystemUtil {
     val statusBarHeight2: Int
         get() {
             var statusBarHeight = 0
-            val resourceId = CXBaseApplication.INSTANCE.resources.getIdentifier("status_bar_height", "dimen", "android")
+            val resourceId = FSBaseApplication.INSTANCE.resources.getIdentifier("status_bar_height", "dimen", "android")
             if (resourceId > 0) {
-                statusBarHeight = CXBaseApplication.INSTANCE.resources.getDimensionPixelSize(resourceId)
+                statusBarHeight = FSBaseApplication.INSTANCE.resources.getDimensionPixelSize(resourceId)
             }
             return statusBarHeight
         }
@@ -159,7 +159,7 @@ object CXSystemUtil {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     fun copyToClipboard(label: String, contentText: String): Boolean {
         try {
-            val cm = CXBaseApplication.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val cm = FSBaseApplication.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(label, contentText)
             cm.primaryClip = clip
             return true
@@ -217,7 +217,7 @@ object CXSystemUtil {
         get() {
             var versionCode = 0
             try {
-                versionCode = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionCode
+                versionCode = FSBaseApplication.INSTANCE.packageManager.getPackageInfo(FSBaseApplication.INSTANCE.packageName, 0).versionCode
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
@@ -229,7 +229,7 @@ object CXSystemUtil {
         get() {
             var versionName: String? = null
             try {
-                versionName = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
+                versionName = FSBaseApplication.INSTANCE.packageManager.getPackageInfo(FSBaseApplication.INSTANCE.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
@@ -239,7 +239,7 @@ object CXSystemUtil {
     fun getAppMetaData(key: String): Any? {
         var metaData: Any? = null
         try {
-            val info = CXBaseApplication.INSTANCE.packageManager.getApplicationInfo(CXBaseApplication.INSTANCE.packageName, PackageManager.GET_META_DATA)
+            val info = FSBaseApplication.INSTANCE.packageManager.getApplicationInfo(FSBaseApplication.INSTANCE.packageName, PackageManager.GET_META_DATA)
             metaData = info.metaData.get(key)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -250,7 +250,7 @@ object CXSystemUtil {
     fun getAppMetaDataForInt(key: String): Int {
         var metaData = 0
         try {
-            val info = CXBaseApplication.INSTANCE.packageManager.getApplicationInfo(CXBaseApplication.INSTANCE.packageName, PackageManager.GET_META_DATA)
+            val info = FSBaseApplication.INSTANCE.packageManager.getApplicationInfo(FSBaseApplication.INSTANCE.packageName, PackageManager.GET_META_DATA)
             metaData = info.metaData.getInt(key)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -274,7 +274,7 @@ object CXSystemUtil {
 
     val isAppInBackground: Boolean
         get() {
-            return !CXActivityLifecycleCallbacks.isApplicationInForeground
+            return !FSActivityLifecycleCallbacks.isApplicationInForeground
         }
 
     /**
@@ -283,7 +283,7 @@ object CXSystemUtil {
     @RequiresPermission(value = "android.permission.EXPAND_STATUS_BAR")
     fun closeStatusBar() {
         try {
-            val statusBarManager = CXBaseApplication.INSTANCE.getSystemService("statusbar")
+            val statusBarManager = FSBaseApplication.INSTANCE.getSystemService("statusbar")
             val collapse: Method
             if (Build.VERSION.SDK_INT <= 16) {
                 collapse = statusBarManager.javaClass.getMethod("collapse")

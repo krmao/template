@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.xixi.library.android.util.FSToastUtil
 
-open class CXBaseActivity : AppCompatActivity() {
+
+open class FSBaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SwipeBackHelper.onCreate(this)
         SwipeBackHelper.getCurrentPage(this)//get current instance
-                .setSwipeBackEnable(true)//on-off
+                .setSwipeBackEnable(enableSwipeBack)//on-off
                 //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
                 .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
                 .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
@@ -43,13 +45,20 @@ open class CXBaseActivity : AppCompatActivity() {
         SwipeBackHelper.onDestroy(this)
     }
 
+    open fun onBackPress(): Boolean {
+        return false
+    }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
+            if (onBackPress())
+                return true
+
             window.decorView.clearAnimation()
             val fragments = supportFragmentManager.fragments
             if (fragments != null && fragments.size > 0) {
                 val fragment = fragments[0]
-                if (fragment is CXBaseFragment.OnBackPressedListener) {
+                if (fragment is FSBaseFragment.OnBackPressedListener) {
                     val canPropagate = fragment.onBackPressed()
                     if (canPropagate) {
                         try {
@@ -61,7 +70,11 @@ open class CXBaseActivity : AppCompatActivity() {
                 }
             }
             if (supportFragmentManager.backStackEntryCount == 0) {
-                finish()
+                if (enableExitWithDoubleBackPressed) {
+                    exitApp()
+                } else {
+                    finish()
+                }
             } else {
                 try {
                     supportFragmentManager.popBackStackImmediate()
@@ -71,6 +84,20 @@ open class CXBaseActivity : AppCompatActivity() {
             return true
         } else {
             return super.onKeyDown(keyCode, event)
+        }
+    }
+
+    protected var enableExitWithDoubleBackPressed = false
+    protected var enableSwipeBack = true
+    protected var exitTime: Long = 0
+
+    fun exitApp() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            FSToastUtil.show("再按一次退出程序")
+            exitTime = System.currentTimeMillis()
+        } else {
+            finish()
+            System.exit(0)
         }
     }
 }

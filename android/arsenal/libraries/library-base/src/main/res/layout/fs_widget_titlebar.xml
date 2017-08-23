@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -11,7 +11,7 @@
     tools:ignore="Deprecated">
 
     <RelativeLayout
-        android:id="@+id/left0BgView"
+        android:id="@+id/left0_bg_view"
         android:layout_width="@dimen/fs_titlebar_height"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -22,7 +22,7 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/left0Btn"
+            android:id="@+id/left0_btn"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="@dimen/fs_titlebar_height"
             android:layout_height="match_parent"
@@ -37,21 +37,21 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/left1BgView"
+        android:id="@+id/left1_bg_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/left0BgView"
-        android:layout_toLeftOf="@+id/titleText"
-        android:layout_toRightOf="@+id/left0BgView"
-        android:layout_toStartOf="@+id/titleText"
+        android:layout_toEndOf="@+id/left0_bg_view"
+        android:layout_toLeftOf="@+id/title_text"
+        android:layout_toRightOf="@+id/left0_bg_view"
+        android:layout_toStartOf="@+id/title_text"
         android:background="@drawable/fs_selector"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/left1Btn"
+            android:id="@+id/left1_btn"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -67,7 +67,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/title_text"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -80,20 +80,20 @@
         tools:ignore="NestedWeights" />
 
     <RelativeLayout
-        android:id="@+id/right1BgView"
+        android:id="@+id/right1_bg_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/titleText"
-        android:layout_toLeftOf="@+id/right0BgView"
-        android:layout_toRightOf="@+id/titleText"
-        android:layout_toStartOf="@+id/right0BgView"
+        android:layout_toEndOf="@+id/title_text"
+        android:layout_toLeftOf="@+id/right0_bg_view"
+        android:layout_toRightOf="@+id/title_text"
+        android:layout_toStartOf="@+id/right0_bg_view"
         android:background="@drawable/fs_selector"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/right1Btn"
+            android:id="@+id/right1_btn"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -109,7 +109,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/right0BgView"
+        android:id="@+id/right0_bg_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -119,7 +119,7 @@
         android:focusable="true">
 
         <TextView
-            android:id="@+id/right0Btn"
+            android:id="@+id/right0_btn"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -131,4 +131,12 @@
             android:singleLine="true"
             android:textColor="@color/fs_black" />
     </RelativeLayout>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/FSWidget.App.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 </RelativeLayout>

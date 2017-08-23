@@ -6,10 +6,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import com.xixi.library.android.util.CXLogUtil
+import com.xixi.library.android.util.FSLogUtil
 
 @Suppress("DEPRECATION")
-class CXNetworkChangedReceiver : BroadcastReceiver() {
+class FSNetworkChangedReceiver : BroadcastReceiver() {
     private val TAG = javaClass.simpleName
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -21,21 +21,21 @@ class CXNetworkChangedReceiver : BroadcastReceiver() {
             //val wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
             when (wifiState) {
                 WifiManager.WIFI_STATE_DISABLED -> if (mLastNetworkType == null)
-                    CXLogUtil.w(TAG, "首次启动，多多关照....")
+                    FSLogUtil.w(TAG, "首次启动，多多关照....")
                 else
-                    CXLogUtil.e(TAG, ">>>>--------start-------->>>>")
+                    FSLogUtil.e(TAG, ">>>>--------start-------->>>>")
                 WifiManager.WIFI_STATE_DISABLING -> {
                 }
                 WifiManager.WIFI_STATE_ENABLED -> if (mLastNetworkType == null)
-                    CXLogUtil.w(TAG, "首次启动，多多关照....")
+                    FSLogUtil.w(TAG, "首次启动，多多关照....")
                 else
-                    CXLogUtil.e(TAG, ">>>>--------start-------->>>>")
+                    FSLogUtil.e(TAG, ">>>>--------start-------->>>>")
                 WifiManager.WIFI_STATE_ENABLING -> {
                 }
                 WifiManager.WIFI_STATE_UNKNOWN -> if (mLastNetworkType == null)
-                    CXLogUtil.w(TAG, "首次启动，多多关照....")
+                    FSLogUtil.w(TAG, "首次启动，多多关照....")
                 else
-                    CXLogUtil.e(TAG, ">>>>--------start-------->>>>")
+                    FSLogUtil.e(TAG, ">>>>--------start-------->>>>")
             }
         }
         // 这个监听wifi的连接状态即是否连上了一个有效无线路由，当上边广播的状态是WifiManager.WIFI_STATE_DISABLING，和WIFI_STATE_DISABLED的时候，根本不会接到这个广播。
@@ -46,7 +46,7 @@ class CXNetworkChangedReceiver : BroadcastReceiver() {
                 ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo gprs = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                 NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                CXLogUtil.w(TAG, "网络状态变化广播  WIFI: " + wifi.isConnected() + "- GPRS: " + gprs.isConnected() + "- 当前状态: " + MNetworkUtil.getNetType(manager));
+                FSLogUtil.w(TAG, "网络状态变化广播  WIFI: " + wifi.isConnected() + "- GPRS: " + gprs.isConnected() + "- 当前状态: " + MNetworkUtil.getNetType(manager));
             }
         }*/
         // 这个监听网络连接的设置，包括wifi和移动数据的打开和关闭。.
@@ -56,13 +56,13 @@ class CXNetworkChangedReceiver : BroadcastReceiver() {
             val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             //val gprs = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
             //val wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-            val currentNetworkType = CXNetworkUtil.getNetType(manager)
+            val currentNetworkType = FSNetworkUtil.getNetType(manager)
             if (mLastNetworkType != null) {//第一次
                 if (mLastNetworkType != currentNetworkType) {
                     // todo others
-                    CXLogUtil.w(TAG, "呼叫下载处理逻辑")
+                    FSLogUtil.w(TAG, "呼叫下载处理逻辑")
                     //
-                    CXLogUtil.e(TAG, "<<<<--------end--------<<<<")
+                    FSLogUtil.e(TAG, "<<<<--------end--------<<<<")
                     mLastNetworkType = currentNetworkType
                 }
             } else
@@ -71,17 +71,17 @@ class CXNetworkChangedReceiver : BroadcastReceiver() {
     }
 
     //"UnKnow" WIFI 2G 3G 4G ""
-    var mLastNetworkType: CXNetworkUtil.MNetworkType? = null
+    var mLastNetworkType: FSNetworkUtil.MNetworkType? = null
 
     companion object {
 
         @Throws(Exception::class)
-        fun register(context: Context): CXNetworkChangedReceiver {
+        fun register(context: Context): FSNetworkChangedReceiver {
             val filter = IntentFilter()
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-            val networkChangedReceiver = CXNetworkChangedReceiver()
+            val networkChangedReceiver = FSNetworkChangedReceiver()
             context.registerReceiver(networkChangedReceiver, filter)
             return networkChangedReceiver
         }

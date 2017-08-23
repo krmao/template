@@ -12,11 +12,11 @@ import android.provider.Settings
 import android.support.annotation.RequiresPermission
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSBaseApplication
 import java.io.File
 import java.util.*
 
-object CXIntentUtil {
+object FSIntentUtil {
     /**
      * @param content  短信内容
      * @param phoneNum String "num,num,num"
@@ -121,7 +121,7 @@ object CXIntentUtil {
     }
 
     fun goToAppDetails(context: Context) {
-        goToDefault(context, getInstalledAppDetailsIntent(CXBaseApplication.INSTANCE.packageName))
+        goToDefault(context, getInstalledAppDetailsIntent(FSBaseApplication.INSTANCE.packageName))
     }
 
     fun getInstalledAppDetailsIntent(packageName: String): Intent {
@@ -219,7 +219,7 @@ object CXIntentUtil {
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             try {
-                CXBaseApplication.INSTANCE.startActivity(intent)
+                FSBaseApplication.INSTANCE.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -238,7 +238,7 @@ object CXIntentUtil {
             context.startActivity(intent)
             return true
         } catch (e: Exception) {
-            CXLogUtil.e(javaClass.name, "Not Found the app.....", e)
+            FSLogUtil.e(javaClass.name, "Not Found the app.....", e)
             return false
         }
 

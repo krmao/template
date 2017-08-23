@@ -9,7 +9,7 @@ import java.net.URL
 import java.util.*
 
 @Suppress("unused")
-object CXHttpUrlConnectionUtil {
+object FSHttpUrlConnectionUtil {
     private var TAG = javaClass.name
 
     /**
@@ -104,8 +104,8 @@ object CXHttpUrlConnectionUtil {
                 ch = inputStream.read()
             }
         }
-        CXLogUtil.d(TAG, "responseCode:" + responseCode)
-        CXLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
+        FSLogUtil.d(TAG, "responseCode:" + responseCode)
+        FSLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
         outStream.close()
         conn.disconnect()
         return responseStringBuilder.toString()
@@ -139,11 +139,11 @@ object CXHttpUrlConnectionUtil {
                 ch = inputStream.read()
             }
         }
-        CXLogUtil.d(TAG, "responseCode:" + responseCode)
-        CXLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
+        FSLogUtil.d(TAG, "responseCode:" + responseCode)
+        FSLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
         try {
             val content = responseStringBuilder.substring(0, 200)
-            CXLogUtil.d(TAG, "responseContent:" + content.toByteArray(charset("utf-8")))
+            FSLogUtil.d(TAG, "responseContent:" + content.toByteArray(charset("utf-8")))
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -12,7 +12,7 @@ import android.view.View
  *
  * Requires API 11+
  */
-class CXVerticalViewPager : ViewPager {
+class FSVerticalViewPager : ViewPager {
 
     constructor(context: Context) : super(context) {
         init()

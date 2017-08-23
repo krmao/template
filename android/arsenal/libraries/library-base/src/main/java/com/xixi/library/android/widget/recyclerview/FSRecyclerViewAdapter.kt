@@ -2,10 +2,10 @@ package com.xixi.library.android.widget.recyclerview
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import com.xixi.library.android.widget.recyclerview.helper.CXRecyclerViewItemTouchHelperAdapter
+import com.xixi.library.android.widget.recyclerview.helper.FSRecyclerViewItemTouchHelperAdapter
 import java.util.*
 
-abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), CXRecyclerViewItemTouchHelperAdapter {
+abstract class FSRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), FSRecyclerViewItemTouchHelperAdapter {
 
     override fun getItemCount(): Int {
         return dataList.size

@@ -19,4 +19,12 @@
         <item name="color">@color/fs_white</item>
     </style>
 
+    <style name="FSWidget.App.ProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">2dp</item>
+        <item name="android:minHeight">2dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/fs_titlebar_progressbar_horizontal_progress_drawable</item>
+    </style>
+
 </resources>

@@ -1,6 +1,6 @@
 package com.xixi.library.android.base.mvp
 
-interface CXBasePresenter {
+interface FSBasePresenter {
 
     fun subscribe()
 

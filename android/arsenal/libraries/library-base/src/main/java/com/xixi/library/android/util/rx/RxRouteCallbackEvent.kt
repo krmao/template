@@ -1,7 +1,7 @@
 package com.xixi.library.android.util.rx
 
 import android.os.Bundle
-import com.xixi.library.android.util.CXLogUtil
+import com.xixi.library.android.util.FSLogUtil
 
 /**
  * <pre>
@@ -18,6 +18,6 @@ open class RxRouteCallbackEvent {
     var bundle: Bundle? = null
 
     init {
-        CXLogUtil.w(javaClass.name, "[路由返回事件]-> id='$id', bundle='$bundle'")
+        FSLogUtil.w(javaClass.name, "[路由返回事件]-> id='$id', bundle='$bundle'")
     }
 }

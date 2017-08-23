@@ -25,11 +25,11 @@ import android.support.v7.widget.helper.ItemTouchHelper
  * An implementation of [ItemTouchHelper.Callback] that enables basic drag & drop and
  * swipe-to-dismiss. Drag events are automatically started by an item long-press.<br></br>
  *
- * Expects the `RecyclerView.Adapter` to listen for [CXRecyclerViewItemTouchHelperAdapter] callbacks
+ * Expects the `RecyclerView.Adapter` to listen for [FSRecyclerViewItemTouchHelperAdapter] callbacks
 
  * @author Paul Burke (ipaulpro)
  */
-class CXRecyclerViewItemTouchHelperCallback(private val mAdapter: CXRecyclerViewItemTouchHelperAdapter, protected var onDragListener: OnDragListener?) : ItemTouchHelper.Callback() {
+class FSRecyclerViewItemTouchHelperCallback(private val mAdapter: FSRecyclerViewItemTouchHelperAdapter, protected var onDragListener: OnDragListener?) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
         return true

@@ -7,8 +7,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
-import com.xixi.library.android.base.CXBaseApplication
-import com.xixi.library.android.base.CXConfig
+import com.xixi.library.android.base.FSBaseApplication
+import com.xixi.library.android.base.FSConfig
 import java.util.*
 
 /**
@@ -24,9 +24,9 @@ import java.util.*
  * import com.fasterxml.jackson.module.kotlin.registerKotlinModule
  */
 
-object CXPreferencesUtil {
+object FSPreferencesUtil {
 
-    private var mSharedPreferences: SharedPreferences = CXBaseApplication.INSTANCE.getSharedPreferences(CXConfig.NAME_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    private var mSharedPreferences: SharedPreferences = FSBaseApplication.INSTANCE.getSharedPreferences(FSConfig.NAME_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     //private var objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
     private var mGson: Gson = Gson()
 

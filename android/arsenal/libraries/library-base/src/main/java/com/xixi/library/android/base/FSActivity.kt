@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.widget.FrameLayout
 
-open class CXActivity : CXBaseActivity() {
+open class FSActivity : FSBaseActivity() {
 
     companion object {
         val KEY_THEME = "KEY_THEME"
@@ -25,11 +25,11 @@ open class CXActivity : CXBaseActivity() {
         }
 
         fun startNewTask(fragmentClass: Class<*>, args: Bundle?) {
-            CXBaseApplication.INSTANCE.startActivity(getNewTaskIntent(CXBaseApplication.INSTANCE, 0, fragmentClass, args))
+            FSBaseApplication.INSTANCE.startActivity(getNewTaskIntent(FSBaseApplication.INSTANCE, 0, fragmentClass, args))
         }
 
         fun startSingleTask(from: Activity, fragmentClass: Class<*>, args: Bundle) {
-            CXBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
+            FSBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
         }
 
         fun start(activity: Activity, fragmentClass: Class<*>, args: Bundle?, themResId: Int) {
@@ -98,7 +98,7 @@ open class CXActivity : CXBaseActivity() {
         }
 
         fun getIntent(context: Context, themResId: Int, fragmentClassName: String, args: Bundle?): Intent {
-            val intent = Intent(context, CXActivity::class.java)
+            val intent = Intent(context, FSActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
             if (args != null)
                 intent.putExtra(KEY_FRAGMENT_ARGS, args)
@@ -108,7 +108,7 @@ open class CXActivity : CXBaseActivity() {
         }
 
         fun getNewTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
-            val intent = Intent(context, CXActivity::class.java)
+            val intent = Intent(context, FSActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
             if (args != null)
                 intent.putExtra(KEY_FRAGMENT_ARGS, args)
@@ -119,7 +119,7 @@ open class CXActivity : CXBaseActivity() {
         }
 
         fun getSingleTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
-            val intent = Intent(context, CXActivity::class.java)
+            val intent = Intent(context, FSActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
             if (args != null)
                 intent.putExtra(KEY_FRAGMENT_ARGS, args)
@@ -167,7 +167,7 @@ open class CXActivity : CXBaseActivity() {
                 supportFragmentManager.beginTransaction().add(android.R.id.content, fragment, fragmentClassName).commitAllowingStateLoss()
             }
         } catch (e: Exception) {
-            Log.e(CXActivity::javaClass.name, "Has error in new instance of fragment", e)
+            Log.e(FSActivity::javaClass.name, "Has error in new instance of fragment", e)
         }
     }
 }

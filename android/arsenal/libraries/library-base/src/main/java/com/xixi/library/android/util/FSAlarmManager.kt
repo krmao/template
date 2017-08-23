@@ -4,9 +4,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import com.xixi.library.android.base.CXBaseApplication
+import com.xixi.library.android.base.FSBaseApplication
 
-object CXAlarmManager {
+object FSAlarmManager {
 
     /*
         Intent intent = new Intent(MAlarmBroadcastReceiver.ACTION);//必须静态注册
@@ -14,21 +14,21 @@ object CXAlarmManager {
         MAlarmManagerUtil.setNormalAlarm(calendar.getTimeInMillis(), pendingIntent);
      */
     fun setNormalAlarm(timeInMillis: Long, pendingIntent: PendingIntent): PendingIntent {
-        val context = CXBaseApplication.INSTANCE.applicationContext
+        val context = FSBaseApplication.INSTANCE.applicationContext
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
         return pendingIntent
     }
 
     fun setRepeatAlarm(timeInMillis: Long, intervalMillis: Long, pendingIntent: PendingIntent): PendingIntent {
-        val context = CXBaseApplication.INSTANCE.applicationContext
+        val context = FSBaseApplication.INSTANCE.applicationContext
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, intervalMillis, pendingIntent)
         return pendingIntent
     }
 
     fun cancelAlarm(pendingIntent: PendingIntent) {
-        val context = CXBaseApplication.INSTANCE.applicationContext
+        val context = FSBaseApplication.INSTANCE.applicationContext
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
     }

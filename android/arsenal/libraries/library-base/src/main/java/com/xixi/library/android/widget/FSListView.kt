@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ListView
 
-open class CXListView : ListView {
+open class FSListView : ListView {
 
     constructor(context: Context) : super(context)
 

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+apply plugin: 'com.taobao.atlas'
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'walle'
 walle {
@@ -9,6 +11,39 @@ walle {
     apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
     // 渠道配置文件
     channelFile = new File("${projectDir}/channels.txt")
+}
+
+atlas {
+
+    atlasEnabled true
+    /*tBuildConfig {
+        autoStartBundles = ['com.taobao.firstbundle'] //自启动bundle配置
+        outOfApkBundles = ['remotebundle']
+        preLaunch = 'com.taobao.demo.DemoPreLaunch'
+        classInject false
+        dataBindingBundles = ['com.taobao.databindbundle']
+    }
+
+    manifestOptions {
+        addAtlasProxyComponents true
+    }
+
+
+    patchConfigs {
+        debug {
+            createTPatch true
+        }
+    }
+
+
+    buildTypes {
+        debug {
+            if (apVersion) {
+                baseApDependency "com.taobao.android.atlasdemo:AP-debug:${apVersion}@ap"
+                patchConfig patchConfigs.debug
+            }
+        }
+    }*/
 }
 
 //上传bugly符号表配置
@@ -51,7 +86,7 @@ android {
             keyAlias 'fruitshop'
             keyPassword 'fruitshop#767709667'
             storeFile file('fruitshop.keystore')
-            storePassword 'mongotoc'
+            storePassword 'fruitshop#767709667'
             v2SigningEnabled true
         }
 
@@ -59,7 +94,7 @@ android {
             keyAlias 'fruitshop'
             keyPassword 'fruitshop#767709667'
             storeFile file('fruitshop.keystore')
-            storePassword 'fruitshop'
+            storePassword 'fruitshop#767709667'
             v2SigningEnabled true
         }
     }
@@ -183,8 +218,15 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Atlas
+    compile("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") {
+        transitive = true
+    }
+    compile "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" //如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
+
     compile project(':library-fruitshop-base')
-    compile project(':library-hybird')
+    //bundleCompile project(':module-fruitshop-home')
+    //compile project(':library-hybird')
     //compile project(':library-fruitshop-repository')
 
     // LeakCanary

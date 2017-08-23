@@ -5,13 +5,13 @@
     android:background="#efefef"
     android:orientation="vertical">
 
-    <com.xixi.library.android.widget.titlebar.CXTitleBar
+    <com.xixi.library.android.widget.titlebar.FSTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fs_titlebar_height"
         android:background="@drawable/fs_b_e2_white_normal_shape" />
 
-    <com.xixi.library.android.widget.loading.CXFrameLoadingLayout
+    <com.xixi.library.android.widget.loading.FSFrameLoadingLayout
         android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,5 +21,5 @@
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.xixi.library.android.widget.loading.CXFrameLoadingLayout>
+    </com.xixi.library.android.widget.loading.FSFrameLoadingLayout>
 </LinearLayout>

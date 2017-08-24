@@ -13,9 +13,7 @@ import kotlinx.android.synthetic.main.home_tab_fragment.*
 
 class HomeTabFragment : FSBaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.home_tab_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.home_tab_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +45,7 @@ class HomeTabFragment : FSBaseFragment() {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                content_vp.currentItem = tab.position
+                content_vp.setCurrentItem(tab.position, false)
             }
         })
     }

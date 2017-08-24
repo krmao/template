@@ -1,5 +1,6 @@
 package com.xixi.fruitshop.android.module.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +12,10 @@ import com.xixi.library.android.base.FSBaseFragment
 class MineFragment : FSBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val button: TextView = TextView(activity)
-        button.text = "mine"
-        return button
+        val textView: TextView = TextView(activity)
+        textView.text = "mine"
+        textView.setBackgroundColor(resources.getColor(R.color.fs_pink))
+        return textView
     }
 
     override fun onStart() {

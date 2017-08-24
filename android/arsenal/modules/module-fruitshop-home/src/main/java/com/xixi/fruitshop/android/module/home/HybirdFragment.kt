@@ -1,5 +1,6 @@
 package com.xixi.fruitshop.android.module.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +12,10 @@ import com.xixi.library.android.base.FSBaseFragment
 class HybirdFragment : FSBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val button: TextView = TextView(activity)
-        button.text = "hybird"
-        return button
+        val textView: TextView = TextView(activity)
+        textView.text = "hybird"
+        textView.setBackgroundColor(Color.parseColor("#FF33B5E5"))
+        return textView
     }
 
     override fun onStart() {

@@ -1,5 +1,6 @@
 package com.xixi.fruitshop.android.module.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +12,11 @@ import com.xixi.library.android.base.FSBaseFragment
 class SettingFragment : FSBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val button: TextView = TextView(activity)
-        button.text = "setting"
-        return button
+        val textView: TextView = TextView(activity)
+        textView.text = "setting"
+        textView.setTextColor(resources.getColor(R.color.fs_orange))
+        textView.setBackgroundColor(Color.DKGRAY)
+        return textView
     }
 
     override fun onStart() {

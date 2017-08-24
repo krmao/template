@@ -5,13 +5,6 @@ import android.util.Log
 import com.xixi.library.android.util.rx.RxBus
 import com.xixi.library.android.util.rx.RxRouteEvent
 
-/**
- * <pre>
- *     author : maokangren
- *     e-mail : maokangren@chexiang.com
- *     desc   :
- * </pre>
- */
 object TestRouteManager {
     init {
         Log.w("TestRouteManager", "init success")

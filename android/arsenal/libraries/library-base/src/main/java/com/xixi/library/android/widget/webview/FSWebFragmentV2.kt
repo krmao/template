@@ -1,4 +1,4 @@
-package com.xixi.fruitshop.android.module.home
+package com.xixi.library.android.widget.webview
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -11,14 +11,13 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.webkit.WebView
+import com.xixi.library.android.R
 import com.xixi.library.android.base.FSActivity
 import com.xixi.library.android.base.FSBaseFragment
 import com.xixi.library.android.util.FSLogUtil
-import com.xixi.library.android.widget.webview.FSWebViewUtil
-import kotlinx.android.synthetic.main.home_fragment_web.*
+import kotlinx.android.synthetic.main.fs_fragment_webview_v2.*
 
-
-class FSWebFragment : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
+class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
 
     companion object {
         fun goTo(activity: Activity, url: String?) {
@@ -29,7 +28,7 @@ class FSWebFragment : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
             val bundle: Bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
-            FSActivity.start(activity, FSWebFragment::class.java, bundle)
+            FSActivity.start(activity, FSWebFragmentV2::class.java, bundle)
         }
     }
 
@@ -41,7 +40,7 @@ class FSWebFragment : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.home_fragment_web, container, false)
+        return inflater?.inflate(R.layout.fs_fragment_webview_v2, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

@@ -17,13 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.test_fragment_test.*
 import java.util.concurrent.TimeUnit
 
-/**
- * <pre>
- *     author : maokangren
- *     e-mail : maokangren@chexiang.com
- *     desc   : 样板模块
- * </pre>
- */
 class TestFragment : CXBaseFragment(), TestContract.View {
 
     companion object {

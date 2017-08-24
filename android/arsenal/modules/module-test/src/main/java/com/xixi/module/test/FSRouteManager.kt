@@ -2,14 +2,7 @@ package com.xixi.module.test
 
 import android.util.Log
 
-/**
- * <pre>
- *     author : maokangren
- *     e-mail : maokangren@chexiang.com
- *     desc   :
- * </pre>
- */
-object CXRouteManager {
+object FSRouteManager {
     val TAG: String = javaClass.name
 
     private val moduleMap: MutableMap<String, String> = hashMapOf(

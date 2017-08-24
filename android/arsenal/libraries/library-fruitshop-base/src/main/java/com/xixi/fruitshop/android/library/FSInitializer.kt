@@ -3,13 +3,6 @@ package com.xixi.fruitshop.android.library
 import android.graphics.Color
 import com.xixi.library.android.widget.titlebar.FSTitleBar
 
-/**
- * <pre>
- *     author : maokangren
- *     e-mail : maokangren@chexiang.com
- *     desc   : 整个工程的初始化器
- * </pre>
- */
 object FSInitializer {
 
     var init: Boolean = false

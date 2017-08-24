@@ -3,13 +3,6 @@ package com.xixi.fruitshop.android.library
 import com.meituan.android.walle.WalleChannelReader
 import com.xixi.library.android.base.FSBaseApplication
 
-/**
- * <pre>
- *     author : maokangren
- *     e-mail : maokangren@chexiang.com
- *     desc   :
- * </pre>
- */
 @Suppress("unused")
 open class FSApplication : FSBaseApplication() {
 

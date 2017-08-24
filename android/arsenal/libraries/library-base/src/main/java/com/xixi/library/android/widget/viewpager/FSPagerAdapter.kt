@@ -1,4 +1,4 @@
-package com.xixi.library.android.widget
+package com.xixi.library.android.widget.viewpager
 
 import android.content.Context
 import android.os.Parcelable

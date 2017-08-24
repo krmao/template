@@ -8,26 +8,26 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.xixi.library.android.base.FSBaseFragment
 
-class HomeFragment : FSBaseFragment() {
+class MineFragment : FSBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val button: TextView = TextView(activity)
-        button.text = "home"
+        button.text = "mine"
         return button
     }
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "HomeFragment:onStart");
+        Log.w("krmao", "MineFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "HomeFragment:onStop");
+        Log.w("krmao", "MineFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "HomeFragment:onDestroy");
+        Log.w("krmao", "MineFragment:onDestroy");
     }
 }

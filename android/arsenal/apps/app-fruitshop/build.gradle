@@ -195,8 +195,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    //compile project(':library-fruitshop-repository')
-
     compile project(':library-fruitshop-base')
     compile project(':module-fruitshop-home')
     bundleCompile project(':module-fruitshop-hybird')

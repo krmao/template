@@ -1,19 +1,19 @@
-package com.xixi.fruitshop.android.module.home
+package com.xixi.fruitshop.android.module.home.tab
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.widget.FrameLayout
+import com.xixi.fruitshop.android.module.home.HomeFragment
 import com.xixi.library.android.base.FSBaseActivity
 
-class HomeActivity : FSBaseActivity() {
+class HomeTabActivity : FSBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = false
+        enableSwipeBack = true
         enableExitWithDoubleBackPressed = true
         super.onCreate(savedInstanceState)
 
         setContentView(FrameLayout(this))
-        val fragment: Fragment = HomeFragment()
-        supportFragmentManager.beginTransaction().add(android.R.id.content, fragment, HomeFragment::javaClass.name).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
     }
 }

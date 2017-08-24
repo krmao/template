@@ -20,15 +20,13 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_rv"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/content_vp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:overScrollMode="never"
             android:scrollbars="none"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:ignore="NestedWeights" />
 
         <LinearLayout

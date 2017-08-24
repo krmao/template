@@ -4,7 +4,7 @@
 
     <application android:icon="@drawable/home_icon">
         <activity
-            android:name=".HomeActivity"
+            android:name=".tab.HomeTabActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/FSAppTheme.Light.NoActionBar"

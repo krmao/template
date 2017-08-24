@@ -2,48 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.taobao.atlas'
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'walle'
+
 walle {
-    // 指定渠道包的输出路径
-    apkOutputFolder = new File("${buildDir}/outputs/channels");
-    // 定制渠道包的APK的文件名称
-    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
-    // 渠道配置文件
-    channelFile = new File("${projectDir}/channels.txt")
+    apkOutputFolder = new File("${buildDir}/outputs/channels");// 指定渠道包的输出路径
+    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';// 定制渠道包的APK的文件名称
+    channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
 }
 
 atlas {
-
     atlasEnabled true
-    /*tBuildConfig {
-        autoStartBundles = ['com.taobao.firstbundle'] //自启动bundle配置
-        outOfApkBundles = ['remotebundle']
-        preLaunch = 'com.taobao.demo.DemoPreLaunch'
-        classInject false
-        dataBindingBundles = ['com.taobao.databindbundle']
+    tBuildConfig {
+        autoStartBundles = ['com.xixi.fruitshop.android.module.home'] //自启动bundle配置
+        //outOfApkBundles = ['remotebundle']
+        //preLaunch = 'com.taobao.demo.DemoPreLaunch'
     }
-
-    manifestOptions {
-        addAtlasProxyComponents true
-    }
-
-
-    patchConfigs {
-        debug {
-            createTPatch true
-        }
-    }
-
-
-    buildTypes {
-        debug {
-            if (apVersion) {
-                baseApDependency "com.taobao.android.atlasdemo:AP-debug:${apVersion}@ap"
-                patchConfig patchConfigs.debug
-            }
-        }
-    }*/
 }
 
 //上传bugly符号表配置
@@ -71,8 +44,7 @@ android {
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
-        ndk {
-            // 设置支持的SO库架构
+        ndk {// 设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a' //, 'x86', 'x86_64', 'arm64-v8a'
         }
 
@@ -215,19 +187,21 @@ android {
     }
 }
 
+/**
+ * compile          :   常规的打包配置，会将依赖代码打入到dex中去
+ * bundleCompile    :   bundle中的代码不会打入dex中去，bundle将以libxxx.so文件的形式，放在apk的lib目录下，随包发布
+ * outOfApkBundles  :   指定远程bundle，不会打入apk中
+ */
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Atlas
-    compile("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") {
-        transitive = true
-    }
-    compile "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" //如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
+    //compile project(':library-fruitshop-repository')
 
     compile project(':library-fruitshop-base')
-    //bundleCompile project(':module-fruitshop-home')
-    //compile project(':library-hybird')
-    //compile project(':library-fruitshop-repository')
+    compile project(':module-fruitshop-home')
+    bundleCompile project(':module-fruitshop-hybird')
+    bundleCompile project(':module-fruitshop-mine')
+    bundleCompile project(':module-fruitshop-setting')
 
     // LeakCanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

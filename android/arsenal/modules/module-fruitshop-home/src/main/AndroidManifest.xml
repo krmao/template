@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xixi.fruitshop.android.module.home">
 
-    <application>
+    <application android:icon="@drawable/home_icon">
         <activity
             android:name=".HomeActivity"
             android:launchMode="standard"

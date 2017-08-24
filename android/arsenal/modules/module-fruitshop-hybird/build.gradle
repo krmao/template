@@ -1,11 +1,11 @@
 apply plugin: "com.android.library"
-//apply plugin: "com.taobao.atlas"
+apply plugin: "com.taobao.atlas"
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 
-//atlas {
-//    bundleConfig { awbBundle true }
-//}
+atlas {
+    bundleConfig { awbBundle true }
+}
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion
@@ -14,7 +14,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
-    resourcePrefix "home_"
+    resourcePrefix "hybird_"
 }
 
 dependencies {

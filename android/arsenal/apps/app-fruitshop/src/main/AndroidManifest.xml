@@ -14,12 +14,11 @@
         android:name=".library.FSApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/fs_backup_descriptor"
-        android:icon="@drawable/fs_emo_im_happy"
         android:label="@string/fs_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/FSAppTheme.Light.NoActionBar"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
 
         <meta-data
             android:name="DEBUG"

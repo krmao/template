@@ -55,7 +55,7 @@ class FSWebFragment : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
             override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean {
                 FSLogUtil.d("krmao", "shouldOverrideUrlLoading:" + _url)
                 if (_url != null && url != _url) {//首页
-                    if (!TextUtils.isEmpty(_url) && _url.startsWith(HomeActivity.URL_PREFIX)) {
+                    if (!TextUtils.isEmpty(_url) && _url.startsWith("")) {
                         FSWebFragment.goTo(activity, _url)
                         return true
                     }

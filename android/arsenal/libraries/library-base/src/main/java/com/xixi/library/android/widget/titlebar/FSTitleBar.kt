@@ -278,11 +278,10 @@ class FSTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
         }
     }
 
-    private fun setTextColor(textView: TextView, index: Int, defaultColor: Int, typedArray: TypedArray) {
+    private fun setTextColor(textView: TextView, index: Int, defaultColor: Int?, typedArray: TypedArray) {
         try {
-            if (defaultColor != -1)
+            if (defaultColor != null)
                 textView.setTextColor(defaultColor)
-
             val color = typedArray.getColor(index, Integer.MAX_VALUE)
             if (color != Integer.MAX_VALUE) {
                 textView.setTextColor(color)
@@ -293,13 +292,11 @@ class FSTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
                         textView.setTextColor(Color.parseColor(colorStr))
                     } catch (ignored: Exception) {
                     }
-
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     private fun setTextSize(textView: TextView, index: Int, _defaultSize: Float, typedArray: TypedArray) {

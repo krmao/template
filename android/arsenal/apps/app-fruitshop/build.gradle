@@ -13,7 +13,8 @@ walle {
 atlas {
     atlasEnabled true
     tBuildConfig {
-        autoStartBundles = ['com.xixi.fruitshop.android.module.home'] //自启动bundle配置
+        autoStartBundles = ['com.xixi.fruitshop.android.module.setting'] //自启动bundle配置
+        autoPackageId = true
         //outOfApkBundles = ['remotebundle']
         //preLaunch = 'com.taobao.demo.DemoPreLaunch'
     }

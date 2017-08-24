@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.xixi.library.android.base.FSBaseFragment
 
-class HybirdFragment : FSBaseFragment() {
+class MineFragment : FSBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.mine_fragment, container, false)

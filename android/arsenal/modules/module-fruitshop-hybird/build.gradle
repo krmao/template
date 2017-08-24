@@ -20,5 +20,5 @@ android {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
-    providedCompile project(':library-fruitshop-base')
+    compile project(':library-fruitshop-base')
 }

@@ -17,6 +17,7 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
     compile project(':library-base')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     /*compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
         transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
@@ -52,7 +53,7 @@ dependencies {
     compile("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") { transitive = true }
     compile "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" // 如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
     /******* 官方支持库 ****************************************************************************/
-    compile "com.android.support:multidex:$rootProject.ext.multidex"
+    //compile "com.android.support:multidex:$rootProject.ext.multidex"
     //compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     /******* 必备工具库 ****************************************************************************/
     //compile "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"

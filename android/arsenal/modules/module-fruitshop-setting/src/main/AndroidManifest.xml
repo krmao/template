@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xixi.fruitshop.android.module.setting">
+          package="com.xixi.fruitshop.android.module.setting">
 
     <application android:name="com.xixi.fruitshop.android.module.setting.SettingApplication">
-        <activity android:name="com.xixi.fruitshop.android.module.setting.SettingActivity" />
     </application>
 
 </manifest>

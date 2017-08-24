@@ -1,8 +1,0 @@
-[
-  {
-    "applicationName": "com.xixi.fruitshop.android.module.setting.SettingApplication",
-    "pkgName": "com.xixi.fruitshop.android.module.setting",
-    "isInternal": "true",
-    "dependency": []
-  }
-]

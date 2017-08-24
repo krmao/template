@@ -3,6 +3,9 @@ apply plugin: "com.taobao.atlas"
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 
+group = 'com.fruitshop'
+version = '1.0.0'
+
 atlas {
     bundleConfig {
         awbBundle true

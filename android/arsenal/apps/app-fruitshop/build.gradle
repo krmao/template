@@ -19,7 +19,7 @@ atlas {
         ]
         autoPackageId = true
         outOfApkBundles = [
-                'module-fruitshop-hybird',
+                'module-fruitshop-hybird', //adb push arsenal/apps/app-fruitshop/build/outputs/remote-bundles-debug/libcom_xixi_fruitshop_android_module_hybird.so /sdcard/Android/data/com.xixi.fruitshop.android/cache/
         ]
         preLaunch = 'com.xixi.fruitshop.android.library.FSPreLaunch' //initBeforeAtlas
     }

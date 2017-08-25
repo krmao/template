@@ -8,11 +8,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.taobao.atlas.bundleInfo.AtlasBundleInfoManager
 import android.taobao.atlas.framework.Atlas
+import android.taobao.atlas.framework.BundleImpl
 import android.taobao.atlas.runtime.ActivityTaskMgr
 import android.taobao.atlas.runtime.BundleUtil
 import android.taobao.atlas.runtime.RuntimeVariables
 import android.text.TextUtils
 import com.xixi.library.android.base.FSActivity
+import org.osgi.framework.BundleException
+import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -113,7 +116,32 @@ object FSRouteManager {
                     BundleUtil.checkBundleStateAsync(location, successTask, failedTask)
                 } else {
                     //该组件是远程组件
+                    FSLogUtil.w("检测到远程组件:$location")
                     FSToastUtil.show("检测到远程组件:$location")
+
+                    val remoteBundleFile = File(activity.externalCacheDir, "lib" + location.replace(".", "_") + ".so")
+                    var path = ""
+                    if (remoteBundleFile.exists()) {
+                        path = remoteBundleFile.absolutePath
+                        val info = activity.packageManager.getPackageArchiveInfo(path, 0)
+                        try {
+                            Atlas.getInstance().installBundle(info.packageName, File(path))
+                            FSLogUtil.e("远程组件安装成功:$location")
+
+                            val tmpBundle = Atlas.getInstance().getBundle(location) as BundleImpl?
+                            if (tmpBundle == null || !tmpBundle.checkValidate()) {
+                                FSLogUtil.e("远程组件校验失败:$location")
+                            } else {
+                                tmpBundle.startBundle()
+                                goToFragmentInternal(activity, fragmentName, bundle, callback)
+                            }
+                        } catch (e: BundleException) {
+                            FSLogUtil.e("远程组件安装失败::$location:" + e.message, e)
+                            FSToastUtil.show("远程组件安装失败::$location:" + e.message)
+                        }
+                    } else {
+                        FSToastUtil.show("远程组件不存在,请确定:" + remoteBundleFile.absolutePath)
+                    }
                 }
             } else if (Atlas.getInstance().bundles.any { fragmentName.startsWith(it.location) }) {
                 //该组件已经被安装

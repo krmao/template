@@ -77,35 +77,44 @@ object FSRouteManager {
             if (filterList.isNotEmpty()) {
                 //该组件尚未被安装
                 val location = filterList[0]
-                //val activity = ActivityTaskMgr.getInstance().peekTopActivity()
-                val dialog = RuntimeVariables.alertDialogUntilBundleProcessed(activity, location) ?: throw RuntimeException("alertDialogUntilBundleProcessed can not return null")
+                val isInternalBundle = AtlasBundleInfoManager.instance().isInternalBundle(location)
 
-                val activityActivitySize = ActivityTaskMgr.getInstance().sizeOfActivityStack()
-                val successTask = BundleUtil.CancelableTask(Runnable {
-                    FSToastUtil.show(filterList.toString() + " 安装成功")
-                    if (activity === ActivityTaskMgr.getInstance().peekTopActivity() || activityActivitySize == ActivityTaskMgr.getInstance().sizeOfActivityStack() + 1) {
-                        goToFragmentInternal(activity, fragmentName, bundle, callback)
+                FSLogUtil.w("$location:isInternalBundle=$isInternalBundle")
+                if (isInternalBundle) {
+                    //该组件是内部组件
+                    //val activity = ActivityTaskMgr.getInstance().peekTopActivity()
+                    val dialog = RuntimeVariables.alertDialogUntilBundleProcessed(activity, location) ?: throw RuntimeException("alertDialogUntilBundleProcessed can not return null")
+
+                    val activityActivitySize = ActivityTaskMgr.getInstance().sizeOfActivityStack()
+                    val successTask = BundleUtil.CancelableTask(Runnable {
+                        FSToastUtil.show(filterList.toString() + " 安装成功")
+                        if (activity === ActivityTaskMgr.getInstance().peekTopActivity() || activityActivitySize == ActivityTaskMgr.getInstance().sizeOfActivityStack() + 1) {
+                            goToFragmentInternal(activity, fragmentName, bundle, callback)
+                        }
+                        if (!activity.isFinishing && dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                    })
+                    val failedTask = BundleUtil.CancelableTask(Runnable {
+                        FSToastUtil.show(filterList.toString() + " 安装失败")
+                        if (!activity.isFinishing && dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                    })
+                    dialog.setOnDismissListener {
+                        successTask.cancel()
+                        failedTask.cancel()
                     }
-                    if (!activity.isFinishing && dialog.isShowing) {
-                        dialog.dismiss()
+                    if (Atlas.getInstance().getBundle(location) == null || Build.VERSION.SDK_INT < 22) {
+                        if (!activity.isFinishing && dialog.isShowing) {
+                            dialog.show()
+                        }
                     }
-                })
-                val failedTask = BundleUtil.CancelableTask(Runnable {
-                    FSToastUtil.show(filterList.toString() + " 安装失败")
-                    if (!activity.isFinishing && dialog.isShowing) {
-                        dialog.dismiss()
-                    }
-                })
-                dialog.setOnDismissListener {
-                    successTask.cancel()
-                    failedTask.cancel()
+                    BundleUtil.checkBundleStateAsync(location, successTask, failedTask)
+                } else {
+                    //该组件是远程组件
+                    FSToastUtil.show("检测到远程组件:$location")
                 }
-                if (Atlas.getInstance().getBundle(location) == null || Build.VERSION.SDK_INT < 22) {
-                    if (!activity.isFinishing && dialog.isShowing) {
-                        dialog.show()
-                    }
-                }
-                BundleUtil.checkBundleStateAsync(location, successTask, failedTask)
             } else if (Atlas.getInstance().bundles.any { fragmentName.startsWith(it.location) }) {
                 //该组件已经被安装
                 goToFragmentInternal(activity, fragmentName, bundle, callback)
@@ -129,12 +138,12 @@ object FSRouteManager {
     fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {
         val installedBundles: List<String> = Atlas.getInstance().bundles.flatMap { listOf(it.location) }
         val allBundles: List<String> = AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.toList()
+        allBundles.forEach { FSLogUtil.d("allBundles: $it : isInternalBundle=" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
         FSLogUtil.v("installedBundles:" + installedBundles)
-        FSLogUtil.v("allBundles:" + allBundles)
         val uninstallBundles = allBundles.minus(installedBundles)
         FSLogUtil.v("uninstallBundles:" + uninstallBundles)
         FSLogUtil.v("installedBundles:" + installedBundles)
-        FSLogUtil.v("allBundles:" + allBundles)
+        allBundles.forEach { FSLogUtil.d("allBundles: $it :" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
         return uninstallBundles
     }
 

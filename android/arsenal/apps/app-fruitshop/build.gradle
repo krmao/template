@@ -13,10 +13,15 @@ walle {
 atlas {
     atlasEnabled true
     tBuildConfig {
-        autoStartBundles = ['com.xixi.fruitshop.android.module.setting'] //自启动bundle配置
+        autoStartBundles = [
+                'com.xixi.fruitshop.android.module.setting',
+                //'com.xixi.fruitshop.android.module.mine',
+        ]
         autoPackageId = true
-        //outOfApkBundles = ['remotebundle']
-        //preLaunch = 'com.taobao.demo.DemoPreLaunch'
+        outOfApkBundles = [
+                'module-fruitshop-hybird',
+        ]
+        preLaunch = 'com.xixi.fruitshop.android.library.FSPreLaunch' //initBeforeAtlas
     }
 }
 

@@ -1,12 +1,12 @@
 package com.xixi.library.android.base
 
+//import android.taobao.atlas.framework.Atlas
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.taobao.atlas.framework.Atlas
-//import android.taobao.atlas.framework.Atlas
 import android.util.Log
 import android.widget.FrameLayout
 import com.xixi.library.android.util.FSLogUtil
@@ -42,8 +42,8 @@ open class FSActivity : FSBaseActivity() {
             activity.startActivity(intent)
         }
 
-        fun start(activity: Activity, fragmentClassName: String?, args: Bundle? = null) {
-            activity.startActivity(getIntent(activity, 0, fragmentClassName, args))
+        fun start(activity: Activity?, fragmentClassName: String?, args: Bundle? = null) {
+            activity?.startActivity(getIntent(activity, 0, fragmentClassName, args))
         }
 
         fun startByCustomAnimation(activity: Activity, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
@@ -95,7 +95,7 @@ open class FSActivity : FSBaseActivity() {
 
         fun getIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent = getIntent(context, themResId, fragmentClass.canonicalName, args)
 
-        fun getIntent(context: Context, themResId: Int, fragmentClassName: String?, args: Bundle?): Intent {
+        fun getIntent(context: Context?, themResId: Int, fragmentClassName: String?, args: Bundle?): Intent {
             val intent = Intent(context, FSActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
             if (args != null)

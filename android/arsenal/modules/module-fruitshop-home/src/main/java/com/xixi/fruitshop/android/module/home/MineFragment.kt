@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.xixi.library.android.base.FSBaseFragment
+import com.xixi.library.android.util.FSLogUtil
+import com.xixi.library.android.util.FSRouteManager
 
 class MineFragment : FSBaseFragment() {
 
@@ -15,6 +17,11 @@ class MineFragment : FSBaseFragment() {
         val textView: TextView = TextView(activity)
         textView.text = "mine"
         textView.setBackgroundColor(resources.getColor(R.color.fs_pink))
+        textView.setOnClickListener {
+            FSRouteManager.goToFragment(activity, "com.xixi.fruitshop.android.module.mine.MineFragment") {
+                FSLogUtil.w("krmao", it.toString())
+            }
+        }
         return textView
     }
 

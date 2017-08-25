@@ -1,6 +1,9 @@
 package com.xixi.fruitshop.android.library
 
 import android.graphics.Color
+import android.taobao.atlas.bundleInfo.AtlasBundleInfoManager
+import android.taobao.atlas.framework.Atlas
+import com.xixi.library.android.util.FSLogUtil
 import com.xixi.library.android.widget.titlebar.FSTitleBar
 
 object FSInitializer {

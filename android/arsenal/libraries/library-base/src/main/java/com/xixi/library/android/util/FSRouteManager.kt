@@ -1,16 +1,18 @@
 package com.xixi.library.android.util
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.taobao.atlas.bundleInfo.AtlasBundleInfoManager
 import android.taobao.atlas.framework.Atlas
+import android.taobao.atlas.runtime.ActivityTaskMgr
+import android.taobao.atlas.runtime.BundleUtil
+import android.taobao.atlas.runtime.RuntimeVariables
 import android.text.TextUtils
 import com.xixi.library.android.base.FSActivity
-import com.xixi.library.android.base.FSBaseApplication
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -74,13 +76,36 @@ object FSRouteManager {
             val filterList = AtlasBundleInfoManager.instance().getUninstallBundles().filter { fragmentName.startsWith(it) }
             if (filterList.isNotEmpty()) {
                 //该组件尚未被安装
+                val location = filterList[0]
+                //val activity = ActivityTaskMgr.getInstance().peekTopActivity()
+                val dialog = RuntimeVariables.alertDialogUntilBundleProcessed(activity, location) ?: throw RuntimeException("alertDialogUntilBundleProcessed can not return null")
 
-//                loadingDialog.show()
-                Atlas.getInstance().installBundleTransitivelyAsync(filterList.toTypedArray()) {
-                    //                    loadingDialog.dismiss()
+                val activityActivitySize = ActivityTaskMgr.getInstance().sizeOfActivityStack()
+                val successTask = BundleUtil.CancelableTask(Runnable {
                     FSToastUtil.show(filterList.toString() + " 安装成功")
-                    goToFragmentInternal(activity, fragmentName, bundle, callback)
+                    if (activity === ActivityTaskMgr.getInstance().peekTopActivity() || activityActivitySize == ActivityTaskMgr.getInstance().sizeOfActivityStack() + 1) {
+                        goToFragmentInternal(activity, fragmentName, bundle, callback)
+                    }
+                    if (!activity.isFinishing && dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                })
+                val failedTask = BundleUtil.CancelableTask(Runnable {
+                    FSToastUtil.show(filterList.toString() + " 安装失败")
+                    if (!activity.isFinishing && dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                })
+                dialog.setOnDismissListener {
+                    successTask.cancel()
+                    failedTask.cancel()
                 }
+                if (Atlas.getInstance().getBundle(location) == null || Build.VERSION.SDK_INT < 22) {
+                    if (!activity.isFinishing && dialog.isShowing) {
+                        dialog.show()
+                    }
+                }
+                BundleUtil.checkBundleStateAsync(location, successTask, failedTask)
             } else if (Atlas.getInstance().bundles.any { fragmentName.startsWith(it.location) }) {
                 //该组件已经被安装
                 goToFragmentInternal(activity, fragmentName, bundle, callback)
@@ -90,11 +115,7 @@ object FSRouteManager {
         }
     }
 
-//    val loadingDialog: ProgressDialog by lazy {
-//        ProgressDialog(FSBaseApplication.INSTANCE)
-//    }
-
-    internal fun goToFragmentInternal(activity: Activity?, fragmentName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
+    private fun goToFragmentInternal(activity: Activity?, fragmentName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
         val _bundle = bundle ?: Bundle()
         if (callback != null) {
             val id = fragmentName + ":" + System.currentTimeMillis()
@@ -108,12 +129,12 @@ object FSRouteManager {
     fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {
         val installedBundles: List<String> = Atlas.getInstance().bundles.flatMap { listOf(it.location) }
         val allBundles: List<String> = AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.toList()
-        FSLogUtil.w("krmao-m", "installedBundles:" + installedBundles)
-        FSLogUtil.w("krmao-m", "allBundles:" + allBundles)
+        FSLogUtil.v("installedBundles:" + installedBundles)
+        FSLogUtil.v("allBundles:" + allBundles)
         val uninstallBundles = allBundles.minus(installedBundles)
-        FSLogUtil.w("krmao-m", "uninstallBundles:" + uninstallBundles)
-        FSLogUtil.w("krmao-m", "installedBundles:" + installedBundles)
-        FSLogUtil.w("krmao-m", "allBundles:" + allBundles)
+        FSLogUtil.v("uninstallBundles:" + uninstallBundles)
+        FSLogUtil.v("installedBundles:" + installedBundles)
+        FSLogUtil.v("allBundles:" + allBundles)
         return uninstallBundles
     }
 

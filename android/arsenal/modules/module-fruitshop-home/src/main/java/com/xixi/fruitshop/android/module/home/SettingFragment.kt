@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.xixi.library.android.base.FSBaseFragment
+import com.xixi.library.android.util.FSLogUtil
+import com.xixi.library.android.util.FSRouteManager
 
 class SettingFragment : FSBaseFragment() {
 
@@ -16,6 +18,11 @@ class SettingFragment : FSBaseFragment() {
         textView.text = "setting"
         textView.setTextColor(resources.getColor(R.color.fs_orange))
         textView.setBackgroundColor(Color.DKGRAY)
+        textView.setOnClickListener {
+            FSRouteManager.goToFragment(activity, "com.xixi.fruitshop.android.module.setting.SettingFragment") {
+                FSLogUtil.w("krmao", it.toString())
+            }
+        }
         return textView
     }
 

@@ -15,7 +15,9 @@ android {
 
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
-
+/******* ATLAS     ****************************************************************************/
+    compile("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") { transitive = true }
+    compile "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" // 如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
     /******* 官方支持库 ****************************************************************************/
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"

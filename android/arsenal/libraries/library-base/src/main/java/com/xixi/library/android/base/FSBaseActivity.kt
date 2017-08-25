@@ -5,10 +5,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.xixi.library.android.util.FSRouteManager
 import com.xixi.library.android.util.FSToastUtil
 
 
 open class FSBaseActivity : AppCompatActivity() {
+
+    /**
+     * 通过 FSRouteManager 跳转到 activity | fragment 可以添加此回调方法，方便跨组件传递参数(atlas)
+     * 在 onDestroy 里会自动清除
+     */
+    val callback: ((bundle: Bundle?) -> Unit?)? by lazy { FSRouteManager.getCallback(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +48,12 @@ open class FSBaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        FSRouteManager.removeCallback(this)
         SwipeBackHelper.onDestroy(this)
+        super.onDestroy()
     }
 
-    open fun onBackPress(): Boolean {
-        return false
-    }
+    open fun onBackPress(): Boolean = false
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
@@ -89,9 +95,9 @@ open class FSBaseActivity : AppCompatActivity() {
 
     protected var enableExitWithDoubleBackPressed = false
     protected var enableSwipeBack = true
-    protected var exitTime: Long = 0
+    private var exitTime: Long = 0
 
-    fun exitApp() {
+    private fun exitApp() {
         if (System.currentTimeMillis() - exitTime > 2000) {
             FSToastUtil.show("再按一次退出程序")
             exitTime = System.currentTimeMillis()

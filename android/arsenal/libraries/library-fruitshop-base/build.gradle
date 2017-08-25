@@ -49,9 +49,6 @@ dependencies {
         *//*
     }*/
 
-    /******* ATLAS     ****************************************************************************/
-    compile("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") { transitive = true }
-    compile "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" // 如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
     /******* 官方支持库 ****************************************************************************/
     //compile "com.android.support:multidex:$rootProject.ext.multidex"
     //compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"

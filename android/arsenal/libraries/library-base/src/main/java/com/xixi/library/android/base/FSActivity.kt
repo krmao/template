@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.taobao.atlas.framework.Atlas
 //import android.taobao.atlas.framework.Atlas
 import android.util.Log
 import android.widget.FrameLayout
+import com.xixi.library.android.util.FSLogUtil
 
 open class FSActivity : FSBaseActivity() {
 
@@ -16,11 +18,11 @@ open class FSActivity : FSBaseActivity() {
         val KEY_FRAGMENT_CLASS = "KEY_FRAGMENT_CLASS"
         val KEY_FRAGMENT_ARGS = "KEY_FRAGMENT_ARGS"
 
-        fun start(from: Activity, fragmentClass: Class<*>) {
+        fun start(from: Context, fragmentClass: Class<*>) {
             start(from, fragmentClass, null)
         }
 
-        fun start(from: Activity, fragmentClass: Class<*>, args: Bundle?) {
+        fun start(from: Context, fragmentClass: Class<*>, args: Bundle?) {
             start(from, fragmentClass, args, 0)
         }
 
@@ -28,20 +30,20 @@ open class FSActivity : FSBaseActivity() {
             FSBaseApplication.INSTANCE.startActivity(getNewTaskIntent(FSBaseApplication.INSTANCE, 0, fragmentClass, args))
         }
 
-        fun startSingleTask(from: Activity, fragmentClass: Class<*>, args: Bundle) {
+        fun startSingleTask(from: Context, fragmentClass: Class<*>, args: Bundle) {
             FSBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
         }
 
-        fun start(activity: Activity, fragmentClass: Class<*>, args: Bundle?, themResId: Int) {
+        fun start(activity: Context, fragmentClass: Class<*>, args: Bundle?, themResId: Int) {
             activity.startActivity(getIntent(activity, themResId, fragmentClass, args))
         }
 
-        fun start(activity: Activity, intent: Intent?) {
+        fun start(activity: Context, intent: Intent?) {
             activity.startActivity(intent)
         }
 
-        fun start(activity: Activity, fragmentClassName: String) {
-            activity.startActivity(getIntent(activity, 0, fragmentClassName, null))
+        fun start(activity: Activity, fragmentClassName: String?, args: Bundle? = null) {
+            activity.startActivity(getIntent(activity, 0, fragmentClassName, args))
         }
 
         fun startByCustomAnimation(activity: Activity, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
@@ -89,15 +91,11 @@ open class FSActivity : FSBaseActivity() {
             fragment.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
         }
 
-        fun getIntent(context: Context, fragmentClass: Class<*>, args: Bundle): Intent {
-            return getIntent(context, 0, fragmentClass, args)
-        }
+        fun getIntent(context: Context, fragmentClass: Class<*>, args: Bundle): Intent = getIntent(context, 0, fragmentClass, args)
 
-        fun getIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
-            return getIntent(context, themResId, fragmentClass.canonicalName, args)
-        }
+        fun getIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent = getIntent(context, themResId, fragmentClass.canonicalName, args)
 
-        fun getIntent(context: Context, themResId: Int, fragmentClassName: String, args: Bundle?): Intent {
+        fun getIntent(context: Context, themResId: Int, fragmentClassName: String?, args: Bundle?): Intent {
             val intent = Intent(context, FSActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
             if (args != null)
@@ -133,7 +131,6 @@ open class FSActivity : FSBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             val args = intent.extras
-            //设置主题
             val themResId = args.getInt(KEY_THEME, 0)
             if (themResId > 0)
                 setTheme(themResId)
@@ -146,20 +143,19 @@ open class FSActivity : FSBaseActivity() {
             val fragmentObject = args.get(KEY_FRAGMENT_CLASS)
 
             if (fragmentObject is Class<*>) {
-                fragmentClassName = fragmentObject.canonicalName
+                fragmentClassName = fragmentObject.name
                 fragment = fragmentObject.newInstance() as Fragment
             } else {
                 fragmentClassName = fragmentObject as String
                 try {
                     fragment = Class.forName(fragmentObject).newInstance() as Fragment
-                } catch (exception: Exception) {
-                    //exception.printStackTrace()
-                    /*try {
+                } catch (_: Exception) {
+                    try {
                         @Suppress("DEPRECATION")
                         fragment = Atlas.getInstance().delegateClassLoader.loadClass(fragmentObject).newInstance() as Fragment
                     } catch (e: Exception) {
-                        throw e
-                    }*/
+                        FSLogUtil.e("ClassNotFoundException:$fragmentClassName", e)
+                    }
                 }
             }
             if (fragment != null) {

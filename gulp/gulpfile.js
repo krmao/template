@@ -1,9 +1,11 @@
 var gulp = require('gulp');
+var path = require('path')
 var zip = require('gulp-zip');
+var tap = require('gulp-tap');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
 var fileInclude = require('gulp-file-include');
 var sass = require('gulp-sass');
 var autoPreFixer = require('gulp-autoprefixer');
@@ -34,7 +36,7 @@ function buildScss(module) {
 //scripts
 function buildJs(module) {
     return gulp.src(module.modulePathJs + '/*.js')
-        .pipe(eslint({configFle: "./.eslintrc.js"}))
+        .pipe(eslint({configFle: './.eslintrc.js'}))
         .pipe(eslint.format())
         .pipe(eslint.failOnError())
         .pipe(uglify())
@@ -44,10 +46,13 @@ function buildJs(module) {
 
 //html
 function buildHtml(module) {
-    return gulp.src(module.moduleTemplateFilePath)
-        .pipe(fileInclude({prefix: '@@', basepath: '@file', context: {moduleName: module.moduleName, htmlName: 'index'}}))
-        .pipe(rename({basename: 'index', extname: '.html'}))
-        .pipe(gulp.dest(module.buildModulePathHtml));
+    return gulp.src(module.modulePathHtml + '/*.html').pipe(tap(function (file) {
+        var htmlName = path.basename(file.path).replace('.html', '');
+        gulp.src(module.moduleTemplateFilePath)
+            .pipe(fileInclude({prefix: '@@', basepath: '@file', context: {moduleName: module.moduleName, htmlName: htmlName}}))
+            .pipe(rename({basename: htmlName, extname: '.html'}))
+            .pipe(gulp.dest(module.buildModulePathHtml));
+    }));
 }
 
 //watch
@@ -59,27 +64,27 @@ function watch(module) {
 }
 
 function zipJs(module) {
-    return gulp.src(module.buildModulePathJs + '/*')
+    return gulp.src(module.buildModulePathJs + '/*.js')
         .pipe(zip(module.moduleName + '-js.zip'))
-        .pipe(gulp.dest(module.buildModulePath))
+        .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipImages(module) {
     return gulp.src(module.buildModulePathImg + '/*')
         .pipe(zip(module.moduleName + '-images.zip'))
-        .pipe(gulp.dest(module.buildModulePath))
+        .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipScss(module) {
-    return gulp.src(module.buildModulePathScss + '/*')
+    return gulp.src(module.buildModulePathScss + '/*.scss')
         .pipe(zip(module.moduleName + '-css.zip'))
-        .pipe(gulp.dest(module.buildModulePath))
+        .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipHtml(module) {
-    return gulp.src(module.buildModulePathHtml + '/index.html')
-        .pipe(zip(module.moduleName + '-html.zip'))
-        .pipe(gulp.dest(module.buildModulePath))
+    return gulp.src(module.buildModulePathHtml + '/*.html', {base: './build/'})
+        .pipe(zip('zip/html/' + module.moduleName + '.zip'))
+        .pipe(gulp.dest(module.buildModulePath));
 }
 
 //remove images build
@@ -191,5 +196,13 @@ gulp.task('default',
         cleanTask,
         gulp.parallel(buildImagesTask, buildScssTask, buildJsTask, buildHtmlTask),
         gulp.parallel(syncTask, watchTask, zipAll)
+    )
+);
+
+gulp.task('build',
+    gulp.series(
+        cleanTask,
+        gulp.parallel(buildImagesTask, buildScssTask, buildJsTask, buildHtmlTask),
+        zipAll
     )
 );

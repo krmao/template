@@ -64,20 +64,20 @@ function watch(module) {
 }
 
 function zipJs(module) {
-    return gulp.src(module.buildModulePathJs + '/*.js')
-        .pipe(zip(module.moduleName + '-js.zip'))
+    return gulp.src(module.buildModulePathJs + '/*.js', {base: './build/'})
+        .pipe(zip('zip/js/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipImages(module) {
-    return gulp.src(module.buildModulePathImg + '/*')
-        .pipe(zip(module.moduleName + '-images.zip'))
+    return gulp.src(module.buildModulePathImg + '/*', {base: './build/'})
+        .pipe(zip('zip/img/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipScss(module) {
-    return gulp.src(module.buildModulePathScss + '/*.scss')
-        .pipe(zip(module.moduleName + '-css.zip'))
+    return gulp.src(module.buildModulePathScss + '/*.css', {base: './build/'})
+        .pipe(zip('zip/css/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 

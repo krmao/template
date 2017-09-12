@@ -79,7 +79,7 @@ function Module(moduleName) {
     });
     Object.defineProperty(this, "buildModulePathHtml", {
         get: function () {
-            return this.buildModulePath;
+            return this.buildModulePath + this._htmlDirName;
         }
     });
     Object.defineProperty(this, "buildModulePathScss", {

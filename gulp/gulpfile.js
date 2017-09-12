@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var path = require('path')
+var path = require('path');
 var zip = require('gulp-zip');
 var tap = require('gulp-tap');
 var eslint = require('gulp-eslint');
@@ -64,25 +64,25 @@ function watch(module) {
 }
 
 function zipJs(module) {
-    return gulp.src(module.buildModulePathJs + '/*.js', {base: './build/'})
+    return gulp.src(module.buildModulePathJs + '/*.js'/*, {base: './build/'}*/)
         .pipe(zip('zip/js/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipImages(module) {
-    return gulp.src(module.buildModulePathImg + '/*', {base: './build/'})
+    return gulp.src(module.buildModulePathImg + '/*'/*, {base: './build/'}*/)
         .pipe(zip('zip/img/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipScss(module) {
-    return gulp.src(module.buildModulePathScss + '/*.css', {base: './build/'})
+    return gulp.src(module.buildModulePathScss + '/*.css'/*, {base: './build/'}*/)
         .pipe(zip('zip/css/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
 
 function zipHtml(module) {
-    return gulp.src(module.buildModulePathHtml + '/*.html', {base: './build/'})
+    return gulp.src(module.buildModulePathHtml + '/*.html'/*, {base: './build/'}*/)
         .pipe(zip('zip/html/' + module.moduleName + '.zip'))
         .pipe(gulp.dest(module.buildModulePath));
 }
@@ -206,3 +206,5 @@ gulp.task('build',
         zipAll
     )
 );
+
+gulp.task('clean', gulp.series(cleanTask));

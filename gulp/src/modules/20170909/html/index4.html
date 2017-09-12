@@ -1,0 +1,135 @@
+<div class="rp-container">
+
+    <div class="rp-header">
+        <div class="rp-banner">
+        </div>
+    </div>
+
+    <div class="rp-content">
+        <div class="rp-content-bottom-bg">
+            <form action="#" method="post" onsubmit="return false" class="rp-content-bottom-form">
+                <div class="rp-content-bottom-form-input-phone">
+                    <span id="img-phone"></span>
+                    <input id="input-phone" maxlength="11" type="text"
+                           oninput="if(value.length>11)value=value.slice(0,11)" placeholder="请输入手机号"/>
+                </div>
+                <div class="rp-content-bottom-form-input-verify">
+                    <span id="img-verify"></span>
+                    <input id="input-verify" maxlength="6" type="text"
+                           oninput="if(value.length>6)value=value.slice(0,6)" placeholder="请输入验证码"/>
+                    <span id="input-verify-btn" onclick="requestVerifyCode()">获取验证码</span>
+                </div>
+
+                <button class="rp-content-bottom-form-submit" onclick="onSubmit()">
+                    立即领取
+                </button>
+            </form>
+        </div>
+
+        <div class="rp-content-top">
+            <div class="rp-content-top-item-left">
+
+            </div>
+            <div class="rp-content-top-item-center">
+
+            </div>
+            <div class="rp-content-top-item-right">
+
+            </div>
+            <div class="rp-content-top-item-add-left">
+            </div>
+            <div class="rp-content-top-item-add-right">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="rp-rule">
+        <div class="rp-rule-desc">
+            <h5>活动规则</h5>
+            <ol>
+                <li>活动时间：即日起至2017年12月31日；</li>
+                <li>领取规则：新用户可领取，新用户是指以手机号申请注册成为用户，且以该手机号申请注册的用户在本次活动开始前，在无消费记录的用户；</li>
+                <li>同一活动，每位新用户限领一次，以手机号码为准；</li>
+                <li>以上分别为15.1元五座洗车抵用券、64元打蜡抵用券、100元保养抵用券，app下单即可享受以上优惠；</li>
+                <li>个别城市洗车价格有差异，以当地城市价格为准，抵扣15.1元；</li>
+                <li>参与本活动视同用户同意成为会员，同意《会员注册协议》；</li>
+                <li>若成功领券，下载APP在线预约下单享受对应优惠，可在app－我的－优惠券中查看券信息；</li>
+                <li>请在券有效期内到店完成服务，券过期则作废；</li>
+                <li>对于利用虚假信息领取优惠券的行为，有冻结相应券码进行查实并保留追责权利；</li>
+                <li>如有任何疑问，欢迎垂询客服热线4008-020-666；</li>
+                <li>拥有在法律允许范围内的解释权。</li>
+            </ol>
+        </div>
+    </div>
+
+
+</div>
+
+<!--  dialog  -->
+<div class="mask js_show_type js_show_type_success"></div>
+<div class="dialog js_show_type">
+    <div class="container center-horizontal">
+        <img class="close" src="../img/close.png">
+        <div class="border">
+            <div class="section01">
+                <img class="circle-icon" src="../img/tips.png">
+                <div class="tip-container">
+                    <p class="status">你已领取过</p>
+                    <p class="tip">不要太贪心喔~</p>
+                </div>
+            </div>
+
+            <div class="section02 ">
+                <a href="">
+                    <img class="app-icon" src="../img/cxj-logo.png"/>
+                </a>
+                <p class="tip">享更多优惠好礼</p>
+                <a class="to-download" href="">下载APP</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--success-->
+<div class="dialog-success js_show_type_success">
+    <!--<div class = "mask"></div>-->
+    <div class="container center-horizontal">
+        <img class="close" src="../img/close.png">
+        <div class="border">
+            <div class="section01">
+                <img class="circle-icon" src="../img/icon-success.png">
+                <div class="tip-container">
+                    <p class="status">领取成功</p>
+                </div>
+            </div>
+
+            <div class="section02 ">
+                <ul>
+                    <li class="item-coupon">
+                        <img width="510px" height="150px" src="../img/success-coupon-bg.png">
+                        <div class="top">
+                            <p class="price">9.9</p>
+                            <p class="price-tips">元洗车抵用券</p>
+                            <p class="price-tips2">新人专享</p>
+
+                        </div>
+
+                        <div class="bottom">
+                            <ul>
+                                <li class="tips">仅限5座（含5座SUV）洗车</li>
+                                <li class="tips"><p class="valid-date">2017.8.28-2017.9.5</p></li>
+                                <li class="tips">仅限APP内下单使用</li>
+                            </ul>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+                <a class="to-order" href=""></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+

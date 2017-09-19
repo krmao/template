@@ -1,0 +1,73 @@
+.share {
+  position: fixed;
+  right: 1rem;
+  bottom: 17.4rem;
+  z-index: 1000;
+  width: 5.1rem;
+  height: 5.1rem;
+  background: transparent url(../images/common/share.png) center center no-repeat;
+  background-size: contain;
+  &.active {
+    display: block;
+  }
+}
+.backtop {
+  position: fixed ;
+  right: 1rem;
+  bottom: 8.4rem;
+  width: 5.2rem;
+  height: 5.2rem;
+  background: transparent url(../images/common/backtop.png) center center no-repeat;
+  background-size: contain;
+  &.active {
+    display: block;
+  }
+}
+.download {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  height: 5.2rem;
+  padding: 0 0.5rem;
+  background: #000;
+  li:nth-of-type(1) {
+    flex: 1 0 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 20px;
+    text-align: left;
+    img {
+      width: 3.6rem;
+      height: 3.6rem;
+      margin-right: 2px;
+    }
+  }
+  li:nth-of-type(2) {
+    flex: 0 0 7.6rem;
+    width: 7.6rem;
+    height: 3.2rem;
+    border-radius: 4px;
+    background: #0084ff;
+    font-size: 1.3rem;
+    line-height: 3.2rem;
+    text-align: center;
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+    }
+  }
+}
+[v-cloak] {
+  display: none;
+}

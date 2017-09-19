@@ -1,0 +1,119 @@
+@function px2rem($px) {
+    @return $px / (750.0/375.0*10.0) * 1.0rem;
+}
+
+img, a {
+    display: block;
+}
+
+.bj_container {
+    position: relative;
+
+    #bj_bg {
+        width: px2rem(750);
+        height: px2rem(2229);
+    }
+
+    #bj_card_root {
+        position: absolute;
+        left: px2rem(14);
+        top: px2rem(515);
+        width: px2rem(722);
+        height: px2rem(1173);
+
+        #bj_card_bg {
+            width: 100%;
+            height: 100%;
+        }
+
+        #bj_card1 {
+            left: px2rem(44);
+            top: px2rem(54);
+            position: absolute;
+            width: px2rem(306);
+            height: px2rem(373);
+        }
+        #bj_card2 {
+            left: px2rem(370);
+            top: px2rem(54);
+            position: absolute;
+            width: px2rem(306);
+            height: px2rem(373);
+        }
+        #bj_card3 {
+            left: px2rem(44);
+            top: px2rem(440);
+            position: absolute;
+            width: px2rem(306);
+            height: px2rem(373);
+        }
+        #bj_card4 {
+            left: px2rem(370);
+            top: px2rem(440);
+            position: absolute;
+            width: px2rem(306);
+            height: px2rem(373);
+        }
+        #bj_price {
+            left: px2rem(54);
+            top: px2rem(813+58);
+            position: absolute;
+            width: px2rem(508);
+            height: px2rem(106);
+        }
+        #bj_buy {
+            left: px2rem(50);
+            top: px2rem(813+58+106+28);
+            position: absolute;
+            width: px2rem(630);
+            height: px2rem(88);
+            background: url("../img/bj_buy.png") center top no-repeat;
+            background-size: px2rem(630) px2rem(88);
+        }
+    }
+
+    #bj_rule_root {
+        position: absolute;
+        top: px2rem(1720);
+        width: 100%;
+        color: #fff;
+        background: #e81b3c;
+
+        #bj_rule_title {
+            font-size: px2rem(26);
+            display: flex;
+            justify-content: center;
+
+            #bj_circle_left {
+                float: left;
+                width: px2rem(23);
+                margin-right: px2rem(12);
+                height: px2rem(23);
+            }
+            #bj_circle_title {
+                float: left;
+                line-height: px2rem(26);
+            }
+            #bj_circle_right {
+                float: left;
+                margin-left: px2rem(12);
+                width: px2rem(23);
+                height: px2rem(23);
+            }
+        }
+        #m_rule_text {
+            font-size: px2rem(22);
+            line-height: 2;
+            margin-top: px2rem(30);
+            margin-left: px2rem(40);
+            margin-right: px2rem(40);
+            padding-bottom: px2rem(140);
+
+            a {
+                display: inline;
+                text-decoration: none;
+                color: darkblue;
+            }
+        }
+    }
+}

@@ -2,10 +2,9 @@
 
 ###配置项目[gulpfile.js]
 ```
-    //设置将要运行的模块
-    var module = new Module('20170915hd');             
-    //设置该模块内默认打开的 html 页面     
-    index: 'static/' + module.moduleName + '/beijing.html'  
+    //config
+    let modules = [new ModuleModel("20170920hd", 7778, "maintain"), new ModuleModel("20170920hd_sh", 7779)];
+
 ```
 #运行项目
 ```

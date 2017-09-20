@@ -161,7 +161,10 @@ class Build {
                 server: {
                     baseDir: './build/',
                 },
-                port: _this.module.port
+                port: _this.module.port,
+                ui: {
+                    port: _this.module.port + 100,
+                }
             });
         } else {
             return browserSync.create(_this.module.indexName).init({
@@ -169,7 +172,10 @@ class Build {
                     baseDir: './build/',
                     index: 'static/' + this.module.moduleName + '/' + this.module.indexName + '.html'
                 },
-                port: _this.module.port
+                port: _this.module.port,
+                ui: {
+                    port: _this.module.port + 100,
+                }
             });
         }
     }
@@ -432,8 +438,8 @@ class Build {
         return "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
-            "\n\n            hybird 构建框架 【GULP】（第三版）" +
-            "\n\n                         ---- by michael.mao 20170919" +
+            "\n\n            车享 hybird 构建框架 【GULP】（第三版）" +
+            "\n\n                         ---- 20170919" +
             "\n\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<\n\n" +

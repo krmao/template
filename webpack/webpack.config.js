@@ -1,11 +1,10 @@
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
-// import path from "path";
 let path = require("path");
 
 module.exports = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     entry: './src/entry.js',
     output: {
         path: __dirname + '/build',
@@ -36,9 +35,11 @@ module.exports = {
                         presets: ['es2016']
                         // name: '[name].[ext]'
                     }
-                }],
+                }
+            ],
             exclude: path.resolve(__dirname, 'node_modules'),
             include: '/src/',
+            enforce: "pre"//加载器的执行顺序，不设置为正常执行。可选值 'pre|post' 前|后
         }, {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({

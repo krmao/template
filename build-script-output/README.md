@@ -1,6 +1,6 @@
-#gulp-builders
+# [gulp-builders](https://www.npmjs.com/package/gulp-builders)
 
-##make gulp build easier !
+## make gulp build easier !
 
 * open multi modules for listeners(diff ports), see example bellow
 * build multi modules
@@ -13,7 +13,7 @@
 {
     "devDependencies": {
         "gulp": "github:gulpjs/gulp#4.0",
-        "gulp-mbuilder": "^1.0.0"
+        "gulp-builders": "^1.0.1"
     }
 }
 
@@ -54,31 +54,30 @@ npm pack && npm publish
 
 ## Unresolved function or method
 ```
-    //Issues when coding node.js using IntelliJ IDEA , please check all
-    IntelliJ IDEA -> Preferences -> JavaScript -> Libraries 
-        -> [Ensure 'Node.js Globals' is checked]
+//Issues when coding node.js using IntelliJ IDEA , please check all
+IntelliJ IDEA -> Preferences -> JavaScript -> Libraries -> [Ensure 'Node.js Globals' is checked]
 ```
 
 ## gulp upgrade to 4.0
 
 ```
-    # Uninstall previous Gulp installation and related packages, if any
-    $ npm rm gulp -g
-    $ npm rm gulp-cli -g
-    $ cd [your-project-dir/]
-    $ npm rm gulp --save-dev
-    $ npm rm gulp --save
-    $ npm rm gulp --save-optional
-    $ npm cache clean
-    
-    # Install the latest Gulp CLI tools globally
-    $ npm install gulpjs/gulp-cli -g
-    
-    # Install Gulp 4 into your project from 4.0 GitHub branch as dev dependency
-    $ npm install gulpjs/gulp#4.0 --save-dev
-    
-    # Check the versions installed. Make sure your versions are not lower than shown.
-    $ gulp -v
+# Uninstall previous Gulp installation and related packages, if any
+$ npm rm gulp -g
+$ npm rm gulp-cli -g
+$ cd [your-project-dir/]
+$ npm rm gulp --save-dev
+$ npm rm gulp --save
+$ npm rm gulp --save-optional
+$ npm cache clean
+
+# Install the latest Gulp CLI tools globally
+$ npm install gulpjs/gulp-cli -g
+
+# Install Gulp 4 into your project from 4.0 GitHub branch as dev dependency
+$ npm install gulpjs/gulp#4.0 --save-dev
+
+# Check the versions installed. Make sure your versions are not lower than shown.
+$ gulp -v
 ```
 
 #### src dirs

@@ -1,48 +1,6 @@
 {
-    "name": "gulp-build",
-    "version": "0.0.1",
-    "description": "gulp-build for hybird developer",
-    "main": "./build-script/Build.js",
-    "author": "krmao",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/krmao/template/tree/gulp"
-    },
-    "homepage": "https://github.com/krmao/template#readme",
-    "bugs": {
-        "url": "https://github.com/krmao/template/issues"
-    },
-    "license": "MIT",
-    "keywords": [
-        "gulp-build",
-        "build"
-    ],
     "devDependencies": {
-        "babel-core": "^6.26.0",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.0",
-        "babel-preset-stage-2": "^6.24.1",
-        "babel-register": "^6.26.0",
-        "browser-sync": "^2.18.13",
-        "del": "^3.0.0",
         "gulp": "github:gulpjs/gulp#4.0",
-        "gulp-autoprefixer": "^4.0.0",
-        "gulp-babel": "^7.0.0",
-        "gulp-connect": "^5.0.0",
-        "gulp-eslint": "^4.0.0",
-        "gulp-file-include": "^1.2.0",
-        "gulp-imagemin": "^3.3.0",
-        "gulp-rename": "^1.2.2",
-        "gulp-replace": "^0.6.1",
-        "gulp-sass": "^3.1.0",
-        "gulp-strip-comments": "^2.5.1",
-        "gulp-tap": "^1.0.1",
-        "gulp-tinypng-nokey": "^1.1.0",
-        "gulp-uglify": "^3.0.0",
-        "gulp-zip": "^4.0.0",
-        "http-proxy-middleware": "^0.17.4",
-        "node-sass": "^4.5.3",
-        "path": "^0.12.7",
-        "require-dir": "^0.3.2"
+        "gulp-builders": "^1.0.1"
     }
 }

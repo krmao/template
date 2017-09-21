@@ -267,36 +267,36 @@ class Module {
 
     toString() {
         return "\n==============================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
-            "\n当前模块" +
+            "\nModuleModel:" +
             "\n==============================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
-            "\nindexName:\t\t\t\t\t\t" + this.indexName +
-            "\nmoduleName:\t\t\t\t\t\t" + this.moduleName +
-            "\nport:\t\t\t\t\t\t" + this.port +
-            "\nsrcPath:\t\t\t\t\t\t" + this.srcPath +
-            "\nsrcPathHtmls:\t\t\t\t\t" + this.srcPathHtmls +
-            "\nsrcPathImages:\t\t\t\t\t" + this.srcPathImages +
-            "\nsrcPathStyles:\t\t\t\t\t" + this.srcPathStyles +
-            "\nsrcPathJavaScripts:\t\t\t\t" + this.srcPathJavaScripts +
+            "\nindexName:\t\t\t\t" + this.indexName +
+            "\nmoduleName:\t\t\t\t" + this.moduleName +
+            "\nport:\t\t\t\t\t" + this.port +
+            "\nsrcPath:\t\t\t\t" + this.srcPath +
+            "\nsrcPathHtmls:\t\t\t\t" + this.srcPathHtmls +
+            "\nsrcPathImages:\t\t\t\t" + this.srcPathImages +
+            "\nsrcPathStyles:\t\t\t\t" + this.srcPathStyles +
+            "\nsrcPathJavaScripts:\t\t\t" + this.srcPathJavaScripts +
             "\nsrcPathTemplateFile:\t\t\t" + this.srcPathTemplateFile +
-            "\nbuildOutputPath:\t\t\t\t" + this.buildOutputPath +
+            "\nbuildOutputPath:\t\t\t" + this.buildOutputPath +
             "\nbuildOutputPathImages:\t\t\t" + this.buildOutputPathImages +
             "\nbuildOutputPathJavaScripts:\t\t" + this.buildOutputPathJavaScripts +
             "\nbuildOutputPathHtmls:\t\t\t" + this.buildOutputPathHtmls +
             "\nbuildOutputPathStyles:\t\t\t" + this.buildOutputPathStyles +
 
-            "\nzipSrcPathImages:\t\t\t\t" + this.zipSrcPathImages +
+            "\nzipSrcPathImages:\t\t\t" + this.zipSrcPathImages +
             "\nzipSrcPathJavaScripts:\t\t\t" + this.zipSrcPathJavaScripts +
-            "\nzipSrcPathHtmls:\t\t\t\t" + this.zipSrcPathHtmls +
-            "\nzipSrcPathStyles:\t\t\t\t" + this.zipSrcPathStyles +
-            "\nzipFileNameImages:\t\t\t\t" + this.zipFileNameImages +
+            "\nzipSrcPathHtmls:\t\t\t" + this.zipSrcPathHtmls +
+            "\nzipSrcPathStyles:\t\t\t" + this.zipSrcPathStyles +
+            "\nzipFileNameImages:\t\t\t" + this.zipFileNameImages +
             "\nzipFileNameJavaScripts:\t\t\t" + this.zipFileNameJavaScripts +
-            "\nzipFileNameHtmls:\t\t\t\t" + this.zipFileNameHtmls +
-            "\nzipFileNameStyles:\t\t\t\t" + this.zipFileNameStyles +
-            "\nzipPathOutput:\t\t\t\t\t" + this.zipPathOutput +
-            "\nzipPathBaseImages:\t\t\t\t" + this.zipPathBaseImages +
+            "\nzipFileNameHtmls:\t\t\t" + this.zipFileNameHtmls +
+            "\nzipFileNameStyles:\t\t\t" + this.zipFileNameStyles +
+            "\nzipPathOutput:\t\t\t\t" + this.zipPathOutput +
+            "\nzipPathBaseImages:\t\t\t" + this.zipPathBaseImages +
             "\nzipPathBaseJavaScripts:\t\t\t" + this.zipPathBaseJavaScripts +
-            "\nzipPathBaseStyles:\t\t\t\t" + this.zipPathBaseStyles +
-            "\nzipPathBaseHtmls:\t\t\t\t" + this.zipPathBaseHtmls +
+            "\nzipPathBaseStyles:\t\t\t" + this.zipPathBaseStyles +
+            "\nzipPathBaseHtmls:\t\t\t" + this.zipPathBaseHtmls +
             "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==============================\n";
     }
 }

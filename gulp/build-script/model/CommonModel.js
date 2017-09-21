@@ -100,14 +100,14 @@ class Common {
 
     toString() {
         return "\n==============================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
-            "\n公共模块" +
+            "\nCommonModel" +
             "\n==============================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
-            "\nsrcPath:\t\t\t\t\t\t" + this.srcPath +
-            "\nsrcPathImages:\t\t\t\t\t" + this.srcPathImages +
-            "\nsrcPathStyles:\t\t\t\t\t" + this.srcPathStyles +
-            "\nsrcPathJavaScripts:\t\t\t\t" + this.srcPathJavaScripts +
+            "\nsrcPath:\t\t\t\t" + this.srcPath +
+            "\nsrcPathImages:\t\t\t\t" + this.srcPathImages +
+            "\nsrcPathStyles:\t\t\t\t" + this.srcPathStyles +
+            "\nsrcPathJavaScripts:\t\t\t" + this.srcPathJavaScripts +
             "\nsrcPathPluginArrays:\t\t\t" + this.srcPathPluginArrays +
-            "\nbuildOutputPath:\t\t\t\t" + this.buildOutputPath +
+            "\nbuildOutputPath:\t\t\t" + this.buildOutputPath +
             "\nbuildOutputPathImages:\t\t\t" + this.buildOutputPathImages +
             "\nbuildOutputPathJavaScripts:\t\t" + this.buildOutputPathJavaScripts +
             "\nbuildOutputPathStyles:\t\t\t" + this.buildOutputPathStyles +

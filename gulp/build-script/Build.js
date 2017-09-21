@@ -17,15 +17,15 @@ import del from "del";
 import path from "path";
 import browserSync from "browser-sync";
 
+
 // import proxy from "http-proxy-middleware";
 
-class Build {
+export class Build {
 
     constructor(module, commonModel) {
         this._module = module;
         this._commonModel = commonModel;
         this._server = browserSync.create(this.module.indexName);
-        console.log(this.toString());
     }
 
     get module() {
@@ -57,9 +57,12 @@ class Build {
     //====================================================================================================
 
     static run(modules, commonModel) {
+        // console.log(Build);
+        // console.log(commonModel.toString());
         let tasks = [];
         for (let index in modules) {
             if (modules.hasOwnProperty(index)) {
+                // console.log(modules[index].toString());
                 tasks[index] = new Build(modules[index], commonModel).runModule();
             }
         }
@@ -112,9 +115,12 @@ class Build {
     }
 
     static build(modules, commonModel) {
+        // console.log(Build);
+        // console.log(commonModel.toString());
         let tasks = [];
         for (let index in modules) {
             if (modules.hasOwnProperty(index)) {
+                // console.log(modules[index].toString());
                 tasks[index] = new Build(modules[index], commonModel).buildModule();
             }
         }
@@ -485,9 +491,17 @@ class Build {
             "\n\n                         ---- by krmao 20170919" +
             "\n\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
-            "\n>>>>>>>>************************************************************<<<<<<<<\n\n" +
-            this.module + this.commonModel;
+            "\n>>>>>>>>************************************************************<<<<<<<<\n\n"
     }
+
+
 }
 
-export default Build;
+import _CommonModel from "./model/CommonModel";
+import _ModuleModel from "./model/ModuleModel";
+
+export class CommonModel extends _CommonModel {
+}
+
+export class ModuleModel extends _ModuleModel {
+}

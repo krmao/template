@@ -1,6 +1,6 @@
-#gulp-builders
+# gulp-builders
 
-##make gulp build easier !
+## make gulp build easier !
 
 * open multi modules for listeners(diff ports), see example bellow
 * build multi modules
@@ -13,7 +13,7 @@
 {
     "devDependencies": {
         "gulp": "github:gulpjs/gulp#4.0",
-        "gulp-mbuilder": "^1.0.0"
+        "gulp-builders": "^1.0.1"
     }
 }
 

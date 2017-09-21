@@ -5,12 +5,13 @@ import sass from "gulp-sass";
 import babel from "gulp-babel";
 import rename from "gulp-rename";
 // import eslint from "gulp-eslint";
+// import imageMin from "gulp-imagemin";
 import uglify from "gulp-uglify";
 import replace from "gulp-replace";
-import imageMin from "gulp-imagemin";
 import strip from "gulp-strip-comments";    //删除代码注释
 import fileInclude from "gulp-file-include";
 import autoPreFixer from "gulp-autoprefixer";
+import tinyPng from 'gulp-tinypng-nokey';
 
 import del from "del";
 import path from "path";
@@ -23,6 +24,7 @@ class Build {
     constructor(module, commonModel) {
         this._module = module;
         this._commonModel = commonModel;
+        this._server = browserSync.create(this.module.indexName);
         console.log(this.toString());
     }
 
@@ -42,7 +44,15 @@ class Build {
         this._commonModel = value;
     }
 
-    //====================================================================================================
+    get server() {
+        return this._server;
+    }
+
+    set server(value) {
+        this._server = value;
+    }
+
+//====================================================================================================
     //  run and watch
     //====================================================================================================
 
@@ -111,6 +121,12 @@ class Build {
         return gulp.parallel(tasks);
     }
 
+    static clean() {
+        return () => {
+            return del(['./build/'])
+        };
+    }
+
     buildModule() {
         let _this = this;
         return gulp.series(
@@ -157,17 +173,25 @@ class Build {
     sync() {
         let _this = this;
         if (_this.module.indexName === null) {
-            return browserSync.create(_this.module.indexName).init({
+            return this.server.init({
                 server: {
                     baseDir: './build/',
                 },
                 port: _this.module.port,
                 ui: {
                     port: _this.module.port + 100,
-                }
+                },
+                reloadDelay: 0,
+                browser: "google chrome",
+                //proxy: 'localhost',
+                watchOptions: {
+                    ignored: 'node_modules/*',
+                    ignoreInitial: true
+                },
+                injectChanges: true
             });
         } else {
-            return browserSync.create(_this.module.indexName).init({
+            return this.server.init({
                 server: {
                     baseDir: './build/',
                     index: 'static/' + this.module.moduleName + '/' + this.module.indexName + '.html'
@@ -175,7 +199,15 @@ class Build {
                 port: _this.module.port,
                 ui: {
                     port: _this.module.port + 100,
-                }
+                },
+                reloadDelay: 0,
+                browser: "google chrome",
+                //proxy: 'localhost',
+                watchOptions: {
+                    ignored: 'node_modules/*',
+                    ignoreInitial: true
+                },
+                injectChanges: true
             });
         }
     }
@@ -192,7 +224,7 @@ class Build {
                     return _this.buildHtml();
                 },
                 function reload(done) {
-                    browserSync.reload();
+                    _this.server.reload();
                     return done();
                 }
             )
@@ -207,7 +239,7 @@ class Build {
                     return _this.buildScss();
                 },
                 function reload(done) {
-                    browserSync.reload();
+                    _this.server.reload();
                     return done();
                 }
             )
@@ -222,7 +254,7 @@ class Build {
                     return _this.buildJs();
                 },
                 function reload(done) {
-                    browserSync.reload();
+                    _this.server.reload();
                     return done();
                 }
             )
@@ -237,7 +269,7 @@ class Build {
                     return _this.buildImages(false);
                 },
                 function reload(done) {
-                    browserSync.reload();
+                    _this.server.reload();
                     return done();
                 }
             )
@@ -285,7 +317,18 @@ class Build {
 
     buildImages(enableMin) {
         if (enableMin)
-            return gulp.src(this.module.srcPathImages + '*').pipe(imageMin()).pipe(gulp.dest(this.module.buildOutputPathImages));
+            return gulp.src(this.module.srcPathImages + '*').pipe(tinyPng()).pipe(gulp.dest(this.module.buildOutputPathImages));
+        /*return gulp.src(this.module.srcPathImages + '*').pipe(imageMin([
+                imageMin.gifsicle({interlaced: true}),
+                imageMin.jpegtran({progressive: true, arithmetic: true}),
+                imageMin.optipng({optimizationLevel: 5}),
+                imageMin.svgo({
+                    plugins: [
+                        {removeViewBox: true},
+                        {cleanupIDs: false}
+                    ]
+                })
+            ])).pipe(gulp.dest(this.module.buildOutputPathImages));*/
         else
             return gulp.src(this.module.srcPathImages + '*').pipe(gulp.dest(this.module.buildOutputPathImages));
     }
@@ -363,7 +406,7 @@ class Build {
 
     buildImagesCommon(enableMin) {
         if (enableMin)
-            return gulp.src(this.commonModel.srcPathImages + '*').pipe(imageMin()).pipe(gulp.dest(this.commonModel.buildOutputPathImages));
+            return gulp.src(this.commonModel.srcPathImages + '*').pipe(tinyPng()/*imageMin()*/).pipe(gulp.dest(this.commonModel.buildOutputPathImages));
         else
             return gulp.src(this.commonModel.srcPathImages + '*').pipe(gulp.dest(this.commonModel.buildOutputPathImages));
     }
@@ -438,8 +481,8 @@ class Build {
         return "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
-            "\n\n            车享 hybird 构建框架 【GULP】（第三版）" +
-            "\n\n                         ---- 20170919" +
+            "\n\n            hybird framework 【GULP】" +
+            "\n\n                         ---- by krmao 20170919" +
             "\n\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<" +
             "\n>>>>>>>>************************************************************<<<<<<<<\n\n" +

@@ -22,7 +22,7 @@
 ### config gulpfile.babel.js
 ```$xslt
 import gulp from "gulp";
-import {Build, ModuleModel, CommonModel} from "gulp-mbuilder";  //"./build-script-output/src/Build";
+import {Build, ModuleModel, CommonModel} from "gulp-builders";  //"./build-script-output/src/Build";
 
 let commonModel = new CommonModel();
 let modules = [new ModuleModel("20170915hd", 7780, "index")];

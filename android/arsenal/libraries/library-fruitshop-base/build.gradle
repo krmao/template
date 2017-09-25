@@ -1,0 +1,63 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    resourcePrefix "fs_"
+}
+
+dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+    compile project(':library-base')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    /*compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
+        transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
+        *//*contains:
+          <p>
+            compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+            compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+            compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+            compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+            compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+            compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+            compile "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
+            compile "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
+            compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
+            compile "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
+            compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
+            compile "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.ext.rxbindingVersion"
+            compile "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rootProject.ext.rxbindingVersion"
+            compile "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxbindingVersion"
+            compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
+            compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
+            compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
+            compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+            compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+            compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+            compile "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
+          </p>
+        *//*
+    }*/
+
+    /******* 官方支持库 ****************************************************************************/
+    //compile "com.android.support:multidex:$rootProject.ext.multidex"
+    //compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    /******* 必备工具库 ****************************************************************************/
+    //compile "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
+
+    /******* 应用权限库 ****************************************************************************/
+    /******* 网络请求库 ****************************************************************************/
+
+    /******* 其它常用库 ****************************************************************************/
+    compile "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
+}

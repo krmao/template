@@ -1,0 +1,98 @@
+apply plugin: 'com.tencent.bugly.tinker-support'
+
+/**
+ * 热更新步骤
+ *
+ * 一:打基础版本包
+ * 1.1 设置 baseApkDir =null
+ * 1.2 设置 thinkerID 为 版本号-base ,例如 :4.1.1-base
+ * 1.3 执行 assembleRelease ,得到最终包 在 backupPath 路径下面，例如 app-0628-12-51-14 ，将文件夹下面所有的文件添加到git长久保存，因为以后万一需要热更新则需要依赖他们
+
+ 二:打热修复patch包(在修改代码或者资源以后执行以下步骤)
+ * 2.1 设置 baseApkDir 为 [步骤1.3] 生成的基础版本包，例如 app-0628-12-51-14
+ * 2.2 设置 thinkerID 为 版本号-patch ,例如 :4.1.1-patch
+ * 2.3 执行 buildTinkerPatchRelease ，得到patch包，在 buildDir/outputs/patch/release/patch_signed_7zip.apk
+ *
+ * 三:上传patch
+ * 3.1 在bugly后台上传 patch_signed_7zip.apk，程序杀死进程重启则会检测到patch，会自动下载合并安装，可选是否提示重启
+ *
+ * 四:打过patch包后又有更改又需要打一个patch包，则重复[步骤二]即可
+ */
+
+//==================================================================================================
+//==================================================================================================
+def baseApkDir = "$rootProject.ext.versionName-base"         //此处填写每次构建生成的基准包目录
+def thinkerID = "$rootProject.ext.versionName-patch"//"4.2-patch" //基础包 -base / path包 -patch
+
+def backupPath = file("${projectDir}/backup/")
+def channelsDir = null
+//==================================================================================================
+//==================================================================================================
+
+/**
+ * 对于插件各参数的详细解析请参考
+ */
+tinkerSupport {
+
+    // 开启tinker-support插件，默认值true
+    enable = true
+
+    // tinkerEnable功能开关
+    tinkerEnable = true
+
+    // 指定归档目录，默认值当前module的子目录tinker
+    autoBackupApkDir = "${backupPath}"
+
+    // 是否启用覆盖tinkerPatch配置功能，默认值false
+    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
+    overrideTinkerPatchConfiguration = true
+
+    // 编译补丁包时，必需指定基线版本的apk，默认值为空
+    // 如果为空，则表示不是进行补丁包的编译
+    // @{link tinkerPatch.oldApk }
+    baseApk = "${backupPath}/${baseApkDir}/app-chexiangjia-release.apk"
+
+    // 对应tinker插件applyMapping
+    baseApkProguardMapping = "${backupPath}/${baseApkDir}/app-chexiangjia-release-mapping.txt"
+
+    // 对应tinker插件applyResourceMapping
+    baseApkResourceMapping = "${backupPath}/${baseApkDir}/app-chexiangjia-release-R.txt"
+
+    // 构建基准包跟补丁包都要修改tinkerId，主要用于区分
+    tinkerId = thinkerID
+
+    // 打多渠道补丁时指定目录
+    buildAllFlavorsDir = channelsDir
+
+    enableProxyApplication = true
+
+}
+
+tinkerPatch {
+    tinkerEnable = true
+    ignoreWarning = false
+    useSign = true
+    dex {
+        dexMode = "jar"
+        pattern = ["classes*.dex"]
+        loader = []
+    }
+    lib {
+        pattern = ["lib/*/*.so"]
+    }
+
+    res {
+        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+    sevenZip {
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+    }
+    buildConfig {
+        keepDexApply = false
+    }
+}

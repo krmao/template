@@ -1,1 +1,1 @@
-### hybird framework template [android]
+### hybird framework template [android(atlas)]

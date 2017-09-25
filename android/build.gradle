@@ -1,0 +1,111 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlinVersion = "1.1.4-2"
+    ext.ankoVersion = "0.8.2"
+    ext.greendaoVersion = "3.2.0"
+    ext.walleVersion = "1.1.4"
+
+    ext.atlasPluginVersion = "2.3.3.rc12"
+    ext.atlasCoreVersion = "5.0.7.42"
+    ext.atlasUpdateVersion = "1.1.4.11"
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.taobao.android:atlasplugin:$atlasPluginVersion"
+        classpath "com.meituan.android.walle:plugin:$walleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+        //classpath "com.android.tools.build:gradle:2.3.0"
+        //classpath "org.greenrobot:greendao-gradle-plugin:$rootProject.ext.greendaoVersion"
+        //classpath "com.tencent.bugly:symtabfileuploader:1.3.9"
+        //classpath "com.tencent.bugly:tinker-support:1.0.8"
+    }
+}
+
+allprojects {
+    ext.frepository_url = ""
+    ext.prepository_url = ""
+    ext.prepository_url_snapshot = ""
+    ext.prepository_username = ""
+    ext.prepository_password = ""
+
+    repositories {
+        flatDir {
+            dirs "file://$rootProject.projectDir/arsenal/libraries/thirdparty/thirdparty-aars"
+        }
+        //maven { url frepository_url }
+        //maven { url "http://maven.dds.com/nexus/content/groups/public" }
+        jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+    tasks.withType(Javadoc) {
+        options.encoding = "UTF-8"
+    }
+}
+
+task clean(type: Delete) {
+    delete buildDir
+}
+
+apply from: "readme/scripts/tasktimings.gradle" //控制台输出任务耗时
+
+// Define versions in a single place
+ext {
+
+    // Sdk and tools
+    minSdkVersion = 15
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.2"
+
+    // App dependencies
+    supportLibraryVersion = "25.3.1"
+    constraintLayoutVersion = "1.0.2"
+    multidex = "1.0.1"
+    guavaVersion = "22.0-android"
+    junitVersion = "4.12"
+    mockitoVersion = "1.10.19"
+    espressoVersion = "2.2.2"
+    rxjavaVersion = "2.1.0"
+    rxkotlinVersion = "2.0.3"
+    rxandroidVersion = "2.0.1"
+    rxpermissionsVersion = "0.9.4@aar"
+    rxlifecycleVersion = "2.0.1"
+    rxbindingVersion = "2.0.0"
+    frescoVersion = "1.3.0"
+    okhttp3Version = "3.8.0"
+    retrofitVersion = "2.3.0"
+    retrofit2rxjava2Version = "1.0.0"
+    leakcanaryVersion = "1.5.1"
+    crashreportUpgradeVersion = "1.3.1"
+    swipebackhelperVersion = "3.1.2"
+    libraryBaseVersion = "0.0.1-SNAPSHOT"
+
+    //others
+    debug = false
+    versionCode = 1
+    versionName = "1.0"
+
+    Properties properties = new Properties()
+    try {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        debug = "true".equalsIgnoreCase(properties.getProperty("app.debug"))
+        versionCode = Integer.parseInt(properties.getProperty("app.versionCode", versionCode.toString()))
+
+        print("debug and versionCode read success,debug=${debug} and versionCode=${versionCode}")
+    } catch (Exception e) {
+        e.printStackTrace()
+        print("debug and versionCode read failure,use default debug=${debug} and versionCode=${versionCode}")
+    }
+}

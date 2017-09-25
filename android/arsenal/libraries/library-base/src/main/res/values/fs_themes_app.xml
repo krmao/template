@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="FSAppTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/FSWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="FSAppTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/FSWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="FSAppTheme.NoActionBar.FullScreen" parent="@style/android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/FSWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="FSAppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="drawerArrowStyle">@style/FSWidget.App.DrawerArrowToggle</item>
+        <item name="android:windowAnimationStyle">@style/FSWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="FSAppTheme.Translucent" parent="@style/FSAppTheme.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
+    </style>
+
+    <style name="FSAppTheme.Translucent.ActionBar" parent="@style/FSAppTheme.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="FSAppTheme.Translucent.FullScreen" parent="@style/FSAppTheme.NoActionBar.FullScreen">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

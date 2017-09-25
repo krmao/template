@@ -1,0 +1,66 @@
+@import "./_reset.scss";
+@import "./_mixins.scss";
+@import "./_common.scss";
+
+html {
+  height: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+  text-size-adjust: 100%;
+}
+
+body {
+  position: static;
+  overflow-y: auto;
+  height: 100%;
+  font-family: Tahoma, Arial, Roboto, ”Droid Sans”, ”Helvetica Neue”, ”Droid Sans Fallback”, ”Heiti SC”, sans-self;
+  -webkit-user-select: none;
+  user-select: none;
+  background: #fff;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.gray {
+  color: $gray1;
+}
+
+.dark {
+  color: $dark;
+}
+
+.white {
+  color: $white;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.display-none {
+  display: none;
+}
+
+.flex {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.overflow-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

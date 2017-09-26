@@ -2,7 +2,11 @@ img, a { display: block; }
 
 .container { background: #eeeeee; height: 100%; width: 100%; text-align: center; padding-top: 1.5rem; }
 
-.container #title { color: black; font-weight: bold; font-size: 2.5rem; }
+.container #header { display: inline-block; }
+
+.container #header #title { float: right; color: black; font-weight: bold; line-height: 2.5rem; font-size: 2.5rem; }
+
+.container #header #svg { height: 2.5rem; width: 2.5rem; float: left; }
 
 .container #women { margin-top: 1.5rem; width: 37.5rem; height: 37.5rem; }
 

@@ -13,11 +13,22 @@ img, a {
     text-align: center;
     padding-top: px2rem(30);
 
-    #title {
-        color: black;
-        font-weight: bold;
-        font-size: px2rem(50);
+    #header {
+        display: inline-block;
+        #title {
+            float: right;
+            color: black;
+            font-weight: bold;
+            line-height: px2rem(50);
+            font-size: px2rem(50);
+        }
+        #svg {
+            height: px2rem(50);
+            width: px2rem(50);
+            float: left;
+        }
     }
+
     #women {
         margin-top: px2rem(30);
         width: px2rem(750);

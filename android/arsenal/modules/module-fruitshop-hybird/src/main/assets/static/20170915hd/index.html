@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="../../static/plugins/sm/sm.min.css" rel="stylesheet">
+<link href="../../static/styles/main.css" rel="stylesheet">
+<link href="../../static/styles/20170915hd/index.css" rel="stylesheet">
+<script type="text/javascript">
+    // 字体控制
+    function setFontsize() {
+        document.querySelector('html').style.fontSize = (window.screen.width / 375 * 10 + 'px');
+    }
+    setFontsize();
+</script>
+
+</head>
+<body>
+<div id="myApp" class="wrapper" v-cloak>
+    <div class="container">
+    <label id="title">hybird[vue] test</label>
+    <img id="women" src="../../static/images/20170915hd/women.jpeg">
+    <img id="dog" src="../../static/images/20170915hd/dog.gif">
+</div>
+
+    <div class="backtop" v-if="basicInfo.showBackTopFlag" @click="backTop"></div>
+<div class="share" v-if="basicInfo.showShareFlag" @click="share"></div>
+<ul class="download" v-if="basicInfo.showDownloadFlag">
+    <li>
+        <img src="../../static/images/common/share.png"/>
+        <template v-if="basicInfo.showDownloadFlag && basicInfo.showDownloadTpl">
+            <div v-html="basicInfo.showDownloadTpl"></div>
+        </template>
+        <template v-if="!basicInfo.showDownloadTpl">
+            <div>
+                <p>下载车template</p>
+            </div>
+        </template>
+    </li>
+    <li v-if="basicInfo.linkTpl" v-html="basicInfo.linkTpl"></li>
+    <li v-if="!basicInfo.linkTpl">
+        <a href="" ca="template" id="hrefHost">
+            立即下载
+        </a>
+    </li>
+</ul>
+
+</div>
+<script type="text/javascript">
+    window._caProtocol = (("http:" === document.location.protocol) ? " http://" : " https://");
+</script>
+<script type="text/javascript" src="../../static/plugins/url.min.js"></script>
+<script type="text/javascript" src="../../static/plugins/vue.min.js"></script>
+<script type="text/javascript" src="../../static/plugins/vue-resource.min.js"></script>
+<script type="text/javascript" src="../../static/plugins/sm/sm.min.js"></script>
+<script type="text/javascript" src="../../static/scripts/common.js"></script>
+<script type="text/javascript" src="../../static/scripts/20170915hd/index.js"></script>
+
+</body>
+</html>

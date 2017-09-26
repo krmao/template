@@ -7,4 +7,24 @@ img, a {
 }
 
 .container {
+    background: #eeeeee;
+    text-align: center;
+    padding-top: px2rem(30);
+    padding-bottom: px2rem(200);
+
+    #title {
+
+        color: black;
+        font-weight: bold;
+        font-size: px2rem(50);
+    }
+    #women {
+        margin-top: px2rem(30);
+        width: px2rem(750);
+        height: px2rem(750);
+    }
+    #dog {
+        width: px2rem(750);
+        height: px2rem(750);
+    }
 }

@@ -1,5 +1,8 @@
 <div class="container">
     <label id="title">hybird[vue] test</label>
-    <img id="women" src="../img/women.jpeg">
-    <img id="dog" src="../img/dog.gif">
+    <div id="linkContainer">
+        <router-link id="linkWomen" to="/women">打开美女页面</router-link>
+        <router-link id="linkDog" to="/dog">打开小狗页面</router-link>
+    </div>
+    <router-view id="view"></router-view>
 </div>

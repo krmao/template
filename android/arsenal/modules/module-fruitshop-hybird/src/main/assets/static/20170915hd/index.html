@@ -19,8 +19,11 @@
 <div id="myApp" class="wrapper" v-cloak>
     <div class="container">
     <label id="title">hybird[vue] test</label>
-    <img id="women" src="../../static/images/20170915hd/women.jpeg">
-    <img id="dog" src="../../static/images/20170915hd/dog.gif">
+    <div id="linkContainer">
+        <router-link id="linkWomen" to="/women">打开美女页面</router-link>
+        <router-link id="linkDog" to="/dog">打开小狗页面</router-link>
+    </div>
+    <router-view id="view"></router-view>
 </div>
 
     <div class="backtop" v-if="basicInfo.showBackTopFlag" @click="backTop"></div>
@@ -52,6 +55,7 @@
 <script type="text/javascript" src="../../static/plugins/url.min.js"></script>
 <script type="text/javascript" src="../../static/plugins/vue.min.js"></script>
 <script type="text/javascript" src="../../static/plugins/vue-resource.min.js"></script>
+<script type="text/javascript" src="../../static/plugins/vue-router.min.js"></script>
 <script type="text/javascript" src="../../static/plugins/sm/sm.min.js"></script>
 <script type="text/javascript" src="../../static/scripts/common.js"></script>
 <script type="text/javascript" src="../../static/scripts/20170915hd/index.js"></script>

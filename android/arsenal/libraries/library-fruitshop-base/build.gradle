@@ -18,6 +18,7 @@ dependencies {
 
     compile project(':library-base')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.evgenyneu:js-evaluator-for-android:v3.0.0'
 
     /*compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
         transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)

@@ -14,12 +14,12 @@ atlas {
     atlasEnabled true
     tBuildConfig {
         autoStartBundles = [
-                'com.xixi.fruitshop.android.module.setting',
-                //'com.xixi.fruitshop.android.module.mine',
+            'com.xixi.fruitshop.android.module.setting',
+            //'com.xixi.fruitshop.android.module.mine',
         ]
         autoPackageId = true
         outOfApkBundles = [
-                //'module-fruitshop-hybird', //adb push arsenal/apps/app-fruitshop/build/outputs/remote-bundles-debug/libcom_xixi_fruitshop_android_module_hybird.so /sdcard/Android/data/com.xixi.fruitshop.android/cache/
+            //'module-fruitshop-hybird', //adb push arsenal/apps/app-fruitshop/build/outputs/remote-bundles-debug/libcom_xixi_fruitshop_android_module_hybird.so /sdcard/Android/data/com.xixi.fruitshop.android/cache/
         ]
         preLaunch = 'com.xixi.fruitshop.android.library.FSPreLaunch' //initBeforeAtlas
     }
@@ -51,7 +51,7 @@ android {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
         ndk {// 设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a' //, 'x86', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86' //'x86_64', 'arm64-v8a'
         }
 
         manifestPlaceholders = [DEBUG: rootProject.ext.debug]

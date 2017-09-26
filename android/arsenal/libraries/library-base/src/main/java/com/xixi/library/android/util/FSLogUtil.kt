@@ -229,11 +229,7 @@ object FSLogUtil {
     }
 
     private fun getLocationClassName(stackTraceElement: StackTraceElement?): String {
-        return getClassName(Class.forName(stackTraceElement?.className))
-    }
-
-    private fun getClassName(clazz: Class<*>?): String {
-        return clazz?.canonicalName ?: getClassName(clazz?.enclosingClass) ?: ""
+        return stackTraceElement?.className ?: ""
     }
 
     /**

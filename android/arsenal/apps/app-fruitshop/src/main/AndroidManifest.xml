@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.xixi.fruitshop.android">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.xixi.fruitshop.android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".library.FSApplication"
@@ -18,11 +18,12 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/FSAppTheme.Light.NoActionBar"
+        tools:replace="android:label"
         tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
 
         <meta-data
             android:name="DEBUG"
-            android:value="${DEBUG}" />
+            android:value="${DEBUG}"/>
     </application>
 
 </manifest>

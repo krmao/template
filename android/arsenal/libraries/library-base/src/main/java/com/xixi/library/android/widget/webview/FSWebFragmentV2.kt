@@ -17,7 +17,7 @@ import com.xixi.library.android.base.FSBaseFragment
 import com.xixi.library.android.util.FSLogUtil
 import kotlinx.android.synthetic.main.fs_fragment_webview_v2.*
 
-class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
+open class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
 
     companion object {
         fun goTo(activity: Activity, url: String?) {

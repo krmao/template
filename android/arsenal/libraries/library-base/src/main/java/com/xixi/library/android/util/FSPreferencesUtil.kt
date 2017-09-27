@@ -50,6 +50,10 @@ object FSPreferencesUtil {
         return mSharedPreferences.getString(key, "")
     }
 
+    fun getString(key: String, default: String? = null): String {
+        return mSharedPreferences.getString(key, default)
+    }
+
     fun putInt(key: String, value: Int): Boolean {
         val editor = mSharedPreferences.edit()
         editor.putInt(key, value)

@@ -8,6 +8,7 @@ import android.util.Log
 import android.webkit.*
 import com.xixi.library.android.base.FSBaseApplication
 import com.xixi.library.android.base.FSConfig
+import com.xixi.library.android.util.FSLogUtil
 
 
 @Suppress("unused")
@@ -91,10 +92,13 @@ object FSWebViewUtil {
     }
 
     open class FSWebChromeClient : WebChromeClient() {
-        @Suppress("OverridingDeprecatedMember")
-        override fun onConsoleMessage(message: String, lineNumber: Int, sourceID: String) {
-            Log.w("HTML5", "#$lineNumber:$sourceID")
-            Log.d("HTML5", message)
+        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+            super.onConsoleMessage(consoleMessage)
+            var console = "\n#" + consoleMessage?.lineNumber()
+            console += ":" + consoleMessage?.sourceId()
+            console += "\nmessage: " + consoleMessage?.message()
+            FSLogUtil.d("HTML5", console)
+            return false
         }
 
         override fun onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissions.Callback?) {
@@ -112,7 +116,7 @@ object FSWebViewUtil {
 
         override fun onPageFinished(webView: WebView?, url: String?) {
             if (clearHistory) {
-                Log.d("HTML5", "clearHistory now")
+                FSLogUtil.w("HTML5", "clearHistory now")
                 clearHistory = false
                 webView?.clearHistory()
             }

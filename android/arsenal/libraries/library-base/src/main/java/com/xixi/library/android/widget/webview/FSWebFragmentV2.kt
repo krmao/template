@@ -15,6 +15,7 @@ import com.xixi.library.android.R
 import com.xixi.library.android.base.FSActivity
 import com.xixi.library.android.base.FSBaseFragment
 import com.xixi.library.android.util.FSLogUtil
+import com.xixi.library.android.widget.titlebar.FSTitleBar
 import kotlinx.android.synthetic.main.fs_fragment_webview_v2.*
 
 open class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListener {
@@ -38,6 +39,12 @@ open class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListe
     private val hideBackAtFirstPage: Boolean by lazy {
         arguments?.getBoolean("hideBackAtFirstPage") ?: false
     }
+    protected val webView: WebView by lazy {
+        web_view
+    }
+    protected val titleBar: FSTitleBar by lazy {
+        title_bar
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fs_fragment_webview_v2, container, false)
@@ -52,7 +59,7 @@ open class FSWebFragmentV2 : FSBaseFragment(), FSBaseFragment.OnBackPressedListe
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
             override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean {
-                FSLogUtil.d("krmao", "shouldOverrideUrlLoading:" + _url)
+                FSLogUtil.d("HTML5", "shouldOverrideUrlLoading:" + _url)
                 if (_url != null && url != _url) {//首页
                     if (!TextUtils.isEmpty(_url) && _url.startsWith("")) {
                         FSWebFragment.goTo(activity, _url)

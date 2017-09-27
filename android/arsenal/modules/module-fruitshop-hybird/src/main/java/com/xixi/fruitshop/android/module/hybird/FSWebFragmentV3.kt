@@ -1,5 +1,6 @@
 package com.xixi.fruitshop.android.module.hybird
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +33,7 @@ class FSWebFragmentV3 : FSWebFragmentV2() {
         JsEvaluator(activity)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -54,10 +56,17 @@ class FSWebFragmentV3 : FSWebFragmentV2() {
                 return FSJSBridgeManager.shouldOverrideUrlLoading(_url)
             }
         })
-
+        titleBar.titleText.visibility = View.VISIBLE
+        titleBar.titleText.text = "hybird test"
         titleBar.titleText.setOnClickListener {
-            FSJSBridgeManager.callJsFunction(webView, "javascript:getSum()") { result: String? ->
-                FSLogUtil.e("HTML5", "on call back now !!!result:" + result + '\n')
+            //            FSJSBridgeManager.callJsFunction(webView, "javascript:getSum()") { result: String? ->
+//                FSLogUtil.e("HTML5", "on call back now !!!result:" + result + '\n')
+//            }
+            FSJSBridgeManager.callJsFunction(webView, "javascript:a()") { result: String? ->
+                FSLogUtil.e("HTML5", "a call back !!!result:" + result + '\n')
+            }
+            FSJSBridgeManager.callJsFunction(webView, "javascript:b()") { result: String? ->
+                FSLogUtil.e("HTML5", "b call back !!!result:" + result + '\n')
             }
         }
     }

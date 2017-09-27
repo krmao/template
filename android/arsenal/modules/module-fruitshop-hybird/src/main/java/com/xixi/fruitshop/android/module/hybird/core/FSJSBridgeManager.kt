@@ -11,8 +11,9 @@ object FSJSBridgeManager {
 
     fun callJsFunction(webView: WebView?, javascript: String, callback: ((result: String?) -> Unit?)? = null) {
         val jsString = javascript.replace("javascript:", "")
-        val callbackHashCode: String? = callback?.hashCode()?.toString()
-        if (callback != null && callbackHashCode != null)
+        val callbackHashCode: String? = callback?.hashCode()?.toString() + '-' + System.currentTimeMillis()
+        FSLogUtil.e("mmCode:" + callbackHashCode + " , size=" + callBackMap.size)
+        if (callback != null)
             callBackMap.put(callbackHashCode, callback)
 
         val wrappedJavascript = """

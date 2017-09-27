@@ -18,7 +18,8 @@ class HybirdFragment : FSBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         text.setOnClickListener {
             //FSWebFragmentV2.goTo(activity, "https://www.baidu.com")
-            FSWebFragmentV3.goTo(activity, "file:///android_asset/static/20170915hd/index.html#/dog")
+//            FSWebFragmentV3.goTo(activity, "file:///android_asset/static/20170915hd/index.html#/dog")
+            FSWebFragmentV3.goTo(activity, "http://10.47.60.194:8020/LB/index.html?__hbt=1506499675144")
         }
     }
 }

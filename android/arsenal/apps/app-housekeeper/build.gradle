@@ -61,18 +61,18 @@ android {
 
     signingConfigs {
         debug {
-            keyAlias 'housekeeper'
-            keyPassword 'housekeeper#767709667'
-            storeFile file('housekeeper.keystore')
-            storePassword 'housekeeper#767709667'
+            keyAlias 'debug'
+            keyPassword '123456'
+            storeFile file('debug.keystore')
+            storePassword '123456'
             v2SigningEnabled true
         }
 
         release {
-            keyAlias 'housekeeper'
-            keyPassword 'housekeeper#767709667'
-            storeFile file('housekeeper.keystore')
-            storePassword 'housekeeper#767709667'
+            keyAlias 'debug'
+            keyPassword '123456'
+            storeFile file('debug.keystore')
+            storePassword '123456'
             v2SigningEnabled true
         }
     }

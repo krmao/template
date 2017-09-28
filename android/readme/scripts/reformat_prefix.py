@@ -8,20 +8,28 @@ import shutil
 # 批量处理文件名称前缀，代码也会相应修改
 # 只需要修改这里...                            ---- by michael.mao at 20170703
 # ======================================================================================================================
-OLD_FILE_PATH = "/Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/libraries/library-base"
-NEW_FILE_PATH = OLD_FILE_PATH + "-new"
-OLD_CODE_FILE_PREFIX = "CX"
-NEW_CODE_FILE_PREFIX = "FS"
+OLD_FILE_PATH = "/Users/maokangren/workspace/template/android"
+NEW_FILE_PATH = "/Users/maokangren/workspace/house-keeper/apps/app-house-keeper/android"
+# NEW_FILE_PATH = "/Users/maokangren/Desktop/android"
+OLD_CODE_FILE_PREFIX = "FS"
+NEW_CODE_FILE_PREFIX = "HK"
 OLD_RES_FILE_PREFIX = "fs"
-NEW_RES_FILE_PREFIX = "fs"
+NEW_RES_FILE_PREFIX = "hk"
 
 REPLACE_PACkAGE_NAMES = collections.OrderedDict((
-    # ("com.xixi.library.android.util", "com.xixi.library.android.util"),
+    ("com.xixi.library.android", "com.smart.library"),
+    ("com.xixi.fruitshop.android", "com.smart.app"),
+    ("com.xixi.fruitshop.android.library", "com.smart.app.library"),
+    ("com.xixi.fruitshop.android.module.home", "com.smart.app.module.home"),
+    ("com.xixi.fruitshop.android.module.hybird", "com.smart.app.module.hybird"),
+    ("com.xixi.fruitshop.android.module.mine", "com.smart.app.module.mine"),
+    ("com.xixi.fruitshop.android.module.setting", "com.smart.app.module.setting"),
+    ("com.xixi.fruitshop.android.module.test", "com.smart.app.module.test"),
 ))
 
 # ======================================================================================================================
 
-excludeFiles = ["build", ".DS_Store", ".gradle", ".idea"]  # 过滤掉的的文件,文件名完全等于
+excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop']  # 过滤掉的的文件,文件名完全等于
 excludeSuffixFiles = ["iml"]  # 过滤掉的的文件,文件名后缀等于
 nameList = []
 suffix_media = ["jpg", "png", "svg", "mp3", "mp4", "avi"]
@@ -43,14 +51,19 @@ replace_map = {
 def init_names(filepath):
     dir_list = os.listdir(filepath)
     for file_path in dir_list:
+        if file_path in excludeFiles:
+            print "exclude:", file_path
+            continue
+
         tmp_path = os.path.join(filepath, file_path)
         if os.path.isdir(tmp_path):
             init_names(tmp_path)
         else:
-            if "." in file_path:
-                nameList.append(file_path.split(".")[0])
-            else:
-                nameList.append(file_path)
+            if file_path.startswith(OLD_CODE_FILE_PREFIX) or file_path.startswith(OLD_RES_FILE_PREFIX):
+                if "." in file_path:
+                    nameList.append(file_path.split(".")[0])
+                else:
+                    nameList.append(file_path)
 
 
 def reformat_prefix(filepath):
@@ -61,8 +74,14 @@ def reformat_prefix(filepath):
             print "exclude:", file_path
             continue
 
+        # print "\npppppp:\tfilepath:", filepath
+        # print "pppppp:\tfile_path:", file_path
         tmp_path = os.path.join(filepath, file_path)
+
+        # print "pppppp:\t", tmp_path
+
         if os.path.isdir(tmp_path):
+            print "\npppppp:\ttmp_path:", tmp_path
             reformat_prefix(tmp_path)
         else:
             new_path = reformat_path(tmp_path)

@@ -1,4 +1,4 @@
-package com.xixi.fruitshop.android.module.hybird.core
+package com.xixi.library.android.util.hybird
 
 import android.webkit.WebView
 import com.google.common.base.Splitter
@@ -6,7 +6,7 @@ import com.xixi.library.android.util.FSLogUtil
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-object FSJSBridgeManager {
+object FSHybirdManager {
     private val callBackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
 
     fun callJsFunction(webView: WebView?, javascript: String, callback: ((result: String?) -> Unit?)? = null) {

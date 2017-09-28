@@ -58,9 +58,9 @@ object FSCacheManager {
         allModuleCacheMap.put(module, subModuleCacheMap)
     }
 
-    fun <T> get(module: String, key: String): T? {
+    fun <T> get(module: String, key: String, default: T? = null): T? {
         if (TextUtils.isEmpty(module) || TextUtils.isEmpty(key)) {
-            return null
+            return default
         }
         val subModuleCacheMap: ConcurrentHashMap<String, Any>? = allModuleCacheMap[module]
         if (subModuleCacheMap != null) {
@@ -71,7 +71,7 @@ object FSCacheManager {
                 e.printStackTrace()
             }
         }
-        return null
+        return default
     }
 
     fun remove(module: String) {

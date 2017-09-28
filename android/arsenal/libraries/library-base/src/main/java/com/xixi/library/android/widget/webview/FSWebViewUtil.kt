@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
-import android.util.Log
 import android.webkit.*
 import com.xixi.library.android.base.FSBaseApplication
 import com.xixi.library.android.base.FSConfig
 import com.xixi.library.android.util.FSLogUtil
+import com.xixi.library.android.util.hybird.FSHybirdManager
 
 
 @Suppress("unused")
@@ -112,6 +112,14 @@ object FSWebViewUtil {
 
         fun clearHistory() {
             clearHistory = true
+        }
+
+        @Suppress("OverridingDeprecatedMember", "DEPRECATION")
+        override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean {
+            FSLogUtil.w("HTML5", "shouldOverrideUrlLoading:" + _url)
+            if (FSHybirdManager.shouldOverrideUrlLoading(_url))
+                return true
+            return super.shouldOverrideUrlLoading(_view, _url)
         }
 
         override fun onPageFinished(webView: WebView?, url: String?) {

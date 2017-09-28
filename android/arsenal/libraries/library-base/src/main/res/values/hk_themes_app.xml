@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="HKAppTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/HKWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="HKAppTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/HKWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="HKAppTheme.NoActionBar.FullScreen" parent="@style/android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/HKWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="HKAppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="drawerArrowStyle">@style/HKWidget.App.DrawerArrowToggle</item>
+        <item name="android:windowAnimationStyle">@style/HKWidget.Animation.Activity.Left_Right
+        </item>
+    </style>
+
+    <style name="HKAppTheme.Translucent" parent="@style/HKAppTheme.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
+    </style>
+
+    <style name="HKAppTheme.Translucent.ActionBar" parent="@style/HKAppTheme.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="HKAppTheme.Translucent.FullScreen" parent="@style/HKAppTheme.NoActionBar.FullScreen">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

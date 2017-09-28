@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hk_titlebar">HKTitleBar</string>
+    <string name="hk_frameloading_networkerror">加载错误,点击空白重试</string>
+    <string name="hk_frameloading_empty">信息正在建设中…</string>
+    <string name="hk_frameloading_loadingnow">努力加载中…</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="HKWidget.Animation.Activity.None" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <style name="HKWidget.Animation.Activity.Left_Right" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/hk_slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/hk_slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hk_slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/hk_slide_out_right</item>
+        <item name="android:taskOpenEnterAnimation">@anim/hk_slide_in_right</item>
+        <item name="android:taskOpenExitAnimation">@anim/hk_slide_out_left</item>
+        <item name="android:taskCloseEnterAnimation">@anim/hk_slide_in_left</item>
+        <item name="android:taskCloseExitAnimation">@anim/hk_slide_out_right</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/hk_slide_in_right</item>
+        <item name="android:taskToFrontExitAnimation">@anim/hk_slide_out_left</item>
+        <item name="android:taskToBackEnterAnimation">@anim/hk_slide_in_left</item>
+        <item name="android:taskToBackExitAnimation">@anim/hk_slide_out_right</item>
+    </style>
+
+    <style name="HKWidget.Animation.FromBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/hk_translate_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/hk_translate_out_bottom</item>
+    </style>
+
+</resources>

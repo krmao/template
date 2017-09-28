@@ -1,0 +1,49 @@
+package com.smart.library.util.hybird
+
+import com.smart.library.base.HKActivityLifecycleCallbacks
+import com.smart.library.util.HKPreferencesUtil
+import com.smart.library.util.HKToastUtil
+import com.smart.library.util.cache.HKCacheManager
+import com.smart.library.util.network.HKNetworkUtil
+
+/**
+ * getAppInfo/getDeviceInfo 放到 userAgent
+ */
+class HKHybirdMethods {
+
+    fun showToast(message: String) {
+        HKToastUtil.show(message)
+    }
+
+    fun putToLocal(key: String, value: String) {
+        HKPreferencesUtil.putString(key, value)
+    }
+
+    fun getFromLocal(key: String, default: String? = null) {
+        HKPreferencesUtil.getString(key, default)
+    }
+
+    fun putToMemory(module: String, key: String, value: String) {
+        HKCacheManager.put(module, key, value)
+    }
+
+    fun getFromMemory(module: String, key: String, default: String? = null): String? {
+        return HKCacheManager.get(module, key, default)
+    }
+
+    fun removeFromMemory(module: String) {
+        HKCacheManager.remove(module)
+    }
+
+    fun removeFromMemory(module: String, key: String) {
+        HKCacheManager.remove(module, key)
+    }
+
+    fun isNetworkAvailable(): Boolean {
+        return HKNetworkUtil.isNetworkAvailable()
+    }
+
+    fun isApplicationVisible(): Boolean {
+        return HKActivityLifecycleCallbacks.isApplicationVisible
+    }
+}

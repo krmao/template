@@ -1,14 +1,14 @@
 //app
-include(":app-fruitshop"); project(":app-fruitshop").projectDir = new File(settingsDir, "arsenal/apps/app-fruitshop")
+include(":app-housekeeper"); project(":app-housekeeper").projectDir = new File(settingsDir, "arsenal/apps/app-housekeeper")
 
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "arsenal/libraries/library-base")
-include(":library-fruitshop-base"); project(":library-fruitshop-base").projectDir = new File(settingsDir, "arsenal/libraries/library-fruitshop-base")
+include(":library-housekeeper-base"); project(":library-housekeeper-base").projectDir = new File(settingsDir, "arsenal/libraries/library-housekeeper-base")
 
 //modules
-include(":module-fruitshop-home"); project(":module-fruitshop-home").projectDir = new File(settingsDir, "arsenal/modules/module-fruitshop-home")
-include(":module-fruitshop-mine"); project(":module-fruitshop-mine").projectDir = new File(settingsDir, "arsenal/modules/module-fruitshop-mine")
-include(":module-fruitshop-setting"); project(":module-fruitshop-setting").projectDir = new File(settingsDir, "arsenal/modules/module-fruitshop-setting")
-include(":module-fruitshop-hybird"); project(":module-fruitshop-hybird").projectDir = new File(settingsDir, "arsenal/modules/module-fruitshop-hybird")
+include(":module-housekeeper-home"); project(":module-housekeeper-home").projectDir = new File(settingsDir, "arsenal/modules/module-housekeeper-home")
+include(":module-housekeeper-mine"); project(":module-housekeeper-mine").projectDir = new File(settingsDir, "arsenal/modules/module-housekeeper-mine")
+include(":module-housekeeper-setting"); project(":module-housekeeper-setting").projectDir = new File(settingsDir, "arsenal/modules/module-housekeeper-setting")
+include(":module-housekeeper-hybird"); project(":module-housekeeper-hybird").projectDir = new File(settingsDir, "arsenal/modules/module-housekeeper-hybird")
 
 //thirdparty

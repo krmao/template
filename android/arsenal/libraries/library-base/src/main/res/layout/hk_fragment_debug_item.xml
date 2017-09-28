@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#CCFFFFFF"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="HardcodedText,SpUsage">
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:button="@drawable/hk_check_button"
+        android:gravity="center_vertical"
+        android:maxLength="4"
+        android:padding="5dp"
+        android:text="测试环境"
+        android:textColor="@color/hk_black"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/hk_selector"
+        android:padding="5dp"
+        android:text="http://www.baidu.com"
+        android:textColor="#909090"
+        android:textSize="14dp" />
+</LinearLayout>

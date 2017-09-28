@@ -10,7 +10,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
-    resourcePrefix "fs_"
+    resourcePrefix "hk_"
 }
 
 dependencies {
@@ -67,7 +67,7 @@ dependencies {
 }
 
 /*外部依赖方式
-compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
+compile("com.smart.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
     transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
     *//*contains:
       <p>
@@ -100,7 +100,7 @@ compile("com.xixi.android:library-base:$rootProject.ext.libraryBaseVersion@aar")
 
 apply plugin: 'maven'
 
-group = "com.xixi.android"
+group = "com.smart.android"
 def artifactID = "library-base"
 version = rootProject.ext.libraryBaseVersion
 

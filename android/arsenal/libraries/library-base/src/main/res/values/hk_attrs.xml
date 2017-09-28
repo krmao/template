@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HKFrameLoadingLayout">
+        <attr name="hkLoadingView" format="reference"/>
+        <attr name="hkFailureView" format="reference"/>
+        <attr name="hkEmptyView" format="reference"/>
+        <attr name="hkCenterInParent" format="reference|boolean"/>
+        <attr name="hkUseSmallStyle" format="reference|boolean"/>
+        <attr name="hkScaleFactor" format="float"/>
+        <attr name="hkAllBackground" format="reference|color"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="HKTitleBar">
+        <attr name="android:background"/>
+        <!--title-->
+        <attr name="hkTitleText" format="reference|string"/>
+        <attr name="hkTitleSize" format="reference|dimension"/>
+        <attr name="hkTitleTxtColor" format="reference|color"/>
+        <attr name="hkTitleAppearance" format="integer"/>
+        <!--left0-->
+        <attr name="hkLeft0BgViewBackground" format="reference|color"/>
+        <attr name="hkLeft0BgViewPadding" format="reference|dimension"/>
+        <attr name="hkLeft0Visible" format="enum">
+            <enum name="visible" value="0x00000000"/>
+            <enum name="invisible" value="0x00000004"/>
+            <enum name="gone" value="0x00000008"/>
+        </attr>
+        <attr name="hkLeft0Appearance" format="integer"/>
+        <attr name="hkLeft0Background" format="reference|color"/>
+        <attr name="hkLeft0Text" format="reference|string"/>
+        <attr name="hkLeft0TextSize" format="reference|dimension"/>
+        <attr name="hkLeft0TextColor" format="reference|color"/>
+        <attr name="hkLeft0BgWidth" format="reference|dimension"/>
+        <attr name="hkLeft0BgPaddingLeft" format="reference|dimension"/>
+        <attr name="hkLeft0BgPaddingRight" format="reference|dimension"/>
+        <attr name="hkLeft0BgPaddingTop" format="reference|dimension"/>
+        <attr name="hkLeft0BgPaddingBottom" format="reference|dimension"/>
+        <attr name="hkLeft0BgTextColor" format="reference|color"/>
+        <!--left1-->
+        <attr name="hkLeft1BgViewBackground" format="reference|color"/>
+        <attr name="hkLeft1BgViewPadding" format="reference|dimension"/>
+        <attr name="hkLeft1Visible" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="1"/>
+            <enum name="gone" value="2"/>
+        </attr>
+        <attr name="hkLeft1Appearance" format="integer"/>
+        <attr name="hkLeft1Background" format="reference|color"/>
+        <attr name="hkLeft1Text" format="reference|string"/>
+        <attr name="hkLeft1TextSize" format="reference|dimension"/>
+        <attr name="hkLeft1TextColor" format="reference|color"/>
+        <attr name="hkLeft1BgWidth" format="reference|dimension"/>
+        <attr name="hkLeft1BgPaddingLeft" format="reference|dimension"/>
+        <attr name="hkLeft1BgPaddingRight" format="reference|dimension"/>
+        <attr name="hkLeft1BgPaddingTop" format="reference|dimension"/>
+        <attr name="hkLeft1BgPaddingBottom" format="reference|dimension"/>
+        <attr name="hkLeft1BgTextColor" format="reference|color"/>
+        <!--right0-->
+        <attr name="hkRight0BgViewBackground" format="reference|color"/>
+        <attr name="hkRight0BgViewPadding" format="reference|dimension"/>
+        <attr name="hkRight0Visible" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="1"/>
+            <enum name="gone" value="2"/>
+        </attr>
+        <attr name="hkRight0Appearance" format="integer"/>
+        <attr name="hkRight0Background" format="reference|color"/>
+        <attr name="hkRight0Text" format="reference|string"/>
+        <attr name="hkRight0TextSize" format="reference|dimension"/>
+        <attr name="hkRight0TextColor" format="reference|color"/>
+        <attr name="hkRight0BgWidth" format="reference|dimension"/>
+        <attr name="hkRight0BgPaddingLeft" format="reference|dimension"/>
+        <attr name="hkRight0BgPaddingRight" format="reference|dimension"/>
+        <attr name="hkRight0BgPaddingTop" format="reference|dimension"/>
+        <attr name="hkRight0BgPaddingBottom" format="reference|dimension"/>
+        <attr name="hkRight0BgTextColor" format="reference|color"/>
+        <!--right1-->
+        <attr name="hkRight1BgViewBackground" format="reference|color"/>
+        <attr name="hkRight1BgViewPadding" format="reference|dimension"/>
+        <attr name="hkRight1Visible" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="1"/>
+            <enum name="gone" value="2"/>
+        </attr>
+        <attr name="hkRight1Appearance" format="integer"/>
+        <attr name="hkRight1Background" format="reference|color"/>
+        <attr name="hkRight1Text" format="reference|string"/>
+        <attr name="hkRight1TextSize" format="reference|dimension"/>
+        <attr name="hkRight1TextColor" format="reference|color"/>
+        <attr name="hkRight1BgWidth" format="reference|dimension"/>
+        <attr name="hkRight1BgPaddingLeft" format="reference|dimension"/>
+        <attr name="hkRight1BgPaddingRight" format="reference|dimension"/>
+        <attr name="hkRight1BgPaddingTop" format="reference|dimension"/>
+        <attr name="hkRight1BgPaddingBottom" format="reference|dimension"/>
+        <attr name="hkRight1BgTextColor" format="reference|color"/>
+        <attr name="hkProgressDrawable" format="reference"/>
+        <attr name="hkProgressVisible" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="1"/>
+            <enum name="gone" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

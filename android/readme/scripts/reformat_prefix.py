@@ -12,25 +12,18 @@ import shutil
 OLD_FILE_PATH = "E:\\template\\android"
 NEW_FILE_PATH = "E:\\house-keeper\\apps\\app-house-keeper\\android"
 
-OLD_CODE_FILE_PREFIX = "FS"
+OLD_CODE_FILE_PREFIX = "HK"
 NEW_CODE_FILE_PREFIX = "HK"
-OLD_RES_FILE_PREFIX = "fs"
+OLD_RES_FILE_PREFIX = "hk"
 NEW_RES_FILE_PREFIX = "hk"
 
 REPLACE_PACkAGE_NAMES = collections.OrderedDict((
-    ("com.xixi.library.android", "com.smart.library"),
-    ("com.xixi.fruitshop.android", "com.smart.app"),
-    ("com.xixi.fruitshop.android.library", "com.smart.app.library"),
-    ("com.xixi.fruitshop.android.module.home", "com.smart.app.module.home"),
-    ("com.xixi.fruitshop.android.module.hybird", "com.smart.app.module.hybird"),
-    ("com.xixi.fruitshop.android.module.mine", "com.smart.app.module.mine"),
-    ("com.xixi.fruitshop.android.module.setting", "com.smart.app.module.setting"),
-    ("com.xixi.fruitshop.android.module.test", "com.smart.app.module.test"),
+    ("com.smart.library", "com.smart.library"),
 ))
 
 # ======================================================================================================================
 
-excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop']  # 过滤掉的的文件,文件名完全等于
+excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop', 'local.properties']  # 过滤掉的的文件,文件名完全等于
 excludeSuffixFiles = ["iml"]  # 过滤掉的的文件,文件名后缀等于
 nameList = []
 suffix_media = ["jpg", "png", "svg", "mp3", "mp4", "avi"]
@@ -74,15 +67,8 @@ def reformat_prefix(filepath):
         if file_path in excludeFiles:
             print "exclude:", file_path
             continue
-
-        # print "\npppppp:\tfilepath:", filepath
-        # print "pppppp:\tfile_path:", file_path
         tmp_path = os.path.join(filepath, file_path)
-
-        # print "pppppp:\t", tmp_path
-
         if os.path.isdir(tmp_path):
-            print "\npppppp:\ttmp_path:", tmp_path
             reformat_prefix(tmp_path)
         else:
             new_path = reformat_path(tmp_path)
@@ -133,8 +119,10 @@ def reformat_path(newpath):
 
 
 def rename_file_to(suffix, _type, oldpath, newpath):
+    print '1-path:'+newpath
     for k, v in REPLACE_PACkAGE_NAMES.items():
-        newpath = newpath.replace(k.replace(".", "/"), v.replace(".", "/"))
+        newpath = newpath.replace(k.replace(".", os.path.sep), v.replace(".", os.path.sep))
+    print '2-path:'+newpath
     make_dirs(newpath)
     # os.rename(oldpath, newpath)
     shutil.copyfile(oldpath, newpath)
@@ -154,13 +142,12 @@ def make_dirs(newpath):
 
 def write_file(suffix, _type, oldpath, newpath, line_list):
     for k, v in REPLACE_PACkAGE_NAMES.items():
-        newpath = newpath.replace(k.replace(".", "/"), v.replace(".", "/"))
+        newpath = newpath.replace(k.replace(".", os.path.sep), v.replace(".", os.path.sep))
     make_dirs(newpath)
     fopen = open(newpath, 'w+')
     fopen.writelines(line_list)
     fopen.close()
     print "[write  to](suffix:" + suffix + ")(type:" + _type + "): ", oldpath, " -> ", newpath
-
 
 if __name__ == '__main__':
     print "reformat prefix start --->"
@@ -169,9 +156,10 @@ if __name__ == '__main__':
         print "生成新项目文件夹:", NEW_FILE_PATH
     else:
         print "开始删除旧产物:", NEW_FILE_PATH
-        shutil.rmtree(NEW_FILE_PATH)
+        shutil.rmtree(NEW_FILE_PATH, ignore_errors=True)
         print "删除旧产物成功"
-        os.makedirs(NEW_FILE_PATH)
+        if not os.path.exists(NEW_FILE_PATH):
+            os.makedirs(NEW_FILE_PATH)
         print "生成新项目文件夹:", NEW_FILE_PATH
 
     init_names(OLD_FILE_PATH)

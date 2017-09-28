@@ -1,4 +1,4 @@
-#!/usr/bin/python
+﻿#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import collections
 import os
@@ -8,9 +8,10 @@ import shutil
 # 批量处理文件名称前缀，代码也会相应修改
 # 只需要修改这里...                            ---- by michael.mao at 20170703
 # ======================================================================================================================
-OLD_FILE_PATH = "/Users/maokangren/workspace/template/android"
-NEW_FILE_PATH = "/Users/maokangren/workspace/house-keeper/apps/app-house-keeper/android"
-# NEW_FILE_PATH = "/Users/maokangren/Desktop/android"
+
+OLD_FILE_PATH = "E:\\template\\android"
+NEW_FILE_PATH = "E:\\house-keeper\\apps\\app-house-keeper\\android"
+
 OLD_CODE_FILE_PREFIX = "FS"
 NEW_CODE_FILE_PREFIX = "HK"
 OLD_RES_FILE_PREFIX = "fs"
@@ -142,7 +143,7 @@ def rename_file_to(suffix, _type, oldpath, newpath):
 
 def make_dirs(newpath):
     try:
-        dir_list = newpath.split("/")
+        dir_list = newpath.split(os.path.sep)
         if len(dir_list) > 0:
             dirpath = newpath.replace(dir_list[len(dir_list) - 1], "")
             if not os.path.exists(dirpath):

@@ -1,5 +1,6 @@
 package com.smart.library.util.hybird
 
+import android.net.Uri
 import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.util.HKPreferencesUtil
 import com.smart.library.util.HKToastUtil
@@ -41,9 +42,5 @@ class HKHybirdMethods {
 
     fun isNetworkAvailable(): Boolean {
         return HKNetworkUtil.isNetworkAvailable()
-    }
-
-    fun isApplicationVisible(): Boolean {
-        return HKActivityLifecycleCallbacks.isApplicationVisible
     }
 }

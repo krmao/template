@@ -95,9 +95,9 @@ object HKWebViewUtil {
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
             super.onConsoleMessage(consoleMessage)
             var console = "\n#" + consoleMessage?.lineNumber()
-            console += ":" + consoleMessage?.sourceId()
+            console += " : " + consoleMessage?.sourceId()
             console += "\nmessage: " + consoleMessage?.message()
-            HKLogUtil.d("HTML5", console)
+            HKLogUtil.w(HKHybirdManager.TAG, console)
             return false
         }
 
@@ -116,7 +116,7 @@ object HKWebViewUtil {
 
         @Suppress("OverridingDeprecatedMember", "DEPRECATION")
         override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean {
-            HKLogUtil.w("HTML5", "shouldOverrideUrlLoading:" + _url)
+            HKLogUtil.w(HKHybirdManager.TAG, "shouldOverrideUrlLoading:" + _url)
             if (HKHybirdManager.shouldOverrideUrlLoading(_url))
                 return true
             return super.shouldOverrideUrlLoading(_view, _url)
@@ -124,7 +124,7 @@ object HKWebViewUtil {
 
         override fun onPageFinished(webView: WebView?, url: String?) {
             if (clearHistory) {
-                HKLogUtil.w("HTML5", "clearHistory now")
+                HKLogUtil.w(HKHybirdManager.TAG, "clearHistory now")
                 clearHistory = false
                 webView?.clearHistory()
             }

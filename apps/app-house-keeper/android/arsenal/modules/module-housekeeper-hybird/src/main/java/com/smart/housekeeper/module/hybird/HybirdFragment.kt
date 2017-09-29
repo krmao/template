@@ -29,7 +29,6 @@ class HybirdFragment : HKBaseFragment() {
         val bundleZipInSdcardPath: String = bundleDirInSdcardPath + bundleUnZipDirName + ".zip"
         val indexPath = "file://$bundleDirInSdcardPath$bundleUnZipDirName/index.html"
 
-
         text.setOnClickListener {
             HKToastUtil.show("开始解压")
             Observable.fromCallable {

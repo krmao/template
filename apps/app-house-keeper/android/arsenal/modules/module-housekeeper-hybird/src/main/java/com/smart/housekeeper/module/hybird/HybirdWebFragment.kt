@@ -20,7 +20,7 @@ class HybirdWebFragment : HKWebFragmentV2() {
         }
 
         fun goTo(activity: Activity, url: String?, hideBackAtFirstPage: Boolean) {
-            val bundle: Bundle = Bundle()
+            val bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
             HKActivity.start(activity, HybirdWebFragment::class.java, bundle)
@@ -33,15 +33,21 @@ class HybirdWebFragment : HKWebFragmentV2() {
         titleBar.titleText.visibility = View.VISIBLE
         titleBar.titleText.text = "hybird test"
         titleBar.titleText.setOnClickListener {
+            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onBackPressed()") { result: String? ->
+                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+            }
+            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onPause()") { result: String? ->
+                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+            }
+            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onNetworkStateChanged()") { result: String? ->
+                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+            }
+            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onResume()") { result: String? ->
+                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+            }
             HKHybirdManager.callJsFunction(webView, "javascript:a()") { result: String? ->
-                HKLogUtil.e("HTML5", "a call back !!!result:" + result + '\n')
+                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
             }
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    override fun onStart() {
-        super.onStart()
-        WebView.setWebContentsDebuggingEnabled(true)
     }
 }

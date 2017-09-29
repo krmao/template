@@ -26,7 +26,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         }
 
         fun goTo(activity: Activity, url: String?, hideBackAtFirstPage: Boolean) {
-            val bundle: Bundle = Bundle()
+            val bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
             HKActivity.start(activity, HKWebFragmentV2::class.java, bundle)
@@ -51,21 +51,12 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         HKWebViewUtil.initWebView(web_view)
-        title_bar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
+        titleBar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
 
-        web_view.setWebViewClient(object : HKWebViewUtil.FSWebViewClient() {
+        webView.setWebViewClient(object : HKWebViewUtil.FSWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-            override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean {
-                HKLogUtil.d("HTML5", "shouldOverrideUrlLoading:" + _url)
-                if (_url != null && url != _url) {//首页
-                    if (!TextUtils.isEmpty(_url) && _url.startsWith("")) {
-                        HKWebFragment.goTo(activity, _url)
-                        return true
-                    }
-                }
-                return super.shouldOverrideUrlLoading(_view, _url)
-            }
+            override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean = super.shouldOverrideUrlLoading(_view, _url)
 
             override fun onPageStarted(_view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(_view, url, favicon)
@@ -87,7 +78,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
             }
         })
 
-        web_view.setWebChromeClient(object : HKWebViewUtil.FSWebChromeClient() {
+        webView.setWebChromeClient(object : HKWebViewUtil.FSWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
                 title_bar?.progressBar?.progress = newProgress
                 if (newProgress >= 100) {

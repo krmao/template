@@ -1,1 +1,0 @@
-### hybird framework template [ios]

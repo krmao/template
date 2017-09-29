@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
+import android.view.View
 import android.webkit.*
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKConfig
@@ -46,13 +47,13 @@ object HKWebViewUtil {
             webView.settings.loadWithOverviewMode = false
             webView.settings.javaScriptCanOpenWindowsAutomatically = true
             webView.settings.javaScriptEnabled = true
+            //webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
             webView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             webView.settings.defaultFontSize = 16//当手机字体很小的时候，部分H5页面显示不正常
             webView.settings.defaultFixedFontSize = 16
 
             webView.settings.setSupportZoom(false)
-            webView.settings.setSupportMultipleWindows(false)
             webView.settings.setSupportMultipleWindows(true)
             webView.settings.setGeolocationEnabled(true)
             webView.settings.setAppCacheEnabled(true)

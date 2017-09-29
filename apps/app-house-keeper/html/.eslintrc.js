@@ -17,9 +17,9 @@ module.exports = {
     ],
     // add your custom rules here
     'rules': {
-        "space-before-function-paren": [
-            0//0 = off, 1 = warn, 2 = error
-        ],
+        "semi": 0,//分号
+        "spaced-comment": 0,//注释之前的空格
+        "space-before-function-paren": 0,
         "indent": ["off", 4],
         // allow paren-less arrow functions
         'arrow-parens': 0,
@@ -28,4 +28,4 @@ module.exports = {
         // allow debugger during development
         'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
     }
-}
+};

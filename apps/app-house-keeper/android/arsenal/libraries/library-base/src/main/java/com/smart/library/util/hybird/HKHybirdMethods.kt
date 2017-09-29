@@ -1,7 +1,5 @@
 package com.smart.library.util.hybird
 
-import android.net.Uri
-import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.util.HKPreferencesUtil
 import com.smart.library.util.HKToastUtil
 import com.smart.library.util.cache.HKCacheManager
@@ -28,9 +26,7 @@ class HKHybirdMethods {
         HKCacheManager.put(module, key, value)
     }
 
-    fun getFromMemory(module: String, key: String, default: String? = null): String? {
-        return HKCacheManager.get(module, key, default)
-    }
+    fun getFromMemory(module: String, key: String, default: String? = null): String? = HKCacheManager.get(module, key, default)
 
     fun removeFromMemory(module: String) {
         HKCacheManager.remove(module)
@@ -40,7 +36,5 @@ class HKHybirdMethods {
         HKCacheManager.remove(module, key)
     }
 
-    fun isNetworkAvailable(): Boolean {
-        return HKNetworkUtil.isNetworkAvailable()
-    }
+    fun isNetworkAvailable(): Boolean = HKNetworkUtil.isNetworkAvailable()
 }

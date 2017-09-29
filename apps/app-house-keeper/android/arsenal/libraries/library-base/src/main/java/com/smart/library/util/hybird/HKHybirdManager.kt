@@ -2,11 +2,9 @@ package com.smart.library.util.hybird
 
 import android.net.Uri
 import android.webkit.WebView
-import com.google.common.base.Splitter
 import com.smart.library.util.HKLogUtil
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-import javax.xml.validation.Schema
 
 @Suppress("MemberVisibilityCanPrivate")
 object HKHybirdManager {
@@ -71,13 +69,12 @@ object HKHybirdManager {
             val hashCode = uri?.getQueryParameter("hashcode")
             callbackMap[hashCode]?.invoke(uri?.getQueryParameter("result"))
             callbackMap.remove(hashCode)
+            HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[after]:" + callbackMap.size)
             true
         }
     }
 
     fun callJsFunction(webView: WebView?, javascript: String, callback: ((result: String?) -> Unit?)? = null) {
-        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[0]:" + callbackMap.size + "\t" + callbackMap)
-
         if (!schemaMap.containsKey(callbackSchemaPrefix))
             addSchemeForCallback()
 
@@ -86,19 +83,7 @@ object HKHybirdManager {
         if (callback != null)
             callbackMap.put(callbackHashCode, callback)
 
-        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[1]:" + callbackMap.size + "\t" + callbackMap)
-
-
-        val sss="""
-
-            var c = document.createElement("div")
-			c.innerHTML = '<iframe style="display: none;" src="' + url + '"/>'
-			document.querySelector("body").appendChild(c)
-			setTimeout(function() {
-				document.querySelector("body").removeChild(c)
-			}, 3000)
-
-        """
+        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[before]:" + callbackMap.size)
 
         val wrappedJavascript = """
                 (function (){

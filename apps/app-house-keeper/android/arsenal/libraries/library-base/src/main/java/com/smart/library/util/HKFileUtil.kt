@@ -42,29 +42,23 @@ object HKFileUtil {
         }
     }
 
+    @Throws(FileNotFoundException::class, IOException::class)
     fun copy(inputStream: InputStream?, destFile: File?) {
-        copy(inputStream, destFile?.path)
-    }
-
-    fun copy(inputStream: InputStream?, toFilePath: String?) {
         var outputStream: OutputStream? = null
         try {
-            outputStream = FileOutputStream(toFilePath)
+            if (destFile != null && !destFile.exists())
+                destFile.createNewFile()
+            outputStream = FileOutputStream(destFile)
             copy(inputStream, outputStream)
-        } catch (e: Exception) {
-            e.printStackTrace()
         } finally {
-            try {
-                inputStream?.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            try {
-                outputStream?.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            inputStream?.close()
+            outputStream?.close()
         }
+    }
+
+    @Throws(FileNotFoundException::class, IOException::class)
+    fun copy(inputStream: InputStream?, toFilePath: String?) {
+        copy(inputStream, File(toFilePath))
     }
 
     @Throws(IOException::class)
@@ -85,11 +79,20 @@ object HKFileUtil {
                     for (childFile in childFiles)
                         deleteDirectory(childFile)
                 }
-                file.delete()
+                deleteFile(file)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun deleteFile(filePath: String?) {
+        if (!TextUtils.isEmpty(filePath))
+            deleteFile(File(filePath))
+    }
+
+    fun deleteFile(file: File?) {
+        file?.delete()
     }
 
     //返回文件夹的大小(bytes)

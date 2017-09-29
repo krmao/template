@@ -95,7 +95,7 @@ var webpackConfig = merge(baseWebpackConfig, {
             }
         ]),
         new CopyToNativePlugin({
-            rootFolder: 'html',
+            rootFolder: '',
             input: config.build.assetsRoot,
             output: [
                 path.resolve(config.build.assetsRoot, '../../android/arsenal/modules/module-housekeeper-hybird/src/main/assets/bundle.zip')

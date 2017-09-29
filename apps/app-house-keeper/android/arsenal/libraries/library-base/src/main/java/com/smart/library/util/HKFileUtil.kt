@@ -2,14 +2,15 @@ package com.smart.library.util
 
 import android.graphics.Bitmap
 import android.text.TextUtils
+import com.google.common.io.ByteStreams
 import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKFileUtil {
 
-    val ENCODING_UTF8 = "UTF-8"
+    private val ENCODING_UTF8 = "UTF-8"
 
     fun fileChannelCopy(sourceFile: File, destFile: File) {
         var fileInputStream: FileInputStream? = null
@@ -41,6 +42,36 @@ object HKFileUtil {
         }
     }
 
+    fun copy(inputStream: InputStream?, destFile: File?) {
+        copy(inputStream, destFile?.path)
+    }
+
+    fun copy(inputStream: InputStream?, toFilePath: String?) {
+        var outputStream: OutputStream? = null
+        try {
+            outputStream = FileOutputStream(toFilePath)
+            copy(inputStream, outputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            try {
+                inputStream?.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            try {
+                outputStream?.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    fun copy(inputStream: InputStream?, outputStream: OutputStream?) {
+        ByteStreams.copy(inputStream, outputStream)
+    }
+
     fun deleteDirectory(filePath: String?) {
         if (!TextUtils.isEmpty(filePath))
             deleteDirectory(File(filePath))
@@ -66,10 +97,7 @@ object HKFileUtil {
         var result: Long = 0
         if (dir.exists()) {
             for (tmpFile in dir.listFiles()) {
-                if (tmpFile.isDirectory)
-                    result += getDirSize(tmpFile)
-                else
-                    result += tmpFile.length()
+                result += if (tmpFile.isDirectory) getDirSize(tmpFile) else tmpFile.length()
             }
         }
         return result
@@ -127,9 +155,7 @@ object HKFileUtil {
         return isWriteSuccess
     }
 
-    fun writeTextToFile(content: String, file: File): Boolean {
-        return writeTextToFile(content, null, file)
-    }
+    fun writeTextToFile(content: String, file: File): Boolean = writeTextToFile(content, null, file)
 
     fun writeTextToFile(content: String, throwable: Throwable?, file: File): Boolean {
         var isAppendSuccess = false

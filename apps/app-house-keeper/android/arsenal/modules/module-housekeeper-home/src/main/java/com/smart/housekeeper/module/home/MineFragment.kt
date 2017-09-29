@@ -1,5 +1,6 @@
 package com.smart.housekeeper.module.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +14,11 @@ import com.smart.library.util.HKRouteManager
 
 class MineFragment : HKBaseFragment() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
         textView.text = "mine"
+        @Suppress("DEPRECATION")
         textView.setBackgroundColor(resources.getColor(R.color.hk_pink))
         textView.setOnClickListener {
             HKRouteManager.goToFragment(activity, "com.smart.housekeeper.module.mine.MineFragment") {

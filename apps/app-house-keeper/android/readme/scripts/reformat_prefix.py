@@ -6,7 +6,7 @@ import shutil
 
 # ======================================================================================================================
 # 批量处理文件名称前缀，代码也会相应修改
-# 只需要修改这里...                            ---- by michael.mao at 20170703
+# 只需要修改这里...                            ---- by krmao at 20170703
 # ======================================================================================================================
 
 OLD_FILE_PATH = "E:\\template\\android"
@@ -17,13 +17,15 @@ NEW_CODE_FILE_PREFIX = "HK"
 OLD_RES_FILE_PREFIX = "hk"
 NEW_RES_FILE_PREFIX = "hk"
 
+# noinspection PyArgumentList
 REPLACE_PACkAGE_NAMES = collections.OrderedDict((
     ("com.smart.library", "com.smart.library"),
+    ("SmartApp", "SmartApp"),
 ))
 
 # ======================================================================================================================
 
-excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop', 'local.properties']  # 过滤掉的的文件,文件名完全等于
+excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop']  # 过滤掉的的文件,文件名完全等于 //, 'local.properties'
 excludeSuffixFiles = ["iml"]  # 过滤掉的的文件,文件名后缀等于
 nameList = []
 suffix_media = ["jpg", "png", "svg", "mp3", "mp4", "avi"]
@@ -119,10 +121,10 @@ def reformat_path(newpath):
 
 
 def rename_file_to(suffix, _type, oldpath, newpath):
-    print '1-path:'+newpath
+    print '1-path:' + newpath
     for k, v in REPLACE_PACkAGE_NAMES.items():
         newpath = newpath.replace(k.replace(".", os.path.sep), v.replace(".", os.path.sep))
-    print '2-path:'+newpath
+    print '2-path:' + newpath
     make_dirs(newpath)
     # os.rename(oldpath, newpath)
     shutil.copyfile(oldpath, newpath)
@@ -148,6 +150,7 @@ def write_file(suffix, _type, oldpath, newpath, line_list):
     fopen.writelines(line_list)
     fopen.close()
     print "[write  to](suffix:" + suffix + ")(type:" + _type + "): ", oldpath, " -> ", newpath
+
 
 if __name__ == '__main__':
     print "reformat prefix start --->"

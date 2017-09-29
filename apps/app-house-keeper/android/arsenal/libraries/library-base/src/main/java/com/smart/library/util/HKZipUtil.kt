@@ -6,13 +6,7 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-/**
- * <pre>
- * author : maokangren
- * e-mail : maokangren@chexiang.com
- * desc   :
- * </pre> *
- */
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKZipUtil {
     private val BUFFER = 2048
 

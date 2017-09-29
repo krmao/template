@@ -1,5 +1,6 @@
 package com.smart.housekeeper.module.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +14,11 @@ import com.smart.library.util.HKRouteManager
 
 class SettingFragment : HKBaseFragment() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
         textView.text = "setting"
+        @Suppress("DEPRECATION")
         textView.setTextColor(resources.getColor(R.color.hk_orange))
         textView.setBackgroundColor(Color.DKGRAY)
         textView.setOnClickListener {

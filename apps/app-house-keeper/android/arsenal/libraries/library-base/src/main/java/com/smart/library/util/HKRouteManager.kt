@@ -120,11 +120,11 @@ object HKRouteManager {
                     HKToastUtil.show("检测到远程组件:$location")
 
                     val remoteBundleFile = File(activity.externalCacheDir, "lib" + location.replace(".", "_") + ".so")
-                    var path = ""
                     if (remoteBundleFile.exists()) {
-                        path = remoteBundleFile.absolutePath
+                        val path = remoteBundleFile.absolutePath
                         val info = activity.packageManager.getPackageArchiveInfo(path, 0)
                         try {
+                            @Suppress("DEPRECATION")
                             Atlas.getInstance().installBundle(info.packageName, File(path))
                             HKLogUtil.e("远程组件安装成功:$location")
 

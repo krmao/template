@@ -1,9 +1,12 @@
 package com.smart.housekeeper.module.hybird
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.webkit.WebView
 import com.smart.library.base.HKActivity
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdManager
@@ -34,5 +37,11 @@ class HybirdWebFragment : HKWebFragmentV2() {
                 HKLogUtil.e("HTML5", "a call back !!!result:" + result + '\n')
             }
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    override fun onStart() {
+        super.onStart()
+        WebView.setWebContentsDebuggingEnabled(true)
     }
 }

@@ -27,7 +27,7 @@ class HybirdFragment : HKBaseFragment() {
         val bundleUnZipDirName = "hybird"
         val bundleDirInSdcardPath: String = HKCacheManager.getCacheDir().path + "/"
         val bundleZipInSdcardPath: String = bundleDirInSdcardPath + bundleUnZipDirName + ".zip"
-        val indexPath = bundleDirInSdcardPath + bundleUnZipDirName + "/index.html"
+        val indexPath = "file://$bundleDirInSdcardPath$bundleUnZipDirName/index.html"
 
 
         text.setOnClickListener {

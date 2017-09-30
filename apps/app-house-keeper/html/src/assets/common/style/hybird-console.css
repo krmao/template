@@ -16,7 +16,7 @@
     left: 0;
     z-index: 998;
     width: 100%;
-    padding: 10px 10px 10px 20px;
+    padding: 1px;
     max-height: 38.2%; /*黄金分割率*/
     overflow-x: scroll;
     overflow-y: scroll;

@@ -1,6 +1,10 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <transition name="slide-left">
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
+        </transition>
     </div>
 </template>
 
@@ -11,6 +15,10 @@
 </script>
 
 <style>
+    body {
+        background: lavenderblush;
+    }
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;

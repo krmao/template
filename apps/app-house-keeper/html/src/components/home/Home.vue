@@ -1,5 +1,6 @@
 <template>
-    <div class="home">
+    <div class="home" @click="onClick()">
+        <label>【click事件跳转】：B->A</label>
         <img id="img" src="./image/share.png"/>
     </div>
 </template>
@@ -7,65 +8,70 @@
 <script>
     export default {
         name: 'hello',
+        methods: {
+            onClick: function () {
+                window.location.href = "#/"
+            }
+        },
         data() {
             return {
-                msg: 'page:home',
-                message: '[page:home]'
+                msg: 'B页面',
+                message: '[B页面]'
             }
         },
         beforeCreate: function () {
-            console.log('beforeCreate 创建前状态===============》')
-            console.log('el     : ' + this.$el) //undefined
-            console.log('data   : ' + this.$data) //undefined
-            console.log('message: ' + this.message)
+            console.log('[B页面]beforeCreate 创建前状态===============》')
+            console.log('[B页面]el     : ' + this.$el) //undefined
+            console.log('[B页面]data   : ' + this.$data) //undefined
+            console.log('[B页面]message: ' + this.message)
         },
         created: function () {
-            console.log('created 创建完毕状态===============》')
-            console.log('el     : ' + this.$el) //undefined
-            console.log('data   : ' + this.$data) //已被初始化
-            console.log('message: ' + this.message) //已被初始化
+            console.log('[B页面]created 创建完毕状态===============》')
+            console.log('[B页面]el     : ' + this.$el) //undefined
+            console.log('[B页面]data   : ' + this.$data) //已被初始化
+            console.log('[B页面]message: ' + this.message) //已被初始化
         },
         beforeMount: function () {
-            console.log('beforeMount 挂载前状态===============》')
-            console.log('el     : ' + (this.$el)) //已被初始化
+            console.log('[B页面]beforeMount 挂载前状态===============》')
+            console.log('[B页面]el     : ' + (this.$el)) //已被初始化
             console.log(this.$el)
-            console.log('data   : ' + this.$data) //已被初始化
-            console.log('message: ' + this.message) //已被初始化
+            console.log('[B页面]data   : ' + this.$data) //已被初始化
+            console.log('[B页面]message: ' + this.message) //已被初始化
         },
         mounted: function () {
-            console.log('mounted 挂载结束状态===============》')
-            console.log('el     : ' + this.$el) //已被初始化
+            console.log('[B页面]mounted 挂载结束状态===============》')
+            console.log('[B页面]el     : ' + this.$el) //已被初始化
             console.log(this.$el)
-            console.log('data   : ' + this.$data) //已被初始化
-            console.log('message: ' + this.message) //已被初始化
+            console.log('[B页面]data   : ' + this.$data) //已被初始化
+            console.log('[B页面]message: ' + this.message) //已被初始化
         },
         beforeUpdate: function () {
-            console.log('beforeUpdate 更新前状态===============》')
-            console.log('el     : ' + this.$el)
+            console.log('[B页面]beforeUpdate 更新前状态===============》')
+            console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
-            console.log('data   : ' + this.$data)
-            console.log('message: ' + this.message)
+            console.log('[B页面]data   : ' + this.$data)
+            console.log('[B页面]message: ' + this.message)
         },
         updated: function () {
-            console.log('updated 更新完成状态===============》')
-            console.log('el     : ' + this.$el)
+            console.log('[B页面]updated 更新完成状态===============》')
+            console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
-            console.log('data   : ' + this.$data)
-            console.log('message: ' + this.message)
+            console.log('[B页面]data   : ' + this.$data)
+            console.log('[B页面]message: ' + this.message)
         },
         beforeDestroy: function () {
-            console.log('beforeDestroy 销毁前状态===============》')
-            console.log('el     : ' + this.$el)
+            console.log('[B页面]beforeDestroy 销毁前状态===============》')
+            console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
-            console.log('data   : ' + this.$data)
-            console.log('message: ' + this.message)
+            console.log('[B页面]data   : ' + this.$data)
+            console.log('[B页面]message: ' + this.message)
         },
         destroyed: function () {
-            console.log('destroyed 销毁完成状态===============》')
-            console.log('el     : ' + this.$el)
+            console.log('[B页面]destroyed 销毁完成状态===============》')
+            console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
-            console.log('data   : ' + this.$data)
-            console.log('message: ' + this.message)
+            console.log('[B页面]data   : ' + this.$data)
+            console.log('[B页面]message: ' + this.message)
         }
     }
 </script>

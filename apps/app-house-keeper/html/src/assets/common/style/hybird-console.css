@@ -26,7 +26,7 @@
 }
 
 .mobile-console__log {
-    color: mediumslateblue;
+    color: darkgray;
 }
 
 .mobile-console__props {
@@ -53,13 +53,14 @@
 
 /*undefined*/
 .mobile-console__node.null {
+    margin-left: 8px;
     color: red;
 }
 
 .mobile-console__log:before {
     display: inline-block;
     position: relative;
-    margin: 2px 4px 0 -12px;
+    margin: 2px 4px 0 9px;
     border: solid transparent;
     float: left;
 }
@@ -67,7 +68,7 @@
 .mobile-console__log.inspect:before {
     content: '';
     border-width: 4px 0 4px 8px;
-    border-left-color: darkorange;
+    border-left-color: darkgray;
 }
 
 .mobile-console__log.opened:before {

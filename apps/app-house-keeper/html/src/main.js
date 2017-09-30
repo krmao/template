@@ -11,7 +11,9 @@ window.hybird = hybird()
 
 Vue.config.productionTip = false
 
-let page = '[VUE]'
+var fixedWidthString = require('fixed-width-string');
+
+let page = '[VUE]';
 
 /* eslint-disable no-new */
 new Vue({
@@ -21,48 +23,32 @@ new Vue({
     components: {App},
     data() {
         return {
-            msg: page,
+            msg: 'VUE',
         }
     },
     beforeCreate: function () {
-        console.log(page + 'beforeCreate -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'beforeCreate <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     created: function () {
-        console.log(page + 'created -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'created <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('created', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     beforeMount: function () {
-        console.log(page + 'beforeMount -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'beforeMount <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('beforeMount', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     mounted: function () {
-        console.log(page + 'mounted -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'mounted <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('mounted', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     beforeUpdate: function () {
-        console.log(page + 'beforeUpdate -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'beforeUpdate <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('beforeUpdate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     updated: function () {
-        console.log(page + 'updated -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'updated <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('updated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     beforeDestroy: function () {
-        console.log(page + 'beforeDestroy -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'beforeDestroy <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('beforeDestroy', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     },
     destroyed: function () {
-        console.log(page + 'destroyed -------------------->>>>>>>>>>')
-        console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
-        console.log(page + 'destroyed <<<<<<<<<<--------------------')
+        console.log(page + '(' + fixedWidthString('destroyed', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:undefined?' + (this.msg === undefined))
     }
 })
 

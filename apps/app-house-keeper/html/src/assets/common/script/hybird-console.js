@@ -1,10 +1,15 @@
 import '../style/hybird-console.css'
+import '../style/dialog.css'
 
 (function () {
+    var menu;
     var element;
 
     function createElement(cls, content, name) {
         var elem = document.createElement(name || 'div');
+        if (name === 'img') {
+            elem.src = content
+        }
         if (content) {
             elem.innerHTML = content;
         }
@@ -66,26 +71,19 @@ import '../style/hybird-console.css'
                 node.innerHTML = text.split(/(\{)/).slice(0, 2).join('');
             }
         } else {
-
             node.innerHTML = obj.constructor.name || obj.constructor.toString().replace(/\[|\]|object\s/g, '');
             content.classList.add('inspect');
             if (Array.isArray(obj)) {
                 node.innerHTML = '[' + obj.length + ']';
             }
-
             props = createElement('props');
-
             top.addEventListener('click', function () {
-                var keys = [],
-                    basicKeys, elem, key;
-
+                var keys = [], elem, key;
                 if (content.classList.contains('inspect')) {
                     if (!elemsCreated) {
-
                         for (key in obj) {
                             keys.push(key);
                         }
-
                         Object.getOwnPropertyNames(obj)
                             .concat(keys)
                             .filter(function (key, index, arr) {
@@ -96,7 +94,6 @@ import '../style/hybird-console.css'
                             .forEach(function (key) {
                                 var enumerable = Object.getOwnPropertyDescriptor(obj, key);
                                 enumerable = enumerable ? enumerable.enumerable : false;
-
                                 elem = inspect(obj[key], key, enumerable);
                                 props.appendChild(elem);
                             });
@@ -111,27 +108,47 @@ import '../style/hybird-console.css'
                     props.classList.remove('visible');
                 }
             }, false);
-
             content.appendChild(props);
         }
-
         return content;
     }
 
     function createConsoleBlock() {
         if (!element) {
             element = createElement('holder');
+            element.classList.add("dialog-wrapper")
             document.body.appendChild(element);
         }
     }
 
-    // if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
-    window.addEventListener('load', function () {
+    function createConsoleMenu() {
+        if (!menu) {
+            menu = createElement('menu', require('../image/hybird-console-menu.svg'), 'img');
+            document.body.appendChild(menu);
+            menu.onclick = function () {
+                // element.hidden = !element.hidden
+                toggleDialog(!isShow)
+            }
+        }
+    }
+
+    var isShow = true;
+
+    function toggleDialog(show) {
+        isShow = show
+        var animation = function () {
+            element.classList.remove(show ? "slipBottom" : "slipUp")
+            element.classList.add(show ? "slipUp" : "slipBottom")
+        };
+        setTimeout(animation, 100);
+    }
+
+    if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
         console.error = console.log = function (message) {
+            createConsoleMenu();
             createConsoleBlock();
             element.appendChild(inspect(message));
             scrollToBottom();
         };
-    }, false);
-    // }
+    }
 })()

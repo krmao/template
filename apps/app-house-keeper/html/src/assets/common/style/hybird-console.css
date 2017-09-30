@@ -1,0 +1,81 @@
+.mobile-console__holder {
+    background-color: #eee;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    padding: 10px;
+    padding-left: 20px;
+    max-height: 200px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    font-family: monospace;
+    font-size: 12px;
+    overflow-x: hidden;
+}
+
+.mobile-console__log {
+    color: black;
+}
+
+.mobile-console__props {
+    padding-left: 15px;
+    display: none;
+    clear: both;
+}
+
+.mobile-console__props.visible {
+    display: block;
+}
+
+.mobile-console__node {
+    position: relative;
+}
+
+.mobile-console__node.number {
+    color: #2d46d6;
+}
+
+.mobile-console__node.string {
+    color: #c83631;
+}
+
+.mobile-console__node.null {
+    color: #838080;
+}
+
+.mobile-console__log:before {
+    border-style: solid;
+    display: inline-block;
+    position: relative;
+    margin: 2px 4px 0 -12px;
+    border-color: transparent;
+    float: left;
+}
+
+.mobile-console__log.inspect:before {
+    content: '';
+    border-width: 4px 0 4px 8px;
+    border-left-color: #838383;
+}
+
+.mobile-console__log.opened:before {
+    content: '';
+    border-width: 8px 4px 0 4px;
+    border-top-color: #838383;
+}
+
+.mobile-console__top {
+    white-space: nowrap;
+}
+
+.mobile-console__enumerable-key {
+    margin-right: 10px;
+    color: #881391;
+}
+
+.mobile-console__not-enumerable-key {
+    color: #b771bd;
+    margin-right: 10px;
+}

@@ -12,7 +12,7 @@ import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdManager
 
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKWebViewUtil {
     fun getCompleteHttpUrl(url: String): String {
         var completeUrl = url
@@ -95,10 +95,10 @@ object HKWebViewUtil {
     open class FSWebChromeClient : WebChromeClient() {
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
             super.onConsoleMessage(consoleMessage)
-            var console = "\n#" + consoleMessage?.lineNumber()
-            console += " : " + consoleMessage?.sourceId()
-            console += "\nmessage: " + consoleMessage?.message()
-            HKLogUtil.w(HKHybirdManager.TAG, console)
+            /*var console = "\n#" + consoleMessage?.lineNumber()
+            console += ":" + consoleMessage?.sourceId()
+            console += "\n" + consoleMessage?.message()
+            HKLogUtil.w(HKHybirdManager.TAG, console)*/
             return false
         }
 

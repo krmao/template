@@ -12,6 +12,12 @@ var CopyToNativePlugin = require('./copyToNative')
 
 var env = config.build.env
 
+// 接收运行参数
+const argv = require('yargs').argv;
+console.log("env:", env)
+console.log("argv:", argv)
+console.log("argv.debug:", argv.debug)
+
 var webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({

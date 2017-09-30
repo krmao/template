@@ -6,11 +6,11 @@ import com.smart.library.util.HKLogUtil
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-@Suppress("MemberVisibilityCanPrivate")
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
 
-    val TAG = "[hybird]"
-    private val schemaMap: ConcurrentMap<String, (uri: Uri?) -> Boolean> = ConcurrentHashMap()
+    val TAG = "template-hybird"
+    private val schemeMap: ConcurrentMap<String, (uri: Uri?) -> Boolean> = ConcurrentHashMap()
 
 
     /**
@@ -22,8 +22,8 @@ object HKHybirdManager {
      *  path    :   index.html
      */
     fun addScheme(scheme: String, host: String, port: Int, intercept: (uri: Uri?) -> Boolean) {
-        val _schemaPrefix = "$scheme://$host:$port"
-        schemaMap.put(_schemaPrefix, intercept)
+        val schemePrefix = "$scheme://$host:$port"
+        schemeMap.put(schemePrefix, intercept)
     }
 
     /**
@@ -35,27 +35,27 @@ object HKHybirdManager {
      *  path    :   index.html
      */
     fun addScheme(schemeUriString: String, intercept: (uri: Uri?) -> Boolean) {
-        schemaMap.put(schemeUriString, intercept)
+        schemeMap.put(schemeUriString, intercept)
     }
 
     fun removeScheme(schemeUriString: String) {
-        schemaMap.remove(schemeUriString)
+        schemeMap.remove(schemeUriString)
     }
 
     fun removeScheme(scheme: String, host: String, port: Int) {
-        val _schemaPrefix = "$scheme://$host:$port"
-        schemaMap.remove(_schemaPrefix)
+        val schemePrefix = "$scheme://$host:$port"
+        schemeMap.remove(schemePrefix)
     }
 
     fun shouldOverrideUrlLoading(uriString: String?): Boolean {
         val uri = Uri.parse(uriString)
-        val _schemaPrefix = "${uri?.scheme}://${uri?.host}:${uri?.port}"
+        val schemePrefix = "${uri?.scheme}://${uri?.host}:${uri?.port}"
 
         HKLogUtil.d(TAG, "get uri : $uri")
-        HKLogUtil.d(TAG, "get schemePrefix : $_schemaPrefix")
-        HKLogUtil.d(TAG, "do intercept ? ${schemaMap.containsKey(_schemaPrefix)}")
+        HKLogUtil.d(TAG, "get schemePrefix : $schemePrefix")
+        HKLogUtil.d(TAG, "do intercept ? ${schemeMap.containsKey(schemePrefix)}")
 
-        return schemaMap[_schemaPrefix]?.invoke(uri) ?: false
+        return schemeMap[schemePrefix]?.invoke(uri) ?: false
     }
 
     //========================================================================================================================
@@ -69,13 +69,13 @@ object HKHybirdManager {
             val hashCode = uri?.getQueryParameter("hashcode")
             callbackMap[hashCode]?.invoke(uri?.getQueryParameter("result"))
             callbackMap.remove(hashCode)
-            HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[after]:" + callbackMap.size)
+            HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
             true
         }
     }
 
     fun callJsFunction(webView: WebView?, javascript: String, callback: ((result: String?) -> Unit?)? = null) {
-        if (!schemaMap.containsKey(callbackSchemaPrefix))
+        if (!schemeMap.containsKey(callbackSchemaPrefix))
             addSchemeForCallback()
 
         val jsString = javascript.replace("javascript:", "")
@@ -83,7 +83,7 @@ object HKHybirdManager {
         if (callback != null)
             callbackMap.put(callbackHashCode, callback)
 
-        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap[before]:" + callbackMap.size)
+        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[before callback]:" + callbackMap.size)
 
         val wrappedJavascript = """
                 (function (){

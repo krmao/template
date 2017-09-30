@@ -5,10 +5,6 @@
 </template>
 
 <script>
-    import hybird from './assets/common/script/hybird'
-
-    window.hybird = hybird()
-
     export default {
         name: 'app'
     }

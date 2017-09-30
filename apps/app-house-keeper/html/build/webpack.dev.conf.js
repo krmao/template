@@ -6,6 +6,14 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
+var env = config.build.env
+
+// 接收运行参数
+const argv = require('yargs').argv;
+console.log("env:", env)
+console.log("argv:", argv)
+console.log("argv.debug:", argv.debug)
+
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
     baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])

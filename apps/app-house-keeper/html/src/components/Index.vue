@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <router-link to="/home">【a标签跳转】A->B</router-link>
+        <router-link to="/B">【a标签跳转】A->B</router-link>
         <div @click="onClick()">【click事件跳转】A->B</div>
     </div>
 </template>
@@ -9,16 +9,15 @@
     let page = '[组件A]'
 
     export default {
-        name: 'hello',
+        name: page,
         methods: {
             onClick: function () {
-                window.location.href = "#/home"
+                window.location.href = "#/B"
             }
         },
         data() {
             return {
                 msg: page,
-                message: 'page'
             }
         },
         beforeCreate: function () {
@@ -47,25 +46,19 @@
             console.log(page + 'beforeUpdate <<<<<<<<<<--------------------')
         },
         updated: function () {
-            console.log(page + 'updated 更新完成状态---------->>>>>>>>>>')
-            console.log(page + 'el     : ' + this.$el)
-            console.log(this.$el)
-            console.log(page + 'data   : ' + this.$data)
-            console.log(page + 'message: ' + this.message)
+            console.log(page + 'updated -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'updated <<<<<<<<<<--------------------')
         },
         beforeDestroy: function () {
-            console.log(page + 'beforeDestroy 销毁前状态---------->>>>>>>>>>')
-            console.log(page + 'el     : ' + this.$el)
-            console.log(this.$el)
-            console.log(page + 'data   : ' + this.$data)
-            console.log(page + 'message: ' + this.message)
+            console.log(page + 'beforeDestroy -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'beforeDestroy <<<<<<<<<<--------------------')
         },
         destroyed: function () {
-            console.log(page + 'destroyed 销毁完成状态---------->>>>>>>>>>')
-            console.log(page + 'el     : ' + this.$el)
-            console.log(this.$el)
-            console.log(page + 'data   : ' + this.$data)
-            console.log(page + 'message: ' + this.message)
+            console.log(page + 'destroyed -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'destroyed <<<<<<<<<<--------------------')
         }
     }
 </script>

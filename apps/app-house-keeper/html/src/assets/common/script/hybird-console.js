@@ -31,6 +31,23 @@ import '../style/dialog.css'
             .replace(/\//g, '&#x2F;');
     }
 
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        return date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds() + " " + date.getMilliseconds();
+    }
+
     function inspect(obj, key, enumerable) {
         var content = createElement('log'),
             top = createElement('top'),
@@ -147,6 +164,7 @@ import '../style/dialog.css'
         console.error = console.log = function (message) {
             createConsoleMenu();
             createConsoleBlock();
+            message += " [" + getNowFormatDate() + "]"
             element.appendChild(inspect(message));
             scrollToBottom();
         };

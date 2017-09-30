@@ -10,7 +10,7 @@
         name: 'hello',
         methods: {
             onClick: function () {
-                window.location.href = "#/"
+                window.location.href = "https://c.chexiang.com/promotion/201709xinche.htm?channel=cx_zc_201709_cxyx_h5"
             }
         },
         data() {
@@ -20,54 +20,54 @@
             }
         },
         beforeCreate: function () {
-            console.log('[B页面]beforeCreate 创建前状态===============》')
+            console.log('[B页面]beforeCreate 创建前状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el) //undefined
             console.log('[B页面]data   : ' + this.$data) //undefined
             console.log('[B页面]message: ' + this.message)
         },
         created: function () {
-            console.log('[B页面]created 创建完毕状态===============》')
+            console.log('[B页面]created 创建完毕状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el) //undefined
             console.log('[B页面]data   : ' + this.$data) //已被初始化
             console.log('[B页面]message: ' + this.message) //已被初始化
         },
         beforeMount: function () {
-            console.log('[B页面]beforeMount 挂载前状态===============》')
+            console.log('[B页面]beforeMount 挂载前状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + (this.$el)) //已被初始化
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data) //已被初始化
             console.log('[B页面]message: ' + this.message) //已被初始化
         },
         mounted: function () {
-            console.log('[B页面]mounted 挂载结束状态===============》')
+            console.log('[B页面]mounted 挂载结束状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el) //已被初始化
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data) //已被初始化
             console.log('[B页面]message: ' + this.message) //已被初始化
         },
         beforeUpdate: function () {
-            console.log('[B页面]beforeUpdate 更新前状态===============》')
+            console.log('[B页面]beforeUpdate 更新前状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data)
             console.log('[B页面]message: ' + this.message)
         },
         updated: function () {
-            console.log('[B页面]updated 更新完成状态===============》')
+            console.log('[B页面]updated 更新完成状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data)
             console.log('[B页面]message: ' + this.message)
         },
         beforeDestroy: function () {
-            console.log('[B页面]beforeDestroy 销毁前状态===============》')
+            console.log('[B页面]beforeDestroy 销毁前状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data)
             console.log('[B页面]message: ' + this.message)
         },
         destroyed: function () {
-            console.log('[B页面]destroyed 销毁完成状态===============》')
+            console.log('[B页面]destroyed 销毁完成状态---------->>>>>>>>>>')
             console.log('[B页面]el     : ' + this.$el)
             console.log(this.$el)
             console.log('[B页面]data   : ' + this.$data)

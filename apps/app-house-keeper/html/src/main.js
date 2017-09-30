@@ -21,54 +21,54 @@ new Vue({
         message: '[VUE]'
     },
     beforeCreate: function () {
-        console.log('[VUE]beforeCreate 创建前状态===============》')
+        console.log('[VUE]beforeCreate 创建前状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el) //undefined
         console.log('[VUE]data   : ' + this.$data) //undefined
         console.log('[VUE]message: ' + this.message)
     },
     created: function () {
-        console.log('[VUE]created 创建完毕状态===============》')
+        console.log('[VUE]created 创建完毕状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el) //undefined
         console.log('[VUE]data   : ' + this.$data) //已被初始化
         console.log('[VUE]message: ' + this.message) //已被初始化
     },
     beforeMount: function () {
-        console.log('[VUE]beforeMount 挂载前状态===============》')
+        console.log('[VUE]beforeMount 挂载前状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + (this.$el)) //已被初始化
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data) //已被初始化
         console.log('[VUE]message: ' + this.message) //已被初始化
     },
     mounted: function () {
-        console.log('[VUE]mounted 挂载结束状态===============》')
+        console.log('[VUE]mounted 挂载结束状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el) //已被初始化
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data) //已被初始化
         console.log('[VUE]message: ' + this.message) //已被初始化
     },
     beforeUpdate: function () {
-        console.log('[VUE]beforeUpdate 更新前状态===============》')
+        console.log('[VUE]beforeUpdate 更新前状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el)
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data)
         console.log('[VUE]message: ' + this.message)
     },
     updated: function () {
-        console.log('[VUE]updated 更新完成状态===============》')
+        console.log('[VUE]updated 更新完成状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el)
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data)
         console.log('[VUE]message: ' + this.message)
     },
     beforeDestroy: function () {
-        console.log('[VUE]beforeDestroy 销毁前状态===============》')
+        console.log('[VUE]beforeDestroy 销毁前状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el)
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data)
         console.log('[VUE]message: ' + this.message)
     },
     destroyed: function () {
-        console.log('[VUE]destroyed 销毁完成状态===============》')
+        console.log('[VUE]destroyed 销毁完成状态---------->>>>>>>>>>')
         console.log('[VUE]el     : ' + this.$el)
         console.log(this.$el)
         console.log('[VUE]data   : ' + this.$data)

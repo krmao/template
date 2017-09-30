@@ -6,7 +6,7 @@
 </template>
 
 <script>
-
+    let page = '[组件A]'
 
     export default {
         name: 'hello',
@@ -17,63 +17,55 @@
         },
         data() {
             return {
-                msg: 'A页面',
-                message: '[A页面]'
+                msg: page,
+                message: 'page'
             }
         },
         beforeCreate: function () {
-            console.log('[A页面]beforeCreate 创建前状态===============》')
-            console.log('[A页面]el     : ' + this.$el) //undefined
-            console.log('[A页面]data   : ' + this.$data) //undefined
-            console.log('[A页面]message: ' + this.message)
+            console.log(page + 'beforeCreate -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'beforeCreate <<<<<<<<<<--------------------')
         },
         created: function () {
-            console.log('[A页面]created 创建完毕状态===============》')
-            console.log('[A页面]el     : ' + this.$el) //undefined
-            console.log('[A页面]data   : ' + this.$data) //已被初始化
-            console.log('[A页面]message: ' + this.message) //已被初始化
+            console.log(page + 'created -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'created <<<<<<<<<<--------------------')
         },
         beforeMount: function () {
-            console.log('[A页面]beforeMount 挂载前状态===============》')
-            console.log('[A页面]el     : ' + (this.$el)) //已被初始化
-            console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data) //已被初始化
-            console.log('[A页面]message: ' + this.message) //已被初始化
+            console.log(page + 'beforeMount -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'beforeMount <<<<<<<<<<--------------------')
         },
         mounted: function () {
-            console.log('[A页面]mounted 挂载结束状态===============》')
-            console.log('[A页面]el     : ' + this.$el) //已被初始化
-            console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data) //已被初始化
-            console.log('[A页面]message: ' + this.message) //已被初始化
+            console.log(page + 'mounted -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'mounted <<<<<<<<<<--------------------')
         },
         beforeUpdate: function () {
-            console.log('[A页面]beforeUpdate 更新前状态===============》')
-            console.log('[A页面]el     : ' + this.$el)
-            console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data)
-            console.log('[A页面]message: ' + this.message)
+            console.log(page + 'beforeUpdate -------------------->>>>>>>>>>')
+            console.log(page + 'el:' + this.$el + '  |  data:' + this.$data + '  |  msg:' + this.msg)
+            console.log(page + 'beforeUpdate <<<<<<<<<<--------------------')
         },
         updated: function () {
-            console.log('[A页面]updated 更新完成状态===============》')
-            console.log('[A页面]el     : ' + this.$el)
+            console.log(page + 'updated 更新完成状态---------->>>>>>>>>>')
+            console.log(page + 'el     : ' + this.$el)
             console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data)
-            console.log('[A页面]message: ' + this.message)
+            console.log(page + 'data   : ' + this.$data)
+            console.log(page + 'message: ' + this.message)
         },
         beforeDestroy: function () {
-            console.log('[A页面]beforeDestroy 销毁前状态===============》')
-            console.log('[A页面]el     : ' + this.$el)
+            console.log(page + 'beforeDestroy 销毁前状态---------->>>>>>>>>>')
+            console.log(page + 'el     : ' + this.$el)
             console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data)
-            console.log('[A页面]message: ' + this.message)
+            console.log(page + 'data   : ' + this.$data)
+            console.log(page + 'message: ' + this.message)
         },
         destroyed: function () {
-            console.log('[A页面]destroyed 销毁完成状态===============》')
-            console.log('[A页面]el     : ' + this.$el)
+            console.log(page + 'destroyed 销毁完成状态---------->>>>>>>>>>')
+            console.log(page + 'el     : ' + this.$el)
             console.log(this.$el)
-            console.log('[A页面]data   : ' + this.$data)
-            console.log('[A页面]message: ' + this.message)
+            console.log(page + 'data   : ' + this.$data)
+            console.log(page + 'message: ' + this.message)
         }
     }
 </script>

@@ -11,7 +11,7 @@
     var fixedWidthString = require('fixed-width-string');
     var page = fixedWidthString('[组件B', 11, {padding: '.', align: 'right'}) + ']';
 
-    export default {
+    let b = {
         name: page,
         methods: {
             onClick: function () {
@@ -29,6 +29,18 @@
             }
         },
         beforeCreate: function () {
+//            this.destroyed()
+            console.log(1)
+            console.log("string")
+            console.log(undefined)
+            console.log(null)
+            console.log(function () {
+                let b = "aa"
+            })
+            console.log("this" + this)
+            console.log("this", this)
+            console.log(this)
+            console.log(window)
             window.hybird = {}
             window.hybird.onPause = function () {
                 console.error(page + " 监听到 onPause 被触发 , 设置 background:green")
@@ -70,6 +82,9 @@
             console.log(page + '(' + fixedWidthString('destroyed', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
         }
     }
+
+
+    export default b
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

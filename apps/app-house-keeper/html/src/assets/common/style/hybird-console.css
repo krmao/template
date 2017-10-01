@@ -9,6 +9,17 @@
     margin-bottom: 1rem;
 }
 
+.mobile-console__menu_clear {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+
 .mobile-console__holder {
     background-color: #000000;
     position: fixed;
@@ -16,7 +27,9 @@
     left: 0;
     z-index: 998;
     width: 100%;
-    padding: 1px;
+    padding-left: 1px;
+    padding-top: 1px;
+    padding-bottom: 54px;
     max-height: 38.2%; /*黄金分割率*/
     overflow-x: scroll;
     overflow-y: scroll;

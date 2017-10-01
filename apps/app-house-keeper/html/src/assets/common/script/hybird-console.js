@@ -3,10 +3,12 @@ import '../style/dialog.css'
 
 (function () {
     var menu;
+    var menu_clear;
     var element;
 
     function createElement(cls, content, name) {
         var elem = document.createElement(name || 'div');
+        elem.id = name
         if (name === 'img') {
             elem.src = content
         }
@@ -33,27 +35,57 @@ import '../style/dialog.css'
 
     function getNowFormatDate() {
         var date = new Date();
-        var seperator1 = "";
-        var seperator2 = "";
+        var seperator1 = "/";
+        var seperator2 = ":";
         var month = date.getMonth() + 1;
         var strDate = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        var milliseconds = date.getMilliseconds();
+        if (hours >= 1 && hours <= 9) {
+            hours = "0" + hours;
+        }
         if (month >= 1 && month <= 9) {
             month = "0" + month;
         }
         if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
         }
-        return date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + "" + date.getHours() + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds() + " " + date.getMilliseconds();
+        if (minutes >= 0 && minutes <= 9) {
+            minutes = "0" + minutes;
+        }
+        if (seconds >= 0 && seconds <= 9) {
+            seconds = "0" + seconds;
+        }
+        if (milliseconds >= 0 && milliseconds <= 9) {
+            milliseconds = "00" + milliseconds;
+        } else if (milliseconds >= 10 && milliseconds <= 99) {
+            milliseconds = "0" + milliseconds;
+        }
+        /*let dateStr = date.getFullYear() + seperator1
+            + month + seperator1 + strDate + " "
+            + hours + seperator2
+            + minutes + seperator2
+            + seconds + " "
+            + milliseconds;*/
+        // noinspection UnnecessaryLocalVariableJS
+        let dateStr = hours + seperator2
+            + minutes + seperator2
+            + seconds + " "
+            + milliseconds;
+        return dateStr;
     }
 
     function inspect(obj, key, enumerable) {
-        var content = createElement('log'),
-            top = createElement('top'),
-            node = createElement('node', '', 'span'),
-            elemsCreated = false,
-            keyNode, text, props;
+        var content = createElement('log');
+        var content_top = createElement('top');
+        var node = createElement('node', '', 'span');
+
+        var elemsCreated = false;
+        var keyNode;
+        var text;
+        var props;
 
         if (arguments.length === 2) {
             enumerable = true;
@@ -61,11 +93,12 @@ import '../style/dialog.css'
 
         if (key) {
             keyNode = createElement(enumerable ? 'enumerable-key' : 'not-enumerable-key', key + ':', 'span');
-            top.appendChild(keyNode);
+            content_top.appendChild(keyNode);
         }
 
-        content.appendChild(top);
-        top.appendChild(node);
+        content.appendChild(content_top);
+        content_top.appendChild(node);
+
         if (typeof obj === 'number') {
             node.innerHTML = obj;
             node.classList.add('number');
@@ -94,7 +127,7 @@ import '../style/dialog.css'
                 node.innerHTML = '[' + obj.length + ']';
             }
             props = createElement('props');
-            top.addEventListener('click', function () {
+            content_top.addEventListener('click', function () {
                 var keys = [], elem, key;
                 if (content.classList.contains('inspect')) {
                     if (!elemsCreated) {
@@ -130,9 +163,11 @@ import '../style/dialog.css'
         return content;
     }
 
-    function createConsoleBlock() {
+    function createConsoleBlock(force) {
+        if (force)
+            element = undefined;
         if (!element) {
-            element = createElement('holder');
+            element = createElement('holder', undefined, "console");
             element.classList.add("dialog-wrapper")
             document.body.appendChild(element);
         }
@@ -140,22 +175,37 @@ import '../style/dialog.css'
 
     function createConsoleMenu() {
         if (!menu) {
-            menu = createElement('menu', require('../image/hybird-console-menu.svg'), 'img');
+            menu = createElement('menu', require('../image/hybird-console-menu-toggleon.svg'), 'img');
             document.body.appendChild(menu);
             menu.onclick = function () {
-                // element.hidden = !element.hidden
                 toggleDialog(!isShow)
             }
+            menu.style.opacity = 0.4;
+        }
+    }
+
+    function createConsoleClear() {
+        if (!menu_clear) {
+            menu_clear = createElement('menu_clear', require('../image/hybird-console-menu-clear.svg'), 'img');
+            document.body.appendChild(menu_clear);
+            menu_clear.onclick = function () {
+                document.body.removeChild(element)
+                createConsoleBlock(true);
+            }
+            menu_clear.style.opacity = 0.4;
         }
     }
 
     var isShow = true;
 
     function toggleDialog(show) {
-        isShow = show
+        isShow = show;
+        menu_clear.hidden = !isShow
         var animation = function () {
-            element.classList.remove(show ? "slipBottom" : "slipUp")
-            element.classList.add(show ? "slipUp" : "slipBottom")
+            element.classList.remove(show ? "slipBottom" : "slipUp");
+            element.classList.add(show ? "slipUp" : "slipBottom");
+            menu_clear.style.display = show ? "" : "none";
+            menu.src = show ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg')
         };
         setTimeout(animation, 100);
     }
@@ -163,8 +213,9 @@ import '../style/dialog.css'
     if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
         console.error = console.log = function (message) {
             createConsoleMenu();
+            createConsoleClear();
             createConsoleBlock();
-            message += " [" + getNowFormatDate() + "]"
+            message = "[" + getNowFormatDate() + "] " + message
             element.appendChild(inspect(message));
             scrollToBottom();
         };

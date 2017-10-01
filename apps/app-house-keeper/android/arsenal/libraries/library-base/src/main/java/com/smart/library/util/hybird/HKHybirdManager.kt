@@ -1,5 +1,6 @@
 package com.smart.library.util.hybird
 
+import android.content.Context
 import android.net.Uri
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentMap
 object HKHybirdManager {
 
     val TAG = "template-hybird"
-    private val schemeMap: ConcurrentMap<String, (uri: Uri?) -> Boolean> = ConcurrentHashMap()
+    private val schemeMap: ConcurrentHashMap<String, (context: Context, uri: Uri?) -> Boolean> = ConcurrentHashMap()
 
 
     /**
@@ -21,7 +22,7 @@ object HKHybirdManager {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(scheme: String, host: String, port: Int, intercept: (uri: Uri?) -> Boolean) {
+    fun addScheme(scheme: String, host: String, port: Int, intercept: (context: Context, uri: Uri?) -> Boolean) {
         val schemePrefix = "$scheme://$host:$port"
         schemeMap.put(schemePrefix, intercept)
     }
@@ -34,7 +35,7 @@ object HKHybirdManager {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUriString: String, intercept: (uri: Uri?) -> Boolean) {
+    fun addScheme(schemeUriString: String, intercept: (context: Context, uri: Uri?) -> Boolean) {
         schemeMap.put(schemeUriString, intercept)
     }
 
@@ -47,7 +48,7 @@ object HKHybirdManager {
         schemeMap.remove(schemePrefix)
     }
 
-    fun shouldOverrideUrlLoading(uriString: String?): Boolean {
+    fun shouldOverrideUrlLoading(context: Context, uriString: String?): Boolean {
         val uri = Uri.parse(uriString)
         val schemePrefix = "${uri?.scheme}://${uri?.host}:${uri?.port}"
 
@@ -55,7 +56,7 @@ object HKHybirdManager {
         HKLogUtil.d(TAG, "get schemePrefix : $schemePrefix")
         HKLogUtil.d(TAG, "do intercept ? ${schemeMap.containsKey(schemePrefix)}")
 
-        return schemeMap[schemePrefix]?.invoke(uri) ?: false
+        return schemeMap[schemePrefix]?.invoke(context, uri) ?: false
     }
 
     //========================================================================================================================
@@ -65,7 +66,7 @@ object HKHybirdManager {
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
     fun addSchemeForCallback() {
-        addScheme(callbackSchemaPrefix) { uri: Uri? ->
+        addScheme(callbackSchemaPrefix) { _: Context, uri: Uri? ->
             val hashCode = uri?.getQueryParameter("hashcode")
             callbackMap[hashCode]?.invoke(uri?.getQueryParameter("result"))
             callbackMap.remove(hashCode)
@@ -87,20 +88,21 @@ object HKHybirdManager {
 
         val wrappedJavascript = """
                 (function (){
-                    console.log("\n[wrap] -----------------------------------------------------------------\n[wrap] before :\n");
+                    console.log(" [wrap(________)] 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　");
+                    console.log(" [wrap(start___)] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
                     var result = '';
 
                     try {
                         result=$jsString;
-                        console.log("\n[wrap] after : result= "+result+"\n[wrap] -----------------------------------------------------------------\n");
+                        console.log(" [wrap(execute_)] result= "+result);
                     } catch(error) {
                         result = 'error';
-                        console.log("\n[wrap] error : result= "+result+" error= "+error+"\n[wrap] -----------------------------------------------------------------\n");
+                        console.log(" [wrap(execute_)] result= "+result+" error= "+error);
                     }
 
                     var jumpUrl = "$callbackSchemaPrefix/callback?hashcode=$callbackHashCode&result="+result;
-                    console.log("\n[wrap] jumpUrl=" + jumpUrl + "\n[wrap] -----------------------------------------------------------------\n");
+                    console.log("\n[wrap(callback)] jumpUrl=" + jumpUrl);
 
                     (function (_jumpUrl) {
                         var c = document.createElement("div");
@@ -108,11 +110,10 @@ object HKHybirdManager {
                         document.querySelector("body").appendChild(c);
                         setTimeout(function () {
                             document.querySelector("body").removeChild(c);
-                        }, 3000);
+                        }, 1000);
                     })(jumpUrl);
 
-                    console.log("\n[wrap] end\n[wrap] -----------------------------------------------------------------\n")
-
+                    console.log(" [wrap(end_____)] <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n");
                 })();
             """.trimIndent()
 

@@ -3,11 +3,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-
-import hybird from './assets/common/script/hybird'
+// import hybird from './assets/common/script/hybird'
 import './assets/common/script/hybird-console'
 
-window.hybird = hybird()
+// window.hybird = hybird()
 
 Vue.config.productionTip = false
 
@@ -27,6 +26,15 @@ new Vue({
         }
     },
     beforeCreate: function () {
+        window.hybird = {}
+        window.hybird.onPause = function () {
+            console.error(page + " 监听到 onPause 被触发 , 设置 background:red")
+            document.querySelector('body').setAttribute('style', 'background:red')
+        };
+        window.hybird.onResume = function () {
+            console.error(page + " 监听到 onResume 被触发 , 设置 background:gray")
+            document.querySelector('body').setAttribute('style', 'background:gray')
+        };
         console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
     },
     created: function () {

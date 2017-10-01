@@ -3,6 +3,7 @@ package com.smart.housekeeper.module.hybird
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -15,11 +16,11 @@ import com.smart.library.widget.webview.HKWebFragmentV2
 
 class HybirdWebFragment : HKWebFragmentV2() {
     companion object {
-        fun goTo(activity: Activity, url: String?) {
+        fun goTo(activity: Context, url: String?) {
             goTo(activity, url, false)
         }
 
-        fun goTo(activity: Activity, url: String?, hideBackAtFirstPage: Boolean) {
+        fun goTo(activity: Context, url: String?, hideBackAtFirstPage: Boolean) {
             val bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
@@ -48,6 +49,20 @@ class HybirdWebFragment : HKWebFragmentV2() {
             HKHybirdManager.callJsFunction(webView, "javascript:a()") { result: String? ->
                 HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        HKHybirdManager.callJsFunction(webView, "javascript:window.hybird.onResume()") { result: String? ->
+            HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        HKHybirdManager.callJsFunction(webView, "javascript:window.hybird.onPause()") { result: String? ->
+            HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
         }
     }
 }

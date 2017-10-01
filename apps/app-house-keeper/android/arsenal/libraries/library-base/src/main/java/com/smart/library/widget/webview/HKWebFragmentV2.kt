@@ -56,7 +56,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         webView.setWebViewClient(object : HKWebViewUtil.FSWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-            override fun shouldOverrideUrlLoading(_view: WebView?, _url: String?): Boolean = super.shouldOverrideUrlLoading(_view, _url)
+            override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean = super.shouldOverrideUrlLoading(_view, _url)
 
             override fun onPageStarted(_view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(_view, url, favicon)

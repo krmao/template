@@ -15,6 +15,9 @@
         methods: {
             onClick: function () {
                 window.location.href = "#/B"
+            },
+            onGoBack: function () {
+                console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
             }
         },
         data() {

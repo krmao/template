@@ -35,6 +35,9 @@
                     console.error("scheme:url===" + url)
                     window.location.href = "hybird://hybird:7777/path/url=" + url
                 }, 1000)
+            },
+            onGoBack: function () {
+                console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
             }
         },
         data() {
@@ -101,7 +104,7 @@
     /* 鼠标经过悬停字体颜色 */
 
     .b_container {
-        height: px2rem(750);
+        height: px2rem(2750);
         width: px2rem(750);
         font-size: px2rem(40);
         padding-top: px2rem(60);

@@ -26,15 +26,6 @@ let vue = new Vue({
         }
     },
     beforeCreate: function () {
-        // window.hybird = {}
-        // window.hybird.onPause = function () {
-        //     console.error(page + " 监听到 onPause 被触发 , 设置 background:red")
-        //     document.querySelector('body').setAttribute('style', 'background:red')
-        // };
-        // window.hybird.onResume = function () {
-        //     console.error(page + " 监听到 onResume 被触发 , 设置 background:gray")
-        //     document.querySelector('body').setAttribute('style', 'background:gray')
-        // };
         console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
     },
     created: function () {
@@ -68,6 +59,9 @@ let vue = new Vue({
     }
 })
 
+window.hybird.onGoBack = function () {
+    console.log(vue.$route.matched[0].components.default.methods.onGoBack())
+}
 window.hybird.onResume = function () {
     console.log(vue.$route.matched[0].components.default.activated())
 }

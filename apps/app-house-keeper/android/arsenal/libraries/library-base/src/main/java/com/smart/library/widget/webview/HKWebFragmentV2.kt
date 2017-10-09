@@ -13,6 +13,8 @@ import android.webkit.WebView
 import com.smart.library.R
 import com.smart.library.base.HKActivity
 import com.smart.library.base.HKBaseFragment
+import com.smart.library.util.HKLogUtil
+import com.smart.library.util.hybird.HKHybirdManager
 import com.smart.library.widget.titlebar.HKTitleBar
 import kotlinx.android.synthetic.main.hk_fragment_webview_v2.*
 
@@ -55,18 +57,21 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
             override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean {
+                HKLogUtil.e("krmao", "shouldOverrideUrlLoading:" + _url)
                 titleBar.right0Btn.text = ""
                 return super.shouldOverrideUrlLoading(_view, _url)
             }
 
             override fun onPageStarted(_view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(_view, url, favicon)
+                HKLogUtil.e("krmao", "onPageStarted:" + url)
                 title_bar?.progressBar?.progress = 0
                 title_bar?.progressBar?.visibility = View.VISIBLE
             }
 
             override fun onPageFinished(webView: WebView?, url: String?) {
                 super.onPageFinished(webView, url)
+                HKLogUtil.e("krmao", "onPageFinished:" + url)
                 title_bar?.progressBar?.progress = 100
                 title_bar?.progressBar?.visibility = View.GONE
 
@@ -75,6 +80,10 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
                         title_bar?.left0BgView?.visibility = View.VISIBLE
                     else
                         title_bar?.left0BgView?.visibility = GONE
+                }
+
+                HKHybirdManager.callJsFunction(webView, "javascript:hybird.onGoBack()") { result: String? ->
+                    HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
                 }
             }
         })
@@ -93,6 +102,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
             override fun onReceivedTitle(_view: WebView?, title: String?) {
                 super.onReceivedTitle(_view, title)
+                HKLogUtil.e("krmao", "onReceivedTitle:" + title)
                 title_bar?.titleText?.maxEms = 8
                 title_bar?.titleText?.text = title
             }

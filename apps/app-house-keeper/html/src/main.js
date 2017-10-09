@@ -3,19 +3,19 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// import hybird from './assets/common/script/hybird'
+import hybird from './assets/common/script/hybird'
 import './assets/common/script/hybird-console'
 
-// window.hybird = hybird()
+window.hybird = hybird()
 
 Vue.config.productionTip = false
 
-var fixedWidthString = require('fixed-width-string');
+import fixedWidthString from 'fixed-width-string';
 
 let page = '[VUE]';
 
 /* eslint-disable no-new */
-new Vue({
+let vue = new Vue({
     el: '#app',
     router,
     template: '<App/>',
@@ -26,15 +26,15 @@ new Vue({
         }
     },
     beforeCreate: function () {
-        window.hybird = {}
-        window.hybird.onPause = function () {
-            console.error(page + " 监听到 onPause 被触发 , 设置 background:red")
-            document.querySelector('body').setAttribute('style', 'background:red')
-        };
-        window.hybird.onResume = function () {
-            console.error(page + " 监听到 onResume 被触发 , 设置 background:gray")
-            document.querySelector('body').setAttribute('style', 'background:gray')
-        };
+        // window.hybird = {}
+        // window.hybird.onPause = function () {
+        //     console.error(page + " 监听到 onPause 被触发 , 设置 background:red")
+        //     document.querySelector('body').setAttribute('style', 'background:red')
+        // };
+        // window.hybird.onResume = function () {
+        //     console.error(page + " 监听到 onResume 被触发 , 设置 background:gray")
+        //     document.querySelector('body').setAttribute('style', 'background:gray')
+        // };
         console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
     },
     created: function () {
@@ -68,3 +68,9 @@ new Vue({
     }
 })
 
+window.hybird.onResume = function () {
+    console.log(vue.$route.matched[0].components.default.activated())
+}
+window.hybird.onPause = function () {
+    console.log(vue.$route.matched[0].components.default.deactivated())
+}

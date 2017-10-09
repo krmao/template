@@ -8,12 +8,26 @@
 </template>
 
 <script>
-    var fixedWidthString = require('fixed-width-string');
-    var page = fixedWidthString('[组件B', 11, {padding: '.', align: 'right'}) + ']';
+    import fixedWidthString from 'fixed-width-string';
 
-    let b = {
+    let page = fixedWidthString('[组件B', 11, {padding: '.', align: 'right'}) + ']';
+
+    export default {
         name: page,
         methods: {
+            testConsole: function () {
+                console.log(1)
+                console.log("string")
+                console.log(undefined)
+                console.log(null)
+                console.log(function () {
+                    let b = "aa"
+                })
+                console.log("this" + this)
+                console.log("this", this)
+                console.log(this)
+                console.log(window)
+            },
             onClick: function () {
                 document.querySelector('body').setAttribute('style', 'background:white')
                 setTimeout(function () {
@@ -29,30 +43,10 @@
             }
         },
         beforeCreate: function () {
-//            this.destroyed()
-            console.log(1)
-            console.log("string")
-            console.log(undefined)
-            console.log(null)
-            console.log(function () {
-                let b = "aa"
-            })
-            console.log("this" + this)
-            console.log("this", this)
-            console.log(this)
-            console.log(window)
-            window.hybird = {}
-            window.hybird.onPause = function () {
-                console.error(page + " 监听到 onPause 被触发 , 设置 background:green")
-                document.querySelector('body').setAttribute('style', 'background:green')
-            };
-            window.hybird.onResume = function () {
-                console.error(page + " 监听到 onResume 被触发 , 设置 background:yellow")
-                document.querySelector('body').setAttribute('style', 'background:yellow')
-            };
             console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
         },
         created: function () {
+            //this.testConsole()
             console.log(page + '(' + fixedWidthString('created', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
         },
         beforeMount: function () {
@@ -74,6 +68,7 @@
         },
         deactivated: function () {
             console.log(page + '(' + fixedWidthString('deactivated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
+            document.querySelector('body').setAttribute('style', 'background:orange')
         },
         beforeDestroy: function () {
             console.log(page + '(' + fixedWidthString('beforeDestroy', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
@@ -82,9 +77,6 @@
             console.log(page + '(' + fixedWidthString('destroyed', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
         }
     }
-
-
-    export default b
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

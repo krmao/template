@@ -211,13 +211,13 @@ import '../style/dialog.css'
     }
 
     if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
-        console.error = console.log = function (message) {
-            createConsoleMenu();
-            createConsoleClear();
-            createConsoleBlock();
-            message = "[" + getNowFormatDate() + "] " + message
-            element.appendChild(inspect(message));
-            scrollToBottom();
-        };
+        // console.error = console.log = function (message) {
+        //     createConsoleMenu();
+        //     createConsoleClear();
+        //     createConsoleBlock();
+        //     message = "[" + getNowFormatDate() + "] " + message
+        //     element.appendChild(inspect(message));
+        //     scrollToBottom();
+        // };
     }
 })()

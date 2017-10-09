@@ -6,7 +6,8 @@
 </template>
 
 <script>
-    var fixedWidthString = require('fixed-width-string');
+    import fixedWidthString from 'fixed-width-string';
+
     let page = fixedWidthString('[组件A', 7, {padding: '.', align: 'right'}) + ']';
 
     export default {
@@ -22,15 +23,6 @@
             }
         },
         beforeCreate: function () {
-            window.hybird = {}
-            window.hybird.onPause = function () {
-                console.error(page + " 监听到 onPause 被触发 , 设置 background:orange")
-                document.querySelector('body').setAttribute('style', 'background:orange')
-            };
-            window.hybird.onResume = function () {
-                console.error(page + " 监听到 onResume 被触发 , 设置 background:white")
-                document.querySelector('body').setAttribute('style', 'background:white')
-            };
             console.log(page + '(' + fixedWidthString('beforeCreate', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
         },
         created: function () {
@@ -51,10 +43,11 @@
         },
         activated: function () {
             console.log(page + '(' + fixedWidthString('activated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
-            document.querySelector('body').setAttribute('style', 'background:blanchedalmond')
+            document.querySelector('body').setAttribute('style', 'background:yellow')
         },
         deactivated: function () {
             console.log(page + '(' + fixedWidthString('deactivated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
+            document.querySelector('body').setAttribute('style', 'background:green')
         },
         beforeDestroy: function () {
             console.log(page + '(' + fixedWidthString('beforeDestroy', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)

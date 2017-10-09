@@ -3,7 +3,6 @@ package com.smart.library.widget.webview
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -14,7 +13,6 @@ import android.webkit.WebView
 import com.smart.library.R
 import com.smart.library.base.HKActivity
 import com.smart.library.base.HKBaseFragment
-import com.smart.library.util.HKLogUtil
 import com.smart.library.widget.titlebar.HKTitleBar
 import kotlinx.android.synthetic.main.hk_fragment_webview_v2.*
 
@@ -56,7 +54,10 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         webView.setWebViewClient(object : HKWebViewUtil.FSWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-            override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean = super.shouldOverrideUrlLoading(_view, _url)
+            override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean {
+                titleBar.right0Btn.text = ""
+                return super.shouldOverrideUrlLoading(_view, _url)
+            }
 
             override fun onPageStarted(_view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(_view, url, favicon)
@@ -92,6 +93,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
             override fun onReceivedTitle(_view: WebView?, title: String?) {
                 super.onReceivedTitle(_view, title)
+                title_bar?.titleText?.maxEms = 8
                 title_bar?.titleText?.text = title
             }
         })

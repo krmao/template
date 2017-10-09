@@ -14,12 +14,5 @@ class HybirdApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.e("krmao", "HybirdApplication:onCreate")
-
-        HKHybirdManager.addScheme("hybird://hybird:7777") { context: Context, uri: Uri? ->
-            val url = uri?.getQueryParameter("url") ?: "";
-            HKLogUtil.e("krmao", "path:$url")
-            HybirdWebFragment.goTo(context, url)
-            true
-        }
     }
 }

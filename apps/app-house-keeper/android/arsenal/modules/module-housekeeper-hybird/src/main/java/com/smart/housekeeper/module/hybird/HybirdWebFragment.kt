@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -54,6 +55,20 @@ class HybirdWebFragment : HKWebFragmentV2() {
 
     override fun onResume() {
         super.onResume()
+        HKHybirdManager.addScheme("hybird://hybird:7777") { context: Context, uri: Uri? ->
+            val url = uri?.getQueryParameter("url") ?: "";
+            HKLogUtil.e("krmao", "path:$url")
+            HybirdWebFragment.goTo(context, url)
+            true
+        }
+        HKHybirdManager.addScheme("hybird://hybird:8888") { _: Context, uri: Uri? ->
+            val title = uri?.getQueryParameter("title") ?: "";
+            HKLogUtil.e("hybird", "title:$title")
+            titleBar.right0Btn.text = title
+            titleBar.right0Btn.visibility = View.VISIBLE
+            titleBar.right0BgView.visibility = View.VISIBLE
+            true
+        }
         HKHybirdManager.callJsFunction(webView, "javascript:window.hybird.onResume()") { result: String? ->
             HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
         }

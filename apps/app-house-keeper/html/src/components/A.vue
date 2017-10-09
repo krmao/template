@@ -1,7 +1,7 @@
 <template>
     <div class="a_container">
-        <router-link to="/B">【a标签跳转】A->B</router-link>
-        <div @click="onClick()">【click事件跳转】A->B</div>
+        <div @click="onClick()">【onClick跳转】A->B</div>
+        <router-link id="route-link" to="/B">【 a 标签跳转 】A->B</router-link>
     </div>
 </template>
 
@@ -62,15 +62,28 @@
 <style lang="scss">
     @import "../assets/common/style/main.scss";
 
-    body {
-        background: blanchedalmond;
+    body img {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        color: #000;
+    }
+
+    a:active {
+        color: orangered;
     }
 
     .a_container {
         height: px2rem(750);
         width: px2rem(750);
-        padding-top: px2rem(30);
-        font-size: px2rem(50);
+        padding-top: px2rem(50);
+        font-size: px2rem(40);
+
+        #route-link {
+            margin-top: px2rem(60);
+        }
     }
 
     h1, h2 {
@@ -85,9 +98,5 @@
     li {
         display: inline-block;
         margin: 0 10px;
-    }
-
-    a {
-        color: #42b983;
     }
 </style>

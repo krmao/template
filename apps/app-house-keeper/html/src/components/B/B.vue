@@ -1,8 +1,8 @@
 <template>
     <div class="b_container">
         <img id="img" src="./image/share.png"/>
-        <label @click="onClick()">【scheme:WebView-new】：B->外部链接</label>
-        <router-link to="/other">【a标签跳转】B->外部链接</router-link>
+        <label id="label" @click="onClick()">【新的WebView】：B->外部链接</label>
+        <router-link id="route-link" to="/other">【当前WebView】：B->外部链接</router-link>
     </div>
 
 </template>
@@ -29,7 +29,7 @@
                 console.log(window)
             },
             onClick: function () {
-                document.querySelector('body').setAttribute('style', 'background:white')
+                document.querySelector('body').setAttribute('style', 'background:darkseagreen')
                 setTimeout(function () {
                     let url = encodeURI("https://c.chexiang.com/promotion/201709xinche.htm?channel=cx_zc_201709_cxyx_h5")
                     console.error("scheme:url===" + url)
@@ -83,18 +83,41 @@
 <style lang="scss">
     @import "../../assets/common/style/main.scss";
 
-    body {
-        background: cornflowerblue;
+    body img {
+        margin: 0;
+        padding: 0;
     }
+
+    a {
+        color: #000;
+    }
+
+    a:active {
+        color: yellow;
+    }
+
+    /* 鼠标经过悬停字体颜色 */
 
     .b_container {
         height: px2rem(750);
         width: px2rem(750);
-        padding-top: px2rem(30);
-        font-size: px2rem(50);
+        font-size: px2rem(40);
+        padding-top: px2rem(60);
+        color: white;
+
+        #label {
+        }
+
+        #route-link {
+            margin-top: px2rem(60);
+        }
 
         #img {
-            margin: 0 auto;
+            width: px2rem(60);
+            height: px2rem(60);
+            position: absolute;
+            right: 0;
+            bottom: 0;
         }
     }
 </style>

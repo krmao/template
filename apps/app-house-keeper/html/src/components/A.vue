@@ -67,6 +67,7 @@
     body img {
         margin: 0;
         padding: 0;
+        height: px2rem(2000);
     }
 
     a {
@@ -78,7 +79,7 @@
     }
 
     .a_container {
-        height: px2rem(750);
+        height: px2rem(2000);
         width: px2rem(750);
         padding-top: px2rem(50);
         font-size: px2rem(40);

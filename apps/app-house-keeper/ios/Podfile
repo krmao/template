@@ -2,10 +2,19 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, "8.0"
 use_frameworks!
 
-target 'fruit-shop-ios' do
+target 'housekeeper' do
   # pod '**', :git => 'http://**.git'
-  pod 'IQKeyboardManagerSwift' #,'4.0.10'
-  pod 'SnapKit', '~> 3.2.0'
+  
+  # ==================== 布局库 ====================
+  pod 'SnapKit', '~> 4.0.0'
+
+  # ==================== 网络库 ====================
   # pod 'AFNetworking', '~> 3.0'
-  pod 'Alamofire', '~> 4.4'
+#  pod 'Alamofire', '~> 4.4'
+
+  # ==================== 工具库 ====================
+#  pod 'IQKeyboardManagerSwift' #,'4.0.10'
+    pod 'SSZipArchive' , '~> 2.1.0'
+    pod 'RxCocoa',    '~> 4.0.0-rc.0'
+
 end

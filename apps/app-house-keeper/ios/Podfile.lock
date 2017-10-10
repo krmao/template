@@ -1,18 +1,21 @@
 PODS:
-  - Alamofire (4.5.0)
-  - IQKeyboardManagerSwift (4.0.10)
-  - SnapKit (3.2.0)
+  - RxCocoa (4.0.0-rc.0):
+    - RxSwift (~> 4.0.0-rc.0)
+  - RxSwift (4.0.0-rc.0)
+  - SnapKit (4.0.0)
+  - SSZipArchive (2.1.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.4)
-  - IQKeyboardManagerSwift
-  - SnapKit (~> 3.2.0)
+  - RxCocoa (~> 4.0.0-rc.0)
+  - SnapKit (~> 4.0.0)
+  - SSZipArchive (~> 2.1.0)
 
 SPEC CHECKSUMS:
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  IQKeyboardManagerSwift: 75ba21a23794a1e6b6fe6d9a267ea17f80e06771
-  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  RxCocoa: 62457355be73369670fbdf053a79a491552b64ed
+  RxSwift: 1dd09ceb11531c39adff4efe23556b1484e16967
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SSZipArchive: 1e8e53dcb11bca3ded4738958dc49fc467320a14
 
-PODFILE CHECKSUM: 180195360efc2261b839d287b1f0a17f74cddddb
+PODFILE CHECKSUM: b803addc5872a8447a9304b20a7bdd0deb916b01
 
 COCOAPODS: 1.3.1

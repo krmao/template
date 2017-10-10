@@ -36,7 +36,7 @@ extension UIButton {
         var tempSpace = space
         
         if labelWidth == 0 {
-            let titleSize = self.titleLabel?.text?.size(attributes: [NSFontAttributeName : self.titleLabel?.font ?? UIFont.systemFont(ofSize: 14)])
+            let titleSize = self.titleLabel?.text?.size(withAttributes: [NSAttributedStringKey.font : self.titleLabel?.font ?? UIFont.systemFont(ofSize: 14)])
             labelWidth = titleSize?.width
         }
         

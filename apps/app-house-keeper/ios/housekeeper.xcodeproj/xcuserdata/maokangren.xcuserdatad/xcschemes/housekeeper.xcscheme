@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-               BuildableName = "fruit-shop-ios.app"
-               BlueprintName = "fruit-shop-ios"
-               ReferencedContainer = "container:fruit-shop-ios.xcodeproj">
+               BuildableName = "housekeeper.app"
+               BlueprintName = "housekeeper"
+               ReferencedContainer = "container:housekeeper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "fruit-shop-ios.app"
-            BlueprintName = "fruit-shop-ios"
-            ReferencedContainer = "container:fruit-shop-ios.xcodeproj">
+            BuildableName = "housekeeper.app"
+            BlueprintName = "housekeeper"
+            ReferencedContainer = "container:housekeeper.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

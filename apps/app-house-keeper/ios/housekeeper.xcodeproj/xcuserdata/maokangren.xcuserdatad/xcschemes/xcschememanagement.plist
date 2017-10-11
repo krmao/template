@@ -4,10 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>fruit-shop-ios.xcscheme</key>
+		<key>housekeeper.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -15,7 +17,7 @@
 		<key>8753A5EB1F22633C00BA4AD4</key>
 		<dict>
 			<key>primary</key>
-			<true />
+			<true/>
 		</dict>
 	</dict>
 </dict>

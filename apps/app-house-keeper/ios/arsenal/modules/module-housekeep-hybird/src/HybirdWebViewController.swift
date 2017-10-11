@@ -5,7 +5,7 @@ import SSZipArchive
 import RxCocoa
 import RxSwift
 
-class UIWebViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
+class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
     let subscriptions = CompositeDisposable()
 
     lazy var progressView: UIProgressView = {

@@ -12,8 +12,9 @@
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
 		8763BF071F8DCA7800CA4E89 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEED1F8DCA5400CA4E89 /* Extension.swift */; };
 		8763BF081F8DCA7800CA4E89 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEEF1F8DCA5400CA4E89 /* UIButtonWithImage.swift */; };
-		8763BF091F8DCA7800CA4E89 /* UIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEF11F8DCA5400CA4E89 /* UIWebViewController.swift */; };
+		8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */; };
 		8763BF0F1F8DCB5000CA4E89 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8763BF0E1F8DCB4800CA4E89 /* assets */; };
+		87856D571F8E0FB800D053DA /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87856D561F8E0F9E00D053DA /* assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,22 +22,20 @@
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8763BEE81F8DCA5400CA4E89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8763BEEC1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8763BEED1F8DCA5400CA4E89 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		8763BEEE1F8DCA5400CA4E89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8763BEEF1F8DCA5400CA4E89 /* UIButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
-		8763BEF11F8DCA5400CA4E89 /* UIWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWebViewController.swift; sourceTree = "<group>"; };
+		8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController.swift; sourceTree = "<group>"; };
 		8763BEF51F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEF71F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BEFB1F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BEFD1F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF011F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF031F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF051F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0E1F8DCB4800CA4E89 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		87856D561F8E0F9E00D053DA /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
 		D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.debug.xcconfig"; sourceTree = "<group>"; };
 		FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_housekeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -103,23 +102,13 @@
 			isa = PBXGroup;
 			children = (
 				8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */,
-				8763BEE81F8DCA5400CA4E89 /* Assets.xcassets */,
 				8763BEE91F8DCA5400CA4E89 /* LaunchScreen.storyboard */,
 				8763BEEB1F8DCA5400CA4E89 /* Main.storyboard */,
 				8763BEED1F8DCA5400CA4E89 /* Extension.swift */,
 				8763BEEE1F8DCA5400CA4E89 /* Info.plist */,
 				8763BEEF1F8DCA5400CA4E89 /* UIButtonWithImage.swift */,
-				8763BEF01F8DCA5400CA4E89 /* webview */,
 			);
 			path = "app-housekeeper";
-			sourceTree = "<group>";
-		};
-		8763BEF01F8DCA5400CA4E89 /* webview */ = {
-			isa = PBXGroup;
-			children = (
-				8763BEF11F8DCA5400CA4E89 /* UIWebViewController.swift */,
-			);
-			path = webview;
 			sourceTree = "<group>";
 		};
 		8763BEF21F8DCA5400CA4E89 /* libraries */ = {
@@ -162,7 +151,7 @@
 		8763BEFA1F8DCA5400CA4E89 /* module-housekeep-home */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEFB1F8DCA5400CA4E89 /* .gitkeep */,
+				87856D561F8E0F9E00D053DA /* assets.xcassets */,
 			);
 			path = "module-housekeep-home";
 			sourceTree = "<group>";
@@ -170,8 +159,8 @@
 		8763BEFC1F8DCA5400CA4E89 /* module-housekeep-hybird */ = {
 			isa = PBXGroup;
 			children = (
+				87856D481F8E02B300D053DA /* src */,
 				8763BF0E1F8DCB4800CA4E89 /* assets */,
-				8763BEFD1F8DCA5400CA4E89 /* .gitkeep */,
 			);
 			path = "module-housekeep-hybird";
 			sourceTree = "<group>";
@@ -214,6 +203,14 @@
 				8763BF0D1F8DCAB500CA4E89 /* .gitkeep */,
 			);
 			path = scripts;
+			sourceTree = "<group>";
+		};
+		87856D481F8E02B300D053DA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		B24924701482C10D6AA9BFC9 /* Pods */ = {
@@ -289,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87856D571F8E0FB800D053DA /* assets.xcassets in Resources */,
 				8763BF0F1F8DCB5000CA4E89 /* assets in Resources */,
 				3D52A0885CC01144DF290BE8 /* Podfile in Resources */,
 			);
@@ -364,7 +362,7 @@
 				8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */,
 				8763BF071F8DCA7800CA4E89 /* Extension.swift in Sources */,
 				8763BF081F8DCA7800CA4E89 /* UIButtonWithImage.swift in Sources */,
-				8763BF091F8DCA7800CA4E89 /* UIWebViewController.swift in Sources */,
+				8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

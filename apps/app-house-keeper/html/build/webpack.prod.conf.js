@@ -105,7 +105,7 @@ var webpackConfig = merge(baseWebpackConfig, {
             input: config.build.assetsRoot,
             output: [
                 path.resolve(config.build.assetsRoot, '../../android/arsenal/modules/module-housekeeper-hybird/src/main/assets/bundle.zip'),
-                path.resolve(config.build.assetsRoot, '../../ios/housekeeper/assets/bundle.zip')
+                path.resolve(config.build.assetsRoot, '../../ios/arsenal/modules/module-housekeeper-hybird/assets/bundle.zip')
             ]
         })
     ]

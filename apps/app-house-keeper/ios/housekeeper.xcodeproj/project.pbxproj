@@ -139,46 +139,46 @@
 		8763BEF81F8DCA5400CA4E89 /* modules */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEFA1F8DCA5400CA4E89 /* module-housekeep-home */,
-				8763BEFC1F8DCA5400CA4E89 /* module-housekeep-hybird */,
-				8763BF001F8DCA5400CA4E89 /* module-housekeep-mine */,
-				8763BF021F8DCA5400CA4E89 /* module-housekeep-setting */,
+				8763BEFA1F8DCA5400CA4E89 /* module-housekeeper-home */,
+				8763BEFC1F8DCA5400CA4E89 /* module-housekeeper-hybird */,
+				8763BF001F8DCA5400CA4E89 /* module-housekeeper-mine */,
+				8763BF021F8DCA5400CA4E89 /* module-housekeeper-setting */,
 				8763BF041F8DCA5400CA4E89 /* module-test */,
 			);
 			path = modules;
 			sourceTree = "<group>";
 		};
-		8763BEFA1F8DCA5400CA4E89 /* module-housekeep-home */ = {
+		8763BEFA1F8DCA5400CA4E89 /* module-housekeeper-home */ = {
 			isa = PBXGroup;
 			children = (
 				87856D561F8E0F9E00D053DA /* assets.xcassets */,
 			);
-			path = "module-housekeep-home";
+			path = "module-housekeeper-home";
 			sourceTree = "<group>";
 		};
-		8763BEFC1F8DCA5400CA4E89 /* module-housekeep-hybird */ = {
+		8763BEFC1F8DCA5400CA4E89 /* module-housekeeper-hybird */ = {
 			isa = PBXGroup;
 			children = (
 				87856D481F8E02B300D053DA /* src */,
 				8763BF0E1F8DCB4800CA4E89 /* assets */,
 			);
-			path = "module-housekeep-hybird";
+			path = "module-housekeeper-hybird";
 			sourceTree = "<group>";
 		};
-		8763BF001F8DCA5400CA4E89 /* module-housekeep-mine */ = {
+		8763BF001F8DCA5400CA4E89 /* module-housekeeper-mine */ = {
 			isa = PBXGroup;
 			children = (
 				8763BF011F8DCA5400CA4E89 /* .gitkeep */,
 			);
-			path = "module-housekeep-mine";
+			path = "module-housekeeper-mine";
 			sourceTree = "<group>";
 		};
-		8763BF021F8DCA5400CA4E89 /* module-housekeep-setting */ = {
+		8763BF021F8DCA5400CA4E89 /* module-housekeeper-setting */ = {
 			isa = PBXGroup;
 			children = (
 				8763BF031F8DCA5400CA4E89 /* .gitkeep */,
 			);
-			path = "module-housekeep-setting";
+			path = "module-housekeeper-setting";
 			sourceTree = "<group>";
 		};
 		8763BF041F8DCA5400CA4E89 /* module-test */ = {

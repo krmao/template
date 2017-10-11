@@ -20,8 +20,6 @@
 /* Begin PBXFileReference section */
 		06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.release.xcconfig"; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		46C05841DB2613E2E4023089 /* Pods-fruit-shop-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fruit-shop-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-fruit-shop-ios/Pods-fruit-shop-ios.release.xcconfig"; sourceTree = "<group>"; };
-		4712E025224187A089E5A7CF /* Pods-fruit-shop-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fruit-shop-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-fruit-shop-ios/Pods-fruit-shop-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE41F8DCA5300CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEE61F8DCA5300CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -235,8 +233,6 @@
 		B24924701482C10D6AA9BFC9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4712E025224187A089E5A7CF /* Pods-fruit-shop-ios.debug.xcconfig */,
-				46C05841DB2613E2E4023089 /* Pods-fruit-shop-ios.release.xcconfig */,
 				D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */,
 				06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */,
 			);

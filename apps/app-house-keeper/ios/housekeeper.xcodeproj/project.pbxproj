@@ -74,11 +74,11 @@
 			isa = PBXGroup;
 			children = (
 				8763BEE21F8DCA5300CA4E89 /* arsenal */,
-				2ECD368FB33AFA6CC1CF9689 /* Frameworks */,
+				8763BF0A1F8DCAB500CA4E89 /* readme */,
 				3D52A20882EC1EF73C14E991 /* Podfile */,
 				B24924701482C10D6AA9BFC9 /* Pods */,
 				8753A5ED1F22633C00BA4AD4 /* Products */,
-				8763BF0A1F8DCAB500CA4E89 /* readme */,
+				2ECD368FB33AFA6CC1CF9689 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

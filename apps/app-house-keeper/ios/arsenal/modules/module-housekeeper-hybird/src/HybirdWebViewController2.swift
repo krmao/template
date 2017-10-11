@@ -6,7 +6,9 @@ class HybirdWebViewController2: UIViewController, WKNavigationDelegate, WKScript
 
     static func goTo(fromViewController: UIViewController, url: String) {
         let toViewController = HybirdWebViewController2.init(url: url)
-        if (fromViewController.navigationController != nil) {
+        if let navigationController = fromViewController as? UINavigationController {
+            navigationController.pushViewController(toViewController, animated: true)
+        } else if fromViewController.navigationController != nil {
             fromViewController.navigationController?.pushViewController(toViewController, animated: true)
         } else {
             fromViewController.present(toViewController, animated: true)

@@ -64,6 +64,7 @@ class UIWebViewController: UIViewController , WKNavigationDelegate, WKScriptMess
         print("viewDidLoad")
         self.view.addSubview(webView)
         self.navigationController?.navigationBar.addSubview(progressView)
+        self.navigationItem.leftBarButtonItem = barLeftItem //在此处 webView.canGoBack 已经是最新状态，可以加入逻辑判断
         self.navigationItem.rightBarButtonItems=[barRightItem,barRightItem1]
         self.navigationItem.title="housekeeper"
         
@@ -109,8 +110,10 @@ class UIWebViewController: UIViewController , WKNavigationDelegate, WKScriptMess
             print("[hybird]","unzipResult:",unzipResult)
             let files = fileManager.subpaths(atPath: docDir)
             print("[hybird]","============================================")
-            for file in files! {
-                print("[hybird]","file:",file)
+            if(files != nil){
+                for file in files! {
+                    print("[hybird]","file:",file)
+                }
             }
             print("[hybird]","============================================")
             observer.onNext(0)
@@ -168,7 +171,6 @@ class UIWebViewController: UIViewController , WKNavigationDelegate, WKScriptMess
     
     func webView(webview:  WKWebView, didCommit navigation: WKNavigation!) {
         print("[hybird] didCommit")
-        self.navigationItem.leftBarButtonItem=webView.canGoBack ?barLeftItem:nil //在此处 webView.canGoBack 已经是最新状态，可以加入逻辑判断
     }
     
     func webView(webview:  WKWebView, didFinish navigation: WKNavigation!) {

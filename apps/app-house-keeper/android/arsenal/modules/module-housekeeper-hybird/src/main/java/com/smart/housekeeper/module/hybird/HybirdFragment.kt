@@ -54,6 +54,7 @@ class HybirdFragment : HKBaseFragment() {
                         HKToastUtil.show("解压成功")
                         HKLogUtil.d("hybird", "解压成功,执行跳转:" + indexPath)
                         HybirdWebFragment.goTo(activity, indexPath)
+                        HybirdWebFragment.goTo(activity, "http://10.47.58.198:8020/LB/index.html?__hbt=1507629880470")
                     }, { error ->
                         HKToastUtil.show("解压失败")
                         HKLogUtil.e("hybird", "开始解压", error)

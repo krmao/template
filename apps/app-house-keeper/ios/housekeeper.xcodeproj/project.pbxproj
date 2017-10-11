@@ -20,8 +20,6 @@
 		06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.release.xcconfig"; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8763BEE41F8DCA5300CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BEE61F8DCA5300CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEE81F8DCA5400CA4E89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -30,16 +28,13 @@
 		8763BEEE1F8DCA5400CA4E89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8763BEEF1F8DCA5400CA4E89 /* UIButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
 		8763BEF11F8DCA5400CA4E89 /* UIWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWebViewController.swift; sourceTree = "<group>"; };
-		8763BEF31F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEF51F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEF71F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BEF91F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEFB1F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BEFD1F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF011F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF031F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF051F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BF0B1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0E1F8DCB4800CA4E89 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.debug.xcconfig"; sourceTree = "<group>"; };
@@ -99,7 +94,6 @@
 		8763BEE31F8DCA5300CA4E89 /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEE41F8DCA5300CA4E89 /* .gitkeep */,
 				8763BEE51F8DCA5300CA4E89 /* app-housekeeper */,
 			);
 			path = apps;
@@ -108,7 +102,6 @@
 		8763BEE51F8DCA5300CA4E89 /* app-housekeeper */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEE61F8DCA5300CA4E89 /* .gitkeep */,
 				8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */,
 				8763BEE81F8DCA5400CA4E89 /* Assets.xcassets */,
 				8763BEE91F8DCA5400CA4E89 /* LaunchScreen.storyboard */,
@@ -132,7 +125,6 @@
 		8763BEF21F8DCA5400CA4E89 /* libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEF31F8DCA5400CA4E89 /* .gitkeep */,
 				8763BEF41F8DCA5400CA4E89 /* library-base */,
 				8763BEF61F8DCA5400CA4E89 /* library-housekeeper-base */,
 			);
@@ -158,7 +150,6 @@
 		8763BEF81F8DCA5400CA4E89 /* modules */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEF91F8DCA5400CA4E89 /* .gitkeep */,
 				8763BEFA1F8DCA5400CA4E89 /* module-housekeep-home */,
 				8763BEFC1F8DCA5400CA4E89 /* module-housekeep-hybird */,
 				8763BF001F8DCA5400CA4E89 /* module-housekeep-mine */,
@@ -212,7 +203,6 @@
 		8763BF0A1F8DCAB500CA4E89 /* readme */ = {
 			isa = PBXGroup;
 			children = (
-				8763BF0B1F8DCAB500CA4E89 /* .gitkeep */,
 				8763BF0C1F8DCAB500CA4E89 /* scripts */,
 			);
 			path = readme;

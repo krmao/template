@@ -1,12 +1,7 @@
-//
-//  AppDelegate.swift
-//  fruit-shop-ios
-//
-//  Created by maokangren on 2017/7/22.
-//  Copyright © 2017年 com.xixi. All rights reserved.
-//
-
 import UIKit
+import SSZipArchive
+import RxCocoa
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,9 +11,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        window=UIWindow(frame:UIScreen.main.bounds)
-        window?.rootViewController=UINavigationController.init(rootViewController: HybirdWebViewController())
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = UINavigationController.init()
+        window?.backgroundColor = .yellow
         window?.makeKeyAndVisible()
+        unZipHtml()
         return true
     }
 
@@ -45,5 +42,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    let subscriptions = CompositeDisposable()
+
+    func unZipHtml() {
+        let docDirs = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray
+        let docDir = docDirs[0] as! String
+
+        let fileManager = FileManager.default
+        let bundleZipPath = Bundle.main.path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
+        print("[hybird]", "bundleZipPath:", bundleZipPath)
+
+        do {
+            try fileManager.removeItem(atPath: docDir)
+            print("[hybird]", "remove dic success")
+            let files = fileManager.subpaths(atPath: docDir)
+            print("[hybird]", "============================================")
+            if ((files) != nil) {
+                for file in files! {
+                    print("[hybird]", "file:", file)
+                }
+            }
+            print("[hybird]", "============================================")
+        } catch {
+            print("[hybird]", "remove dic failure")
+        }
+
+        _ = subscriptions.insert(Observable<Any>.create { observer in
+                    let unzipResult = SSZipArchive.unzipFile(atPath: bundleZipPath, toDestination: docDir)
+                    print("[hybird]", "unzipResult:", unzipResult)
+                    let files = fileManager.subpaths(atPath: docDir)
+                    print("[hybird]", "============================================")
+                    if (files != nil) {
+                        for file in files! {
+                            print("[hybird]", "file:", file)
+                        }
+                    }
+                    print("[hybird]", "============================================")
+                    observer.onNext(0)
+                    return Disposables.create()
+                }
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+                .observeOn(MainScheduler.instance)
+                .subscribe(
+                        onNext: { _ in
+                            print("[hybird]", "onNext")
+                            (self.window?.rootViewController as! UINavigationController).pushViewController(HybirdWebViewController2.init(url: "file://" + docDir + "/index.html"), animated: false)
+                        },
+                        onError: { error in
+                            print("[hybird]", "onError", error)
+                        },
+                        onCompleted: nil,
+                        onDisposed: nil
+                ))
+
+        //subscriptions.dispose()
+    }
 }
 

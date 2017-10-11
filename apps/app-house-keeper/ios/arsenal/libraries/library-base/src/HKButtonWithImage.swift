@@ -1,11 +1,3 @@
-//
-//  UIButtonWithImage.swift
-//  fruit-shop-ios
-//
-//  Created by maokangren on 2017/7/31.
-//  Copyright © 2017年 com.xixi. All rights reserved.
-//
-
 import UIKit
 import SnapKit
 

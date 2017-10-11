@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1EF6EE660E3638617F5B6C48 /* Pods_housekeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE80588C909FA4121DB6ADE /* Pods_housekeeper.framework */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
 		8763BF071F8DCA7800CA4E89 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEED1F8DCA5400CA4E89 /* Extension.swift */; };
@@ -42,6 +43,7 @@
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0E1F8DCB4800CA4E89 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.debug.xcconfig"; sourceTree = "<group>"; };
+		FDE80588C909FA4121DB6ADE /* Pods_housekeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_housekeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,12 +51,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EF6EE660E3638617F5B6C48 /* Pods_housekeeper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BF6002117E2D7979742E7B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FDE80588C909FA4121DB6ADE /* Pods_housekeeper.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8753A5E31F22633C00BA4AD4 = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +74,7 @@
 				3D52A20882EC1EF73C14E991 /* Podfile */,
 				B24924701482C10D6AA9BFC9 /* Pods */,
 				8753A5ED1F22633C00BA4AD4 /* Products */,
+				1BF6002117E2D7979742E7B2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

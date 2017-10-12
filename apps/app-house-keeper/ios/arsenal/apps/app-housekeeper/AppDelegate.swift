@@ -21,10 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController.init()
-        window?.backgroundColor =  UIColor.argb(rgbHexValue:0xcccccc)//rgb(rgbValue:0xcccccc)
-        //UIColor.colorWithHexString(hexValue:"123")
+        window?.backgroundColor =  UIColor(hexStr:"111")//rgb(rgbValue:0xcccccc)
         window?.makeKeyAndVisible()
-        unZipHtml()
+//        unZipHtml()
         return true
     }
 

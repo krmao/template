@@ -9,19 +9,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
-    func rgb(rgbValue: Int) -> (UIColor) {
-         return UIColor(red: ((CGFloat)((rgbValue & 0xFF0000) >> 16)) / 255.0,
-                                                  green: ((CGFloat)((rgbValue & 0xFF00) >> 8)) / 255.0,
-                                                    blue: ((CGFloat)(rgbValue & 0xFF)) / 255.0,
-                             alpha: 1.0)
-         }
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController.init()
-        window?.backgroundColor =  UIColor(hexStr:"111")//rgb(rgbValue:0xcccccc)
+        window?.backgroundColor =  UIColor(hexStr:"0x700F")//rgb(rgbValue:0xcccccc)
         window?.makeKeyAndVisible()
 //        unZipHtml()
         return true

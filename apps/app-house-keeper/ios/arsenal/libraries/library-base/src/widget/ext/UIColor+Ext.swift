@@ -33,15 +33,15 @@ extension UIColor {
 
     //#rgb
     public convenience init(hex3: UInt32) {
-        self.init(hex4: hex3 & 0xFFFF)
+        self.init(hex4: hex3 + 0xF000)
     }
 
     //#argb
     public convenience init(hex4: UInt32) {
         self.init(
-                red: ((CGFloat)((hex4 & 0xF000) >> 8)) / 15.0,
-                green: ((CGFloat)((hex4 & 0x0F00) >> 4)) / 15.0,
-                blue: ((CGFloat)(hex4 & 0x00F0)) / 15.0,
+                red: ((CGFloat)((hex4 & 0x0F00) >> 8)) / 15.0,
+                green: ((CGFloat)((hex4 & 0x00F0) >> 4)) / 15.0,
+                blue: ((CGFloat)(hex4 & 0x000F)) / 15.0,
                 alpha: ((CGFloat)((hex4 & 0xF000) >> 12)) / 15.0
         )
     }
@@ -63,7 +63,6 @@ extension UIColor {
 
     public convenience init(hexStr: String) {
         var _hexStr: String = hexStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).uppercased()
-        print("hexStr", hexStr)
         if _hexStr.hasPrefix("#") {
             _hexStr = (_hexStr as NSString).substring(from: 1)
         }
@@ -73,31 +72,16 @@ extension UIColor {
         if _hexStr.count == 3 || _hexStr.count == 4 {
             var hex4 = String.init(repeating: "F", count: 4 - _hexStr.count)
             hex4.append(_hexStr)
-            print("hex4", hex4)
-            let scanner = Scanner(string: hex4)
             var hexUInt32: UInt32 = 0
-            if scanner.scanHexInt32(&hexUInt32) == false {
-                print("hexUInt32", hexUInt32, "scanHexInt32==false", "return .clear")
-                self.init(hex4: 0000) // .clear
-            } else {
-                print("hexUInt32", hexUInt32, "scanHexInt32==false", "return UIColor(hex4: hexUInt32)")
-                self.init(hex4: hexUInt32)
-            }
+            self.init(hex4: Scanner(string: hex4).scanHexInt32(&hexUInt32) ? hexUInt32 : 0x0000)
         } else if _hexStr.count == 6 || _hexStr.count == 8 {
             var hex8 = String.init(repeating: "F", count: 8 - _hexStr.count)
             hex8.append(_hexStr)
-            print("hex8", hex8)
             let scanner = Scanner(string: hex8)
             var hexUInt32: UInt32 = 0
-            if scanner.scanHexInt32(&hexUInt32) == false {
-                print("hexUInt32", hexUInt32, "scanHexInt32==false", "return .clear")
-                self.init(hex4: 0000) // .clear
-            } else {
-                print("hexUInt32", hexUInt32, "scanHexInt32==false", "return UIColor(hex8: hexUInt32)")
-                self.init(hex8: hexUInt32)
-            }
+            self.init(hex8: Scanner(string: hex8).scanHexInt32(&hexUInt32) ? hexUInt32 : 0x00000000)
         } else {
-            self.init(hex4: 0000) // .clear
+            self.init(hex4: 0x0000)
         }
     }
 }

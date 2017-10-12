@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		04046169D5603C9C420CD1FA /* Pods_housekeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
-		3D52A124B35362FD273DB3B3 /* HKExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC15508DF5AA724EB833 /* HKExtention.swift */; };
-		3D52A25771123507C71C7937 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */; };
-		3D52A25805177840E3A9DF69 /* HKButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */; };
+		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
+		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */; };
+		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
+		3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
 		8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */; };
 		8763BF0F1F8DCB5000CA4E89 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8763BF0E1F8DCB4800CA4E89 /* assets */; };
@@ -22,10 +23,11 @@
 /* Begin PBXFileReference section */
 		06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.release.xcconfig"; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKButtonWithImage.swift; sourceTree = "<group>"; };
+		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
+		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController2.swift; sourceTree = "<group>"; };
-		3D52AC15508DF5AA724EB833 /* HKExtention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKExtention.swift; sourceTree = "<group>"; };
-		3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKFileUtil.swift; sourceTree = "<group>"; };
+		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,22 +65,47 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3D52AC5D00491521F78EF732 /* ext */ = {
+		3D52A3BECE0622E9005ABB99 /* ext */ = {
 			isa = PBXGroup;
 			children = (
-				3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */,
+				3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */,
 			);
 			path = ext;
+			sourceTree = "<group>";
+		};
+		3D52A4A00D5B656C508FADBE /* util */ = {
+			isa = PBXGroup;
+			children = (
+				3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		3D52AA2FA888BF152B987199 /* widget */ = {
+			isa = PBXGroup;
+			children = (
+				3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */,
+				3D52A3BECE0622E9005ABB99 /* ext */,
+			);
+			path = widget;
 			sourceTree = "<group>";
 		};
 		3D52AD0CFB42EC7C232D5E55 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */,
-				3D52AC15508DF5AA724EB833 /* HKExtention.swift */,
-				3D52AC5D00491521F78EF732 /* ext */,
+				3D52AA2FA888BF152B987199 /* widget */,
+				3D52A4A00D5B656C508FADBE /* util */,
+				3D52AD7253BE03D1D0ED829E /* base */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		3D52AD7253BE03D1D0ED829E /* base */ = {
+			isa = PBXGroup;
+			children = (
+				3D52A5B5020FA2FE0CAAD872 /* .gitkeep */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 		8753A5E31F22633C00BA4AD4 = {
@@ -309,6 +336,7 @@
 				87856D571F8E0FB800D053DA /* assets.xcassets in Resources */,
 				8763BF0F1F8DCB5000CA4E89 /* assets in Resources */,
 				3D52A0885CC01144DF290BE8 /* Podfile in Resources */,
+				3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,9 +412,9 @@
 				8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */,
 				8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */,
 				3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */,
-				3D52A25805177840E3A9DF69 /* HKButtonWithImage.swift in Sources */,
-				3D52A124B35362FD273DB3B3 /* HKExtention.swift in Sources */,
-				3D52A25771123507C71C7937 /* UIColor+Ext.swift in Sources */,
+				3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */,
+				3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */,
+				3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

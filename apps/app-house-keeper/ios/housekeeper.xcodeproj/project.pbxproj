@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		04046169D5603C9C420CD1FA /* Pods_housekeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
+		3D52A124B35362FD273DB3B3 /* HKExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC15508DF5AA724EB833 /* HKExtention.swift */; };
+		3D52A25771123507C71C7937 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */; };
 		3D52A25805177840E3A9DF69 /* HKButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
@@ -22,6 +24,8 @@
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKButtonWithImage.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController2.swift; sourceTree = "<group>"; };
+		3D52AC15508DF5AA724EB833 /* HKExtention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKExtention.swift; sourceTree = "<group>"; };
+		3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -59,10 +63,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3D52AC5D00491521F78EF732 /* ext */ = {
+			isa = PBXGroup;
+			children = (
+				3D52AC3324BD5567F5E1A8E9 /* UIColor+Ext.swift */,
+			);
+			path = ext;
+			sourceTree = "<group>";
+		};
 		3D52AD0CFB42EC7C232D5E55 /* src */ = {
 			isa = PBXGroup;
 			children = (
 				3D52A9710BA5C2286875F884 /* HKButtonWithImage.swift */,
+				3D52AC15508DF5AA724EB833 /* HKExtention.swift */,
+				3D52AC5D00491521F78EF732 /* ext */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -308,6 +322,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
@@ -315,6 +330,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
@@ -369,6 +385,8 @@
 				8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */,
 				3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */,
 				3D52A25805177840E3A9DF69 /* HKButtonWithImage.swift in Sources */,
+				3D52A124B35362FD273DB3B3 /* HKExtention.swift in Sources */,
+				3D52A25771123507C71C7937 /* UIColor+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

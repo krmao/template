@@ -110,48 +110,33 @@ class HybirdWebViewController2: UIViewController, WKNavigationDelegate, WKScript
     }
 
     //[webview] protocol ===========================================================================
-
+    
+    
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         print("[hybird]", "didReceive", "(类似于 android @JavaInterface)", "message.name:", message.name)
     }
 
     func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         print("[hybird]", "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString.removingPercentEncoding ?? "null")
-        //print("[hybird]","  decidePolicyFor:host=",navigationAction.request.url?.host?.removingPercentEncoding ?? "null")
         decisionHandler(WKNavigationActionPolicy.allow)
-
-        //        if(navigationAction.request.url != nil){
-        //            switch navigationAction.request.url!.absoluteString {
-        //            default:break;
-        //            }
-        //        }
-
-        //if ("m.car.chexiang.com" == navigationAction.request.url?.host) {
-        //    print("decidePolicyFor cancel")
-        //    decisionHandler(WKNavigationActionPolicy.cancel)
-        //} else {
-        //    print("decidePolicyFor allow")
-        //    decisionHandler(WKNavigationActionPolicy.allow)
-        //}
     }
-
 
     func webView(_ webview: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("[hybird]", "didStartProvisionalNavigation")
     }
 
-    func webView(webview: WKWebView, didCommit navigation: WKNavigation!) {
+    func webView(_ webview: WKWebView, didCommit navigation: WKNavigation!) {
         print("[hybird]", "didCommit")
     }
-
-    func webView(webview: WKWebView, didFinish navigation: WKNavigation!) {
-        print("[hybird]", "didFinish")
+    
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!){
+        print("[hybird]", "didFinish","title:", webView.title ?? "")
         self.navigationItem.title = webView.title
         self.title = webView.title
         progressView.setProgress(0.0, animated: false)
     }
 
-    func webView(webview: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+    func webView(_ webview: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("[hybird]", "didFail")
     }
 

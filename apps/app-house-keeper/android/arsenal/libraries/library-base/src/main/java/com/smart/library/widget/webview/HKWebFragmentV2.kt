@@ -14,7 +14,6 @@ import com.smart.library.R
 import com.smart.library.base.HKActivity
 import com.smart.library.base.HKBaseFragment
 import com.smart.library.util.HKLogUtil
-import com.smart.library.util.hybird.HKHybirdManager
 import com.smart.library.widget.titlebar.HKTitleBar
 import kotlinx.android.synthetic.main.hk_fragment_webview_v2.*
 
@@ -82,9 +81,9 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
                         title_bar?.left0BgView?.visibility = GONE
                 }
 
-                HKHybirdManager.callJsFunction(webView, "javascript:hybird.onGoBack()") { result: String? ->
-                    HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-                }
+//                HKHybirdManager.callJsFunction(webView, "javascript:hybird.onGoBack()") { result: String? ->
+//                    HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
+//                }
             }
         })
 

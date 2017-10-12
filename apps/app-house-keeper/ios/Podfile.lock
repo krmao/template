@@ -1,4 +1,5 @@
 PODS:
+  - MBProgressHUD (1.0.0)
   - RxCocoa (4.0.0-rc.0):
     - RxSwift (~> 4.0.0-rc.0)
   - RxSwift (4.0.0-rc.0)
@@ -6,16 +7,18 @@ PODS:
   - SSZipArchive (2.1.0)
 
 DEPENDENCIES:
+  - MBProgressHUD (~> 1.0.0)
   - RxCocoa (~> 4.0.0-rc.0)
   - SnapKit (~> 4.0.0)
   - SSZipArchive (~> 2.1.0)
 
 SPEC CHECKSUMS:
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   RxCocoa: 62457355be73369670fbdf053a79a491552b64ed
   RxSwift: 1dd09ceb11531c39adff4efe23556b1484e16967
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SSZipArchive: 1e8e53dcb11bca3ded4738958dc49fc467320a14
 
-PODFILE CHECKSUM: b803addc5872a8447a9304b20a7bdd0deb916b01
+PODFILE CHECKSUM: 9b46af687a474ca29b42a1c3934c07904c980ccd
 
 COCOAPODS: 1.4.0.beta.1

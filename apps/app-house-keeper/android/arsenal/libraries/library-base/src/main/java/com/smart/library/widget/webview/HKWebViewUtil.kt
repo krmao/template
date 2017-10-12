@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
-import android.view.View
 import android.webkit.*
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKConfig
@@ -118,8 +117,8 @@ object HKWebViewUtil {
         @Suppress("OverridingDeprecatedMember", "DEPRECATION")
         override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean {
             HKLogUtil.w(HKHybirdManager.TAG, "shouldOverrideUrlLoading:" + _url)
-            if (HKHybirdManager.shouldOverrideUrlLoading(_view.context, _url))
-                return true
+//            if (HKHybirdManager.shouldOverrideUrlLoading(_view.context, _url))
+//                return true
             return super.shouldOverrideUrlLoading(_view, _url)
         }
 

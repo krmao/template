@@ -48,18 +48,18 @@
             var that = this;
             console.log(page + '(' + fixedWidthString('activated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
             document.querySelector('body').setAttribute('style', 'background:yellow')
-            window.location.href = "hybird://hybird:8888/updateTitle?title=组件A"
+//            window.location.href = "hybird://hybird:8888/updateTitle?title=组件A"
 
-            window.hybird.onResume = ()=> {
-                that.activated()
-            }
+//            window.hybird.onResume = ()=> {
+//                that.activated()
+//            }
 
 
         },
         deactivated: function () {
             console.log(page + '(' + fixedWidthString('deactivated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
             document.querySelector('body').setAttribute('style', 'background:green')
-            window.location.href = "hybird://hybird:8888/updateTitle?title="
+//            window.location.href = "hybird://hybird:8888/updateTitle?title="
         },
         beforeDestroy: function () {
             console.log(page + '(' + fixedWidthString('beforeDestroy', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)

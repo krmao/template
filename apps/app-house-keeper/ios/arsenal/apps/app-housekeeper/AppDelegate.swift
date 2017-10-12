@@ -2,6 +2,7 @@ import UIKit
 import SSZipArchive
 import RxCocoa
 import RxSwift
+import MBProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,11 +10,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
+    func rgb(rgbValue: Int) -> (UIColor) {
+         return UIColor(red: ((CGFloat)((rgbValue & 0xFF0000) >> 16)) / 255.0,
+                                                  green: ((CGFloat)((rgbValue & 0xFF00) >> 8)) / 255.0,
+                                                    blue: ((CGFloat)(rgbValue & 0xFF)) / 255.0,
+                             alpha: 1.0)
+         }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController.init()
-        window?.backgroundColor = .yellow
+        window?.backgroundColor =  UIColor.argb(rgbHexValue:0xcccccc)//rgb(rgbValue:0xcccccc)
+        //UIColor.colorWithHexString(hexValue:"123")
         window?.makeKeyAndVisible()
         unZipHtml()
         return true
@@ -47,27 +56,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func unZipHtml() {
         let docDirs = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray
         let docDir = docDirs[0] as! String
-
-        let fileManager = FileManager.default
-        let bundleZipPath = Bundle.main.path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
-        print("[hybird]", "bundleZipPath:", bundleZipPath)
-
-        do {
-            try fileManager.removeItem(atPath: docDir)
-            print("[hybird]", "remove dic success")
-            let files = fileManager.subpaths(atPath: docDir)
-            print("[hybird]", "============================================")
-            if ((files) != nil) {
-                for file in files! {
-                    print("[hybird]", "file:", file)
-                }
-            }
-            print("[hybird]", "============================================")
-        } catch {
-            print("[hybird]", "remove dic failure")
-        }
-
+        
+        let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
+//        progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
+//        progress.bezelView.backgroundColor = .black
+//        progress.activityIndicatorColor = .white
+        
         _ = subscriptions.insert(Observable<Any>.create { observer in
+                    let fileManager = FileManager.default
+                    let bundleZipPath = Bundle.main.path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
+                    print("[hybird]", "bundleZipPath:", bundleZipPath)
+            
+                    do {
+                        try fileManager.removeItem(atPath: docDir)
+                        print("[hybird]", "remove dic success")
+                        let files = fileManager.subpaths(atPath: docDir)
+                        print("[hybird]", "============================================")
+                        if ((files) != nil) {
+                            for file in files! {
+                                print("[hybird]", "file:", file)
+                            }
+                        }
+                        print("[hybird]", "============================================")
+                    } catch {
+                        print("[hybird]", "remove dic failure")
+                    }
+            
+            
                     let unzipResult = SSZipArchive.unzipFile(atPath: bundleZipPath, toDestination: docDir)
                     print("[hybird]", "unzipResult:", unzipResult)
                     let files = fileManager.subpaths(atPath: docDir)
@@ -84,12 +99,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                 .observeOn(MainScheduler.instance)
                 .subscribe(
-                        onNext: { _ in
+                        onNext: { index in
                             print("[hybird]", "onNext")
                             (self.window?.rootViewController as! UINavigationController).pushViewController(HybirdWebViewController2.init(url: "file://" + docDir + "/index.html"), animated: false)
+                            progress.hide(animated: true)
                         },
                         onError: { error in
                             print("[hybird]", "onError", error)
+                            progress.hide(animated: true)
                         },
                         onCompleted: nil,
                         onDisposed: nil

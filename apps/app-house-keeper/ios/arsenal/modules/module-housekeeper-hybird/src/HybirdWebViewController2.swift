@@ -84,7 +84,7 @@ class HybirdWebViewController2: UIViewController, WKNavigationDelegate, WKScript
         //== ios 11.0 以上 撑满底部 =============================================================
         self.navigationController?.navigationBar.isTranslucent = false
         if #available(iOS 11.0, *) {
-            webView.scrollView.contentInsetAdjustmentBehavior = .never
+            webView.scrollView.contentInsetAdjustmentBehavior = (self.navigationController?.navigationBar.isHidden)! ? .scrollableAxes :  .never
         }
         //== ios 11.0 以上 撑满底部 =============================================================
 

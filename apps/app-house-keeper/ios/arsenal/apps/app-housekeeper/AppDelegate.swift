@@ -12,11 +12,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController()
+        let rootViewController = UINavigationController()
+        rootViewController.setNavigationBarHidden(true, animated: false)
+        
+        window?.rootViewController = rootViewController
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        HybirdManager.reInstallBundle(view: self.window!, fromViewController: self.window!.rootViewController!)
+        HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
         return true
     }
 

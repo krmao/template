@@ -23,5 +23,6 @@ hs_err_pid*
 .idea/
 build/
 *.iml
+Podfile.lock
 
 UserInterfaceState.xcuserstate

@@ -7,9 +7,9 @@ Vue.use(Router)
 
 let router = new Router({
     mode: 'hash',//hash abstract
-    scrollBehavior(to, from, savedPosition) {
-        return savedPosition || {x: 0, y: 0}
-    },
+    // scrollBehavior(to, from, savedPosition) {
+    //     return savedPosition || {x: 0, y: 0}
+    // },
     routes: [
         {
             path: '/',

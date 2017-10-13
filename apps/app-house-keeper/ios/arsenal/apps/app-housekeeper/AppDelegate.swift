@@ -12,10 +12,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController.init()
-        window?.backgroundColor =  UIColor(hexStr:"0x700F")//rgb(rgbValue:0xcccccc)
+        window?.rootViewController = UINavigationController()
+        window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
-//        unZipHtml()
+
+        HybirdManager.reInstallBundle(view: self.window!, fromViewController: self.window!.rootViewController!)
         return true
     }
 
@@ -39,71 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-
-    let subscriptions = CompositeDisposable()
-
-    func unZipHtml() {
-        let docDirs = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray
-        let docDir = docDirs[0] as! String
-        
-        let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
-//        progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
-//        progress.bezelView.backgroundColor = .black
-//        progress.activityIndicatorColor = .white
-        
-        _ = subscriptions.insert(Observable<Any>.create { observer in
-                    let fileManager = FileManager.default
-                    let bundleZipPath = Bundle.main.path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
-                    print("[hybird]", "bundleZipPath:", bundleZipPath)
-            
-                    do {
-                        try fileManager.removeItem(atPath: docDir)
-                        print("[hybird]", "remove dic success")
-                        let files = fileManager.subpaths(atPath: docDir)
-                        print("[hybird]", "============================================")
-                        if ((files) != nil) {
-                            for file in files! {
-                                print("[hybird]", "file:", file)
-                            }
-                        }
-                        print("[hybird]", "============================================")
-                    } catch {
-                        print("[hybird]", "remove dic failure")
-                    }
-            
-            
-                    let unzipResult = SSZipArchive.unzipFile(atPath: bundleZipPath, toDestination: docDir)
-                    print("[hybird]", "unzipResult:", unzipResult)
-                    let files = fileManager.subpaths(atPath: docDir)
-                    print("[hybird]", "============================================")
-                    if (files != nil) {
-                        for file in files! {
-                            print("[hybird]", "file:", file)
-                        }
-                    }
-                    print("[hybird]", "============================================")
-                    observer.onNext(0)
-                    return Disposables.create()
-                }
-                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-                .observeOn(MainScheduler.instance)
-                .subscribe(
-                        onNext: { index in
-                            print("[hybird]", "onNext")
-                            (self.window?.rootViewController as! UINavigationController).pushViewController(HybirdWebViewController2.init(url: "file://" + docDir + "/index.html"), animated: false)
-                            progress.hide(animated: true)
-                        },
-                        onError: { error in
-                            print("[hybird]", "onError", error)
-                            progress.hide(animated: true)
-                        },
-                        onCompleted: nil,
-                        onDisposed: nil
-                ))
-
-        //subscriptions.dispose()
     }
 }
 

@@ -61,7 +61,7 @@ extension UIColor {
         )
     }
 
-    public convenience init(hexStr: String) {
+    public convenience init(_ hexStr: String) {
         var _hexStr: String = hexStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).uppercased()
         if _hexStr.hasPrefix("#") {
             _hexStr = (_hexStr as NSString).substring(from: 1)
@@ -70,14 +70,13 @@ extension UIColor {
             _hexStr = (_hexStr as NSString).substring(from: 2)
         }
         if _hexStr.count == 3 || _hexStr.count == 4 {
-            var hex4 = String.init(repeating: "F", count: 4 - _hexStr.count)
+            var hex4 = String(repeating: "F", count: 4 - _hexStr.count)
             hex4.append(_hexStr)
             var hexUInt32: UInt32 = 0
             self.init(hex4: Scanner(string: hex4).scanHexInt32(&hexUInt32) ? hexUInt32 : 0x0000)
         } else if _hexStr.count == 6 || _hexStr.count == 8 {
-            var hex8 = String.init(repeating: "F", count: 8 - _hexStr.count)
+            var hex8 = String(repeating: "F", count: 8 - _hexStr.count)
             hex8.append(_hexStr)
-            let scanner = Scanner(string: hex8)
             var hexUInt32: UInt32 = 0
             self.init(hex8: Scanner(string: hex8).scanHexInt32(&hexUInt32) ? hexUInt32 : 0x00000000)
         } else {

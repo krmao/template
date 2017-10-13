@@ -11,6 +11,7 @@
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
 		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
 		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
+		3D52A95B5C57FCDB720ED5A2 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA536CFAD6B08A637550 /* TestViewController.swift */; };
 		3D52AA96DE6D424D6669689A /* HybirdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */; };
 		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
@@ -26,6 +27,7 @@
 		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdManager.swift; sourceTree = "<group>"; };
 		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
+		3D52AA536CFAD6B08A637550 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController.swift; sourceTree = "<group>"; };
 		3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKFileUtil.swift; sourceTree = "<group>"; };
 		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			children = (
 				3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */,
 				3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */,
+				3D52AA536CFAD6B08A637550 /* TestViewController.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */,
 				3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */,
 				3D52AA96DE6D424D6669689A /* HybirdManager.swift in Sources */,
+				3D52A95B5C57FCDB720ED5A2 /* TestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

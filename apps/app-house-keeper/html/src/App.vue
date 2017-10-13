@@ -17,6 +17,7 @@
 <style>
     body {
         background: lavenderblush;
+        padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);
     }
 
     #app {

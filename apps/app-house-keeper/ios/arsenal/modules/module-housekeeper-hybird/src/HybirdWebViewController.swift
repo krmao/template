@@ -62,6 +62,10 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         return _barRightItem1
     }()
 
+    public class var sdk_INT: Int {
+        return Int(UIDevice.current.systemVersion.components(separatedBy: ".").first!)!
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
@@ -78,13 +82,15 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         }
         webView.snp.makeConstraints { (make) in
             make.width.equalTo(self.view)
-            make.height.equalTo(self.view)
+            make.top.equalTo(self.view).offset(0)
+            make.bottom.equalTo(self.view)
         }
 
-        //== ios 11.0 以上 撑满底部 =============================================================
+        self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.isTranslucent = false
+        //== ios 11.0 以上 撑满底部 =============================================================
         if #available(iOS 11.0, *) {
-            webView.scrollView.contentInsetAdjustmentBehavior = (self.navigationController?.navigationBar.isHidden)! ? .scrollableAxes :  .never
+            webView.scrollView.contentInsetAdjustmentBehavior = (self.navigationController?.navigationBar.isHidden)! ? .never : .never
         }
         //== ios 11.0 以上 撑满底部 =============================================================
 
@@ -95,6 +101,11 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         } else {
             self.webView.load(URLRequest(url: URL(string: self.indexPath)!))
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
     }
 
     @objc func barClickedEvents(barItem: UIBarButtonItem) {
@@ -110,8 +121,8 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
     }
 
     //[webview] protocol ===========================================================================
-    
-    
+
+
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         print("[hybird]", "didReceive", "(类似于 android @JavaInterface)", "message.name:", message.name)
     }
@@ -128,9 +139,9 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
     func webView(_ webview: WKWebView, didCommit navigation: WKNavigation!) {
         print("[hybird]", "didCommit")
     }
-    
-    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!){
-        print("[hybird]", "didFinish","title:", webView.title ?? "")
+
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("[hybird]", "didFinish", "title:", webView.title ?? "")
         self.navigationItem.title = webView.title
         self.title = webView.title
         progressView.setProgress(0.0, animated: false)

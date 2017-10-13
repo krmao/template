@@ -45,7 +45,7 @@ class HybirdManager {
                 .subscribe(
                         onNext: { index in
                             print("[hybird]", "onNext")
-                            (fromViewController as! UINavigationController).pushViewController(HybirdWebViewController2.init(url: "file://" + docDir + "/index.html"), animated: false)
+                            (fromViewController as! UINavigationController).pushViewController(HybirdWebViewController.init(url: "file://" + docDir + "/index.html"), animated: false)
                             progress.hide(animated: true)
                         },
                         onError: { error in

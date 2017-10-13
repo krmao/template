@@ -12,11 +12,10 @@
 		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
 		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
 		3D52AA96DE6D424D6669689A /* HybirdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */; };
-		3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */; };
+		3D52ABBF4471F259761AFD38 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */; };
 		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
 		3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
-		8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */; };
 		8763BF0F1F8DCB5000CA4E89 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8763BF0E1F8DCB4800CA4E89 /* assets */; };
 		87856D571F8E0FB800D053DA /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87856D561F8E0F9E00D053DA /* assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -27,7 +26,7 @@
 		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdManager.swift; sourceTree = "<group>"; };
 		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
-		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController2.swift; sourceTree = "<group>"; };
+		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController.swift; sourceTree = "<group>"; };
 		3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKFileUtil.swift; sourceTree = "<group>"; };
 		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,7 +34,6 @@
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8763BEEC1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8763BEEE1F8DCA5400CA4E89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController.swift; sourceTree = "<group>"; };
 		8763BEF71F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF011F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF031F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -256,8 +254,7 @@
 		87856D481F8E02B300D053DA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEF11F8DCA5400CA4E89 /* HybirdWebViewController.swift */,
-				3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController2.swift */,
+				3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */,
 				3D52A64D405ACA89B8FDB7EC /* HybirdManager.swift */,
 			);
 			path = src;
@@ -413,8 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */,
-				8763BF091F8DCA7800CA4E89 /* HybirdWebViewController.swift in Sources */,
-				3D52ABBF4471F259761AFD38 /* HybirdWebViewController2.swift in Sources */,
+				3D52ABBF4471F259761AFD38 /* HybirdWebViewController.swift in Sources */,
 				3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */,
 				3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */,
 				3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */,

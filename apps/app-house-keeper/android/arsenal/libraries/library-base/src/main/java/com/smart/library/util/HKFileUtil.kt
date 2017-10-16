@@ -46,8 +46,10 @@ object HKFileUtil {
     fun copy(inputStream: InputStream?, destFile: File?) {
         var outputStream: OutputStream? = null
         try {
-            if (destFile != null && !destFile.exists())
+            if (destFile != null && !destFile.exists()) {
+                destFile.parentFile.mkdirs()
                 destFile.createNewFile()
+            }
             outputStream = FileOutputStream(destFile)
             copy(inputStream, outputStream)
         } finally {

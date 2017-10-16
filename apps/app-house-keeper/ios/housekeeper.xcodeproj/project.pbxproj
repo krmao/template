@@ -67,6 +67,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3D52A0E74EE605071D7DC73D /* bundle */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = bundle;
+			sourceTree = "<group>";
+		};
 		3D52A3BECE0622E9005ABB99 /* ext */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +105,7 @@
 				3D52AA2FA888BF152B987199 /* widget */,
 				3D52A4A00D5B656C508FADBE /* util */,
 				3D52AD7253BE03D1D0ED829E /* base */,
+				3D52A0E74EE605071D7DC73D /* bundle */,
 			);
 			path = src;
 			sourceTree = "<group>";

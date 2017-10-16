@@ -21,7 +21,7 @@ class HybirdManager {
         progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
         _ = Observable<Any>.create { observer in
-                    let bundleZipPath = Bundle.main.path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
+                    let bundleZipPath = Bundle.init().path(forResource: "bundle", ofType: "zip", inDirectory: "assets") ?? ""
                     print("[hybird]", "bundleZipPath:", bundleZipPath)
 
                     do {

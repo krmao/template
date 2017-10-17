@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.smart.housekeeper.module.hybird.bundle.imp.HybirdBundleManager
 import com.smart.library.base.HKBaseFragment
+import com.smart.library.bundle.imp.HKBundleManager
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKToastUtil
 import kotlinx.android.synthetic.main.hybird_fragment.*
 
 class HybirdFragment : HKBaseFragment() {
 
-    private val indexPath = "file://${HybirdBundleManager.pathForHybirdDir}index.html"
+    private val indexPath = "file://${HKBundleManager.pathForHybirdDir}index.html"
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hybird_fragment, container, false)
 
@@ -20,7 +20,7 @@ class HybirdFragment : HKBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         text.setOnClickListener {
-            HybirdBundleManager.installWithVerify {
+            HKBundleManager.installWithVerify {
                 if (it) {
                     HybirdWebFragment.goTo(activity, indexPath)
 

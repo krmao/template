@@ -1,6 +1,6 @@
-package com.smart.housekeeper.module.hybird.bundle
+package com.smart.library.bundle
 
-interface IBundleManager {
+interface HKIBundleManager {
 
     fun verify(): Boolean
 

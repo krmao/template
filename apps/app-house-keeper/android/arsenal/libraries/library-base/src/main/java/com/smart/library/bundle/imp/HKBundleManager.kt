@@ -1,7 +1,7 @@
-package com.smart.housekeeper.module.hybird.bundle.imp
+package com.smart.library.bundle.imp
 
-import com.smart.housekeeper.library.HKApplication
-import com.smart.housekeeper.module.hybird.bundle.IBundleManager
+import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.HKIBundleManager
 import com.smart.library.util.*
 import com.smart.library.util.cache.HKCacheManager
 import io.reactivex.Observable
@@ -43,18 +43,18 @@ import java.io.File
             ......................................................./com.smart.modules.device.ios.zip
             ........./app.version.2.2(bundleKey)/
 */
-object HybirdBundleManager : IBundleManager {
-    private val TAG = HybirdBundleManager::class.java.name
+object HKBundleManager : HKIBundleManager {
+    private val TAG = HKBundleManager::class.java.name
     private val KEY_HYBIRD_VERSION = "[HybirdLocalVersion]"
 
     private val suffix = ".zip"
     private val nameInAssets = "bundle"
     private val nameForUnZipDir = "hybird"
-    private val pathForLocalRootDir: String = HKCacheManager.getCacheDir().path + "/$nameForUnZipDir/"
+    private val pathForLocalRootDir: String = HKCacheManager.getCacheDir().path + "/${nameForUnZipDir}/"
 
-    val pathForHybirdDir: String = "$pathForLocalRootDir$nameForUnZipDir/"
+    val pathForHybirdDir: String = "${pathForLocalRootDir}${nameForUnZipDir}/"
 
-    private val pathForLocalFile: String = "$pathForHybirdDir$nameForUnZipDir$suffix"
+    private val pathForLocalFile: String = "${pathForHybirdDir}${nameForUnZipDir}${suffix}"
 
     private val listeners: java.util.ArrayList<(success: Boolean) -> Unit> = ArrayList()
 
@@ -73,7 +73,7 @@ object HybirdBundleManager : IBundleManager {
                 HKFileUtil.deleteDirectory(pathForHybirdDir)
                 HKLogUtil.d(TAG, "clean success")
                 HKLogUtil.d(TAG, "start copy now ...")
-                HKFileUtil.copy(HKApplication.INSTANCE.assets.open(nameInAssets + suffix), pathForLocalFile)
+                HKFileUtil.copy(HKBaseApplication.INSTANCE.assets.open(nameInAssets + suffix), pathForLocalFile)
                 HKLogUtil.d(TAG, "copy success ! isFileExistsInSdcard:${File(pathForLocalFile).exists()}")
                 HKLogUtil.d(TAG, "start unzip now ...")
                 HKZipUtil.unzip(pathForLocalFile, pathForLocalRootDir)
@@ -102,7 +102,7 @@ object HybirdBundleManager : IBundleManager {
     override fun verify(): Boolean {
         val versionCurrentApp = "${HKSystemUtil.versionCode}_${HKSystemUtil.versionName}"
         val verify = versionCurrentApp == hybirdLocalVersion
-        HKLogUtil.d(TAG, "versionCurrentApp:$versionCurrentApp == hybirdLocalVersion:$hybirdLocalVersion ? $verify")
+        HKLogUtil.d(TAG, "versionCurrentApp:$versionCurrentApp == hybirdLocalVersion:${hybirdLocalVersion} ? $verify")
         return verify
     }
 }

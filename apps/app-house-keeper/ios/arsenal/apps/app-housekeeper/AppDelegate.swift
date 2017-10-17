@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         progress.bezelView.backgroundColor = UIColor("#CC000000")
         progress.activityIndicatorColor = UIColor("#FFEFEFEF")
         
-        HybirdBundleManager.INSTANCE.installWithVerify(){ ( success:Bool ,rootDir:String) in
+        HKBundleManager.INSTANCE.installWithVerify(){ ( success:Bool , rootDir:String) in
             progress.hide(animated: true)
             rootViewController.pushViewController(HybirdWebViewController.init(url: "file://" + rootDir + "/index.html"), animated: false)
         }

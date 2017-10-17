@@ -34,7 +34,7 @@ class HKFileUtil {
     static func copy(_ fromFilePath: String, _ toFilePath: String) throws {
         HKLogUtil.d(TAG + ":copy-start", "from:", fromFilePath, " , fileExists:", FileManager.default.fileExists(atPath: fromFilePath))
         try FileManager.default.copyItem(atPath: fromFilePath, toPath: toFilePath)
-        HKLogUtil.d(TAG + ":cop-end", "to:", toFilePath, " , fileExists:", FileManager.default.fileExists(atPath: toFilePath))
+        HKLogUtil.d(TAG + ":copy-end", "to:", toFilePath, " , fileExists:", FileManager.default.fileExists(atPath: toFilePath))
     }
 
     static func printDirs(_ dirPath: String) {

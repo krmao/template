@@ -37,9 +37,9 @@ import SSZipArchive
 import RxCocoa
 import RxSwift
 
-class HybirdBundleManager: HKIBundleManager {
+class HKBundleManager: HKIBundleManager {
 
-    static let INSTANCE = HybirdBundleManager()
+    static let INSTANCE = HKBundleManager()
 
     let TAG = "[hybird]"
 
@@ -79,7 +79,6 @@ class HybirdBundleManager: HKIBundleManager {
                         HKLogUtil.d(self.TAG, "start clean now ...")
                         HKFileUtil.deleteFile(self.pathForLocalFile)
                         HKFileUtil.deleteDirectory(self.pathForHybirdDir)
-                        HKLogUtil.d(self.TAG, "clean success")
                         HKLogUtil.d(self.TAG, "start copy now ...")
                         do {
                             try HKFileUtil.copy(Bundle.main.path(forResource: self.nameInAssets, ofType: "zip", inDirectory: "assets")!, self.pathForLocalFile)

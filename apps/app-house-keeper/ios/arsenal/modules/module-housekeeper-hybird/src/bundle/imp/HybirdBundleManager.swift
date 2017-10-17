@@ -77,12 +77,8 @@ class HybirdBundleManager: HKIBundleManager {
         if (!verify()) {
             _ = Observable<Any>.create { observer in
                         HKLogUtil.d(self.TAG, "start clean now ...")
-                        do {
-                            try HKFileUtil.deleteFile(self.pathForLocalFile)
-                            try HKFileUtil.deleteDirectory(self.pathForHybirdDir)
-                        } catch {
-                                HKLogUtil.d(self.TAG, "clean success" , error)
-                        }
+                        HKFileUtil.deleteFile(self.pathForLocalFile)
+                        HKFileUtil.deleteDirectory(self.pathForHybirdDir)
                         HKLogUtil.d(self.TAG, "clean success")
                         HKLogUtil.d(self.TAG, "start copy now ...")
                         do {
@@ -91,17 +87,13 @@ class HybirdBundleManager: HKIBundleManager {
                             HKLogUtil.d(self.TAG, "start unzip now ...")
                             HKZipUtil.unzip(self.pathForLocalFile, targetDirPath: self.pathForHybirdDir)
                             HKLogUtil.d(self.TAG, "unzip success")
-
                             HKFileUtil.printDirs(self.docDir)
-
                             self.hybirdLocalVersion = String(HKSystemUtil.versionCode) + "_" + HKSystemUtil.versionName
-
                             observer.onNext(0)
                         } catch {
                             HKLogUtil.d(self.TAG, "copy failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
                              observer.onError(error)
                         }
-               
                         return Disposables.create()
                     }
                     .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)) //Schedulers.io()

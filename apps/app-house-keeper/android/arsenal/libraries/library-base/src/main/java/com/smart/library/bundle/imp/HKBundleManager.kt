@@ -43,20 +43,26 @@ import java.io.File
             ......................................................./com.smart.modules.device.ios.zip
             ........./app.version.2.2(bundleKey)/
 */
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKBundleManager : HKIBundleManager {
     private val TAG = HKBundleManager::class.java.name
     private val KEY_HYBIRD_VERSION = "[HybirdLocalVersion]"
 
     private val suffix = ".zip"
+
     private val nameInAssets = "bundle"
     private val nameForUnZipDir = "hybird"
-    private val pathForLocalRootDir: String = HKCacheManager.getCacheDir().path + "/${nameForUnZipDir}/"
+    private val pathForLocalRootDir: String = HKCacheManager.getCacheDir().path + "/$nameForUnZipDir/"
 
-    val pathForHybirdDir: String = "${pathForLocalRootDir}${nameForUnZipDir}/"
+    private val pathForHybirdDir: String = "$pathForLocalRootDir$nameForUnZipDir/"
 
-    private val pathForLocalFile: String = "${pathForHybirdDir}${nameForUnZipDir}${suffix}"
+    private val pathForLocalFile: String = "$pathForHybirdDir$nameForUnZipDir$suffix"
 
-    private val listeners: java.util.ArrayList<(success: Boolean) -> Unit> = ArrayList()
+    val HYBIRD_URL_PREFIX = "file://"
+
+    val HYBIRD_DIR: String = pathForHybirdDir
+
+    private val listeners: java.util.ArrayList<(success: Boolean, hybirdDir: String) -> Unit> = ArrayList()
 
     private var hybirdLocalVersion: String = HKPreferencesUtil.getString(KEY_HYBIRD_VERSION)
         set(value) {
@@ -65,7 +71,7 @@ object HKBundleManager : HKIBundleManager {
         }
 
     @Synchronized
-    override fun installWithVerify(callback: ((success: Boolean) -> Unit)?) {
+    override fun installWithVerify(callback: ((success: Boolean, hybirdDir: String) -> Unit)?) {
         if (!verify()) {
             Observable.fromCallable {
                 HKLogUtil.d(TAG, "start clean now ...")
@@ -85,17 +91,17 @@ object HKBundleManager : HKIBundleManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     HKLogUtil.d(TAG, "copyToLocal success")
-                    callback?.invoke(true)
-                    listeners.forEach { it(true) }
+                    callback?.invoke(true, HYBIRD_DIR)
+                    listeners.forEach { it(true, HYBIRD_DIR) }
 
                 }, { error ->
                     HKLogUtil.e(TAG, "copyToLocal failure", error)
-                    callback?.invoke(false)
-                    listeners.forEach { it(false) }
+                    callback?.invoke(false, HYBIRD_DIR)
+                    listeners.forEach { it(false, HYBIRD_DIR) }
                 })
         } else {
             HKLogUtil.w(TAG, "no need to copyToLocal")
-            callback?.invoke(true)
+            callback?.invoke(true, HYBIRD_DIR)
         }
     }
 

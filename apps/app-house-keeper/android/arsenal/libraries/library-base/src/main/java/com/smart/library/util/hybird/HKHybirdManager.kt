@@ -1,7 +1,7 @@
 package com.smart.library.util.hybird
 
-import android.content.Context
 import android.net.Uri
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
 import java.util.concurrent.ConcurrentHashMap
@@ -10,9 +10,22 @@ import java.util.concurrent.ConcurrentMap
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
 
-    val TAG = "template-hybird"
-    private val schemeMap: ConcurrentHashMap<String, (context: Context, uri: Uri?) -> Boolean> = ConcurrentHashMap()
+    val TAG = "hybird"
 
+    private val schemeMap: ConcurrentHashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = ConcurrentHashMap()
+    private val requestMap: ConcurrentHashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = ConcurrentHashMap()
+
+    fun addRequest(host: String, intercept: (webView: WebView?, url: String?) -> WebResourceResponse?) {
+        requestMap.put(host, intercept)
+    }
+
+    fun removeRequest(host: String) {
+        requestMap.remove(host)
+    }
+
+    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? {
+        return requestMap[Uri.parse(url).host]?.invoke(webView, url)
+    }
 
     /**
      *  scheme://host:port/path?k=v
@@ -22,7 +35,7 @@ object HKHybirdManager {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(scheme: String, host: String, port: Int, intercept: (context: Context, uri: Uri?) -> Boolean) {
+    fun addScheme(scheme: String, host: String, port: Int, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
         val schemePrefix = "$scheme://$host:$port"
         schemeMap.put(schemePrefix, intercept)
     }
@@ -35,7 +48,7 @@ object HKHybirdManager {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUriString: String, intercept: (context: Context, uri: Uri?) -> Boolean) {
+    fun addScheme(schemeUriString: String, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
         schemeMap.put(schemeUriString, intercept)
     }
 
@@ -48,15 +61,15 @@ object HKHybirdManager {
         schemeMap.remove(schemePrefix)
     }
 
-    fun shouldOverrideUrlLoading(context: Context, uriString: String?): Boolean {
-        val uri = Uri.parse(uriString)
-        val schemePrefix = "${uri?.scheme}://${uri?.host}:${uri?.port}"
+    fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean? {
+        val url = Uri.parse(uriString)
+        val schemePrefix = "${url?.scheme}://${url?.host}:${url?.port}"
 
-        HKLogUtil.d(TAG, "get uri : $uri")
-        HKLogUtil.d(TAG, "get schemePrefix : $schemePrefix")
-        HKLogUtil.d(TAG, "do intercept ? ${schemeMap.containsKey(schemePrefix)}")
+        HKLogUtil.d(TAG, "intercept url : $url")
+        HKLogUtil.d(TAG, "intercept schemePrefix : $schemePrefix")
+        HKLogUtil.d(TAG, "intercept ? ${schemeMap.containsKey(schemePrefix)}")
 
-        return schemeMap[schemePrefix]?.invoke(context, uri) ?: false
+        return schemeMap[schemePrefix]?.invoke(webView, url)
     }
 
     //========================================================================================================================
@@ -66,9 +79,9 @@ object HKHybirdManager {
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
     fun addSchemeForCallback() {
-        addScheme(callbackSchemaPrefix) { _: Context, uri: Uri? ->
-            val hashCode = uri?.getQueryParameter("hashcode")
-            callbackMap[hashCode]?.invoke(uri?.getQueryParameter("result"))
+        addScheme(callbackSchemaPrefix) { _: WebView?, url: Uri? ->
+            val hashCode = url?.getQueryParameter("hashcode")
+            callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
             callbackMap.remove(hashCode)
             HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
             true

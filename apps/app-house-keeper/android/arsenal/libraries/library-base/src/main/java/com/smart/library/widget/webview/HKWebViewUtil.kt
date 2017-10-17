@@ -7,8 +7,7 @@ import android.text.TextUtils
 import android.webkit.*
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKConfig
-import com.smart.library.util.HKLogUtil
-import com.smart.library.util.hybird.HKHybirdManager
+import com.smart.library.widget.webview.client.HKWebChromeClient
 
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
@@ -73,7 +72,7 @@ object HKWebViewUtil {
             }
 
             webView.setWebViewClient(WebViewClient())
-            webView.setWebChromeClient(FSWebChromeClient())
+            webView.setWebChromeClient(HKWebChromeClient())
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 WebView.setWebContentsDebuggingEnabled(HKBaseApplication.DEBUG)
@@ -91,44 +90,4 @@ object HKWebViewUtil {
         CookieSyncManager.getInstance().sync()
     }
 
-    open class FSWebChromeClient : WebChromeClient() {
-        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            super.onConsoleMessage(consoleMessage)
-            /*var console = "\n#" + consoleMessage?.lineNumber()
-            console += ":" + consoleMessage?.sourceId()
-            console += "\n" + consoleMessage?.message()
-            HKLogUtil.w(HKHybirdManager.TAG, console)*/
-            return false
-        }
-
-        override fun onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissions.Callback?) {
-            callback?.invoke(origin, true, true)
-            super.onGeolocationPermissionsShowPrompt(origin, callback)
-        }
-    }
-
-    open class FSWebViewClient : WebViewClient() {
-        private var clearHistory = false
-
-        fun clearHistory() {
-            clearHistory = true
-        }
-
-        @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-        override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean {
-            HKLogUtil.w(HKHybirdManager.TAG, "shouldOverrideUrlLoading:" + _url)
-//            if (HKHybirdManager.shouldOverrideUrlLoading(_view.context, _url))
-//                return true
-            return super.shouldOverrideUrlLoading(_view, _url)
-        }
-
-        override fun onPageFinished(webView: WebView?, url: String?) {
-            if (clearHistory) {
-                HKLogUtil.w(HKHybirdManager.TAG, "clearHistory now")
-                clearHistory = false
-                webView?.clearHistory()
-            }
-            super.onPageFinished(webView, url)
-        }
-    }
 }

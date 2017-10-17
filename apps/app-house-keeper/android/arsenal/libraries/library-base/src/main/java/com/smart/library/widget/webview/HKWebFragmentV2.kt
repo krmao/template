@@ -14,7 +14,10 @@ import com.smart.library.R
 import com.smart.library.base.HKActivity
 import com.smart.library.base.HKBaseFragment
 import com.smart.library.util.HKLogUtil
+import com.smart.library.util.hybird.HKHybirdManager
 import com.smart.library.widget.titlebar.HKTitleBar
+import com.smart.library.widget.webview.client.HKWebChromeClient
+import com.smart.library.widget.webview.client.HKWebViewClient
 import kotlinx.android.synthetic.main.hk_fragment_webview_v2.*
 
 open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListener {
@@ -52,25 +55,22 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         HKWebViewUtil.initWebView(web_view)
         titleBar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
 
-        webView.setWebViewClient(object : HKWebViewUtil.FSWebViewClient() {
+        webView.setWebViewClient(object : HKWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-            override fun shouldOverrideUrlLoading(_view: WebView, _url: String?): Boolean {
-                HKLogUtil.e("krmao", "shouldOverrideUrlLoading:" + _url)
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 titleBar.right0Btn.text = ""
-                return super.shouldOverrideUrlLoading(_view, _url)
+                return super.shouldOverrideUrlLoading(view, url)
             }
 
-            override fun onPageStarted(_view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(_view, url, favicon)
-                HKLogUtil.e("krmao", "onPageStarted:" + url)
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
                 title_bar?.progressBar?.progress = 0
                 title_bar?.progressBar?.visibility = View.VISIBLE
             }
 
             override fun onPageFinished(webView: WebView?, url: String?) {
                 super.onPageFinished(webView, url)
-                HKLogUtil.e("krmao", "onPageFinished:" + url)
                 title_bar?.progressBar?.progress = 100
                 title_bar?.progressBar?.visibility = View.GONE
 
@@ -80,14 +80,10 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
                     else
                         title_bar?.left0BgView?.visibility = GONE
                 }
-
-//                HKHybirdManager.callJsFunction(webView, "javascript:hybird.onGoBack()") { result: String? ->
-//                    HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//                }
             }
         })
 
-        webView.setWebChromeClient(object : HKWebViewUtil.FSWebChromeClient() {
+        webView.setWebChromeClient(object : HKWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
                 title_bar?.progressBar?.progress = newProgress
                 if (newProgress >= 100) {
@@ -99,13 +95,14 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
                 super.onProgressChanged(_view, newProgress)
             }
 
-            override fun onReceivedTitle(_view: WebView?, title: String?) {
-                super.onReceivedTitle(_view, title)
-                HKLogUtil.e("krmao", "onReceivedTitle:" + title)
-                title_bar?.titleText?.maxEms = 8
+            override fun onReceivedTitle(view: WebView?, title: String?) {
+                super.onReceivedTitle(view, title)
+                title_bar?.titleText?.maxEms = 10
                 title_bar?.titleText?.text = title
             }
         })
+
+        HKLogUtil.w(HKHybirdManager.TAG, "indexUrl:$url , isValidUrl?${URLUtil.isValidUrl(url)}")
 
         if (URLUtil.isValidUrl(url))
             web_view?.loadUrl(url)

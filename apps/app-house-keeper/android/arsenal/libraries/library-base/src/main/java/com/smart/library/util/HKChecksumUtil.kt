@@ -6,11 +6,12 @@ import java.io.File
 import java.io.IOException
 import java.security.MessageDigest
 
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKChecksumUtil {
     @Deprecated("use @see HKChecksumUtil#genMD5Checksum(charSequence: CharSequence)")
     fun genMD5Checksum(buffer: ByteArray): String {
         val hexDigits = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
-        try {
+        return try {
             val mdTemp = MessageDigest.getInstance("MD5")
             mdTemp.update(buffer)
             val md = mdTemp.digest()
@@ -21,9 +22,9 @@ object HKChecksumUtil {
                 str[k++] = hexDigits[byte0.toInt() ushr 4 and 0xf]
                 str[k++] = hexDigits[byte0.toInt() and 0xf]
             }
-            return String(str)
+            String(str)
         } catch (e: Exception) {
-            return ""
+            ""
         }
     }
 

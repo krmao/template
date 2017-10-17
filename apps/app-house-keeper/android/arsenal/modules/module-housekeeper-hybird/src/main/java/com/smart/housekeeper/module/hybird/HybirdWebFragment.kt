@@ -27,50 +27,5 @@ class HybirdWebFragment : HKWebFragmentV2() {
         super.onViewCreated(view, savedInstanceState)
         titleBar.titleText.visibility = View.VISIBLE
         titleBar.titleText.text = "hybird test"
-        titleBar.titleText.setOnClickListener {
-//            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onBackPressed()") { result: String? ->
-//                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//            }
-//            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onPause()") { result: String? ->
-//                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//            }
-//            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onNetworkStateChanged()") { result: String? ->
-//                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//            }
-//            HKHybirdManager.callJsFunction(webView, "javascript:hybird.onResume()") { result: String? ->
-//                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//            }
-//            HKHybirdManager.callJsFunction(webView, "javascript:a()") { result: String? ->
-//                HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        HKHybirdManager.addScheme("hybird://hybird:7777") { context: Context, uri: Uri? ->
-//            val url = uri?.getQueryParameter("url") ?: "";
-//            HKLogUtil.e("krmao", "path:$url")
-//            HybirdWebFragment.goTo(context, url)
-//            true
-//        }
-//        HKHybirdManager.addScheme("hybird://hybird:8888") { _: Context, uri: Uri? ->
-//            val title = uri?.getQueryParameter("title") ?: "";
-//            HKLogUtil.e("hybird", "title:$title")
-//            titleBar.right0Btn.text = title
-//            titleBar.right0Btn.visibility = View.VISIBLE
-//            titleBar.right0BgView.visibility = View.VISIBLE
-//            true
-//        }
-//        HKHybirdManager.callJsFunction(webView, "javascript:window.hybird.onResume()") { result: String? ->
-//            HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        HKHybirdManager.callJsFunction(webView, "javascript:window.hybird.onPause()") { result: String? ->
-//            HKLogUtil.e(HKHybirdManager.TAG, "a call back !!!result:" + result + '\n')
-//        }
     }
 }

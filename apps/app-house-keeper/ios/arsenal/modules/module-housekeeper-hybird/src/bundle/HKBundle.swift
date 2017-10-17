@@ -1,4 +1,4 @@
-class Bundle {
+class HKBundle {
     var path = ""
     var version = ""
 }

@@ -6,22 +6,22 @@
 import Foundation
 
 class HKLogUtil {
-    static func d(_ items: String...) {
+    static func d(_ items: Any...) {
         print(items)
     }
     
-    static func e(_ items: String...) {
+    static func e(_ items: Any...) {
         print(items)
     }
     
-    static func w(_ items: String...) {
+    static func w(_ items: Any...) {
         print(items)
     }
     
-    static func v(_ items: String...) {
+    static func v(_ items: Any...) {
         print(items)
     }
-    static func i(_ items: String...) {
+    static func i(_ items: Any...) {
         print(items)
     }
 }

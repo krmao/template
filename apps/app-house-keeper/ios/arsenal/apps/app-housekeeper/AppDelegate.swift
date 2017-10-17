@@ -19,7 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
+        //HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
+        
+        let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
+        progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
+        progress.bezelView.backgroundColor = UIColor("#CC000000")
+        progress.activityIndicatorColor = UIColor("#FFEFEFEF")
+        
+        HybirdBundleManager.INSTANCE.installWithVerify(){ ( success:Bool ,rootDir:String) in
+            progress.hide(animated: true)
+            rootViewController.pushViewController(HybirdWebViewController.init(url: "file://" + rootDir + "/index.html"), animated: false)
+        }
         return true
     }
 

@@ -6,15 +6,15 @@
 import Foundation
 
 class HKSystemUtil {
-    static var versionCode: String {
+    static var versionCode: Int {
         get {
-            return self.versionCode
+            return Bundle.main.object(forInfoDictionaryKey: "versionCode") as! Int
         }
     }
 
     static var versionName: String {
         get {
-            return self.versionName
+            return Bundle.main.object(forInfoDictionaryKey: "versionName") as! String
         }
     }
 }

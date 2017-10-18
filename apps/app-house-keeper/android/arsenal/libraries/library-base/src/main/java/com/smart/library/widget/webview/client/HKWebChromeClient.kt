@@ -1,6 +1,8 @@
 package com.smart.library.widget.webview.client
 
+import android.net.Uri
 import android.webkit.GeolocationPermissions
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
@@ -18,4 +20,10 @@ open class HKWebChromeClient : WebChromeClient() {
         callback?.invoke(origin, true, true)
         super.onGeolocationPermissionsShowPrompt(origin, callback)
     }
+
+    override fun onShowFileChooser(webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
+        HKLogUtil.v(HKHybirdManager.TAG, "onShowFileChooser")
+        return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
+    }
+
 }

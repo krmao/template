@@ -8,9 +8,32 @@ import android.webkit.*
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdManager
 
+/*
+
+android 17 以下存在的 安全问题
+function addJsHack(cmdArgs){
+    for (var obj in window) {
+        try {
+            if ("getClass" in window[obj]) {
+                try {
+                    window[obj].getClass().forName("java.lang.Runtime").
+                        getMethod("getRuntime", null).invoke(null, null).exec(cmdArgs);;
+                } catch (e) {
+                }
+            }
+        } catch (e) {
+        }
+    }
+}
+addJsHack("")
+
+ */
 @Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride")
 open class HKWebViewClient : WebViewClient() {
 
+    /**
+     * 针对 https 证书校验可以在此拦截通过HttpsURLConnection实现请求验证
+     */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         HKLogUtil.v(HKHybirdManager.TAG, "shouldOverrideUrlLoading: $url")
         return HKHybirdManager.shouldOverrideUrlLoading(view, url) ?: super.shouldOverrideUrlLoading(view, url)
@@ -36,6 +59,14 @@ open class HKWebViewClient : WebViewClient() {
         super.onPageCommitVisible(view, url)
     }
 
+    /**
+     * android 5.0 以上 webView 再次校验 https 证书
+     */
+    override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) {
+        HKLogUtil.v(HKHybirdManager.TAG, "onReceivedClientCertRequest: $request")
+        super.onReceivedClientCertRequest(view, request)
+    }
+
     override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
         HKLogUtil.w(HKHybirdManager.TAG, "onReceivedError: $error")
         super.onReceivedError(view, request, error)
@@ -43,7 +74,8 @@ open class HKWebViewClient : WebViewClient() {
 
     override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
         HKLogUtil.w(HKHybirdManager.TAG, "onReceivedSslError:proceed: $error")
-        handler?.proceed()
+        //避免调用proceed忽略证书验证错误信息继续加载页面
+        handler?.cancel()
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

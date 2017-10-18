@@ -208,6 +208,11 @@
 -dontnote fqcn.of.**
 #javascript interface webview end
 
+-keepclassmembers class * extends android.webkit.WebChromeClient{
+       public void openFileChooser(...);
+}
+
+
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
 -dontnote com.google.vending.licensing.ILicensingService

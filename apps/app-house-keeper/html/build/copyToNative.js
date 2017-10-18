@@ -20,12 +20,19 @@ class CopyToNativePlugin {
 
             if (this.options.input && this.options.output) {
                 zip.zipFolder(this.options.input, {rootFolder: this.options.rootFolder}, () => {
-                    let tmpPath = this.options.input + '/bundle.zip';
 
-                    if (fs.existsSync(tmpPath))
-                        fs.unlinkSync(tmpPath);
+                    let outputDirPath = this.options.input + '/../build-output';
+                    let outputFilePath = this.options.input + '/../build-output/bundle.zip';
 
-                    zip.writeToFile(tmpPath, () => {
+                    if (fs.existsSync(outputFilePath)) {
+                        fs.unlinkSync(outputFilePath);
+                    }
+
+                    if (!fs.existsSync(outputDirPath)) {
+                        fs.mkdir(outputDirPath)
+                    }
+
+                    zip.writeToFile(outputFilePath, () => {
 
                         for (let index in this.options.output) {
 
@@ -35,7 +42,7 @@ class CopyToNativePlugin {
                                 if (fs.existsSync(tmpOutPut))
                                     fs.unlinkSync(tmpOutPut);
                                 console.log("[copyToNative] output:", tmpOutPut);
-                                ncp(tmpPath, tmpOutPut, (err) => {
+                                ncp(outputFilePath, tmpOutPut, (err) => {
                                     if (err) {
                                         return console.error('[copyToNative] error! ', err);
                                     }

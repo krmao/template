@@ -32,6 +32,7 @@ dependencies {
 
     /******* kotlin支持 ***************************************************************************/
     compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$rootProject.ext.kotlinVersion"
     compile "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
 
     /******* 必备工具库 ****************************************************************************/

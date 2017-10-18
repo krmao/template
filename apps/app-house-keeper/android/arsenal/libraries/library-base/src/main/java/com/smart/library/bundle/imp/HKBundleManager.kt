@@ -107,8 +107,19 @@ object HKBundleManager : HKIBundleManager {
 
     override fun verify(): Boolean {
         val versionCurrentApp = "${HKSystemUtil.versionCode}_${HKSystemUtil.versionName}"
-        val verify = versionCurrentApp == hybirdLocalVersion
-        HKLogUtil.d(TAG, "versionCurrentApp:$versionCurrentApp == hybirdLocalVersion:${hybirdLocalVersion} ? $verify")
+        var verify = versionCurrentApp == hybirdLocalVersion
+
+
+        val hybirdLocalValid: Boolean = File(HYBIRD_DIR + "index.html").exists()
+        if (!hybirdLocalValid) {
+            HKFileUtil.deleteDirectory(HYBIRD_DIR)
+            hybirdLocalVersion = ""
+        }
+
+        verify = verify && hybirdLocalValid
+
+        HKLogUtil.d(TAG, "[verify:$verify] versionCurrentApp:$versionCurrentApp == hybirdLocalVersion:${hybirdLocalVersion} && hybirdLocalValid:$hybirdLocalValid")
+
         return verify
     }
 }

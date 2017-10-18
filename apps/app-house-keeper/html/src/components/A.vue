@@ -2,6 +2,9 @@
     <div class="a_container">
         <div @click="onClick()">【onClick跳转】A->B</div>
         <router-link id="route-link" to="/B">【 a 标签跳转 】A->B</router-link>
+
+        <div id="nativeCall" @click="onNativeCallClick()"> 调用 native 方法测试 </div>
+        <div id="nativeCall2" @click="onNativeCallClick2()"> 调用 native 方法测试2 </div>
     </div>
 </template>
 
@@ -15,6 +18,12 @@
         methods: {
             onClick: function () {
                 window.location.href = "#/B"
+            },
+            onNativeCallClick: function () {
+                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
+            },
+            onNativeCallClick2: function () {
+                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello"
             },
             onGoBack: function () {
                 console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
@@ -96,6 +105,14 @@
         font-size: px2rem(40);
 
         #route-link {
+            margin-top: px2rem(60);
+        }
+
+        #nativeCall {
+            margin-top: px2rem(60);
+        }
+
+        #nativeCall2 {
             margin-top: px2rem(60);
         }
     }

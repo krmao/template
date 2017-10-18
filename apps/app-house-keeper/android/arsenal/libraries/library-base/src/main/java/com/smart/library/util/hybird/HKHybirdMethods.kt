@@ -10,31 +10,37 @@ import com.smart.library.util.network.HKNetworkUtil
  */
 class HKHybirdMethods {
 
-    fun showToast(message: String) {
-        HKToastUtil.show(message)
+    companion object {
+        fun showToast(message: String) {
+            HKToastUtil.show(message)
+        }
+
+        fun showToast(message: String, duration: Long) {
+            HKToastUtil.show(message + " ,duration:" + duration)
+        }
+
+        fun putToLocal(key: String, value: String) {
+            HKPreferencesUtil.putString(key, value)
+        }
+
+        fun getFromLocal(key: String, default: String? = null) {
+            HKPreferencesUtil.getString(key, default)
+        }
+
+        fun putToMemory(module: String, key: String, value: String) {
+            HKCacheManager.put(module, key, value)
+        }
+
+        fun getFromMemory(module: String, key: String, default: String? = null): String? = HKCacheManager.get(module, key, default)
+
+        fun removeFromMemory(module: String) {
+            HKCacheManager.remove(module)
+        }
+
+        fun removeFromMemory(module: String, key: String) {
+            HKCacheManager.remove(module, key)
+        }
+
+        fun isNetworkAvailable(): Boolean = HKNetworkUtil.isNetworkAvailable()
     }
-
-    fun putToLocal(key: String, value: String) {
-        HKPreferencesUtil.putString(key, value)
-    }
-
-    fun getFromLocal(key: String, default: String? = null) {
-        HKPreferencesUtil.getString(key, default)
-    }
-
-    fun putToMemory(module: String, key: String, value: String) {
-        HKCacheManager.put(module, key, value)
-    }
-
-    fun getFromMemory(module: String, key: String, default: String? = null): String? = HKCacheManager.get(module, key, default)
-
-    fun removeFromMemory(module: String) {
-        HKCacheManager.remove(module)
-    }
-
-    fun removeFromMemory(module: String, key: String) {
-        HKCacheManager.remove(module, key)
-    }
-
-    fun isNetworkAvailable(): Boolean = HKNetworkUtil.isNetworkAvailable()
 }

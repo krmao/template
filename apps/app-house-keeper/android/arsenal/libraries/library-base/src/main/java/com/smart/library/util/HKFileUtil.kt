@@ -43,7 +43,7 @@ object HKFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream?, destFile: File?) {
+    fun copy(inputStream: InputStream, destFile: File?) {
         var outputStream: OutputStream? = null
         try {
             if (destFile != null && !destFile.exists()) {
@@ -53,18 +53,18 @@ object HKFileUtil {
             outputStream = FileOutputStream(destFile)
             copy(inputStream, outputStream)
         } finally {
-            inputStream?.close()
+            inputStream.close()
             outputStream?.close()
         }
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream?, toFilePath: String?) {
+    fun copy(inputStream: InputStream, toFilePath: String) {
         copy(inputStream, File(toFilePath))
     }
 
     @Throws(IOException::class)
-    fun copy(inputStream: InputStream?, outputStream: OutputStream?) {
+    fun copy(inputStream: InputStream, outputStream: OutputStream) {
         ByteStreams.copy(inputStream, outputStream)
     }
 

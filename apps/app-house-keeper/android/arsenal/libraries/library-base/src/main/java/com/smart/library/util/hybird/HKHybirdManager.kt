@@ -1,19 +1,99 @@
 package com.smart.library.util.hybird
 
 import android.net.Uri
+import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
+import org.jetbrains.anko.collections.forEachWithIndex
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.functions
+import kotlin.reflect.full.staticFunctions
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
 
     val TAG = "hybird"
 
-    private val schemeMap: ConcurrentHashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = ConcurrentHashMap()
-    private val requestMap: ConcurrentHashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = ConcurrentHashMap()
+    private val classMap: HashMap<String, Map<String, KFunction<*>>> = hashMapOf()
+    private val schemeMap: HashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = hashMapOf()
+    private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
+
+    @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
+    fun callNativeMethod(className: String?, methodName: String?, vararg params: Any?): Any? {
+        if (TextUtils.isEmpty(className) || TextUtils.isEmpty(methodName)) {
+            throw RuntimeException("[callNativeMethod] className:$className or methodName:$methodName is null")
+        }
+
+        if (!classMap.containsKey(className)) {
+            throw RuntimeException("[callNativeMethod] class not register :$className")
+        }
+
+        if (classMap[className]?.containsKey(methodName) != true) {
+            throw RuntimeException("[callNativeMethod] the invoked method dose not exist :$methodName")
+        }
+
+        HKLogUtil.d(TAG, "params:${params.size}")
+        params.forEachWithIndex { index, it ->
+            HKLogUtil.v(TAG, "param[$index]:$it")
+        }
+        HKLogUtil.d(TAG, "parameters:${classMap[className]!![methodName]?.parameters?.toList().toString()}")
+
+        classMap[className]!![methodName]?.typeParameters.toString()
+
+        return classMap[className]!![methodName]?.call(null, *params)
+    }
+
+    /**
+     * hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445
+     */
+    @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
+    fun addNativeClass(scheme: String, className: String, kClass: KClass<HKHybirdMethods>?) {
+        if (TextUtils.isEmpty(className) || kClass == null) {
+            throw RuntimeException("[addNativeClass] className:$className or kClass:$kClass is null")
+        }
+        if (!classMap.containsKey(className)) {
+            val methods = HashMap<String, KFunction<*>>()
+            kClass.java.kotlin.companionObject?.declaredFunctions?.forEach { methods.put(it.name, it) }
+            classMap.put(className, methods)
+        }
+
+        schemeMap.put(scheme, { _: WebView?, url: Uri? ->
+            val hashCode = url?.getQueryParameter("hashcode")
+
+            val pathSegments = url?.pathSegments ?: arrayListOf()
+            if (pathSegments.size >= 2) {
+                val clazzName = pathSegments[0]
+                val methodName = pathSegments[1]
+                val params = url?.getQueryParameter("params")?.split(",")?.toTypedArray()
+
+                HKLogUtil.d(TAG, "clazzName:$clazzName , methodName:$methodName , params:$params , hashCode:$hashCode")
+                HKLogUtil.d(TAG, "native.invoke start")
+
+                val result = null
+                try {
+                    callNativeMethod(className, methodName, *params ?: arrayOf())
+                } catch (e: Exception) {
+                    HKLogUtil.e(TAG, "native.invoke exception", e)
+                }
+
+                HKLogUtil.d(TAG, "native.invoke end , result:$result")
+
+                true
+            } else {
+                HKLogUtil.e(TAG, "schemaUrl:${url.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
+                false
+            }
+        })
+    }
 
     fun addRequest(host: String, intercept: (webView: WebView?, url: String?) -> WebResourceResponse?) {
         requestMap.put(host, intercept)
@@ -48,12 +128,12 @@ object HKHybirdManager {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUriString: String, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
-        schemeMap.put(schemeUriString, intercept)
+    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
+        schemeMap.put(schemeUrlString, intercept)
     }
 
-    fun removeScheme(schemeUriString: String) {
-        schemeMap.remove(schemeUriString)
+    fun removeScheme(schemeUrlString: String) {
+        schemeMap.remove(schemeUrlString)
     }
 
     fun removeScheme(scheme: String, host: String, port: Int) {
@@ -131,5 +211,9 @@ object HKHybirdManager {
             """.trimIndent()
 
         webView?.loadUrl("javascript:$wrappedJavascript")
+    }
+
+    init {
+        addNativeClass("hybird://hybird:1234", "native", HKHybirdMethods::class)
     }
 }

@@ -32,19 +32,19 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
         var defaultTitleBarTextSize = 16
 
         fun goToCompleteHttpUrl(activity: Activity, url: String) {
-            goTo(activity, HKWebViewUtil.getCompleteHttpUrl(url), false)
+            goTo(activity, HKWebViewUtil.wrapUrlSchema(url), false)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, title: String) {
-            goTo(activity, HKWebViewUtil.getCompleteHttpUrl(url), title, null)
+            goTo(activity, HKWebViewUtil.wrapUrlSchema(url), title, null)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, title: String, failureUrl: String) {
-            goTo(activity, HKWebViewUtil.getCompleteHttpUrl(url), false, title, 0, 0, 0, 0, failureUrl)
+            goTo(activity, HKWebViewUtil.wrapUrlSchema(url), false, title, 0, 0, 0, 0, failureUrl)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean) {
-            goTo(activity, HKWebViewUtil.getCompleteHttpUrl(url), isHideTitle, null)
+            goTo(activity, HKWebViewUtil.wrapUrlSchema(url), isHideTitle, null)
         }
 
         fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean, title: String,
@@ -54,7 +54,7 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
                                 titleBarTextSize: Int,
                                 failureUrl: String
         ) {
-            goTo(activity, HKWebViewUtil.getCompleteHttpUrl(url), isHideTitle, title, titleBarBgColor, titleBarBgRes, titleBarTextColor, titleBarTextSize, failureUrl)
+            goTo(activity, HKWebViewUtil.wrapUrlSchema(url), isHideTitle, title, titleBarBgColor, titleBarBgRes, titleBarTextColor, titleBarTextSize, failureUrl)
         }
 
         fun goTo(activity: Activity, url: String, title: String, failureUrl: String? = null) {

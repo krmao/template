@@ -8,15 +8,19 @@ import com.smart.library.util.network.HKNetworkUtil
 /**
  * getAppInfo/getDeviceInfo 放到 userAgent
  */
+@Suppress("unused")
 class HKHybirdMethods {
 
+    /**
+     * 注意 反射的时候 参数最好全部是string
+     */
     companion object {
         fun showToast(message: String) {
             HKToastUtil.show(message)
         }
 
-        fun showToast(message: String, duration: Long) {
-            HKToastUtil.show(message + " ,duration:" + duration)
+        fun showToast(message: String, duration: String) {
+            HKToastUtil.show(message + duration)
         }
 
         fun putToLocal(key: String, value: String) {

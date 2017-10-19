@@ -13,17 +13,15 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
-import kotlin.reflect.full.companionObject
-import kotlin.reflect.full.declaredFunctions
-import kotlin.reflect.full.functions
-import kotlin.reflect.full.staticFunctions
+import kotlin.reflect.full.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
 
     val TAG = "hybird"
 
-    private val classMap: HashMap<String, Map<String, KFunction<*>>> = hashMapOf()
+    private val classMap: HashMap<String, KClass<*>> = hashMapOf()
+    //private val classMap: HashMap<String, Map<String, KFunction<*>>> = hashMapOf()
     private val schemeMap: HashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = hashMapOf()
     private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
@@ -37,33 +35,25 @@ object HKHybirdManager {
             throw RuntimeException("[callNativeMethod] class not register :$className")
         }
 
-        if (classMap[className]?.containsKey(methodName) != true) {
+        val methods = classMap[className]!!.java.kotlin.companionObject?.declaredFunctions?.filter { it.name == methodName && it.parameters.size - 1 == params.size }
+        if (methods?.size ?: 0 <= 0) {
             throw RuntimeException("[callNativeMethod] the invoked method dose not exist :$methodName")
         }
-
-        HKLogUtil.d(TAG, "params:${params.size}")
-        params.forEachWithIndex { index, it ->
-            HKLogUtil.v(TAG, "param[$index]:$it")
-        }
-        HKLogUtil.d(TAG, "parameters:${classMap[className]!![methodName]?.parameters?.toList().toString()}")
-
-        classMap[className]!![methodName]?.typeParameters.toString()
-
-        return classMap[className]!![methodName]?.call(null, *params)
+        return methods!![0].call(classMap[className]!!.companionObjectInstance, *params)
     }
 
     /**
      * hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445
      */
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
-    fun addNativeClass(scheme: String, className: String, kClass: KClass<HKHybirdMethods>?) {
+    fun addNativeClass(scheme: String, className: String, kClass: KClass<*>?) {
         if (TextUtils.isEmpty(className) || kClass == null) {
             throw RuntimeException("[addNativeClass] className:$className or kClass:$kClass is null")
         }
         if (!classMap.containsKey(className)) {
             val methods = HashMap<String, KFunction<*>>()
             kClass.java.kotlin.companionObject?.declaredFunctions?.forEach { methods.put(it.name, it) }
-            classMap.put(className, methods)
+            classMap.put(className, kClass)
         }
 
         schemeMap.put(scheme, { _: WebView?, url: Uri? ->
@@ -73,19 +63,21 @@ object HKHybirdManager {
             if (pathSegments.size >= 2) {
                 val clazzName = pathSegments[0]
                 val methodName = pathSegments[1]
-                val params = url?.getQueryParameter("params")?.split(",")?.toTypedArray()
+
+                val params = url?.getQueryParameter("params")
+                val paramArray = url?.getQueryParameter("params")?.split(",")?.toTypedArray()
 
                 HKLogUtil.d(TAG, "clazzName:$clazzName , methodName:$methodName , params:$params , hashCode:$hashCode")
-                HKLogUtil.d(TAG, "native.invoke start")
+                HKLogUtil.w(TAG, "native.invoke start --> [ ${kClass.java.name}.$methodName( $params ) ]")
 
                 val result = null
                 try {
-                    callNativeMethod(className, methodName, *params ?: arrayOf())
+                    callNativeMethod(className, methodName, *paramArray ?: arrayOf())
                 } catch (e: Exception) {
                     HKLogUtil.e(TAG, "native.invoke exception", e)
                 }
 
-                HKLogUtil.d(TAG, "native.invoke end , result:$result")
+                HKLogUtil.w(TAG, "native.invoke end , result:$result")
 
                 true
             } else {

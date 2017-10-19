@@ -3,8 +3,9 @@
         <div @click="onClick()">【onClick跳转】A->B</div>
         <router-link id="route-link" to="/B">【 a 标签跳转 】A->B</router-link>
 
-        <div id="nativeCall" @click="onNativeCallClick()"> 调用 native 方法测试 </div>
-        <div id="nativeCall2" @click="onNativeCallClick2()"> 调用 native 方法测试2 </div>
+        <div id="nativeCall" @click="onNativeCallClick()"> params=Hello </div>
+        <div id="nativeCall2" @click="onNativeCallClick2()"> params=Hello, Native,3000 </div>
+        <div id="nativeCall3" @click="onNativeCallClick3()"> params=Hello,1000 </div>
     </div>
 </template>
 
@@ -20,10 +21,13 @@
                 window.location.href = "#/B"
             },
             onNativeCallClick: function () {
-                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
+                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello"
             },
             onNativeCallClick2: function () {
-                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello"
+                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
+            },
+            onNativeCallClick3: function () {
+                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello,1000"
             },
             onGoBack: function () {
                 console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
@@ -113,6 +117,9 @@
         }
 
         #nativeCall2 {
+            margin-top: px2rem(60);
+        }
+        #nativeCall3 {
             margin-top: px2rem(60);
         }
     }

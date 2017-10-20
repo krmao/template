@@ -66,3 +66,4 @@ window.hybird.onPause = function () {
     console.log(vue.$route.matched[0].components.default.deactivated())
 }
 // hybird ============================================================
+console.log((window.hybird.browser))

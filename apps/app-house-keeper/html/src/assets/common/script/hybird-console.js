@@ -212,6 +212,9 @@ import '../style/dialog.css'
 
     if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
         console.error = console.log = function (message) {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native)
+                window.webkit.messageHandlers.native.postMessage(message);
+
             createConsoleMenu();
             createConsoleClear();
             createConsoleBlock();

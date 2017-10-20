@@ -11,6 +11,7 @@
 
 <script>
     import fixedWidthString from 'fixed-width-string';
+    import axios from 'axios'
 
     let page = fixedWidthString('[组件A', 7, {padding: '.', align: 'right'}) + ']';
 
@@ -21,19 +22,36 @@
                 window.location.href = "#/B"
             },
             onNativeCallClick: function () {
-                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello"
+                window.hybird.showToast("show now")
             },
             onNativeCallClick2: function () {
-                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
-            },
-            onNativeCallClick3: function () {
                 window.hybird.test("a", "b", function () {
                     console.log("回调被执行")
                 })
             },
-            onGoBack: function () {
-                console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
-            }
+            onNativeCallClick3: function () {
+                console.log("onNativeCallClick3 start")
+                axios.get('/user?ID=12345')
+                    .then(
+                        function (response) {
+                            console.log("success:" + response, response);
+                        },
+                        function (error) {
+                            console.log("failure:" + error, error);
+                        }
+                    )
+                    .catch(
+                        function (error) {
+                            console.log("exception:" + error, error);
+                        }
+                    );
+                console.log("onNativeCallClick3 end")
+            },
+            onGoBack:
+
+                function () {
+                    console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
+                }
         },
         data() {
             return {

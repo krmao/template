@@ -9,6 +9,10 @@ Vue.config.productionTip = false
 
 import fixedWidthString from 'fixed-width-string';
 
+
+// https://github.com/axios/axios/issues/188 Android 4.4.4 之前报错 找不到 Promise
+import 'es6-promise/auto'
+
 let page = '[VUE]';
 
 /* eslint-disable no-new */

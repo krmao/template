@@ -40,6 +40,8 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         //_webConfiguration.dataDetectorTypes=WKDataDetectorTypes.all //ios 10.0 自动检测电话、网址和邮箱
         //_webConfiguration.userContentController = WKUserContentController()
         //_webConfiguration.userContentController.add(self, name: "native") // html 直接 调用 native 方法
+        _webConfiguration.userContentController.add(self, name: "native")
+        
         var _webView = WKWebView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: _webConfiguration)
         _webView.isMultipleTouchEnabled = true
         _webView.uiDelegate = self
@@ -124,11 +126,11 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
 
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("[hybird]", "didReceive", "(类似于 android @JavaInterface)", "message.name:", message.name)
+        print("[hybird]", "didReceive", message.name, message.body)
     }
 
     func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("[hybird]", "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString.removingPercentEncoding ?? "null")
+        print("[hybird]", "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
         decisionHandler(WKNavigationActionPolicy.allow)
     }
 

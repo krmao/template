@@ -59,12 +59,9 @@ let vue = new Vue({
     }
 })
 
-window.hybird.onGoBack = function () {
-    console.log(vue.$route.matched[0].components.default.methods.onGoBack())
-}
-window.hybird.onResume = function () {
+window.native.onResume = function () {
     console.log(vue.$route.matched[0].components.default.activated())
 }
-window.hybird.onPause = function () {
+window.native.onPause = function () {
     console.log(vue.$route.matched[0].components.default.deactivated())
 }

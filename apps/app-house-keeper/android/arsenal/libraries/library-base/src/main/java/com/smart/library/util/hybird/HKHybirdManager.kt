@@ -5,12 +5,11 @@ import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
-import org.jetbrains.anko.collections.forEachWithIndex
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
-import java.util.*
+import java.net.URLDecoder
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.*
@@ -57,18 +56,20 @@ object HKHybirdManager {
         }
 
         schemeMap.put(scheme, { _: WebView?, url: Uri? ->
-            val hashCode = url?.getQueryParameter("hashcode")
-
             val pathSegments = url?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
                 val clazzName = pathSegments[0]
                 val methodName = pathSegments[1]
 
-                val params = url?.getQueryParameter("params")
-                val paramArray = url?.getQueryParameter("params")?.split(",")?.toTypedArray()
+                val queryMap: HashMap<String?, String?> = HashMap()
+                url?.encodedQuery?.split("&")?.forEach { it.split("=").takeIf { it.isNotEmpty() }?.apply { queryMap.put(this.getOrNull(0), this.getOrNull(1)) } }
+                val hashcode = queryMap["hashcode"]  // val hashcode = url?.getQueryParameter("hashcode") // getQueryParameter 默认 decode
+                val params = queryMap["params"]
 
-                HKLogUtil.d(TAG, "clazzName:$clazzName , methodName:$methodName , params:$params , hashCode:$hashCode")
-                HKLogUtil.w(TAG, "native.invoke start --> [ ${kClass.java.name}.$methodName( $params ) ]")
+                val paramArray = params?.split(",")?.map { URLDecoder.decode(it, "UTF-8") }?.toTypedArray()
+
+                HKLogUtil.d(TAG, "clazzName:$clazzName , methodName:$methodName , params:size:${paramArray?.size}:($params) , hashCode:$hashcode")
+                HKLogUtil.w(TAG, "native.invoke start --> [${kClass.java.name}.$methodName($params)]")
 
                 val result = null
                 try {
@@ -95,9 +96,8 @@ object HKHybirdManager {
         requestMap.remove(host)
     }
 
-    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? {
-        return requestMap[Uri.parse(url).host]?.invoke(webView, url)
-    }
+    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? =
+        requestMap[Uri.parse(url).host]?.invoke(webView, url)
 
     /**
      *  scheme://host:port/path?k=v

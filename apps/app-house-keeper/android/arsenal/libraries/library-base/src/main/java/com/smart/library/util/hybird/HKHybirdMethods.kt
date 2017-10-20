@@ -19,10 +19,6 @@ class HKHybirdMethods {
             HKToastUtil.show(message)
         }
 
-        fun showToast(message: String, duration: String) {
-            HKToastUtil.show(message + duration)
-        }
-
         fun putToLocal(key: String, value: String) {
             HKPreferencesUtil.putString(key, value)
         }

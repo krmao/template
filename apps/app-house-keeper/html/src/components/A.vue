@@ -5,12 +5,13 @@
 
         <div id="nativeCall" @click="onNativeCallClick()"> params=Hello </div>
         <div id="nativeCall2" @click="onNativeCallClick2()"> params=Hello, Native,3000 </div>
-        <div id="nativeCall3" @click="onNativeCallClick3()"> params=Hello,1000 </div>
+        <div id="nativeCall3" @click="onNativeCallClick3()"> Native.test </div>
     </div>
 </template>
 
 <script>
     import fixedWidthString from 'fixed-width-string';
+    import Native from '../assets/common/script/native'
 
     let page = fixedWidthString('[组件A', 7, {padding: '.', align: 'right'}) + ']';
 
@@ -27,7 +28,9 @@
                 window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
             },
             onNativeCallClick3: function () {
-                window.location.href = "hybird://hybird:1234/native/showToast?params=Hello,1000"
+                Native.test("a", "b", function () {
+                    console.log("回调被执行")
+                })
             },
             onGoBack: function () {
                 console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')

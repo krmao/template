@@ -79,7 +79,9 @@ object HKHybirdManager {
                 }
 
                 HKLogUtil.w(TAG, "native.invoke end , result:$result")
-                callJsFunction(webView, "javascript:window.hybird.onCallback($hashcode, $result)")
+                if (!TextUtils.isEmpty(hashcode)) {
+                    callJsFunction(webView, "javascript:window.hybird.onCallback($hashcode, $result)")
+                }
                 true
             } else {
                 HKLogUtil.e(TAG, "schemaUrl:${url.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")

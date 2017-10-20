@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/common/script/hybird-console'
-import './assets/common/script/hybird'
 
 Vue.config.productionTip = false
 
@@ -57,3 +56,13 @@ let vue = new Vue({
     }
 })
 
+// hybird ============================================================
+import './assets/common/script/hybird'
+
+window.hybird.onResume = function () {
+    console.log(vue.$route.matched[0].components.default.activated())
+}
+window.hybird.onPause = function () {
+    console.log(vue.$route.matched[0].components.default.deactivated())
+}
+// hybird ============================================================

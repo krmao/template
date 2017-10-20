@@ -41,14 +41,14 @@ module.export = (function (bindObj = null) {
         let result = null
         try {
             let hashcode = args[0]
-            let params = args.slice(1, args.length)
-            console.log("[html] onCallback:invoke before: params:(" + params + ") , hashcode=" + hashcode)
-            result = _bind.callbackMap.get(hashcode)(params)
+            let result = args.slice(1, args.length)
+            console.log("[html] onCallback:invoke before: hashcode=" + hashcode + " , result=" + result)
+            _bind.callbackMap.get(hashcode)(result)
             _bind.callbackMap.delete(hashcode)
-            console.log("[html] onCallback:invoke success:result= " + result)
+            console.log("[html] onCallback:invoke success")
         } catch (error) {
             result = 'error';
-            console.log("[html] onCallback:invoke error:result= " + result + " error= " + error)
+            console.log("[html] onCallback:invoke error:" + error)
         }
         console.log("[html] onCallback:end:callbackMap.size==" + _bind.callbackMap.size)
         return result

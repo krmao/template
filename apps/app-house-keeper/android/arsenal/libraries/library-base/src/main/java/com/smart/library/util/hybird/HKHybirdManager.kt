@@ -55,7 +55,7 @@ object HKHybirdManager {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { _: WebView?, url: Uri? ->
+        schemeMap.put(scheme, { webView: WebView?, url: Uri? ->
             val pathSegments = url?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
                 val clazzName = pathSegments[0]
@@ -71,15 +71,15 @@ object HKHybirdManager {
                 HKLogUtil.d(TAG, "clazzName:$clazzName , methodName:$methodName , params:size:${paramArray?.size}:($params) , hashCode:$hashcode")
                 HKLogUtil.w(TAG, "native.invoke start --> [${kClass.java.name}.$methodName($params)]")
 
-                val result = null
+                var result: Any? = null
                 try {
-                    callNativeMethod(className, methodName, *paramArray ?: arrayOf())
+                    result = callNativeMethod(className, methodName, *paramArray ?: arrayOf())
                 } catch (e: Exception) {
                     HKLogUtil.e(TAG, "native.invoke exception", e)
                 }
 
                 HKLogUtil.w(TAG, "native.invoke end , result:$result")
-
+                callJsFunction(webView, "javascript:window.hybird.onCallback($hashcode, $result)")
                 true
             } else {
                 HKLogUtil.e(TAG, "schemaUrl:${url.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
@@ -169,7 +169,7 @@ object HKHybirdManager {
         if (callback != null)
             callbackMap.put(callbackHashCode, callback)
 
-        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[before callback]:" + callbackMap.size)
+        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[before callback]:" + callbackMap.size + " :$javascript")
 
         val wrappedJavascript = """
                 (function (){

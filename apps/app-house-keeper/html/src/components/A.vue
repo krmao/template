@@ -11,7 +11,6 @@
 
 <script>
     import fixedWidthString from 'fixed-width-string';
-    import Native from '../assets/common/script/native'
 
     let page = fixedWidthString('[组件A', 7, {padding: '.', align: 'right'}) + ']';
 
@@ -28,7 +27,7 @@
                 window.location.href = "hybird://hybird:1234/native/showToast?params=Hello, Native,3000"
             },
             onNativeCallClick3: function () {
-                Native.test("a", "b", function () {
+                window.hybird.test("a", "b", function () {
                     console.log("回调被执行")
                 })
             },

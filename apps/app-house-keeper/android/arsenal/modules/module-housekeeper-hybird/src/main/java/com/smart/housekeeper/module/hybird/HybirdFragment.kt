@@ -14,6 +14,7 @@ import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKToastUtil
 import com.smart.library.util.hybird.HKHybirdManager
 import kotlinx.android.synthetic.main.hybird_fragment.*
+import java.io.File
 import java.io.FileInputStream
 
 class HybirdFragment : HKBaseFragment() {
@@ -31,7 +32,7 @@ class HybirdFragment : HKBaseFragment() {
         text.setOnClickListener {
             HKBundleManager.installWithVerify { success, roodDir ->
                 // val indexPath = "file://${roodDir}index.html"
-                val indexPath = "https://$HOST/index.html"
+                val indexPath = "http://$HOST/index.html"
                 if (success) {
                     HybirdWebFragment.goTo(activity, indexPath)
 
@@ -57,32 +58,36 @@ class HybirdFragment : HKBaseFragment() {
 
                         HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest: intercept originPath: " + requestUrl.toString())
 
-                        try {
-                            val tmpPath = requestUrl.toString()
-                                .replace("https://", "")
-                                .replace("http://", "")
-                                .replace(interceptHost + "/", "")
-                                .replace(interceptHost, "")
-                            //.replace("/#!.*".toRegex(), "")
-                            //.replace("/index.html", "")
 
-                            HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept tmpPath: $tmpPath")
+                        val tmpPath = requestUrl.toString()
+                            .replace("https://", "")
+                            .replace("http://", "")
+                            .replace(interceptHost + "/", "")
+                            .replace(interceptHost, "")
+                        //.replace("/#!.*".toRegex(), "")
+                        //.replace("/index.html", "")
 
-                            val mimeType = when {
-                                requestUrl.toString().contains(".css") -> "text/css"
-                                requestUrl.toString().contains(".png") -> "image/png"
-                                requestUrl.toString().contains(".js") -> "application/x-javascript"
-                                requestUrl.toString().contains(".woff") -> "application/x-font-woff"
-                                else -> "text/html"
+                        HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept tmpPath: $tmpPath")
+
+                        val mimeType = when {
+                            requestUrl.toString().contains(".css") -> "text/css"
+                            requestUrl.toString().contains(".png") -> "image/png"
+                            requestUrl.toString().contains(".js") -> "application/x-javascript"
+                            requestUrl.toString().contains(".woff") -> "application/x-font-woff"
+                            else -> "text/html"
+                        }
+
+                        val fullPath = HKBundleManager.HYBIRD_DIR + tmpPath
+
+                        HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept fullPath: $fullPath")
+
+                        val file = File(fullPath)
+                        if (file.exists()) {
+                            try {
+                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(fullPath))
+                            } catch (e: Exception) {
+                                HKLogUtil.e(HKHybirdManager.TAG, "shouldInterceptRequest: intercept error: ", e)
                             }
-
-                            val fullPath = HKBundleManager.HYBIRD_DIR + tmpPath
-
-                            HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept fullPath: $fullPath")
-
-                            resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(fullPath))
-                        } catch (e: Exception) {
-                            HKLogUtil.e(HKHybirdManager.TAG, "shouldInterceptRequest: intercept error: ", e)
                         }
                     }
                 }

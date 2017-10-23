@@ -41,7 +41,7 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         //_webConfiguration.userContentController = WKUserContentController()
         //_webConfiguration.userContentController.add(self, name: "native") // html 直接 调用 native 方法
         _webConfiguration.userContentController.add(self, name: "native")
-        
+
         var _webView = WKWebView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: _webConfiguration)
         _webView.isMultipleTouchEnabled = true
         _webView.uiDelegate = self
@@ -104,7 +104,7 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
             self.webView.load(URLRequest(url: URL(string: self.indexPath)!))
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)

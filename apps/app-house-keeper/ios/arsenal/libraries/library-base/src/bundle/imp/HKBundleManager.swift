@@ -33,7 +33,6 @@
             ........./app.version.2.2(bundleKey)/
 */
 
-import SSZipArchive
 import RxCocoa
 import RxSwift
 
@@ -84,14 +83,13 @@ class HKBundleManager: HKIBundleManager {
                             try HKFileUtil.copy(Bundle.main.path(forResource: self.nameInAssets, ofType: "zip", inDirectory: "assets")!, self.pathForLocalFile)
                             HKLogUtil.d(self.TAG, "copy success ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)))
                             HKLogUtil.d(self.TAG, "start unzip now ...")
-                            HKZipUtil.unzip(self.pathForLocalFile, targetDirPath: self.pathForHybirdDir)
-                            HKLogUtil.d(self.TAG, "unzip success")
-                            HKFileUtil.printDirs(self.docDir)
+                            try HKZipUtil.unzip(self.pathForLocalFile, targetDirPath: self.pathForHybirdDir)
                             self.hybirdLocalVersion = String(HKSystemUtil.versionCode) + "_" + HKSystemUtil.versionName
                             observer.onNext(0)
+                            HKFileUtil.printDirs(self.docDir)
                         } catch {
-                            HKLogUtil.d(self.TAG, "copy failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
-                             observer.onError(error)
+                            HKLogUtil.d(self.TAG, "copy/unzip failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
+                            observer.onError(error)
                         }
                         return Disposables.create()
                     }

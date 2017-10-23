@@ -79,7 +79,7 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
 
         progressView.snp.makeConstraints { (make) in
             make.width.equalTo((self.navigationController?.navigationBar)!)
-            make.height.equalTo(2)
+            make.height.equalTo(20)
             make.top.equalTo(44 - 2)
         }
         webView.snp.makeConstraints { (make) in
@@ -155,8 +155,18 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "estimatedProgress") {
-            progressView.isHidden = webView.estimatedProgress == 1
-            progressView.setProgress(Float(webView.estimatedProgress), animated: true)
+            let newProgress = (change?[.newKey] as AnyObject).floatValue ?? 0
+            let oldProgress = (change?[.oldKey] as AnyObject).floatValue ?? 0
+
+            HKLogUtil.d("webView:load: newProgress:", newProgress, " , oldProgress:", oldProgress)
+
+            if (newProgress >= 1) {
+                progressView.isHidden = true
+                progressView.setProgress(0, animated: false)
+            } else if (newProgress > oldProgress) {
+                progressView.isHidden = false
+                progressView.setProgress(Float(self.webView.estimatedProgress), animated: true)
+            }
         }
     }
 

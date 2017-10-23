@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         let rootViewController = UINavigationController()
-        rootViewController.setNavigationBarHidden(true, animated: false)
+//        rootViewController.setNavigationBarHidden(true, animated: false)
         
         window?.rootViewController = rootViewController
         window?.backgroundColor = UIColor("#FFEFEFEF")

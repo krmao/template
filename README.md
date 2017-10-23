@@ -26,6 +26,8 @@
 
 2) [Uncaught ReferenceError: Promise is not defined](https://github.com/axios/axios/issues/188)
     
+    [promise 各系统版本的支持](http://caniuse.com/#search=promise)
+    
     此问题在 android sdk 4.4.2 出现
     
     解决方案:
@@ -33,5 +35,5 @@
     import 'es6-promise/auto'
     ```
     
-    注: 在 android sdk >= 20 ( >= 4.4W ) 此问题不再出现
+    注: 在 android sdk >= 21 ( >= 5.0 ) 此问题不再出现
     

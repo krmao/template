@@ -48,26 +48,17 @@ class HybirdFragment : HKBaseFragment() {
         val interceptHost = HybirdFragment.HOST
         HKHybirdManager.addRequest(interceptHost) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null
-
             if (!TextUtils.isEmpty(url)) {
                 val requestUrl = Uri.parse(url)
                 val scheme = requestUrl?.scheme?.trim()
 
                 if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
                     if (interceptHost.equals(requestUrl.host, true)) {
-
-                        HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest: intercept originPath: " + requestUrl.toString())
-
-
                         val tmpPath = requestUrl.toString()
                             .replace("https://", "")
                             .replace("http://", "")
                             .replace(interceptHost + "/", "")
                             .replace(interceptHost, "")
-                        //.replace("/#!.*".toRegex(), "")
-                        //.replace("/index.html", "")
-
-                        HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept tmpPath: $tmpPath")
 
                         val mimeType = when {
                             requestUrl.toString().contains(".css") -> "text/css"
@@ -77,16 +68,14 @@ class HybirdFragment : HKBaseFragment() {
                             else -> "text/html"
                         }
 
-                        val fullPath = HKBundleManager.HYBIRD_DIR + tmpPath
-
-                        HKLogUtil.w(HKHybirdManager.TAG, "shouldInterceptRequest: intercept fullPath: $fullPath")
-
-                        val file = File(fullPath)
-                        if (file.exists()) {
+                        val localPath = HKBundleManager.HYBIRD_DIR + tmpPath
+                        val localFileExists = File(localPath).exists()
+                        HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?$localFileExists(localFile.exists?$localFileExists)>, [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
+                        if (localFileExists) {
                             try {
-                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(fullPath))
+                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
                             } catch (e: Exception) {
-                                HKLogUtil.e(HKHybirdManager.TAG, "shouldInterceptRequest: intercept error: ", e)
+                                HKLogUtil.e(HKHybirdManager.TAG, "shouldInterceptRequest:<intercept error>: ", e)
                             }
                         }
                     }

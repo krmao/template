@@ -17,13 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = rootViewController
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
+        
+        URLProtocol.registerClass(HKURLProtocol.self)
+        HKContextControllerClass.wk_registerScheme("http")
+        HKContextControllerClass.wk_registerScheme("https")
 
         //HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
         
         let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
         progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
         progress.bezelView.backgroundColor = UIColor("#CC000000")
+        
         progress.activityIndicatorColor = UIColor("#FFEFEFEF")
+        
         
         HKBundleManager.INSTANCE.installWithVerify(){ ( success:Bool , rootDir:String) in
             progress.hide(animated: true)

@@ -122,13 +122,21 @@ class HKBundleManager: HKIBundleManager {
 
     func verify() -> Bool {
         let versionCurrentApp = String(HKSystemUtil.versionCode) + "_" + HKSystemUtil.versionName
-        let verify = versionCurrentApp == self.hybirdLocalVersion
-        HKLogUtil.d(self.TAG, "versionCurrentApp:", versionCurrentApp, " == hybirdLocalVersion:", hybirdLocalVersion, "?", String(verify))
-        return false//verify
+        var verify = versionCurrentApp == self.hybirdLocalVersion
+
+        let hybirdLocalValid = HKFileUtil.fileExists(self.pathForHybirdDir + "index.html")
+        if !hybirdLocalValid {
+            HKFileUtil.deleteDirectory(self.pathForHybirdDir)
+            self.hybirdLocalVersion = ""
+        }
+
+        verify = verify && hybirdLocalValid
+
+        HKLogUtil.d(self.TAG, "[verify:\(verify)] versionCurrentApp:\(versionCurrentApp) == hybirdLocalVersion:\(hybirdLocalVersion) && hybirdLocalValid:\(hybirdLocalValid)")
+        return verify
     }
 
     func installWithVerify() {
         self.installWithVerify(nil)
     }
-
 }

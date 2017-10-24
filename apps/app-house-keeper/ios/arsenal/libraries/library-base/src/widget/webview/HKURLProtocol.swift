@@ -11,30 +11,30 @@ class HKURLProtocol: URLProtocol {
         var canInit = request.url?.host == HKURLProtocol.HOST
 
         if !canInit {
-            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:host!=" + HKURLProtocol.HOST, "url:" + (request.url?.absoluteString ?? ""))
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false, host:false, isLocalFileExists:false", "url:" + (request.url?.absoluteString ?? ""), "correctHost:\(HKURLProtocol.HOST)")
             return false
         }
 
         canInit = canInit && HKURLProtocol.isLocalFileExists(request)
 
         if !canInit {
-            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:isLocalFileExists=false", "url:" + (request.url?.absoluteString ?? ""))
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:false", "url:" + (request.url?.absoluteString ?? ""))
             return false
         }
 
         if (URLProtocol.property(forKey: HKURLProtocol.KEY, in: request) != nil) {
             canInit = false
-            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:isLocalFileExists=true:repeatRequest", "url:" + (request.url?.absoluteString ?? ""))
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true, repeatRequest", "url:" + (request.url?.absoluteString ?? ""))
             return canInit
         }
 
-        HKLogUtil.d(HKURLProtocol.TAG, "canInit:true:isLocalFileExists=true", "url:" + (request.url?.absoluteString ?? ""))
+        HKLogUtil.d(HKURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true", "url:" + (request.url?.absoluteString ?? ""))
         return canInit
     }
 
 
     class func getLocalFilePath(_ request: URLRequest) -> String {
-        let localFilePath = String( HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (request.url?.path ?? ""))
+        let localFilePath = String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (request.url?.path ?? ""))
         return localFilePath
     }
 
@@ -55,10 +55,10 @@ class HKURLProtocol: URLProtocol {
         if self.request.url?.host == HKURLProtocol.HOST {
             //let routeIndex = request.url?.absoluteString.index(of: "#")
             //let route = routeIndex == nil ? "" : request.url?.absoluteString.substring(from: routeIndex!)
-            
+
             let localFilePath = request.url?.absoluteString
-                .replace("https://"+HKURLProtocol.HOST, String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1)))
-                .replace("http://"+HKURLProtocol.HOST,String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1))) ?? ""
+                    .replace("https://" + HKURLProtocol.HOST, String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1)))
+                    .replace("http://" + HKURLProtocol.HOST, String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1))) ?? ""
             //let localFilePath = String( HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (self.request.url?.path ?? ""))
             HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "localUrl:" + localFilePath)
             guard let url = URL(string: localFilePath) else {

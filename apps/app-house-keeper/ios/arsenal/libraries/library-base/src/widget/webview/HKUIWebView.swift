@@ -9,11 +9,38 @@ import UIKit
 open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
     var TAG = "[hybird]"
-    
 
-    init() {
+    convenience init() {
+        self.init(nil)
+    }
+
+    init(_ navigationController: UINavigationController?) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         self.scalesPageToFit = true
+        //== ios 11.0 以上 撑满底部 =============================================================
+        // 适配ios11 navigationBar 隐藏的情况下
+        // self.navigationController?.navigationBar.isTranslucent = false
+        // self.webView.scrollView.contentInsetAdjustmentBehavior = .never
+        // and set webView.backgroundColor after webViewDidFinishLoad
+
+        // 适配ios11 navigationBar 显示的情况下
+        // self.navigationController?.navigationBar.isTranslucent = false
+        // self.webView.scrollView.contentInsetAdjustmentBehavior = .never
+        if #available(iOS 11.0, *) {
+            self.scrollView.contentInsetAdjustmentBehavior = .never
+        }
+        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
+        navigationController?.navigationBar.isTranslucent = false
+        if navigationController?.navigationBar.isHidden ?? false {
+            self.scrollView.contentInset = UIEdgeInsets(top: HKSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
+            self.backgroundColor = .white
+            self.setOnGetBodyBackgroundListener { ( _ bodyBGColorString: String? ) -> Void in
+                HKLogUtil.d(self.TAG, "onGetBodyColorString", bodyBGColorString ?? "")
+                self.backgroundColor = UIColor.init(name: bodyBGColorString ?? "") ?? .white
+            }
+        }
+        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
+        //== ios 11.0 以上 撑满底部 =============================================================
         delegate = self
     }
 
@@ -34,14 +61,13 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
     @available(iOS 2.0, *)
     public func webViewDidFinishLoad(_ webView: UIWebView) {
-        let bodyBGColorString = webView.stringByEvaluatingJavaScript(from: "document.body.style.backgroundColor")
-        HKLogUtil.d(TAG, "webViewDidFinishLoad","bodyColorString", bodyBGColorString)
+        let bodyBGColorString = webView.stringByEvaluatingJavaScript(from: "document.body.style.backgroundColor") ?? ""
         onGetBodyBackgroundListener?(bodyBGColorString)
     }
-    
-    private var onGetBodyBackgroundListener:(( _ bodyBGColorString : String? ) -> Void)? = nil
-    
-    public func setOnGetBodyBackgroundListener( onGetBodyBackgroundListener:(( _ bodyBGColorString : String? ) -> Void)? ){
+
+    private var onGetBodyBackgroundListener: ((_ bodyBGColorString: String?) -> Void)? = nil
+
+    public func setOnGetBodyBackgroundListener(onGetBodyBackgroundListener: ((_ bodyBGColorString: String?) -> Void)?) {
         self.onGetBodyBackgroundListener = onGetBodyBackgroundListener
     }
 

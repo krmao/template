@@ -158,7 +158,7 @@ extension UIColor {
     ]
 
 
-    public class var random: UIColor {
+    public static var random: UIColor {
         return UIColor(
                 red: CGFloat(arc4random_uniform(256)) / 255.0,
                 green: CGFloat(arc4random_uniform(256)) / 255.0,

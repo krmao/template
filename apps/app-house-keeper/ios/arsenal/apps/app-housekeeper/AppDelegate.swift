@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HKBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
             progress.hide(animated: true)
             //rootViewController.pushViewController(HybirdWebViewControllerV2.init(url: /*"file://" +*/ rootDir + "index.html"), animated: false)
-            rootViewController.pushViewController(HybirdWebViewControllerV2.init(url: "https://www.smarttemplate.com/index.html"), animated: false)
+            rootViewController.pushViewController(HybirdWebViewControllerV2.init(url: "http://www.smarttemplate.com/index.html"), animated: false)
         }
 
         return true

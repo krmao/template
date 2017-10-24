@@ -12,6 +12,8 @@
 		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
 		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
 		3D52A300774BC609EEC96E8A /* HKBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A75A2374E3E1FF50EEFF /* HKBundleManager.swift */; };
+		3D52A477DCB8207E59722359 /* HKUIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A68100CFFD19A22531AC /* HKUIWebView.swift */; };
+		3D52A56403ECA7C590825083 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEB4353DE7FB5154134E /* String+Ext.swift */; };
 		3D52A5D4E3383708DDC1B6FB /* HKBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AFA41FD0C7E91849B14E /* HKBundle.swift */; };
 		3D52A77ABFD52CEAC4A13934 /* HKZipUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */; };
 		3D52A7E0BA6AEA04B365F825 /* HKLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB2C5DAE023FCF89CE7E /* HKLogUtil.swift */; };
@@ -19,7 +21,9 @@
 		3D52AB3C75132BC58893B661 /* HKSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */; };
 		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
+		3D52ADFFCF7505549C75F5B4 /* HybirdWebViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF7F42EC88F1390ECA4 /* HybirdWebViewControllerV2.swift */; };
 		3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */; };
+		3D52AFFAAFAAF88813628897 /* HKURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A92139790360723819E4 /* HKURLProtocol.swift */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
 		8763BF0F1F8DCB5000CA4E89 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8763BF0E1F8DCB4800CA4E89 /* assets */; };
 		87856D571F8E0FB800D053DA /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87856D561F8E0F9E00D053DA /* assets.xcassets */; };
@@ -32,12 +36,16 @@
 		3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKSystemUtil.swift; sourceTree = "<group>"; };
 		3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKZipUtil.swift; sourceTree = "<group>"; };
 		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
+		3D52A68100CFFD19A22531AC /* HKUIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKUIWebView.swift; sourceTree = "<group>"; };
 		3D52A75A2374E3E1FF50EEFF /* HKBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKBundleManager.swift; sourceTree = "<group>"; };
+		3D52A92139790360723819E4 /* HKURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKURLProtocol.swift; sourceTree = "<group>"; };
 		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
+		3D52AAF7F42EC88F1390ECA4 /* HybirdWebViewControllerV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewControllerV2.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWebViewController.swift; sourceTree = "<group>"; };
 		3D52AB2C5DAE023FCF89CE7E /* HKLogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKLogUtil.swift; sourceTree = "<group>"; };
 		3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKFileUtil.swift; sourceTree = "<group>"; };
 		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		3D52AEB4353DE7FB5154134E /* String+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		3D52AFA41FD0C7E91849B14E /* HKBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKBundle.swift; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */,
+				3D52AEB4353DE7FB5154134E /* String+Ext.swift */,
 			);
 			path = ext;
 			sourceTree = "<group>";
@@ -104,11 +113,21 @@
 			path = util;
 			sourceTree = "<group>";
 		};
+		3D52A78BE57FFC61869187B9 /* webview */ = {
+			isa = PBXGroup;
+			children = (
+				3D52A92139790360723819E4 /* HKURLProtocol.swift */,
+				3D52A68100CFFD19A22531AC /* HKUIWebView.swift */,
+			);
+			path = webview;
+			sourceTree = "<group>";
+		};
 		3D52AA2FA888BF152B987199 /* widget */ = {
 			isa = PBXGroup;
 			children = (
 				3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */,
 				3D52A3BECE0622E9005ABB99 /* ext */,
+				3D52A78BE57FFC61869187B9 /* webview */,
 			);
 			path = widget;
 			sourceTree = "<group>";
@@ -287,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				3D52AB15C10C0A694D9E4FB7 /* HybirdWebViewController.swift */,
+				3D52AAF7F42EC88F1390ECA4 /* HybirdWebViewControllerV2.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -384,16 +404,16 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -451,6 +471,10 @@
 				3D52A90C61C191ACE832F8D7 /* HKIBundleManager.swift in Sources */,
 				3D52A5D4E3383708DDC1B6FB /* HKBundle.swift in Sources */,
 				3D52A300774BC609EEC96E8A /* HKBundleManager.swift in Sources */,
+				3D52AFFAAFAAF88813628897 /* HKURLProtocol.swift in Sources */,
+				3D52A477DCB8207E59722359 /* HKUIWebView.swift in Sources */,
+				3D52ADFFCF7505549C75F5B4 /* HybirdWebViewControllerV2.swift in Sources */,
+				3D52A56403ECA7C590825083 /* String+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

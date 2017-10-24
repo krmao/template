@@ -49,7 +49,7 @@
                 console.log("onNativeCallClick3 end")
             },
             onNativeCallClick4: function () {
-                console.log("onNativeCallClick3 start")
+                console.log("onNativeCallClick4 start")
                 axios.post('/user', {
                     firstName: 'Fred',
                     lastName: 'Flintstone'
@@ -65,7 +65,7 @@
                         console.log("exception:" + error, error);
                     }
                 );
-                console.log("onNativeCallClick3 end")
+                console.log("onNativeCallClick4 end")
             },
             onGoBack:
 

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         URLProtocol.registerClass(HKURLProtocol.self)
 //
-        //HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
+//        HybirdManager.reInstallBundle(view: self.window!, fromViewController: rootViewController)
 
         let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
         progress.bezelView.style = MBProgressHUDBackgroundStyle.blur

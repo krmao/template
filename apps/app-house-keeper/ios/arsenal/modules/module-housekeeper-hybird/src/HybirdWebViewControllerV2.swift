@@ -47,17 +47,36 @@ class HybirdWebViewControllerV2: UIViewController {
             make.top.equalTo(self.view).offset(0)
             make.bottom.equalTo(self.view)
         }
+        
+        // 适配ios11 navigationBar 隐藏的情况下
+        // self.navigationController?.navigationBar.isTranslucent = false
+        // self.webView.scrollView.contentInsetAdjustmentBehavior = .never
+        // and set webView.backgroundColor after webViewDidFinishLoad
+        
+        // 适配ios11 navigationBar 显示的情况下
+        // self.navigationController?.navigationBar.isTranslucent = false
+        // self.webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-        self.automaticallyAdjustsScrollViewInsets = false
+        // self.automaticallyAdjustsScrollViewInsets = true
         self.navigationController?.navigationBar.isTranslucent = false
         //== ios 11.0 以上 撑满底部 =============================================================
         if #available(iOS 11.0, *) {
-            self.webView.scrollView.contentInsetAdjustmentBehavior = (self.navigationController?.navigationBar.isHidden)! ? .never : .never
+            self.webView.scrollView.contentInsetAdjustmentBehavior = .never
         }
         //== ios 11.0 以上 撑满底部 =============================================================
+        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
+        if self.navigationController?.navigationBar.isHidden ?? false {
+            self.webView.scrollView.contentInset = UIEdgeInsets(top: HKSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
+            self.webView.backgroundColor = .white
+            self.webView.setOnGetBodyBackgroundListener{( _ bodyBGColorString : String? ) -> Void in
+                print("bodyColorString",bodyBGColorString ?? "")
+                self.webView.backgroundColor = UIColor.init(name: bodyBGColorString!)
+            }
+        }
+        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
+        
         self.webView.loadRequest(URLRequest(url: URL(string: self.indexPath)!))
     }
-
 
     deinit {
         self.webView.delegate = nil

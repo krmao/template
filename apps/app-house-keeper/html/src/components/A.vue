@@ -5,7 +5,8 @@
 
         <div id="nativeCall" @click="onNativeCallClick()"> params=Hello </div>
         <div id="nativeCall2" @click="onNativeCallClick2()"> params=Hello, Native,3000 </div>
-        <div id="nativeCall3" @click="onNativeCallClick3()"> Native.test </div>
+        <div id="nativeCall3" @click="onNativeCallClick3()"> http get </div>
+        <div id="nativeCall4" @click="onNativeCallClick4()"> http post </div>
     </div>
 </template>
 
@@ -45,6 +46,25 @@
                             console.log("exception:" + error, error);
                         }
                     );
+                console.log("onNativeCallClick3 end")
+            },
+            onNativeCallClick4: function () {
+                console.log("onNativeCallClick3 start")
+                axios.post('/user', {
+                    firstName: 'Fred',
+                    lastName: 'Flintstone'
+                }).then(
+                    function (response) {
+                        console.log("success:" + response, response);
+                    },
+                    function (error) {
+                        console.log("failure:" + error, error);
+                    }
+                ).catch(
+                    function (error) {
+                        console.log("exception:" + error, error);
+                    }
+                );
                 console.log("onNativeCallClick3 end")
             },
             onGoBack:
@@ -122,7 +142,7 @@
     }
 
     .a_container {
-        padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);
+        /*padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);*/
         height: px2rem(2000);
         width: px2rem(750);
         /*padding-top: px2rem(50);*/
@@ -140,6 +160,9 @@
             margin-top: px2rem(60);
         }
         #nativeCall3 {
+            margin-top: px2rem(60);
+        }
+        #nativeCall4 {
             margin-top: px2rem(60);
         }
     }

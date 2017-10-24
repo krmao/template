@@ -7,23 +7,39 @@ class HKURLProtocol: URLProtocol {
     public static let HOST = "www.smarttemplate.com"
 
     override class func canInit(with request: URLRequest) -> Bool {
-         var canInit = request.url?.host == HKURLProtocol.HOST
-        
+        HKLogUtil.d()
+        var canInit = request.url?.host == HKURLProtocol.HOST
+
+        if !canInit {
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:host!=" + HKURLProtocol.HOST, "url:" + (request.url?.absoluteString ?? ""))
+            return false
+        }
+
+        canInit = canInit && HKURLProtocol.isLocalFileExists(request)
+
+        if !canInit {
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:isLocalFileExists=false", "url:" + (request.url?.absoluteString ?? ""))
+            return false
+        }
+
         if (URLProtocol.property(forKey: HKURLProtocol.KEY, in: request) != nil) {
             canInit = false
-            HKLogUtil.d()
-            HKLogUtil.d(HKURLProtocol.TAG, "canInit:repeat", "url:"+(request.url?.absoluteString ?? ""),("request.url?.host:" + (request.url?.host ?? "")) + (" == HOST:" + HKURLProtocol.HOST) , canInit)
+            HKLogUtil.d(HKURLProtocol.TAG, "canInit:false:isLocalFileExists=true:repeatRequest", "url:" + (request.url?.absoluteString ?? ""))
             return canInit
         }
-        let localFilePath = request.url?.absoluteString
-            .replace("http://", "")
-            .replace("https://", "")
-            .replace(HKURLProtocol.HOST + "/", HKBundleManager.INSTANCE.pathForHybirdDir)
-            .replace(HKURLProtocol.HOST, HKBundleManager.INSTANCE.pathForHybirdDir) ?? ""
-        HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "localUrl:"+localFilePath)
-        
-        HKLogUtil.d(HKURLProtocol.TAG, "canInit", "url:"+(request.url?.absoluteString ?? ""),("request.url?.host:" + (request.url?.host ?? "")) + (" == HOST:" + HKURLProtocol.HOST) , canInit)
+
+        HKLogUtil.d(HKURLProtocol.TAG, "canInit:true:isLocalFileExists=true", "url:" + (request.url?.absoluteString ?? ""))
         return canInit
+    }
+
+
+    class func getLocalFilePath(_ request: URLRequest) -> String {
+        let localFilePath = String( HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (request.url?.path ?? ""))
+        return localFilePath
+    }
+
+    class func isLocalFileExists(_ request: URLRequest) -> Bool {
+        return HKFileUtil.fileExists(HKURLProtocol.getLocalFilePath(request))
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -32,17 +48,19 @@ class HKURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
-        HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "originUrl:"+(self.request.url?.absoluteString ?? ""))
+        HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "originUrl:" + (self.request.url?.absoluteString ?? ""))
 
         URLProtocol.setProperty(true, forKey: HKURLProtocol.KEY, in: self.request as! NSMutableURLRequest)
 
         if self.request.url?.host == HKURLProtocol.HOST {
-            let localFilePath = self.request.url?.absoluteString
-                    .replace("http://", "")
-                    .replace("https://", "")
-                    .replace(HKURLProtocol.HOST + "/", HKBundleManager.INSTANCE.pathForHybirdDir)
-                    .replace(HKURLProtocol.HOST, HKBundleManager.INSTANCE.pathForHybirdDir) ?? ""
-            HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "localUrl:"+localFilePath)
+            //let routeIndex = request.url?.absoluteString.index(of: "#")
+            //let route = routeIndex == nil ? "" : request.url?.absoluteString.substring(from: routeIndex!)
+            
+            let localFilePath = request.url?.absoluteString
+                .replace("https://"+HKURLProtocol.HOST, String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1)))
+                .replace("http://"+HKURLProtocol.HOST,String(HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1))) ?? ""
+            //let localFilePath = String( HKBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (self.request.url?.path ?? ""))
+            HKLogUtil.d(HKURLProtocol.TAG, "startLoading", "localUrl:" + localFilePath)
             guard let url = URL(string: localFilePath) else {
                 return
             }

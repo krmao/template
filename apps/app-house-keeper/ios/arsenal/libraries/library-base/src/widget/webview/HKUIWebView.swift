@@ -9,9 +9,9 @@ import UIKit
 open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
     var TAG = "[hybird]"
-    
+
     init() {
-        super.init(frame: CGRect(x:0,y:0,width:100,height:100))
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         self.scalesPageToFit = true
         delegate = self
     }
@@ -19,25 +19,25 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @available(iOS 2.0, *)
-     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool{
-        HKLogUtil.d(TAG, "shouldStartLoadWith", "URL=\(String(describing: request.url))")
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        HKLogUtil.d(TAG, "shouldStartLoadWith", "URL=\((request.url?.absoluteString ?? ""))", "path=\((request.url?.path ?? ""))")
         return true
     }
-    
+
     @available(iOS 2.0, *)
-     public func webViewDidStartLoad(_ webView: UIWebView){
+    public func webViewDidStartLoad(_ webView: UIWebView) {
         HKLogUtil.d(TAG, "webViewDidStartLoad")
     }
-    
+
     @available(iOS 2.0, *)
-     public func webViewDidFinishLoad(_ webView: UIWebView){
+    public func webViewDidFinishLoad(_ webView: UIWebView) {
         HKLogUtil.d(TAG, "webViewDidFinishLoad")
     }
-    
+
     @available(iOS 2.0, *)
-     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
+    public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         HKLogUtil.d(TAG, "didFailLoadWithError", error)
     }
 }

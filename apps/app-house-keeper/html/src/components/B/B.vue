@@ -108,7 +108,7 @@
         width: px2rem(750);
         font-size: px2rem(40);
         /*padding-top: px2rem(60);*/
-        padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);
+        /*padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);*/
         color: white;
 
         #label {

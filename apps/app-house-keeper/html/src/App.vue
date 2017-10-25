@@ -25,12 +25,19 @@
 </script>
 
 <style>
+    @import "./assets/common/style/main.scss";
+
     body {
         background: red;
     }
 
+    /*iphonex statusbar height=44 , others=20*/
     .safe-area-padding-for-iphonex {
         padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);
+    }
+
+    .safe-area-padding-for-others {
+        padding: px2rem(20) 0 0 0
     }
 
     .root-container {

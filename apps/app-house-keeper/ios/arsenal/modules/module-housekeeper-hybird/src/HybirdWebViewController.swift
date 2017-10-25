@@ -92,7 +92,10 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         self.navigationController?.navigationBar.isTranslucent = false
         //== ios 11.0 以上 撑满底部 =============================================================
         if #available(iOS 11.0, *) {
-            webView.scrollView.contentInsetAdjustmentBehavior = (self.navigationController?.navigationBar.isHidden)! ? .never : .never
+            webView.scrollView.contentInsetAdjustmentBehavior = .never
+        }else {
+            self.automaticallyAdjustsScrollViewInsets = true //只跟 navigationBar 有关, true 自动移到导航栏下面， <= ios 10
+            self.edgesForExtendedLayout = UIRectEdge(rawValue: 0) //UIRectEdge.all
         }
         //== ios 11.0 以上 撑满底部 =============================================================
 
@@ -103,6 +106,10 @@ class HybirdWebViewController: UIViewController, WKNavigationDelegate, WKScriptM
         } else {
             self.webView.load(URLRequest(url: URL(string: self.indexPath)!))
         }
+    }
+    
+    override var prefersStatusBarHidden: Bool{
+        return false //self.navigationController?.navigationBar.isHidden ?? true
     }
 
     override func viewWillAppear(_ animated: Bool) {

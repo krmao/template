@@ -78,4 +78,26 @@ class HKURLProtocol: URLProtocol {
     override func stopLoading() {
         HKLogUtil.d(HKURLProtocol.TAG, "stopLoading", request.url?.absoluteString ?? "")
     }
+    
+    class func registerSchemeForWKWebView(_ schemes : String...){
+        //todo encode
+        if let cls = NSClassFromString("WKBrowsingContextController") as? NSObject.Type {
+            let sel = Selector(("registerSchemeForCustomProtocol:"))  //unregisterSchemeForCustomProtocol
+            if cls.responds(to: sel) {
+                for scheme in schemes{
+                    cls.perform(sel, with: scheme)
+                }
+            }
+        }
+    }
+    class func unregisterSchemeForWKWebView(_ schemes : String...){
+        if let cls = NSClassFromString("WKBrowsingContextController") as? NSObject.Type {
+            let sel = Selector(("unregisterSchemeForCustomProtocol:"))  //unregisterSchemeForCustomProtocol
+            if cls.responds(to: sel) {
+                for scheme in schemes{
+                    cls.perform(sel, with: scheme)
+                }
+            }
+        }
+    }
 }

@@ -133,7 +133,7 @@ class HKBundleManager: HKIBundleManager {
         verify = verify && hybirdLocalValid
 
         HKLogUtil.d(self.TAG, "[verify:\(verify)] versionCurrentApp:\(versionCurrentApp) == hybirdLocalVersion:\(hybirdLocalVersion) && hybirdLocalValid:\(hybirdLocalValid)")
-        return verify
+        return false//verify
     }
 
     func installWithVerify() {

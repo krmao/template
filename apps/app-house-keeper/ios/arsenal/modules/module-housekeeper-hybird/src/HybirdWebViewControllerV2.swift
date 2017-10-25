@@ -44,12 +44,11 @@ class HybirdWebViewControllerV2: UIViewController {
 
         webView.snp.makeConstraints { (make) in
             make.width.equalTo(self.view)
-            make.top.equalTo(self.view).offset(0)
+            make.top.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
-
+        
         // self.automaticallyAdjustsScrollViewInsets = true
-
         self.webView.loadRequest(URLRequest(url: URL(string: self.indexPath)!))
     }
 

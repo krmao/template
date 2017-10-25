@@ -1,9 +1,13 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
+import './assets/common/script/hybird-console'
+import './assets/common/script/hybird'
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import './assets/common/script/hybird-console'
+
 
 Vue.config.productionTip = false
 
@@ -61,7 +65,7 @@ let vue = new Vue({
 })
 
 // hybird ============================================================
-import './assets/common/script/hybird'
+
 
 window.hybird.onResume = function () {
     console.log(vue.$route.matched[0].components.default.activated())
@@ -70,4 +74,4 @@ window.hybird.onPause = function () {
     console.log(vue.$route.matched[0].components.default.deactivated())
 }
 // hybird ============================================================
-console.log((window.hybird.browser))
+// console.log((window.hybird.browser))

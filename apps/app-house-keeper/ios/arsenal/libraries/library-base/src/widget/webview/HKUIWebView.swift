@@ -29,8 +29,9 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
         if #available(iOS 11.0, *) {
             self.scrollView.contentInsetAdjustmentBehavior = .never
         }
-        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
         navigationController?.navigationBar.isTranslucent = false
+        //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
+        /**
         if navigationController?.navigationBar.isHidden ?? false {
             self.scrollView.contentInset = UIEdgeInsets(top: HKSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
             self.backgroundColor = .white
@@ -39,6 +40,7 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
                 self.backgroundColor = UIColor.init(name: bodyBGColorString ?? "") ?? .white
             }
         }
+         */
         //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
         //== ios 11.0 以上 撑满底部 =============================================================
         delegate = self

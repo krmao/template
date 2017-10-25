@@ -99,18 +99,40 @@ module.export = (function (bindObj = null) {
     _bind.browser = {
         versions: function () {
             var u = navigator.userAgent, app = navigator.appVersion;
+            var ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
             return {
                 webKit: u.indexOf('AppleWebKit') > -1,                                                      //苹果、谷歌内核
                 mobile: !!u.match(/AppleWebKit.*Mobile.*/),                                                 //是否为移动终端
-                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),                                            //ios终端
+                ios: ios,                                            //ios终端
                 android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 || u.indexOf('Linux') > -1,     //android终端
                 iPhone: u.indexOf('iPhone') > -1,                                                           //是否为iPhone或者QQHD浏览器
                 iPad: u.indexOf('iPad') > -1,                                                               //是否iPad
                 weixin: u.indexOf('MicroMessenger') > -1,                                                   //是否微信 （2015-01-22新增）
-                qq: u.match(/\sQQ/i) === " qq"                                                              //是否QQ
+                qq: u.match(/\sQQ/i) === " qq",                                                              //是否QQ
+                isIphoneX: ios && ((window.screen.height === 812 && window.screen.width === 375) || (window.screen.height === 375 && window.screen.width === 812)),
             };
         }(),
-        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+        language: (navigator.browserLanguage || navigator.language).toLowerCase(),
+        toString: function () {
+            return "\nwebKit:" + this.versions.webKit +
+                "\nmobile:" + this.versions.mobile +
+                "\nios:" + this.versions.ios +
+                "\nandroid:" + this.versions.android +
+                "\niPhone:" + this.versions.iPhone +
+                "\niPad:" + this.versions.iPad +
+                "\nweixin:" + this.versions.weixin +
+                "\nqq:" + this.versions.qq +
+                "\nisIphoneX:" + this.versions.isIphoneX +
+                "\niosVersion:" + this.versions.iosVersion +
+                "\nandroidVersion:" + this.versions.androidVersion
+        }
     }
+
+    console.log("navigator.userAgent=" + navigator.userAgent)
+    console.log("navigator.appVersion=" + navigator.appVersion)
+    console.log("navigator.browser=" + _bind.browser)
+    console.log("window.screen.height=" + window.screen.height)
+    console.log("window.screen.width=" + window.screen.width)
+
     return _bind
 })(window.hybird)

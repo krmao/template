@@ -2,10 +2,10 @@ import UIKit
 import WebKit
 import SnapKit
 
-class HybirdWebViewController: UIViewController {
+class HybirdWKWebViewController: UIViewController {
 
     public static func goTo(fromViewController: UIViewController, url: String) {
-        let toViewController = HybirdWebViewController.init(url: url)
+        let toViewController = HybirdWKWebViewController.init(url: url)
         if let navigationController = fromViewController as? UINavigationController {
             navigationController.pushViewController(toViewController, animated: true)
         } else if fromViewController.navigationController != nil {
@@ -65,4 +65,9 @@ class HybirdWebViewController: UIViewController {
         } else {
         }
     }*/
+
+    deinit {
+        self.webView.navigationDelegate = nil
+        self.webView.uiDelegate = nil
+    }
 }

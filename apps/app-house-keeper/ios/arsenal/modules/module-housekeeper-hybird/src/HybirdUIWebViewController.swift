@@ -2,10 +2,10 @@ import UIKit
 import WebKit
 import SnapKit
 
-class HybirdWebViewControllerV2: UIViewController {
+class HybirdUIWebViewController: UIViewController {
 
-    static func goTo(fromViewController: UIViewController, url: String) {
-        let toViewController = HybirdWebViewControllerV2.init(url: url)
+    public static func goTo(fromViewController: UIViewController, url: String) {
+        let toViewController = HybirdUIWebViewController.init(url: url)
         if let navigationController = fromViewController as? UINavigationController {
             navigationController.pushViewController(toViewController, animated: true)
         } else if fromViewController.navigationController != nil {
@@ -15,7 +15,7 @@ class HybirdWebViewControllerV2: UIViewController {
         }
     }
 
-    var indexPath: String = ""
+    private var indexPath: String = ""
 
     init(url: String) {
         super.init(nibName: nil, bundle: nil)
@@ -26,14 +26,10 @@ class HybirdWebViewControllerV2: UIViewController {
         super.init(coder: aDecoder)
     }
 
-    lazy var webView: HKUIWebView = {
+    private lazy var webView: HKUIWebView = {
         var _webView = HKUIWebView(self.navigationController)
         return _webView
     }()
-
-    public class var sdk_INT: Int {
-        return Int(UIDevice.current.systemVersion.components(separatedBy: ".").first!)!
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +42,7 @@ class HybirdWebViewControllerV2: UIViewController {
             make.top.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
-        
-        // self.automaticallyAdjustsScrollViewInsets = true
+
         self.webView.loadRequest(URLRequest(url: URL(string: self.indexPath)!))
     }
 

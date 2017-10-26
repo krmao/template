@@ -19,17 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         URLProtocol.registerClass(HKURLProtocol.self)
-        HKURLProtocol.registerSchemeForWKWebView("http","https")
-        
+        HKURLProtocol.registerSchemeForWKWebView("http", "https")
+
         let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
-        //progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
-        //progress.bezelView.backgroundColor = UIColor("#CC000000")
-        //progress.activityIndicatorColor = UIColor("#FFEFEFEF")
+        // progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
+        // progress.bezelView.backgroundColor = UIColor("#CC000000")
+        // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
         HKBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
             progress.hide(animated: true)
-            //rootViewController.pushViewController(HybirdWebViewControllerV2.init(url: /*"file://" +*/ rootDir + "index.html"), animated: false)
-            rootViewController.pushViewController(HybirdWebViewController.init(url: "http://www.smarttemplate.com/index.html"), animated: false)
+            // rootViewController.pushViewController(HybirdUIWebViewController.init(url: /*"file://" +*/ rootDir + "index.html"), animated: false)
+            rootViewController.pushViewController(HybirdWKWebViewController.init(url: "http://www.smarttemplate.com/index.html"), animated: false)
         }
         return true
     }

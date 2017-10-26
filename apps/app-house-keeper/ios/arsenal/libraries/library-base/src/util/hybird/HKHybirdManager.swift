@@ -43,7 +43,7 @@ class HKHybirdManager {
             HKLogUtil.d(TAG, "queryUnDecoded:key:params:", schemeUrl?.queryUnDecoded("params") ?? "nil")
 
             if (pathSegments.count >= 3) {
-                let clazzName = pathSegments[1]
+                let clazzName = classMap[pathSegments[1]] ?? pathSegments[1]
                 let methodName = pathSegments[2]
 
                 let hashcode = schemeUrl?.queryUnDecoded("hashcode") ?? ""
@@ -54,7 +54,7 @@ class HKHybirdManager {
                 } ?? []
 
                 HKLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
-                HKLogUtil.w(TAG, "native.invoke start --> [${kClass.java.name}.$methodName($params)]")
+                HKLogUtil.w(TAG, "native.invoke start --> [\(clazzName).\(methodName)(\(paramArray)]")
 //
                 var result: Any? = nil
                 do {
@@ -98,9 +98,9 @@ class HKHybirdManager {
 
     public static func shouldOverrideUrlLoading(_ webView: WKWebView?, _ userContentController: WKUserContentController, _ message: WKScriptMessage) -> Bool? {
         let schemeUrl = URL(string: String(describing: message.body))
-        let schemePrefix = "\(String(describing: schemeUrl?.scheme))://\(String(describing: schemeUrl?.host)):\(String(describing: schemeUrl?.port))"
+        let schemePrefix = "\(String(describing: schemeUrl?.scheme ?? ""))://\(String(describing: schemeUrl?.host ?? "")):\(String(describing: schemeUrl?.port ?? 0))"
         HKLogUtil.d(HKHybirdManager.TAG, "intercept message.body : \(String(describing: message.body))")
-        HKLogUtil.d(HKHybirdManager.TAG, "intercept url : \(String(describing: schemeUrl?.absoluteString))")
+        HKLogUtil.d(HKHybirdManager.TAG, "intercept url : \(String(describing: schemeUrl?.absoluteString ?? ""))")
         HKLogUtil.d(HKHybirdManager.TAG, "intercept schemePrefix : \(schemePrefix)")
         HKLogUtil.d(HKHybirdManager.TAG, "intercept ? \(schemeMap.containsKey(schemePrefix))")
         return schemeMap[schemePrefix]?(webView, schemeUrl)
@@ -112,9 +112,5 @@ class HKHybirdManager {
             let result = error == nil ? (any as? String) : ("error:" + error.debugDescription)
             callback?(result)
         }
-    }
-
-    private static let _init = {
-        HKHybirdManager.addNativeClass(scheme: "hybird://hybird:1234", virtualClassName: "native", "HKHybirdMethods")
     }
 }

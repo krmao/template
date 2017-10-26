@@ -61,7 +61,7 @@ module.export = (function (bindObj = null) {
     }
 
     _bind.showToastWithDuration = function (message, duration) {
-        _bind.invoke("showToast", [message, duration].filter(it => it !== undefined && it !== null))
+        _bind.invoke(null, "showToast", [message, duration].filter(it => it !== undefined && it !== null))
     }
 
     _bind.test = function (message, duration, callback) {

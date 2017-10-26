@@ -5,7 +5,7 @@
 
 import Foundation
 
-class HKHybirdMethods {
+class HKHybirdMethods : NSObject {
     private static let TAG = "[HybirdMethods]"
     func showToast(_ message: String) {
         //HKToastUtil.show(message)

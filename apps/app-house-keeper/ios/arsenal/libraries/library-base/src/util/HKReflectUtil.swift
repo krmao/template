@@ -8,6 +8,16 @@ import Foundation
 class HKReflectUtil {
     private static let TAG = "[reflect]"
 
+//    static func invoke(_ cls: Swift.AnyClass, _ methodName: String, _ params: Any...) {
+//        let sel = Selector(methodName)
+//        if cls.responds(to: sel) {
+//            let result: Unmanaged<AnyObject>! = cls.perform(sel, with: params)
+//            HKLogUtil.d(TAG, "invoke success , result=\(result)")
+//        } else {
+//            HKLogUtil.e(TAG, "the method:\(methodName) of class:\(className) is not exist!")
+//        }
+//    }
+    
     static func invoke(_ className: String, _ methodName: String, _ params: Any...) {
         if let cls = NSClassFromString(className) as? NSObject.Type {
             let sel = Selector(methodName)

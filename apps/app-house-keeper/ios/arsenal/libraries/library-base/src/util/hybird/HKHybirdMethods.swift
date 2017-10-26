@@ -5,49 +5,65 @@
 
 import Foundation
 
-class HKHybirdMethods : NSObject {
+
+class HKHybirdMethods: NSObject {
     private static let TAG = "[HybirdMethods]"
-    func showToast(_ message: String) {
-        //HKToastUtil.show(message)
-        HKLogUtil.d(HKHybirdMethods.TAG, "showToast",message)
-    }
-    
-    func putToLocal(_ key: String,_ value: String) {
-        //HKPreferencesUtil.putString(key, value)
-    }
-    
-    func getFromLocal(_ key: String) {
-        getFromLocal(key,nil)
-    }
-    
-    func getFromLocal(_ key: String, _ default: String?) {
-        //HKPreferencesUtil.getString(key, default)
-    }
-    
-    func putToMemory(_ module: String,_ key: String,_ value: String) {
-        //HKCacheManager.put(module, key, value)
-    }
-    
-    func getFromMemory(_ module: String,_ key: String)-> String?{
-        return getFromMemory(module, key ,nil)
-    }
-    
-    func getFromMemory(_ module: String, _ key: String, _ default: String?)-> String?{
-        //HKCacheManager.get(module, key, default)
+
+    @objc
+    public static func showToast(_ msg: String) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:\(msg)")
         return nil
-     }
-    
-    func removeFromMemory(_ module: String) {
-        //HKCacheManager.remove(module)
     }
-    
-    func removeFromMemory(_ module:String , _ key: String) {
-        //HKCacheManager.remove(module, key)
+
+    @objc
+    public static func putToLocal(_ key: String, _ value: String) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "putToLocal", key, value)
+        return nil
     }
-    
-    func isNetworkAvailable() -> Bool {
-        //HKNetworkUtil.isNetworkAvailable()
+
+    @objc
+    public static func getFromLocal(_ key: String) -> Any? {
+        return getFromLocal(key, nil)
+    }
+
+    @objc
+    public static func getFromLocal(_ key: String, _ defaultValue: String?) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "getFromLocal", key, defaultValue)
+        return nil
+    }
+
+    @objc
+    public static func putToMemory(_ module: String, _ key: String, _ value: String) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "putToMemory", key, value)
+        return nil
+    }
+
+    @objc
+    public static func getFromMemory(_ module: String, _ key: String) -> String? {
+        return getFromMemory(module, key, nil)
+    }
+
+    @objc
+    public static func getFromMemory(_ module: String, _ key: String, _ defaultValue: String?) -> String? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "getFromMemory", key, defaultValue)
+        return nil
+    }
+
+    @objc
+    public static func removeFromMemory(_ module: String) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "removeFromMemory", module)
+        return nil
+    }
+
+    @objc
+    public static func removeFromMemory(_ module: String, _ key: String) -> Any? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "removeFromMemory", module, key)
+        return nil
+    }
+
+    @objc
+    public static func isNetworkAvailable() -> Bool {
+        HKLogUtil.d(HKHybirdMethods.TAG, "isNetworkAvailable")
         return false
     }
-    
 }

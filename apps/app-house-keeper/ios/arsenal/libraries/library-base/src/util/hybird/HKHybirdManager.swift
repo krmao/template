@@ -20,11 +20,12 @@ class HKHybirdManager {
     /**
      * hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445
      */
-    static func addNativeClass(scheme: String, virtualClassName: String, _ realClassName: String) {
+    static func addNativeClass(_ scheme: String,_ virtualClassName: String, _ realClassName: String) {
         if (TextUtils.isEmpty(virtualClassName) || TextUtils.isEmpty(realClassName)) {
             HKLogUtil.d(TAG, "[addNativeClass] className:$className or kClass:$kClass is null")
             return
         }
+
         classMap[virtualClassName] = realClassName
 
         schemeMap[scheme] = { webView, schemeUrl in

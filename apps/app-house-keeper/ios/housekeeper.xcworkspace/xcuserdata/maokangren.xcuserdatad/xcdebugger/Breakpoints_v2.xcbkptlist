@@ -209,6 +209,38 @@
             endingLineNumber = "31"
             landmarkName = "canInit(with:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static housekeeper.HKURLProtocol.canInit(with: Foundation.URLRequest) -&gt; Swift.Bool"
+                  moduleName = "housekeeper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maokangren/workspace/template/apps/app-house-keeper/ios/arsenal/libraries/library-base/src/widget/webview/HKURLProtocol.swift"
+                  timestampString = "530707589.51113"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "3944">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #4 : @autoclosure () throws -&gt; Swift.String in static housekeeper.HKURLProtocol.canInit(with: Foundation.URLRequest) -&gt; Swift.Bool"
+                  moduleName = "housekeeper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maokangren/workspace/template/apps/app-house-keeper/ios/arsenal/libraries/library-base/src/widget/webview/HKURLProtocol.swift"
+                  timestampString = "530707589.514142"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

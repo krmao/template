@@ -85,17 +85,6 @@ module.export = (function (bindObj = null) {
         _bind.goTo("hybird://hybird:1234/" + className + "/" + methodName + "?params=" + patamString + "&hashcode=" + hashcode)
     }
 
-    _bind.goTo = function (url) {
-        console.log("[Native:goTo] url: " + url)
-
-        var div = document.createElement("div");
-        div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>';
-        document.querySelector("body").appendChild(div);
-        setTimeout(function () {
-            document.querySelector("body").removeChild(div);
-        }, 1000);
-    }
-
     _bind.browser = {
         versions: function () {
             var u = navigator.userAgent, app = navigator.appVersion;
@@ -125,6 +114,28 @@ module.export = (function (bindObj = null) {
                 "\nisIphoneX:" + this.versions.isIphoneX +
                 "\niosVersion:" + this.versions.iosVersion +
                 "\nandroidVersion:" + this.versions.androidVersion
+        }
+    }
+
+    _bind.goTo = function (url) {
+        console.log('[Native:goTo] url: ' + url)
+
+        if (_bind.browser.versions.ios) {
+
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native) {
+                window.webkit.messageHandlers.native.postMessage(url)
+            }
+
+        } else if (_bind.browser.versions.android) {
+
+            let div = document.createElement('div')
+            div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>'
+            document.querySelector('body').appendChild(div)
+
+            setTimeout(function () {
+                document.querySelector('body').removeChild(div)
+            }, 1000)
+
         }
     }
 

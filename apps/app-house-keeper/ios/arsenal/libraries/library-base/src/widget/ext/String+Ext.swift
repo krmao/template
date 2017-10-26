@@ -15,6 +15,10 @@ extension String {
         }
     }
 
+    public func trim() -> String {
+        return  self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     var data: Data {
         get {
             return Data(utf8)
@@ -30,6 +34,18 @@ extension String {
     var base64Decoded: Data? {
         get {
             return Data(base64Encoded: self)
+        }
+    }
+    
+    var urlEncoded:String?{
+        get {
+            return self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        }
+    }
+    
+    var urlDecoded:String?{
+        get {
+            return self.removingPercentEncoding
         }
     }
 }

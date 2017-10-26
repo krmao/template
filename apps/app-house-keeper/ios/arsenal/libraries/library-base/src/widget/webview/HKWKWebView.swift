@@ -88,6 +88,7 @@ open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         HKLogUtil.d(TAG, "didReceive", message.name, message.body)
+        _ = HKHybirdManager.shouldOverrideUrlLoading(self, userContentController, message)
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -107,6 +108,10 @@ open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
         HKLogUtil.d(TAG, "didFinish", "title:", webView.title ?? "")
         self.navigationController?.title = webView.title
         self.progressView.setProgress(0.0, animated: false)
+
+        HKHybirdManager.callJsFunction(self, "console.log('hello html')") { result in
+            HKLogUtil.d("hybird", "onResultCallback", result ?? "nil")
+        }
     }
 
     public func webView(_ webview: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

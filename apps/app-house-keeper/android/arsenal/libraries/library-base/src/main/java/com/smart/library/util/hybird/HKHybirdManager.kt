@@ -55,14 +55,14 @@ object HKHybirdManager {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { webView: WebView?, url: Uri? ->
-            val pathSegments = url?.pathSegments ?: arrayListOf()
+        schemeMap.put(scheme, { webView: WebView?, schemeUrl: Uri? ->
+            val pathSegments = schemeUrl?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
                 val clazzName = pathSegments[0]
                 val methodName = pathSegments[1]
 
                 val queryMap: HashMap<String?, String?> = HashMap()
-                url?.encodedQuery?.split("&")?.forEach { it.split("=").takeIf { it.isNotEmpty() }?.apply { queryMap.put(this.getOrNull(0), this.getOrNull(1)) } }
+                schemeUrl?.encodedQuery?.split("&")?.forEach { it.split("=").takeIf { it.isNotEmpty() }?.apply { queryMap.put(this.getOrNull(0), this.getOrNull(1)) } }
                 val hashcode = queryMap["hashcode"]  // val hashcode = url?.getQueryParameter("hashcode") // getQueryParameter 默认 decode
                 val params = queryMap["params"]
 
@@ -84,7 +84,7 @@ object HKHybirdManager {
                 }
                 true
             } else {
-                HKLogUtil.e(TAG, "schemaUrl:${url.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
+                HKLogUtil.e(TAG, "schemaUrl:${schemeUrl.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
                 false
             }
         })

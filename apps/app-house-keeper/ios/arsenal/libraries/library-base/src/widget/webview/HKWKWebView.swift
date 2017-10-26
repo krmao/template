@@ -4,7 +4,7 @@ import SnapKit
 
 open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
 
-    private var TAG = "[hybird]"
+    private var TAG = "[HKWKWebView]"
     private var navigationController: UINavigationController? = nil
 
     private lazy var progressView: UIProgressView = {
@@ -87,37 +87,37 @@ open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
     }
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("[hybird]", "didReceive", message.name, message.body)
+        HKLogUtil.d(TAG, "didReceive", message.name, message.body)
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("[hybird]", "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
+        HKLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
         decisionHandler(WKNavigationActionPolicy.allow)
     }
 
     public func webView(_ webview: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("[hybird]", "didStartProvisionalNavigation")
+        HKLogUtil.d(TAG, "didStartProvisionalNavigation")
     }
 
     public func webView(_ webview: WKWebView, didCommit navigation: WKNavigation!) {
-        print("[hybird]", "didCommit")
+        HKLogUtil.d(TAG, "didCommit")
     }
 
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("[hybird]", "didFinish", "title:", webView.title ?? "")
+        HKLogUtil.d(TAG, "didFinish", "title:", webView.title ?? "")
         self.navigationController?.title = webView.title
         self.progressView.setProgress(0.0, animated: false)
     }
 
     public func webView(_ webview: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("[hybird]", "didFail")
+        HKLogUtil.d(TAG, "didFail")
     }
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "estimatedProgress") {
             let newProgress = (change?[.newKey] as AnyObject).floatValue ?? 0
             let oldProgress = (change?[.oldKey] as AnyObject).floatValue ?? 0
-            HKLogUtil.d("webView:load: newProgress:", newProgress, " , oldProgress:", oldProgress)
+            HKLogUtil.d(TAG, "observeValue: newProgress:", newProgress, " , oldProgress:", oldProgress)
 
             if (newProgress >= 1) {
                 self.progressView.isHidden = true

@@ -8,7 +8,7 @@ import UIKit
 
 open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
-    var TAG = "[hybird]"
+    var TAG = "[HKUIWebView]"
 
     convenience init() {
         self.init(nil)

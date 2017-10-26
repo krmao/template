@@ -28,7 +28,6 @@ class HybirdWebViewControllerV2: UIViewController {
 
     lazy var webView: HKUIWebView = {
         var _webView = HKUIWebView(self.navigationController)
-        _webView.isMultipleTouchEnabled = true
         return _webView
     }()
 

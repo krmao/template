@@ -17,6 +17,7 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
     init(_ navigationController: UINavigationController?) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         self.scalesPageToFit = true
+        self.isMultipleTouchEnabled = true
         //== ios 11.0 以上 撑满底部 =============================================================
         // 适配ios11 navigationBar 隐藏的情况下
         // self.navigationController?.navigationBar.isTranslucent = false

@@ -21,6 +21,7 @@
 		3D52A90C61C191ACE832F8D7 /* HKIBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A1606C5946251066CC66 /* HKIBundleManager.swift */; };
 		3D52AB3C75132BC58893B661 /* HKSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */; };
+		3D52AC3BF448789748C13AA8 /* Data+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3EDA472CF12306A783A /* Data+Ext.swift */; };
 		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
 		3D52ADFFCF7505549C75F5B4 /* HybirdUIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF7F42EC88F1390ECA4 /* HybirdUIWebViewController.swift */; };
 		3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */; };
@@ -36,6 +37,7 @@
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKSystemUtil.swift; sourceTree = "<group>"; };
 		3D52A3649B84A9667BA1883E /* HKWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKWKWebView.swift; sourceTree = "<group>"; };
+		3D52A3EDA472CF12306A783A /* Data+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Ext.swift"; sourceTree = "<group>"; };
 		3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKZipUtil.swift; sourceTree = "<group>"; };
 		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52A68100CFFD19A22531AC /* HKUIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKUIWebView.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */,
 				3D52AEB4353DE7FB5154134E /* String+Ext.swift */,
+				3D52A3EDA472CF12306A783A /* Data+Ext.swift */,
 			);
 			path = ext;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				3D52ADFFCF7505549C75F5B4 /* HybirdUIWebViewController.swift in Sources */,
 				3D52A56403ECA7C590825083 /* String+Ext.swift in Sources */,
 				3D52A7DE52EE60AA59A85935 /* HKWKWebView.swift in Sources */,
+				3D52AC3BF448789748C13AA8 /* Data+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

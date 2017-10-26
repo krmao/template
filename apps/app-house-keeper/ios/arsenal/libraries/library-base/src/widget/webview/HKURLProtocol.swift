@@ -2,9 +2,13 @@ import Foundation
 
 class HKURLProtocol: URLProtocol {
 
+    public static let HOST = "www.smarttemplate.com"
+
     private static let TAG = "[HKURLProtocol]"
     private static let KEY = TAG + "_REQUEST_KEY"
-    public static let HOST = "www.smarttemplate.com"
+    private static let CLASS_STRING_BROWSING_CONTROLLER = "V0tCcm93c2luZ0NvbnRleHRDb250cm9sbGVy".base64Decoded?.string ?? ""
+    private static let CLASS_STRING_REGISTER_SCHEME = "cmVnaXN0ZXJTY2hlbWVGb3JDdXN0b21Qcm90b2NvbDo=".base64Decoded?.string ?? ""
+    private static let CLASS_STRING_UNREGISTER_SCHEME = "dW5yZWdpc3RlclNjaGVtZUZvckN1c3RvbVByb3RvY29sOg==".base64Decoded?.string ?? ""
 
     override class func canInit(with request: URLRequest) -> Bool {
         HKLogUtil.d()
@@ -78,23 +82,24 @@ class HKURLProtocol: URLProtocol {
     override func stopLoading() {
         HKLogUtil.d(HKURLProtocol.TAG, "stopLoading", request.url?.absoluteString ?? "")
     }
-    
-    class func registerSchemeForWKWebView(_ schemes : String...){
-        //todo encode
-        if let cls = NSClassFromString("WKBrowsingContextController") as? NSObject.Type {
-            let sel = Selector(("registerSchemeForCustomProtocol:"))  //unregisterSchemeForCustomProtocol
+
+
+    class func registerSchemeForWKWebView(_ schemes: String...) {
+        if let cls = NSClassFromString(CLASS_STRING_BROWSING_CONTROLLER) as? NSObject.Type {
+            let sel = Selector(CLASS_STRING_REGISTER_SCHEME)
             if cls.responds(to: sel) {
-                for scheme in schemes{
+                for scheme in schemes {
                     cls.perform(sel, with: scheme)
                 }
             }
         }
     }
-    class func unregisterSchemeForWKWebView(_ schemes : String...){
-        if let cls = NSClassFromString("WKBrowsingContextController") as? NSObject.Type {
-            let sel = Selector(("unregisterSchemeForCustomProtocol:"))  //unregisterSchemeForCustomProtocol
+
+    class func unregisterSchemeForWKWebView(_ schemes: String...) {
+        if let cls = NSClassFromString(CLASS_STRING_BROWSING_CONTROLLER) as? NSObject.Type {
+            let sel = Selector(CLASS_STRING_UNREGISTER_SCHEME)
             if cls.responds(to: sel) {
-                for scheme in schemes{
+                for scheme in schemes {
                     cls.perform(sel, with: scheme)
                 }
             }

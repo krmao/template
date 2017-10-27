@@ -14,7 +14,7 @@ class HKHybirdManager {
     private static var schemeMap = [String: (webView: WKWebView?, url: URL?) -> Bool?]()
 
     static func callNativeMethod(className: String, methodName: String, _ params: Any...) -> Any? {
-        return HKReflectUtil.invoke(className, methodName, params)
+        return HKReflectUtil.invokeByNSInvocation(className, methodName, params)
     }
 
     /**

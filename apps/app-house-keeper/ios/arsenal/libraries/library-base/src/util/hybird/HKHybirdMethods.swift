@@ -5,14 +5,19 @@
 
 import Foundation
 
-
 class HKHybirdMethods: NSObject {
     private static let TAG = "[HybirdMethods]"
 
     @objc
-    public static func showToast(_ msg: String) -> Any? {
+    public func showToast(_ msg: String)/* -> Any?*/ {
         HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:\(msg)")
-        return nil
+        //return nil
+    }
+
+    @objc
+    public static func showToast(_ msg: String)/* -> Any?*/ {
+        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:\(msg)")
+        //return nil
     }
 
     @objc

@@ -13,8 +13,8 @@ class HKHybirdManager {
     private static var classMap = [String: String]()
     private static var schemeMap = [String: (webView: WKWebView?, url: URL?) -> Bool?]()
 
-    static func callNativeMethod(className: String, methodName: String, _ params: Any...) -> Any? {
-        return HKReflectUtil.invokeByNSInvocation(className, methodName, params)
+    static func callNativeMethod(className: String, methodName: String, _ params: [String]) -> String? {
+        return HKReflectUtil.invoke(className, methodName, params)
     }
 
     /**
@@ -55,19 +55,13 @@ class HKHybirdManager {
                 } ?? []
 
                 HKLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
-                HKLogUtil.w(TAG, "native.invoke start --> [\(clazzName).\(methodName)(\(paramArray)]")
-//
-                var result: Any? = nil
-                do {
-                    try result = callNativeMethod(className: clazzName, methodName: methodName, paramArray)
-                } catch {
-                    HKLogUtil.e(TAG, "native.invoke exception", error)
-                }
-//
-                HKLogUtil.w(TAG, "native.invoke end , result:\(String(describing: result))")
+                
+                _ = callNativeMethod(className: clazzName, methodName: methodName, paramArray)
+                print("test xxxx")
 //                if (!TextUtils.isEmpty(hashcode)) {
 //                    callJsFunction(webView, "javascript:window.hybird.onCallback($hashcode, $result)")
 //                }
+                
                 return true
             } else {
                 HKLogUtil.e(TAG, "schemaUrl:${schemeUrl.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")

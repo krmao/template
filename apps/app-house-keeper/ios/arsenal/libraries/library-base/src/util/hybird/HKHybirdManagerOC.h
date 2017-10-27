@@ -1,0 +1,12 @@
+//
+// Created by maokangren on 2017/10/27.
+// Copyright (c) 2017 com.xixi. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface HKHybirdManagerOC : NSObject
+//_ className:String, _ methodName:String, _ params:[Any]
++ (NSString*) invoke: (NSString*)className  methodName:(NSString*)methodName params:(NSArray<NSString *>*)params;
+
+@end

@@ -9,16 +9,27 @@ class HKHybirdMethods: NSObject {
     private static let TAG = "[HybirdMethods]"
 
     @objc
-    public func showToast(_ msg: String)/* -> Any?*/ {
-        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:\(msg)")
-        //return nil
+    public func showToast(_ msg: String) {
+        HKLogUtil.d(HKHybirdMethods.TAG, "not static -> showToast", "msg:\(msg)")
     }
 
     @objc
-    public static func showToast(_ msg: String)/* -> Any?*/ {
-        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:\(msg)")
-        //return nil
+    public func showToast(_ msg: String, _ time: String) -> String? {
+        HKLogUtil.d(HKHybirdMethods.TAG, "not static -> showToast", "msg:\(msg + time)")
+        return "I am back now ..."
     }
+
+//    @objc
+//    public static func showToast()/* -> Any?*/ {
+//        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:")
+//        //return nil
+//    }
+//
+//    @objc
+//    public static func showToast(_ msg: String)/* -> Any?*/ {
+//        HKLogUtil.d(HKHybirdMethods.TAG, "static -> showToast", "msg:\(msg)")
+//        //return nil
+//    }
 
     @objc
     public static func putToLocal(_ key: String, _ value: String) -> Any? {

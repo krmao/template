@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.util.HKLogUtil
+import com.smart.library.util.HKReflectUtil
 import java.lang.reflect.InvocationTargetException
 import java.net.URLDecoder
 import java.util.concurrent.ConcurrentHashMap
@@ -16,29 +17,16 @@ import kotlin.reflect.full.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
-
     val TAG = "hybird"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
-    //private val classMap: HashMap<String, Map<String, KFunction<*>>> = hashMapOf()
     private val schemeMap: HashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = hashMapOf()
     private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
     fun callNativeMethod(className: String?, methodName: String?, vararg params: Any?): Any? {
-        if (TextUtils.isEmpty(className) || TextUtils.isEmpty(methodName)) {
-            throw RuntimeException("[callNativeMethod] className:$className or methodName:$methodName is null")
-        }
-
-        if (!classMap.containsKey(className)) {
-            throw RuntimeException("[callNativeMethod] class not register :$className")
-        }
-
-        val methods = classMap[className]!!.java.kotlin.companionObject?.declaredFunctions?.filter { it.name == methodName && it.parameters.size - 1 == params.size }
-        if (methods?.size ?: 0 <= 0) {
-            throw RuntimeException("[callNativeMethod] the invoked method dose not exist :$methodName")
-        }
-        return methods!![0].call(classMap[className]!!.companionObjectInstance, *params)
+        if (!classMap.containsKey(className)) throw RuntimeException("[callNativeMethod] class not register :$className")
+        return HKReflectUtil.invoke(classMap[className], methodName, params)
     }
 
     /**

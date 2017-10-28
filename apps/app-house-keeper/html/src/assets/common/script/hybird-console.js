@@ -1,10 +1,10 @@
 import '../style/hybird-console.css'
-import '../style/dialog.css'
 
 (function () {
     var menu;
     var menu_clear;
     var element;
+    var isShow = false;
 
     function createElement(cls, content, name) {
         var elem = document.createElement(name || 'div');
@@ -175,7 +175,7 @@ import '../style/dialog.css'
 
     function createConsoleMenu() {
         if (!menu) {
-            menu = createElement('menu', require('../image/hybird-console-menu-toggleon.svg'), 'img');
+            menu = createElement('menu', isShow ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg'), 'img');
             document.body.appendChild(menu);
             menu.onclick = function () {
                 toggleDialog(!isShow)
@@ -187,6 +187,7 @@ import '../style/dialog.css'
     function createConsoleClear() {
         if (!menu_clear) {
             menu_clear = createElement('menu_clear', require('../image/hybird-console-menu-clear.svg'), 'img');
+            menu_clear.hidden = !isShow
             document.body.appendChild(menu_clear);
             menu_clear.onclick = function () {
                 document.body.removeChild(element)
@@ -196,31 +197,38 @@ import '../style/dialog.css'
         }
     }
 
-    var isShow = true;
-
     function toggleDialog(show) {
         isShow = show;
+        createConsoleBlock();
+        createConsoleClear();
         menu_clear.hidden = !isShow
-        var animation = function () {
-            element.classList.remove(show ? "slipBottom" : "slipUp");
-            element.classList.add(show ? "slipUp" : "slipBottom");
-            menu_clear.style.display = show ? "" : "none";
-            menu.src = show ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg')
-        };
-        setTimeout(animation, 100);
+        menu_clear.style.display = show ? "" : "none";
+        menu.src = show ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg')
+        element.hidden = !show
     }
 
-    if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
-        console.error = console.log = function (message) {
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native)
-                window.webkit.messageHandlers.native.postMessage(message);
+    (function () {
+        var log = console.log;
+        console.log = function () {
+            //log.call(this, 'My Console!!!');
+            log.apply(this, Array.prototype.slice.call(arguments));
 
-            createConsoleMenu();
-            createConsoleClear();
-            createConsoleBlock();
-            message = "[" + getNowFormatDate() + "] " + message
-            element.appendChild(inspect(message));
-            scrollToBottom();
+            if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
+                createConsoleMenu();
+                if (element) {
+                    var message = ""
+                    message = "[" + getNowFormatDate() + "] " + message
+                    for (var i = 0; i < arguments.length; i++) {
+                        message += arguments[i];
+
+                        element.appendChild(inspect(arguments[i]));
+                    }
+                    scrollToBottom();
+                }
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native)
+                    window.webkit.messageHandlers.native.postMessage(message);
+            }
+
         };
-    }
+    }());
 })()

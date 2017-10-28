@@ -36,7 +36,7 @@ module.export = (function (bindObj = null) {
      * @param args args[0]==hashcode 后面的为其它不定长参数
      */
     _bind.onCallback = function (...args) {
-        console.log("[html] onCallback:start:args=" + args+ " , callbackMap.size==" + _bind.callbackMap.size)
+        console.log("[html]","onCallback:start:args=" ,args, " , callbackMap.size==" + _bind.callbackMap.size, _bind.callbackMap)
         let result = null
         try {
             let hashcode = args[0]

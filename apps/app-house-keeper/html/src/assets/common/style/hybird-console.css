@@ -20,7 +20,7 @@
     margin-bottom: 1rem;
 }
 
-.mobile-console__holder {
+.mobile-console__holder_bg {
     background-color: #000000;
     position: fixed;
     bottom: 0;
@@ -30,7 +30,24 @@
     padding-left: 1px;
     padding-top: 1px;
     padding-bottom: 54px;
-    max-height: 38.2%; /*黄金分割率*/
+    height: 38.2%; /*黄金分割率*/
+    overflow-x: scroll;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.mobile-console__holder {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 998;
+    width: 100%;
+    padding-left: 1px;
+    padding-top: 1px;
+    padding-bottom: 54px;
+    height: 38.2%; /*黄金分割率*/
     overflow-x: scroll;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;

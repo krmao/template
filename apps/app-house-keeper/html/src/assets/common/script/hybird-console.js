@@ -4,6 +4,7 @@ import '../style/hybird-console.css'
     var menu;
     var menu_clear;
     var element;
+    var elementBG;
     var isShow = false;
 
     function createElement(cls, content, name) {
@@ -167,9 +168,13 @@ import '../style/hybird-console.css'
         if (force)
             element = undefined;
         if (!element) {
+            elementBG = createElement('holder_bg', undefined, "console_bg");
+            document.body.appendChild(elementBG);
+            elementBG.style.opacity = 0.7;
+
             element = createElement('holder', undefined, "console");
-            element.classList.add("dialog-wrapper")
             document.body.appendChild(element);
+            // element.style.opacity = 1;
         }
     }
 
@@ -220,7 +225,6 @@ import '../style/hybird-console.css'
                     message = "[" + getNowFormatDate() + "] " + message
                     for (var i = 0; i < arguments.length; i++) {
                         message += arguments[i];
-
                         element.appendChild(inspect(arguments[i]));
                     }
                     scrollToBottom();

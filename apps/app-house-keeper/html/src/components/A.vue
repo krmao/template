@@ -8,6 +8,15 @@
         <div id="nativeCall3" @click="onNativeCallClick3()"> http get </div>
         <div id="nativeCall4" @click="onNativeCallClick4()"> http post </div>
         <div id="nativeCall5" @click="onNativeCallClick5()"> getNative value </div>
+        134<br/>
+        098<br/>
+        9809<br/>
+        09809<br/>
+        09809<br/>
+        09809<br/>
+        09809<br/>
+        09809<br/>
+        09809<br/>
     </div>
 </template>
 

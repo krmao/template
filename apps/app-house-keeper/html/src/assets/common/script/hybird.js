@@ -36,16 +36,19 @@ module.export = (function (bindObj = null) {
      * @param args args[0]==hashcode 后面的为其它不定长参数
      */
     _bind.onCallback = function (...args) {
-        console.log("[html] onCallback:start:callbackMap.size==" + _bind.callbackMap.size)
-        console.log("[html] onCallback:start:args=" + args)
+        console.log("[html] onCallback:start:args=" + args+ " , callbackMap.size==" + _bind.callbackMap.size)
         let result = null
         try {
             let hashcode = args[0]
             let result = args.slice(1, args.length)
             console.log("[html] onCallback:invoke before: hashcode=" + hashcode + " , result=" + result)
-
-            if(hashcode && hashcode.length > 0){
+            if(hashcode){
+                console.log("[html] onCallback:hashcode=" + hashcode)
+                _bind.callbackMap.forEach(function(value, key, mapObj) {
+                    console.log("map:value:"+ value + ', key:' + key + ', key==hashcode?' + (key === hashcode));
+                });
                 let method = _bind.callbackMap.get(hashcode)
+                console.log("[html] onCallback:method=" + method)
                 if(method){
                     method(result)
                     _bind.callbackMap.delete(hashcode)

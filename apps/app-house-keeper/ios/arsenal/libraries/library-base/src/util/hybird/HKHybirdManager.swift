@@ -47,7 +47,7 @@ class HKHybirdManager {
                 let clazzName = classMap[pathSegments[1]] ?? pathSegments[1]
                 let methodName = pathSegments[2]
 
-                let hashcode = schemeUrl?.queryUnDecoded("hashcode") ?? ""
+                let hashcode:Int = Int((schemeUrl?.queryUnDecoded("hashcode")) ?? "-1") ?? -1
                 let params = schemeUrl?.queryUnDecoded("params")
 
                 let paramArray: [String] = params?.split(separator: ",").map {
@@ -57,8 +57,8 @@ class HKHybirdManager {
                 HKLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
                 
                 let result = callNativeMethod(className: clazzName, methodName: methodName, paramArray) ?? ""
-                if (!TextUtils.isEmpty(hashcode)) {
-                    callJsFunction(webView, "javascript:window.hybird.onCallback('\(hashcode)', '\(result)')")
+                if (hashcode != -1) {
+                    callJsFunction(webView, "javascript:window.hybird.onCallback(\(hashcode), '\(result)')")
                 }
                 return true
             } else {

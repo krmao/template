@@ -43,8 +43,14 @@ module.export = (function (bindObj = null) {
             let hashcode = args[0]
             let result = args.slice(1, args.length)
             console.log("[html] onCallback:invoke before: hashcode=" + hashcode + " , result=" + result)
-            _bind.callbackMap.get(hashcode)(result)
-            _bind.callbackMap.delete(hashcode)
+
+            if(hashcode && hashcode.length > 0){
+                let method = _bind.callbackMap.get(hashcode)
+                if(method){
+                    method(result)
+                    _bind.callbackMap.delete(hashcode)
+                }
+            }
             console.log("[html] onCallback:invoke success")
         } catch (error) {
             result = 'error';
@@ -58,6 +64,10 @@ module.export = (function (bindObj = null) {
 
     _bind.showToast = function (message) {
         _bind.showToastWithDuration(message, null)
+    }
+
+    _bind.getFromLocal = function (key, callback) {
+        _bind.invoke(callback, "getFromLocal",key)
     }
 
     _bind.showToastWithDuration = function (message, duration) {
@@ -79,9 +89,11 @@ module.export = (function (bindObj = null) {
             }
         )
 
-        let hashcode = new Date().getTime()
-        _bind.callbackMap.set(hashcode, callback)
-
+        var hashcode = ""
+        if(callback){
+            hashcode = new Date().getTime()
+            _bind.callbackMap.set(hashcode, callback)
+        }
         _bind.goTo("hybird://hybird:1234/" + className + "/" + methodName + "?params=" + patamString + "&hashcode=" + hashcode)
     }
 

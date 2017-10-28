@@ -19,66 +19,54 @@ class HKHybirdMethods: NSObject {
         return "I am back now ..."
     }
 
-//    @objc
-//    public static func showToast()/* -> Any?*/ {
-//        HKLogUtil.d(HKHybirdMethods.TAG, "showToast", "msg:")
-//        //return nil
-//    }
-//
-//    @objc
-//    public static func showToast(_ msg: String)/* -> Any?*/ {
-//        HKLogUtil.d(HKHybirdMethods.TAG, "static -> showToast", "msg:\(msg)")
-//        //return nil
-//    }
-
     @objc
-    public static func putToLocal(_ key: String, _ value: String) -> Any? {
+    public func putToLocal(_ key: String, _ value: String) -> Any? {
         HKLogUtil.d(HKHybirdMethods.TAG, "putToLocal", key, value)
         return nil
     }
 
     @objc
-    public static func getFromLocal(_ key: String) -> Any? {
-        return getFromLocal(key, nil)
+    public func getFromLocal(_ key: String) -> Any? {
+        return self.getFromLocal(key, nil)
     }
 
     @objc
-    public static func getFromLocal(_ key: String, _ defaultValue: String?) -> Any? {
+    public func getFromLocal(_ key: String, _ defaultValue: String?) -> Any? {
         HKLogUtil.d(HKHybirdMethods.TAG, "getFromLocal", key, defaultValue)
-        return nil
+        return "krmao"
     }
 
     @objc
-    public static func putToMemory(_ module: String, _ key: String, _ value: String) -> Any? {
+    public func putToMemory(_ module: String, _ key: String, _ value: String) -> Any? {
         HKLogUtil.d(HKHybirdMethods.TAG, "putToMemory", key, value)
         return nil
     }
 
     @objc
-    public static func getFromMemory(_ module: String, _ key: String) -> String? {
+    public func getFromMemory(_ module: String, _ key: String) -> String? {
         return getFromMemory(module, key, nil)
     }
 
     @objc
-    public static func getFromMemory(_ module: String, _ key: String, _ defaultValue: String?) -> String? {
+    public func getFromMemory(_ module: String, _ key: String, _ defaultValue: String?) -> String? {
         HKLogUtil.d(HKHybirdMethods.TAG, "getFromMemory", key, defaultValue)
         return nil
     }
 
     @objc
-    public static func removeFromMemory(_ module: String) -> Any? {
+    public func removeFromMemory(_ module: String) -> Any? {
         HKLogUtil.d(HKHybirdMethods.TAG, "removeFromMemory", module)
         return nil
     }
 
     @objc
-    public static func removeFromMemory(_ module: String, _ key: String) -> Any? {
+    public func removeFromMemory(_ module: String, _ key: String) -> Any? {
         HKLogUtil.d(HKHybirdMethods.TAG, "removeFromMemory", module, key)
         return nil
     }
 
     @objc
-    public static func isNetworkAvailable() -> Bool {
+    public func isNetworkAvailable() -> Bool {
         HKLogUtil.d(HKHybirdMethods.TAG, "isNetworkAvailable")
         return false
     }

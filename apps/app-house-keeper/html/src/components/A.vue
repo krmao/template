@@ -7,6 +7,7 @@
         <div id="nativeCall2" @click="onNativeCallClick2()"> params=Hello, Native,3000 </div>
         <div id="nativeCall3" @click="onNativeCallClick3()"> http get </div>
         <div id="nativeCall4" @click="onNativeCallClick4()"> http post </div>
+        <div id="nativeCall5" @click="onNativeCallClick5()"> getNative value </div>
     </div>
 </template>
 
@@ -66,6 +67,13 @@
                     }
                 );
                 console.log("onNativeCallClick4 end")
+            },
+            onNativeCallClick5: function () {
+                console.log("onNativeCallClick5 start")
+                window.hybird.getFromLocal("haha",function (value) {
+                    console.log("onCallback,value="+value)
+                })
+                console.log("onNativeCallClick5 end")
             },
             onGoBack:
 
@@ -163,6 +171,9 @@
             margin-top: px2rem(60);
         }
         #nativeCall4 {
+            margin-top: px2rem(60);
+        }
+        #nativeCall5 {
             margin-top: px2rem(60);
         }
     }

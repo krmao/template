@@ -56,12 +56,10 @@ class HKHybirdManager {
 
                 HKLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
                 
-                _ = callNativeMethod(className: clazzName, methodName: methodName, paramArray)
-                print("test xxxx")
-//                if (!TextUtils.isEmpty(hashcode)) {
-//                    callJsFunction(webView, "javascript:window.hybird.onCallback($hashcode, $result)")
-//                }
-                
+                let result = callNativeMethod(className: clazzName, methodName: methodName, paramArray) ?? ""
+                if (!TextUtils.isEmpty(hashcode)) {
+                    callJsFunction(webView, "javascript:window.hybird.onCallback('\(hashcode)', '\(result)')")
+                }
                 return true
             } else {
                 HKLogUtil.e(TAG, "schemaUrl:${schemeUrl.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
@@ -102,7 +100,7 @@ class HKHybirdManager {
     }
 
     public static func callJsFunction(_ webView: WKWebView?, _ javascript: String, _ callback: ((_ result: String?) -> Void?)? = nil) {
-        webView?.evaluateJavaScript(javascript) { (any: Any?, error: Error?) in
+        webView?.evaluateJavaScript(javascript.replace("javascript:", "")) { (any: Any?, error: Error?) in
             HKLogUtil.d(TAG, "any", (any ?? "nil"), "error", (error ?? "nil"))
             let result = error == nil ? (any as? String) : ("error:" + error.debugDescription)
             callback?(result)

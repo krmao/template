@@ -21,7 +21,7 @@
 }
 
 .mobile-console__holder_bg {
-    background-color: #000000;
+    background-color: #ffffff;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -78,7 +78,7 @@
 }
 
 .mobile-console__node.string {
-    color: lightseagreen;
+    color: coral;
 }
 
 /*undefined*/

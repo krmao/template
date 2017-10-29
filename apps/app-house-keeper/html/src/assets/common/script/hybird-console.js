@@ -104,7 +104,7 @@ import '../style/hybird-console.css'
             node.innerHTML = obj;
             node.classList.add('number');
         } else if (typeof obj === 'string') {
-            node.innerHTML = '"' + escapeHTML(obj) + '"';
+            node.innerHTML = '>' + escapeHTML(obj) + '　';
             node.classList.add('string');
         } else if (obj === undefined) {
             node.innerHTML = 'undefined';
@@ -170,7 +170,7 @@ import '../style/hybird-console.css'
         if (!element) {
             elementBG = createElement('holder_bg', undefined, "console_bg");
             document.body.appendChild(elementBG);
-            elementBG.style.opacity = 0.7;
+            elementBG.style.opacity = 0.9;
 
             element = createElement('holder', undefined, "console");
             document.body.appendChild(element);

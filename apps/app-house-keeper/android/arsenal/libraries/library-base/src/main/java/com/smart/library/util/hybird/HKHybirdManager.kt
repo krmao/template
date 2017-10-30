@@ -17,7 +17,7 @@ import kotlin.reflect.full.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
-    val TAG = "hybird"
+    val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
     private val schemeMap: HashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = hashMapOf()
@@ -126,11 +126,7 @@ object HKHybirdManager {
     fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean? {
         val url = Uri.parse(uriString)
         val schemePrefix = "${url?.scheme}://${url?.host}:${url?.port}"
-
-        HKLogUtil.d(TAG, "intercept url : $url")
-        HKLogUtil.d(TAG, "intercept schemePrefix : $schemePrefix")
-        HKLogUtil.d(TAG, "intercept ? ${schemeMap.containsKey(schemePrefix)}")
-
+        HKLogUtil.v(TAG, "[intercept?${schemeMap.containsKey(schemePrefix)}] , url=$url , schemePrefix=$schemePrefix")
         return schemeMap[schemePrefix]?.invoke(webView, url)
     }
 

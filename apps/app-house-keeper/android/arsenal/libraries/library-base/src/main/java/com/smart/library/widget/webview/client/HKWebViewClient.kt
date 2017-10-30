@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Build
+import android.os.Message
 import android.webkit.*
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdManager
@@ -35,17 +36,22 @@ open class HKWebViewClient : WebViewClient() {
      * 针对 https 证书校验可以在此拦截通过HttpsURLConnection实现请求验证
      */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        HKLogUtil.v(HKHybirdManager.TAG, "shouldOverrideUrlLoading: $url")
+        HKLogUtil.d(HKHybirdManager.TAG, "shouldOverrideUrlLoading: $url")
         return HKHybirdManager.shouldOverrideUrlLoading(view, url) ?: super.shouldOverrideUrlLoading(view, url)
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        HKLogUtil.v(HKHybirdManager.TAG, "onPageStarted: $url")
+        HKLogUtil.d(HKHybirdManager.TAG, "onPageStarted: $url")
         super.onPageStarted(view, url, favicon)
     }
 
+    override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
+        HKLogUtil.d(HKHybirdManager.TAG, "doUpdateVisitedHistory(isReload=$isReload)): $url")
+        super.doUpdateVisitedHistory(view, url, isReload)
+    }
+
     override fun onPageFinished(webView: WebView?, url: String?) {
-        HKLogUtil.v(HKHybirdManager.TAG, "onPageFinished: $url")
+        HKLogUtil.d(HKHybirdManager.TAG, "onPageFinished: $url")
         super.onPageFinished(webView, url)
     }
 
@@ -55,15 +61,20 @@ open class HKWebViewClient : WebViewClient() {
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
-        HKLogUtil.v(HKHybirdManager.TAG, "onPageCommitVisible: $url")
+        HKLogUtil.d(HKHybirdManager.TAG, "onPageCommitVisible: $url")
         super.onPageCommitVisible(view, url)
+    }
+
+    override fun onFormResubmission(view: WebView?, dontResend: Message?, resend: Message?) {
+        HKLogUtil.d(HKHybirdManager.TAG, "onPageCommitVisible: dontResend=$dontResend , resend=$resend")
+        super.onFormResubmission(view, dontResend, resend)
     }
 
     /**
      * android 5.0 以上 webView 再次校验 https 证书
      */
     override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) {
-        HKLogUtil.v(HKHybirdManager.TAG, "onReceivedClientCertRequest: $request")
+        HKLogUtil.w(HKHybirdManager.TAG, "onReceivedClientCertRequest: $request")
         super.onReceivedClientCertRequest(view, request)
     }
 
@@ -85,7 +96,7 @@ open class HKWebViewClient : WebViewClient() {
     }
 
     override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
-        HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<LOLLIPOP $url")
+        HKLogUtil.d(HKHybirdManager.TAG, "shouldInterceptRequest:<LOLLIPOP $url")
         return HKHybirdManager.shouldInterceptRequest(view, url) ?: super.shouldInterceptRequest(view, url)
     }
 }

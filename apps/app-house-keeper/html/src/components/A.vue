@@ -117,7 +117,7 @@
         activated: function () {
             var that = this;
             console.log(page + '(' + fixedWidthString('activated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
-            document.querySelector('body').setAttribute('style', 'background:yellow')
+            document.querySelector('body').setAttribute('style', 'background:orange')
 //            window.location.href = "hybird://hybird:8888/updateTitle?title=组件A"
 
 //            window.hybird.onResume = ()=> {

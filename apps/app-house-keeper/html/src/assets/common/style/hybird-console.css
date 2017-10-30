@@ -21,29 +21,31 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
 
  */
 
-.mobile-console__menu {
+.hybird_console_menu {
     position: fixed;
     bottom: 0;
     right: 0;
     z-index: 999;
-    width: 4rem;
-    height: 4rem;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.7rem;
+    margin-bottom: 0.7rem;
+    opacity: 0.9;
 }
 
-.mobile-console__menu_clear {
+.hybird_console_menu_clear {
     position: fixed;
     bottom: 0;
     left: 0;
     z-index: 999;
-    width: 4rem;
-    height: 4rem;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
+    width: 2.7rem;
+    height: 2.7rem;
+    margin-left: 0.7rem;
+    margin-bottom: 0.7rem;
+    opacity: 0.9;
 }
 
-.mobile-console__holder_bg {
+.hybird_console_container_background {
     background-color: #002b36;
     position: fixed;
     bottom: 0;
@@ -59,9 +61,10 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
     -webkit-overflow-scrolling: touch;
     font-family: monospace;
     font-size: 12px;
+    opacity: 0.9;
 }
 
-.mobile-console__holder {
+.hybird_console_container {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -76,42 +79,62 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
     -webkit-overflow-scrolling: touch;
     font-family: monospace;
     font-size: 12px;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    margin-right: -10px;
+}
+
+.hybird_console_container::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 0; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 0;
+}
+
+.hybird_console_container::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 0;
+    -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
+    background: #000;
+}
+
+.hybird_console_container::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
+    border-radius: 0;
+    background: #000;
 }
 
 /* 变量类型 */
-.mobile-console__log {
+.hybird_console_log {
     color: #d33682;
 }
 
-.mobile-console__props {
+.hybird_console_props {
     padding-left: 15px;
     display: none;
     clear: both;
 }
 
-.mobile-console__props.visible {
+.hybird_console_props.visible {
     display: block;
 }
 
-.mobile-console__node {
+.hybird_console_node {
     position: relative;
 }
 
-.mobile-console__node.number {
+.hybird_console_node.number {
     color: ghostwhite;
 }
 
-.mobile-console__node.string {
+.hybird_console_node.string {
     color: #657b83;
 }
 
 /*undefined*/
-.mobile-console__node.null {
+.hybird_console_node.null {
     margin-left: 8px;
     color: red;
 }
 
-.mobile-console__log:before {
+.hybird_console_log:before {
     display: inline-block;
     position: relative;
     margin: 2px 4px 0 9px;
@@ -120,31 +143,31 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
 }
 
 /* 箭头: 展开前 */
-.mobile-console__log.inspect:before {
+.hybird_console_log.inspect:before {
     content: '';
     border-width: 4px 0 4px 8px;
     border-left-color: #268bd2;
 }
 
 /* 箭头: 展开后 */
-.mobile-console__log.opened:before {
+.hybird_console_log.opened:before {
     content: '';
     border-width: 8px 4px 0 4px;
     border-top-color: #268bd2;
 }
 
-.mobile-console__top {
+.hybird_console_top {
     white-space: nowrap;
 }
 
 /* 变量对象 */
-.mobile-console__enumerable-key {
+.hybird_console_enumerable-key {
     margin-right: 10px;
     color: #b58900;
 }
 
 /* 字典对象名称 */
-.mobile-console__not-enumerable-key {
+.hybird_console_not-enumerable-key {
     color: #5f8700;
     margin-right: 10px;
 }

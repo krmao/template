@@ -1,13 +1,14 @@
 import '../style/hybird-console.css'
 
 (function () {
-    var menu;
-    var menu_clear;
-    var element;
-    var elementBG;
-    var isShow = false;
+    var btn_menu;
+    var btn_menu_off;
+    var btn_clear;
+    var container;
+    var container_background;
+    var isContentShow = false;
 
-    function createElement(cls, content, name) {
+    function createElement(styleClass, content, name) {
         var elem = document.createElement(name || 'div');
         elem.id = name
         if (name === 'img') {
@@ -16,12 +17,12 @@ import '../style/hybird-console.css'
         if (content) {
             elem.innerHTML = content;
         }
-        elem.classList.add('mobile-console__' + cls);
+        elem.classList.add('hybird_console_' + styleClass);
         return elem;
     }
 
     function scrollToBottom() {
-        element.scrollTop = element.scrollHeight;
+        container.scrollTop = container.scrollHeight;
     }
 
     function escapeHTML(html) {
@@ -164,76 +165,85 @@ import '../style/hybird-console.css'
         return content;
     }
 
-    function createConsoleBlock(force) {
-        if (force)
-            element = undefined;
-        if (!element) {
-            elementBG = createElement('holder_bg', undefined, "console_bg");
-            document.body.appendChild(elementBG);
-            elementBG.style.opacity = 0.9;
-
-            element = createElement('holder', undefined, "console");
-            document.body.appendChild(element);
-            // element.style.opacity = 1;
+    function initContainer(reset) {
+        if (reset) {
+            container = undefined;
+        }
+        if (!container_background) {
+            container_background = createElement('container_background', undefined, "container_background");
+            document.body.appendChild(container_background);
+        }
+        if (!container) {
+            container = createElement('container', undefined, "container");
+            document.body.appendChild(container);
         }
     }
 
-    function createConsoleMenu() {
-        if (!menu) {
-            menu = createElement('menu', isShow ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg'), 'img');
-            document.body.appendChild(menu);
-            menu.onclick = function () {
-                toggleDialog(!isShow)
+    function initMenus() {
+        if (!btn_menu_off) {
+            btn_menu_off = createElement('menu', require('../image/hybird-console-menu-toggleoff.svg'), 'img');
+            document.body.appendChild(btn_menu_off);
+            btn_menu_off.onclick = function () {
+                toggleConsole(true)
             }
-            menu.style.opacity = 0.4;
+            setVisible(btn_menu_off, !isContentShow)
         }
-    }
-
-    function createConsoleClear() {
-        if (!menu_clear) {
-            menu_clear = createElement('menu_clear', require('../image/hybird-console-menu-clear.svg'), 'img');
-            menu_clear.hidden = !isShow
-            document.body.appendChild(menu_clear);
-            menu_clear.onclick = function () {
-                document.body.removeChild(element)
-                createConsoleBlock(true);
+        if (!btn_menu) {
+            btn_menu = createElement('menu', require('../image/hybird-console-menu-toggleon.svg'), 'img');
+            document.body.appendChild(btn_menu);
+            btn_menu.onclick = function () {
+                toggleConsole(false)
             }
-            menu_clear.style.opacity = 0.4;
+            setVisible(btn_menu, isContentShow)
+        }
+        if (!btn_clear) {
+            btn_clear = createElement('menu_clear', require('../image/hybird-console-menu-clear.svg'), 'img');
+            btn_clear.hidden = !isContentShow
+            document.body.appendChild(btn_clear);
+            btn_clear.onclick = function () {
+                document.body.removeChild(container)
+                initContainer(true);
+            }
+            setVisible(btn_clear, isContentShow)
         }
     }
 
-    function toggleDialog(show) {
-        isShow = show;
-        createConsoleBlock();
-        createConsoleClear();
-        menu_clear.hidden = !isShow
-        menu_clear.style.display = show ? "" : "none";
-        menu.src = show ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg')
-        element.hidden = !show
-        elementBG.hidden = !show
+    function toggleConsole(isShow) {
+        isContentShow = isShow;
+        initContainer();
+        setVisible(container, isContentShow)
+        setVisible(container_background, isContentShow)
+        setVisible(btn_menu_off, !isContentShow)
+        setVisible(btn_menu, isContentShow)
+        setVisible(btn_clear, isContentShow)
+    }
+
+    function setVisible(element, visible) {
+        element.style.display = visible ? "block" : "none";
+    }
+
+    function insepctLog(params) {
+        if (container) {
+            var message = ""
+            message = "[" + getNowFormatDate() + "] " + message
+            for (var i = 0; i < params.length; i++) {
+                message += params[i];
+                container.appendChild(inspect(params[i]));
+            }
+            scrollToBottom();
+        }
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native)
+            window.webkit.messageHandlers.native.postMessage(message);
     }
 
     (function () {
-        var log = console.log;
-        console.log = function () {
-            //log.call(this, 'My Console!!!');
-            log.apply(this, Array.prototype.slice.call(arguments));
-
-            if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
-                createConsoleMenu();
-                if (element) {
-                    var message = ""
-                    message = "[" + getNowFormatDate() + "] " + message
-                    for (var i = 0; i < arguments.length; i++) {
-                        message += arguments[i];
-                        element.appendChild(inspect(arguments[i]));
-                    }
-                    scrollToBottom();
-                }
-                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native)
-                    window.webkit.messageHandlers.native.postMessage(message);
-            }
-
-        };
+        if (/android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
+            initMenus();
+            var log = console.log;
+            console.log = function () {
+                log.apply(this, Array.prototype.slice.call(arguments));
+                insepctLog(arguments)
+            };
+        }
     }());
 })()

@@ -210,6 +210,7 @@ import '../style/hybird-console.css'
         menu_clear.style.display = show ? "" : "none";
         menu.src = show ? require('../image/hybird-console-menu-toggleon.svg') : require('../image/hybird-console-menu-toggleoff.svg')
         element.hidden = !show
+        elementBG.hidden = !show
     }
 
     (function () {

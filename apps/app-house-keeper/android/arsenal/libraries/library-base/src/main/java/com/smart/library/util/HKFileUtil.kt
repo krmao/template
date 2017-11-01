@@ -2,7 +2,6 @@ package com.smart.library.util
 
 import android.graphics.Bitmap
 import android.text.TextUtils
-import com.google.common.io.ByteStreams
 import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
@@ -43,7 +42,7 @@ object HKFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream, destFile: File?) {
+    fun copy(inputStream: InputStream, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
         var outputStream: OutputStream? = null
         try {
             if (destFile != null && !destFile.exists()) {
@@ -51,7 +50,7 @@ object HKFileUtil {
                 destFile.createNewFile()
             }
             outputStream = FileOutputStream(destFile)
-            copy(inputStream, outputStream)
+            copy(inputStream, outputStream, onProgress)
         } finally {
             inputStream.close()
             outputStream?.close()
@@ -59,13 +58,39 @@ object HKFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream, toFilePath: String) {
-        copy(inputStream, File(toFilePath))
+    fun copy(inputStream: InputStream, toFilePath: String, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
+        copy(inputStream, File(toFilePath), onProgress)
     }
 
+    /**
+     * copy from
+     * @see com.google.common.io.ByteStreams.copy
+     *
+     * Copies all bytes from the input stream to the output stream. Does not close or flush either
+     * stream.
+     *
+     * @param from the input stream to read from
+     * @param to the output stream to write to
+     * @return the number of bytes copied
+     * @throws IOException if an I/O error occurs
+     */
     @Throws(IOException::class)
-    fun copy(inputStream: InputStream, outputStream: OutputStream) {
-        ByteStreams.copy(inputStream, outputStream)
+    fun copy(from: InputStream, to: OutputStream, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
+        checkNotNull(from)
+        checkNotNull(to)
+        val total = from.available().toLong()
+        val buf = ByteArray(8192)
+        var current: Long = 0
+        while (true) {
+            val r = from.read(buf)
+            if (r == -1) {
+                break
+            }
+            to.write(buf, 0, r)
+            current += r.toLong()
+            onProgress?.invoke(current, total)
+        }
+        return current
     }
 
     fun deleteDirectory(filePath: String?) {

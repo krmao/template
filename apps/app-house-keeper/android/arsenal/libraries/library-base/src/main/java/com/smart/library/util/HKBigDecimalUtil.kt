@@ -6,12 +6,10 @@ import java.math.BigDecimal
 object HKBigDecimalUtil {
 
     //四舍五入 decimalLength：小数位数
-    fun formatValue(value: Double, decimalLength: Int): Double {
-        return BigDecimal(value).setScale(decimalLength, BigDecimal.ROUND_HALF_UP).toDouble()
-    }
+    fun formatValue(value: Double, decimalLength: Int): Double =
+        BigDecimal(value).setScale(decimalLength, BigDecimal.ROUND_HALF_UP).toDouble()
 
     //四舍五入 decimalLength：小数位数
-    fun formatValue(value: Float, decimalLength: Int): Float {
-        return BigDecimal(value.toDouble()).setScale(decimalLength, BigDecimal.ROUND_HALF_UP).toFloat()
-    }
+    fun formatValue(value: Float, decimalLength: Int): Float =
+        BigDecimal(value.toDouble()).setScale(decimalLength, BigDecimal.ROUND_HALF_UP).toFloat()
 }

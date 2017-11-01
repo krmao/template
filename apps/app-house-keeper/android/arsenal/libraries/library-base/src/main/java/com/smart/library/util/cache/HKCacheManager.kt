@@ -10,9 +10,10 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * 管理应用程序全局的 entity cache
  */
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKCacheManager {
 
-    interface Callback<T> {
+    interface Callback<in T> {
         fun onSuccess(successObject: T?)
 
         fun onFailure(failureObject: T?)
@@ -22,11 +23,10 @@ object HKCacheManager {
 
     // 荣耀6 会有很多警告
     fun getPackageDir(): File {
-        val cacheDir: File?
-        if (HKSystemUtil.isSdCardExist) {
-            cacheDir = File(Environment.getExternalStorageDirectory().absolutePath + "/Android/data/" + HKBaseApplication.INSTANCE.packageName)
+        val cacheDir = if (HKSystemUtil.isSdCardExist) {
+            File(Environment.getExternalStorageDirectory().absolutePath + "/Android/data/" + HKBaseApplication.INSTANCE.packageName)
         } else {
-            cacheDir = File(HKBaseApplication.INSTANCE.filesDir.absolutePath)
+            File(HKBaseApplication.INSTANCE.filesDir.absolutePath)
         }
         if (!cacheDir.exists())
             cacheDir.mkdirs()
@@ -53,7 +53,7 @@ object HKCacheManager {
         if (TextUtils.isEmpty(module) || TextUtils.isEmpty(key)) {
             return
         }
-        val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap<String, Any>()
+        val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
         subModuleCacheMap.put(key, value)
         allModuleCacheMap.put(module, subModuleCacheMap)
     }
@@ -85,7 +85,7 @@ object HKCacheManager {
         if (TextUtils.isEmpty(module) || TextUtils.isEmpty(key)) {
             return
         }
-        val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap<String, Any>()
+        val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
         subModuleCacheMap.remove(key)
         allModuleCacheMap.put(module, subModuleCacheMap)
     }

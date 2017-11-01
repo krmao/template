@@ -4,6 +4,7 @@ include(":app-housekeeper"); project(":app-housekeeper").projectDir = new File(s
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "arsenal/libraries/library-base")
 include(":library-housekeeper-base"); project(":library-housekeeper-base").projectDir = new File(settingsDir, "arsenal/libraries/library-housekeeper-base")
+include(":library-housekeeper-repository"); project(":library-housekeeper-repository").projectDir = new File(settingsDir, "arsenal/libraries/library-housekeeper-repository")
 
 //modules
 include(":module-housekeeper-home"); project(":module-housekeeper-home").projectDir = new File(settingsDir, "arsenal/modules/module-housekeeper-home")

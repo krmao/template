@@ -20,7 +20,6 @@ import com.smart.library.util.HKSystemUtil
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
 @Suppress("DEPRECATION")
-@Deprecated("@see HKDebugFragment.showDebugNotification")
 enum class HKFloatViewUtil {
     instance;
 

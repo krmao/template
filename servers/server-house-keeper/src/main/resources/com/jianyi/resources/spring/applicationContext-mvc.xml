@@ -43,7 +43,8 @@
     <!--<mvc:resources mapping="*.png" location="/WEB-INF/static/images/"/>-->
     <!--<mvc:resources mapping="*.jpg" location="/WEB-INF/static/images/"/>-->
 
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/" cache-period="30"/>
+    <!--<mvc:resources mapping="/static/**" location="/WEB-INF/static/" cache-period="30"/>-->
+    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
 
     <!-- [静态资源映射]:第二种方式:不能访问WEB-INF目录下的静态资源-->
     <!-- 将静态资源的处理经由Spring MVC框架交回Web应用服务器处理, -->

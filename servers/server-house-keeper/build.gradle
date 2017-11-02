@@ -31,13 +31,11 @@ tasks.withType(JavaCompile) {
 }
 
 gretty {
-//    jvmArgs = '-Da=b'
 //    httpEnabled = true
 //    httpsEnabled = false
 //    optionally you can specify port. 8443 is the default.
 //    httpsPort = 443
-//    httpPort = 7777
-//    port = 7777
+    httpPort = 7777
 //    sslKeyStorePath = '/some/path/keystore'
 //    sslKeyStorePassword = 'someKeystorePassword'
 //    sslKeyManagerPassword = 'someKeyManagerPassword'
@@ -47,10 +45,10 @@ gretty {
 
 //    断点调试 http://www.chenkaihua.com/2016/02/20/idea-webapp-remote-debug-via-gretty/
 //    断点调试端口号
-//    debugPort = 8888
+    debugPort = 8888
 //    debugSuspend = true 表示 gradle appStartDebug 运行中途会暂停JVM(此时无法响应请求), 直到监听端口连接上后,继续执行
-//    debugSuspend = true
-//
+    debugSuspend = true
+
     contextPath = ''
     loggingLevel = "ALL"// 'ALL', 'DEBUG', 'ERROR', 'INFO', 'OFF', 'TRACE', 'WARN'. The default value is 'INFO'.
     consoleLogEnabled = true

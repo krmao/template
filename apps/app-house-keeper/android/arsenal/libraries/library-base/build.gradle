@@ -53,7 +53,7 @@ dependencies {
     //compile "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
 
     /******* 网络请求库 ****************************************************************************/
-    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
+    //compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version" //HKHttpLoggingInterceptor
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"

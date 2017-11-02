@@ -14,7 +14,6 @@ import com.smart.library.base.HKBaseFragment
 import com.smart.library.util.HKBigDecimalUtil
 import com.smart.library.util.HKFileUtil
 import com.smart.library.util.HKLogUtil
-import com.smart.library.util.HKToastUtil
 import com.smart.library.util.cache.HKCacheManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -28,7 +27,7 @@ class HomeFragment : HKBaseFragment() {
         textView.text = "home"
         textView.setBackgroundColor(Color.LTGRAY)
         textView.setOnClickListener {
-            HKRepository.download("http://10.47.12.176:8080/view/Android/job/cxj-toc-android-release/lastSuccessfulBuild/artifact/arsenal/apps/app-chexiangjia/build/outputs/channels/app-chexiangjia-CXB0000-release-v4.3-175-20170913-174408.apk", { current, total ->
+            HKRepository.download("http://10.47.18.39:8080/server-house-keeper/static/files/test.json", { current, total ->
                 HKLogUtil.d("download:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
             })
                 .subscribeOn(Schedulers.io())

@@ -272,13 +272,11 @@ object HKLogUtil {
         }
     }
 
-    fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null): String {
-        return p(level, tag, message, throwable, null)
-    }
+    fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null): String =
+        p(level, tag, message, throwable, null)
 
-    fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {
-        return p(level, tag, message, true, throwable, stackTraceElement)
-    }
+    fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String =
+        p(level, tag, message, false, throwable, stackTraceElement)
 
     fun p(level: Int, tag: String? = null, message: String, appendLocation: Boolean = true, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {
         var _tag = tag

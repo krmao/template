@@ -15,16 +15,16 @@ internal object HKURLManager {
 
     enum class Environments(val map: Map<String, String>) {
         DEV(mapOf(
-            KEY_HOST to "http://10.47.18.39")
+            KEY_HOST to "http://10.47.18.39:7777")
         ),
         SIT(mapOf(
-            KEY_HOST to "http://10.47.18.39")
+            KEY_HOST to "http://10.47.18.39:7777")
         ),
         UAT(mapOf(
-            KEY_HOST to "http://10.47.18.39")
+            KEY_HOST to "http://10.47.18.39:7777")
         ),
         PRD(mapOf(
-            KEY_HOST to "http://10.47.18.39")
+            KEY_HOST to "http://10.47.18.39:7777")
         )
     }
 

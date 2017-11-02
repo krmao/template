@@ -1,6 +1,7 @@
 package com.smart.housekeeper.repository.remote.core
 
 
+import com.smart.library.util.HKTimeUtil
 import okhttp3.*
 import okhttp3.internal.http.HttpHeaders
 import okhttp3.internal.platform.Platform
@@ -10,6 +11,7 @@ import java.io.EOFException
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
+import java.util.logging.SimpleFormatter
 
 /**
  * An OkHttp interceptor which logs request and response information. Can be applied as an
@@ -177,8 +179,8 @@ class HKHttpLoggingInterceptor(private var level: Level = Level.NONE, private va
         val responseBody = response.body()
         val contentLength = responseBody!!.contentLength()
         val bodySize = if (contentLength != -1L) (contentLength).toString() + "-byte" else "unknown-length"
-        logger.log(("<-- " + response.code() + "(RAW_STATUS_CODE==${response.networkResponse()?.code()}) " + response.message() + ' '
-            + response.request().url() + " (" + tookMs + "ms" + (if (!logHeaders) ", " + bodySize + " body" else "") + ')'))
+        logger.log(("<-- " + response.code() + "(RAW_STATUS_CODE==${response.networkResponse()?.code()}[${HKTimeUtil.formatNow()}]) " + response.message() + ' '
+            + response.request().url() + " (" + tookMs + "ms" + (if (!logHeaders) ", $bodySize body" else "") + ')'))
 
         if (logHeaders) {
             val headers = response.headers()

@@ -18,6 +18,9 @@ import java.io.IOException
 
 interface HKApi {
 
+    @GET("/bundle")
+    fun getBundleConfig(): Observable<String>
+
     /**
      * 下载, 例:
      *

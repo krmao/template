@@ -7,6 +7,7 @@ import com.smart.library.util.HKLogUtil
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import okhttp3.ResponseBody
+import retrofit2.http.GET
 import java.io.File
 
 
@@ -20,6 +21,9 @@ object HKRepository {
     fun init() {
         HKApiManager.init()
     }
+
+    fun getBundleConfig(): Observable<String> =
+        HKApiManager.getApi(HKApi::class.java).getBundleConfig()
 
     /*
         HKRepository.download("http://10.47.12.176:8080/view/Android/job/cxj-toc-android-release/lastSuccessfulBuild/artifact/arsenal/apps/app-chexiangjia/build/outputs/channels/app-chexiangjia-CXB0000-release-v4.3-175-20170913-174408.apk", { current, total ->

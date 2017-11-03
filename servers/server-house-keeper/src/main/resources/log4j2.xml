@@ -4,7 +4,7 @@
     <properties>
         <property name="LOG_HOME">build/log/log4j2</property>
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>
-        <property name="SERVER_NAME">jianyi</property>
+        <property name="SERVER_NAME">smart.housekeeper</property>
     </properties>
     <appenders>
         <!-- 定义控制台输出 -->

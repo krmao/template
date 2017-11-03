@@ -7,7 +7,7 @@
     <!-- 配置contextConfigLocation初始化参数 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:com/jianyi/resources/spring/applicationContext.xml</param-value>
+        <param-value>classpath:com/smart/housekeeper/resources/spring/applicationContext.xml</param-value>
     </context-param>
 
     <!--
@@ -35,7 +35,7 @@
         <!-- 自定义路径,名称另当别论 -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:com/jianyi/resources/spring/applicationContext-mvc.xml</param-value>
+            <param-value>classpath:com/smart/housekeeper/resources/spring/applicationContext-mvc.xml</param-value>
         </init-param>
         <!-- 表示启动容器时初始化该Servlet -->
         <load-on-startup>1</load-on-startup>

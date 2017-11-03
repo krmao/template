@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.6.24, for osx10.8 (x86_64)
 --
--- Host: 114.215.153.200    Database: jianyi
+-- Host: 114.215.153.200    Database: smart.housekeeper
 -- ------------------------------------------------------
 -- Server version	5.6.26
 

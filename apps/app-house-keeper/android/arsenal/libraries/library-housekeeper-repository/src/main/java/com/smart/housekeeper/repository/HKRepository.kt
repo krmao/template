@@ -7,6 +7,7 @@ import com.smart.library.util.HKLogUtil
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.GET
 import java.io.File
 
@@ -64,7 +65,7 @@ object HKRepository {
      * @param file 指定文件的sd卡下载路径
      * @return ResponseBody
      */
-    fun download(url: String, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Observable<ResponseBody> {
+    fun download(url: String, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Observable<Response<ResponseBody>> {
         RxBus.toObservable(HKOkHttpProgressResponseBody.OnProgressEvent::class.java).subscribe { onProgressEvent ->
             if (url == onProgressEvent.requestUrl) onProgress?.invoke(onProgressEvent.current, onProgressEvent.total)
         }

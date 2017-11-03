@@ -42,7 +42,7 @@ object HKFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
+    fun copy(inputStream: InputStream?, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
         var outputStream: OutputStream? = null
         try {
             if (destFile != null && !destFile.exists()) {
@@ -52,13 +52,13 @@ object HKFileUtil {
             outputStream = FileOutputStream(destFile)
             copy(inputStream, outputStream, onProgress)
         } finally {
-            inputStream.close()
+            inputStream?.close()
             outputStream?.close()
         }
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream, toFilePath: String, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
+    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
         copy(inputStream, File(toFilePath), onProgress)
     }
 
@@ -75,10 +75,10 @@ object HKFileUtil {
      * @throws IOException if an I/O error occurs
      */
     @Throws(IOException::class)
-    fun copy(from: InputStream, to: OutputStream, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
+    fun copy(from: InputStream?, to: OutputStream?, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
         checkNotNull(from)
         checkNotNull(to)
-        val total = from.available().toLong()
+        val total = from!!.available().toLong()
         val buf = ByteArray(8192)
         var current: Long = 0
         while (true) {
@@ -86,7 +86,7 @@ object HKFileUtil {
             if (r == -1) {
                 break
             }
-            to.write(buf, 0, r)
+            to!!.write(buf, 0, r)
             current += r.toLong()
             onProgress?.invoke(current, total)
         }

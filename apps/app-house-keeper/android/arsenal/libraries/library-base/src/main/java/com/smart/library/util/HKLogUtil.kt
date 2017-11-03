@@ -260,6 +260,7 @@ object HKLogUtil {
                         message = msg
                     }
                 } catch (e: JSONException) {
+                    e.printStackTrace()
                     message = msg
                 }
                 p(level, tag, "╔═══════════════════════════════════════════════════════════════════════════════════════", false)

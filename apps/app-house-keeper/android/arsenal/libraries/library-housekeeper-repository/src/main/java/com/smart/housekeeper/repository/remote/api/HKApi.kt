@@ -9,6 +9,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import okio.*
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -32,7 +33,7 @@ interface HKApi {
      * @return ResponseBody
      */
     @GET
-    fun download(@Url url: String): Observable<ResponseBody>
+    fun download(@Url url: String): Observable<Response<ResponseBody>>
 
     /**
      * 上传, 例:

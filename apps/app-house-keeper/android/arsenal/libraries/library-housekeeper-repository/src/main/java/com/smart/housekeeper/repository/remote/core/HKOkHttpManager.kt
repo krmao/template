@@ -30,7 +30,7 @@ object HKOkHttpManager {
                 })
             .addInterceptor(
                 HKHttpLoggingInterceptor(
-                    if (HKBaseApplication.DEBUG) HKHttpLoggingInterceptor.Level.BODY else HKHttpLoggingInterceptor.Level.BASIC,
+                    if (HKBaseApplication.DEBUG) HKHttpLoggingInterceptor.Level.BODY else HKHttpLoggingInterceptor.Level.NONE,
                     object : HKHttpLoggingInterceptor.Logger {
                         override fun log(message: String) {
                             if (message.length <= 10000)

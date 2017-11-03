@@ -11,7 +11,6 @@ import java.io.EOFException
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
-import java.util.logging.SimpleFormatter
 
 /**
  * An OkHttp interceptor which logs request and response information. Can be applied as an
@@ -130,14 +129,17 @@ class HKHttpLoggingInterceptor(private var level: Level = Level.NONE, private va
             val headers = request.headers()
             var i = 0
             val count = headers.size()
+            val headersString = StringBuilder()
             while (i < count) {
                 val name = headers.name(i)
                 // Skip headers from the request body as they are explicitly logged above.
                 if (!"Content-Type".equals(name, ignoreCase = true) && !"Content-Length".equals(name, ignoreCase = true)) {
-                    logger.log(name + ": " + headers.value(i))
+                    headersString.append(String.format("%24s -> %s%s", name, headers.value(i), if (i == count - 1) "" else "\n"))
                 }
                 i++
             }
+            if (headersString.isNotEmpty())
+                logger.log("REQUEST HEADERS:\n" + headersString.toString())
 
             if (!logBody || !hasRequestBody) {
                 logger.log("--> END " + request.method())
@@ -156,11 +158,9 @@ class HKHttpLoggingInterceptor(private var level: Level = Level.NONE, private va
                 logger.log("")
                 if (isPlaintext(buffer)) {
                     logger.log(buffer.readString(charset!!))
-                    logger.log("--> END " + request.method()
-                        + " (" + requestBody.contentLength() + "-byte body)")
+                    logger.log("--> END " + request.method() + " (" + requestBody.contentLength() + "-byte body)")
                 } else {
-                    logger.log("--> END " + request.method() + " (binary "
-                        + requestBody.contentLength() + "-byte body omitted)")
+                    logger.log("--> END " + request.method() + " (binary " + requestBody.contentLength() + "-byte body omitted)")
                 }
             }
         }
@@ -179,17 +179,18 @@ class HKHttpLoggingInterceptor(private var level: Level = Level.NONE, private va
         val responseBody = response.body()
         val contentLength = responseBody!!.contentLength()
         val bodySize = if (contentLength != -1L) (contentLength).toString() + "-byte" else "unknown-length"
-        logger.log(("<-- " + response.code() + "(RAW_STATUS_CODE==${response.networkResponse()?.code()}[${HKTimeUtil.formatNow()}]) " + response.message() + ' '
-            + response.request().url() + " (" + tookMs + "ms" + (if (!logHeaders) ", $bodySize body" else "") + ')'))
+        logger.log(("""<-- ${response.code()} [RAW:${String.format("%4d", response.networkResponse()?.code())} (${HKTimeUtil.Hms()})] ${response.message()} ${response.request().url()} (${tookMs}ms${if (!logHeaders) ", $bodySize body" else ""})"""))
 
         if (logHeaders) {
             val headers = response.headers()
             var i = 0
             val count = headers.size()
+            val headersString = StringBuilder("RESPONSE HEADERS:\n")
             while (i < count) {
-                logger.log(headers.name(i) + ": " + headers.value(i))
+                headersString.append(String.format("%24s -> %s%s", headers.name(i), headers.value(i), if (i == count - 1) "" else "\n"))
                 i++
             }
+            logger.log(headersString.toString())
 
             if (!logBody || !HttpHeaders.hasBody(response)) {
                 logger.log("<-- END HTTP")

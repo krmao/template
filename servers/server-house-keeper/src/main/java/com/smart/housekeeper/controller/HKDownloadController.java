@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.*;
 
 @Controller
 @RequestMapping("/download")
@@ -27,12 +28,13 @@ public class HKDownloadController {
     }
 
     @RequestMapping(value = "/v0/{fileName}", method = RequestMethod.GET)
-    public void download(HttpServletResponse response, @PathVariable("fileName") String fileName) throws IOException {
+    public void download(HttpServletResponse response, @PathVariable("fileName") String fileName) {
         fileName += ".json";
-        String filePath = servletContext.getRealPath("/WEB-INF/static/files/" + fileName);
-        File file = new File(filePath);
+        String dirPath = servletContext.getRealPath("/WEB-INF/static/files/");
 
+        File file = Paths.get(dirPath).resolve(fileName).toFile();
         System.out.println("fileName:" + fileName);
+        System.out.println("lastModified:" + file.lastModified());
         System.out.println("filePath:" + file.getPath());
 
         if (file.exists()) {
@@ -50,21 +52,38 @@ public class HKDownloadController {
             // response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
             response.setContentLength((int) file.length());
 
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-            FileCopyUtils.copy(inputStream, response.getOutputStream());
-            return;
+            InputStream inputStream = null;
+            try {
+                inputStream = new BufferedInputStream(new FileInputStream(file));
+                FileCopyUtils.copy(inputStream, response.getOutputStream());
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
         response.setContentType("application/json");
-        OutputStream outputStream = response.getOutputStream();
-        outputStream.write("Sorry. The file you are looking for does not exist".getBytes(Charset.forName("UTF-8")));
-        outputStream.close();
+        OutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            outputStream.write("Sorry. The file you are looking for does not exist".getBytes(Charset.forName("UTF-8")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null)
+                    outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
-    private static long modelLastModifiedDate = System.currentTimeMillis();
-
     @RequestMapping(value = "/v1/{fileName}", method = RequestMethod.GET)
-    public void downloadWithCustomCache(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) throws IOException {
-        HKCacheControlManager.checkHeaderCache(request, response, modelLastModifiedDate, 30);
+    public void downloadWithCustomCache(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) {
+        String dirPath = servletContext.getRealPath("/WEB-INF/static/files/");
+        HKCacheControlManager.checkHeaderCache(request, response, Paths.get(dirPath).resolve(fileName + ".json").toFile().lastModified(), 30);
         download(response, fileName);
     }
 

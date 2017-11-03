@@ -17,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.home_fragment.*
 import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.File
 
 class HomeFragment : HKBaseFragment() {
@@ -35,14 +36,36 @@ class HomeFragment : HKBaseFragment() {
             })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnNext {
-                    HKFileUtil.copy(it.byteStream(), File(HKCacheManager.getCacheDir(), "test.zip").path) { current, total ->
-                        HKLogUtil.w("copy:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
-                    }
+                .doOnNext { response: Response<ResponseBody> ->
+                    val headers = response.headers()
+                    System.out.println("-----------");
+                    System.out.println("Content-Type:" + headers.get("Content-Type"))
+                    val eTag = headers.get("ETag")?.toLongOrNull()
+                    System.out.println("ETag:" + eTag)
+                    val lastModified = headers.getDate("Last-Modified")?.time
+                    System.out.println("Last-Modified:" + headers.getDate("Last-Modified"))
+                    System.out.println("Date:" + headers.getDate("Date"))
+                    System.out.println("Expires:" + headers.getDate("Expires"))
+                    System.out.println("Cache-Control:" + headers.get("Cache-Control"))
+                    System.out.println("max-age:" + headers.get("Cache-Control")?.split("=")?.getOrNull(1))
+                    System.out.println("Content-Disposition:" + headers.get("Content-Disposition"))
+                    val fileName = headers.get("Content-Disposition")?.split("=")?.getOrNull(1) ?: "temp_file"
+                    System.out.println("filename:" + fileName)
+                    System.out.println("-----------")
+                    val file = File(HKCacheManager.getCacheDir(), fileName)
+                    if (response.body() != null)
+                        HKFileUtil.copy(response.body()?.byteStream(), file.path) { current, total ->
+                            HKLogUtil.w("copy:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
+                        }
+                    System.out.println("file:lastModified:" + file.lastModified())
+                    val tmpModified = eTag ?: lastModified ?: file.lastModified()
+                    val setSuccess = file.setLastModified(tmpModified) //can't set, bug is here: https://issuetracker.google.com/issues/36930892
+                    System.out.println("file:tmpModified:$tmpModified , setSuccess:$setSuccess")
+                    System.out.println("file:lastModified:" + file.lastModified())
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { _: ResponseBody ->
+                    { _: Response<ResponseBody> ->
                         HKLogUtil.w("progress", "onNext")
                     },
                     { error: Throwable ->

@@ -21,7 +21,7 @@
     </context:component-scan>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <bean class="com.smart.housekeeper.base.spring.aspect.LogAspect"/>
+    <bean class="com.smart.housekeeper.base.spring.aspect.HKLogAspect"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters>

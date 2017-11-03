@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/bundle")
-public class BundleController {
+public class HKBundleController {
 
     @RequestMapping(value = {""}, method = {RequestMethod.GET})
     public

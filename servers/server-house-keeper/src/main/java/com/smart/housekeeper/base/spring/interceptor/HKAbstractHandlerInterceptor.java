@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author hejinguo
  * @version $Id: AbstractHandlerPreparInterceptor.java, v 0.1 2015-8-8 下午11:45:05
  */
-public abstract class AbstractHandlerInterceptor implements HandlerInterceptor {
+public abstract class HKAbstractHandlerInterceptor implements HandlerInterceptor {
     /**
      * 在请求处理前会被调用
      * 返回值如果是false,则整个请求结束

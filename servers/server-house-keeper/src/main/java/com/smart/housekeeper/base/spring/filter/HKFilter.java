@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * http请求拦截器
  */
-public class JianYiFilter implements Filter {
+public class HKFilter implements Filter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -22,8 +22,7 @@ public class JianYiFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
         logger.info("执行请求开始");
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;

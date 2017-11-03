@@ -8,7 +8,7 @@ import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class JsonUtil {
+public class HKJSONUtil {
     private static final SerializeConfig SERIALIZE_CONFIG = new SerializeConfig();
 
     static {

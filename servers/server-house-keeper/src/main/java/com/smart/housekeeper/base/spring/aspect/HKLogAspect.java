@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @Aspect
-public class LogAspect {
+public class HKLogAspect {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
 
@@ -36,6 +36,7 @@ public class LogAspect {
         logger.info("[请求参数]: " + requestBuilder);
         logger.info("[映射地址]: " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
     }
+
     //使用@AfterReturning在切入点return内容之后切入内容（可以用来对处理返回值做一些加工处理）
     @AfterReturning(returning = "response", pointcut = "printLog()")
     public void doAfterReturning(Object response) {

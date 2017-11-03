@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 拦截器,用于控制是否登录
  */
-public class HandlerDispatcherContextInterceptor extends HandlerInterceptorAdapter {
+public class HKHandlerDispatcherContextInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

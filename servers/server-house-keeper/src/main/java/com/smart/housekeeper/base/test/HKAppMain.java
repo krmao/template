@@ -6,7 +6,7 @@ import com.mysql.cj.mysqlx.protobuf.MysqlxDatatypes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-public class AppMain {
+public class HKAppMain {
     public static void main(MysqlxDatatypes.Scalar.String[] args) {
         ApplicationContext context = new FileSystemXmlApplicationContext(
                 new String[]{

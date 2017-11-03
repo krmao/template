@@ -28,7 +28,9 @@ class HomeFragment : HKBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         text1.setOnClickListener {
-            HKRepository.download("http://10.47.18.39:7777/static/files/test.json", { current, total ->
+            var path = "http://10.47.18.39:7777/static/files/test.json"
+            path = "http://10.47.18.39:7777/download/v1/test2"
+            HKRepository.download(path, { current, total ->
                 HKLogUtil.d("download:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
             })
                 .subscribeOn(Schedulers.io())

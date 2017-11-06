@@ -10,6 +10,20 @@
         <param-value>classpath:com/smart/housekeeper/resources/spring/applicationContext.xml</param-value>
     </context-param>
 
+    <filter>
+        <filter-name>pictureLogFilter</filter-name>
+        <filter-class>com.smart.housekeeper.base.spring.aspect.HKRequestFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>pictureLogFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!--
         ContextLoaderListener：Spring MVC在Web容器中的启动类，负责Spring IoC容器在Web上下文中的初始化。
         Web容器调用contextInitialized方法初始化ContextLoaderListener，在此方法中，ContextLoaderListener通过调用继承自ContextLoader的initWebApplicationContext方法实例化Spring Ioc容器。

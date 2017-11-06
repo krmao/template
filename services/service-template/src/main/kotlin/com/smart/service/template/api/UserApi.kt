@@ -33,5 +33,4 @@ class UserApi(private val userMapper: UserMapper) {
     fun getBadUser(@PathVariable("username") username: String, @PathVariable("password") password: String): User {
         return userMapper.getBadUser(username, password)
     }
-
 }

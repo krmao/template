@@ -1,3 +1,5 @@
+debug: true
+
 server:
     port: 7776
 
@@ -7,12 +9,12 @@ spring:
           ddl-auto: none
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/spring-boot?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        url: jdbc:mysql://127.0.0.1:3306/spring-boot?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
         driver-class-name: com.mysql.jdbc.Driver
         username: root
         password: 777
-        schema: classpath:/schema-mysql.sql
-        data: classpath:/data-mysql.sql
+        schema: classpath:/sql/schema-mysql.sql
+        data: classpath:/sql/data-mysql.sql
 
 
 #        druid:
@@ -33,7 +35,18 @@ spring:
 #            maxOpenPreparedStatements: 20
 #
 #            useGlobalDataSourceStat: true                 # 合并多个DruidDataSource的监控数据
+    resources:
+      cache-period: 15
 
 mybatis:
-    type-aliases-package: com.smart.service.template.mapper.model # 实体类的包
+    type-aliases-package: com.smart.service.template.mapper.model
+
+#TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+#logging:
+#    level:
+#        root: WARN
+#        com.smart: DEBUG
+#        static: DEBUG
+
+# 实体类的包
 #    mapper-locations: classpath:mapper/**/*.xml                   # mapper的xml文件

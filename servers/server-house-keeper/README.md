@@ -1,6 +1,6 @@
 # server-house-keeper
 
-####1 过滤器 Filter(ResourceUrlEncodingFilter)
+####1 过滤器 [Servlet Filter](http://www.runoob.com/servlet/servlet-writing-filters.html)(ResourceUrlEncodingFilter)
    * 使用范围: filter 是 servlet 规范规定的，只能用于 web 程序中
    * 规范   : filter 是在 servlet 规范中定义的，是 servlet 容器支持的
    * 深度   : filter 只能在 servlet 前后起到作用
@@ -77,3 +77,22 @@
 拦截器（Interceptor）：在一个流程正在进行的时候，你希望干预它的进展，甚至终止它进行，这是拦截器做的事情。
 监听器（Listener）：当一个事件发生的时候，你希望获得这个事件发生的详细信息，而并不想干预这个事件本身的进程，这就要用到监听器。
 ```
+
+#### [spring 是如何封装 servlet](http://blog.csdn.net/initphp/article/details/38171219)
+
+#### web.xml配置各节点说明
+* <filter>指定一个过滤器。
+* <filter-name>用于为过滤器指定一个名字，该元素的内容不能为空。
+* <filter-class>元素用于指定过滤器的完整的限定类名。
+* <init-param>元素用于为过滤器指定初始化参数，它的子元素<param-name>指定参数的名字，<param-value>指定参数的值。
+* 在过滤器中，可以使用FilterConfig接口对象来访问初始化参数。
+* <filter-mapping>元素用于设置一个 Filter 所负责拦截的资源。一个Filter拦截的资源可通过两种方式来指定：Servlet 名称和资源访问的请求路径
+* <filter-name>子元素用于设置filter的注册名称。该值必须是在<filter>元素中声明过的过滤器的名字
+* <url-pattern>设置 filter 所拦截的请求路径(过滤器关联的URL样式)
+* <servlet-name>指定过滤器所拦截的Servlet名称。
+* <dispatcher>指定过滤器所拦截的资源被 Servlet 容器调用的方式，可以是REQUEST,INCLUDE,FORWARD和ERROR之一，默认REQUEST。用户可以设置多个<dispatcher>子元素用来指定 Filter 对资源的多种调用方式进行拦截。
+* <dispatcher>子元素可以设置的值及其意义
+* REQUEST：当用户直接访问页面时，Web容器将会调用过滤器。如果目标资源是通过RequestDispatcher的include()或forward()方法访问时，那么该过滤器就不会被调用。
+* INCLUDE：如果目标资源是通过RequestDispatcher的include()方法访问时，那么该过滤器将被调用。除此之外，该过滤器不会被调用。
+* FORWARD：如果目标资源是通过RequestDispatcher的forward()方法访问时，那么该过滤器将被调用，除此之外，该过滤器不会被调用。
+* ERROR：如果目标资源是通过声明式异常处理机制调用时，那么该过滤器将被调用。除此之外，过滤器不会被调用。

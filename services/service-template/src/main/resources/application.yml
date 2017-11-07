@@ -40,7 +40,10 @@ spring:
       cache-period: 15
 
 mybatis:
-    type-aliases-package: com.smart.service.template.mapper.model
+    configuration:
+        mapUnderscoreToCamelCase: true # 是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。
+    type-aliases-package: com.smart.service.template.database.model
+#    mapper-locations: classpath:mapper/**/*.xml                   # mapper的xml文件
 
 #TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 #logging:
@@ -48,6 +51,3 @@ mybatis:
 #        root: WARN
 #        com.smart: DEBUG
 #        static: DEBUG
-
-# 实体类的包
-#    mapper-locations: classpath:mapper/**/*.xml                   # mapper的xml文件

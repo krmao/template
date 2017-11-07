@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="ALL" monitorInterval="1800">
+<configuration status="OFF" monitorInterval="1800">
     <properties>
         <property name="LOG_HOME">build/log/log4j2</property>
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>
@@ -26,7 +26,7 @@
     <!-- ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
     <loggers>
         <!-- Root Logger -->
-        <root level="ALL">
+        <root level="INFO">
             <appender-ref ref="Appender-Console"/>
             <appender-ref ref="Appender-File"/>
         </root>

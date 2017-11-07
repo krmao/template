@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- status=off/debug 可以查看log4j的装配过程 -->
-<configuration status="debug" monitorInterval="1800">
+<configuration status="ALL" monitorInterval="1800">
     <properties>
         <property name="LOG_HOME">build/log/log4j2</property>
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>
         <property name="SERVER_NAME">smart.housekeeper</property>
     </properties>
     <appenders>
-        <!-- 定义控制台输出 -->
         <Console name="Appender-Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout charset="UTF-8"
-                           pattern="%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Black, DEBUG=Bright Blue, TRACE=Bright White}"/>
+                           pattern="%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n%throwable}{FATAL=Blinking Bright Red, ERROR=Bright Red, WARN=Bright Yellow, INFO=Bright Black, DEBUG=Bright Blue, TRACE=Bright White}"/>
         </Console>
-        <!-- 程序员调试日志 -->
         <RollingRandomAccessFile name="Appender-File"
                                  fileName="${LOG_HOME}/${SERVER_NAME}.log"
                                  filePattern="${LOG_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}.log">
             <PatternLayout charset="UTF-8"
-                           pattern="%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=RED, WARN=Yellow, INFO=Bright Black, DEBUG=Bright Blue, TRACE=Black}"/>
+                           pattern="%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n%throwable}{FATAL=Blinking Bright Red, ERROR=Bright Red, WARN=Bright Yellow, INFO=Bright Black, DEBUG=Bright Blue, TRACE=Bright White}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="10M"/>
@@ -26,10 +23,10 @@
         </RollingRandomAccessFile>
     </appenders>
 
-    <!-- DEBUG < INFO < WARN < ERROR < FATAL -->
+    <!-- ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
     <loggers>
         <!-- Root Logger -->
-        <root level="INFO">
+        <root level="ALL">
             <appender-ref ref="Appender-Console"/>
             <appender-ref ref="Appender-File"/>
         </root>

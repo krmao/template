@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- status=off/debug 可以查看log4j的装配过程 -->
-<configuration status="debug" monitorInterval="1800">
+<configuration status="OFF" monitorInterval="1800">
     <properties>
         <property name="LOG_HOME">build/log/log4j2</property>
         <property name="BACKUP_HOME">{LOG_HOME}/backup</property>
@@ -24,7 +23,7 @@
         </RollingRandomAccessFile>
     </appenders>
 
-    <!-- DEBUG < INFO < WARN < ERROR < FATAL -->
+    <!-- ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
     <loggers>
         <!-- Root Logger -->
         <root level="INFO">

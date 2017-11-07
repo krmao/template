@@ -1,4 +1,4 @@
-debug: true
+debug: false
 
 server:
     port: 7776
@@ -7,6 +7,7 @@ spring:
     jpa:
         hibernate:
           ddl-auto: none
+        show-sql: false
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         url: jdbc:mysql://127.0.0.1:3306/spring-boot?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC

@@ -18,6 +18,11 @@ class HKResourceUrlFilter : ResourceUrlEncodingFilter() {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
         super.doFilter(request, response, filterChain)
         val httpRequest = request as HttpServletRequest
+        log.info("-----------------------------------")
+        log.info("request:" + httpRequest.requestURI)
         log.debug("request:" + httpRequest.requestURI)
+        log.warn("request:" + httpRequest.requestURI)
+        log.error("request:" + httpRequest.requestURI)
+        log.trace("request:" + httpRequest.requestURI)
     }
 }

@@ -1,7 +1,7 @@
 package com.smart.service.template.controller
 
 
-import com.smart.service.template.database.UserMapper
+import com.smart.service.template.database.mapper.UserMapper
 import com.smart.service.template.database.model.UserModel
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping

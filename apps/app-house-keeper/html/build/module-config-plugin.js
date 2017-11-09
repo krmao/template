@@ -73,18 +73,17 @@ function writeJsonToFile(filePath, json) {
 }
 
 function outputConfig(intput, output, data) {
-    let temArray = [];
+    let obj = Object.create(null);
     getFileList(intput).forEach(function (filePath) {
-        let obj = Object.create(null);
+
         let tmpPathList = filePath.split("dist");
         if (tmpPathList.length >= 2) {
             obj[tmpPathList[1]] = md5File.sync(filePath);
-            temArray.push(obj)
         } else {
             console.error(TAG, filePath, "can not split by dist !")
         }
     });
-    data['moduleFilesMd5'] = temArray;
+    data['moduleFilesMd5'] = obj;
 
     writeJsonToFile(output, data);
     console.warn(TAG, 'json -> ' + output)

@@ -112,19 +112,19 @@ var webpackConfig = merge(baseWebpackConfig, {
         new ModuleConfigPlugin({
             rootFolder: '',
             baseInfo: {
-                moduleVersion: 117,
-                moduleName: "order",
+                moduleVersion: 1,
+                moduleName: "base",
                 moduleSchemeUrls: {
-                    "prd": "h.jia.com",
-                    "pre": "h.jia.com",
-                    "sit": "h.jia.com"
+                    // "prd": "xxxxxx",
+                    // "pre": "xxxxxx",
+                    // "sit": "xxxxxx"
                 },
-                moduleDownloadUrl: "http://www.cheixang.com/download",
+                // moduleDownloadUrl: "xxxxxx",
                 moduleUpdateStrategy: 0,
                 moduleRoutesUpdateStrategy: {
-                    "/base": 1,
-                    "/base2": 0,
-                    "/base3": 1,
+                    // "/base": 1,
+                    // "/base2": 0,
+                    // "/base3": 1,
                 },
             },
             input: config.build.assetsRoot,

@@ -10,10 +10,10 @@ import java.lang.reflect.InvocationTargetException
 import java.net.URLDecoder
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
-import kotlin.reflect.full.*
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.declaredFunctions
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
@@ -86,8 +86,14 @@ object HKHybirdManager {
         requestMap.remove(host)
     }
 
-    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? =
-        requestMap[Uri.parse(url).host]?.invoke(webView, url)
+    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? {
+        return requestMap.entries.filter { entry ->
+            url?.contains(entry.key, true) ?: false
+        }.getOrNull(0)?.value?.invoke(webView, url)
+
+
+        //return requestMap[Uri.parse(url).host]?.invoke(webView, url)
+    }
 
     /**
      *  scheme://host:port/path?k=v

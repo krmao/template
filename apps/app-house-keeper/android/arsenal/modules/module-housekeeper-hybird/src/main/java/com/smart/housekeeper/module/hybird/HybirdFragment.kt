@@ -19,7 +19,8 @@ import java.io.FileInputStream
 
 class HybirdFragment : HKBaseFragment() {
     companion object {
-        val HOST = "www.smarttemplate.com"
+//        val HOST = "www.smarttemplate.com"
+        val HOST = "s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/base"
     }
 
 
@@ -32,7 +33,7 @@ class HybirdFragment : HKBaseFragment() {
         text.setOnClickListener {
             HKBundleManager.installWithVerify { success, roodDir ->
                 // val indexPath = "file://${roodDir}index.html"
-                val indexPath = "http://$HOST/index.html"
+                val indexPath = "http://$HOST/index.shtml"
                 if (success) {
                     HybirdWebFragment.goTo(activity, indexPath)
 
@@ -53,7 +54,8 @@ class HybirdFragment : HKBaseFragment() {
                 val scheme = requestUrl?.scheme?.trim()
 
                 if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
-                    if (interceptHost.equals(requestUrl.host, true)) {
+                    if (url!!.contains(interceptHost,true)) {
+//                    if (interceptHost.equals(requestUrl.host, true)) {
                         val tmpPath = requestUrl.toString()
                             .replace("https://", "")
                             .replace("http://", "")
@@ -79,7 +81,11 @@ class HybirdFragment : HKBaseFragment() {
                             }
                         }
                     }
+                }else{
+                    HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptHost]")
                 }
+            }else{
+                HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptHost]")
             }
             resourceResponse
         }

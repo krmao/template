@@ -50,11 +50,12 @@ object HKBundleManager : HKIBundleManager {
 
     private val suffix = ".zip"
 
-    private val nameInAssets = "bundle"
+//    private val nameInAssets = "bundle"
+    private val nameInAssets = "module-base"
     private val nameForUnZipDir = "hybird"
     private val pathForLocalRootDir: String = HKCacheManager.getCacheDir().path + "/$nameForUnZipDir/"
 
-    private val pathForHybirdDir: String = "$pathForLocalRootDir$nameForUnZipDir/"
+    private val pathForHybirdDir: String = "$pathForLocalRootDir$nameForUnZipDir/$nameInAssets/"
 
     private val pathForLocalFile: String = "$pathForHybirdDir$nameForUnZipDir$suffix"
 

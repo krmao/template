@@ -120,8 +120,8 @@ var webpackConfig = merge(baseWebpackConfig, {
                     "sit": "h.jia.com"
                 },
                 moduleDownloadUrl: "http://www.cheixang.com/download",
-                moduleUpdateStratege: 0,
-                moduleRoutesUpdateStratege: {
+                moduleUpdateStrategy: 0,
+                moduleRoutesUpdateStrategy: {
                     "/base": 1,
                     "/base2": 0,
                     "/base3": 1,

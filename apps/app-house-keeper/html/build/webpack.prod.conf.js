@@ -8,7 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var CopyToNativePlugin = require('./copyToNative')
+var ModuleConfigPlugin = require('./module-config-plugin')
 var ReplaceBundleStringPlugin = require('replace-bundle-webpack-plugin')
 
 var env = config.build.env
@@ -109,7 +109,7 @@ var webpackConfig = merge(baseWebpackConfig, {
             }
         }]),
 
-        new CopyToNativePlugin({
+        new ModuleConfigPlugin({
             rootFolder: '',
             baseInfo: {
                 moduleVersion: 117,

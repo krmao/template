@@ -13,37 +13,37 @@
         "/base2": 0,
         "/base3": 1
     },
-    "moduleZipMd5": "xxxxxx",
+    "moduleZipMd5": "17a958fa49898d3c3c74ad3af3047813",
     "moduleFilesMd5": [
         {
-            "favicon.ico": "6c2f5d4c5da961d1a53ba3da03d7c653"
+            "/favicon.ico": "6c2f5d4c5da961d1a53ba3da03d7c653"
         },
         {
-            "index.html": "1d8cf5af10afb2e3760d54ae1ec87da5"
+            "/index.html": "1d8cf5af10afb2e3760d54ae1ec87da5"
         },
         {
-            "static/css/app.9fbc1c31521638323a6027deeedda19e.css": "b5507228723a7008027e348b42482ee9"
+            "/static/css/app.9fbc1c31521638323a6027deeedda19e.css": "b5507228723a7008027e348b42482ee9"
         },
         {
-            "static/css/app.9fbc1c31521638323a6027deeedda19e.css.map": "edc603c04a453e44860ada0c173e0df0"
+            "/static/css/app.9fbc1c31521638323a6027deeedda19e.css.map": "edc603c04a453e44860ada0c173e0df0"
         },
         {
-            "static/js/app.f01c8fe6812f5db00153.js": "d3a208765b637f77d6a7c8865a6c7644"
+            "/static/js/app.f01c8fe6812f5db00153.js": "d3a208765b637f77d6a7c8865a6c7644"
         },
         {
-            "static/js/app.f01c8fe6812f5db00153.js.map": "39f3c5b4611f467190008ab4b724a7e8"
+            "/static/js/app.f01c8fe6812f5db00153.js.map": "39f3c5b4611f467190008ab4b724a7e8"
         },
         {
-            "static/js/manifest.60eaedd537688530b4d3.js": "e9fdd7755d3bb22b09005ddd69d68475"
+            "/static/js/manifest.60eaedd537688530b4d3.js": "e9fdd7755d3bb22b09005ddd69d68475"
         },
         {
-            "static/js/manifest.60eaedd537688530b4d3.js.map": "4dc389eab9f56f9fa8e9553714c1c408"
+            "/static/js/manifest.60eaedd537688530b4d3.js.map": "4dc389eab9f56f9fa8e9553714c1c408"
         },
         {
-            "static/js/vendor.35fed9ac149480c12054.js": "2ede28b741c30c2821aa0193dc6fd198"
+            "/static/js/vendor.35fed9ac149480c12054.js": "2ede28b741c30c2821aa0193dc6fd198"
         },
         {
-            "static/js/vendor.35fed9ac149480c12054.js.map": "c91948dcf598b4545acf79dbfd25e0a9"
+            "/static/js/vendor.35fed9ac149480c12054.js.map": "c91948dcf598b4545acf79dbfd25e0a9"
         }
     ]
 }

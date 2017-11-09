@@ -108,8 +108,25 @@ var webpackConfig = merge(baseWebpackConfig, {
                 return '';
             }
         }]),
+
         new CopyToNativePlugin({
             rootFolder: '',
+            baseInfo: {
+                moduleVersion: 117,
+                moduleName: "order",
+                moduleSchemeUrls: {
+                    "prd": "h.jia.com",
+                    "pre": "h.jia.com",
+                    "sit": "h.jia.com"
+                },
+                moduleDownloadUrl: "http://www.cheixang.com/download",
+                moduleUpdateStratege: 0,
+                moduleRoutesUpdateStratege: {
+                    "/base": 1,
+                    "/base2": 0,
+                    "/base3": 1,
+                },
+            },
             input: config.build.assetsRoot,
             output: [
                 path.resolve(config.build.assetsRoot, '../../android/arsenal/modules/module-housekeeper-hybird/src/main/assets/bundle.zip'),

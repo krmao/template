@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.Message
 import android.webkit.*
 import com.smart.library.util.HKLogUtil
-import com.smart.library.util.hybird.HKHybirdManager
+import com.smart.library.util.hybird.HKHybirdBridge
 
 /*
 
@@ -36,37 +36,37 @@ open class HKWebViewClient : WebViewClient() {
      * 针对 https 证书校验可以在此拦截通过HttpsURLConnection实现请求验证
      */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        HKLogUtil.d(HKHybirdManager.TAG, "shouldOverrideUrlLoading: $url")
-        return HKHybirdManager.shouldOverrideUrlLoading(view, url) ?: super.shouldOverrideUrlLoading(view, url)
+        HKLogUtil.d(HKHybirdBridge.TAG, "shouldOverrideUrlLoading: $url")
+        return HKHybirdBridge.shouldOverrideUrlLoading(view, url) ?: super.shouldOverrideUrlLoading(view, url)
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        HKLogUtil.d(HKHybirdManager.TAG, "onPageStarted: $url")
+        HKLogUtil.d(HKHybirdBridge.TAG, "onPageStarted: $url")
         super.onPageStarted(view, url, favicon)
     }
 
     override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
-        HKLogUtil.d(HKHybirdManager.TAG, "doUpdateVisitedHistory(isReload=$isReload)): $url")
+        HKLogUtil.d(HKHybirdBridge.TAG, "doUpdateVisitedHistory(isReload=$isReload)): $url")
         super.doUpdateVisitedHistory(view, url, isReload)
     }
 
     override fun onPageFinished(webView: WebView?, url: String?) {
-        HKLogUtil.d(HKHybirdManager.TAG, "onPageFinished: $url")
+        HKLogUtil.d(HKHybirdBridge.TAG, "onPageFinished: $url")
         super.onPageFinished(webView, url)
     }
 
     override fun onLoadResource(view: WebView?, url: String?) {
-        HKLogUtil.v(HKHybirdManager.TAG, "onLoadResource: $url")
+        HKLogUtil.v(HKHybirdBridge.TAG, "onLoadResource: $url")
         super.onLoadResource(view, url)
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
-        HKLogUtil.d(HKHybirdManager.TAG, "onPageCommitVisible: $url")
+        HKLogUtil.d(HKHybirdBridge.TAG, "onPageCommitVisible: $url")
         super.onPageCommitVisible(view, url)
     }
 
     override fun onFormResubmission(view: WebView?, dontResend: Message?, resend: Message?) {
-        HKLogUtil.d(HKHybirdManager.TAG, "onPageCommitVisible: dontResend=$dontResend , resend=$resend")
+        HKLogUtil.d(HKHybirdBridge.TAG, "onPageCommitVisible: dontResend=$dontResend , resend=$resend")
         super.onFormResubmission(view, dontResend, resend)
     }
 
@@ -74,29 +74,29 @@ open class HKWebViewClient : WebViewClient() {
      * android 5.0 以上 webView 再次校验 https 证书
      */
     override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) {
-        HKLogUtil.w(HKHybirdManager.TAG, "onReceivedClientCertRequest: $request")
+        HKLogUtil.w(HKHybirdBridge.TAG, "onReceivedClientCertRequest: $request")
         super.onReceivedClientCertRequest(view, request)
     }
 
     override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-        HKLogUtil.w(HKHybirdManager.TAG, "onReceivedError: $error")
+        HKLogUtil.w(HKHybirdBridge.TAG, "onReceivedError: $error")
         super.onReceivedError(view, request, error)
     }
 
     override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-        HKLogUtil.w(HKHybirdManager.TAG, "onReceivedSslError:proceed: $error")
+        HKLogUtil.w(HKHybirdBridge.TAG, "onReceivedSslError:proceed: $error")
         //避免调用proceed忽略证书验证错误信息继续加载页面
         handler?.cancel()
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-        HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:>=LOLLIPOP: ${request?.url?.toString()}")
+        HKLogUtil.v(HKHybirdBridge.TAG, "shouldInterceptRequest:>=LOLLIPOP: ${request?.url?.toString()}")
         return shouldInterceptRequest(view, request?.url?.toString())
     }
 
     override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
-        HKLogUtil.d(HKHybirdManager.TAG, "shouldInterceptRequest:<LOLLIPOP $url")
-        return HKHybirdManager.shouldInterceptRequest(view, url) ?: super.shouldInterceptRequest(view, url)
+        HKLogUtil.d(HKHybirdBridge.TAG, "shouldInterceptRequest:<LOLLIPOP $url")
+        return HKHybirdBridge.shouldInterceptRequest(view, url) ?: super.shouldInterceptRequest(view, url)
     }
 }

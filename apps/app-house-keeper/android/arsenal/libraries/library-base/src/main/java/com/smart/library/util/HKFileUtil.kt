@@ -133,6 +133,23 @@ object HKFileUtil {
         return result
     }
 
+    fun readTextFromFile(inputStream: InputStream): String {
+        var content = ""
+        try {
+            val bufferedReader = BufferedReader(InputStreamReader(inputStream, ENCODING_UTF8))
+            var oneLine: String? = bufferedReader.readLine()
+            while (oneLine != null) {
+                content += oneLine + "\r\n"
+                oneLine = bufferedReader.readLine()
+            }
+            bufferedReader.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return content
+    }
+
     fun readTextFromFile(file: File): String {
         var content = ""
         try {
@@ -269,4 +286,10 @@ object HKFileUtil {
         }
         return isAppendSuccess
     }
+
+    fun getFileList(dirPath: String): List<File> =
+        getFileList(File(dirPath))
+
+    fun getFileList(dir: File): List<File> =
+        dir.walkTopDown().filter { it.isFile }.toList()
 }

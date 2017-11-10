@@ -1,0 +1,30 @@
+{
+    "moduleVersion": 1,
+    "moduleName": "base",
+    "moduleSchemeUrls": {
+        "prd": "https://s1.chexiang.com/msweb02/cx/cxj/cxjappweb/base",
+        "pre": "https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/base",
+        "sit": "https://s1.chexiangsit.com/msweb02/cx/cxj/cxjappweb/base"
+    },
+    "moduleDownloadUrl": "http://10.47.17.147:7776/files/module-base.zip",
+    "moduleUpdateStrategy": 0,
+    "moduleRoutesUpdateStrategy": {},
+    "moduleZipMd5": "6ab39f60bf2c846ff7e5d16f55156dc3",
+    "moduleFilesMd5": {
+        "/css/app.31324244c6bc8f526777358b8762d26d.css": "251289e5469b06f748682b7d2976e458",
+        "/css/app.31324244c6bc8f526777358b8762d26d.css.map": "2196c6d55e388edd5e46b83a9dd26d38",
+        "/index.shtml": "1f5c9cb858dc0c140c7d3aa37a0f45ce",
+        "/js/0.f5b2b3b88b7482874b3f.js": "c25011653fe518ef17e8d78b5082630d",
+        "/js/0.f5b2b3b88b7482874b3f.js.map": "1643af4a9e39e8830e5057a8420d5432",
+        "/js/1.5e02b3201653acb88d09.js": "dfac6f8aadc8217985d5ee49007bc9c0",
+        "/js/1.5e02b3201653acb88d09.js.map": "99013fb28ab3e02d8b2bc5267a764dbe",
+        "/js/app.753a0aad066fb6656771.js": "573de8a73a90961ef1f7d53ca2daaa0e",
+        "/js/app.753a0aad066fb6656771.js.map": "90686de94cfe5ea6e59685a592d1bc32",
+        "/js/base.6ae18fb363c0106b2be0.js": "479fa3baf57bb23e2489b95942c7876f",
+        "/js/base.6ae18fb363c0106b2be0.js.map": "17edad1e8dbc59749e7030f26e7db356",
+        "/js/common.56d2188fd5fe114aa997.js": "a3290705bd4802aee135d29349a06e3d",
+        "/js/common.56d2188fd5fe114aa997.js.map": "51f51cd370c2d1e284035ff673499349",
+        "/js/manifest.8797ab3cd83e06e11683.js": "6c5539c194acf781ce9baa85a0a75911",
+        "/js/manifest.8797ab3cd83e06e11683.js.map": "545991099fa6f234d3ea3b7dcf94f0d6"
+    }
+}

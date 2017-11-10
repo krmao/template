@@ -34,7 +34,7 @@ object HKChecksumUtil {
     }
 
     @Throws(IOException::class)
-    fun genMD5Checksum(file: File): String {
+    fun genMD5Checksum(file: File?): String? {
         @Suppress("DEPRECATION")
         return getChecksum(file, Hashing.md5())
     }
@@ -44,12 +44,13 @@ object HKChecksumUtil {
      * sha256()		sha512()		goodFastHash(int bits)
      */
     @Throws(IOException::class)
-    fun getChecksum(charSequence: CharSequence, hashFunction: HashFunction): String {
-        return hashFunction.newHasher().putString(charSequence, Charsets.UTF_8).hash().toString()
-    }
+    fun getChecksum(charSequence: CharSequence, hashFunction: HashFunction): String =
+        hashFunction.newHasher().putString(charSequence, Charsets.UTF_8).hash().toString()
 
     @Throws(IOException::class)
-    fun getChecksum(file: File, hashFunction: HashFunction): String {
+    fun getChecksum(file: File?, hashFunction: HashFunction): String? {
+        if (file == null || !file.exists())
+            return null
         return com.google.common.io.Files.asByteSource(file).hash(hashFunction).toString()
     }
 }

@@ -9,20 +9,17 @@ import android.view.ViewGroup
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.base.HKBaseFragment
-import com.smart.library.bundle.imp.HKBundleManager
+import com.smart.library.bundle.HKHybirdManager
+import com.smart.library.bundle.HKHybirdModuleConfiguration
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKToastUtil
-import com.smart.library.util.hybird.HKHybirdManager
+import com.smart.library.util.hybird.HKHybirdBridge
 import kotlinx.android.synthetic.main.hybird_fragment.*
 import java.io.File
 import java.io.FileInputStream
 
 class HybirdFragment : HKBaseFragment() {
-    companion object {
-//        val HOST = "www.smarttemplate.com"
-        val HOST = "s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/base"
-    }
-
+    private val TAG = HybirdFragment::class.java.simpleName
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hybird_fragment, container, false)
 
@@ -31,36 +28,30 @@ class HybirdFragment : HKBaseFragment() {
 
         @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         text.setOnClickListener {
-            HKBundleManager.installWithVerify { success, roodDir ->
-                // val indexPath = "file://${roodDir}index.html"
-                val indexPath = "http://$HOST/index.shtml"
-                if (success) {
-                    HybirdWebFragment.goTo(activity, indexPath)
-
-                    HKLogUtil.d("hybird", "加载成功")
-                    HKToastUtil.show("加载成功")
-                } else {
-                    HKLogUtil.e("hybird", "加载失败,请重新安装程序")
-                    HKToastUtil.show("加载失败,请重新安装程序")
-                }
+            HKHybirdManager.Module.BASE.manager.verify { localUnzipDir, configuration ->
+                addRequestIntercept(localUnzipDir, configuration)
+                val indexPath = configuration?.moduleSchemeUrls?.get("sit") + "/index.shtml"
+                HybirdWebFragment.goTo(activity, indexPath)
+                HKLogUtil.d("hybird", "加载成功")
+                HKToastUtil.show("加载成功")
             }
         }
+    }
 
-        val interceptHost = HybirdFragment.HOST
-        HKHybirdManager.addRequest(interceptHost) { _: WebView?, url: String? ->
+    private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {
+        val interceptUrl = configuration?.moduleSchemeUrls?.get("sit") ?: return
+
+        HKHybirdBridge.addRequest(interceptUrl) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null
             if (!TextUtils.isEmpty(url)) {
                 val requestUrl = Uri.parse(url)
                 val scheme = requestUrl?.scheme?.trim()
-
                 if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
-                    if (url!!.contains(interceptHost,true)) {
-//                    if (interceptHost.equals(requestUrl.host, true)) {
+                    if (url!!.contains(interceptUrl, true)) {
                         val tmpPath = requestUrl.toString()
+                            .replace(interceptUrl, "")
                             .replace("https://", "")
                             .replace("http://", "")
-                            .replace(interceptHost + "/", "")
-                            .replace(interceptHost, "")
 
                         val mimeType = when {
                             requestUrl.toString().contains(".css") -> "text/css"
@@ -70,22 +61,22 @@ class HybirdFragment : HKBaseFragment() {
                             else -> "text/html"
                         }
 
-                        val localPath = HKBundleManager.HYBIRD_DIR + tmpPath
+                        val localPath = localUnzipDir.absolutePath + tmpPath
                         val localFileExists = File(localPath).exists()
-                        HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?$localFileExists(localFile.exists?$localFileExists)>, [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
+                        HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?$localFileExists(localFile.exists?$localFileExists)>, [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
                         if (localFileExists) {
                             try {
                                 resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
                             } catch (e: Exception) {
-                                HKLogUtil.e(HKHybirdManager.TAG, "shouldInterceptRequest:<intercept error>: ", e)
+                                HKLogUtil.e(TAG, "shouldInterceptRequest:<intercept error>: ", e)
                             }
                         }
                     }
-                }else{
-                    HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptHost]")
+                } else {
+                    HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptUrl]")
                 }
-            }else{
-                HKLogUtil.v(HKHybirdManager.TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptHost]")
+            } else {
+                HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptUrl]")
             }
             resourceResponse
         }

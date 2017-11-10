@@ -16,7 +16,7 @@ import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.declaredFunctions
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
-object HKHybirdManager {
+object HKHybirdBridge {
     val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
@@ -147,7 +147,7 @@ object HKHybirdManager {
             val hashCode = url?.getQueryParameter("hashcode")
             callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
             callbackMap.remove(hashCode)
-            HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
+            HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
             true
         }
     }
@@ -161,7 +161,7 @@ object HKHybirdManager {
         if (callback != null)
             callbackMap.put(callbackHashCode, callback)
 
-        HKLogUtil.e(HKHybirdManager.TAG, "callbackMap.size[before callback]:" + callbackMap.size + " :$javascript")
+        HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[before callback]:" + callbackMap.size + " :$javascript")
 
         val wrappedJavascript = """
                 (function (){

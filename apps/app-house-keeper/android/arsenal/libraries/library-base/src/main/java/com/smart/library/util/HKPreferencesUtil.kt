@@ -60,7 +60,7 @@ object HKPreferencesUtil {
         return editor.commit()
     }
 
-    fun putEntity(key: String, value: Any): Boolean {
+    fun putEntity(key: String, value: Any?): Boolean {
         try {
             val editor = mSharedPreferences.edit()
             editor.putString(key, mGson.toJson(value))

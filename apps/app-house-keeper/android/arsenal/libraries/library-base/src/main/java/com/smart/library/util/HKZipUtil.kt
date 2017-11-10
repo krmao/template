@@ -96,9 +96,9 @@ object HKZipUtil {
     /**
      * Example: unzip("downloads/images.zip", "downloads/");
      */
-    @Throws(ZipException::class, IOException::class)
+    @Throws(ZipException::class, IOException::class, FileNotFoundException::class)
     fun unzip(zipFile: File, targetDirFile: File) {
-        val targetFinalFile = File(targetDirFile.absolutePath + File.separator + zipFile.nameWithoutExtension)
+        val targetFinalFile = File(targetDirFile.absolutePath)
         targetFinalFile.mkdirs()
         val zip = ZipFile(zipFile)
         val zipFileEntries = zip.entries()

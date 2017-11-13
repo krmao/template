@@ -37,7 +37,10 @@ spring:
 #
 #            useGlobalDataSourceStat: true                 # 合并多个DruidDataSource的监控数据
     resources:
-      cache-period: 15
+        cache-period: 15
+#    thymeleaf:
+#        suffix: .html
+#        prefix: classpath:/templates/
 
 mybatis:
     configuration:

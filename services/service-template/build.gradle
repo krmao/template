@@ -4,31 +4,34 @@ buildscript {
         springBootVersion = '1.5.8.RELEASE'
     }
     repositories {
+        jcenter()
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
     }
 }
 
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
+apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.smart'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
+
+
+
+compileKotlin { kotlinOptions.jvmTarget = "1.8" }
+compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -36,8 +39,15 @@ configurations {
     all*.exclude module: 'spring-boot-starter-logging'
 }
 
+task deploy(type: Exec) {
+    executable "sh"
+    //noinspection GroovyAssignabilityCheck
+    args "-c", "/usr/local/bin/sshpass -p pwd scp ~/Desktop/test root@server-ip:/usr/software/tomcat/apache-tomcat-8.0.47/webapps/"
+}
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+//    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-log4j2')
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
 
@@ -48,6 +58,10 @@ dependencies {
 
     // compile('org.springframework.boot:spring-boot-starter-jdbc')
     // compile('org.springframework.boot:spring-boot-starter-web-services')
+
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+//    compile('org.springframework.boot:spring-boot-starter-tomcat')
+
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
 

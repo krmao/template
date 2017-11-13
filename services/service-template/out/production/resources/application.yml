@@ -10,10 +10,10 @@ spring:
         show-sql: false
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/spring-boot?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        url: jdbc:mysql://47.96.2.1:3306/spring-boot?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
         driver-class-name: com.mysql.jdbc.Driver
-        username: root
-        password: 777
+        username: housekeeper
+        password: password$1
         schema: classpath:/sql/schema-mysql.sql
         data: classpath:/sql/data-mysql.sql
 

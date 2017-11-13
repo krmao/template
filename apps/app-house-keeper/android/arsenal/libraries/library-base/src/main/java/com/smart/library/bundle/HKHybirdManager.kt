@@ -2,13 +2,13 @@ package com.smart.library.bundle
 
 import com.smart.library.util.HKLogUtil
 
-@Suppress("MemberVisibilityCanPrivate")
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
     private val TAG = HKHybirdManager::class.java.simpleName
 
     enum class Module(val fullName: String, val manager: HKHybirdModuleManager) {
         BASE("module-base", HKHybirdModuleManager("module-base")),
-        MINE("module-mine", HKHybirdModuleManager("module-mine")),
+        BUYMEALCARD("module-buyMealCard", HKHybirdModuleManager("module-buyMealCard")),
     }
 
     fun init() {

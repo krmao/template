@@ -1,17 +1,21 @@
 package com.smart.housekeeper.module.hybird
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
 import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.bundle.HKHybirdModuleConfiguration
 import com.smart.library.util.HKLogUtil
+import com.smart.library.util.HKRandomUtil
 import com.smart.library.util.HKToastUtil
 import com.smart.library.util.hybird.HKHybirdBridge
 import kotlinx.android.synthetic.main.hybird_fragment.*
@@ -20,26 +24,39 @@ import java.io.FileInputStream
 
 class HybirdFragment : HKBaseFragment() {
     private val TAG = HybirdFragment::class.java.simpleName
+    private val EVN = "pre"
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hybird_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-        text.setOnClickListener {
-            HKHybirdManager.Module.BASE.manager.verify { localUnzipDir, configuration ->
-                addRequestIntercept(localUnzipDir, configuration)
-                val indexPath = configuration?.moduleSchemeUrls?.get("sit") + "/index.shtml"
-                HybirdWebFragment.goTo(activity, indexPath)
-                HKLogUtil.d("hybird", "加载成功")
-                HKToastUtil.show("加载成功")
+        HKHybirdManager.Module.values().forEach {
+            val textView = TextView(context)
+            textView.text = it.name
+            textView.setTextColor(Color.BLACK)
+            textView.setBackgroundColor(HKRandomUtil.randomColor)
+            textView.textSize = 24f
+            textView.gravity = Gravity.CENTER
+            textView.setPadding(20, 20, 20, 20)
+            textView.setOnClickListener {
+                HKHybirdManager.Module.valueOf(textView.text.toString()).manager.verify { localUnzipDir, configuration ->
+                    addRequestIntercept(localUnzipDir, configuration)
+                    var indexPath = "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml"
+                    if ("BUYMEALCARD".equals(textView.text.toString())) {
+                        indexPath = "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"
+                    }
+                    HybirdWebFragment.goTo(activity, indexPath)
+                    HKLogUtil.d("hybird", "加载成功")
+                    HKToastUtil.show("加载成功")
+                }
             }
+            containerLayout.addView(textView)
         }
     }
 
     private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {
-        val interceptUrl = configuration?.moduleSchemeUrls?.get("sit") ?: return
+        val interceptUrl = configuration?.moduleSchemeUrls?.get(EVN) ?: return
 
         HKHybirdBridge.addRequest(interceptUrl) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null

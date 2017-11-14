@@ -132,7 +132,7 @@ object HKHybirdBridge {
     fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean? {
         val url = Uri.parse(uriString)
         val schemePrefix = "${url?.scheme}://${url?.host}:${url?.port}"
-        HKLogUtil.v(TAG, "[intercept?${schemeMap.containsKey(schemePrefix)}] , url=$url , schemePrefix=$schemePrefix")
+        HKLogUtil.e(TAG, ">>>> do intercept url ? ${schemeMap.containsKey(schemePrefix)} <<<< url=$url , schemePrefix=$schemePrefix")
         return schemeMap[schemePrefix]?.invoke(webView, url)
     }
 

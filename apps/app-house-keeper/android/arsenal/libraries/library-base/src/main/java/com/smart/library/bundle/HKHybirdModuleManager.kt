@@ -1,12 +1,18 @@
 package com.smart.library.bundle
 
+import android.net.Uri
+import android.text.TextUtils
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.*
 import com.smart.library.util.cache.HKCacheManager
+import com.smart.library.util.hybird.HKHybirdBridge
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.zip.ZipException
@@ -16,6 +22,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     private val TAG = HKHybirdModuleManager::class.java.simpleName + ":" + moduleFullName
     private val KEY_CONFIGURATION = "key-$moduleFullName"
+
     /**
      * zip准备好后保存到本地, verifyLocalZip==false 时从本地删除
      */
@@ -49,6 +56,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             } else {
                 HKLogUtil.e(TAG, "verify $verifySuccess , 耗时:${System.currentTimeMillis() - start}ms , [无需重复校验,直接返回 success]")
             }
+            addRequestIntercept(localUnzipDir, localConfiguration)
         }
         return verifySuccess
     }
@@ -148,5 +156,93 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.w(TAG, "verifyLocalFiles : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时:${System.currentTimeMillis() - start}ms")
         HKLogUtil.d(TAG, "verifyLocalFiles : --------------------------------------------------")
         return success
+    }
+
+    private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {
+        val interceptScriptUrl = configuration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
+        val interceptMainUrl = configuration.moduleMainUrl[HKHybirdManager.EVN] ?: return
+
+        //html
+        HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
+            var resourceResponse: WebResourceResponse? = null
+            if (!TextUtils.isEmpty(url)) {
+                val requestUrl = Uri.parse(url)
+                val scheme = requestUrl?.scheme?.trim()
+                if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
+                    val requestUrlString = requestUrl.toString()
+                    if (interceptMainUrl == requestUrlString) {
+                        val mimeType = "text/html"
+                        val localPath = localUnzipDir.absolutePath + "/" + requestUrlString.substringBefore("#", requestUrlString).split("/").last()
+                        val localFileExists = File(localPath).exists()
+                        HKLogUtil.e(TAG, "**** do intercept request ? $localFileExists **** [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
+                        if (localFileExists) {
+                            try {
+                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
+                            } catch (e: Exception) {
+                                HKLogUtil.e(TAG, "**** do intercept request ? false **** ", e)
+                            }
+                        } else {
+                            HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], [localPath(exist?$localFileExists): $localPath]")
+                        }
+                    } else {
+                        HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], interceptMainUrl != requestUrlString")
+                    }
+                } else {
+                    HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], requestUrl ==null || scheme != http && scheme != https")
+                }
+            } else {
+                HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], url is empty")
+            }
+            resourceResponse
+        }
+
+        //css,js,image
+        HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
+            var resourceResponse: WebResourceResponse? = null
+            if (!TextUtils.isEmpty(url)) {
+                val requestUrl = Uri.parse(url)
+                val scheme = requestUrl?.scheme?.trim()
+                if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
+                    if (url!!.contains(interceptScriptUrl, true)) {
+
+                        val requestUrlString = requestUrl.toString()
+
+                        val mimeType: String = when {
+                            requestUrlString.contains(".css") -> "text/css"
+                            requestUrlString.contains(".png") -> "image/png"
+                            requestUrlString.contains(".js") -> "application/x-javascript"
+                            requestUrlString.contains(".woff") -> "application/x-font-woff"
+                            requestUrlString.contains(".html") -> "text/html"
+                            requestUrlString.contains(".shtml") -> "text/html"
+                            else -> "text/html"
+                        }
+                        val tmpPath = requestUrlString
+                            .replace(interceptScriptUrl, "")
+                            .replace("https://", "")
+                            .replace("http://", "")
+                        val localPath = localUnzipDir.absolutePath + tmpPath
+
+                        val localFileExists = File(localPath).exists()
+                        HKLogUtil.e(TAG, "**** do intercept request ? $localFileExists **** [originPath: $requestUrlString], [localPath: $localPath]")
+                        if (localFileExists) {
+                            try {
+                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
+                            } catch (e: Exception) {
+                                HKLogUtil.e(TAG, "**** do intercept request ? false **** ", e)
+                            }
+                        } else {
+                            HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], [localPath(exist?$localFileExists): $localPath]")
+                        }
+                    } else {
+                        HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], interceptMainUrl != requestUrlString")
+                    }
+                } else {
+                    HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], requestUrl ==null || scheme != http && scheme != https")
+                }
+            } else {
+                HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], url is empty")
+            }
+            resourceResponse
+        }
     }
 }

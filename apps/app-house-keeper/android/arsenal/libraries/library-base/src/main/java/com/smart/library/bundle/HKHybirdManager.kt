@@ -6,6 +6,8 @@ import com.smart.library.util.HKLogUtil
 object HKHybirdManager {
     private val TAG = HKHybirdManager::class.java.simpleName
 
+    val EVN = "pre"
+
     enum class Module(val fullName: String, val manager: HKHybirdModuleManager) {
         BASE("module-base", HKHybirdModuleManager("module-base")),
         BUYMEALCARD("module-buyMealCard", HKHybirdModuleManager("module-buyMealCard")),

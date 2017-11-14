@@ -42,10 +42,7 @@ class HybirdFragment : HKBaseFragment() {
             textView.setOnClickListener {
                 HKHybirdManager.Module.valueOf(textView.text.toString()).manager.verify { localUnzipDir, configuration ->
                     addRequestIntercept(localUnzipDir, configuration)
-                    var indexPath = "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml"
-                    if ("BUYMEALCARD".equals(textView.text.toString())) {
-                        indexPath = "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"
-                    }
+                    val indexPath = configuration?.moduleMainUrl?.get(EVN)
                     HybirdWebFragment.goTo(activity, indexPath)
                     HKLogUtil.d("hybird", "加载成功")
                     HKToastUtil.show("加载成功")
@@ -56,7 +53,7 @@ class HybirdFragment : HKBaseFragment() {
     }
 
     private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {
-        val interceptUrl = configuration?.moduleSchemeUrls?.get(EVN) ?: return
+        val interceptUrl = configuration?.moduleScriptUrl?.get(EVN) ?: return
 
         HKHybirdBridge.addRequest(interceptUrl) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null
@@ -80,20 +77,20 @@ class HybirdFragment : HKBaseFragment() {
 
                         val localPath = localUnzipDir.absolutePath + tmpPath
                         val localFileExists = File(localPath).exists()
-                        HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?$localFileExists(localFile.exists?$localFileExists)>, [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
+                        HKLogUtil.e(TAG, "**** do intercept? $localFileExists **** [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
                         if (localFileExists) {
                             try {
                                 resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
                             } catch (e: Exception) {
-                                HKLogUtil.e(TAG, "shouldInterceptRequest:<intercept error>: ", e)
+                                HKLogUtil.e(TAG, "do intercept? false", e)
                             }
                         }
                     }
                 } else {
-                    HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptUrl]")
+                    HKLogUtil.e(TAG, "intercept? false, [originPath: $url], [interceptHost: $interceptUrl]")
                 }
             } else {
-                HKLogUtil.v(TAG, "shouldInterceptRequest:<do intercept?false>, [originPath: $url], [interceptHost: $interceptUrl]")
+                HKLogUtil.e(TAG, "do intercept? false, [originPath: $url], [interceptHost: $interceptUrl]")
             }
             resourceResponse
         }

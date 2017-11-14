@@ -1,20 +1,20 @@
 {
-    "moduleVersion": "1.0",
+    "moduleVersion": 1,
     "moduleName": "buyMealCard",
     "moduleMainUrl": {
         "prd": "https://h.jia.chexiang.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList",
         "pre": "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList",
         "sit": "https://h.jia.chexiangsit.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"
     },
-    "moduleScriptUrl": {
+    "moduleSchemeUrls": {
         "prd": "https://s1.chexiang.com/msweb02/cx/cxj/cxjappweb/buyMealCard",
         "pre": "https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/buyMealCard",
         "sit": "https://s1.chexiangsit.com/msweb02/cx/cxj/cxjappweb/buyMealCard"
     },
-    "moduleDownloadUrl": "http://10.47.17.147:7776/files/module-buyMealCard-1.0.zip",
+    "moduleDownloadUrl": "http://10.47.17.147:7776/files/module-buyMealCard-1.zip",
     "moduleUpdateStrategy": 0,
     "moduleRoutesUpdateStrategy": {},
-    "moduleZipMd5": "24d4c957dc7f1ad604c1a5e75ff35440",
+    "moduleZipMd5": "a5659f98dbfbbc8830dc9ee20a3beb32",
     "moduleFilesMd5": {
         "/css/app.0beb745539445a88f03a09706cb56c3e.css": "17dec343acada741c70524aebb1e5c20",
         "/css/app.0beb745539445a88f03a09706cb56c3e.css.map": "c75f297e9acf45e83f23187bfd935ee3",

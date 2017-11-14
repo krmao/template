@@ -5,9 +5,10 @@ import android.os.Parcelable
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST")
 open class HKHybirdModuleConfiguration() : Parcelable {
-    var moduleVersion = 1 //只分当前版本与线上最新版本
+    var moduleVersion = "" //只分当前版本与线上最新版本
     var moduleName = ""
-    var moduleSchemeUrls = HashMap<String, String>()
+    var moduleMainUrl = HashMap<String, String>()
+    var moduleScriptUrl = HashMap<String, String>()
     var moduleDownloadUrl = ""
 
     /**
@@ -21,9 +22,9 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     var moduleFilesMd5 = HashMap<String, String>()
 
     constructor(parcel: Parcel) : this() {
-        moduleVersion = parcel.readInt()
+        moduleVersion = parcel.readString()
         moduleName = parcel.readString()
-        moduleSchemeUrls = parcel.readHashMap(null) as HashMap<String, String>
+        moduleScriptUrl = parcel.readHashMap(null) as HashMap<String, String>
         moduleDownloadUrl = parcel.readString()
         moduleUpdateStrategy = parcel.readInt()
         moduleRoutesUpdateStrategy = parcel.readHashMap(null) as HashMap<String, String>
@@ -32,9 +33,9 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(moduleVersion)
+        parcel.writeString(moduleVersion)
         parcel.writeString(moduleName)
-        parcel.writeMap(moduleSchemeUrls)
+        parcel.writeMap(moduleScriptUrl)
         parcel.writeString(moduleDownloadUrl)
         parcel.writeInt(moduleUpdateStrategy)
         parcel.writeMap(moduleRoutesUpdateStrategy)
@@ -50,5 +51,5 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     }
 
     override fun toString(): String =
-        "HKHybirdModuleConfiguration(moduleVersion=$moduleVersion, moduleName='$moduleName', moduleSchemeUrls=$moduleSchemeUrls, moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
+        "HKHybirdModuleConfiguration(moduleVersion=$moduleVersion, moduleName='$moduleName', moduleScriptUrl=$moduleScriptUrl, moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
 }

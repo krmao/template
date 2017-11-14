@@ -29,7 +29,7 @@ function addJsHack(cmdArgs){
 addJsHack("")
 
  */
-@Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride")
+@Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride", "UseExpressionBody")
 open class HKWebViewClient : WebViewClient() {
 
     /**
@@ -56,7 +56,7 @@ open class HKWebViewClient : WebViewClient() {
     }
 
     override fun onLoadResource(view: WebView?, url: String?) {
-        HKLogUtil.v(HKHybirdBridge.TAG, "onLoadResource: $url")
+        //HKLogUtil.v(HKHybirdBridge.TAG, "onLoadResource: $url")
         super.onLoadResource(view, url)
     }
 
@@ -91,12 +91,12 @@ open class HKWebViewClient : WebViewClient() {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-        HKLogUtil.v(HKHybirdBridge.TAG, "shouldInterceptRequest:>=LOLLIPOP: ${request?.url?.toString()}")
+        //HKLogUtil.v(HKHybirdBridge.TAG, "shouldInterceptRequest:>=LOLLIPOP: ${request?.url?.toString()}")
         return shouldInterceptRequest(view, request?.url?.toString())
     }
 
     override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
-        HKLogUtil.d(HKHybirdBridge.TAG, "shouldInterceptRequest:<LOLLIPOP $url")
+        HKLogUtil.d(HKHybirdBridge.TAG, "shouldInterceptRequest: $url")
         return HKHybirdBridge.shouldInterceptRequest(view, url) ?: super.shouldInterceptRequest(view, url)
     }
 }

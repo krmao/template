@@ -9,6 +9,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     var moduleName = ""
     var moduleMainUrl = HashMap<String, String>()
     var moduleScriptUrl = HashMap<String, String>()
+    var moduleConfigUrl = ""
     var moduleDownloadUrl = ""
 
     /**
@@ -25,6 +26,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
         moduleVersion = parcel.readString()
         moduleName = parcel.readString()
         moduleScriptUrl = parcel.readHashMap(null) as HashMap<String, String>
+        moduleConfigUrl = parcel.readString()
         moduleDownloadUrl = parcel.readString()
         moduleUpdateStrategy = parcel.readInt()
         moduleRoutesUpdateStrategy = parcel.readHashMap(null) as HashMap<String, String>
@@ -36,6 +38,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
         parcel.writeString(moduleVersion)
         parcel.writeString(moduleName)
         parcel.writeMap(moduleScriptUrl)
+        parcel.writeString(moduleConfigUrl)
         parcel.writeString(moduleDownloadUrl)
         parcel.writeInt(moduleUpdateStrategy)
         parcel.writeMap(moduleRoutesUpdateStrategy)
@@ -50,6 +53,21 @@ open class HKHybirdModuleConfiguration() : Parcelable {
         override fun newArray(size: Int): Array<HKHybirdModuleConfiguration?> = arrayOfNulls(size)
     }
 
-    override fun toString(): String =
-        "HKHybirdModuleConfiguration(moduleVersion=$moduleVersion, moduleName='$moduleName', moduleScriptUrl=$moduleScriptUrl, moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
+    override fun equals(other: Any?): Boolean = other is HKHybirdModuleConfiguration && moduleVersion == other.moduleVersion
+
+    override fun hashCode(): Int {
+        var result = moduleVersion.hashCode()
+        result = 31 * result + moduleName.hashCode()
+        result = 31 * result + moduleMainUrl.hashCode()
+        result = 31 * result + moduleScriptUrl.hashCode()
+        result = 31 * result + moduleConfigUrl.hashCode()
+        result = 31 * result + moduleDownloadUrl.hashCode()
+        result = 31 * result + moduleUpdateStrategy
+        result = 31 * result + moduleRoutesUpdateStrategy.hashCode()
+        result = 31 * result + moduleZipMd5.hashCode()
+        result = 31 * result + moduleFilesMd5.hashCode()
+        return result
+    }
+
+    override fun toString(): String = "HKHybirdModuleConfiguration(moduleVersion=$moduleVersion, moduleName='$moduleName', moduleScriptUrl=$moduleScriptUrl, moduleConfigUrl='$moduleConfigUrl', moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
 }

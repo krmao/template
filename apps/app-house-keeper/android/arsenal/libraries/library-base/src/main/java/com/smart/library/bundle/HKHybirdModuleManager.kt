@@ -23,30 +23,36 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     private val KEY_CONFIGURATION = "key-$moduleFullName"
 
     /**
-     * zip准备好后保存到本地, verifyLocalZip==false 时从本地删除
+     * zip准备好后保存到本地, verify Local Zip==false 时从本地删除
      */
+    //TODO 新版本文件破坏，读取原始版本，但是原始版本本地存在，则校验成功？
+    //TODO 本地文件存在，只是配置丢失，注意此时情况
     var localConfiguration: HKHybirdModuleConfiguration? = HKPreferencesUtil.getEntity(KEY_CONFIGURATION, HKHybirdModuleConfiguration::class.java) ?: getConfigurationFromAssets()
         set(value) {
             HKPreferencesUtil.putEntity(KEY_CONFIGURATION, value)
             field = value
         }
 
-    private val updateManager: HKHybirdModuleUpdateManager = HKHybirdModuleUpdateManager()
+
     private val localRootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
-    private var localZipFile: File = File(localRootDir, "${localConfiguration?.moduleName}-${localConfiguration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
-    private var localUnzipDir: File = File(localRootDir, localConfiguration?.moduleVersion)
+    private var localZipFile: File = getLocalZipFile(localConfiguration?.moduleVersion)
+    private var localUnzipDir: File = getLocalUnZipDir(localConfiguration?.moduleVersion)
     private var verifySuccess: Boolean = false
+    private val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
+
+    fun getLocalZipFile(moduleVersion: String?): File = File(localRootDir, "${localConfiguration?.moduleName}-$moduleVersion${HKHybirdManager.BUNDLE_SUFFIX}")
+    fun getLocalUnZipDir(moduleVersion: String?): File = File(localRootDir, moduleVersion)
 
     private fun verifySync(): Boolean {
         synchronized(this) {
             val start = System.currentTimeMillis()
             if (!verifySuccess) {
-                if (!verifyLocalFiles()) {
-                    if (!verifyLocalZip()) {
+                if (!verifyLocalFiles(localUnzipDir, localConfiguration?.moduleFilesMd5)) {
+                    if (!verifyZip(localZipFile, localConfiguration?.moduleZipMd5)) {
                         localConfiguration = null
                         copyZipFromAssets()
                     }
-                    verifySuccess = unzipToLocal()
+                    verifySuccess = unzipToLocal(localZipFile, localUnzipDir)
                 } else {
                     verifySuccess = true
                 }
@@ -103,12 +109,12 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         return success
     }
 
-    private fun unzipToLocal(): Boolean {
+    internal fun unzipToLocal(zipFile: File, unZipDir: File): Boolean {
         var success = false
         val start = System.currentTimeMillis()
-        HKFileUtil.deleteDirectory(localUnzipDir)
+        HKFileUtil.deleteDirectory(unZipDir)
         try {
-            HKZipUtil.unzip(localZipFile, localUnzipDir)
+            HKZipUtil.unzip(zipFile, unZipDir)
             success = true
             HKLogUtil.d(TAG, "unzipToLocal success , 耗时: ${System.currentTimeMillis() - start}ms")
         } catch (exception: FileNotFoundException) {
@@ -121,35 +127,44 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         return success
     }
 
-    private fun verifyLocalZip(): Boolean {
+    internal fun verifyZip(zipFile: File?, moduleZipMd5: String?): Boolean {
         val start = System.currentTimeMillis()
-        val zipFileExists = localZipFile.exists()
-        val zipFileMd5 = HKChecksumUtil.genMD5Checksum(localZipFile)
-        val rightMd5 = localConfiguration?.moduleZipMd5
-        val isZipFileMd5Valid = zipFileMd5 == rightMd5
-        val success = zipFileExists && isZipFileMd5Valid
-        HKLogUtil.d(TAG, "verifyLocalZip : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时: ${System.currentTimeMillis() - start}ms")
+        var success = false
+        if (zipFile != null && !TextUtils.isEmpty(moduleZipMd5)) {
+            val zipFileExists = zipFile.exists()
+            val zipFileMd5 = HKChecksumUtil.genMD5Checksum(zipFile)
+            val isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
+            success = zipFileExists && isZipFileMd5Valid
+            HKLogUtil.d(TAG, "verifyZip (${zipFile.name}) : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时: ${System.currentTimeMillis() - start}ms")
+        } else {
+            HKLogUtil.e(TAG, "verifyZip (${zipFile?.name}) : ${if (success) "success" else "failure"}, zipFile or moduleZipMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
+        }
         return success
     }
 
-    private fun verifyLocalFiles(): Boolean {
+    internal fun verifyLocalFiles(unZipDir: File?, moduleFilesMd5: HashMap<String, String>?): Boolean {
         val start = System.currentTimeMillis()
-        val localUnzipDirExists = localUnzipDir.exists()
-        val localIndexExists = File(localUnzipDir, "index.shtml").exists()
-        var invalidFilesNum = 0
-        if (localIndexExists && localIndexExists) {
-            HKFileUtil.getFileList(localUnzipDir).forEach {
-                val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
-                val remotePath = it.absolutePath.replace(localUnzipDir.absolutePath, "")
-                val rightMd5 = localConfiguration?.moduleFilesMd5?.get(remotePath)
-                val isFileMd5Valid = fileMd5 == rightMd5
-                if (!isFileMd5Valid)
-                    invalidFilesNum++
-                HKLogUtil.d(TAG, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
+        var success = false
+        if (unZipDir != null && moduleFilesMd5 != null) {
+            val localUnzipDirExists = unZipDir.exists()
+            val localIndexExists = File(unZipDir, "index.shtml").exists()
+            var invalidFilesNum = 0
+            if (localIndexExists && localIndexExists) {
+                HKFileUtil.getFileList(unZipDir).forEach {
+                    val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
+                    val remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
+                    val rightMd5 = moduleFilesMd5.get(remotePath)
+                    val isFileMd5Valid = fileMd5 == rightMd5
+                    if (!isFileMd5Valid)
+                        invalidFilesNum++
+                    HKLogUtil.d(TAG, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
+                }
+                success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
             }
+            HKLogUtil.w(TAG, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
+        } else {
+            HKLogUtil.e(TAG, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
         }
-        val success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
-        HKLogUtil.w(TAG, "verifyLocalFiles : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
         return success
     }
 
@@ -239,5 +254,18 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             }
             resourceResponse
         }
+    }
+
+    //TODO
+    fun checkUpdate() {
+        updateManager.checkUpdate()
+    }
+
+    fun setDownloader(downloader: (downloadUrl: String?, file: File, callback: (File?) -> Unit) -> Unit) {
+        updateManager.downloader = downloader
+    }
+
+    fun setConfider(configer: (configUrl: String?, callback: (HKHybirdModuleConfiguration?) -> Unit) -> Unit) {
+        updateManager.configer = configer
     }
 }

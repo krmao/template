@@ -6,7 +6,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.*
-import com.smart.library.util.cache.HKCacheManager
 import com.smart.library.util.hybird.HKHybirdBridge
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,8 +32,8 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         }
 
     private val updateManager: HKHybirdModuleUpdateManager = HKHybirdModuleUpdateManager()
-    private val localRootDir = File(HKCacheManager.getChildCacheDir("hybird"), moduleFullName)
-    private var localZipFile: File = File(localRootDir, "${localConfiguration?.moduleName}-${localConfiguration?.moduleVersion}.zip")
+    private val localRootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
+    private var localZipFile: File = File(localRootDir, "${localConfiguration?.moduleName}-${localConfiguration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
     private var localUnzipDir: File = File(localRootDir, localConfiguration?.moduleVersion)
     private var verifySuccess: Boolean = false
 
@@ -52,9 +51,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
                     verifySuccess = true
                 }
                 updateManager.checkUpdate()
-                HKLogUtil.e(TAG, "verify $verifySuccess , 耗时:${System.currentTimeMillis() - start}ms")
+                HKLogUtil.e(TAG, "verify $verifySuccess , 耗时: ${System.currentTimeMillis() - start}ms")
             } else {
-                HKLogUtil.e(TAG, "verify $verifySuccess , 耗时:${System.currentTimeMillis() - start}ms , [无需重复校验,直接返回 success]")
+                HKLogUtil.e(TAG, "verify $verifySuccess , 耗时: ${System.currentTimeMillis() - start}ms , [无需重复校验,直接返回 success]")
             }
             addRequestIntercept(localUnzipDir, localConfiguration)
         }
@@ -62,26 +61,26 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     }
 
     fun verify(callback: ((localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) -> Unit)? = null) {
-        HKLogUtil.w(TAG, "verify >>>>>>>>>>==============================>>>>>>>>>>")
+        HKLogUtil.w(TAG, "verify >>>>>>>>>>===============>>>>>>>>>>")
         val start = System.currentTimeMillis()
         Observable.fromCallable { verifySync() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { callback?.invoke(localUnzipDir, localConfiguration) }
-        HKLogUtil.w(TAG, "verify async-progressing , 耗时:${System.currentTimeMillis() - start}ms")
-        HKLogUtil.w(TAG, "verify <<<<<<<<<<==============================<<<<<<<<<<")
+        HKLogUtil.w(TAG, "verify async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
+        HKLogUtil.w(TAG, "verify <<<<<<<<<<===============<<<<<<<<<<")
     }
 
     private fun getConfigurationFromAssets(): HKHybirdModuleConfiguration? {
         val start = System.currentTimeMillis()
         var configuration: HKHybirdModuleConfiguration? = null
         try {
-            configuration = HKJsonUtil.fromJson(HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("hybird/$moduleFullName.json")), HKHybirdModuleConfiguration::class.java)
-            HKLogUtil.d(TAG, "getConfigurationFromAssets success , 耗时:${System.currentTimeMillis() - start}ms \nconfiguration:$configuration")
+            configuration = HKJsonUtil.fromJson(HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleFullName${HKHybirdManager.CONFIG_SUFFIX}")), HKHybirdModuleConfiguration::class.java)
+            HKLogUtil.d(TAG, "getConfigurationFromAssets success , 耗时: ${System.currentTimeMillis() - start}ms \nconfiguration:$configuration")
         } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         }
         return configuration
     }
@@ -93,13 +92,13 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKFileUtil.deleteDirectory(localUnzipDir)
         try {
             localConfiguration = getConfigurationFromAssets()
-            HKFileUtil.copy(HKBaseApplication.INSTANCE.assets.open("hybird/$moduleFullName-${localConfiguration?.moduleVersion}.zip"), localZipFile)
+            HKFileUtil.copy(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleFullName-${localConfiguration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}"), localZipFile)
             success = true
-            HKLogUtil.d(TAG, "copyZipFromAssets success ,localZipFile.exists?${localZipFile.exists()} , 耗时:${System.currentTimeMillis() - start}ms")
+            HKLogUtil.d(TAG, "copyZipFromAssets success ,localZipFile.exists?${localZipFile.exists()} , 耗时: ${System.currentTimeMillis() - start}ms")
         } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "copyZipFromAssets failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "copyZipFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "copyZipFromAssets failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "copyZipFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         }
         return success
     }
@@ -111,13 +110,13 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         try {
             HKZipUtil.unzip(localZipFile, localUnzipDir)
             success = true
-            HKLogUtil.d(TAG, "unzipToLocal success , 耗时:${System.currentTimeMillis() - start}ms")
+            HKLogUtil.d(TAG, "unzipToLocal success , 耗时: ${System.currentTimeMillis() - start}ms")
         } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         } catch (exception: ZipException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时:${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
         }
         return success
     }
@@ -129,18 +128,16 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         val rightMd5 = localConfiguration?.moduleZipMd5
         val isZipFileMd5Valid = zipFileMd5 == rightMd5
         val success = zipFileExists && isZipFileMd5Valid
-        HKLogUtil.d(TAG, "verifyLocalZip : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时:${System.currentTimeMillis() - start}ms")
+        HKLogUtil.d(TAG, "verifyLocalZip : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时: ${System.currentTimeMillis() - start}ms")
         return success
     }
 
     private fun verifyLocalFiles(): Boolean {
         val start = System.currentTimeMillis()
-        HKLogUtil.d(TAG, "verifyLocalFiles : --------------------------------------------------")
         val localUnzipDirExists = localUnzipDir.exists()
         val localIndexExists = File(localUnzipDir, "index.shtml").exists()
         var invalidFilesNum = 0
         if (localIndexExists && localIndexExists) {
-            HKLogUtil.d(TAG, "verifyLocalFiles : ------------")
             HKFileUtil.getFileList(localUnzipDir).forEach {
                 val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
                 val remotePath = it.absolutePath.replace(localUnzipDir.absolutePath, "")
@@ -150,11 +147,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
                     invalidFilesNum++
                 HKLogUtil.d(TAG, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
             }
-            HKLogUtil.d(TAG, "verifyLocalFiles : ------------")
         }
         val success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
-        HKLogUtil.w(TAG, "verifyLocalFiles : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时:${System.currentTimeMillis() - start}ms")
-        HKLogUtil.d(TAG, "verifyLocalFiles : --------------------------------------------------")
+        HKLogUtil.w(TAG, "verifyLocalFiles : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
         return success
     }
 

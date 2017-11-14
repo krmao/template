@@ -12,6 +12,7 @@ class HybirdApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.v("krmao", "HybirdApplication:onCreate")
-        HKHybirdManager.init()
+        
+        HKHybirdManager.init("pre")
     }
 }

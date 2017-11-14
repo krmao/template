@@ -20,17 +20,16 @@ class HybirdFragment : HKBaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        HKHybirdManager.Module.values().forEach {
-            val textView = TextView(context)
-            textView.text = it.name
-            textView.setTextColor(Color.BLACK)
-            textView.setBackgroundColor(HKRandomUtil.randomColor)
-            textView.textSize = 24f
-            textView.gravity = Gravity.CENTER
-            textView.setPadding(20, 20, 20, 20)
+        HKHybirdManager.MODULES.value.forEach { entry ->
+            val textView = TextView(context).apply {
+                text = entry.key; textSize = 24f; gravity = Gravity.CENTER
+                setTextColor(Color.BLACK)
+                setBackgroundColor(HKRandomUtil.randomColor)
+                setPadding(20, 20, 20, 20)
+            }
 
             textView.setOnClickListener {
-                HKHybirdManager.Module.valueOf(textView.text.toString()).manager.verify { localUnzipDir, configuration ->
+                entry.value.verify { _, configuration ->
                     HybirdWebFragment.goTo(activity, configuration?.moduleMainUrl?.get(HKHybirdManager.EVN))
                 }
             }

@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
 import com.smart.library.bundle.HKHybirdManager
-import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKRandomUtil
-import com.smart.library.util.HKToastUtil
 import kotlinx.android.synthetic.main.hybird_fragment.*
 
+@Suppress("unused")
 class HybirdFragment : HKBaseFragment() {
-    private val TAG = HybirdFragment::class.java.simpleName
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hybird_fragment, container, false)
 
@@ -30,14 +28,13 @@ class HybirdFragment : HKBaseFragment() {
             textView.textSize = 24f
             textView.gravity = Gravity.CENTER
             textView.setPadding(20, 20, 20, 20)
+
             textView.setOnClickListener {
                 HKHybirdManager.Module.valueOf(textView.text.toString()).manager.verify { localUnzipDir, configuration ->
-                    val indexPath = configuration?.moduleMainUrl?.get(HKHybirdManager.EVN)
-                    HybirdWebFragment.goTo(activity, indexPath)
-                    HKLogUtil.d("hybird", "加载成功")
-                    HKToastUtil.show("加载成功")
+                    HybirdWebFragment.goTo(activity, configuration?.moduleMainUrl?.get(HKHybirdManager.EVN))
                 }
             }
+
             containerLayout.addView(textView)
         }
     }

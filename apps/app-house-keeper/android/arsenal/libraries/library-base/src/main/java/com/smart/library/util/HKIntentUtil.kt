@@ -121,9 +121,10 @@ object HKIntentUtil {
     }
 
     fun goToAppDetails(context: Context) {
-        goToDefault(context, getInstalledAppDetailsIntent(HKBaseApplication.INSTANCE.packageName))
+        goToDefault(context, getInstalledAppDetailsIntent(CXBaseApplication.INSTANCE.packageName))
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     fun getInstalledAppDetailsIntent(packageName: String): Intent {
         val intent = Intent()
         if (Build.VERSION.SDK_INT >= 9) {
@@ -141,28 +142,28 @@ object HKIntentUtil {
     fun getImageIntent(imageFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(imageFile), "image/*")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(imageFile), "image/*")
         return intent
     }
 
     fun getPdfIntent(pdfFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(pdfFile), "application/pdf")
         return intent
     }
 
     fun getTextIntent(textFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(textFile), "text/plain")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(textFile), "text/plain")
         return intent
     }
 
     fun getAudioIntent(audioFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(audioFile), "audio/*")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(audioFile), "audio/*")
         return intent
     }
 
@@ -171,28 +172,28 @@ object HKIntentUtil {
         intent.putExtra("oneshot", 0)
         intent.putExtra("configchange", 0)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(videoFile), "video/*")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(videoFile), "video/*")
         return intent
     }
 
     fun getChmIntent(chmFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(chmFile), "application/x-chm")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(chmFile), "application/x-chm")
         return intent
     }
 
     fun getExcelIntent(excelFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(excelFile), "application/vnd.ms-excel")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(excelFile), "application/vnd.ms-excel")
         return intent
     }
 
     fun getPptIntent(pptFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addCategory("android.intent.category.DEFAULT")
-        intent.setDataAndType(Uri.fromFile(pptFile), "application/vnd.ms-powerpoint")
+        intent.setDataAndType(CXUriUtil.fromFileProvider(pptFile), "application/vnd.ms-powerpoint")
         return intent
     }
 
@@ -219,7 +220,7 @@ object HKIntentUtil {
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             try {
-                HKBaseApplication.INSTANCE.startActivity(intent)
+                CXBaseApplication.INSTANCE.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -238,7 +239,7 @@ object HKIntentUtil {
             context.startActivity(intent)
             return true
         } catch (e: Exception) {
-            HKLogUtil.e(javaClass.name, "Not Found the app.....", e)
+            CXLogUtil.e(javaClass.name, "Not Found the app.....", e)
             return false
         }
 
@@ -295,7 +296,7 @@ object HKIntentUtil {
             intent.type = "text/plain" //纯文本
         } else {
             intent.type = "application/octet-stream"//发送附件
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))//附件
+            intent.putExtra(Intent.EXTRA_STREAM, CXUriUtil.fromFileProvider(file))//附件
         }
         if (emails != null && emails.size > 0)
             intent.putExtra(Intent.EXTRA_EMAIL, emails) //设置对方邮件地址

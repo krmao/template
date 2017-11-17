@@ -83,7 +83,7 @@
                     android:textColor="#333"
                     android:textColorHint="#909090"
                     android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
                         android:padding="5dp"
                         android:text="点击添加"
                         android:textColor="@color/hk_black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
@@ -124,7 +124,7 @@
             android:padding="5dp"
             android:text="永久隐藏悬浮窗"
             android:textColor="@color/hk_black"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:visibility="gone" />
 
         <TextView
@@ -137,6 +137,6 @@
             android:padding="5dp"
             android:text="程序详细信息"
             android:textColor="@color/hk_black"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
     </android.support.v7.widget.LinearLayoutCompat>
 </LinearLayout>

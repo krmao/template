@@ -23,14 +23,13 @@ import java.io.File
 class HomeFragment : HKBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater?.inflate(R.layout.home_fragment, null)
+        inflater?.inflate(R.layout.home_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         text1.setOnClickListener {
-            var path = "http://10.47.18.39:7777/static/files/test.json"
-            path = "http://10.47.18.39:7777/download/v1/test2"
+            val path = "http://10.47.18.39:7777/download/v1/test2"
             HKRepository.download(path, { current, total ->
                 HKLogUtil.d("download:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
             })
@@ -38,7 +37,7 @@ class HomeFragment : HKBaseFragment() {
                 .observeOn(Schedulers.io())
                 .doOnNext { response: Response<ResponseBody> ->
                     val headers = response.headers()
-                    System.out.println("-----------");
+                    System.out.println("-----------")
                     System.out.println("Content-Type:" + headers.get("Content-Type"))
                     val eTag = headers.get("ETag")?.toLongOrNull()
                     System.out.println("ETag:" + eTag)

@@ -20,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.Serializable
 
 
+@Suppress("UNCHECKED_CAST", "unused")
 internal object HKApiManager {
 
     fun init() {

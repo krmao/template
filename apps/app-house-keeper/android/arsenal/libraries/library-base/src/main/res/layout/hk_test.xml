@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/hk_accent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <com.smart.library.widget.titlebar.HKTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hk_titlebar_height"
+        android:background="#fefefe"
+        app:hkTitleText="测试页面" />
+
+    <com.smart.library.widget.imageview.HKRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/hk_black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hk_image"
+        app:hkLeftBottomCornerRadius="15dp"
+        app:hkLeftTopCornerRadius="30dp"
+        app:hkRightBottomCornerRadius="30dp" />
+
+    <com.smart.library.widget.imageview.HKRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/hk_pink"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hk_image" />
+
+    <com.smart.library.widget.imageview.HKRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/hk_yellow"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hk_image"
+        app:hkType="circle" />
+
+    <com.smart.library.widget.imageview.HKRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/hk_orange"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hk_image"
+        app:hkBorderColor="@color/hk_blue_dark"
+        app:hkBorderWidth="5dp"
+        app:hkCornerRadius="30dp"
+        app:hkType="round" />
+
+    <com.smart.library.widget.imageview.HKRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/hk_black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hk_image"
+        app:hkBorderColor="@color/hk_blue_light"
+        app:hkBorderWidth="10dp"
+        app:hkProgressBorder="90"
+        app:hkProgressColor="@color/hk_blue"
+        app:hkType="circle" />
+
+</LinearLayout>

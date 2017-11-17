@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.support.v4.content.FileProvider
-import com.saike.library.base.CXBaseApplication
+import com.smart.library.base.HKBaseApplication
 import java.io.File
 
 /*
@@ -30,10 +30,10 @@ import java.io.File
  * if Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
  *     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
  */
-@Suppress("MemberVisibilityCanPrivate")
+@Suppress("MemberVisibilityCanPrivate", "unused")
 object HKUriUtil {
     private val TAG = HKUriUtil::class.java.simpleName
-    val AUTHORITY = CXBaseApplication.INSTANCE.packageName + ".provider"
+    val AUTHORITY = HKBaseApplication.INSTANCE.packageName + ".provider"
 
     fun intentForFileProvider(action: String? = null): Intent? {
         val intent = Intent(action)
@@ -42,32 +42,25 @@ object HKUriUtil {
         return intent
     }
 
-    fun fromFileProvider(filePath: String?): Uri? {
-        return fromFileProvider(File(filePath))
-    }
+    fun fromFileProvider(filePath: String?): Uri? = fromFileProvider(File(filePath))
 
-    fun fromFileProvider(file: File?): Uri? {
-        return fromFileProvider(AUTHORITY, file)
-    }
+    fun fromFileProvider(file: File?): Uri? = fromFileProvider(AUTHORITY, file)
 
-    fun fromFileProvider(uri: Uri?): Uri? {
-        return fromFileProvider(AUTHORITY, uri)
-    }
+    fun fromFileProvider(uri: Uri?): Uri? = fromFileProvider(AUTHORITY, uri)
 
-    fun fromFileProvider(authority: String, uri: Uri?): Uri? {
-        return if (uri != null && uri.scheme.startsWith("file://")) fromFileProvider(authority, File(uri.toString().replace(uri.scheme, ""))) else uri
-    }
+    fun fromFileProvider(authority: String, uri: Uri?): Uri? =
+        if (uri != null && uri.scheme.startsWith("file://")) fromFileProvider(authority, File(uri.toString().replace(uri.scheme, ""))) else uri
 
     fun fromFileProvider(authority: String?, file: File?): Uri? {
         var result: Uri? = null
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                result = FileProvider.getUriForFile(CXBaseApplication.INSTANCE, authority, file)
+                result = FileProvider.getUriForFile(HKBaseApplication.INSTANCE, authority, file)
             } else if (file != null) {
                 result = Uri.fromFile(file)
             }
         } catch (exception: Exception) {
-            CXLogUtil.e(TAG, "fromFileProvider failure !", exception)
+            HKLogUtil.e(TAG, "fromFileProvider failure !", exception)
         }
         return result
     }

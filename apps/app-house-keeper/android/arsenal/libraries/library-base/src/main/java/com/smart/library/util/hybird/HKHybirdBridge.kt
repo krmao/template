@@ -20,7 +20,7 @@ object HKHybirdBridge {
     val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
-    private val schemeMap: HashMap<String, (webView: WebView?, url: Uri?) -> Boolean> = hashMapOf()
+    private val schemeMap: HashMap<String, (webView: WebView?, url: String?) -> Boolean> = hashMapOf()
     private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
@@ -43,7 +43,8 @@ object HKHybirdBridge {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { webView: WebView?, schemeUrl: Uri? ->
+        schemeMap.put(scheme, { webView: WebView?, schemeUrlString: String? ->
+            val schemeUrl = Uri.parse(schemeUrlString)
             val pathSegments = schemeUrl?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
                 val clazzName = pathSegments[0]
@@ -72,7 +73,7 @@ object HKHybirdBridge {
                 }
                 true
             } else {
-                HKLogUtil.e(TAG, "schemaUrl:${schemeUrl.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
+                HKLogUtil.e(TAG, "schemaUrl:$schemeUrl 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
                 false
             }
         })
@@ -103,10 +104,10 @@ object HKHybirdBridge {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(scheme: String, host: String, port: Int, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
+    /*fun addScheme(scheme: String, host: String, port: Int, intercept: (webView: WebView?, url: String?) -> Boolean) {
         val schemePrefix = "$scheme://$host:$port"
         schemeMap.put(schemePrefix, intercept)
-    }
+    }*/
 
     /**
      *  scheme://host:port/path?k=v
@@ -116,7 +117,7 @@ object HKHybirdBridge {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, url: Uri?) -> Boolean) {
+    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, url: String?) -> Boolean) {
         schemeMap.put(schemeUrlString, intercept)
     }
 
@@ -124,17 +125,44 @@ object HKHybirdBridge {
         schemeMap.remove(schemeUrlString)
     }
 
-    fun removeScheme(scheme: String, host: String, port: Int) {
+    /*fun removeScheme(scheme: String, host: String, port: Int) {
         val schemePrefix = "$scheme://$host:$port"
         schemeMap.remove(schemePrefix)
+    }*/
+
+    fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean {
+        if (uriString == null)
+            return false
+        val list = schemeMap.filterKeys { uriString.startsWith(it) }.entries
+
+        //根据 key 字符串的长度，越长的越先匹配
+        for (entry in list.sortedByDescending { it.key.length }) {
+            HKLogUtil.w(TAG, "[0] do intercept -> ${entry.key}")
+            val intercept = entry.value.invoke(webView, uriString)
+            HKLogUtil.w(TAG, "[1] do intercept result ->  $intercept")
+            if (intercept) {
+                return true
+            } else {
+                continue
+            }
+        }
+        return false
     }
 
-    fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean? {
-        val url = Uri.parse(uriString)
-        val schemePrefix = "${url?.scheme}://${url?.host}:${url?.port}"
-        HKLogUtil.e(TAG, ">>>> do intercept url ? ${schemeMap.containsKey(schemePrefix)} <<<< url=$url , schemePrefix=$schemePrefix")
-        return schemeMap[schemePrefix]?.invoke(webView, url)
-    }
+//    fun shouldOverrideUrlLoadingV2(context: Context, uriString: String?): Boolean {
+//        val uri = Uri.parse(uriString)
+//
+//        val port = uri?.port ?: -1
+//        val portString = if (port == -1) "" else ":$port"
+//
+//        val schemePrefix = "${uri?.scheme}://${uri?.host}$portString"
+//
+//        HKLogUtil.d(TAG, "get uri : $uri")
+//        HKLogUtil.d(TAG, "get schemePrefix : $schemePrefix")
+//        HKLogUtil.d(TAG, "do intercept ? ${schemeMap.containsKey(schemePrefix)}")
+//
+//        return schemeMap[schemePrefix]?.invoke(context, uri) ?: false
+//    }
 
     //========================================================================================================================
     // async callback
@@ -143,7 +171,8 @@ object HKHybirdBridge {
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
     fun addSchemeForCallback() {
-        addScheme(callbackSchemaPrefix) { _: WebView?, url: Uri? ->
+        addScheme(callbackSchemaPrefix) { _: WebView?, urlString: String? ->
+            val url = Uri.parse(urlString)
             val hashCode = url?.getQueryParameter("hashcode")
             callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
             callbackMap.remove(hashCode)

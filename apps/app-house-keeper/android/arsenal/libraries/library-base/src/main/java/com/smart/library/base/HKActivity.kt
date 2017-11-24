@@ -1,6 +1,5 @@
 package com.smart.library.base
 
-//import android.taobao.atlas.framework.Atlas
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,60 +10,67 @@ import android.util.Log
 import android.widget.FrameLayout
 import com.smart.library.util.HKLogUtil
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 open class HKActivity : HKBaseActivity() {
 
     companion object {
+
+        @JvmStatic
         val KEY_THEME = "KEY_THEME"
+        @JvmStatic
         val KEY_FRAGMENT_CLASS = "KEY_FRAGMENT_CLASS"
+        @JvmStatic
         val KEY_FRAGMENT_ARGS = "KEY_FRAGMENT_ARGS"
 
-        fun start(from: Context, fragmentClass: Class<*>) {
-            start(from, fragmentClass, null)
-        }
+        @JvmStatic
+        fun start(from: Context, fragmentClass: Class<*>) = start(from, fragmentClass, null)
 
-        fun start(from: Context, fragmentClass: Class<*>, args: Bundle?) {
+        @JvmStatic
+        fun start(from: Context, fragmentClass: Class<*>, args: Bundle?) =
             start(from, fragmentClass, args, 0)
-        }
 
-        fun startNewTask(fragmentClass: Class<*>, args: Bundle?) {
+        @JvmStatic
+        fun startNewTask(fragmentClass: Class<*>, args: Bundle?) =
             HKBaseApplication.INSTANCE.startActivity(getNewTaskIntent(HKBaseApplication.INSTANCE, 0, fragmentClass, args))
-        }
 
-        fun startSingleTask(from: Context, fragmentClass: Class<*>, args: Bundle) {
+        @JvmStatic
+        fun startSingleTask(from: Context, fragmentClass: Class<*>, args: Bundle) =
             HKBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
-        }
 
-        fun start(activity: Context, fragmentClass: Class<*>, args: Bundle?, themResId: Int) {
+        @JvmStatic
+        fun start(activity: Context, fragmentClass: Class<*>, args: Bundle?, themResId: Int) =
             activity.startActivity(getIntent(activity, themResId, fragmentClass, args))
-        }
 
-        fun start(activity: Context, intent: Intent?) {
-            activity.startActivity(intent)
-        }
+        @JvmStatic
+        fun start(activity: Context, intent: Intent?) = activity.startActivity(intent)
 
+        @JvmStatic
         fun start(activity: Activity?, fragmentClassName: String?, args: Bundle? = null) {
             activity?.startActivity(getIntent(activity, 0, fragmentClassName, args))
         }
 
+        @JvmStatic
         fun startByCustomAnimation(activity: Activity, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
             activity.startActivity(getIntent(activity, fragmentClass, args))
             activity.overridePendingTransition(enterAnim, exitAnim)
         }
 
 
-        fun startForResultByCustomAnimation(activity: Activity, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
+        @JvmStatic
+        fun startForResultByCustomAnimation(activity: Activity, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
             startForResultByCustomAnimation(activity, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
-        }
 
+        @JvmStatic
         fun startForResultByCustomAnimation(activity: Activity, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
             startForResult(activity, themResId, requestCode, fragmentClass, args)
             activity.overridePendingTransition(enterAnim, exitAnim)
         }
 
-        fun startForResultByCustomAnimation(fragment: Fragment, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
+        @JvmStatic
+        fun startForResultByCustomAnimation(fragment: Fragment, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
             startForResultByCustomAnimation(fragment, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
-        }
 
+        @JvmStatic
         fun startForResultByCustomAnimation(fragment: Fragment, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
             startForResult(fragment, themResId, requestCode, fragmentClass, args)
             fragment.activity.overridePendingTransition(enterAnim, exitAnim)
@@ -73,28 +79,31 @@ open class HKActivity : HKBaseActivity() {
         //================================//================================//================================
         //base
         /* Activity页面发起的，再由Activity来接收结果 如果由Fragment来接收结果，需要使用 {@link #startForResult(Fragment, int, Class, Bundle)} */
-        fun startForResult(activity: Activity, reqCode: Int, fragmentClass: Class<*>, args: Bundle) {
+        @JvmStatic
+        fun startForResult(activity: Activity, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
             startForResult(activity, 0, reqCode, fragmentClass, args)
-        }
 
-        fun startForResult(activity: Activity, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) {
+        @JvmStatic
+        fun startForResult(activity: Activity, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
             activity.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
-        }
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
-        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle) {
+        @JvmStatic
+        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
             startForResult(fragment, 0, reqCode, fragmentClass, args)
-        }
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
-        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) {
+        @JvmStatic
+        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
             fragment.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
-        }
 
+        @JvmStatic
         fun getIntent(context: Context, fragmentClass: Class<*>, args: Bundle): Intent = getIntent(context, 0, fragmentClass, args)
 
+        @JvmStatic
         fun getIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent = getIntent(context, themResId, fragmentClass.canonicalName, args)
 
+        @JvmStatic
         fun getIntent(context: Context?, themResId: Int, fragmentClassName: String?, args: Bundle?): Intent {
             val intent = Intent(context, HKActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
@@ -105,6 +114,7 @@ open class HKActivity : HKBaseActivity() {
             return intent
         }
 
+        @JvmStatic
         fun getNewTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
             val intent = Intent(context, HKActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
@@ -116,6 +126,7 @@ open class HKActivity : HKBaseActivity() {
             return intent
         }
 
+        @JvmStatic
         fun getSingleTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
             val intent = Intent(context, HKActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)

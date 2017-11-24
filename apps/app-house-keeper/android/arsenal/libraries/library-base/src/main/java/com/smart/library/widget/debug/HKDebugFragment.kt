@@ -15,12 +15,13 @@ import android.widget.TextView
 import com.smart.library.R
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKBaseFragment
+import com.smart.library.base.HKConfig
 import com.smart.library.util.*
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.hk_fragment_debug.*
 
 @Suppress("unused")
-open class HKTestingFragment : HKBaseFragment() {
+open class HKDebugFragment : HKBaseFragment() {
     companion object {
         private val KEY_TESTING_LIST = "KEY_TESTING_LIST"
         private var URLList: MutableList<URLModel> = HKPreferencesUtil.getList(KEY_TESTING_LIST, URLModel::class.java)
@@ -63,12 +64,10 @@ open class HKTestingFragment : HKBaseFragment() {
                 .setAutoCancel(false)
                 .setDefaults(Notification.DEFAULT_LIGHTS)
                 .setOngoing(true)
-            HKNotificationManager.showNotifyToFragment(HKBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, HKTestingFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
+            HKNotificationManager.showNotifyToFragment(HKBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, HKDebugFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
-        fun cancelDebugNotification(notificationId: Int) {
-            HKNotificationManager.cancelNotify(HKBaseApplication.INSTANCE, notificationId)
-        }
+        fun cancelDebugNotification(notificationId: Int) = HKNotificationManager.cancelNotify(HKBaseApplication.INSTANCE, notificationId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -76,6 +75,9 @@ open class HKTestingFragment : HKBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        trace_cb.isChecked = HKConfig.ENABLE_TRACE_DEBUG
+        trace_cb.setOnCheckedChangeListener { _, isChecked -> HKConfig.ENABLE_TRACE_DEBUG = isChecked }
 
         val adapter = DebugAdapter(URLList, activity)
         listView.adapter = adapter

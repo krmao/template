@@ -13,6 +13,7 @@ import com.smart.library.util.HKLogUtil
  *     version: 1.0
  * </pre>
  */
+@Suppress("unused")
 open class RxRouteCallbackEvent {
     var id: String = ""
     var bundle: Bundle? = null

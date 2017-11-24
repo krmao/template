@@ -1,5 +1,6 @@
 package com.smart.library.util
 
+import android.annotation.SuppressLint
 import android.support.annotation.StringRes
 import android.text.TextUtils
 import android.view.Gravity
@@ -10,39 +11,55 @@ import android.widget.Toast
 import com.smart.library.R
 import com.smart.library.base.HKBaseApplication
 
+@SuppressLint("InflateParams")
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object HKToastUtil {
     private var toast: Toast? = null
 
-    fun show(@StringRes strId: Int) {
-        show(HKBaseApplication.INSTANCE.resources.getString(strId))
+
+    @JvmOverloads
+    @JvmStatic
+    fun show(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+        show(HKBaseApplication.INSTANCE.resources.getString(strId), textGravity, cancelLastImmediately)
     }
 
-    fun show(msg: String?) {
-        show(msg, null)
+    @JvmOverloads
+    @JvmStatic
+    fun show(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+        show(msg, null, textGravity, cancelLastImmediately)
     }
 
-    fun showCenter(@StringRes strId: Int) {
-        show(HKBaseApplication.INSTANCE.resources.getString(strId), Gravity.CENTER)
+    @JvmOverloads
+    @JvmStatic
+    fun showCenter(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+        show(HKBaseApplication.INSTANCE.resources.getString(strId), Gravity.CENTER, textGravity, cancelLastImmediately)
     }
 
-    fun showCenter(msg: String?) {
-        show(msg, Gravity.CENTER)
+    @JvmOverloads
+    @JvmStatic
+    fun showCenter(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+        show(msg, Gravity.CENTER, textGravity, cancelLastImmediately)
     }
 
-    fun show(msg: String?, gravity: Int?) {
-        show(msg, gravity, null)
+    @JvmOverloads
+    @JvmStatic
+    fun show(msg: String?, toastGravity: Int?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+        show(msg, toastGravity, null, textGravity, cancelLastImmediately)
     }
 
-    fun show(msg: String?, gravity: Int?, duration: Int?) {
+    @JvmOverloads
+    @JvmStatic
+    fun show(msg: String?, toastGravity: Int?, duration: Int?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
         if (!TextUtils.isEmpty(msg)) {
-            toast?.cancel()
+            if (cancelLastImmediately)
+                toast?.cancel()
             toast = Toast(HKBaseApplication.INSTANCE)
             viewHolder.textView.text = msg
+            viewHolder.textView.gravity = textGravity
             toast?.view = viewHolder.rootView
             toast?.duration = duration ?: Toast.LENGTH_SHORT
-            if (gravity != null)
-                toast?.setGravity(gravity, 0, 0)
+            if (toastGravity != null)
+                toast?.setGravity(toastGravity, 0, 0)
             toast?.show()
         }
     }

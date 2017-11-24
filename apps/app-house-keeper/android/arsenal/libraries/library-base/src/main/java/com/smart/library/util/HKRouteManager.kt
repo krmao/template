@@ -19,7 +19,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKRouteManager {
     private val KEY_ID_CALLBACK = "id_callback"
 
@@ -153,14 +153,14 @@ object HKRouteManager {
     }
 
     private fun goToFragmentInternal(activity: Activity?, fragmentName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
-        val _bundle = bundle ?: Bundle()
+        val tmpBundle = bundle ?: Bundle()
         if (callback != null) {
             val id = fragmentName + ":" + System.currentTimeMillis()
-            _bundle.putString(KEY_ID_CALLBACK, id)
+            tmpBundle.putString(KEY_ID_CALLBACK, id)
             callbackMap.put(id, callback)
         }
         HKLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
-        HKActivity.start(activity, fragmentName, _bundle)
+        HKActivity.start(activity, fragmentName, tmpBundle)
     }
 
     fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {

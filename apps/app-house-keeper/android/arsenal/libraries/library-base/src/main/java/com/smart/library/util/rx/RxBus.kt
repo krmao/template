@@ -14,9 +14,7 @@ RxBus.toObservable(HKTestingFragment.ChangeEvent::class.java).subscribe { change
 object RxBus {
     private val bus: io.reactivex.subjects.PublishSubject<Any> by lazy { io.reactivex.subjects.PublishSubject.create<Any>() }
 
-    fun post(event: Any) {
-        bus.onNext(event)
-    }
+    fun post(event: Any) = bus.onNext(event)
 
     fun <T> toObservable(eventType: Class<T>): io.reactivex.Observable<T> = bus.ofType(eventType)
 }

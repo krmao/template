@@ -5,11 +5,10 @@ import android.support.v7.widget.RecyclerView
 import com.smart.library.widget.recyclerview.helper.HKRecyclerViewItemTouchHelperAdapter
 import java.util.*
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class HKRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), HKRecyclerViewItemTouchHelperAdapter {
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount(): Int = dataList.size
 
     fun remove(position: Int) {
         if (position >= 0 && position < dataList.size) {
@@ -41,13 +40,9 @@ abstract class HKRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
         }
     }
 
-    fun notifyItemRangeChanged() {
-        notifyItemRangeChanged(0, dataList.size)
-    }
+    fun notifyItemRangeChanged() = notifyItemRangeChanged(0, dataList.size)
 
-    override fun onItemDismiss(position: Int) {
-        remove(position)
-    }
+    override fun onItemDismiss(position: Int) = remove(position)
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         Collections.swap(dataList, fromPosition, toPosition)

@@ -43,7 +43,5 @@ open class HKThreadPoolManager {
 
     }
 
-    fun addCommand(runnable: Runnable) {
-        executorService.execute(runnable)
-    }
+    fun addCommand(runnable: Runnable) = executorService.execute(runnable)
 }

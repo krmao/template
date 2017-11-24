@@ -27,7 +27,7 @@ object HKRepository {
         HKApiManager.getApi(HKApi::class.java).getBundleConfig()
 
     /*
-        HKRepository.download("http://10.47.12.176:8080/view/Android/job/cxj-toc-android-release/lastSuccessfulBuild/artifact/arsenal/apps/app-chexiangjia/build/outputs/channels/app-chexiangjia-CXB0000-release-v4.3-175-20170913-174408.apk", { current, total ->
+        HKRepository.download("http://10.47.12.176:8080/view/Android/job/cxj-toc-android-release/lastSuccessfulBuild/artifact/arsenal/apps/app-smart/build/outputs/channels/app-smart-CXB0000-release-v4.3-175-20170913-174408.apk", { current, total ->
             HKLogUtil.d("download:progress", "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
         })
             .subscribeOn(Schedulers.io())

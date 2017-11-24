@@ -1,5 +1,6 @@
 package com.smart.library.util.network
 
+@Suppress("unused")
 enum class HKNetworkSwitchState {
     WIFI_TO_NONE,
     WIFI_TO_MOBILE,

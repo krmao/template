@@ -2,6 +2,7 @@
 
 package com.smart.library.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Notification
 import android.app.NotificationManager
@@ -15,19 +16,21 @@ import android.support.v4.app.NotificationCompat
 import com.smart.library.base.HKActivity
 
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKNotificationManager {
-    fun showNotify(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder) {
+    @JvmStatic
+    fun showNotify(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder) =
         showNotify(context, notificationId, notificationFlags, notificationBuilder, null)
-    }
 
-    fun showNotifyToActivity(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, intent: Intent) {
+    @JvmStatic
+    fun showNotifyToActivity(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, intent: Intent) =
         showNotify(context, notificationId, notificationFlags, notificationBuilder, PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT))
-    }
 
-    fun showNotifyToActivity(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, intent: Intent, pendingIntentFlags: Int) {
+    @JvmStatic
+    fun showNotifyToActivity(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, intent: Intent, pendingIntentFlags: Int) =
         showNotify(context, notificationId, notificationFlags, notificationBuilder, PendingIntent.getActivity(context, notificationId, intent, pendingIntentFlags))
-    }
 
+    @JvmStatic
     fun showNotifyToActivity(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, toActivity: Class<out Activity>, bundle: Bundle?, pendingIntentFlags: Int) {
         val intent = Intent(context, toActivity)
         if (bundle != null)
@@ -36,6 +39,7 @@ object HKNotificationManager {
         showNotify(context, notificationId, notificationFlags, notificationBuilder, PendingIntent.getActivity(context, notificationId, intent, pendingIntentFlags))
     }
 
+    @JvmStatic
     fun showNotifyToFragment(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, fragmentClass: Class<out Fragment>, bundle: Bundle?) {
         val intent = HKActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
         if (bundle != null)
@@ -44,6 +48,7 @@ object HKNotificationManager {
         showNotify(context, notificationId, notificationFlags, notificationBuilder, PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
+    @JvmStatic
     fun showNotifyToFragment(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, fragmentClass: Class<out Fragment>, bundle: Bundle?, pendingIntentFlags: Int) {
         val intent = HKActivity.getNewTaskIntent(context, notificationId, fragmentClass, bundle)
         if (bundle != null)
@@ -52,6 +57,8 @@ object HKNotificationManager {
         showNotify(context, notificationId, notificationFlags, notificationBuilder, PendingIntent.getActivity(context, notificationId, intent, pendingIntentFlags))
     }
 
+    @SuppressLint("ObsoleteSdkInt")
+    @JvmStatic
     fun showNotify(context: Context, notificationId: Int, notificationFlags: Int, notificationBuilder: NotificationCompat.Builder, pendingIntent: PendingIntent?) {
         if (pendingIntent != null)
             notificationBuilder.setContentIntent(pendingIntent)
@@ -68,15 +75,14 @@ object HKNotificationManager {
         }
     }
 
-    fun cancelNotify(context: Context, notificationId: Int) {
+    @JvmStatic
+    fun cancelNotify(context: Context, notificationId: Int) =
         cancelNotify(context, null, notificationId)
-    }
 
-    fun cancelNotify(context: Context, tag: String?, notificationId: Int) {
+    @JvmStatic
+    fun cancelNotify(context: Context, tag: String?, notificationId: Int) =
         (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(tag, notificationId)
-    }
 
-    fun cancelAllNotify(context: Context) {
-        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
-    }
+    @JvmStatic
+    fun cancelAllNotify(context: Context) = (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
 }

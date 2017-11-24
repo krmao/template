@@ -12,6 +12,7 @@ import com.smart.library.util.HKLogUtil
  * targetUrl - example://demo
  * bundle    - 数据载体
  */
+@Suppress("unused", "MemberVisibilityCanPrivate")
 open class RxRouteEvent {
     var activity: Activity? = null
     var targetUrl: String = ""

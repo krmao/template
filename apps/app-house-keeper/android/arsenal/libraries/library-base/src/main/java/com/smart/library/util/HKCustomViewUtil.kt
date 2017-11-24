@@ -13,28 +13,25 @@ import android.view.View
 object HKCustomViewUtil {
 
     fun getBoolean(typedArray: TypedArray, index: Int, defaultValue: Boolean): Boolean {
-        var result: Boolean
-        try {
+        return try {
             val resId = typedArray.getResourceId(index, -1)
             if (resId != -1)
-                result = typedArray.resources.getBoolean(resId)
+                typedArray.resources.getBoolean(resId)
             else
-                result = typedArray.getBoolean(index, defaultValue)
+                typedArray.getBoolean(index, defaultValue)
         } catch (e: Exception) {
             e.printStackTrace()
-            result = defaultValue
+            defaultValue
         }
-
-        return result
     }
 
     fun getFloat(typedArray: TypedArray, index: Int, defaultValue: Float): Float {
-        var result: Float
-        try {
-            result = typedArray.getFloat(index, defaultValue)
+        val result: Float
+        result = try {
+            typedArray.getFloat(index, defaultValue)
         } catch (e: Exception) {
             e.printStackTrace()
-            result = defaultValue
+            defaultValue
         }
 
         return result
@@ -83,15 +80,15 @@ object HKCustomViewUtil {
 
     fun getString(typedArray: TypedArray, index: Int, defaultValue: String): String {
         var result: String?
-        try {
+        result = try {
             val resId = typedArray.getResourceId(index, -1)
             if (resId != -1)
-                result = typedArray.resources.getString(resId)
+                typedArray.resources.getString(resId)
             else
-                result = typedArray.getString(index)
+                typedArray.getString(index)
         } catch (e: Exception) {
             e.printStackTrace()
-            result = defaultValue
+            defaultValue
         }
 
         if (result == null)
@@ -107,40 +104,38 @@ object HKCustomViewUtil {
      * @param defaultRes   -1 or >0
      * @param typedArray   typedArray
      */
-    fun setBackground(view: View, index: Int, defaultColor: Int, defaultRes: Int, typedArray: TypedArray) {
-        try {
-            if (defaultColor != -1)
-                view.setBackgroundColor(defaultColor)
-            if (defaultRes != -1)
-                view.setBackgroundResource(defaultRes)
+    fun setBackground(view: View, index: Int, defaultColor: Int, defaultRes: Int, typedArray: TypedArray) = try {
+        if (defaultColor != -1)
+            view.setBackgroundColor(defaultColor)
+        if (defaultRes != -1)
+            view.setBackgroundResource(defaultRes)
 
-            val drawable = typedArray.getDrawable(index)
-            if (drawable != null) {
-                @Suppress("DEPRECATION")
-                view.setBackgroundDrawable(drawable)
+        val drawable = typedArray.getDrawable(index)
+        if (drawable != null) {
+            @Suppress("DEPRECATION")
+            view.setBackgroundDrawable(drawable)
+        } else {
+            val color = typedArray.getColor(index, Integer.MAX_VALUE)
+            if (color != Integer.MAX_VALUE) {
+                view.setBackgroundColor(color)
             } else {
-                val color = typedArray.getColor(index, Integer.MAX_VALUE)
-                if (color != Integer.MAX_VALUE) {
-                    view.setBackgroundColor(color)
-                } else {
-                    val colorStr = typedArray.getString(index)
-                    if (!TextUtils.isEmpty(colorStr)) {
-                        try {
-                            view.setBackgroundColor(Color.parseColor(colorStr))
-                        } catch (ignored: Exception) {
-                        }
+                val colorStr = typedArray.getString(index)
+                if (!TextUtils.isEmpty(colorStr)) {
+                    try {
+                        view.setBackgroundColor(Color.parseColor(colorStr))
+                    } catch (ignored: Exception) {
+                    }
 
+                } else {
+                    val resId = typedArray.getResourceId(index, -1)
+                    if (resId == -1) {
                     } else {
-                        val resId = typedArray.getResourceId(index, -1)
-                        if (resId != -1) {
-                            view.setBackgroundResource(resId)
-                        }
+                        view.setBackgroundResource(resId)
                     }
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }

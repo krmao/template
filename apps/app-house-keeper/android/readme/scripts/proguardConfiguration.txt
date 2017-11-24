@@ -1,76 +1,76 @@
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/a9283170b7305c8d92d25aff02a6ab7e45d06cbe/okio-1.13.0.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jude/swipebackhelper/3.1.2/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains.anko/anko-common/0.8.2/8974e9997afe8701e4207a315d4aa9bf7f05a8f4/anko-common-0.8.2.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.3-2/9b44c139a4ec57031e0c84ba0e49ba16df6d801c/kotlin-stdlib-1.1.3-2.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-v4/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar(**.class)
--injars /Users/maokangren/libs/sdk_android/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.meituan.android.walle/payload_reader/1.1.4/908f575a3a222ad7f12c9027689f09e74afc5115/payload_reader-1.1.4.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.8.0/f765f004f3e201bd6ad0904266e605d7fb776d5/logging-interceptor-3.8.0.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.3.0/9e09011e9767bb76b5e27c9b8223476b93b14631/converter-gson-2.3.0.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/22.0-android/7b2fc7ef242f35bc2c9a3b816ed846c9345e3f95/guava-22.0-android.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.tbruyelle.rxpermissions/rxpermissions/0.9.4/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/bcacde6a8ccedcc56c127403d26b76072fe6214d/retrofit-2.3.0.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.0/14b8c877d98005ba3941c9257cfe09f6ed0e0d74/reactive-streams-1.0.0.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.0/2fdf84dedcaaeabb9d70cde9dbb8aad4eccb80a1/rxjava-2.1.0.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-compat/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/976d8d30bebc251db406f2bdb3eb01962b5685b3/j2objc-annotations-1.1.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava2/2.3.0/f436637f9500ab5b8bc32afe556373180894b4a5/adapter-rxjava2-2.3.0.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxkotlin/2.0.3/5898dbe86fbc7d807359b199aa8b7078f07229af/rxkotlin-2.0.3.jar(**.class)
--injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/5a11f020cce2d11eb71ba916700600e18c4547e7/okhttp-3.8.0.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/io.reactivex.rxjava2/rxandroid/2.0.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-fragment/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/1.3.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.meituan.android.walle/library/1.1.4/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android-no-op/1.5.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/fruit-shop-android/module-housekeeper-home/unspecified/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/fruit-shop-android/library-housekeeper-base/unspecified/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.smart.android/library-base/0.0.1-SNAPSHOT/jars/classes.jar(**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/transforms/mergeJavaRes/release/jars/2/1f/main.jar(!**.class)
--injars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/classes/release(**.class)
--outjars /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/transforms/proguard/release/jars/3/1f/main.jar
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/a9283170b7305c8d92d25aff02a6ab7e45d06cbe/okio-1.13.0.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jude/swipebackhelper/3.1.2/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains.anko/anko-common/0.8.2/8974e9997afe8701e4207a315d4aa9bf7f05a8f4/anko-common-0.8.2.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design-kotlin/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.3-2/9b44c139a4ec57031e0c84ba0e49ba16df6d801c/kotlin-stdlib-1.1.3-2.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-v4/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar(**.class)
+-injars /Users/smart/libs/sdk_android/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.meituan.android.walle/payload_reader/1.1.4/908f575a3a222ad7f12c9027689f09e74afc5115/payload_reader-1.1.4.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.8.0/f765f004f3e201bd6ad0904266e605d7fb776d5/logging-interceptor-3.8.0.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.3.0/9e09011e9767bb76b5e27c9b8223476b93b14631/converter-gson-2.3.0.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-kotlin/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/22.0-android/7b2fc7ef242f35bc2c9a3b816ed846c9345e3f95/guava-22.0-android.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.tbruyelle.rxpermissions/rxpermissions/0.9.4/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/bcacde6a8ccedcc56c127403d26b76072fe6214d/retrofit-2.3.0.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.0/14b8c877d98005ba3941c9257cfe09f6ed0e0d74/reactive-streams-1.0.0.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.0/2fdf84dedcaaeabb9d70cde9dbb8aad4eccb80a1/rxjava-2.1.0.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-compat/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/976d8d30bebc251db406f2bdb3eb01962b5685b3/j2objc-annotations-1.1.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7-kotlin/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava2/2.3.0/f436637f9500ab5b8bc32afe556373180894b4a5/adapter-rxjava2-2.3.0.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4-kotlin/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxkotlin/2.0.3/5898dbe86fbc7d807359b199aa8b7078f07229af/rxkotlin-2.0.3.jar(**.class)
+-injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/5a11f020cce2d11eb71ba916700600e18c4547e7/okhttp-3.8.0.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/io.reactivex.rxjava2/rxandroid/2.0.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/support-fragment/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/1.3.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.meituan.android.walle/library/1.1.4/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android-no-op/1.5.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7-kotlin/2.0.0/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/fruit-shop-android/module-housekeeper-home/unspecified/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/fruit-shop-android/library-housekeeper-base/unspecified/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/exploded-aar/com.smart.android/library-base/0.0.1-SNAPSHOT/jars/classes.jar(**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/transforms/mergeJavaRes/release/jars/2/1f/main.jar(!**.class)
+-injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/classes/release(**.class)
+-outjars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/intermediates/transforms/proguard/release/jars/3/1f/main.jar
 
--libraryjars /Users/maokangren/libs/sdk_android/platforms/android-25/android.jar
--libraryjars /Users/maokangren/libs/sdk_android/platforms/android-25/optional/org.apache.http.legacy.jar
+-libraryjars /Users/smart/libs/sdk_android/platforms/android-25/android.jar
+-libraryjars /Users/smart/libs/sdk_android/platforms/android-25/optional/org.apache.http.legacy.jar
 
 -forceprocessing
 -dontshrink
--printusage /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/usage.txt
+-printusage /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/usage.txt
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 -optimizationpasses 5
 -allowaccessmodification
--printmapping /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/mapping.txt
+-printmapping /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/mapping.txt
 -overloadaggressively
 -useuniqueclassmembernames
 -dontusemixedcaseclassnames
@@ -84,9 +84,9 @@
 -verbose
 -dontnote android.net.http.*,org.apache.commons.codec.**,org.apache.http.**,java.lang.invoke.SerializedLambda,fqcn.of.**,com.google.vending.licensing.ILicensingService,com.android.vending.licensing.ILicensingService
 -dontwarn android.support.**,android.support.**,freemarker.**,fqcn.of.**
--printconfiguration /Users/maokangren/workspace/fruit-shop/fruit-shop-android/readme/scripts/proguardConfiguration.txt
--dump /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/dump.txt
--printseeds /Users/maokangren/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/seeds.txt
+-printconfiguration /Users/smart/workspace/fruit-shop/fruit-shop-android/readme/scripts/proguardConfiguration.txt
+-dump /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/dump.txt
+-printseeds /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-housekeeper/build/outputs/mapping/release/seeds.txt
 
 
 # 保护属性 end
@@ -247,13 +247,13 @@
 -keep interface  android.**
 
 # Copyright (C) 2015 The Android Open Source Project
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -266,13 +266,13 @@
 }
 
 # Copyright (C) 2015 The Android Open Source Project
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -285,13 +285,13 @@
 }
 
 # Copyright (C) 2016 The Android Open Source Project
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

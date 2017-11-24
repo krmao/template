@@ -15,9 +15,7 @@ object HKZipUtil {
      * Example: zip("downloads/images", "downloads/images.zip");
      */
     @Throws(NullPointerException::class, FileNotFoundException::class, IOException::class)
-    fun zip(sourcePath: String, targetFilePath: String) {
-        zip(File(sourcePath), targetFilePath)
-    }
+    fun zip(sourcePath: String, targetFilePath: String) = zip(File(sourcePath), targetFilePath)
 
     @Throws(NullPointerException::class, FileNotFoundException::class, IOException::class)
     fun zip(sourceFile: File, targetFilePath: String) {
@@ -89,9 +87,7 @@ object HKZipUtil {
      * Example: unzip("downloads/images.zip", "downloads/");
      */
     @Throws(ZipException::class, IOException::class)
-    fun unzip(zipFilePath: String, targetDirPath: String) {
-        unzip(File(zipFilePath), File(targetDirPath))
-    }
+    fun unzip(zipFilePath: String, targetDirPath: String) = unzip(File(zipFilePath), File(targetDirPath))
 
     /**
      * Example: unzip("downloads/images.zip", "downloads/");

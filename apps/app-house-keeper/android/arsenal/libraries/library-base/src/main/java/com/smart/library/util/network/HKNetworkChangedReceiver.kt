@@ -8,9 +8,9 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.smart.library.util.HKLogUtil
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "PrivatePropertyName")
 class HKNetworkChangedReceiver : BroadcastReceiver() {
-    private val TAG = javaClass.simpleName
+    private val TAG: String? = HKNetworkChangedReceiver::class.java.simpleName
 
     override fun onReceive(context: Context, intent: Intent) {
         // 这个监听wifi的打开与关闭，与wifi的连接无关
@@ -71,10 +71,12 @@ class HKNetworkChangedReceiver : BroadcastReceiver() {
     }
 
     //"UnKnow" WIFI 2G 3G 4G ""
-    var mLastNetworkType: HKNetworkUtil.MNetworkType? = null
+    private var mLastNetworkType: HKNetworkUtil.MNetworkType? = null
 
+    @Suppress("unused")
     companion object {
 
+        @JvmStatic
         @Throws(Exception::class)
         fun register(context: Context): HKNetworkChangedReceiver {
             val filter = IntentFilter()
@@ -86,6 +88,7 @@ class HKNetworkChangedReceiver : BroadcastReceiver() {
             return networkChangedReceiver
         }
 
+        @JvmStatic
         @Throws(Exception::class)
         fun unregister(context: Context, broadcastReceiver: BroadcastReceiver) {
             val filter = IntentFilter()

@@ -7,6 +7,7 @@ import com.smart.library.util.HKLogUtil
 import com.smart.library.util.rx.RxBus
 import kotlin.properties.Delegates
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     // I use four separate variables here. You can, of course, just use two and
     // increment/decrement them instead of using four and incrementing them all.
@@ -15,9 +16,9 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     private int started;
     private int stopped;*/
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
 
-    override fun onActivityDestroyed(activity: Activity) {}
+    override fun onActivityDestroyed(activity: Activity) = Unit
 
     override fun onActivityResumed(activity: Activity) {
         ++resumed
@@ -28,7 +29,7 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
         HKLogUtil.w("test", "application is in foreground: " + (resumed > paused))
     }
 
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {}
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) = Unit
 
     override fun onActivityStarted(activity: Activity) {
         ++started

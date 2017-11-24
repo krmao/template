@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 
+@Suppress("unused")
 class HKHomeKeyUtil(private val context: Context, listener: OnClickListener) {
     private val intentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
     private val innerReceiver: InnerReceiver?
@@ -41,7 +42,7 @@ class HKHomeKeyUtil(private val context: Context, listener: OnClickListener) {
         }
     }
 
-    class InnerReceiver(protected var listener: OnClickListener?) : BroadcastReceiver() {
+    class InnerReceiver(private var listener: OnClickListener?) : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == Intent.ACTION_CLOSE_SYSTEM_DIALOGS) {

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import com.smart.library.base.HKBaseApplication
 
+@Suppress("unused")
 object HKAlarmManager {
 
     /*
@@ -42,7 +43,7 @@ object HKAlarmManager {
     </receiver>
  */
     abstract class CXAlarmBroadcastReceiver : BroadcastReceiver() {
-        protected var TAG = javaClass.simpleName
+        protected var TAG: String? = javaClass.simpleName
 
         companion object {
             val ACTION = "org.smartrobot.action.alarm"

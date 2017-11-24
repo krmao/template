@@ -7,33 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import java.util.*
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class HKPagerAdapter<ItemEntity> : PagerAdapter {
 
-    protected var TAG = javaClass.simpleName
+    protected var TAG: String? = HKPagerAdapter::class.java.simpleName
 
     protected lateinit var mDataList: ArrayList<ItemEntity>
     protected lateinit var mContext: Context
 
-    private constructor() {}
+    private constructor()
 
     constructor(context: Context, dataList: ArrayList<ItemEntity>) {
         mContext = context
         mDataList = dataList
     }
 
-    override fun getCount(): Int {
-        return mDataList.size
-    }
+    override fun getCount(): Int = mDataList.size
 
-    override fun getItemPosition(`object`: Any?): Int {
-        return PagerAdapter.POSITION_NONE
-    }
+    override fun getItemPosition(`object`: Any?): Int = PagerAdapter.POSITION_NONE
 
-    override fun saveState(): Parcelable? {
-        return null
-    }
+    override fun saveState(): Parcelable? = null
 
-    override fun restoreState(state: Parcelable?, loader: ClassLoader?) {}
+    override fun restoreState(state: Parcelable?, loader: ClassLoader?) = Unit
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemPagerView = getView(mDataList[position], position, container)
@@ -41,12 +36,10 @@ abstract class HKPagerAdapter<ItemEntity> : PagerAdapter {
         return itemPagerView
     }
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
-    }
+    override fun isViewFromObject(view: View, any: Any): Boolean = view == any
 
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any) {
-        container?.removeView(`object` as View)
+    override fun destroyItem(container: ViewGroup?, position: Int, any: Any) {
+        container?.removeView(any as View)
     }
 
     // 只需要返回 convertView 即可

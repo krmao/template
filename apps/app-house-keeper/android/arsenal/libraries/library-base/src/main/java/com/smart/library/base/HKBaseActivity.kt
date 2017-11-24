@@ -97,13 +97,11 @@ open class HKBaseActivity : AppCompatActivity() {
     protected var enableSwipeBack = true
     private var exitTime: Long = 0
 
-    private fun exitApp() {
-        if (System.currentTimeMillis() - exitTime > 2000) {
-            HKToastUtil.show("再按一次退出程序")
-            exitTime = System.currentTimeMillis()
-        } else {
-            finish()
-            System.exit(0)
-        }
+    private fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
+        HKToastUtil.show("再按一次退出程序")
+        exitTime = System.currentTimeMillis()
+    } else {
+        finish()
+        System.exit(0)
     }
 }

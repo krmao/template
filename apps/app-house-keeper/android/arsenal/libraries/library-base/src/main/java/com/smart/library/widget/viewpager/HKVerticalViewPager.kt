@@ -1,10 +1,12 @@
 package com.smart.library.widget.viewpager
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+
 
 /**
  * Uses a combination of a PageTransformer and swapping X & Y coordinates
@@ -12,6 +14,7 @@ import android.view.View
  *
  * Requires API 11+
  */
+@Suppress("unused")
 class HKVerticalViewPager : ViewPager {
 
     constructor(context: Context) : super(context) {
@@ -31,8 +34,7 @@ class HKVerticalViewPager : ViewPager {
 
     private inner class VerticalPageTransformer : ViewPager.PageTransformer {
 
-        override fun transformPage(view: View, position: Float) {
-
+        override fun transformPage(view: View, position: Float) =
             if (position < -1) { // [-Infinity,-1)
                 // This page is way off-screen to the left.
                 view.alpha = 0f
@@ -47,7 +49,6 @@ class HKVerticalViewPager : ViewPager {
                 // This page is way off-screen to the right.
                 view.alpha = 0f
             }
-        }
     }
 
     /**
@@ -68,8 +69,7 @@ class HKVerticalViewPager : ViewPager {
         return intercepted
     }
 
-    override fun onTouchEvent(ev: MotionEvent): Boolean {
-        return super.onTouchEvent(swapXY(ev))
-    }
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(ev: MotionEvent): Boolean = super.onTouchEvent(swapXY(ev))
 
 }

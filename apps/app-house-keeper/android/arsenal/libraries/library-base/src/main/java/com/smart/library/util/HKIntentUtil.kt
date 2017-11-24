@@ -122,9 +122,7 @@ object HKIntentUtil {
         return null
     }
 
-    fun goToAppDetails(context: Context) {
-        goToDefault(context, getInstalledAppDetailsIntent(HKBaseApplication.INSTANCE.packageName))
-    }
+    fun goToAppDetails(context: Context) = goToDefault(context, getInstalledAppDetailsIntent(HKBaseApplication.INSTANCE.packageName))
 
     @SuppressLint("ObsoleteSdkInt")
     fun getInstalledAppDetailsIntent(packageName: String): Intent {
@@ -230,18 +228,15 @@ object HKIntentUtil {
     /**
      * 启动外部应用程序
      */
-    fun callOpenApp(context: Context, packageName: String): Boolean {
-        return try {
-            val pm = context.packageManager
-            val intent = pm.getLaunchIntentForPackage(packageName)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-            true
-        } catch (e: Exception) {
-            HKLogUtil.e(javaClass.name, "Not Found the app.....", e)
-            false
-        }
-
+    fun callOpenApp(context: Context, packageName: String): Boolean = try {
+        val pm = context.packageManager
+        val intent = pm.getLaunchIntentForPackage(packageName)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        true
+    } catch (e: Exception) {
+        HKLogUtil.e(javaClass.name, "Not Found the app.....", e)
+        false
     }
 
     /**

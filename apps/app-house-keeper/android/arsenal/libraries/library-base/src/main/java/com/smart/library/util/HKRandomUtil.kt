@@ -5,12 +5,12 @@ import java.util.*
 
 /**
  * <pre>
- * author : maokangren
- * e-mail : maokangren@chexiang.com
+ * author : smart
+ * e-mail : smart@smart.com
  * desc   : 获取随机的测试图片地址以及随机的颜色值
  * </pre>
  */
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKRandomUtil {
     /**
      * must be start>0 end>0
@@ -20,6 +20,12 @@ object HKRandomUtil {
         val absEnd = Math.abs(end)
         return (Math.random() * Math.abs(absBegin - absEnd) + if (absBegin > absEnd) absEnd else absBegin).toInt()
     }
+
+    val randomImage: String
+        get() = String.format(Locale.getDefault(), "http://ozo5c6x9f.bkt.clouddn.com/image_%d.jpg-600x400", getRandom(0, 52))
+
+    val randomBannerImage: String
+        get() = String.format(Locale.getDefault(), "http://oznsh6z3y.bkt.clouddn.com/banner_%d.jpg-500x200", getRandom(0, 14))
 
     val randomTransparentAvatar: String
         get() = String.format(Locale.getDefault(), "http://odw6aoxik.bkt.clouddn.com/avatar_tranparent_%d.png-200x200", getRandom(1, 15))

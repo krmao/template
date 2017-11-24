@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.Window
 
+@Suppress("unused")
 object HKFragmentManager {
 
+    @JvmStatic
     fun addFragment(fm: FragmentManager?, fragment: Fragment?) {
         if (fm == null || fragment == null)
             return
@@ -17,6 +19,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun addFragment(fm: FragmentManager?, fragment: Fragment?, enterAnimation: Int, exitAnimation: Int) {
         if (fm == null || fragment == null)
             return
@@ -28,6 +31,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun addFragment(fm: FragmentManager?, fragment: Fragment?, id: Int) {
         if (fm == null || fragment == null)
             return
@@ -39,6 +43,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun addFragment(fm: FragmentManager?, fragment: Fragment?, tag: String) {
         if (fm == null || fragment == null)
             return
@@ -50,6 +55,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun addFragmentNotBackStack(fm: FragmentManager?, fragment: Fragment?) {
         if (fm == null || fragment == null)
             return
@@ -59,6 +65,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun addFragmentNotBackStack(fm: FragmentManager?, fragment: Fragment?, id: Int) {
         if (fm == null || fragment == null)
             return
@@ -68,6 +75,7 @@ object HKFragmentManager {
         transaction.commitAllowingStateLoss()
     }
 
+    @JvmStatic
     fun removeFragment(fm: FragmentManager?, fragment: Fragment?) {
         if (fm == null || fragment == null)
             return

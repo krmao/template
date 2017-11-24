@@ -20,13 +20,14 @@ import com.smart.library.widget.webview.client.HKWebChromeClient
 import com.smart.library.widget.webview.client.HKWebViewClient
 import kotlinx.android.synthetic.main.hk_fragment_webview_v2.*
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListener {
 
     companion object {
-        fun goTo(activity: Activity, url: String?) {
-            goTo(activity, url, false)
-        }
+        @JvmStatic
+        fun goTo(activity: Activity, url: String?) = goTo(activity, url, false)
 
+        @JvmStatic
         fun goTo(activity: Activity, url: String?, hideBackAtFirstPage: Boolean) {
             val bundle = Bundle()
             bundle.putString("url", url)
@@ -39,7 +40,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         arguments?.getString("url", null)
     }
     private val hideBackAtFirstPage: Boolean by lazy {
-        arguments?.getBoolean("hideBackAtFirstPage") ?: false
+        arguments?.getBoolean("hideBackAtFirstPage") == true
     }
     protected val webView: WebView by lazy {
         web_view

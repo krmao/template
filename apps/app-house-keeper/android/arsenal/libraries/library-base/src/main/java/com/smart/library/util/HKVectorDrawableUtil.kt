@@ -7,11 +7,7 @@ import com.smart.library.base.HKBaseApplication
 
 @Suppress("unused")
 object HKVectorDrawableUtil {
-    fun getVectorDrawableCompat(vectorResId: Int): Drawable {
-        return AppCompatDrawableManager.get().getDrawable(HKBaseApplication.INSTANCE, vectorResId)
-    }
+    fun getVectorDrawableCompat(vectorResId: Int): Drawable = AppCompatDrawableManager.get().getDrawable(HKBaseApplication.INSTANCE, vectorResId)
 
-    fun getAnimatedVectorDrawableCompat(animatedVectorResId: Int): AnimatedVectorDrawableCompat? {
-        return AnimatedVectorDrawableCompat.create(HKBaseApplication.INSTANCE, animatedVectorResId)
-    }
+    fun getAnimatedVectorDrawableCompat(animatedVectorResId: Int): AnimatedVectorDrawableCompat? = AnimatedVectorDrawableCompat.create(HKBaseApplication.INSTANCE, animatedVectorResId)
 }

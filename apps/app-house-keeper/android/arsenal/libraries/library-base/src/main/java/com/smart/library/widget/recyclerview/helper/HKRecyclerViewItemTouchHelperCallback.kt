@@ -21,6 +21,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 
+@Suppress("unused")
 /**
  * An implementation of [ItemTouchHelper.Callback] that enables basic drag & drop and
  * swipe-to-dismiss. Drag events are automatically started by an item long-press.<br></br>
@@ -29,28 +30,22 @@ import android.support.v7.widget.helper.ItemTouchHelper
 
  * @author Paul Burke (ipaulpro)
  */
-class HKRecyclerViewItemTouchHelperCallback(private val mAdapter: HKRecyclerViewItemTouchHelperAdapter, protected var onDragListener: OnDragListener?) : ItemTouchHelper.Callback() {
+class HKRecyclerViewItemTouchHelperCallback(private val mAdapter: HKRecyclerViewItemTouchHelperAdapter, private var onDragListener: OnDragListener?) : ItemTouchHelper.Callback() {
 
-    override fun isLongPressDragEnabled(): Boolean {
-        return true
-    }
+    override fun isLongPressDragEnabled(): Boolean = true
 
-    override fun isItemViewSwipeEnabled(): Boolean {
-        return true
-    }
+    override fun isItemViewSwipeEnabled(): Boolean = true
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        // Set movement flags based on the layout manager
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int =// Set movement flags based on the layout manager
         if (recyclerView.layoutManager is GridLayoutManager) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
-            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
+            ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
         } else {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-            return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
+            ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
         }
-    }
 
     override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         if (source.itemViewType != target.itemViewType) {
@@ -62,12 +57,10 @@ class HKRecyclerViewItemTouchHelperCallback(private val mAdapter: HKRecyclerView
         return true
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
-        // Notify the adapter of the dismissal
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) =// Notify the adapter of the dismissal
         mAdapter.onItemDismiss(viewHolder.adapterPosition)
-    }
 
-    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+    override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) =
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // Fade out the view as it is swiped out of the parent's bounds
             val alpha = ALPHA_FULL - Math.abs(dX) / viewHolder.itemView.width.toFloat()
@@ -76,7 +69,6 @@ class HKRecyclerViewItemTouchHelperCallback(private val mAdapter: HKRecyclerView
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
-    }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder, actionState: Int) {
         // We only want the active item to change

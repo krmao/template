@@ -10,6 +10,7 @@ import java.util.*
 object HKFileUtil {
 
     private val ENCODING_UTF8 = "UTF-8"
+    private val TAG = HKFileUtil::class.java.simpleName
 
     fun fileChannelCopy(sourceFile: File, destFile: File) {
         var fileInputStream: FileInputStream? = null
@@ -58,9 +59,7 @@ object HKFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
-        copy(inputStream, File(toFilePath), onProgress)
-    }
+    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)
 
     /**
      * copy from
@@ -99,17 +98,21 @@ object HKFileUtil {
     }
 
     fun deleteDirectory(file: File?) {
-        try {
-            if (file != null) {
-                val childFiles = file.listFiles()
-                if (file.isDirectory && childFiles != null && childFiles.isNotEmpty()) {
-                    for (childFile in childFiles)
-                        deleteDirectory(childFile)
-                }
-                deleteFile(file)
+        if (file == null) {
+        } else {
+            var childFiles: Array<File> = arrayOf()
+            var isDirectory = false
+            try {
+                childFiles = file.listFiles()
+                isDirectory = file.isDirectory
+            } catch (exception: SecurityException) {
+                HKLogUtil.e(TAG, "", exception)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            if (isDirectory && childFiles.isNotEmpty()) {
+                for (childFile: File? in childFiles)
+                    deleteDirectory(childFile)
+            }
+            deleteFile(file)
         }
     }
 

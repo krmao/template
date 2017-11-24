@@ -50,13 +50,13 @@ tinkerSupport {
     // 编译补丁包时，必需指定基线版本的apk，默认值为空
     // 如果为空，则表示不是进行补丁包的编译
     // @{link tinkerPatch.oldApk }
-    baseApk = "${backupPath}/${baseApkDir}/app-chexiangjia-release.apk"
+    baseApk = "${backupPath}/${baseApkDir}/app-smart-release.apk"
 
     // 对应tinker插件applyMapping
-    baseApkProguardMapping = "${backupPath}/${baseApkDir}/app-chexiangjia-release-mapping.txt"
+    baseApkProguardMapping = "${backupPath}/${baseApkDir}/app-smart-release-mapping.txt"
 
     // 对应tinker插件applyResourceMapping
-    baseApkResourceMapping = "${backupPath}/${baseApkDir}/app-chexiangjia-release-R.txt"
+    baseApkResourceMapping = "${backupPath}/${baseApkDir}/app-smart-release-R.txt"
 
     // 构建基准包跟补丁包都要修改tinkerId，主要用于区分
     tinkerId = thinkerID

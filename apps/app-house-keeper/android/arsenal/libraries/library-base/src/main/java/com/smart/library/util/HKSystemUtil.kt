@@ -2,6 +2,7 @@
 
 package com.smart.library.util
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
@@ -23,7 +24,7 @@ import java.lang.reflect.Method
 /**
  * 所有与系统相关的方法
  */
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKSystemUtil {
 
     val isSdCardExist: Boolean
@@ -114,17 +115,11 @@ object HKSystemUtil {
         get() = HKBaseApplication.INSTANCE.resources.displayMetrics.heightPixels
 
 
-    fun getPxFromDp(value: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
-    }
+    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
 
-    fun getPxFromPx(value: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
-    }
+    fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
 
-    fun getPxFromSp(value: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
-    }
+    fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
 
     val statusBarHeight2: Int
         get() {
@@ -158,14 +153,14 @@ object HKSystemUtil {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     fun copyToClipboard(label: String, contentText: String): Boolean {
-        try {
+        return try {
             val cm = HKBaseApplication.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(label, contentText)
             cm.primaryClip = clip
-            return true
+            true
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            false
         }
 
     }
@@ -273,22 +268,21 @@ object HKSystemUtil {
     }
 
     val isAppInBackground: Boolean
-        get() {
-            return !HKActivityLifecycleCallbacks.isApplicationInForeground
-        }
+        get() = !HKActivityLifecycleCallbacks.isApplicationInForeground
 
     /**
      * 收起下拉通知栏
      */
+    @SuppressLint("WrongConstant")
     @RequiresPermission(value = "android.permission.EXPAND_STATUS_BAR")
     fun closeStatusBar() {
         try {
             val statusBarManager = HKBaseApplication.INSTANCE.getSystemService("statusbar")
             val collapse: Method
-            if (Build.VERSION.SDK_INT <= 16) {
-                collapse = statusBarManager.javaClass.getMethod("collapse")
+            collapse = if (Build.VERSION.SDK_INT <= 16) {
+                statusBarManager.javaClass.getMethod("collapse")
             } else {
-                collapse = statusBarManager.javaClass.getMethod("collapsePanels")
+                statusBarManager.javaClass.getMethod("collapsePanels")
             }
             collapse.invoke(statusBarManager)
         } catch (localException: Exception) {

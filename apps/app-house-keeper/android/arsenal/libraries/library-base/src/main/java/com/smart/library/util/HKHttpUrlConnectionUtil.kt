@@ -8,7 +8,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-@Suppress("unused")
+@Suppress("unused", "LocalVariableName")
 object HKHttpUrlConnectionUtil {
     private var TAG = javaClass.name
 

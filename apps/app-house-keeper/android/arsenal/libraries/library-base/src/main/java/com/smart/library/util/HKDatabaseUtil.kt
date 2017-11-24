@@ -6,11 +6,10 @@ import com.smart.library.base.HKBaseApplication
 import java.io.File
 import java.io.FileOutputStream
 
+@Suppress("unused")
 object HKDatabaseUtil {
 
-    fun getDatabase(dbName: String): File {
-        return HKBaseApplication.INSTANCE.getDatabasePath(dbName)
-    }
+    fun getDatabase(dbName: String): File = HKBaseApplication.INSTANCE.getDatabasePath(dbName)
 
     fun copyDBFile(dbName: String, dbResId: Int, destDBDir: File?) {
         if (destDBDir == null || dbResId <= 0 || TextUtils.isEmpty(dbName))

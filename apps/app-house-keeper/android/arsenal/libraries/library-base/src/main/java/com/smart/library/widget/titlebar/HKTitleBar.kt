@@ -15,6 +15,7 @@ import com.smart.library.util.HKCustomViewUtil
 import com.smart.library.util.HKSystemUtil
 import kotlinx.android.synthetic.main.hk_widget_titlebar.view.*
 
+@Suppress("MemberVisibilityCanPrivate")
 /**
  * TitleView样式一
  * “左0--左1(hide)--Title--右1(hide)--右0”
@@ -65,8 +66,8 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             left0BgView.visibility = typedArray.getInt(R.styleable.HKTitleBar_hkLeft0Visible, View.VISIBLE)
             setTextAppearance(left0Btn, R.styleable.HKTitleBar_hkLeft0Appearance, typedArray)
             @Suppress("DEPRECATION")
-            val hk_transparentColor = resources.getColor(R.color.hk_transparent)
-            setBackground(left0Btn, R.styleable.HKTitleBar_hkLeft0Background, hk_transparentColor, -1, typedArray)
+            val transparentColor = resources.getColor(R.color.hk_transparent)
+            setBackground(left0Btn, R.styleable.HKTitleBar_hkLeft0Background, transparentColor, -1, typedArray)
             setText(left0Btn, R.styleable.HKTitleBar_hkLeft0Text, null, typedArray)
             setTextColor(left0Btn, R.styleable.HKTitleBar_hkLeft0TextColor, DEFAULT_TEXT_COLOR, typedArray)
             setTextSize(left0Btn, R.styleable.HKTitleBar_hkLeft0TextSize, DEFAULT_TEXT_SIZE, typedArray)
@@ -76,7 +77,7 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             setBgPadding(left1BgView, R.styleable.HKTitleBar_hkLeft1BgViewPadding, R.styleable.HKTitleBar_hkLeft1BgPaddingLeft, R.styleable.HKTitleBar_hkLeft1BgPaddingRight, R.styleable.HKTitleBar_hkLeft1BgPaddingTop, R.styleable.HKTitleBar_hkLeft1BgPaddingBottom, iconPadding, typedArray)
             left1BgView.visibility = typedArray.getInt(R.styleable.HKTitleBar_hkLeft1Visible, View.INVISIBLE)
             setTextAppearance(left1Btn, R.styleable.HKTitleBar_hkLeft1Appearance, typedArray)
-            setBackground(left1Btn, R.styleable.HKTitleBar_hkLeft1Background, hk_transparentColor, -1, typedArray)
+            setBackground(left1Btn, R.styleable.HKTitleBar_hkLeft1Background, transparentColor, -1, typedArray)
             setText(left1Btn, R.styleable.HKTitleBar_hkLeft1Text, null, typedArray)
             setTextColor(left1Btn, R.styleable.HKTitleBar_hkLeft1TextColor, DEFAULT_TEXT_COLOR, typedArray)
             setTextSize(left1Btn, R.styleable.HKTitleBar_hkLeft1TextSize, DEFAULT_TEXT_SIZE, typedArray)
@@ -86,7 +87,7 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             setBgPadding(right0BgView, R.styleable.HKTitleBar_hkRight0BgViewPadding, R.styleable.HKTitleBar_hkRight0BgPaddingLeft, R.styleable.HKTitleBar_hkRight0BgPaddingRight, R.styleable.HKTitleBar_hkRight0BgPaddingTop, R.styleable.HKTitleBar_hkRight0BgPaddingBottom, iconPadding, typedArray)
             right0BgView.visibility = typedArray.getInt(R.styleable.HKTitleBar_hkRight0Visible, View.INVISIBLE)
             setTextAppearance(right0Btn, R.styleable.HKTitleBar_hkRight0Appearance, typedArray)
-            setBackground(right0Btn, R.styleable.HKTitleBar_hkRight0Background, hk_transparentColor, -1, typedArray)
+            setBackground(right0Btn, R.styleable.HKTitleBar_hkRight0Background, transparentColor, -1, typedArray)
             setText(right0Btn, R.styleable.HKTitleBar_hkRight0Text, null, typedArray)
             setTextColor(right0Btn, R.styleable.HKTitleBar_hkRight0TextColor, DEFAULT_TEXT_COLOR, typedArray)
             setTextSize(right0Btn, R.styleable.HKTitleBar_hkRight0TextSize, DEFAULT_TEXT_SIZE, typedArray)
@@ -96,7 +97,7 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             setBgPadding(right1BgView, R.styleable.HKTitleBar_hkRight1BgViewPadding, R.styleable.HKTitleBar_hkRight1BgPaddingLeft, R.styleable.HKTitleBar_hkRight1BgPaddingRight, R.styleable.HKTitleBar_hkRight1BgPaddingTop, R.styleable.HKTitleBar_hkRight1BgPaddingBottom, iconPadding, typedArray)
             right1BgView.visibility = typedArray.getInt(R.styleable.HKTitleBar_hkRight1Visible, View.INVISIBLE)
             setTextAppearance(right1Btn, R.styleable.HKTitleBar_hkRight1Appearance, typedArray)
-            setBackground(right1Btn, R.styleable.HKTitleBar_hkRight1Background, hk_transparentColor, -1, typedArray)
+            setBackground(right1Btn, R.styleable.HKTitleBar_hkRight1Background, transparentColor, -1, typedArray)
             setText(right1Btn, R.styleable.HKTitleBar_hkRight1Text, null, typedArray)
             setTextColor(right1Btn, R.styleable.HKTitleBar_hkRight1TextColor, DEFAULT_TEXT_COLOR, typedArray)
             setTextSize(right1Btn, R.styleable.HKTitleBar_hkRight1TextSize, DEFAULT_TEXT_SIZE, typedArray)
@@ -106,36 +107,34 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             typedArray.recycle()
 
             if (!mIsLeft0Set) {
-                setBackground(left0Btn, R.styleable.HKTitleBar_hkLeft0Background, hk_transparentColor, R.drawable.hk_menu_back_gray, typedArray)
+                setBackground(left0Btn, R.styleable.HKTitleBar_hkLeft0Background, transparentColor, R.drawable.hk_menu_back_gray, typedArray)
             }
         }
         left0BgView.setOnClickListener { HKSystemUtil.sendKeyBackEvent(context) }
     }
 
-    private fun setLayoutParams(bgView: View, childView: View, index: Int, typedArray: TypedArray) {
-        try {
-            val layoutParams = bgView.layoutParams as RelativeLayout.LayoutParams
-            var configWidth = typedArray.getDimensionPixelSize(index, -3).toFloat()
-            if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0)
+    private fun setLayoutParams(bgView: View, childView: View, index: Int, typedArray: TypedArray) = try {
+        val layoutParams = bgView.layoutParams as RelativeLayout.LayoutParams
+        var configWidth = typedArray.getDimensionPixelSize(index, -3).toFloat()
+        if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0)
+            layoutParams.width = configWidth.toInt()
+        else if (configWidth == -3f) {
+            val resId = typedArray.getResourceId(index, -1)
+            if (resId != -1) {
+                configWidth = resources.getDimensionPixelSize(resId).toFloat()
                 layoutParams.width = configWidth.toInt()
-            else if (configWidth == -3f) {
-                val resId = typedArray.getResourceId(index, -1)
-                if (resId != -1) {
-                    configWidth = resources.getDimensionPixelSize(resId).toFloat()
-                    layoutParams.width = configWidth.toInt()
-                }
             }
-            //layoutParams.width = if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0) layoutParams.width else RelativeLayout.LayoutParams.WRAP_CONTENT
-            bgView.layoutParams = layoutParams
-            if (layoutParams.width != RelativeLayout.LayoutParams.WRAP_CONTENT) {
-                val childLayoutParams = childView.layoutParams as RelativeLayout.LayoutParams
-                childLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
-                childView.layoutParams = childLayoutParams
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-
+        //layoutParams.width = if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0) layoutParams.width else RelativeLayout.LayoutParams.WRAP_CONTENT
+        bgView.layoutParams = layoutParams
+        if (layoutParams.width == RelativeLayout.LayoutParams.WRAP_CONTENT) {
+        } else {
+            val childLayoutParams = childView.layoutParams as RelativeLayout.LayoutParams
+            childLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            childView.layoutParams = childLayoutParams
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
     private fun setBgPadding(bgView: View, indexPadding: Int, indexLeft: Int, indexRight: Int, indexTop: Int, indexBottom: Int, _defaultPadding: Int, typedArray: TypedArray) {
@@ -178,55 +177,53 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             }
             defaultPadding = if (padding == -10000f) defaultPadding else padding.toInt()
             bgView.setPadding(
-                    if (paddingLeft == -10000f) defaultPadding else paddingLeft.toInt(),
-                    if (paddingTop == -10000f) defaultPadding else paddingTop.toInt(),
-                    if (paddingRight == -10000f) defaultPadding else paddingRight.toInt(),
-                    if (paddingBottom == -10000f) defaultPadding else paddingBottom.toInt())
+                if (paddingLeft == -10000f) defaultPadding else paddingLeft.toInt(),
+                if (paddingTop == -10000f) defaultPadding else paddingTop.toInt(),
+                if (paddingRight == -10000f) defaultPadding else paddingRight.toInt(),
+                if (paddingBottom == -10000f) defaultPadding else paddingBottom.toInt())
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
     }
 
-    private fun setBackground(view: View, index: Int, defaultColor: Int, defaultRes: Int, typedArray: TypedArray) {
-        try {
-            if (defaultColor != -1)
-                view.setBackgroundColor(defaultColor)
-            if (defaultRes != -1)
-                view.setBackgroundResource(defaultRes)
+    private fun setBackground(view: View, index: Int, defaultColor: Int, defaultRes: Int, typedArray: TypedArray) = try {
+        if (defaultColor != -1)
+            view.setBackgroundColor(defaultColor)
+        if (defaultRes != -1)
+            view.setBackgroundResource(defaultRes)
 
-            val drawable = typedArray.getDrawable(index)
-            if (drawable != null) {
-                @Suppress("DEPRECATION")
-                view.setBackgroundDrawable(drawable)
+        val drawable = typedArray.getDrawable(index)
+        if (drawable != null) {
+            @Suppress("DEPRECATION")
+            view.setBackgroundDrawable(drawable)
+            resetVisible(view)
+        } else {
+            val color = typedArray.getColor(index, Integer.MAX_VALUE)
+            if (color != Integer.MAX_VALUE) {
+                view.setBackgroundColor(color)
                 resetVisible(view)
             } else {
-                val color = typedArray.getColor(index, Integer.MAX_VALUE)
-                if (color != Integer.MAX_VALUE) {
-                    view.setBackgroundColor(color)
-                    resetVisible(view)
-                } else {
-                    val colorStr = typedArray.getString(index)
-                    if (!TextUtils.isEmpty(colorStr)) {
-                        try {
-                            view.setBackgroundColor(Color.parseColor(colorStr))
-                            resetVisible(view)
-                        } catch (ignored: Exception) {
-                        }
+                val colorStr = typedArray.getString(index)
+                if (!TextUtils.isEmpty(colorStr)) {
+                    try {
+                        view.setBackgroundColor(Color.parseColor(colorStr))
+                        resetVisible(view)
+                    } catch (ignored: Exception) {
+                    }
 
+                } else {
+                    val resId = typedArray.getResourceId(index, -1)
+                    if (resId == -1) {
                     } else {
-                        val resId = typedArray.getResourceId(index, -1)
-                        if (resId != -1) {
-                            view.setBackgroundResource(resId)
-                            resetVisible(view)
-                        }
+                        view.setBackgroundResource(resId)
+                        resetVisible(view)
                     }
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
     private fun setText(textView: TextView, index: Int, _defaultString: String?, typedArray: TypedArray) {
@@ -250,8 +247,7 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
 
     }
 
-    private fun resetViewPadding(textView: TextView) {
-        /*int viewId = textView.getId();
+    private fun resetViewPadding(textView: TextView) =/*int viewId = textView.getId();
         if (viewId == R.id.right0Btn) {
             right0BgView.setPadding(0, 0, 0, 0);
         } else if (viewId == R.id.right1Btn) {
@@ -262,7 +258,6 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             left1BgView.setPadding(0, 0, 0, 0);
         }*/
         resetVisible(textView)
-    }
 
     private fun resetVisible(view: View) {
         val viewId = view.id
@@ -278,25 +273,24 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
         }
     }
 
-    private fun setTextColor(textView: TextView, index: Int, defaultColor: Int?, typedArray: TypedArray) {
-        try {
-            if (defaultColor != null)
-                textView.setTextColor(defaultColor)
-            val color = typedArray.getColor(index, Integer.MAX_VALUE)
-            if (color != Integer.MAX_VALUE) {
-                textView.setTextColor(color)
+    private fun setTextColor(textView: TextView, index: Int, defaultColor: Int?, typedArray: TypedArray) = try {
+        if (defaultColor != null)
+            textView.setTextColor(defaultColor)
+        val color = typedArray.getColor(index, Integer.MAX_VALUE)
+        if (color != Integer.MAX_VALUE) {
+            textView.setTextColor(color)
+        } else {
+            val colorStr = typedArray.getString(index)
+            if (TextUtils.isEmpty(colorStr)) {
             } else {
-                val colorStr = typedArray.getString(index)
-                if (!TextUtils.isEmpty(colorStr)) {
-                    try {
-                        textView.setTextColor(Color.parseColor(colorStr))
-                    } catch (ignored: Exception) {
-                    }
+                try {
+                    textView.setTextColor(Color.parseColor(colorStr))
+                } catch (ignored: Exception) {
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
     private fun setTextSize(textView: TextView, index: Int, _defaultSize: Float, typedArray: TypedArray) {
@@ -320,16 +314,14 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
 
     }
 
-    private fun setTextAppearance(textView: TextView, index: Int, typedArray: TypedArray) {
-        try {
-            val resId = typedArray.getResourceId(index, -1)
-            if (resId != -1) {
-                @Suppress("DEPRECATION")
-                textView.setTextAppearance(mContext, resId)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private fun setTextAppearance(textView: TextView, index: Int, typedArray: TypedArray) = try {
+        val resId = typedArray.getResourceId(index, -1)
+        if (resId == -1) {
+        } else {
+            @Suppress("DEPRECATION")
+            textView.setTextAppearance(mContext, resId)
         }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }

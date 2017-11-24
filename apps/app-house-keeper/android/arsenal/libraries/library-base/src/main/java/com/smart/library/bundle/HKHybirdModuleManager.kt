@@ -257,9 +257,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     }
 
     //TODO
-    fun checkUpdate() {
-        updateManager.checkUpdate()
-    }
+    fun checkUpdate() = updateManager.checkUpdate()
 
     fun setDownloader(downloader: (downloadUrl: String?, file: File, callback: (File?) -> Unit) -> Unit) {
         updateManager.downloader = downloader

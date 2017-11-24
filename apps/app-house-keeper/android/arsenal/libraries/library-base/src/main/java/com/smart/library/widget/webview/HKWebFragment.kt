@@ -17,54 +17,61 @@ import com.smart.library.base.HKBaseFragment
 import com.smart.library.widget.loading.HKFrameLoadingLayout
 import kotlinx.android.synthetic.main.hk_fragment_webview.*
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListener {
     companion object {
-        protected var TAG = "HTML5"
-        protected val KEY_URL = "key_url"
-        protected val KEY_DATA = "key_data"
-        protected val KEY_TITLE = "key_title"
-        protected val KEY_HIDE_TITLE = "key_hide_title"
+
+        @JvmStatic protected var TAG = "HTML5"
+        @JvmStatic protected val KEY_URL = "key_url"
+        @JvmStatic protected val KEY_DATA = "key_data"
+        @JvmStatic protected val KEY_TITLE = "key_title"
+        @JvmStatic protected val KEY_HIDE_TITLE = "key_hide_title"
 
         //可外部静态配置
+        @JvmStatic
         var defaultTitleBarBgColor: Int = 0
+        @JvmStatic
         var defaultTitleBarBgRes: Int = R.drawable.hk_b_e2_white_normal_shape
+        @JvmStatic
         var defaultTitleBarTextColor = Color.parseColor("#333333")
+        @JvmStatic
         var defaultTitleBarTextSize = 16
 
-        fun goToCompleteHttpUrl(activity: Activity, url: String) {
+        @JvmStatic
+        fun goToCompleteHttpUrl(activity: Activity, url: String) =
             goTo(activity, HKWebViewUtil.wrapUrlSchema(url), false)
-        }
 
-        fun goToCompleteHttpUrl(activity: Activity, url: String, title: String) {
+        @JvmStatic
+        fun goToCompleteHttpUrl(activity: Activity, url: String, title: String) =
             goTo(activity, HKWebViewUtil.wrapUrlSchema(url), title, null)
-        }
 
-        fun goToCompleteHttpUrl(activity: Activity, url: String, title: String, failureUrl: String) {
+        @JvmStatic
+        fun goToCompleteHttpUrl(activity: Activity, url: String, title: String, failureUrl: String) =
             goTo(activity, HKWebViewUtil.wrapUrlSchema(url), false, title, 0, 0, 0, 0, failureUrl)
-        }
 
-        fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean) {
+        @JvmStatic
+        fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean) =
             goTo(activity, HKWebViewUtil.wrapUrlSchema(url), isHideTitle, null)
-        }
 
+        @JvmStatic
         fun goToCompleteHttpUrl(activity: Activity, url: String, isHideTitle: Boolean, title: String,
                                 titleBarBgColor: Int,
                                 titleBarBgRes: Int,
                                 titleBarTextColor: Int,
                                 titleBarTextSize: Int,
                                 failureUrl: String
-        ) {
+        ) =
             goTo(activity, HKWebViewUtil.wrapUrlSchema(url), isHideTitle, title, titleBarBgColor, titleBarBgRes, titleBarTextColor, titleBarTextSize, failureUrl)
-        }
 
-        fun goTo(activity: Activity, url: String, title: String, failureUrl: String? = null) {
+        @JvmStatic
+        fun goTo(activity: Activity, url: String, title: String, failureUrl: String? = null) =
             goTo(activity, url, false, title, 0, 0, 0, 0, failureUrl)
-        }
 
-        fun goTo(activity: Activity, url: String, isHideTitle: Boolean = false, failureUrl: String? = null) {
+        @JvmStatic
+        fun goTo(activity: Activity, url: String, isHideTitle: Boolean = false, failureUrl: String? = null) =
             goTo(activity, url, isHideTitle, null, 0, 0, 0, 0, failureUrl)
-        }
 
+        @JvmStatic
         fun goTo(activity: Activity, url: String, isHideTitle: Boolean, title: String?,
                  titleBarBgColor: Int,
                  titleBarBgRes: Int,
@@ -88,6 +95,7 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
             HKActivity.start(activity, HKWebFragment::class.java, bundle)
         }
 
+        @JvmStatic
         fun goToWithData(activity: Activity, htmlStr: String, isHideTitle: Boolean, title: String,
                          titleBarBgColor: Int,
                          titleBarBgRes: Int,
@@ -121,9 +129,8 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
     protected var mFailureUrl: String? = "http://www.baidu.com"
     protected var mIsHideTitle = true
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.hk_fragment_webview, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater?.inflate(R.layout.hk_fragment_webview, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -225,10 +232,9 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
     }
 
     @Suppress("unused_parameter")
-    protected fun addJavascriptInterface(webview: WebView) {
-    }
+    protected fun addJavascriptInterface(webview: WebView) = Unit
 
-    protected fun loadUrl(webView: WebView, url: String?, failureUrl: String?) {
+    protected fun loadUrl(webView: WebView, url: String?, failureUrl: String?) =
         if (URLUtil.isValidUrl(url)) {
             loading_view.setOnRefreshClickListener(View.OnClickListener { webView.loadUrl(url) })
             /*if (!TextUtils.isEmpty(mHtmlData)) {
@@ -241,7 +247,6 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
             else
                 loading_view.showView(HKFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, "加载失败,Url不正确:\n" + url, false, true)
         }
-    }
 
     override fun onBackPressed(): Boolean {
         if (web_view.canGoBack()) {

@@ -87,14 +87,12 @@ object HKHybirdBridge {
         requestMap.remove(host)
     }
 
-    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? {
-        return requestMap.entries.filter { entry ->
-            url?.contains(entry.key, true) ?: false
-        }.getOrNull(0)?.value?.invoke(webView, url)
+    fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? = requestMap.entries.filter { entry ->
+        url?.contains(entry.key, true) == true
+    }.getOrNull(0)?.value?.invoke(webView, url)
 
 
-        //return requestMap[Uri.parse(url).host]?.invoke(webView, url)
-    }
+    //return requestMap[Uri.parse(url).host]?.invoke(webView, url)
 
     /**
      *  scheme://host:port/path?k=v
@@ -140,8 +138,8 @@ object HKHybirdBridge {
             HKLogUtil.w(TAG, "[0] do intercept -> ${entry.key}")
             val intercept = entry.value.invoke(webView, uriString)
             HKLogUtil.w(TAG, "[1] do intercept result ->  $intercept")
-            if (intercept) {
-                return true
+            return if (intercept) {
+                true
             } else {
                 continue
             }
@@ -170,15 +168,13 @@ object HKHybirdBridge {
 
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
-    fun addSchemeForCallback() {
-        addScheme(callbackSchemaPrefix) { _: WebView?, urlString: String? ->
-            val url = Uri.parse(urlString)
-            val hashCode = url?.getQueryParameter("hashcode")
-            callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
-            callbackMap.remove(hashCode)
-            HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
-            true
-        }
+    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, urlString: String? ->
+        val url = Uri.parse(urlString)
+        val hashCode = url?.getQueryParameter("hashcode")
+        callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
+        callbackMap.remove(hashCode)
+        HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
+        true
     }
 
     fun callJsFunction(webView: WebView?, javascript: String, callback: ((result: String?) -> Unit?)? = null) {

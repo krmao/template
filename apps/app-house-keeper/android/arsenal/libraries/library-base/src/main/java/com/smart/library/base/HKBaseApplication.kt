@@ -20,7 +20,7 @@ open class HKBaseApplication : Application() {
         HKLogUtil.w("config", "config: versionCode:" + HKSystemUtil.versionCode)
         HKLogUtil.w("config", "config: versionName:" + HKSystemUtil.versionName)
 
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);//selector vector support
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)//selector vector support
         // Simply add the handler, and that's it! No need to add any code
         // to every activity. Everything is contained in MActivityLifecycleCallbacks
         // with just a few lines of code. Now *that's* nice.

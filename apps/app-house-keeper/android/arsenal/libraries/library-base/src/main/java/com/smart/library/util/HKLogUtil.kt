@@ -32,7 +32,7 @@ import java.util.*
  *
  * </p>
  */
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanPrivate")
 object HKLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
     private val PAGE_SUFFIX = "#_PAGE_#"
@@ -92,9 +92,7 @@ object HKLogUtil {
         return isModuleEnable
     }
 
-    fun v(msg: String, throwable: Throwable? = null) {
-        v(null, msg, throwable)
-    }
+    fun v(msg: String, throwable: Throwable? = null) = v(null, msg, throwable)
 
     fun v(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
@@ -105,13 +103,9 @@ object HKLogUtil {
         }
     }
 
-    fun d(msg: String, throwable: Throwable? = null) {
-        d(null, msg, throwable)
-    }
+    fun d(msg: String, throwable: Throwable? = null) = d(null, msg, throwable)
 
-    fun d(tag: String? = null, msg: String) {
-        d(tag, msg, null)
-    }
+    fun d(tag: String? = null, msg: String) = d(tag, msg, null)
 
     fun d(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
@@ -122,13 +116,9 @@ object HKLogUtil {
         }
     }
 
-    fun i(msg: String, throwable: Throwable? = null) {
-        i(null, msg, throwable)
-    }
+    fun i(msg: String, throwable: Throwable? = null) = i(null, msg, throwable)
 
-    fun i(tag: String? = null, msg: String) {
-        i(tag, msg, null)
-    }
+    fun i(tag: String? = null, msg: String) = i(tag, msg, null)
 
     fun i(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
@@ -139,13 +129,9 @@ object HKLogUtil {
         }
     }
 
-    fun w(msg: String, throwable: Throwable? = null) {
-        w(null, msg, throwable)
-    }
+    fun w(msg: String, throwable: Throwable? = null) = w(null, msg, throwable)
 
-    fun w(tag: String? = null, msg: String) {
-        w(tag, msg, null)
-    }
+    fun w(tag: String? = null, msg: String) = w(tag, msg, null)
 
     fun w(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
@@ -156,13 +142,9 @@ object HKLogUtil {
         }
     }
 
-    fun e(msg: String, throwable: Throwable? = null) {
-        e(null, msg, throwable)
-    }
+    fun e(msg: String, throwable: Throwable? = null) = e(null, msg, throwable)
 
-    fun e(tag: String? = null, msg: String) {
-        e(tag, msg, null)
-    }
+    fun e(tag: String? = null, msg: String) = e(tag, msg, null)
 
     fun e(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
@@ -180,16 +162,12 @@ object HKLogUtil {
         return cacheDir
     }
 
-    fun write(msg: String, throwable: Throwable? = null) {
-        write(null, msg, throwable)
-    }
+    fun write(msg: String, throwable: Throwable? = null) = write(null, msg, throwable)
 
-    fun write(msg: String, isForce: Boolean? = false) {
-        write(null, msg, null, isForce)
-    }
+    fun write(msg: String, isForce: Boolean? = false) = write(null, msg, null, isForce)
 
     fun write(tag: String? = null, msg: String, throwable: Throwable? = null, isForce: Boolean? = false) {
-        if (debug || isForce ?: false) {
+        if (debug || isForce == true) {
             HKFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), HKConfig.NAME_NEW_LOG))
         }
     }
@@ -212,56 +190,44 @@ object HKLogUtil {
         return null
     }
 
-    private fun getLocation(stackTraceElement: StackTraceElement?): String {
-        return "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
-    }
+    private fun getLocation(stackTraceElement: StackTraceElement?): String = "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
 
-    private fun getLocationPackageName(stackTraceElement: StackTraceElement?): String {
-        return Class.forName(stackTraceElement?.className).`package`.name ?: ""
-    }
+    private fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className).`package`.name ?: ""
 
-    private fun getLocationMethodName(stackTraceElement: StackTraceElement?): String {
-        return stackTraceElement?.methodName ?: ""
-    }
+    private fun getLocationMethodName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.methodName ?: ""
 
-    private fun getLocationLineNumber(stackTraceElement: StackTraceElement?): Int {
-        return stackTraceElement?.lineNumber ?: 0
-    }
+    private fun getLocationLineNumber(stackTraceElement: StackTraceElement?): Int = stackTraceElement?.lineNumber ?: 0
 
-    private fun getLocationClassName(stackTraceElement: StackTraceElement?): String {
-        return stackTraceElement?.className ?: ""
-    }
+    private fun getLocationClassName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.className ?: ""
 
     /**
      * json support
      */
-    fun j(msg: String) {
-        j(Log.DEBUG, null, msg)
-    }
+    fun j(msg: String) = j(Log.DEBUG, null, msg)
 
-    fun j(tag: String? = null, msg: String) {
-        j(Log.DEBUG, tag, msg)
-    }
+    fun j(tag: String? = null, msg: String) = j(Log.DEBUG, tag, msg)
 
     fun j(level: Int, tag: String? = null, msg: String) {
         if (debug) {
             if (TextUtils.isEmpty(msg)) {
                 p(level, tag, msg)
             } else {
-                var message: String
-                try {
-                    if (msg.startsWith("{")) {
-                        val jsonObject = JSONObject(msg)
-                        message = jsonObject.toString(4)
-                    } else if (msg.startsWith("[")) {
-                        val jsonArray = JSONArray(msg)
-                        message = jsonArray.toString(4)
-                    } else {
-                        message = msg
+                val message: String
+                message = try {
+                    when {
+                        msg.startsWith("{") -> {
+                            val jsonObject = JSONObject(msg)
+                            jsonObject.toString(4)
+                        }
+                        msg.startsWith("[") -> {
+                            val jsonArray = JSONArray(msg)
+                            jsonArray.toString(4)
+                        }
+                        else -> msg
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    message = msg
+                    msg
                 }
                 p(level, tag, "╔═══════════════════════════════════════════════════════════════════════════════════════", false)
                 val lines = message.split(LINE_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -280,25 +246,25 @@ object HKLogUtil {
         p(level, tag, message, false, throwable, stackTraceElement)
 
     fun p(level: Int, tag: String? = null, message: String, appendLocation: Boolean = true, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {
-        var _tag = tag
-        var _msg = message
+        var tmpTag = tag
+        var tmpMsg = message
         if (debug) {
-            val _stackTraceElement = stackTraceElement ?: getStackTraceElement()
-            _tag = _tag ?: getLocationClassName(_stackTraceElement)
-            if (appendLocation && !TextUtils.isEmpty(_msg)) {
-                _msg += getLocation(_stackTraceElement)
+            val traceElement = stackTraceElement ?: getStackTraceElement()
+            tmpTag = tmpTag ?: getLocationClassName(traceElement)
+            if (appendLocation && !TextUtils.isEmpty(tmpMsg)) {
+                tmpMsg += getLocation(traceElement)
             }
             when (level) {
-                Log.VERBOSE -> Log.v(_tag, _msg, throwable)
-                Log.DEBUG -> Log.d(_tag, _msg, throwable)
-                Log.INFO -> Log.i(_tag, _msg, throwable)
-                Log.WARN -> Log.w(_tag, _msg, throwable)
-                Log.ERROR -> Log.e(_tag, _msg, throwable)
-                Log.ASSERT -> Log.wtf(_tag, _msg, throwable)
-                else -> Log.v(_tag, _msg, throwable)
+                Log.VERBOSE -> Log.v(tmpTag, tmpMsg, throwable)
+                Log.DEBUG -> Log.d(tmpTag, tmpMsg, throwable)
+                Log.INFO -> Log.i(tmpTag, tmpMsg, throwable)
+                Log.WARN -> Log.w(tmpTag, tmpMsg, throwable)
+                Log.ERROR -> Log.e(tmpTag, tmpMsg, throwable)
+                Log.ASSERT -> Log.wtf(tmpTag, tmpMsg, throwable)
+                else -> Log.v(tmpTag, tmpMsg, throwable)
             }
 
         }
-        return _tag + ":" + _msg
+        return tmpTag + ":" + tmpMsg
     }
 }

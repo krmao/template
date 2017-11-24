@@ -1,18 +1,4 @@
-package com.smart.library.util.cache; /**
- * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.smart.library.util.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -49,18 +35,19 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
+@SuppressWarnings({"ALL", "StringConcatenationInLoop"})
 public class HKCacheFileManager {
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, HKCacheFileManager> mInstanceMap = new HashMap<String, HKCacheFileManager>();
+    private static Map<String, HKCacheFileManager> mInstanceMap = new HashMap<>();
     private ACacheManager mCache;
 
     private HKCacheFileManager(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in "
-                    + cacheDir.getAbsolutePath());
+                + cacheDir.getAbsolutePath());
         }
         mCache = new ACacheManager(cacheDir, max_size, max_count);
     }
@@ -371,7 +358,7 @@ public class HKCacheFileManager {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(String key, Serializable value, int saveTime) {
-        ByteArrayOutputStream baos = null;
+        ByteArrayOutputStream baos;
         ObjectOutputStream oos = null;
         try {
             baos = new ByteArrayOutputStream();
@@ -387,7 +374,8 @@ public class HKCacheFileManager {
             e.printStackTrace();
         } finally {
             try {
-                oos.close();
+                if (oos != null)
+                    oos.close();
             } catch (IOException e) {
             }
         }
@@ -540,8 +528,10 @@ public class HKCacheFileManager {
     /**
      * @author 杨福海（michael） www.yangfuhai.com
      * @version 1.0
-     * @title 时间计算工具类
+     *          <p>
+     *          时间计算工具类
      */
+    @SuppressWarnings({"JavaDoc", "StringConcatenationInLoop"})
     private static class Utils {
 
         private static final char mSeparator = ' ';
@@ -568,7 +558,7 @@ public class HKCacheFileManager {
                 String saveTimeStr = strs[0];
                 while (saveTimeStr.startsWith("0")) {
                     saveTimeStr = saveTimeStr
-                            .substring(1, saveTimeStr.length());
+                        .substring(1, saveTimeStr.length());
                 }
                 long saveTime = Long.valueOf(saveTimeStr);
                 long deleteAfter = Long.valueOf(strs[1]);
@@ -594,7 +584,7 @@ public class HKCacheFileManager {
         private static String clearDateInfo(String strInfo) {
             if (strInfo != null && hasDateInfo(strInfo.getBytes())) {
                 strInfo = strInfo.substring(strInfo.indexOf(mSeparator) + 1,
-                        strInfo.length());
+                    strInfo.length());
             }
             return strInfo;
         }
@@ -602,21 +592,21 @@ public class HKCacheFileManager {
         private static byte[] clearDateInfo(byte[] data) {
             if (hasDateInfo(data)) {
                 return copyOfRange(data, indexOf(data, mSeparator) + 1,
-                        data.length);
+                    data.length);
             }
             return data;
         }
 
         private static boolean hasDateInfo(byte[] data) {
             return data != null && data.length > 15 && data[13] == '-'
-                    && indexOf(data, mSeparator) > 14;
+                && indexOf(data, mSeparator) > 14;
         }
 
         private static String[] getDateInfoFromDate(byte[] data) {
             if (hasDateInfo(data)) {
                 String saveDate = new String(copyOfRange(data, 0, 13));
                 String deleteAfter = new String(copyOfRange(data, 14,
-                        indexOf(data, mSeparator)));
+                    indexOf(data, mSeparator)));
                 return new String[]{saveDate, deleteAfter};
             }
             return null;
@@ -637,7 +627,7 @@ public class HKCacheFileManager {
                 throw new IllegalArgumentException(from + " > " + to);
             byte[] copy = new byte[newLength];
             System.arraycopy(original, from, copy, 0,
-                    Math.min(original.length - from, newLength));
+                Math.min(original.length - from, newLength));
             return copy;
         }
 
@@ -683,7 +673,7 @@ public class HKCacheFileManager {
             int h = drawable.getIntrinsicHeight();
             // 取 drawable 的颜色格式
             Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                    : Bitmap.Config.RGB_565;
+                : Bitmap.Config.RGB_565;
             // 建立对应 bitmap
             Bitmap bitmap = Bitmap.createBitmap(w, h, config);
             // 建立对应 bitmap 的画布
@@ -711,13 +701,14 @@ public class HKCacheFileManager {
      * @version 1.0
      * @title 缓存管理器
      */
+    @SuppressWarnings({"JavaDoc", "ResultOfMethodCallIgnored"})
     public class ACacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
         private final long sizeLimit;
         private final int countLimit;
         private final Map<File, Long> lastUsageDates = Collections
-                .synchronizedMap(new HashMap<File, Long>());
+            .synchronizedMap(new HashMap<File, Long>());
         protected File cacheDir;
 
         private ACacheManager(File cacheDir, long sizeLimit, int countLimit) {
@@ -744,7 +735,7 @@ public class HKCacheFileManager {
                             size += calculateSize(cachedFile);
                             count += 1;
                             lastUsageDates.put(cachedFile,
-                                    cachedFile.lastModified());
+                                cachedFile.lastModified());
                         }
                         cacheSize.set(size);
                         cacheCount.set(count);
@@ -807,8 +798,6 @@ public class HKCacheFileManager {
 
         /**
          * 移除旧的文件
-         *
-         * @return
          */
         private long removeNext() {
             if (lastUsageDates.isEmpty()) {
@@ -834,7 +823,7 @@ public class HKCacheFileManager {
             }
 
             long fileSize = calculateSize(mostLongUsedFile);
-            if (mostLongUsedFile.delete()) {
+            if (mostLongUsedFile != null && mostLongUsedFile.delete()) {
                 lastUsageDates.remove(mostLongUsedFile);
             }
             return fileSize;

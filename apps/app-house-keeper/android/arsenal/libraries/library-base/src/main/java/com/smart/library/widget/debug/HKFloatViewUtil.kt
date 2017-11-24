@@ -1,6 +1,7 @@
 package com.smart.library.widget.debug
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
@@ -19,9 +20,10 @@ import com.smart.library.util.HKSystemUtil
 <!--悬浮窗-->
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "unused", "ClickableViewAccessibility", "PrivatePropertyName")
 enum class HKFloatViewUtil {
-    instance;
+    @SuppressLint("StaticFieldLeak")
+    INSTANCE;
 
     private val KEY_LAST_X = "M_FLOAT_VIEW_LAST_X"
     private val KEY_LAST_Y = "M_FLOAT_VIEW_LAST_Y"
@@ -30,13 +32,12 @@ enum class HKFloatViewUtil {
     private val defaultX = 0
     private val defaultY = defaultWH * 5
 
-    private var floatView: ImageView
+    private var floatView: ImageView = ImageView(HKBaseApplication.INSTANCE)
     private var windowManager: WindowManager
     private var windowLayoutParams: WindowManager.LayoutParams
     private var listener: View.OnClickListener? = null
 
     init {
-        floatView = ImageView(HKBaseApplication.INSTANCE)
         floatView.setImageResource(R.drawable.hk_emo_im_happy)
         windowManager = HKBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowLayoutParams = WindowManager.LayoutParams()
@@ -95,23 +96,20 @@ enum class HKFloatViewUtil {
                 hide()
         }
 
-    fun setImageResource(@DrawableRes resId: Int) {
-        floatView.setImageResource(resId)
-    }
+    fun setImageResource(@DrawableRes resId: Int) = floatView.setImageResource(resId)
 
     fun setOnClickListener(listener: View.OnClickListener) {
         this.listener = listener
     }
 
-    fun show() {
-        try {
-            hide()
-            if (!isAwaysHide)
-                windowManager.addView(floatView, windowLayoutParams)
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun show() = try {
+        hide()
+        if (isAwaysHide) {
+        } else {
+            windowManager.addView(floatView, windowLayoutParams)
         }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
 
@@ -120,18 +118,15 @@ enum class HKFloatViewUtil {
         HKPreferencesUtil.putInt(KEY_LAST_Y, defaultY)
     }
 
-    fun hide() {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (floatView.isAttachedToWindow)
-                    windowManager.removeViewImmediate(floatView)
-            } else {
-                if (floatView.parent != null)
-                    windowManager.removeViewImmediate(floatView)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+    fun hide() = try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (!floatView.isAttachedToWindow) {
+            } else windowManager.removeViewImmediate(floatView)
+        } else {
+            if (floatView.parent == null) {
+            } else windowManager.removeViewImmediate(floatView)
         }
-
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }

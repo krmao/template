@@ -9,7 +9,7 @@ import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKToastUtil
 import com.smart.library.util.cache.HKCacheFileManager
 import com.smart.library.util.rx.RxBus
-import com.smart.library.widget.debug.HKTestingFragment
+import com.smart.library.widget.debug.HKDebugFragment
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,9 +26,9 @@ internal object HKApiManager {
     fun init() {
         if (HKBaseApplication.DEBUG) {
             HKURLManager.Environments.values().forEach { environment: HKURLManager.Environments ->
-                HKTestingFragment.add(environment.name, environment.map[HKURLManager.KEY_HOST] ?: "", HKURLManager.curEnvironment == environment)
+                HKDebugFragment.add(environment.name, environment.map[HKURLManager.KEY_HOST] ?: "", HKURLManager.curEnvironment == environment)
             }
-            RxBus.toObservable(HKTestingFragment.ChangeEvent::class.java).subscribe { changeEvent ->
+            RxBus.toObservable(HKDebugFragment.ChangeEvent::class.java).subscribe { changeEvent ->
                 try {
                     HKURLManager.curEnvironment = HKURLManager.Environments.valueOf(changeEvent.model.name)
                 } catch (_: Exception) {
@@ -36,12 +36,12 @@ internal object HKApiManager {
                 HKToastUtil.show("检测到环境切换(${changeEvent.model.name})\n已切换到:${HKURLManager.curEnvironment.name}")
             }
             val notificationId = 999999
-            HKTestingFragment.showDebugNotification(notificationId)
+            HKDebugFragment.showDebugNotification(notificationId)
             RxBus.toObservable(HKActivityLifecycleCallbacks.ForegroundEvent::class.java).subscribe { foregroundEvent ->
                 if (foregroundEvent.isApplicationInForeground)
-                    HKTestingFragment.showDebugNotification(notificationId)
+                    HKDebugFragment.showDebugNotification(notificationId)
                 else
-                    HKTestingFragment.cancelDebugNotification(notificationId)
+                    HKDebugFragment.cancelDebugNotification(notificationId)
             }
         }
     }

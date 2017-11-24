@@ -1,7 +1,9 @@
 package com.smart.library.util.network
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
+import android.support.annotation.RequiresPermission
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import com.smart.library.base.HKBaseApplication
@@ -9,8 +11,10 @@ import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.*
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 object HKNetworkUtil {
 
+    @RequiresPermission("android.permission.ACCESS_NETWORK_STATE")
     fun isNetworkAvailable(): Boolean {
         var isNetworkAvailable = false
         val application = HKBaseApplication.INSTANCE
@@ -50,10 +54,11 @@ object HKNetworkUtil {
         return ""
     }
 
-    fun getNetType(): MNetworkType {
-        return getNetType(HKBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-    }
+    @RequiresPermission("android.permission.READ_PHONE_STATE")
+    fun getNetType(): MNetworkType =
+        getNetType(HKBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
 
+    @RequiresPermission(allOf = arrayOf("android.permission.ACCESS_NETWORK_STATE", "android.permission.READ_PHONE_STATE"))
     fun getNetType(connectivityManager: ConnectivityManager?): MNetworkType {
         var networkType = MNetworkType.NONE
         if (connectivityManager != null) {
@@ -68,33 +73,28 @@ object HKNetworkUtil {
     enum class MNetworkType {
         G2, G3, G4, NONE, WIFI;
 
-        //提供商
-        var provider = ""
-
+        var provider = "" //提供商
         val isMobile: Boolean
             get() = this == G2 || this == G3 || this == G4
 
-        override fun toString(): String {
-            if (isMobile) {
-                return if (TextUtils.isEmpty(provider)) "" else provider + ":" + super.toString()
-            } else
-                return super.toString()
-        }
+        override fun toString(): String = if (isMobile) (if (TextUtils.isEmpty(provider)) "" else provider + ":" + super.toString()) else super.toString()
     }
 
 
+    @SuppressLint("HardwareIds")
+    @RequiresPermission("android.permission.READ_PHONE_STATE")
     private fun updateNetProvider(type: Int): MNetworkType {
         var networkType = MNetworkType.NONE
         val application = HKBaseApplication.INSTANCE
         val tempType = getSwitchedType(type)
         val telephonyManager = application.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
-        var IMSI: String? = null
+        var imsi: String? = null
         var netType = 0
         if (telephonyManager != null) {
-            IMSI = telephonyManager.subscriberId
+            imsi = telephonyManager.subscriberId
             netType = telephonyManager.networkType
         }
-        val provide = getNetworkProvider(IMSI)
+        val provide = getNetworkProvider(imsi)
 
         if (tempType == ConnectivityManager.TYPE_WIFI) {
             networkType = MNetworkType.WIFI
@@ -111,10 +111,10 @@ object HKNetworkUtil {
 
     private fun getSwitchedType(type: Int): Int {
         @Suppress("DEPRECATION")
-        when (type) {
-            ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI, ConnectivityManager.TYPE_MOBILE_MMS, ConnectivityManager.TYPE_MOBILE_SUPL -> return ConnectivityManager.TYPE_MOBILE
-            else -> return type
-        }
+        (return when (type) {
+            ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI, ConnectivityManager.TYPE_MOBILE_MMS, ConnectivityManager.TYPE_MOBILE_SUPL -> ConnectivityManager.TYPE_MOBILE
+            else -> type
+        })
     }
 
     private fun getNetworkProvider(IMSI: String?): String {

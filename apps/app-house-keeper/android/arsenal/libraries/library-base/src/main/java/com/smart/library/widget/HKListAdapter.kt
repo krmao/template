@@ -6,31 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 
+@Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class HKListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> : BaseAdapter {
+    protected var TAG: String? = HKListAdapter::class.java.simpleName
+    protected var dataList: List<ItemEntity> = arrayListOf()
+    protected var context: Context? = null
 
-    protected var TAG = javaClass.simpleName
+    private constructor()
 
-    protected lateinit var mDataList: List<ItemEntity>
-    protected lateinit var mContext: Context
-
-    private constructor() {}
-
-    constructor(context: Context, dataList: List<ItemEntity>) {
-        mContext = context
-        mDataList = dataList
+    constructor(context: Context?, dataList: List<ItemEntity>) {
+        this.context = context
+        this.dataList = dataList
     }
 
-    override fun getCount(): Int {
-        return mDataList.size
-    }
+    override fun getCount(): Int = dataList.size
 
-    override fun getItem(position: Int): ItemEntity {
-        return mDataList[position]
-    }
+    override fun getItem(position: Int): ItemEntity = dataList[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     abstract fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
 

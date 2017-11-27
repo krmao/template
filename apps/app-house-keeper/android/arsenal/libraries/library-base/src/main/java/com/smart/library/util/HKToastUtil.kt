@@ -1,5 +1,6 @@
 package com.smart.library.util
 
+
 import android.annotation.SuppressLint
 import android.support.annotation.StringRes
 import android.text.TextUtils
@@ -13,43 +14,43 @@ import com.smart.library.base.HKBaseApplication
 
 @SuppressLint("InflateParams")
 @Suppress("unused", "MemberVisibilityCanPrivate")
-object HKToastUtil {
+object CXToastUtil {
     private var toast: Toast? = null
 
 
     @JvmOverloads
     @JvmStatic
-    fun show(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
-        show(HKBaseApplication.INSTANCE.resources.getString(strId), textGravity, cancelLastImmediately)
+    fun show(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
+        show(msg = HKBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun show(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
-        show(msg, null, textGravity, cancelLastImmediately)
+    fun showTop(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
+        showTop(msg = HKBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun showCenter(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
-        show(HKBaseApplication.INSTANCE.resources.getString(strId), Gravity.CENTER, textGravity, cancelLastImmediately)
+    fun showTop(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
+        show(msg = msg, toastGravity = Gravity.BOTTOM, textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun showCenter(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
-        show(msg, Gravity.CENTER, textGravity, cancelLastImmediately)
+    fun showCenter(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
+        showCenter(msg = HKBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun show(msg: String?, toastGravity: Int?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
-        show(msg, toastGravity, null, textGravity, cancelLastImmediately)
+    fun showCenter(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
+        show(msg = msg, toastGravity = Gravity.CENTER, textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun show(msg: String?, toastGravity: Int?, duration: Int?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true) {
+    fun show(msg: String?, toastGravity: Int = Gravity.BOTTOM, duration: Int = Toast.LENGTH_SHORT, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
         if (!TextUtils.isEmpty(msg)) {
             if (cancelLastImmediately)
                 toast?.cancel()
@@ -57,9 +58,8 @@ object HKToastUtil {
             viewHolder.textView.text = msg
             viewHolder.textView.gravity = textGravity
             toast?.view = viewHolder.rootView
-            toast?.duration = duration ?: Toast.LENGTH_SHORT
-            if (toastGravity != null)
-                toast?.setGravity(toastGravity, 0, 0)
+            toast?.duration = duration
+            toast?.setGravity(toastGravity, xOffset, yOffset)
             toast?.show()
         }
     }

@@ -13,7 +13,7 @@ spring:
         url: jdbc:mysql://47.96.2.1:3306/spring-boot?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
         driver-class-name: com.mysql.jdbc.Driver
         username: housekeeper
-        password: password$1
+        password: xxx
         schema: classpath:/sql/schema-mysql.sql
         data: classpath:/sql/data-mysql.sql
 

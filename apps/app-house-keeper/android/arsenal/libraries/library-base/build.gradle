@@ -65,6 +65,7 @@ dependencies {
     compile "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
     /******* 其它常用库 ****************************************************************************/
     compile "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
+    compile "com.andkulikov:transitionseverywhere:1.7.8"
 }
 
 /*外部依赖方式

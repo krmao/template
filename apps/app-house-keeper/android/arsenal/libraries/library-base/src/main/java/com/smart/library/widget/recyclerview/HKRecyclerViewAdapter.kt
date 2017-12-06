@@ -2,11 +2,14 @@ package com.smart.library.widget.recyclerview
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.smart.library.widget.recyclerview.helper.HKRecyclerViewItemTouchHelperAdapter
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class HKRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), HKRecyclerViewItemTouchHelperAdapter {
+
+    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int = dataList.size
 

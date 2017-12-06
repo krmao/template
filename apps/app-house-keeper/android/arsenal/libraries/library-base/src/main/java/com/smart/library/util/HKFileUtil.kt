@@ -100,7 +100,7 @@ object HKFileUtil {
     fun deleteDirectory(file: File?) {
         if (file == null) {
         } else {
-            var childFiles: Array<File> = arrayOf()
+            var childFiles: Array<File>? = null
             var isDirectory = false
             try {
                 childFiles = file.listFiles()
@@ -108,7 +108,7 @@ object HKFileUtil {
             } catch (exception: SecurityException) {
                 HKLogUtil.e(TAG, "", exception)
             }
-            if (isDirectory && childFiles.isNotEmpty()) {
+            if (isDirectory && childFiles?.isNotEmpty() == true) {
                 for (childFile: File? in childFiles)
                     deleteDirectory(childFile)
             }

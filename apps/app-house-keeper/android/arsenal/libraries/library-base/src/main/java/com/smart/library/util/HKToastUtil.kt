@@ -14,7 +14,7 @@ import com.smart.library.base.HKBaseApplication
 
 @SuppressLint("InflateParams")
 @Suppress("unused", "MemberVisibilityCanPrivate")
-object CXToastUtil {
+object HKToastUtil {
     private var toast: Toast? = null
 
 

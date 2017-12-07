@@ -45,6 +45,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     private fun verifySync(): Boolean {
         synchronized(this) {
+            verifySuccess=false
             val start = System.currentTimeMillis()
             if (!verifySuccess) {
                 if (!verifyLocalFiles(localUnzipDir, localConfiguration?.moduleFilesMd5)) {
@@ -139,7 +140,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         } else {
             HKLogUtil.e(TAG, "verifyZip (${zipFile?.name}) : ${if (success) "success" else "failure"}, zipFile or moduleZipMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
         }
-        return success
+        return false
     }
 
     internal fun verifyLocalFiles(unZipDir: File?, moduleFilesMd5: HashMap<String, String>?): Boolean {
@@ -165,7 +166,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         } else {
             HKLogUtil.e(TAG, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
         }
-        return success
+        return false
     }
 
     private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {

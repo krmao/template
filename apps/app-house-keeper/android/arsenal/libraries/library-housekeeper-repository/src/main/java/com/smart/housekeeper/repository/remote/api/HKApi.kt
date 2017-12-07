@@ -3,6 +3,7 @@ package com.smart.housekeeper.repository.remote.api
 import android.os.Handler
 import android.os.Looper
 import com.smart.housekeeper.repository.remote.core.HKResponseModel
+import com.smart.library.bundle.HKHybirdModuleConfiguration
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -10,10 +11,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import okio.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Url
+import retrofit2.http.*
 import java.io.File
 import java.io.IOException
 
@@ -22,18 +20,16 @@ interface HKApi {
     @GET("/bundle")
     fun getBundleConfig(): Observable<String>
 
-    /**
-     * 下载, 例:
-     *
-     *      HKApiManager.getApi(HKApi.class)
-     *              .download(url)
-     *              .subscribe(...);
-     *
-     * @param url 全路径, 含 baseUrl
-     * @return ResponseBody
-     */
     @GET
-    fun download(@Url url: String): Observable<Response<ResponseBody>>
+    fun downloadHybirdModuleConfiguration(@Url url: String): Observable<HKHybirdModuleConfiguration>
+
+    @Streaming
+    @GET
+    fun downloadFile(@Url url: String): Observable<Response<ResponseBody>>
+
+    @GET
+    fun downloadString(@Url url: String): Observable<Response<ResponseBody>>
+
 
     /**
      * 上传, 例:

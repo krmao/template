@@ -45,7 +45,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     private fun verifySync(): Boolean {
         synchronized(this) {
-            verifySuccess=false
+            verifySuccess = false
             val start = System.currentTimeMillis()
             if (!verifySuccess) {
                 if (!verifyLocalFiles(localUnzipDir, localConfiguration?.moduleFilesMd5)) {
@@ -173,6 +173,12 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         val interceptScriptUrl = configuration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
         val interceptMainUrl = configuration.moduleMainUrl[HKHybirdManager.EVN] ?: return
 
+        //main url
+        HKHybirdBridge.addScheme(interceptMainUrl) { webView: WebView?, url: String? ->
+            checkUpdate()
+            false
+        }
+
         //html
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null
@@ -260,11 +266,11 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     //TODO
     fun checkUpdate() = updateManager.checkUpdate()
 
-    fun setDownloader(downloader: (downloadUrl: String?, file: File, callback: (File?) -> Unit) -> Unit) {
+    fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         updateManager.downloader = downloader
     }
 
-    fun setConfider(configer: (configUrl: String?, callback: (HKHybirdModuleConfiguration?) -> Unit) -> Unit) {
+    fun setConfiger(configer: (configUrl: String, callback: (HKHybirdModuleConfiguration?) -> Unit?) -> Unit?) {
         updateManager.configer = configer
     }
 }

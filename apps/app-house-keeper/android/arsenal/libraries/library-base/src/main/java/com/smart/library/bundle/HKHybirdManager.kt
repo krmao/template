@@ -24,13 +24,19 @@ object HKHybirdManager {
             val tmpMap = ConcurrentHashMap<String, HKHybirdModuleManager>()
             HKBaseApplication.INSTANCE.assets.list(ASSETS_DIR_NAME).filter { !TextUtils.isEmpty(it) && it.endsWith(CONFIG_SUFFIX) }.map { it.replace(CONFIG_SUFFIX, "") }.forEach {
                 tmpMap[it] = HKHybirdModuleManager(it)
+                moduleInitBeforeVerifyListener?.invoke(tmpMap[it])
                 tmpMap[it]?.verify()
             }
             tmpMap
         }
 
-    fun init(env: String? = null) {
+    var moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null
+
+    @JvmStatic
+    @JvmOverloads
+    fun init(env: String? = null, moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null) {
         if (!TextUtils.isEmpty(env)) EVN = env!!
+        this.moduleInitBeforeVerifyListener = moduleInitBeforeVerifyListener
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         HKLogUtil.w(TAG, "**  INIT START")
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")

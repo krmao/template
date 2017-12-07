@@ -6,6 +6,7 @@ import com.smart.housekeeper.repository.remote.exception.HKRetrofitException
 import com.smart.housekeeper.repository.remote.exception.HKRetrofitServerException
 import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
+import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKToastUtil
 import com.smart.library.util.cache.HKCacheFileManager
 import com.smart.library.util.rx.RxBus
@@ -14,9 +15,13 @@ import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.Headers
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.InputStream
 import java.io.Serializable
 
 
@@ -46,7 +51,7 @@ internal object HKApiManager {
         }
     }
 
-    fun <T> compose(): ObservableTransformer<HKResponseModel<T>, T> {
+    fun <T> composeWithResponseModel(): ObservableTransformer<HKResponseModel<T>, T> {
         return ObservableTransformer { observable ->
             observable
                 .map { responseModel: HKResponseModel<T>? ->
@@ -56,6 +61,18 @@ internal object HKApiManager {
                         throw HKRetrofitServerException(responseModel?.errorCode ?: -1, responseModel?.errorMessage ?: "网络不给力")
                     }
                 }
+                .onErrorResumeNext { throwable: Throwable ->
+                    Observable.error(HKRetrofitException.handleException(throwable))
+                }
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    fun <T> compose(): ObservableTransformer<T, T> {
+        return ObservableTransformer { observable ->
+            observable
                 .onErrorResumeNext { throwable: Throwable ->
                     Observable.error(HKRetrofitException.handleException(throwable))
                 }
@@ -77,6 +94,58 @@ internal object HKApiManager {
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }
+    }
+
+    fun composeWithDownloadString(): ObservableTransformer<Response<ResponseBody>, String> {
+        return ObservableTransformer { observable ->
+            observable
+                .map { response: Response<ResponseBody> ->
+                    printHeaders(response.headers())
+                    val result = response.body()?.string() ?: ""
+                    HKLogUtil.w("download success :$result")
+                    result
+                }
+                .onErrorResumeNext { throwable: Throwable ->
+                    Observable.error(HKRetrofitException.handleException(throwable))
+                }
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    fun composeWithDownloadFile(): ObservableTransformer<Response<ResponseBody>, InputStream> {
+        return ObservableTransformer { observable ->
+            observable
+                .map { response: Response<ResponseBody> ->
+                    printHeaders(response.headers())
+                    if (response.body() == null)
+                        Observable.error<InputStream>(HKRetrofitException.handleException(Exception("文件下载失败")))
+                    response.body()!!.byteStream()
+                }
+                .onErrorResumeNext { throwable: Throwable ->
+                    Observable.error(HKRetrofitException.handleException(throwable))
+                }
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    fun printHeaders(headers: Headers) {
+        HKLogUtil.w("""
+                            -----------
+                            Content-Type        :   ${headers.get("Content-Type")}
+                            ETag                :   ${headers.get("ETag")?.toLongOrNull()}
+                            Last-Modified       :   ${headers.getDate("Last-Modified")}
+                            Date                :   ${headers.getDate("Date")}
+                            Expires             :   ${headers.getDate("Expires")}
+                            Cache-Control       :   ${headers.get("Cache-Control")}
+                            max-age             :   ${headers.get("Cache-Control")?.split("=")?.getOrNull(1)}
+                            Content-Disposition :   ${headers.get("Content-Disposition")}
+                            filename            :   ${headers.get("Content-Disposition")?.split("=")?.getOrNull(1) ?: "temp_file"})
+                            -----------
+                        """)
     }
 
     /**

@@ -35,11 +35,12 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
             HKLogUtil.e(TAG, "download start")
             downloader?.invoke(remoteConfiguration.moduleDownloadUrl, moduleManager.getLocalZipFile(remoteConfiguration.moduleVersion)) { file: File? ->
                 if (file != null && file.exists()) {
-                    if (moduleManager.verifyZip(file, remoteConfiguration.moduleZipMd5)) {
+//                    if (moduleManager.verifyZip(file, remoteConfiguration.moduleZipMd5)) {//todo
+                    if (true) {
                         val unzipDir = moduleManager.getLocalUnZipDir(remoteConfiguration.moduleVersion)
                         moduleManager.unzipToLocal(file, unzipDir)
-                        if (moduleManager.verifyLocalFiles(unzipDir, remoteConfiguration.moduleFilesMd5)) {
-                            //TODO 实时切换
+//                        if (moduleManager.verifyLocalFiles(unzipDir, remoteConfiguration.moduleFilesMd5)) {
+                        if (true) {//TODO 实时切换
                             HKToastUtil.show("实时切换")
                             HKLogUtil.w(TAG, "download ${file.name} success ! verifyZip success ! verifyLocalFiles success! 实时切换成功 ！！！")
                         } else {

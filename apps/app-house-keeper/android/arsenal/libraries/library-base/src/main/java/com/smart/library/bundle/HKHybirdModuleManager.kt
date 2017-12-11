@@ -32,16 +32,27 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             HKPreferencesUtil.putEntity(KEY_CONFIGURATION, value)
             field = value
         }
-
+        get() {
+            HKLogUtil.w("localConfiguration:$field")
+            return field
+        }
 
     private val localRootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
     private var localZipFile: File = getLocalZipFile(localConfiguration?.moduleVersion)
     private var localUnzipDir: File = getLocalUnZipDir(localConfiguration?.moduleVersion)
+        get() = getLocalUnZipDir(localConfiguration?.moduleVersion)
+
     private var verifySuccess: Boolean = false
     private val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
-    fun getLocalZipFile(moduleVersion: String?): File = File(localRootDir, "${localConfiguration?.moduleName}-$moduleVersion${HKHybirdManager.BUNDLE_SUFFIX}")
-    fun getLocalUnZipDir(moduleVersion: String?): File = File(localRootDir, moduleVersion)
+    fun getLocalZipFile(moduleVersion: String?): File {
+        HKLogUtil.w("getLocalZipFile moduleVersion:$moduleVersion")
+        return File(localRootDir, "${localConfiguration?.moduleName}-$moduleVersion${HKHybirdManager.BUNDLE_SUFFIX}")
+    }
+    fun getLocalUnZipDir(moduleVersion: String?): File {
+        HKLogUtil.w("getLocalUnZipDir moduleVersion:$moduleVersion")
+        return File(localRootDir, moduleVersion)
+    }
 
     private fun verifySync(): Boolean {
         synchronized(this) {
@@ -50,7 +61,6 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             if (!verifySuccess) {
                 if (!verifyLocalFiles(localUnzipDir, localConfiguration?.moduleFilesMd5)) {
                     if (!verifyZip(localZipFile, localConfiguration?.moduleZipMd5)) {
-                        localConfiguration = null
                         copyZipFromAssets()
                     }
                     verifySuccess = unzipToLocal(localZipFile, localUnzipDir)
@@ -62,7 +72,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             } else {
                 HKLogUtil.e(TAG, "verify $verifySuccess , 耗时: ${System.currentTimeMillis() - start}ms , [无需重复校验,直接返回 success]")
             }
-            addRequestIntercept(localUnzipDir, localConfiguration)
+            resetRequestIntercept()
         }
         return verifySuccess
     }
@@ -169,9 +179,13 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         return false
     }
 
-    private fun addRequestIntercept(localUnzipDir: File, configuration: HKHybirdModuleConfiguration?) {
-        val interceptScriptUrl = configuration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
-        val interceptMainUrl = configuration.moduleMainUrl[HKHybirdManager.EVN] ?: return
+    fun resetRequestIntercept() {
+        HKLogUtil.e("krmao resetRequestIntercept start")
+        val interceptScriptUrl = localConfiguration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
+        val interceptMainUrl = localConfiguration?.moduleMainUrl?.get(HKHybirdManager.EVN) ?: return
+        HKHybirdBridge.removeScheme(interceptMainUrl)
+        HKHybirdBridge.removeRequest(interceptMainUrl)
+        HKHybirdBridge.removeRequest(interceptScriptUrl)
 
         //main url
         HKHybirdBridge.addScheme(interceptMainUrl) { webView: WebView?, url: String? ->
@@ -261,6 +275,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             }
             resourceResponse
         }
+        HKLogUtil.e("krmao resetRequestIntercept end")
     }
 
     //TODO

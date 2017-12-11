@@ -1,7 +1,6 @@
 package com.smart.library.bundle
 
 import com.smart.library.util.HKLogUtil
-import com.smart.library.util.HKToastUtil
 import java.io.File
 
 /**
@@ -41,7 +40,18 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                         moduleManager.unzipToLocal(file, unzipDir)
 //                        if (moduleManager.verifyLocalFiles(unzipDir, remoteConfiguration.moduleFilesMd5)) {
                         if (true) {//TODO 实时切换
-                            HKToastUtil.show("实时切换")
+
+                            val start = System.currentTimeMillis()
+                            HKLogUtil.e("krmao 实时切换 start")
+
+                            //锁住 moduleManager 确保升级期间不会有乱入操作，导致数据混乱
+                            synchronized(moduleManager) {
+                                moduleManager.localConfiguration = remoteConfiguration
+                                moduleManager.resetRequestIntercept()
+                            }
+
+                            HKLogUtil.e("krmao 实时切换 end  耗时:${System.currentTimeMillis() - start}ms ")
+
                             HKLogUtil.w(TAG, "download ${file.name} success ! verifyZip success ! verifyLocalFiles success! 实时切换成功 ！！！")
                         } else {
                             HKLogUtil.e(TAG, "download ${file.name} success ! verifyZip success ! but verifyLocalFiles failure! the moduleFilesMd5 of unzipDir is not right!")

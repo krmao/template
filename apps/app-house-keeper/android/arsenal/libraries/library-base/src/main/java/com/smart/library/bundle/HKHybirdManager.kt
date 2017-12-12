@@ -8,6 +8,21 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * 1:   无论本地有多少个版本的文件夹
+ *      如果服务端想回滚的话，只能直接回滚到原始安装包里面的版本
+ *
+ * 2:
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKHybirdManager {
     private val TAG = HKHybirdManager::class.java.simpleName
@@ -26,7 +41,7 @@ object HKHybirdManager {
             HKBaseApplication.INSTANCE.assets.list(ASSETS_DIR_NAME).filter { !TextUtils.isEmpty(it) && it.endsWith(CONFIG_SUFFIX) }.map { it.replace(CONFIG_SUFFIX, "") }.forEach {
                 tmpMap[it] = HKHybirdModuleManager(it)
                 moduleInitBeforeVerifyListener?.invoke(tmpMap[it])
-                tmpMap[it]?.verify()
+                tmpMap[it]?.init()
             }
             tmpMap
         }
@@ -42,7 +57,8 @@ object HKHybirdManager {
     fun init(debug: Boolean = true, env: String? = null, moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null) {
         DEBUG = debug
 
-        if (!TextUtils.isEmpty(env)) EVN = env!!
+        EVN = if (env?.isNotBlank() == true) env else EVN
+
         this.moduleInitBeforeVerifyListener = moduleInitBeforeVerifyListener
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         HKLogUtil.w(TAG, "**  INIT START")

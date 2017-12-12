@@ -29,7 +29,7 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-                entry.value.verify { _, configuration ->
+                entry.value.init { _, configuration ->
                     HybirdWebFragment.goTo(activity, configuration?.moduleMainUrl?.get(HKHybirdManager.EVN))
                 }
             }

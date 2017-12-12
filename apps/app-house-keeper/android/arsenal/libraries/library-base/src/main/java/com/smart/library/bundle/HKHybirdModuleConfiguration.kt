@@ -55,7 +55,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
         override fun newArray(size: Int): Array<HKHybirdModuleConfiguration?> = arrayOfNulls(size)
     }
 
-    override fun equals(other: Any?): Boolean = other is HKHybirdModuleConfiguration && moduleVersion == other.moduleVersion
+    override fun equals(other: Any?): Boolean = other is HKHybirdModuleConfiguration && moduleVersion == other.moduleVersion && moduleName == other.moduleName
 
     override fun hashCode(): Int {
         var result = moduleVersion.hashCode()

@@ -18,6 +18,7 @@ object HKHybirdManager {
     val BUNDLE_SUFFIX = ".zip"
     val CONFIG_SUFFIX = ".json"
     val LOCAL_ROOT_DIR = HKCacheManager.getChildCacheDir(ASSETS_DIR_NAME)
+    var DEBUG = true
 
     val MODULES: Lazy<ConcurrentHashMap<String, HKHybirdModuleManager>> =
         lazy {
@@ -32,9 +33,15 @@ object HKHybirdManager {
 
     var moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null
 
+    /**
+     * debug true  的话代表是测试机,可以拉取动态更新的测试版本
+     *       false 代表是已发布的正式的去打包，不能拉取动态更新的测试版本
+     */
     @JvmStatic
     @JvmOverloads
-    fun init(env: String? = null, moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null) {
+    fun init(debug: Boolean = true, env: String? = null, moduleInitBeforeVerifyListener: ((moduleManager: HKHybirdModuleManager?) -> Unit?)? = null) {
+        DEBUG = debug
+
         if (!TextUtils.isEmpty(env)) EVN = env!!
         this.moduleInitBeforeVerifyListener = moduleInitBeforeVerifyListener
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")

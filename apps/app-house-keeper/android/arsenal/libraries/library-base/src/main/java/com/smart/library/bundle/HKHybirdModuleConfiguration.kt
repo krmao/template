@@ -2,9 +2,11 @@ package com.smart.library.bundle
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.smart.library.base.HKBaseApplication
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST")
 open class HKHybirdModuleConfiguration() : Parcelable {
+    var moduleDebug = HKBaseApplication.DEBUG //只下发到测试机
     var moduleVersion = "" //只分当前版本与线上最新版本
     var moduleName = ""
     var moduleMainUrl = HashMap<String, String>()

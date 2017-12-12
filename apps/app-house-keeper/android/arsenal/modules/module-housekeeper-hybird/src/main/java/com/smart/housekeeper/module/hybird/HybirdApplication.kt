@@ -3,6 +3,7 @@ package com.smart.housekeeper.module.hybird
 import android.app.Application
 import android.util.Log
 import com.smart.housekeeper.repository.HKRepository
+import com.smart.library.base.HKBaseApplication
 import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.bundle.HKHybirdModuleConfiguration
 import com.smart.library.bundle.HKHybirdModuleManager
@@ -20,7 +21,7 @@ class HybirdApplication : Application() {
         super.onCreate()
         Log.v("krmao", "HybirdApplication:onCreate")
 
-        HKHybirdManager.init("pre") { moduleManager: HKHybirdModuleManager? ->
+        HKHybirdManager.init(HKBaseApplication.DEBUG, "pre") { moduleManager: HKHybirdModuleManager? ->
             moduleManager?.setDownloader { downloadUrl, file, callback ->
                 HKRepository.downloadFile(downloadUrl,
                     { current, total ->

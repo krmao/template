@@ -49,7 +49,10 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     private val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
-    fun checkUpdate() = updateManager.checkUpdate()
+    fun checkUpdate() {
+        HKLogUtil.w(TAG, "checkUpdate --> ")
+        updateManager.checkUpdate()
+    }
 
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         updateManager.downloader = downloader
@@ -71,7 +74,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     var latestValidConfiguration: HKHybirdModuleConfiguration? = null
         set(value) {
             field = value
-            setRequestIntercept(field)
+            setRequestIntercept(value)
         }
 
     //配置信息存在 sharedPreference
@@ -266,7 +269,8 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     //==============================================================================================
 
     private fun setRequestIntercept(configuration: HKHybirdModuleConfiguration?) {
-        HKLogUtil.e(TAG, "setRequestIntercept start")
+        HKLogUtil.w(TAG, "setRequestIntercept start")
+        HKLogUtil.w(TAG, "configuration : $configuration")
         val interceptScriptUrl = configuration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
         val interceptMainUrl = configuration.moduleMainUrl.get(HKHybirdManager.EVN) ?: return
         val unzipDir = getUnzipDir(configuration)
@@ -276,13 +280,17 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKHybirdBridge.removeRequest(interceptScriptUrl)
 
         //main url
-        HKHybirdBridge.addScheme(interceptMainUrl) { webView: WebView?, url: String? ->
+        HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
+        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, url: String? ->
+            HKLogUtil.w(TAG, "拦截到 scheme : $url")
             checkUpdate()
             false
         }
 
         //html
+        HKLogUtil.w(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
+            HKLogUtil.w(TAG, "拦截到 request : $url")
             var resourceResponse: WebResourceResponse? = null
             if (!TextUtils.isEmpty(url)) {
                 val requestUrl = Uri.parse(url)
@@ -315,6 +323,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             resourceResponse
         }
 
+        HKLogUtil.w(TAG, "interceptScriptUrl : $interceptScriptUrl")
         //css,js,image
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
             var resourceResponse: WebResourceResponse? = null
@@ -367,6 +376,6 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             }
             resourceResponse
         }
-        HKLogUtil.e("getUnzipDirsetRequestIntercept end")
+        HKLogUtil.w("setRequestIntercept end")
     }
 }

@@ -19,7 +19,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     private var isDownloading = false
 
     fun checkUpdate() {
-        HKLogUtil.e(TAG, "checkUpdate start")
+        HKLogUtil.w(TAG, "checkUpdate start")
 
         if (isDownloading) {
             HKLogUtil.e(TAG, "正在下载更新中，在更新安装成功前不能下载其他更新 return")

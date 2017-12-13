@@ -45,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap
  * 检查更新策略
  * @see com.smart.library.bundle.HKHybirdUpdateManager.checkUpdate
  * =============================================
- * 1: 每次启动模块主URL，执行检查更新  checkUpdate
+ * 1: 每次启动模块主URL，执行检查更新  checkUpdate, 目前是所有模块都会检查更新，是否需要只检查当前url对应的模块 todo
  * 2: 每次程序启动时，所有模块执行一次检查更新 checkUpdate
  * 3: 更新策略分 测试机与正式用户机，测试机方便调试，参数为 moduleDebug = true/false
  * 4: 如果检查到更新是最新版本，但是本地文件无效(也许是物理删除)，此过程放在健康体检中，检测无效
@@ -59,6 +59,13 @@ import java.util.concurrent.ConcurrentHashMap
  * 8: onlineMode 的安全性
  *    a: 假如 加载 html 是本地的页面，切换线上后，线上的所有js/css 是基于修改后的 线上 html(线上html有可能已经大变样，js也是)
  *       此时内存中的 html 结构已经不支持显示正常的页面了
+ *       此时有两种方案
+ *       0: 加载 html 之前 同步检测更新
+ *       1: 以全部在线的方式 reload 当前页面
+ *       2: 全部离线的方式加载本地缓存页面                                    todo
+ *       3: 浏览器回退时如何处理                                             todo
+ *
+ *
  *
  *       此时应该做好页面级的沙盒操作                                         todo
  *

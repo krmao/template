@@ -10,6 +10,7 @@ import com.smart.library.bundle.HKHybirdModuleManager
 import com.smart.library.util.HKBigDecimalUtil
 import com.smart.library.util.HKFileUtil
 import com.smart.library.util.HKLogUtil
+import io.reactivex.schedulers.Schedulers
 import java.io.InputStream
 
 /**
@@ -32,31 +33,35 @@ class HybirdApplication : Application() {
                         else
                             HKLogUtil.w(moduleManager.moduleFullName, "current:$current/total:$total")
                     }
-                ).subscribe(
-                    { content: InputStream ->
-                        HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
-                        if (file != null) HKFileUtil.copy(content, file)
-                        callback.invoke(file)
-                    },
-                    { error: Throwable ->
-                        HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
-                        callback.invoke(null)
-                    }
                 )
+                    .observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
+                    .subscribe(
+                        { content: InputStream ->
+                            HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
+                            if (file != null) HKFileUtil.copy(content, file)
+                            callback.invoke(file)
+                        },
+                        { error: Throwable ->
+                            HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
+                            callback.invoke(null)
+                        }
+                    )
 
                 Unit
             }
             moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdModuleConfiguration?) -> Unit? ->
-                HKRepository.downloadHybirdModuleConfiguration(configUrl).subscribe(
-                    { content: HKHybirdModuleConfiguration ->
-                        HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
-                        callback.invoke(content)
-                    },
-                    { error: Throwable ->
-                        HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
-                        callback.invoke(null)
-                    }
-                )
+                HKRepository.downloadHybirdModuleConfiguration(configUrl)
+                    .observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
+                    .subscribe(
+                        { content: HKHybirdModuleConfiguration ->
+                            HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
+                            callback.invoke(content)
+                        },
+                        { error: Throwable ->
+                            HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
+                            callback.invoke(null)
+                        }
+                    )
                 Unit
             }
 

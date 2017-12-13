@@ -66,6 +66,43 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             HKLogUtil.w(TAG, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
         }
     }
+
+    /**
+     * 安全的删除所有大于 @param latestConfiguration 的版本的 临时配置信息以及与之相关的本地文件，包括压缩包和解压文件夹以及sharedPreference里面的配置信息
+     * 注意这里会重置 onLineMode 的值
+     */
+    @Synchronized //同步，确保所有其他操作在此期间都是等待状态，最好这里是原子性的, @Synchronized注解锁住的是对该类对象的访问操作
+    fun completeRemoveAllGTLatestConfigSafely(latestConfiguration: HKHybirdModuleConfiguration?) {
+        HKLogUtil.e(TAG, "completeRemoveAllGTLatestConfigSafely start")
+        val start = System.currentTimeMillis()
+        if (latestConfiguration != null) {
+            val latestVersion = latestConfiguration.moduleVersion.toFloatOrNull()
+            if (latestVersion != null) {
+                val oldOnLineMode = onLineMode
+                onLineMode = true
+                val configurationList = getConfigurationList()
+
+                val iterate = configurationList.listIterator()
+                while (iterate.hasNext()) {
+                    val tmpConfiguration = iterate.next()
+                    val zipFile = getZipFile(tmpConfiguration)
+                    val unzipDir = getUnzipDir(tmpConfiguration)
+                    val tmpVersion = tmpConfiguration.moduleVersion.toFloatOrNull()
+                    if (tmpVersion == null || tmpVersion > latestVersion) {
+                        iterate.remove()                            //删除在list中的位置
+                        HKFileUtil.deleteFile(zipFile)              //删除 zip
+                        HKFileUtil.deleteDirectory(unzipDir)        //删除 unzipDir
+                    }
+                }
+                saveConfiguration(configurationList)                //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
+                initLocalConfiguration()                            //重置 latestValidConfiguration ，并且list为空自动重新拷贝原始安装包
+
+                //还原 onLineMode
+                onLineMode = oldOnLineMode
+            }
+        }
+        HKLogUtil.e(TAG, "completeRemoveAllGTLatestConfigSafely   end  耗时:${System.currentTimeMillis() - start}ms")
+    }
     //==============================================================================================
     // updater
     //==============================================================================================
@@ -105,22 +142,23 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     //只校验有配置信息的，校验失败可以删除，但是没有校验信息的本地文件夹不要删除，下次下载好配置信息好先检测本地zip包是否已经有了，避免重复下载，如果有解压后的文件夹但是没有zip包，不删除，可以直接
     @Synchronized
     private fun initLocalConfiguration() {
-        if (latestValidConfiguration != null) return //不执行无用的耗时的重复校验
-
+        HKLogUtil.e(TAG, "initLocalConfiguration start")
+        val start = System.currentTimeMillis()
         val configurationList = getConfigurationList()//读取配置信息
         HKLogUtil.d(TAG, "sorted list : ${configurationList.map { it.moduleVersion }}")
         if (configurationList.isNotEmpty()) {
             HKLogUtil.d(TAG, "configurationList not empty")
 
+            //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
             val iterate = configurationList.listIterator()
-            while (iterate.hasNext()) {//删除无效的配置信息 mind ConcurrentModificationException
+            while (iterate.hasNext()) {
                 if (!isLocalFilesValid(iterate.next())) {
-                    iterate.remove()
+                    iterate.remove() // mind ConcurrentModificationException
                 }
             }
         }
 
-        //删除后会重新判断空,如果是空会获取原始安装包
+        //删除无效的配置信息,删除后会重新判断空,如果是空会获取原始安装包
         if (configurationList.isEmpty()) {
             HKLogUtil.d(TAG, "configurationList is empty")
             getConfigurationFromAssets()?.let { configurationList.add(it) } //如果为空则添加原始配置信息
@@ -128,7 +166,10 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         //如果有删除的或则新加的原始配置信息，则需要重新保存下
         saveConfiguration(configurationList)
 
+        latestValidConfiguration = null
         configurationList.firstOrNull()?.let { latestValidConfiguration = it }
+        HKLogUtil.e(TAG, "initLocalConfiguration reset latestValidConfiguration:$latestValidConfiguration")
+        HKLogUtil.e(TAG, "initLocalConfiguration   end  耗时:${System.currentTimeMillis() - start}ms")
         return
     }
 
@@ -149,7 +190,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     }
 
     @Synchronized
-    private fun getConfigurationList(): MutableList<HKHybirdModuleConfiguration> = HKPreferencesUtil.getList(KEY_CONFIGURATION, HKHybirdModuleConfiguration::class.java).sortedByDescending { it.moduleVersion.toFloatOrNull() ?: -1f }.toMutableList()
+    private fun getConfigurationList(): MutableList<HKHybirdModuleConfiguration> = HKPreferencesUtil.getList(KEY_CONFIGURATION, HKHybirdModuleConfiguration::class.java).filter { it.moduleVersion.toFloatOrNull() != null }.sortedByDescending { it.moduleVersion.toFloatOrNull() ?: -1f }.toMutableList()
 
 //==============================================================================================
 //检验文件

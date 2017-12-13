@@ -40,6 +40,11 @@ open class HKWebViewClient : WebViewClient() {
         return HKHybirdBridge.shouldOverrideUrlLoading(view, url)
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        return shouldOverrideUrlLoading(view, request?.url?.toString())
+    }
+
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         HKLogUtil.d(HKHybirdBridge.TAG, "onPageStarted: $url")
         super.onPageStarted(view, url, favicon)

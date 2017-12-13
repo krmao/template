@@ -21,7 +21,9 @@ class HybirdApplication : Application() {
         super.onCreate()
         Log.v("krmao", "HybirdApplication:onCreate")
 
-        HKHybirdManager.init(HKBaseApplication.DEBUG, "pre") { moduleManager: HKHybirdModuleManager? ->
+        //set downloader and configure
+        HKHybirdManager.MODULES.value.forEach {
+            val moduleManager: HKHybirdModuleManager? = it.value
             moduleManager?.setDownloader { downloadUrl, file, callback ->
                 HKRepository.downloadFile(downloadUrl,
                     { current, total ->
@@ -57,6 +59,12 @@ class HybirdApplication : Application() {
                 )
                 Unit
             }
+
+            //3: 每次程序启动时，a:所有模块执行一次检查更新 checkUpdate，b:所有模块执行一次健康体检 checkHealth
+            moduleManager?.checkUpdate()
         }
+
+        //all config before call init
+        HKHybirdManager.init(HKBaseApplication.DEBUG, "pre")
     }
 }

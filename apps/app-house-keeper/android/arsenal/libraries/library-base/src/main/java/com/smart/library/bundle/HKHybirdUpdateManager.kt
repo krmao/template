@@ -19,16 +19,19 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     private var isDownloading = false
 
     fun checkUpdate() {
-        HKLogUtil.w(TAG, "checkUpdate start")
+        HKLogUtil.e(TAG, "checkUpdate start")
 
         if (isDownloading) {
             HKLogUtil.e(TAG, "正在下载更新中，在更新安装成功前不能下载其他更新 return")
             return
         }
 
-        configer?.invoke(moduleManager.latestValidConfiguration?.moduleConfigUrl ?: "") { remoteConfiguration: HKHybirdModuleConfiguration? ->
-            HKLogUtil.d(TAG, "remoteConfigurationJsonString:$remoteConfiguration")
-            HKLogUtil.w(TAG, "remoteConfiguration != null?${remoteConfiguration != null}")
+
+        val moduleConfigUrl = moduleManager.latestValidConfiguration?.moduleConfigUrl ?: ""
+        HKLogUtil.e(TAG, "do download moduleConfig start --> $moduleConfigUrl")
+        configer?.invoke(moduleConfigUrl) { remoteConfiguration: HKHybirdModuleConfiguration? ->
+            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfigurationJsonString:$remoteConfiguration")
+            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfiguration != null?${remoteConfiguration != null}")
             if (remoteConfiguration != null) {
 
                 //1:正式包，所有机器可以拉取
@@ -57,6 +60,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     }
 
     /**
+     * todo 安全性有待验证
      * 锁住 moduleManager 确保升级期间不会有乱入操作，导致数据混乱
      */
     private fun completeUpdating(remoteConfiguration: HKHybirdModuleConfiguration) {
@@ -71,13 +75,20 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         }
     }
 
-
     private fun download(remoteConfiguration: HKHybirdModuleConfiguration) {
-        HKLogUtil.e(TAG, "do download start --> ${remoteConfiguration.moduleDownloadUrl}")
+        HKLogUtil.e(TAG, "do download zip start --> ${remoteConfiguration.moduleDownloadUrl}")
 
-        downloader?.invoke(remoteConfiguration.moduleDownloadUrl, moduleManager.getZipFile(remoteConfiguration)) { _: File? ->
-            if (moduleManager.isLocalFilesValid(remoteConfiguration))
+        downloader?.invoke(remoteConfiguration.moduleDownloadUrl, moduleManager.getZipFile(remoteConfiguration)) { file: File? ->
+            HKLogUtil.e(TAG, "do download zip end <-- file:${file?.path}")
+
+            if (moduleManager.isLocalFilesValid(remoteConfiguration)) {
+                HKLogUtil.e(TAG, "do download zip end <-- local file valid")
                 completeUpdating(remoteConfiguration)
+            } else {
+                isDownloading = false
+                //moduleManager.onLineMode = false //todo 线上版本是否完备？
+                HKLogUtil.e(TAG, "do download zip end <-- local file not valid !")
+            }
         }
     }
 }

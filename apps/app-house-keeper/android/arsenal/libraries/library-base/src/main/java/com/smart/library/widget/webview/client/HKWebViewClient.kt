@@ -6,6 +6,7 @@ import android.net.http.SslError
 import android.os.Build
 import android.os.Message
 import android.webkit.*
+import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdBridge
 
@@ -31,6 +32,11 @@ addJsHack("")
  */
 @Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride", "UseExpressionBody")
 open class HKWebViewClient : WebViewClient() {
+
+    init {
+        //每次浏览器启动，执行一次健康体检
+        HKHybirdManager.checkHealth()
+    }
 
     /**
      * 针对 https 证书校验可以在此拦截通过HttpsURLConnection实现请求验证

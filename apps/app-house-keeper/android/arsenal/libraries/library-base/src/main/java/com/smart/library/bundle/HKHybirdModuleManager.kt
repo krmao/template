@@ -16,6 +16,13 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.zip.ZipException
 
+
+/**
+ * 全责范围
+ *
+ * 1: 负责对本模块各版本的健康体检，自动删除无效版本，删除后自动还原到上一个最新版本，如果没有则还原到原始安装包版本
+ * 2: 不负责下载更新升级等操作，这些操作放在 HKHybirdUpdateManager
+ */
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST", "PrivatePropertyName")
 class HKHybirdModuleManager(val moduleFullName: String) {
 
@@ -30,19 +37,35 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     var onLineMode = false
 
-    fun init(callback: ((localUnzipDir: File?, configuration: HKHybirdModuleConfiguration?) -> Unit)? = null) {
-        HKLogUtil.w(TAG, "init >>>>>>>>>>===============>>>>>>>>>>")
+    /**
+     * 健康体检，检查模块完整性
+     * 每次打开浏览器时执行
+     *
+     * 由于 initLocalConfiguration 是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
+     */
+    @Synchronized
+    fun checkHealth(callback: ((localUnzipDir: File?, configuration: HKHybirdModuleConfiguration?) -> Unit)? = null) {
+        HKLogUtil.w(TAG, "checkHealth >>>>>>>>>>===============>>>>>>>>>>")
         val start = System.currentTimeMillis()
-        Observable.fromCallable {
-            initLocalConfiguration()//由于是同步的，切内部有是否重复执行的校验，所以在任何地方都可以调用init而不会重复校验
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { callback?.invoke(getUnzipDir(latestValidConfiguration), latestValidConfiguration) }
-        HKLogUtil.w(TAG, "init async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
-        HKLogUtil.w(TAG, "init <<<<<<<<<<===============<<<<<<<<<<")
-    }
+        if (latestValidConfiguration == null || !isLocalFilesValid(latestValidConfiguration)) {
 
+            Observable.fromCallable {
+                initLocalConfiguration()
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    callback?.invoke(getUnzipDir(latestValidConfiguration), latestValidConfiguration)
+                    HKLogUtil.e(TAG, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
+                    HKLogUtil.w(TAG, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+                }
+            HKLogUtil.w(TAG, "checkHealth async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
+        } else {
+            callback?.invoke(getUnzipDir(latestValidConfiguration), latestValidConfiguration)
+            HKLogUtil.e(TAG, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.w(TAG, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+        }
+    }
     //==============================================================================================
     // updater
     //==============================================================================================
@@ -50,7 +73,6 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     private val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
     fun checkUpdate() {
-        HKLogUtil.w(TAG, "checkUpdate --> ")
         updateManager.checkUpdate()
     }
 
@@ -89,13 +111,17 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.d(TAG, "sorted list : ${configurationList.map { it.moduleVersion }}")
         if (configurationList.isNotEmpty()) {
             HKLogUtil.d(TAG, "configurationList not empty")
-            for (configuration in configurationList.iterator()) {//删除无效的配置信息
-                val isLocalFilesValid = isLocalFilesValid(configuration)
-                if (!isLocalFilesValid) {
-                    configurationList.remove(configuration)
+
+            val iterate = configurationList.listIterator()
+            while (iterate.hasNext()) {//删除无效的配置信息 mind ConcurrentModificationException
+                if (!isLocalFilesValid(iterate.next())) {
+                    iterate.remove()
                 }
             }
-        } else {
+        }
+
+        //删除后会重新判断空,如果是空会获取原始安装包
+        if (configurationList.isEmpty()) {
             HKLogUtil.d(TAG, "configurationList is empty")
             getConfigurationFromAssets()?.let { configurationList.add(it) } //如果为空则添加原始配置信息
         }
@@ -125,9 +151,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     @Synchronized
     private fun getConfigurationList(): MutableList<HKHybirdModuleConfiguration> = HKPreferencesUtil.getList(KEY_CONFIGURATION, HKHybirdModuleConfiguration::class.java).sortedByDescending { it.moduleVersion.toFloatOrNull() ?: -1f }.toMutableList()
 
-    //==============================================================================================
-    //检验文件
-    //==============================================================================================
+//==============================================================================================
+//检验文件
+//==============================================================================================
 
     /**
      * 校验配置信息
@@ -264,9 +290,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         return success
     }
 
-    //==============================================================================================
-    // intercept
-    //==============================================================================================
+//==============================================================================================
+// intercept
+//==============================================================================================
 
     private fun setRequestIntercept(configuration: HKHybirdModuleConfiguration?) {
         HKLogUtil.w(TAG, "setRequestIntercept start")
@@ -279,18 +305,22 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKHybirdBridge.removeRequest(interceptMainUrl)
         HKHybirdBridge.removeRequest(interceptScriptUrl)
 
-        //main url
-        HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
+        /**
+         * webView.loadUrl 不会触发此回调,放到 HKHybirdBridge.addRequest(interceptMainUrl) 里面处理
+         * http://www.jianshu.com/p/3474cb8096da
+         */
+        /*HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, url: String? ->
             HKLogUtil.w(TAG, "拦截到 scheme : $url")
             checkUpdate()
             false
-        }
+        }*/
 
         //html
         HKLogUtil.w(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
             HKLogUtil.w(TAG, "拦截到 request : $url")
+            checkUpdate()
             var resourceResponse: WebResourceResponse? = null
             if (!TextUtils.isEmpty(url)) {
                 val requestUrl = Uri.parse(url)
@@ -301,7 +331,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
                         val mimeType = "text/html"
                         val localPath = unzipDir?.absolutePath + "/" + requestUrlString.substringBefore("#", requestUrlString).split("/").last()
                         val localFileExists = File(localPath).exists()
-                        HKLogUtil.e(TAG, "**** do intercept request ? $localFileExists **** [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
+                        HKLogUtil.d(TAG, "**** do intercept request ? $localFileExists **** [originPath: " + requestUrl.toString() + "], [localPath: $localPath]")
                         if (localFileExists) {
                             try {
                                 resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))

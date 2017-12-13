@@ -15,6 +15,15 @@ import java.util.concurrent.ConcurrentHashMap
  * 2: 适用于完全本地版本的网页，可以动态调整更新替换
  * 3: 完全线上版本也不会有影响
  *
+ *
+ * 测试步骤
+ * =============================================
+ * 设置moduleDebug=true / false 决定是开发机器还是所有用户机器进行下载更新
+ * 明智的步骤为:
+ * a: moduleDebug=true 进行开发测试
+ * b: 测试成功后 修改 moduleDebug=false 进行全局发布
+ *
+ *
  * =============================================
  * 用到的一些策略
  * =============================================
@@ -31,7 +40,8 @@ import java.util.concurrent.ConcurrentHashMap
  *    并更新配置信息，还原到上一个最近有效版本，如果上一版本也无效，则会递归直到找到有效版本位置，
  *    如果全部无效，会从原始安装包重新拷贝解压
  *    如果本地所有版本接无效，则重新copy 原始安装包中的版本并且重新解压，此时无需校验
-
+ *
+ *
  * 检查更新策略
  * @see com.smart.library.bundle.HKHybirdUpdateManager.checkUpdate
  * =============================================
@@ -43,21 +53,26 @@ import java.util.concurrent.ConcurrentHashMap
  * 5: 当前粒度是按照整个模块的更新,并且每次是加载主url的时候检查更新，android也只能拦截到主url，
  *    '#' 后面的内部路由无法检测到,
  *    won't do [暂时保留更细粒度的按内部url进行检查更新，暂时不支持这个 moduleRoutesUpdateStrategy 字段]
- * 6: 模块可控粒度 moduleUpdateStrategy  todo
+ * 6: 模块可控粒度 moduleUpdateStrategy                                     todo
  *    0 每次启动模块主URL/每次程序启动时
  * 7: 检查更新是异步的，检测到版本变化时会实时切换 onlineModel 所以无需同步等待
+ * 8: onlineMode 的安全性
+ *    a: 假如 加载 html 是本地的页面，切换线上后，线上的所有js/css 是基于修改后的 线上 html(线上html有可能已经大变样，js也是)
+ *       此时内存中的 html 结构已经不支持显示正常的页面了
  *
+ *       此时应该做好页面级的沙盒操作                                         todo
  *
  *
  * 检查更新策略--回滚策略-实时切换策略
  * @see com.smart.library.bundle.HKHybirdUpdateManager.completeUpdating
  * =============================================
  * 1: 实施切换的安全性有待验证，可能需要提示用户重启应用，或者重启所有浏览器
- * 2: 实时切换成功后 应广播事件提示所有浏览器刷新当前页面 todo 通知事件还是自己直接刷新
- * 3: 线上版本是否完备？是否所有的js html css 线上都有，因此可以安全切换在线模式 todo 确保所有文件线上都有
+ * 2: 实时切换成功后 应广播事件提示所有浏览器刷新当前页面                        todo 通知事件还是自己直接刷新
+ * 3: 线上版本是否完备？是否所有的js html css 线上都有，因此可以安全切换在线模式   todo 确保所有文件线上都有
  * 4: 回滚期间会切换到在线状态，回滚后还原上一次是否在线的状态
  * 5: 回滚操作是异步的，对回滚的方法做了同步处理，防止多线程错乱问题
  *   @see com.smart.housekeeper.module.hybird.HybirdApplication.onCreate()
+ *
  *
  * 检查更新策略--回滚策略
  * @see com.smart.library.bundle.HKHybirdUpdateManager.rollback
@@ -66,13 +81,15 @@ import java.util.concurrent.ConcurrentHashMap
  *    a: 服务器删除当前最新配置信息，还原成上一个配置信息，版本号 -1
  *    b: 客户端检测到版本比本地低的时候，则删除本地配置信息及所有文件(一定包括zip,不过以后再发布新的版本号+1，zip MD5也不一样)
  *    c: 删除本地版本时注意适时切换的策略
- * todo 暂时不增加远程控制回滚策略，避免回滚过程中再次发版本的逻辑问题
+ *    d: 远程回滚操作已经支持，只要把最新的配置文件修改为旧版本的即可，本地会自动删除高于本版本的所有相关信息即文件，操作为异步线程安全的操作
+ *
  *
  * 检查更新策略--下载策略
  * @see com.smart.library.bundle.HKHybirdUpdateManager.download
  * =============================================
  * 1: 如果即将下载的版本 本地解压包存在切校验正确,zip即使不存在也无需下载
  * 2: 如果即将下载的版本 本地解压包不存在或者校验失败,执行下载zip
+ *
  *
  **/
 @Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference")

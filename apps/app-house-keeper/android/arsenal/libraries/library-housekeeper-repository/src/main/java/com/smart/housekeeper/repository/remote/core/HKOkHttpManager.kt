@@ -4,8 +4,7 @@ import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.cache.HKCacheManager
 import com.smart.library.util.rx.RxBus
-import okhttp3.Cache
-import okhttp3.OkHttpClient
+import okhttp3.*
 import java.util.concurrent.TimeUnit
 
 
@@ -42,5 +41,33 @@ object HKOkHttpManager {
                 )
             )
             .build()
+    }
+
+
+    @JvmStatic
+    @JvmOverloads
+    fun doGetSync(url: String, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null): String? {
+        var result: String? = null
+        var response: Response? = null
+        var okhttpClient = client
+
+        if (readTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().readTimeout(readTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (writeTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().writeTimeout(writeTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (connectTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().connectTimeout(connectTimeoutMS, TimeUnit.MILLISECONDS).build()
+
+        try {
+            response = okhttpClient.newCall(Request.Builder().url(url).get().build()).execute()
+            if (response != null && response.isSuccessful) result = response.body()?.string()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        } finally {
+            response?.close()
+        }
+        return result
+    }
+
+    @JvmStatic
+    fun doGet(url: String, callback: Callback) {
+        client.newCall(Request.Builder().url(url).get().build()).enqueue(callback)
     }
 }

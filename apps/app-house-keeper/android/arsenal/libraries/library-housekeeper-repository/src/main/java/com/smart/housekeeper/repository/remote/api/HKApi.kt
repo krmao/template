@@ -3,7 +3,7 @@ package com.smart.housekeeper.repository.remote.api
 import android.os.Handler
 import android.os.Looper
 import com.smart.housekeeper.repository.remote.core.HKResponseModel
-import com.smart.library.bundle.HKHybirdModuleConfiguration
+import com.smart.library.bundle.HKHybirdConfigModel
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -21,7 +21,7 @@ interface HKApi {
     fun getBundleConfig(): Observable<String>
 
     @GET
-    fun downloadHybirdModuleConfiguration(@Url url: String): Observable<HKHybirdModuleConfiguration>
+    fun downloadHybirdModuleConfiguration(@Url url: String): Observable<HKHybirdConfigModel>
 
     @Streaming
     @GET

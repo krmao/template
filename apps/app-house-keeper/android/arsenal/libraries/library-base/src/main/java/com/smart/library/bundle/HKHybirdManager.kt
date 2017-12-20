@@ -137,6 +137,10 @@ object HKHybirdManager {
         checkHealth()
     }
 
+    fun getModule(url: String): HKHybirdModuleManager? {
+        return MODULES.value.filter { it.value.getLocalFile(url)?.exists() == true }.values.firstOrNull()
+    }
+
     /**
      * 健康体检，检查模块完整性
      * 每次打开浏览器时执行

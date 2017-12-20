@@ -25,7 +25,6 @@ import java.util.*
  * import com.fasterxml.jackson.databind.type.TypeFactory
  * import com.fasterxml.jackson.module.kotlin.registerKotlinModule
  */
-
 object HKPreferencesUtil {
 
     private var mSharedPreferences: SharedPreferences = HKBaseApplication.INSTANCE.getSharedPreferences(HKConfig.NAME_SHARED_PREFERENCES, Context.MODE_PRIVATE)
@@ -44,6 +43,12 @@ object HKPreferencesUtil {
     fun putString(key: String, value: String): Boolean {
         val editor = mSharedPreferences.edit()
         editor.putString(key, value)
+        return editor.commit()
+    }
+
+    fun putJsonString(key: String, value: Any): Boolean {
+        val editor = mSharedPreferences.edit()
+        editor.putString(key, mGson.toJson(value))
         return editor.commit()
     }
 
@@ -80,6 +85,7 @@ object HKPreferencesUtil {
         return entity
     }
 
+    @SuppressLint("ApplySharedPref")
     fun putList(key: String, list: List<*>): Boolean = try {
         val editor = mSharedPreferences.edit()
         editor.putString(key, mGson.toJson(list))
@@ -109,6 +115,16 @@ object HKPreferencesUtil {
             e.printStackTrace()
         }
         return list*/
+    }
+
+    fun <T : Any> getStack(key: String, classOfT: Class<T>?): Stack<T> {
+        val stack = Stack<T>()
+        try {
+            mGson.fromJson<Stack<JsonElement>>(mSharedPreferences.getString(key, null), object : TypeToken<Stack<JsonElement>>() {}.type)?.mapNotNullTo(stack) { mGson.fromJson(it, classOfT) }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+        return stack
     }
 
     fun getInt(key: String, iDefault: Int): Int = mSharedPreferences.getInt(key, iDefault)

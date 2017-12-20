@@ -3,12 +3,14 @@ package com.smart.housekeeper.module.hybird
 import android.app.Application
 import android.util.Log
 import com.smart.housekeeper.repository.HKRepository
+import com.smart.housekeeper.repository.remote.core.HKOkHttpManager
 import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.HKHybirdConfigModel
 import com.smart.library.bundle.HKHybirdManager
-import com.smart.library.bundle.HKHybirdModuleConfiguration
 import com.smart.library.bundle.HKHybirdModuleManager
 import com.smart.library.util.HKBigDecimalUtil
 import com.smart.library.util.HKFileUtil
+import com.smart.library.util.HKJsonUtil
 import com.smart.library.util.HKLogUtil
 import io.reactivex.schedulers.Schedulers
 import java.io.InputStream
@@ -49,11 +51,16 @@ class HybirdApplication : Application() {
 
                 Unit
             }
-            moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdModuleConfiguration?) -> Unit? ->
+
+            //同步下载器
+            /*moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Unit? ->
                 HKRepository.downloadHybirdModuleConfiguration(configUrl)
-                    .observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    //.observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
                     .subscribe(
-                        { content: HKHybirdModuleConfiguration ->
+                        { content: HKHybirdConfigModel ->
                             HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
                             callback.invoke(content)
                         },
@@ -63,6 +70,10 @@ class HybirdApplication : Application() {
                         }
                     )
                 Unit
+            } */
+            //同步下载器
+            moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Unit? ->
+                callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 150, connectTimeoutMS = 50), HKHybirdConfigModel::class.java))
             }
 
             //3: 每次程序启动时，a:所有模块执行一次检查更新 checkUpdate，b:所有模块执行一次健康体检 checkHealth

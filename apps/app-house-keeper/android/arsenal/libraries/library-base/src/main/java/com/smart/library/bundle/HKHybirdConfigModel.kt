@@ -5,10 +5,11 @@ import android.os.Parcelable
 import com.smart.library.base.HKBaseApplication
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST")
-open class HKHybirdModuleConfiguration() : Parcelable {
+open class HKHybirdConfigModel() : Parcelable {
     var moduleDebug = HKBaseApplication.DEBUG //只下发到测试机
     var moduleVersion = "" //只分当前版本与线上最新版本
     var moduleName = ""
+    var moduleUpdateMode = HKHybirdUpdateManager.Mode.RESTART
     var moduleMainUrl = HashMap<String, String>()
     var moduleScriptUrl = HashMap<String, String>()
     var moduleConfigUrl = ""
@@ -27,6 +28,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     constructor(parcel: Parcel) : this() {
         moduleVersion = parcel.readString()
         moduleName = parcel.readString()
+        moduleUpdateMode = parcel.readSerializable() as HKHybirdUpdateManager.Mode
         moduleScriptUrl = parcel.readHashMap(null) as HashMap<String, String>
         moduleConfigUrl = parcel.readString()
         moduleDownloadUrl = parcel.readString()
@@ -39,6 +41,7 @@ open class HKHybirdModuleConfiguration() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(moduleVersion)
         parcel.writeString(moduleName)
+        parcel.writeSerializable(moduleUpdateMode)
         parcel.writeMap(moduleScriptUrl)
         parcel.writeString(moduleConfigUrl)
         parcel.writeString(moduleDownloadUrl)
@@ -50,16 +53,17 @@ open class HKHybirdModuleConfiguration() : Parcelable {
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<HKHybirdModuleConfiguration> {
-        override fun createFromParcel(parcel: Parcel): HKHybirdModuleConfiguration = HKHybirdModuleConfiguration(parcel)
-        override fun newArray(size: Int): Array<HKHybirdModuleConfiguration?> = arrayOfNulls(size)
+    companion object CREATOR : Parcelable.Creator<HKHybirdConfigModel> {
+        override fun createFromParcel(parcel: Parcel): HKHybirdConfigModel = HKHybirdConfigModel(parcel)
+        override fun newArray(size: Int): Array<HKHybirdConfigModel?> = arrayOfNulls(size)
     }
 
-    override fun equals(other: Any?): Boolean = other is HKHybirdModuleConfiguration && moduleVersion == other.moduleVersion && moduleName == other.moduleName
+    override fun equals(other: Any?): Boolean = other is HKHybirdConfigModel && moduleVersion == other.moduleVersion && moduleName == other.moduleName
 
     override fun hashCode(): Int {
         var result = moduleVersion.hashCode()
         result = 31 * result + moduleName.hashCode()
+        result = 31 * result + moduleUpdateMode.hashCode()
         result = 31 * result + moduleMainUrl.hashCode()
         result = 31 * result + moduleScriptUrl.hashCode()
         result = 31 * result + moduleConfigUrl.hashCode()
@@ -71,5 +75,5 @@ open class HKHybirdModuleConfiguration() : Parcelable {
         return result
     }
 
-    override fun toString(): String = "HKHybirdModuleConfiguration(moduleVersion=$moduleVersion, moduleName='$moduleName', moduleScriptUrl=$moduleScriptUrl, moduleConfigUrl='$moduleConfigUrl', moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
+    override fun toString(): String = "HybirdConfigModel(moduleVersion=$moduleVersion, moduleName='$moduleName',moduleUpdateMode='$moduleUpdateMode', moduleScriptUrl=$moduleScriptUrl, moduleConfigUrl='$moduleConfigUrl', moduleDownloadUrl='$moduleDownloadUrl', moduleUpdateStrategy=$moduleUpdateStrategy, moduleRoutesUpdateStrategy=$moduleRoutesUpdateStrategy, moduleZipMd5='$moduleZipMd5', moduleFilesMd5=$moduleFilesMd5)"
 }

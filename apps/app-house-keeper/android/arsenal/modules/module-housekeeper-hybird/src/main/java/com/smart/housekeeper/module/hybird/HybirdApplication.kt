@@ -77,7 +77,7 @@ class HybirdApplication : Application() {
             }
 
             //3: 每次程序启动时，a:所有模块执行一次检查更新 checkUpdate，b:所有模块执行一次健康体检 checkHealth
-            moduleManager?.checkUpdate()
+//            moduleManager?.checkUpdate()
         }
 
         //all config before call init

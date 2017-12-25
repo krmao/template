@@ -101,6 +101,10 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         updateManager.checkUpdate()
     }
 
+    fun checkUpdateSync() {
+        updateManager.checkUpdateSync()
+    }
+
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         updateManager.downloader = downloader
     }
@@ -366,7 +370,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.w(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
             HKLogUtil.w(TAG, "拦截到 request : $url")
-            checkUpdate()
+//            checkUpdate()
             var resourceResponse: WebResourceResponse? = null
             val localFile = getLocalFile(url)
             if (localFile?.exists() == true) {

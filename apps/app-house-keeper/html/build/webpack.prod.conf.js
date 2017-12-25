@@ -112,25 +112,35 @@ var webpackConfig = merge(baseWebpackConfig, {
         new ModuleConfigPlugin({
             rootFolder: '',
             baseInfo: {
-                moduleVersion: 1,
-                moduleName: "base",
-                moduleSchemeUrls: {
-                    // "prd": "xxxxxx",
-                    // "pre": "xxxxxx",
-                    // "sit": "xxxxxx"
+                moduleDebug: true,
+                moduleVersion: "1.0",
+                moduleName: path.basename(path.resolve(".")),
+
+                //https://h.jia.xxxpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList
+                moduleMainUrl: {
+                    "prd": "https://h.jia.xxx.com/cx/cxj/cxjappweb/" + this.moduleName + "/",
+                    "pre": "https://h.jia.xxxpre.com/cx/cxj/cxjappweb/" + this.moduleName + "/",
+                    "sit": "https://h.jia.xxxsit.com/cx/cxj/cxjappweb/" + this.moduleName + "/"
                 },
-                // moduleDownloadUrl: "xxxxxx",
+
+                moduleSchemeUrls: {
+                    "prd": "https://s1.xxx.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/",
+                    "pre": "https://s1.xxxpre.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/",
+                    "sit": "https://s1.xxxsit.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/"
+                },
+                moduleConfigUrl: "http://10.47.17.147:7776/files/module-" + this.moduleName + ".json",
+                moduleDownloadUrl: "http://10.47.17.147:7776/files/module-" + this.moduleName + "-" + this.moduleVersion + ".zip",
                 moduleUpdateStrategy: 0,
                 moduleRoutesUpdateStrategy: {
-                    // "/base": 1,
-                    // "/base2": 0,
-                    // "/base3": 1,
+                    // "/base/route1": 1,
+                    // "/base/route2": 0,
+                    // "/base/route3": 1,
                 },
             },
             input: config.build.assetsRoot,
             output: [
-                path.resolve(config.build.assetsRoot, '../../android/arsenal/modules/module-housekeeper-hybird/src/main/assets/bundle.zip'),
-                path.resolve(config.build.assetsRoot, '../../ios/arsenal/modules/module-housekeeper-hybird/assets/bundle.zip')
+                path.resolve(config.build.assetsRoot, '../../../../template/apps/app-house-keeper/android/arsenal/modules/module-housekeeper-hybird/src/main/assets/'),
+                // path.resolve(config.build.assetsRoot, '../../ios/arsenal/modules/module-housekeeper-hybird/assets/bundle.zip')
             ]
         })
     ]

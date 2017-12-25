@@ -165,7 +165,6 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
         //set color size end  ======================================================================
 
         initWebView(web_view)
-        addJavascriptInterface(web_view)
         loadUrl(web_view, mUrl, mFailureUrl)
     }
 
@@ -173,66 +172,13 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
         HKWebViewUtil.initWebView(webView)
 
         webView.setWebViewClient(object : WebViewClient() {
-
-            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError?) {
-                super.onReceivedError(view, request, error)
-                view.stopLoading()
-                if (TextUtils.isEmpty(mFailureUrl)) {
-                    webView.goBack()
-                    loading_view.showView(HKFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, if (error == null) loading_view.getDefaultText(HKFrameLoadingLayout.ViewType.NETWORK_EXCEPTION) else "error", false, true)
-                } else {
-                    view.loadUrl(mFailureUrl)
-                }
-            }
-
             @Suppress("DEPRECATION", "OverridingDeprecatedMember")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 Log.d(TAG, "shouldOverrideUrlLoading:" + url)
                 return super.shouldOverrideUrlLoading(view, url)
             }
-
-            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
-                Log.d(TAG, "onPageStarted:" + url)
-                super.onPageStarted(view, url, favicon)
-                loading_view.showView(HKFrameLoadingLayout.ViewType.LOADING)
-            }
-
-            override fun onPageFinished(view: WebView, url: String) {
-                Log.d(TAG, "onPageFinished:" + url)
-                loading_view.hideAll()
-            }
-        })
-
-        webView.setWebChromeClient(object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                Log.d(TAG, "onProgressChanged:" + newProgress)
-                loading_view.updateText(HKFrameLoadingLayout.ViewType.LOADING, loading_view.getDefaultText(HKFrameLoadingLayout.ViewType.NODATA) + " " + newProgress + "%", false, true)
-            }
-
-            @Suppress("OverridingDeprecatedMember")
-            override fun onConsoleMessage(message: String, lineNumber: Int, sourceID: String) {
-                Log.w(TAG, "#$lineNumber:$sourceID")
-                Log.d(TAG, message)
-            }
-
-            override fun onReceivedTitle(view: WebView, title: String) {
-                super.onReceivedTitle(view, title)
-                Log.d(TAG, "onReceivedTitle:" + title)
-                if (!mIsHideTitle && TextUtils.isEmpty(mTitle)) {
-                    titleBar.titleText.text = mTitle
-                }
-            }
-
-            override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
-                Log.d(TAG, "onJsAlert:" + message)
-                return super.onJsAlert(view, url, message, result)
-            }
         })
     }
-
-    @Suppress("unused_parameter")
-    protected fun addJavascriptInterface(webview: WebView) = Unit
 
     protected fun loadUrl(webView: WebView, url: String?, failureUrl: String?) =
         if (URLUtil.isValidUrl(url)) {

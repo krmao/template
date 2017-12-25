@@ -2,6 +2,7 @@ package com.smart.library.bundle
 
 import android.net.Uri
 import android.text.TextUtils
+import android.util.Log
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import com.smart.library.base.HKBaseApplication
@@ -360,10 +361,10 @@ class HKHybirdModuleManager(val moduleFullName: String) {
          */
         HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, url: String? ->
-            HKLogUtil.e(TAG, "测试是否能拦截到 shouldOverrideUrl : $url")
+            Log.e(TAG, "测试是否能拦截到 shouldOverrideUrl : $url")
 //            checkUpdate()
             HKToastUtil.show("shouldOverrideUrl:$url")
-            true
+            false
         }
 
         //html

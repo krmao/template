@@ -15,7 +15,7 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
         set(value) {
             field = value
             //当设置新的当前生效的配置信息时，更新拦截请求配置
-            moduleManager.setRequestIntercept(value)
+            moduleManager.setIntercept(value)
         }
 
     /**

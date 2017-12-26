@@ -2,6 +2,7 @@ package com.smart.library.bundle
 
 import android.app.Activity
 import android.net.Uri
+import android.os.StrictMode
 import android.text.TextUtils
 import android.util.Log
 import android.webkit.WebResourceResponse
@@ -34,6 +35,8 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     internal val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
     internal val rootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
+
+    var onLineModel: Boolean = true
 
     fun getZipFile(configuration: HKHybirdConfigModel?): File = File(rootDir, "${configuration?.moduleName}-${configuration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
     fun getUnzipDir(configuration: HKHybirdConfigModel?): File? = File(rootDir, configuration?.moduleVersion)
@@ -104,15 +107,15 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         updateManager.checkUpdate()
     }
 
-    fun checkUpdateSync() {
-        updateManager.checkUpdateSync()
+    fun checkUpdateSync(): Boolean {
+        return updateManager.checkUpdateSync()
     }
 
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         updateManager.downloader = downloader
     }
 
-    fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Unit?) -> Unit?) {
+    fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?) {
         updateManager.configer = configer
     }
 
@@ -362,9 +365,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
     }
 
-    internal fun setRequestIntercept(configuration: HKHybirdConfigModel?) {
+    internal fun setIntercept(configuration: HKHybirdConfigModel?) {
         if (configuration == null) return
-        HKLogUtil.w(TAG, "setRequestIntercept start")
+        HKLogUtil.w(TAG, "setIntercept start")
         HKLogUtil.w(TAG, "configuration : $configuration")
 
         val interceptScriptUrl = configuration.moduleScriptUrl[HKHybirdManager.EVN]
@@ -392,24 +395,45 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
             //            checkUpdate()
             onWebViewOpenPage(webViewClient)
-            true
+
+            //======================================================================================
+            // 暂时修改系统策略
+            //======================================================================================
+            val oldThreadPolicy = StrictMode.getThreadPolicy()
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+            //======================================================================================
+
+            val needUpdate = checkUpdateSync()
+            HKLogUtil.v(TAG, "needUpdate:$needUpdate")
+
+            //======================================================================================
+            // 还原系统策略
+            //======================================================================================
+            StrictMode.setThreadPolicy(oldThreadPolicy)
+            //======================================================================================
+
+            false
         }
 
         //html
-        HKLogUtil.w(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
+        HKLogUtil.v(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
             HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-            val localFile = getLocalHtmlFile(url)
-            if (localFile?.exists() == true) {
-                try {
-                    HKLogUtil.w(TAG, "返回本地文件给 WebView")
-                    resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
-                } catch (e: Exception) {
-                    HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+            if (!onLineModel) {
+                val localFile = getLocalHtmlFile(url)
+                if (localFile?.exists() == true) {
+                    try {
+                        HKLogUtil.v(TAG, "返回本地文件给 WebView")
+                        resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
+                    } catch (e: Exception) {
+                        HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+                    }
+                } else {
+                    HKLogUtil.v(TAG, "即将在线访问...")
                 }
             } else {
-                HKLogUtil.w(TAG, "即将在线访问...")
+                HKLogUtil.v(TAG, "在线模式,访问在线资源")
             }
             resourceResponse
         }
@@ -419,29 +443,33 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
             HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-            val localFile = getLocalScriptFile(url)
-            if (url != null && localFile?.exists() == true) {
-                val mimeType: String = when {
-                    url.contains(".css") -> "text/css"
-                    url.contains(".png") -> "image/png"
-                    url.contains(".js") -> "application/x-javascript"
-                    url.contains(".woff") -> "application/x-font-woff"
-                    url.contains(".html") -> "text/html"
-                    url.contains(".shtml") -> "text/html"
-                    else -> "text/html"
-                }
-                try {
-                    HKLogUtil.w(TAG, "返回本地文件给 WebView")
-                    resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
-                } catch (e: Exception) {
-                    HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+            if (!onLineModel) {
+                val localFile = getLocalScriptFile(url)
+                if (url != null && localFile?.exists() == true) {
+                    val mimeType: String = when {
+                        url.contains(".css") -> "text/css"
+                        url.contains(".png") -> "image/png"
+                        url.contains(".js") -> "application/x-javascript"
+                        url.contains(".woff") -> "application/x-font-woff"
+                        url.contains(".html") -> "text/html"
+                        url.contains(".shtml") -> "text/html"
+                        else -> "text/html"
+                    }
+                    try {
+                        HKLogUtil.v(TAG, "返回本地文件给 WebView")
+                        resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
+                    } catch (e: Exception) {
+                        HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+                    }
+                } else {
+                    HKLogUtil.w(TAG, "即将在线访问...")
                 }
             } else {
-                HKLogUtil.w(TAG, "即将在线访问...")
+                HKLogUtil.v(TAG, "在线模式,访问在线资源")
             }
             resourceResponse
         }
-        HKLogUtil.w("setRequestIntercept end")
+        HKLogUtil.v("setIntercept end")
     }
 
 }

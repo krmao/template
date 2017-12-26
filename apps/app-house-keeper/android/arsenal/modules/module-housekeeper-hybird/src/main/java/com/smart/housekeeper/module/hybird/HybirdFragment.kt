@@ -40,7 +40,7 @@ class HybirdFragment : HKBaseFragment() {
 //                    HKWebFragment.goTo(activity, "https://www.baidu.com")
 
                     HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
-                    HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
+                    //HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
                 }
             }
 

@@ -6,6 +6,7 @@ import com.smart.library.util.HKLogUtil
 import java.io.File
 import kotlin.system.exitProcess
 
+
 /**
  * 负责检查更新和下载
  *
@@ -26,7 +27,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         IMMEDIATELY;    // 实时生效
     }
 
-    var configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Unit?) -> Unit?)? = null
+    var configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null
     var downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null
     private var isDownloading = false
 
@@ -45,58 +46,79 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         }
 
         val moduleConfigUrl = moduleManager.configManager.currentConfig?.moduleConfigUrl ?: ""
-        HKLogUtil.e(TAG, "do download moduleConfig start --> $moduleConfigUrl")
+        HKLogUtil.v(TAG, "开始下载配置文件 $moduleConfigUrl")
         configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
-            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfigJsonString:$remoteConfig")
-            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfig != null?${remoteConfig != null}")
+            HKLogUtil.v(TAG, "配置文件下载成功: $remoteConfig")
             if (remoteConfig != null) {
-
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
-                HKLogUtil.w("remoteConfig.moduleDebug == ${remoteConfig.moduleDebug}")
-                HKLogUtil.w("HKHybirdManager.DEBUG == ${HKHybirdManager.DEBUG}")
                 if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybirdManager.DEBUG)) {
                     startUpdating(remoteConfig)
                 }
             }
+            true
         }
     }
 
+    /**
+     * 是否需要切换在线状态
+     *
+     * 返回 true  代表有更新,需要更新,并且切换为在线状态, 直到应用更新成功之前,都是在线,意味着即使更新下载成功,依然代表需要更新,依然使用在线状态
+     * 返回 false 代表没有更新,使用本地文件
+     */
     @Synchronized
-    fun checkUpdateSync() {
-        HKLogUtil.e(TAG, "checkUpdate start")
+    fun checkUpdateSync(): Boolean {
+        val start = System.currentTimeMillis()
+        HKLogUtil.v(TAG, "开始检查更新")
+
+        if (moduleManager.onLineModel) {
+            HKLogUtil.e(TAG, "已经是在线状态了,无需重复检测更新")
+            return true
+        }
 
         if (configer == null) {
-            HKLogUtil.e(TAG, "尚未配置config下载器，请先设置config下载器")
-            return
+            HKLogUtil.e(TAG, "尚未配置config下载器，请先设置config下载器,无需切换为在线状态")
+            return false
         }
 
         if (isDownloading) {
-            HKLogUtil.e(TAG, "正在下载更新中，在更新安装成功前不能下载其他更新 return")
-            return
+            HKLogUtil.e(TAG, "正在下载更新中，需要切换为在线状态")
+            return true
         }
 
         val moduleConfigUrl = moduleManager.configManager.currentConfig?.moduleConfigUrl ?: ""
-        HKLogUtil.e(TAG, "do download moduleConfig start --> $moduleConfigUrl")
-        configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
-            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfigJsonString:$remoteConfig")
-            HKLogUtil.e(TAG, "do download moduleConfig end <--\nremoteConfig != null?${remoteConfig != null}")
-            if (remoteConfig != null) {
+        HKLogUtil.v(TAG, "开始下载配置文件 $moduleConfigUrl")
 
+        val needUpdate = configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
+            HKLogUtil.v(TAG, "配置文件下载成功: $remoteConfig")
+            if (remoteConfig != null) {
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
-                HKLogUtil.w("remoteConfig.moduleDebug == ${remoteConfig.moduleDebug}")
-                HKLogUtil.w("HKHybirdManager.DEBUG == ${HKHybirdManager.DEBUG}")
                 if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybirdManager.DEBUG)) {
-                    startUpdating(remoteConfig)
+                    val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
+                    val localVersion = moduleManager.configManager.currentConfig?.moduleVersion?.toFloatOrNull()
+                    HKLogUtil.v("${moduleManager.moduleFullName} 当前版本:$localVersion   远程版本:$remoteVersion")
+                    if (remoteVersion != null && localVersion != null) {
+                        //版本号相等时不做任何处理，避免不必要的麻烦
+                        if (remoteVersion > localVersion) {
+                            HKLogUtil.v("检测到有新版本")
+                            return@invoke true
+                        } else if (remoteVersion < localVersion) {
+                            HKLogUtil.v("检测到需要回滚")
+                            return@invoke true
+                        }
+                    }
                 }
             }
-        }
+            return@invoke false
+        } == true
+        HKLogUtil.v(TAG, "检查更新结束: ${if (needUpdate) "检测到需要更新,请立即切换为在线状态" else "未检测到更新, 耗时: ${System.currentTimeMillis() - start}"}ms")
+        return needUpdate
     }
 
     @Synchronized
     private fun startUpdating(remoteConfig: HKHybirdConfigModel) {
-        HKLogUtil.e("startUpdating start")
+        HKLogUtil.v("开始准备下载更新的ZIP包")
         if (moduleManager.configManager.isContainedInNextConfigStack(remoteConfig)) {
             HKLogUtil.w("${moduleManager.moduleFullName} 不用重复下载，已经在下次启动生效的队列中 -->")
             return
@@ -109,11 +131,11 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
             //版本号相等时不做任何处理，避免不必要的麻烦
             if (remoteVersion > localVersion) {
-                HKLogUtil.e("${moduleManager.moduleFullName} 开始升级 -->")
-                HKLogUtil.e(TAG, "切换在线模式并且立即下载")
+                HKLogUtil.v("${moduleManager.moduleFullName} 开始升级 -->")
+                HKLogUtil.v(TAG, "切换在线模式并且立即下载")
                 download(remoteConfig)       //然后立即下载
             } else if (remoteVersion < localVersion) {
-                HKLogUtil.e("${moduleManager.moduleFullName} 开始回滚 -->")
+                HKLogUtil.v("${moduleManager.moduleFullName} 开始回滚 -->")
 
                 moduleManager.configManager.saveConfigNext(remoteConfig)
                 //回滚
@@ -122,9 +144,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                 download(remoteConfig)       //然后立即下载
             }
         } else {
-            HKLogUtil.e(TAG, "remoteVersion:$remoteVersion or localVersion:$localVersion is null !")
+            HKLogUtil.e(TAG, "无需下载 remoteVersion:$remoteVersion or localVersion:$localVersion is null !")
         }
-        HKLogUtil.e("startUpdating end")
     }
 
     /**

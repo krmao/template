@@ -4,6 +4,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKReflectUtil
 import java.lang.reflect.InvocationTargetException
@@ -20,7 +21,7 @@ object HKHybirdBridge {
     val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
-    private val schemeMap: HashMap<String, (webView: WebView?, url: String?) -> Boolean> = hashMapOf()
+    private val schemeMap: HashMap<String, (webView: WebView?, webViewClient: WebViewClient?, url: String?) -> Boolean> = hashMapOf()
     private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
@@ -43,7 +44,7 @@ object HKHybirdBridge {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { webView: WebView?, schemeUrlString: String? ->
+        schemeMap.put(scheme, { webView: WebView?, _: WebViewClient?, schemeUrlString: String? ->
             val schemeUrl = Uri.parse(schemeUrlString)
             val pathSegments = schemeUrl?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
@@ -115,7 +116,7 @@ object HKHybirdBridge {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, url: String?) -> Boolean) {
+    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, webViewClient: WebViewClient?, url: String?) -> Boolean) {
         schemeMap.put(schemeUrlString, intercept)
     }
 
@@ -128,16 +129,16 @@ object HKHybirdBridge {
         schemeMap.remove(schemePrefix)
     }*/
 
-    fun shouldOverrideUrlLoading(webView: WebView?, uriString: String?): Boolean {
+    fun shouldOverrideUrlLoading(webView: WebView?, webViewClient: WebViewClient?, uriString: String?): Boolean {
         if (uriString == null)
             return false
         val list = schemeMap.filterKeys { uriString.startsWith(it) }.entries
 
         //根据 key 字符串的长度，越长的越先匹配
         for (entry in list.sortedByDescending { it.key.length }) {
-            HKLogUtil.w(TAG, "[检测]开始 本URL是否被拦截 匹配:${entry.key}")
-            val intercept = entry.value.invoke(webView, uriString)
-            HKLogUtil.w(TAG, "[检测]结束 -> ${if (intercept) "被拦截" else "没有被拦截"}")
+            HKLogUtil.v(TAG, "shouldOverrideUrlLoading [检测开始] 检测本URL是否被拦截, 匹配: ${entry.key}")
+            val intercept = entry.value.invoke(webView, webViewClient, uriString)
+            HKLogUtil.v(TAG, "shouldOverrideUrlLoading [检测结束] 本URL ${if (intercept) "被拦截 " else "未被拦截 "}")
             return if (intercept) true else continue
         }
         return false
@@ -164,7 +165,7 @@ object HKHybirdBridge {
 
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
-    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, urlString: String? ->
+    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, _: WebViewClient?, urlString: String? ->
         val url = Uri.parse(urlString)
         val hashCode = url?.getQueryParameter("hashcode")
         callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))

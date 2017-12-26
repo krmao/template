@@ -1,6 +1,8 @@
 package com.smart.library.bundle
 
 import android.text.TextUtils
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.cache.HKCacheManager
@@ -167,5 +169,11 @@ object HKHybirdManager {
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================<<<<<<<<<<<<<<<<<<<<")
         HKLogUtil.e(TAG, "**  CHECK HEALTH ING  耗时: ${System.currentTimeMillis() - start}ms")
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================<<<<<<<<<<<<<<<<<<<<")
+    }
+
+    fun onWebViewClose(webViewClient: WebViewClient?) {
+        MODULES.value.forEach {
+            it.value.onWebViewClose(webViewClient)
+        }
     }
 }

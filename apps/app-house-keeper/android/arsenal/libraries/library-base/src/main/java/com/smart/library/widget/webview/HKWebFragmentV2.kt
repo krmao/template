@@ -48,6 +48,33 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
     protected val titleBar: HKTitleBar by lazy {
         title_bar
     }
+    protected var webViewClient: HKWebViewClient = object : HKWebViewClient() {
+
+        @Suppress("OverridingDeprecatedMember", "DEPRECATION")
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            titleBar.right0Btn.text = ""
+            return super.shouldOverrideUrlLoading(view, url)
+        }
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+            title_bar?.progressBar?.progress = 0
+            title_bar?.progressBar?.visibility = View.VISIBLE
+        }
+
+        override fun onPageFinished(webView: WebView?, url: String?) {
+            super.onPageFinished(webView, url)
+            title_bar?.progressBar?.progress = 100
+            title_bar?.progressBar?.visibility = View.GONE
+
+            if (hideBackAtFirstPage) {
+                if (web_view.canGoBack())
+                    title_bar?.left0BgView?.visibility = View.VISIBLE
+                else
+                    title_bar?.left0BgView?.visibility = GONE
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hk_fragment_webview_v2, container, false)
 
@@ -56,33 +83,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
         HKWebViewUtil.initWebView(web_view)
         titleBar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
 
-        webView.setWebViewClient(object : HKWebViewClient() {
-
-            @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                titleBar.right0Btn.text = ""
-                return super.shouldOverrideUrlLoading(view, url)
-            }
-
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                title_bar?.progressBar?.progress = 0
-                title_bar?.progressBar?.visibility = View.VISIBLE
-            }
-
-            override fun onPageFinished(webView: WebView?, url: String?) {
-                super.onPageFinished(webView, url)
-                title_bar?.progressBar?.progress = 100
-                title_bar?.progressBar?.visibility = View.GONE
-
-                if (hideBackAtFirstPage) {
-                    if (web_view.canGoBack())
-                        title_bar?.left0BgView?.visibility = View.VISIBLE
-                    else
-                        title_bar?.left0BgView?.visibility = GONE
-                }
-            }
-        })
+        webView.setWebViewClient(webViewClient)
 
         webView.setWebChromeClient(object : HKWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
@@ -107,6 +108,11 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
         if (URLUtil.isValidUrl(url))
             web_view?.loadUrl(url)
+    }
+
+    override fun onDestroy() {
+        webViewClient.onDestroy()
+        super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {

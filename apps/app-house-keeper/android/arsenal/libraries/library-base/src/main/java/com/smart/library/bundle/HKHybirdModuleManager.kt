@@ -1,10 +1,12 @@
 package com.smart.library.bundle
 
+import android.app.Activity
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.*
 import com.smart.library.util.hybird.HKHybirdBridge
@@ -341,6 +343,25 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         return localFile
     }
 
+    private val webViewClientSet: MutableSet<WebViewClient?> = mutableSetOf()
+
+    fun isModuleOpenNow(): Boolean {
+        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
+        return !webViewClientSet.isEmpty()
+    }
+
+    fun onWebViewOpenPage(webViewClient: WebViewClient?) {
+        if (webViewClient != null)
+            webViewClientSet.add(webViewClient)
+        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
+    }
+
+    fun onWebViewClose(webViewClient: WebViewClient?) {
+        if (webViewClient != null)
+            webViewClientSet.remove(webViewClient)
+        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
+    }
+
     internal fun setRequestIntercept(configuration: HKHybirdConfigModel?) {
         if (configuration == null) return
         HKLogUtil.w(TAG, "setRequestIntercept start")
@@ -368,11 +389,10 @@ class HKHybirdModuleManager(val moduleFullName: String) {
          * http://www.jianshu.com/p/3474cb8096da
          */
         HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
-        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, url: String? ->
-            Log.e(TAG, "测试是否能拦截到 shouldOverrideUrl : $url")
-//            checkUpdate()
-            HKToastUtil.show("shouldOverrideUrl:$url")
-            false
+        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
+            //            checkUpdate()
+            onWebViewOpenPage(webViewClient)
+            true
         }
 
         //html

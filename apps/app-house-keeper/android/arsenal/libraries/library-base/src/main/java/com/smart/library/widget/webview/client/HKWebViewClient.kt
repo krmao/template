@@ -35,7 +35,13 @@ open class HKWebViewClient : WebViewClient() {
 
     init {
         //每次浏览器启动，执行一次健康体检
+        Log.d(HKHybirdBridge.TAG, "每次浏览器启动，执行一次健康体检")
         HKHybirdManager.checkHealth()
+    }
+
+    open fun onDestroy() {
+        Log.d(HKHybirdBridge.TAG, "每次浏览器关闭，提前删除 webView 的强引用,避免内存泄露")
+        HKHybirdManager.onWebViewClose(this)
     }
 
     /**
@@ -43,7 +49,7 @@ open class HKWebViewClient : WebViewClient() {
      */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         Log.d(HKHybirdBridge.TAG, "shouldOverrideUrlLoading: $url")
-        return HKHybirdBridge.shouldOverrideUrlLoading(view, url)
+        return HKHybirdBridge.shouldOverrideUrlLoading(view, this, url)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

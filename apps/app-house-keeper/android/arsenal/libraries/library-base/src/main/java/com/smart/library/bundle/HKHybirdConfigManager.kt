@@ -40,7 +40,7 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
                             HKFileUtil.deleteDirectory(moduleManager.getUnzipDir(tmpConfig))        //删除 unzipDir
                         }
                     }
-                    configList.add(0,destConfig)
+                    configList.add(0, destConfig)
                     saveConfig(configList)  //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
                 } else {
                     saveConfig(destConfig)

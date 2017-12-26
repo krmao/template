@@ -135,14 +135,10 @@ object HKHybirdBridge {
 
         //根据 key 字符串的长度，越长的越先匹配
         for (entry in list.sortedByDescending { it.key.length }) {
-            HKLogUtil.w(TAG, "[0] do intercept -> ${entry.key}")
+            HKLogUtil.w(TAG, "[检测]开始 本URL是否被拦截 匹配:${entry.key}")
             val intercept = entry.value.invoke(webView, uriString)
-            HKLogUtil.w(TAG, "[1] do intercept result ->  $intercept")
-            return if (intercept) {
-                true
-            } else {
-                continue
-            }
+            HKLogUtil.w(TAG, "[检测]结束 -> ${if (intercept) "被拦截" else "没有被拦截"}")
+            return if (intercept) true else continue
         }
         return false
     }

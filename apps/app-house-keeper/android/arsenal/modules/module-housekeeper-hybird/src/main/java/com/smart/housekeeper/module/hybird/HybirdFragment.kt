@@ -2,7 +2,6 @@ package com.smart.housekeeper.module.hybird
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import com.smart.library.base.HKBaseFragment
 import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.util.HKRandomUtil
 import com.smart.library.widget.webview.HKWebFragment
-import com.smart.library.widget.webview.HKWebFragmentV2
 import kotlinx.android.synthetic.main.hybird_fragment.*
 
 @Suppress("unused")
@@ -33,13 +31,16 @@ class HybirdFragment : HKBaseFragment() {
 
             textView.setOnClickListener {
                 entry.value.checkHealth { _, configuration ->
-                    var url = configuration?.moduleMainUrl?.get(HKHybirdManager.EVN)!!
-                    url += "index.shtml#/cardList"
-                    Log.e("url", url)
-//                    HybirdWebFragment.goTo(activity, url)
-//                    HKWebFragmentV2.goTo(activity, url)
-                    HKWebFragment.goTo(activity, url)
-                    HKWebFragment.goTo(activity, "http://www.baidu.com")
+                    //                    var url = configuration?.moduleMainUrl?.get(HKHybirdManager.EVN)!!
+//                    url += "index.shtml"
+//                    HKWebFragment.goTo(activity, url)
+//                    url += "#/cardList"
+//                    HKWebFragment.goTo(activity, "http://www.chexiang.com")
+//                    HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
+//                    HKWebFragment.goTo(activity, "https://www.baidu.com")
+
+                    HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
+                    HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
                 }
             }
 

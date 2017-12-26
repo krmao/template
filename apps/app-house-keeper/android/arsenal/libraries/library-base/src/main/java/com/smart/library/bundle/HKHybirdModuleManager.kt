@@ -300,20 +300,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
      * interceptMainUrl == "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base"
      * localFilePath    == unzipDir/example.shtml
      *
-
      */
     fun getLocalFile(url: String?): File? {
-        var localFile: File? = null
-        if (url?.isNotBlank() == true) {
-            val scheme = Uri.parse(url)?.scheme?.trim()
-            if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = configManager.currentConfig?.moduleMainUrl?.get(HKHybirdManager.EVN)
-                if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringBefore("#", url).split("/").last())
-                }
-            }
-        }
-        return localFile
+        return getLocalHtmlFile(url) ?: getLocalScriptFile(url)
     }
 
     fun getLocalHtmlFile(url: String?): File? {
@@ -323,10 +312,14 @@ class HKHybirdModuleManager(val moduleFullName: String) {
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
                 val mainBaseUrl = configManager.currentConfig?.moduleMainUrl?.get(HKHybirdManager.EVN)
                 if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringBefore("#", url).split("/").last())
+                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
+                        HKLogUtil.v(TAG, "检测到本地文件路径=${it.absolutePath}")
+                        it.exists()
+                    }
                 }
             }
         }
+        HKLogUtil.v(TAG, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
         return localFile
     }
 
@@ -335,21 +328,36 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         if (url?.isNotBlank() == true) {
             val scheme = Uri.parse(url)?.scheme?.trim()
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = configManager.currentConfig?.moduleMainUrl?.get(HKHybirdManager.EVN)
+                val mainBaseUrl = configManager.currentConfig?.moduleScriptUrl?.get(HKHybirdManager.EVN)
                 if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringBefore("#", url).split("/").last())
+                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringAfter(mainBaseUrl)).takeIf {
+                        HKLogUtil.v(TAG, "检测到本地文件路径=${it.absolutePath}")
+                        it.exists()
+                    }
                 }
             }
         }
+        HKLogUtil.v(TAG, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
         return localFile
     }
 
     internal fun setRequestIntercept(configuration: HKHybirdConfigModel?) {
+        if (configuration == null) return
         HKLogUtil.w(TAG, "setRequestIntercept start")
         HKLogUtil.w(TAG, "configuration : $configuration")
-        val interceptScriptUrl = configuration?.moduleScriptUrl?.get(HKHybirdManager.EVN) ?: return
-        val interceptMainUrl = configuration.moduleMainUrl.get(HKHybirdManager.EVN) ?: return
-        val unzipDir = getUnzipDir(configuration)
+
+        val interceptScriptUrl = configuration.moduleScriptUrl[HKHybirdManager.EVN]
+        if (interceptScriptUrl == null || interceptScriptUrl.isBlank()) {
+            HKLogUtil.e(TAG, "interceptScriptUrl == null")
+            return
+        }
+
+        val interceptMainUrl = configuration.moduleMainUrl[HKHybirdManager.EVN]
+
+        if (interceptMainUrl == null || interceptMainUrl.isBlank()) {
+            HKLogUtil.e(TAG, "interceptMainUrl == null")
+            return
+        }
 
         HKHybirdBridge.removeScheme(interceptMainUrl)
         HKHybirdBridge.removeRequest(interceptMainUrl)
@@ -370,16 +378,18 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         //html
         HKLogUtil.w(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
-            HKLogUtil.w(TAG, "拦截到 request : $url")
-//            checkUpdate()
+            HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-            val localFile = getLocalFile(url)
+            val localFile = getLocalHtmlFile(url)
             if (localFile?.exists() == true) {
                 try {
+                    HKLogUtil.w(TAG, "返回本地文件给 WebView")
                     resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
                 } catch (e: Exception) {
-                    HKLogUtil.e(TAG, "**** do intercept request ? false **** ", e)
+                    HKLogUtil.e(TAG, "new WebResourceResponse error", e)
                 }
+            } else {
+                HKLogUtil.w(TAG, "即将在线访问...")
             }
             resourceResponse
         }
@@ -387,54 +397,28 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.w(TAG, "interceptScriptUrl : $interceptScriptUrl")
         //css,js,image
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
+            HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-//            if (!onLineMode) {
-            if (!TextUtils.isEmpty(url)) {
-                val requestUrl = Uri.parse(url)
-                val scheme = requestUrl?.scheme?.trim()
-                if (requestUrl != null && ("http".equals(scheme, true) || "https".equals(scheme, true))) {
-                    if (url!!.contains(interceptScriptUrl, true)) {
-
-                        val requestUrlString = requestUrl.toString()
-
-                        val mimeType: String = when {
-                            requestUrlString.contains(".css") -> "text/css"
-                            requestUrlString.contains(".png") -> "image/png"
-                            requestUrlString.contains(".js") -> "application/x-javascript"
-                            requestUrlString.contains(".woff") -> "application/x-font-woff"
-                            requestUrlString.contains(".html") -> "text/html"
-                            requestUrlString.contains(".shtml") -> "text/html"
-                            else -> "text/html"
-                        }
-                        val tmpPath = requestUrlString
-                            .replace(interceptScriptUrl, "")
-                            .replace("https://", "")
-                            .replace("http://", "")
-                        val localPath = unzipDir?.absolutePath + tmpPath
-
-                        val localFileExists = File(localPath).exists()
-                        HKLogUtil.e(TAG, "**** do intercept request ? $localFileExists **** [originPath: $requestUrlString], [localPath: $localPath]")
-                        if (localFileExists) {
-                            try {
-                                resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localPath))
-                            } catch (e: Exception) {
-                                HKLogUtil.e(TAG, "**** do intercept request ? false **** ", e)
-                            }
-                        } else {
-                            HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], [localPath(exist?$localFileExists): $localPath]")
-                        }
-                    } else {
-                        HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], interceptMainUrl != requestUrlString")
-                    }
-                } else {
-                    HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], requestUrl ==null || scheme != http && scheme != https")
+            val localFile = getLocalScriptFile(url)
+            if (url != null && localFile?.exists() == true) {
+                val mimeType: String = when {
+                    url.contains(".css") -> "text/css"
+                    url.contains(".png") -> "image/png"
+                    url.contains(".js") -> "application/x-javascript"
+                    url.contains(".woff") -> "application/x-font-woff"
+                    url.contains(".html") -> "text/html"
+                    url.contains(".shtml") -> "text/html"
+                    else -> "text/html"
+                }
+                try {
+                    HKLogUtil.w(TAG, "返回本地文件给 WebView")
+                    resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
+                } catch (e: Exception) {
+                    HKLogUtil.e(TAG, "new WebResourceResponse error", e)
                 }
             } else {
-                HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], url is empty")
+                HKLogUtil.w(TAG, "即将在线访问...")
             }
-//            } else {
-//                HKLogUtil.e(TAG, "**** do intercept request ? false **** [originPath: $url], [interceptHost: $interceptScriptUrl], onLineMode now ...")
-//            }
             resourceResponse
         }
         HKLogUtil.w("setRequestIntercept end")

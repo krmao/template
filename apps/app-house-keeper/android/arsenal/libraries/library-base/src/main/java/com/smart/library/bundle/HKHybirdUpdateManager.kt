@@ -122,9 +122,9 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
                             if (remoteConfig.moduleUpdateMode == UpdateStrategy.ONLINE) {
                                 moduleManager.onLineModel = true
-                                HKLogUtil.v("立即切换为在线模式")
+                                HKLogUtil.e("立即切换为在线模式")
                             } else {
-                                HKLogUtil.v("无需切换为在线模式")
+                                HKLogUtil.e("无需切换为在线模式")
                             }
                             download(remoteConfig)
                             return@invoke true

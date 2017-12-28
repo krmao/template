@@ -68,7 +68,7 @@ class HKHybirdModuleManager(val moduleName: String) {
             HKLogUtil.w(moduleName, "checkHealth async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
         } else {
             callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-            HKLogUtil.e(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.w(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
             HKLogUtil.w(moduleName, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
         }
     }
@@ -101,9 +101,9 @@ class HKHybirdModuleManager(val moduleName: String) {
 
         val configList = configManager.fitNextConfigsInfo()
 
-        HKLogUtil.w(moduleName, "检测到当前可被发现的所有本地配置信息为: ${configList.map { it.moduleVersion }}")
+        HKLogUtil.e(moduleName, "检测到当前可被发现的所有本地配置信息为: ${configList.map { it.moduleVersion }}")
         if (configList.isNotEmpty()) {
-            HKLogUtil.w(moduleName, "检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
+            HKLogUtil.v(moduleName, "检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
 
             //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
             val iterate = configList.listIterator()
@@ -237,7 +237,7 @@ class HKHybirdModuleManager(val moduleName: String) {
                 val localFile = getLocalHtmlFile(currentConfig, url)
                 if (localFile?.exists() == true) {
                     try {
-                        HKLogUtil.v(currentConfig.moduleName, "执行伪造本地资源")
+                        HKLogUtil.v(currentConfig.moduleName, "执行伪造本地资源 返回给 webView")
                         resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
                     } catch (e: Exception) {
                         HKLogUtil.e(currentConfig.moduleName, "伪造本地资源出错", e)
@@ -403,11 +403,11 @@ class HKHybirdModuleManager(val moduleName: String) {
                         val isFileMd5Valid = fileMd5 == rightMd5
                         if (!isFileMd5Valid)
                             invalidFilesNum++
-                        HKLogUtil.w(logTag, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
+                        HKLogUtil.v(logTag, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
                     }
                     success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
                 }
-                HKLogUtil.w(logTag, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
+                HKLogUtil.v(logTag, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
             } else {
                 HKLogUtil.e(logTag, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
             }
@@ -441,13 +441,12 @@ class HKHybirdModuleManager(val moduleName: String) {
                     val mainBaseUrl = config?.moduleMainUrl?.get(HKHybirdManager.EVN)
                     if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
                         localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
-                            HKLogUtil.v(config.moduleName, "检测到本地文件路径=${it.absolutePath}")
                             it.exists()
                         }
                     }
                 }
             }
-            HKLogUtil.v(config?.moduleName, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
+            HKLogUtil.v(config?.moduleName, "检测到本地文件(${if (localFile == null) " 不存在 " else " 存在 , path=${localFile.absolutePath}"})")
             return localFile
         }
 

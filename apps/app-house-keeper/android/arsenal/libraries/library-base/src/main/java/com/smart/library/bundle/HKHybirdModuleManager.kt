@@ -36,7 +36,13 @@ class HKHybirdModuleManager(val moduleFullName: String) {
 
     internal val rootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
 
-    var onLineModel: Boolean = true
+    /**
+     * 1: 检测到有新的版本变化,开始异步下载更新,立即切换为在线模式
+     * 2: 更新时机必须在浏览器加载本模块之前,如果本模块并没有在浏览器中打开,则直接更新,如果已经打开,则一直使用在线模式
+     * 3: 如果已经是在线模式,则不执行重复检查更新,不执行重复的健康体检
+     * 4: 重启app或者执行正式更新替换之前,检查更新包的完整性
+     */
+    var onLineModel: Boolean = false
 
     fun getZipFile(configuration: HKHybirdConfigModel?): File = File(rootDir, "${configuration?.moduleName}-${configuration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
     fun getUnzipDir(configuration: HKHybirdConfigModel?): File? = File(rootDir, configuration?.moduleVersion)
@@ -366,9 +372,9 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     }
 
     internal fun setIntercept(configuration: HKHybirdConfigModel?) {
+        HKLogUtil.v("设置拦截器开始: $configuration")
+
         if (configuration == null) return
-        HKLogUtil.w(TAG, "setIntercept start")
-        HKLogUtil.w(TAG, "configuration : $configuration")
 
         val interceptScriptUrl = configuration.moduleScriptUrl[HKHybirdManager.EVN]
         if (interceptScriptUrl == null || interceptScriptUrl.isBlank()) {
@@ -418,22 +424,22 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         //html
         HKLogUtil.v(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
+            HKLogUtil.v(TAG, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
             if (!onLineModel) {
                 val localFile = getLocalHtmlFile(url)
                 if (localFile?.exists() == true) {
                     try {
-                        HKLogUtil.v(TAG, "返回本地文件给 WebView")
+                        HKLogUtil.v(TAG, "执行伪造本地资源")
                         resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
                     } catch (e: Exception) {
-                        HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+                        HKLogUtil.e(TAG, "伪造本地资源出错", e)
                     }
                 } else {
-                    HKLogUtil.v(TAG, "即将在线访问...")
+                    HKLogUtil.v(TAG, "系统检测到本地文件不存在,访问在线资源")
                 }
             } else {
-                HKLogUtil.v(TAG, "在线模式,访问在线资源")
+                HKLogUtil.v(TAG, "系统检测到当前为在线模式,访问在线资源")
             }
             resourceResponse
         }
@@ -441,7 +447,7 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         HKLogUtil.w(TAG, "interceptScriptUrl : $interceptScriptUrl")
         //css,js,image
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(TAG, "拦截到资源访问请求: $url")
+            HKLogUtil.v(TAG, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
             if (!onLineModel) {
                 val localFile = getLocalScriptFile(url)
@@ -456,20 +462,20 @@ class HKHybirdModuleManager(val moduleFullName: String) {
                         else -> "text/html"
                     }
                     try {
-                        HKLogUtil.v(TAG, "返回本地文件给 WebView")
+                        HKLogUtil.v(TAG, "执行伪造本地资源")
                         resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
                     } catch (e: Exception) {
-                        HKLogUtil.e(TAG, "new WebResourceResponse error", e)
+                        HKLogUtil.e(TAG, "伪造本地资源出错", e)
                     }
                 } else {
-                    HKLogUtil.w(TAG, "即将在线访问...")
+                    HKLogUtil.v(TAG, "系统检测到本地文件不存在,访问在线资源")
                 }
             } else {
-                HKLogUtil.v(TAG, "在线模式,访问在线资源")
+                HKLogUtil.v(TAG, "系统检测到当前为在线模式,访问在线资源")
             }
             resourceResponse
         }
-        HKLogUtil.v("setIntercept end")
+        HKLogUtil.v("设置拦截器结束")
     }
 
 }

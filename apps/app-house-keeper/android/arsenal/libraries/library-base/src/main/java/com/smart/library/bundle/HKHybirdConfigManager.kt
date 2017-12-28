@@ -97,6 +97,7 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
             configStack.remove(configuration)
         configStack.push(configuration)
         HKPreferencesUtil.putList(KEY_HYBIRD_CONFIG_NEXT, configStack)
+        HKLogUtil.v(moduleManager.moduleName, "保存 需要在下次打开本模块之前生效的 配置信息")
     }
 
     /**
@@ -104,8 +105,8 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
      */
     @Synchronized
     internal fun clearConfigNext() {
-        HKLogUtil.v(moduleManager.moduleName, "清空下次启动生效的配置信息")
         HKPreferencesUtil.putJsonString(KEY_HYBIRD_CONFIG_NEXT, Stack<HKHybirdConfigModel>())
+        HKLogUtil.v(moduleManager.moduleName, "清空下次启动生效的配置信息")
     }
 
     @Synchronized

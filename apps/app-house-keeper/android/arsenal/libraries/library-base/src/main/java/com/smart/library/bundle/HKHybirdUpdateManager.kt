@@ -126,11 +126,11 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                             } else {
                                 HKLogUtil.v("无需切换为在线模式")
                             }
-                            //download(remoteConfig)
+                            download(remoteConfig)
                             return@invoke true
                         } else if (remoteVersion < localVersion) {
                             HKLogUtil.v("系统检测到需要回滚")
-                            moduleManager.configManager.saveConfigNext(remoteConfig)
+                            download(remoteConfig)
                             return@invoke true
                         }
                     }
@@ -211,10 +211,16 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     }
 
     private fun download(remoteConfig: HKHybirdConfigModel) {
-        HKLogUtil.e(moduleManager.moduleName, "下载开始: ${remoteConfig.moduleDownloadUrl}")
+        HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始: ${remoteConfig.moduleDownloadUrl}")
 
-        if (moduleManager.configManager.isContainedInNextConfigStack(remoteConfig)) {
-            HKLogUtil.w("${moduleManager.moduleName} 不用重复下载，已经在下次启动生效的队列中 -->")
+        val nextConfigStack = moduleManager.configManager.getNextConfigStack()
+        if (nextConfigStack.contains(remoteConfig)) {
+            if (nextConfigStack.peek() != remoteConfig) {
+                HKLogUtil.w(moduleManager.moduleName, "系统检测到 当前任务已经加载好并且已经保存在下次启动生效的对战里面, 但是不在栈顶 , nextConfigStack=$nextConfigStack , 即将执行重置堆栈")
+                moduleManager.configManager.saveConfigNext(remoteConfig)
+            } else {
+                HKLogUtil.w(moduleManager.moduleName, "系统检测到 当前任务已经加载好并且已经保存在下次启动生效的对战里面 , 无需重复下载 return , nextConfigStack=$nextConfigStack")
+            }
             return
         }
 
@@ -222,29 +228,30 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
         //1: 如果即将下载的版本 本地解压包存在切校验正确,zip即使不存在也无需下载
         if (HKHybirdModuleManager.isLocalFilesValid(remoteConfig)) {
-            HKLogUtil.e(moduleManager.moduleName, "do download zip end <-- local file valid")
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到 更新zip包本地已经存在,且校验成功,无需执行下载, 开始执行后续操作")
             completeUpdating(remoteConfig)
             return
         }
 
         if (downloader == null) {
             isDownloading = false
-            HKLogUtil.e(moduleManager.moduleName, "尚未配置zip下载器，请先设置模块的zip下载器")
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到 尚未配置zip下载器，请先设置模块的zip下载器, return")
             return
         }
 
         isDownloading = true
+        HKLogUtil.v(moduleManager.moduleName, "开始进行网络下载 ...")
         //如果即将下载的版本 本地解压包不存在或者校验失败,执行下载zip
         downloader?.invoke(remoteConfig.moduleDownloadUrl, zipFile) { file: File? ->
-            HKLogUtil.e(moduleManager.moduleName, "do download zip end <-- file:${file?.path}")
+            HKLogUtil.e(moduleManager.moduleName, "下载更新包结束 :${file?.path}")
 
             if (HKHybirdModuleManager.isLocalFilesValid(remoteConfig)) {
-                HKLogUtil.e(moduleManager.moduleName, "do download zip end <-- local file valid")
+                HKLogUtil.e(moduleManager.moduleName, "更新包 & 解压后的文件夹 校验成功, 开始执行后续操作")
                 completeUpdating(remoteConfig)
             } else {
                 isDownloading = false
-                //moduleManager.onLineMode = false //todo 线上版本是否完备？
-                HKLogUtil.e(moduleManager.moduleName, "do download zip end <-- local file not valid !")
+                HKLogUtil.e(moduleManager.moduleName, "更新包 & 解压后的文件夹 校验失败, 请检查 更新包已经配置信息是否完善,完整,MD5值是否一一对应 ! 本次更新失败,操作结束 !!!")
+                HKLogUtil.e(moduleManager.moduleName, "注意 虽然本次操作结束, 但是仍然是在线模式, 因为服务端仍然会返回新版本,避免重复操作! 只有当本模块在浏览器中全部退出的时候,重置 onLineMode 为 false !!!")
             }
         }
     }

@@ -12,8 +12,8 @@
         "pre": "https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/buyMealCard/",
         "sit": "https://s1.chexiangsit.com/msweb02/cx/cxj/cxjappweb/buyMealCard/"
     },
-    "moduleConfigUrl": "http://10.47.16.49:8080/background/files/buyMealCard.json",
-    "moduleDownloadUrl": "http://10.47.16.49:8080/background/files/buyMealCard-1.0.zip",
+    "moduleConfigUrl": "http://10.47.58.14:8080/background/files/buyMealCard.json",
+    "moduleDownloadUrl": "http://10.47.58.14:8080/background/files/buyMealCard-1.0.zip",
     "moduleUpdateStrategy": 0,
     "moduleRoutesUpdateStrategy": {},
     "moduleZipMd5": "87f9db1eb5f0fc83a6c2a17688433202",

@@ -58,11 +58,14 @@ class HKHybirdModuleManager(val moduleName: String) {
      *      }
      */
     @Synchronized
-    fun checkHealth(callback: ((localUnzipDir: File?, configuration: HKHybirdConfigModel?) -> Unit)? = null) {
+    fun checkHealth(callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
         HKLogUtil.w(moduleName, "健康体检 开始")
         val start = System.currentTimeMillis()
-        if (configManager.currentConfig == null || !isLocalFilesValid(configManager.currentConfig)) {
-            HKLogUtil.w(moduleName, "健康体检 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作")
+
+        val isConfigNull = configManager.currentConfig == null
+        val isLocalFilesValid = isLocalFilesValid(configManager.currentConfig)
+        if (isConfigNull || !isLocalFilesValid(configManager.currentConfig)) {
+            HKLogUtil.w(moduleName, "健康体检 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作 , isConfigNull==$isConfigNull , isLocalFilesValid==$isLocalFilesValid")
             Observable.fromCallable {
                 fitConfigsInfo()
             }
@@ -335,21 +338,23 @@ class HKHybirdModuleManager(val moduleName: String) {
          * 注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件
          */
         fun isLocalFilesValid(config: HKHybirdConfigModel?): Boolean {
-            HKLogUtil.v(config?.moduleName, "文件校验开始(注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件): ${config?.moduleName}:${config?.moduleVersion}")
-            val success: Boolean
+            HKLogUtil.v(config?.moduleName, "文件校验开始(注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件): 模块名称=${config?.moduleName} , 模块版本=${config?.moduleVersion}")
+            var success = false
             val start = System.currentTimeMillis()
-            val zipFile = getZipFile(config)
-            val unzipDir = getUnzipDir(config)
-            if (!verifyLocalFiles(unzipDir, config?.moduleFilesMd5, config?.moduleName)) {
-                if (!verifyZip(zipFile, config?.moduleZipMd5)) {
-                    success = false
+            if (config != null) {
+                val zipFile = getZipFile(config)
+                val unzipDir = getUnzipDir(config)
+                if (!verifyLocalFiles(unzipDir, config.moduleFilesMd5, config.moduleName)) {
+                    if (!verifyZip(zipFile, config.moduleZipMd5)) {
+                        success = false
+                    } else {
+                        success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
+                    }
                 } else {
-                    success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
+                    success = true
                 }
-            } else {
-                success = true
             }
-            HKLogUtil.v(config?.moduleName, "文件校验结束: ${config?.moduleName}:${config?.moduleVersion} , verify ${if (success) "success" else "failure"} , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.v(config?.moduleName, "文件校验结束: ${config?.moduleName}:${config?.moduleVersion} , 校验 ${if (success) "成功" else "失败"} , 耗时: ${System.currentTimeMillis() - start}ms")
             return success
         }
 

@@ -30,17 +30,8 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-                entry.value.checkHealth { _, configuration ->
-                    //                    var url = configuration?.moduleMainUrl?.get(HKHybirdManager.EVN)!!
-//                    url += "index.shtml"
-//                    HKWebFragment.goTo(activity, url)
-//                    url += "#/cardList"
-//                    HKWebFragment.goTo(activity, "http://www.chexiang.com")
-//                    HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
-//                    HKWebFragment.goTo(activity, "https://www.baidu.com")
-
+                entry.value.checkHealth { _, _ ->
                     HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
-                    //HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList")
                 }
             }
 

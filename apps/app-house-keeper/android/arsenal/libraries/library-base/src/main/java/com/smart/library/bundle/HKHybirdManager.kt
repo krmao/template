@@ -159,7 +159,7 @@ object HKHybirdManager {
         Observable.fromCallable {
             MODULES.value.forEach {
                 HKLogUtil.w(TAG, "**  --> MODULE CHECK HEALTH START: " + it.key)
-                it.value.checkHealth()
+                //it.value.checkHealth()
             }
 
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")

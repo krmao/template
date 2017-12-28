@@ -44,17 +44,25 @@ class HKHybirdModuleManager(val moduleName: String) {
     var onLineModel: Boolean = false
 
     /**
-     * 健康体检，检查模块完整性
-     * 每次打开浏览器时执行
      *
-     * 由于 c 是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
+     * 健康体检，检查模块完整性
+     *
+     * 注意: 执行一次本方法,才能添加资源拦截器,不然无法使用本地资源,无法拦截URL,所以万无一失的做法是每次都调用下面提到的案例方式加载URL,能确保条件充分
+     *
+     * 执行时机:
+     *
+     * 案例:
+     *
+     *      checkHealth { _, _ ->
+     *          HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
+     *      }
      */
     @Synchronized
     fun checkHealth(callback: ((localUnzipDir: File?, configuration: HKHybirdConfigModel?) -> Unit)? = null) {
-        HKLogUtil.w(moduleName, "checkHealth >>>>>>>>>>===============>>>>>>>>>>")
+        HKLogUtil.w(moduleName, "健康体检 开始")
         val start = System.currentTimeMillis()
         if (configManager.currentConfig == null || !isLocalFilesValid(configManager.currentConfig)) {
-
+            HKLogUtil.w(moduleName, "健康体检 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作")
             Observable.fromCallable {
                 fitConfigsInfo()
             }
@@ -62,14 +70,12 @@ class HKHybirdModuleManager(val moduleName: String) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-                    HKLogUtil.e(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
-                    HKLogUtil.w(moduleName, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+                    HKLogUtil.e(moduleName, "健康体检 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
                 }
-            HKLogUtil.w(moduleName, "checkHealth async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
         } else {
+            HKLogUtil.v(moduleName, "健康体检 检测到当前配置信息文件完善且文件校验成功,非常健康!")
             callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-            HKLogUtil.w(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
-            HKLogUtil.w(moduleName, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+            HKLogUtil.w(moduleName, "健康体检 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
         }
     }
 

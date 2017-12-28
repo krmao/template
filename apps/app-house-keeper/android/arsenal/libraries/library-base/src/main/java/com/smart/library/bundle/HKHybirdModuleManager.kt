@@ -1,10 +1,8 @@
 package com.smart.library.bundle
 
-import android.app.Activity
 import android.net.Uri
 import android.os.StrictMode
 import android.text.TextUtils
-import android.util.Log
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -21,20 +19,21 @@ import java.io.IOException
 import java.util.zip.ZipException
 
 /**
- * 全责范围
+ * 负责责范围
  *
  * 1: 负责对本模块各版本的健康体检，自动删除无效版本，删除后自动还原到上一个最新版本，如果没有则还原到原始安装包版本
  * 2: 不负责下载更新升级等操作，这些操作放在 HKHybirdUpdateManager
+ *
+ * *** 注意: 确保这里的  moduleName 与 配置文件里面的 moduleName 一致 ***
+ *
  */
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST", "PrivatePropertyName")
-class HKHybirdModuleManager(val moduleFullName: String) {
-
-    internal val TAG = HKHybirdModuleManager::class.java.simpleName + ":" + moduleFullName
+class HKHybirdModuleManager(val moduleName: String) {
 
     internal val configManager: HKHybirdConfigManager = HKHybirdConfigManager(this)
     internal val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
-    internal val rootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleFullName)
+    internal val rootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleName)
 
     /**
      * 1: 检测到有新的版本变化,开始异步下载更新,立即切换为在线模式
@@ -44,69 +43,34 @@ class HKHybirdModuleManager(val moduleFullName: String) {
      */
     var onLineModel: Boolean = false
 
-    fun getZipFile(configuration: HKHybirdConfigModel?): File = File(rootDir, "${configuration?.moduleName}-${configuration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
-    fun getUnzipDir(configuration: HKHybirdConfigModel?): File? = File(rootDir, configuration?.moduleVersion)
-
     /**
      * 健康体检，检查模块完整性
      * 每次打开浏览器时执行
      *
-     * 由于 initLocalConfiguration 是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
+     * 由于 c 是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
      */
     @Synchronized
     fun checkHealth(callback: ((localUnzipDir: File?, configuration: HKHybirdConfigModel?) -> Unit)? = null) {
-        HKLogUtil.w(TAG, "checkHealth >>>>>>>>>>===============>>>>>>>>>>")
+        HKLogUtil.w(moduleName, "checkHealth >>>>>>>>>>===============>>>>>>>>>>")
         val start = System.currentTimeMillis()
         if (configManager.currentConfig == null || !isLocalFilesValid(configManager.currentConfig)) {
 
             Observable.fromCallable {
-                initLocalConfiguration()
+                fitConfigsInfo()
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-                    HKLogUtil.e(TAG, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
-                    HKLogUtil.w(TAG, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+                    HKLogUtil.e(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
+                    HKLogUtil.w(moduleName, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
                 }
-            HKLogUtil.w(TAG, "checkHealth async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.w(moduleName, "checkHealth async-progressing , 耗时: ${System.currentTimeMillis() - start}ms")
         } else {
             callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-            HKLogUtil.e(TAG, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
-            HKLogUtil.w(TAG, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
+            HKLogUtil.e(moduleName, "checkHealth complete , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.w(moduleName, "checkHealth <<<<<<<<<<===============<<<<<<<<<<")
         }
-    }
-
-    /**
-     * 安全的删除所有大于 @param latestConfiguration 的版本的 临时配置信息以及与之相关的本地文件，包括压缩包和解压文件夹以及sharedPreference里面的配置信息
-     */
-    @Deprecated("下次启动生效")
-    @Synchronized //同步，确保所有其他操作在此期间都是等待状态，最好这里是原子性的, @Synchronized注解锁住的是对该类对象的访问操作
-    fun completeRemoveAllGTLatestConfigSafely(latestConfiguration: HKHybirdConfigModel?) {
-        HKLogUtil.e(TAG, "completeRemoveAllGTLatestConfigSafely start")
-        val start = System.currentTimeMillis()
-        if (latestConfiguration != null) {
-            val latestVersion = latestConfiguration.moduleVersion.toFloatOrNull()
-            if (latestVersion != null) {
-                val configurationList = configManager.getConfigList()
-
-                val iterate = configurationList.listIterator()
-                while (iterate.hasNext()) {
-                    val tmpConfiguration = iterate.next()
-                    val zipFile = getZipFile(tmpConfiguration)
-                    val unzipDir = getUnzipDir(tmpConfiguration)
-                    val tmpVersion = tmpConfiguration.moduleVersion.toFloatOrNull()
-                    if (tmpVersion == null || tmpVersion > latestVersion) {
-                        iterate.remove()                            //删除在list中的位置
-                        HKFileUtil.deleteFile(zipFile)              //删除 zip
-                        HKFileUtil.deleteDirectory(unzipDir)        //删除 unzipDir
-                    }
-                }
-                configManager.saveConfig(configurationList)  //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
-                initLocalConfiguration()                            //重置 currentConfig ，并且list为空自动重新拷贝原始安装包
-            }
-        }
-        HKLogUtil.e(TAG, "completeRemoveAllGTLatestConfigSafely   end  耗时:${System.currentTimeMillis() - start}ms")
     }
 
     fun checkUpdate() {
@@ -126,21 +90,23 @@ class HKHybirdModuleManager(val moduleFullName: String) {
     }
 
     /**
-     * 赋值最新版本信息
-     * 做到可以回滚
-     * 只校验有配置信息的，校验失败可以删除，但是没有校验信息的本地文件夹不要删除，下次下载好配置信息好先检测本地zip包是否已经有了，避免重复下载，如果有解压后的文件夹但是没有zip包，不删除，可以直接
+     * 校验所有版本信息,如果无效则删除该版本相关的所有文件/配置
+     * 重置当前版本指向
+     * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
      */
     @Synchronized
-    internal fun initLocalConfiguration() {
-        HKLogUtil.e(TAG, "initLocalConfiguration start")
+    internal fun fitConfigsInfo() {
+        HKLogUtil.v(moduleName, "初始化模块配置 开始")
         val start = System.currentTimeMillis()
-        val configurationList = configManager.getConfigList()//读取配置信息
-        HKLogUtil.w(TAG, "sorted list : ${configurationList.map { it.moduleVersion }}")
-        if (configurationList.isNotEmpty()) {
-            HKLogUtil.w(TAG, "configurationList not empty")
+
+        val configList = configManager.fitNextConfigsInfo()
+
+        HKLogUtil.w(moduleName, "检测到当前可被发现的所有本地配置信息为: ${configList.map { it.moduleVersion }}")
+        if (configList.isNotEmpty()) {
+            HKLogUtil.w(moduleName, "检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
 
             //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
-            val iterate = configurationList.listIterator()
+            val iterate = configList.listIterator()
             while (iterate.hasNext()) {
                 if (!isLocalFilesValid(iterate.next())) {
                     iterate.remove() // mind ConcurrentModificationException
@@ -149,243 +115,84 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         }
 
         //删除无效的配置信息,删除后会重新判断空,如果是空会获取原始安装包
-        if (configurationList.isEmpty()) {
-            HKLogUtil.w(TAG, "configurationList is empty")
-            getConfigurationFromAssets()?.let { configurationList.add(it) } //如果为空则添加原始配置信息
+        if (configList.isEmpty()) {
+            HKLogUtil.w(moduleName, "检测到本地配置信息为空,重新从原始包拷贝")
+            getPrimaryConfigFromAssets()?.let { configList.add(it) } //如果为空则添加原始配置信息
         }
         //如果有删除的或则新加的原始配置信息，则需要重新保存下
-        configManager.saveConfig(configurationList)
+        configManager.saveConfig(configList)
 
         configManager.currentConfig = null
-        configurationList.firstOrNull()?.let { configManager.currentConfig = it }
-        HKLogUtil.e(TAG, "initLocalConfiguration reset currentConfig:${configManager.currentConfig}")
-        HKLogUtil.e(TAG, "initLocalConfiguration   end  耗时:${System.currentTimeMillis() - start}ms")
+        configList.firstOrNull()?.let { configManager.currentConfig = it }
+        HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${configManager.currentConfig?.moduleVersion}")
+        HKLogUtil.v(moduleName, "初始化模块配置 结束 耗时:${System.currentTimeMillis() - start}ms")
         return
     }
 
-    /**
-     * 校验配置信息
-     *
-     * 规则
-     * 1: 文件夹校验成功则成功，zip包的校验不影响结果，如果zip包校验失败则删除zip包
-     */
-    fun isLocalFilesValid(configuration: HKHybirdConfigModel?): Boolean {
-        HKLogUtil.w(TAG, "verify start ${configuration?.moduleName}:${configuration?.moduleVersion}")
-        val success: Boolean
-        val start = System.currentTimeMillis()
-        val zipFile = getZipFile(configuration)
-        val unzipDir = getUnzipDir(configuration)
-        if (!verifyLocalFiles(unzipDir, configuration?.moduleFilesMd5)) {
-            if (!verifyZip(zipFile, configuration?.moduleZipMd5)) {
-                success = false
-            } else {
-                success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
-            }
-        } else {
-            success = true
-        }
-        HKLogUtil.w(TAG, "verify   end ${configuration?.moduleName}:${configuration?.moduleVersion} , verify ${if (success) "success" else "failure"} , 耗时: ${System.currentTimeMillis() - start}ms")
-        return success
-    }
-
     @Synchronized
-    internal fun getConfigurationFromAssets(): HKHybirdConfigModel? {
+    internal fun getPrimaryConfigFromAssets(): HKHybirdConfigModel? {
+        HKLogUtil.v(moduleName, "从 assets 获取最原始配置信息 开始")
         val start = System.currentTimeMillis()
-        var configuration: HKHybirdConfigModel? = null
+        var primaryConfig: HKHybirdConfigModel? = null
         try {
-            configuration = HKJsonUtil.fromJson(HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleFullName${HKHybirdManager.CONFIG_SUFFIX}")), HKHybirdConfigModel::class.java)
-            HKLogUtil.w(TAG, "getConfigurationFromAssets success , 耗时: ${System.currentTimeMillis() - start}ms \nconfiguration:$configuration")
+            primaryConfig = HKJsonUtil.fromJson(HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleName${HKHybirdManager.CONFIG_SUFFIX}")), HKHybirdConfigModel::class.java)
 
-            val zipFile = getZipFile(configuration)
-            val unzipDir = getUnzipDir(configuration)
-            if (copyPrimaryZipFromAssets(configuration)) {
+            val zipFile = getZipFile(primaryConfig)
+            val unzipDir = getUnzipDir(primaryConfig)
+            if (copyPrimaryZipFromAssets(primaryConfig)) {
                 unzipToLocal(zipFile, unzipDir)
             }
         } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(moduleName, "文件不存在", exception)
         } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "getConfigurationFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(moduleName, "文件读写错误", exception)
         }
-        return configuration
+        HKLogUtil.v(moduleName, "从 assets 获取最原始配置信息 结束 , 耗时: ${System.currentTimeMillis() - start}ms , 原始配置信息为:$primaryConfig")
+        return primaryConfig
     }
 
     @Synchronized
-    internal fun copyPrimaryZipFromAssets(primaryConfiguration: HKHybirdConfigModel?): Boolean {
+    internal fun copyPrimaryZipFromAssets(primaryConfig: HKHybirdConfigModel?): Boolean {
+        HKLogUtil.v(moduleName, "从 assets 拷贝/解压原始包 开始")
         var success = false
         val start = System.currentTimeMillis()
+        val zipFile = getZipFile(primaryConfig)
+        val unzipDir = getUnzipDir(primaryConfig)
         try {
-            val zipFile = getZipFile(primaryConfiguration)
-            val unzipDir = getUnzipDir(primaryConfiguration)
-
             HKFileUtil.deleteFile(zipFile)
             HKFileUtil.deleteDirectory(unzipDir)
-            HKFileUtil.copy(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleFullName-${primaryConfiguration?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}"), zipFile)
+            HKFileUtil.copy(HKBaseApplication.INSTANCE.assets.open("${HKHybirdManager.ASSETS_DIR_NAME}/$moduleName-${primaryConfig?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}"), zipFile)
             success = true
-            HKLogUtil.w(TAG, "copyPrimaryZipFromAssets success ,localZipFile.exists?${zipFile.exists()} , 耗时: ${System.currentTimeMillis() - start}ms")
         } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "copyPrimaryZipFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(moduleName, "文件不存在", exception)
         } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "copyPrimaryZipFromAssets failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            HKLogUtil.e(moduleName, "文件读写错误", exception)
         }
-        return success
-    }
-
-    @Synchronized
-    internal fun unzipToLocal(zipFile: File, unZipDir: File?): Boolean {
-        var success = false
-        val start = System.currentTimeMillis()
-        HKFileUtil.deleteDirectory(unZipDir)
-        try {
-            HKZipUtil.unzip(zipFile, unZipDir)
-            success = true
-            HKLogUtil.w(TAG, "unzipToLocal success , 耗时: ${System.currentTimeMillis() - start}ms")
-        } catch (exception: FileNotFoundException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
-        } catch (exception: IOException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
-        } catch (exception: ZipException) {
-            HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
-        }
+        HKLogUtil.v(moduleName, "从 assets 拷贝/解压原始包 结束 , 是否拷贝成功:$success , 目标文件是否存在:${zipFile.exists()} , 耗时:${System.currentTimeMillis() - start}ms")
         return success
     }
 
     /**
-     * 校验失败删除压缩包
+     * 设置资源拦截器,URL拦截器
      */
-    internal fun verifyZip(zipFile: File?, moduleZipMd5: String?): Boolean {
-        val start = System.currentTimeMillis()
-        var success = false
-        if (zipFile != null && !TextUtils.isEmpty(moduleZipMd5)) {
-            val zipFileExists = zipFile.exists()
-            val zipFileMd5 = HKChecksumUtil.genMD5Checksum(zipFile)
-            val isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
-            success = zipFileExists && isZipFileMd5Valid
-            HKLogUtil.w(TAG, "verifyZip (${zipFile.name}) : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时: ${System.currentTimeMillis() - start}ms")
-        } else {
-            HKLogUtil.e(TAG, "verifyZip (${zipFile?.name}) : ${if (success) "success" else "failure"}, zipFile or moduleZipMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
-        }
-        if (!success) HKFileUtil.deleteFile(zipFile)
-        return success
-    }
+    internal fun setIntercept(currentConfig: HKHybirdConfigModel?) {
+        HKLogUtil.v(currentConfig?.moduleName, "设置拦截器开始: ${currentConfig?.moduleVersion}")
 
-    /**
-     * 校验失败删除文件夹
-     */
-    internal fun verifyLocalFiles(unZipDir: File?, moduleFilesMd5: HashMap<String, String>?): Boolean {
-        val start = System.currentTimeMillis()
-        var success = false
-        if (unZipDir != null && moduleFilesMd5 != null) {
-            val localUnzipDirExists = unZipDir.exists()
-            val localIndexExists = File(unZipDir, "index.shtml").exists()
-            var invalidFilesNum = 0
-            if (localIndexExists && localIndexExists) {
-                HKFileUtil.getFileList(unZipDir).forEach {
-                    val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
-                    val remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
-                    val rightMd5 = moduleFilesMd5[remotePath]
-                    val isFileMd5Valid = fileMd5 == rightMd5
-                    if (!isFileMd5Valid)
-                        invalidFilesNum++
-                    HKLogUtil.w(TAG, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
-                }
-                success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
-            }
-            HKLogUtil.w(TAG, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
-        } else {
-            HKLogUtil.e(TAG, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
-        }
-        if (!success) HKFileUtil.deleteDirectory(unZipDir)
-        return success
-    }
-
-    /**
-     * return file or null
-     *
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/2"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/child/3"
-     *
-     *
-     *
-     * interceptMainUrl == "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base"
-     * localFilePath    == unzipDir/example.shtml
-     *
-     */
-    fun getLocalFile(url: String?): File? {
-        return getLocalHtmlFile(url) ?: getLocalScriptFile(url)
-    }
-
-    fun getLocalHtmlFile(url: String?): File? {
-        var localFile: File? = null
-        if (url?.isNotBlank() == true) {
-            val scheme = Uri.parse(url)?.scheme?.trim()
-            if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = configManager.currentConfig?.moduleMainUrl?.get(HKHybirdManager.EVN)
-                if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
-                        HKLogUtil.v(TAG, "检测到本地文件路径=${it.absolutePath}")
-                        it.exists()
-                    }
-                }
-            }
-        }
-        HKLogUtil.v(TAG, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
-        return localFile
-    }
-
-    fun getLocalScriptFile(url: String?): File? {
-        var localFile: File? = null
-        if (url?.isNotBlank() == true) {
-            val scheme = Uri.parse(url)?.scheme?.trim()
-            if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = configManager.currentConfig?.moduleScriptUrl?.get(HKHybirdManager.EVN)
-                if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(configManager.currentConfig)?.absolutePath + "/" + url.substringAfter(mainBaseUrl)).takeIf {
-                        HKLogUtil.v(TAG, "检测到本地文件路径=${it.absolutePath}")
-                        it.exists()
-                    }
-                }
-            }
-        }
-        HKLogUtil.v(TAG, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
-        return localFile
-    }
-
-    private val webViewClientSet: MutableSet<WebViewClient?> = mutableSetOf()
-
-    fun isModuleOpenNow(): Boolean {
-        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
-        return !webViewClientSet.isEmpty()
-    }
-
-    fun onWebViewOpenPage(webViewClient: WebViewClient?) {
-        if (webViewClient != null)
-            webViewClientSet.add(webViewClient)
-        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
-    }
-
-    fun onWebViewClose(webViewClient: WebViewClient?) {
-        if (webViewClient != null)
-            webViewClientSet.remove(webViewClient)
-        HKLogUtil.e(TAG, "webViewClientSet.size=${webViewClientSet.size}")
-    }
-
-    internal fun setIntercept(configuration: HKHybirdConfigModel?) {
-        HKLogUtil.v("设置拦截器开始: $configuration")
-
-        if (configuration == null) return
-
-        val interceptScriptUrl = configuration.moduleScriptUrl[HKHybirdManager.EVN]
-        if (interceptScriptUrl == null || interceptScriptUrl.isBlank()) {
-            HKLogUtil.e(TAG, "interceptScriptUrl == null")
+        if (currentConfig == null) {
+            HKLogUtil.v(currentConfig?.moduleName, "检测到 配置文件为空 , 取消设置拦截器 return")
             return
         }
 
-        val interceptMainUrl = configuration.moduleMainUrl[HKHybirdManager.EVN]
+        val interceptScriptUrl = currentConfig.moduleScriptUrl[HKHybirdManager.EVN]
+        if (interceptScriptUrl == null || interceptScriptUrl.isBlank()) {
+            HKLogUtil.e(currentConfig.moduleName, "检测到 interceptScriptUrl == null return")
+            return
+        }
+
+        val interceptMainUrl = currentConfig.moduleMainUrl[HKHybirdManager.EVN]
 
         if (interceptMainUrl == null || interceptMainUrl.isBlank()) {
-            HKLogUtil.e(TAG, "interceptMainUrl == null")
+            HKLogUtil.e(currentConfig.moduleName, "检测到 interceptMainUrl == null return")
             return
         }
 
@@ -397,20 +204,20 @@ class HKHybirdModuleManager(val moduleFullName: String) {
          * webView.loadUrl 不会触发此回调,放到 HKHybirdBridge.addRequest(interceptMainUrl) 里面处理
          * http://www.jianshu.com/p/3474cb8096da
          */
-        HKLogUtil.w(TAG, "addScheme interceptMainUrl : $interceptMainUrl")
+        HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
             //            checkUpdate()
             onWebViewOpenPage(webViewClient)
 
             //======================================================================================
-            // 暂时修改系统策略
+            // 暂时修改系统策略(因为网络请求不能再主线程执行)
             //======================================================================================
             val oldThreadPolicy = StrictMode.getThreadPolicy()
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
             //======================================================================================
 
             val needUpdate = checkUpdateSync()
-            HKLogUtil.v(TAG, "needUpdate:$needUpdate")
+            HKLogUtil.v(currentConfig.moduleName, "needUpdate:$needUpdate")
 
             //======================================================================================
             // 还原系统策略
@@ -422,35 +229,35 @@ class HKHybirdModuleManager(val moduleFullName: String) {
         }
 
         //html
-        HKLogUtil.v(TAG, "addRequest interceptMainUrl : $interceptMainUrl")
+        HKLogUtil.v(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(TAG, "系统检测到资源访问请求: $url")
+            HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
             if (!onLineModel) {
-                val localFile = getLocalHtmlFile(url)
+                val localFile = getLocalHtmlFile(currentConfig, url)
                 if (localFile?.exists() == true) {
                     try {
-                        HKLogUtil.v(TAG, "执行伪造本地资源")
+                        HKLogUtil.v(currentConfig.moduleName, "执行伪造本地资源")
                         resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
                     } catch (e: Exception) {
-                        HKLogUtil.e(TAG, "伪造本地资源出错", e)
+                        HKLogUtil.e(currentConfig.moduleName, "伪造本地资源出错", e)
                     }
                 } else {
-                    HKLogUtil.v(TAG, "系统检测到本地文件不存在,访问在线资源")
+                    HKLogUtil.v(currentConfig.moduleName, "系统检测到本地文件不存在,访问在线资源")
                 }
             } else {
-                HKLogUtil.v(TAG, "系统检测到当前为在线模式,访问在线资源")
+                HKLogUtil.v(currentConfig.moduleName, "系统检测到当前为在线模式,访问在线资源")
             }
             resourceResponse
         }
 
-        HKLogUtil.w(TAG, "interceptScriptUrl : $interceptScriptUrl")
+        HKLogUtil.w(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptScriptUrl : $interceptScriptUrl")
         //css,js,image
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(TAG, "系统检测到资源访问请求: $url")
+            HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
             if (!onLineModel) {
-                val localFile = getLocalScriptFile(url)
+                val localFile = getLocalScriptFile(currentConfig, url)
                 if (url != null && localFile?.exists() == true) {
                     val mimeType: String = when {
                         url.contains(".css") -> "text/css"
@@ -462,20 +269,206 @@ class HKHybirdModuleManager(val moduleFullName: String) {
                         else -> "text/html"
                     }
                     try {
-                        HKLogUtil.v(TAG, "执行伪造本地资源")
+                        HKLogUtil.v(currentConfig.moduleName, "执行伪造本地资源")
                         resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
                     } catch (e: Exception) {
-                        HKLogUtil.e(TAG, "伪造本地资源出错", e)
+                        HKLogUtil.e(currentConfig.moduleName, "伪造本地资源出错", e)
                     }
                 } else {
-                    HKLogUtil.v(TAG, "系统检测到本地文件不存在,访问在线资源")
+                    HKLogUtil.v(currentConfig.moduleName, "系统检测到本地文件不存在,访问在线资源")
                 }
             } else {
-                HKLogUtil.v(TAG, "系统检测到当前为在线模式,访问在线资源")
+                HKLogUtil.v(currentConfig.moduleName, "系统检测到当前为在线模式,访问在线资源")
             }
             resourceResponse
         }
-        HKLogUtil.v("设置拦截器结束")
+        HKLogUtil.v(currentConfig.moduleName, "设置拦截器结束")
+    }
+
+    //---------- 模块生命周期 ------------------------------------------------------------------------
+
+    private val webViewClientSet: MutableSet<WebViewClient?> = mutableSetOf()
+
+    fun isModuleOpenNow(): Boolean {
+        HKLogUtil.e(moduleName, "isModuleOpenNow -> webViewClientSet.size=${webViewClientSet.size}")
+        return !webViewClientSet.isEmpty()
+    }
+
+    fun onWebViewOpenPage(webViewClient: WebViewClient?) {
+        if (webViewClient != null)
+            webViewClientSet.add(webViewClient)
+        HKLogUtil.e(moduleName, "onWebViewOpenPage -> webViewClientSet.size=${webViewClientSet.size}")
+    }
+
+    fun onWebViewClose(webViewClient: WebViewClient?) {
+        if (webViewClient != null)
+            webViewClientSet.remove(webViewClient)
+        HKLogUtil.e(moduleName, "onWebViewClose -> webViewClientSet.size=${webViewClientSet.size}")
+    }
+
+    //---------- 模块生命周期 ------------------------------------------------------------------------
+
+
+    companion object {
+        private val TAG = HKHybirdModuleManager::class.java.simpleName
+
+        @JvmStatic
+        fun getRootDir(moduleName: String?): File = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleName)
+
+        @JvmStatic
+        fun getZipFile(config: HKHybirdConfigModel?): File = File(getRootDir(config?.moduleName), "${config?.moduleName}-${config?.moduleVersion}${HKHybirdManager.BUNDLE_SUFFIX}")
+
+        @JvmStatic
+        fun getUnzipDir(config: HKHybirdConfigModel?): File? = File(getRootDir(config?.moduleName), config?.moduleVersion)
+
+        /**
+         * 校验配置信息
+         *
+         * 规则
+         * 1: 文件夹校验成功则成功，zip包的校验不影响结果，如果zip包校验失败则删除zip包
+         * 注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件
+         */
+        fun isLocalFilesValid(config: HKHybirdConfigModel?): Boolean {
+            HKLogUtil.v(config?.moduleName, "文件校验开始(注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件): ${config?.moduleName}:${config?.moduleVersion}")
+            val success: Boolean
+            val start = System.currentTimeMillis()
+            val zipFile = getZipFile(config)
+            val unzipDir = getUnzipDir(config)
+            if (!verifyLocalFiles(unzipDir, config?.moduleFilesMd5, config?.moduleName)) {
+                if (!verifyZip(zipFile, config?.moduleZipMd5)) {
+                    success = false
+                } else {
+                    success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
+                }
+            } else {
+                success = true
+            }
+            HKLogUtil.v(config?.moduleName, "文件校验结束: ${config?.moduleName}:${config?.moduleVersion} , verify ${if (success) "success" else "failure"} , 耗时: ${System.currentTimeMillis() - start}ms")
+            return success
+        }
+
+        @Synchronized
+        internal fun unzipToLocal(zipFile: File, unZipDir: File?): Boolean {
+            var success = false
+            val start = System.currentTimeMillis()
+            HKFileUtil.deleteDirectory(unZipDir)
+            try {
+                HKZipUtil.unzip(zipFile, unZipDir)
+                success = true
+                HKLogUtil.v(TAG, "unzipToLocal success , 耗时: ${System.currentTimeMillis() - start}ms")
+            } catch (exception: FileNotFoundException) {
+                HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            } catch (exception: IOException) {
+                HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            } catch (exception: ZipException) {
+                HKLogUtil.e(TAG, "unzipToLocal failure , 耗时: ${System.currentTimeMillis() - start}ms", exception)
+            }
+            return success
+        }
+
+        /**
+         * 校验失败删除压缩包
+         */
+        internal fun verifyZip(zipFile: File?, moduleZipMd5: String?): Boolean {
+            val start = System.currentTimeMillis()
+            var success = false
+            if (zipFile != null && !TextUtils.isEmpty(moduleZipMd5)) {
+                val zipFileExists = zipFile.exists()
+                val zipFileMd5 = HKChecksumUtil.genMD5Checksum(zipFile)
+                val isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
+                success = zipFileExists && isZipFileMd5Valid
+                HKLogUtil.v(TAG, "verifyZip (${zipFile.name}) : ${if (success) "success" else "failure"}, zip文件是否存在:$zipFileExists, MD5是否正确:$isZipFileMd5Valid, 耗时: ${System.currentTimeMillis() - start}ms")
+            } else {
+                HKLogUtil.e(TAG, "verifyZip (${zipFile?.name}) : ${if (success) "success" else "failure"}, zipFile or moduleZipMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
+            }
+            if (!success) HKFileUtil.deleteFile(zipFile)
+            return success
+        }
+
+        /**
+         * 校验失败删除文件夹
+         */
+        internal fun verifyLocalFiles(unZipDir: File?, moduleFilesMd5: HashMap<String, String>?, logTag: String? = TAG): Boolean {
+            val start = System.currentTimeMillis()
+            var success = false
+            if (unZipDir != null && moduleFilesMd5 != null) {
+                val localUnzipDirExists = unZipDir.exists()
+                val localIndexExists = File(unZipDir, "index.shtml").exists()
+                var invalidFilesNum = 0
+                if (localIndexExists && localIndexExists) {
+                    HKFileUtil.getFileList(unZipDir).forEach {
+                        val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
+                        val remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
+                        val rightMd5 = moduleFilesMd5[remotePath]
+                        val isFileMd5Valid = fileMd5 == rightMd5
+                        if (!isFileMd5Valid)
+                            invalidFilesNum++
+                        HKLogUtil.w(logTag, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
+                    }
+                    success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
+                }
+                HKLogUtil.w(logTag, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
+            } else {
+                HKLogUtil.e(logTag, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
+            }
+            if (!success) HKFileUtil.deleteDirectory(unZipDir)
+            return success
+        }
+
+        /**
+         * return file or null
+         *
+         * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml"
+         * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route"
+         * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/2"
+         * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/child/3"
+         *
+         *
+         *
+         * interceptMainUrl == "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base"
+         * localFilePath    == unzipDir/example.shtml
+         *
+         */
+        fun getLocalFile(config: HKHybirdConfigModel?, url: String?): File? {
+            return getLocalHtmlFile(config, url) ?: getLocalScriptFile(config, url)
+        }
+
+        fun getLocalHtmlFile(config: HKHybirdConfigModel?, url: String?): File? {
+            var localFile: File? = null
+            if (url?.isNotBlank() == true) {
+                val scheme = Uri.parse(url)?.scheme?.trim()
+                if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
+                    val mainBaseUrl = config?.moduleMainUrl?.get(HKHybirdManager.EVN)
+                    if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
+                        localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
+                            HKLogUtil.v(config.moduleName, "检测到本地文件路径=${it.absolutePath}")
+                            it.exists()
+                        }
+                    }
+                }
+            }
+            HKLogUtil.v(config?.moduleName, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
+            return localFile
+        }
+
+        fun getLocalScriptFile(config: HKHybirdConfigModel?, url: String?): File? {
+            var localFile: File? = null
+            if (url?.isNotBlank() == true) {
+                val scheme = Uri.parse(url)?.scheme?.trim()
+                if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
+                    val mainBaseUrl = config?.moduleScriptUrl?.get(HKHybirdManager.EVN)
+                    if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
+                        localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringAfter(mainBaseUrl)).takeIf {
+                            HKLogUtil.v(config.moduleName, "检测到本地文件路径=${it.absolutePath}")
+                            it.exists()
+                        }
+                    }
+                }
+            }
+            HKLogUtil.v(config?.moduleName, "检测到本地文件${if (localFile == null) " 不存在 " else " 存在 "}")
+            return localFile
+        }
+
     }
 
 }

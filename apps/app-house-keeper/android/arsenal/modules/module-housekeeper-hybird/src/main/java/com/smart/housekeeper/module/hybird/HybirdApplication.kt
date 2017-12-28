@@ -31,20 +31,20 @@ class HybirdApplication : Application() {
                 HKRepository.downloadFile(downloadUrl,
                     { current, total ->
                         if (total.toFloat() > 0)
-                            HKLogUtil.d(moduleManager.moduleFullName, "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
+                            HKLogUtil.d(moduleManager.moduleName, "current:$current/total:$total==${HKBigDecimalUtil.formatValue((current.toFloat() / total.toFloat() * 100).toDouble(), 2)}%")
                         else
-                            HKLogUtil.w(moduleManager.moduleFullName, "current:$current/total:$total")
+                            HKLogUtil.w(moduleManager.moduleName, "current:$current/total:$total")
                     }
                 )
                     .observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
                     .subscribe(
                         { content: InputStream ->
-                            HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
+                            HKLogUtil.w(moduleManager.moduleName, "download success result :$content")
                             if (file != null) HKFileUtil.copy(content, file)
                             callback.invoke(file)
                         },
                         { error: Throwable ->
-                            HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
+                            HKLogUtil.w(moduleManager.moduleName, "download failure", error)
                             callback.invoke(null)
                         }
                     )
@@ -52,25 +52,6 @@ class HybirdApplication : Application() {
                 Unit
             }
 
-            //同步下载器
-            /*moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Unit? ->
-                HKRepository.downloadHybirdModuleConfiguration(configUrl)
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    //.observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
-                    .subscribe(
-                        { content: HKHybirdConfigModel ->
-                            HKLogUtil.w(moduleManager.moduleFullName, "download success result :$content")
-                            callback.invoke(content)
-                        },
-                        { error: Throwable ->
-                            HKLogUtil.w(moduleManager.moduleFullName, "download failure", error)
-                            callback.invoke(null)
-                        }
-                    )
-                Unit
-            } */
             //同步下载器
             moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean? ->
                 callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 50, connectTimeoutMS = 50), HKHybirdConfigModel::class.java))

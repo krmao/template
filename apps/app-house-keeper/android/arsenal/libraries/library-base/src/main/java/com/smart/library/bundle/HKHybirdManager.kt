@@ -140,14 +140,14 @@ object HKHybirdManager {
     }
 
     fun getModule(url: String): HKHybirdModuleManager? {
-        return MODULES.value.filter { it.value.getLocalFile(url)?.exists() == true }.values.firstOrNull()
+        return MODULES.value.filter { HKHybirdModuleManager.getLocalFile(it.value.configManager.currentConfig, url)?.exists() == true }.values.firstOrNull()
     }
 
     /**
      * 健康体检，检查模块完整性
      * 每次打开浏览器时执行
      *
-     * 由于 initLocalConfiguration 是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
+     * 由于  是同步的，所以在任何地方都可以调用  checkHealth 而不会重复校验,是序列化的
      */
     @JvmStatic
     @Synchronized

@@ -9,7 +9,7 @@ open class HKHybirdConfigModel() : Parcelable {
     var moduleDebug = HKBaseApplication.DEBUG //只下发到测试机
     var moduleVersion = "" //只分当前版本与线上最新版本
     var moduleName = ""
-    var moduleUpdateMode = HKHybirdUpdateManager.Mode.RESTART
+    var moduleUpdateMode = HKHybirdUpdateManager.UpdateStrategy.ONLINE
     var moduleMainUrl = HashMap<String, String>()
     var moduleScriptUrl = HashMap<String, String>()
     var moduleConfigUrl = ""
@@ -28,7 +28,7 @@ open class HKHybirdConfigModel() : Parcelable {
     constructor(parcel: Parcel) : this() {
         moduleVersion = parcel.readString()
         moduleName = parcel.readString()
-        moduleUpdateMode = parcel.readSerializable() as HKHybirdUpdateManager.Mode
+        moduleUpdateMode = parcel.readSerializable() as HKHybirdUpdateManager.UpdateStrategy
         moduleScriptUrl = parcel.readHashMap(null) as HashMap<String, String>
         moduleConfigUrl = parcel.readString()
         moduleDownloadUrl = parcel.readString()

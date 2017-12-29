@@ -54,7 +54,7 @@ class HybirdApplication : Application() {
 
             //同步下载器
             moduleManager?.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean? ->
-                callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 50, connectTimeoutMS = 50), HKHybirdConfigModel::class.java))
+                callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 200, connectTimeoutMS = 200), HKHybirdConfigModel::class.java))
             }
 
             //3: 每次程序启动时，a:所有模块执行一次检查更新 checkUpdate，b:所有模块执行一次健康体检 checkHealth

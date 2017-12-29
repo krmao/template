@@ -1,70 +1,17 @@
 package com.smart.library.bundle
 
-import com.smart.library.util.HKFileUtil
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKPreferencesUtil
 import java.util.*
 
-@Suppress("MemberVisibilityCanPrivate", "PrivatePropertyName")
+/**
+ * 处理配置信息 在 sharedpreference 的保存/读取操作,仅限于此
+ */
+@Suppress("MemberVisibilityCanPrivate", "PrivatePropertyName", "unused")
 class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
 
-    internal val KEY_HYBIRD_CONFIG = "KEY-HYBIRD-CONFIG-${moduleManager.moduleName}"
-    internal val KEY_HYBIRD_CONFIG_NEXT = "KEY-HYBIRD_CONFIG_NEXT-${moduleManager.moduleName}"
-
-    internal var currentConfig: HKHybirdConfigModel? = null
-        set(value) {
-            field = value
-            //当设置新的当前生效的配置信息时，更新拦截请求配置
-            if (value != null)
-                moduleManager.setIntercept(value)
-        }
-
-    /**
-     * 处理 下次模块启动生效的目标配置文件, 结果保存到 sharedPreference
-     * 清除 下次模块启动生效的目标配置信息
-     * 返回 当前本地可以使用的最完备的配置信息
-     */
-    @Synchronized
-    fun fitNextConfigsInfo(): MutableList<HKHybirdConfigModel> {
-        HKLogUtil.v(moduleManager.moduleName, "检测是否可以在此时处理下次模块启动生效的配置 开始")
-        val configList = getConfigList() //版本号降序排序
-
-        if (!moduleManager.onLineModel) {
-            HKLogUtil.v(moduleManager.moduleName, "检测当前模块未被浏览器加载,可以处理")
-
-            val nextConfigStack = getNextConfigStack()
-            if (!nextConfigStack.empty()) {
-                HKLogUtil.v(moduleManager.moduleName, "检测下次生效的配置信息不为空,开始处理")
-                val destConfig = nextConfigStack.pop()
-                val destVersion = destConfig.moduleVersion.toFloatOrNull()
-                if (destVersion != null) {
-                    if (configList.isNotEmpty()) {
-                        val iterate = configList.listIterator()
-                        while (iterate.hasNext()) {
-                            val tmpConfig = iterate.next()
-                            val tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
-                            //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
-                            if (tmpVersion == null || tmpVersion >= destVersion) {
-                                HKLogUtil.v(moduleManager.moduleName, "清空版本号为$tmpVersion(升级/回滚的目标版本为$destVersion) 的所有本地文件以及配置信息")
-                                iterate.remove()                                                                //删除在list中的位置
-                                HKFileUtil.deleteFile(HKHybirdModuleManager.getZipFile(tmpConfig))              //删除 zip
-                                HKFileUtil.deleteDirectory(HKHybirdModuleManager.getUnzipDir(tmpConfig))        //删除 unzipDir
-                            }
-                        }
-                    }
-                    configList.add(0, destConfig)
-                    saveConfig(configList)  //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
-                }
-                clearConfigNext()
-            } else {
-                HKLogUtil.v(moduleManager.moduleName, "检测下次生效的配置信息为空,无需处理")
-            }
-        } else {
-            HKLogUtil.v(moduleManager.moduleName, "检测当前模块正在被浏览器加载,不能处理")
-        }
-        HKLogUtil.v(moduleManager.moduleName, "检测是否可以在此时处理下次模块启动生效的配置 结束")
-        return configList
-    }
+    private val KEY_HYBIRD_CONFIG = "KEY-HYBIRD-CONFIG-${moduleManager.moduleName}"
+    private val KEY_HYBIRD_CONFIG_NEXT = "KEY-HYBIRD_CONFIG_NEXT-${moduleManager.moduleName}"
 
     @Synchronized
     internal fun saveConfig(configurationList: MutableList<HKHybirdConfigModel>) {
@@ -87,18 +34,17 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
     @Synchronized
     internal fun getConfigList(): MutableList<HKHybirdConfigModel> = HKPreferencesUtil.getList(KEY_HYBIRD_CONFIG, HKHybirdConfigModel::class.java).filter { it.moduleVersion.toFloatOrNull() != null }.sortedByDescending { it.moduleVersion.toFloatOrNull() ?: -1f }.toMutableList()
 
-
     /**
      * 入栈
      */
     @Synchronized
-    internal fun saveConfigNext(configuration: HKHybirdConfigModel) {
+    internal fun saveConfigNext(config: HKHybirdConfigModel) {
         val configStack = getNextConfigStack()
-        if (configStack.contains(configuration))
-            configStack.remove(configuration)
-        configStack.push(configuration)
+        if (configStack.contains(config))
+            configStack.remove(config)
+        configStack.push(config)
         HKPreferencesUtil.putList(KEY_HYBIRD_CONFIG_NEXT, configStack)
-        HKLogUtil.v(moduleManager.moduleName, "保存 需要在下次打开本模块之前生效的 配置信息")
+        HKLogUtil.v(moduleManager.moduleName, "保存 '下次浏览器重新加载本模块才会生效的配置信息' ${config.moduleName}:${config.moduleVersion} 到 sharedPreference , 注:只有在该模块完全退出浏览器的时候才可以被应用生效")
     }
 
     /**

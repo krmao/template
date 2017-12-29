@@ -33,6 +33,14 @@ class HKHybirdModuleManager(val moduleName: String) {
     internal val configManager: HKHybirdConfigManager = HKHybirdConfigManager(this)
     internal val updateManager: HKHybirdUpdateManager = HKHybirdUpdateManager(this)
 
+    internal var currentConfig: HKHybirdConfigModel? = null
+        set(value) {
+            field = value
+            //当设置新的当前生效的配置信息时，更新拦截请求配置
+            if (value != null)
+                setIntercept(value)
+        }
+
     internal val rootDir = File(HKHybirdManager.LOCAL_ROOT_DIR, moduleName)
 
     /**
@@ -48,38 +56,43 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 健康体检，检查模块完整性
      *
      * 注意: 执行一次本方法,才能添加资源拦截器,不然无法使用本地资源,无法拦截URL,所以万无一失的做法是每次都调用下面提到的案例方式加载URL,能确保条件充分
+     * 注意: 本方法会在合适的情况下处理 下次启动生效的配置信息
      *
      * 执行时机:
      *
-     * 案例:
+     * 1: 程序启动的时候
+     * 2: 每次手动加载本模块的时候, 详见下面的  案例
+     * 3: url被拦截到的时候,进行检查更新的同事,检测本地文件完整性,由于这是同步耗时操作,暂定 TODO 待定
      *
+     * 案例:
      *      checkHealth { _, _ ->
      *          HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
      *      }
      */
     @Synchronized
     fun checkHealth(callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
-        HKLogUtil.w(moduleName, "健康体检 开始")
+        HKLogUtil.w(moduleName, "健康体检(异步:${Thread.currentThread().name}) 开始")
+        val start = System.currentTimeMillis()
+        Observable.fromCallable { fitConfigsInfoSync() }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            callback?.invoke(getUnzipDir(currentConfig), currentConfig)
+            HKLogUtil.e(moduleName, "健康体检(异步:${Thread.currentThread().name}) 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
+        }
+    }
+
+    @Synchronized
+    fun checkHealthSync() {
+        HKLogUtil.w(moduleName, "健康体检(同步:${Thread.currentThread().name}) 开始")
         val start = System.currentTimeMillis()
 
-        val isConfigNull = configManager.currentConfig == null
-        val isLocalFilesValid = isLocalFilesValid(configManager.currentConfig)
-        if (isConfigNull || !isLocalFilesValid(configManager.currentConfig)) {
-            HKLogUtil.w(moduleName, "健康体检 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作 , isConfigNull==$isConfigNull , isLocalFilesValid==$isLocalFilesValid")
-            Observable.fromCallable {
-                fitConfigsInfoSync()
-            }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-                    HKLogUtil.e(moduleName, "健康体检 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
-                }
+        val isConfigNull = currentConfig == null
+        val isLocalFilesValid = isLocalFilesValid(currentConfig)
+        if (isConfigNull || !isLocalFilesValid) {
+            HKLogUtil.w(moduleName, "健康体检(同步:${Thread.currentThread().name}) 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作 , isConfigNull==$isConfigNull , isLocalFilesValid==$isLocalFilesValid")
+            fitConfigsInfoSync()
         } else {
-            HKLogUtil.v(moduleName, "健康体检 检测到当前配置信息文件完善且文件校验成功,非常健康!")
-            callback?.invoke(getUnzipDir(configManager.currentConfig), configManager.currentConfig)
-            HKLogUtil.w(moduleName, "健康体检 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.v(moduleName, "健康体检(同步:${Thread.currentThread().name}) 检测到当前配置信息文件完善且文件校验成功,非常健康!")
         }
+        HKLogUtil.w(moduleName, "健康体检(同步:${Thread.currentThread().name}) 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
     }
 
     fun checkUpdate() {
@@ -98,11 +111,102 @@ class HKHybirdModuleManager(val moduleName: String) {
         updateManager.configer = configer
     }
 
-    fun fitConfigsInfo() {
+    /**
+     * 同步 处理本地配置信息,如果当前模块没有被打开,则会优先处理下次生效的配置信息然后立即处理本地配置信息
+     */
+    private fun fitConfigsInfoSync() {
+        if (isModuleOpenNow()) {
+            fitLocalConfigsInfoSync()
+        } else {
+            fitNextAndLocalConfigsInfoSync()
+        }
+    }
+
+    /**
+     * 同步 处理下次生效的配置信息以及处理完后紧接着处理本地配置信息
+     */
+    private fun fitNextAndLocalConfigsInfoSync() {
+        fitNextAndFitLocalIfNeedConfigsInfoSync(true)
+    }
+
+    /**
+     * 当检测到模块完全没有被浏览器加载的时候,可以调用此方法是否有 下次加载生效的配置信息 ,并异步处理本地文件,重置当前模块的 版本头信息
+     *
+     * 调用时机
+     * 1: 当前模块退出浏览器的时候(异步处理)
+     * 2: 当前模块第一次被浏览器加载的时候(同步处理)
+     */
+    private fun fitNextAndFitLocalIfNeedConfigsInfo() {
+        val start = System.currentTimeMillis()
+        HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+        Observable.fromCallable {
+            fitNextAndFitLocalIfNeedConfigsInfoSync()
+            HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    /**
+     * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
+     */
+    private fun fitNextAndFitLocalIfNeedConfigsInfoSync(mustFitLocal: Boolean = false) {
+        HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(同步) 开始 ,当前线程:${Thread.currentThread().name}")
+
+        if (onLineModel || isModuleOpenNow()) {
+            HKLogUtil.v(moduleName, "检测到 当前为在线模式 onLineModel=$onLineModel 或者当前模块正在被浏览器使用 isModuleOpenNow=${isModuleOpenNow()} ,不能执行本操作 return")
+            return
+        }
+
+        val configList = configManager.getConfigList() //版本号降序排序
+
+        if (!onLineModel) {
+            HKLogUtil.v(moduleName, "检测当前模块未被浏览器加载,可以处理")
+
+            val nextConfigStack = configManager.getNextConfigStack()
+            if (!nextConfigStack.empty()) {
+                HKLogUtil.v(moduleName, "检测下次生效的配置信息不为空,开始处理")
+                val destConfig = nextConfigStack.pop()
+                val destVersion = destConfig.moduleVersion.toFloatOrNull()
+                if (destVersion != null) {
+                    if (configList.isNotEmpty()) {
+                        val iterate = configList.listIterator()
+                        while (iterate.hasNext()) {
+                            val tmpConfig = iterate.next()
+                            val tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
+                            //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
+                            if (tmpVersion == null || tmpVersion >= destVersion) {
+                                HKLogUtil.v(moduleName, "清空版本号为$tmpVersion(升级/回滚的目标版本为$destVersion) 的所有本地文件以及配置信息")
+                                iterate.remove()                                                                //删除在list中的位置
+                                HKFileUtil.deleteFile(HKHybirdModuleManager.getZipFile(tmpConfig))              //删除 zip
+                                HKFileUtil.deleteDirectory(HKHybirdModuleManager.getUnzipDir(tmpConfig))        //删除 unzipDir
+                            }
+                        }
+                    }
+                    configList.add(0, destConfig)
+
+                    configManager.saveConfig(configList)  //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
+                }
+                configManager.clearConfigNext()
+            } else {
+                HKLogUtil.v(moduleName, "检测下次生效的配置信息为空,无需处理")
+            }
+
+            //ifNeed 体现在此处
+            if (nextConfigStack.isNotEmpty() || mustFitLocal) fitLocalConfigsInfoSync()
+        } else {
+            HKLogUtil.v(moduleName, "检测当前模块正在被浏览器加载,不能处理")
+        }
+
+        HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(同步) 结束 ,当前线程:${Thread.currentThread().name}")
+    }
+
+    /**
+     * 与 nextConfig 互不相关
+     */
+    private fun fitLocalConfigsInfo() {
         val start = System.currentTimeMillis()
         HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
         Observable.fromCallable {
-            fitConfigsInfoSync()
+            fitLocalConfigsInfoSync()
             HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
@@ -113,13 +217,11 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
      */
     @Synchronized
-    fun fitConfigsInfoSync() {
-        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息的完整性(同步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+    private fun fitLocalConfigsInfoSync() {
+        HKLogUtil.e(moduleName, "一次检验本地可用配置信息的完整性(同步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
         val start = System.currentTimeMillis()
-
-        val configList = configManager.fitNextConfigsInfo()
-
-        HKLogUtil.e(moduleName, "检测到当前可被发现的所有本地配置信息为: ${configList.map { it.moduleVersion }}")
+        val configList = configManager.getConfigList()
+        HKLogUtil.e(moduleName, "当前最新配置信息为: ${configList.map { it.moduleVersion }}")
         if (configList.isNotEmpty()) {
             HKLogUtil.v(moduleName, "检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
 
@@ -140,14 +242,14 @@ class HKHybirdModuleManager(val moduleName: String) {
         //如果有删除的或则新加的原始配置信息，则需要重新保存下
         configManager.saveConfig(configList)
 
-        configManager.currentConfig = null
-        configList.firstOrNull()?.let { configManager.currentConfig = it }
-        HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${configManager.currentConfig?.moduleVersion}")
-        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息的完整性(同步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+        currentConfig = null
+        configList.firstOrNull()?.let { currentConfig = it }
+        HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${currentConfig?.moduleVersion}")
+        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息(不包含 next)的完整性(同步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
     }
 
     @Synchronized
-    internal fun getPrimaryConfigFromAssets(): HKHybirdConfigModel? {
+    private fun getPrimaryConfigFromAssets(): HKHybirdConfigModel? {
         HKLogUtil.v(moduleName, "从 assets 获取最原始配置信息 开始")
         val start = System.currentTimeMillis()
         var primaryConfig: HKHybirdConfigModel? = null
@@ -169,7 +271,7 @@ class HKHybirdModuleManager(val moduleName: String) {
     }
 
     @Synchronized
-    internal fun copyPrimaryZipFromAssets(primaryConfig: HKHybirdConfigModel?): Boolean {
+    private fun copyPrimaryZipFromAssets(primaryConfig: HKHybirdConfigModel?): Boolean {
         HKLogUtil.v(moduleName, "从 assets 拷贝/解压原始包 开始")
         var success = false
         val start = System.currentTimeMillis()
@@ -192,7 +294,7 @@ class HKHybirdModuleManager(val moduleName: String) {
     /**
      * 设置资源拦截器,URL拦截器
      */
-    internal fun setIntercept(currentConfig: HKHybirdConfigModel?) {
+    private fun setIntercept(currentConfig: HKHybirdConfigModel?) {
         HKLogUtil.v(currentConfig?.moduleName, "设置拦截器开始: ${currentConfig?.moduleVersion}")
 
         if (currentConfig == null) {
@@ -326,7 +428,8 @@ class HKHybirdModuleManager(val moduleName: String) {
             HKLogUtil.e(moduleName, "系统监测到当前模块已经完全从浏览器中解耦,强制 onLineMode = false , 并检查是否有 下一次加载本模块 生效的任务,此时是设置的最佳时机")
 
             onLineModel = false
-            fitConfigsInfo()
+
+            fitNextAndFitLocalIfNeedConfigsInfo()
         }
     }
 
@@ -369,7 +472,7 @@ class HKHybirdModuleManager(val moduleName: String) {
                     success = true
                 }
             }
-            HKLogUtil.v(config?.moduleName, "文件校验结束: ${config?.moduleName}:${config?.moduleVersion} , 校验 ${if (success) "成功" else "失败"} , 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.v(config?.moduleName, "文件校验结束: 校验 ${if (success) "成功" else "失败"} , 模块名称=${config?.moduleName} , 模块版本=${config?.moduleVersion} , 耗时: ${System.currentTimeMillis() - start}ms")
             return success
         }
 
@@ -416,28 +519,37 @@ class HKHybirdModuleManager(val moduleName: String) {
          */
         internal fun verifyLocalFiles(unZipDir: File?, moduleFilesMd5: HashMap<String, String>?, logTag: String? = TAG): Boolean {
             val start = System.currentTimeMillis()
+            HKLogUtil.v(logTag, "校验本地文件夹 开始")
+
             var success = false
             if (unZipDir != null && moduleFilesMd5 != null) {
                 val localUnzipDirExists = unZipDir.exists()
-                val localIndexExists = File(unZipDir, "index.shtml").exists()
-                var invalidFilesNum = 0
-                if (localIndexExists && localIndexExists) {
+
+                val rightFilesCount = moduleFilesMd5.size
+                var validFilesCount = 0
+                HKLogUtil.v(logTag, "校验本地文件夹(${unZipDir.name}) : 检测到本地文件夹 ${if (localUnzipDirExists) "存在" else "不存在"}")
+                if (localUnzipDirExists) {
                     HKFileUtil.getFileList(unZipDir).forEach {
                         val fileMd5 = HKChecksumUtil.genMD5Checksum(it)
                         val remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
                         val rightMd5 = moduleFilesMd5[remotePath]
                         val isFileMd5Valid = fileMd5 == rightMd5
-                        if (!isFileMd5Valid)
-                            invalidFilesNum++
-                        HKLogUtil.v(logTag, "verifyLocalFiles : isFileMd5Valid:$isFileMd5Valid , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
+                        if (isFileMd5Valid)
+                            validFilesCount++
+
+                        HKLogUtil.v(logTag, "---- 校验文件 -(${it.name}) : ${if (isFileMd5Valid) "成功" else "失败"} , fileMd5:$fileMd5 , rightMd5:$rightMd5 , localPath:${it.path} ,remotePath:$remotePath")
                     }
-                    success = invalidFilesNum == 0 && localUnzipDirExists && localIndexExists
                 }
-                HKLogUtil.v(logTag, "verifyLocalFiles(${unZipDir.name}) : ${if (success) "success" else "failure"}, invalidFilesNum:$invalidFilesNum, localUnzipDirExists:$localUnzipDirExists, localIndexExists:$localIndexExists, 耗时: ${System.currentTimeMillis() - start}ms")
+
+                success = rightFilesCount == validFilesCount && localUnzipDirExists
+
+                HKLogUtil.v(logTag, "校验本地文件夹(${unZipDir.name}) :  ${if (success) "成功" else "失败"}")
             } else {
-                HKLogUtil.e(logTag, "verifyLocalFiles(${unZipDir?.name}) : ${if (success) "success" else "failure"}, unZipDir or moduleFilesMd5 is null, 耗时: ${System.currentTimeMillis() - start}ms")
+                HKLogUtil.e(logTag, "校验本地文件夹 (${unZipDir?.name}) :  ${if (success) "成功" else "失败"}, unZipDir:$unZipDir or moduleFilesMd5:$moduleFilesMd5 is null")
             }
             if (!success) HKFileUtil.deleteDirectory(unZipDir)
+
+            HKLogUtil.v(logTag, "校验本地文件夹 结束 ,校验结果:${success}  ,耗时:${System.currentTimeMillis() - start}ms")
             return success
         }
 

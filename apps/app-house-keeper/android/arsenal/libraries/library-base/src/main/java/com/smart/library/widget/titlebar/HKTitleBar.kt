@@ -104,11 +104,13 @@ class HKTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
 
             progressBar.visibility = typedArray.getInt(R.styleable.HKTitleBar_hkProgressVisible, View.GONE)
             progressBar.progressDrawable = HKCustomViewUtil.getDrawable(typedArray, R.styleable.HKTitleBar_hkProgressDrawable, -1, R.drawable.hk_titlebar_progressbar_horizontal_progress_drawable)
-            typedArray.recycle()
+
 
             if (!mIsLeft0Set) {
                 setBackground(left0Btn, R.styleable.HKTitleBar_hkLeft0Background, transparentColor, R.drawable.hk_menu_back_gray, typedArray)
             }
+
+            typedArray.recycle()
         }
         left0BgView.setOnClickListener { HKSystemUtil.sendKeyBackEvent(context) }
     }

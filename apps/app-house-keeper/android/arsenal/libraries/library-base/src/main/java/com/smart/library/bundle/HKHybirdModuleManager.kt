@@ -105,7 +105,7 @@ class HKHybirdModuleManager(val moduleName: String) {
      */
     @Synchronized
     internal fun fitConfigsInfo() {
-        HKLogUtil.v(moduleName, "初始化模块配置 开始")
+        HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) 开始")
         val start = System.currentTimeMillis()
 
         val configList = configManager.fitNextConfigsInfo()
@@ -313,6 +313,13 @@ class HKHybirdModuleManager(val moduleName: String) {
         if (webViewClient != null)
             webViewClientSet.remove(webViewClient)
         HKLogUtil.e(moduleName, "onWebViewClose -> webViewClientSet.size=${webViewClientSet.size}")
+
+        if (webViewClientSet.isEmpty()) {
+            HKLogUtil.e(moduleName, "系统监测到当前模块已经完全从浏览器中解耦,强制 onLineMode = false , 并检查是否有 下一次加载本模块 生效的任务,此时是设置的最佳时机")
+
+            onLineModel = false
+            fitConfigsInfo()
+        }
     }
 
     //---------- 模块生命周期 ------------------------------------------------------------------------

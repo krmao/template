@@ -24,6 +24,7 @@ class HKHybirdConfigManager(val moduleManager: HKHybirdModuleManager) {
      * 清除 下次模块启动生效的目标配置信息
      * 返回 当前本地可以使用的最完备的配置信息
      */
+    @Synchronized
     fun fitNextConfigsInfo(): MutableList<HKHybirdConfigModel> {
         HKLogUtil.v(moduleManager.moduleName, "检测是否可以在此时处理下次模块启动生效的配置 开始")
         val configList = getConfigList() //版本号降序排序

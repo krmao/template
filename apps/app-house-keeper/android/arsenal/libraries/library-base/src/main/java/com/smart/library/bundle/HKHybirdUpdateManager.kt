@@ -2,6 +2,7 @@ package com.smart.library.bundle
 
 import com.smart.library.util.HKLogUtil
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
@@ -31,14 +32,13 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     /**
      * 检查更新-异步
      */
-    @Synchronized
     fun checkUpdate() {
         val start = System.currentTimeMillis()
         HKLogUtil.v(moduleManager.moduleName, "系统检测更新(异步) 开始 ,当前线程:${Thread.currentThread().name}")
         Observable.fromCallable {
             val needUpdate = checkUpdateSync()
             HKLogUtil.v(moduleManager.moduleName, "检查更新(同步) 结束 ,当前线程:${Thread.currentThread().name} , ${if (needUpdate) "检测到需要更新,已经切换为在线状态,访问在线资源" else "未检测到更新,访问本地资源"} 耗时: ${System.currentTimeMillis() - start}ms")
-        }.subscribeOn(Schedulers.io()).subscribe()
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     /**

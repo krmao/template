@@ -67,7 +67,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         if (isConfigNull || !isLocalFilesValid(configManager.currentConfig)) {
             HKLogUtil.w(moduleName, "健康体检 检测到当前配置信息文件为空或者文件校验失败,开始执行修复操作 , isConfigNull==$isConfigNull , isLocalFilesValid==$isLocalFilesValid")
             Observable.fromCallable {
-                fitConfigsInfo()
+                fitConfigsInfoSync()
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,14 +98,23 @@ class HKHybirdModuleManager(val moduleName: String) {
         updateManager.configer = configer
     }
 
+    fun fitConfigsInfo() {
+        val start = System.currentTimeMillis()
+        HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+        Observable.fromCallable {
+            fitConfigsInfoSync()
+            HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
     /**
      * 校验所有版本信息,如果无效则删除该版本相关的所有文件/配置
      * 重置当前版本指向
      * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
      */
     @Synchronized
-    internal fun fitConfigsInfo() {
-        HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) 开始")
+    fun fitConfigsInfoSync() {
+        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息的完整性(同步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
         val start = System.currentTimeMillis()
 
         val configList = configManager.fitNextConfigsInfo()
@@ -134,8 +143,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         configManager.currentConfig = null
         configList.firstOrNull()?.let { configManager.currentConfig = it }
         HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${configManager.currentConfig?.moduleVersion}")
-        HKLogUtil.v(moduleName, "初始化模块配置 结束 耗时:${System.currentTimeMillis() - start}ms")
-        return
+        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息的完整性(同步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
     }
 
     @Synchronized

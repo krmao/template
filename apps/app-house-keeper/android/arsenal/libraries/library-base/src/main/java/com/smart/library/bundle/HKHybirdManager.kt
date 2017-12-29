@@ -1,7 +1,6 @@
 package com.smart.library.bundle
 
 import android.text.TextUtils
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKLogUtil
@@ -73,7 +72,7 @@ import java.util.concurrent.ConcurrentHashMap
  *
  *
  * 检查更新策略--回滚策略-实时切换策略
- * @see com.smart.library.bundle.HKHybirdUpdateManager.completeUpdating
+ * @see com.smart.library.bundle.HKHybirdUpdateManager.completeDownloadSuccess
  * =============================================
  * 1: 实施切换的安全性有待验证，可能需要提示用户重启应用，或者重启所有浏览器
  * 2: 实时切换成功后 应广播事件提示所有浏览器刷新当前页面                        todo 通知事件还是自己直接刷新
@@ -153,22 +152,20 @@ object HKHybirdManager {
     @Synchronized
     fun checkHealth() {
         HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.e(TAG, "**  CHECK HEALTH START")
-        HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.e(TAG, "所有模块执行一次健康体检 开始")
+        HKLogUtil.e(TAG, "")
         val start = System.currentTimeMillis()
         Observable.fromCallable {
             MODULES.value.forEach {
-                HKLogUtil.w(TAG, "**  --> MODULE CHECK HEALTH START: " + it.key)
+                HKLogUtil.w(it.key, "${it.key} 执行一次健康体检 开始")
                 //it.value.checkHealth()
+                HKLogUtil.w(it.key, "${it.key} 执行一次健康体检 结束")
             }
 
-            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-            HKLogUtil.e(TAG, "**  CHECK HEALTH COMPLETE  耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.e(TAG, "")
+            HKLogUtil.e(TAG, "所有模块执行一次健康体检 结束  耗时: ${System.currentTimeMillis() - start}ms\n\n")
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
         }.subscribeOn(Schedulers.newThread()).subscribe()
-        HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.e(TAG, "**  CHECK HEALTH ING  耗时: ${System.currentTimeMillis() - start}ms")
-        HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================<<<<<<<<<<<<<<<<<<<<")
     }
 
     fun onWebViewClose(webViewClient: WebViewClient?) {

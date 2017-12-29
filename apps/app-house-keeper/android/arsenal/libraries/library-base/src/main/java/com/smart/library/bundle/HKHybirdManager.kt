@@ -151,19 +151,28 @@ object HKHybirdManager {
     @JvmStatic
     @Synchronized
     fun checkHealth() {
-        HKLogUtil.d(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.e(TAG, "所有模块执行一次健康体检 开始")
-        HKLogUtil.e(TAG, "")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, "\n\n所有模块执行一次健康体检 开始\n\n")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         val start = System.currentTimeMillis()
         Observable.fromCallable {
             MODULES.value.forEach {
-                HKLogUtil.w(it.key, "${it.key} 执行一次健康体检 开始")
+                val moduleStart = System.currentTimeMillis()
+                HKLogUtil.w(it.key, "模块:${it.key}执行一次健康体检 开始 , 当前线程:${Thread.currentThread().name}")
                 //it.value.checkHealth()
-                HKLogUtil.w(it.key, "${it.key} 执行一次健康体检 结束")
+                HKLogUtil.w(it.key, "模块:${it.key}执行一次健康体检 结束 , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - moduleStart}ms")
             }
 
-            HKLogUtil.e(TAG, "")
-            HKLogUtil.e(TAG, "所有模块执行一次健康体检 结束  耗时: ${System.currentTimeMillis() - start}ms\n\n")
+            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+            HKLogUtil.w(TAG, "\n\n所有模块执行一次健康体检 结束  耗时: ${System.currentTimeMillis() - start}ms\n\n")
+            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
         }.subscribeOn(Schedulers.newThread()).subscribe()
     }

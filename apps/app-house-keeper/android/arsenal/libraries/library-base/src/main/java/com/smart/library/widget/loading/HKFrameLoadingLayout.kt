@@ -41,7 +41,7 @@ import java.util.*
  *
  * 默认要向上一点点不是居中的,因为titlebar占有一定的高度 宽高必须大于等于 120dp
  */
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanPrivate")
 class HKFrameLoadingLayout : FrameLayout {
 
     enum class ViewType {
@@ -123,13 +123,12 @@ class HKFrameLoadingLayout : FrameLayout {
         val view = processViewToFrontByType(viewType)
         if (view != null) {
             try {
-                var textView: TextView? = null
-                textView = when (viewType) {
+                val textView: TextView? = when (viewType) {
                     ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
                     ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
                     ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
                 }
-                textView.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView.text).toString() + "\n" + text else text
+                textView?.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView?.text).toString() + "\n" + text else text
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -141,13 +140,12 @@ class HKFrameLoadingLayout : FrameLayout {
         val view = mViewMaps[viewType]
         if (view != null) {
             try {
-                var textView: TextView? = null
-                textView = when (viewType) {
+                val textView: TextView? = when (viewType) {
                     ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
                     ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
                     ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
                 }
-                textView.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView.text).toString() + "\n" + text else text
+                textView?.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView?.text).toString() + "\n" + text else text
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -162,26 +160,23 @@ class HKFrameLoadingLayout : FrameLayout {
     }
 
     fun getDefaultText(viewType: ViewType): String {
-        var text: String? = null
-        text = when (viewType) {
+        return when (viewType) {
             ViewType.NODATA -> resources.getString(R.string.hk_frameloading_empty)
             ViewType.LOADING -> resources.getString(R.string.hk_frameloading_loadingnow)
             ViewType.NETWORK_EXCEPTION -> resources.getString(R.string.hk_frameloading_networkerror)
         }
-        return text
     }
 
     fun getText(viewType: ViewType): String? {
         var text: String? = null
         val view = mViewMaps[viewType]
         if (view != null) {
-            var textView: TextView? = null
-            textView = when (viewType) {
+            val textView: TextView? = when (viewType) {
                 ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
                 ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
                 ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
             }
-            text = textView.text.toString().trim { it <= ' ' }
+            text = textView?.text.toString().trim { it <= ' ' }
         }
         return text
     }

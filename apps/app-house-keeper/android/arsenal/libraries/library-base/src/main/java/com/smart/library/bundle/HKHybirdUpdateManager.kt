@@ -37,12 +37,14 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         HKLogUtil.v(moduleManager.moduleName, "系统检测更新(异步) 开始 ,当前线程:${Thread.currentThread().name}")
         Observable.fromCallable {
             val needUpdate = checkUpdateSync()
-            HKLogUtil.v(moduleManager.moduleName, "检查更新(同步) 结束 ,当前线程:${Thread.currentThread().name} , ${if (needUpdate) "检测到需要更新,已经切换为在线状态,访问在线资源" else "未检测到更新,访问本地资源"} 耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.e(moduleManager.moduleName, "检查更新(同步) 结束 ,当前线程:${Thread.currentThread().name} , ${if (needUpdate) "检测到需要更新,已经切换为在线状态,访问在线资源" else "未检测到更新,访问本地资源"} 耗时: ${System.currentTimeMillis() - start}ms")
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     /**
      * 检查更新-同步(加载本模块URL的时候)
+     * 注意: 此处无需处理 模块第一次加载 然后合并 下次启动生效的配置文件  操作, 因为既然打开了本网页,前提是已经checkHealth, 而 checkHealth 已经包含了 fitNextAndFitLocalIfNeedConfigsInfo
+     *       所以,良好的设计是此时无需关注合版本合并信息,只关注自己的责任,检查/下载更新
      *
      * A:   进来发现  当前已经是在线状态    说明时间段为  正在下载 到 应用成功之前 这个时间段内
      *
@@ -92,11 +94,12 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         val moduleConfigUrl = moduleManager.currentConfig?.moduleConfigUrl ?: ""
         HKLogUtil.v(moduleManager.moduleName, "下载配置文件 开始: $moduleConfigUrl")
         val needUpdate = configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
-            HKLogUtil.v(moduleManager.moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"}")
+            HKLogUtil.v(moduleManager.moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , remoteConfig = $remoteConfig")
             if (remoteConfig != null) {
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
                 if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybirdManager.DEBUG)) {
+                    HKLogUtil.e(moduleManager.moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
                     val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
                     val localVersion = moduleManager.currentConfig?.moduleVersion?.toFloatOrNull()
                     HKLogUtil.v("${moduleManager.moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
@@ -115,6 +118,13 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                             return@invoke true
                         } else if (remoteVersion < localVersion) {
                             HKLogUtil.v("系统检测到需要回滚")
+
+                            if (remoteConfig.moduleUpdateMode == UpdateStrategy.ONLINE) {
+                                moduleManager.onLineModel = true
+                                HKLogUtil.e("立即切换为在线模式")
+                            } else {
+                                HKLogUtil.e("无需切换为在线模式")
+                            }
                             download(remoteConfig)
                             return@invoke true
                         } else {
@@ -123,6 +133,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                     } else {
                         HKLogUtil.e("系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 为空, 无法判断需要更新,默认不需要更新")
                     }
+                } else {
+                    HKLogUtil.e(moduleManager.moduleName, "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
                 }
             }
             return@invoke false

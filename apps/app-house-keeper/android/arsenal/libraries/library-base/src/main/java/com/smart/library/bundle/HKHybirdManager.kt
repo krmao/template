@@ -139,7 +139,7 @@ object HKHybirdManager {
     }
 
     fun getModule(url: String): HKHybirdModuleManager? {
-        return MODULES.value.filter { HKHybirdModuleManager.getLocalFile(it.value.configManager.currentConfig, url)?.exists() == true }.values.firstOrNull()
+        return MODULES.value.filter { HKHybirdModuleManager.getLocalFile(it.value.currentConfig, url)?.exists() == true }.values.firstOrNull()
     }
 
     /**

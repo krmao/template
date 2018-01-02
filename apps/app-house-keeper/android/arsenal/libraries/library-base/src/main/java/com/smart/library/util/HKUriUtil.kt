@@ -27,8 +27,7 @@ import java.io.File
  *
  * 要在应用间共享文件，您应发送一项 content:// URI，并授予 URI 临时访问权限。
  *
- * if Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
- *     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+ * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
  */
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object HKUriUtil {

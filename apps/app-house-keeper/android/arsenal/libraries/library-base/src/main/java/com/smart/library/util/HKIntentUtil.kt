@@ -141,6 +141,7 @@ object HKIntentUtil {
 
     fun getImageIntent(imageFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(imageFile), "image/*")
         return intent
@@ -148,6 +149,7 @@ object HKIntentUtil {
 
     fun getPdfIntent(pdfFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(pdfFile), "application/pdf")
         return intent
@@ -155,6 +157,7 @@ object HKIntentUtil {
 
     fun getTextIntent(textFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(textFile), "text/plain")
         return intent
@@ -162,6 +165,7 @@ object HKIntentUtil {
 
     fun getAudioIntent(audioFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(audioFile), "audio/*")
         return intent
@@ -169,6 +173,7 @@ object HKIntentUtil {
 
     fun getVideoIntent(videoFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.putExtra("oneshot", 0)
         intent.putExtra("configchange", 0)
         intent.addCategory("android.intent.category.DEFAULT")
@@ -178,6 +183,7 @@ object HKIntentUtil {
 
     fun getChmIntent(chmFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(chmFile), "application/x-chm")
         return intent
@@ -185,6 +191,7 @@ object HKIntentUtil {
 
     fun getExcelIntent(excelFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(excelFile), "application/vnd.ms-excel")
         return intent
@@ -192,6 +199,7 @@ object HKIntentUtil {
 
     fun getPptIntent(pptFile: File): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         intent.addCategory("android.intent.category.DEFAULT")
         intent.setDataAndType(HKUriUtil.fromFileProvider(pptFile), "application/vnd.ms-powerpoint")
         return intent
@@ -307,7 +315,8 @@ object HKIntentUtil {
 
     fun callOpenInstallApk(context: Context, apkFilePath: String) {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(Uri.parse("file://" + apkFilePath), "application/vnd.android.package-archive")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        intent.setDataAndType(HKUriUtil.fromFileProvider(apkFilePath), "application/vnd.android.package-archive")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }

@@ -1,10 +1,11 @@
 package com.smart.library.bundle
 
 import android.text.TextUtils
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.manager.HKHybirdModuleManager
+import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.cache.HKCacheManager
 import com.smart.library.util.rx.RxBus
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap
  * =============================================
  *
  * 健康体检策略
- * @see com.smart.library.bundle.HKHybirdManager.checkHealth         健康体检接口
+ * @see com.smart.library.bundle.HKHybird.checkHealth         健康体检接口
  * @see com.smart.library.widget.webview.client.HKWebViewClient.init 浏览器每次启动时
  * =============================================
  * 1: 每次启动浏览器 执行异步健康检查
@@ -105,8 +106,8 @@ import java.util.concurrent.ConcurrentHashMap
  *
  **/
 @Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference")
-object HKHybirdManager {
-    private val TAG = HKHybirdManager::class.java.simpleName
+object HKHybird {
+    private val TAG = HKHybird::class.java.simpleName
 
     var EVN = "pre"
         private set
@@ -218,7 +219,7 @@ object HKHybirdManager {
 
     fun onWebViewClose(webViewClient: WebViewClient?) {
         MODULES.value.forEach {
-            it.value.onWebViewClose(webViewClient)
+            it.value.lifecycleManager.onWebViewClose(webViewClient)
         }
     }
 

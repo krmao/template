@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.Message
 import android.util.Log
 import android.webkit.*
-import com.smart.library.bundle.HKHybirdManager
+import com.smart.library.bundle.HKHybird
 import com.smart.library.util.hybird.HKHybirdBridge
 
 /*
@@ -36,12 +36,12 @@ open class HKWebViewClient : WebViewClient() {
     init {
         //每次浏览器启动，执行一次健康体检
         Log.d(HKHybirdBridge.TAG, "每次浏览器启动，执行一次健康体检")
-        HKHybirdManager.checkHealth()
+        HKHybird.checkHealth()
     }
 
     open fun onDestroy() {
         Log.d(HKHybirdBridge.TAG, "每次浏览器关闭，提前删除 webView 的强引用,避免内存泄露")
-        HKHybirdManager.onWebViewClose(this)
+        HKHybird.onWebViewClose(this)
     }
 
     /**

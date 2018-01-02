@@ -1,5 +1,6 @@
-package com.smart.library.bundle
+package com.smart.library.bundle.manager
 
+import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKPreferencesUtil
 import java.util.*

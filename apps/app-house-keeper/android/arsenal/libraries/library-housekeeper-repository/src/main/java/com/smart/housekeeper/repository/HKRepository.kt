@@ -3,7 +3,7 @@ package com.smart.housekeeper.repository
 import com.smart.housekeeper.repository.remote.HKApiManager
 import com.smart.housekeeper.repository.remote.api.HKApi
 import com.smart.housekeeper.repository.remote.core.HKOkHttpProgressResponseBody
-import com.smart.library.bundle.HKHybirdConfigModel
+import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import java.io.File

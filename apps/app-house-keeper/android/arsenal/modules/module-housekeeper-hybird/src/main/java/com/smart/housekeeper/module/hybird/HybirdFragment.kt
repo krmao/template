@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
-import com.smart.library.bundle.HKHybirdConfigModel
-import com.smart.library.bundle.HKHybirdManager
-import com.smart.library.bundle.HKHybirdModuleManager
+import com.smart.library.bundle.model.HKHybirdConfigModel
+import com.smart.library.bundle.HKHybird
+import com.smart.library.bundle.strategy.HKHybirdCheckStrategy
 import com.smart.library.util.HKRandomUtil
-import com.smart.library.widget.webview.HKWebFragment
 import kotlinx.android.synthetic.main.hybird_fragment.*
 
 @Suppress("unused")
@@ -23,7 +22,7 @@ class HybirdFragment : HKBaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        HKHybirdManager.MODULES.value.forEach { entry ->
+        HKHybird.MODULES.value.forEach { entry ->
             val textView = TextView(context).apply {
                 text = entry.key; textSize = 24f; gravity = Gravity.CENTER
                 setTextColor(Color.BLACK)
@@ -33,8 +32,8 @@ class HybirdFragment : HKBaseFragment() {
 
             textView.setOnClickListener {
 
-                entry.value.checkHealth(strategy = HKHybirdModuleManager.CheckStrategy.READY, synchronized = false) { _, config: HKHybirdConfigModel? ->
-                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybirdManager.EVN) + "index.shtml#/cardList")
+                entry.value.checkHealth(strategy = HKHybirdCheckStrategy.READY, synchronized = false) { _, config: HKHybirdConfigModel? ->
+                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybird.EVN) + "index.shtml#/cardList")
                     //HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
                 }
             }

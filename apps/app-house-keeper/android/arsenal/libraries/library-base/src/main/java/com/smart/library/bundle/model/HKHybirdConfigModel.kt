@@ -1,15 +1,16 @@
-package com.smart.library.bundle
+package com.smart.library.bundle.model
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "UNCHECKED_CAST")
 open class HKHybirdConfigModel() : Parcelable {
     var moduleDebug = HKBaseApplication.DEBUG //只下发到测试机
     var moduleVersion = "" //只分当前版本与线上最新版本
     var moduleName = ""
-    var moduleUpdateMode = HKHybirdUpdateManager.UpdateStrategy.ONLINE
+    var moduleUpdateMode = HKHybirdUpdateStrategy.ONLINE
     var moduleMainUrl = HashMap<String, String>()
     var moduleScriptUrl = HashMap<String, String>()
     var moduleConfigUrl = ""
@@ -28,7 +29,7 @@ open class HKHybirdConfigModel() : Parcelable {
     constructor(parcel: Parcel) : this() {
         moduleVersion = parcel.readString()
         moduleName = parcel.readString()
-        moduleUpdateMode = parcel.readSerializable() as HKHybirdUpdateManager.UpdateStrategy
+        moduleUpdateMode = parcel.readSerializable() as HKHybirdUpdateStrategy
         moduleScriptUrl = parcel.readHashMap(null) as HashMap<String, String>
         moduleConfigUrl = parcel.readString()
         moduleDownloadUrl = parcel.readString()

@@ -1,5 +1,9 @@
-package com.smart.library.bundle
+package com.smart.library.bundle.manager
 
+import com.smart.library.bundle.HKHybird
+import com.smart.library.bundle.model.HKHybirdConfigModel
+import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
+import com.smart.library.bundle.util.HKHybirdUtil
 import com.smart.library.util.HKLogUtil
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,16 +20,9 @@ import java.io.File
 @Suppress("MemberVisibilityCanPrivate", "PrivatePropertyName")
 class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
-    /**
-     * 升级策略
-     */
-    enum class UpdateStrategy {
-        ONLINE,         // 检测到更新理解切换在线,在程序第一次启动初始化 以及 前后台切换的时候执行 异步检查,  每次加载模块URL 同步检查
-        OFFLINE,        // 检测到更新仍然使用本地,在程序第一次启动初始化 以及 前后台切换的时候执行 异步检查,  每次加载模块URL   不检查
-    }
-
     internal var configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null
     internal var downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null
+
     private var isDownloading = false
 
     /**
@@ -111,7 +108,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
             if (remoteConfig != null) {
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
-                if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybirdManager.DEBUG)) {
+                if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybird.DEBUG)) {
                     HKLogUtil.e(moduleManager.moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
                     val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
                     val localVersion = moduleManager.currentConfig?.moduleVersion?.toFloatOrNull()
@@ -121,7 +118,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                         if (remoteVersion != localVersion) {
                             HKLogUtil.v("系统检测到有新版本")
 
-                            if (remoteConfig.moduleUpdateMode == UpdateStrategy.ONLINE) {
+                            if (remoteConfig.moduleUpdateMode == HKHybirdUpdateStrategy.ONLINE) {
                                 if (switchToOnlineModeIfRemoteVersionChanged) {
                                     moduleManager.onlineModel = true
                                     HKLogUtil.e("立即切换为在线模式")
@@ -150,22 +147,6 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     }
 
     @Synchronized
-    private fun completeDownloadSuccess(remoteConfig: HKHybirdConfigModel) {
-        val start = System.currentTimeMillis()
-        HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 开始: 目标配置文件为=$remoteConfig")
-        moduleManager.configManager.saveConfigNext(remoteConfig)
-        isDownloading = false
-        HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 结束  耗时:${System.currentTimeMillis() - start}ms ")
-    }
-
-    @Synchronized
-    private fun completeDownloadFailure(remoteConfig: HKHybirdConfigModel) {
-        val start = System.currentTimeMillis()
-        HKLogUtil.e(moduleManager.moduleName, "下载任务失败-后期处理 开始: 目标配置文件为=$remoteConfig")
-        isDownloading = false
-        HKLogUtil.e(moduleManager.moduleName, "下载任务失败-后期处理 结束  耗时:${System.currentTimeMillis() - start}ms ")
-    }
-
     private fun download(remoteConfig: HKHybirdConfigModel) {
         HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始: ${remoteConfig.moduleDownloadUrl}, 当前线程:${Thread.currentThread().name}")
 
@@ -180,11 +161,11 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
             return
         }
 
-        val zipFile = HKHybirdModuleManager.getZipFile(remoteConfig)
+        val zipFile = HKHybirdUtil.getZipFile(remoteConfig)
 
         HKLogUtil.e(moduleManager.moduleName, "率先校验本地是否存在 目标版本的已解压的校验完整的 更新包解压后的文件夹,有无zip包不重要,如果有则无需重复执行下载任务")
         //1: 如果即将下载的版本 本地解压包存在切校验正确,zip即使不存在也无需下载
-        if (HKHybirdModuleManager.isLocalFilesValid(remoteConfig)) {
+        if (HKHybirdUtil.isLocalFilesValid(remoteConfig)) {
             HKLogUtil.e(moduleManager.moduleName, "系统检测到 解压后的文件夹 校验成功,无需执行下载, 开始执行后续操作")
             completeDownloadSuccess(remoteConfig)
             return
@@ -202,7 +183,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         downloader?.invoke(remoteConfig.moduleDownloadUrl, zipFile) { file: File? ->
             HKLogUtil.e(moduleManager.moduleName, "下载更新包结束 :${file?.path}")
 
-            if (HKHybirdModuleManager.isLocalFilesValid(remoteConfig)) {
+            if (HKHybirdUtil.isLocalFilesValid(remoteConfig)) {
                 HKLogUtil.e(moduleManager.moduleName, "更新包 & 解压后的文件夹 校验成功, 开始执行后续操作")
                 completeDownloadSuccess(remoteConfig)
             } else {
@@ -211,5 +192,22 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                 completeDownloadFailure(remoteConfig)
             }
         }
+    }
+
+    @Synchronized
+    private fun completeDownloadSuccess(remoteConfig: HKHybirdConfigModel) {
+        val start = System.currentTimeMillis()
+        HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 开始: 目标配置文件为=$remoteConfig")
+        moduleManager.configManager.saveConfigNext(remoteConfig)
+        isDownloading = false
+        HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 结束  耗时:${System.currentTimeMillis() - start}ms ")
+    }
+
+    @Synchronized
+    private fun completeDownloadFailure(remoteConfig: HKHybirdConfigModel) {
+        val start = System.currentTimeMillis()
+        HKLogUtil.e(moduleManager.moduleName, "下载任务失败-后期处理 开始: 目标配置文件为=$remoteConfig")
+        isDownloading = false
+        HKLogUtil.e(moduleManager.moduleName, "下载任务失败-后期处理 结束  耗时:${System.currentTimeMillis() - start}ms ")
     }
 }

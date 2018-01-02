@@ -3,7 +3,7 @@ package com.smart.housekeeper.repository.remote.api
 import android.os.Handler
 import android.os.Looper
 import com.smart.housekeeper.repository.remote.core.HKResponseModel
-import com.smart.library.bundle.HKHybirdConfigModel
+import com.smart.library.bundle.model.HKHybirdConfigModel
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody

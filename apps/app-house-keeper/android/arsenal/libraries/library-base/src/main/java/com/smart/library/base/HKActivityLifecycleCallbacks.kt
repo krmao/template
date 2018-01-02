@@ -6,10 +6,9 @@ import android.os.Bundle
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.rx.RxBus
 import kotlin.properties.Delegates
-import kotlin.reflect.KProperty
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
-class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+open class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
     // I use four separate variables here. You can, of course, just use two and
     // increment/decrement them instead of using four and incrementing them all.
     /*private int resumed;
@@ -45,18 +44,10 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     companion object {
 
-        // If you want a static function you can use to check if your application is
-        // foreground/background, you can use the following:
-
-        // Replace the four variables above with these four
-        private var resumed by Delegates.observable(0) { _, _, _ ->
-        }
-        private var paused by Delegates.observable(0) { _, _, _ ->
-        }
-        private var started by Delegates.observable(0) { _, _, _ ->
-        }
-        private var stopped by Delegates.observable(0) { _, _, _ ->
-        }
+        private var resumed = 0
+        private var paused = 0
+        private var started = 0
+        private var stopped = 0
 
         @Suppress("UNUSED_ANONYMOUS_PARAMETER")
         private var applicationVisibleChanged by Delegates.observable(0) { property, oldValue, newValue ->
@@ -64,9 +55,8 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
                 RxBus.post(ApplicationVisibleChangedEvent(isApplicationVisible))
         }
 
-        // And these two public static functions
         val isApplicationVisible: Boolean
-            get() = applicationVisibleChanged > 0 //started > stopped
+            get() = applicationVisibleChanged > 0
     }
 
     class ApplicationVisibleChangedEvent(val isApplicationVisible: Boolean)

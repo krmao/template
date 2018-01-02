@@ -1,6 +1,7 @@
 package com.smart.library.bundle
 
 import android.text.TextUtils
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
@@ -181,8 +182,8 @@ object HKHybirdManager {
         HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
     }
 
-    fun getModule(url: String): HKHybirdModuleManager? {
-        return MODULES.value.filter { HKHybirdModuleManager.getLocalFile(it.value.currentConfig, url)?.exists() == true }.values.firstOrNull()
+    fun getModule(url: String?): HKHybirdModuleManager? {
+        return if (url.isNullOrBlank()) null else MODULES.value.filter { isMemberOfModule(it.value.currentConfig, url) }.values.firstOrNull()
     }
 
     /**
@@ -227,5 +228,13 @@ object HKHybirdManager {
 
     fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?) {
         MODULES.value.forEach { it.value.setConfiger(configer) }
+    }
+
+    fun isMemberOfModule(config: HKHybirdConfigModel?, url: String?): Boolean {
+        return config?.moduleMainUrl?.values?.any { url?.startsWith(it, true) ?: false } == true
+    }
+
+    fun checkUpdate(url: String?) {
+        getModule(url)?.checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
     }
 }

@@ -267,8 +267,8 @@ object HKSystemUtil {
         return false
     }
 
-    val isAppInBackground: Boolean
-        get() = !HKActivityLifecycleCallbacks.isApplicationInForeground
+    val isApplicationVisible: Boolean
+        get() = !HKActivityLifecycleCallbacks.isApplicationVisible
 
     /**
      * 收起下拉通知栏

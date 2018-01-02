@@ -13,6 +13,7 @@ import android.webkit.WebView
 import com.smart.library.R
 import com.smart.library.base.HKActivity
 import com.smart.library.base.HKBaseFragment
+import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.hybird.HKHybirdBridge
 import com.smart.library.widget.titlebar.HKTitleBar
@@ -106,8 +107,10 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
         HKLogUtil.w(HKHybirdBridge.TAG, "indexUrl:$url , isValidUrl?${URLUtil.isValidUrl(url)}")
 
-        if (URLUtil.isValidUrl(url))
-            web_view?.loadUrl(url)
+        if (URLUtil.isValidUrl(url)) {
+            HKHybirdManager.checkUpdate(url)
+            web_view.loadUrl(url)
+        }
     }
 
     override fun onDestroy() {

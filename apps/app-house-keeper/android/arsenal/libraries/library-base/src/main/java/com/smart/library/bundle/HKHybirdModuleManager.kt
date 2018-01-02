@@ -53,11 +53,14 @@ class HKHybirdModuleManager(val moduleName: String) {
 
     var updateStrategy = HKHybirdUpdateManager.UpdateStrategy.ONLINE
 
+    /**
+     * 异步进行初始化操作
+     */
     fun init(configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null, callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
         if (configer != null) setConfiger(configer)
         if (downloader != null) setDownloader(downloader)
 
-        checkHealth(true, callback)
+        checkHealth(false, callback)
     }
 
     /**

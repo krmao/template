@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
+import com.smart.library.bundle.HKHybirdConfigModel
 import com.smart.library.bundle.HKHybirdManager
 import com.smart.library.util.HKRandomUtil
 import com.smart.library.widget.webview.HKWebFragment
@@ -30,8 +31,9 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-                entry.value.checkHealth { _, _ ->
-                    HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
+                entry.value.checkHealth { _, config: HKHybirdConfigModel? ->
+                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybirdManager.EVN))
+                    //HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
                 }
             }
 

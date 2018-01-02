@@ -42,8 +42,8 @@ internal object HKApiManager {
             }
             val notificationId = 999999
             HKDebugFragment.showDebugNotification(notificationId)
-            RxBus.toObservable(HKActivityLifecycleCallbacks.ForegroundEvent::class.java).subscribe { foregroundEvent ->
-                if (foregroundEvent.isApplicationInForeground)
+            RxBus.toObservable(HKActivityLifecycleCallbacks.ApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+                if (changeEvent.isApplicationVisible)
                     HKDebugFragment.showDebugNotification(notificationId)
                 else
                     HKDebugFragment.cancelDebugNotification(notificationId)

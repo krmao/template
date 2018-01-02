@@ -6,7 +6,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
-
 /**
  * 负责检查更新和下载
  *
@@ -21,8 +20,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
      * 升级策略
      */
     enum class UpdateStrategy {
-        ONLINE,         // 检测到更新理解切换在线
-        OFFLINE,        // 检测到更新仍然使用本地
+        ONLINE,         // 检测到更新理解切换在线,在程序第一次启动初始化 以及 前后台切换的时候执行 异步检查,  每次加载模块URL 同步检查
+        OFFLINE,        // 检测到更新仍然使用本地,在程序第一次启动初始化 以及 前后台切换的时候执行 异步检查,  每次加载模块URL   不检查
     }
 
     internal var configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null
@@ -32,16 +31,16 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     /**
      * 检查更新-异步
      */
-    fun checkUpdate() {
-        val start = System.currentTimeMillis()
-        HKLogUtil.v(moduleManager.moduleName, "系统检测更新(异步) 开始 ,当前线程:${Thread.currentThread().name}")
-        Observable.fromCallable {
-            val needUpdate = checkUpdateSync()
-            HKLogUtil.e(moduleManager.moduleName, "检查更新(同步) 结束 ,当前线程:${Thread.currentThread().name} , ${if (needUpdate) "检测到需要更新,已经切换为在线状态,访问在线资源" else "未检测到更新,访问本地资源"} 耗时: ${System.currentTimeMillis() - start}ms")
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
+    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false) {
+        if (synchronized)
+            checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged)
+        else
+            Observable.fromCallable { checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     /**
+     * 本操作会修改 onLineMode 状态
+     *
      * 检查更新-同步(加载本模块URL的时候)
      * 注意: 此处无需处理 模块第一次加载 然后合并 下次启动生效的配置文件  操作, 因为既然打开了本网页,前提是已经checkHealth, 而 checkHealth 已经包含了 fitNextAndFitLocalIfNeedConfigsInfo
      *       所以,良好的设计是此时无需关注合版本合并信息,只关注自己的责任,检查/下载更新
@@ -72,23 +71,37 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
      * 返回 false 代表没有更新,或者更新包已经应用成功
      */
     @Synchronized
-    fun checkUpdateSync(): Boolean {
+    private fun checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged: Boolean = true): Boolean {
         val start = System.currentTimeMillis()
         HKLogUtil.v(moduleManager.moduleName, "系统检测更新(同步) 开始 ,当前线程:${Thread.currentThread().name}")
 
-        if (isDownloading) {
-            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前正在下载更新中, return true")
-            return true
-        }
-
-        if (moduleManager.onLineModel) {
-            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return true")
-            return true
+        if (moduleManager.currentConfig == null) {
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前模块尚未被初始化,必须执行初始化操作")
+            moduleManager.checkHealth(synchronized = true)
+        } else {
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前模块已被初始化过,可以执行检查更新")
         }
 
         if (configer == null) {
             HKLogUtil.e(moduleManager.moduleName, "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return false")
             return false
+        }
+
+        if (isDownloading) {
+            //有可能是异步检查设置的 isDownloading ,需要强制切换为在线
+            if (switchToOnlineModeIfRemoteVersionChanged) {
+                moduleManager.onlineModel = true
+                HKLogUtil.e("立即切换为在线模式")
+            } else {
+                HKLogUtil.e("不允许切换为在线模式")
+            }
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前正在下载更新中, return true")
+            return true
+        }
+
+        if (moduleManager.onlineModel) {
+            HKLogUtil.e(moduleManager.moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return true")
+            return true
         }
 
         val moduleConfigUrl = moduleManager.currentConfig?.moduleConfigUrl ?: ""
@@ -105,23 +118,16 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                     HKLogUtil.v("${moduleManager.moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
                     if (remoteVersion != null && localVersion != null) {
                         //版本号相等时不做任何处理，避免不必要的麻烦
-                        if (remoteVersion > localVersion) {
+                        if (remoteVersion != localVersion) {
                             HKLogUtil.v("系统检测到有新版本")
 
                             if (remoteConfig.moduleUpdateMode == UpdateStrategy.ONLINE) {
-                                moduleManager.onLineModel = true
-                                HKLogUtil.e("立即切换为在线模式")
-                            } else {
-                                HKLogUtil.e("无需切换为在线模式")
-                            }
-                            download(remoteConfig)
-                            return@invoke true
-                        } else if (remoteVersion < localVersion) {
-                            HKLogUtil.v("系统检测到需要回滚")
-
-                            if (remoteConfig.moduleUpdateMode == UpdateStrategy.ONLINE) {
-                                moduleManager.onLineModel = true
-                                HKLogUtil.e("立即切换为在线模式")
+                                if (switchToOnlineModeIfRemoteVersionChanged) {
+                                    moduleManager.onlineModel = true
+                                    HKLogUtil.e("立即切换为在线模式")
+                                } else {
+                                    HKLogUtil.e("不允许切换为在线模式")
+                                }
                             } else {
                                 HKLogUtil.e("无需切换为在线模式")
                             }

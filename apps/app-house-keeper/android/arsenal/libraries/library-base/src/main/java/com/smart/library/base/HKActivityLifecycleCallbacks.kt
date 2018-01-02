@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.rx.RxBus
 import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
@@ -22,10 +23,12 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityResumed(activity: Activity) {
         ++resumed
+        ++applicationVisibleChanged
     }
 
     override fun onActivityPaused(activity: Activity) {
         ++paused
+        --applicationVisibleChanged
         HKLogUtil.w("test", "application is in foreground: " + (resumed > paused))
     }
 
@@ -47,26 +50,24 @@ class HKActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
         // Replace the four variables above with these four
         private var resumed by Delegates.observable(0) { _, _, _ ->
-            RxBus.post(ForegroundEvent(isApplicationInForeground))
         }
         private var paused by Delegates.observable(0) { _, _, _ ->
-            RxBus.post(ForegroundEvent(isApplicationInForeground))
         }
         private var started by Delegates.observable(0) { _, _, _ ->
-            RxBus.post(VisibleEvent(isApplicationVisible))
         }
         private var stopped by Delegates.observable(0) { _, _, _ ->
-            RxBus.post(VisibleEvent(isApplicationVisible))
+        }
+
+        @Suppress("UNUSED_ANONYMOUS_PARAMETER")
+        private var applicationVisibleChanged by Delegates.observable(0) { property, oldValue, newValue ->
+            if (oldValue != newValue)
+                RxBus.post(ApplicationVisibleChangedEvent(isApplicationVisible))
         }
 
         // And these two public static functions
         val isApplicationVisible: Boolean
-            get() = started > stopped
-
-        val isApplicationInForeground: Boolean
-            get() = resumed > paused
+            get() = applicationVisibleChanged > 0 //started > stopped
     }
 
-    class ForegroundEvent(val isApplicationInForeground: Boolean)
-    class VisibleEvent(val isApplicationVisible: Boolean)
+    class ApplicationVisibleChangedEvent(val isApplicationVisible: Boolean)
 }

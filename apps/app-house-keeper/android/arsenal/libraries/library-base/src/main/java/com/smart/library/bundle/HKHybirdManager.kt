@@ -2,11 +2,14 @@ package com.smart.library.bundle
 
 import android.text.TextUtils
 import android.webkit.WebViewClient
+import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.cache.HKCacheManager
+import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -132,10 +135,50 @@ object HKHybirdManager {
      */
     @JvmStatic
     @JvmOverloads
-    fun init(debug: Boolean = true, env: String? = null) {
+    @Synchronized
+    fun init(debug: Boolean = true, env: String? = null, configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+        val start = System.currentTimeMillis()
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, "初始化HYBIRD模块 开始")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+
         DEBUG = debug
         EVN = if (env?.isNotBlank() == true) env else EVN
-        checkHealth()
+
+        MODULES.value.forEach {
+            //初始化本模块
+            it.value.init(configer, downloader) { _, _ ->
+                //检查更新1: 应用程序第一次启动的时候执行一次一步检查更新
+                it.value.checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = false)
+            }
+        }
+
+        //应用程序前后台切换的时候执行一次异步检查更新
+        RxBus.toObservable(HKActivityLifecycleCallbacks.ApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+            //从前台切换到后台时
+            if (!changeEvent.isApplicationVisible) {
+                HKLogUtil.e(TAG, "系统监测到应用程序从前台切换到后台,执行一次异步的健康体检和检查更新")
+                MODULES.value.forEach {
+                    //初始化本模块
+                    it.value.checkHealth { _, _ ->
+                        //检查更新2: 应用程序第一次启动的时候执行一次一步检查更新
+                        it.value.checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = false)
+                    }
+                }
+            }
+        }
+
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, "初始化HYBIRD模块 结束  耗时: ${System.currentTimeMillis() - start}ms")
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
     }
 
     fun getModule(url: String): HKHybirdModuleManager? {
@@ -160,12 +203,7 @@ object HKHybirdManager {
         HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         val start = System.currentTimeMillis()
         Observable.fromCallable {
-            MODULES.value.forEach {
-                val moduleStart = System.currentTimeMillis()
-                HKLogUtil.w(it.key, "模块:${it.key}执行一次健康体检 开始 , 当前线程:${Thread.currentThread().name}")
-                //it.value.checkHealth()
-                HKLogUtil.w(it.key, "模块:${it.key}执行一次健康体检 结束 , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - moduleStart}ms")
-            }
+            MODULES.value.forEach { it.value.checkHealth(synchronized = false) }
 
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
@@ -181,5 +219,13 @@ object HKHybirdManager {
         MODULES.value.forEach {
             it.value.onWebViewClose(webViewClient)
         }
+    }
+
+    fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
+        MODULES.value.forEach { it.value.setDownloader(downloader) }
+    }
+
+    fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?) {
+        MODULES.value.forEach { it.value.setConfiger(configer) }
     }
 }

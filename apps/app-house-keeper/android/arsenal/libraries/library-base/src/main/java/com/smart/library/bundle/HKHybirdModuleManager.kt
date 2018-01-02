@@ -49,7 +49,16 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 3: 如果已经是在线模式,则不执行重复检查更新,不执行重复的健康体检
      * 4: 重启app或者执行正式更新替换之前,检查更新包的完整性
      */
-    var onLineModel: Boolean = false
+    var onlineModel: Boolean = false
+
+    var updateStrategy = HKHybirdUpdateManager.UpdateStrategy.ONLINE
+
+    fun init(configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null, callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
+        if (configer != null) setConfiger(configer)
+        if (downloader != null) setDownloader(downloader)
+
+        checkHealth(true, callback)
+    }
 
     /**
      *
@@ -70,17 +79,17 @@ class HKHybirdModuleManager(val moduleName: String) {
      *      }
      */
     @Synchronized
-    fun checkHealth(callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
-        HKLogUtil.w(moduleName, "健康体检(异步:${Thread.currentThread().name}) 开始")
-        val start = System.currentTimeMillis()
-        Observable.fromCallable { fitConfigsInfoSync() }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+    fun checkHealth(synchronized: Boolean = true, callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
+        if (synchronized) {
+            checkHealthSync()
             callback?.invoke(getUnzipDir(currentConfig), currentConfig)
-            HKLogUtil.e(moduleName, "健康体检(异步:${Thread.currentThread().name}) 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
+        } else {
+            Observable.fromCallable { fitConfigsInfoSync() }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { callback?.invoke(getUnzipDir(currentConfig), currentConfig) }
         }
     }
 
     @Synchronized
-    fun checkHealthSync() {
+    private fun checkHealthSync() {
         HKLogUtil.w(moduleName, "健康体检(同步:${Thread.currentThread().name}) 开始")
         val start = System.currentTimeMillis()
 
@@ -95,12 +104,14 @@ class HKHybirdModuleManager(val moduleName: String) {
         HKLogUtil.w(moduleName, "健康体检(同步:${Thread.currentThread().name}) 结束 , 耗时: ${System.currentTimeMillis() - start}ms")
     }
 
-    fun checkUpdate() {
-        updateManager.checkUpdate()
-    }
-
-    fun checkUpdateSync(): Boolean {
-        return updateManager.checkUpdateSync()
+    /**
+     * 检查更新一共有三个地方
+     *
+     * 更新策略为ONLINE 时,  1:程序启动,2:前后台切换,3:webView加载模块
+     * 更新策略为OFFLINE 时,  1:程序启动,2:前后台切换
+     */
+    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false) {
+        updateManager.checkUpdate(synchronized, switchToOnlineModeIfRemoteVersionChanged)
     }
 
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
@@ -114,6 +125,7 @@ class HKHybirdModuleManager(val moduleName: String) {
     /**
      * 同步 处理本地配置信息,如果当前模块没有被打开,则会优先处理下次生效的配置信息然后立即处理本地配置信息
      */
+    @Synchronized
     private fun fitConfigsInfoSync() {
         if (isModuleOpenNow()) {
             fitLocalConfigsInfoSync()
@@ -125,6 +137,7 @@ class HKHybirdModuleManager(val moduleName: String) {
     /**
      * 同步 处理下次生效的配置信息以及处理完后紧接着处理本地配置信息
      */
+    @Synchronized
     private fun fitNextAndLocalConfigsInfoSync() {
         fitNextAndFitLocalIfNeedConfigsInfoSync(true)
     }
@@ -138,27 +151,28 @@ class HKHybirdModuleManager(val moduleName: String) {
      */
     private fun fitNextAndFitLocalIfNeedConfigsInfo() {
         val start = System.currentTimeMillis()
-        HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+        HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel)")
         Observable.fromCallable {
             fitNextAndFitLocalIfNeedConfigsInfoSync()
-            HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     /**
      * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
      */
+    @Synchronized
     private fun fitNextAndFitLocalIfNeedConfigsInfoSync(mustFitLocal: Boolean = false) {
         HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(同步) 开始 ,当前线程:${Thread.currentThread().name}")
 
-        if (onLineModel || isModuleOpenNow()) {
-            HKLogUtil.v(moduleName, "检测到 当前为在线模式 onLineModel=$onLineModel 或者当前模块正在被浏览器使用 isModuleOpenNow=${isModuleOpenNow()} ,不能执行本操作 return")
+        if (onlineModel || isModuleOpenNow()) {
+            HKLogUtil.v(moduleName, "检测到 当前为在线模式 onlineModel=$onlineModel 或者当前模块正在被浏览器使用 isModuleOpenNow=${isModuleOpenNow()} ,不能执行本操作 return")
             return
         }
 
         val configList = configManager.getConfigList() //版本号降序排序
 
-        if (!onLineModel) {
+        if (!onlineModel) {
             HKLogUtil.v(moduleName, "检测当前模块未被浏览器加载,可以处理")
 
             val nextConfigStack = configManager.getNextConfigStack()
@@ -204,10 +218,10 @@ class HKHybirdModuleManager(val moduleName: String) {
      */
     private fun fitLocalConfigsInfo() {
         val start = System.currentTimeMillis()
-        HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+        HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel)")
         Observable.fromCallable {
             fitLocalConfigsInfoSync()
-            HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+            HKLogUtil.v(moduleName, "一次检验本地所有可用配置信息的完整性(异步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
@@ -218,7 +232,7 @@ class HKHybirdModuleManager(val moduleName: String) {
      */
     @Synchronized
     private fun fitLocalConfigsInfoSync() {
-        HKLogUtil.e(moduleName, "一次检验本地可用配置信息的完整性(同步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel)")
+        HKLogUtil.e(moduleName, "一次检验本地可用配置信息的完整性(同步) 开始 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel)")
         val start = System.currentTimeMillis()
         val configList = configManager.getConfigList()
         HKLogUtil.e(moduleName, "当前最新配置信息为: ${configList.map { it.moduleVersion }}")
@@ -245,7 +259,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         currentConfig = null
         configList.firstOrNull()?.let { currentConfig = it }
         HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${currentConfig?.moduleVersion}")
-        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息(不包含 next)的完整性(同步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onLineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
+        HKLogUtil.e(moduleName, "一次检验本地所有可用配置信息(不包含 next)的完整性(同步) 结束 , 当前线程:${Thread.currentThread().name} , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = $onlineModel) ,  耗时: ${System.currentTimeMillis() - start}ms")
     }
 
     @Synchronized
@@ -328,22 +342,26 @@ class HKHybirdModuleManager(val moduleName: String) {
             //            checkUpdate()
             onWebViewOpenPage(webViewClient)
 
-            //======================================================================================
-            // 暂时修改系统策略(因为网络请求不能再主线程执行)
-            //======================================================================================
-            val oldThreadPolicy = StrictMode.getThreadPolicy()
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
-            //======================================================================================
+            //仅仅更新策略为 ONLINE 时,才会执行此步骤
+            if (updateStrategy == HKHybirdUpdateManager.UpdateStrategy.ONLINE) {
 
-            val needUpdate = checkUpdateSync()
-            HKLogUtil.v(currentConfig.moduleName, "needUpdate:$needUpdate")
+                //======================================================================================
+                // 暂时修改系统策略(因为网络请求不能再主线程执行)
+                //======================================================================================
+                val oldThreadPolicy = StrictMode.getThreadPolicy()
+                StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+                //======================================================================================
 
-            //======================================================================================
-            // 还原系统策略
-            //======================================================================================
-            StrictMode.setThreadPolicy(oldThreadPolicy)
-            //======================================================================================
+                val needUpdate = checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
+                HKLogUtil.v(currentConfig.moduleName, "needUpdate:$needUpdate")
 
+                //======================================================================================
+                // 还原系统策略
+                //======================================================================================
+                StrictMode.setThreadPolicy(oldThreadPolicy)
+                //======================================================================================
+
+            }
             false
         }
 
@@ -352,7 +370,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
             HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-            if (!onLineModel) {
+            if (!onlineModel) {
                 val localFile = getLocalHtmlFile(currentConfig, url)
                 if (localFile?.exists() == true) {
                     try {
@@ -375,7 +393,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
             HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
             var resourceResponse: WebResourceResponse? = null
-            if (!onLineModel) {
+            if (!onlineModel) {
                 val localFile = getLocalScriptFile(currentConfig, url)
                 if (url != null && localFile?.exists() == true) {
                     val mimeType: String = when {
@@ -408,6 +426,7 @@ class HKHybirdModuleManager(val moduleName: String) {
 
     private val webViewClientSet: MutableSet<WebViewClient?> = mutableSetOf()
 
+    @Synchronized
     fun isModuleOpenNow(): Boolean {
         HKLogUtil.e(moduleName, "isModuleOpenNow -> webViewClientSet.size=${webViewClientSet.size}")
         return !webViewClientSet.isEmpty()
@@ -425,9 +444,9 @@ class HKHybirdModuleManager(val moduleName: String) {
         HKLogUtil.e(moduleName, "onWebViewClose -> webViewClientSet.size=${webViewClientSet.size}")
 
         if (webViewClientSet.isEmpty()) {
-            HKLogUtil.e(moduleName, "系统监测到当前模块已经完全从浏览器中解耦,强制 onLineMode = false , 并检查是否有 下一次加载本模块 生效的任务,此时是设置的最佳时机")
+            HKLogUtil.e(moduleName, "系统监测到当前模块已经完全从浏览器中解耦,强制 onlineModel = false , 并检查是否有 下一次加载本模块 生效的任务,此时是设置的最佳时机")
 
-            onLineModel = false
+            onlineModel = false
 
             fitNextAndFitLocalIfNeedConfigsInfo()
         }

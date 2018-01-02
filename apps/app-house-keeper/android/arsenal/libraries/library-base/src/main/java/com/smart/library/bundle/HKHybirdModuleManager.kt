@@ -60,7 +60,14 @@ class HKHybirdModuleManager(val moduleName: String) {
         if (configer != null) setConfiger(configer)
         if (downloader != null) setDownloader(downloader)
 
-        checkHealth(false, callback)
+        checkHealth(HKHybirdModuleManager.CheckStrategy.ALL, false, callback)
+    }
+
+    enum class CheckStrategy {
+        //只要检查准备好就可以了
+        READY,
+        //所有文件重新检验一边
+        ALL
     }
 
     /**
@@ -82,7 +89,13 @@ class HKHybirdModuleManager(val moduleName: String) {
      *      }
      */
     @Synchronized
-    fun checkHealth(synchronized: Boolean = true, callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
+    fun checkHealth(strategy: CheckStrategy = CheckStrategy.READY, synchronized: Boolean = true, callback: ((localUnzipDir: File?, config: HKHybirdConfigModel?) -> Unit)? = null) {
+        if (strategy == CheckStrategy.READY && currentConfig != null) {
+            HKLogUtil.v(moduleName, "系统监测到当前模块已经准备充分,当前策略不需要检验本地文件,可以加载URL   strategy:$strategy")
+            callback?.invoke(getUnzipDir(currentConfig), currentConfig)
+            return
+        }
+        HKLogUtil.v(moduleName, "开始校验本模块文件 strategy:$strategy")
         if (synchronized) {
             checkHealthSync()
             callback?.invoke(getUnzipDir(currentConfig), currentConfig)
@@ -341,7 +354,7 @@ class HKHybirdModuleManager(val moduleName: String) {
          * http://www.jianshu.com/p/3474cb8096da
          */
         HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
-        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
+        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, @Suppress("UNUSED_ANONYMOUS_PARAMETER") url: String? ->
             //            checkUpdate()
             onWebViewOpenPage(webViewClient)
 

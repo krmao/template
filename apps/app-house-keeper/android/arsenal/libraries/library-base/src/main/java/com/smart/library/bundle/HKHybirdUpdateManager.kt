@@ -105,9 +105,9 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         }
 
         val moduleConfigUrl = moduleManager.currentConfig?.moduleConfigUrl ?: ""
-        HKLogUtil.v(moduleManager.moduleName, "下载配置文件 开始: $moduleConfigUrl")
+        HKLogUtil.v(moduleManager.moduleName, "下载配置文件 开始: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
         val needUpdate = configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
-            HKLogUtil.v(moduleManager.moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , remoteConfig = $remoteConfig")
+            HKLogUtil.v(moduleManager.moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name} , remoteConfig = $remoteConfig")
             if (remoteConfig != null) {
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
@@ -167,7 +167,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     }
 
     private fun download(remoteConfig: HKHybirdConfigModel) {
-        HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始: ${remoteConfig.moduleDownloadUrl}")
+        HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始: ${remoteConfig.moduleDownloadUrl}, 当前线程:${Thread.currentThread().name}")
 
         val nextConfigStack = moduleManager.configManager.getNextConfigStack()
         if (nextConfigStack.contains(remoteConfig)) {

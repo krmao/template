@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
 import com.smart.library.bundle.HKHybirdConfigModel
 import com.smart.library.bundle.HKHybirdManager
+import com.smart.library.bundle.HKHybirdModuleManager
 import com.smart.library.util.HKRandomUtil
 import com.smart.library.widget.webview.HKWebFragment
 import kotlinx.android.synthetic.main.hybird_fragment.*
@@ -31,8 +32,9 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-                entry.value.checkHealth { _, config: HKHybirdConfigModel? ->
-                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybirdManager.EVN))
+
+                entry.value.checkHealth(strategy = HKHybirdModuleManager.CheckStrategy.READY, synchronized = false) { _, config: HKHybirdConfigModel? ->
+                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybirdManager.EVN) + "index.shtml#/cardList")
                     //HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
                 }
             }

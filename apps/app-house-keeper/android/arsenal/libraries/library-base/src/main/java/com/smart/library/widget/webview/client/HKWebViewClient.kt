@@ -35,8 +35,8 @@ open class HKWebViewClient : WebViewClient() {
 
     init {
         //每次浏览器启动，执行一次健康体检
-        Log.d(HKHybirdBridge.TAG, "每次浏览器启动，执行一次健康体检")
-        HKHybird.checkHealth()
+        //Log.d(HKHybirdBridge.TAG, "每次浏览器启动，执行一次健康体检")
+        //HKHybird.checkHealth()
     }
 
     open fun onDestroy() {

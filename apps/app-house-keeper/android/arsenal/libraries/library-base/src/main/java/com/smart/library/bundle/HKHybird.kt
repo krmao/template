@@ -109,16 +109,24 @@ import java.util.concurrent.ConcurrentHashMap
 object HKHybird {
     private val TAG = HKHybird::class.java.simpleName
 
+    @JvmStatic
     var EVN = "pre"
         private set
+
+    @JvmStatic
     var DEBUG = true
         private set
 
+    @JvmStatic
     val ASSETS_DIR_NAME = "hybird"
+    @JvmStatic
     val BUNDLE_SUFFIX = ".zip"
+    @JvmStatic
     val CONFIG_SUFFIX = ".json"
+    @JvmStatic
     val LOCAL_ROOT_DIR = HKCacheManager.getChildCacheDir(ASSETS_DIR_NAME)
 
+    @JvmStatic
     val MODULES: Lazy<ConcurrentHashMap<String, HKHybirdModuleManager>> =
         lazy {
             val tmpMap = ConcurrentHashMap<String, HKHybirdModuleManager>()
@@ -217,24 +225,29 @@ object HKHybird {
         }.subscribeOn(Schedulers.newThread()).subscribe()
     }
 
+    @JvmStatic
     fun onWebViewClose(webViewClient: WebViewClient?) {
         MODULES.value.forEach {
             it.value.lifecycleManager.onWebViewClose(webViewClient)
         }
     }
 
+    @JvmStatic
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         MODULES.value.forEach { it.value.setDownloader(downloader) }
     }
 
+    @JvmStatic
     fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?) {
         MODULES.value.forEach { it.value.setConfiger(configer) }
     }
 
+    @JvmStatic
     fun isMemberOfModule(config: HKHybirdConfigModel?, url: String?): Boolean {
         return config?.moduleMainUrl?.values?.any { url?.startsWith(it, true) ?: false } == true
     }
 
+    @JvmStatic
     fun checkUpdate(url: String?) {
         getModule(url)?.checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
     }

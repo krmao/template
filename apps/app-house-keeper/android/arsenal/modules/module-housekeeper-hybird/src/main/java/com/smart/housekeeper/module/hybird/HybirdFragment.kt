@@ -31,14 +31,16 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-
                 entry.value.checkHealth(strategy = HKHybirdCheckStrategy.READY, synchronized = false) { _, config: HKHybirdConfigModel? ->
-                    HybirdWebFragment.goTo(activity, config?.moduleMainUrl?.get(HKHybird.EVN) + "index.shtml#/cardList")
-                    //HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
+                    HybirdWebFragment.goTo(activity, "https://h.jia.chexiangpre.com" + config?.moduleMainUrl + "index.shtml#/cardList")
                 }
             }
 
             containerLayout.addView(textView)
+        }
+
+        title_bar.right0BgView.setOnClickListener {
+            HybirdWebFragment.goTo(activity, "file:///android_asset/index.html")
         }
     }
 }

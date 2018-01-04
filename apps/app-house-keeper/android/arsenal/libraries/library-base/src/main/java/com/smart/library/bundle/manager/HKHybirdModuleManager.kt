@@ -5,6 +5,8 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.bundle.HKHybird
+import com.smart.library.bundle.HKHybird.setConfiger
+import com.smart.library.bundle.HKHybird.setDownloader
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.strategy.HKHybirdCheckStrategy
 import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
@@ -106,7 +108,21 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 更新策略为OFFLINE 时,  1:程序启动,2:前后台切换
      */
     fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false) {
+
+        //======================================================================================
+        // 暂时修改系统策略(因为网络请求不能再主线程执行)
+        //======================================================================================
+        val oldThreadPolicy = StrictMode.getThreadPolicy()
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+        //======================================================================================
+
         updateManager.checkUpdate(synchronized, switchToOnlineModeIfRemoteVersionChanged)
+
+        //======================================================================================
+        // 还原系统策略
+        //======================================================================================
+        StrictMode.setThreadPolicy(oldThreadPolicy)
+        //======================================================================================
     }
 
     @Synchronized
@@ -201,6 +217,8 @@ class HKHybirdModuleManager(val moduleName: String) {
                     configList.add(0, destConfig)
 
                     configManager.saveConfig(configList)  //彻底删除配置信息，至此已经删除了所有与本版本相关的信息
+                    currentConfig = destConfig
+                    HKLogUtil.e(moduleName, "重置当前 本地配置头 为:${currentConfig?.moduleVersion}")
                 }
                 configManager.clearConfigNext()
             } else {
@@ -276,15 +294,15 @@ class HKHybirdModuleManager(val moduleName: String) {
             return
         }
 
-        val interceptScriptUrl = currentConfig.moduleScriptUrl[HKHybird.EVN]
-        if (interceptScriptUrl == null || interceptScriptUrl.isBlank()) {
+        val interceptScriptUrl = currentConfig.moduleScriptUrl
+        if (interceptScriptUrl.isBlank()) {
             HKLogUtil.e(currentConfig.moduleName, "检测到 interceptScriptUrl == null return")
             return
         }
 
-        val interceptMainUrl = currentConfig.moduleMainUrl[HKHybird.EVN]
+        val interceptMainUrl = currentConfig.moduleMainUrl
 
-        if (interceptMainUrl == null || interceptMainUrl.isBlank()) {
+        if (interceptMainUrl.isBlank()) {
             HKLogUtil.e(currentConfig.moduleName, "检测到 interceptMainUrl == null return")
             return
         }
@@ -298,29 +316,14 @@ class HKHybirdModuleManager(val moduleName: String) {
          * http://www.jianshu.com/p/3474cb8096da
          */
         HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
-        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, _: String? ->
-            //            checkUpdate()
-            lifecycleManager.onWebViewOpenPage(webViewClient)
+        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
+            lifecycleManager.onWebViewOpenPage(webViewClient, url)
+
+            HKLogUtil.e(currentConfig.moduleName, "系统拦截到模块URL请求: url=$url ,匹配到 检测内容为 '$interceptMainUrl' 的拦截器, 由于当前模块的策略为 '$updateStrategy' , ${if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) "需要检测更新,开始更新" else "不需要检查更新,不拦截 return"}")
 
             //仅仅更新策略为 ONLINE 时,才会执行此步骤
             if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) {
-
-                //======================================================================================
-                // 暂时修改系统策略(因为网络请求不能再主线程执行)
-                //======================================================================================
-                val oldThreadPolicy = StrictMode.getThreadPolicy()
-                StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
-                //======================================================================================
-
-                val needUpdate = checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
-                HKLogUtil.v(currentConfig.moduleName, "needUpdate:$needUpdate")
-
-                //======================================================================================
-                // 还原系统策略
-                //======================================================================================
-                StrictMode.setThreadPolicy(oldThreadPolicy)
-                //======================================================================================
-
+                checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
             }
             false
         }

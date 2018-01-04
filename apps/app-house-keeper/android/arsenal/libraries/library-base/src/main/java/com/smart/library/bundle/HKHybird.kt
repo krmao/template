@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.webkit.WebViewClient
 import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.HKHybird.getModule
 import com.smart.library.bundle.manager.HKHybirdModuleManager
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.HKLogUtil
@@ -233,6 +234,13 @@ object HKHybird {
     }
 
     @JvmStatic
+    fun onWebViewOpenPage(webViewClient: WebViewClient?, url: String?) {
+        MODULES.value.forEach {
+            it.value.lifecycleManager.onWebViewOpenPage(webViewClient, url)
+        }
+    }
+
+    @JvmStatic
     fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
         MODULES.value.forEach { it.value.setDownloader(downloader) }
     }
@@ -244,7 +252,9 @@ object HKHybird {
 
     @JvmStatic
     fun isMemberOfModule(config: HKHybirdConfigModel?, url: String?): Boolean {
-        return config?.moduleMainUrl?.values?.any { url?.startsWith(it, true) ?: false } == true
+        val isMemberOfModule = url?.contains(config?.moduleMainUrl ?: "") == true
+        HKLogUtil.w(TAG, "isMemberOfModule:$isMemberOfModule , url=$url , mainUrl=${config?.moduleMainUrl}")
+        return isMemberOfModule
     }
 
     @JvmStatic

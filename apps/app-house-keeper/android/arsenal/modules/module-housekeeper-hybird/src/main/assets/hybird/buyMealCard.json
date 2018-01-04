@@ -1,32 +1,23 @@
 {
-    "moduleDebug": true,
-    "moduleVersion": "1.0",
     "moduleName": "buyMealCard",
-    "moduleMainUrl": {
-        "prd": "https://h.jia.chexiang.com/cx/cxj/cxjappweb/buyMealCard/",
-        "pre": "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/",
-        "sit": "https://h.jia.chexiangsit.com/cx/cxj/cxjappweb/buyMealCard/"
-    },
-    "moduleScriptUrl": {
-        "prd": "https://s1.chexiang.com/msweb02/cx/cxj/cxjappweb/buyMealCard/",
-        "pre": "https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/buyMealCard/",
-        "sit": "https://s1.chexiangsit.com/msweb02/cx/cxj/cxjappweb/buyMealCard/"
-    },
+    "moduleVersion": "1.0",
+    "moduleDebug": true,
+    "moduleUpdateStrategy": "ONLINE",
+    "moduleMainUrl": "/cx/cxj/cxjappweb/buyMealCard/",
+    "moduleScriptUrl": "/cx/cxj/cxjappweb/buyMealCard/",
     "moduleConfigUrl": "http://10.47.58.14:8080/background/files/buyMealCard.json",
     "moduleDownloadUrl": "http://10.47.58.14:8080/background/files/buyMealCard-1.0.zip",
-    "moduleUpdateStrategy": 0,
-    "moduleRoutesUpdateStrategy": {},
-    "moduleZipMd5": "87f9db1eb5f0fc83a6c2a17688433202",
+    "moduleZipMd5": "54fa4d554d7782dc0e1622eadc17f02a",
     "moduleFilesMd5": {
         "/css/app.0beb745539445a88f03a09706cb56c3e.css": "17dec343acada741c70524aebb1e5c20",
         "/css/app.0beb745539445a88f03a09706cb56c3e.css.map": "c75f297e9acf45e83f23187bfd935ee3",
         "/img/loading.7b076d5.gif": "7b076d589dd912bf134018d385ed2db9",
-        "/index.shtml": "985843d94c9029bfc901be5f746e239a",
-        "/js/app.102d0571dc3aa8aedccd.js": "19343bc75331bc5ad1d8856de2ac244d",
-        "/js/app.102d0571dc3aa8aedccd.js.map": "59b221ec71b8f9b2e0922c79732fa148",
+        "/index.shtml": "9c2962c97e8b85342b533f8f3bece0a5",
+        "/js/app.b31930aa7c864d2b82a5.js": "0867051e5d8bc74c2f0e30e8f0e40566",
+        "/js/app.b31930aa7c864d2b82a5.js.map": "35c9afa09b89654367cdafb408f75069",
         "/js/base.f3174a4e8585ed5bda87.js": "8610cad1a6146955bbeaba85039daf3f",
         "/js/base.f3174a4e8585ed5bda87.js.map": "cb778e185aa12bc1321fcfe731531ed5",
-        "/js/manifest.96f2f1dffcc8cf822c2a.js": "d69b4343fe7d9d61f2a1d9a55dbfc090",
-        "/js/manifest.96f2f1dffcc8cf822c2a.js.map": "c8fe5c5fc55fc4fa2214601c9d132cc3"
+        "/js/manifest.7c82600fde6dcd17c0d4.js": "cb87f04fa30b161736d0795d7da0d570",
+        "/js/manifest.7c82600fde6dcd17c0d4.js.map": "5f2489e2c95c207ee323be4a83ffc306"
     }
 }

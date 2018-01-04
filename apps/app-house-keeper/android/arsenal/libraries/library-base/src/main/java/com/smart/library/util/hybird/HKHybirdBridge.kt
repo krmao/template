@@ -89,7 +89,7 @@ object HKHybirdBridge {
     }
 
     fun shouldInterceptRequest(webView: WebView?, url: String?): WebResourceResponse? = requestMap.entries.filter { entry ->
-        url?.contains(entry.key, true) == true
+        url?.contains(entry.key) == true
     }.getOrNull(0)?.value?.invoke(webView, url)
 
 
@@ -132,7 +132,7 @@ object HKHybirdBridge {
     fun shouldOverrideUrlLoading(webView: WebView?, webViewClient: WebViewClient?, uriString: String?): Boolean {
         if (uriString == null)
             return false
-        val list = schemeMap.filterKeys { uriString.startsWith(it) }.entries
+        val list = schemeMap.filterKeys { uriString.contains(it) }.entries
 
         //根据 key 字符串的长度，越长的越先匹配
         for (entry in list.sortedByDescending { it.key.length }) {

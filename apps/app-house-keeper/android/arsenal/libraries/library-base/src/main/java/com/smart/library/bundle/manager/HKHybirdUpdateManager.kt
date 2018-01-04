@@ -70,8 +70,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     @Synchronized
     private fun checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged: Boolean = true): Boolean {
         val start = System.currentTimeMillis()
-        HKLogUtil.v(moduleManager.moduleName, "系统检测更新(同步) 开始 ,当前线程:${Thread.currentThread().name}")
-
+        HKLogUtil.v(moduleManager.moduleName, "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig?.moduleVersion},当前线程:${Thread.currentThread().name}")
+        HKLogUtil.v(moduleManager.moduleName, "当前配置=${moduleManager.currentConfig}")
         if (moduleManager.currentConfig == null) {
             HKLogUtil.e(moduleManager.moduleName, "系统检测到当前模块尚未被初始化,必须执行初始化操作")
             moduleManager.checkHealth(synchronized = true)
@@ -102,7 +102,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         }
 
         val moduleConfigUrl = moduleManager.currentConfig?.moduleConfigUrl ?: ""
-        HKLogUtil.v(moduleManager.moduleName, "下载配置文件 开始: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
+        HKLogUtil.v(moduleManager.moduleName, "下载配置文件 开始 当前版本=${moduleManager.currentConfig?.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
         val needUpdate = configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdConfigModel? ->
             HKLogUtil.v(moduleManager.moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name} , remoteConfig = $remoteConfig")
             if (remoteConfig != null) {
@@ -118,7 +118,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
                         if (remoteVersion != localVersion) {
                             HKLogUtil.v("系统检测到有新版本")
 
-                            if (remoteConfig.moduleUpdateMode == HKHybirdUpdateStrategy.ONLINE) {
+                            if (remoteConfig.moduleUpdateStrategy == HKHybirdUpdateStrategy.ONLINE) {
                                 if (switchToOnlineModeIfRemoteVersionChanged) {
                                     moduleManager.onlineModel = true
                                     HKLogUtil.e("立即切换为在线模式")
@@ -148,7 +148,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
     @Synchronized
     private fun download(remoteConfig: HKHybirdConfigModel) {
-        HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始: ${remoteConfig.moduleDownloadUrl}, 当前线程:${Thread.currentThread().name}")
+        HKLogUtil.v(moduleManager.moduleName, "下载更新包 开始 当前版本=${moduleManager.currentConfig?.moduleVersion}: ${remoteConfig.moduleDownloadUrl}, 当前线程:${Thread.currentThread().name}")
 
         val nextConfigStack = moduleManager.configManager.getNextConfigStack()
         if (nextConfigStack.contains(remoteConfig)) {
@@ -181,7 +181,7 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         HKLogUtil.v(moduleManager.moduleName, "开始进行网络下载 ...")
         //如果即将下载的版本 本地解压包不存在或者校验失败,执行下载zip
         downloader?.invoke(remoteConfig.moduleDownloadUrl, zipFile) { file: File? ->
-            HKLogUtil.e(moduleManager.moduleName, "下载更新包结束 :${file?.path}")
+            HKLogUtil.e(moduleManager.moduleName, "下载更新包结束  当前版本=${moduleManager.currentConfig?.moduleVersion}:${file?.path}")
 
             if (HKHybirdUtil.isLocalFilesValid(remoteConfig)) {
                 HKLogUtil.e(moduleManager.moduleName, "更新包 & 解压后的文件夹 校验成功, 开始执行后续操作")

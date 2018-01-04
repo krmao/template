@@ -39,7 +39,7 @@ class HybirdApplication : Application() {
         }
         //同步 配置文件下载器
         HKHybird.setConfiger { configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean? ->
-            callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 200, connectTimeoutMS = 200), HKHybirdConfigModel::class.java))
+            callback.invoke(HKJsonUtil.fromJson(HKOkHttpManager.doGetSync(configUrl, readTimeoutMS = 2000, connectTimeoutMS = 2000), HKHybirdConfigModel::class.java))
         }
         //初始化开始
         HKHybird.init(HKBaseApplication.DEBUG, "pre")

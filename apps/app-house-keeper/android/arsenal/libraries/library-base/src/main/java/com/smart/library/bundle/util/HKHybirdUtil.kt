@@ -159,8 +159,8 @@ object HKHybirdUtil {
         if (url?.isNotBlank() == true) {
             val scheme = Uri.parse(url)?.scheme?.trim()
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = config?.moduleMainUrl?.get(HKHybird.EVN)
-                if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
+                val mainBaseUrl = config?.moduleMainUrl
+                if (mainBaseUrl?.isNotBlank() == true && url.contains(mainBaseUrl, true)) {
                     localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
                         it.exists()
                     }
@@ -177,8 +177,8 @@ object HKHybirdUtil {
         if (url?.isNotBlank() == true) {
             val scheme = Uri.parse(url)?.scheme?.trim()
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = config?.moduleScriptUrl?.get(HKHybird.EVN)
-                if (mainBaseUrl?.isNotBlank() == true && url.startsWith(mainBaseUrl, true)) {
+                val mainBaseUrl = config?.moduleScriptUrl
+                if (mainBaseUrl?.isNotBlank() == true && url.contains(mainBaseUrl, true)) {
                     localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringAfter(mainBaseUrl)).takeIf {
                         HKLogUtil.v(config.moduleName, "检测到本地文件路径=${it.absolutePath}")
                         it.exists()

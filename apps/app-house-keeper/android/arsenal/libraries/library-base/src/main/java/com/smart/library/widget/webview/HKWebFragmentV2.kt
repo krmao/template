@@ -109,6 +109,7 @@ open class HKWebFragmentV2 : HKBaseFragment(), HKBaseFragment.OnBackPressedListe
 
         if (URLUtil.isValidUrl(url)) {
             HKHybird.checkUpdate(url)
+            HKHybird.onWebViewOpenPage(webViewClient, url)
             web_view.loadUrl(url)
         }
     }

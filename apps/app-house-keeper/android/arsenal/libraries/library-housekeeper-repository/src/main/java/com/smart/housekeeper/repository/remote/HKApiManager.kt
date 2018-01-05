@@ -4,7 +4,7 @@ import com.smart.housekeeper.repository.remote.core.HKOkHttpManager
 import com.smart.housekeeper.repository.remote.core.HKResponseModel
 import com.smart.housekeeper.repository.remote.exception.HKRetrofitException
 import com.smart.housekeeper.repository.remote.exception.HKRetrofitServerException
-import com.smart.library.base.HKActivityLifecycleCallbacks
+import com.smart.library.base.HKApplicationVisibleChangedEvent
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKToastUtil
@@ -42,7 +42,7 @@ internal object HKApiManager {
             }
             val notificationId = 999999
             HKDebugFragment.showDebugNotification(notificationId)
-            RxBus.toObservable(HKActivityLifecycleCallbacks.ApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+            RxBus.toObservable(HKApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)
                     HKDebugFragment.showDebugNotification(notificationId)
                 else

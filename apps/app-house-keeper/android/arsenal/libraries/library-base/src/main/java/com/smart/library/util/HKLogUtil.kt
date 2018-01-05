@@ -32,24 +32,38 @@ import java.util.*
  *
  * </p>
  */
-@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanPrivate")
+/**
+ * @deprerate
+ *
+ *      警告 当使用 clazz?.canonicalName 的时候
+ *      如果在一个类的 complain object 里面的静态 成员变量 上加 监听 Delegates.observable ,则在 华为 PLK-UL00 型号的手机报出
+ *      java.lang.IncompatibleClassChangeError
+ *      at java.lang.Class.getCanonicalName
+ *      华为荣耀6P 则没有任何问题
+ *
+ *      为了保险起见,不用 Delegates.observable监听 且不用 getCanonicalName,
+ *      改用 set 方法 以及 getName 方法
+ *
+ */
+@Suppress("unused", "MemberVisibilityCan", "MemberVisibilityCan", "MemberVisibilityCanPrivate")
 object HKLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
     private val PAGE_SUFFIX = "#_PAGE_#"
 
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
-    private var debug = HKBaseApplication.DEBUG
 
-    fun setDebug(debug: Boolean) {
-        this.debug = debug
-    }
+    @JvmStatic
+    var debug = HKBaseApplication.DEBUG
 
+
+    @JvmStatic
     fun open() {
         if (debug) {
             MODULE_MAP_ASC.put(getLocationPackageName(getStackTraceElement()), true)
         }
     }
 
+    @JvmStatic
     fun openPage() {
         if (debug) {
             val locationClassName = getLocationClassName(getStackTraceElement()) + PAGE_SUFFIX
@@ -57,12 +71,14 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun close() {
         if (debug) {
             MODULE_MAP_ASC.put(getLocationPackageName(getStackTraceElement()), false)
         }
     }
 
+    @JvmStatic
     fun closePage() {
         if (debug) {
             val locationClassName = getLocationClassName(getStackTraceElement()) + PAGE_SUFFIX
@@ -70,7 +86,8 @@ object HKLogUtil {
         }
     }
 
-    private fun isModuleEnable(stackTraceElement: StackTraceElement?): Boolean {
+    @JvmStatic
+    fun isModuleEnable(stackTraceElement: StackTraceElement?): Boolean {
         var isModuleEnable = debug
         if (debug) {
             val locationClassName = getLocationClassName(stackTraceElement) + PAGE_SUFFIX
@@ -92,8 +109,10 @@ object HKLogUtil {
         return isModuleEnable
     }
 
+    @JvmStatic
     fun v(msg: String, throwable: Throwable? = null) = v(null, msg, throwable)
 
+    @JvmStatic
     fun v(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
             val stackTraceElement: StackTraceElement? = getStackTraceElement()
@@ -103,10 +122,13 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun d(msg: String, throwable: Throwable? = null) = d(null, msg, throwable)
 
+    @JvmStatic
     fun d(tag: String? = null, msg: String) = d(tag, msg, null)
 
+    @JvmStatic
     fun d(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
             val stackTraceElement: StackTraceElement? = getStackTraceElement()
@@ -116,10 +138,13 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun i(msg: String, throwable: Throwable? = null) = i(null, msg, throwable)
 
+    @JvmStatic
     fun i(tag: String? = null, msg: String) = i(tag, msg, null)
 
+    @JvmStatic
     fun i(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
             val stackTraceElement: StackTraceElement? = getStackTraceElement()
@@ -129,10 +154,13 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun w(msg: String, throwable: Throwable? = null) = w(null, msg, throwable)
 
+    @JvmStatic
     fun w(tag: String? = null, msg: String) = w(tag, msg, null)
 
+    @JvmStatic
     fun w(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
             val stackTraceElement: StackTraceElement? = getStackTraceElement()
@@ -142,10 +170,13 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun e(msg: String, throwable: Throwable? = null) = e(null, msg, throwable)
 
+    @JvmStatic
     fun e(tag: String? = null, msg: String) = e(tag, msg, null)
 
+    @JvmStatic
     fun e(tag: String? = null, msg: String, throwable: Throwable? = null) {
         if (debug) {
             val stackTraceElement: StackTraceElement? = getStackTraceElement()
@@ -155,6 +186,7 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun getCacheDir(): File {
         val cacheDir = File(HKCacheManager.getCacheDir(), if (debug) HKConfig.NAME_LOG_DIR else HKChecksumUtil.genMD5Checksum(HKConfig.NAME_LOG_DIR))
         if (!cacheDir.exists())
@@ -162,17 +194,21 @@ object HKLogUtil {
         return cacheDir
     }
 
+    @JvmStatic
     fun write(msg: String, throwable: Throwable? = null) = write(null, msg, throwable)
 
+    @JvmStatic
     fun write(msg: String, isForce: Boolean? = false) = write(null, msg, null, isForce)
 
+    @JvmStatic
     fun write(tag: String? = null, msg: String, throwable: Throwable? = null, isForce: Boolean? = false) {
         if (debug || isForce == true) {
             HKFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), HKConfig.NAME_NEW_LOG))
         }
     }
 
-    private fun getStackTraceElement(): StackTraceElement? {
+    @JvmStatic
+    fun getStackTraceElement(): StackTraceElement? {
         val className = HKLogUtil::class.java.name
         var found = false
         for (trace in Thread.currentThread().stackTrace) {
@@ -190,23 +226,31 @@ object HKLogUtil {
         return null
     }
 
-    private fun getLocation(stackTraceElement: StackTraceElement?): String = "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
+    @JvmStatic
+    fun getLocation(stackTraceElement: StackTraceElement?): String = "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
 
-    private fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className).`package`.name ?: ""
+    @JvmStatic
+    fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className).`package`.name ?: ""
 
-    private fun getLocationMethodName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.methodName ?: ""
+    @JvmStatic
+    fun getLocationMethodName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.methodName ?: ""
 
-    private fun getLocationLineNumber(stackTraceElement: StackTraceElement?): Int = stackTraceElement?.lineNumber ?: 0
+    @JvmStatic
+    fun getLocationLineNumber(stackTraceElement: StackTraceElement?): Int = stackTraceElement?.lineNumber ?: 0
 
-    private fun getLocationClassName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.className ?: ""
+    @JvmStatic
+    fun getLocationClassName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.className ?: ""
 
     /**
      * json support
      */
+    @JvmStatic
     fun j(msg: String) = j(Log.DEBUG, null, msg)
 
+    @JvmStatic
     fun j(tag: String? = null, msg: String) = j(Log.DEBUG, tag, msg)
 
+    @JvmStatic
     fun j(level: Int, tag: String? = null, msg: String) {
         if (debug) {
             if (TextUtils.isEmpty(msg)) {
@@ -239,12 +283,15 @@ object HKLogUtil {
         }
     }
 
+    @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null): String =
         p(level, tag, message, throwable, null)
 
+    @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String =
         p(level, tag, message, false, throwable, stackTraceElement)
 
+    @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, appendLocation: Boolean = true, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {
         var tmpTag = tag
         var tmpMsg = message

@@ -2,9 +2,8 @@ package com.smart.library.bundle
 
 import android.text.TextUtils
 import android.webkit.WebViewClient
-import com.smart.library.base.HKActivityLifecycleCallbacks
+import com.smart.library.base.HKApplicationVisibleChangedEvent
 import com.smart.library.base.HKBaseApplication
-import com.smart.library.bundle.HKHybird.getModule
 import com.smart.library.bundle.manager.HKHybirdModuleManager
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.HKLogUtil
@@ -169,7 +168,7 @@ object HKHybird {
         }
 
         //应用程序前后台切换的时候执行一次异步检查更新
-        RxBus.toObservable(HKActivityLifecycleCallbacks.ApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+        RxBus.toObservable(HKApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
             //从前台切换到后台时
             if (!changeEvent.isApplicationVisible) {
                 HKLogUtil.e(TAG, "系统监测到应用程序从前台切换到后台,执行一次异步的健康体检和检查更新")

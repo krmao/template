@@ -17,7 +17,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import com.smart.library.base.HKActivityLifecycleCallbacks
 import com.smart.library.base.HKBaseApplication
 import java.lang.reflect.Method
 
@@ -266,9 +265,6 @@ object HKSystemUtil {
         }
         return false
     }
-
-    val isApplicationVisible: Boolean
-        get() = !HKActivityLifecycleCallbacks.isApplicationVisible
 
     /**
      * 收起下拉通知栏

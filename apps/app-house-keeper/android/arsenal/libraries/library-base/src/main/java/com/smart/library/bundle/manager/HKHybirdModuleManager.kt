@@ -5,8 +5,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.bundle.HKHybird
-import com.smart.library.bundle.HKHybird.setConfiger
-import com.smart.library.bundle.HKHybird.setDownloader
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.strategy.HKHybirdCheckStrategy
 import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
@@ -294,32 +292,25 @@ class HKHybirdModuleManager(val moduleName: String) {
             return
         }
 
-        val interceptScriptUrl = currentConfig.moduleScriptUrl
-        if (interceptScriptUrl.isBlank()) {
-            HKLogUtil.e(currentConfig.moduleName, "检测到 interceptScriptUrl == null return")
-            return
-        }
+        val interceptUrl = currentConfig.moduleMainUrl
 
-        val interceptMainUrl = currentConfig.moduleMainUrl
-
-        if (interceptMainUrl.isBlank()) {
+        if (interceptUrl.isBlank()) {
             HKLogUtil.e(currentConfig.moduleName, "检测到 interceptMainUrl == null return")
             return
         }
 
-        HKHybirdBridge.removeScheme(interceptMainUrl)
-        HKHybirdBridge.removeRequest(interceptMainUrl)
-        HKHybirdBridge.removeRequest(interceptScriptUrl)
+        HKHybirdBridge.removeScheme(interceptUrl)
+        HKHybirdBridge.removeRequest(interceptUrl)
 
         /**
          * webView.loadUrl 不会触发此回调,放到 HKHybirdBridge.addRequest(interceptMainUrl) 里面处理
          * http://www.jianshu.com/p/3474cb8096da
          */
-        HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
-        HKHybirdBridge.addScheme(interceptMainUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
+        HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptUrl")
+        HKHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
-            HKLogUtil.e(currentConfig.moduleName, "系统拦截到模块URL请求: url=$url ,匹配到 检测内容为 '$interceptMainUrl' 的拦截器, 由于当前模块的策略为 '$updateStrategy' , ${if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) "需要检测更新,开始更新" else "不需要检查更新,不拦截 return"}")
+            HKLogUtil.e(currentConfig.moduleName, "系统拦截到模块URL请求: url=$url ,匹配到 检测内容为 '$interceptUrl' 的拦截器, 由于当前模块的策略为 '$updateStrategy' , ${if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) "需要检测更新,开始更新" else "不需要检查更新,不拦截 return"}")
 
             //仅仅更新策略为 ONLINE 时,才会执行此步骤
             if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) {
@@ -328,36 +319,12 @@ class HKHybirdModuleManager(val moduleName: String) {
             false
         }
 
-        //html
-        HKLogUtil.v(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptMainUrl : $interceptMainUrl")
-        HKHybirdBridge.addRequest(interceptMainUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
+        HKLogUtil.v(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptUrl : $interceptUrl")
+        HKHybirdBridge.addRequest(interceptUrl) { _: WebView?, url: String? ->
+            HKLogUtil.v(currentConfig.moduleName, "shouldInterceptRequest: $url ,匹配拦截器:$interceptUrl")
             var resourceResponse: WebResourceResponse? = null
             if (!onlineModel) {
-                val localFile = HKHybirdUtil.getLocalHtmlFile(currentConfig, url)
-                if (localFile?.exists() == true) {
-                    try {
-                        HKLogUtil.v(currentConfig.moduleName, "执行伪造本地资源 返回给 webView")
-                        resourceResponse = WebResourceResponse("text/html", "UTF-8", FileInputStream(localFile.absolutePath))
-                    } catch (e: Exception) {
-                        HKLogUtil.e(currentConfig.moduleName, "伪造本地资源出错", e)
-                    }
-                } else {
-                    HKLogUtil.v(currentConfig.moduleName, "系统检测到本地文件不存在,访问在线资源")
-                }
-            } else {
-                HKLogUtil.v(currentConfig.moduleName, "系统检测到当前为在线模式,访问在线资源")
-            }
-            resourceResponse
-        }
-
-        HKLogUtil.w(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptScriptUrl : $interceptScriptUrl")
-        //css,js,image
-        HKHybirdBridge.addRequest(interceptScriptUrl) { _: WebView?, url: String? ->
-            HKLogUtil.v(currentConfig.moduleName, "系统检测到资源访问请求: $url")
-            var resourceResponse: WebResourceResponse? = null
-            if (!onlineModel) {
-                val localFile = HKHybirdUtil.getLocalScriptFile(currentConfig, url)
+                val localFile = HKHybirdUtil.getLocalFile(currentConfig, url)
                 if (url != null && localFile?.exists() == true) {
                     val mimeType: String = when {
                         url.contains(".css") -> "text/css"

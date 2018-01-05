@@ -3,8 +3,8 @@ package com.smart.library.bundle.util
 import android.net.Uri
 import android.text.TextUtils
 import com.smart.library.base.HKBaseApplication
-import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.HKHybird
+import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.util.*
 import java.io.File
 import java.io.FileNotFoundException
@@ -134,53 +134,31 @@ object HKHybirdUtil {
         return success
     }
 
-    /**
-     * return file or null
-     *
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/2"
-     * "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base/example.shtml#route/child/3"
-     *
-     *
-     *
-     * interceptMainUrl == "https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/base"
-     * localFilePath    == unzipDir/example.shtml
-     *
-     */
     @JvmStatic
     fun getLocalFile(config: HKHybirdConfigModel?, url: String?): File? {
-        return getLocalHtmlFile(config, url) ?: getLocalScriptFile(config, url)
-    }
-
-    @JvmStatic
-    fun getLocalHtmlFile(config: HKHybirdConfigModel?, url: String?): File? {
         var localFile: File? = null
         if (url?.isNotBlank() == true) {
             val scheme = Uri.parse(url)?.scheme?.trim()
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = config?.moduleMainUrl
-                if (mainBaseUrl?.isNotBlank() == true && url.contains(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringBefore("#").split("/").last()).takeIf {
-                        it.exists()
+
+                var tmpPath = url.substringAfter(config?.moduleMainUrl ?: "", "")
+
+                HKLogUtil.e(config?.moduleName, "tmpPath=$tmpPath")
+                if (tmpPath.isNotBlank()) {
+
+                    if (tmpPath.contains("#/")) {
+                        //  #/index?userInfo=
+                        //  index.shtml#/index?userInfo=
+                        tmpPath = "index.shtml"
+                    } else {
+                        //  css/app.ae44e2d0f77af623eb2bcac61ceb2626.css
+                        //  js/manifest.d01e227b32f52bdd60bd.js
+                        //  js/app.6aff061a2dc3ffbfb27c.js
+                        //  png/xxx
                     }
-                }
-            }
-        }
-        HKLogUtil.v(config?.moduleName, "检测到本地文件(${if (localFile == null) " 不存在 " else " 存在 , path=${localFile.absolutePath}"})")
-        return localFile
-    }
 
-    @JvmStatic
-    fun getLocalScriptFile(config: HKHybirdConfigModel?, url: String?): File? {
-        var localFile: File? = null
-        if (url?.isNotBlank() == true) {
-            val scheme = Uri.parse(url)?.scheme?.trim()
-            if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
-                val mainBaseUrl = config?.moduleScriptUrl
-                if (mainBaseUrl?.isNotBlank() == true && url.contains(mainBaseUrl, true)) {
-                    localFile = File(getUnzipDir(config)?.absolutePath + "/" + url.substringAfter(mainBaseUrl)).takeIf {
-                        HKLogUtil.v(config.moduleName, "检测到本地文件路径=${it.absolutePath}")
+                    localFile = File(getUnzipDir(config)?.absolutePath + "/$tmpPath").takeIf {
+                        HKLogUtil.v(config?.moduleName, "检测到本地文件路径=${it.absolutePath}")
                         it.exists()
                     }
                 }
@@ -196,8 +174,8 @@ object HKHybirdUtil {
         HKLogUtil.v(moduleName, "从 assets 拷贝/解压原始包 开始")
         var success = false
         val start = System.currentTimeMillis()
-        val zipFile = HKHybirdUtil.getZipFile(primaryConfig)
-        val unzipDir = HKHybirdUtil.getUnzipDir(primaryConfig)
+        val zipFile = getZipFile(primaryConfig)
+        val unzipDir = getUnzipDir(primaryConfig)
         try {
             HKFileUtil.deleteFile(zipFile)
             HKFileUtil.deleteDirectory(unzipDir)
@@ -221,10 +199,10 @@ object HKHybirdUtil {
         try {
             primaryConfig = HKJsonUtil.fromJson(HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybird.ASSETS_DIR_NAME}/$moduleName${HKHybird.CONFIG_SUFFIX}")), HKHybirdConfigModel::class.java)
 
-            val zipFile = HKHybirdUtil.getZipFile(primaryConfig)
-            val unzipDir = HKHybirdUtil.getUnzipDir(primaryConfig)
-            if (HKHybirdUtil.copyPrimaryZipFromAssets(moduleName, primaryConfig)) {
-                HKHybirdUtil.unzipToLocal(zipFile, unzipDir)
+            val zipFile = getZipFile(primaryConfig)
+            val unzipDir = getUnzipDir(primaryConfig)
+            if (copyPrimaryZipFromAssets(moduleName, primaryConfig)) {
+                unzipToLocal(zipFile, unzipDir)
             }
         } catch (exception: FileNotFoundException) {
             HKLogUtil.e(moduleName, "文件不存在", exception)

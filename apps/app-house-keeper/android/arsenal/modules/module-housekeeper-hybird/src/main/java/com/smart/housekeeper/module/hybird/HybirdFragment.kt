@@ -32,7 +32,8 @@ class HybirdFragment : HKBaseFragment() {
 
             textView.setOnClickListener {
                 entry.value.checkHealth(strategy = HKHybirdCheckStrategy.READY, synchronized = false) { _, config: HKHybirdConfigModel? ->
-                    HybirdWebFragment.goTo(activity, "https://h.jia.chexiangpre.com" + config?.moduleMainUrl + "index.shtml#/cardList")
+                    //HybirdWebFragment.goTo(activity, "https://h.jia.chexiangpre.com" + config?.moduleMainUrl + "index.shtml#/cardList")
+                    HybirdWebFragment.goTo(activity, "https://cxjapp.chexiang.com/service/dispacher/0?cityCode=310100&id=CXJ_445&longitude=121.433353&latitude=31.204572&storeId=&userToken=MTAwMDVhNGY0MmUzNWFjNWU5ZTM4NjY0MDMxAu7noHxv7lSlaLt_rGS8oedQqJo&cityName=上海市")
                 }
             }
 

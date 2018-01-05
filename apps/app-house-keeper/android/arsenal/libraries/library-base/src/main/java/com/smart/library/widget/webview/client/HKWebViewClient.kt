@@ -49,7 +49,9 @@ open class HKWebViewClient : WebViewClient() {
      */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         Log.d(HKHybirdBridge.TAG, "shouldOverrideUrlLoading: $url")
-        return HKHybirdBridge.shouldOverrideUrlLoading(view, this, url)
+        val shouldOverrideUrlLoading = HKHybirdBridge.shouldOverrideUrlLoading(view, this, url)
+        view?.loadUrl(url)
+        return true
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

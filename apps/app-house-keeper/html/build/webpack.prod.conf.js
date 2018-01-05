@@ -8,8 +8,11 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var ModuleConfigPlugin = require('./module-config-plugin')
 var ReplaceBundleStringPlugin = require('replace-bundle-webpack-plugin')
+
+var ModuleConfigPlugin = require('./module-config-plugin')
+let moduleName = path.basename(path.resolve("."));
+let moduleVersion = "1.0";
 
 var env = config.build.env
 
@@ -108,39 +111,24 @@ var webpackConfig = merge(baseWebpackConfig, {
                 return '';
             }
         }]),
-
         new ModuleConfigPlugin({
             rootFolder: '',
             baseInfo: {
+                moduleName: moduleName,
+                moduleVersion: moduleVersion,
                 moduleDebug: true,
-                moduleVersion: "1.0",
-                moduleName: path.basename(path.resolve(".")),
+                moduleUpdateStrategy: "ONLINE", // ONLINE=在线  , OFFLINE=离线
 
-                //https://h.jia.xxxpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList
-                moduleMainUrl: {
-                    "prd": "https://h.jia.xxx.com/cx/cxj/cxjappweb/" + this.moduleName + "/",
-                    "pre": "https://h.jia.xxxpre.com/cx/cxj/cxjappweb/" + this.moduleName + "/",
-                    "sit": "https://h.jia.xxxsit.com/cx/cxj/cxjappweb/" + this.moduleName + "/"
-                },
-
-                moduleSchemeUrls: {
-                    "prd": "https://s1.xxx.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/",
-                    "pre": "https://s1.xxxpre.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/",
-                    "sit": "https://s1.xxxsit.com/msweb02/cx/cxj/cxjappweb/" + this.moduleName + "/"
-                },
-                moduleConfigUrl: "http://10.47.17.147:7776/files/module-" + this.moduleName + ".json",
-                moduleDownloadUrl: "http://10.47.17.147:7776/files/module-" + this.moduleName + "-" + this.moduleVersion + ".zip",
-                moduleUpdateStrategy: 0,
-                moduleRoutesUpdateStrategy: {
-                    // "/base/route1": 1,
-                    // "/base/route2": 0,
-                    // "/base/route3": 1,
-                },
+                //https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList
+                moduleMainUrl: "/cx/cxj/cxjappweb/" + moduleName + "/",
+                //"https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/" + moduleName + "/"
+                moduleScriptUrl: "/cx/cxj/cxjappweb/" + moduleName + "/",
+                moduleConfigUrl: "http://10.47.58.14:8080/background/files/" + moduleName + ".json",
+                moduleDownloadUrl: "http://10.47.58.14:8080/background/files/" + moduleName + "-" + moduleVersion + ".zip"
             },
             input: config.build.assetsRoot,
             output: [
-                path.resolve(config.build.assetsRoot, '../../../../template/apps/app-house-keeper/android/arsenal/modules/module-housekeeper-hybird/src/main/assets/'),
-                // path.resolve(config.build.assetsRoot, '../../ios/arsenal/modules/module-housekeeper-hybird/assets/bundle.zip')
+                path.resolve(config.build.assetsRoot, '../../../../template/apps/app-house-keeper/android/arsenal/modules/module-housekeeper-hybird/src/main/assets/')
             ]
         })
     ]

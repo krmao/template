@@ -54,13 +54,16 @@ open class HKWebViewClient : WebViewClient() {
         // 如果不 重新执行 view?.loadUrl(url) 并 return true
         // 则对于重定向的 url 将不会调用 shouldInterceptRequest 生命周期,则无法伪造资源
         // 相关讨论-> https://groups.google.com/a/chromium.org/forum/#!topic/android-webview-dev/FzajQrxaG48
-        val shouldOverrideUrlLoading = HKHybirdBridge.shouldOverrideUrlLoading(view, this, url) {
+        val shouldOverrideUrlLoading = HKHybirdBridge.shouldOverrideUrlLoading(view, this, url)/* {
             //只有 return true 的情况下 并且 回调 callack 的情况下才会执行异步 loadUrl 操作
             HKLogUtil.e(HKHybirdBridge.TAG, "shouldOverrideUrlLoading:callback , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - start}ms")
             view?.loadUrl(url)
-        }
+        }*/
         HKLogUtil.e(HKHybirdBridge.TAG, "shouldOverrideUrlLoading:return $shouldOverrideUrlLoading , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - start}ms")
-        return shouldOverrideUrlLoading
+
+        if (!shouldOverrideUrlLoading)
+            view?.loadUrl(url)
+        return true
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

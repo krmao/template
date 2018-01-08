@@ -163,7 +163,7 @@ object HKHybird {
             //初始化本模块
             it.value.init(configer, downloader) { _, _ ->
                 //检查更新1: 应用程序第一次启动的时候执行一次一步检查更新
-                it.value.checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = false)
+                it.value.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = false)
             }
         }
 
@@ -176,7 +176,7 @@ object HKHybird {
                     //初始化本模块
                     it.value.checkHealth { _, _ ->
                         //检查更新2: 应用程序第一次启动的时候执行一次一步检查更新
-                        it.value.checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = false)
+                        it.value.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = false)
                     }
                 }
             }
@@ -257,7 +257,7 @@ object HKHybird {
     }
 
     @JvmStatic
-    fun checkUpdate(url: String?) {
-        getModule(url)?.checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
+    fun checkUpdate(url: String?, callback: (() -> Unit?)? = null) {
+        getModule(url)?.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
     }
 }

@@ -3,32 +3,15 @@ package com.smart.library.widget.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.text.TextUtils
 import android.webkit.*
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKConfig
 import com.smart.library.widget.webview.client.HKWebChromeClient
+import com.smart.library.widget.webview.client.HKWebViewClient
 
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object HKWebViewUtil {
-
-    /**
-     * 返回带 file:// 或者 http:// 的带 schema 的 url
-     */
-    fun wrapUrlSchema(url: String): String {
-        var temp = url
-
-        //检测非 hybird 的链接
-        if (!TextUtils.isEmpty(url) && !url.contains("://")) {
-            if (url.startsWith("/")) {
-                temp = "file://" + temp
-            } else if (!temp.startsWith("http://")) {
-                temp = "http://" + temp
-            }
-        }
-        return temp
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     fun initWebView(webView: WebView?, userAgent: String? = null) {
@@ -104,7 +87,7 @@ object HKWebViewUtil {
             webView.isVerticalScrollBarEnabled = false
             webView.isHorizontalScrollBarEnabled = false
 
-            webView.setWebViewClient(WebViewClient())
+            webView.setWebViewClient(HKWebViewClient())
             webView.setWebChromeClient(HKWebChromeClient())
             //webView.setDownloadListener()
 

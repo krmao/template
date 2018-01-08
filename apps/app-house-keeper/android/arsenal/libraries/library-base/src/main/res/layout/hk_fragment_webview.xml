@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
     android:orientation="vertical">
 
     <com.smart.library.widget.titlebar.HKTitleBar
-        android:id="@+id/titleBar"
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/hk_titlebar_height"
-        android:background="@drawable/hk_b_e2_white_normal_shape" />
+        android:layout_height="48dp"
+        app:hkProgressVisible="visible" />
 
-    <com.smart.library.widget.loading.HKFrameLoadingLayout
-        android:id="@+id/loading_view"
+    <com.smart.library.widget.webview.client.HKWebView
+        android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.smart.library.widget.loading.HKFrameLoadingLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

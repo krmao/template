@@ -1,5 +1,6 @@
 package com.smart.library.bundle.manager
 
+import android.os.StrictMode
 import com.smart.library.bundle.HKHybird
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
@@ -28,11 +29,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     /**
      * 检查更新-异步
      */
-    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
-        if (synchronized)
-            checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged)
-        else
-            Observable.fromCallable { checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { callback?.invoke() }
+    fun checkUpdate(switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
+        Observable.fromCallable { checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { callback?.invoke() }
     }
 
     /**

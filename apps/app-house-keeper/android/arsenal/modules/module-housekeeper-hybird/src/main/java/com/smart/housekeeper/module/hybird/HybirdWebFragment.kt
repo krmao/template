@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.smart.library.base.HKActivity
-import com.smart.library.widget.webview.HKWebFragmentV2
+import com.smart.library.widget.webview.HKWebFragment
 
 
-class HybirdWebFragment : HKWebFragmentV2() {
+class HybirdWebFragment : HKWebFragment() {
     companion object {
         fun goTo(activity: Context, url: String?) {
             goTo(activity, url, false)

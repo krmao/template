@@ -1,9 +1,7 @@
 package com.smart.library.bundle.manager
 
-import android.os.StrictMode
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.smart.library.bundle.HKHybird
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.strategy.HKHybirdCheckStrategy
@@ -105,22 +103,8 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 更新策略为ONLINE 时,  1:程序启动,2:前后台切换,3:webView加载模块
      * 更新策略为OFFLINE 时,  1:程序启动,2:前后台切换
      */
-    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
-
-        //======================================================================================
-        // 暂时修改系统策略(因为网络请求不能再主线程执行)
-        //======================================================================================
-        val oldThreadPolicy = StrictMode.getThreadPolicy()
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
-        //======================================================================================
-
-        updateManager.checkUpdate(synchronized, switchToOnlineModeIfRemoteVersionChanged, callback)
-
-        //======================================================================================
-        // 还原系统策略
-        //======================================================================================
-        StrictMode.setThreadPolicy(oldThreadPolicy)
-        //======================================================================================
+    fun checkUpdate(switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
+        updateManager.checkUpdate(switchToOnlineModeIfRemoteVersionChanged, callback)
     }
 
     @Synchronized
@@ -306,7 +290,7 @@ class HKHybirdModuleManager(val moduleName: String) {
          * webView.loadUrl 不会触发此回调,放到 HKHybirdBridge.addRequest(interceptMainUrl) 里面处理
          * http://www.jianshu.com/p/3474cb8096da
          */
-        HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptUrl")
+        /*HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptUrl")
         HKHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Unit?)? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
@@ -317,7 +301,7 @@ class HKHybirdModuleManager(val moduleName: String) {
                 checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
             }
             true
-        }
+        }*/
 
         HKLogUtil.v(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptUrl : $interceptUrl")
         HKHybirdBridge.addRequest(interceptUrl) { _: WebView?, url: String? ->

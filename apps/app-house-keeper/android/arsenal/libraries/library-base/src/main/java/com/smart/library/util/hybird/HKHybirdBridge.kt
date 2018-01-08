@@ -21,7 +21,7 @@ object HKHybirdBridge {
     val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()
-    private val schemeMap: HashMap<String, (webView: WebView?, webViewClient: WebViewClient?, url: String?) -> Boolean> = hashMapOf()
+    private val schemeMap: HashMap<String, (webView: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Unit?)?) -> Boolean> = hashMapOf()
     private val requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
@@ -44,7 +44,7 @@ object HKHybirdBridge {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { webView: WebView?, _: WebViewClient?, schemeUrlString: String? ->
+        schemeMap.put(scheme, { webView: WebView?, _: WebViewClient?, schemeUrlString: String?, callback: (() -> Unit?)? ->
             val schemeUrl = Uri.parse(schemeUrlString)
             val pathSegments = schemeUrl?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
@@ -116,7 +116,7 @@ object HKHybirdBridge {
      *  port    :   7777            if the authority is "google.com:80", this method will return 80.
      *  path    :   index.html
      */
-    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, webViewClient: WebViewClient?, url: String?) -> Boolean) {
+    fun addScheme(schemeUrlString: String, intercept: (webView: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Unit?)?) -> Boolean) {
         schemeMap.put(schemeUrlString, intercept)
     }
 
@@ -129,7 +129,7 @@ object HKHybirdBridge {
         schemeMap.remove(schemePrefix)
     }*/
 
-    fun shouldOverrideUrlLoading(webView: WebView?, webViewClient: WebViewClient?, uriString: String?): Boolean {
+    fun shouldOverrideUrlLoading(webView: WebView?, webViewClient: WebViewClient?, uriString: String?, callback: (() -> Unit?)? = null): Boolean {
         if (uriString == null)
             return false
         val list = schemeMap.filterKeys { uriString.contains(it) }.entries
@@ -137,9 +137,13 @@ object HKHybirdBridge {
         //根据 key 字符串的长度，越长的越先匹配
         for (entry in list.sortedByDescending { it.key.length }) {
             HKLogUtil.v(TAG, "shouldOverrideUrlLoading [检测开始] 检测本URL是否被拦截, 匹配: ${entry.key}")
-            val intercept = entry.value.invoke(webView, webViewClient, uriString)
+            val intercept = entry.value.invoke(webView, webViewClient, uriString, callback)
             HKLogUtil.v(TAG, "shouldOverrideUrlLoading [检测结束] 本URL ${if (intercept) "被拦截 " else "未被拦截 "}")
-            return if (intercept) true else continue
+            if (intercept) {
+                return true
+            } else {
+                continue
+            }
         }
         return false
     }
@@ -165,12 +169,12 @@ object HKHybirdBridge {
 
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
-    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, _: WebViewClient?, urlString: String? ->
+    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, _: WebViewClient?, urlString: String?, callback: (() -> Unit?)? ->
         val url = Uri.parse(urlString)
         val hashCode = url?.getQueryParameter("hashcode")
         callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))
         callbackMap.remove(hashCode)
-        HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[after callback]:" + callbackMap.size)
+        HKLogUtil.e(TAG, "callbackMap.size[after callback]:" + callbackMap.size)
         true
     }
 
@@ -183,7 +187,7 @@ object HKHybirdBridge {
         if (callback != null)
             callbackMap.put(callbackHashCode, callback)
 
-        HKLogUtil.e(HKHybirdBridge.TAG, "callbackMap.size[before callback]:" + callbackMap.size + " :$javascript")
+        HKLogUtil.e(TAG, "callbackMap.size[before callback]:" + callbackMap.size + " :$javascript")
 
         val wrappedJavascript = """
                 (function (){
@@ -200,7 +204,7 @@ object HKHybirdBridge {
                         console.log(" [wrap(execute_)] result= "+result+" error= "+error);
                     }
 
-                    var jumpUrl = "$callbackSchemaPrefix/callback?hashcode=$callbackHashCode&result="+result;
+                    var jumpUrl = "${callbackSchemaPrefix}/callback?hashcode=$callbackHashCode&result="+result;
                     console.log("\n[wrap(callback)] jumpUrl=" + jumpUrl);
 
                     (function (_jumpUrl) {

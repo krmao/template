@@ -105,7 +105,7 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 更新策略为ONLINE 时,  1:程序启动,2:前后台切换,3:webView加载模块
      * 更新策略为OFFLINE 时,  1:程序启动,2:前后台切换
      */
-    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false) {
+    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
 
         //======================================================================================
         // 暂时修改系统策略(因为网络请求不能再主线程执行)
@@ -114,7 +114,7 @@ class HKHybirdModuleManager(val moduleName: String) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         //======================================================================================
 
-        updateManager.checkUpdate(synchronized, switchToOnlineModeIfRemoteVersionChanged)
+        updateManager.checkUpdate(synchronized, switchToOnlineModeIfRemoteVersionChanged, callback)
 
         //======================================================================================
         // 还原系统策略
@@ -307,16 +307,16 @@ class HKHybirdModuleManager(val moduleName: String) {
          * http://www.jianshu.com/p/3474cb8096da
          */
         HKLogUtil.v(currentConfig.moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : $interceptUrl")
-        HKHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String? ->
+        HKHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Unit?)? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
             HKLogUtil.e(currentConfig.moduleName, "系统拦截到模块URL请求: url=$url ,匹配到 检测内容为 '$interceptUrl' 的拦截器, 由于当前模块的策略为 '$updateStrategy' , ${if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) "需要检测更新,开始更新" else "不需要检查更新,不拦截 return"}")
 
             //仅仅更新策略为 ONLINE 时,才会执行此步骤
             if (updateStrategy == HKHybirdUpdateStrategy.ONLINE) {
-                checkUpdate(synchronized = true, switchToOnlineModeIfRemoteVersionChanged = true)
+                checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
             }
-            false
+            true
         }
 
         HKLogUtil.v(currentConfig.moduleName, "增加 资源 拦截 , 匹配 -> interceptUrl : $interceptUrl")

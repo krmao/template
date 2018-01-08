@@ -28,11 +28,11 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
     /**
      * 检查更新-异步
      */
-    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false) {
+    fun checkUpdate(synchronized: Boolean = true, switchToOnlineModeIfRemoteVersionChanged: Boolean = false, callback: (() -> Unit?)? = null) {
         if (synchronized)
             checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged)
         else
-            Observable.fromCallable { checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
+            Observable.fromCallable { checkUpdateSync(switchToOnlineModeIfRemoteVersionChanged) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { callback?.invoke() }
     }
 
     /**

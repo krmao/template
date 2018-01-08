@@ -11,6 +11,8 @@ commander = "npm"
 
 
 def copy(from_dir, to_dir):
+    if not os.path.exists(to_dir):
+        os.makedirs(to_dir)
     if os.path.exists(from_dir):
         file_list = os.listdir(from_dir)
         for file_name in file_list:

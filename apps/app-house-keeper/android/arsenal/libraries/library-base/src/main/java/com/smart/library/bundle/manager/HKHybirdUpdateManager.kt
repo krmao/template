@@ -1,6 +1,5 @@
 package com.smart.library.bundle.manager
 
-import android.os.StrictMode
 import com.smart.library.bundle.HKHybird
 import com.smart.library.bundle.model.HKHybirdConfigModel
 import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
@@ -150,12 +149,8 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
 
         val nextConfigStack = moduleManager.configManager.getNextConfigStack()
         if (nextConfigStack.contains(remoteConfig)) {
-            if (nextConfigStack.peek() != remoteConfig) {
-                HKLogUtil.w(moduleManager.moduleName, "系统检测到 当前任务已经加载好并且已经保存在下次启动生效的对战里面, 但是不在栈顶 , nextConfigStack=$nextConfigStack , 即将执行重置堆栈")
-                moduleManager.configManager.saveConfigNext(remoteConfig)
-            } else {
-                HKLogUtil.w(moduleManager.moduleName, "系统检测到 当前任务已经加载好并且已经保存在下次启动生效的对战里面 , 无需重复下载 return , nextConfigStack=$nextConfigStack")
-            }
+            HKLogUtil.w(moduleManager.moduleName, "系统检测到 当前任务已经加载好并且已经保存在下次启动生效的对战里面 , 无需重复下载 , 立即处理更新包")
+            completeDownloadSuccess(remoteConfig)
             return
         }
 
@@ -197,6 +192,13 @@ class HKHybirdUpdateManager(val moduleManager: HKHybirdModuleManager) {
         val start = System.currentTimeMillis()
         HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 开始: 目标配置文件为=$remoteConfig")
         moduleManager.configManager.saveConfigNext(remoteConfig)
+        if (moduleManager.lifecycleManager.isModuleOpenNow()) {
+            HKLogUtil.e(moduleManager.moduleName, "系统监测到当前模块已经打开,保存到下次生效的堆栈")
+        } else {
+            HKLogUtil.e(moduleManager.moduleName, "系统监测到当前模块没有被打开,立即处理更新/回滚操作,设置 onlineModel = false")
+            moduleManager.onlineModel = false
+            moduleManager.fitNextAndFitLocalIfNeedConfigsInfoSync() //同步处理,由于检查更新是在异步线程,所以这里同步也不会阻塞主线程
+        }
         isDownloading = false
         HKLogUtil.e(moduleManager.moduleName, "下载任务成功-后期处理 结束  耗时:${System.currentTimeMillis() - start}ms ")
     }

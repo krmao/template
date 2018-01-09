@@ -163,7 +163,7 @@ class HKHybirdModuleManager(val moduleName: String) {
      * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
      */
     @Synchronized
-    private fun fitNextAndFitLocalIfNeedConfigsInfoSync(mustFitLocal: Boolean = false) {
+    internal fun fitNextAndFitLocalIfNeedConfigsInfoSync(mustFitLocal: Boolean = false) {
         HKLogUtil.v(moduleName, "检测是否有 下次启动生效的配置文件 需要处理(同步) 开始 ,当前线程:${Thread.currentThread().name}")
 
         if (onlineModel || lifecycleManager.isModuleOpenNow()) {

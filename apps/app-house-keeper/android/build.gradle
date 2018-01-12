@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.1.51"
+    ext.kotlinVersion = "1.2.10"
     ext.ankoVersion = "0.8.2"
     ext.greendaoVersion = "3.2.0"
-    ext.walleVersion = "1.1.4"
+    ext.walleVersion = "1.1.5"
 
     ext.atlasPluginVersion = "2.3.3.rc12"
     ext.atlasCoreVersion = "5.0.7.42"
@@ -12,15 +12,19 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 
     dependencies {
-        classpath "com.taobao.android:atlasplugin:$atlasPluginVersion"
+        //classpath "com.taobao.android:atlasplugin:$atlasPluginVersion"
         classpath "com.meituan.android.walle:plugin:$walleVersion"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
-        //classpath "com.android.tools.build:gradle:2.3.0"
+        classpath "com.android.tools.build:gradle:3.0.1"
         //classpath "org.greenrobot:greendao-gradle-plugin:$rootProject.ext.greendaoVersion"
         //classpath "com.tencent.bugly:symtabfileuploader:1.3.9"
         //classpath "com.tencent.bugly:tinker-support:1.0.8"
@@ -43,6 +47,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
@@ -66,14 +74,14 @@ ext {
 
     // Sdk and tools
     minSdkVersion = 15
-    targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.2"
+    targetSdkVersion = 22
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.2"
 
     // App dependencies
-    supportLibraryVersion = "25.3.1"
+    supportLibraryVersion = "27.0.2"
     constraintLayoutVersion = "1.0.2"
-    multidex = "1.0.1"
+    multidex = "1.0.2"
     guavaVersion = "22.0-android"
     junitVersion = "4.12"
     mockitoVersion = "1.10.19"

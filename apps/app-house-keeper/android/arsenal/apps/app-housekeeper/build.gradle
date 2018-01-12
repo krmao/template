@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.taobao.atlas'
+//apply plugin: 'com.taobao.atlas'
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'walle'
@@ -10,20 +10,20 @@ walle {
     channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
 }
 
-atlas {
-    atlasEnabled true
-    tBuildConfig {
-        autoStartBundles = [
-            'com.smart.housekeeper.module.setting',
-            //'com.smart.housekeeper.module.mine',
-        ]
-        autoPackageId = true
-        outOfApkBundles = [
-            //'module-housekeeper-hybird', //adb push arsenal/apps/app-housekeeper/build/outputs/remote-bundles-debug/libcom_smart_housekeeper_android_module_hybird.so /sdcard/Android/data/com.smart.housekeeper/cache/
-        ]
-        preLaunch = 'com.smart.housekeeper.library.HKPreLaunch' //initBeforeAtlas
-    }
-}
+//atlas {
+//    atlasEnabled true
+//    tBuildConfig {
+//        autoStartBundles = [
+//            'com.smart.housekeeper.module.setting',
+//            //'com.smart.housekeeper.module.mine',
+//        ]
+//        autoPackageId = true
+//        outOfApkBundles = [
+//            //'module-housekeeper-hybird', //adb push arsenal/apps/app-housekeeper/build/outputs/remote-bundles-debug/libcom_smart_housekeeper_android_module_hybird.so /sdcard/Android/data/com.smart.housekeeper/cache/
+//        ]
+//        preLaunch = 'com.smart.housekeeper.library.HKPreLaunch' //initBeforeAtlas
+//    }
+//}
 
 //上传bugly符号表配置
 /*apply plugin: 'bugly'
@@ -203,9 +203,6 @@ dependencies {
 
     compile project(':library-housekeeper-base')
     compile project(':module-housekeeper-home')
-    bundleCompile project(':module-housekeeper-hybird')
-    bundleCompile project(':module-housekeeper-mine')
-    bundleCompile project(':module-housekeeper-setting')
 
     // LeakCanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

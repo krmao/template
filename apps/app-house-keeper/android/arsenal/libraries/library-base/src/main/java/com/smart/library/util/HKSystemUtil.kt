@@ -79,8 +79,8 @@ object HKSystemUtil {
     /***
      * 隐藏软键盘
      */
-    fun hideKeyboard(activity: Activity) {
-        val view = activity.currentFocus
+    fun hideKeyboard(activity: Activity?) {
+        val view = activity?.currentFocus
         if (view != null) {
             val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (inputMethodManager.isActive)
@@ -120,7 +120,7 @@ object HKSystemUtil {
 
     fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
 
-    val statusBarHeight2: Int
+    val statusBarHeight: Int
         get() {
             var statusBarHeight = 0
             val resourceId = HKBaseApplication.INSTANCE.resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -129,23 +129,6 @@ object HKSystemUtil {
             }
             return statusBarHeight
         }
-
-    /* 获取屏幕statusBar高度 */
-    fun getStatusBarHeight(context: Context): Int {
-        var statusBarHeight = 0
-
-        try {
-            val clazz = Class.forName("com.android.internal.R\$dimen")
-            val `object` = clazz.newInstance()
-            val field = clazz.getField("status_bar_height")
-            val id = Integer.parseInt(field.get(`object`).toString())
-            statusBarHeight = context.resources.getDimensionPixelSize(id)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return statusBarHeight
-    }
 
     /**
      * 复制到剪贴板

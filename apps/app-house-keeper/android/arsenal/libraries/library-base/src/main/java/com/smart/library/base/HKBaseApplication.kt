@@ -2,6 +2,8 @@ package com.smart.library.base
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
 import com.smart.library.util.HKLogUtil
 import com.smart.library.util.HKSystemUtil
@@ -34,6 +36,12 @@ open class HKBaseApplication : Application() {
                     RxBus.post(HKApplicationVisibleChangedEvent(value))
                 }
             }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(base)
+        //Thread(Runnable { MultiDex.install(base) }).start()
     }
 
     override fun onCreate() {

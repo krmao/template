@@ -2,44 +2,52 @@ package com.smart.library.bundle.manager
 
 import android.webkit.WebViewClient
 import com.smart.library.bundle.HKHybird
+import com.smart.library.util.HKJsonUtil
 import com.smart.library.util.HKLogUtil
 
-class HKHybirdLifecycleManager(val moduleManager: HKHybirdModuleManager) {
-
-    private val webViewClientSet: MutableSet<WebViewClient?> = mutableSetOf()
+object HKHybirdLifecycleManager {
+    private val lifecycleMap: MutableMap<String, MutableSet<Int>> = mutableMapOf()
 
     @Synchronized
-    fun isModuleOpenNow(): Boolean {
-        HKLogUtil.e(moduleManager.moduleName, "isModuleOpenNow -> webViewClientSet.size=${webViewClientSet.size}")
-        return !webViewClientSet.isEmpty()
+    fun isModuleOpened(moduleName: String?): Boolean {
+        HKLogUtil.e(HKHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载${moduleName}的浏览器数量=${lifecycleMap[moduleName]?.size ?: 0}")
+        return lifecycleMap[moduleName]?.isNotEmpty() == true
     }
 
     fun onWebViewOpenPage(webViewClient: WebViewClient?, url: String?) {
-        val isMemberOfModule = HKHybird.isMemberOfModule(moduleManager.currentConfig, url)
+        HKLogUtil.e(HKHybird.TAG, ">>>>>>>>>><<<<<<<<<< 检测到浏览器正在加载页面")
 
-        HKLogUtil.w(moduleManager.moduleName, "onWebViewOpenPage -> 系统监测到当前 url ${if (isMemberOfModule) "" else "不"} 属于模块 ${moduleManager.moduleName}  url=$url")
+        HKHybird.MODULES.forEach {
+            if (HKHybird.isMemberOfModule(it.value.currentConfig, url)) {
+                HKLogUtil.w(HKHybird.TAG, ">>>>>>>>>><<<<<<<<<< 系统监测到当前 url 属于模块 ${it.key}  url=$url")
+                if (webViewClient != null) {
 
-        if (isMemberOfModule) {
-            HKLogUtil.w(moduleManager.moduleName, "onWebViewOpenPage -> 系统监测到当前 url 属于模块 ${moduleManager.moduleName}  url=$url")
-            if (webViewClient != null) {
-                HKLogUtil.w(moduleManager.moduleName, "onWebViewOpenPage -> 添加 webView 到 ${moduleManager.moduleName}")
-                webViewClientSet.add(webViewClient)
-            } else {
-                HKLogUtil.e(moduleManager.moduleName, "onWebViewOpenPage -> webView 为空, 不添加到 生命周期, 请检查代码是否存在错误!!!")
+                    val webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?: mutableSetOf()
+                    webViewHashCodeSet.add(webViewClient.hashCode())
+                    lifecycleMap[it.key] = webViewHashCodeSet
+                }
             }
         }
-        HKLogUtil.e(moduleManager.moduleName, "onWebViewOpenPage -> webViewClientSet.size=${webViewClientSet.size}")
+
+        HKLogUtil.j(HKHybird.TAG, HKJsonUtil.toJson(lifecycleMap))
     }
 
     fun onWebViewClose(webViewClient: WebViewClient?) {
-        if (webViewClient != null)
-            webViewClientSet.remove(webViewClient)
-        HKLogUtil.e(moduleManager.moduleName, "onWebViewClose -> webViewClientSet.size=${webViewClientSet.size}")
+        HKLogUtil.e(HKHybird.TAG, ">>>>>>>>>><<<<<<<<<< 检测到浏览器正在关闭")
 
-        if (webViewClientSet.isEmpty()) {
-            HKLogUtil.e(moduleManager.moduleName, "系统监测到当前模块已经完全从浏览器中解耦,强制 onlineModel = false , 并检查是否有 下一次加载本模块 生效的任务,此时是设置的最佳时机")
-            moduleManager.onlineModel = false
-            moduleManager.fitNextAndFitLocalIfNeedConfigsInfo()
+        HKHybird.MODULES.forEach {
+            if (webViewClient != null) {
+                val webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?: mutableSetOf()
+                webViewHashCodeSet.remove(webViewClient.hashCode())
+                lifecycleMap[it.key] = webViewHashCodeSet
+
+                if (webViewHashCodeSet.isEmpty()) {
+                    HKLogUtil.e(it.key, ">>>>>>>>>><<<<<<<<<< 监测到模块:${it.key} 已经完全从浏览器中解耦, 强制设置 onlineModel = false, 并检查是否有下一次生效的任务, 此时是设置的最佳时机")
+                    it.value.onlineModel = false
+                    it.value.fitNextAndFitLocalIfNeedConfigsInfo()
+                }
+            }
         }
+        HKLogUtil.j(HKHybird.TAG, HKJsonUtil.toJson(lifecycleMap))
     }
 }

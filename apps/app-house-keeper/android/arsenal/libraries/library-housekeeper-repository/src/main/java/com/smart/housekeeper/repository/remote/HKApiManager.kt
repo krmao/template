@@ -192,6 +192,6 @@ internal object HKApiManager {
     }
 
     @Synchronized
-    fun <T> getApi(clazz: Class<T>): T =
-        builder.baseUrl(HKURLManager.curHost).client(HKOkHttpManager.client).build().create(clazz)
+    fun <T> getApi(clazz: Class<T>, baseUrl: String = HKURLManager.curHost): T =
+        builder.baseUrl(baseUrl).client(HKOkHttpManager.client).build().create(clazz)
 }

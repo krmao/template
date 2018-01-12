@@ -15,7 +15,7 @@ import com.smart.library.util.HKRouteManager
 class MineFragment : HKBaseFragment() {
 
     @SuppressLint("SetTextI18n")
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
         textView.text = "mine"
         @Suppress("DEPRECATION")

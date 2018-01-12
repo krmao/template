@@ -4,11 +4,35 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.HKRouteManager
 import com.smart.library.util.HKToastUtil
 
 
+/**
+ * 默认沉浸式布局
+ *
+ * 1: activity/fragment 手动设置根布局背景色即可影响状态栏背景色
+ *    即-> 需要设置 activity/fragment 根布局 去影响状态栏背景色
+ *
+ * 2: fragment 默认设置了根布局 fitsSystemWindows = true , 所以开发人员无需处理
+ *
+ * 3: 如果activity 没有包含fragment, 则需要手动设置 根布局 fitsSystemWindows = true
+ *    即-> 没有包含fragment 的 activity 无需做任何处理需要设置根布局 fitsSystemWindows = true
+ *
+ * 4: 如果activity    包含fragment, 则不需要设置 根布局 fitsSystemWindows = true, 因为步骤2 fragment 以及默认设置了
+ *    即-> 包含fragment 的 activity 无需做任何处理
+ *
+ * 5: 总结: fragment/activity 的根布局 不可同时设置 fitsSystemWindows = true , 否则没有效果(即内容显示在状态栏的后面)
+ *    注意: 以上方案 在 根布局不是 CoordinatorLayout 时 可行
+ *
+ * sdk >= 4.4 纯透明
+ * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
+ */
 open class HKBaseActivity : AppCompatActivity() {
 
     /**
@@ -17,19 +41,26 @@ open class HKBaseActivity : AppCompatActivity() {
      */
     val callback: ((bundle: Bundle?) -> Unit?)? by lazy { HKRouteManager.getCallback(this) }
 
+    open var statusBar: ImmersionBar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
+        statusBar = ImmersionBar.with(this).navigationBarEnable(false)
+        statusBar?.init()
+
         SwipeBackHelper.onCreate(this)
         SwipeBackHelper.getCurrentPage(this)//get current instance
-                .setSwipeBackEnable(enableSwipeBack)//on-off
-                //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-                .setClosePercent(0.7f)//close activity when swipe over this
-                .setSwipeRelateEnable(true)//if should move together with the following Activity
-                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+            .setSwipeBackEnable(enableSwipeBack)//on-off
+            //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+            .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
+            .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
+            .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
+            .setClosePercent(0.7f)//close activity when swipe over this
+            .setSwipeRelateEnable(true)//if should move together with the following Activity
+            .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
+            .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
         /*.addListener(object : SwipeListener {
             override fun onScrollToClose() {
             }
@@ -50,6 +81,7 @@ open class HKBaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         HKRouteManager.removeCallback(this)
         SwipeBackHelper.onDestroy(this)
+        statusBar?.destroy()
         super.onDestroy()
     }
 

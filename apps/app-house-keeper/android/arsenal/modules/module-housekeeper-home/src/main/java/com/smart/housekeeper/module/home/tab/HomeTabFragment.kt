@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.home_tab_fragment.*
 
 class HomeTabFragment : HKBaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.home_tab_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.home_tab_fragment, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content_vp.adapter = HKFragmentPagerAdapter(context, childFragmentManager,
                 listOf(

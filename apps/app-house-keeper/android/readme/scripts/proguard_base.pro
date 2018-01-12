@@ -197,6 +197,7 @@
 #java.lang.IllegalArgumentException: name already added: string{"b"}
 #while processing android/support/a/n.class
 -keep class android.support.** { *; }
+-dontnote android.support.**
 #问题 end
 
 
@@ -225,6 +226,7 @@
 -keepattributes javax.annotation.processing.*
 -keepclassmembers class * extends java.lang.Enum { *; }
 -keep class android.**
+-dontnote android.**
 -keep interface android.**
 
 #-libraryjars  <java.home>/lib/rt.jar

@@ -24,7 +24,7 @@ abstract class HKPagerAdapter<ItemEntity> : PagerAdapter {
 
     override fun getCount(): Int = mDataList.size
 
-    override fun getItemPosition(`object`: Any?): Int = PagerAdapter.POSITION_NONE
+    override fun getItemPosition(obj: Any): Int = PagerAdapter.POSITION_NONE
 
     override fun saveState(): Parcelable? = null
 
@@ -38,8 +38,8 @@ abstract class HKPagerAdapter<ItemEntity> : PagerAdapter {
 
     override fun isViewFromObject(view: View, any: Any): Boolean = view == any
 
-    override fun destroyItem(container: ViewGroup?, position: Int, any: Any) {
-        container?.removeView(any as View)
+    override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
+        container.removeView(any as View)
     }
 
     // 只需要返回 convertView 即可

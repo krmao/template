@@ -3,7 +3,7 @@ package com.smart.housekeeper.repository
 import com.smart.housekeeper.repository.remote.HKApiManager
 import com.smart.housekeeper.repository.remote.api.HKApi
 import com.smart.housekeeper.repository.remote.core.HKOkHttpProgressResponseBody
-import com.smart.library.bundle.model.HKHybirdConfigModel
+import com.smart.library.bundle.model.HKHybirdModuleConfigModel
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import java.io.File
@@ -38,8 +38,12 @@ object HKRepository {
         return HKApiManager.getApi(HKApi::class.java).downloadString(url).compose(HKApiManager.composeWithDownloadString())
     }
 
-    fun downloadHybirdModuleConfiguration(url: String): Observable<HKHybirdConfigModel> {
+    fun downloadHybirdModuleConfiguration(url: String): Observable<HKHybirdModuleConfigModel> {
         return HKApiManager.getApi(HKApi::class.java).downloadHybirdModuleConfiguration(url).compose(HKApiManager.compose())
+    }
+
+    fun downloadHybirdAllModuleConfigurations(url: String): Observable<MutableList<HKHybirdModuleConfigModel>> {
+        return HKApiManager.getApi(HKApi::class.java).downloadHybirdAllModuleConfigurations(url).compose(HKApiManager.compose())
     }
 
     /**

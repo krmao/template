@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken
 import com.smart.library.base.HKBaseApplication
 import com.smart.library.base.HKConfig
 import java.util.*
+import kotlin.collections.HashMap
 
 @Suppress("unused")
 /**
@@ -96,8 +97,37 @@ object HKPreferencesUtil {
         false
     }
 
+    @SuppressLint("ApplySharedPref")
+    fun putMap(key: String, map: Map<String, Any>): Boolean {
+        var success = false
+        try {
+            val editor = mSharedPreferences.edit()
+            editor.putString(key, mGson.toJson(map))
+            editor.commit()
+            success = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return success
+    }
+
+    fun <T : Any> getMap(key: String, classOfT: Class<T>?): MutableMap<String, T> {
+        val map: MutableMap<String, T> = mutableMapOf()
+        val mapJsonString = mSharedPreferences.getString(key, null)
+        if (!mapJsonString.isNullOrBlank()) {
+            try {
+                mGson.fromJson<MutableMap<String, JsonElement>>(mapJsonString, object : TypeToken<MutableMap<String, JsonElement>>() {}.type)?.map {
+                    map[it.key] = mGson.fromJson(it.value, classOfT)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return map
+    }
+
     fun <T : Any> getList(key: String, classOfT: Class<T>?): MutableList<T> {
-        val list = ArrayList<T>()
+        val list: ArrayList<T> = ArrayList()
         try {
             mGson.fromJson<ArrayList<JsonElement>>(mSharedPreferences.getString(key, null), object : TypeToken<ArrayList<JsonElement>>() {}.type)?.mapNotNullTo(list) { mGson.fromJson(it, classOfT) }
         } catch (jsonParseException: JsonParseException) {

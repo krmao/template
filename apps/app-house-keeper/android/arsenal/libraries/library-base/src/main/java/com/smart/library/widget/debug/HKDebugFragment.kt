@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +58,7 @@ open class HKDebugFragment : HKBaseFragment() {
         }
 
         fun showDebugNotification(notificationId: Int) {
-            val builder = android.support.v7.app.NotificationCompat.Builder(HKBaseApplication.INSTANCE)
+            val builder = NotificationCompat.Builder(HKBaseApplication.INSTANCE, "channel-0")
                 .setSmallIcon(R.drawable.hk_emo_im_happy)
                 .setContentTitle("车享家环境切换")
                 .setContentText("点击跳转到环境切换页面")
@@ -105,7 +106,7 @@ open class HKDebugFragment : HKBaseFragment() {
         clearCacheTV.setOnClickListener { HKIntentUtil.goToAppDetails(activity) }
     }
 
-    class DebugAdapter(private var urlList: List<URLModel>, private val context: Context) : BaseAdapter() {
+    class DebugAdapter(private var urlList: List<URLModel>, private val context: Context?) : BaseAdapter() {
         override fun getCount(): Int = urlList.size
 
         override fun getItem(position: Int): URLModel = urlList[position]

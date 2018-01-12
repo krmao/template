@@ -5,6 +5,7 @@ import com.google.gson.Gson
 object HKJsonUtil {
     private val GSON: Gson = Gson()
 
+    @JvmStatic
     fun <T> fromJson(jsonString: String?, classOfT: Class<T>): T? {
         var entity: T? = null
         if (jsonString?.isNotBlank() == true) {
@@ -16,5 +17,10 @@ object HKJsonUtil {
             }
         }
         return entity
+    }
+
+    @JvmStatic
+    fun toJson(any: Any?): String {
+        return if (any != null) GSON.toJson(any) else ""
     }
 }

@@ -3,19 +3,10 @@ package com.smart.library.util
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.taobao.atlas.bundleInfo.AtlasBundleInfoManager
-import android.taobao.atlas.framework.Atlas
-import android.taobao.atlas.framework.BundleImpl
-import android.taobao.atlas.runtime.ActivityTaskMgr
-import android.taobao.atlas.runtime.BundleUtil
-import android.taobao.atlas.runtime.RuntimeVariables
 import android.text.TextUtils
 import com.smart.library.base.HKActivity
-import org.osgi.framework.BundleException
-import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -75,7 +66,7 @@ object HKRouteManager {
         }
 
         //该类在atlas组件中
-        if (AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.any { fragmentName.startsWith(it) }) {
+        /*if (AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.any { fragmentName.startsWith(it) }) {
             val filterList = AtlasBundleInfoManager.instance().getUninstallBundles().filter { fragmentName.startsWith(it) }
             if (filterList.isNotEmpty()) {
                 //该组件尚未被安装
@@ -147,9 +138,9 @@ object HKRouteManager {
                 //该组件已经被安装
                 goToFragmentInternal(activity, fragmentName, bundle, callback)
             }
-        } else {
-            goToFragmentInternal(activity, fragmentName, bundle, callback)
-        }
+        } else {*/
+        goToFragmentInternal(activity, fragmentName, bundle, callback)
+//        }
     }
 
     private fun goToFragmentInternal(activity: Activity?, fragmentName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
@@ -163,7 +154,7 @@ object HKRouteManager {
         HKActivity.start(activity, fragmentName, tmpBundle)
     }
 
-    fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {
+    /*fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {
         val installedBundles: List<String> = Atlas.getInstance().bundles.flatMap { listOf(it.location) }
         val allBundles: List<String> = AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.toList()
         allBundles.forEach { HKLogUtil.d("allBundles: $it : isInternalBundle=" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
@@ -173,7 +164,7 @@ object HKRouteManager {
         HKLogUtil.v("installedBundles:" + installedBundles)
         allBundles.forEach { HKLogUtil.d("allBundles: $it :" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
         return uninstallBundles
-    }
+    }*/
 
     @Synchronized
     fun getCallback(fragment: Fragment?): ((bundle: Bundle?) -> Unit?)? = callbackMap[fragment?.arguments?.getString(KEY_ID_CALLBACK)]

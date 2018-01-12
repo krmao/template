@@ -186,16 +186,16 @@ class HKFrameLoadingLayout : FrameLayout {
         for ((key, view) in mViewMaps) {
             when (key) {
                 ViewType.NODATA -> {
-                    view.findViewById(R.id.topEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
-                    view.findViewById(R.id.bottomEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.topEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.bottomEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
                 ViewType.LOADING -> {
-                    view.findViewById(R.id.topEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
-                    view.findViewById(R.id.bottomEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.topEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.bottomEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
                 ViewType.NETWORK_EXCEPTION -> {
-                    view.findViewById(R.id.topEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
-                    view.findViewById(R.id.bottomEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.topEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.bottomEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
             }
         }

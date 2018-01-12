@@ -13,6 +13,8 @@ import java.net.UnknownHostException
 import java.text.ParseException
 
 object HKRetrofitException {
+    private val TAG: String = HKRetrofitException::class.java.name
+
     private val UNAUTHORIZED = 401
     private val FORBIDDEN = 403
     private val NOT_FOUND = 404
@@ -27,10 +29,13 @@ object HKRetrofitException {
         if (throwable is HttpException) {
             apiException = HKRetrofitApiException(throwable, HKRetrofitError.HTTP_ERROR)
             when (throwable.code()) {
-                UNAUTHORIZED, FORBIDDEN, NOT_FOUND, REQUEST_TIMEOUT, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE -> apiException.displayMessage = "网络连接错误"
+                UNAUTHORIZED, FORBIDDEN, NOT_FOUND, REQUEST_TIMEOUT, GATEWAY_TIMEOUT, INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE -> {
+                    apiException.displayMessage = "网络连接错误"
+                    Log.e(TAG, "网络连接错误")
+                }
                 else -> {
                     apiException.displayMessage = "网络不给力"
-                    Log.e(javaClass.name, "网络连接错误")
+                    Log.e(TAG, "网络连接错误")
                 }
             }
             return apiException
@@ -38,7 +43,7 @@ object HKRetrofitException {
             val resultException = throwable
             apiException = HKRetrofitApiException(resultException, resultException.code)
             apiException.displayMessage = resultException.msg
-            Log.e(javaClass.name, resultException.msg)
+            Log.e(TAG, resultException.msg)
             return apiException
         } /*else if (throwable is com.alibaba.fastjson.JSONException
                 || throwable is JSONException
@@ -47,25 +52,25 @@ object HKRetrofitException {
             apiException.displayMessage = "数据解析错误"
             return apiException
         }*/ else if (throwable is JsonParseException
-                || throwable is JsonSyntaxException
-                || throwable is JsonIOException
-                || throwable is JSONException
-                || throwable is ParseException) {
+            || throwable is JsonSyntaxException
+            || throwable is JsonIOException
+            || throwable is JSONException
+            || throwable is ParseException) {
             apiException = HKRetrofitApiException(throwable, HKRetrofitError.PARSE_ERROR)
             apiException.displayMessage = "网络不给力"
-            Log.e(javaClass.name, "数据解析错误")
+            Log.e(TAG, "数据解析错误")
             return apiException
         } else if (throwable is ConnectException
-                || throwable is SocketTimeoutException
-                || throwable is UnknownHostException) {
+            || throwable is SocketTimeoutException
+            || throwable is UnknownHostException) {
             apiException = HKRetrofitApiException(throwable, HKRetrofitError.NETWORK_ERROR)
             apiException.displayMessage = "网络不给力"
-            Log.e(javaClass.name, "网络连接错误")
+            Log.e(TAG, "网络连接错误")
             return apiException
         } else {
             apiException = HKRetrofitApiException(throwable, HKRetrofitError.UNKNOWN)
             apiException.displayMessage = "网络不给力"
-            Log.e(javaClass.name, "未知错误")
+            Log.e(TAG, "未知错误")
             return apiException
         }
     }

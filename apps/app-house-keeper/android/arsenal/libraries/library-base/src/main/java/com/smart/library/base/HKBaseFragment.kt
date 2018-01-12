@@ -2,6 +2,7 @@ package com.smart.library.base
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.View
 import com.smart.library.util.HKRouteManager
 
 open class HKBaseFragment : Fragment() {
@@ -18,6 +19,11 @@ open class HKBaseFragment : Fragment() {
      * 在 onDestroy 里会自动清除
      */
     val callback: ((bundle: Bundle?) -> Unit?)? by lazy { HKRouteManager.getCallback(this) }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.fitsSystemWindows = true
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun onDestroy() {
         HKRouteManager.removeCallback(this)

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.smart.housekeeper">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.smart.housekeeper">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.LOCATION_HARDWARE"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".library.HKApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/hk_backup_descriptor"
+        android:icon="@drawable/home_icon"
         android:label="@string/hk_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/HKAppTheme.Light.NoActionBar"
-        tools:replace="android:label"
-        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
+        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon"
+        tools:replace="android:label">
 
         <meta-data
             android:name="DEBUG"
-            android:value="${DEBUG}"/>
+            android:value="${DEBUG}" />
     </application>
 
 </manifest>

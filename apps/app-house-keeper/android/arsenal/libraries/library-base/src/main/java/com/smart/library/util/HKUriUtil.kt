@@ -43,19 +43,19 @@ object HKUriUtil {
 
     fun fromFileProvider(filePath: String?): Uri? = fromFileProvider(File(filePath))
 
-    fun fromFileProvider(file: File?): Uri? = fromFileProvider(AUTHORITY, file)
+    fun fromFileProvider(file: File): Uri? = fromFileProvider(AUTHORITY, file)
 
     fun fromFileProvider(uri: Uri?): Uri? = fromFileProvider(AUTHORITY, uri)
 
     fun fromFileProvider(authority: String, uri: Uri?): Uri? =
         if (uri != null && uri.scheme.startsWith("file://")) fromFileProvider(authority, File(uri.toString().replace(uri.scheme, ""))) else uri
 
-    fun fromFileProvider(authority: String?, file: File?): Uri? {
+    fun fromFileProvider(authority: String, file: File): Uri? {
         var result: Uri? = null
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 result = FileProvider.getUriForFile(HKBaseApplication.INSTANCE, authority, file)
-            } else if (file != null) {
+            } else {
                 result = Uri.fromFile(file)
             }
         } catch (exception: Exception) {

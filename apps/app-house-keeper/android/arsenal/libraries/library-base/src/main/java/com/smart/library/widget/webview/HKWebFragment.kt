@@ -21,10 +21,10 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
 
     companion object {
         @JvmStatic
-        fun goTo(activity: Activity, url: String?) = goTo(activity, url, false)
+        fun goTo(activity: Activity?, url: String?) = goTo(activity, url, false)
 
         @JvmStatic
-        fun goTo(activity: Activity, url: String?, hideBackAtFirstPage: Boolean) {
+        fun goTo(activity: Activity?, url: String?, hideBackAtFirstPage: Boolean) {
             val bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
@@ -39,14 +39,14 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
         arguments?.getBoolean("hideBackAtFirstPage") == true
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.hk_fragment_webview, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.hk_fragment_webview, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         title_bar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
 
-        web_view.setWebViewClient(object : HKWebViewClient() {
+        web_view.webViewClient = object : HKWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -72,9 +72,9 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
                         title_bar?.left0BgView?.visibility = GONE
                 }
             }
-        })
+        }
 
-        web_view.setWebChromeClient(object : HKWebChromeClient() {
+        web_view.webChromeClient = object : HKWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
                 title_bar?.progressBar?.progress = newProgress
                 if (newProgress >= 100) {
@@ -91,18 +91,18 @@ open class HKWebFragment : HKBaseFragment(), HKBaseFragment.OnBackPressedListene
                 title_bar?.titleText?.maxEms = 10
                 title_bar?.titleText?.text = title
             }
-        })
+        }
 
         web_view.loadURL(url)
     }
 
     override fun onDestroy() {
-        web_view.onDestroy()
+        web_view?.onDestroy()
         super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {
-        if (web_view != null && web_view.canGoBack()) {
+        if (web_view?.canGoBack() == true) {
             web_view.goBack()
             return true
         }

@@ -17,7 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter
  * {@link FragmentStatePagerAdapter}.
  */
 @Suppress("unused")
-class HKFragmentPagerAdapter(var context: Context, fragmentManager: FragmentManager, var dataList: List<Fragment>) : FragmentPagerAdapter(fragmentManager) {
+class HKFragmentPagerAdapter(var context: Context?, fragmentManager: FragmentManager, var dataList: List<Fragment>) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]
 

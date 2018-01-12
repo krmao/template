@@ -16,4 +16,7 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
     compile project(':library-housekeeper-base')
+    compile project(':module-housekeeper-hybird')
+    compile project(':module-housekeeper-mine')
+    compile project(':module-housekeeper-setting')
 }

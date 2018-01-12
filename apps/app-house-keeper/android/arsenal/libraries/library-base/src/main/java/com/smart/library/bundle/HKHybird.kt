@@ -1,17 +1,25 @@
 package com.smart.library.bundle
 
-import android.text.TextUtils
 import android.webkit.WebViewClient
 import com.smart.library.base.HKApplicationVisibleChangedEvent
-import com.smart.library.base.HKBaseApplication
+import com.smart.library.bundle.manager.HKHybirdBundleInfoManager
+import com.smart.library.bundle.manager.HKHybirdDownloadManager
+import com.smart.library.bundle.manager.HKHybirdLifecycleManager
 import com.smart.library.bundle.manager.HKHybirdModuleManager
-import com.smart.library.bundle.model.HKHybirdConfigModel
+import com.smart.library.bundle.model.HKHybirdModuleBundleModel
+import com.smart.library.bundle.model.HKHybirdModuleConfigModel
+import com.smart.library.bundle.strategy.HKHybirdInitStrategy
+import com.smart.library.bundle.strategy.HKHybirdUpdateStrategy
+import com.smart.library.bundle.util.HKHybirdUtil
+import com.smart.library.util.HKJsonUtil
 import com.smart.library.util.HKLogUtil
+import com.smart.library.util.HKTimeUtil
 import com.smart.library.util.cache.HKCacheManager
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -107,7 +115,9 @@ import java.util.concurrent.ConcurrentHashMap
  **/
 @Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference")
 object HKHybird {
-    private val TAG = HKHybird::class.java.simpleName
+
+    @JvmStatic
+    val TAG: String = HKHybird::class.java.simpleName
 
     @JvmStatic
     var EVN = "pre"
@@ -126,18 +136,29 @@ object HKHybird {
     @JvmStatic
     val LOCAL_ROOT_DIR = HKCacheManager.getChildCacheDir(ASSETS_DIR_NAME)
 
+    /**
+     * 初始化策略
+     */
     @JvmStatic
-    val MODULES: Lazy<ConcurrentHashMap<String, HKHybirdModuleManager>> =
-        lazy {
-            val tmpMap = ConcurrentHashMap<String, HKHybirdModuleManager>()
-            HKBaseApplication.INSTANCE.assets
-                .list(ASSETS_DIR_NAME)
-                .filter { !TextUtils.isEmpty(it) && it.endsWith(CONFIG_SUFFIX) }
-                .map { it.replace(CONFIG_SUFFIX, "") }
-                .forEach { tmpMap[it] = HKHybirdModuleManager(it) }
+    var INIT_STRATEGY = HKHybirdInitStrategy.LOCAL
+        internal set
 
-            tmpMap
-        }
+    @JvmStatic
+    var downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null
+        internal set
+    @JvmStatic
+    var configer: ((configUrl: String, callback: (HKHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null
+        internal set
+    @JvmStatic
+    var allConfiger: ((allConfigUrl: String, callback: (configList: MutableList<HKHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null
+        internal set
+    @JvmStatic
+    var allConfigUrl: String = ""
+        internal set
+
+    @JvmStatic
+    var MODULES: ConcurrentHashMap<String, HKHybirdModuleManager> = ConcurrentHashMap()
+        internal set
 
     /**
      * debug true  的话代表是测试机,可以拉取动态更新的测试版本
@@ -146,53 +167,357 @@ object HKHybird {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(debug: Boolean = true, env: String? = null, configer: ((configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+    fun init(debug: Boolean = true, env: String? = null, initStrategy: HKHybirdInitStrategy = HKHybird.INIT_STRATEGY, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<HKHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (HKHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
         val start = System.currentTimeMillis()
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, "初始化HYBIRD模块 开始")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+        HKLogUtil.w(TAG, ">>>>----初始化HYBIRD模块 开始")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
 
         DEBUG = debug
         EVN = if (env?.isNotBlank() == true) env else EVN
+        INIT_STRATEGY = initStrategy
 
-        MODULES.value.forEach {
-            //初始化本模块
-            it.value.init(configer, downloader) { _, _ ->
-                //检查更新1: 应用程序第一次启动的时候执行一次一步检查更新
-                it.value.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = false)
+        if (configer != null) HKHybird.configer = configer
+        if (downloader != null) HKHybird.downloader = downloader
+        if (allConfiger != null) HKHybird.allConfiger = allConfiger
+        if (allConfigUrl.isNotBlank()) HKHybird.allConfigUrl = allConfigUrl
+
+        HKLogUtil.w(TAG, ">>>>----DEBUG=$DEBUG")
+        HKLogUtil.w(TAG, ">>>>----EVN=$EVN")
+        HKLogUtil.w(TAG, ">>>>----INIT_STRATEGY=$INIT_STRATEGY")
+        HKLogUtil.w(TAG, ">>>>----allConfigUrl=$allConfigUrl")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+
+        /**
+         * 关于保存配置信息的时机
+         * 1: 为空的时候的第一次初始化
+         */
+        val bundles: MutableMap<String, HKHybirdModuleBundleModel> = HKHybirdBundleInfoManager.getBundles()
+        val bundleNames: MutableSet<String> = bundles.keys
+
+        HKLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: INIT_STRATEGY=$INIT_STRATEGY, 检测本地是否存在缓存配置信息: bundleNames=$bundleNames")
+        if (bundleNames.isEmpty()) {
+            if (INIT_STRATEGY == HKHybirdInitStrategy.DOWNLOAD) {
+                HKLogUtil.w(TAG, ">>>>----由于未检测到缓存配置信息, 开始执行远程下载总配置信息进行初始化")
+                if (HKHybird.allConfiger != null && HKHybird.allConfigUrl.isNotBlank()) {
+                    HKLogUtil.w(TAG, ">>>>----初始化策略为在线下载初始化, 开始下载总的配置文件, allConfigUrl=${HKHybird.allConfigUrl}")
+                    HKHybird.allConfiger?.invoke(HKHybird.allConfigUrl) { remoteConfigList: MutableList<HKHybirdModuleConfigModel>? ->
+                        HKLogUtil.w(TAG, ">>>>----总的配置文件下载 ${if (remoteConfigList == null) "失败" else "成功"}")
+                        HKLogUtil.j(TAG, HKJsonUtil.toJson(remoteConfigList))
+
+                        downloadAndInitModules(remoteConfigList)
+                    }
+                } else {
+                    HKLogUtil.w(TAG, ">>>>----检测到下载器 allConfiger==null?${HKHybird.allConfiger == null} 尚未设置 或者 总配置信息的 allConfigUrl=$allConfigUrl 没有设置,return")
+                }
+            } else {
+                HKLogUtil.w(TAG, ">>>>----由于未检测到缓存配置信息, 开始执行从 assets 读取总配置信息进行初始化")
+                HKHybirdUtil.getConfigListFromAssets { configList ->
+                    initAllModules(configList, true)
+                }
             }
+        } else {
+            HKLogUtil.w(TAG, ">>>>----检测本地有缓存配置信息, 根据缓存配置信息初始化")
+            initAllModules(bundles.values.mapNotNull { it.moduleConfigList.firstOrNull() }.toMutableList(), true)
         }
 
         //应用程序前后台切换的时候执行一次异步检查更新
         RxBus.toObservable(HKApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
             //从前台切换到后台时
             if (!changeEvent.isApplicationVisible) {
-                HKLogUtil.e(TAG, "系统监测到应用程序从前台切换到后台,执行一次异步的健康体检和检查更新")
-                MODULES.value.forEach {
-                    //初始化本模块
-                    it.value.checkHealth { _, _ ->
-                        //检查更新2: 应用程序第一次启动的时候执行一次一步检查更新
-                        it.value.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = false)
-                    }
-                }
+                HKLogUtil.e(TAG, ">>>>----系统监测到应用程序从前台切换到后台,执行一次异步的健康体检和检查更新")
+                checkAllUpdate()
             }
         }
 
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.w(TAG, "初始化HYBIRD模块 结束  耗时: ${System.currentTimeMillis() - start}ms")
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-        HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+        HKLogUtil.w(TAG, ">>>>----初始化HYBIRD模块 结束  耗时: ${System.currentTimeMillis() - start}ms")
+        HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+    }
+
+    fun downloadAndInitModules(configList: MutableList<HKHybirdModuleConfigModel>?) {
+        HKHybirdUtil.downloadAllModules(configList) { validConfigList: MutableList<HKHybirdModuleConfigModel>? ->
+            initAllModules(validConfigList, false)
+        }
+    }
+
+    fun downloadAndInitModule(config: HKHybirdModuleConfigModel?) {
+        if (config != null) {
+            val start = System.currentTimeMillis()
+            HKLogUtil.d(HKHybird.TAG, "**********[downloadAndInitModule:单模块开始")
+
+            HKLogUtil.d(HKHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}")
+            HKLogUtil.d(HKHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], ${config.moduleDownloadUrl}")
+
+            HKHybirdDownloadManager.download(config) { isLocalFilesValid: Boolean ->
+                HKLogUtil.d(HKHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], isLocalFilesValid:$isLocalFilesValid")
+                HKLogUtil.d(HKHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms, config=$config")
+                if (isLocalFilesValid) {
+                    initModule(config)
+                }
+            }
+        }
+    }
+
+    fun initModule(config: HKHybirdModuleConfigModel?, callback: ((config: HKHybirdModuleConfigModel?) -> Unit)? = null) {
+        val start = System.currentTimeMillis()
+        HKLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化开始]-----------------------------------------------------------------------------------")
+        HKLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化开始], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}")
+        if (config == null) {
+            HKLogUtil.e(HKHybird.TAG, "--[initModule:${config?.moduleName}初始化结束], 没有模块需要初始化")
+            HKLogUtil.e(HKHybird.TAG, "--[initModule:${config?.moduleName}初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${HKHybird.MODULES.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+            HKLogUtil.e(HKHybird.TAG, "--[initModule:${config?.moduleName}初始化结束]-----------------------------------------------------------------------------------")
+            callback?.invoke(null)
+        } else {
+            Observable.fromCallable { initModuleManager(config) }
+                .subscribeOn(Schedulers.io())
+                .subscribe {
+                    HKLogUtil.e(TAG, "--[initModule:${config.moduleName}初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${MODULES.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+                    HKLogUtil.e(TAG, "--[initModule:${config.moduleName}初始化结束]-----------------------------------------------------------------------------------")
+                    callback?.invoke(config)
+                }
+        }
+    }
+
+    private fun initModuleManager(config: HKHybirdModuleConfigModel?) {
+        val _start = System.currentTimeMillis()
+        HKLogUtil.w(TAG, "--[initModule:${config?.moduleName}](开始), 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(_start))}")
+
+        if (config != null) {
+            val moduleManager = HKHybirdModuleManager.create(config)
+            if (moduleManager != null) {
+                MODULES[config.moduleName] = moduleManager
+                HKHybirdBundleInfoManager.saveConfigToBundleByName(config.moduleName, config)
+            }
+        }
+        HKLogUtil.w(TAG, "--[initModule:${config?.moduleName}](结束), 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())} , 一共耗时:${System.currentTimeMillis() - _start}ms")
+    }
+
+    /**
+     * @param callback 在全部模块成功初始化结束以后,检查全部更新之前回调, configList 返回空,代表没有模块被成功初始化, 属于初始化失败的标志
+     */
+    private fun initAllModules(configList: MutableList<HKHybirdModuleConfigModel>?, isNeedCheckAllUpdateAfterAllModulesSuccessInit: Boolean = true, callback: ((configList: MutableList<HKHybirdModuleConfigModel>?) -> Unit)? = null) {
+        val start = System.currentTimeMillis()
+        HKLogUtil.e(TAG, "--[initAllModules:全部初始化开始]-----------------------------------------------------------------------------------")
+        HKLogUtil.e(TAG, "--[initAllModules:全部初始化开始], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}  ,isNeedCheckAllUpdateAfterAllModulesSuccessInit=$isNeedCheckAllUpdateAfterAllModulesSuccessInit")
+        if (configList == null || configList.isEmpty()) {
+            HKLogUtil.e(HKHybird.TAG, "--[initAllModules:全部初始化结束], 没有模块需要初始化")
+            HKLogUtil.e(HKHybird.TAG, "--[initAllModules:全部初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${HKHybird.MODULES.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+            HKLogUtil.e(HKHybird.TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
+            callback?.invoke(null)
+        } else {
+            Observable.zip(
+                configList.map { config ->
+                    Observable.fromCallable { initModuleManager(config) }.subscribeOn(Schedulers.io())
+                }
+                ,
+                ({
+                })
+            ).subscribe {
+
+
+                HKLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${MODULES.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+                HKLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
+
+                callback?.invoke(configList)
+
+                if (isNeedCheckAllUpdateAfterAllModulesSuccessInit) {
+                    checkAllUpdate()
+                }
+            }
+        }
+    }
+
+    /**
+     * 只有各模块初始化成功后可以执行该方法, 因为会用到 MODULES
+     */
+    fun checkAllUpdate() {
+        val start = System.currentTimeMillis()
+        HKLogUtil.e(TAG, ">>>>>>>检查更新:下载开始, 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}")
+        HKHybird.allConfiger?.invoke(HKHybird.allConfigUrl) { remoteConfigList: MutableList<HKHybirdModuleConfigModel>? ->
+            HKLogUtil.w(TAG, ">>>>----检查更新:下载${if (remoteConfigList == null) "失败" else "成功"}, 当前时间:${HKTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms")
+            HKLogUtil.j(TAG, HKJsonUtil.toJson(remoteConfigList))
+
+            val needDownloadAndInitConfigList: MutableList<HKHybirdModuleConfigModel> = mutableListOf()
+
+            remoteConfigList?.forEach {
+                if (MODULES.containsKey(it.moduleName)) {
+                    checkUpdate(it)
+                } else {
+                    needDownloadAndInitConfigList.add(it)
+                }
+            }
+
+            if (needDownloadAndInitConfigList.isNotEmpty()) {
+                downloadAndInitModules(needDownloadAndInitConfigList)
+            }
+
+            HKLogUtil.w(TAG, ">>>>----检查更新:结束, 当前时间:${HKTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms")
+        }
+    }
+
+    fun checkUpdate(remoteConfig: HKHybirdModuleConfigModel?) {
+        HKLogUtil.e(TAG, ">>>>>>>======检查子模块更新 开始:${remoteConfig?.moduleName}, 当前时间:${HKTimeUtil.yMdHmsS(Date())}")
+
+        if (remoteConfig != null) {
+            val moduleManager = MODULES[remoteConfig.moduleName]
+            if (moduleManager != null) {
+                HKLogUtil.e(TAG, ">>>>>>>======检查子模块本地已经有以前的版本信息,进行比较操作")
+                //1:正式包，所有机器可以拉取
+                //2:测试包，只要测试机器可以拉取
+                if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybird.DEBUG)) {
+                    HKLogUtil.e(remoteConfig.moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
+                    val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
+                    val localVersion = moduleManager.currentConfig?.moduleVersion?.toFloatOrNull()
+                    HKLogUtil.v(TAG, ">>>>>>>======${remoteConfig.moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
+                    if (remoteVersion != null && localVersion != null) {
+                        //版本号相等时不做任何处理，避免不必要的麻烦
+                        if (remoteVersion != localVersion) {
+                            HKLogUtil.v(TAG, ">>>>>>>======${remoteConfig.moduleName} 系统检测到有新版本")
+
+                            if (remoteConfig.moduleUpdateStrategy == HKHybirdUpdateStrategy.ONLINE) {
+                                moduleManager.onlineModel = true
+                            } else {
+                                HKLogUtil.e(TAG, ">>>>>>>======${remoteConfig.moduleName} 无需切换为在线模式")
+                            }
+                            HKHybirdDownloadManager.download(remoteConfig)
+                        } else {
+                            HKLogUtil.v(TAG, ">>>>>>>======${remoteConfig.moduleName} 系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 相等, 无需更新")
+                        }
+                    } else {
+                        HKLogUtil.e(TAG, ">>>>>>>======${remoteConfig.moduleName} 系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 为空, 无法判断需要更新,默认不需要更新")
+                    }
+                } else {
+                    HKLogUtil.e(TAG, ">>>>>>>======${remoteConfig.moduleName} 检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
+                }
+            }
+        }
+        HKLogUtil.e(TAG, ">>>>>>>======检查子模块结束 结束:${remoteConfig?.moduleName}, 当前时间:${HKTimeUtil.yMdHmsS(Date())}")
+    }
+
+    /**
+     * 本操作会修改 onLineMode 状态
+     *
+     * 检查更新-同步(加载本模块URL的时候)
+     * 注意: 此处无需处理 模块第一次加载 然后合并 下次启动生效的配置文件  操作, 因为既然打开了本网页,前提是已经checkHealth, 而 checkHealth 已经包含了 fitNextAndFitLocalIfNeedConfigsInfo
+     *       所以,良好的设计是此时无需关注合版本合并信息,只关注自己的责任,检查/下载更新
+     *
+     * A:   进来发现  当前已经是在线状态    说明时间段为  正在下载 到 应用成功之前 这个时间段内
+     *
+     * 不执行重复网络请求,return true, 说明正在处理更新操作
+     * ----
+     * B:   进来发现  当前不是在线状态
+     *
+     * 1: 执行检查更新
+     *
+     * 2: 如果检测到 有更新或者回滚指令 则异步下载更新包(这里需要检测本地是否已经下载,已经解压,只待切换),并解压到本地,校验OK后,将状态保存为下一次模块启动替换
+     *
+     *      调用时机:   系统启动时,浏览器启动时,模块主url被拦截到时,前后台切换时
+     *
+     *                 其中 系统启动时         --> 检测模块是否已经被打开,如果没有且更细胞准备充分,则同步更新替换本地文件结束再执行放行
+     *                 其中 模块主url被拦截到时 --> 检测模块是否已经被打开,如果没有且更细胞准备充分,则同步更新替换本地文件结束再执行放行
+     *
+     *      a-> 回滚/升级, 更新策略为在线:  则立即 切换为在线状态(onlineModel=true),    访问在线资源     ,当检测到模块没有被浏览器加载的时候,执行回滚操作
+     *      b-> 回滚/升级, 更新策略为离线:  则依然 使用本地文件  (onlineModel=false),    访问本地资源     ,当检测到模块没有被浏览器加载的时候,执行回滚操作
+     *
+     *
+     * 3: 如果没有更新 return false
+     *
+     *
+     * 返回 true  直到更新包尚未应用成功
+     * 返回 false 代表没有更新,或者更新包已经应用成功
+     */
+    /**
+     * 检查更新一共有三个地方
+     *
+     * 更新策略为ONLINE 时,  1:程序启动,2:前后台切换,3:webView加载模块
+     * 更新策略为OFFLINE 时,  1:程序启动,2:前后台切换
+     */
+    @JvmStatic
+    fun checkUpdate(url: String?, callback: (() -> Unit?)? = null) {
+        val moduleManager = getModule(url)
+        if (moduleManager == null) {
+            callback?.invoke()
+        } else {
+            checkUpdate(moduleManager, callback)
+        }
+    }
+
+    @JvmStatic
+    fun checkUpdate(moduleManager: HKHybirdModuleManager?, callback: (() -> Unit?)? = null) {
+        if (moduleManager != null) {
+            val moduleName = moduleManager.currentConfig?.moduleName
+            val start = System.currentTimeMillis()
+            HKLogUtil.v(HKHybird.TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig?.moduleVersion},当前线程:${Thread.currentThread().name}")
+            HKLogUtil.v(HKHybird.TAG + ":" + moduleName, "当前配置=${moduleManager.currentConfig}")
+            if (moduleManager.currentConfig == null) {
+                HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "系统检测到当前模块尚未被初始化,必须执行初始化操作")
+                moduleManager.checkHealth(synchronized = true)
+            } else {
+                HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "系统检测到当前模块已被初始化过,可以执行检查更新")
+            }
+
+            if (HKHybird.configer == null) {
+                HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
+                callback?.invoke()
+                return
+            }
+
+            if (HKHybirdDownloadManager.isDownloading(moduleManager.currentConfig)) {
+                HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "系统检测到当前正在下载更新中, return")
+                callback?.invoke()
+                return
+            }
+
+            if (moduleManager.onlineModel) {
+                HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return")
+                callback?.invoke()
+                return
+            }
+
+            val moduleConfigUrl = moduleManager.currentConfig?.moduleConfigUrl ?: ""
+            HKLogUtil.v(HKHybird.TAG + ":" + moduleName, "下载配置文件 开始 当前版本=${moduleManager.currentConfig?.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
+            HKHybird.configer?.invoke(moduleConfigUrl) { remoteConfig: HKHybirdModuleConfigModel? ->
+                HKLogUtil.v(HKHybird.TAG + ":" + moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name}")
+                HKLogUtil.j(HKHybird.TAG + ":" + moduleName, HKJsonUtil.toJson(remoteConfig))
+                if (remoteConfig != null) {
+                    //1:正式包，所有机器可以拉取
+                    //2:测试包，只要测试机器可以拉取
+                    if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && HKHybird.DEBUG)) {
+                        HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
+                        val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
+                        val localVersion = moduleManager.currentConfig?.moduleVersion?.toFloatOrNull()
+                        HKLogUtil.v("${HKHybird.TAG + ":" + moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
+                        if (remoteVersion != null && localVersion != null) {
+                            //版本号相等时不做任何处理，避免不必要的麻烦
+                            if (remoteVersion != localVersion) {
+                                HKLogUtil.v("系统检测到有新版本")
+
+                                if (remoteConfig.moduleUpdateStrategy == HKHybirdUpdateStrategy.ONLINE) {
+                                    moduleManager.onlineModel = true
+                                } else {
+                                    HKLogUtil.e("无需切换为在线模式")
+                                }
+                                HKHybirdDownloadManager.download(remoteConfig)
+                            } else {
+                                HKLogUtil.v("系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 相等, 无需更新")
+                            }
+                        } else {
+                            HKLogUtil.e("系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 为空, 无法判断需要更新,默认不需要更新")
+                        }
+                    } else {
+                        HKLogUtil.e(HKHybird.TAG + ":" + moduleName, "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
+                    }
+                }
+                callback?.invoke()
+            }
+            HKLogUtil.v(HKHybird.TAG + ":" + moduleName, "检查更新 结束, 当前线程:${Thread.currentThread().name}, 耗时: ${System.currentTimeMillis() - start}ms")
+        }
     }
 
     fun getModule(url: String?): HKHybirdModuleManager? {
-        return if (url.isNullOrBlank()) null else MODULES.value.filter { isMemberOfModule(it.value.currentConfig, url) }.values.firstOrNull()
+        return if (url.isNullOrBlank()) null else HKHybird.MODULES.values.firstOrNull { isMemberOfModule(it.currentConfig, url) }
     }
 
     /**
@@ -204,60 +529,36 @@ object HKHybird {
     @JvmStatic
     @Synchronized
     fun checkHealth() {
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         HKLogUtil.w(TAG, "所有模块执行一次健康体检 开始")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
-        HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         HKLogUtil.w(TAG, ">>>>>>>>>>>>>>>>>>>>====================>>>>>>>>>>>>>>>>>>>>")
         val start = System.currentTimeMillis()
         Observable.fromCallable {
-            MODULES.value.forEach { it.value.checkHealth(synchronized = false) }
+            MODULES.forEach { it.value.checkHealth(synchronized = false) }
 
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
             HKLogUtil.w(TAG, "所有模块执行一次健康体检 结束  耗时: ${System.currentTimeMillis() - start}ms")
-            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
-            HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
             HKLogUtil.w(TAG, "<<<<<<<<<<<<<<<<<<<<====================<<<<<<<<<<<<<<<<<<<<")
         }.subscribeOn(Schedulers.newThread()).subscribe()
     }
 
     @JvmStatic
     fun onWebViewClose(webViewClient: WebViewClient?) {
-        MODULES.value.forEach {
-            it.value.lifecycleManager.onWebViewClose(webViewClient)
-        }
+        HKHybirdLifecycleManager.onWebViewClose(webViewClient)
     }
 
     @JvmStatic
     fun onWebViewOpenPage(webViewClient: WebViewClient?, url: String?) {
-        MODULES.value.forEach {
-            it.value.lifecycleManager.onWebViewOpenPage(webViewClient, url)
-        }
+        HKHybirdLifecycleManager.onWebViewOpenPage(webViewClient, url)
     }
 
     @JvmStatic
-    fun setDownloader(downloader: (downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?) {
-        MODULES.value.forEach { it.value.setDownloader(downloader) }
+    fun isMemberOfModule(config: HKHybirdModuleConfigModel?, url: String?): Boolean {
+        return url?.contains(config?.moduleMainUrl ?: "") == true
     }
 
     @JvmStatic
-    fun setConfiger(configer: (configUrl: String, callback: (HKHybirdConfigModel?) -> Boolean?) -> Boolean?) {
-        MODULES.value.forEach { it.value.setConfiger(configer) }
+    fun isModuleOpened(moduleName: String?): Boolean {
+        return HKHybirdLifecycleManager.isModuleOpened(moduleName)
     }
 
-    @JvmStatic
-    fun isMemberOfModule(config: HKHybirdConfigModel?, url: String?): Boolean {
-        val isMemberOfModule = url?.contains(config?.moduleMainUrl ?: "") == true
-        HKLogUtil.w(TAG, "isMemberOfModule:$isMemberOfModule , url=$url , mainUrl=${config?.moduleMainUrl}")
-        return isMemberOfModule
-    }
-
-    @JvmStatic
-    fun checkUpdate(url: String?, callback: (() -> Unit?)? = null) {
-        getModule(url)?.checkUpdate(switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
-    }
 }

@@ -122,7 +122,7 @@ object HKIntentUtil {
         return null
     }
 
-    fun goToAppDetails(context: Context) = goToDefault(context, getInstalledAppDetailsIntent(HKBaseApplication.INSTANCE.packageName))
+    fun goToAppDetails(context: Context?) = goToDefault(context, getInstalledAppDetailsIntent(HKBaseApplication.INSTANCE.packageName))
 
     @SuppressLint("ObsoleteSdkInt")
     fun getInstalledAppDetailsIntent(packageName: String): Intent {
@@ -210,10 +210,10 @@ object HKIntentUtil {
 
     fun getHtmlIntent(htmlUrl: String): Intent = Intent(Intent.ACTION_VIEW, Uri.parse(htmlUrl))
 
-    fun goToDefault(context: Context, intent: Intent?) {
+    fun goToDefault(context: Context?, intent: Intent?) {
         if (intent != null) {
             try {
-                context.startActivity(intent)
+                context?.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

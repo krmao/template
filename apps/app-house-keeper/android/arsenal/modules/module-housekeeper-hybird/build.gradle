@@ -1,14 +1,14 @@
 apply plugin: "com.android.library"
-apply plugin: "com.taobao.atlas"
+//apply plugin: "com.taobao.atlas"
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 
 group = 'com.housekeeper'
 version = '1.0.0'
 
-atlas {
-    bundleConfig { awbBundle true }
-}
+//atlas {
+//    bundleConfig { awbBundle true }
+//}
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion
@@ -23,5 +23,5 @@ android {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
-    providedCompile project(':library-housekeeper-base')
+    compile project(':library-housekeeper-base')
 }

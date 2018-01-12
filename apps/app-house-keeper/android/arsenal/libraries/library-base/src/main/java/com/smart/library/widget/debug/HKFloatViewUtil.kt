@@ -67,7 +67,7 @@ enum class HKFloatViewUtil {
                     }
                     MotionEvent.ACTION_MOVE -> {
                         windowLayoutParams.x = (event.rawX - x).toInt()
-                        windowLayoutParams.y = (event.rawY - HKSystemUtil.statusBarHeight2.toFloat() - y).toInt()
+                        windowLayoutParams.y = (event.rawY - HKSystemUtil.statusBarHeight.toFloat() - y).toInt()
                         windowManager.updateViewLayout(v, windowLayoutParams)
                     }
                     MotionEvent.ACTION_UP -> {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
+    android:background="@color/hk_blue_dark"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -12,6 +12,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:background="@color/hk_blue_dark"
         app:hkRight0Text="模拟跳转"
         app:hkTitleText="hybird本地网页页面" />
 
@@ -19,7 +20,8 @@
         android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#efefef">
 
         <LinearLayout
             android:id="@+id/containerLayout"

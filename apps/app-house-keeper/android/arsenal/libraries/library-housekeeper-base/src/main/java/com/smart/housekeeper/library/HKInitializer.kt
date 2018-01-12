@@ -1,10 +1,7 @@
 package com.smart.housekeeper.library
 
 import android.graphics.Color
-import android.taobao.atlas.bundleInfo.AtlasBundleInfoManager
-import android.taobao.atlas.framework.Atlas
 import com.smart.housekeeper.repository.HKRepository
-import com.smart.library.util.HKLogUtil
 import com.smart.library.widget.titlebar.HKTitleBar
 
 object HKInitializer {

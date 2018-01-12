@@ -44,6 +44,8 @@ open class HKWebView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     open fun onDestroy() {
-        if (client is HKWebViewClient) (client as? HKWebViewClient)?.onDestroy()
+        if (client != null && client is HKWebViewClient) {
+            (client as HKWebViewClient).onDestroy()
+        }
     }
 }

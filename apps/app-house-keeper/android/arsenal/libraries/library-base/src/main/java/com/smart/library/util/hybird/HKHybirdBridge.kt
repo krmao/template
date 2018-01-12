@@ -44,7 +44,7 @@ object HKHybirdBridge {
             classMap.put(className, kClass)
         }
 
-        schemeMap.put(scheme, { webView: WebView?, _: WebViewClient?, schemeUrlString: String?, callback: (() -> Unit?)? ->
+        schemeMap.put(scheme, { webView: WebView?, _: WebViewClient?, schemeUrlString: String?, _: (() -> Unit?)? ->
             val schemeUrl = Uri.parse(schemeUrlString)
             val pathSegments = schemeUrl?.pathSegments ?: arrayListOf()
             if (pathSegments.size >= 2) {
@@ -169,7 +169,7 @@ object HKHybirdBridge {
 
     private val callbackMap: ConcurrentMap<String, ((result: String?) -> Unit?)?> = ConcurrentHashMap()
     private val callbackSchemaPrefix: String = "hybird://hybird:${(-System.currentTimeMillis().toInt())}"
-    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, _: WebViewClient?, urlString: String?, callback: (() -> Unit?)? ->
+    fun addSchemeForCallback() = addScheme(callbackSchemaPrefix) { _: WebView?, _: WebViewClient?, urlString: String?, _: (() -> Unit?)? ->
         val url = Uri.parse(urlString)
         val hashCode = url?.getQueryParameter("hashcode")
         callbackMap[hashCode]?.invoke(url?.getQueryParameter("result"))

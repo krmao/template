@@ -11,12 +11,19 @@ object HKJsonUtil {
         if (jsonString?.isNotBlank() == true) {
             try {
                 entity = GSON.fromJson(jsonString, classOfT)
-                //entity = objectMapper.readValue(mSharedPreferences.getString(key, null), classOfT)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
         return entity
+    }
+
+    /**
+     * val allConfigList = HKJsonUtil.fromJson(allConfigJsonString, Array<HKHybirdModuleConfigModel>::class.java) ?: mutableListOf()
+     */
+    @JvmStatic
+    fun <T> fromJson(jsonString: String, clazz: Class<Array<T>>): MutableList<T>? {
+        return GSON.fromJson(jsonString, clazz).toMutableList()
     }
 
     @JvmStatic

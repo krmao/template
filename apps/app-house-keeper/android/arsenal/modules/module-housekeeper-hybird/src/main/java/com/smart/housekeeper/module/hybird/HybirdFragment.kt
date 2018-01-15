@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.HKBaseFragment
-import com.smart.library.bundle.model.HKHybirdModuleConfigModel
 import com.smart.library.bundle.HKHybird
-import com.smart.library.bundle.strategy.HKHybirdCheckStrategy
 import com.smart.library.util.HKRandomUtil
 import com.smart.library.widget.webview.HKWebFragment
 import kotlinx.android.synthetic.main.hybird_fragment.*
@@ -23,7 +21,7 @@ class HybirdFragment : HKBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        HKHybird.MODULES.forEach { entry ->
+        HKHybird.modules.forEach { entry ->
             val textView = TextView(context).apply {
                 text = entry.key; textSize = 24f; gravity = Gravity.CENTER
                 setTextColor(Color.BLACK)
@@ -32,8 +30,9 @@ class HybirdFragment : HKBaseFragment() {
             }
 
             textView.setOnClickListener {
-                entry.value.checkHealth(strategy = HKHybirdCheckStrategy.READY, synchronized = false) { _, _: HKHybirdModuleConfigModel? ->
-                    //HybirdWebFragment.goTo(activity, "https://h.jia.chexiangpre.com" + config?.moduleMainUrl + "index.shtml#/cardList")
+                if (entry.key == "buyMealCard") {
+                    HKWebFragment.goTo(activity, "https://h.jia.chexiangpre.com" + entry.value.currentConfig.moduleMainUrl + "index.shtml#/cardList")
+                } else if (entry.key == "welfare") {
                     HKWebFragment.goTo(activity, "https://cxjapp.chexiang.com/service/dispacher/0?cityCode=310100&id=CXJ_445&longitude=121.433353&latitude=31.204572&storeId=&userToken=MTAwMDVhNGY0MmUzNWFjNWU5ZTM4NjY0MDMxAu7noHxv7lSlaLt_rGS8oedQqJo&cityName=上海市")
                 }
             }

@@ -35,9 +35,8 @@ addJsHack("")
 open class HKWebViewClient : WebViewClient() {
 
     init {
-        //每次浏览器启动，执行一次健康体检
-        //Log.d(HKHybirdBridge.TAG, "每次浏览器启动，执行一次健康体检")
-        //HKHybird.checkHealth()
+        //每次浏览器启动
+        Log.e(HKHybirdBridge.TAG, "检测到浏览器初始化")
     }
 
     open fun onDestroy() {
@@ -87,7 +86,6 @@ open class HKWebViewClient : WebViewClient() {
     }
 
     override fun onLoadResource(view: WebView?, url: String?) {
-        //Log.v(HKHybirdBridge.TAG, "onLoadResource: $url")
         super.onLoadResource(view, url)
     }
 
@@ -122,7 +120,6 @@ open class HKWebViewClient : WebViewClient() {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-        //Log.v(HKHybirdBridge.TAG, "shouldInterceptRequest:>=LOLLIPOP: ${request?.url?.toString()}")
         return shouldInterceptRequest(view, request?.url?.toString())
     }
 

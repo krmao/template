@@ -1,0 +1,45 @@
+[
+    {
+        "moduleName": "buyMealCard",
+        "moduleVersion": "1.0",
+        "moduleDebug": true,
+        "moduleUpdateStrategy": "OFFLINE",
+        "moduleMainUrl": "/cx/cxj/cxjappweb/buyMealCard/",
+        "moduleScriptUrl": "/cx/cxj/cxjappweb/buyMealCard/",
+        "moduleConfigUrl": "http://10.47.58.14:8080/background/files/buyMealCard.json",
+        "moduleDownloadUrl": "http://10.47.58.14:8080/background/files/buyMealCard-1.0.zip",
+        "moduleZipMd5": "a02e01694c80c12d8f33185738dae9fe",
+        "moduleFilesMd5": {
+            "/css/app.0beb745539445a88f03a09706cb56c3e.css": "0beb745539445a88f03a09706cb56c3e",
+            "/img/loading.7b076d5.gif": "7b076d589dd912bf134018d385ed2db9",
+            "/index.shtml": "1879c2c5028e998bbb0a463b63956ada",
+            "/js/app.000490f9cde5f927efd4.js": "ed5e00ca0cfa253ea026205a67b056b4",
+            "/js/base.69b97924d161f4c0ca0e.js": "c992bcbe3e9740cc6f0c2f0360f81888",
+            "/js/manifest.39ab628e3370c697e984.js": "a17347600eeb7a25852f5f4a1dfc96b1"
+        }
+    },
+    {
+        "moduleName": "welfare",
+        "moduleVersion": "1.0",
+        "moduleDebug": true,
+        "moduleUpdateStrategy": "ONLINE",
+        "moduleMainUrl": "/cx/cxj/cxjappweb/welfare/",
+        "moduleScriptUrl": "/cx/cxj/cxjappweb/welfare/",
+        "moduleConfigUrl": "http://10.47.58.14:8080/background/files/welfare.json",
+        "moduleDownloadUrl": "http://10.47.58.14:8080/background/files/welfare-1.0.zip",
+        "moduleZipMd5": "ee5309330e7d7fb61dbd3f61bf598fda",
+        "moduleFilesMd5": {
+            "/css/app.69b4fe6cacbd1c0ffe112a0ef720f6d3.css": "69b4fe6cacbd1c0ffe112a0ef720f6d3",
+            "/img/bg-arch.b10e885.png": "b10e885b47cbdb820cb4b034e2f02f0f",
+            "/img/bg.4c958ef.jpg": "4c958efa5b056cc9e683cc6617cf8e55",
+            "/img/bg.99de24d.jpg": "99de24d62fd1146d14ea664cf07d665b",
+            "/img/cpn-bg.2a6a0a7.png": "2a6a0a7cb89671580c4e69e1141ccd10",
+            "/img/middle.9131917.png": "913191715d6dd0e2aa6e1fdb1c8a1e62",
+            "/img/swiper-bg-01.34b8850.png": "34b8850c834c71d6fecee75cc563a2d5",
+            "/index.shtml": "e0f89d6c6e8e06e34c7c1b8ab214a880",
+            "/js/app.25a2ac1cdfd755d2e2a1.js": "0471e3e44ce16e15f1c9438f18e03eab",
+            "/js/base.a3a892b7430fc4a5536b.js": "36d6531f92c7cbe1f3cf8dedc362a78f",
+            "/js/manifest.3f715786fdc728e71e40.js": "fd35dbc2c892b959cc64e3a80427f4b5"
+        }
+    }
+]

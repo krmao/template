@@ -44,7 +44,7 @@ object CXHybirdLifecycleManager {
                 lifecycleMap[it.key] = webViewHashCodeSet
 
                 if (webViewHashCodeSet.isEmpty()) {
-                    CXLogUtil.e(it.key, ">>>>>>>>>><<<<<<<<<< 监测到模块:${it.key} 已经完全从浏览器中解耦, 强制设置 onlineModel = false, 并检查是否有下一次生效的任务, 此时是设置的最佳时机")
+                    CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 监测到模块:${it.key} 已经完全从浏览器中解耦, 强制设置 onlineModel = false, 并检查是否有下一次生效的任务, 此时是设置的最佳时机")
                     it.value.onlineModel = false
                     CXHybirdUtil.fitNextAndFitLocalIfNeedConfigsInfo(it.key)
                 }

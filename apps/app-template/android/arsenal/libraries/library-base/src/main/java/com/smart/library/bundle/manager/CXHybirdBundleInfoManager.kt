@@ -1,7 +1,10 @@
 package com.smart.library.bundle.manager
 
+import android.util.Log
+import com.smart.library.bundle.CXHybird
 import com.smart.library.bundle.model.CXHybirdModuleBundleModel
 import com.smart.library.bundle.model.CXHybirdModuleConfigModel
+import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXPreferencesUtil
 
@@ -65,6 +68,8 @@ object CXHybirdBundleInfoManager {
 
     @Synchronized
     fun saveNextConfigBundleByName(moduleName: String?, nextConfig: CXHybirdModuleConfigModel?) {
+        CXLogUtil.e(CXHybird.TAG, "krmao: saveNextConfigBundleByName: moduleName=$moduleName, nextConfig is ${if (nextConfig == null) "null !" else "not null !"} ---->")
+        CXLogUtil.j(Log.ERROR, CXHybird.TAG, CXJsonUtil.toJson(nextConfig))
         if (moduleName != null && moduleName.isNotBlank()) {
             val bundles: MutableMap<String, CXHybirdModuleBundleModel> = getBundles()
             var bundle: CXHybirdModuleBundleModel? = bundles[moduleName]
@@ -80,6 +85,7 @@ object CXHybirdBundleInfoManager {
 
     @Synchronized
     fun removeNextConfigBundleByName(moduleName: String?) {
+        CXLogUtil.e(CXHybird.TAG, "removeNextConfigBundleByName: moduleName=$moduleName")
         saveNextConfigBundleByName(moduleName, null)
     }
 
@@ -104,7 +110,10 @@ object CXHybirdBundleInfoManager {
 
     @Synchronized
     fun getNextConfigFromBundleByName(moduleName: String?): CXHybirdModuleConfigModel? {
-        return getBundles()[moduleName]?.moduleNextConfig
+        val nextConfig = getBundles()[moduleName]?.moduleNextConfig
+        CXLogUtil.e(CXHybird.TAG, "getNextConfigFromBundleByName: moduleName=$moduleName, nextConfig is ${if (nextConfig == null) "null !" else "not null !"} ---->")
+        CXLogUtil.j(Log.ERROR, CXHybird.TAG, CXJsonUtil.toJson(nextConfig))
+        return nextConfig
     }
 }
 

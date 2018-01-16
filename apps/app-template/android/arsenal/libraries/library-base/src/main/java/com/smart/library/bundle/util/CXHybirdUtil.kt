@@ -345,7 +345,7 @@ object CXHybirdUtil {
             CXLogUtil.v(tag, "======>> shouldInterceptRequest: $url ,匹配拦截器:$interceptUrl")
             var resourceResponse: WebResourceResponse? = null
             if (CXHybird.modules[moduleName]?.onlineModel != true) {
-                val localFile = CXHybirdUtil.getLocalFile(config, url)
+                val localFile = getLocalFile(config, url)
                 if (url != null && localFile?.exists() == true) {
                     val mimeType: String = when {
                         url.contains(".css") -> "text/css"
@@ -399,7 +399,7 @@ object CXHybirdUtil {
             //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
             val iterate = configList.listIterator()
             while (iterate.hasNext()) {
-                if (!CXHybirdUtil.isLocalFilesValid(iterate.next())) {
+                if (!isLocalFilesValid(iterate.next())) {
                     iterate.remove() // mind ConcurrentModificationException
                 }
             }
@@ -449,42 +449,52 @@ object CXHybirdUtil {
         CXLogUtil.v(tag, "---->>>> 检测是否有下次启动生效的配置文件需要处理 开始, 当前线程:${Thread.currentThread().name}")
 
         val configList = CXHybirdBundleInfoManager.getConfigListFromBundleByName(moduleManager.currentConfig.moduleName)
+        CXLogUtil.v(tag, "---->>>> configList->")
+        CXLogUtil.j(Log.VERBOSE, tag, CXJsonUtil.toJson(configList))
 
         val isModuleOpened = CXHybirdLifecycleManager.isModuleOpened(moduleName)
         if (!isModuleOpened) {
             CXLogUtil.v(tag, "---->>>> 检测当前模块未被浏览器加载,可以处理")
 
-            val nextConfigStack = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleManager.currentConfig.moduleName)
-            if (nextConfigStack != null) {
-                CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空,开始处理")
-                val destVersion = nextConfigStack.moduleVersion.toFloatOrNull()
-                if (destVersion != null) {
-                    if (configList.isNotEmpty()) {
-                        val iterate = configList.listIterator()
-                        while (iterate.hasNext()) {
-                            val tmpConfig = iterate.next()
-                            val tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
-                            //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
-                            if (tmpVersion == null || tmpVersion >= destVersion) {
-                                CXLogUtil.v(tag, "---->>>> 清空版本号为$tmpVersion(升级/回滚的目标版本为$destVersion) 的所有本地文件以及配置信息")
-                                iterate.remove()                                                                //删除在list中的位置
-                                CXFileUtil.deleteFile(CXHybirdUtil.getZipFile(tmpConfig))              //删除 zip
-                                CXFileUtil.deleteDirectory(CXHybirdUtil.getUnzipDir(tmpConfig))        //删除 unzipDir
+            val nextConfig = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleManager.currentConfig.moduleName)
+
+            if (nextConfig != null) {
+                if (isLocalFilesValid(nextConfig)) {
+                    CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 且本地文件夹校验成功, 开始处理")
+
+                    val destVersion = nextConfig.moduleVersion.toFloatOrNull()
+                    if (destVersion != null) {
+                        if (configList.isNotEmpty()) {
+                            val iterate = configList.listIterator()
+                            while (iterate.hasNext()) {
+                                val tmpConfig = iterate.next()
+                                val tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
+                                //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
+                                if (tmpVersion == null || tmpVersion >= destVersion) {
+                                    CXLogUtil.v(tag, "---->>>> 清空版本号为$tmpVersion(升级/回滚的目标版本为$destVersion) 的所有本地文件以及配置信息")
+                                    iterate.remove()                                                                //删除在list中的位置
+                                    CXFileUtil.deleteFile(getZipFile(tmpConfig))              //删除 zip
+                                    CXFileUtil.deleteDirectory(getUnzipDir(tmpConfig))        //删除 unzipDir
+                                }
                             }
                         }
+                        configList.add(0, nextConfig)
+                        CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleManager.currentConfig.moduleName, configList)
+                        moduleManager.currentConfig = nextConfig
+                        CXLogUtil.e(tag, "---->>>> 重置当前 本地配置头 为:${moduleManager.currentConfig.moduleVersion}")
                     }
-                    configList.add(0, nextConfigStack)
-                    CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleManager.currentConfig.moduleName, configList)
-                    moduleManager.currentConfig = nextConfigStack
-                    CXLogUtil.e(tag, "---->>>> 重置当前 本地配置头 为:${moduleManager.currentConfig.moduleVersion}")
+                } else {
+                    CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 但是本地文件夹校验失败, 不做处理, 清除下次生效的该配置文件")
                 }
+
+
                 CXHybirdBundleInfoManager.removeNextConfigBundleByName(moduleManager.currentConfig.moduleName)
             } else {
                 CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息为空,无需处理")
             }
 
             //ifNeed 体现在此处
-            if (nextConfigStack != null || mustFitLocal) CXHybirdUtil.fitLocalConfigsInfoSync(moduleName)
+            if (nextConfig != null || mustFitLocal) fitLocalConfigsInfoSync(moduleName)
         } else {
             CXLogUtil.v(tag, "---->>>> 检测当前模块正在被浏览器加载,不能处理")
         }

@@ -94,27 +94,33 @@ object HKZipUtil {
      */
     @Throws(ZipException::class, IOException::class, FileNotFoundException::class)
     fun unzip(zipFile: File, targetDirFile: File?) {
-        val targetFinalFile = File(targetDirFile?.absolutePath)
-        targetFinalFile.mkdirs()
-        val zip = ZipFile(zipFile)
-        val zipFileEntries = zip.entries()
-        while (zipFileEntries.hasMoreElements()) {
-            val entry = zipFileEntries.nextElement()
-            val destFile = File(targetFinalFile, entry.name)
-            destFile.parentFile.mkdirs()
-            if (!entry.isDirectory) {
-                val bufferedInputStream = BufferedInputStream(zip.getInputStream(entry))
-                val dataBytes = ByteArray(BUFFER)
-                val bufferedOutputStream = BufferedOutputStream(FileOutputStream(destFile), BUFFER)
-                var currentByte: Int = bufferedInputStream.read(dataBytes, 0, BUFFER)
-                while (currentByte != -1) {
-                    bufferedOutputStream.write(dataBytes, 0, currentByte)
-                    currentByte = bufferedInputStream.read(dataBytes, 0, BUFFER)
+        var zip: ZipFile? = null
+
+        try {
+            val targetFinalFile = File(targetDirFile?.absolutePath)
+            targetFinalFile.mkdirs()
+            zip = ZipFile(zipFile)
+            val zipFileEntries = zip.entries()
+            while (zipFileEntries.hasMoreElements()) {
+                val entry = zipFileEntries.nextElement()
+                val destFile = File(targetFinalFile, entry.name)
+                destFile.parentFile.mkdirs()
+                if (!entry.isDirectory) {
+                    val bufferedInputStream = BufferedInputStream(zip.getInputStream(entry))
+                    val dataBytes = ByteArray(BUFFER)
+                    val bufferedOutputStream = BufferedOutputStream(FileOutputStream(destFile), BUFFER)
+                    var currentByte: Int = bufferedInputStream.read(dataBytes, 0, BUFFER)
+                    while (currentByte != -1) {
+                        bufferedOutputStream.write(dataBytes, 0, currentByte)
+                        currentByte = bufferedInputStream.read(dataBytes, 0, BUFFER)
+                    }
+                    bufferedOutputStream.flush()
+                    bufferedOutputStream.close()
+                    bufferedInputStream.close()
                 }
-                bufferedOutputStream.flush()
-                bufferedOutputStream.close()
-                bufferedInputStream.close()
             }
+        } finally {
+            zip?.close()
         }
     }
 }

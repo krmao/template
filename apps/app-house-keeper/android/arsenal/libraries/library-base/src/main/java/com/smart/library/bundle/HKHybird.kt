@@ -30,10 +30,6 @@ object HKHybird {
     internal val TAG: String = HKHybird::class.java.simpleName
 
     @JvmStatic
-    var env = "pre"
-        private set
-
-    @JvmStatic
     var debug = true
         private set
 
@@ -82,14 +78,13 @@ object HKHybird {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(debug: Boolean = true, env: String? = null, initStrategy: HKHybirdInitStrategy = HKHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<HKHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (HKHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+    fun init(debug: Boolean = true, initStrategy: HKHybirdInitStrategy = HKHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<HKHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (HKHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
         val start = System.currentTimeMillis()
         HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
         HKLogUtil.w(TAG, ">>>>----初始化HYBIRD模块 开始")
         HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
 
         this.debug = debug
-        this.env = if (env?.isNotBlank() == true) env else this.env
         this.initStrategy = initStrategy
 
         if (configer != null) HKHybird.configer = configer
@@ -98,7 +93,6 @@ object HKHybird {
         if (allConfigUrl.isNotBlank()) HKHybird.allConfigUrl = allConfigUrl
 
         HKLogUtil.w(TAG, ">>>>----debug=${this.debug}")
-        HKLogUtil.w(TAG, ">>>>----env=${this.env}")
         HKLogUtil.w(TAG, ">>>>----initStrategy=${this.initStrategy}")
         HKLogUtil.w(TAG, ">>>>----allConfigUrl=$allConfigUrl")
         HKLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")

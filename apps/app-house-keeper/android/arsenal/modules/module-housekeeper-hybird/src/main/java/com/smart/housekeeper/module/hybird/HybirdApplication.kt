@@ -61,6 +61,6 @@ object HybirdApplication {
 
         val allConfigUrl = "http://10.47.58.14:8080/background/files/all.json"
         //初始化开始
-        HKHybird.init(HKBaseApplication.DEBUG, "pre", HKHybirdInitStrategy.LOCAL, allConfigUrl, allConfiger, configer, downloader)
+        HKHybird.init(HKBaseApplication.DEBUG, HKHybirdInitStrategy.LOCAL, allConfigUrl, allConfiger, configer, downloader)
     }
 }

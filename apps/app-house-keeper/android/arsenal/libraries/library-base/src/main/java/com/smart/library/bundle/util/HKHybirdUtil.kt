@@ -195,15 +195,16 @@ object HKHybirdUtil {
         var allConfigList: MutableList<HKHybirdModuleConfigModel> = mutableListOf()
 
         Observable.fromCallable {
-            val allConfigJsonString = HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybird.assetsDirName}/all${HKHybird.configSuffix}"))
-            HKLogUtil.j(Log.VERBOSE, HKHybird.TAG, allConfigJsonString)
-
             try {
+                val allConfigJsonString = HKFileUtil.readTextFromFile(HKBaseApplication.INSTANCE.assets.open("${HKHybird.assetsDirName}/all${HKHybird.configSuffix}"))
+                HKLogUtil.j(Log.VERBOSE, HKHybird.TAG, allConfigJsonString)
                 allConfigList = HKJsonUtil.fromJson(allConfigJsonString, Array<HKHybirdModuleConfigModel>::class.java) ?: mutableListOf()
             } catch (exception: FileNotFoundException) {
                 HKLogUtil.e(HKHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 文件不存在, 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}", exception)
             } catch (exception: IOException) {
                 HKLogUtil.e(HKHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 文件读写错误, 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}", exception)
+            } catch (exception: Exception) {
+                HKLogUtil.e(HKHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 其它错误, 当前线程:${Thread.currentThread().name}, 当前时间:${HKTimeUtil.yMdHmsS(Date(start))}", exception)
             }
 
             if (allConfigList.isNotEmpty()) {

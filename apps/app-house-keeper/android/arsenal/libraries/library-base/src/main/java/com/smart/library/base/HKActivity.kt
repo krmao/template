@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-//import android.taobao.atlas.framework.Atlas
 import android.util.Log
 import android.widget.FrameLayout
-import com.smart.library.util.HKLogUtil
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 open class HKActivity : HKBaseActivity() {
@@ -80,21 +78,21 @@ open class HKActivity : HKBaseActivity() {
         //base
         /* Activity页面发起的，再由Activity来接收结果 如果由Fragment来接收结果，需要使用 {@link #startForResult(Fragment, int, Class, Bundle)} */
         @JvmStatic
-        fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
+        fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
             startForResult(activity, 0, reqCode, fragmentClass, args)
 
         @JvmStatic
-        fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
+        fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
             activity?.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
+        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
             startForResult(fragment, 0, reqCode, fragmentClass, args)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle) =
+        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
             fragment.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
 
         @JvmStatic

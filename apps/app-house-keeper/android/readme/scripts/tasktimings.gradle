@@ -1,16 +1,16 @@
 // Log timings per task.
 class TimingsListener implements TaskExecutionListener, BuildListener {
-    private Clock clock
+    private long timeStart = 0
     private timings = []
 
     @Override
     void beforeExecute(Task task) {
-        clock = new Clock()
+        timeStart = System.currentTimeMillis()
     }
 
     @Override
     void afterExecute(Task task, TaskState taskState) {
-        def ms = clock.timeInMs
+        def ms = System.currentTimeMillis() - timeStart
         timings.add([ms, task.path])
         task.project.logger.warn "${task.path} spent ${ms}ms"
     }

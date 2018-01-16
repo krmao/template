@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CXFrameLoadingLayout">
+        <attr name="cxLoadingView" format="reference" />
+        <attr name="cxFailureView" format="reference" />
+        <attr name="cxEmptyView" format="reference" />
+        <attr name="cxCenterInParent" format="reference|boolean" />
+        <attr name="cxUseSmallStyle" format="reference|boolean" />
+        <attr name="cxScaleFactor" format="float" />
+        <attr name="cxAllBackground" format="reference|color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="CXTitleBar">
+        <attr name="android:background" />
+        <!--title-->
+        <attr name="cxTitleText" format="reference|string" />
+        <attr name="cxTitleSize" format="reference|dimension" />
+        <attr name="cxTitleTxtColor" format="reference|color" />
+        <attr name="cxTitleAppearance" format="integer" />
+        <!--left0-->
+        <attr name="cxLeft0BgViewBackground" format="reference|color" />
+        <attr name="cxLeft0BgViewPadding" format="reference|dimension" />
+        <attr name="cxLeft0Visible" format="enum">
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="cxLeft0Appearance" format="integer" />
+        <attr name="cxLeft0Background" format="reference|color" />
+        <attr name="cxLeft0Text" format="reference|string" />
+        <attr name="cxLeft0TextSize" format="reference|dimension" />
+        <attr name="cxLeft0TextColor" format="reference|color" />
+        <attr name="cxLeft0BgWidth" format="reference|dimension" />
+        <attr name="cxLeft0BgPaddingLeft" format="reference|dimension" />
+        <attr name="cxLeft0BgPaddingRight" format="reference|dimension" />
+        <attr name="cxLeft0BgPaddingTop" format="reference|dimension" />
+        <attr name="cxLeft0BgPaddingBottom" format="reference|dimension" />
+        <attr name="cxLeft0BgTextColor" format="reference|color" />
+        <!--left1-->
+        <attr name="cxLeft1BgViewBackground" format="reference|color" />
+        <attr name="cxLeft1BgViewPadding" format="reference|dimension" />
+        <attr name="cxLeft1Visible" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="cxLeft1Appearance" format="integer" />
+        <attr name="cxLeft1Background" format="reference|color" />
+        <attr name="cxLeft1Text" format="reference|string" />
+        <attr name="cxLeft1TextSize" format="reference|dimension" />
+        <attr name="cxLeft1TextColor" format="reference|color" />
+        <attr name="cxLeft1BgWidth" format="reference|dimension" />
+        <attr name="cxLeft1BgPaddingLeft" format="reference|dimension" />
+        <attr name="cxLeft1BgPaddingRight" format="reference|dimension" />
+        <attr name="cxLeft1BgPaddingTop" format="reference|dimension" />
+        <attr name="cxLeft1BgPaddingBottom" format="reference|dimension" />
+        <attr name="cxLeft1BgTextColor" format="reference|color" />
+        <!--right0-->
+        <attr name="cxRight0BgViewBackground" format="reference|color" />
+        <attr name="cxRight0BgViewPadding" format="reference|dimension" />
+        <attr name="cxRight0Visible" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="cxRight0Appearance" format="integer" />
+        <attr name="cxRight0Background" format="reference|color" />
+        <attr name="cxRight0Text" format="reference|string" />
+        <attr name="cxRight0TextSize" format="reference|dimension" />
+        <attr name="cxRight0TextColor" format="reference|color" />
+        <attr name="cxRight0BgWidth" format="reference|dimension" />
+        <attr name="cxRight0BgPaddingLeft" format="reference|dimension" />
+        <attr name="cxRight0BgPaddingRight" format="reference|dimension" />
+        <attr name="cxRight0BgPaddingTop" format="reference|dimension" />
+        <attr name="cxRight0BgPaddingBottom" format="reference|dimension" />
+        <attr name="cxRight0BgTextColor" format="reference|color" />
+        <!--right1-->
+        <attr name="cxRight1BgViewBackground" format="reference|color" />
+        <attr name="cxRight1BgViewPadding" format="reference|dimension" />
+        <attr name="cxRight1Visible" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="cxRight1Appearance" format="integer" />
+        <attr name="cxRight1Background" format="reference|color" />
+        <attr name="cxRight1Text" format="reference|string" />
+        <attr name="cxRight1TextSize" format="reference|dimension" />
+        <attr name="cxRight1TextColor" format="reference|color" />
+        <attr name="cxRight1BgWidth" format="reference|dimension" />
+        <attr name="cxRight1BgPaddingLeft" format="reference|dimension" />
+        <attr name="cxRight1BgPaddingRight" format="reference|dimension" />
+        <attr name="cxRight1BgPaddingTop" format="reference|dimension" />
+        <attr name="cxRight1BgPaddingBottom" format="reference|dimension" />
+        <attr name="cxRight1BgTextColor" format="reference|color" />
+        <attr name="cxProgressDrawable" format="reference" />
+        <attr name="cxProgressVisible" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+    </declare-styleable>
+    
+    <declare-styleable name="CXRoundImageView">
+        <attr name="cxBorderWidth" format="dimension" />
+        <attr name="cxBorderColor" format="color" />
+        <attr name="cxProgressColor" format="color" />
+        <attr name="cxProgressBorder" format="integer" />
+        <attr name="cxCornerRadius" format="dimension" />
+        <attr name="cxLeftTopCornerRadius" format="dimension" />
+        <attr name="cxRightTopCornerRadius" format="dimension" />
+        <attr name="cxLeftBottomCornerRadius" format="dimension" />
+        <attr name="cxRightBottomCornerRadius" format="dimension" />
+        <attr name="cxType" format="enum">
+            <enum name="oval" value="2" />
+            <enum name="round" value="1" />
+            <enum name="circle" value="0" />
+        </attr>
+    </declare-styleable>
+
+</resources>

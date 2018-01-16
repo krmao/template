@@ -1,0 +1,27 @@
+apply plugin: "com.android.library"
+//apply plugin: "com.taobao.atlas"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+group = 'com.template'
+version = '1.0.0'
+
+//atlas {
+//    bundleConfig { awbBundle true }
+//}
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+    resourcePrefix "mine_"
+}
+
+dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+    compile project(':library-template-base')
+}

@@ -1,0 +1,16 @@
+rootProject.name = "template"
+//app
+include(":app-template"); project(":app-template").projectDir = new File(settingsDir, "arsenal/apps/app-template")
+
+//libraries
+include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "arsenal/libraries/library-base")
+include(":library-template-base"); project(":library-template-base").projectDir = new File(settingsDir, "arsenal/libraries/library-template-base")
+include(":library-template-repository"); project(":library-template-repository").projectDir = new File(settingsDir, "arsenal/libraries/library-template-repository")
+
+//modules
+include(":module-template-home"); project(":module-template-home").projectDir = new File(settingsDir, "arsenal/modules/module-template-home")
+include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "arsenal/modules/module-template-mine")
+include(":module-template-setting"); project(":module-template-setting").projectDir = new File(settingsDir, "arsenal/modules/module-template-setting")
+include(":module-template-hybird"); project(":module-template-hybird").projectDir = new File(settingsDir, "arsenal/modules/module-template-hybird")
+
+//thirdparty

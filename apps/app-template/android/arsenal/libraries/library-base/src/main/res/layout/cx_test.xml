@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cx_accent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <com.smart.library.widget.titlebar.CXTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cx_titlebar_height"
+        android:background="#fefefe"
+        app:cxTitleText="测试页面" />
+
+    <com.smart.library.widget.imageview.CXRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cx_black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cx_image"
+        app:cxLeftBottomCornerRadius="15dp"
+        app:cxLeftTopCornerRadius="30dp"
+        app:cxRightBottomCornerRadius="30dp" />
+
+    <com.smart.library.widget.imageview.CXRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cx_pink"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cx_image" />
+
+    <com.smart.library.widget.imageview.CXRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cx_yellow"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cx_image"
+        app:cxType="circle" />
+
+    <com.smart.library.widget.imageview.CXRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cx_orange"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cx_image"
+        app:cxBorderColor="@color/cx_blue_dark"
+        app:cxBorderWidth="5dp"
+        app:cxCornerRadius="30dp"
+        app:cxType="round" />
+
+    <com.smart.library.widget.imageview.CXRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/cx_black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cx_image"
+        app:cxBorderColor="@color/cx_blue_light"
+        app:cxBorderWidth="10dp"
+        app:cxProgressBorder="90"
+        app:cxProgressColor="@color/cx_blue"
+        app:cxType="circle" />
+
+</LinearLayout>

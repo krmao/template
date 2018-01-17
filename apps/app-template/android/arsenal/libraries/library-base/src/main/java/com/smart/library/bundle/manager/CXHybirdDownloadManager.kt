@@ -74,7 +74,7 @@ object CXHybirdDownloadManager {
             if (isLocalFilesValid) {
                 CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第二步: 更新包校验成功")
                 CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第二步: 尝试直接替换到目标版本...")
-                if (moduleManager != null) {
+                if (moduleManager != null && moduleManager.currentConfig != remoteConfig) {
                     CXHybirdBundleInfoManager.saveNextConfigBundleByName(moduleName, remoteConfig)
                     CXHybirdUtil.fitNextAndFitLocalIfNeedConfigsInfoSync(moduleName)//同步处理,由于检查更新是在异步线程,所以这里同步也不会阻塞主线程
                 } else {

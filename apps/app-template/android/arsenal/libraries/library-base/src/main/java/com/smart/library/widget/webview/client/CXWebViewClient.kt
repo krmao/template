@@ -8,7 +8,6 @@ import android.os.Message
 import android.util.Log
 import android.webkit.*
 import com.smart.library.bundle.CXHybird
-import com.smart.library.bundle.manager.CXHybirdStatisticalAnalysisManager
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.hybird.CXHybirdBridge
 
@@ -73,7 +72,6 @@ open class CXWebViewClient : WebViewClient() {
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         Log.d(CXHybirdBridge.TAG, "onPageStarted: $url")
-        CXHybirdStatisticalAnalysisManager.onPageStarted(this, url)
         super.onPageStarted(view, url, favicon)
     }
 
@@ -84,7 +82,6 @@ open class CXWebViewClient : WebViewClient() {
 
     override fun onPageFinished(webView: WebView?, url: String?) {
         Log.d(CXHybirdBridge.TAG, "onPageFinished: $url")
-        CXHybirdStatisticalAnalysisManager.onPageFinished(this, url)
         super.onPageFinished(webView, url)
     }
 

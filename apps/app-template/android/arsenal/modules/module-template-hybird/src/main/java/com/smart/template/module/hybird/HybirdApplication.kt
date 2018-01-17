@@ -38,9 +38,11 @@ object HybirdApplication {
             Unit
         }
 
-        //同步 配置文件下载器
+        //异步 配置文件下载器
         val configer = { configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit? ->
-            callback.invoke(CXJsonUtil.fromJson(CXOkHttpManager.doGetSync(configUrl, readTimeoutMS = 500, connectTimeoutMS = 500), CXHybirdModuleConfigModel::class.java))
+            CXOkHttpManager.doGet(configUrl, readTimeoutMS = 500, connectTimeoutMS = 500) {
+                callback.invoke(CXJsonUtil.fromJson(it, CXHybirdModuleConfigModel::class.java))
+            }
         }
 
         //异步 更新包下载器
@@ -61,6 +63,6 @@ object HybirdApplication {
 
         val allConfigUrl = "http://10.47.58.14:8080/background/files/all.json"
         //初始化开始
-        CXHybird.init(CXBaseApplication.DEBUG, CXHybirdInitStrategy.LOCAL, allConfigUrl, allConfiger, configer, downloader)
+        CXHybird.init(CXBaseApplication.DEBUG, CXHybirdInitStrategy.DOWNLOAD, allConfigUrl, allConfiger, configer, downloader)
     }
 }

@@ -28,7 +28,10 @@ open class CXWebView @JvmOverloads constructor(context: Context, attrs: Attribut
         CXLogUtil.e(TAG, "loadURL start:$url")
         CXHybird.checkUpdate(url) {
             CXHybird.onWebViewOpenPage(client, url)
-            loadUrl(url)
+
+            post { loadUrl(url) } //确保在主线程执行
+
+            Unit
         }
         CXLogUtil.e(TAG, "loadURL   end:$url , 耗时:${System.currentTimeMillis() - start}ms")
     }

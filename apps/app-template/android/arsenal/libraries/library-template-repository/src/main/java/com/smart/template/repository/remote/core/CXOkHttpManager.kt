@@ -5,6 +5,7 @@ import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
 import com.smart.library.util.rx.RxBus
 import okhttp3.*
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -64,6 +65,28 @@ object CXOkHttpManager {
             response?.close()
         }
         return result
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun doGet(url: String, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null, callback: (content: String?) -> Unit?) {
+        var result: String? = null
+        var okhttpClient = client
+
+        if (readTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().readTimeout(readTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (writeTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().writeTimeout(writeTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (connectTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().connectTimeout(connectTimeoutMS, TimeUnit.MILLISECONDS).build()
+
+        okhttpClient.newCall(Request.Builder().url(url).get().build()).enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                callback.invoke(result)
+            }
+
+            override fun onResponse(call: Call?, response: Response?) {
+                result = response?.body()?.string()
+                callback.invoke(result)
+            }
+        })
     }
 
     @JvmStatic

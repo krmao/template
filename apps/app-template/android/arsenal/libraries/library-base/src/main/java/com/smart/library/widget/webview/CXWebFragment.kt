@@ -13,6 +13,7 @@ import com.smart.library.R
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.widget.webview.client.CXWebChromeClient
+import com.smart.library.widget.webview.client.CXWebView
 import com.smart.library.widget.webview.client.CXWebViewClient
 import kotlinx.android.synthetic.main.cx_fragment_webview.*
 
@@ -38,6 +39,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
     private val hideBackAtFirstPage: Boolean by lazy {
         arguments?.getBoolean("hideBackAtFirstPage") == true
     }
+    protected val webView: CXWebView by lazy { web_view }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.cx_fragment_webview, container, false)
 
@@ -46,7 +48,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
 
         title_bar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
 
-        web_view.webViewClient = object : CXWebViewClient() {
+        webView.webViewClient = object : CXWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -74,7 +76,7 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             }
         }
 
-        web_view.webChromeClient = object : CXWebChromeClient() {
+        webView.webChromeClient = object : CXWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
                 title_bar?.progressBar?.progress = newProgress
                 if (newProgress >= 100) {
@@ -93,17 +95,17 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
             }
         }
 
-        web_view.loadURL(url)
+        webView.loadURL(url)
     }
 
     override fun onDestroy() {
-        web_view?.onDestroy()
+        webView.onDestroy()
         super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {
-        if (web_view?.canGoBack() == true) {
-            web_view.goBack()
+        if (webView.canGoBack()) {
+            webView.goBack()
             return true
         }
         return false

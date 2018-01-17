@@ -40,7 +40,7 @@ object HybirdApplication {
 
         //同步 配置文件下载器
         val configer = { configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit? ->
-            callback.invoke(CXJsonUtil.fromJson(CXOkHttpManager.doGetSync(configUrl, readTimeoutMS = 2000, connectTimeoutMS = 2000), CXHybirdModuleConfigModel::class.java))
+            callback.invoke(CXJsonUtil.fromJson(CXOkHttpManager.doGetSync(configUrl, readTimeoutMS = 500, connectTimeoutMS = 500), CXHybirdModuleConfigModel::class.java))
         }
 
         //异步 更新包下载器

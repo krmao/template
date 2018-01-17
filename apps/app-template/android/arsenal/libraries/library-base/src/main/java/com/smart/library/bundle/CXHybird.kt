@@ -147,6 +147,7 @@ object CXHybird {
     }
 
     private fun downloadAndInitModules(configList: MutableList<CXHybirdModuleConfigModel>?) {
+        CXLogUtil.w(TAG, ">>>>----需要下载初始化的模块有 ${configList?.map { it.moduleName }}")
         CXHybirdUtil.downloadAllModules(configList) { validConfigList: MutableList<CXHybirdModuleConfigModel>? ->
             initAllModules(validConfigList, false)
         }
@@ -254,8 +255,10 @@ object CXHybird {
 
             remoteConfigList?.forEach {
                 if (modules.containsKey(it.moduleName)) {
+                    CXLogUtil.w(TAG, ">>>>----检测模块${it.moduleName}已经被初始化过, 走更新流程")
                     checkUpdate(it)
-                } else {
+                } else if (initStrategy == CXHybirdInitStrategy.DOWNLOAD) {
+                    CXLogUtil.w(TAG, ">>>>----检测模块${it.moduleName}已经尚未被初始化过, 且当前初始化策略为在线下载初始化, 走下载初始化流程")
                     needDownloadAndInitConfigList.add(it)
                 }
             }

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.1.51'
+        kotlinVersion = '1.2.0'
         springBootVersion = '1.5.8.RELEASE'
     }
     repositories {
@@ -14,110 +14,85 @@ buildscript {
         classpath 'org.hidetake:gradle-ssh-plugin:2.9.0'
     }
 }
-
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
-apply plugin: 'war'
-apply plugin: 'org.hidetake.ssh'
-apply plugin: 'org.springframework.boot'
-
-group = 'com.smart'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
-compileKotlin { kotlinOptions.jvmTarget = "1.8" }
-compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
-
-repositories {
-    jcenter()
-    mavenCentral()
+allprojects {
+    repositories {
+        flatDir {
+            dirs "file://$rootProject.projectDir/arsenal/libraries/thirdparty/thirdparty-aars"
+        }
+        maven { url "http://maven.dds.com/nexus/content/groups/public" }
+        maven { url "https://jitpack.io" }
+        jcenter()
+        mavenCentral()
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+    tasks.withType(Javadoc) {
+        options.encoding = "UTF-8"
+    }
 }
 
-configurations {
-    all*.exclude module: 'spring-boot-starter-logging'
-}
-
-war {
-    archiveName 'template.war'
+task clean(type: Delete) {
+    delete(buildDir, 'out')
 }
 
 ext {
-    ssh_host = "127.0.0.1"
-    ssh_user = ""
-    ssh_password = ""
+    logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+    logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+    logger.error("config properties")
+    logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+    server_debug = false
+    server_port = 8080
+    server_ip = null
+    server_user = null
+    server_password = null
+    server_sql_ip = null
+    server_sql_user = null
+    server_sql_password = null
+    server_jwt_secret = null
+    logger = Logging.getLogger("build-script")
 
     Properties properties = new Properties()
+
     try {
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        ssh_host = properties.getProperty("ssh.host")
-        ssh_user = properties.getProperty("ssh.user")
-        ssh_password = properties.getProperty("ssh.password")
-
-        print("read local.properties success,ssh.host=${ssh_host} and ssh.user=${ssh_user} and ssh.password=${ssh_password}")
     } catch (Exception e) {
         e.printStackTrace()
-        print("read local.properties failure,ssh.host=${ssh_host} and ssh.user=${ssh_user} and ssh.password=${ssh_password}")
     }
-}
-
-//======================================================================================================================
-// deploy by ssh
-//======================================================================================================================
-task deployBySSH(type: Exec) {
-    executable "sh"
-    //noinspection GroovyAssignabilityCheck
-    args "-c", "/usr/local/bin/sshpass -p ${ssh_password} scp ~/Desktop/test ${ssh_user}@${ssh_host}:/usr/software/tomcat/apache-tomcat-8.0.47/webapps/"
-}
-deployBySSH.dependsOn("clean", "war")
-//======================================================================================================================
-// deploy by gradle-ssh-plugin
-//======================================================================================================================
-remotes {
-    serverHousekeeper {
-        host = ssh_host
-        user = ssh_user
-        password = ssh_password
+    try {
+        server_debug = properties.get("server_debug").toBoolean()
+    } catch (Exception e) {
+        e.printStackTrace()
     }
-}
-
-task deploy {
-    doLast {
-        ssh.run {
-            session(remotes.serverHousekeeper) {
-                put from: 'build/libs/template.war', into: '/usr/software/tomcat/apache-tomcat-8.0.47/webapps/'
-                // execute 'service tomcat restart'
-            }
-        }
+    try {
+        server_port = properties.get("server_port").toInteger()
+    } catch (Exception e) {
+        e.printStackTrace()
     }
-}
-deploy.dependsOn("clean", "war")
 
-task deployLocal(type: Copy) {
-    from 'build/libs/template.war'
-    into '/Users/maokangren/software/apache-tomcat-8.5.23/webapps/'
-    rename('template.war', 'template.war')
-}
-deployLocal.dependsOn("clean", "war")
-//======================================================================================================================
-// deploy end
-//======================================================================================================================
+    server_ip = properties.get("server_ip")
+    server_user = properties.get("server_user")
+    server_password = properties.get("server_password")
+    server_sql_ip = properties.get("server_sql_ip")
+    server_sql_user = properties.get("server_sql_user")
+    server_sql_password = properties.get("server_sql_password")
+    server_jwt_secret = properties.get("server_jwt_secret")
 
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    // compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-log4j2')
-    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    logger.error(">>>>>>>>>>==============================<<<<<<<<<<")
+    logger.error("server_debug:$server_debug")
+    logger.error("server_port:$server_port")
+    logger.error("server_ip:$server_ip")
+    logger.error("server_user:$server_user")
+    logger.error("server_password:$server_password")
+    logger.error("server_sql_ip:$server_sql_ip")
+    logger.error("server_sql_user:$server_sql_user")
+    logger.error("server_sql_password:$server_sql_password")
+    logger.error("server_jwt_secret:$server_jwt_secret")
+    logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
+    logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
 
-    compile 'com.alibaba:druid-spring-boot-starter:1.1.5'
-
-    runtime('org.springframework.boot:spring-boot-devtools')
-    runtime('mysql:mysql-connector-java')
-
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-
-//    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-     compile('org.springframework.boot:spring-boot-starter-tomcat')
+    springfox_swagger_version = "2.5.0" //2.6.0+ token 不更新
+    spring_boot_version = "1.5.8.RELEASE"
 }

@@ -9,8 +9,8 @@ import shutil
 # 只需要修改这里...                            ---- by krmao at 20170703
 # ======================================================================================================================
 
-OLD_FILE_PATH = "/Users/maokangren/workspace/template/apps/app-house-keeper/android"
-NEW_FILE_PATH = "/Users/maokangren/Desktop/android"
+OLD_FILE_PATH = "/Users/maokangren/workspace/house-keeper/servers/service-hk-background"
+NEW_FILE_PATH = "/Users/maokangren/Desktop/service"
 
 OLD_CODE_FILE_PREFIX = "HK"
 NEW_CODE_FILE_PREFIX = "CX"
@@ -19,16 +19,19 @@ NEW_RES_FILE_PREFIX = "cx"
 
 # noinspection PyArgumentList
 REPLACE_PACkAGE_NAMES = collections.OrderedDict((
-    ("template", "template"),
+    ("com.housekeeper.service.background", "com.smart.template"),
+    ("background", "template"),
 ))
 
 # ======================================================================================================================
 
-excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', 'Desktop']  # 过滤掉的的文件,文件名完全等于 //, 'local.properties'
+excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~',
+                'Desktop']  # 过滤掉的的文件,文件名完全等于 //, 'local.properties'
 excludeSuffixFiles = ["iml"]  # 过滤掉的的文件,文件名后缀等于
 nameList = []
 suffix_media = ["jpg", "png", "svg", "mp3", "mp4", "avi"]
-suffix_source = ["java", "kt", "xml", "pro", "text", "txt", "md", "c", "cpp", "gitignore", "gradle", "py",
+suffix_source = ["java", "kt", "xml", "pro", "text", "txt", "md", "c", "cpp", "gitignore", "gradle",
+                 "py",
                  "html", "js", "css"]
 
 replace_map = {
@@ -54,7 +57,8 @@ def init_names(filepath):
         if os.path.isdir(tmp_path):
             init_names(tmp_path)
         else:
-            if file_path.startswith(OLD_CODE_FILE_PREFIX) or file_path.startswith(OLD_RES_FILE_PREFIX):
+            if file_path.startswith(OLD_CODE_FILE_PREFIX) or file_path.startswith(
+                OLD_RES_FILE_PREFIX):
                 if "." in file_path:
                     nameList.append(file_path.split(".")[0])
                 else:

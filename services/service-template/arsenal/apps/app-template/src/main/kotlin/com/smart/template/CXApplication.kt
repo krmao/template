@@ -1,7 +1,6 @@
 package com.smart.template
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.smart.template.base.util.CXJsonUtil
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,10 +16,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 //@EnableResourceServer
 //@EnableAuthorizationServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-class ServiceHousekeeperApplication : SpringBootServletInitializer() {
+class CXApplication : SpringBootServletInitializer() {
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder {
-        return builder.sources(ServiceHousekeeperApplication::class.java)
+        return builder.sources(CXApplication::class.java)
     }
 
     @Bean
@@ -30,5 +29,5 @@ class ServiceHousekeeperApplication : SpringBootServletInitializer() {
 }
 
 fun main(args: Array<String>) {
-    SpringApplication.run(ServiceHousekeeperApplication::class.java, *args)
+    SpringApplication.run(CXApplication::class.java, *args)
 }

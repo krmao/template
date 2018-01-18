@@ -2,14 +2,13 @@ package com.smart.template.base.mapper
 
 import com.smart.template.base.util.CXReflectUtil
 import com.smart.template.base.util.toLowerUnderScoreFromUpperCamel
-import com.smart.template.http.controller.UserController
-import org.apache.ibatis.annotations.Param
+//import org.apache.ibatis.annotations.Param
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @Suppress("unused")
 class CXSqlProvider {
-    private val logger: Logger = LogManager.getLogger(UserController::class.java.name)
+    private val logger: Logger = LogManager.getLogger(CXSqlProvider::class.java.name)
 
     fun insert(newData: Any?): String {
         val tableName = newData?.javaClass?.simpleName?.replace("Model", "")?.toLowerUnderScoreFromUpperCamel()
@@ -29,45 +28,45 @@ class CXSqlProvider {
         return sqlString.toString()
     }
 
-    fun updateV2(@Param("newData")newData: Any?,@Param("condition") condition: Any?): String {
-        val tableName = newData?.javaClass?.simpleName?.replace("Model", "")?.toLowerUnderScoreFromUpperCamel()
-        val newDataNameList = CXReflectUtil.getFields(newData?.javaClass).filter { CXReflectUtil.getValue(it, newData) != null }.map { it.name }
-
-        val sqlString = StringBuilder()
-        if (newDataNameList.isNotEmpty()) {
-            sqlString.append("update $tableName set ")
-            newDataNameList.forEachIndexed { index, valueName -> sqlString.append("$valueName=#{newData.$valueName}").append(if (index != newDataNameList.size - 1) "," else "") }
-
-            val conditionNameList = CXReflectUtil.getFields(condition?.javaClass).filter { CXReflectUtil.getValue(it, condition) != null }.map { it.name }
-            if (conditionNameList.isNotEmpty()) {
-                sqlString.append(" where ")
-                conditionNameList.forEachIndexed { index, valueName -> sqlString.append("$valueName=#{condition.$valueName}").append(if (index != newDataNameList.size - 1) "," else "") }
-            }
-
-        } else {
-            sqlString.append("update $tableName where 1=0")
-        }
-
-
-        logger.warn("""
-               newData=${newData?.javaClass?.name}
-               newData=$newData
-               condition=${condition?.javaClass?.name}
-               condition=$condition
-               tableName=$tableName
-               newDataNameList=$newDataNameList
-
-            """)
-        logger.warn("""
-            ---------------------------------
-            mybatis-buildSql-update -->
-              newData: $newData
-            condition: $condition
-                   sql: $sqlString
-            ---------------------------------
-        """)
-        return sqlString.toString()
-    }
+//    fun updateV2(@Param("newData") newData: Any?, @Param("condition") condition: Any?): String {
+//        val tableName = newData?.javaClass?.simpleName?.replace("Model", "")?.toLowerUnderScoreFromUpperCamel()
+//        val newDataNameList = CXReflectUtil.getFields(newData?.javaClass).filter { CXReflectUtil.getValue(it, newData) != null }.map { it.name }
+//
+//        val sqlString = StringBuilder()
+//        if (newDataNameList.isNotEmpty()) {
+//            sqlString.append("update $tableName set ")
+//            newDataNameList.forEachIndexed { index, valueName -> sqlString.append("$valueName=#{newData.$valueName}").append(if (index != newDataNameList.size - 1) "," else "") }
+//
+//            val conditionNameList = CXReflectUtil.getFields(condition?.javaClass).filter { CXReflectUtil.getValue(it, condition) != null }.map { it.name }
+//            if (conditionNameList.isNotEmpty()) {
+//                sqlString.append(" where ")
+//                conditionNameList.forEachIndexed { index, valueName -> sqlString.append("$valueName=#{condition.$valueName}").append(if (index != newDataNameList.size - 1) "," else "") }
+//            }
+//
+//        } else {
+//            sqlString.append("update $tableName where 1=0")
+//        }
+//
+//
+//        logger.warn("""
+//               newData=${newData?.javaClass?.name}
+//               newData=$newData
+//               condition=${condition?.javaClass?.name}
+//               condition=$condition
+//               tableName=$tableName
+//               newDataNameList=$newDataNameList
+//
+//            """)
+//        logger.warn("""
+//            ---------------------------------
+//            mybatis-buildSql-update -->
+//              newData: $newData
+//            condition: $condition
+//                   sql: $sqlString
+//            ---------------------------------
+//        """)
+//        return sqlString.toString()
+//    }
 
     fun update(tableModel: Any?): String {
         val tableName = tableModel?.javaClass?.simpleName?.replace("Model", "")?.toLowerUnderScoreFromUpperCamel()

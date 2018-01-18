@@ -39,22 +39,22 @@ class JWTAuthService {
     private var userDetailsService: CXUserDetailService? = null
 
     @Suppress("SpringKotlinAutowiring")
-    @Autowired
-    private var userMapper: UserMapper? = null
-
-    fun register(userToAdd: UserModel?): Int? {
-        if (userToAdd == null)
-            return 0
-        val username = userToAdd.userName
-        val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
-        if (userDetails != null) {
-            return null
-        }
-        val encoder = BCryptPasswordEncoder()
-        val rawPassword = userToAdd.password
-        userToAdd.password = encoder.encode(rawPassword)
-        return userMapper?.createUser(userToAdd)
-    }
+//    @Autowired
+//    private var userMapper: UserMapper? = null
+//
+//    fun register(userToAdd: UserModel?): Int? {
+//        if (userToAdd == null)
+//            return 0
+//        val username = userToAdd.userName
+//        val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
+//        if (userDetails != null) {
+//            return null
+//        }
+//        val encoder = BCryptPasswordEncoder()
+//        val rawPassword = userToAdd.password
+//        userToAdd.password = encoder.encode(rawPassword)
+//        return userMapper?.createUser(userToAdd)
+//    }
 
     @Throws(AuthenticationException::class)
     fun login(username: String?, password: String?): UserModelWithToken? {

@@ -97,12 +97,12 @@ dependencies {
 
     // compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-log4j2')
-    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
+//    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
     compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
 
-    compile 'com.alibaba:druid-spring-boot-starter:1.1.5'
+//    compile 'com.alibaba:druid-spring-boot-starter:1.1.5'
     compile 'com.google.guava:guava:23.0'
 
     //spring security
@@ -119,7 +119,7 @@ dependencies {
     // 这里切换是否发布
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
-    runtime('mysql:mysql-connector-java')
+//    runtime('mysql:mysql-connector-java')
 
     // http://www.jianshu.com/p/39f145c6eb29
     compile group: 'io.springfox', name: 'springfox-swagger2', version: rootProject.ext.springfox_swagger_version

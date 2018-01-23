@@ -3,7 +3,7 @@
 // Copyright (c) 2017 com.xixi. All rights reserved.
 //
 
-#import "HKHybirdManagerOC.h"
+#import "CXHybirdManagerOC.h"
 
 @implementation HKHybirdManagerOC {
     

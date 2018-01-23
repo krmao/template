@@ -8,66 +8,67 @@
 
 /* Begin PBXBuildFile section */
 		04046169D5603C9C420CD1FA /* Pods_template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_template.framework */; };
+		3D52A04C970A8EC26A65AACE /* CXURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
+		3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */; };
+		3D52A0E04E0F3E02B2DFDEA9 /* CXUIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */; };
 		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
-		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
-		3D52A300774BC609EEC96E8A /* HKBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A75A2374E3E1FF50EEFF /* HKBundleManager.swift */; };
-		3D52A477DCB8207E59722359 /* HKUIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A68100CFFD19A22531AC /* HKUIWebView.swift */; };
+		3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */; };
+		3D52A31B4E1C58EEF3B486CC /* CXLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */; };
 		3D52A55354C8E3083C6389A2 /* Dictionary+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A22D3819CEAFAF3E5868 /* Dictionary+Ext.swift */; };
 		3D52A56403ECA7C590825083 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEB4353DE7FB5154134E /* String+Ext.swift */; };
-		3D52A5D4E3383708DDC1B6FB /* HKBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AFA41FD0C7E91849B14E /* HKBundle.swift */; };
-		3D52A77ABFD52CEAC4A13934 /* HKZipUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */; };
-		3D52A7DE52EE60AA59A85935 /* HKWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3649B84A9667BA1883E /* HKWKWebView.swift */; };
-		3D52A7E0BA6AEA04B365F825 /* HKLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB2C5DAE023FCF89CE7E /* HKLogUtil.swift */; };
-		3D52A90C61C191ACE832F8D7 /* HKIBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A1606C5946251066CC66 /* HKIBundleManager.swift */; };
+		3D52A6414C8FEC00056CB71F /* CXIBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADBBAC56246275C523C9 /* CXIBundleManager.swift */; };
+		3D52A7F9EB694A0B2708C925 /* CXFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A6C4303A3CD2095940F6 /* CXFileUtil.swift */; };
+		3D52A838880EF31F77ED3587 /* CXWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */; };
+		3D52A9625751BD098194F692 /* CXSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */; };
 		3D52A98B06597D3406A5DF0C /* URL+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A533F1EBC9299C88A37D /* URL+Ext.swift */; };
-		3D52AB3C75132BC58893B661 /* HKSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */; };
-		3D52AB9E15946521F7EB9FFC /* HKHybirdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A64539755AB1B7B7BFFC /* HKHybirdManager.swift */; };
-		3D52ABBAADC18703D3AE464D /* HKHybirdMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3D1D16D18A83460F0A0 /* HKHybirdMethods.swift */; };
+		3D52ABAB249A23BC215DBE82 /* CXHybirdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7F838985AEB0C4B2F44 /* CXHybirdManager.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */; };
 		3D52ABC63576583FE18D3F83 /* SubString+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA39BCE87F2C93476B4D /* SubString+Ext.swift */; };
+		3D52ABC95B9EC60CFC8D08E7 /* CXBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AE5EFB476DAE781B487E /* CXBundle.swift */; };
+		3D52AC22533A9CAF6A57F544 /* CXBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF7DF7D9F25F37EA546 /* CXBundleManager.swift */; };
 		3D52AC355B5C4977D554387E /* Standard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A85E7A57F8606909974A /* Standard.swift */; };
 		3D52AC3BF448789748C13AA8 /* Data+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3EDA472CF12306A783A /* Data+Ext.swift */; };
 		3D52ADA87FC3473C2ACFB076 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAAB1FEF4D3583B78F42 /* Array+Ext.swift */; };
 		3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A5B5020FA2FE0CAAD872 /* .gitkeep */; };
 		3D52ADFFCF7505549C75F5B4 /* HybirdUIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF7F42EC88F1390ECA4 /* HybirdUIWebViewController.swift */; };
+		3D52AE214F41127F7CCFD0BE /* CXReflectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AE8BB7AC39B36A2E370C /* CXReflectUtil.swift */; };
 		3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */; };
-		3D52AE6B65748AFA60CEE53F /* HKReflectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC0281833A6E2E184885 /* HKReflectUtil.swift */; };
-		3D52AFFAAFAAF88813628897 /* HKURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A92139790360723819E4 /* HKURLProtocol.swift */; };
+		3D52AE8EF71B0EA88DA71E85 /* CXZipUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A71135F2E34620455935 /* CXZipUtil.swift */; };
 		8763BF061F8DCA7800CA4E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */; };
-		8763BF0F1F8DCB5000CA4E89 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8763BF0E1F8DCB4800CA4E89 /* assets */; };
 		87856D571F8E0FB800D053DA /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87856D561F8E0F9E00D053DA /* assets.xcassets */; };
-		87B442BC1FA322E800BE03B6 /* HKHybirdManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 87B442BA1FA322E700BE03B6 /* HKHybirdManagerOC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		06D69C8B9ACC2B092CE66DFE /* Pods-template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.release.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.release.xcconfig"; sourceTree = "<group>"; };
-		3D52A1606C5946251066CC66 /* HKIBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKIBundleManager.swift; sourceTree = "<group>"; };
+		3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXWKWebView.swift; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3D52A22D3819CEAFAF3E5868 /* Dictionary+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Ext.swift"; sourceTree = "<group>"; };
-		3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKSystemUtil.swift; sourceTree = "<group>"; };
-		3D52A3649B84A9667BA1883E /* HKWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKWKWebView.swift; sourceTree = "<group>"; };
-		3D52A3D1D16D18A83460F0A0 /* HKHybirdMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKHybirdMethods.swift; sourceTree = "<group>"; };
+		3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXSystemUtil.swift; sourceTree = "<group>"; };
 		3D52A3EDA472CF12306A783A /* Data+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Ext.swift"; sourceTree = "<group>"; };
-		3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKZipUtil.swift; sourceTree = "<group>"; };
 		3D52A533F1EBC9299C88A37D /* URL+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Ext.swift"; sourceTree = "<group>"; };
 		3D52A5B5020FA2FE0CAAD872 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
-		3D52A64539755AB1B7B7BFFC /* HKHybirdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKHybirdManager.swift; sourceTree = "<group>"; };
-		3D52A68100CFFD19A22531AC /* HKUIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKUIWebView.swift; sourceTree = "<group>"; };
-		3D52A75A2374E3E1FF50EEFF /* HKBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKBundleManager.swift; sourceTree = "<group>"; };
+		3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXHybirdManagerOC.m; sourceTree = "<group>"; };
+		3D52A6C4303A3CD2095940F6 /* CXFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXFileUtil.swift; sourceTree = "<group>"; };
+		3D52A71135F2E34620455935 /* CXZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXZipUtil.swift; sourceTree = "<group>"; };
+		3D52A7F838985AEB0C4B2F44 /* CXHybirdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdManager.swift; sourceTree = "<group>"; };
 		3D52A85E7A57F8606909974A /* Standard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Standard.swift; sourceTree = "<group>"; };
-		3D52A92139790360723819E4 /* HKURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKURLProtocol.swift; sourceTree = "<group>"; };
+		3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXURLProtocol.swift; sourceTree = "<group>"; };
 		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
+		3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdMethods.swift; sourceTree = "<group>"; };
 		3D52AA39BCE87F2C93476B4D /* SubString+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SubString+Ext.swift"; sourceTree = "<group>"; };
+		3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIWebView.swift; sourceTree = "<group>"; };
+		3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXLogUtil.swift; sourceTree = "<group>"; };
 		3D52AAAB1FEF4D3583B78F42 /* Array+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		3D52AAF7DF7D9F25F37EA546 /* CXBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXBundleManager.swift; sourceTree = "<group>"; };
 		3D52AAF7F42EC88F1390ECA4 /* HybirdUIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdUIWebViewController.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWKWebViewController.swift; sourceTree = "<group>"; };
-		3D52AB2C5DAE023FCF89CE7E /* HKLogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKLogUtil.swift; sourceTree = "<group>"; };
-		3D52AC0281833A6E2E184885 /* HKReflectUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKReflectUtil.swift; sourceTree = "<group>"; };
-		3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKFileUtil.swift; sourceTree = "<group>"; };
 		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		3D52ADBBAC56246275C523C9 /* CXIBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXIBundleManager.swift; sourceTree = "<group>"; };
+		3D52AE5EFB476DAE781B487E /* CXBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXBundle.swift; sourceTree = "<group>"; };
+		3D52AE8BB7AC39B36A2E370C /* CXReflectUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXReflectUtil.swift; sourceTree = "<group>"; };
 		3D52AEB4353DE7FB5154134E /* String+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
-		3D52AFA41FD0C7E91849B14E /* HKBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKBundle.swift; sourceTree = "<group>"; };
+		3D52AFFF257156A8C0EF2BEE /* CXHybirdManagerOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXHybirdManagerOC.h; sourceTree = "<group>"; };
 		8753A5EC1F22633C00BA4AD4 /* template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = template.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,11 +79,8 @@
 		8763BF031F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF051F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		8763BF0E1F8DCB4800CA4E89 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		87856D561F8E0F9E00D053DA /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
 		87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "template-Bridging-Header.h"; sourceTree = "<group>"; };
-		87B442BA1FA322E700BE03B6 /* HKHybirdManagerOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKHybirdManagerOC.m; sourceTree = "<group>"; };
-		87B442BB1FA322E800BE03B6 /* HKHybirdManagerOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKHybirdManagerOC.h; sourceTree = "<group>"; };
 		D758266E12247889767BE3A9 /* Pods-template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.debug.xcconfig"; sourceTree = "<group>"; };
 		FC5EE7D932C4FAD2820A909C /* Pods_template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -110,9 +108,9 @@
 		3D52A0E74EE605071D7DC73D /* bundle */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A1606C5946251066CC66 /* HKIBundleManager.swift */,
-				3D52AFA41FD0C7E91849B14E /* HKBundle.swift */,
 				3D52AA40A87DE738FCC4ABAE /* imp */,
+				3D52AE5EFB476DAE781B487E /* CXBundle.swift */,
+				3D52ADBBAC56246275C523C9 /* CXIBundleManager.swift */,
 			);
 			path = bundle;
 			sourceTree = "<group>";
@@ -120,11 +118,11 @@
 		3D52A2D10274200C5826E07C /* hybird */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A64539755AB1B7B7BFFC /* HKHybirdManager.swift */,
-				87B442BB1FA322E800BE03B6 /* HKHybirdManagerOC.h */,
-				87B442BA1FA322E700BE03B6 /* HKHybirdManagerOC.m */,
-				3D52A3D1D16D18A83460F0A0 /* HKHybirdMethods.swift */,
 				87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */,
+				3D52A7F838985AEB0C4B2F44 /* CXHybirdManager.swift */,
+				3D52AFFF257156A8C0EF2BEE /* CXHybirdManagerOC.h */,
+				3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */,
+				3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */,
 			);
 			path = hybird;
 			sourceTree = "<group>";
@@ -147,12 +145,12 @@
 		3D52A4A00D5B656C508FADBE /* util */ = {
 			isa = PBXGroup;
 			children = (
-				3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */,
-				3D52AB2C5DAE023FCF89CE7E /* HKLogUtil.swift */,
-				3D52A4BA03A3B91BB447E371 /* HKZipUtil.swift */,
-				3D52A2E1B91473B7B5C260A0 /* HKSystemUtil.swift */,
 				3D52A2D10274200C5826E07C /* hybird */,
-				3D52AC0281833A6E2E184885 /* HKReflectUtil.swift */,
+				3D52A6C4303A3CD2095940F6 /* CXFileUtil.swift */,
+				3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */,
+				3D52AE8BB7AC39B36A2E370C /* CXReflectUtil.swift */,
+				3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */,
+				3D52A71135F2E34620455935 /* CXZipUtil.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -160,9 +158,9 @@
 		3D52A78BE57FFC61869187B9 /* webview */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A92139790360723819E4 /* HKURLProtocol.swift */,
-				3D52A68100CFFD19A22531AC /* HKUIWebView.swift */,
-				3D52A3649B84A9667BA1883E /* HKWKWebView.swift */,
+				3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */,
+				3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */,
+				3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */,
 			);
 			path = webview;
 			sourceTree = "<group>";
@@ -180,7 +178,7 @@
 		3D52AA40A87DE738FCC4ABAE /* imp */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A75A2374E3E1FF50EEFF /* HKBundleManager.swift */,
+				3D52AAF7DF7D9F25F37EA546 /* CXBundleManager.swift */,
 			);
 			path = imp;
 			sourceTree = "<group>";
@@ -302,7 +300,6 @@
 			isa = PBXGroup;
 			children = (
 				87856D481F8E02B300D053DA /* src */,
-				8763BF0E1F8DCB4800CA4E89 /* assets */,
 			);
 			path = "module-template-hybird";
 			sourceTree = "<group>";
@@ -430,7 +427,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				87856D571F8E0FB800D053DA /* assets.xcassets in Resources */,
-				8763BF0F1F8DCB5000CA4E89 /* assets in Resources */,
 				3D52A0885CC01144DF290BE8 /* Podfile in Resources */,
 				3D52ADE9D59950C4AC6EAC0C /* .gitkeep in Resources */,
 			);
@@ -509,28 +505,28 @@
 				3D52ABBF4471F259761AFD38 /* HybirdWKWebViewController.swift in Sources */,
 				3D52AE3C9BA928668CC66FF6 /* UIButtonWithImage.swift in Sources */,
 				3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */,
-				3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */,
-				3D52A7E0BA6AEA04B365F825 /* HKLogUtil.swift in Sources */,
-				3D52A77ABFD52CEAC4A13934 /* HKZipUtil.swift in Sources */,
-				3D52AB3C75132BC58893B661 /* HKSystemUtil.swift in Sources */,
-				3D52A90C61C191ACE832F8D7 /* HKIBundleManager.swift in Sources */,
-				3D52A5D4E3383708DDC1B6FB /* HKBundle.swift in Sources */,
-				3D52A300774BC609EEC96E8A /* HKBundleManager.swift in Sources */,
-				3D52AFFAAFAAF88813628897 /* HKURLProtocol.swift in Sources */,
-				3D52A477DCB8207E59722359 /* HKUIWebView.swift in Sources */,
 				3D52ADFFCF7505549C75F5B4 /* HybirdUIWebViewController.swift in Sources */,
-				87B442BC1FA322E800BE03B6 /* HKHybirdManagerOC.m in Sources */,
 				3D52A56403ECA7C590825083 /* String+Ext.swift in Sources */,
-				3D52A7DE52EE60AA59A85935 /* HKWKWebView.swift in Sources */,
 				3D52AC3BF448789748C13AA8 /* Data+Ext.swift in Sources */,
-				3D52AB9E15946521F7EB9FFC /* HKHybirdManager.swift in Sources */,
-				3D52ABBAADC18703D3AE464D /* HKHybirdMethods.swift in Sources */,
 				3D52A98B06597D3406A5DF0C /* URL+Ext.swift in Sources */,
 				3D52A55354C8E3083C6389A2 /* Dictionary+Ext.swift in Sources */,
 				3D52ADA87FC3473C2ACFB076 /* Array+Ext.swift in Sources */,
 				3D52ABC63576583FE18D3F83 /* SubString+Ext.swift in Sources */,
 				3D52AC355B5C4977D554387E /* Standard.swift in Sources */,
-				3D52AE6B65748AFA60CEE53F /* HKReflectUtil.swift in Sources */,
+				3D52A7F9EB694A0B2708C925 /* CXFileUtil.swift in Sources */,
+				3D52A31B4E1C58EEF3B486CC /* CXLogUtil.swift in Sources */,
+				3D52AE214F41127F7CCFD0BE /* CXReflectUtil.swift in Sources */,
+				3D52A9625751BD098194F692 /* CXSystemUtil.swift in Sources */,
+				3D52AE8EF71B0EA88DA71E85 /* CXZipUtil.swift in Sources */,
+				3D52ABAB249A23BC215DBE82 /* CXHybirdManager.swift in Sources */,
+				3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */,
+				3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */,
+				3D52A0E04E0F3E02B2DFDEA9 /* CXUIWebView.swift in Sources */,
+				3D52A04C970A8EC26A65AACE /* CXURLProtocol.swift in Sources */,
+				3D52A838880EF31F77ED3587 /* CXWKWebView.swift in Sources */,
+				3D52ABC95B9EC60CFC8D08E7 /* CXBundle.swift in Sources */,
+				3D52A6414C8FEC00056CB71F /* CXIBundleManager.swift in Sources */,
+				3D52AC22533A9CAF6A57F544 /* CXBundleManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

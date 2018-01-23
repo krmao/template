@@ -2,9 +2,9 @@ import UIKit
 import WebKit
 import SnapKit
 
-open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
+open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
 
-    private var TAG = "[HKWKWebView]"
+    private var TAG = "[CXWKWebView]"
     private var navigationController: UINavigationController? = nil
 
     private lazy var progressView: UIProgressView = {
@@ -58,10 +58,10 @@ open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
         //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
         /**
          if navigationController?.navigationBar.isHidden ?? false {
-         self.scrollView.contentInset = UIEdgeInsets(top: HKSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
+         self.scrollView.contentInset = UIEdgeInsets(top: CXSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
          self.backgroundColor = .white
          self.setOnGetBodyBackgroundListener { ( _ bodyBGColorString: String? ) -> Void in
-         HKLogUtil.d(self.TAG, "onGetBodyColorString", bodyBGColorString ?? "")
+         CXLogUtil.d(self.TAG, "onGetBodyColorString", bodyBGColorString ?? "")
          self.backgroundColor = UIColor.init(name: bodyBGColorString ?? "") ?? .white
          }
          }
@@ -87,42 +87,42 @@ open class HKWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
     }
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        HKLogUtil.d(TAG, "didReceive", message.name, message.body)
-        _ = HKHybirdManager.shouldOverrideUrlLoading(self, userContentController, message)
+        CXLogUtil.d(TAG, "didReceive", message.name, message.body)
+        _ = CXHybirdManager.shouldOverrideUrlLoading(self, userContentController, message)
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        HKLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
+        CXLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
         decisionHandler(WKNavigationActionPolicy.allow)
     }
 
     public func webView(_ webview: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        HKLogUtil.d(TAG, "didStartProvisionalNavigation")
+        CXLogUtil.d(TAG, "didStartProvisionalNavigation")
     }
 
     public func webView(_ webview: WKWebView, didCommit navigation: WKNavigation!) {
-        HKLogUtil.d(TAG, "didCommit")
+        CXLogUtil.d(TAG, "didCommit")
     }
 
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        HKLogUtil.d(TAG, "didFinish", "title:", webView.title ?? "")
+        CXLogUtil.d(TAG, "didFinish", "title:", webView.title ?? "")
         self.navigationController?.title = webView.title
         self.progressView.setProgress(0.0, animated: false)
 
-        HKHybirdManager.callJsFunction(self, "console.log('hello html')") { result in
-            HKLogUtil.d("hybird", "onResultCallback", result ?? "nil")
+        CXHybirdManager.callJsFunction(self, "console.log('hello html')") { result in
+            CXLogUtil.d("hybird", "onResultCallback", result ?? "nil")
         }
     }
 
     public func webView(_ webview: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        HKLogUtil.d(TAG, "didFail")
+        CXLogUtil.d(TAG, "didFail")
     }
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "estimatedProgress") {
             let newProgress = (change?[.newKey] as AnyObject).floatValue ?? 0
             let oldProgress = (change?[.oldKey] as AnyObject).floatValue ?? 0
-            HKLogUtil.d(TAG, "observeValue: newProgress:", newProgress, " , oldProgress:", oldProgress)
+            CXLogUtil.d(TAG, "observeValue: newProgress:", newProgress, " , oldProgress:", oldProgress)
 
             if (newProgress >= 1) {
                 self.progressView.isHidden = true

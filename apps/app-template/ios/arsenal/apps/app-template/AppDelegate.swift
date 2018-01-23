@@ -18,17 +18,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        URLProtocol.registerClass(HKURLProtocol.self)
-        HKURLProtocol.registerSchemeForWKWebView("http", "https")
+        URLProtocol.registerClass(CXURLProtocol.self)
+        CXURLProtocol.registerSchemeForWKWebView("http", "https")
 
         let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
         // progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
         // progress.bezelView.backgroundColor = UIColor("#CC000000")
         // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
-        HKHybirdManager.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(HKHybirdMethods.self))
+        CXHybirdManager.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
         
-        HKBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
+        CXBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
             progress.hide(animated: true)
             // rootViewController.pushViewController(HybirdUIWebViewController.init(url: /*"file://" +*/ rootDir + "index.html"), animated: false)
             rootViewController.pushViewController(HybirdWKWebViewController.init(url: "http://www.smarttemplate.com/index.html"), animated: false)

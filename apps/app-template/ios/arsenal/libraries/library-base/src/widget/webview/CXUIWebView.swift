@@ -6,9 +6,9 @@
 import Foundation
 import UIKit
 
-open class HKUIWebView: UIWebView, UIWebViewDelegate {
+open class CXUIWebView: UIWebView, UIWebViewDelegate {
 
-    var TAG = "[HKUIWebView]"
+    var TAG = "[CXUIWebView]"
 
     convenience init() {
         self.init(nil)
@@ -34,10 +34,10 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
         //== navigationBar.isHidden:true 状态栏颜色及 marginTop =================================
         /**
         if navigationController?.navigationBar.isHidden ?? false {
-            self.scrollView.contentInset = UIEdgeInsets(top: HKSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
+            self.scrollView.contentInset = UIEdgeInsets(top: CXSystemUtil.statusBarHeight, left: 0, bottom: 0, right: 0)
             self.backgroundColor = .white
             self.setOnGetBodyBackgroundListener { ( _ bodyBGColorString: String? ) -> Void in
-                HKLogUtil.d(self.TAG, "onGetBodyColorString", bodyBGColorString ?? "")
+                CXLogUtil.d(self.TAG, "onGetBodyColorString", bodyBGColorString ?? "")
                 self.backgroundColor = UIColor.init(name: bodyBGColorString ?? "") ?? .white
             }
         }
@@ -53,13 +53,13 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
     @available(iOS 2.0, *)
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        HKLogUtil.d(TAG, "shouldStartLoadWith", "URL=\((request.url?.absoluteString ?? ""))", "path=\((request.url?.path ?? ""))")
+        CXLogUtil.d(TAG, "shouldStartLoadWith", "URL=\((request.url?.absoluteString ?? ""))", "path=\((request.url?.path ?? ""))")
         return true
     }
 
     @available(iOS 2.0, *)
     public func webViewDidStartLoad(_ webView: UIWebView) {
-        HKLogUtil.d(TAG, "webViewDidStartLoad")
+        CXLogUtil.d(TAG, "webViewDidStartLoad")
     }
 
     @available(iOS 2.0, *)
@@ -76,6 +76,6 @@ open class HKUIWebView: UIWebView, UIWebViewDelegate {
 
     @available(iOS 2.0, *)
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        HKLogUtil.d(TAG, "didFailLoadWithError", error)
+        CXLogUtil.d(TAG, "didFailLoadWithError", error)
     }
 }

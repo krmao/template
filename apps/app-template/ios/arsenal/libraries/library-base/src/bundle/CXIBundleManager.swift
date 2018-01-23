@@ -1,4 +1,4 @@
-protocol HKIBundleManager {
+protocol CXIBundleManager {
 
     func verify() -> Bool
 

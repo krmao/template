@@ -26,8 +26,8 @@ class HybirdUIWebViewController: UIViewController {
         super.init(coder: aDecoder)
     }
 
-    private lazy var webView: HKUIWebView = {
-        var _webView = HKUIWebView(self.navigationController)
+    private lazy var webView: CXUIWebView = {
+        var _webView = CXUIWebView(self.navigationController)
         return _webView
     }()
 

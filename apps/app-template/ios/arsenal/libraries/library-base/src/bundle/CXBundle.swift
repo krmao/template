@@ -1,4 +1,4 @@
-class HKBundle {
+class CXBundle {
     var path = ""
     var version = ""
 }

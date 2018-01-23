@@ -36,9 +36,9 @@
 import RxCocoa
 import RxSwift
 
-class HKBundleManager: HKIBundleManager {
+class CXBundleManager: CXIBundleManager {
 
-    static let INSTANCE = HKBundleManager()
+    static let INSTANCE = CXBundleManager()
 
     let TAG = "[hybird]"
 
@@ -53,7 +53,7 @@ class HKBundleManager: HKIBundleManager {
 
     lazy var pathForHybirdDir: String = {
         let path = self.pathForLocalRootDir + self.nameForUnZipDir + "/"
-        HKFileUtil.makeDirs(path)
+        CXFileUtil.makeDirs(path)
         return path
     }()
 
@@ -75,20 +75,20 @@ class HKBundleManager: HKIBundleManager {
     func installWithVerify(_ callback: ((_ success: Bool, _ rootDir: String) -> Void)?) {
         if (!verify()) {
             _ = Observable<Any>.create { observer in
-                        HKLogUtil.d(self.TAG, "start clean now ...")
-                        HKFileUtil.deleteFile(self.pathForLocalFile)
-                        HKFileUtil.deleteDirectory(self.pathForHybirdDir)
-                        HKLogUtil.d(self.TAG, "start copy now ...")
+                        CXLogUtil.d(self.TAG, "start clean now ...")
+                        CXFileUtil.deleteFile(self.pathForLocalFile)
+                        CXFileUtil.deleteDirectory(self.pathForHybirdDir)
+                        CXLogUtil.d(self.TAG, "start copy now ...")
                         do {
-                            try HKFileUtil.copy(Bundle.main.path(forResource: self.nameInAssets, ofType: "zip", inDirectory: "assets")!, self.pathForLocalFile)
-                            HKLogUtil.d(self.TAG, "copy success ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)))
-                            HKLogUtil.d(self.TAG, "start unzip now ...")
-                            try HKZipUtil.unzip(self.pathForLocalFile, targetDirPath: self.pathForHybirdDir)
-                            self.hybirdLocalVersion = String(HKSystemUtil.versionCode) + "_" + HKSystemUtil.versionName
+                            try CXFileUtil.copy(Bundle.main.path(forResource: self.nameInAssets, ofType: "zip", inDirectory: "assets")!, self.pathForLocalFile)
+                            CXLogUtil.d(self.TAG, "copy success ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)))
+                            CXLogUtil.d(self.TAG, "start unzip now ...")
+                            try CXZipUtil.unzip(self.pathForLocalFile, targetDirPath: self.pathForHybirdDir)
+                            self.hybirdLocalVersion = String(CXSystemUtil.versionCode) + "_" + CXSystemUtil.versionName
                             observer.onNext(0)
-                            HKFileUtil.printDirs(self.docDir)
+                            CXFileUtil.printDirs(self.docDir)
                         } catch {
-                            HKLogUtil.d(self.TAG, "copy/unzip failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
+                            CXLogUtil.d(self.TAG, "copy/unzip failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
                             observer.onError(error)
                         }
                         return Disposables.create()
@@ -97,7 +97,7 @@ class HKBundleManager: HKIBundleManager {
                     .observeOn(MainScheduler.instance) //AndroidSchedulers.mainThread()
                     .subscribe(
                             onNext: { index in
-                                HKLogUtil.d(self.TAG, "copyToLocal success")
+                                CXLogUtil.d(self.TAG, "copyToLocal success")
                                 callback?(true, self.pathForHybirdDir)
                                 self.listeners.forEach() { it in
                                     it(true, self.pathForHybirdDir)
@@ -105,7 +105,7 @@ class HKBundleManager: HKIBundleManager {
 
                             },
                             onError: { error in
-                                HKLogUtil.e(self.TAG, "copyToLocal failure", error.localizedDescription)
+                                CXLogUtil.e(self.TAG, "copyToLocal failure", error.localizedDescription)
                                 callback?(false, self.pathForHybirdDir)
                                 self.listeners.forEach { it in
                                     it(false, self.pathForHybirdDir)
@@ -115,24 +115,24 @@ class HKBundleManager: HKIBundleManager {
                             onDisposed: nil
                     )
         } else {
-            HKLogUtil.w(self.TAG, "no need to copyToLocal")
+            CXLogUtil.w(self.TAG, "no need to copyToLocal")
             callback?(true, self.pathForHybirdDir)
         }
     }
 
     func verify() -> Bool {
-        let versionCurrentApp = String(HKSystemUtil.versionCode) + "_" + HKSystemUtil.versionName
+        let versionCurrentApp = String(CXSystemUtil.versionCode) + "_" + CXSystemUtil.versionName
         var verify = versionCurrentApp == self.hybirdLocalVersion
 
-        let hybirdLocalValid = HKFileUtil.fileExists(self.pathForHybirdDir + "index.html")
+        let hybirdLocalValid = CXFileUtil.fileExists(self.pathForHybirdDir + "index.html")
         if !hybirdLocalValid {
-            HKFileUtil.deleteDirectory(self.pathForHybirdDir)
+            CXFileUtil.deleteDirectory(self.pathForHybirdDir)
             self.hybirdLocalVersion = ""
         }
 
         verify = verify && hybirdLocalValid
 
-        HKLogUtil.d(self.TAG, "[verify:\(verify)] versionCurrentApp:\(versionCurrentApp) == hybirdLocalVersion:\(hybirdLocalVersion) && hybirdLocalValid:\(hybirdLocalValid)")
+        CXLogUtil.d(self.TAG, "[verify:\(verify)] versionCurrentApp:\(versionCurrentApp) == hybirdLocalVersion:\(hybirdLocalVersion) && hybirdLocalValid:\(hybirdLocalValid)")
         return false//verify
     }
 

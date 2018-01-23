@@ -1,6 +1,6 @@
 import Foundation
 
-class HKLogUtil {
+class CXLogUtil {
     static func d(_ items: Any...) {
         print(items)
     }

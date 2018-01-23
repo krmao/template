@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class HKSystemUtil {
+class CXSystemUtil {
     static var versionCode: Int {
         get {
             return Bundle.main.object(forInfoDictionaryKey: "versionCode") as! Int

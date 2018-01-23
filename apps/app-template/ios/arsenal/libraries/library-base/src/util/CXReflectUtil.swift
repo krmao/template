@@ -1,6 +1,6 @@
 import Foundation
 
-class HKReflectUtil {
+class CXReflectUtil {
     private static let TAG = "[reflect]"
 
     /**
@@ -33,21 +33,21 @@ class HKReflectUtil {
                 if (tmpValue != nil) {
                     if (tmpValue?.takeUnretainedValue() is NSString) {
                         result = tmpValue?.takeUnretainedValue() as? NSString
-                        HKLogUtil.d(TAG, "invoke success, result:NSString != nil", result ?? "")
+                        CXLogUtil.d(TAG, "invoke success, result:NSString != nil", result ?? "")
                     } else if (tmpValue?.takeUnretainedValue() is NSNumber) {
                         result = (tmpValue?.takeUnretainedValue() as? NSNumber)?.stringValue
-                        HKLogUtil.d(TAG, "invoke success, result:NSNumber != nil", result ?? "")
+                        CXLogUtil.d(TAG, "invoke success, result:NSNumber != nil", result ?? "")
                     } else {
-                        HKLogUtil.d(TAG, "invoke success, result:UNKnowType != nil", result ?? "")
+                        CXLogUtil.d(TAG, "invoke success, result:UNKnowType != nil", result ?? "")
                     }
                 } else {
-                    HKLogUtil.d(TAG, "invoke success, result:nil", result ?? "")
+                    CXLogUtil.d(TAG, "invoke success, result:nil", result ?? "")
                 }
             } else {
-                HKLogUtil.e(TAG, "the method:\(methodName) of class:\(className) is not exist!")
+                CXLogUtil.e(TAG, "the method:\(methodName) of class:\(className) is not exist!")
             }
         } else {
-            HKLogUtil.e(TAG, "class:\(className) is not exist!")
+            CXLogUtil.e(TAG, "class:\(className) is not exist!")
         }
         return result
     }
@@ -59,11 +59,11 @@ class HKReflectUtil {
      *
      */
     public static func invoke(_ className: String, _ methodName: String, _ params: [String]) -> String? {
-        HKLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
-        HKLogUtil.d(TAG, "\(className).\(methodName)", params)
-        let result: String? = HKHybirdManagerOC.invoke(className, methodName: methodName, params: params)
-        HKLogUtil.d(TAG, "return \(String(describing: result))")
-        HKLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
+        CXLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
+        CXLogUtil.d(TAG, "\(className).\(methodName)", params)
+        let result: String? = CXHybirdManagerOC.invoke(className, methodName: methodName, params: params)
+        CXLogUtil.d(TAG, "return \(String(describing: result))")
+        CXLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
         return result
     }
 
@@ -73,31 +73,31 @@ class HKReflectUtil {
     //UnsafeMutablePointer:         int*                c语言中的 可变指针
     //
     private static func invokeTest(_ className: String, _ methodName: String, _ params: [String]) -> String? {
-        HKLogUtil.d(TAG, "invokeByNSInvocation:start", "\(className).\(methodName)(\(params)")
-        let result = HKHybirdManagerOC.invoke(className, methodName: methodName, params: params)
+        CXLogUtil.d(TAG, "invokeByNSInvocation:start", "\(className).\(methodName)(\(params)")
+        let result = CXHybirdManagerOC.invoke(className, methodName: methodName, params: params)
         let clazz = NSClassFromString(className) as? NSObject.Type
         let methodSelector = Selector(("showToast:"))//Selector(methodName + (params.isEmpty ? "" : ":"))
 
         if let methodInvocationWithMethodSignature: Method = class_getClassMethod(NSClassFromString("NSInvocation"), NSSelectorFromString("invocationWithMethodSignature:")) {
             if let methodSignatureForSelector: Method = class_getClassMethod(NSClassFromString("NSInvocation"), NSSelectorFromString("methodSignatureForSelector:")) {
                 //========================================================================================================================================================================================================
-                // #1 let methodSignature:NSMethodSignature = clazz(HKHybirdMethods).methodSignatureForSelector(methodSelector)
+                // #1 let methodSignature:NSMethodSignature = clazz(CXHybirdMethods).methodSignatureForSelector(methodSelector)
                 //========================================================================================================================================================================================================
                 let methodSignatureForSelectorFunc = unsafeBitCast(method_getImplementation(methodSignatureForSelector), to: (@convention(c)(Any?, Selector, Selector) -> Any).self )
                 let methodSignature = methodSignatureForSelectorFunc(clazz, NSSelectorFromString("methodSignatureForSelector:"), methodSelector)
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#1 let methodSignature:NSMethodSignature = clazz(HKHybirdMethods).methodSignatureForSelector(methodSelector)")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#1 let methodSignature:NSMethodSignature = clazz(CXHybirdMethods).methodSignatureForSelector(methodSelector)")
                 //========================================================================================================================================================================================================
                 // #2 let invocation:NSInvocation = NSInvocation.invocationWithMethodSignature(methodSignature)
                 //========================================================================================================================================================================================================
                 let invocationWithMethodSignatureFunc = unsafeBitCast(method_getImplementation(methodInvocationWithMethodSignature), to: ( @convention(c) (AnyClass?, Selector, Any?) -> Any).self)
                 let invocation = invocationWithMethodSignatureFunc(NSClassFromString("NSInvocation"), NSSelectorFromString("invocationWithMethodSignature:"), methodSignature) as! NSObject
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#2 let invocation:NSInvocation = NSInvocation.invocationWithMethodSignature(methodSignature)")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#2 let invocation:NSInvocation = NSInvocation.invocationWithMethodSignature(methodSignature)")
                 //========================================================================================================================================================================================================
                 // #3 invocation.setSelector(methodSelector)
                 //========================================================================================================================================================================================================
                 let setSeclectorFunc = unsafeBitCast(class_getMethodImplementation(NSClassFromString("NSInvocation"), NSSelectorFromString("setSelector:")), to: ( @convention(c) (Any, Selector, Selector) -> Void).self)
                 setSeclectorFunc(invocation, NSSelectorFromString("setSelector:"), methodSelector)
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#3 invocation.setSelector(methodSelector)")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#3 invocation.setSelector(methodSelector)")
                 //========================================================================================================================================================================================================
                 // #4 invocation.setArgument(&value, atIndex:2) //value 必须是引用，而不是值本身
                 //========================================================================================================================================================================================================
@@ -110,20 +110,20 @@ class HKReflectUtil {
                 //                        setArgumentFunc(invocation, NSSelectorFromString("setArgument:atIndex:"), OpaquePointer(it), index + 2)
                 //                    }
                 //                }
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#4 invocation has setArgument(&value, atIndex:2) function ?\(invocation.responds(to: NSSelectorFromString("setArgument:atIndex:")))")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#4 invocation has setArgument(&value, atIndex:2) function ?\(invocation.responds(to: NSSelectorFromString("setArgument:atIndex:")))")
                 var msg = "hahahahahahah"
                 withUnsafePointer(to: &msg) {
                     setArgumentFunc(invocation, NSSelectorFromString("setArgument:atIndex:"), OpaquePointer($0), 2) //[-1,0,1,2]
                 }
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#4 invocation.setArgument(&value, atIndex:2) //value 必须是引用，而不是值本身")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#4 invocation.setArgument(&value, atIndex:2) //value 必须是引用，而不是值本身")
                 //========================================================================================================================================================================================================
                 // #5 invocation.invokeWithTarget(clazz)
                 //========================================================================================================================================================================================================
                 invocation.perform(NSSelectorFromString("invokeWithTarget:"), with: clazz?.init())
-                HKLogUtil.d(TAG, "invokeByNSInvocation", "#5 invocation.invokeWithTarget(clazz?.init())")
+                CXLogUtil.d(TAG, "invokeByNSInvocation", "#5 invocation.invokeWithTarget(clazz?.init())")
             }
         }
-        HKLogUtil.d(TAG, "invokeByNSInvocation:result=", result ?? "")
+        CXLogUtil.d(TAG, "invokeByNSInvocation:result=", result ?? "")
         return result
     }
 

@@ -5,7 +5,7 @@
 
 #import "CXHybirdManagerOC.h"
 
-@implementation HKHybirdManagerOC {
+@implementation CXHybirdManagerOC {
     
 }
 

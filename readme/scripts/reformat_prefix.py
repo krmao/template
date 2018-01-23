@@ -9,8 +9,8 @@ import shutil
 # 只需要修改这里...                            ---- by krmao at 20170703
 # ======================================================================================================================
 
-OLD_FILE_PATH = "/Users/maokangren/workspace/template/apps/app-template/ios"
-NEW_FILE_PATH = "/Users/maokangren/Desktop/ios"
+OLD_FILE_PATH = "/Users/maokangren/Desktop/ios"
+NEW_FILE_PATH = "/Users/maokangren/Desktop/ios2"
 
 OLD_CODE_FILE_PREFIX = "HK"
 NEW_CODE_FILE_PREFIX = "CX"

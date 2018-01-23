@@ -16,8 +16,8 @@ class HybirdWKWebViewController: UIViewController {
     }
 
     private var indexPath: String = ""
-    private lazy var webView: HKWKWebView = {
-        var _webView = HKWKWebView(self.navigationController)
+    private lazy var webView: CXWKWebView = {
+        var _webView = CXWKWebView(self.navigationController)
         return _webView
     }()
 

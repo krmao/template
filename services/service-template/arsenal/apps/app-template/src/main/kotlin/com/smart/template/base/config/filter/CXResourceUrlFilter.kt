@@ -20,8 +20,8 @@ class CXResourceUrlFilter : ResourceUrlEncodingFilter() {
 
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
         val httpRequest = request as HttpServletRequest
-        log.error("request stasrt " + httpRequest.requestURI)
+        log.error("---------->doFilter start " + httpRequest.requestURI)
         super.doFilter(request, response, filterChain)
-        log.error("request   end " + httpRequest.requestURI)
+        log.error("---------->doFilter end " + httpRequest.requestURI)
     }
 }

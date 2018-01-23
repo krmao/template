@@ -67,7 +67,7 @@ spring:
 logging:
     level:
         root: WARN
-        com.smart: WARN
+        com.smart: DEBUG
         static: WARN
 
         org.springframework:

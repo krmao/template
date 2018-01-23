@@ -52,7 +52,7 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        logger.warn("[configure start] ====>>>>")
+        logger.warn("====>>>>configure start")
         http
             // 由于使用的是JWT，这里不需要csrf
             .csrf().disable()
@@ -76,6 +76,7 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
             ).permitAll()
             .antMatchers("/api", "/api/**").permitAll()
             .antMatchers("/file/upload").permitAll() //TODO 正式环境删除
+            .antMatchers("/test/**").permitAll() //TODO 正式环境删除
             .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
             .permitAll()
 
@@ -93,7 +94,7 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
             .headers().cacheControl()                                   // 禁用缓存
 
         // http.httpBasic() // 访问一个需要HTTP Basic Authentication的URL的时候，如果你没有提供用户名和密码，服务器就会返回401
-        logger.warn("[configure   end] <<<<====")
+        logger.warn("====>>>>configure end")
     }
 
     //==================================================================================================================================

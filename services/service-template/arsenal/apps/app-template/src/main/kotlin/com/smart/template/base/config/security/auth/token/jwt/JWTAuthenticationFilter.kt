@@ -38,25 +38,12 @@ class JWTAuthenticationFilter : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        log.warn("authentication start -->")
+        log.debug(">>>>doFilterInternal start")
         var token: String? = request.getHeader(CXConfigProperties.jwt.header)
-
-        val logBuffer = StringBuffer()
-
-        logBuffer.appendln("\n\ntoken_header = ${CXConfigProperties.jwt.header}")
-        logBuffer.appendln("token_prefix = ${CXConfigProperties.jwt.tokenPrefix}")
-        logBuffer.appendln("token = $token")
 
         if (token?.startsWith(CXConfigProperties.jwt.tokenPrefix) == true) {
             token = token.substring(CXConfigProperties.jwt.tokenPrefix.length)
-            logBuffer.appendln("token has prefix -> '${CXConfigProperties.jwt.tokenPrefix}'")
-            logBuffer.appendln("token(subString) = $token")
-        } else {
-            logBuffer.appendln("token has no prefix -> '${CXConfigProperties.jwt.tokenPrefix}'")
         }
-        logBuffer.appendln("\ncheck global config : $CXConfig")
-
-        log.warn(logBuffer)
 
         if (token?.isNotEmpty() == true) {
             var username: String? = null
@@ -87,12 +74,10 @@ class JWTAuthenticationFilter : OncePerRequestFilter() {
         } else {
             log.warn("token is empty")
         }
-        log.warn("chain.doFilter start -->\n\n")
-        CXContextManager.printContext()
+        log.debug("----chain.doFilter start")
         chain.doFilter(request, response)
-        log.warn("chain.doFilter   end <--")
-        CXContextManager.printContext()
-        log.warn("authentication   end <--\n\n")
+        log.debug("----chain.doFilter end")
+        log.debug(">>>>doFilterInternal end")
     }
 
 }

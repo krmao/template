@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-               BuildableName = "housekeeper.app"
-               BlueprintName = "housekeeper"
-               ReferencedContainer = "container:housekeeper.xcodeproj">
+               BuildableName = "template.app"
+               BlueprintName = "template"
+               ReferencedContainer = "container:template.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "housekeeper.app"
-            BlueprintName = "housekeeper"
-            ReferencedContainer = "container:housekeeper.xcodeproj">
+            BuildableName = "template.app"
+            BlueprintName = "template"
+            ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -58,9 +58,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "housekeeper.app"
-            BlueprintName = "housekeeper"
-            ReferencedContainer = "container:housekeeper.xcodeproj">
+            BuildableName = "template.app"
+            BlueprintName = "template"
+            ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "housekeeper.app"
-            BlueprintName = "housekeeper"
-            ReferencedContainer = "container:housekeeper.xcodeproj">
+            BuildableName = "template.app"
+            BlueprintName = "template"
+            ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

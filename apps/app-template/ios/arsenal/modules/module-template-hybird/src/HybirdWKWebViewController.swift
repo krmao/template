@@ -40,7 +40,7 @@ class HybirdWKWebViewController: UIViewController {
         self.view.addSubview(webView)
         // self.navigationItem.leftBarButtonItem = barLeftItem //在此处 webView.canGoBack 已经是最新状态，可以加入逻辑判断
         // self.navigationItem.rightBarButtonItems = [barRightItem, barRightItem1]
-        self.navigationItem.title = "housekeeper"
+        self.navigationItem.title = "template"
         webView.snp.makeConstraints { (make) in
             make.width.equalTo(self.view)
             make.top.equalTo(self.view).offset(0)

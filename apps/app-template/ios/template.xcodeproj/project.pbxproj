@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04046169D5603C9C420CD1FA /* Pods_housekeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */; };
+		04046169D5603C9C420CD1FA /* Pods_template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_template.framework */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
 		3D52A0E5B88F5DD46D1D63CA /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */; };
 		3D52A15B8DEA7866D3572B3D /* HKFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC8A7EDE4F9A0E6BDFA8 /* HKFileUtil.swift */; };
@@ -41,7 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.release.xcconfig"; sourceTree = "<group>"; };
+		06D69C8B9ACC2B092CE66DFE /* Pods-template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.release.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.release.xcconfig"; sourceTree = "<group>"; };
 		3D52A1606C5946251066CC66 /* HKIBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKIBundleManager.swift; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3D52A22D3819CEAFAF3E5868 /* Dictionary+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Ext.swift"; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 		3D52ADA84106C3CFCD47CBF1 /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		3D52AEB4353DE7FB5154134E /* String+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		3D52AFA41FD0C7E91849B14E /* HKBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKBundle.swift; sourceTree = "<group>"; };
-		8753A5EC1F22633C00BA4AD4 /* housekeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = housekeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8753A5EC1F22633C00BA4AD4 /* template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = template.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8763BEEC1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,11 +80,11 @@
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0E1F8DCB4800CA4E89 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		87856D561F8E0F9E00D053DA /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
-		87B442B91FA322E600BE03B6 /* housekeeper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "housekeeper-Bridging-Header.h"; sourceTree = "<group>"; };
+		87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "template-Bridging-Header.h"; sourceTree = "<group>"; };
 		87B442BA1FA322E700BE03B6 /* HKHybirdManagerOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HKHybirdManagerOC.m; sourceTree = "<group>"; };
 		87B442BB1FA322E800BE03B6 /* HKHybirdManagerOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HKHybirdManagerOC.h; sourceTree = "<group>"; };
-		D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-housekeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper.debug.xcconfig"; sourceTree = "<group>"; };
-		FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_housekeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D758266E12247889767BE3A9 /* Pods-template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.debug.xcconfig"; sourceTree = "<group>"; };
+		FC5EE7D932C4FAD2820A909C /* Pods_template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04046169D5603C9C420CD1FA /* Pods_housekeeper.framework in Frameworks */,
+				04046169D5603C9C420CD1FA /* Pods_template.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +102,7 @@
 		39A3A0D870A969F29446D91F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FC5EE7D932C4FAD2820A909C /* Pods_housekeeper.framework */,
+				FC5EE7D932C4FAD2820A909C /* Pods_template.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -124,7 +124,7 @@
 				87B442BB1FA322E800BE03B6 /* HKHybirdManagerOC.h */,
 				87B442BA1FA322E700BE03B6 /* HKHybirdManagerOC.m */,
 				3D52A3D1D16D18A83460F0A0 /* HKHybirdMethods.swift */,
-				87B442B91FA322E600BE03B6 /* housekeeper-Bridging-Header.h */,
+				87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */,
 			);
 			path = hybird;
 			sourceTree = "<group>";
@@ -219,7 +219,7 @@
 		8753A5ED1F22633C00BA4AD4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8753A5EC1F22633C00BA4AD4 /* housekeeper.app */,
+				8753A5EC1F22633C00BA4AD4 /* template.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,12 +237,12 @@
 		8763BEE31F8DCA5300CA4E89 /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEE51F8DCA5300CA4E89 /* app-housekeeper */,
+				8763BEE51F8DCA5300CA4E89 /* app-template */,
 			);
 			path = apps;
 			sourceTree = "<group>";
 		};
-		8763BEE51F8DCA5300CA4E89 /* app-housekeeper */ = {
+		8763BEE51F8DCA5300CA4E89 /* app-template */ = {
 			isa = PBXGroup;
 			children = (
 				8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */,
@@ -250,14 +250,14 @@
 				8763BEEB1F8DCA5400CA4E89 /* Main.storyboard */,
 				8763BEEE1F8DCA5400CA4E89 /* Info.plist */,
 			);
-			path = "app-housekeeper";
+			path = "app-template";
 			sourceTree = "<group>";
 		};
 		8763BEF21F8DCA5400CA4E89 /* libraries */ = {
 			isa = PBXGroup;
 			children = (
 				8763BEF41F8DCA5400CA4E89 /* library-base */,
-				8763BEF61F8DCA5400CA4E89 /* library-housekeeper-base */,
+				8763BEF61F8DCA5400CA4E89 /* library-template-base */,
 			);
 			path = libraries;
 			sourceTree = "<group>";
@@ -270,57 +270,57 @@
 			path = "library-base";
 			sourceTree = "<group>";
 		};
-		8763BEF61F8DCA5400CA4E89 /* library-housekeeper-base */ = {
+		8763BEF61F8DCA5400CA4E89 /* library-template-base */ = {
 			isa = PBXGroup;
 			children = (
 				8763BEF71F8DCA5400CA4E89 /* .gitkeep */,
 			);
-			path = "library-housekeeper-base";
+			path = "library-template-base";
 			sourceTree = "<group>";
 		};
 		8763BEF81F8DCA5400CA4E89 /* modules */ = {
 			isa = PBXGroup;
 			children = (
-				8763BEFA1F8DCA5400CA4E89 /* module-housekeeper-home */,
-				8763BEFC1F8DCA5400CA4E89 /* module-housekeeper-hybird */,
-				8763BF001F8DCA5400CA4E89 /* module-housekeeper-mine */,
-				8763BF021F8DCA5400CA4E89 /* module-housekeeper-setting */,
+				8763BEFA1F8DCA5400CA4E89 /* module-template-home */,
+				8763BEFC1F8DCA5400CA4E89 /* module-template-hybird */,
+				8763BF001F8DCA5400CA4E89 /* module-template-mine */,
+				8763BF021F8DCA5400CA4E89 /* module-template-setting */,
 				8763BF041F8DCA5400CA4E89 /* module-test */,
 			);
 			path = modules;
 			sourceTree = "<group>";
 		};
-		8763BEFA1F8DCA5400CA4E89 /* module-housekeeper-home */ = {
+		8763BEFA1F8DCA5400CA4E89 /* module-template-home */ = {
 			isa = PBXGroup;
 			children = (
 				87856D561F8E0F9E00D053DA /* assets.xcassets */,
 			);
-			path = "module-housekeeper-home";
+			path = "module-template-home";
 			sourceTree = "<group>";
 		};
-		8763BEFC1F8DCA5400CA4E89 /* module-housekeeper-hybird */ = {
+		8763BEFC1F8DCA5400CA4E89 /* module-template-hybird */ = {
 			isa = PBXGroup;
 			children = (
 				87856D481F8E02B300D053DA /* src */,
 				8763BF0E1F8DCB4800CA4E89 /* assets */,
 			);
-			path = "module-housekeeper-hybird";
+			path = "module-template-hybird";
 			sourceTree = "<group>";
 		};
-		8763BF001F8DCA5400CA4E89 /* module-housekeeper-mine */ = {
+		8763BF001F8DCA5400CA4E89 /* module-template-mine */ = {
 			isa = PBXGroup;
 			children = (
 				8763BF011F8DCA5400CA4E89 /* .gitkeep */,
 			);
-			path = "module-housekeeper-mine";
+			path = "module-template-mine";
 			sourceTree = "<group>";
 		};
-		8763BF021F8DCA5400CA4E89 /* module-housekeeper-setting */ = {
+		8763BF021F8DCA5400CA4E89 /* module-template-setting */ = {
 			isa = PBXGroup;
 			children = (
 				8763BF031F8DCA5400CA4E89 /* .gitkeep */,
 			);
-			path = "module-housekeeper-setting";
+			path = "module-template-setting";
 			sourceTree = "<group>";
 		};
 		8763BF041F8DCA5400CA4E89 /* module-test */ = {
@@ -359,8 +359,8 @@
 		B24924701482C10D6AA9BFC9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */,
-				06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */,
+				D758266E12247889767BE3A9 /* Pods-template.debug.xcconfig */,
+				06D69C8B9ACC2B092CE66DFE /* Pods-template.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -368,9 +368,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8753A5EB1F22633C00BA4AD4 /* housekeeper */ = {
+		8753A5EB1F22633C00BA4AD4 /* template */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8753A5FE1F22633C00BA4AD4 /* Build configuration list for PBXNativeTarget "housekeeper" */;
+			buildConfigurationList = 8753A5FE1F22633C00BA4AD4 /* Build configuration list for PBXNativeTarget "template" */;
 			buildPhases = (
 				4DB3506FE4B2C5673C8CFCD0 /* [CP] Check Pods Manifest.lock */,
 				8753A5E81F22633C00BA4AD4 /* Sources */,
@@ -383,9 +383,9 @@
 			);
 			dependencies = (
 			);
-			name = housekeeper;
+			name = template;
 			productName = "fruit-shop-ios";
-			productReference = 8753A5EC1F22633C00BA4AD4 /* housekeeper.app */;
+			productReference = 8753A5EC1F22633C00BA4AD4 /* template.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -400,13 +400,13 @@
 				TargetAttributes = {
 					8753A5EB1F22633C00BA4AD4 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = T295MMEZ9W;
+						DevelopmentTeam = ZGJH8VAAW9;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 8753A5E71F22633C00BA4AD4 /* Build configuration list for PBXProject "housekeeper" */;
+			buildConfigurationList = 8753A5E71F22633C00BA4AD4 /* Build configuration list for PBXProject "template" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -419,7 +419,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8753A5EB1F22633C00BA4AD4 /* housekeeper */,
+				8753A5EB1F22633C00BA4AD4 /* template */,
 			);
 		};
 /* End PBXProject section */
@@ -445,7 +445,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-template/Pods-template-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
@@ -462,7 +462,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-template/Pods-template-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4DB3506FE4B2C5673C8CFCD0 /* [CP] Check Pods Manifest.lock */ = {
@@ -476,7 +476,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-housekeeper-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-template-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -495,7 +495,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-housekeeper/Pods-housekeeper-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-template/Pods-template-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -671,17 +671,17 @@
 		};
 		8753A5FF1F22633C00BA4AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D758266E12247889767BE3A9 /* Pods-housekeeper.debug.xcconfig */;
+			baseConfigurationReference = D758266E12247889767BE3A9 /* Pods-template.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = T295MMEZ9W;
-				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-housekeeper/Info.plist";
+				DEVELOPMENT_TEAM = ZGJH8VAAW9;
+				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-template/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.smart.housekeeper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/housekeeper-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -691,17 +691,17 @@
 		};
 		8753A6001F22633C00BA4AD4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06D69C8B9ACC2B092CE66DFE /* Pods-housekeeper.release.xcconfig */;
+			baseConfigurationReference = 06D69C8B9ACC2B092CE66DFE /* Pods-template.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = T295MMEZ9W;
-				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-housekeeper/Info.plist";
+				DEVELOPMENT_TEAM = ZGJH8VAAW9;
+				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-template/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.smart.housekeeper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/housekeeper-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				WARNING_CFLAGS = "";
@@ -711,7 +711,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8753A5E71F22633C00BA4AD4 /* Build configuration list for PBXProject "housekeeper" */ = {
+		8753A5E71F22633C00BA4AD4 /* Build configuration list for PBXProject "template" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8753A5FC1F22633C00BA4AD4 /* Debug */,
@@ -720,7 +720,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8753A5FE1F22633C00BA4AD4 /* Build configuration list for PBXNativeTarget "housekeeper" */ = {
+		8753A5FE1F22633C00BA4AD4 /* Build configuration list for PBXNativeTarget "template" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8753A5FF1F22633C00BA4AD4 /* Debug */,

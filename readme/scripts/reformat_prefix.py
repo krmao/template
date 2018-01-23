@@ -25,14 +25,22 @@ REPLACE_PACkAGE_NAMES = collections.OrderedDict((
 
 # ======================================================================================================================
 
-excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~',
-                'Desktop']  # 过滤掉的的文件,文件名完全等于 //, 'local.properties'
+excludeFiles = ["build", ".DS_Store", ".gradle", ".idea", ".git", '~', "Podfile.lock", "Manifest.lock",
+                'Desktop', "Pods"]  # 过滤掉的的文件,文件名完全等于 //, 'local.properties'
 excludeSuffixFiles = ["iml"]  # 过滤掉的的文件,文件名后缀等于
 nameList = []
 suffix_media = ["jpg", "png", "svg", "mp3", "mp4", "avi"]
-suffix_source = ["java", "kt", "xml", "pro", "text", "txt", "md", "c", "cpp", "gitignore", "gradle",
-                 "py",
-                 "html", "js", "css"]
+
+suffix_source = [
+    "java", "kt", "xml", "pro", "text", "txt", "md", "c", "cpp", "gitignore", "gradle", "md", "gitignore", "json",
+    "py",
+    "html", "js", "css",
+    "pbxproj", "pbxproj", "xcscheme", "plist", "xcworkspacedata", "xcuserstate", "storyboard", "swift", "h",
+    "m", "xcbkptlist"
+]
+no_suffix_source = [
+    "Podfile"
+]
 
 replace_map = {
     "name=\"" + OLD_CODE_FILE_PREFIX: "name=\"" + NEW_CODE_FILE_PREFIX,
@@ -58,7 +66,7 @@ def init_names(filepath):
             init_names(tmp_path)
         else:
             if file_path.startswith(OLD_CODE_FILE_PREFIX) or file_path.startswith(
-                OLD_RES_FILE_PREFIX):
+                    OLD_RES_FILE_PREFIX):
                 if "." in file_path:
                     nameList.append(file_path.split(".")[0])
                 else:
@@ -68,7 +76,7 @@ def init_names(filepath):
 def reformat_prefix(filepath):
     dir_list = os.listdir(filepath)
     for file_path in dir_list:
-
+        print "file_path --> ", file_path
         if file_path in excludeFiles:
             print "exclude:", file_path
             continue
@@ -78,44 +86,51 @@ def reformat_prefix(filepath):
         else:
             new_path = reformat_path(tmp_path)
             if "." in file_path:
-                suffix = tmp_path.split(".")[1]
+                suffix = file_path.split(".")[1]
                 if suffix in excludeSuffixFiles:
                     print "exclude:", file_path
                     continue
                 if suffix in suffix_source:
-                    fopen = open(tmp_path, "r")
-                    modified = False
-                    new_lines = []
-                    for each_line in fopen:
-                        for key in nameList:
-                            if key in each_line:
-                                each_line = each_line.replace(key,
-                                                              key
-                                                              .replace(OLD_CODE_FILE_PREFIX,
-                                                                       NEW_CODE_FILE_PREFIX)
-                                                              .replace(OLD_RES_FILE_PREFIX + "_",
-                                                                       NEW_RES_FILE_PREFIX + "_")
-                                                              )
-                                modified = True
-                        for k, v in replace_map.items():
-                            each_line = each_line.replace(k, v)
-                            modified = True
-                        for k, v in REPLACE_PACkAGE_NAMES.items():
-                            each_line = each_line.replace(k, v)
-                            modified = True
-                        new_lines.append(each_line)
-                    fopen.close()
-                    if modified:
-                        write_file(suffix, "source", tmp_path, new_path, new_lines)
-                    else:
-                        rename_file_to(suffix, "source", tmp_path, new_path)
+                    process_source(suffix, tmp_path, new_path)
                 else:
                     if suffix in suffix_media:
                         rename_file_to(suffix, "media", tmp_path, new_path)
                     else:
-                        rename_file_to(suffix, "media", tmp_path, new_path)
+                        rename_file_to(suffix, "unknown", tmp_path, new_path)
             else:
-                rename_file_to("null", "bin", tmp_path, new_path)
+                if file_path in no_suffix_source:
+                    process_source("no_suffix_source", tmp_path, new_path)
+                else:
+                    rename_file_to("no dot", "unknown", tmp_path, new_path)
+
+
+def process_source(suffix, tmp_path, new_path):
+    fopen = open(tmp_path, "r")
+    modified = False
+    new_lines = []
+    for each_line in fopen:
+        for key in nameList:
+            if key in each_line:
+                each_line = each_line.replace(key,
+                                              key
+                                              .replace(OLD_CODE_FILE_PREFIX,
+                                                       NEW_CODE_FILE_PREFIX)
+                                              .replace(OLD_RES_FILE_PREFIX + "_",
+                                                       NEW_RES_FILE_PREFIX + "_")
+                                              )
+                modified = True
+        for k, v in replace_map.items():
+            each_line = each_line.replace(k, v)
+            modified = True
+        for k, v in REPLACE_PACkAGE_NAMES.items():
+            each_line = each_line.replace(k, v)
+            modified = True
+        new_lines.append(each_line)
+    fopen.close()
+    if modified:
+        write_file(suffix, "source", tmp_path, new_path, new_lines)
+    else:
+        rename_file_to(suffix, "source", tmp_path, new_path)
 
 
 def reformat_path(newpath):

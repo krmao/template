@@ -35,7 +35,7 @@ class HybirdUIWebViewController: UIViewController {
         super.viewDidLoad()
         print("viewDidLoad")
         self.view.addSubview(webView)
-        self.navigationItem.title = "housekeeper"
+        self.navigationItem.title = "template"
 
         webView.snp.makeConstraints { (make) in
             make.width.equalTo(self.view)

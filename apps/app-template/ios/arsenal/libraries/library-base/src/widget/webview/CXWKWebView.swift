@@ -92,7 +92,7 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        CXLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "null")
+        CXLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "nil")
         decisionHandler(WKNavigationActionPolicy.allow)
     }
 

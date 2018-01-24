@@ -67,7 +67,7 @@ class CXReflectUtil {
         return result
     }
 
-    //IMP(Implementation):          指向方法实现的指针   IMP 有返回值    VIMP 无返回值   (EXC_BAD_ACCESS)
+    //IMP(Implementation)->          指向方法实现的指针   IMP 有返回值    VIMP 无返回值   (EXC_BAD_ACCESS)
     //unsafeBitCast:                将第一个参数类型转换成第二个参数的类型, 由于UnsafePointer不安全，所以不必遵守类型转换的检查
     //UnsafePointer:                const int*          c语言中的 不可变指针
     //UnsafeMutablePointer:         int*                c语言中的 可变指针

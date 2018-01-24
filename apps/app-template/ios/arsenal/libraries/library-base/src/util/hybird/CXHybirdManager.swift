@@ -22,7 +22,7 @@ class CXHybirdManager {
      */
     static func addNativeClass(_ scheme: String,_ virtualClassName: String, _ realClassName: String) {
         if (TextUtils.isEmpty(virtualClassName) || TextUtils.isEmpty(realClassName)) {
-            CXLogUtil.d(TAG, "[addNativeClass] className:$className or kClass:$kClass is null")
+            CXLogUtil.d(TAG, "[addNativeClass] className:$className or kClass:$kClass is nil")
             return
         }
 

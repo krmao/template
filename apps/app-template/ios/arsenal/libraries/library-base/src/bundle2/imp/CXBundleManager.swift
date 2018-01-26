@@ -10,14 +10,14 @@
                         patchVersion:1
                         patchMd5:""
                         syntheticMd5:""
-                    },
+                    ),
                     {
                         patchUrl="https://www.ctrip.com/com.smart.modules.device.android_1.patch",
                         packageName:"com.smart.modules.device.android"
                         patchVersion:1
                         patchMd5:""
                         syntheticMd5:""
-                    },
+                    ),
                 ]
             }
    本地目录: /hotpatch
@@ -103,14 +103,14 @@ class CXBundleManager: CXIBundleManager {
                                     it(true, self.pathForHybirdDir)
                                 }
 
-                            },
+                            ),
                             onError: { error in
                                 CXLogUtil.e(self.TAG, "copyToLocal failure", error.localizedDescription)
                                 callback?(false, self.pathForHybirdDir)
                                 self.listeners.forEach { it in
                                     it(false, self.pathForHybirdDir)
                                 }
-                            },
+                            ),
                             onCompleted: nil,
                             onDisposed: nil
                     )

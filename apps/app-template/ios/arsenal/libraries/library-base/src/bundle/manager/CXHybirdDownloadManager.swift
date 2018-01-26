@@ -19,10 +19,10 @@ class CXHybirdDownloadManager {
 
         let zipFile = CXHybirdUtil.getZipFile(remoteConfig)
 
-        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 开始, 当前版本=${moduleManager?.currentConfig?.moduleVersion}, 即将下载的版本=${remoteConfig.moduleVersion}, 即将下载的URL=${remoteConfig.moduleDownloadUrl}, 当前线程:${Thread.currentThread().name}")
+        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 开始, 当前版本=\(moduleManager?.currentConfig?.moduleVersion), 即将下载的版本=\(remoteConfig.moduleVersion), 即将下载的URL=\(remoteConfig.moduleDownloadUrl), 当前线程:\(Thread.currentThread().name)")
         let nextConfig = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleName)
-        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: nextConfig:${nextConfig?.moduleName}:${nextConfig?.moduleVersion}:${nextConfig?.moduleDownloadUrl}")
-        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: remoteConfig:${remoteConfig.moduleName}:${remoteConfig.moduleVersion}:${remoteConfig.moduleDownloadUrl}")
+        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: nextConfig:\(nextConfig?.moduleName):\(nextConfig?.moduleVersion):\(nextConfig?.moduleDownloadUrl)")
+        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: remoteConfig:\(remoteConfig.moduleName):\(remoteConfig.moduleVersion):\(remoteConfig.moduleDownloadUrl)")
         if (nextConfig != nil && nextConfig == remoteConfig) {
             CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: 系统检测到当前任务已经存在下次启动生效的队列里, 无需重复下载")
             CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: 尝试直接替换到目标版本...")
@@ -57,7 +57,7 @@ class CXHybirdDownloadManager {
 
         CXHybird.downloader?.invoke(remoteConfig.moduleDownloadUrl, zipFile) {
             (file: File?) ->
-                    CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第二步: 下载完成 ${file?.path}")
+                    CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第二步: 下载完成 \(file?.path)")
 
             let isLocalFilesValid = CXHybirdUtil.isLocalFilesValid(remoteConfig)
 
@@ -76,7 +76,7 @@ class CXHybirdDownloadManager {
 
             callback?.invoke(isLocalFilesValid)
             setDownloadStatus(remoteConfig, false) //重置下载标记
-            CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 结束,  耗时:${System.currentTimeMillis() - start}ms ")
+            CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 结束,  耗时:\(System.currentTimeMillis() - start)ms ")
         }
     }
 }

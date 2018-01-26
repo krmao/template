@@ -3,7 +3,7 @@
 |0      |import/package  | import Foundation    |
 |1      |val/ const val  | let                  |
 |2      |?|              | ??                   |
-|3      |${}             | \()                  |
+|3      |\(}             | \()                  |
 |4      |if else         | ? :                  |
 |5      |fun             | func                 |
 |6      |@Synchronized   | objc_sync_enter/exit |

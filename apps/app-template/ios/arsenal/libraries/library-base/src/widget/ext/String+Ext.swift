@@ -16,7 +16,23 @@ extension String {
     }
 
     public func trim() -> String {
-        return  self.trimmingCharacters(in: .whitespacesAndNewlines)
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    public func isEmpty() -> Bool {
+        return TextUtils.isEmpty(self)
+    }
+
+    public func isNotBlank() -> Bool {
+        return !isEmpty()
+    }
+
+    public func isNullOrBlank() -> Bool {
+        return isEmpty()
+    }
+
+    public func toFloatOrNull() -> Float? {
+        return Float(self)
     }
 
     var data: Data {
@@ -36,14 +52,14 @@ extension String {
             return Data(base64Encoded: self)
         }
     }
-    
-    var urlEncoded:String?{
+
+    var urlEncoded: String? {
         get {
             return self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         }
     }
-    
-    var urlDecoded:String?{
+
+    var urlDecoded: String? {
         get {
             return self.removingPercentEncoding
         }

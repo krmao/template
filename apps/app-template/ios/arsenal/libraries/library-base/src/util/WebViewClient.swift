@@ -1,5 +1,5 @@
 import Foundation
 
-class WebViewClient {
+class WebViewClient: NSObject {
 
 }

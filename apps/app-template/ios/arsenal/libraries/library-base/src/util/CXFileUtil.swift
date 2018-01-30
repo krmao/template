@@ -3,6 +3,18 @@ import Foundation
 class CXFileUtil {
     static let TAG = "[file]"
 
+    static func deleteFile(_ file: File?) {
+        if (file == nil) {
+            return
+        }
+        do {
+            try FileManager.default.removeItem(atPath: file!.path!)
+            CXLogUtil.d(TAG + ":deleteFile", "[文件删除成功] path:", file!.path!, " , fileExists:", CXFileUtil.fileExists(file!.path))
+        } catch {
+            CXLogUtil.d(TAG + ":deleteFile", "[文件删除失败] path:", file!.path!, " , fileExists:", CXFileUtil.fileExists(file!.path), error)
+        }
+    }
+
     static func deleteFile(_ path: String?) {
         do {
             try FileManager.default.removeItem(atPath: path!)

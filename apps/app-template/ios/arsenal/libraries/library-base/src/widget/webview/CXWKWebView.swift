@@ -89,7 +89,7 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         CXLogUtil.d(TAG, "didReceive", message.name, message.body)
-        _ = CXHybirdManager.shouldOverrideUrlLoading(self, userContentController, message)
+        _ = CXHybirdBridge.shouldOverrideUrlLoading(self, userContentController, message)
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -110,7 +110,7 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
         self.navigationController?.title = webView.title
         self.progressView.setProgress(0.0, animated: false)
 
-        CXHybirdManager.callJsFunction(self, "console.log('hello html')") { result in
+        CXHybirdBridge.callJsFunction(self, "console.log('hello html')") { result in
             CXLogUtil.d("hybird", "onResultCallback", result ?? "nil")
         }
     }

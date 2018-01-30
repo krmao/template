@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // progress.bezelView.backgroundColor = UIColor("#CC000000")
         // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
-        CXHybirdManager.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
+        CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
         
         CXBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
             progress.hide(animated: true)

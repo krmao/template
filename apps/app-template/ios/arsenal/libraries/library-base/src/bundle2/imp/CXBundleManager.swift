@@ -93,7 +93,7 @@ class CXBundleManager: CXIBundleManager {
                         }
                         return Disposables.create()
                     }
-                    .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)) //Schedulers.io()
+                    .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)) //ConcurrentDispatchQueueScheduler(qos: .background)
                     .observeOn(MainScheduler.instance) //AndroidSchedulers.mainThread()
                     .subscribe(
                             onNext: { index in

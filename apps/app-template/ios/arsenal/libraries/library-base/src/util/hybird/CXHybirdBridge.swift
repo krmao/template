@@ -7,7 +7,7 @@ import Foundation
 import WebKit
 import UIKit
 
-class CXHybirdManager {
+class CXHybirdBridge {
     private static let TAG = "hybird"
 
     private static var classMap = [String: String]()
@@ -92,10 +92,10 @@ class CXHybirdManager {
     public static func shouldOverrideUrlLoading(_ webView: WKWebView?, _ userContentController: WKUserContentController, _ message: WKScriptMessage) -> Bool? {
         let schemeUrl = URL(string: String(describing: message.body))
         let schemePrefix = "\(String(describing: schemeUrl?.scheme ?? ""))://\(String(describing: schemeUrl?.host ?? "")):\(String(describing: schemeUrl?.port ?? 0))"
-        CXLogUtil.d(CXHybirdManager.TAG, "intercept message.body : \(String(describing: message.body))")
-        CXLogUtil.d(CXHybirdManager.TAG, "intercept url : \(String(describing: schemeUrl?.absoluteString ?? ""))")
-        CXLogUtil.d(CXHybirdManager.TAG, "intercept schemePrefix : \(schemePrefix)")
-        CXLogUtil.d(CXHybirdManager.TAG, "intercept ? \(schemeMap.containsKey(schemePrefix))")
+        CXLogUtil.d(CXHybirdBridge.TAG, "intercept message.body : \(String(describing: message.body))")
+        CXLogUtil.d(CXHybirdBridge.TAG, "intercept url : \(String(describing: schemeUrl?.absoluteString ?? ""))")
+        CXLogUtil.d(CXHybirdBridge.TAG, "intercept schemePrefix : \(schemePrefix)")
+        CXLogUtil.d(CXHybirdBridge.TAG, "intercept ? \(schemeMap.containsKey(schemePrefix))")
         return schemeMap[schemePrefix]?(webView, schemeUrl)
     }
 

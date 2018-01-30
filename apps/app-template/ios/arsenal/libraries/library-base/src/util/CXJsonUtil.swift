@@ -7,6 +7,10 @@ import Foundation
 
 class CXJsonUtil {
 
+    static func toJson<T: Encodable>(_ value: T, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
+        return toJSONString(value, outputFormatting)
+    }
+
     static func toJSONString<T: Encodable>(_ value: T, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = outputFormatting
@@ -21,7 +25,7 @@ class CXJsonUtil {
         return jsonString
     }
 
-    static func parse<T: Decodable>(_ type: T.Type, _ jsonString: String) -> T? {
+    static func parse<T: Decodable>(_ type: T.Type, _ jsonString: String?) -> T? {
         let decoder = JSONDecoder()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sszzz"
@@ -29,7 +33,7 @@ class CXJsonUtil {
 
         var model: T? = nil
         do {
-            if let data = jsonString.data(using: .utf8) {
+            if let data = jsonString?.data(using: .utf8) {
                 model = try decoder.decode(type, from: data)
             }
         } catch {
@@ -67,11 +71,11 @@ extension Encodable {
     }
 
     func toString() -> String {
-        return JDJsonUtil.toJSONString(self, .prettyPrinted) ?? ""
+        return CXJsonUtil.toJSONString(self, .prettyPrinted) ?? ""
     }
 
     func toJSONString() -> String? {
-        return JDJsonUtil.toJSONString(self)
+        return CXJsonUtil.toJSONString(self)
     }
 
 }
@@ -79,11 +83,11 @@ extension Encodable {
 extension Decodable {
 
     static func parse(_ jsonString: String) -> Self? {
-        return JDJsonUtil.parse(self, jsonString)
+        return CXJsonUtil.parse(self, jsonString)
     }
 
     static func parse(withJSONObject any: Any) -> Self? {
-        return JDJsonUtil.parse(self, withJSONObject: any)
+        return CXJsonUtil.parse(self, withJSONObject: any)
     }
 
 }

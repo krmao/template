@@ -10,6 +10,7 @@
 |7      |@JvmStatic      | static               |
 |8      |Boolean         | Bool                 |
 |9      |Unit            | Void                 |
+|10     |Exception       | Error                |
 
 
 

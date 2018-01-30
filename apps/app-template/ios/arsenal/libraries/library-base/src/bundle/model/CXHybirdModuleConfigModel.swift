@@ -1,31 +1,38 @@
-class CXHybirdModuleConfigModel {
+class CXHybirdModuleConfigModel: Hashable {
     var moduleName: String = ""
     var moduleVersion: String = "" //只分当前版本与线上最新版本
-    var moduleDebug: Bool = CXBaseApplication.DEBUG //只下发到测试机
+    var moduleDebug: Bool = false //只下发到测试机
     var moduleUpdateStrategy: CXHybirdUpdateStrategy = CXHybirdUpdateStrategy.ONLINE
     var moduleMainUrl: String = ""
     var moduleConfigUrl: String = ""
     var moduleDownloadUrl: String = ""
     var moduleZipMd5: String = ""
-    var moduleFilesMd5: NSDictionary<String, String> = HashMap<String, String>()
+    var moduleFilesMd5: MutableMap<String, String> = MutableMap<String, String>()
 
-    func equals(other: Any?) -> Bool {
-        other is CXHybirdModuleConfigModel && moduleVersion == other.moduleVersion && moduleName == other.moduleName
-    }
-
-    func hashCode() -> Int {
-        var result = moduleName.hashCode()
-        result = 31 * result + moduleVersion.hashCode()
-        result = 31 * result + moduleDebug.hashCode()
-        result = 31 * result + moduleUpdateStrategy.hashCode()
-        result = 31 * result + moduleMainUrl.hashCode()
-        result = 31 * result + moduleConfigUrl.hashCode()
-        result = 31 * result + moduleDownloadUrl.hashCode()
-        result = 31 * result + moduleZipMd5.hashCode()
-        result = 31 * result + moduleFilesMd5.hashCode()
-        return result
+    func equals(other: CXHybirdModuleConfigModel?) -> Bool {
+        return moduleVersion == other?.moduleVersion && moduleName == other?.moduleName
     }
 
     static var invalidConfigModel: CXHybirdModuleConfigModel = CXHybirdModuleConfigModel()
+
+    var hashValue: Int {
+        get {
+            var result = moduleName.hashValue
+            result = 31 * result + moduleVersion.hashValue
+            result = 31 * result + moduleDebug.hashValue
+            result = 31 * result + moduleUpdateStrategy.hashValue
+            result = 31 * result + moduleMainUrl.hashValue
+            result = 31 * result + moduleConfigUrl.hashValue
+            result = 31 * result + moduleDownloadUrl.hashValue
+            result = 31 * result + moduleZipMd5.hashValue
+//            result = 31 * result + moduleFilesMd5.hashValue
+            return result
+        }
+    }
+
+    //MARK: - Equatable
+    static func ==(lhs: CXHybirdModuleConfigModel, rhs: CXHybirdModuleConfigModel) -> Bool {
+        return lhs.moduleVersion == rhs.moduleVersion && lhs.moduleName == rhs.moduleName
+    }
 
 }

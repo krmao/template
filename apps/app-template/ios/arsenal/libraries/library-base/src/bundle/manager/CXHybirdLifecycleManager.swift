@@ -1,24 +1,27 @@
 import Foundation
 
 class CXHybirdLifecycleManager {
-    private let lifecycleMap: MutableMap<String, MutableSet<Int>> = mutableMapOf()
+    private static var lifecycleMap: MutableMap<String, MutableSet<Int>> = MutableMap<String, MutableSet<Int>>()
 
 
-    func  isModuleOpened(moduleName: String?)-> Bool {
-        CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载\(moduleName)的浏览器数量=\(lifecycleMap[moduleName]?.size ?? 0)")
-        return lifecycleMap[moduleName]?.isNotEmpty() == true
+    static func isModuleOpened(_ moduleName: String?) -> Bool {
+        if (moduleName == nil) {
+            return false
+        }
+        CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载\(moduleName)的浏览器数量=\(lifecycleMap[moduleName!]?.size ?? 0)")
+        return lifecycleMap[moduleName!]?.isNotEmpty() == true
     }
 
-    func  onWebViewOpenPage(webViewClient: WebViewClient?, url: String?) {
+    static func onWebViewOpenPage(_ webViewClient: WebViewClient?, _ url: String?) {
         CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 检测到浏览器正在加载页面, lifecycleMap->")
 
-        CXHybird.modules.forEach {
+        CXHybird.modules.forEach { it in
             if (CXHybird.isMemberOfModule(it.value.currentConfig, url)) {
                 CXLogUtil.w(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 系统监测到当前 url 属于模块 \(it.key)  url=\(url)")
                 if (webViewClient != nil) {
 
-                    let webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?? mutableSetOf()
-                    webViewHashCodeSet.add(webViewClient.hashCode())
+                    var webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?? MutableSet<Int>()
+                    webViewHashCodeSet.add(webViewClient!.hashCode())
                     lifecycleMap[it.key] = webViewHashCodeSet
                 }
             }
@@ -27,13 +30,13 @@ class CXHybirdLifecycleManager {
         //CXLogUtil.j(Log.ERROR, CXHybird.TAG, CXJsonUtil.toJson(lifecycleMap))
     }
 
-    func  onWebViewClose(webViewClient: WebViewClient?) {
+    static func onWebViewClose(_ webViewClient: WebViewClient?) {
         CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 检测到浏览器正在关闭, lifecycleMap->")
 
-        CXHybird.modules.forEach {
+        CXHybird.modules.forEach { it in
             if (webViewClient != nil) {
-                let webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?? mutableSetOf()
-                webViewHashCodeSet.remove(webViewClient.hashCode())
+                var webViewHashCodeSet: MutableSet<Int> = lifecycleMap[it.key] ?? MutableSet<Int>()
+                webViewHashCodeSet.remove(webViewClient!.hashCode())
                 lifecycleMap[it.key] = webViewHashCodeSet
 
                 if (webViewHashCodeSet.isEmpty()) {
@@ -43,6 +46,6 @@ class CXHybirdLifecycleManager {
                 }
             }
         }
-        CXLogUtil.j(Log.ERROR, CXHybird.TAG, CXJsonUtil.toJson(lifecycleMap))
+        CXLogUtil.j(CXLogUtil.ERROR, CXHybird.TAG, CXJsonUtil.toJson(lifecycleMap))
     }
 }

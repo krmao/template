@@ -99,20 +99,17 @@ class CXBundleManager: CXIBundleManager {
                             onNext: { index in
                                 CXLogUtil.d(self.TAG, "copyToLocal success")
                                 callback?(true, self.pathForHybirdDir)
-                                self.listeners.forEach() { it in
+                                self.listeners.forEach() { (it) in
                                     it(true, self.pathForHybirdDir)
                                 }
-
-                            ),
+                            },
                             onError: { error in
                                 CXLogUtil.e(self.TAG, "copyToLocal failure", error.localizedDescription)
                                 callback?(false, self.pathForHybirdDir)
                                 self.listeners.forEach { it in
                                     it(false, self.pathForHybirdDir)
                                 }
-                            ),
-                            onCompleted: nil,
-                            onDisposed: nil
+                            }
                     )
         } else {
             CXLogUtil.w(self.TAG, "no need to copyToLocal")
@@ -120,23 +117,23 @@ class CXBundleManager: CXIBundleManager {
         }
     }
 
-    func verify() -> Bool {
+        func verify() -> Bool {
         let versionCurrentApp = String(CXSystemUtil.versionCode) + "_" + CXSystemUtil.versionName
         var verify = versionCurrentApp == self.hybirdLocalVersion
 
         let hybirdLocalValid = CXFileUtil.fileExists(self.pathForHybirdDir + "index.html")
         if !hybirdLocalValid {
-            CXFileUtil.deleteDirectory(self.pathForHybirdDir)
-            self.hybirdLocalVersion = ""
+        CXFileUtil.deleteDirectory(self.pathForHybirdDir)
+        self.hybirdLocalVersion = ""
         }
 
         verify = verify && hybirdLocalValid
 
         CXLogUtil.d(self.TAG, "[verify:\(verify)] versionCurrentApp:\(versionCurrentApp) == hybirdLocalVersion:\(hybirdLocalVersion) && hybirdLocalValid:\(hybirdLocalValid)")
         return false//verify
-    }
+        }
 
-    func installWithVerify() {
+        func installWithVerify() {
         self.installWithVerify(nil)
     }
-}
+    }

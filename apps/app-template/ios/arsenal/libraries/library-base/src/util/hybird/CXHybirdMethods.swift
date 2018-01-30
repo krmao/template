@@ -6,7 +6,8 @@
 import Foundation
 
 class CXHybirdMethods: NSObject {
-    private static let TAG = "[HybirdMethods]"
+
+//    private static var TAG = "[HybirdMethods]"
 
     @objc
     public func showToast(_ msg: String) {

@@ -4,11 +4,11 @@ import Foundation
 class CXPreferencesUtil {
 
 
-    static func getBoolean(name: String) -> Boolean {
+    static func getBool(name: String) -> Bool {
         return UserDefaults.standard.bool(forKey: name)
     }
 
-    static func putBoolean(name: String, value: Boolean) {
+    static func putBool(name: String, value: Bool) {
         UserDefaults.standard.set(value, forKey: name)
     }
 

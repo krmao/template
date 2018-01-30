@@ -62,7 +62,7 @@ class CXHybirdManager {
                 }
                 return true
             } else {
-                CXLogUtil.e(TAG, "schemaUrl:\(schemeUrl.toString()} 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
+                CXLogUtil.e(TAG, "schemaUrl:\(schemeUrl.toString()) 格式定义错误，请参照 hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445")
                 return false
             }
         }

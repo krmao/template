@@ -21,7 +21,7 @@ class CXHybirdUtil {
      * 1: 文件夹校验成功则成功，zip包的校验不影响结果，如果zip包校验失败则删除zip包
      * 注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件
      */
-    static func isLocalFilesValid(config: CXHybirdModuleConfigModel?) -> Boolean {
+    static func isLocalFilesValid(config: CXHybirdModuleConfigModel?) -> Bool {
         CXLogUtil.v(CXHybird.TAG + ":" + config?.moduleName, "<><><><><><><>文件校验 开始: 模块名称=\(config?.moduleName) , 模块版本=\(config?.moduleVersion)")
         var success = false
         let start = System.currentTimeMillis()
@@ -42,7 +42,7 @@ class CXHybirdUtil {
         return success
     }
 
-    static internal func unzipToLocal(_ zipFile: File, _ unZipDir: File?) -> Boolean {
+    static internal func unzipToLocal(_ zipFile: File, _ unZipDir: File?) -> Bool {
         var success = false
         CXFileUtil.deleteDirectory(unZipDir)
         do {
@@ -61,7 +61,7 @@ class CXHybirdUtil {
     /**
      * 校验失败删除压缩包
      */
-    static internal func verifyZip(_ zipFile: File?, moduleZipMd5: String?, logTag: String? = CXHybird.TAG) -> Boolean {
+    static internal func verifyZip(_ zipFile: File?, moduleZipMd5: String?, logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
         if (zipFile != nil && !TextUtils.isEmpty(moduleZipMd5)) {
             let zipFileExists = zipFile.exists()
@@ -79,7 +79,7 @@ class CXHybirdUtil {
     /**
      * 校验失败删除文件夹
      */
-    static internal func verifyLocalFiles(_ unZipDir: File?, moduleFilesMd5: HashMap<String, String>?, logTag: String? = CXHybird.TAG) -> Boolean {
+    static internal func verifyLocalFiles(_ unZipDir: File?, moduleFilesMd5: HashMap<String, String>?, logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
 
         if (unZipDir != nil && moduleFilesMd5 != nil) {
@@ -142,7 +142,7 @@ class CXHybirdUtil {
         return localFile
     }
 
-    static func copyModuleZipFromAssets(moduleName: String, primaryConfig: CXHybirdModuleConfigModel?) -> Boolean {
+    static func copyModuleZipFromAssets(moduleName: String, primaryConfig: CXHybirdModuleConfigModel?) -> Bool {
         var success = false
         if (primaryConfig != nil) {
             let zipFile = getZipFile(primaryConfig)
@@ -164,7 +164,7 @@ class CXHybirdUtil {
 /**
  * @return 返回拷贝zip成功 并且解压zip到文件夹也成功的 configList
  */
-    static func getConfigListFromAssetsWithCopyAndUnzip(callback: (_ configList: MutableList<CXHybirdModuleConfigModel>) -> Unit) {
+    static func getConfigListFromAssetsWithCopyAndUnzip(callback: (_ configList: MutableList<CXHybirdModuleConfigModel>) -> Void) {
         let start = System.currentTimeMillis()
         CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始]-----------------------------------------------------------------------------------")
         CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
@@ -219,7 +219,7 @@ class CXHybirdUtil {
 
     }
 
-    static func downloadAllModules(configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((_ validConfigList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = nil) {
+    static func downloadAllModules(configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((_ validConfigList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]:\(configList?.map { it.moduleName })")
@@ -241,7 +241,7 @@ class CXHybirdUtil {
                                             CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(_start)))")
                                             CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):开始], \(config.moduleDownloadUrl)")
                                             CXHybirdDownloadManager.download(config) {
-                                                (isLocalFilesValid: Boolean) ->
+                                                (isLocalFilesValid: Bool) ->
 
                                                         CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):结束], isLocalFilesValid:\(isLocalFilesValid)")
                                                 CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - _start)ms, config=\(config)")
@@ -314,7 +314,7 @@ class CXHybirdUtil {
          * http://www.jianshu.com/p/3474cb8096da
          */
         /*CXLogUtil.v(config.CXHybird.TAG +":" + moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : \(interceptUrl)")
-        CXHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Unit?)? ->
+        CXHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Void?)? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
             CXLogUtil.e(config.CXHybird.TAG +":" + moduleName, "系统拦截到模块URL请求: url=\(url) ,匹配到 检测内容为 '\(interceptUrl)' 的拦截器, 由于当前模块的策略为 '\(updateStrategy)' , \(updateStrategy == CXHybirdUpdateStrategy.ONLINE) "需要检测更新,开始更新" else "不需要检查更新,不拦截 return")")
@@ -428,7 +428,7 @@ class CXHybirdUtil {
 /**
  * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
  */
-    static internal func fitNextAndFitLocalIfNeedConfigsInfoSync(moduleName: String?, mustFitLocal: Boolean = false) {
+    static internal func fitNextAndFitLocalIfNeedConfigsInfoSync(moduleName: String?, mustFitLocal: Bool = false) {
         if (moduleName.isNullOrBlank()) {
             return
         }

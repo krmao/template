@@ -20,13 +20,13 @@ class CXHybird: NSObject {
     static var initStrategy = CXHybirdInitStrategy.LOCAL
 
 
-    static var downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Unit?) -> Unit?)? = nil
+    static var downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil
 
 
-    static var configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = nil
+    static var configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil
 
 
-    static var allConfiger: ((_ allConfigUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = nil
+    static var allConfiger: ((_ allConfigUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil
 
 
     static var allConfigUrl: String = ""
@@ -47,7 +47,7 @@ class CXHybird: NSObject {
      *       false 代表是已发布的正式的去打包，不能拉取动态更新的测试版本
      */
 
-    static func initialize(debug: Boolean = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((_ configUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = nil, configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = nil, downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Unit?) -> Unit?)? = nil) {
+    static func initialize(debug: Bool = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((_ configUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil, configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil, downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil) {
 
 
         objc_sync_enter(self)
@@ -151,7 +151,7 @@ class CXHybird: NSObject {
             CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config.moduleName):开始], \(config.moduleDownloadUrl)")
 
             CXHybirdDownloadManager.download(config) {
-                (isLocalFilesvalid: Boolean) ->
+                (isLocalFilesvalid: Bool) ->
                         CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config.moduleName):结束], isLocalFilesletid:\(isLocalFilesvalid)")
                 CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config.moduleName):结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms, config=\(config)")
                 if (isLocalFilesletid) {
@@ -161,7 +161,7 @@ class CXHybird: NSObject {
         }
     }
 
-    private static func initModule(config: CXHybirdModuleConfigModel?, callback: ((_ config: CXHybirdModuleConfigModel?) -> Unit)? = nil) {
+    private static func initModule(config: CXHybirdModuleConfigModel?, callback: ((_ config: CXHybirdModuleConfigModel?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
@@ -200,7 +200,7 @@ class CXHybird: NSObject {
     /**
      * @param callback 在全部模块成功初始化结束以后,检查全部更新之前回调, configList 返回空,代表没有模块被成功初始化, 属于初始化失败的标志
      */
-    private static func initAllModules(configList: MutableList<CXHybirdModuleConfigModel>?, isNeedCheckAllUpdateAfterAllModulesSuccessInit: Boolean = true, callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = nil) {
+    private static func initAllModules(configList: MutableList<CXHybirdModuleConfigModel>?, isNeedCheckAllUpdateAfterAllModulesSuccessInit: Bool = true, callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))  ,isNeedCheckAllUpdateAfterAllModulesSuccessInit=\(isNeedCheckAllUpdateAfterAllModulesSuccessInit)")
@@ -291,10 +291,9 @@ class CXHybird: NSObject {
                             } else {
                                 CXLogUtil.e(TAG, ">>>>>>>======\(remoteConfig.moduleName) 无需切换为在线模式")
                             }
-                            CXHybirdDownloadManager.download(remoteConfig) {
-                                (isLocalFilesletid)->
-
-                            }
+//                            CXHybirdDownloadManager.download(remoteConfig) {
+//                                (isLocalFilesletid)->
+//                            }
                         } else {
                             CXLogUtil.v(TAG, ">>>>>>>======\(remoteConfig.moduleName) 系统检测到 remoteVersion:\(remoteVersion) 或者 localVersion:\(localVersion) 相等, 无需更新")
                         }
@@ -310,7 +309,7 @@ class CXHybird: NSObject {
     }
 
 
-    static func checkUpdate(url: String?, callback: (() -> Unit?)? = nil) {
+    static func checkUpdate(url: String?, callback: (() -> Void?)? = nil) {
         let moduleManager = getModule(url)
         if (moduleManager == nil) {
             callback?.invoke()
@@ -320,7 +319,7 @@ class CXHybird: NSObject {
     }
 
 
-    static func checkUpdate(moduleManager: CXHybirdModuleManager?, callback: (() -> Unit?)? = nil) {
+    static func checkUpdate(moduleManager: CXHybirdModuleManager?, callback: (() -> Void?)? = nil) {
         if (moduleManager != nil) {
             let moduleName = moduleManager.currentConfig.moduleName
             let start = System.currentTimeMillis()
@@ -407,12 +406,12 @@ class CXHybird: NSObject {
     }
 
 
-    static func isMemberOfModule(config: CXHybirdModuleConfigModel?, url: String?) -> Boolean {
+    static func isMemberOfModule(config: CXHybirdModuleConfigModel?, url: String?) -> Bool {
         return url?.contains(config?.moduleMainUrl ?? "") == true
     }
 
 
-    static func isModuleOpened(moduleName: String?) -> Boolean {
+    static func isModuleOpened(moduleName: String?) -> Bool {
         return CXHybirdLifecycleManager.isModuleOpened(moduleName)
     }
 

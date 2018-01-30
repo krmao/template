@@ -1,15 +1,15 @@
 class CXHybirdModuleConfigModel {
-    var moduleName: String = "",
-    var moduleVersion: String = "", //只分当前版本与线上最新版本
-    var moduleDebug: Boolean = CXBaseApplication.DEBUG, //只下发到测试机
-    var moduleUpdateStrategy: CXHybirdUpdateStrategy = CXHybirdUpdateStrategy.ONLINE,
-    var moduleMainUrl: String = "",
-    var moduleConfigUrl: String = "",
-    var moduleDownloadUrl: String = "",
-    var moduleZipMd5: String = "",
+    var moduleName: String = ""
+    var moduleVersion: String = "" //只分当前版本与线上最新版本
+    var moduleDebug: Bool = CXBaseApplication.DEBUG //只下发到测试机
+    var moduleUpdateStrategy: CXHybirdUpdateStrategy = CXHybirdUpdateStrategy.ONLINE
+    var moduleMainUrl: String = ""
+    var moduleConfigUrl: String = ""
+    var moduleDownloadUrl: String = ""
+    var moduleZipMd5: String = ""
     var moduleFilesMd5: NSDictionary<String, String> = HashMap<String, String>()
 
-    func equals(other: Any?) -> Boolean {
+    func equals(other: Any?) -> Bool {
         other is CXHybirdModuleConfigModel && moduleVersion == other.moduleVersion && moduleName == other.moduleName
     }
 

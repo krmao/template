@@ -31,6 +31,6 @@ class CXHybirdModuleManager{
         }
     }
 
-    var onlineModel: Boolean = false
+    var onlineModel: Bool = false
 
 }

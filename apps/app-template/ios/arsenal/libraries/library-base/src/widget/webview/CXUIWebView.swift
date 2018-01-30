@@ -7,8 +7,7 @@ import Foundation
 import UIKit
 
 open class CXUIWebView: UIWebView, UIWebViewDelegate {
-
-    var TAG = "[CXUIWebView]"
+    let TAG: String = "\(type(of: self))"
 
     convenience init() {
         self.init(nil)

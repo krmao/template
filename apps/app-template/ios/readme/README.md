@@ -8,6 +8,8 @@
 |5      |fun             | func                 |
 |6      |@Synchronized   | objc_sync_enter/exit |
 |7      |@JvmStatic      | static               |
+|8      |Boolean         | Bool                 |
+|9      |Unit            | Void                 |
 
 
 

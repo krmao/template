@@ -8,7 +8,7 @@ class CXReflectUtil {
      * 2: 被反射的方法 必须添加 @objc 标签 , #注意, 必须加 static
      * 3: 为了方便处理返回值，这里强制返回 Any?, 因为不加返回值 takeUnretainedValue 会 crash
      * 4: 关于返回值的可选类型
-     *    ->  NSNumber for Boolean, Integer, Float and Double attributes,
+     *    ->  NSNumber for Bool, Integer, Float and Double attributes,
      *    ->  NSString for String attributes,
      *    ->  NSSet for (unordered) to-many relationships.
      *

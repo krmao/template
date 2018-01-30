@@ -4,7 +4,7 @@ class CXURLProtocol: URLProtocol {
 
     public static let HOST = "www.smarttemplate.com"
 
-    private static let TAG = "[CXURLProtocol]"
+//    private static let TAG = "[CXURLProtocol]"
     private static let KEY = TAG + "_REQUEST_KEY"
     private static let CLASS_STRING_BROWSING_CONTROLLER = "V0tCcm93c2luZ0NvbnRleHRDb250cm9sbGVy".base64Decoded?.string ?? ""
     private static let CLASS_STRING_REGISTER_SCHEME = "cmVnaXN0ZXJTY2hlbWVGb3JDdXN0b21Qcm90b2NvbDo=".base64Decoded?.string ?? ""

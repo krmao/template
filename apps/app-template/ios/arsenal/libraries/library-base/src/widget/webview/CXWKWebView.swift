@@ -4,7 +4,8 @@ import SnapKit
 
 open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
 
-    private var TAG = "[CXWKWebView]"
+    let TAG: String = "\(type(of: self))"
+
     private var navigationController: UINavigationController? = nil
 
     private lazy var progressView: UIProgressView = {

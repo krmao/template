@@ -2,17 +2,17 @@ import Foundation
 
 class CXHybirdDownloadManager {
 
-    private let downloadMap: ConcurrentHashMap<CXHybirdModuleConfigModel, Boolean> = ConcurrentHashMap()
+    private let downloadMap: ConcurrentHashMap<CXHybirdModuleConfigModel, Bool> = ConcurrentHashMap()
 
-    static func isDownloading(config: CXHybirdModuleConfigModel?) -> Boolean {
+    static func isDownloading(config: CXHybirdModuleConfigModel?) -> Bool {
         return downloadMap[config] == true
     }
 
-    static func setDownloadStatus(config: CXHybirdModuleConfigModel, isDownloading: Boolean) {
+    static func setDownloadStatus(config: CXHybirdModuleConfigModel, isDownloading: Bool) {
         downloadMap[config] = isDownloading
     }
 
-    static func download(remoteConfig: CXHybirdModuleConfigModel, callback: ((_ isLocalFilesValid: Boolean) -> Unit?)? = nil) {
+    static func download(remoteConfig: CXHybirdModuleConfigModel, callback: ((_ isLocalFilesValid: Bool) -> Void?)? = nil) {
         let start = System.currentTimeMillis()
         let moduleName = remoteConfig.moduleName
         let moduleManager = CXHybird.modules[moduleName]

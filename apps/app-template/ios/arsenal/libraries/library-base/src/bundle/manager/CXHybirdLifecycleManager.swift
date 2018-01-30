@@ -4,7 +4,7 @@ class CXHybirdLifecycleManager {
     private let lifecycleMap: MutableMap<String, MutableSet<Int>> = mutableMapOf()
 
 
-    func  isModuleOpened(moduleName: String?)-> Boolean {
+    func  isModuleOpened(moduleName: String?)-> Bool {
         CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载\(moduleName)的浏览器数量=\(lifecycleMap[moduleName]?.size ?? 0)")
         return lifecycleMap[moduleName]?.isNotEmpty() == true
     }

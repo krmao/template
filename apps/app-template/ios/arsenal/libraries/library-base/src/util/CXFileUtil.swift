@@ -49,6 +49,21 @@ class CXFileUtil {
         CXLogUtil.d(TAG + ":copy-end", "to:" + toFilePath + " , fileExists:\(FileManager.default.fileExists(atPath: toFilePath))")
     }
 
+    static func readTextFromFile(_ filePath: String?) -> String {
+        CXLogUtil.i("readTextFromFile start -> \(filePath)")
+        var content: String = ""
+        if (filePath != nil && filePath!.isNotEmpty()) {
+            do {
+                content = try String(contentsOfFile: filePath!, encoding: .utf8)
+                CXLogUtil.i("readTextFromFile success ->")
+            } catch {
+                CXLogUtil.e("readTextFromFile failure", error)
+            }
+        }
+        CXLogUtil.i("readTextFromFile end   <-")
+        return content
+    }
+
     static func printDirs(_ dirPath: String) {
         let files = FileManager.default.subpaths(atPath: dirPath)
 

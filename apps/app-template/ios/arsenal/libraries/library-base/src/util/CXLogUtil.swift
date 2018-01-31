@@ -3,6 +3,8 @@ import SwiftyBeaver
 
 
 /**
+    AppCode 安装 GrepConsole
+
     http://docs.swiftybeaver.com/article/20-custom-format
 
     $L	Level, for example "VERBOSE"
@@ -21,27 +23,26 @@ import SwiftyBeaver
 */
 class CXLogUtil {
 
-
-    static var log: SwiftyBeaver.Type = {
-        var _log = SwiftyBeaver.self
-
-        var console = ConsoleDestination()
-        //console.format = "$DHH:mm:ss.SSS$d $C$L$c: $M $N.$F:$l $T"  // hour, minute, second, logLevel and message
-        console.format = "$Dmm:ss.SSS$d $C$L$c: $M"
-
-        _log.addDestination(console)
-        return _log
-    }()
-
-    static var logJson: SwiftyBeaver.Type = {
-        var _log = SwiftyBeaver.self
-
-        var console = ConsoleDestination()
-        console.format = "$J"
-
-        _log.addDestination(console)
-        return _log
-    }()
+    static var log: SwiftyBeaver.Type {
+        get {
+            var _log = SwiftyBeaver.self
+            _log.removeAllDestinations()
+            var console = ConsoleDestination()
+            console.format = "$Dmm:ss.SSS$d $C$L$c: $M"
+            _log.addDestination(console)
+            return _log
+        }
+    }
+    static var logJson: SwiftyBeaver.Type {
+        get {
+            var _log = SwiftyBeaver.self
+            _log.removeAllDestinations()
+            var console = ConsoleDestination()
+            console.format = "$Dmm:ss.SSS$d $C$L$c: \n$M"
+            _log.addDestination(console)
+            return _log
+        }
+    }
 
     static let ERROR: Int = log.Level.error.rawValue
     static let WARN: Int = log.Level.warning.rawValue
@@ -116,20 +117,9 @@ class CXLogUtil {
     }
 
     static func j(_ level: Int = CXLogUtil.INFO, _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: SwiftyBeaver.Level(rawValue: level) ?? SwiftyBeaver.Level.warning,
-                message: message,
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
-    }
-
-    static func j(_ level: Int = CXLogUtil.INFO, _ tag: Any? = "", _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
         logJson.custom(
                 level: SwiftyBeaver.Level(rawValue: level) ?? SwiftyBeaver.Level.warning,
-                message: message,
+                message: message ?? "",
                 file: file,
                 function: function,
                 line: line,

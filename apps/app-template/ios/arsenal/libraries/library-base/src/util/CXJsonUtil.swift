@@ -5,6 +5,11 @@
 
 import Foundation
 
+/*
+enum XXX: String, Codable  //反序列化 注意是通过 Int 还是 String 很重要
+
+数组反序列化 可以传入类型  [Class]
+*/
 class CXJsonUtil {
 
     static func toJson<T: Encodable>(_ value: T, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
@@ -25,7 +30,11 @@ class CXJsonUtil {
         return jsonString
     }
 
-    static func parse<T: Decodable>(_ type: T.Type, _ jsonString: String?) -> T? {
+    static func parse<T: Decodable>(_ jsonString: String?) -> T? {
+        return parse(T.self, jsonString)
+    }
+
+    static func parse<T: Decodable>(_ type: T.Type = T.self, _ jsonString: String?) -> T? {
         let decoder = JSONDecoder()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sszzz"
@@ -40,6 +49,10 @@ class CXJsonUtil {
             print(error)
         }
         return model
+    }
+
+    static func parseArray<T: Decodable>(_ jsonString: String?) -> [T]? {
+        return parse(jsonString)
     }
 
     static func parse<T: Decodable>(_ type: T.Type, withJSONObject any: Any) -> T? {

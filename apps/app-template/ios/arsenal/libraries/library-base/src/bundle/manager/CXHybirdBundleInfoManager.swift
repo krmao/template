@@ -64,7 +64,7 @@ class CXHybirdBundleInfoManager: NSObject {
 
     static func saveNextConfigBundleByName(_ moduleName: String?, _ nextConfig: CXHybirdModuleConfigModel?) {
         CXLogUtil.e(CXHybird.TAG, "krmao: saveNextConfigBundleByName: moduleName=\(moduleName), nextConfig is \(nextConfig == nil ? "nil !" : "not nil !") ---->")
-        CXLogUtil.j(CXLogUtil.ERROR, CXHybird.TAG, CXJsonUtil.toJson(nextConfig))
+        CXLogUtil.j(CXLogUtil.ERROR, CXJsonUtil.toJson(nextConfig))
         if (moduleName != nil && moduleName!.isNotBlank()) {
             var bundles: MutableMap<String, CXHybirdModuleBundleModel> = getBundles()
             var bundle: CXHybirdModuleBundleModel? = bundles[moduleName!]
@@ -108,7 +108,7 @@ class CXHybirdBundleInfoManager: NSObject {
     static func getNextConfigFromBundleByName(_ moduleName: String?) -> CXHybirdModuleConfigModel? {
         let nextConfig = getBundles()[moduleName ?? ""]?.moduleNextConfig
         CXLogUtil.e(CXHybird.TAG, "getNextConfigFromBundleByName: moduleName=\(moduleName), nextConfig is \(nextConfig == nil ? "nil !" : "not nil !") ---->")
-        CXLogUtil.j(CXLogUtil.ERROR, CXHybird.TAG, CXJsonUtil.toJson(nextConfig))
+        CXLogUtil.j(CXLogUtil.ERROR, CXJsonUtil.toJson(nextConfig))
         return nextConfig
     }
 }

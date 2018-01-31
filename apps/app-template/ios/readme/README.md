@@ -67,3 +67,7 @@ configer?.invoke(moduleConfigUrl) {
 ### rxbus 订阅机制
 
 ### x++
+
+
+
+## Codable

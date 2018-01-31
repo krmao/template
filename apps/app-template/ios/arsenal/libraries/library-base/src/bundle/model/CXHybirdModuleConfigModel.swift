@@ -1,6 +1,6 @@
 import Foundation
 
-public class CXHybirdModuleConfigModel: NSObject {
+public class CXHybirdModuleConfigModel: NSObject, Codable {
     public var moduleName: String = ""
     public var moduleVersion: String = "" //只分当前版本与线上最新版本
     public var moduleDebug: Bool = false //只下发到测试机
@@ -37,4 +37,17 @@ public class CXHybirdModuleConfigModel: NSObject {
         return lhs.moduleVersion == rhs.moduleVersion && lhs.moduleName == rhs.moduleName
     }
 
+    public override var description: String {
+        return """
+        moduleName: \(self.moduleName)
+        moduleVersion: \(self.moduleVersion)
+        moduleDebug: \(self.moduleDebug)
+        moduleUpdateStrategy: \(self.moduleUpdateStrategy)
+        moduleMainUrl: \(self.moduleMainUrl)
+        moduleConfigUrl: \(self.moduleConfigUrl)
+        moduleDownloadUrl: \(self.moduleDownloadUrl)
+        moduleZipMd5: \(self.moduleZipMd5)
+        moduleFilesMd5: \(self.moduleFilesMd5)
+        """
+    }
 }

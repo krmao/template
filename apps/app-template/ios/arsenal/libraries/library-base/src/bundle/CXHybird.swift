@@ -55,10 +55,6 @@ class CXHybird: NSObject {
         objc_sync_enter(self)
 
         let start = System.currentTimeMillis()
-        CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
-        CXLogUtil.w(TAG, ">>>>----初始化HYBIRD模块 开始")
-        CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
-
         CXHybird.debug = debug
         CXHybird.initStrategy = initStrategy
 
@@ -75,11 +71,20 @@ class CXHybird: NSObject {
             CXHybird.allConfigUrl = allConfigUrl
         }
 
-        CXLogUtil.w(TAG, ">>>>----debug=\(CXHybird.debug)")
-        CXLogUtil.w(TAG, ">>>>----initStrategy=\(CXHybird.initStrategy)")
-        CXLogUtil.w(TAG, ">>>>----allConfigUrl=\(allConfigUrl)")
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+        CXLogUtil.w(TAG, """
+
+        >>>>
+        >>>>
+        >>>>---- 初始化HYBIRD模块 开始
+        >>>>---- debug=\(CXHybird.debug)
+        >>>>---- initStrategy=\(CXHybird.initStrategy)
+        >>>>---- allConfigUrl=\(allConfigUrl)
+        >>>>
+        >>>>
+        """)
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
+
 
         /**
          * 关于保存配置信息的时机
@@ -97,7 +102,7 @@ class CXHybird: NSObject {
                     CXHybird.allConfiger?(CXHybird.allConfigUrl) { remoteConfigList in
                         CXLogUtil.w(TAG, ">>>>----总的配置文件下载 \(remoteConfigList == nil ? "失败" : "成功")")
                         CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
-                        CXLogUtil.j(CXLogUtil.WARN, TAG, CXJsonUtil.toJson(remoteConfigList))
+                        CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
 
                         downloadAndInitModules(remoteConfigList)
 
@@ -246,7 +251,7 @@ class CXHybird: NSObject {
         allConfiger?(allConfigUrl) { (remoteConfigList: MutableList<CXHybirdModuleConfigModel>?) in
             CXLogUtil.w(TAG, ">>>>----检查更新:下载\(remoteConfigList == nil ? "失败" : "成功"), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
             CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
-            CXLogUtil.j(CXLogUtil.WARN, TAG, CXJsonUtil.toJson(remoteConfigList))
+            CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
 
             var needDownloadAndInitConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
 

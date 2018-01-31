@@ -46,6 +46,6 @@ class CXHybirdLifecycleManager {
                 }
             }
         }
-        CXLogUtil.j(CXLogUtil.ERROR, CXHybird.TAG, CXJsonUtil.toJson(lifecycleMap))
+        CXLogUtil.j(CXLogUtil.ERROR, CXJsonUtil.toJson(lifecycleMap))
     }
 }

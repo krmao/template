@@ -88,12 +88,12 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
     }
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        CXLogUtil.d(TAG, "didReceive", message.name, message.body)
+        CXLogUtil.d(TAG, "didReceive \(message.name) \(message.body)")
         _ = CXHybirdBridge.shouldOverrideUrlLoading(self, userContentController, message)
     }
 
     public func webView(_ webview: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        CXLogUtil.d(TAG, "decidePolicyFor", "url=", navigationAction.request.url?.absoluteString ?? "nil")
+        CXLogUtil.d(TAG, "decidePolicyFor url= \(navigationAction.request.url?.absoluteString ?? "nil")")
         decisionHandler(WKNavigationActionPolicy.allow)
     }
 
@@ -106,12 +106,12 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
     }
 
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        CXLogUtil.d(TAG, "didFinish", "title:", webView.title ?? "")
+        CXLogUtil.d(TAG, "didFinish title:\(webView.title)")
         self.navigationController?.title = webView.title
         self.progressView.setProgress(0.0, animated: false)
 
         CXHybirdBridge.callJsFunction(self, "console.log('hello html')") { result in
-            CXLogUtil.d("hybird", "onResultCallback", result ?? "nil")
+            CXLogUtil.d("hybird", "onResultCallback \(result)")
         }
     }
 
@@ -123,7 +123,7 @@ open class CXWKWebView: WKWebView, WKNavigationDelegate, WKScriptMessageHandler,
         if (keyPath == "estimatedProgress") {
             let newProgress = (change?[.newKey] as AnyObject).floatValue ?? 0
             let oldProgress = (change?[.oldKey] as AnyObject).floatValue ?? 0
-            CXLogUtil.d(TAG, "observeValue: newProgress:", newProgress, " , oldProgress:", oldProgress)
+            CXLogUtil.d(TAG, "observeValue: newProgress: \(newProgress), oldProgress:\(oldProgress)")
 
             if (newProgress >= 1) {
                 self.progressView.isHidden = true

@@ -353,7 +353,7 @@ class CXHybird: NSObject {
             configer?(moduleConfigUrl) { remoteConfig in
                 CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 \(remoteConfig == nil ? "失败" : "成功") , 当前线程:\(Thread.currentThread().name)")
                 CXLogUtil.v(TAG + ":" + moduleName, "remoteConfig->")
-                CXLogUtil.j(TAG + ":" + moduleName, CXJsonUtil.toJson(remoteConfig))
+                CXLogUtil.j(CXLogUtil.INFO, CXJsonUtil.toJson(remoteConfig))
                 if (remoteConfig != nil) {
                     //1:正式包，所有机器可以拉取
                     //2:测试包，只要测试机器可以拉取

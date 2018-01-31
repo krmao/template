@@ -15,24 +15,23 @@ class CXURLProtocol: URLProtocol {
         var canInit = request.url?.host == CXURLProtocol.HOST
 
         if !canInit {
-            CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:false, isLocalFileExists:false", "url:" + (request.url?.absoluteString ?? ""), "correctHost:\(CXURLProtocol.HOST)")
             return false
         }
 
         canInit = canInit && CXURLProtocol.isLocalFileExists(request)
 
         if !canInit {
-            CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:false", "url:" + (request.url?.absoluteString ?? ""))
+            CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:false url:" + (request.url?.absoluteString ?? ""))
             return false
         }
 
         if (URLProtocol.property(forKey: CXURLProtocol.KEY, in: request) != nil) {
             canInit = false
-            CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true, repeatRequest", "url:" + (request.url?.absoluteString ?? ""))
+            CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true, repeatRequest url:" + (request.url?.absoluteString ?? ""))
             return canInit
         }
 
-        CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true", "url:" + (request.url?.absoluteString ?? ""))
+        CXLogUtil.d(CXURLProtocol.TAG, "canInit:false, host:true, isLocalFileExists:true url:" + (request.url?.absoluteString ?? ""))
         return canInit
     }
 
@@ -52,7 +51,7 @@ class CXURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
-        CXLogUtil.d(CXURLProtocol.TAG, "startLoading", "originUrl:" + (self.request.url?.absoluteString ?? ""))
+        CXLogUtil.d(CXURLProtocol.TAG, "startLoading originUrl:" + (self.request.url?.absoluteString ?? ""))
 
         URLProtocol.setProperty(true, forKey: CXURLProtocol.KEY, in: self.request as! NSMutableURLRequest)
 
@@ -64,7 +63,7 @@ class CXURLProtocol: URLProtocol {
                     .replace("https://" + CXURLProtocol.HOST, String(CXBundleManager.INSTANCE.pathForHybirdDir.dropLast(1)))
                     .replace("http://" + CXURLProtocol.HOST, String(CXBundleManager.INSTANCE.pathForHybirdDir.dropLast(1))) ?? ""
             //let localFilePath = String( CXBundleManager.INSTANCE.pathForHybirdDir.dropLast(1) + (self.request.url?.path ?? ""))
-            CXLogUtil.d(CXURLProtocol.TAG, "startLoading", "localUrl:" + localFilePath)
+            CXLogUtil.d(CXURLProtocol.TAG, "startLoading localUrl:" + localFilePath)
             guard let url = URL(string: localFilePath) else {
                 return
             }
@@ -80,7 +79,6 @@ class CXURLProtocol: URLProtocol {
     }
 
     override func stopLoading() {
-        CXLogUtil.d(CXURLProtocol.TAG, "stopLoading", request.url?.absoluteString ?? "")
     }
 
 

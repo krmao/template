@@ -5,7 +5,7 @@ import SnapKit
 class HybirdUIWebViewController: UIViewController {
 
     public static func goTo(fromViewController: UIViewController, url: String) {
-        let toViewController = HybirdUIWebViewController.init(url: url)
+        let toViewController = HybirdUIWebViewController(url)
         if let navigationController = fromViewController as? UINavigationController {
             navigationController.pushViewController(toViewController, animated: true)
         } else if fromViewController.navigationController != nil {
@@ -17,7 +17,7 @@ class HybirdUIWebViewController: UIViewController {
 
     private var indexPath: String = ""
 
-    init(url: String) {
+    public init(_ url: String) {
         super.init(nibName: nil, bundle: nil)
         self.indexPath = url
     }
@@ -33,7 +33,6 @@ class HybirdUIWebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
         self.view.addSubview(webView)
         self.navigationItem.title = "template"
 

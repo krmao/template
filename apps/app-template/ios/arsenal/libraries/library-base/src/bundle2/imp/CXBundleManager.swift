@@ -81,14 +81,14 @@ class CXBundleManager: CXIBundleManager {
                         CXLogUtil.d(self.TAG, "start copy now ...")
                         do {
                             try CXFileUtil.copy(Bundle.main.path(forResource: self.nameInAssets, ofType: "zip", inDirectory: "assets")!, self.pathForLocalFile)
-                            CXLogUtil.d(self.TAG, "copy success ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)))
+                            CXLogUtil.d(self.TAG, "copy success ! isFileExistsInSdcard:" + String(FileManager.default.fileExists(atPath: self.pathForLocalFile)))
                             CXLogUtil.d(self.TAG, "start unzip now ...")
                             try CXZipUtil.unzip(self.pathForLocalFile, self.pathForHybirdDir)
                             self.hybirdLocalVersion = String(CXSystemUtil.versionCode) + "_" + CXSystemUtil.versionName
                             observer.onNext(0)
                             CXFileUtil.printDirs(self.docDir)
                         } catch {
-                            CXLogUtil.d(self.TAG, "copy/unzip failure ! isFileExistsInSdcard:", String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
+                            CXLogUtil.d(self.TAG, "copy/unzip failure ! isFileExistsInSdcard:" + String(FileManager.default.fileExists(atPath: self.pathForLocalFile)), error)
                             observer.onError(error)
                         }
                         return Disposables.create()
@@ -104,7 +104,7 @@ class CXBundleManager: CXIBundleManager {
                                 }
                             },
                             onError: { error in
-                                CXLogUtil.e(self.TAG, "copyToLocal failure", error.localizedDescription)
+                                CXLogUtil.e(self.TAG, "copyToLocal failure", error)
                                 callback?(false, self.pathForHybirdDir)
                                 self.listeners.forEach { it in
                                     it(false, self.pathForHybirdDir)

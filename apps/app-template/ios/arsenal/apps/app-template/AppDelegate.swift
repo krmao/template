@@ -1,6 +1,4 @@
 import UIKit
-import RxCocoa
-import RxSwift
 import MBProgressHUD
 
 @UIApplicationMain
@@ -9,6 +7,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        CXLogUtil.i("application init start -->")
+
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         let rootViewController = UINavigationController()
@@ -18,21 +18,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        URLProtocol.registerClass(CXURLProtocol.self)
-        CXURLProtocol.registerSchemeForWKWebView("http", "https")
+        //URLProtocol.registerClass(CXURLProtocol.self)
+        //CXURLProtocol.registerSchemeForWKWebView("http", "https")
 
-        let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
+        //let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
         // progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
         // progress.bezelView.backgroundColor = UIColor("#CC000000")
         // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
         CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
-        
-        CXBundleManager.INSTANCE.installWithVerify() { ( success: Bool, rootDir: String) in
-            progress.hide(animated: true)
-            // rootViewController.pushViewController(HybirdUIWebViewController.init(url: /*"file://" +*/ rootDir + "index.html"), animated: false)
-            rootViewController.pushViewController(HybirdWKWebViewController.init(url: "http://www.smarttemplate.com/index.html"), animated: false)
-        }
+
+        CXHybird.initialize(debug: true, initStrategy: CXHybirdInitStrategy.LOCAL)
+
+        rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
+
+        CXLogUtil.i("application init end <--")
         return true
     }
 

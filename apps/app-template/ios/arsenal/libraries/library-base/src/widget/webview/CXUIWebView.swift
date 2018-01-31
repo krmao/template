@@ -52,7 +52,6 @@ open class CXUIWebView: UIWebView, UIWebViewDelegate {
 
     @available(iOS 2.0, *)
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        CXLogUtil.d(TAG, "shouldStartLoadWith", "URL=\((request.url?.absoluteString ?? ""))", "path=\((request.url?.path ?? ""))")
         return true
     }
 

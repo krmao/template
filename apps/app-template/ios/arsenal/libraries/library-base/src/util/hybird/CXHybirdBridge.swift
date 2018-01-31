@@ -20,7 +20,7 @@ class CXHybirdBridge {
     /**
      * hybird://native/className/methodName?params=1,2,3,4,5&hashcode=123445
      */
-    static func addNativeClass(_ scheme: String,_ virtualClassName: String, _ realClassName: String) {
+    static func addNativeClass(_ scheme: String, _ virtualClassName: String, _ realClassName: String) {
         if (TextUtils.isEmpty(virtualClassName) || TextUtils.isEmpty(realClassName)) {
             CXLogUtil.d(TAG, "[addNativeClass] className:$className or kClass:$kClass is nil")
             return
@@ -29,25 +29,25 @@ class CXHybirdBridge {
         classMap[virtualClassName] = realClassName
 
         schemeMap[scheme] = { webView, schemeUrl in
-            CXLogUtil.d(TAG, "schemeUrl:", schemeUrl?.absoluteString ?? "nil")
+//            CXLogUtil.d(TAG, "schemeUrl:" + schemeUrl?.absoluteString ?? "nil")
             let pathSegments = schemeUrl?.pathComponents ?? []
-            CXLogUtil.d(TAG, "scheme:", schemeUrl?.scheme ?? "nil")
-            CXLogUtil.d(TAG, "host:", schemeUrl?.host ?? "nil")
-            CXLogUtil.d(TAG, "port:", schemeUrl?.port ?? "nil")
-            CXLogUtil.d(TAG, "path:", schemeUrl?.path ?? "nil")
-            CXLogUtil.d(TAG, "lastPathComponent:", schemeUrl?.lastPathComponent ?? "nil")
-            CXLogUtil.d(TAG, "pathSegments:", pathSegments)
-            CXLogUtil.d(TAG, "query:", schemeUrl?.query ?? "nil")
-            CXLogUtil.d(TAG, "queryParams:", schemeUrl?.queryParams ?? "nil")
-            CXLogUtil.d(TAG, "query:key:params:", schemeUrl?.query("params") ?? "nil")
-            CXLogUtil.d(TAG, "queryParamsUnDecoded:", schemeUrl?.queryParamsUnDecoded ?? "nil")
-            CXLogUtil.d(TAG, "queryUnDecoded:key:params:", schemeUrl?.queryUnDecoded("params") ?? "nil")
+//            CXLogUtil.d(TAG, "scheme:" + schemeUrl?.scheme ?? "nil")
+//            CXLogUtil.d(TAG, "host:" + schemeUrl?.host ?? "nil")
+//            CXLogUtil.d(TAG, "port:" + schemeUrl?.port ?? "nil")
+//            CXLogUtil.d(TAG, "path:" + schemeUrl?.path ?? "nil")
+//            CXLogUtil.d(TAG, "lastPathComponent:" + schemeUrl?.lastPathComponent ?? "nil")
+//            CXLogUtil.d(TAG, "pathSegments:" + pathSegments)
+//            CXLogUtil.d(TAG, "query:" + schemeUrl?.query ?? "nil")
+//            CXLogUtil.d(TAG, "queryParams:" + schemeUrl?.queryParams ?? "nil")
+//            CXLogUtil.d(TAG, "query:key:params:" + schemeUrl?.query("params") ?? "nil")
+//            CXLogUtil.d(TAG, "queryParamsUnDecoded:" + schemeUrl?.queryParamsUnDecoded ?? "nil")
+//            CXLogUtil.d(TAG, "queryUnDecoded:key:params:" + schemeUrl?.queryUnDecoded("params") ?? "nil")
 
             if (pathSegments.count >= 3) {
                 let clazzName = classMap[pathSegments[1]] ?? pathSegments[1]
                 let methodName = pathSegments[2]
 
-                let hashcode:Int = Int((schemeUrl?.queryUnDecoded("hashcode")) ?? "-1") ?? -1
+                let hashcode: Int = Int((schemeUrl?.queryUnDecoded("hashcode")) ?? "-1") ?? -1
                 let params = schemeUrl?.queryUnDecoded("params")
 
                 let paramArray: [String] = params?.split(separator: ",").map {
@@ -55,7 +55,7 @@ class CXHybirdBridge {
                 } ?? []
 
                 CXLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
-                
+
                 let result = callNativeMethod(className: clazzName, methodName: methodName, paramArray) ?? ""
                 if (hashcode != -1) {
                     callJsFunction(webView, "javascript:window.hybird.onCallback(\(hashcode), '\(result)')")
@@ -101,7 +101,6 @@ class CXHybirdBridge {
 
     public static func callJsFunction(_ webView: WKWebView?, _ javascript: String, _ callback: ((_ result: String?) -> Void?)? = nil) {
         webView?.evaluateJavaScript(javascript.replace("javascript:", "")) { (any: Any?, error: Error?) in
-            CXLogUtil.d(TAG, "any", (any ?? "nil"), "error", (error ?? "nil"))
             let result = error == nil ? (any as? String) : ("error:" + error.debugDescription)
             callback?(result)
         }

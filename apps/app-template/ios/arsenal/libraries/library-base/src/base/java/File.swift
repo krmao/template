@@ -10,7 +10,7 @@ class File {
     }
 
     init(_ parent: File, _ name: String) {
-        self.absolutePath = parent.path + name
+        self.absolutePath = parent.path ?? "" + name
     }
 
     func exists() -> Bool {

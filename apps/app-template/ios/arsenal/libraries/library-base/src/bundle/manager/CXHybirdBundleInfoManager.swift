@@ -5,24 +5,25 @@ class CXHybirdBundleInfoManager: NSObject {
     private static let KEY_HYBIRD_BUNDLE_MODEL_LIST = "KEY_HYBIRD_BUNDLE_MODEL_LIST"
 
     static func getBundles() -> MutableMap<String, CXHybirdModuleBundleModel> {
-        let map: MutableMap<String, CXHybirdModuleBundleModel> = CXPreferencesUtil.getMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, CXHybirdModuleBundleModel.self)
+        /*let map: MutableMap<String, CXHybirdModuleBundleModel> = CXPreferencesUtil.getMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, CXHybirdModuleBundleModel)
         map.values.forEach { it in
             it.moduleConfigList = it.moduleConfigList.sortedByDescending {
                 it.moduleVersion.toFloatOrNull() ?? -1
             }.toMutableList()
         }
-        return map
+        return map*/
+        return MutableMap<String, CXHybirdModuleBundleModel>()
     }
 
     static func saveBundle(_ bundle: CXHybirdModuleBundleModel) {
-        saveBundles(getBundles().apply { it in
-            it[bundle.moduleName] = bundle
-        })
+//        saveBundles(getBundles().apply { it in
+//            it[bundle.moduleName] = bundle
+//        })
     }
 
 
     static func saveBundles(_ bundleMap: Map<String, CXHybirdModuleBundleModel>) {
-        CXPreferencesUtil.putMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, bundleMap)
+//        CXPreferencesUtil.putMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, bundleMap)
         CXLogUtil.w(TAG, "保存配置信息到 sharedPreference: \(bundleMap)")
     }
 
@@ -54,7 +55,7 @@ class CXHybirdBundleInfoManager: NSObject {
             } else {
                 bundle!.moduleConfigList.add(it)
             }
-            bundles[it.moduleName] = bundle
+//            bundles[it.moduleName] = bundle
         }
 
         saveBundles(bundles)

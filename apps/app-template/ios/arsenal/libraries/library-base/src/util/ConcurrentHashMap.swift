@@ -1,13 +1,13 @@
 import Foundation
 
-typealias ConcurrentHashMap = Dictionary
-typealias MutableMap = Dictionary
-typealias HashMap = Dictionary
-typealias Map = Dictionary
+public typealias ConcurrentHashMap = Dictionary
+public typealias MutableMap = Dictionary
+public typealias HashMap = Dictionary
+public typealias Map = Dictionary
 
 
-typealias MutableSet = Set
-typealias MutableList = Array
+public typealias MutableSet = Set
+public typealias MutableList = Array
 
 extension Dictionary {
 
@@ -18,18 +18,20 @@ extension Dictionary {
     }
 
     public mutating func remove(_ key: Dictionary.Key?) {
-        if (key) {
+        if (key != nil) {
             removeValue(forKey: key!)
         }
     }
 
     public func keys() -> Set<Dictionary.Key> {
-        return Set<Dictionary.Key>(arrayLiteral: keys)
+//        return Set<Dictionary.Key>(arrayLiteral: keys)
+        return Set<Dictionary.Key>()
+
     }
 
-    public func apply(_ callback: (Dictionary.Element) -> Dictionary.Element) -> Dictionary.Element {
-        return callback(self)
-    }
+//    public func apply(_ callback: (Dictionary.Element) -> Dictionary.Element) -> Dictionary.Element {
+//        return callback(self)
+//    }
 
 
 }
@@ -63,7 +65,7 @@ extension Set {
 extension Collection {
     public var size: Int {
         get {
-            return self.count
+            return self.count as! Int
         }
     }
 
@@ -79,15 +81,16 @@ extension Collection {
         return self.first
     }
 
-    public func firstOrNull(_ predicate: (Self.Element?) throws -> Bool) -> Self.Element? {
-        return self.first(predicate)
+    public func firstOrNull(where predicate: (Self.Element) throws -> Bool) rethrows -> Self.Element? {
+//        return self.first(predicate)
+        return nil
     }
 }
 
 extension MutableCollection {
     public func mapNotNull<T>(_ transform: (Self.Element) throws -> T?) -> Array<T> {
-        let values = self.map {
-            try? transform($0)
+        let values: [T] = self.map {
+            try! transform($0)!
         }.filter {
             $0 != nil
         }
@@ -115,9 +118,10 @@ extension Array {
     }
 
     public func sortedByDescending() -> MutableList<Array.Element> {
-        return self.sorted { (v: Element, v1: Element) in
-
-        }
+//        return self.sorted { (v: Element, v1: Element) in
+//
+//        }
+        return self
     }
 
     mutating func add(_ position: Int, _ value: Array.Element) {
@@ -131,8 +135,8 @@ extension Array {
     }
 
     mutating func remove(_ obj: Array.Element) {
-        if let index = index(of: obj) {
-            remove(at: index)
-        }
+//        if let index = index(of: obj) {
+//            remove(at: index)
+//        }
     }
 }

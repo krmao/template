@@ -6,8 +6,8 @@ class CXTimeUtil {
         return yMdHmsS(Date())
     }
 
-    static func yMdHmsS(_ date: Int) -> String {
-        return yMdHmsS(Date.init(timeIntervalSince1970: date))
+    static func yMdHmsS(_ millisecond: Int) -> String {
+        return yMdHmsS(Date(millisecond))
     }
 
     static func yMdHmsS(_ date: Date) -> String {
@@ -18,8 +18,8 @@ class CXTimeUtil {
         return HmsS(Date())
     }
 
-    static func HmsS(_ date: Int) -> String {
-        return HmsS(Date.init(timeIntervalSince1970: date))
+    static func HmsS(_ millisecond: Int) -> String {
+        return HmsS(Date(millisecond))
     }
 
     static func HmsS(_ date: Date) -> String {
@@ -30,8 +30,8 @@ class CXTimeUtil {
         return Hms(Date())
     }
 
-    static func Hms(_ date: Int) -> String {
-        return Hms(Date.init(timeIntervalSince1970: date))
+    static func Hms(_ millisecond: Int) -> String {
+        return Hms(Date(millisecond))
     }
 
     static func Hms(_ date: Date) -> String {
@@ -44,7 +44,7 @@ class CXTimeUtil {
         return dateFormatter.string(from: date)
     }
 
-    static func parse(_ pattern: String, _ value: String) -> Date {
+    static func parse(_ pattern: String, _ value: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = pattern
         return dateFormatter.date(from: value)
@@ -53,6 +53,6 @@ class CXTimeUtil {
 
 extension Date {
     public init(_ millisecond: Int) {
-        Date.init(timeIntervalSince1970: TimeInterval(millisecond / 1000.0))
+        self.init(timeIntervalSince1970: TimeInterval(Double(millisecond) / 1000.0))
     }
 }

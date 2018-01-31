@@ -31,7 +31,7 @@ class CXHybirdUtil {
             let zipFile = getZipFile(config!)
             let unzipDir = getUnzipDir(config!)
             if (!verifyLocalFiles(unzipDir, config!.moduleFilesMd5, config!.moduleName ?? "")) {
-                if (!verifyZip(zipFile, config!.moduleZipMd5, config.moduleName ?? "")) {
+                if (!verifyZip(zipFile, config!.moduleZipMd5, config!.moduleName ?? "")) {
                     success = false
                 } else {
                     success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
@@ -46,13 +46,12 @@ class CXHybirdUtil {
 
     static internal func unzipToLocal(_ zipFile: File, _ unZipDir: File?) -> Bool {
         var success = false
-        CXFileUtil.deleteDirectory(unZipDir.path)
-        do {
-            try CXZipUtil.unzip(zipFile, unZipDir.path)
-            success = true
-        } catch (exception:Error) {
-            CXLogUtil.e(CXHybird.TAG, "--------[unzipToLocal]: 解压失败:文件不存在", exception)
-        }
+        CXFileUtil.deleteDirectory(unZipDir?.path)
+//        do {
+        try? CXZipUtil.unzip(zipFile.path ?? "", unZipDir?.path ?? "")
+        success = true
+//        } catch (error:Error) {
+//        }
         return success
     }
 
@@ -61,7 +60,7 @@ class CXHybirdUtil {
      */
     static internal func verifyZip(_ zipFile: File?, _ moduleZipMd5: String?, _ logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
-        if (zipFile != nil && !TextUtils.isEmpty(moduleZipMd5)) {
+        /*if (zipFile != nil && !TextUtils.isEmpty(moduleZipMd5)) {
             let zipFileExists = zipFile!.exists()
             let zipFileMd5 = CXChecksumUtil.genMD5Checksum(zipFile)
             let isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
@@ -70,7 +69,7 @@ class CXHybirdUtil {
         CXLogUtil.v(CXHybird.TAG, "-- 文件校验 校验本地 zip 压缩包:\(success ? "成功" : "失败")")
         if (!success) {
             CXFileUtil.deleteFile(zipFile)
-        }
+        }*/
         return success
     }
 
@@ -80,7 +79,7 @@ class CXHybirdUtil {
     static internal func verifyLocalFiles(_ unZipDir: File?, _ moduleFilesMd5: HashMap<String, String>?, _ logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
 
-        if (unZipDir != nil && moduleFilesMd5 != nil) {
+        /*if (unZipDir != nil && moduleFilesMd5 != nil) {
             let localUnzipDirExists = unZipDir.exists()
 
             let rightFilesCount = moduleFilesMd5.size
@@ -102,13 +101,13 @@ class CXHybirdUtil {
         CXLogUtil.v(CXHybird.TAG + ":" + logTag, "-- 文件校验 校验本地 zip 解压后的文件夹:\(success ? "成功" : "失败"), path=\(unZipDir)")
         if (!success) {
             CXFileUtil.deleteDirectory(unZipDir)
-        }
+        }*/
         return success
     }
 
     static func getLocalFile(_ config: CXHybirdModuleConfigModel?, _ url: String?) -> File? {
         var localFile: File? = nil
-        if (config != nil && url?.isNotBlank() == true) {
+        /*if (config != nil && url?.isNotBlank() == true) {
             let scheme = Uri.parse(url)?.scheme?.trim()
             if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
 
@@ -136,24 +135,24 @@ class CXHybirdUtil {
         CXLogUtil.v(CXHybird.TAG + ":" + config?.moduleName, "检测到本地文件\(!exists ? " 不存在 " : " 存在"), 文件路径:\(localFile?.absolutePath)")
         if (!exists) {
             localFile = nil
-        }
+        }*/
         return localFile
     }
 
     static func copyModuleZipFromAssets(_ moduleName: String, _ primaryConfig: CXHybirdModuleConfigModel?) -> Bool {
         var success = false
-        if (primaryConfig != nil) {
+        /*if (primaryConfig != nil) {
             let zipFile = getZipFile(primaryConfig!)
             let unzipDir = getUnzipDir(primaryConfig!)
             do {
                 try CXFileUtil.deleteFile(zipFile)
                 try CXFileUtil.deleteDirectory(unzipDir)
-                try CXFileUtil.copy(CXBaseApplication.INSTANCE.assets.open("\(CXHybird.assetsDirName)/\(moduleName)-\(primaryConfig!.moduleVersion)\(CXHybird.bundleSuffix)"), zipFile)
+                //todo try CXFileUtil.copy(CXBaseApplication.INSTANCE.assets.open("\(CXHybird.assetsDirName)/\(moduleName)-\(primaryConfig!.moduleVersion)\(CXHybird.bundleSuffix)"), zipFile)
                 success = true
-            } catch (exception:Error) {
+            } catch (exception: Error) {
                 CXLogUtil.e(CXHybird.TAG, "--------[copyModuleZipFromAssets]: 文件不存在", exception)
             }
-        }
+        }*/
         return success
     }
 
@@ -161,7 +160,7 @@ class CXHybirdUtil {
  * @return 返回拷贝zip成功 并且解压zip到文件夹也成功的 configList
  */
     static func getConfigListFromAssetsWithCopyAndUnzip(_ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>) -> Void) {
-        let start = System.currentTimeMillis()
+        /*let start = System.currentTimeMillis()
         CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始]-----------------------------------------------------------------------------------")
         CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
         var allConfigList: MutableList<CXHybirdModuleConfigModel> = mutableListOf()
@@ -207,12 +206,12 @@ class CXHybirdUtil {
             CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 结束]-----------------------------------------------------------------------------------")
             CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 一共耗时:\(System.currentTimeMillis() - start)ms")
             callback.invoke(allConfigList)
-        }
+        }*/
 
     }
 
     static func downloadAllModules(_ configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((_ validConfigList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
-        let start = System.currentTimeMillis()
+        /*let start = System.currentTimeMillis()
         CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]:\(configList?.map { it.moduleName })")
         CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
@@ -268,13 +267,13 @@ class CXHybirdUtil {
                             }
                     )
 
-        }
+        }*/
     }
 
     static func removeIntercept(_ config: CXHybirdModuleConfigModel?) {
         if (config != nil) {
-            CXHybirdBridge.removeScheme(config.moduleMainUrl)
-            CXHybirdBridge.removeRequest(config.moduleMainUrl)
+//            CXHybirdBridge.removeScheme(config.moduleMainUrl)
+//            CXHybirdBridge.removeRequest(config.moduleMainUrl)
         }
     }
 
@@ -282,7 +281,7 @@ class CXHybirdUtil {
  * 设置资源拦截器,URL拦截器
  */
     static func setIntercept(_ config: CXHybirdModuleConfigModel?) {
-        let moduleName: String = config?.moduleName ?? ""
+        /*let moduleName: String = config?.moduleName ?? ""
         let tag: String = CXHybird.TAG + ":" + moduleName
 
         CXLogUtil.v(tag, "======>> 设置拦截器开始: \(config?.moduleVersion)")
@@ -302,11 +301,11 @@ class CXHybirdUtil {
         CXHybirdBridge.removeScheme(interceptUrl)
 //        CXHybirdBridge.removeRequest(interceptUrl)
 
-        /**
+        *//**
          * webView.loadUrl 不会触发此回调,放到 CXHybirdBridge.addRequest(interceptMainUrl) 里面处理
          * http://www.jianshu.com/p/3474cb8096da
-         */
-        /*CXLogUtil.v(config.CXHybird.TAG +":" + moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : \(interceptUrl)")
+         *//*
+        *//*CXLogUtil.v(config.CXHybird.TAG +":" + moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : \(interceptUrl)")
         CXHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Void?)? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
@@ -317,7 +316,7 @@ class CXHybirdUtil {
                 checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
             }
             true
-        }*/
+        }*//*
 
         CXLogUtil.v(tag, "======>> 增加 资源 拦截 , 匹配 -> interceptUrl : \(interceptUrl)")
         CXHybirdBridge.addRequest(interceptUrl) {
@@ -327,14 +326,14 @@ class CXHybirdUtil {
             if (CXHybird.modules[moduleName]?.onlineModel != true) {
                 let localFile = CXHybirdUtil.getLocalFile(config, url)
                 if (url != nil && localFile?.exists() == true) {
-                    /*let mimeType: String = when {
+                    *//*let mimeType: String = when {
                         url.contains(".css") -> "text/css"
                         url.contains(".png") -> "image/png"
                         url.contains(".js") -> "application/x-javascript"
                         url.contains(".woff") -> "application/x-font-woff"
                         url.contains(".html") -> "text/html"
                         url.contains(".shtml") -> "text/html" else -> "text/html"
-                    }*/
+                    }*//*
                     do {
                         CXLogUtil.v(tag, "======>> 执行伪造本地资源")
                         try resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
@@ -349,7 +348,7 @@ class CXHybirdUtil {
             }
             resourceResponse
         }
-        CXLogUtil.v(tag, "======>> 设置拦截器结束")
+        CXLogUtil.v(tag, "======>> 设置拦截器结束")*/
     }
 
 /**
@@ -358,51 +357,51 @@ class CXHybirdUtil {
  * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
  */
     static func fitLocalConfigsInfoSync(_ moduleName: String?) {
-        objc_sync_enter(self)
+        /* objc_sync_enter(self)
 
-        if (moduleName == nil || moduleName!.isNullOrBlank()) {
-            return
-        }
-        let moduleManager: CXHybirdModuleManager? = CXHybird.modules[moduleName!]
-        if (moduleManager == nil) {
-            return
-        }
+         if (moduleName == nil || moduleName!.isNullOrBlank()) {
+             return
+         }
+         let moduleManager: CXHybirdModuleManager? = CXHybird.modules[moduleName!]
+         if (moduleManager == nil) {
+             return
+         }
 
-        let tag = CXHybird.TAG + ":" + moduleName!
+         let tag = CXHybird.TAG + ":" + moduleName!
 
 
-        CXLogUtil.e(tag, "||||||||=====>>>>> 一次检验本地可用配置信息的完整性(同步) 开始 , 当前线程:\(Thread.currentThread().name) , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = \(moduleManager.onlineModel))")
-        let start = System.currentTimeMillis()
-        let configList = CXHybirdBundleInfoManager.getConfigListFromBundleByName(moduleName!)
-        CXLogUtil.e(tag, "||||||||=====>>>>> 当前最新配置信息为: \(configList.map { $0.moduleVersion })")
-        if (configList.isNotEmpty()) {
-            CXLogUtil.v(tag, "||||||||=====>>>>> 检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
+         CXLogUtil.e(tag, "||||||||=====>>>>> 一次检验本地可用配置信息的完整性(同步) 开始 , 当前线程:\(Thread.currentThread().name) , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = \(moduleManager.onlineModel))")
+         let start = System.currentTimeMillis()
+         let configList = CXHybirdBundleInfoManager.getConfigListFromBundleByName(moduleName!)
+         CXLogUtil.e(tag, "||||||||=====>>>>> 当前最新配置信息为: \(configList.map { $0.moduleVersion })")
+         if (configList.isNotEmpty()) {
+             CXLogUtil.v(tag, "||||||||=====>>>>> 检测到本地配置信息不为空,开始过滤/清理无效的本地配置信息")
 
-            //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
-            let iterate = configList.listIterator()
-            while (iterate.hasNext()) {
-                if (!CXHybirdUtil.isLocalFilesValid(iterate.next())) {
-                    iterate.remove() // mind ConcurrentModificationException
-                }
-            }
-        }
+             //直到找到有效的版本，如果全部无效，则在后续步骤中重新解压原始版本
+             let iterate = configList.listIterator()
+             while (iterate.hasNext()) {
+                 if (!CXHybirdUtil.isLocalFilesValid(iterate.next())) {
+                     iterate.remove() // mind ConcurrentModificationException
+                 }
+             }
+         }
 
-        //删除无效的配置信息,删除后会重新判断空,如果是空会获取原始安装包
-        if (configList.isEmpty()) {
-            CXLogUtil.w(tag, "||||||||=====>>>>> 检测到本地配置信息为空,从全局你变量 modules 中删除")
-            CXHybird.removeModule(moduleName)
-            CXLogUtil.e(tag, "||||||||=====>>>>> 清空 本模块 结束, 当前本地可操作模块: \(CXHybird.modules.keys)")
-        } else {
-            //如果有删除的或则新加的原始配置信息，则需要重新保存下
-            CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleName, configList)
-            configList.firstOrNull()?.let { it in
-                moduleManager.currentConfig = it
-            }
-            CXLogUtil.e(tag, "||||||||=====>>>>> 重置当前 本地配置头 为:\(moduleManager.currentConfig.moduleVersion)")
+         //删除无效的配置信息,删除后会重新判断空,如果是空会获取原始安装包
+         if (configList.isEmpty()) {
+             CXLogUtil.w(tag, "||||||||=====>>>>> 检测到本地配置信息为空,从全局你变量 modules 中删除")
+             CXHybird.removeModule(moduleName)
+             CXLogUtil.e(tag, "||||||||=====>>>>> 清空 本模块 结束, 当前本地可操作模块: \(CXHybird.modules.keys)")
+         } else {
+             //如果有删除的或则新加的原始配置信息，则需要重新保存下
+             CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleName, configList)
+             configList.firstOrNull()?.let { it in
+                 moduleManager.currentConfig = it
+             }
+             CXLogUtil.e(tag, "||||||||=====>>>>> 重置当前 本地配置头 为:\(moduleManager.currentConfig.moduleVersion)")
 
-        }
-        CXLogUtil.e(tag, "||||||||=====>>>>> 一次检验本地所有可用配置信息(不包含 next)的完整性(同步) 结束 , 当前线程:\(Thread.currentThread().name) , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = \(moduleManager.onlineModel) ,  耗时: \(System.currentTimeMillis() - start)ms")
-        objc_sync_exit(self)
+         }
+         CXLogUtil.e(tag, "||||||||=====>>>>> 一次检验本地所有可用配置信息(不包含 next)的完整性(同步) 结束 , 当前线程:\(Thread.currentThread().name) , (如果本模块没有被浏览器加载,则优先合并 下次启动生效的任务, 当前 onLineMode = \(moduleManager.onlineModel) ,  耗时: \(System.currentTimeMillis() - start)ms")
+         objc_sync_exit(self)*/
     }
 
 /**
@@ -422,72 +421,72 @@ class CXHybirdUtil {
  * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
  */
     static internal func fitNextAndFitLocalIfNeedConfigsInfoSync(_ moduleName: String?, _ mustFitLocal: Bool = false) {
-        if (moduleName == nil || moduleName!.isNullOrBlank()) {
-            return
-        }
-        let moduleManager: CXHybirdModuleManager? = CXHybird.modules[moduleName!]
-        if (moduleManager == nil) {
-            return
-        }
+        /* if (moduleName == nil || moduleName!.isNullOrBlank()) {
+             return
+         }
+         let moduleManager: CXHybirdModuleManager? = CXHybird.modules[moduleName!]
+         if (moduleManager == nil) {
+             return
+         }
 
-        let tag = CXHybird.TAG + ":" + moduleName!
+         let tag = CXHybird.TAG + ":" + moduleName!
 
-        CXLogUtil.v(tag, "---->>>> 检测是否有下次启动生效的配置文件需要处理 开始, 当前线程:\(Thread.currentThread().name)")
+         CXLogUtil.v(tag, "---->>>> 检测是否有下次启动生效的配置文件需要处理 开始, 当前线程:\(Thread.currentThread().name)")
 
-        var configList = CXHybirdBundleInfoManager.getConfigListFromBundleByName(moduleManager!.currentConfig.moduleName)
-        CXLogUtil.v(tag, "---->>>> configList->")
-        CXLogUtil.j(CXLogUtil.VERBOSE, tag, CXJsonUtil.toJson(configList))
+         var configList = CXHybirdBundleInfoManager.getConfigListFromBundleByName(moduleManager!.currentConfig.moduleName)
+         CXLogUtil.v(tag, "---->>>> configList->")
+         CXLogUtil.j(CXLogUtil.VERBOSE, tag, CXJsonUtil.toJson(configList))
 
-        let isModuleOpened = CXHybirdLifecycleManager.isModuleOpened(moduleName!)
-        if (!isModuleOpened) {
-            CXLogUtil.v(tag, "---->>>> 检测当前模块未被浏览器加载,可以处理")
+         let isModuleOpened = CXHybirdLifecycleManager.isModuleOpened(moduleName!)
+         if (!isModuleOpened) {
+             CXLogUtil.v(tag, "---->>>> 检测当前模块未被浏览器加载,可以处理")
 
-            let nextConfig = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleManager!.currentConfig.moduleName)
+             let nextConfig = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleManager!.currentConfig.moduleName)
 
-            if (nextConfig != nil) {
-                if (isLocalFilesValid(nextConfig!)) {
-                    CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 且本地文件夹校验成功, 开始处理")
+             if (nextConfig != nil) {
+                 if (isLocalFilesValid(nextConfig!)) {
+                     CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 且本地文件夹校验成功, 开始处理")
 
-                    let destVersion = nextConfig!.moduleVersion.toFloatOrNull()
-                    if (destVersion != nil) {
-                        if (configList.isNotEmpty()) {
-                            let iterate = configList.listIterator()
-                            while (iterate.hasNext()) {
-                                let tmpConfig = iterate.next()
-                                let tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
-                                //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
-                                if (tmpVersion == nil || tmpVersion >= destVersion) {
-                                    CXLogUtil.v(tag, "---->>>> 清空版本号为\(tmpVersion)(升级/回滚的目标版本为\(destVersion)) 的所有本地文件以及配置信息")
-                                    iterate.remove()                                                                //删除在list中的位置
-                                    CXFileUtil.deleteFile(CXHybirdUtil.getZipFile(tmpConfig))              //删除 zip
-                                    CXFileUtil.deleteDirectory(CXHybirdUtil.getUnzipDir(tmpConfig))        //删除 unzipDir
-                                }
-                            }
-                        }
-                        configList.add(0, nextConfig!)
-                        CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleManager!.currentConfig.moduleName, configList)
-                        moduleManager!.currentConfig = nextConfig!
-                        CXLogUtil.e(tag, "---->>>> 重置当前 本地配置头 为:\(moduleManager!.currentConfig.moduleVersion)")
-                    }
-                } else {
-                    CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 但是本地文件夹校验失败, 不做处理, 清除下次生效的该配置文件")
-                }
+                     let destVersion = nextConfig!.moduleVersion.toFloatOrNull()
+                     if (destVersion != nil) {
+                         if (configList.isNotEmpty()) {
+                             let iterate = configList.listIterator()
+                             while (iterate.hasNext()) {
+                                 let tmpConfig = iterate.next()
+                                 let tmpVersion = tmpConfig.moduleVersion.toFloatOrNull()
+                                 //版本号为空 或者 这是回滚操作,则清空大于等于该版本的所有文件/配置
+                                 if (tmpVersion == nil || tmpVersion >= destVersion) {
+                                     CXLogUtil.v(tag, "---->>>> 清空版本号为\(tmpVersion)(升级/回滚的目标版本为\(destVersion)) 的所有本地文件以及配置信息")
+                                     iterate.remove()                                                                //删除在list中的位置
+                                     CXFileUtil.deleteFile(CXHybirdUtil.getZipFile(tmpConfig))              //删除 zip
+                                     CXFileUtil.deleteDirectory(CXHybirdUtil.getUnzipDir(tmpConfig))        //删除 unzipDir
+                                 }
+                             }
+                         }
+                         configList.add(0, nextConfig!)
+                         CXHybirdBundleInfoManager.saveConfigListToBundleByName(moduleManager!.currentConfig.moduleName, configList)
+                         moduleManager!.currentConfig = nextConfig!
+                         CXLogUtil.e(tag, "---->>>> 重置当前 本地配置头 为:\(moduleManager!.currentConfig.moduleVersion)")
+                     }
+                 } else {
+                     CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息不为空, 但是本地文件夹校验失败, 不做处理, 清除下次生效的该配置文件")
+                 }
 
 
-                CXHybirdBundleInfoManager.removeNextConfigBundleByName(moduleManager!.currentConfig.moduleName)
-            } else {
-                CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息为空,无需处理")
-            }
+                 CXHybirdBundleInfoManager.removeNextConfigBundleByName(moduleManager!.currentConfig.moduleName)
+             } else {
+                 CXLogUtil.v(tag, "---->>>> 检测下次生效的配置信息为空,无需处理")
+             }
 
-            //ifNeed 体现在此处
-            if (nextConfig != nil || mustFitLocal) {
-                CXHybirdUtil.fitLocalConfigsInfoSync(moduleName!)
-            }
-        } else {
-            CXLogUtil.v(tag, "---->>>> 检测当前模块正在被浏览器加载,不能处理")
-        }
+             //ifNeed 体现在此处
+             if (nextConfig != nil || mustFitLocal) {
+                 CXHybirdUtil.fitLocalConfigsInfoSync(moduleName!)
+             }
+         } else {
+             CXLogUtil.v(tag, "---->>>> 检测当前模块正在被浏览器加载,不能处理")
+         }
 
-        CXLogUtil.v(tag, "---->>>>  检测是否有下次启动生效的配置文件需要处理 结束, 当前线程:\(Thread.currentThread().name)")
+         CXLogUtil.v(tag, "---->>>>  检测是否有下次启动生效的配置文件需要处理 结束, 当前线程:\(Thread.currentThread().name)")*/
     }
 
 }

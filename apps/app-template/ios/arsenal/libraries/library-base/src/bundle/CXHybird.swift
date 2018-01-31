@@ -395,7 +395,7 @@ class CXHybird: NSObject {
         }
 
         return modules.values.firstOrNull {
-            isMemberOfModule($0?.currentConfig, url)
+            isMemberOfModule($0.currentConfig, url)
         }
     }
 

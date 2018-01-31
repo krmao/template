@@ -16,7 +16,7 @@ class CXPreferencesUtil {
         UserDefaults.standard.set(value, forKey: key)
     }
 
-    static func putJsonString(_ key: String, _ value: Any) {
+    static func putJsonString<T: Encodable>(_ key: String, _ value: T) {
         UserDefaults.standard.set(CXJsonUtil.toJSONString(value), forKey: key)
     }
 
@@ -32,21 +32,23 @@ class CXPreferencesUtil {
         return CXJsonUtil.parse(type, getString(key))
     }
 
-    static func putList(_ key: String, _ list: Array<Any>) {
-        putJsonString(key: key, value: list)
+    static func putList<T: Encodable>(_ key: String, _ list: Array<T>) {
+        putJsonString(key, list)
     }
 
 
-    static func putMap(_ key: String, _ map: Map<String, Any>) {
+    static func putMap<T: Encodable>(_ key: String, _ map: Map<String, T>) {
         putJsonString(key, map)
     }
 
-    static func getMap<T: Decodable>(_ key: String, _ type: T.Type) -> MutableMap<String, T> {
-        return getEntity(key, type)
+    static func getMap<T: Decodable>(_ key: String, _ type: T.Type) -> MutableMap<String, T>? {
+//        return getEntity(key, Dictionary<String, T>)
+        return MutableMap<String, T>()
     }
 
-    static func getList<T: Decodable>(_ key: String, _ type: T.Type) -> MutableList<T> {
-        return getEntity(key, type)
+    static func getList<T: Decodable>(_ key: String, _ type: T.Type) -> MutableList<T>? {
+//        return getEntity(key, Array<T>)
+        return MutableList<T>()
     }
 
     static func getInt(_ key: String) -> Int {

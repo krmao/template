@@ -1,7 +1,9 @@
-class CXHybirdModuleBundleModel: NSObject {
-    var moduleName: String = ""
-    var moduleConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
-    var moduleNextConfig: CXHybirdModuleConfigModel? = nil
+import Foundation
+
+public class CXHybirdModuleBundleModel: NSObject {
+    public var moduleName: String = ""
+    public var moduleConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
+    public var moduleNextConfig: CXHybirdModuleConfigModel? = nil
 
     public init(_ name: String, _ list: MutableList<CXHybirdModuleConfigModel>) {
         self.moduleName = name
@@ -12,4 +14,6 @@ class CXHybirdModuleBundleModel: NSObject {
         self.moduleName = name
         self.moduleNextConfig = moduleNextConfig
     }
+
+
 }

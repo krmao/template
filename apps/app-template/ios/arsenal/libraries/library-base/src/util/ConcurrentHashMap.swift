@@ -134,9 +134,19 @@ extension Array {
 
     }
 
-    mutating func remove(_ obj: Array.Element) {
-//        if let index = index(of: obj) {
-//            remove(at: index)
-//        }
+    mutating func remove(where predicate: (Array.Element) throws -> Bool) {
+        if let i = try? index(where: predicate) {
+            remove(at: i!)
+        }
+    }
+
+    mutating func remove<T: Equatable>(_ obj: T) {
+        if let i = try? index(where: { $0 is T && ($0 as! T) == obj }) {
+            remove(at: i!)
+        }
+    }
+
+    mutating func contains<T: Equatable>(_ obj: T) -> Bool {
+        return contains(where: { $0 is T && ($0 as! T) == obj })
     }
 }

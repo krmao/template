@@ -39,15 +39,18 @@ public class CXHybirdModuleConfigModel: NSObject, Codable {
 
     public override var description: String {
         return """
-        moduleName: \(self.moduleName)
-        moduleVersion: \(self.moduleVersion)
-        moduleDebug: \(self.moduleDebug)
-        moduleUpdateStrategy: \(self.moduleUpdateStrategy)
-        moduleMainUrl: \(self.moduleMainUrl)
-        moduleConfigUrl: \(self.moduleConfigUrl)
-        moduleDownloadUrl: \(self.moduleDownloadUrl)
-        moduleZipMd5: \(self.moduleZipMd5)
-        moduleFilesMd5: \(self.moduleFilesMd5)
+            \n
+            --------
+            moduleName: \(self.moduleName)
+            moduleVersion: \(self.moduleVersion)
+            moduleDebug: \(self.moduleDebug)
+            moduleUpdateStrategy: \(self.moduleUpdateStrategy)
+            moduleMainUrl: \(self.moduleMainUrl)
+            moduleConfigUrl: \(self.moduleConfigUrl)
+            moduleDownloadUrl: \(self.moduleDownloadUrl)
+            moduleZipMd5: \(self.moduleZipMd5)
+            moduleFilesMd5: \(self.moduleFilesMd5)
+            \n
         """
     }
 }

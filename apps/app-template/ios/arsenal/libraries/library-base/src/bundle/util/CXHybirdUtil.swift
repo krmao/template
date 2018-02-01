@@ -179,6 +179,33 @@ class CXHybirdUtil {
                     }
                     CXLogUtil.e(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip] end   read")
                     CXLogUtil.j(CXLogUtil.DEBUG, allConfigList)
+
+
+                    if (allConfigList.isNotEmpty()) {
+                        for (index, config) in allConfigList.enumerated().reversed(){
+                            CXLogUtil.w(index)
+                            let zipFile = getZipFile(config)
+                            let unzipDir = getUnzipDir(config)
+
+//                            let copyStart = System.currentTimeMillis()
+//                            let copyPrimaryZipFromAssetsSuccess = copyModuleZipFromAssets(config.moduleName, config)
+//                            let copyTime = System.currentTimeMillis() - copyStart
+//
+//                            if (copyPrimaryZipFromAssetsSuccess) {
+//                                let unzipStart = System.currentTimeMillis()
+//                                let unzipToLocalSuccess = unzipToLocal(zipFile, unzipDir)
+//                                let unzipTime = System.currentTimeMillis() - unzipStart
+//
+//                                CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 成功, 解压\(unzipToLocalSuccess ? "成功" : "失败"), 拷贝耗时:\(copyTime) ms, 解压耗时:\(unzipTime) ms, 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+//                                if (!unzipToLocalSuccess) {
+//                                    allConfigList.remove(at: index)
+//                                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 解压\(config.moduleName).zip 到文件夹失败, 从列表中删除 \(config.moduleName), 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+//                                }
+//                            } else {
+//                                CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 失败, 拷贝耗时:\(copyTime) ms, 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+//                            }
+                        }
+                    }
                     return Disposables.create()
                 }
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
@@ -189,36 +216,6 @@ class CXHybirdUtil {
                     CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 一共耗时:\(System.currentTimeMillis() - start)ms")
                     callback(allConfigList)
                 })
-
-
-//            if (allConfigList.isNotEmpty()) {
-//                let iterator = allConfigList.iterator()
-//                while (iterator.hasNext()) {
-//                    let config = iterator.next()
-//                    let zipFile = getZipFile(config)
-//                    let unzipDir = getUnzipDir(config)
-//
-//                    let copyStart = System.currentTimeMillis()
-//                    let copyPrimaryZipFromAssetsSuccess = copyModuleZipFromAssets(config.moduleName, config)
-//                    let copyTime = System.currentTimeMillis() - copyStart
-//
-//                    if (copyPrimaryZipFromAssetsSuccess) {
-//                        let unzipStart = System.currentTimeMillis()
-//                        let unzipToLocalSuccess = unzipToLocal(zipFile, unzipDir)
-//                        let unzipTime = System.currentTimeMillis() - unzipStart
-//
-//                        CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 成功, 解压\(unzipToLocalSuccess ? "成功" : "失败"), 拷贝耗时:\(copyTime) ms, 解压耗时:\(unzipTime) ms, 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
-//                        if (!unzipToLocalSuccess) {
-//                            iterator.remove()
-//                            CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 解压\(config.moduleName).zip 到文件夹失败, 从列表中删除 \(config.moduleName), 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
-//                        }
-//                    } else {
-//                        CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 失败, 拷贝耗时:\(copyTime) ms, 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
-//                    }
-//                }
-//            }
-
-
     }
 
     static func downloadAllModules(_ configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((_ validConfigList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {

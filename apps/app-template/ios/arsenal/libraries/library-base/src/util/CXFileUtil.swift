@@ -3,6 +3,8 @@ import Foundation
 class CXFileUtil {
     static let TAG = "[file]"
 
+    static let docDir = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray)[0] as! String + "/"
+
     static func deleteFile(_ file: File?) {
         if (file == nil) {
             return

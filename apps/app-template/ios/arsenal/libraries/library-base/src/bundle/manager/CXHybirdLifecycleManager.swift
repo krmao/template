@@ -8,7 +8,7 @@ class CXHybirdLifecycleManager {
         if (moduleName == nil) {
             return false
         }
-        CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载\(moduleName)的浏览器数量=\(lifecycleMap[moduleName!]?.size ?? 0)")
+        CXLogUtil.e(CXHybird.TAG, ">>>>>>>>>><<<<<<<<<< 已经加载\(moduleName ?? "nil")的浏览器数量=\(lifecycleMap[moduleName!]?.size ?? 0)")
         return lifecycleMap[moduleName!]?.isNotEmpty() == true
     }
 

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-               BuildableName = "template.app"
+               BuildableName = "template"
                BlueprintName = "template"
                ReferencedContainer = "container:template.xcodeproj">
             </BuildableReference>
@@ -34,7 +34,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "template.app"
+            BuildableName = "template"
             BlueprintName = "template"
             ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "template.app"
+            BuildableName = "template"
             BlueprintName = "template"
             ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
@@ -77,7 +77,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "template.app"
+            BuildableName = "template"
             BlueprintName = "template"
             ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>

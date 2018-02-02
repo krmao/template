@@ -51,6 +51,7 @@ class CXJsonUtil {
         return model
     }
 
+    //allConfigList = CXJsonUtil.parse([CXHybirdModuleConfigModel].self, allConfigJsonString) ?? MutableList<CXHybirdModuleConfigModel>()
     static func parseArray<T: Decodable>(_ jsonString: String?) -> [T]? {
         return parse(jsonString)
     }

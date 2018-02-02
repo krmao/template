@@ -23,6 +23,10 @@ extension Dictionary {
         }
     }
 
+    public func containsKey(_ key: Key) -> Bool {
+        return self[key] != nil
+    }
+
     public func keys() -> Set<Dictionary.Key> {
 //        return Set<Dictionary.Key>(arrayLiteral: keys)
         return Set<Dictionary.Key>()
@@ -115,6 +119,10 @@ extension Array {
 
     public func toMutableList() -> MutableList<Array.Element> {
         return self
+    }
+
+    public func getOrNull(_ index: Int) -> Element? {
+        return (index >= 0 && index <= (self.count - 1)) ? self[index] : nil
     }
 
     public func sortedByDescending() -> MutableList<Array.Element> {

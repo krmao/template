@@ -1,19 +1,29 @@
 import Foundation
-//import Zip
+
+import Zip
 
 class CXZipUtil {
     static var TAG = "[ZIP]"
 
-    static func unzip(_ zipFilePath: String,_ targetDirPath: String) throws {
-        CXLogUtil.d(TAG, "unzip from:" + zipFilePath + " to:" + targetDirPath)
-        /*try Zip.unzipFile(
-                URL.init(string: zipFilePath)!,
-                destination: URL.init(string: targetDirPath)!,
+    static func unzip(_ fromFile: File?, _ toFile: File?) throws {
+        try unzip(fromFile?.path, toFile?.path)
+    }
+
+    static func unzip(_ fromPath: String?, _ toPath: String?) throws {
+        if (TextUtils.isEmpty(fromPath) || TextUtils.isEmpty(toPath)) {
+            CXLogUtil.e("unzip failure")
+            return
+        }
+
+        CXLogUtil.d(TAG, "unzip from:\(fromPath) to:\(toPath)")
+        try Zip.unzipFile(
+                URL.init(string: fromPath!)!,
+                destination: URL.init(string: toPath!)!,
                 overwrite: true,
                 password: "password",
                 progress: { (progress) -> () in
-                    CXLogUtil.d(TAG, "unzip progress:", progress)
-                })*/
+                    CXLogUtil.d("unzip progress:", progress)
+                })
         CXLogUtil.d(TAG, "unzip success")
     }
 }

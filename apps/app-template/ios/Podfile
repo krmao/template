@@ -18,7 +18,7 @@ target 'template' do
   # ==================== 工具库 ====================
   pod 'SwiftyBeaver'
   # pod 'IQKeyboardManagerSwift' #,'4.0.10'
-  # pod 'Zip', '~> 1.1.0'
+  pod 'Zip', '~> 1.1.0'
   pod 'RxCocoa', '~> 4.1.1'
   pod 'MBProgressHUD', '~> 1.1.0'
 

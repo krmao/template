@@ -23,6 +23,14 @@ extension String {
         return TextUtils.isEmpty(self)
     }
 
+    public func startsWith(_ prefix: String, _  ignoreCase: Bool = false) -> Bool {
+        return ignoreCase ? self.lowercased().hasPrefix(prefix) : self.hasPrefix(prefix)
+    }
+
+    public func endsWith(_ suffix: String, _ ignoreCase: Bool = false) -> Bool {
+        return ignoreCase ? self.lowercased().hasSuffix(suffix) : self.hasSuffix(suffix)
+    }
+
     public func isNotBlank() -> Bool {
         return !isEmpty()
     }
@@ -62,6 +70,14 @@ extension String {
     var urlDecoded: String? {
         get {
             return self.removingPercentEncoding
+        }
+    }
+}
+
+extension Substring {
+    var string: String? {
+        get {
+            return String(self)
         }
     }
 }

@@ -11,7 +11,7 @@ class CXURLProtocol: URLProtocol {
     private static let CLASS_STRING_UNREGISTER_SCHEME = "dW5yZWdpc3RlclNjaGVtZUZvckN1c3RvbVByb3RvY29sOg==".base64Decoded?.string ?? ""
 
     override class func canInit(with request: URLRequest) -> Bool {
-        CXLogUtil.d()
+        CXLogUtil.d("URLProtocol:canInit->\(request.url)")
         var canInit = request.url?.host == CXURLProtocol.HOST
 
         if !canInit {

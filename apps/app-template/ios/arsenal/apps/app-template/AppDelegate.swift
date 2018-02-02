@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        //URLProtocol.registerClass(CXURLProtocol.self)
+        URLProtocol.registerClass(CXURLProtocol.self)
         //CXURLProtocol.registerSchemeForWKWebView("http", "https")
 
         //let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)

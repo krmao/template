@@ -16,4 +16,8 @@ public class CXHybirdModuleBundleModel: NSObject {
     }
 
 
+    public override var description: String {
+        return "(name:\(self.moduleName) configSize:\(self.moduleConfigList.size)) nextConfig:\(moduleNextConfig?.moduleName ?? "nil")"
+    }
+
 }

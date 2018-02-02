@@ -22,7 +22,7 @@ class CXZipUtil {
                 overwrite: true,
                 password: "password",
                 progress: { (progress) -> () in
-                    CXLogUtil.d("unzip progress:", progress)
+                    //CXLogUtil.d("unzip progress:", progress)
                 })
         CXLogUtil.d(TAG, "unzip success")
     }

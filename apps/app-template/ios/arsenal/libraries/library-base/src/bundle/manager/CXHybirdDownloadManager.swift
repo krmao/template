@@ -19,7 +19,7 @@ class CXHybirdDownloadManager {
 
         let zipFile = CXHybirdUtil.getZipFile(remoteConfig)
 
-        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 开始, 当前版本=\(moduleManager?.currentConfig.moduleVersion), 即将下载的版本=\(remoteConfig.moduleVersion), 即将下载的URL=\(remoteConfig.moduleDownloadUrl), 当前线程:\(Thread.currentThread().name)")
+        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 开始, 当前版本=\(moduleManager?.currentConfig.moduleVersion), 即将下载的版本=\(remoteConfig.moduleVersion), 即将下载的URL=\(remoteConfig.moduleDownloadUrl), 当前线程:\(Thread.currentThread())")
         let nextConfig = CXHybirdBundleInfoManager.getNextConfigFromBundleByName(moduleName)
         CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: nextConfig:\(nextConfig?.moduleName):\(nextConfig?.moduleVersion):\(nextConfig?.moduleDownloadUrl)")
         CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "下载管理器 第一步: remoteConfig:\(remoteConfig.moduleName):\(remoteConfig.moduleVersion):\(remoteConfig.moduleDownloadUrl)")

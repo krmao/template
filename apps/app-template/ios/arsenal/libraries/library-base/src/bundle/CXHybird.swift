@@ -154,12 +154,12 @@ class CXHybird: NSObject {
             let start = System.currentTimeMillis()
             CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块开始")
 
-            CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+            CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
             CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):开始], \(config!.moduleDownloadUrl)")
 
             CXHybirdDownloadManager.download(config!) { isLocalFilesValid in
                 CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):结束], isLocalFilesValid:\(isLocalFilesValid)")
-                CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms, config=\(config)")
+                CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:\(config!.moduleName):结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms, config=\(config)")
                 if (isLocalFilesValid) {
                     initModule(config)
                 }
@@ -171,10 +171,10 @@ class CXHybird: NSObject {
     private static func initModule(_ config: CXHybirdModuleConfigModel?, _ callback: ((_ config: CXHybirdModuleConfigModel?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始]-----------------------------------------------------------------------------------")
-        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
         if (config == nil) {
             CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束], 没有模块需要初始化")
-            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
             CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束]-----------------------------------------------------------------------------------")
             callback?(nil)
         } else {
@@ -184,7 +184,7 @@ class CXHybird: NSObject {
                     .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                     .subscribe(
                             onNext: { it in
-                                CXLogUtil.e(TAG, "--[initModule:\(config!.moduleName)初始化结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+                                CXLogUtil.e(TAG, "--[initModule:\(config!.moduleName)初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
                                 CXLogUtil.e(TAG, "--[initModule:\(config!.moduleName)初始化结束]-----------------------------------------------------------------------------------")
                                 callback?(config!)
                             }
@@ -194,7 +194,7 @@ class CXHybird: NSObject {
 
     private static func initModuleManager(_ config: CXHybirdModuleConfigModel?) {
         let _start = System.currentTimeMillis()
-        CXLogUtil.w(TAG, "--[initModule:\(config?.moduleName)](开始), 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(_start)))")
+        CXLogUtil.w(TAG, "----------[initModule:\(config?.moduleName ?? "nil")](开始), 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(_start)))")
 
         if (config != nil) {
             let moduleManager = CXHybirdModuleManager.create(config!)
@@ -203,7 +203,7 @@ class CXHybird: NSObject {
                 CXHybirdBundleInfoManager.saveConfigToBundleByName(config!.moduleName, config!)
             }
         }
-        CXLogUtil.w(TAG, "--[initModule:\(config?.moduleName)](结束), 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) , 一共耗时:\(System.currentTimeMillis() - _start)ms")
+        CXLogUtil.w(TAG, "----------[initModule:\(config?.moduleName ?? "nil")](结束), 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) , 一共耗时:\(System.currentTimeMillis() - _start)ms")
     }
 
     /**
@@ -212,25 +212,37 @@ class CXHybird: NSObject {
     private static func initAllModules(_ configList: MutableList<CXHybirdModuleConfigModel>?, _ isNeedCheckAllUpdateAfterAllModulesSuccessInit: Bool = true, _ callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始]-----------------------------------------------------------------------------------")
-        CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))  ,isNeedCheckAllUpdateAfterAllModulesSuccessInit=\(isNeedCheckAllUpdateAfterAllModulesSuccessInit)")
+        CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))  ,isNeedCheckAllUpdateAfterAllModulesSuccessInit=\(isNeedCheckAllUpdateAfterAllModulesSuccessInit)")
         if (configList == nil || configList!.isEmpty()) {
             CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 没有模块需要初始化")
-            CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+            CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
             CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
             callback?(nil)
         } else {
 
+//            configList!.map { config -> Observable<Any> in
+//                CXLogUtil.d(config.moduleName)
+//                return Observable<CXHybirdModuleConfigModel>.just(config).map { element -> Observable<CXHybirdModuleConfigModel> in
+//                    CXLogUtil.e(config.moduleName)
+//                    return Observable<CXHybirdModuleConfigModel>.just(element)
+//                }.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+//
+//            }
+
+            CXLogUtil.d("zip-> size=\(configList!.size) \(Thread.currentThread())")
             Observable.zip(
-                    configList!.map { (config: CXHybirdModuleConfigModel?) in
+                            configList!.map { config -> Observable<CXHybirdModuleConfigModel> in
+                                CXLogUtil.i("zip-> \(config.moduleName) size=\(configList!.size) \(Thread.currentThread())")
 
-                        Observable.from {
-                            initModuleManager(config)
-                        }.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-
-                    }
-            ).subscribe(
-                    onNext: { it in
-                        CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+                                return Observable<CXHybirdModuleConfigModel>.just(config).map { element -> CXHybirdModuleConfigModel in
+                                    CXLogUtil.d("zip-> \(config.moduleName) size=\(configList!.size) \(Thread.currentThread())")
+                                    initModuleManager(element)
+                                    return element
+                                }//.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+                            }
+                    )
+                    .subscribe(onNext: { it in
+                        CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
                         CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
 
                         callback?(configList!)
@@ -242,37 +254,41 @@ class CXHybird: NSObject {
         }
     }
 
-    /**
-     * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
-     */
+/**
+ * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
+ */
     static func checkAllUpdate() {
         let start = System.currentTimeMillis()
-        CXLogUtil.e(TAG, ">>>>----检查更新:下载开始, 当前线程:\(Thread.currentThread().name), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
-        allConfiger?(allConfigUrl) { (remoteConfigList: MutableList<CXHybirdModuleConfigModel>?) in
-            CXLogUtil.w(TAG, ">>>>----检查更新:下载\(remoteConfigList == nil ? "失败" : "成功"), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
-            CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
-            CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
+        CXLogUtil.w(TAG, ">>>>----检查更新:下载开始, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+        if (allConfiger == nil) {
+            CXLogUtil.w(TAG, ">>>>----检查更新:结束,allConfiger == nil !!! 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
+        } else {
+            allConfiger!(allConfigUrl) { (remoteConfigList: MutableList<CXHybirdModuleConfigModel>?) in
+                CXLogUtil.w(TAG, ">>>>----检查更新:下载\(remoteConfigList == nil ? "失败" : "成功"), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
+                CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
+                CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
 
-            var needDownloadAndInitConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
+                var needDownloadAndInitConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
 
 
-            remoteConfigList?.forEach { it in
-                if (modules.containsKey(it.moduleName)) {
-                    CXLogUtil.w(TAG, ">>>>----检测模块\(it.moduleName)已经被初始化过, 走更新流程")
-                    checkUpdate(it)
-                } else if (initStrategy == CXHybirdInitStrategy.DOWNLOAD) {
-                    CXLogUtil.w(TAG, ">>>>----检测模块\(it.moduleName)已经尚未被初始化过, 且当前初始化策略为在线下载初始化, 走下载初始化流程")
-                    needDownloadAndInitConfigList.add(it)
+                remoteConfigList?.forEach { it in
+                    if (modules.containsKey(it.moduleName)) {
+                        CXLogUtil.w(TAG, ">>>>----检测模块\(it.moduleName)已经被初始化过, 走更新流程")
+                        checkUpdate(it)
+                    } else if (initStrategy == CXHybirdInitStrategy.DOWNLOAD) {
+                        CXLogUtil.w(TAG, ">>>>----检测模块\(it.moduleName)已经尚未被初始化过, 且当前初始化策略为在线下载初始化, 走下载初始化流程")
+                        needDownloadAndInitConfigList.add(it)
+                    }
+
                 }
 
-            }
+                if (needDownloadAndInitConfigList.isNotEmpty()) {
+                    downloadAndInitModules(needDownloadAndInitConfigList)
+                }
 
-            if (needDownloadAndInitConfigList.isNotEmpty()) {
-                downloadAndInitModules(needDownloadAndInitConfigList)
+                CXLogUtil.w(TAG, ">>>>----检查更新:结束, 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
+                return Void()
             }
-
-            CXLogUtil.w(TAG, ">>>>----检查更新:结束, 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
-            return Void()
         }
     }
 
@@ -332,7 +348,7 @@ class CXHybird: NSObject {
         if (moduleManager != nil) {
             let moduleName = moduleManager!.currentConfig.moduleName
             let start = System.currentTimeMillis()
-            CXLogUtil.v(TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion),当前线程:\(Thread.currentThread().name)")
+            CXLogUtil.v(TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion),当前线程:\(Thread.currentThread())")
             CXLogUtil.v(TAG + ":" + moduleName, "当前配置=\(moduleManager!.currentConfig)")
 
             if (configer == nil) {
@@ -354,9 +370,9 @@ class CXHybird: NSObject {
             }
 
             let moduleConfigUrl = moduleManager!.currentConfig.moduleConfigUrl
-            CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion): \(moduleConfigUrl) , 当前线程:\(Thread.currentThread().name)")
+            CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion): \(moduleConfigUrl) , 当前线程:\(Thread.currentThread())")
             configer?(moduleConfigUrl) { remoteConfig in
-                CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 \(remoteConfig == nil ? "失败" : "成功") , 当前线程:\(Thread.currentThread().name)")
+                CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 \(remoteConfig == nil ? "失败" : "成功") , 当前线程:\(Thread.currentThread())")
                 CXLogUtil.v(TAG + ":" + moduleName, "remoteConfig->")
                 CXLogUtil.j(CXLogUtil.INFO, CXJsonUtil.toJson(remoteConfig))
                 if (remoteConfig != nil) {
@@ -390,7 +406,7 @@ class CXHybird: NSObject {
                 callback?()
                 return Void()
             }
-            CXLogUtil.v(TAG + ":" + moduleName, "检查更新 结束, 当前线程:\(Thread.currentThread().name), 耗时: \(System.currentTimeMillis() - start)ms")
+            CXLogUtil.v(TAG + ":" + moduleName, "检查更新 结束, 当前线程:\(Thread.currentThread()), 耗时: \(System.currentTimeMillis() - start)ms")
         }
     }
 

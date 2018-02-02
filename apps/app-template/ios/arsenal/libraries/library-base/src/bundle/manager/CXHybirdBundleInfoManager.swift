@@ -24,7 +24,7 @@ class CXHybirdBundleInfoManager: NSObject {
 
     static func saveBundles(_ bundleMap: Map<String, CXHybirdModuleBundleModel>) {
 //        CXPreferencesUtil.putMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, bundleMap)
-        CXLogUtil.w(TAG, "保存配置信息到 sharedPreference: \(bundleMap)")
+        CXLogUtil.i("--------------->>>> 保存配置信息到 sharedPreference: \(bundleMap)")
     }
 
     static func saveConfigListToBundleByName(_ moduleName: String?, _ configList: MutableList<CXHybirdModuleConfigModel>) {

@@ -49,7 +49,19 @@ class CXHybird: NSObject {
      *       false 代表是已发布的正式的去打包，不能拉取动态更新的测试版本
      */
 
-    static func initialize(debug: Bool = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((_ configUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil, configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil, downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil) {
+    static func initialize(debug: Bool = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
+        initialize(debug: debug, initStrategy: initStrategy, allConfigUrl: "", allConfiger: nil, configer: nil, downloader: nil, callback: callback)
+    }
+
+    static func initialize(
+            debug: Bool = true,
+            initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy,
+            allConfigUrl: String = "",
+            allConfiger: ((_ configUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil,
+            configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil,
+            downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil,
+            callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil
+    ) {
 
 
         objc_sync_enter(self)
@@ -115,7 +127,7 @@ class CXHybird: NSObject {
                 CXLogUtil.w(TAG, ">>>>----由于未检测到缓存配置信息, 开始执行从 assets 读取总配置信息进行初始化")
 
                 CXHybirdUtil.getConfigListFromAssetsWithCopyAndUnzip { configList in
-                    CXHybird.initAllModules(configList, true)
+                    CXHybird.initAllModules(configList, true, callback)
                 }
             }
         } else {
@@ -241,6 +253,7 @@ class CXHybird: NSObject {
                                 }//.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                             }
                     )
+                    .observeOn(MainScheduler.instance)
                     .subscribe(onNext: { it in
                         CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
                         CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
@@ -411,9 +424,11 @@ class CXHybird: NSObject {
     }
 
     static func getModule(_ url: String?) -> CXHybirdModuleManager? {
-        if (url?.isNullOrBlank() == true) {
+        if (url == nil || url!.isNullOrBlank()) {
             return nil
         }
+
+        print("modules:\(modules.map { $0 })")
 
         return modules.values.firstOrNull {
             isMemberOfModule($0.currentConfig, url)

@@ -11,7 +11,6 @@
 		3D52A022A91CA01AFE3E2C41 /* CXThreadExtension copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7F84AEB1104F5EA3FB1 /* CXThreadExtension copy.swift */; };
 		3D52A030F14AA48DDEC470FF /* storeselect-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A04D80A0D65D19E36B85 /* storeselect-1.0.zip */; };
 		3D52A040BA78D2773FF7C4AA /* CXHybird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A08D05CD3DEE53D8987F /* CXHybird.swift */; };
-		3D52A04C970A8EC26A65AACE /* CXURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */; };
 		3D52A0885CC01144DF290BE8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A20882EC1EF73C14E991 /* Podfile */; };
 		3D52A0A0756E7183F1F5563C /* CXHybirdBundleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AFED1DB7B6E76D14125D /* CXHybirdBundleInfoManager.swift */; };
 		3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */; };
@@ -20,6 +19,7 @@
 		3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */; };
 		3D52A1EAF7C09662D74CD3D8 /* commonactivities-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AE46A1AD449558F47734 /* commonactivities-1.0.zip */; };
 		3D52A1FF8EFC113C549B8AD4 /* CXJsonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A15CB1DB862880C81137 /* CXJsonUtil.swift */; };
+		3D52A210D3D39EFB6F043D34 /* CXUIWebViewURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA688FA6746C47FAD32E /* CXUIWebViewURLProtocol.swift */; };
 		3D52A272E7F9840747019E1D /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ACCB49BA8114880A34B0 /* README.md */; };
 		3D52A2F2731B26B82EC50E98 /* CXHybirdModuleBundleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A90DB8C8E93A25403D28 /* CXHybirdModuleBundleModel.swift */; };
 		3D52A31B4E1C58EEF3B486CC /* CXLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */; };
@@ -49,6 +49,7 @@
 		3D52A9625751BD098194F692 /* CXSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */; };
 		3D52AAB5DEDC91FAA1A02BD1 /* CXHybirdModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3F52C10593C560CACA8 /* CXHybirdModuleManager.swift */; };
 		3D52ABAB249A23BC215DBE82 /* CXHybirdBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7F838985AEB0C4B2F44 /* CXHybirdBridge.swift */; };
+		3D52ABAE483DA614BA26FED3 /* CXWKWebViewURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A849EFAB73504805A188 /* CXWKWebViewURLProtocol.swift */; };
 		3D52ABBF4471F259761AFD38 /* HybirdWKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */; };
 		3D52AC41AB71A57E924DDEFC /* CXDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A1AE25FC7CED3F95E08D /* CXDataExtension.swift */; };
 		3D52AC4C204B69184D1A0B58 /* coupon-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AF543AFDF8D45FD80266 /* coupon-1.0.zip */; };
@@ -98,17 +99,18 @@
 		3D52A797AF2221424E7F66AA /* all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all.json; sourceTree = "<group>"; };
 		3D52A7F838985AEB0C4B2F44 /* CXHybirdBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdBridge.swift; sourceTree = "<group>"; };
 		3D52A7F84AEB1104F5EA3FB1 /* CXThreadExtension copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CXThreadExtension copy.swift"; sourceTree = "<group>"; };
+		3D52A849EFAB73504805A188 /* CXWKWebViewURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXWKWebViewURLProtocol.swift; sourceTree = "<group>"; };
 		3D52A90DB8C8E93A25403D28 /* CXHybirdModuleBundleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdModuleBundleModel.swift; sourceTree = "<group>"; };
 		3D52A91A8CB203605AE0392D /* IllegalArgumentException.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IllegalArgumentException.swift; sourceTree = "<group>"; };
 		3D52A9203F222AC3755A9494 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		3D52A9238458C62421CAB4BF /* CXThreadExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXThreadExtension.swift; sourceTree = "<group>"; };
 		3D52A92B6A23B01357632FB2 /* CXHybirdInitStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdInitStrategy.swift; sourceTree = "<group>"; };
 		3D52A9696F4B13648DC9897E /* CXTimeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXTimeUtil.swift; sourceTree = "<group>"; };
-		3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXURLProtocol.swift; sourceTree = "<group>"; };
 		3D52A9CCFB8D7EC9354020C8 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		3D52A9ECEBD94F6AEBAB38DA /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
 		3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdMethods.swift; sourceTree = "<group>"; };
 		3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIWebView.swift; sourceTree = "<group>"; };
+		3D52AA688FA6746C47FAD32E /* CXUIWebViewURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIWebViewURLProtocol.swift; sourceTree = "<group>"; };
 		3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXLogUtil.swift; sourceTree = "<group>"; };
 		3D52AA7D35316AFCD0EE2C3D /* orderresult-1.0.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "orderresult-1.0.zip"; sourceTree = "<group>"; };
 		3D52AA948D98B9B192AF39FA /* CXCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXCacheManager.swift; sourceTree = "<group>"; };
@@ -272,8 +274,8 @@
 			isa = PBXGroup;
 			children = (
 				3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */,
-				3D52A9AF4220559943E30B49 /* CXURLProtocol.swift */,
 				3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */,
+				3D52AC7B544EF9A661E02A0A /* protocol */,
 			);
 			path = webview;
 			sourceTree = "<group>";
@@ -307,6 +309,15 @@
 				3D52AFED1DB7B6E76D14125D /* CXHybirdBundleInfoManager.swift */,
 			);
 			path = manager;
+			sourceTree = "<group>";
+		};
+		3D52AC7B544EF9A661E02A0A /* protocol */ = {
+			isa = PBXGroup;
+			children = (
+				3D52A849EFAB73504805A188 /* CXWKWebViewURLProtocol.swift */,
+				3D52AA688FA6746C47FAD32E /* CXUIWebViewURLProtocol.swift */,
+			);
+			path = protocol;
 			sourceTree = "<group>";
 		};
 		3D52AD0CFB42EC7C232D5E55 /* src */ = {
@@ -679,7 +690,6 @@
 				3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */,
 				3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */,
 				3D52A0E04E0F3E02B2DFDEA9 /* CXUIWebView.swift in Sources */,
-				3D52A04C970A8EC26A65AACE /* CXURLProtocol.swift in Sources */,
 				3D52A838880EF31F77ED3587 /* CXWKWebView.swift in Sources */,
 				3D52A040BA78D2773FF7C4AA /* CXHybird.swift in Sources */,
 				3D52AAB5DEDC91FAA1A02BD1 /* CXHybirdModuleManager.swift in Sources */,
@@ -712,6 +722,8 @@
 				3D52A44727269CAB7A1A66A0 /* CXThreadExtension.swift in Sources */,
 				3D52A7DB7DA90C3D0342D9CB /* IllegalArgumentException.swift in Sources */,
 				3D52A022A91CA01AFE3E2C41 /* CXThreadExtension copy.swift in Sources */,
+				3D52ABAE483DA614BA26FED3 /* CXWKWebViewURLProtocol.swift in Sources */,
+				3D52A210D3D39EFB6F043D34 /* CXUIWebViewURLProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

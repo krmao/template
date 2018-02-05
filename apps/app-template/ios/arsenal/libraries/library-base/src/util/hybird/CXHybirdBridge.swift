@@ -12,8 +12,9 @@ class CXHybirdBridge {
 
     private static var classMap = [String: String]()
     private static var schemeMap = [String: (webView: WKWebView?, url: URL?) -> Bool?]()
+//    private static var requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
-    static func callNativeMethod(className: String, methodName: String, _ params: [String]) -> String? {
+    static func callNativeMethod(_ className: String, _ methodName: String, _ params: [String]) -> String? {
         return CXReflectUtil.invoke(className, methodName, params)
     }
 
@@ -56,7 +57,7 @@ class CXHybirdBridge {
 
                 CXLogUtil.d(TAG, "clazzName:\(clazzName) , methodName:\(methodName) , params:size:\(String(describing: paramArray.count)):(\(String(describing: paramArray)) , hashCode:\(String(describing: hashcode))")
 
-                let result = callNativeMethod(className: clazzName, methodName: methodName, paramArray) ?? ""
+                let result = callNativeMethod(clazzName, methodName, paramArray) ?? ""
                 if (hashcode != -1) {
                     callJsFunction(webView, "javascript:window.hybird.onCallback(\(hashcode), '\(result)')")
                 }
@@ -80,11 +81,11 @@ class CXHybirdBridge {
         schemeMap[schemeUrlString] = intercept
     }
 
-    public static func removeScheme(schemeUrlString: String) {
+    public static func removeScheme(_ schemeUrlString: String) {
         schemeMap.removeValue(forKey: schemeUrlString)
     }
 
-    public static func removeScheme(scheme: String, host: String, port: Int) {
+    public static func removeScheme(_ scheme: String, _  host: String, _ port: Int) {
         let schemePrefix = "\(scheme)://\(host):\(port)"
         schemeMap.removeValue(forKey: schemePrefix)
     }

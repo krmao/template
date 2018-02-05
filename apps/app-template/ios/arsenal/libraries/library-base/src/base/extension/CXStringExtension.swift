@@ -15,6 +15,17 @@ extension String {
         }
     }
 
+    /**
+     * Returns a substring after the first occurrence of [delimiter].
+     * If the string does not contain the delimiter, returns [missingDelimiterValue] which defaults to the original string.
+     */
+    public func substringAfter(_ delimiter: String) -> String? {
+        CXLogUtil.i("substringAfter:start->\(delimiter)")
+        let result = components(separatedBy: delimiter).last
+        CXLogUtil.i("substringAfter:end  ->\(result)")
+        return result
+    }
+
     public func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -33,6 +44,10 @@ extension String {
 
     public func isNotBlank() -> Bool {
         return !isEmpty()
+    }
+
+    public func isBlank() -> Bool {
+        return isEmpty()
     }
 
     public func isNullOrBlank() -> Bool {

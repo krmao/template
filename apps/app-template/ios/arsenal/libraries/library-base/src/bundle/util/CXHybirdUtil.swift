@@ -116,15 +116,13 @@ class CXHybirdUtil {
 
     static func getLocalFile(_ config: CXHybirdModuleConfigModel?, _ url: String?) -> File? {
         var localFile: File? = nil
-        /*if (config != nil && url?.isNotBlank() == true) {
-            let scheme = Uri.parse(url)?.scheme?.trim()
-            if ("http".equals(scheme, true) || "https".equals(scheme, true)) {
+        CXLogUtil.e("\(config?.moduleName) \(config?.moduleMainUrl) \(url)")
 
-                var tmpPath = url.substringAfter(config.moduleMainUrl, "")
-
-                if (tmpPath.isNotBlank()) {
-
-                    if (tmpPath.contains("#/")) {
+        if (config != nil && url?.isNotBlank() == true) {
+            if (url!.startsWith("http")) {
+                var tmpPath: String? = url!.substringAfter(config!.moduleMainUrl)
+                if (tmpPath != nil && tmpPath!.isNotBlank()) {
+                    if (tmpPath!.contains("#/")) {
                         //  #/index?userInfo=
                         //  index.shtml#/index?userInfo=
                         tmpPath = "index.shtml"
@@ -134,17 +132,18 @@ class CXHybirdUtil {
                         //  js/app.6aff061a2dc3ffbfb27c.js
                         //  png/xxx
                     }
-                    localFile = File(getUnzipDir(config)?.absolutePath + "/\(tmpPath)")
+                    localFile = File(getUnzipDir(config!), "\(tmpPath!)")
                 }
             }
         } else {
-            CXLogUtil.e(CXHybird.TAG + ":" + config?.moduleName, "params error ! config=\(config) , url=\(url)")
+            CXLogUtil.e("params error ! config=\(config) , url=\(url)")
         }
         let exists = localFile?.exists() == true
-        CXLogUtil.v(CXHybird.TAG + ":" + config?.moduleName, "检测到本地文件\(!exists ? " 不存在 " : " 存在"), 文件路径:\(localFile?.absolutePath)")
+        CXLogUtil.v("检测到本地文件\(!exists ? " 不存在 " : " 存在"), 文件路径:\(localFile?.absolutePath)")
         if (!exists) {
             localFile = nil
-        }*/
+        }
+
         return localFile
     }
 
@@ -305,7 +304,7 @@ class CXHybirdUtil {
  * 设置资源拦截器,URL拦截器
  */
     static func setIntercept(_ config: CXHybirdModuleConfigModel?) {
-        /*let moduleName: String = config?.moduleName ?? ""
+        let moduleName: String = config?.moduleName ?? ""
         let tag: String = CXHybird.TAG + ":" + moduleName
 
         CXLogUtil.v(tag, "======>> 设置拦截器开始: \(config?.moduleVersion)")
@@ -317,7 +316,7 @@ class CXHybirdUtil {
 
         let interceptUrl = config!.moduleMainUrl
 
-        if (interceptUrl.isBlank()) {
+        if (interceptUrl.isEmpty()) {
             CXLogUtil.e(tag, "======>> 检测到 interceptMainUrl == nil return")
             return
         }
@@ -325,11 +324,11 @@ class CXHybirdUtil {
         CXHybirdBridge.removeScheme(interceptUrl)
 //        CXHybirdBridge.removeRequest(interceptUrl)
 
-        *//**
+        /**
          * webView.loadUrl 不会触发此回调,放到 CXHybirdBridge.addRequest(interceptMainUrl) 里面处理
          * http://www.jianshu.com/p/3474cb8096da
-         *//*
-        *//*CXLogUtil.v(config.CXHybird.TAG +":" + moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : \(interceptUrl)")
+         */
+        /*CXLogUtil.v(config.CXHybird.TAG +":" + moduleName, "增加 URL 拦截 , 匹配 -> interceptMainUrl : \(interceptUrl)")
         CXHybirdBridge.addScheme(interceptUrl) { _: WebView?, webViewClient: WebViewClient?, url: String?, callback: (() -> Void?)? ->
             lifecycleManager.onWebViewOpenPage(webViewClient, url)
 
@@ -340,27 +339,19 @@ class CXHybirdUtil {
                 checkUpdate(synchronized = false, switchToOnlineModeIfRemoteVersionChanged = true, callback = callback)
             }
             true
-        }*//*
+        }*////
 
         CXLogUtil.v(tag, "======>> 增加 资源 拦截 , 匹配 -> interceptUrl : \(interceptUrl)")
-        CXHybirdBridge.addRequest(interceptUrl) {
+        /*CXHybirdBridge.addRequest(interceptUrl) {
             (_: WebView?, url: String?) ->
                     CXLogUtil.v(tag, "======>> shouldInterceptRequest: \(url) ,匹配拦截器:\(interceptUrl)")
             var resourceResponse: WebResourceResponse? = nil
             if (CXHybird.modules[moduleName]?.onlineModel != true) {
                 let localFile = CXHybirdUtil.getLocalFile(config, url)
                 if (url != nil && localFile?.exists() == true) {
-                    *//*let mimeType: String = when {
-                        url.contains(".css") -> "text/css"
-                        url.contains(".png") -> "image/png"
-                        url.contains(".js") -> "application/x-javascript"
-                        url.contains(".woff") -> "application/x-font-woff"
-                        url.contains(".html") -> "text/html"
-                        url.contains(".shtml") -> "text/html" else -> "text/html"
-                    }*//*
                     do {
                         CXLogUtil.v(tag, "======>> 执行伪造本地资源")
-                        try resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
+//                        try resourceResponse = WebResourceResponse(mimeType, "UTF-8", FileInputStream(localFile))
                     } catch (e:Error) {
                         CXLogUtil.e(tag, "======>> 伪造本地资源出错", e)
                     }
@@ -371,8 +362,8 @@ class CXHybirdUtil {
                 CXLogUtil.v(tag, "======>> 系统检测到当前为在线模式,访问在线资源")
             }
             resourceResponse
-        }
-        CXLogUtil.v(tag, "======>> 设置拦截器结束")*/
+        }*/
+        CXLogUtil.v(tag, "======>> 设置拦截器结束")
     }
 
 /**

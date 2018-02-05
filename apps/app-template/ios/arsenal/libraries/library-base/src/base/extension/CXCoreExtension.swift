@@ -85,9 +85,10 @@ extension Collection {
         return self.first
     }
 
-    public func firstOrNull(where predicate: (Self.Element) throws -> Bool) rethrows -> Self.Element? {
-//        return self.first(predicate)
-        return nil
+    public func firstOrNull(predicate: (Self.Element) throws -> Bool) rethrows -> Self.Element? {
+        return try self.first { (v: Element) in
+            try predicate(v)
+        }
     }
 }
 

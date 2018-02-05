@@ -18,19 +18,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        URLProtocol.registerClass(CXURLProtocol.self)
-        //CXURLProtocol.registerSchemeForWKWebView("http", "https")
+        URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
+        // CXURLProtocol.registerSchemeForWKWebView("http", "https")
 
-        //let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
+        // let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
         // progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
         // progress.bezelView.backgroundColor = UIColor("#CC000000")
         // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
 
-        CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
+        // CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
 
-        CXHybird.initialize(debug: true, initStrategy: CXHybirdInitStrategy.LOCAL)
+        CXHybird.initialize(debug: true,
+                initStrategy: CXHybirdInitStrategy.LOCAL) { (list: MutableList?) -> Void in
 
-        rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
+            CXLogUtil.e("初始化成功 -> \(list)")
+
+            rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
+        }
+
 
         CXLogUtil.i("application init end <--")
         return true

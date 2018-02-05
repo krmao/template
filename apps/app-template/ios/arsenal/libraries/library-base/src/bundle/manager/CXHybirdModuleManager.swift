@@ -9,7 +9,7 @@ class CXHybirdModuleManager {
 
         defer {
             //swift 这里会触发 didSet
-            self.currentConfig = config//手动重新赋值一下才会调用 其自定义的 set 方法, 从而设置拦截器
+            //self.currentConfig = config//手动重新赋值一下才会调用 其自定义的 set 方法, 从而设置拦截器
         }
     }
 

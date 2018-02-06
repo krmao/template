@@ -6,14 +6,11 @@ class CXHybirdBundleInfoManager: NSObject {
 
     static func getBundles() -> MutableMap<String, CXHybirdModuleBundleModel> {
         let map: MutableMap<String, CXHybirdModuleBundleModel> = CXPreferencesUtil.getMap(KEY_HYBIRD_BUNDLE_MODEL_LIST) ?? MutableMap<String, CXHybirdModuleBundleModel>()
-        CXLogUtil.e("CXHybirdBundleInfoManager:getBundles:\(map.keys())")
-
         map.values.forEach { (bundleModel: CXHybirdModuleBundleModel) in
             bundleModel.moduleConfigList.sort {
                 $0.moduleVersion.toFloatOrNull() ?? -1 > $1.moduleVersion.toFloatOrNull() ?? -1
             }
         }
-
         return map
     }
 

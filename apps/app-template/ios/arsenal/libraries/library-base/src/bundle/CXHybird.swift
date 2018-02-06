@@ -239,7 +239,7 @@ class CXHybird: NSObject {
                                     CXLogUtil.d("zip-> \(config.moduleName) size=\(configList!.size) \(Thread.currentThread())")
                                     initModuleManager(element)
                                     return element
-                                }//.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+                                }.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                             }
                     )
                     .observeOn(MainScheduler.instance)
@@ -256,9 +256,9 @@ class CXHybird: NSObject {
         }
     }
 
-/**
- * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
- */
+    /**
+     * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
+     */
     static func checkAllUpdate() {
         let start = System.currentTimeMillis()
         CXLogUtil.w(TAG, ">>>>----检查更新:下载开始, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")

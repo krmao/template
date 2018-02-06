@@ -5,26 +5,28 @@ class CXHybirdBundleInfoManager: NSObject {
     private static let KEY_HYBIRD_BUNDLE_MODEL_LIST = "KEY_HYBIRD_BUNDLE_MODEL_LIST"
 
     static func getBundles() -> MutableMap<String, CXHybirdModuleBundleModel> {
-        /*let map: MutableMap<String, CXHybirdModuleBundleModel> = CXPreferencesUtil.getMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, CXHybirdModuleBundleModel)
-        map.values.forEach { it in
-            it.moduleConfigList = it.moduleConfigList.sortedByDescending {
-                it.moduleVersion.toFloatOrNull() ?? -1
-            }.toMutableList()
+        let map: MutableMap<String, CXHybirdModuleBundleModel> = CXPreferencesUtil.getMap(KEY_HYBIRD_BUNDLE_MODEL_LIST) ?? MutableMap<String, CXHybirdModuleBundleModel>()
+        CXLogUtil.e("CXHybirdBundleInfoManager:getBundles:\(map.keys())")
+
+        map.values.forEach { (bundleModel: CXHybirdModuleBundleModel) in
+            bundleModel.moduleConfigList.sort {
+                $0.moduleVersion.toFloatOrNull() ?? -1 > $1.moduleVersion.toFloatOrNull() ?? -1
+            }
         }
-        return map*/
-        return MutableMap<String, CXHybirdModuleBundleModel>()
+
+        return map
     }
 
     static func saveBundle(_ bundle: CXHybirdModuleBundleModel) {
-//        saveBundles(getBundles().apply { it in
-//            it[bundle.moduleName] = bundle
-//        })
+        var bundles = getBundles()
+        bundles[bundle.moduleName] = bundle
+        saveBundles(bundles)
     }
 
 
     static func saveBundles(_ bundleMap: Map<String, CXHybirdModuleBundleModel>) {
-//        CXPreferencesUtil.putMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, bundleMap)
-        CXLogUtil.i("--------------->>>> 保存配置信息到 sharedPreference: \(bundleMap)")
+        CXPreferencesUtil.putMap(KEY_HYBIRD_BUNDLE_MODEL_LIST, bundleMap)
+        CXLogUtil.i("--------------->>>> 保存配置信息到 sharedPreference: \(bundleMap.values())")
     }
 
     static func saveConfigListToBundleByName(_ moduleName: String?, _ configList: MutableList<CXHybirdModuleConfigModel>) {
@@ -43,7 +45,7 @@ class CXHybirdBundleInfoManager: NSObject {
 
 
     static func saveConfigListToBundleList(_ configList: MutableList<CXHybirdModuleConfigModel>) {
-        let bundles: MutableMap<String, CXHybirdModuleBundleModel> = getBundles()
+        var bundles: MutableMap<String, CXHybirdModuleBundleModel> = getBundles()
 
         configList.forEach { it in
             var bundle: CXHybirdModuleBundleModel? = bundles[it.moduleName]
@@ -55,7 +57,7 @@ class CXHybirdBundleInfoManager: NSObject {
             } else {
                 bundle!.moduleConfigList.add(it)
             }
-//            bundles[it.moduleName] = bundle
+            bundles[it.moduleName] = bundle
         }
 
         saveBundles(bundles)
@@ -99,9 +101,11 @@ class CXHybirdBundleInfoManager: NSObject {
     /**
      * moduleConfigList 降序排序
      */
-
     static func getConfigListFromBundleByName(_ moduleName: String?) -> MutableList<CXHybirdModuleConfigModel> {
-        return getBundles()[moduleName ?? ""]?.moduleConfigList ?? MutableList<CXHybirdModuleConfigModel>()
+        let configList: MutableList<CXHybirdModuleConfigModel> = getBundles()[moduleName ?? ""]?.moduleConfigList ?? MutableList<CXHybirdModuleConfigModel>()
+        return configList.sorted {
+            $0.moduleVersion.toFloatOrNull() ?? -1 > $1.moduleVersion.toFloatOrNull() ?? -1
+        }
     }
 
 

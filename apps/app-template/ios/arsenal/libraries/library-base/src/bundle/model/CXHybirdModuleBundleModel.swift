@@ -1,6 +1,6 @@
 import Foundation
 
-public class CXHybirdModuleBundleModel: NSObject {
+public class CXHybirdModuleBundleModel: NSObject, Codable {
     public var moduleName: String = ""
     public var moduleConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
     public var moduleNextConfig: CXHybirdModuleConfigModel? = nil

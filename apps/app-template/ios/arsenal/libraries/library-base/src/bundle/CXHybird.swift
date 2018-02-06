@@ -103,7 +103,7 @@ class CXHybird: NSObject {
          * 1: 为空的时候的第一次初始化
          */
         let bundles: MutableMap<String, CXHybirdModuleBundleModel> = CXHybirdBundleInfoManager.getBundles()
-        let bundleNames: MutableSet<String> = bundles.keys()
+        let bundleNames: MutableList<String> = bundles.keys()
 
         CXLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: initStrategy=\(CXHybird.initStrategy), 检测本地是否存在缓存配置信息: bundleNames=\(bundleNames)")
         if (bundleNames.isEmpty()) {
@@ -132,9 +132,7 @@ class CXHybird: NSObject {
             }
         } else {
             CXLogUtil.w(TAG, ">>>>----检测本地有缓存配置信息, 根据缓存配置信息初始化")
-            initAllModules(bundles.values.mapNotNull { it in
-                it.moduleConfigList.firstOrNull()
-            }.toMutableList(), true)
+            initAllModules(bundles.values.mapNotNull { $0.moduleConfigList.firstOrNull() }, true, callback)
         }
 
         //应用程序前后台切换的时候执行一次异步检查更新 todo
@@ -231,15 +229,6 @@ class CXHybird: NSObject {
             CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
             callback?(nil)
         } else {
-
-//            configList!.map { config -> Observable<Any> in
-//                CXLogUtil.d(config.moduleName)
-//                return Observable<CXHybirdModuleConfigModel>.just(config).map { element -> Observable<CXHybirdModuleConfigModel> in
-//                    CXLogUtil.e(config.moduleName)
-//                    return Observable<CXHybirdModuleConfigModel>.just(element)
-//                }.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-//
-//            }
 
             CXLogUtil.d("zip-> size=\(configList!.size) \(Thread.currentThread())")
             Observable.zip(

@@ -17,7 +17,9 @@ class CXPreferencesUtil {
     }
 
     static func putJsonString<T: Encodable>(_ key: String, _ value: T) {
-        UserDefaults.standard.set(CXJsonUtil.toJSONString(value), forKey: key)
+        let json = CXJsonUtil.toJSONString(value)
+        //CXLogUtil.e("preferences:putJsonString:json->\(json)")
+        UserDefaults.standard.set(json, forKey: key)
     }
 
     static func getString(_ key: String, _ defaultValue: String? = nil) -> String? {
@@ -29,7 +31,11 @@ class CXPreferencesUtil {
     }
 
     static func getEntity<T: Decodable>(_ key: String, _ type: T.Type) -> T? {
-        return CXJsonUtil.parse(type, getString(key))
+        let json = getString(key)
+        //CXLogUtil.e("preferences:getEntity:json->\(json)")
+        let entity: T? = CXJsonUtil.parse(json)
+        //CXLogUtil.e("preferences:getEntity:entity->\(entity)")
+        return entity
     }
 
     static func putList<T: Encodable>(_ key: String, _ list: Array<T>) {
@@ -41,14 +47,20 @@ class CXPreferencesUtil {
         putJsonString(key, map)
     }
 
-    static func getMap<T: Decodable>(_ key: String, _ type: T.Type) -> MutableMap<String, T>? {
-//        return getEntity(key, Dictionary<String, T>)
-        return MutableMap<String, T>()
+    static func getMap<T: Decodable>(_ key: String) -> MutableMap<String, T>? {
+        let json = getString(key)
+        //CXLogUtil.e("preferences:getMap:json->\(json)")
+        let map: MutableMap<String, T>? = CXJsonUtil.parse(json)
+        //CXLogUtil.e("preferences:getMap:map->\(map)")
+        return map
     }
 
     static func getList<T: Decodable>(_ key: String, _ type: T.Type) -> MutableList<T>? {
-//        return getEntity(key, Array<T>)
-        return MutableList<T>()
+        let json = getString(key)
+        //CXLogUtil.e("preferences:getList:json->\(json)")
+        let list: MutableList<T>? = CXJsonUtil.parse(json)
+        //CXLogUtil.e("preferences:getList:list->\(list)")
+        return list
     }
 
     static func getInt(_ key: String) -> Int {

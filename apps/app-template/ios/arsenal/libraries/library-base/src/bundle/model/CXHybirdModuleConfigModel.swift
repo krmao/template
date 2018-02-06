@@ -32,10 +32,18 @@ public class CXHybirdModuleConfigModel: NSObject, Codable {
         }
     }
 
-    //MARK: - Equatable
-    static func ==(lhs: CXHybirdModuleConfigModel, rhs: CXHybirdModuleConfigModel) -> Bool {
-        return lhs.moduleVersion == rhs.moduleVersion && lhs.moduleName == rhs.moduleName
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let obj = object as? CXHybirdModuleConfigModel else {
+            return false
+        }
+        return self.moduleVersion == obj.moduleVersion && self.moduleName == obj.moduleName
     }
+
+    //MARK: - Equatable
+    /*public static func ==(lhs: CXHybirdModuleConfigModel, rhs: CXHybirdModuleConfigModel) -> Bool {
+        CXLogUtil.e("== 比较操作")
+        return lhs.moduleVersion == rhs.moduleVersion && lhs.moduleName == rhs.moduleName
+    }*/
 
     public override var description: String {
         return """

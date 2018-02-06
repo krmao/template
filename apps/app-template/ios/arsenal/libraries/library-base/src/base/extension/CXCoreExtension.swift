@@ -27,17 +27,13 @@ extension Dictionary {
         return self[key] != nil
     }
 
-    public func keys() -> Set<Dictionary.Key> {
-//        return Set<Dictionary.Key>(arrayLiteral: keys)
-        return Set<Dictionary.Key>()
-
+    public func keys() -> MutableList<Dictionary.Key> {
+        return MutableList(keys)
     }
 
-//    public func apply(_ callback: (Dictionary.Element) -> Dictionary.Element) -> Dictionary.Element {
-//        return callback(self)
-//    }
-
-
+    public func values() -> MutableList<Dictionary.Value> {
+        return MutableList(values)
+    }
 }
 
 extension Set {
@@ -126,13 +122,6 @@ extension Array {
         return (index >= 0 && index <= (self.count - 1)) ? self[index] : nil
     }
 
-    public func sortedByDescending() -> MutableList<Array.Element> {
-//        return self.sorted { (v: Element, v1: Element) in
-//
-//        }
-        return self
-    }
-
     mutating func add(_ position: Int, _ value: Array.Element) {
         self.insert(value, at: position)
 
@@ -149,13 +138,23 @@ extension Array {
         }
     }
 
+    /**
+     * 如果继承 NSObject, 请重写 'isEqual' 方法 而不是重写 '==' 操作符(除非不继承 NSObject)
+     *
+     * 详见: https://stackoverflow.com/questions/34580089/swift-array-contains-doesnt-call-equatable-function-of-pfuser-subclass
+     */
     mutating func remove<T: Equatable>(_ obj: T) {
-        if let i = try? index(where: { $0 is T && ($0 as! T) == obj }) {
+        if let i = try? index(where: { ($0 as? T) == obj }) {
             remove(at: i!)
         }
     }
 
+    /**
+     * 如果继承 NSObject, 请重写 'isEqual' 方法 而不是重写 '==' 操作符(除非不继承 NSObject)
+     *
+     * 详见: https://stackoverflow.com/questions/34580089/swift-array-contains-doesnt-call-equatable-function-of-pfuser-subclass
+     */
     mutating func contains<T: Equatable>(_ obj: T) -> Bool {
-        return contains(where: { $0 is T && ($0 as! T) == obj })
+        return contains(where: { ($0 as? T) == obj })
     }
 }

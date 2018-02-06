@@ -24,7 +24,6 @@
 		3D52A2F2731B26B82EC50E98 /* CXHybirdModuleBundleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A90DB8C8E93A25403D28 /* CXHybirdModuleBundleModel.swift */; };
 		3D52A31B4E1C58EEF3B486CC /* CXLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */; };
 		3D52A38E44E64C29B97AA0FF /* orderresult-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AA7D35316AFCD0EE2C3D /* orderresult-1.0.zip */; };
-		3D52A39F3C9D24BD37F02399 /* CXBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2A970BFAAEE63CB732B /* CXBundle.swift */; };
 		3D52A44727269CAB7A1A66A0 /* CXThreadExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9238458C62421CAB4BF /* CXThreadExtension.swift */; };
 		3D52A4AE1B6B371BDEF87BB6 /* stricselection-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A612703D9F978717F7D1 /* stricselection-1.0.zip */; };
 		3D52A4EC3CE14FD2420261F7 /* CXHybirdUpdateStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AE70C809010760CD2943 /* CXHybirdUpdateStrategy.swift */; };
@@ -33,11 +32,9 @@
 		3D52A51FC22490328EAA099A /* CXPreferencesUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A4139BC2B4F8ABE223D1 /* CXPreferencesUtil.swift */; };
 		3D52A52170ED5582E5BAE81C /* CXHybirdModuleConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF116313A9E907BFDB3 /* CXHybirdModuleConfigModel.swift */; };
 		3D52A6B762F56D17B1D889DB /* CXHybirdUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2C01DA28A843EC75AFE /* CXHybirdUtil.swift */; };
-		3D52A6C32CC7DA6B9278414D /* CXBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADA2FB16CBEC25C063FA /* CXBundleManager.swift */; };
 		3D52A715FBC8704FDD479C61 /* CXHybirdInitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A92B6A23B01357632FB2 /* CXHybirdInitStrategy.swift */; };
 		3D52A73E6CCADAD7A90C1B42 /* all.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A797AF2221424E7F66AA /* all.json */; };
 		3D52A748BEA71808823C5468 /* CXNSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A168C0B8C374184FBAB8 /* CXNSObjectExtension.swift */; };
-		3D52A775E434557BE6B80A1A /* CXIBundleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AAF348CB7B74CD823C67 /* CXIBundleManager.swift */; };
 		3D52A7DB7DA90C3D0342D9CB /* IllegalArgumentException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A91A8CB203605AE0392D /* IllegalArgumentException.swift */; };
 		3D52A7E84DCB6C7125E8AA9E /* CXTimeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9696F4B13648DC9897E /* CXTimeUtil.swift */; };
 		3D52A7F9EB694A0B2708C925 /* CXFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A6C4303A3CD2095940F6 /* CXFileUtil.swift */; };
@@ -80,7 +77,6 @@
 		3D52A168C0B8C374184FBAB8 /* CXNSObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXNSObjectExtension.swift; sourceTree = "<group>"; };
 		3D52A1AE25FC7CED3F95E08D /* CXDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDataExtension.swift; sourceTree = "<group>"; };
 		3D52A20882EC1EF73C14E991 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		3D52A2A970BFAAEE63CB732B /* CXBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXBundle.swift; sourceTree = "<group>"; };
 		3D52A2C01DA28A843EC75AFE /* CXHybirdUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdUtil.swift; sourceTree = "<group>"; };
 		3D52A31DAB23821567C1CD58 /* CXHybirdLifecycleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdLifecycleManager.swift; sourceTree = "<group>"; };
 		3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXSystemUtil.swift; sourceTree = "<group>"; };
@@ -115,7 +111,6 @@
 		3D52AA7D35316AFCD0EE2C3D /* orderresult-1.0.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "orderresult-1.0.zip"; sourceTree = "<group>"; };
 		3D52AA948D98B9B192AF39FA /* CXCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXCacheManager.swift; sourceTree = "<group>"; };
 		3D52AAF116313A9E907BFDB3 /* CXHybirdModuleConfigModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdModuleConfigModel.swift; sourceTree = "<group>"; };
-		3D52AAF348CB7B74CD823C67 /* CXIBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXIBundleManager.swift; sourceTree = "<group>"; };
 		3D52AAF7F42EC88F1390ECA4 /* HybirdUIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdUIWebViewController.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWKWebViewController.swift; sourceTree = "<group>"; };
 		3D52AB39F9A92786DB69A319 /* WebViewClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewClient.swift; sourceTree = "<group>"; };
@@ -124,7 +119,6 @@
 		3D52ACCB49BA8114880A34B0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3D52AD2DCE32233D04E14AD0 /* CXCoreExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXCoreExtension.swift; sourceTree = "<group>"; };
 		3D52AD6DE75017F3570280CA /* CXUIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIColorExtension.swift; sourceTree = "<group>"; };
-		3D52ADA2FB16CBEC25C063FA /* CXBundleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXBundleManager.swift; sourceTree = "<group>"; };
 		3D52ADD642C38FA594640436 /* CXURLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXURLExtension.swift; sourceTree = "<group>"; };
 		3D52AE46A1AD449558F47734 /* commonactivities-1.0.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "commonactivities-1.0.zip"; sourceTree = "<group>"; };
 		3D52AE70C809010760CD2943 /* CXHybirdUpdateStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdUpdateStrategy.swift; sourceTree = "<group>"; };
@@ -174,16 +168,6 @@
 				3D52AAF116313A9E907BFDB3 /* CXHybirdModuleConfigModel.swift */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		3D52A07F2BB24D8D5BAAD0CE /* bundle2 */ = {
-			isa = PBXGroup;
-			children = (
-				3D52AE478BA03BA1CFFCE788 /* imp */,
-				3D52A2A970BFAAEE63CB732B /* CXBundle.swift */,
-				3D52AAF348CB7B74CD823C67 /* CXIBundleManager.swift */,
-			);
-			path = bundle2;
 			sourceTree = "<group>";
 		};
 		3D52A0E74EE605071D7DC73D /* bundle */ = {
@@ -327,7 +311,6 @@
 				3D52A4A00D5B656C508FADBE /* util */,
 				3D52AD7253BE03D1D0ED829E /* base */,
 				3D52A0E74EE605071D7DC73D /* bundle */,
-				3D52A07F2BB24D8D5BAAD0CE /* bundle2 */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -349,14 +332,6 @@
 				3D52A9203F222AC3755A9494 /* index.html */,
 			);
 			path = assets;
-			sourceTree = "<group>";
-		};
-		3D52AE478BA03BA1CFFCE788 /* imp */ = {
-			isa = PBXGroup;
-			children = (
-				3D52ADA2FB16CBEC25C063FA /* CXBundleManager.swift */,
-			);
-			path = imp;
 			sourceTree = "<group>";
 		};
 		3D52AF3BFC498D470267612F /* extension */ = {
@@ -701,9 +676,6 @@
 				3D52A715FBC8704FDD479C61 /* CXHybirdInitStrategy.swift in Sources */,
 				3D52A4EC3CE14FD2420261F7 /* CXHybirdUpdateStrategy.swift in Sources */,
 				3D52A6B762F56D17B1D889DB /* CXHybirdUtil.swift in Sources */,
-				3D52A6C32CC7DA6B9278414D /* CXBundleManager.swift in Sources */,
-				3D52A39F3C9D24BD37F02399 /* CXBundle.swift in Sources */,
-				3D52A775E434557BE6B80A1A /* CXIBundleManager.swift in Sources */,
 				3D52A1FF8EFC113C549B8AD4 /* CXJsonUtil.swift in Sources */,
 				3D52A51FC22490328EAA099A /* CXPreferencesUtil.swift in Sources */,
 				3D52A272E7F9840747019E1D /* README.md in Sources */,

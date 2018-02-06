@@ -6,7 +6,7 @@ class CXHybirdUtil {
 
     static func getRootDir(_ moduleName: String) -> File {
         let root = File(CXHybird.localRootDir, moduleName)
-        CXLogUtil.v("rootDir=\(root)")
+        //CXLogUtil.v("rootDir=\(root)")
         return root
     }
 
@@ -14,13 +14,13 @@ class CXHybirdUtil {
         let parent = getRootDir(config.moduleName)
         let name = "\(config.moduleName)-\(config.moduleVersion)\(CXHybird.bundleSuffix)"
         let zipFile = File(parent, name)
-        CXLogUtil.v("zipFile=\(zipFile)")
+        //CXLogUtil.v("zipFile=\(zipFile)")
         return zipFile
     }
 
     static func getUnzipDir(_ config: CXHybirdModuleConfigModel) -> File {
         let unzipDir = File(getRootDir(config.moduleName), config.moduleVersion)
-        CXLogUtil.v("unzipDir=\(unzipDir)")
+        //CXLogUtil.v("unzipDir=\(unzipDir)")
         return unzipDir.makeDirs()
     }
 
@@ -116,7 +116,6 @@ class CXHybirdUtil {
 
     static func getLocalFile(_ config: CXHybirdModuleConfigModel?, _ url: String?) -> File? {
         var localFile: File? = nil
-        CXLogUtil.e("\(config?.moduleName) \(config?.moduleMainUrl) \(url)")
 
         if (config != nil && url?.isNotBlank() == true) {
             if (url!.startsWith("http")) {
@@ -139,7 +138,7 @@ class CXHybirdUtil {
             CXLogUtil.e("params error ! config=\(config) , url=\(url)")
         }
         let exists = localFile?.exists() == true
-        CXLogUtil.v("检测到本地文件\(!exists ? " 不存在 " : " 存在"), 文件路径:\(localFile?.absolutePath)")
+        CXLogUtil.v("检测到本地文件\(!exists ? " 不存在 " : " 存在"), 文件路径:\(localFile?.absolutePath ?? "") url:\(url ?? "")")
         if (!exists) {
             localFile = nil
         }

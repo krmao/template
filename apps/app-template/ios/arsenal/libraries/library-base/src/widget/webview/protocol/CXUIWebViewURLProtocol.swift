@@ -88,7 +88,7 @@ class CXUIWebViewURLProtocol: URLProtocol {
         self.client?.urlProtocol(self, didLoad: data as Data)
         self.client?.urlProtocolDidFinishLoading(self)
 
-        CXLogUtil.d("URLProtocol startLoading: use local URLResponse success !!! urlString: \(urlString) localFilePath:\(localFilePath)")
+        CXLogUtil.e("URLProtocol startLoading: 伪造本地资源成功 !!! urlString: \(urlString) localFilePath:\(localFilePath)")
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {

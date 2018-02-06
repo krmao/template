@@ -24,10 +24,7 @@ extension String {
      * 3: result    = image/test.png
      */
     public func substringAfter(_ delimiter: String) -> String? {
-        CXLogUtil.i("substringAfter:start->\(delimiter)")
-        let result = components(separatedBy: delimiter).last
-        CXLogUtil.i("substringAfter:end  ->\(result)")
-        return result
+        return components(separatedBy: delimiter).last
     }
 
     public func trim() -> String {

@@ -10,8 +10,7 @@ class CXFileUtil {
             return
         }
         do {
-            try! FileManager.default.removeItem(atPath: file!.path)
-            CXLogUtil.d(":deleteFile", "[文件删除成功] path:\(file!.path), fileExists:" + "\(CXFileUtil.fileExists(file!.path))")
+            try FileManager.default.removeItem(atPath: file!.path)
         } catch {
             CXLogUtil.d(":deleteFile", "[文件删除失败] path:\(file!.path), fileExists:" + "\(CXFileUtil.fileExists(file!.path))", error)
         }
@@ -81,13 +80,11 @@ class CXFileUtil {
     }
 
     static func makeDirs(_ path: String?) -> Bool {
-        CXLogUtil.d("makeDirs:start")
         do {
             try FileManager.default.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
-            CXLogUtil.d("makeDirs:[路径创建成功] path:\(path) fileExists:" + "\(CXFileUtil.fileExists(path))")
             return true
         } catch {
-            CXLogUtil.d("makeDirs:[路径创建失败] path:\(path) fileExists:" + "\(CXFileUtil.fileExists(path))", error)
+            CXLogUtil.e("makeDirs:[路径创建失败] path:\(path) fileExists:" + "\(CXFileUtil.fileExists(path))", error)
         }
         return false
     }
@@ -97,25 +94,20 @@ class CXFileUtil {
     }
 
     static func copy(_ fromFilePath: String, _ toFilePath: String?) throws {
-        CXLogUtil.d(":copy-start from: \(fromFilePath) fileExists:\(CXFileUtil.fileExists(fromFilePath))")
         if (toFilePath != nil && toFilePath!.isNotBlank()) {
             try FileManager.default.copyItem(atPath: fromFilePath, toPath: toFilePath!)
         }
-        CXLogUtil.d(":copy-end to:\(toFilePath) fileExists:\(CXFileUtil.fileExists(toFilePath))")
     }
 
     static func readTextFromFile(_ filePath: String?) -> String {
-        CXLogUtil.i("readTextFromFile start -> \(filePath)")
         var content: String = ""
         if (filePath != nil && filePath!.isNotEmpty()) {
             do {
                 content = try String(contentsOfFile: filePath!, encoding: .utf8)
-                CXLogUtil.i("readTextFromFile success ->")
             } catch {
                 CXLogUtil.e("readTextFromFile failure", error)
             }
         }
-        CXLogUtil.i("readTextFromFile end   <-")
         return content
     }
 

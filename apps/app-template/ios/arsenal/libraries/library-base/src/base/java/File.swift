@@ -19,8 +19,6 @@ public class File: NSObject {
 
         absolutePath = prefixPath + name
         path = absolutePath
-
-        CXLogUtil.i("*File*:init:path=\(path)")
     }
 
     convenience init(_ parent: File?, _ name: String) {

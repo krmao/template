@@ -18,7 +18,7 @@ class CXHybirdModuleManager {
             CXLogUtil.e("||||||||=====>>>>>\(config?.moduleName ?? "") [初始化 错误]<<<< 本地解压文件夹校验失败,不能初始化模块 return nil !!!")
             return nil
         } else {
-            CXLogUtil.e("||||||||=====>>>>>\(config?.moduleName ?? "") create success")
+            //CXLogUtil.e("||||||||=====>>>>>\(config?.moduleName ?? "") create success")
             return CXHybirdModuleManager(config!)
         }
     }

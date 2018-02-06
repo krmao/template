@@ -31,8 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CXHybird.initialize(debug: true,
                 initStrategy: CXHybirdInitStrategy.LOCAL) { (list: MutableList?) -> Void in
 
-            CXLogUtil.e("初始化成功 -> \(list)")
-
             rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
         }
 

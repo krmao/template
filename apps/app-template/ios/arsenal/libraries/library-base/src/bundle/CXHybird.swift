@@ -428,8 +428,6 @@ class CXHybird: NSObject {
             return nil
         }
 
-        print("modules:\(modules.map { $0 })")
-
         return modules.values.firstOrNull {
             isMemberOfModule($0.currentConfig, url)
         }

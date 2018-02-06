@@ -18,6 +18,10 @@ extension String {
     /**
      * Returns a substring after the first occurrence of [delimiter].
      * If the string does not contain the delimiter, returns [missingDelimiterValue] which defaults to the original string.
+     *
+     * 1: origin    = something/example/2/1/image/test.png
+     * 2: delimiter = /example/2/1/
+     * 3: result    = image/test.png
      */
     public func substringAfter(_ delimiter: String) -> String? {
         CXLogUtil.i("substringAfter:start->\(delimiter)")

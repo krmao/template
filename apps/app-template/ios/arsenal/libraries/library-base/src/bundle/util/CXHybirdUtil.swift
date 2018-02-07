@@ -92,29 +92,29 @@ class CXHybirdUtil {
     static internal func verifyLocalFiles(_ unZipDir: File?, _ moduleFilesMd5: HashMap<String, String>?, _ logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
 
-        /*if (unZipDir != nil && moduleFilesMd5 != nil) {
-            let localUnzipDirExists = unZipDir.exists()
+        if (unZipDir != nil && moduleFilesMd5 != nil) {
+            let localUnzipDirExists = unZipDir!.exists()
 
-            let rightFilesCount = moduleFilesMd5.size
+            let rightFilesCount = moduleFilesMd5!.size
             var validFilesCount = 0
             if (localUnzipDirExists) {
-                CXFileUtil.getFileList(unZipDir).forEach {
+                CXFileUtil.getFileList(unZipDir).forEach { (it: File) in
                     let fileMd5 = CXChecksumUtil.genMD5Checksum(it)
-                    let remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
-                    let rightMd5 = moduleFilesMd5[remotePath]
+                    let remotePath = it.absolutePath.replace(unZipDir!.absolutePath, "")
+                    let rightMd5 = moduleFilesMd5![remotePath]
                     let isFileMd5Valid = fileMd5 == rightMd5
                     if (isFileMd5Valid) {
                         validFilesCount = validFilesCount + 1
                     }
-                    CXLogUtil.v(CXHybird.TAG + ":" + logTag, "-- 文件校验 校验文件(\(it.name)) : \(isFileMd5Valid ? "成功" : "失败") , fileMd5:\(fileMd5) , rightMd5:\(rightMd5) , localPath:\(it.path) ,remotePath:\(remotePath)")
+                    CXLogUtil.v("-- 文件校验 校验文件(\(it.name)) : \(isFileMd5Valid ? "成功" : "失败") , fileMd5:\(fileMd5 ?? "") , rightMd5:\(rightMd5 ?? "") , localPath:\(it.path) ,remotePath:\(remotePath)")
                 }
             }
             success = rightFilesCount == validFilesCount && localUnzipDirExists
         }
-        CXLogUtil.v(CXHybird.TAG + ":" + logTag, "-- 文件校验 校验本地 zip 解压后的文件夹:\(success ? "成功" : "失败"), path=\(unZipDir)")
+        CXLogUtil.v("-- 文件校验 校验本地 zip 解压后的文件夹:\(success ? "成功" : "失败"), path=\(unZipDir)")
         if (!success) {
             CXFileUtil.deleteDirectory(unZipDir)
-        }*/
+        }
         return success
     }
 

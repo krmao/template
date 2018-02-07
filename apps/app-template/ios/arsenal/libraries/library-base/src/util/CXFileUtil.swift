@@ -138,4 +138,28 @@ class CXFileUtil {
     static func fileExists(_ path: String?) -> Bool {
         return path != nil && path!.isNotBlank() && FileManager.default.fileExists(atPath: path!)
     }
+
+
+    static func getFileList(_ dirPath: String?) -> List<File> {
+        var fileList = List<File>()
+        if (dirPath == nil && dirPath!.isNullOrBlank()) {
+            CXLogUtil.v("getFileList dirPath is nil or empty dirPath:\(dirPath)")
+            return fileList
+        }
+        let childFiles = FileManager.default.subpaths(atPath: dirPath!)
+        if (childFiles != nil) {
+            for childFilePath in childFiles! {
+                if let childFile = try? File(dirPath! + "/" + childFilePath) {
+                    if (childFile.isFile()) {
+                        fileList.add(childFile)
+                    }
+                }
+            }
+        }
+        return fileList
+    }
+
+    static func getFileList(_ dir: File?) -> List<File> {
+        return getFileList(dir?.path)
+    }
 }

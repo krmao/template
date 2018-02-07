@@ -4,6 +4,8 @@ public class File: NSObject {
 
     private(set) public var absolutePath: String
     private(set) public var path: String
+    private(set) public var name: String
+
 
     init(_ filePath: String?) throws {
         if (filePath == nil || filePath!.isNullOrBlank()) {
@@ -11,6 +13,7 @@ public class File: NSObject {
         }
         self.absolutePath = filePath!
         self.path = self.absolutePath
+        self.name = self.absolutePath.components(separatedBy: "/").last ?? ""
     }
 
     init(_ parentPath: String?, _ name: String) {
@@ -19,6 +22,7 @@ public class File: NSObject {
 
         absolutePath = prefixPath + name
         path = absolutePath
+        self.name = name
     }
 
     convenience init(_ parent: File?, _ name: String) {
@@ -34,7 +38,7 @@ public class File: NSObject {
     }
 
     public func isFile() -> Bool {
-        return CXFileUtil.isDirectory(self.path)
+        return CXFileUtil.isFile(self.path)
     }
 
     public override var description: String {
@@ -44,6 +48,14 @@ public class File: NSObject {
     public func makeDirs() -> Self {
         CXFileUtil.makeDirs(self.path)
         return self
+    }
+
+    public func getChildList(dir: File?) -> List<File> {
+        if (self.isDirectory()) {
+            return CXFileUtil.getFileList(self)
+        } else {
+            return List<File>()
+        }
     }
 
 }

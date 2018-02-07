@@ -8,6 +8,7 @@ public typealias Map = Dictionary
 
 public typealias MutableSet = Set
 public typealias MutableList = Array
+public typealias List = Array
 
 extension Dictionary {
 

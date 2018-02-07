@@ -22,13 +22,13 @@ class CXHybird: NSObject {
     static var initStrategy = CXHybirdInitStrategy.LOCAL
 
 
-    static var downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil
+    static var downloader: ((_ downloadUrl: String, _ file: File?, _ callback: @escaping  (File?) -> Void?) -> Void?)? = nil
 
 
-    static var configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil
+    static var configer: ((_ configUrl: String, _ callback: @escaping  (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil
 
 
-    static var allConfiger: ((_ allConfigUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil
+    static var allConfiger: ((_ allConfigUrl: String, _ callback: @escaping (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil
 
 
     static var allConfigUrl: String = ""
@@ -42,24 +42,20 @@ class CXHybird: NSObject {
             CXHybirdUtil.removeIntercept(modules[moduleName!]?.currentConfig)
             modules.remove(moduleName)
         }
+
     }
 
     /**
      * debug true  的话代表是测试机,可以拉取动态更新的测试版本
      *       false 代表是已发布的正式的去打包，不能拉取动态更新的测试版本
      */
-
-    static func initialize(debug: Bool = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
-        initialize(debug: debug, initStrategy: initStrategy, allConfigUrl: "", allConfiger: nil, configer: nil, downloader: nil, callback: callback)
-    }
-
     static func initialize(
             debug: Bool = true,
             initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy,
             allConfigUrl: String = "",
-            allConfiger: ((_ configUrl: String, _ callback: (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil,
-            configer: ((_ configUrl: String, _ callback: (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil,
-            downloader: ((_ downloadUrl: String, _ file: File?, _ callback: (File?) -> Void?) -> Void?)? = nil,
+            allConfiger: ((_ configUrl: String, _ callback: @escaping (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = nil,
+            configer: ((_ configUrl: String, _ callback: @escaping  (CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = nil,
+            downloader: ((_ downloadUrl: String, _ file: File?, _ callback: @escaping  (File?) -> Void?) -> Void?)? = nil,
             callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil
     ) {
 
@@ -103,7 +99,8 @@ class CXHybird: NSObject {
          * 1: 为空的时候的第一次初始化
          */
         let bundles: MutableMap<String, CXHybirdModuleBundleModel> = CXHybirdBundleInfoManager.getBundles()
-        let bundleNames: MutableList<String> = bundles.keys()
+        //let bundleNames: MutableList<String> = bundles.keys()
+        let bundleNames: MutableList<String> = MutableList<String>()
 
         CXLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: initStrategy=\(CXHybird.initStrategy), 检测本地是否存在缓存配置信息: bundleNames=\(bundleNames)")
         if (bundleNames.isEmpty()) {
@@ -116,7 +113,7 @@ class CXHybird: NSObject {
                         CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
                         CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
 
-                        downloadAndInitModules(remoteConfigList)
+                        downloadAndInitModules(remoteConfigList, callback)
 
                         return Void()
                     }
@@ -132,7 +129,9 @@ class CXHybird: NSObject {
             }
         } else {
             CXLogUtil.w(TAG, ">>>>----检测本地有缓存配置信息, 根据缓存配置信息初始化")
-            initAllModules(bundles.values.mapNotNull { $0.moduleConfigList.firstOrNull() }, true, callback)
+            initAllModules(bundles.values.mapNotNull {
+                $0.moduleConfigList.firstOrNull()
+            }, true, callback)
         }
 
         //应用程序前后台切换的时候执行一次异步检查更新 todo
@@ -152,10 +151,10 @@ class CXHybird: NSObject {
         objc_sync_exit(self)
     }
 
-    private static func downloadAndInitModules(_ configList: MutableList<CXHybirdModuleConfigModel>?) {
+    private static func downloadAndInitModules(_ configList: MutableList<CXHybirdModuleConfigModel>?, _ callback: ((_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
         CXLogUtil.w(TAG, ">>>>----需要下载初始化的模块有 \(configList?.map { $0.moduleName })")
         CXHybirdUtil.downloadAllModules(configList) { validConfigList in
-            initAllModules(validConfigList, false)
+            initAllModules(validConfigList, false, callback)
         }
     }
 
@@ -268,7 +267,7 @@ class CXHybird: NSObject {
             allConfiger!(allConfigUrl) { (remoteConfigList: MutableList<CXHybirdModuleConfigModel>?) in
                 CXLogUtil.w(TAG, ">>>>----检查更新:下载\(remoteConfigList == nil ? "失败" : "成功"), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
                 CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
-                CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
+                //CXLogUtil.j(CXLogUtil.WARN, CXJsonUtil.toJson(remoteConfigList))
 
                 var needDownloadAndInitConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
 

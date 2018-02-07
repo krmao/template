@@ -13,10 +13,12 @@ target 'template' do
 
   # ==================== 网络库 ====================
   # pod 'AFNetworking', '~> 3.0'
-  # pod 'Alamofire', '~> 4.4'
+  pod 'Alamofire', '~> 4.6.0'
+  # pod 'Moya', '~> 10.0'
+  pod 'Moya/RxSwift', '~> 10.0'
 
   # ==================== 工具库 ====================
-  pod 'SwiftyBeaver'
+  pod 'SwiftyBeaver' # 日志
   # pod 'IQKeyboardManagerSwift' #,'4.0.10'
   pod 'Zip', '~> 1.1.0'
   pod 'RxCocoa', '~> 4.1.1'

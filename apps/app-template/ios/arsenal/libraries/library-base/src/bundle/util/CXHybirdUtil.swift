@@ -32,25 +32,24 @@ class CXHybirdUtil {
      * 注意文件夹如果检验失败压缩包校验成功,则立即重新解压且返回校验成功,重新解压正确的压缩包不用重复校验文件夹内的各个文件
      */
     static func isLocalFilesValid(_ config: CXHybirdModuleConfigModel?) -> Bool {
-//        CXLogUtil.v(CXHybird.TAG, "<><><><><><><>文件校验 开始: 模块名称=\(config?.moduleName ?? "")")
-//        var success = false
-//        let start = System.currentTimeMillis()
-//        if (config != nil) {
-//            let zipFile = getZipFile(config!)
-//            let unzipDir = getUnzipDir(config!)
-//            if (!verifyLocalFiles(unzipDir, config!.moduleFilesMd5, config!.moduleName ?? "")) {
-//                if (!verifyZip(zipFile, config!.moduleZipMd5, config!.moduleName ?? "")) {
-//                    success = false
-//                } else {
-//                    success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
-//                }
-//            } else {
-//                success = true
-//            }
-//        }
-//        CXLogUtil.v(CXHybird.TAG, "<><><><><><><>文件校验 文件校验结束: 校验 \(success ? "成功" : "失败") , 模块版本=\(config?.moduleVersion) , 耗时: \(System.currentTimeMillis() - start)ms")
-//        return success
-        return true
+        CXLogUtil.v("<><><><><><><>文件校验 开始: 模块名称=\(config?.moduleName ?? "")")
+        var success = false
+        let start = System.currentTimeMillis()
+        if (config != nil) {
+            let zipFile = getZipFile(config!)
+            let unzipDir = getUnzipDir(config!)
+            if (!verifyLocalFiles(unzipDir, config!.moduleFilesMd5, config!.moduleName ?? "")) {
+                if (!verifyZip(zipFile, config!.moduleZipMd5, config!.moduleName ?? "")) {
+                    success = false
+                } else {
+                    success = unzipToLocal(zipFile, unzipDir)//解压后的文件夹校验失败，但是zip包校验成功，则重新解压即可
+                }
+            } else {
+                success = true
+            }
+        }
+        CXLogUtil.v("<><><><><><><>文件校验 文件校验结束: 校验 \(success ? "成功" : "失败") , 模块版本=\(config?.moduleVersion ?? "nil") , 耗时: \(System.currentTimeMillis() - start)ms")
+        return success
     }
 
     static internal func unzipToLocal(_ zipFile: File?, _ unZipDir: File?) -> Bool {
@@ -69,16 +68,21 @@ class CXHybirdUtil {
      */
     static internal func verifyZip(_ zipFile: File?, _ moduleZipMd5: String?, _ logTag: String? = CXHybird.TAG) -> Bool {
         var success = false
-        /*if (zipFile != nil && !TextUtils.isEmpty(moduleZipMd5)) {
+        if (zipFile != nil && !TextUtils.isEmpty(moduleZipMd5)) {
             let zipFileExists = zipFile!.exists()
+
             let zipFileMd5 = CXChecksumUtil.genMD5Checksum(zipFile)
             let isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
             success = zipFileExists && isZipFileMd5Valid
+
+            CXLogUtil.v("-- 文件校验 校验本地 zip 压缩包:\(success ? "成功" : "失败") localMD5:\(zipFileMd5 ?? "nil") , rightMD5:\(moduleZipMd5 ?? "nil")")
+        } else {
+            CXLogUtil.e("-- 文件校验 校验本地 zip 压缩包:失败, zipFile is nil or moduleZipMd5 is empty")
         }
-        CXLogUtil.v(CXHybird.TAG, "-- 文件校验 校验本地 zip 压缩包:\(success ? "成功" : "失败")")
+
         if (!success) {
             CXFileUtil.deleteFile(zipFile)
-        }*/
+        }
         return success
     }
 
@@ -162,7 +166,7 @@ class CXHybirdUtil {
                 try CXFileUtil.copy(Bundle.main.path(forResource: "\(moduleName)-\(primaryConfig!.moduleVersion)", ofType: "zip")!, zipFile)
                 success = true
             } catch {
-                CXLogUtil.e(CXHybird.TAG, "--------[copyModuleZipFromAssets]: 文件不存在", error)
+                CXLogUtil.e("--------[copyModuleZipFromAssets]: 文件不存在", error)
             }
         }
         CXLogUtil.d("--------[copyModuleZipFromAssets]:  end success:\(success)")
@@ -174,8 +178,8 @@ class CXHybirdUtil {
  */
     static func getConfigListFromAssetsWithCopyAndUnzip(_ callback: @escaping (_ configList: MutableList<CXHybirdModuleConfigModel>) -> Void) {
         let start = System.currentTimeMillis()
-        CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始]-----------------------------------------------------------------------------------")
-        CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+        CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 开始]-----------------------------------------------------------------------------------")
+        CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
         var allConfigList: MutableList<CXHybirdModuleConfigModel> = MutableList<CXHybirdModuleConfigModel>()
         Observable<Any>.create { observer in
                     do {
@@ -203,19 +207,19 @@ class CXHybirdUtil {
                                     let unzipToLocalSuccess = unzipToLocal(zipFile, unzipDir)
                                     let unzipTime = System.currentTimeMillis() - unzipStart
 
-                                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 成功, 解压\(unzipToLocalSuccess ? "成功" : "失败"), 拷贝耗时:\(copyTime) ms, 解压耗时:\(unzipTime) ms, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+                                    CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 成功, 解压\(unzipToLocalSuccess ? "成功" : "失败"), 拷贝耗时:\(copyTime) ms, 解压耗时:\(unzipTime) ms, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
                                     if (!unzipToLocalSuccess) {
                                         allConfigList.remove(at: index)
-                                        CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 解压\(config.moduleName).zip 到文件夹失败, 从列表中删除 \(config.moduleName), 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+                                        CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 解压\(config.moduleName).zip 到文件夹失败, 从列表中删除 \(config.moduleName), 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
                                     }
                                 } else {
-                                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 失败, 拷贝耗时:\(copyTime) ms, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+                                    CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 从 assets 拷贝 \(config.moduleName).zip 失败, 拷贝耗时:\(copyTime) ms, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
                                 }
                             }
                         }
                         observer.onNext(0)
                     } catch {
-                        CXLogUtil.e(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 文件不存在, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))", error)
+                        CXLogUtil.e("--------[getConfigListFromAssetsWithCopyAndUnzip: 开始], 文件不存在, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))", error)
                         observer.onError(error)
                     }
                     return Disposables.create()
@@ -223,9 +227,9 @@ class CXHybirdUtil {
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                 .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
                 .subscribe(onNext: { it in
-                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 返回解压成功的 allConfigList.size=\(allConfigList.size)], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
-                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 结束]-----------------------------------------------------------------------------------")
-                    CXLogUtil.v(CXHybird.TAG, "--------[getConfigListFromAssetsWithCopyAndUnzip: 结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 一共耗时:\(System.currentTimeMillis() - start)ms")
+                    CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 返回解压成功的 allConfigList.size=\(allConfigList.size)], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+                    CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 结束]-----------------------------------------------------------------------------------")
+                    CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 一共耗时:\(System.currentTimeMillis() - start)ms")
 
                     //CXFileUtil.printDirs(CXHybird.localRootDir)
                     callback(allConfigList)
@@ -233,63 +237,59 @@ class CXHybirdUtil {
     }
 
     static func downloadAllModules(_ configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((_ validConfigList: MutableList<CXHybirdModuleConfigModel>?) -> Void)? = nil) {
-        /*let start = System.currentTimeMillis()
-        CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]-----------------------------------------------------------------------------------")
-        CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始]:\(configList?.map { it.moduleName })")
-        CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+        let start = System.currentTimeMillis()
+        CXLogUtil.e("--[downloadAllModules:全部下载开始]-----------------------------------------------------------------------------------")
+        CXLogUtil.e("--[downloadAllModules:全部下载开始]:\(configList?.map { $0.moduleName })")
+        CXLogUtil.e("--[downloadAllModules:全部下载开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
 
-        if (configList == nil || configList.isEmpty()) {
-            CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束], 没有模块需要下载")
-            CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(CXHybird.modules.map { it.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
-            CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束]-----------------------------------------------------------------------------------")
-            callback?.invoke(nil)
+        if (configList == nil || configList!.isEmpty()) {
+            CXLogUtil.e("--[downloadAllModules:全部下载结束], 没有模块需要下载")
+            CXLogUtil.e("--[downloadAllModules:全部下载结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(CXHybird.modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+            CXLogUtil.e("--[downloadAllModules:全部下载结束]-----------------------------------------------------------------------------------")
+            callback?(nil)
         } else {
+
             Observable.zip(
-                            configList.map {
-                                config in
-
-                                Observable.create<CXHybirdModuleConfigModel> {
+                            configList!.map { config in
+                                Observable<CXHybirdModuleConfigModel>.create { observer in
                                     //下载好所有准备都充分后, 再进行初始化
-                                    CXLogUtil.e(CXHybird.TAG, "----开始下载子模块: \(config.moduleDownloadUrl)")
+                                    CXLogUtil.e("----开始下载子模块: \(config.moduleDownloadUrl)")
                                     let _start = System.currentTimeMillis()
-                                    CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(_start)))")
-                                    CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):开始], \(config.moduleDownloadUrl)")
-                                    CXHybirdDownloadManager.download(config) {
-                                        (isLocalFilesValid: Bool) ->
-
-                                                CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):结束], isLocalFilesValid:\(isLocalFilesValid)")
-                                        CXLogUtil.d(CXHybird.TAG, "--------[downloadAllModules:单模块下载:\(config.moduleName):结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - _start)ms, config=\(config)")
+                                    CXLogUtil.d("--------[downloadAllModules:单模块下载:\(config.moduleName):开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(_start)))")
+                                    CXLogUtil.d("--------[downloadAllModules:单模块下载:\(config.moduleName):开始], \(config.moduleDownloadUrl)")
+                                    CXHybirdDownloadManager.download(config) { isLocalFilesValid in
+                                        CXLogUtil.d("--------[downloadAllModules:单模块下载:\(config.moduleName):结束], isLocalFilesValid:\(isLocalFilesValid)")
+                                        CXLogUtil.d("--------[downloadAllModules:单模块下载:\(config.moduleName):结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - _start)ms, config=\(config)")
                                         if (isLocalFilesValid) {
-                                            it.onNext(config)
+                                            observer.onNext(config)
                                         } else {
-                                            it.onError(FileNotFoundException("--------[downloadAllModules:单模块下载:\(config.moduleName):校验失败] isLocalFilesValid=\(isLocalFilesValid)"))
+                                            observer.onError(FileNotFoundException("--------[downloadAllModules:单模块下载:\(config.moduleName):校验失败] isLocalFilesValid=\(isLocalFilesValid)"))
                                         }
+                                        return Void()
                                     }
-                                }.onErrorReturnItem(CXHybirdModuleConfigModel.invalidConfigModel)
-                            }
-
-                            ,
+                                    return Disposables.create()
+                                }.catchErrorJustReturn(CXHybirdModuleConfigModel.invalidConfigModel)
+                            },
                             ({
-                                it.map { it in
-                                            it as CXHybirdModuleConfigModel
-                                        }
-
-                                        .filter { it in
-                                            it != CXHybirdModuleConfigModel.invalidConfigModel
-                                        }.toMutableList()
+                                CXLogUtil.e("result selector == ")
+                                return $0.map {
+                                    $0 as CXHybirdModuleConfigModel
+                                }.filter { it in
+                                    it != CXHybirdModuleConfigModel.invalidConfigModel
+                                }.toMutableList()
                             })
                     )
                     .subscribe(
                             onNext: { (validConfigList: MutableList<CXHybirdModuleConfigModel>) in
 
-                                CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束]:success, 经校验有效的可以保存到 sharedPreference 的 validConfigList=\(validConfigList.map { it.moduleName })")
-                                CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束]:success, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
-                                CXLogUtil.e(CXHybird.TAG, "--[downloadAllModules:全部下载结束]-----------------------------------------------------------------------------------")
-                                callback?.invoke(validConfigList)
+                                CXLogUtil.e("--[downloadAllModules:全部下载结束]:success, 经校验有效的可以保存到 sharedPreference 的 validConfigList=\(validConfigList.map { $0.moduleName })")
+                                CXLogUtil.e("--[downloadAllModules:全部下载结束]:success, 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())), 耗时:\(System.currentTimeMillis() - start)ms")
+                                CXLogUtil.e("--[downloadAllModules:全部下载结束]-----------------------------------------------------------------------------------")
+                                callback?(validConfigList)
                             }
                     )
 
-        }*/
+        }
     }
 
     static func removeIntercept(_ config: CXHybirdModuleConfigModel?) {

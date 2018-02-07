@@ -1,5 +1,6 @@
 import UIKit
 import MBProgressHUD
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,8 +29,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
 
-        CXHybird.initialize(debug: true,
-                initStrategy: CXHybirdInitStrategy.LOCAL) { (list: MutableList?) -> Void in
+
+        //异步 所有模块配置文件下载器
+        var allConfiger: ((_ configUrl: String, _  callback: @escaping  (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = { (configUrl, callback) in
+            CXRepository.downloadHybirdAllModuleConfigurations(
+                    url: configUrl,
+                    success: { response in
+                        callback(response)
+                    },
+                    failure: { message in
+                        callback(nil)
+                    }
+            )
+        }
+        let downloader: ((_ downloadUrl: String, _ file: File?, _ callback: @escaping  (File?) -> Void?) -> Void?)? = { (downloadUrl, file, callback) in
+
+            let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+                return (URL.init(fileURLWithPath: file?.path ?? ".", isDirectory: false), [.removePreviousFile, .createIntermediateDirectories])
+            }
+
+            Alamofire.download(downloadUrl, to: destination).response { response in
+
+                debugPrint(response)
+
+                if (response.error != nil) {
+                    callback(nil)
+                } else {
+                    callback(file)
+                }
+            }
+
+            return Void()
+
+        }
+
+        let allConfigUrl: String = "http://10.47.58.14:8080/background/files/all.json"
+
+        CXHybird.initialize(
+                debug: true,
+                initStrategy: CXHybirdInitStrategy.DOWNLOAD,
+                allConfigUrl: allConfigUrl,
+                allConfiger: allConfiger,
+                configer: nil,
+                downloader: downloader) { (list: MutableList?) -> Void in
 
             rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
         }

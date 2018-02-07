@@ -1,5 +1,5 @@
 //
-// Created by maokangren on 2017/12/27.
+// Created by smart on 2017/12/27.
 // Copyright (c) 2017 ZGW. All rights reserved.
 //
 
@@ -12,20 +12,22 @@ enum XXX: String, Codable  //反序列化 注意是通过 Int 还是 String 很�
 */
 class CXJsonUtil {
 
-    static func toJson<T: Encodable>(_ value: T, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
+    static func toJson<T: Encodable>(_ value: T?, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
         return toJSONString(value, outputFormatting)
     }
 
-    static func toJSONString<T: Encodable>(_ value: T, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
+    static func toJSONString<T: Encodable>(_ value: T?, _ outputFormatting: JSONEncoder.OutputFormatting = []) -> String? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = outputFormatting
 
         var jsonString: String? = nil
-        do {
-            let data = try encoder.encode(value)
-            jsonString = String(data: data, encoding: .utf8)
-        } catch {
-            print(error)
+        if (value != nil) {
+            do {
+                let data = try encoder.encode(value)
+                jsonString = String(data: data, encoding: .utf8)
+            } catch {
+                CXLogUtil.e("CXJsonUtil.toJSONString failure \(error)")
+            }
         }
         return jsonString
     }
@@ -46,7 +48,7 @@ class CXJsonUtil {
                 model = try decoder.decode(type, from: data)
             }
         } catch {
-            print(error)
+            CXLogUtil.e("CXJsonUtil.parse failure \(error)")
         }
         return model
     }
@@ -67,7 +69,7 @@ class CXJsonUtil {
             let data: Data = try JSONSerialization.data(withJSONObject: any, options: .prettyPrinted)
             model = try decoder.decode(type, from: data)
         } catch {
-            print(error)
+            CXLogUtil.e("CXJsonUtil.parse failure \(error)")
         }
         return model
     }

@@ -17,21 +17,6 @@ public class CXHybirdModuleConfigModel: NSObject, Codable {
 
     static var invalidConfigModel: CXHybirdModuleConfigModel = CXHybirdModuleConfigModel()
 
-    override public var hashValue: Int {
-        get {
-            var result = moduleName.hashValue
-            result = 31 * result + moduleVersion.hashValue
-            result = 31 * result + moduleDebug.hashValue
-            result = 31 * result + moduleUpdateStrategy.hashValue
-            result = 31 * result + moduleMainUrl.hashValue
-            result = 31 * result + moduleConfigUrl.hashValue
-            result = 31 * result + moduleDownloadUrl.hashValue
-            result = 31 * result + moduleZipMd5.hashValue
-//            result = 31 * result + moduleFilesMd5.hashValue
-            return result
-        }
-    }
-
     public override func isEqual(_ object: Any?) -> Bool {
         guard let obj = object as? CXHybirdModuleConfigModel else {
             return false

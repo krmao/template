@@ -4,3 +4,4 @@
 
 
 #import "CXHybirdManagerOC.h"
+#import <CommonCrypto/CommonCrypto.h>

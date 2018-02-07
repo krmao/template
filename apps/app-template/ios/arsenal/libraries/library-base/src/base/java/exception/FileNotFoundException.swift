@@ -5,12 +5,12 @@
 
 import Foundation
 
-class IllegalArgumentException: NSObject, Error {
+class FileNotFoundException: NSObject, Error {
 
     private(set) var detailMessage: String
 
     init(_ message: String?) {
-        self.detailMessage = message ?? "error param !!!"
+        self.detailMessage = message ?? "file not found !!!"
     }
 
     public override var description: String {

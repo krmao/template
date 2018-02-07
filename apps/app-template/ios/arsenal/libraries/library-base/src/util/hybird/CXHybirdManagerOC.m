@@ -1,6 +1,6 @@
 //
-// Created by maokangren on 2017/10/27.
-// Copyright (c) 2017 com.xixi. All rights reserved.
+// Created by smart on 2017/10/27.
+// Copyright (c) 2017 com.smart. All rights reserved.
 //
 
 #import "CXHybirdManagerOC.h"

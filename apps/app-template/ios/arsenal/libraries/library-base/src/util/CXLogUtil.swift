@@ -1,6 +1,4 @@
 import Foundation
-import SwiftyBeaver
-
 
 /**
     AppCode 安装 GrepConsole
@@ -23,151 +21,75 @@ import SwiftyBeaver
 */
 class CXLogUtil {
 
-    static var log: SwiftyBeaver.Type {
-        get {
-            var _log = SwiftyBeaver.self
-            _log.removeAllDestinations()
-            var console = ConsoleDestination()
-            console.format = "$Dmm:ss.SSS$d $C$L$c: $M"
-            _log.addDestination(console)
-            return _log
-        }
-    }
-    static var logJson: SwiftyBeaver.Type {
-        get {
-            var _log = SwiftyBeaver.self
-            _log.removeAllDestinations()
-            var console = ConsoleDestination()
-            console.format = "$Dmm:ss.SSS$d $C$L$c: \n$M"
-            _log.addDestination(console)
-            return _log
-        }
-    }
-
-    static let ERROR: Int = log.Level.error.rawValue
-    static let WARN: Int = log.Level.warning.rawValue
-    static let INFO: Int = log.Level.info.rawValue
-    static let DEBUG: Int = log.Level.debug.rawValue
-    static let VERBOSE: Int = log.Level.verbose.rawValue
+    static let ERROR: Int = 1
+    static let WARN: Int = 2
+    static let INFO: Int = 3
+    static let DEBUG: Int = 4
+    static let VERBOSE: Int = 5
 
     static func d(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .debug,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+         let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("DEBUG", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func d(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .debug,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("DEBUG", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func e(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .error,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("ERROR", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func e(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .error,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("ERROR", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func w(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .warning,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("WARNING", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func w(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .warning,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("WARNING",msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func j(_ level: Int = CXLogUtil.INFO, _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        logJson.custom(
-                level: SwiftyBeaver.Level(rawValue: level) ?? SwiftyBeaver.Level.warning,
-                message: message ?? "",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)")"
+
+        print("VERBOSE",  msg, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func v(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .verbose,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("VERBOSE", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func v(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .verbose,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("VERBOSE", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func i(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .info,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("INFO", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 
     static func i(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        log.custom(
-                level: .info,
-                message: "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")",
-                file: file,
-                function: function,
-                line: line,
-                context: context
-        )
+        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+
+        print("INFO", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
     }
 }

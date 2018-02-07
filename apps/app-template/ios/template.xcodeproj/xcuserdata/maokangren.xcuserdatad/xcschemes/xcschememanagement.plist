@@ -3,15 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict>
-		<key>template.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<true />
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
-	</dict>
+	<dict />
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>8753A5EB1F22633C00BA4AD4</key>

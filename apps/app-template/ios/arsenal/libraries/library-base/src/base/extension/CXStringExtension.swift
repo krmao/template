@@ -23,8 +23,12 @@ extension String {
      * 2: delimiter = /example/2/1/
      * 3: result    = image/test.png
      */
-    public func substringAfter(_ delimiter: String) -> String? {
-        return components(separatedBy: delimiter).last
+    public func substringAfter(_ delimiter: String, _ defaultValue: String? = nil) -> String {
+        return components(separatedBy: delimiter).last ?? defaultValue ?? self
+    }
+
+    public func substringBefore(_ delimiter: String, _ defaultValue: String? = nil) -> String {
+        return components(separatedBy: delimiter).first ?? defaultValue ?? self
     }
 
     public func paddingLeft(_ totalLength: Int, _ character: Character) -> String {

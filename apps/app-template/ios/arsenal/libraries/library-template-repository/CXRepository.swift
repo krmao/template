@@ -8,6 +8,10 @@ public class CXRepository: NSObject {
         return CXApiManager.requestByFullURL(url: url, method: .get, success: success, failure: failure)
     }
 
+    static func downloadHybirdModuleConfiguration(url: String, success: @escaping (_ responseData: CXHybirdModuleConfigModel?) -> Void, failure: @escaping (_ message: String?) -> Void) {
+        return CXApiManager.requestByFullURL(url: url, method: .get, success: success, failure: failure)
+    }
+
     /*static func addGoodsCar<T: Codable>(requestData: AddGoodCarRequestData, success: @escaping (_ responseData: BaseResponseModel<T>?) -> Void, failure: @escaping (_ message: String?) -> Void) {
         return CXApiManager.request(path: "addGoodsCar", requestData: requestData.toDictionary(), success: success, failure: failure)
     }

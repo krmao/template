@@ -173,9 +173,9 @@ class CXHybirdUtil {
         return success
     }
 
-/**
- * @return 返回拷贝zip成功 并且解压zip到文件夹也成功的 configList
- */
+    /**
+     * @return 返回拷贝zip成功 并且解压zip到文件夹也成功的 configList
+     */
     static func getConfigListFromAssetsWithCopyAndUnzip(_ callback: @escaping (_ configList: MutableList<CXHybirdModuleConfigModel>) -> Void) {
         let start = System.currentTimeMillis()
         CXLogUtil.v("--------[getConfigListFromAssetsWithCopyAndUnzip: 开始]-----------------------------------------------------------------------------------")
@@ -185,7 +185,7 @@ class CXHybirdUtil {
                     do {
                         let path = Bundle.main.path(forResource: "all", ofType: "json")
                         let allConfigJsonString = CXFileUtil.readTextFromFile(path)
-//                        CXLogUtil.j(CXLogUtil.VERBOSE, allConfigJsonString)
+                        CXLogUtil.j(CXLogUtil.VERBOSE, allConfigJsonString)
 
                         allConfigList = CXJsonUtil.parseArray(allConfigJsonString) ?? MutableList<CXHybirdModuleConfigModel>()
                         CXLogUtil.d("--------[getConfigListFromAssetsWithCopyAndUnzip:  allConfigList.size = \(allConfigList.size)")
@@ -293,17 +293,17 @@ class CXHybirdUtil {
     }
 
     static func removeIntercept(_ config: CXHybirdModuleConfigModel?) {
-        if (config != nil) {
+//        if (config != nil) {
 //            CXHybirdBridge.removeScheme(config.moduleMainUrl)
 //            CXHybirdBridge.removeRequest(config.moduleMainUrl)
-        }
+//        }
     }
 
 /**
  * 设置资源拦截器,URL拦截器
  */
     static func setIntercept(_ config: CXHybirdModuleConfigModel?) {
-        let moduleName: String = config?.moduleName ?? ""
+        /*let moduleName: String = config?.moduleName ?? ""
         let tag: String = CXHybird.TAG + ":" + moduleName
 
         CXLogUtil.v(tag, "======>> 设置拦截器开始: \(config?.moduleVersion)")
@@ -320,7 +320,7 @@ class CXHybirdUtil {
             return
         }
 
-        CXHybirdBridge.removeScheme(interceptUrl)
+        CXHybirdBridge.removeScheme(interceptUrl)*/
 //        CXHybirdBridge.removeRequest(interceptUrl)
 
         /**
@@ -340,7 +340,7 @@ class CXHybirdUtil {
             true
         }*////
 
-        CXLogUtil.v(tag, "======>> 增加 资源 拦截 , 匹配 -> interceptUrl : \(interceptUrl)")
+        //CXLogUtil.v(tag, "======>> 增加 资源 拦截 , 匹配 -> interceptUrl : \(interceptUrl)")
         /*CXHybirdBridge.addRequest(interceptUrl) {
             (_: WebView?, url: String?) ->
                     CXLogUtil.v(tag, "======>> shouldInterceptRequest: \(url) ,匹配拦截器:\(interceptUrl)")
@@ -362,14 +362,14 @@ class CXHybirdUtil {
             }
             resourceResponse
         }*/
-        CXLogUtil.v(tag, "======>> 设置拦截器结束")
+        //CXLogUtil.v(tag, "======>> 设置拦截器结束")
     }
 
-/**
- * 校验所有版本信息,如果无效则删除该版本相关的所有文件/配置
- * 重置当前版本指向
- * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
- */
+    /**
+     * 校验所有版本信息,如果无效则删除该版本相关的所有文件/配置
+     * 重置当前版本指向
+     * 如果本模块尚未被打开,则下一次启动生效的更新/回滚配置 在此一并兼容
+     */
     static func fitLocalConfigsInfoSync(_ moduleName: String?) {
         /* objc_sync_enter(self)
 
@@ -418,22 +418,22 @@ class CXHybirdUtil {
          objc_sync_exit(self)*/
     }
 
-/**
- * 当检测到模块完全没有被浏览器加载的时候,可以调用此方法是否有 下次加载生效的配置信息 ,并异步处理本地文件,重置当前模块的 版本头信息
- *
- * 调用时机
- * 1: 当前模块退出浏览器的时候(异步处理)
- * 2: 当前模块第一次被浏览器加载的时候(同步处理)
- */
+    /**
+     * 当检测到模块完全没有被浏览器加载的时候,可以调用此方法是否有 下次加载生效的配置信息 ,并异步处理本地文件,重置当前模块的 版本头信息
+     *
+     * 调用时机
+     * 1: 当前模块退出浏览器的时候(异步处理)
+     * 2: 当前模块第一次被浏览器加载的时候(同步处理)
+     */
     static internal func fitNextAndFitLocalIfNeedConfigsInfo(_ moduleName: String?) {
         Observable.from {
             fitNextAndFitLocalIfNeedConfigsInfoSync(moduleName)
         }.subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)).observeOn(MainScheduler.instance).subscribe()
     }
 
-/**
- * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
- */
+    /**
+     * 同步 处理下次生效的配置信息以及处理完后 如果需要的话(即确实有下次生效的配置信息的情况下,避免检查下次配置信息的时候多做一次处理本地配置信息的操作)紧接着处理本地配置信息
+     */
     static internal func fitNextAndFitLocalIfNeedConfigsInfoSync(_ moduleName: String?, _ mustFitLocal: Bool = false) {
         /* if (moduleName == nil || moduleName!.isNullOrBlank()) {
              return

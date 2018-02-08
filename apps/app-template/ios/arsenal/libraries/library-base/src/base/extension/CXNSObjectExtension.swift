@@ -1,7 +1,13 @@
 import Foundation
 
 extension NSObject {
-    static let TAG: String = "\(type(of: self))"
+    static var TAG: String {
+        return "[\(String(describing: self).substringBefore(":").substringAfter("."))]"
+    }
+
+    var TAG: String {
+        return "[\(String(describing: self).substringBefore(":").substringAfter("."))]"
+    }
 
     public func hashCode() -> Int {
         return self.hashValue

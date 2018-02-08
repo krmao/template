@@ -5,13 +5,27 @@ import Alamofire
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    public static var debug: Bool {
+        get {
+            return true
+        }
+    }
+
+    public static var isApplicationVisible: Bool {
+        get {
+            return UIApplication.shared.applicationState == UIApplicationState.active
+        }
+    }
+
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        CXLogUtil.i("application init start -->")
+        CXLogUtil.i("0application init start -->")
+        CXLogUtil.i(TAG, "1application init start -->")
+        CXLogUtil.i(AppDelegate.TAG, "2application init start -->")
         NSSetUncaughtExceptionHandler { exception in
             print(exception)
-            print(exception.callStackSymbols.joined(separator:"\n"))
+            print(exception.callStackSymbols.joined(separator: "\n"))
         }
 
         // Override point for customization after application launch.
@@ -37,6 +51,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //异步 所有模块配置文件下载器
         var allConfiger: ((_ configUrl: String, _  callback: @escaping  (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = { (configUrl, callback) in
             CXRepository.downloadHybirdAllModuleConfigurations(
+                    url: configUrl,
+                    success: { response in
+                        callback(response)
+                    },
+                    failure: { message in
+                        callback(nil)
+                    }
+            )
+        }
+        var configer: ((_ configUrl: String, _  callback: @escaping  (_ config: CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = { (configUrl, callback) in
+            CXRepository.downloadHybirdModuleConfiguration(
                     url: configUrl,
                     success: { response in
                         callback(response)
@@ -74,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 initStrategy: CXHybirdInitStrategy.DOWNLOAD,
                 allConfigUrl: allConfigUrl,
                 allConfiger: allConfiger,
-                configer: nil,
+                configer: configer,
                 downloader: downloader) { (list: MutableList?) -> Void in
 
             rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
@@ -93,10 +118,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+
+        CXHybird.checkAllUpdate()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

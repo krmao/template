@@ -317,9 +317,9 @@ class CXHybird: NSObject {
                             } else {
                                 CXLogUtil.e(TAG, ">>>>>>>======\(remoteConfig!.moduleName) 无需切换为在线模式")
                             }
-//                            CXHybirdDownloadManager.download(remoteConfig) {
-//                                (isLocalFilesletid)->
-//                            }
+                            CXHybirdDownloadManager.download(remoteConfig!) { isLocalFilesletid in
+                                return Void()
+                            }
                         } else {
                             CXLogUtil.v(TAG, ">>>>>>>======\(remoteConfig!.moduleName) 系统检测到 remoteVersion:\(remoteVersion) 或者 localVersion:\(localVersion) 相等, 无需更新")
                         }
@@ -335,12 +335,93 @@ class CXHybird: NSObject {
     }
 
 
-    static func checkUpdate(_ url: String?, _ callback: (() -> Void?)? = nil) {
+    static func checkUpdate(sync: Bool = false, _ url: String?, _ callback: (() -> Void?)? = nil) {
         let moduleManager = getModule(url)
         if (moduleManager == nil) {
             callback?()
         } else {
-            checkUpdate(moduleManager, callback)
+            checkUpdate(sync: sync, moduleManager, callback)
+        }
+    }
+
+    static func checkUpdate(sync: Bool = false, _ moduleManager: CXHybirdModuleManager?, _ callback: (() -> Void?)? = nil) {
+        if (moduleManager != nil) {
+            let moduleName = moduleManager!.currentConfig.moduleName
+            let start = System.currentTimeMillis()
+            CXLogUtil.v("krmao", "系统检测更新(同步) 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion),当前线程:\(Thread.currentThread())")
+            CXLogUtil.v("krmao", "当前配置=\(moduleManager!.currentConfig)")
+
+            if (configer == nil) {
+                CXLogUtil.e("krmao", "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
+                callback?()
+                return
+            }
+
+            if (CXHybirdDownloadManager.isDownloading(moduleManager!.currentConfig)) {
+                CXLogUtil.e("krmao", "系统检测到当前正在下载更新中, return")
+                callback?()
+                return
+            }
+
+            if (moduleManager!.onlineModel) {
+                CXLogUtil.e("krmao", "系统检测到当前已经是在线状态了,无需重复检测 return")
+                callback?()
+                return
+            }
+
+            var semaphore: DispatchSemaphore? = nil
+
+            if (sync) {
+                semaphore = DispatchSemaphore.init(value: 0)
+            }
+
+
+            let moduleConfigUrl = moduleManager!.currentConfig.moduleConfigUrl
+            CXLogUtil.v("krmao", "下载配置文件 开始 当前版本=\(moduleManager!.currentConfig.moduleVersion): \(moduleConfigUrl) , 当前线程:\(Thread.currentThread())")
+            configer?(moduleConfigUrl) { remoteConfig in
+                CXLogUtil.v("krmao", "下载配置文件 \(remoteConfig == nil ? "失败" : "成功") , 当前线程:\(Thread.currentThread())")
+                CXLogUtil.v("krmao", "remoteConfig->")
+                CXLogUtil.j(CXLogUtil.INFO, CXJsonUtil.toJson(remoteConfig))
+                if (remoteConfig != nil) {
+                    //1:正式包，所有机器可以拉取
+                    //2:测试包，只要测试机器可以拉取
+                    if (!remoteConfig!.moduleDebug || (remoteConfig!.moduleDebug && debug)) {
+                        CXLogUtil.e("krmao", "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
+                        let remoteVersion = remoteConfig!.moduleVersion.toFloatOrNull()
+                        let localVersion = moduleManager!.currentConfig.moduleVersion.toFloatOrNull()
+                        CXLogUtil.v("\("krmao") 当前版本:\(localVersion)   远程版本:\(remoteVersion)")
+                        if (remoteVersion != nil && localVersion != nil) {
+                            //版本号相等时不做任何处理，避免不必要的麻烦
+                            if (remoteVersion != localVersion) {
+                                CXLogUtil.v("系统检测到有新版本")
+                                if (remoteConfig!.moduleUpdateStrategy == CXHybirdUpdateStrategy.ONLINE) {
+                                    moduleManager!.onlineModel = true
+                                } else {
+                                    CXLogUtil.e("无需切换为在线模式")
+                                }
+                                CXHybirdDownloadManager.download(remoteConfig!)
+                            } else {
+                                CXLogUtil.v("系统检测到 remoteVersion:\(remoteVersion) 或者 localVersion:\(localVersion) 相等, 无需更新")
+                            }
+                        } else {
+                            CXLogUtil.e("系统检测到 remoteVersion:\(remoteVersion) 或者 localVersion:\(localVersion) 为空, 无法判断需要更新,默认不需要更新")
+                        }
+                    } else {
+                        CXLogUtil.e("krmao", "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
+                    }
+                }
+                callback?()
+
+                if (sync) {
+                    semaphore?.signal()
+                }
+
+                return Void()
+            }
+            if (sync) {
+                _ = semaphore?.wait(timeout: DispatchTime.distantFuture)
+            }
+            CXLogUtil.v("krmao", "检查更新 结束, 当前线程:\(Thread.currentThread()), 耗时: \(System.currentTimeMillis() - start)ms")
         }
     }
 

@@ -61,7 +61,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             )
         }
         var configer: ((_ configUrl: String, _  callback: @escaping  (_ config: CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = { (configUrl, callback) in
-            CXRepository.downloadHybirdModuleConfiguration(
+
+            callback(CXRepository.downloadHybirdModuleConfigurationSync(
+                    url: configUrl,
+                    timeoutInterval: 0.2
+            ))
+
+            /*CXRepository.downloadHybirdModuleConfiguration(
                     url: configUrl,
                     timeoutInterval: 0.2, //200 ms
                     success: { response in
@@ -70,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     failure: { message in
                         callback(nil)
                     }
-            )
+            )*/
         }
         let downloader: ((_ downloadUrl: String, _ file: File?, _ callback: @escaping  (File?) -> Void?) -> Void?)? = { (downloadUrl, file, callback) in
 

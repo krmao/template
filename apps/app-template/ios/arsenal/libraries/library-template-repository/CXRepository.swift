@@ -12,6 +12,10 @@ public class CXRepository: NSObject {
         return CXApiManager.downloadByFullURL(url: url, timeoutInterval: timeoutInterval, success: success, failure: failure)
     }
 
+    static func downloadHybirdModuleConfigurationSync(url: String, timeoutInterval: Double = 60) -> CXHybirdModuleConfigModel? {
+        return CXApiManager.downloadByFullURLSync(url: url, timeoutInterval: timeoutInterval)
+    }
+
     /*static func addGoodsCar<T: Codable>(requestData: AddGoodCarRequestData, success: @escaping (_ responseData: BaseResponseModel<T>?) -> Void, failure: @escaping (_ message: String?) -> Void) {
         return CXApiManager.request(path: "addGoodsCar", requestData: requestData.toDictionary(), success: success, failure: failure)
     }

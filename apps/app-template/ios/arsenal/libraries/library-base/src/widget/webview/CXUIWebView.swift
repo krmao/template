@@ -51,7 +51,21 @@ open class CXUIWebView: UIWebView, UIWebViewDelegate {
 
     @available(iOS 2.0, *)
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        CXLogUtil.d("webView:shouldStartLoadWith->\(request.url)")
+        let url: String? = request.url?.absoluteString
+
+        CXLogUtil.d("webView:shouldStartLoadWith start->\(url ?? "")")
+
+        if (url != nil && !url!.isEmpty()) {
+
+            CXHybird.checkUpdate(sync: true, url!) {
+                CXHybird.onWebViewOpenPage(self.hashCode(), url!)
+                CXLogUtil.d("webView:shouldStartLoadWith middle->\(url!)")
+                return Void()
+            }
+
+        }
+
+        CXLogUtil.d("webView:shouldStartLoadWith end->\(url ?? "")")
         return true
     }
 
@@ -80,13 +94,20 @@ open class CXUIWebView: UIWebView, UIWebViewDelegate {
     open func loadURL(_ url: String) {
         let start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "loadURL start:\(url)")
+        self.loadRequest(URLRequest(url: URL(string: url)!))
+        CXLogUtil.e(TAG, "loadURL   end:\(url) , 耗时:\(System.currentTimeMillis() - start)ms")
+    }
+
+    /*open func loadURL(_ url: String) {
+        let start = System.currentTimeMillis()
+        CXLogUtil.e(TAG, "loadURL start:\(url)")
         CXHybird.checkUpdate(url) {
             CXHybird.onWebViewOpenPage(self.hashCode(), url)
             self.loadRequest(URLRequest(url: URL(string: url)!))
             return Void()
         }
         CXLogUtil.e(TAG, "loadURL   end:\(url) , 耗时:\(System.currentTimeMillis() - start)ms")
-    }
+    }*/
 
     deinit {
         CXHybird.onWebViewClose(self.hashCode())

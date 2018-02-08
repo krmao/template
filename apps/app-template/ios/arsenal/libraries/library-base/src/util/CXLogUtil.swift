@@ -1,95 +1,122 @@
 import Foundation
 
 /**
-    AppCode 安装 GrepConsole
+ *
+ *    AppCode 安装 GrepConsole
+ *
+ *    change Expression like this
+ *
+ *    .* I .*
+ *    .* D .*
+ *    .* W .*
+ *    .* E .*
+ *    .* V .*
+ *
+ */
+public class CXLogUtil {
 
-    http://docs.swiftybeaver.com/article/20-custom-format
+    public static let ERROR: Int = 1
+    public static let WARN: Int = 2
+    public static let INFO: Int = 3
+    public static let DEBUG: Int = 4
+    public static let VERBOSE: Int = 5
 
-    $L	Level, for example "VERBOSE"
-    $M	Message, for example the foo in log.debug("foo")
-    $J	JSON-encoded logging object (can not be combined with other format variables!)
-    $N	Name of file without suffix
-    $n	Name of file with suffix
-    $F	Function
-    $l	Line (lower-case l)
-    $D	Datetime, followed by standard Swift datetime syntax
-    $d	Datetime format end
-    $T	Thread
-    $C	Color start, is just supported by certain destinations and is ignored if unsupported
-    $c	Color end
-    $X	Optional context value of any type (see below)
-*/
-class CXLogUtil {
-
-    static let ERROR: Int = 1
-    static let WARN: Int = 2
-    static let INFO: Int = 3
-    static let DEBUG: Int = 4
-    static let VERBOSE: Int = 5
-
-    static func d(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-         let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("DEBUG", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func d(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(DEBUG, tag, message, error, file, function, line)
     }
 
-    static func d(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("DEBUG", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func d(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        d(nil, message, error, file, function, line)
     }
 
-    static func e(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("ERROR", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func e(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(ERROR, tag, message, error, file, function, line)
     }
 
-    static func e(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("ERROR", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func e(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        e(nil, message, error, file, function, line)
     }
 
-    static func w(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("WARNING", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func w(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(WARN, tag, message, error, file, function, line)
     }
 
-    static func w(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("WARNING",msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func w(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        w(nil, message, error, file, function, line)
     }
 
-    static func j(_ level: Int = CXLogUtil.INFO, _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)")"
-
-        print("VERBOSE",  msg, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func j(_ level: Int = CXLogUtil.INFO, _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(level, nil, message, nil, file, function, line)
     }
 
-    static func v(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("VERBOSE", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func v(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(VERBOSE, tag, message, error, file, function, line)
     }
 
-    static func v(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("VERBOSE", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func v(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        v(nil, message, error, file, function, line)
     }
 
-    static func i(_ tag: Any? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
-
-        print("INFO", tag, msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func i(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        p(INFO, tag, message, error, file, function, line)
     }
 
-    static func i(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line, _ context: Any? = nil) {
-        let msg = "\(message == nil ? "" : "\(message!)") \(error == nil ? "" : "\(error!)")"
+    public static func i(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        i(nil, message, error, file, function, line)
+    }
 
-        print("INFO", msg, error, "\t\(function)", "\t\(line)", "\t\(function)", context)
+    public static func p(_ level: Int, _ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+        print("\(getLevelDesc(level)) ❪\(getLocation(file, function, line))❫ █\t", getTag(tag), getMessage(message), getError(error))
+    }
+
+    private static func getTag(_ tag: String? = "") -> String {
+        return "\(tag == nil ? "" : "\(tag!)")"
+    }
+
+    private static func getLevelDesc(_ level: Int) -> String {
+        let levelDesc: String
+
+        switch level {
+        case ERROR:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ E"
+            break
+        case WARN:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ W"
+            break
+        case INFO:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ I"
+            break
+        case DEBUG:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ D"
+            break
+        case VERBOSE:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ V"
+            break
+        default:
+            levelDesc = "❪\(CXTimeUtil.HmsS())❫ V"
+            break
+        }
+
+        return levelDesc
+    }
+
+    private static func getMessage(_ message: Any? = "") -> String {
+        return "\(message == nil ? "" : "\(message!)")"
+    }
+
+    private static func getError(_ error: Error? = nil) -> String {
+        return "\(error == nil ? "" : "\(error!)")"
+    }
+
+    public static func getLocation(_ file: String = #file, _ function: String = #function, _ line: Int = #line) -> String {
+        return "\(getFileName(file)):\(getLine(line))"
+    }
+
+    public static func getFileName(_ file: String = #file) -> String {
+        return (file.substringAfter("/") ?? "").replace(".swift", "").replace(".h", " ").replace(".m", " ").paddingLeft(26, " ")
+    }
+
+    public static func getLine(_ line: Int = #line) -> String {
+        return "\(line)".paddingRight(4, " ")
     }
 }

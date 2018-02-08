@@ -27,6 +27,24 @@ extension String {
         return components(separatedBy: delimiter).last
     }
 
+    public func paddingLeft(_ totalLength: Int, _ character: Character) -> String {
+        let stringLength = self.characters.count
+        if stringLength < totalLength {
+            return String(repeatElement(character, count: totalLength - stringLength)) + self
+        } else {
+            return String(self.suffix(totalLength))
+        }
+    }
+
+    public func paddingRight(_ totalLength: Int, _ character: Character) -> String {
+        let stringLength = self.characters.count
+        if stringLength < totalLength {
+            return self + String(repeatElement(character, count: totalLength - stringLength))
+        } else {
+            return String(self.suffix(totalLength))
+        }
+    }
+
     public func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }

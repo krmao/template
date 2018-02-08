@@ -42,7 +42,8 @@ class HybirdUIWebViewController: UIViewController {
             make.bottom.equalTo(self.view)
         }
 
-        self.webView.loadRequest(URLRequest(url: URL(string: self.indexPath)!))
+        //self.webView.loadRequest(URLRequest(url: URL(string: self.indexPath)!))
+        self.webView.loadURL(self.indexPath)
     }
 
     deinit {

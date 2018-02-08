@@ -5,11 +5,11 @@ import Alamofire
 public class CXRepository: NSObject {
 
     static func downloadHybirdAllModuleConfigurations(url: String, success: @escaping (_ responseData: MutableList<CXHybirdModuleConfigModel>?) -> Void, failure: @escaping (_ message: String?) -> Void) {
-        return CXApiManager.requestByFullURL(url: url, method: .get, success: success, failure: failure)
+        return CXApiManager.downloadByFullURL(url: url, success: success, failure: failure)
     }
 
     static func downloadHybirdModuleConfiguration(url: String, success: @escaping (_ responseData: CXHybirdModuleConfigModel?) -> Void, failure: @escaping (_ message: String?) -> Void) {
-        return CXApiManager.requestByFullURL(url: url, method: .get, success: success, failure: failure)
+        return CXApiManager.downloadByFullURL(url: url, success: success, failure: failure)
     }
 
     /*static func addGoodsCar<T: Codable>(requestData: AddGoodCarRequestData, success: @escaping (_ responseData: BaseResponseModel<T>?) -> Void, failure: @escaping (_ message: String?) -> Void) {

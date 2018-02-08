@@ -43,6 +43,39 @@ class CXApiManager {
                 }
     }
 
+    static func downloadByFullURL<T: Codable>(url: String, success: @escaping (_ response: T?) -> Void, failure: @escaping (_ message: String?) -> Void) {
+
+        let start = Date()
+        Alamofire.download(url)
+                .responseJSON { dataResponse in
+                    print("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    print("request url: ", dataResponse.request?.url ?? "")
+                    print("\nrequest headers:\n")
+                    dataResponse.request?.allHTTPHeaderFields?.forEach { key, value in
+                        print("\t", key, value)
+                    }
+                    print("\n<<<<<<<<<<---------->>>>>>>>>>\n")
+                    print("response headers:\n")
+                    dataResponse.response?.allHeaderFields.forEach { key, value in
+                        print("\t", key, value)
+                    }
+
+                    print("\nresponse body:\n\n\t\(dataResponse.result.value ?? "")\n")
+
+                    let ms = round(Date().timeIntervalSince(start) * 1000)
+                    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 耗时: \(ms) ms \n\n")
+                    if (dataResponse.result.isSuccess && dataResponse.result.value != nil) {
+                        let responseModel: T? = CXJsonUtil.parse(T.self, withJSONObject: dataResponse.result.value)
+                        print("\nresponse success:\n")
+                        success(responseModel)
+                    } else {
+                        let failureMessage = dataResponse.result.error?.localizedDescription.lowercased() ?? "网络错误"
+                        print("\nresponse failure:\n\n\t\(failureMessage)\n")
+                        failure(failureMessage)
+                    }
+                }
+    }
+
     /*private static let SERVER_RESPONSE_STATUS_SUCCESS = 0; //成功
     private static let SERVER_RESPONSE_STATUS_UN_LOGIN = 1; //未登录
 

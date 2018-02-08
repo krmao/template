@@ -76,4 +76,19 @@ open class CXUIWebView: UIWebView, UIWebViewDelegate {
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         CXLogUtil.d(TAG, "didFailLoadWithError", error)
     }
+
+    open func loadURL(_ url: String) {
+        let start = System.currentTimeMillis()
+        CXLogUtil.e(TAG, "loadURL start:\(url)")
+        CXHybird.checkUpdate(url) {
+            CXHybird.onWebViewOpenPage(self.hashCode(), url)
+            self.loadRequest(URLRequest(url: URL(string: url)!))
+            return Void()
+        }
+        CXLogUtil.e(TAG, "loadURL   end:\(url) , 耗时:\(System.currentTimeMillis() - start)ms")
+    }
+
+    deinit {
+        CXHybird.onWebViewClose(self.hashCode())
+    }
 }

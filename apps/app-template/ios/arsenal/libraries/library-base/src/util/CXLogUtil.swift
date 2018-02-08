@@ -21,55 +21,55 @@ public class CXLogUtil {
     public static let DEBUG: Int = 4
     public static let VERBOSE: Int = 5
 
-    public static func d(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func d(_ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(DEBUG, tag, message, error, file, function, line)
     }
 
-    public static func d(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func d(_ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         d(nil, message, error, file, function, line)
     }
 
-    public static func e(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func e(_ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(ERROR, tag, message, error, file, function, line)
     }
 
-    public static func e(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func e(_ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         e(nil, message, error, file, function, line)
     }
 
-    public static func w(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func w(_ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(WARN, tag, message, error, file, function, line)
     }
 
-    public static func w(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func w(_ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         w(nil, message, error, file, function, line)
     }
 
-    public static func j(_ level: Int = CXLogUtil.INFO, _ message: Any? = "", _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func j(_ level: Int = CXLogUtil.INFO, _ message: Any?, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(level, nil, message, nil, file, function, line)
     }
 
-    public static func v(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func v(_ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(VERBOSE, tag, message, error, file, function, line)
     }
 
-    public static func v(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func v(_ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         v(nil, message, error, file, function, line)
     }
 
-    public static func i(_ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func i(_ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         p(INFO, tag, message, error, file, function, line)
     }
 
-    public static func i(_ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func i(_ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         i(nil, message, error, file, function, line)
     }
 
-    public static func p(_ level: Int, _ tag: String? = "", _ message: Any? = "", _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
+    public static func p(_ level: Int, _ tag: String? = nil, _ message: Any?, _ error: Error? = nil, _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
         print("\(getLevelDesc(level)) ❪\(getLocation(file, function, line))❫ █\t", getTag(tag), getMessage(message), getError(error))
     }
 
-    private static func getTag(_ tag: String? = "") -> String {
+    private static func getTag(_ tag: String? = nil) -> String {
         return "\(tag == nil ? "" : "\(tag!)")"
     }
 
@@ -100,7 +100,7 @@ public class CXLogUtil {
         return levelDesc
     }
 
-    private static func getMessage(_ message: Any? = "") -> String {
+    private static func getMessage(_ message: Any?) -> String {
         return "\(message == nil ? "" : "\(message!)")"
     }
 

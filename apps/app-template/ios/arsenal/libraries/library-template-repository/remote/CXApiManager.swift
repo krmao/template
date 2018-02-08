@@ -43,10 +43,9 @@ class CXApiManager {
                 }
     }
 
-    static func downloadByFullURL<T: Codable>(url: String, success: @escaping (_ response: T?) -> Void, failure: @escaping (_ message: String?) -> Void) {
-
+    static func downloadByFullURL<T: Codable>(url: String, timeoutInterval: Double = 60, success: @escaping (_ response: T?) -> Void, failure: @escaping (_ message: String?) -> Void) {
         let start = Date()
-        Alamofire.download(url)
+        Alamofire.download(URLRequest(url: NSURL.init(string: url) as! URL, timeoutInterval: timeoutInterval))
                 .responseJSON { dataResponse in
                     print("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                     print("request url: ", dataResponse.request?.url ?? "")

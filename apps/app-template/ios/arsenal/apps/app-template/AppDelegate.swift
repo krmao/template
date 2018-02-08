@@ -63,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var configer: ((_ configUrl: String, _  callback: @escaping  (_ config: CXHybirdModuleConfigModel?) -> Void?) -> Void?)? = { (configUrl, callback) in
             CXRepository.downloadHybirdModuleConfiguration(
                     url: configUrl,
+                    timeoutInterval: 0.2, //200 ms
                     success: { response in
                         callback(response)
                     },

@@ -11,7 +11,7 @@ public class CXDialogUtil: NSObject {
             let hud: MBProgressHUD = MBProgressHUD.showAdded(to: topView!!, animated: true)
             hud.mode = .indeterminate
             hud.bezelView.style = MBProgressHUDBackgroundStyle.blur
-            hud.bezelView.backgroundColor = UIColor("#CC000000")
+            hud.bezelView.backgroundColor = UIColor("#FE000000")
             hud.activityIndicatorColor = UIColor("#FFEFEFEF")
 
             if (delaySeconds > 0) {

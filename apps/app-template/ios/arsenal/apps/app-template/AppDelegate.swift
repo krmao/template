@@ -104,9 +104,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 configer: configer,
                 downloader: downloader) { (list: MutableList?) -> Void in
 
+            CXDialogUtil.hideProgress()
+
             CXToastUtil.show("初始化成功")
 
-            CXDialogUtil.hideProgress()
+
             rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
         }
 

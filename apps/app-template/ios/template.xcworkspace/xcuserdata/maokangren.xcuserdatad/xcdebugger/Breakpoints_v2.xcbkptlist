@@ -218,12 +218,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777954.999566"
+            timestampString = "539849081.468616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
             endingLineNumber = "84"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURL(url:toFilePath:qos:timeoutInterval:success:failure:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,29 +234,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.000258"
+            timestampString = "539849081.469197"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "88"
             endingLineNumber = "88"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURLSync(url:toFilePath:timeoutInterval:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.000789"
+            timestampString = "539849081.469681"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
             endingLineNumber = "87"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
-            landmarkType = "7">
+            landmarkName = "CXApiManager"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 1 of static template.CXApiManager.downloadByFullURLSync&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(url: Swift.String, toFilePath: Swift.Optional&lt;Swift.String&gt;, timeoutInterval: Swift.Double) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "template"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maokangren/workspace/template/apps/app-template/ios/arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
+                  timestampString = "539849460.053172"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "8">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static template.CXApiManager.downloadByFullURLSync&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(url: Swift.String, toFilePath: Swift.Optional&lt;Swift.String&gt;, timeoutInterval: Swift.Double) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "template"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maokangren/workspace/template/apps/app-template/ios/arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
+                  timestampString = "539849460.056092"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "84">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -266,12 +298,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.001346"
+            timestampString = "539849081.4701639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
             endingLineNumber = "97"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURLSync(url:toFilePath:timeoutInterval:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,12 +314,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.001953"
+            timestampString = "539849081.471408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURLSync(url:toFilePath:timeoutInterval:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -298,12 +330,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.00253"
+            timestampString = "539849081.472997"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURLSync(url:toFilePath:timeoutInterval:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -314,12 +346,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.003149"
+            timestampString = "539849081.4735399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
             endingLineNumber = "101"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
+            landmarkName = "downloadByFullURLSync(url:toFilePath:timeoutInterval:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -330,13 +362,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "arsenal/libraries/library-template-repository/remote/CXApiManager.swift"
-            timestampString = "539777955.003708"
+            timestampString = "539849081.47402"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
             endingLineNumber = "118"
-            landmarkName = "downloadByFullURLSync(url:timeoutInterval:)"
-            landmarkType = "7">
+            landmarkName = "CXApiManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

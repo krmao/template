@@ -20,9 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        CXLogUtil.i("0application init start -->")
-        CXLogUtil.i(TAG, "1application init start -->")
-        CXLogUtil.i(AppDelegate.TAG, "2application init start -->")
+        CXLogUtil.i("application init start DEBUG:\(CXConfig.DEBUG)-->")
+
         NSSetUncaughtExceptionHandler { exception in
             print(exception)
             print(exception.callStackSymbols.joined(separator: "\n"))
@@ -39,14 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
         // CXURLProtocol.registerSchemeForWKWebView("http", "https")
-
-        // let progress = MBProgressHUD.showAdded(to: self.window!, animated: true)
-        // progress.bezelView.style = MBProgressHUDBackgroundStyle.blur
-        // progress.bezelView.backgroundColor = UIColor("#CC000000")
-        // progress.activityIndicatorColor = UIColor("#FFEFEFEF")
-
         // CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
 
+
+        CXDialogUtil.showProgress()
 
         //异步 所有模块配置文件下载器
         var allConfiger: ((_ configUrl: String, _  callback: @escaping  (_ configList: MutableList<CXHybirdModuleConfigModel>?) -> Void?) -> Void?)? = { (configUrl, callback) in
@@ -109,6 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 configer: configer,
                 downloader: downloader) { (list: MutableList?) -> Void in
 
+            CXToastUtil.show("初始化成功")
+
+            CXDialogUtil.hideProgress()
             rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
         }
 

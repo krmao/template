@@ -99,8 +99,8 @@ class CXHybird: NSObject {
          * 1: 为空的时候的第一次初始化
          */
         let bundles: MutableMap<String, CXHybirdModuleBundleModel> = CXHybirdBundleInfoManager.getBundles()
-//        let bundleNames: MutableList<String> = bundles.keys()
-        let bundleNames: MutableList<String> = MutableList<String>()
+        let bundleNames: MutableList<String> = bundles.keys()
+        //let bundleNames: MutableList<String> = MutableList<String>()
 
         CXLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: initStrategy=\(CXHybird.initStrategy), 检测本地是否存在缓存配置信息: bundleNames=\(bundleNames)")
         if (bundleNames.isEmpty()) {

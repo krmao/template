@@ -3,12 +3,10 @@ import MBProgressHUD
 
 public class CXDialogUtil: NSObject {
 
-    @objc static func showProgress(_ delaySeconds: Double = 0, _ isUserInteractionEnabled: Bool = true) {
-        let topView = UIApplication.shared.delegate?.window
-
-        if topView != nil {
+    @objc static func showProgress(_ delaySeconds: Double = 0, _ toView: UIView? = nil, _ isUserInteractionEnabled: Bool = true) {
+        if let _toView = toView == nil ? UIApplication.shared.delegate?.window : toView {
             hideProgress()
-            let hud: MBProgressHUD = MBProgressHUD.showAdded(to: topView!!, animated: true)
+            let hud: MBProgressHUD = MBProgressHUD.showAdded(to: _toView!, animated: true)
             hud.mode = .indeterminate
             hud.bezelView.style = MBProgressHUDBackgroundStyle.blur
             hud.bezelView.backgroundColor = UIColor("#FE000000")
@@ -22,11 +20,9 @@ public class CXDialogUtil: NSObject {
         }
     }
 
-    @objc static func hideProgress() {
-        let topView = UIApplication.shared.delegate?.window
-
-        if topView != nil {
-            MBProgressHUD.hide(for: topView!!, animated: true)
+    @objc static func hideProgress(_ toView: UIView? = nil) {
+        if let _toView = toView == nil ? UIApplication.shared.delegate?.window : toView {
+            MBProgressHUD.hide(for: _toView!, animated: true)
         }
     }
 

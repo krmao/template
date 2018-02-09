@@ -3,13 +3,12 @@ import MBProgressHUD
 
 class CXToastUtil: NSObject {
 
-    @objc static func show(_ text: String? = nil, _ delaySeconds: Double = 3) {
-        var topView = UIApplication.shared.delegate?.window
+    @objc static func show(_ text: String? = nil, _ delaySeconds: Double = 3, _ toView: UIView? = nil) {
 
-        if (topView != nil) {
-            MBProgressHUD.hide(for: topView!!, animated: true)
+        if let _toView = toView == nil ? UIApplication.shared.delegate?.window : toView {
+            MBProgressHUD.hide(for: _toView!, animated: true)
 
-            let hud: MBProgressHUD = MBProgressHUD.showAdded(to: topView!!, animated: true)
+            let hud: MBProgressHUD = MBProgressHUD.showAdded(to: _toView!, animated: true)
             hud.mode = .text
             hud.bezelView.style = MBProgressHUDBackgroundStyle.blur
             hud.bezelView.backgroundColor = UIColor("#FE000000")

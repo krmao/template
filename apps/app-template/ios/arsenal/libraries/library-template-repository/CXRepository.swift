@@ -5,6 +5,7 @@ import Alamofire
 public class CXRepository: NSObject {
 
     static func downloadHybirdAllModuleConfigurations(url: String, timeoutInterval: Double = 60, success: @escaping (_ responseData: MutableList<CXHybirdModuleConfigModel>?) -> Void, failure: @escaping (_ message: String?) -> Void) {
+//        return CXApiManager.requestByFullURL(url: url, method: .get,requestData:[:], success: success, failure: failure)
         return CXApiManager.downloadByFullURL(url: url, timeoutInterval: timeoutInterval, success: success, failure: failure)
     }
 

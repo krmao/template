@@ -3,7 +3,36 @@ import Foundation
 class CXFileUtil {
     static let TAG = "[file]"
 
+    //应该将所有的应用程序数据文件写入到这个目录下。这个目录用于存储用户数据。该路径可通过配置实现iTunes共享文件。可被iTunes备份。
     static let docDir: String = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as NSArray)[0] as! String + "/"
+
+    //这个目录下有两个子目录：
+    //Preferences 目录：包含应用程序的偏好设置文件。您不应该直接创建偏好设置文件，而是应该使用NSUserDefaults类来取得和设置应用程序的偏好.
+    //Caches 目录：用于存放应用程序专用的支持文件，保存应用程序再次启动过程中需要的信息。
+    //可创建子文件夹。可以用来放置您希望被备份但不希望被用户看到的数据。该路径下的文件夹，除Caches以外，都会被iTunes备份。
+    static let libDir: String = (NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true) as NSArray)[0] as! String + "/"
+
+    //用于存放应用程序专用的支持文件，保存应用程序再次启动过程中需要的信息。
+    static let cacheDir: String = (NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as NSArray)[0] as! String + "/"
+
+    //这个目录用于存放临时文件，保存应用程序再次启动过程中不需要的信息。该路径下的文件不会被iTunes备份。
+    //尾部包含 '/'
+    static let tmpDir: String = NSTemporaryDirectory()
+
+    //获取沙盒主目录路径
+    static let homeDir: String = NSHomeDirectory()
+
+    static func getFilePathFromResource(_  fileFullName: String?) -> String? {
+        return Bundle.main.path(forResource: fileFullName, ofType: nil)
+    }
+
+    static func getFileContentFromResource(_  fileFullName: String?) -> String {
+        return CXFileUtil.readTextFromFile(getFilePathFromResource(fileFullName))
+    }
+
+    static func getTempFile(_ name: String) -> File {
+        return File(CXFileUtil.tmpDir, name)
+    }
 
     static func deleteFile(_ file: File?) {
         if (file == nil) {

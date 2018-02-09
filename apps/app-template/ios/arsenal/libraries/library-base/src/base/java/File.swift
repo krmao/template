@@ -17,7 +17,7 @@ public class File: NSObject {
     }
 
     init(_ parentPath: String?, _ name: String) {
-        var prefixPath: String = (parentPath ?? ".")
+        var prefixPath: String = parentPath ?? "."
         prefixPath = prefixPath.endsWith("/") ? prefixPath : (prefixPath + "/")
 
         absolutePath = prefixPath + name

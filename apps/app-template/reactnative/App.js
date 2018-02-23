@@ -24,7 +24,9 @@ export default class App extends Component {
 
     _handleIndexChange = index => this.setState({index});
 
-    _renderFooter = props => <TabBar {...props} />;
+    _renderFooter = props => <TabBar {...props} onTabPress={(scene) => {
+        console.log(scene.index)
+    }}/>;
 
     _renderScene = SceneMap({
         a: HomePage,

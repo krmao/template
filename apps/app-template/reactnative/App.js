@@ -1,46 +1,47 @@
 import React, {Component} from "react";
-import {Button, Image, Platform, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Dimensions, Platform, StyleSheet, View} from "react-native";
+import {SceneMap, TabBar, TabViewAnimated} from "react-native-tab-view";
 
-class MText extends Component {
-    render() {
-        return (
-            <Text>{this.props.text}</Text>
-        );
-    }
-}
+
+const initialLayout = {
+    height: 0,
+    width: Dimensions.get('window').width,
+};
+
+const HomePage = () => <View style={[styles.container, {backgroundColor: '#ff4081'}]}/>;
+const OtherPage = () => <View style={[styles.container, {backgroundColor: '#673ab7'}]}/>;
+const MinePage = () => <View style={[styles.container, {backgroundColor: '#EFEFEF'}]}/>;
 
 export default class App extends Component {
+    state = {
+        index: 0,
+        routes: [
+            {key: 'a', title: '首页'},
+            {key: 'b', title: '其它'},
+            {key: 'c', title: '我'},
+        ],
+    };
+
+    _handleIndexChange = index => this.setState({index});
+
+    _renderFooter = props => <TabBar {...props} />;
+
+    _renderScene = SceneMap({
+        a: HomePage,
+        b: OtherPage,
+        c: MinePage,
+    });
+
     render() {
-        let pic = {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-        };
-        var inputText = '';
-
         return (
-            <View style={styles.container}>
-
-                <TextInput
-                    style={{color: 'red', fontWeight: 'bold', fontSize: 30, marginBottom: 15, height: 40}}
-                    placeholder="Type here to translate!"
-                    onChangeText={(text) => inputText = {text}}
-                />
-
-                <Text style={{color: 'red', fontWeight: 'bold', fontSize: 30, marginBottom: 15}}>Hello World!</Text>
-
-                <MText text='Michael Mao'/>
-
-                <Image source={pic} style={{width: 193, height: 110, backgroundColor: 'powderblue'}}/>
-                <Button
-                    onPress={() => {
-                        alert('You tapped the button!');
-                    }}
-                    title="Press Me"
-                />
-                <ScrollView style={{backgroundColor: '#ccc'}}>
-                    <Text style={{fontSize: 96}}>Scroll me plz</Text>
-                    <Image source={require('./image.png')}/>
-                </ScrollView>
-            </View>
+            <TabViewAnimated
+                style={styles.container}
+                navigationState={this.state}
+                renderScene={this._renderScene}
+                renderFooter={this._renderFooter}
+                onIndexChange={this._handleIndexChange}
+                initialLayout={initialLayout}
+            />
         );
     }
 }
@@ -55,10 +56,6 @@ const styles = StyleSheet.create({
                 backgroundColor: 'blue',
             },
         }),
-        padding: 15,
-        flexDirection: 'column',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1
     }
 });

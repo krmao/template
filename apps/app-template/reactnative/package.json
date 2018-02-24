@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "expo": "^25.0.0",
+    "lottie-react-native": "^2.3.2",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-tab-view": "0.0.74"

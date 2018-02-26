@@ -1,7 +1,10 @@
 package com.smart.library.widget.webview.client
 
 import android.annotation.TargetApi
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Message
@@ -45,24 +48,29 @@ open class CXWebViewClient : WebViewClient() {
     }
 
     /**
-     * 针对 https 证书校验可以在此拦截通过HttpsURLConnection实现请求验证
+     * 如果不 重新执行 view?.loadUrl(url) 并 return true, 则对于重定向的 url 将不会调用 shouldInterceptRequest 生命周期,则无法伪造资源
+     * 相关讨论-> https://groups.google.com/a/chromium.org/forum/#!topic/android-webview-dev/FzajQrxaG48
      */
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         Log.d(CXHybirdBridge.TAG, "shouldOverrideUrlLoading: $url")
-        val start = System.currentTimeMillis()
-        // 如果不 重新执行 view?.loadUrl(url) 并 return true
-        // 则对于重定向的 url 将不会调用 shouldInterceptRequest 生命周期,则无法伪造资源
-        // 相关讨论-> https://groups.google.com/a/chromium.org/forum/#!topic/android-webview-dev/FzajQrxaG48
-        val shouldOverrideUrlLoading = CXHybirdBridge.shouldOverrideUrlLoading(view, this, url)/* {
-            //只有 return true 的情况下 并且 回调 callack 的情况下才会执行异步 loadUrl 操作
-            CXLogUtil.e(CXHybirdBridge.TAG, "shouldOverrideUrlLoading:callback , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - start}ms")
-            view?.loadUrl(url)
-        }*/
-        CXLogUtil.e(CXHybirdBridge.TAG, "shouldOverrideUrlLoading:return $shouldOverrideUrlLoading , 当前线程:${Thread.currentThread().name} , 耗时:${System.currentTimeMillis() - start}ms")
 
-        if (!shouldOverrideUrlLoading)
-            view?.loadUrl(url)
-        return true
+        if (url?.isNotBlank() == true && !CXHybirdBridge.shouldOverrideUrlLoading(view, this, url)) {
+            // 处理 hybird 异步检查更新操作
+            if (CXHybird.getModule(url) != null) {
+                view?.loadUrl(url)
+                return true
+            }
+
+            // 处理 第三方 schema 的跳转, like youku:// and so on
+            if (!url.startsWith("http")) {
+                try {
+                    view?.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    return true
+                } catch (ignore: ActivityNotFoundException) {
+                }
+            }
+        }
+        return false
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

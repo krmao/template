@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.2.10"
+    ext.kotlinVersion = "1.2.20"
     ext.ankoVersion = "0.8.2"
     ext.greendaoVersion = "3.2.0"
     ext.walleVersion = "1.1.5"
@@ -51,6 +51,10 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/../react/node_modules/react-native/android"
+        }
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
@@ -73,7 +77,7 @@ apply from: "readme/scripts/tasktimings.gradle" //控制台输出任务耗时
 ext {
 
     // Sdk and tools
-    minSdkVersion = 15
+    minSdkVersion = 16 // react native >=16
     targetSdkVersion = 22
     compileSdkVersion = 27
     buildToolsVersion = "27.0.2"

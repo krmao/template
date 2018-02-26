@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cx_blue_dark"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <com.smart.library.widget.titlebar.CXTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/cx_blue_dark"
+        app:cxRight0Text="模拟跳转"
+        app:cxTitleText="hybird本地网页页面" />
+
+    <com.smart.library.widget.loading.CXFrameLoadingLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#efefef">
+
+        <LinearLayout
+            android:id="@+id/containerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </com.smart.library.widget.loading.CXFrameLoadingLayout>
+</LinearLayout>

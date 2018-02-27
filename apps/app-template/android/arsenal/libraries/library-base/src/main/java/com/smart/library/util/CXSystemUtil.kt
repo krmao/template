@@ -7,6 +7,7 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
@@ -172,12 +173,12 @@ object CXSystemUtil {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     fun hideSystemUI(window: Window, useImmersiveSticky: Boolean) {
         window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        if (useImmersiveSticky) View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY else View.SYSTEM_UI_FLAG_IMMERSIVE
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_FULLSCREEN or
+            if (useImmersiveSticky) View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY else View.SYSTEM_UI_FLAG_IMMERSIVE
     }
 
     // This snippet shows the system bars. It does this by removing all the flags
@@ -211,6 +212,30 @@ object CXSystemUtil {
                 e.printStackTrace()
             }
             return versionName
+        }
+
+    val appName: String?
+        get() {
+            var appName: String? = null
+            try {
+                appName = CXBaseApplication.INSTANCE.resources.getString(CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.labelRes)
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+
+            return appName
+        }
+
+    val appIcon: Int?
+        get() {
+            var appIcon: Int? = null
+            try {
+                appIcon = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.icon
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+
+            return appIcon
         }
 
     fun getAppMetaData(key: String): Any? {

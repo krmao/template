@@ -21,58 +21,72 @@ import com.smart.library.util.*
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.cx_fragment_debug.*
 
-@Suppress("unused")
+
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class CXDebugFragment : CXBaseFragment() {
+
     companion object {
-        private val KEY_TESTING_LIST = "KEY_TESTING_LIST"
-        private var URLList: MutableList<URLModel> = CXPreferencesUtil.getList(KEY_TESTING_LIST, URLModel::class.java)
+        private const val KEY_CUSTOM_LIST = "KEY_CUSTOM_LIST"
+        private var hostList: MutableList<HostModel> = CXPreferencesUtil.getList(KEY_CUSTOM_LIST, HostModel::class.java)
 
-        fun add(vararg URLModels: URLModel) {
-            if (URLModels.isNotEmpty()) {
-                URLModels
-                    .filterNot { URLList.contains(it) }
-                    .forEach { URLList.add(it) }
-                save()
+        @JvmStatic
+        fun addHost(vararg hostModels: HostModel) {
+            if (hostModels.isNotEmpty()) {
+                hostModels
+                    .filterNot { hostList.contains(it) }
+                    .forEach { hostList.add(it) }
+                saveHostList()
             }
         }
 
-        fun add(label: String, url: String, isSelected: Boolean = false) {
+        @JvmStatic
+        fun addHost(label: String, url: String, isSelected: Boolean = false) {
             if (!TextUtils.isEmpty(label) && !TextUtils.isEmpty(url))
-                add(URLModel(label, url, isSelected))
+                addHost(HostModel(label, url, isSelected))
         }
 
-        fun save() {
-            CXPreferencesUtil.putList(KEY_TESTING_LIST, URLList)
+        @JvmStatic
+        private fun saveHostList() {
+            CXPreferencesUtil.putList(KEY_CUSTOM_LIST, hostList)
         }
 
-        fun getCurUrl(): String {
-            val tmpUrlList = URLList
-            var url: String = tmpUrlList.firstOrNull { it.selected }?.url ?: ""
-            if (TextUtils.isEmpty(url) && tmpUrlList.size > 0) {
-                tmpUrlList[0].selected = true
-                URLList = tmpUrlList
-                url = tmpUrlList[0].url
-                save()
+        @JvmStatic
+        fun getCurrentHost(): HostModel? {
+            val tmpUrlList = hostList
+            var currentSelectedModel: HostModel? = tmpUrlList.firstOrNull { it.isSelected }
+            if (currentSelectedModel == null && tmpUrlList.size > 0) {
+                tmpUrlList[0].isSelected = true
+                hostList = tmpUrlList
+                currentSelectedModel = tmpUrlList[0]
+                saveHostList()
             }
-            return url
+            return currentSelectedModel
         }
 
+        @JvmStatic
         fun showDebugNotification(notificationId: Int) {
-            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, "channel-0")
-                .setSmallIcon(R.drawable.cx_emo_im_happy)
-                .setContentTitle("车享家环境切换")
-                .setContentText("点击跳转到环境切换页面")
+            showDebugNotification(notificationId, "${CXSystemUtil.appName} 调试助手", "点击跳转到调试界面", CXSystemUtil.appIcon ?: R.drawable.cx_emo_im_happy)
+        }
+
+        @JvmStatic
+        fun showDebugNotification(notificationId: Int, title: String, text: String, icon: Int) {
+            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, notificationId.toString())
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setContentText(text)
                 .setAutoCancel(false)
                 .setDefaults(Notification.DEFAULT_LIGHTS)
                 .setOngoing(true)
             CXNotificationManager.showNotifyToFragment(CXBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, CXDebugFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
-        fun cancelDebugNotification(notificationId: Int) = CXNotificationManager.cancelNotify(CXBaseApplication.INSTANCE, notificationId)
+        @JvmStatic
+        fun cancelDebugNotification(notificationId: Int) {
+            CXNotificationManager.cancelNotify(CXBaseApplication.INSTANCE, notificationId)
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.cx_fragment_debug, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.cx_fragment_debug, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,11 +94,11 @@ open class CXDebugFragment : CXBaseFragment() {
         trace_cb.isChecked = CXConfig.ENABLE_TRACE_DEBUG
         trace_cb.setOnCheckedChangeListener { _, isChecked -> CXConfig.ENABLE_TRACE_DEBUG = isChecked }
 
-        val adapter = DebugAdapter(URLList, activity)
+        val adapter = DebugAdapter(hostList, activity)
         listView.adapter = adapter
         addCustom.setOnClickListener(View.OnClickListener {
-            val newEntity = URLModel(editLabel.text.toString(), editUrl.text.toString(), false)
-            if (TextUtils.isEmpty(newEntity.name)) {
+            val newEntity = HostModel(editLabel.text.toString(), editUrl.text.toString(), false)
+            if (TextUtils.isEmpty(newEntity.label)) {
                 CXToastUtil.show("请填写标签")
                 return@OnClickListener
             }
@@ -94,10 +108,10 @@ open class CXDebugFragment : CXBaseFragment() {
             }
             editLabel.text = null
             editUrl.text = null
-            if (!URLList.contains(newEntity)) {
-                URLList.add(newEntity)
-                save()
-                RxBus.post(ChangeEvent(newEntity))
+            if (!hostList.contains(newEntity)) {
+                hostList.add(newEntity)
+                saveHostList()
+                RxBus.post(HostChangeEvent(newEntity))
                 adapter.notifyDataSetChanged()
             }
             CXSystemUtil.hideKeyboard(activity)
@@ -106,36 +120,36 @@ open class CXDebugFragment : CXBaseFragment() {
         clearCacheTV.setOnClickListener { CXIntentUtil.goToAppDetails(activity) }
     }
 
-    class DebugAdapter(private var urlList: List<URLModel>, private val context: Context?) : BaseAdapter() {
-        override fun getCount(): Int = urlList.size
+    private class DebugAdapter(var list: List<HostModel>, private val context: Context?) : BaseAdapter() {
+        override fun getCount(): Int = list.size
 
-        override fun getItem(position: Int): URLModel = urlList[position]
+        override fun getItem(position: Int): HostModel = list[position]
 
         override fun getItemId(position: Int): Long = position.toLong()
 
         @SuppressLint("ViewHolder")
         override fun getView(position: Int, _convertView: View?, parent: ViewGroup?): View {
             val convertView = LayoutInflater.from(context).inflate(R.layout.cx_fragment_debug_item, parent, false)
-            val radioButton = convertView.findViewById(R.id.radioButton) as RadioButton
-            val textView = convertView.findViewById(R.id.textView) as TextView
+            val radioButton = convertView.findViewById<RadioButton>(R.id.radioButton)
+            val textView = convertView.findViewById<TextView>(R.id.textView)
             val urlEntity = getItem(position)
-            radioButton.text = urlEntity.name
+            radioButton.text = urlEntity.label
             radioButton.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked && !urlEntity.selected) {
-                    urlEntity.selected = true
-                    for (item in URLList) {
-                        item.selected = item == urlEntity
+                if (isChecked && !urlEntity.isSelected) {
+                    urlEntity.isSelected = true
+                    for (item in hostList) {
+                        item.isSelected = item == urlEntity
                     }
-                    save()
-                    RxBus.post(ChangeEvent(urlEntity))
+                    saveHostList()
+                    RxBus.post(HostChangeEvent(urlEntity))
                     notifyDataSetChanged()
                 }
             }
-            radioButton.isChecked = urlEntity.selected
+            radioButton.isChecked = urlEntity.isSelected
             textView.text = urlEntity.url
             textView.setOnClickListener { CXToastUtil.show("长按复制") }
             textView.setOnLongClickListener {
-                CXSystemUtil.copyToClipboard(urlEntity.name, urlEntity.url)
+                CXSystemUtil.copyToClipboard(urlEntity.label, urlEntity.url)
                 CXToastUtil.show("已复制")
                 true
             }
@@ -144,17 +158,17 @@ open class CXDebugFragment : CXBaseFragment() {
 
     }
 
-    class ChangeEvent(var model: URLModel)
+    data class HostChangeEvent(var hostModel: HostModel)
 
-    class URLModel(var name: String, var url: String, var selected: Boolean) {
-        override fun equals(other: Any?): Boolean = (other is URLModel) && !TextUtils.isEmpty(name) && name == other.name
-
-        override fun toString(): String = "URLModel{name='$name', url='$url', selected=$selected}"
+    data class HostModel(var label: String, var url: String, var isSelected: Boolean) {
+        override fun equals(other: Any?): Boolean {
+            return if (other is HostModel) !TextUtils.isEmpty(label) && label == other.label else false
+        }
 
         override fun hashCode(): Int {
-            var result = name.hashCode()
+            var result = label.hashCode()
             result = 31 * result + url.hashCode()
-            result = 31 * result + selected.hashCode()
+            result = 31 * result + isSelected.hashCode()
             return result
         }
     }

@@ -31,15 +31,15 @@ internal object CXApiManager {
     fun init() {
         if (CXBaseApplication.DEBUG) {
             CXURLManager.Environments.values().forEach { environment: CXURLManager.Environments ->
-                CXDebugFragment.add(environment.name, environment.map[CXURLManager.KEY_HOST] ?: "", CXURLManager.curEnvironment == environment)
+                CXDebugFragment.addHost(environment.name, environment.map[CXURLManager.KEY_HOST]
+                    ?: "", CXURLManager.curEnvironment == environment)
             }
-            RxBus.toObservable(CXDebugFragment.ChangeEvent::class.java).subscribe { changeEvent ->
-                try {
-                    CXURLManager.curEnvironment = CXURLManager.Environments.valueOf(changeEvent.model.name)
-                } catch (_: Exception) {
-                }
-                CXToastUtil.show("检测到环境切换(${changeEvent.model.name})\n已切换到:${CXURLManager.curEnvironment.name}")
+            RxBus.toObservable(CXDebugFragment.HostChangeEvent::class.java).subscribe { changeEvent ->
+                CXURLManager.curEnvironment = CXURLManager.Environments.valueOf(changeEvent.hostModel.label)
+                CXToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${CXURLManager.curEnvironment.name}")
             }
+
+
             val notificationId = 999999
             CXDebugFragment.showDebugNotification(notificationId)
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
@@ -58,7 +58,8 @@ internal object CXApiManager {
                     if (responseModel != null && responseModel.errorCode == 0 && responseModel.result != null) {
                         responseModel.result!!
                     } else {
-                        throw CXRetrofitServerException(responseModel?.errorCode ?: -1, responseModel?.errorMessage ?: "网络不给力")
+                        throw CXRetrofitServerException(responseModel?.errorCode
+                            ?: -1, responseModel?.errorMessage ?: "网络不给力")
                     }
                 }
                 .onErrorResumeNext { throwable: Throwable ->
@@ -143,7 +144,8 @@ internal object CXApiManager {
                             Cache-Control       :   ${headers.get("Cache-Control")}
                             max-age             :   ${headers.get("Cache-Control")?.split("=")?.getOrNull(1)}
                             Content-Disposition :   ${headers.get("Content-Disposition")}
-                            filename            :   ${headers.get("Content-Disposition")?.split("=")?.getOrNull(1) ?: "temp_file"})
+                            filename            :   ${headers.get("Content-Disposition")?.split("=")?.getOrNull(1)
+            ?: "temp_file"})
                             -----------
                         """)
     }

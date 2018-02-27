@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFEFEF"
+    android:background="#FAFBFC"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -101,6 +101,15 @@
                         android:textSize="14sp" />
                 </FrameLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="切换环境后请注意:\n当前页面之前的所有页面都是 **老的环境** 请求的数据, 会直接影响当前页面的测试结果, 如果依赖之前的数据正确性, **重启** app 即可"
+                android:textColor="@color/cx_gray"
+                android:textSize="12sp"
+                android:textStyle="italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"

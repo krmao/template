@@ -7,12 +7,13 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.KeyEvent
 import com.facebook.react.ReactInstanceManager
-import com.facebook.react.bridge.ReactContext
+import com.facebook.react.ReactPackage
 import com.facebook.react.common.LifecycleState
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.shell.MainReactPackage
 import com.smart.library.base.CXBaseActivity
+import com.smart.library.base.CXBaseApplication
 import kotlinx.android.synthetic.main.react_activity.*
 
 
@@ -34,19 +35,22 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
         mReactInstanceManager = ReactInstanceManager.builder()
             .setApplication(application)
+            .setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
             .setBundleAssetName("index.android.bundle")
             .setJSMainModulePath("index")
-            .addPackage(MainReactPackage())
-            .setUseDeveloperSupport(BuildConfig.DEBUG)
+            .addPackages(
+                mutableListOf<ReactPackage>(
+                    MainReactPackage(),
+                    ReactNativePackage()
+                )
+            )
+            .setUseDeveloperSupport(CXBaseApplication.DEBUG)
             .setInitialLifecycleState(LifecycleState.RESUMED)
             .build()
 
         val bundle = Bundle()
 
-        bundle.putInt("a", 1)
-        bundle.putString("b", "2")
-        bundle.putDouble("c", 3.0)
-        bundle.putIntegerArrayList("d", arrayListOf(4, 5, 6, 7, 8, 9))
+        bundle.putInt("native_params", 1)
 
         react_root_view?.startReactApplication(mReactInstanceManager, "react-module-home", bundle)
 
@@ -56,6 +60,11 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         btn_send?.setOnClickListener {
             //向 react native 发送数据
             mReactInstanceManager?.currentReactContext?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)?.emit("native_event", "msg://${count++}")
+
+            val newBundle = Bundle()
+
+            newBundle.putInt("native_params", 9000 + count)
+            react_root_view?.appProperties = newBundle
         }
 
         /**

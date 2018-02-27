@@ -1,8 +1,17 @@
 import React from "react";
-import {AppRegistry, DeviceEventEmitter, NativeModules, StyleSheet, Text, View} from "react-native";
+import {AppRegistry, Button, DeviceEventEmitter, NativeModules, StyleSheet, Text, View} from "react-native";
 
 
 class HomeModule extends React.Component {
+
+    constructor() {
+        super();
+
+        this.state = {
+            "dataToNative": 0,
+            "resultFromNative": "null"
+        }
+    }
 
     componentWillMount() {
         console.debug("componentWillMount -> " + this.props.native_params);
@@ -11,6 +20,9 @@ class HomeModule extends React.Component {
     componentDidMount() {
         console.debug("componentDidMount -> " + this.props.native_params);
         console.debug(this.props);
+
+        this.reactBridge = NativeModules.ReactBridge;
+
 
         var CXToastUtil = NativeModules.CXToastUtil;
         this.native_listener = DeviceEventEmitter.addListener('native_event', (event) => {
@@ -49,6 +61,30 @@ class HomeModule extends React.Component {
 
         return (
             <View style={styles.container}>
+                <Button
+                    style={{padding: 15, margin: 15}}
+                    title={"点击调用 native 方法 并传值:" + (this.state.dataToNative)}
+                    onPress={() => {
+                        this.reactBridge.callNative((this.state.dataToNative).toString())
+                            .then(
+                                (successResult) => {
+                                    console.debug("successResult -> " + successResult);
+                                    this.setState({
+                                        "dataToNative": Number(successResult) + 1,
+                                        "resultFromNative": successResult
+                                    })
+                                },
+                                (errorCode, errorMsg, error) => {
+                                    console.debug("errorCode -> " + errorCode);
+                                    console.debug("errorMsg -> " + errorMsg);
+                                    console.debug("error -> ");
+                                    console.error(error);
+                                }
+                            )
+                    }}
+                />
+
+                <Text style={styles.content}>调用 native 后的返回结果: {this.state.resultFromNative}</Text>
                 <Text style={styles.content}>当前 REACT-NATIVE 启动参数: {this.props.native_params}</Text>
                 <Text style={styles.desc}>(只有双数才会重新渲染界面)</Text>
                 <Text style={styles.desc}>通过在 native 重新设置 react_root_view?.appProperties 修改 REACT-NATIVE 启动参数</Text>

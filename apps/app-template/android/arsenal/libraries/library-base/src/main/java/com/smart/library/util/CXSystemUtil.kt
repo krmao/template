@@ -203,9 +203,9 @@ object CXSystemUtil {
             return versionCode
         }
 
-    val versionName: String?
+    val versionName: String
         get() {
-            var versionName: String? = null
+            var versionName = ""
             try {
                 versionName = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException) {
@@ -214,9 +214,9 @@ object CXSystemUtil {
             return versionName
         }
 
-    val appName: String?
+    val appName: String
         get() {
-            var appName: String? = null
+            var appName = ""
             try {
                 appName = CXBaseApplication.INSTANCE.resources.getString(CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.labelRes)
             } catch (e: PackageManager.NameNotFoundException) {
@@ -226,9 +226,9 @@ object CXSystemUtil {
             return appName
         }
 
-    val appIcon: Int?
+    val appIcon: Int
         get() {
-            var appIcon: Int? = null
+            var appIcon = 0
             try {
                 appIcon = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.icon
             } catch (e: PackageManager.NameNotFoundException) {

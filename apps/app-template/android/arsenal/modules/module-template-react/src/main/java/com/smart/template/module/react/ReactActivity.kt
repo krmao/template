@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.react_activity.*
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     override fun invokeDefaultOnBackPressed() {
-        super.onBackPressed();
+        super.onBackPressed()
     }
 
     private var mReactInstanceManager: ReactInstanceManager? = null
@@ -57,14 +57,13 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         btn_menu?.setOnClickListener {
             mReactInstanceManager?.showDevOptionsDialog()
         }
+
         btn_send?.setOnClickListener {
             //向 react native 发送数据
-            mReactInstanceManager?.currentReactContext?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)?.emit("native_event", "msg://${count++}")
+            ReactBridge.callReact(mReactInstanceManager?.currentReactContext, "native_event", "msg://${count++}")
 
-            val newBundle = Bundle()
-
-            newBundle.putInt("native_params", 9000 + count)
-            react_root_view?.appProperties = newBundle
+            bundle.putInt("native_params", 9000 + count)
+            updateReactProperties(bundle)
         }
 
         /**
@@ -73,6 +72,13 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName)), OVERLAY_PERMISSION_REQ_CODE)
         }
+    }
+
+    /**
+     * 重新设置 react 属性, 并重新渲染 react 界面
+     */
+    private fun updateReactProperties(bundle: Bundle?) {
+        react_root_view?.appProperties = bundle
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

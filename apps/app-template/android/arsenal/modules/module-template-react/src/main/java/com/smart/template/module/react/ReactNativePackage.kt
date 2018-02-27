@@ -10,7 +10,8 @@ import com.facebook.react.uimanager.ViewManager
 class ReactNativePackage : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
         return arrayListOf(
-            ReactToastUtil(reactContext)
+            ReactToastUtil(reactContext),
+            ReactBridge(reactContext)
         )
     }
 

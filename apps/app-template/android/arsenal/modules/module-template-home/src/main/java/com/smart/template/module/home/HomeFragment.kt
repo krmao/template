@@ -29,8 +29,5 @@ class HomeFragment : CXBaseFragment() {
         text3.setOnClickListener {
             startActivity(Intent(activity, ReactActivity::class.java))
         }
-        text4.setOnClickListener {
-            startActivity(Intent(activity, DevSettingsActivity::class.java))
-        }
     }
 }

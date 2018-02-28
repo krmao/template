@@ -104,9 +104,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 configer: configer,
                 downloader: downloader) { (list: MutableList?) -> Void in
 
-            CXDialogUtil.hideProgress()
+            DispatchQueue.main.async {
 
-            rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
+                CXDialogUtil.hideProgress()
+                rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
+
+            }
         }
 
 

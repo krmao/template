@@ -40,6 +40,7 @@
 		3D52A7F9EB694A0B2708C925 /* CXFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A6C4303A3CD2095940F6 /* CXFileUtil.swift */; };
 		3D52A838880EF31F77ED3587 /* CXWKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */; };
 		3D52A87EE35CD13F9FD858BB /* WebViewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB39F9A92786DB69A319 /* WebViewClient.swift */; };
+		3D52A87EF9DF8C29B16654B6 /* ReactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A0F9945D66CB3749A4E5 /* ReactViewController.swift */; };
 		3D52A886D7A487B64F8AD90D /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A004966EF72B2F5CAA3B /* CategoryData.swift */; };
 		3D52A8D8AC2FCF6436C7565A /* CXStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A71BEC3E9D4B46058CEA /* CXStringExtension.swift */; };
 		3D52A91B9ED6E358D271757E /* CXURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2FDAE84E0C07657B63E /* CXURLManager.swift */; };
@@ -78,6 +79,7 @@
 		3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXWKWebView.swift; sourceTree = "<group>"; };
 		3D52A08D05CD3DEE53D8987F /* CXHybird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybird.swift; sourceTree = "<group>"; };
 		3D52A09D6632F76B4EDD5966 /* GetOrderYunFeeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderYunFeeData.swift; sourceTree = "<group>"; };
+		3D52A0F9945D66CB3749A4E5 /* ReactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactViewController.swift; sourceTree = "<group>"; };
 		3D52A15CB1DB862880C81137 /* CXJsonUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXJsonUtil.swift; sourceTree = "<group>"; };
 		3D52A168C0B8C374184FBAB8 /* CXNSObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXNSObjectExtension.swift; sourceTree = "<group>"; };
 		3D52A1AE25FC7CED3F95E08D /* CXDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDataExtension.swift; sourceTree = "<group>"; };
@@ -293,6 +295,14 @@
 			path = exception;
 			sourceTree = "<group>";
 		};
+		3D52A75E291A7EBC73AE3101 /* module-template-react_native */ = {
+			isa = PBXGroup;
+			children = (
+				3D52A0F9945D66CB3749A4E5 /* ReactViewController.swift */,
+			);
+			path = "module-template-react_native";
+			sourceTree = "<group>";
+		};
 		3D52A78BE57FFC61869187B9 /* webview */ = {
 			isa = PBXGroup;
 			children = (
@@ -489,6 +499,7 @@
 				8763BEFC1F8DCA5400CA4E89 /* module-template-hybird */,
 				8763BF001F8DCA5400CA4E89 /* module-template-mine */,
 				8763BF021F8DCA5400CA4E89 /* module-template-setting */,
+				3D52A75E291A7EBC73AE3101 /* module-template-react_native */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -640,26 +651,36 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-template/Pods-template-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
+				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
+				"${BUILT_PRODUCTS_DIR}/GLog/glog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
+				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -766,6 +787,7 @@
 				3D52A69875FB1EF98B6AAF1A /* CXToastUtil.swift in Sources */,
 				3D52A2B150C01FDE45A9A146 /* CXDialogUtil.swift in Sources */,
 				3D52AC0903FDD1F88D499439 /* CXConfig.swift in Sources */,
+				3D52A87EF9DF8C29B16654B6 /* ReactViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,12 +933,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = ZGJH8VAAW9;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-template/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REEXPORTED_FRAMEWORK_NAMES = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -933,12 +957,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = ZGJH8VAAW9;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/arsenal/apps/app-template/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REEXPORTED_FRAMEWORK_NAMES = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

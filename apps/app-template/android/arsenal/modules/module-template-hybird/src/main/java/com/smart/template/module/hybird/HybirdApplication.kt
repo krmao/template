@@ -63,6 +63,6 @@ object HybirdApplication {
 
         val allConfigUrl = "http://10.47.58.14:8080/background/files/all.json"
         //初始化开始
-        CXHybird.init(CXBaseApplication.DEBUG, CXHybirdInitStrategy.DOWNLOAD, allConfigUrl, allConfiger, configer, downloader)
+        CXHybird.init(false, CXBaseApplication.DEBUG, CXHybirdInitStrategy.DOWNLOAD, allConfigUrl, allConfiger, configer, downloader)
     }
 }

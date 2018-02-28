@@ -34,6 +34,10 @@ object CXHybird {
         private set
 
     @JvmStatic
+    var enable = false
+        private set
+
+    @JvmStatic
     val assetsDirName = "hybird"
     @JvmStatic
     val bundleSuffix = ".zip"
@@ -65,9 +69,13 @@ object CXHybird {
 
     @JvmStatic
     fun removeModule(moduleName: String?) {
+        if (!enable) {
+            return
+        }
+
         if (moduleName != null && moduleName.isNotBlank()) {
-            CXHybirdUtil.removeIntercept(CXHybird.modules[moduleName]?.currentConfig)
-            CXHybird.modules.remove(moduleName)
+            CXHybirdUtil.removeIntercept(modules[moduleName]?.currentConfig)
+            modules.remove(moduleName)
         }
     }
 
@@ -78,22 +86,30 @@ object CXHybird {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(debug: Boolean = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+    fun init(enable: Boolean = false, debug: Boolean = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+        CXHybird.enable = enable
+
+        if (!enable) {
+            return
+        }
+
         val start = System.currentTimeMillis()
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
         CXLogUtil.w(TAG, ">>>>----初始化HYBIRD模块 开始")
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
 
-        this.debug = debug
-        this.initStrategy = initStrategy
+
+        CXHybird.debug = debug
+        CXHybird.initStrategy = initStrategy
 
         if (configer != null) CXHybird.configer = configer
         if (downloader != null) CXHybird.downloader = downloader
         if (allConfiger != null) CXHybird.allConfiger = allConfiger
         if (allConfigUrl.isNotBlank()) CXHybird.allConfigUrl = allConfigUrl
 
-        CXLogUtil.w(TAG, ">>>>----debug=${this.debug}")
-        CXLogUtil.w(TAG, ">>>>----initStrategy=${this.initStrategy}")
+        CXLogUtil.w(TAG, ">>>>----enable=${CXHybird.enable}")
+        CXLogUtil.w(TAG, ">>>>----debug=${CXHybird.debug}")
+        CXLogUtil.w(TAG, ">>>>----initStrategy=${CXHybird.initStrategy}")
         CXLogUtil.w(TAG, ">>>>----allConfigUrl=$allConfigUrl")
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
@@ -105,9 +121,9 @@ object CXHybird {
         val bundles: MutableMap<String, CXHybirdModuleBundleModel> = CXHybirdBundleInfoManager.getBundles()
         val bundleNames: MutableSet<String> = bundles.keys
 
-        CXLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: initStrategy=${this.initStrategy}, 检测本地是否存在缓存配置信息: bundleNames=$bundleNames")
+        CXLogUtil.w(TAG, ">>>>----检测到当前初始化策略为: initStrategy=${CXHybird.initStrategy}, 检测本地是否存在缓存配置信息: bundleNames=$bundleNames")
         if (bundleNames.isEmpty()) {
-            if (this.initStrategy == CXHybirdInitStrategy.DOWNLOAD) {
+            if (CXHybird.initStrategy == CXHybirdInitStrategy.DOWNLOAD) {
                 CXLogUtil.w(TAG, ">>>>----由于未检测到缓存配置信息, 开始执行远程下载总配置信息进行初始化")
                 if (CXHybird.allConfiger != null && CXHybird.allConfigUrl.isNotBlank()) {
                     CXLogUtil.w(TAG, ">>>>----初始化策略为在线下载初始化, 开始下载总的配置文件, allConfigUrl=${CXHybird.allConfigUrl}")
@@ -147,6 +163,10 @@ object CXHybird {
     }
 
     private fun downloadAndInitModules(configList: MutableList<CXHybirdModuleConfigModel>?) {
+        if (!enable) {
+            return
+        }
+
         CXLogUtil.w(TAG, ">>>>----需要下载初始化的模块有 ${configList?.map { it.moduleName }}")
         CXHybirdUtil.downloadAllModules(configList) { validConfigList: MutableList<CXHybirdModuleConfigModel>? ->
             initAllModules(validConfigList, false)
@@ -154,16 +174,20 @@ object CXHybird {
     }
 
     private fun downloadAndInitModule(config: CXHybirdModuleConfigModel?) {
+        if (!enable) {
+            return
+        }
+
         if (config != null) {
             val start = System.currentTimeMillis()
-            CXLogUtil.d(CXHybird.TAG, "**********[downloadAndInitModule:单模块开始")
+            CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块开始")
 
-            CXLogUtil.d(CXHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(start))}")
-            CXLogUtil.d(CXHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], ${config.moduleDownloadUrl}")
+            CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(start))}")
+            CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:开始], ${config.moduleDownloadUrl}")
 
             CXHybirdDownloadManager.download(config) { isLocalFilesValid: Boolean ->
-                CXLogUtil.d(CXHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], isLocalFilesValid:$isLocalFilesValid")
-                CXLogUtil.d(CXHybird.TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms, config=$config")
+                CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], isLocalFilesValid:$isLocalFilesValid")
+                CXLogUtil.d(TAG, "**********[downloadAndInitModule:单模块下载:${config.moduleName}:结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms, config=$config")
                 if (isLocalFilesValid) {
                     initModule(config)
                 }
@@ -172,13 +196,18 @@ object CXHybird {
     }
 
     private fun initModule(config: CXHybirdModuleConfigModel?, callback: ((config: CXHybirdModuleConfigModel?) -> Unit)? = null) {
+        if (!enable) {
+            callback?.invoke(null)
+            return
+        }
+
         val start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化开始], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(start))}")
         if (config == null) {
-            CXLogUtil.e(CXHybird.TAG, "--[initModule:${config?.moduleName}初始化结束], 没有模块需要初始化")
-            CXLogUtil.e(CXHybird.TAG, "--[initModule:${config?.moduleName}初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${CXHybird.modules.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
-            CXLogUtil.e(CXHybird.TAG, "--[initModule:${config?.moduleName}初始化结束]-----------------------------------------------------------------------------------")
+            CXLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化结束], 没有模块需要初始化")
+            CXLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${modules.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+            CXLogUtil.e(TAG, "--[initModule:${config?.moduleName}初始化结束]-----------------------------------------------------------------------------------")
             callback?.invoke(null)
         } else {
             Observable.fromCallable { initModuleManager(config) }
@@ -192,6 +221,10 @@ object CXHybird {
     }
 
     private fun initModuleManager(config: CXHybirdModuleConfigModel?) {
+        if (!enable) {
+            return
+        }
+
         val _start = System.currentTimeMillis()
         CXLogUtil.w(TAG, "--[initModule:${config?.moduleName}](开始), 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(_start))}")
 
@@ -209,13 +242,18 @@ object CXHybird {
      * @param callback 在全部模块成功初始化结束以后,检查全部更新之前回调, configList 返回空,代表没有模块被成功初始化, 属于初始化失败的标志
      */
     private fun initAllModules(configList: MutableList<CXHybirdModuleConfigModel>?, isNeedCheckAllUpdateAfterAllModulesSuccessInit: Boolean = true, callback: ((configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = null) {
+        if (!enable) {
+            callback?.invoke(null)
+            return
+        }
+
         val start = System.currentTimeMillis()
         CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始]-----------------------------------------------------------------------------------")
         CXLogUtil.e(TAG, "--[initAllModules:全部初始化开始], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(start))}  ,isNeedCheckAllUpdateAfterAllModulesSuccessInit=$isNeedCheckAllUpdateAfterAllModulesSuccessInit")
         if (configList == null || configList.isEmpty()) {
-            CXLogUtil.e(CXHybird.TAG, "--[initAllModules:全部初始化结束], 没有模块需要初始化")
-            CXLogUtil.e(CXHybird.TAG, "--[initAllModules:全部初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${CXHybird.modules.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
-            CXLogUtil.e(CXHybird.TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
+            CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 没有模块需要初始化")
+            CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${modules.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
+            CXLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
             callback?.invoke(null)
         } else {
             Observable.zip(
@@ -243,10 +281,14 @@ object CXHybird {
     /**
      * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
      */
-    fun checkAllUpdate() {
+    private fun checkAllUpdate() {
+        if (!enable) {
+            return
+        }
+
         val start = System.currentTimeMillis()
         CXLogUtil.e(TAG, ">>>>----检查更新:下载开始, 当前线程:${Thread.currentThread().name}, 当前时间:${CXTimeUtil.yMdHmsS(Date(start))}")
-        CXHybird.allConfiger?.invoke(CXHybird.allConfigUrl) { remoteConfigList: MutableList<CXHybirdModuleConfigModel>? ->
+        allConfiger?.invoke(allConfigUrl) { remoteConfigList: MutableList<CXHybirdModuleConfigModel>? ->
             CXLogUtil.w(TAG, ">>>>----检查更新:下载${if (remoteConfigList == null) "失败" else "成功"}, 当前时间:${CXTimeUtil.yMdHmsS(Date())}, 耗时:${System.currentTimeMillis() - start}ms")
             CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
             CXLogUtil.j(Log.WARN, TAG, CXJsonUtil.toJson(remoteConfigList))
@@ -271,7 +313,11 @@ object CXHybird {
         }
     }
 
-    fun checkUpdate(remoteConfig: CXHybirdModuleConfigModel?) {
+    private fun checkUpdate(remoteConfig: CXHybirdModuleConfigModel?) {
+        if (!enable) {
+            return
+        }
+
         CXLogUtil.e(TAG, ">>>>>>>======检查子模块更新 开始:${remoteConfig?.moduleName}, 当前时间:${CXTimeUtil.yMdHmsS(Date())}")
 
         if (remoteConfig != null) {
@@ -280,7 +326,7 @@ object CXHybird {
                 CXLogUtil.e(TAG, ">>>>>>>======检查子模块本地已经有以前的版本信息,进行比较操作")
                 //1:正式包，所有机器可以拉取
                 //2:测试包，只要测试机器可以拉取
-                if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && CXHybird.debug)) {
+                if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && debug)) {
                     CXLogUtil.e(remoteConfig.moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
                     val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
                     val localVersion = moduleManager.currentConfig.moduleVersion.toFloatOrNull()
@@ -295,7 +341,7 @@ object CXHybird {
                             } else {
                                 CXLogUtil.e(TAG, ">>>>>>>======${remoteConfig.moduleName} 无需切换为在线模式")
                             }
-                            CXHybirdDownloadManager.download(remoteConfig) { isLocalFilesValid ->
+                            CXHybirdDownloadManager.download(remoteConfig) { _ ->
 
                             }
                         } else {
@@ -314,6 +360,11 @@ object CXHybird {
 
     @JvmStatic
     fun checkUpdate(url: String?, callback: (() -> Unit?)? = null) {
+        if (!enable) {
+            callback?.invoke()
+            return
+        }
+
         val moduleManager = getModule(url)
         if (moduleManager == null) {
             callback?.invoke()
@@ -323,45 +374,50 @@ object CXHybird {
     }
 
     @JvmStatic
-    fun checkUpdate(moduleManager: CXHybirdModuleManager?, callback: (() -> Unit?)? = null) {
+    private fun checkUpdate(moduleManager: CXHybirdModuleManager?, callback: (() -> Unit?)? = null) {
+        if (!enable) {
+            callback?.invoke()
+            return
+        }
+
         if (moduleManager != null) {
             val moduleName = moduleManager.currentConfig.moduleName
             val start = System.currentTimeMillis()
-            CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig.moduleVersion},当前线程:${Thread.currentThread().name}")
-            CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "当前配置=${moduleManager.currentConfig}")
+            CXLogUtil.v(TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig.moduleVersion},当前线程:${Thread.currentThread().name}")
+            CXLogUtil.v(TAG + ":" + moduleName, "当前配置=${moduleManager.currentConfig}")
 
-            if (CXHybird.configer == null) {
-                CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
+            if (configer == null) {
+                CXLogUtil.e(TAG + ":" + moduleName, "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
                 callback?.invoke()
                 return
             }
 
             if (CXHybirdDownloadManager.isDownloading(moduleManager.currentConfig)) {
-                CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "系统检测到当前正在下载更新中, return")
+                CXLogUtil.e(TAG + ":" + moduleName, "系统检测到当前正在下载更新中, return")
                 callback?.invoke()
                 return
             }
 
             if (moduleManager.onlineModel) {
-                CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return")
+                CXLogUtil.e(TAG + ":" + moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return")
                 callback?.invoke()
                 return
             }
 
             val moduleConfigUrl = moduleManager.currentConfig.moduleConfigUrl
-            CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "下载配置文件 开始 当前版本=${moduleManager.currentConfig.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
-            CXHybird.configer?.invoke(moduleConfigUrl) { remoteConfig: CXHybirdModuleConfigModel? ->
-                CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name}")
-                CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "remoteConfig->")
-                CXLogUtil.j(CXHybird.TAG + ":" + moduleName, CXJsonUtil.toJson(remoteConfig))
+            CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 开始 当前版本=${moduleManager.currentConfig.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
+            configer?.invoke(moduleConfigUrl) { remoteConfig: CXHybirdModuleConfigModel? ->
+                CXLogUtil.v(TAG + ":" + moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name}")
+                CXLogUtil.v(TAG + ":" + moduleName, "remoteConfig->")
+                CXLogUtil.j(TAG + ":" + moduleName, CXJsonUtil.toJson(remoteConfig))
                 if (remoteConfig != null) {
                     //1:正式包，所有机器可以拉取
                     //2:测试包，只要测试机器可以拉取
-                    if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && CXHybird.debug)) {
-                        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
+                    if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && debug)) {
+                        CXLogUtil.e(TAG + ":" + moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
                         val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
                         val localVersion = moduleManager.currentConfig.moduleVersion.toFloatOrNull()
-                        CXLogUtil.v("${CXHybird.TAG + ":" + moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
+                        CXLogUtil.v("${TAG + ":" + moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
                         if (remoteVersion != null && localVersion != null) {
                             //版本号相等时不做任何处理，避免不必要的麻烦
                             if (remoteVersion != localVersion) {
@@ -379,36 +435,56 @@ object CXHybird {
                             CXLogUtil.e("系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 为空, 无法判断需要更新,默认不需要更新")
                         }
                     } else {
-                        CXLogUtil.e(CXHybird.TAG + ":" + moduleName, "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
+                        CXLogUtil.e(TAG + ":" + moduleName, "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
                     }
                 }
                 callback?.invoke()
             }
-            CXLogUtil.v(CXHybird.TAG + ":" + moduleName, "检查更新 结束, 当前线程:${Thread.currentThread().name}, 耗时: ${System.currentTimeMillis() - start}ms")
+            CXLogUtil.v(TAG + ":" + moduleName, "检查更新 结束, 当前线程:${Thread.currentThread().name}, 耗时: ${System.currentTimeMillis() - start}ms")
         }
     }
 
     fun getModule(url: String?): CXHybirdModuleManager? {
-        return if (url.isNullOrBlank()) null else CXHybird.modules.values.firstOrNull { isMemberOfModule(it.currentConfig, url) }
+        if (!enable) {
+            return null
+        }
+
+        return if (url.isNullOrBlank()) null else modules.values.firstOrNull { isMemberOfModule(it.currentConfig, url) }
     }
 
     @JvmStatic
     fun onWebViewClose(webViewClient: WebViewClient?) {
+        if (!enable) {
+            return
+        }
+
         CXHybirdLifecycleManager.onWebViewClose(webViewClient)
     }
 
     @JvmStatic
     fun onWebViewOpenPage(webViewClient: WebViewClient?, url: String?) {
+        if (!enable) {
+            return
+        }
+
         CXHybirdLifecycleManager.onWebViewOpenPage(webViewClient, url)
     }
 
     @JvmStatic
     fun isMemberOfModule(config: CXHybirdModuleConfigModel?, url: String?): Boolean {
+        if (!enable) {
+            return false
+        }
+
         return url?.contains(config?.moduleMainUrl ?: "") == true
     }
 
     @JvmStatic
     fun isModuleOpened(moduleName: String?): Boolean {
+        if (!enable) {
+            return false
+        }
+
         return CXHybirdLifecycleManager.isModuleOpened(moduleName)
     }
 

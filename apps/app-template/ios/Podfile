@@ -1,6 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, "8.0"
 use_frameworks!
+
 inhibit_all_warnings!
 
 # /usr/bin/ruby /Applications/AppCode.app/Contents/bin/pod install --no-ansi
@@ -23,5 +25,28 @@ target 'template' do
   pod 'Zip', '~> 1.1.0'
   pod 'RxCocoa', '~> 4.1.1'
   pod 'MBProgressHUD', '~> 1.1.0'
+
+
+  # ==================== REACT NATIVE =============
+  # Your 'node_modules' directory is probably in the root of your project,
+  # but if not, adjust the `:path` accordingly
+  pod 'React', :path => '../react/node_modules/react-native', :subspecs => [
+      'Core',
+      'CxxBridge', # Include this for RN >= 0.47
+      'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
+      'RCTText',
+      'RCTNetwork',
+      'RCTWebSocket', # needed for debugging
+  # Add any other subspecs you want to use in your project
+  ]
+  # Explicitly include Yoga if you are using RN >= 0.42.0
+  pod "yoga", :path => "../react/node_modules/react-native/ReactCommon/yoga"
+
+  # Third party deps podspec link
+  pod 'DoubleConversion', :podspec => '../react/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'GLog', :podspec => '../react/node_modules/react-native/third-party-podspecs/GLog.podspec'
+  pod 'Folly', :podspec => '../react/node_modules/react-native/third-party-podspecs/Folly.podspec'
+  
+
 
 end

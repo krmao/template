@@ -17,7 +17,7 @@ open class CXWebChromeClient : WebChromeClient() {
 
     override fun onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissions.Callback?) {
         CXLogUtil.v(CXHybirdBridge.TAG, "onGeolocationPermissionsShowPrompt:allow=true: $origin")
-        callback?.invoke(origin, true, true)
+        //callback?.invoke(origin, true, true)
         super.onGeolocationPermissionsShowPrompt(origin, callback)
     }
 

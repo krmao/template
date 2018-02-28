@@ -39,11 +39,11 @@ open class CXWebViewClient : WebViewClient() {
 
     init {
         //每次浏览器启动
-        Log.e(CXHybirdBridge.TAG, "检测到浏览器初始化")
+        //Log.e(CXHybirdBridge.TAG, "检测到浏览器初始化")
     }
 
     open fun onDestroy() {
-        Log.d(CXHybirdBridge.TAG, "每次浏览器关闭，提前删除 webView 的强引用,避免内存泄露")
+        //Log.d(CXHybirdBridge.TAG, "每次浏览器关闭，提前删除 webView 的强引用,避免内存泄露")
         CXHybird.onWebViewClose(this)
     }
 
@@ -84,7 +84,7 @@ open class CXWebViewClient : WebViewClient() {
     }
 
     override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
-        Log.d(CXHybirdBridge.TAG, "doUpdateVisitedHistory(isReload=$isReload)): $url")
+        //Log.d(CXHybirdBridge.TAG, "doUpdateVisitedHistory(isReload=$isReload)): $url")
         super.doUpdateVisitedHistory(view, url, isReload)
     }
 
@@ -98,12 +98,12 @@ open class CXWebViewClient : WebViewClient() {
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
-        Log.d(CXHybirdBridge.TAG, "onPageCommitVisible: $url")
+        //Log.d(CXHybirdBridge.TAG, "onPageCommitVisible: $url")
         super.onPageCommitVisible(view, url)
     }
 
     override fun onFormResubmission(view: WebView?, dontResend: Message?, resend: Message?) {
-        Log.d(CXHybirdBridge.TAG, "onPageCommitVisible: dontResend=$dontResend , resend=$resend")
+        //Log.d(CXHybirdBridge.TAG, "onPageCommitVisible: dontResend=$dontResend , resend=$resend")
         super.onFormResubmission(view, dontResend, resend)
     }
 
@@ -123,7 +123,7 @@ open class CXWebViewClient : WebViewClient() {
     override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
         Log.w(CXHybirdBridge.TAG, "onReceivedSslError:proceed: $error")
         //避免调用proceed忽略证书验证错误信息继续加载页面
-        handler?.cancel()
+        super.onReceivedSslError(view, handler, error)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -132,7 +132,8 @@ open class CXWebViewClient : WebViewClient() {
     }
 
     override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
-        Log.d(CXHybirdBridge.TAG, "shouldInterceptRequest: $url")
-        return CXHybirdBridge.shouldInterceptRequest(view, url) ?: super.shouldInterceptRequest(view, url)
+        //Log.d(CXHybirdBridge.TAG, "shouldInterceptRequest: $url")
+        return CXHybirdBridge.shouldInterceptRequest(view, url)
+            ?: super.shouldInterceptRequest(view, url)
     }
 }

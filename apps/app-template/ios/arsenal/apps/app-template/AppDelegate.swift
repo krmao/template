@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
+        /*URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
         // CXURLProtocol.registerSchemeForWKWebView("http", "https")
         // CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
 
@@ -110,8 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 rootViewController.pushViewController(HybirdUIWebViewController("https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList"), animated: false)
 
             }
-        }
+        }*/
 
+
+        rootViewController.pushViewController(ReactViewController(), animated: false)
 
         CXLogUtil.i("application init end <--")
         return true

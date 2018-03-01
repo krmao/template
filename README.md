@@ -14,9 +14,9 @@
 
 ### features
 ---
-* hybird bridge for android and ios with hot-update
+* [hybird bridge with two-way callback](https://github.com/krmao/template/blob/master/apps/app-template/hybird_vue/src/assets/common/script/hybird.js) for android and ios with hot-update
 * [webpack plugin for package vue project](https://github.com/krmao/template/blob/master/apps/app-template/hybird_vue/build/module-config-plugin.js) to zip with file md5s for hybird init or upgrade or downgrade
-* swift with kotlin features
+* [swift with kotlin features](https://github.com/krmao/template/tree/master/apps/app-template/ios/arsenal/libraries/library-base/src/base/extension)
 * and so on
 ---
 

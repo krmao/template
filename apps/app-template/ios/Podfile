@@ -50,3 +50,26 @@ target 'template' do
 
 
 end
+
+def remove_unused_yoga_headers
+  filepath = './Pods/Target Support Files/yoga/yoga-umbrella.h'
+
+  contents = []
+
+  file = File.open(filepath, 'r')
+  file.each_line do | line |
+    contents << line
+  end
+  file.close
+
+  contents.delete_at(14) # #import "YGNodePrint.h"
+  contents.delete_at(14) # #import "Yoga-internal.h"
+
+  file = File.open(filepath, 'w') do |f|
+    f.puts(contents)
+  end
+end
+
+post_install do | installer |
+  remove_unused_yoga_headers
+end

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-               BuildableName = "template"
+               BuildableName = "template.app"
                BlueprintName = "template"
                ReferencedContainer = "container:template.xcodeproj">
             </BuildableReference>
@@ -44,20 +44,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         BundleIdentifier = "com.smart.template"
-         FilePath = "/Users/maokangren/Library/Developer/Xcode/DerivedData/template-fjdfqpmpxstvoxczwjjlncgbewvz/Build/Products/Debug-iphonesimulator/template.app">
-      </PathRunnable>
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8753A5EB1F22633C00BA4AD4"
-            BuildableName = "template"
+            BuildableName = "template.app"
             BlueprintName = "template"
             ReferencedContainer = "container:template.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
          <AdditionalOption
             key = "NSZombieEnabled"

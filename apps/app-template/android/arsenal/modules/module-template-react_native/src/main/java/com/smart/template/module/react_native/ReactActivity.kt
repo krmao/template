@@ -1,4 +1,4 @@
-package com.smart.template.module.react
+package com.smart.template.module.react_native
 
 import android.content.Intent
 import android.net.Uri

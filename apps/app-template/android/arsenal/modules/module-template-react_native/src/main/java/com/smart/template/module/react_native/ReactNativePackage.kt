@@ -1,4 +1,4 @@
-package com.smart.template.module.react
+package com.smart.template.module.react_native
 
 import android.view.View
 import com.facebook.react.ReactPackage

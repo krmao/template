@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04046169D5603C9C420CD1FA /* Pods_template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC5EE7D932C4FAD2820A909C /* Pods_template.framework */; };
+		3D52A010C2B23C7C22B0217A /* ReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF18BC4F386868F0BE1D /* ReactBridge.m */; };
 		3D52A022A91CA01AFE3E2C41 /* CXThreadExtension copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7F84AEB1104F5EA3FB1 /* CXThreadExtension copy.swift */; };
 		3D52A03399C692B99811B91F /* CXRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AFEE1AAD6903E6CCE460 /* CXRepository.swift */; };
 		3D52A040BA78D2773FF7C4AA /* CXHybird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A08D05CD3DEE53D8987F /* CXHybird.swift */; };
@@ -16,13 +17,13 @@
 		3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */; };
 		3D52A0E04E0F3E02B2DFDEA9 /* CXUIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA5A9F88A69C2C6D324A /* CXUIWebView.swift */; };
 		3D52A16A4764F7E86FFCE033 /* CXHybirdLifecycleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A31DAB23821567C1CD58 /* CXHybirdLifecycleManager.swift */; };
-		3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */; };
 		3D52A1FF8EFC113C549B8AD4 /* CXJsonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A15CB1DB862880C81137 /* CXJsonUtil.swift */; };
 		3D52A210D3D39EFB6F043D34 /* CXUIWebViewURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA688FA6746C47FAD32E /* CXUIWebViewURLProtocol.swift */; };
 		3D52A272E7F9840747019E1D /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ACCB49BA8114880A34B0 /* README.md */; };
 		3D52A2B150C01FDE45A9A146 /* CXDialogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A434D826FAE42254929F /* CXDialogUtil.swift */; };
 		3D52A2F2731B26B82EC50E98 /* CXHybirdModuleBundleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A90DB8C8E93A25403D28 /* CXHybirdModuleBundleModel.swift */; };
 		3D52A31B4E1C58EEF3B486CC /* CXLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */; };
+		3D52A376977559A6618325C9 /* CXHybirdManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A095EA1A4846D841C224 /* CXHybirdManagerOC.m */; };
 		3D52A44727269CAB7A1A66A0 /* CXThreadExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9238458C62421CAB4BF /* CXThreadExtension.swift */; };
 		3D52A4A40DC94FDE79F662BC /* CXApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A66D56156157BA1E4FF6 /* CXApiManager.swift */; };
 		3D52A4EC3CE14FD2420261F7 /* CXHybirdUpdateStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AE70C809010760CD2943 /* CXHybirdUpdateStrategy.swift */; };
@@ -53,6 +54,7 @@
 		3D52ABBF4471F259761AFD38 /* HybirdWKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */; };
 		3D52ABE50F5B09751BEE5236 /* CXLogUtil2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ABE755BEA3AB7F65B619 /* CXLogUtil2.swift */; };
 		3D52AC0903FDD1F88D499439 /* CXConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A484704CFACF79B8C779 /* CXConfig.swift */; };
+		3D52AC21A222DA8CB8D21D77 /* ReactBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF8F40B161850F085963 /* ReactBridge.swift */; };
 		3D52AC41AB71A57E924DDEFC /* CXDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A1AE25FC7CED3F95E08D /* CXDataExtension.swift */; };
 		3D52AC77EC657656CD8D224A /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9CCFB8D7EC9354020C8 /* System.swift */; };
 		3D52AC78324928522DC3E84A /* BaseRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB271F339A7A0D91588D /* BaseRequestModel.swift */; };
@@ -78,6 +80,7 @@
 		3D52A004966EF72B2F5CAA3B /* CategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
 		3D52A030B5FD05EE9898B046 /* CXWKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXWKWebView.swift; sourceTree = "<group>"; };
 		3D52A08D05CD3DEE53D8987F /* CXHybird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybird.swift; sourceTree = "<group>"; };
+		3D52A095EA1A4846D841C224 /* CXHybirdManagerOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXHybirdManagerOC.m; sourceTree = "<group>"; };
 		3D52A09D6632F76B4EDD5966 /* GetOrderYunFeeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderYunFeeData.swift; sourceTree = "<group>"; };
 		3D52A0F9945D66CB3749A4E5 /* ReactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactViewController.swift; sourceTree = "<group>"; };
 		3D52A15CB1DB862880C81137 /* CXJsonUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXJsonUtil.swift; sourceTree = "<group>"; };
@@ -94,7 +97,7 @@
 		3D52A434D826FAE42254929F /* CXDialogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDialogUtil.swift; sourceTree = "<group>"; };
 		3D52A484704CFACF79B8C779 /* CXConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXConfig.swift; sourceTree = "<group>"; };
 		3D52A4C236EC9D2EBE1D1F2D /* TextUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
-		3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXHybirdManagerOC.m; sourceTree = "<group>"; };
+		3D52A5E443B50C6E43F7895A /* CXHybirdManagerOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXHybirdManagerOC.h; sourceTree = "<group>"; };
 		3D52A64E87F0AF12C66E20A7 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		3D52A66D56156157BA1E4FF6 /* CXApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXApiManager.swift; sourceTree = "<group>"; };
 		3D52A684944C5F931A59EA27 /* FileNotFoundException.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNotFoundException.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 		3D52A7F838985AEB0C4B2F44 /* CXHybirdBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdBridge.swift; sourceTree = "<group>"; };
 		3D52A7F84AEB1104F5EA3FB1 /* CXThreadExtension copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CXThreadExtension copy.swift"; sourceTree = "<group>"; };
 		3D52A849EFAB73504805A188 /* CXWKWebViewURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXWKWebViewURLProtocol.swift; sourceTree = "<group>"; };
+		3D52A8D9235DFAF9D55D8F91 /* template-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "template-Bridging-Header.h"; sourceTree = "<group>"; };
 		3D52A90DB8C8E93A25403D28 /* CXHybirdModuleBundleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdModuleBundleModel.swift; sourceTree = "<group>"; };
 		3D52A91A8CB203605AE0392D /* IllegalArgumentException.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IllegalArgumentException.swift; sourceTree = "<group>"; };
 		3D52A9238458C62421CAB4BF /* CXThreadExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXThreadExtension.swift; sourceTree = "<group>"; };
@@ -133,10 +137,11 @@
 		3D52ADF642546DCF1A0B3683 /* SearchData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchData.swift; sourceTree = "<group>"; };
 		3D52AE70C809010760CD2943 /* CXHybirdUpdateStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdUpdateStrategy.swift; sourceTree = "<group>"; };
 		3D52AE8BB7AC39B36A2E370C /* CXReflectUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXReflectUtil.swift; sourceTree = "<group>"; };
+		3D52AF18BC4F386868F0BE1D /* ReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBridge.m; sourceTree = "<group>"; };
+		3D52AF8F40B161850F085963 /* ReactBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactBridge.swift; sourceTree = "<group>"; };
 		3D52AFE2DFFBEAE4C7EFA9F5 /* BaseResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResponseModel.swift; sourceTree = "<group>"; };
 		3D52AFED1DB7B6E76D14125D /* CXHybirdBundleInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdBundleInfoManager.swift; sourceTree = "<group>"; };
 		3D52AFEE1AAD6903E6CCE460 /* CXRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXRepository.swift; sourceTree = "<group>"; };
-		3D52AFFF257156A8C0EF2BEE /* CXHybirdManagerOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXHybirdManagerOC.h; sourceTree = "<group>"; };
 		8763BEE71F8DCA5400CA4E89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8763BEEA1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8763BEEC1F8DCA5400CA4E89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -146,7 +151,6 @@
 		8763BF031F8DCA5400CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		8763BF0D1F8DCAB500CA4E89 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		87856D561F8E0F9E00D053DA /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
-		87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "template-Bridging-Header.h"; sourceTree = "<group>"; };
 		D758266E12247889767BE3A9 /* Pods-template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.debug.xcconfig"; sourceTree = "<group>"; };
 		FC5EE7D932C4FAD2820A909C /* Pods_template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -211,11 +215,10 @@
 		3D52A2D10274200C5826E07C /* hybird */ = {
 			isa = PBXGroup;
 			children = (
-				87B442B91FA322E600BE03B6 /* template-Bridging-Header.h */,
 				3D52A7F838985AEB0C4B2F44 /* CXHybirdBridge.swift */,
-				3D52AFFF257156A8C0EF2BEE /* CXHybirdManagerOC.h */,
-				3D52A5F54BA6226D1729F789 /* CXHybirdManagerOC.m */,
 				3D52AA0F380BCC12CC6C6546 /* CXHybirdMethods.swift */,
+				3D52A5E443B50C6E43F7895A /* CXHybirdManagerOC.h */,
+				3D52A095EA1A4846D841C224 /* CXHybirdManagerOC.m */,
 			);
 			path = hybird;
 			sourceTree = "<group>";
@@ -299,6 +302,8 @@
 			isa = PBXGroup;
 			children = (
 				3D52A0F9945D66CB3749A4E5 /* ReactViewController.swift */,
+				3D52AF8F40B161850F085963 /* ReactBridge.swift */,
+				3D52AF18BC4F386868F0BE1D /* ReactBridge.m */,
 			);
 			path = "module-template-react_native";
 			sourceTree = "<group>";
@@ -462,6 +467,7 @@
 				8763BEE91F8DCA5400CA4E89 /* LaunchScreen.storyboard */,
 				8763BEEB1F8DCA5400CA4E89 /* Main.storyboard */,
 				8763BEEE1F8DCA5400CA4E89 /* Info.plist */,
+				3D52A8D9235DFAF9D55D8F91 /* template-Bridging-Header.h */,
 			);
 			path = "app-template";
 			sourceTree = "<group>";
@@ -737,7 +743,6 @@
 				3D52A9625751BD098194F692 /* CXSystemUtil.swift in Sources */,
 				3D52AE8EF71B0EA88DA71E85 /* CXZipUtil.swift in Sources */,
 				3D52ABAB249A23BC215DBE82 /* CXHybirdBridge.swift in Sources */,
-				3D52A1895E4530159AADE950 /* CXHybirdManagerOC.m in Sources */,
 				3D52A0B6EEEEC14848A39BBF /* CXHybirdMethods.swift in Sources */,
 				3D52A0E04E0F3E02B2DFDEA9 /* CXUIWebView.swift in Sources */,
 				3D52A838880EF31F77ED3587 /* CXWKWebView.swift in Sources */,
@@ -788,6 +793,9 @@
 				3D52A2B150C01FDE45A9A146 /* CXDialogUtil.swift in Sources */,
 				3D52AC0903FDD1F88D499439 /* CXConfig.swift in Sources */,
 				3D52A87EF9DF8C29B16654B6 /* ReactViewController.swift in Sources */,
+				3D52AC21A222DA8CB8D21D77 /* ReactBridge.swift in Sources */,
+				3D52A010C2B23C7C22B0217A /* ReactBridge.m in Sources */,
+				3D52A376977559A6618325C9 /* CXHybirdManagerOC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,7 +949,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REEXPORTED_FRAMEWORK_NAMES = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/apps/app-template/template-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -965,7 +973,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REEXPORTED_FRAMEWORK_NAMES = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/libraries/library-base/src/util/hybird/template-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "arsenal/apps/app-template/template-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

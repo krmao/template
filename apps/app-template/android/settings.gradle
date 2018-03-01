@@ -12,6 +12,6 @@ include(":module-template-home"); project(":module-template-home").projectDir = 
 include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "arsenal/modules/module-template-mine")
 include(":module-template-setting"); project(":module-template-setting").projectDir = new File(settingsDir, "arsenal/modules/module-template-setting")
 include(":module-template-hybird"); project(":module-template-hybird").projectDir = new File(settingsDir, "arsenal/modules/module-template-hybird")
-include(":module-template-react"); project(":module-template-react").projectDir = new File(settingsDir, "arsenal/modules/module-template-react")
+include(":module-template-react_native"); project(":module-template-react_native").projectDir = new File(settingsDir, "arsenal/modules/module-template-react_native")
 
 //thirdparty

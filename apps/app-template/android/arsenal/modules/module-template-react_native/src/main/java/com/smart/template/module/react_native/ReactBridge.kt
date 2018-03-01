@@ -1,4 +1,4 @@
-package com.smart.template.module.react
+package com.smart.template.module.react_native
 
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule

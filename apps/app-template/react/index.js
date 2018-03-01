@@ -1,5 +1,5 @@
 import React from "react";
-import {AppRegistry, Button, DeviceEventEmitter, NativeModules, StyleSheet, Text, View} from "react-native";
+import {AppRegistry, DeviceEventEmitter, NativeModules, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 
 
 class HomeModule extends React.Component {
@@ -27,7 +27,7 @@ class HomeModule extends React.Component {
         var CXToastUtil = NativeModules.CXToastUtil;
         this.native_listener = DeviceEventEmitter.addListener('native_event', (event) => {
             console.warn("监听到有数据从native传递过来(这里不会重新渲染界面) -> " + event);
-            CXToastUtil.showWithDurationAndGravity(event, CXToastUtil.BOTTOM, CXToastUtil.LENGTH_SHORT);
+            //CXToastUtil.showWithDurationAndGravity(event, CXToastUtil.BOTTOM, CXToastUtil.LENGTH_SHORT);
         });
     }
 
@@ -61,28 +61,27 @@ class HomeModule extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Button
-                    style={{padding: 15, margin: 15}}
-                    title={"点击调用 native 方法 并传值:" + (this.state.dataToNative)}
-                    onPress={() => {
-                        this.reactBridge.callNative((this.state.dataToNative).toString())
-                            .then(
-                                (successResult) => {
-                                    console.debug("successResult -> " + successResult);
-                                    this.setState({
-                                        "dataToNative": Number(successResult) + 1,
-                                        "resultFromNative": successResult
-                                    })
-                                },
-                                (errorCode, errorMsg, error) => {
-                                    console.debug("errorCode -> " + errorCode);
-                                    console.debug("errorMsg -> " + errorMsg);
-                                    console.debug("error -> ");
-                                    console.error(error);
-                                }
-                            )
-                    }}
-                />
+                <TouchableHighlight onPress={() => {
+                    this.reactBridge.callNative((this.state.dataToNative).toString())
+                        .then(
+                            (successResult) => {
+                                console.debug("successResult -> " + successResult);
+                                this.setState({
+                                    "dataToNative": Number(successResult) + 1,
+                                    "resultFromNative": successResult
+                                })
+                            },
+                            (errorCode, errorMsg, error) => {
+                                console.debug("errorCode -> " + errorCode);
+                                console.debug("errorMsg -> " + errorMsg);
+                                console.debug("error -> ");
+                                console.warn(error);
+                            }
+                        )
+                }}>
+                    <Text style={styles.button}>{"点击调用 native 方法 并传值:" + (this.state.dataToNative)}</Text>
+                </TouchableHighlight>
+
 
                 <Text style={styles.content}>调用 native 后的返回结果: {this.state.resultFromNative}</Text>
                 <Text style={styles.content}>当前 REACT-NATIVE 启动参数: {this.props.native_params}</Text>
@@ -98,6 +97,7 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        backgroundColor: 'yellow'
     },
     content: {
         fontSize: 20,
@@ -109,6 +109,14 @@ var styles = StyleSheet.create({
     desc: {
         fontSize: 12,
         textAlign: 'center'
+    },
+    button: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        padding: 10,
+        backgroundColor: 'blue',
     },
 });
 

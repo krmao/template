@@ -17,7 +17,7 @@ dependencies {
 
     compile project(':library-template-base')
     compile project(':module-template-hybird')
-    compile project(':module-template-react')
+    compile project(':module-template-react_native')
     compile project(':module-template-mine')
     compile project(':module-template-setting')
 }

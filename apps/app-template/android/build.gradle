@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.2.20"
+    ext.kotlinVersion = "1.2.30"
     ext.ankoVersion = "0.8.2"
     ext.greendaoVersion = "3.2.0"
     ext.walleVersion = "1.1.5"

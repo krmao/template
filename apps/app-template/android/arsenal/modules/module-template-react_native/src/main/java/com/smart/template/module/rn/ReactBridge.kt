@@ -1,4 +1,4 @@
-package com.smart.template.module.react_native
+package com.smart.template.module.rn
 
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -13,14 +13,12 @@ class ReactBridge(reactContext: ReactApplicationContext?) : ReactContextBaseJava
     }
 
 
-    override fun getConstants(): MutableMap<String, Any> {
+    override fun getConstants(): MutableMap<String, Any?> {
         return mutableMapOf(
             "DEBUG" to CXBaseApplication.DEBUG,
-            "isApplicationVisible" to CXBaseApplication.isApplicationVisible,
             "SDK_INT" to CXSystemUtil.SDK_INT,
             "versionCode" to CXSystemUtil.versionCode,
             "versionName" to CXSystemUtil.versionName,
-            "appIcon" to CXSystemUtil.appIcon,
             "appName" to CXSystemUtil.appName,
             "screenWidth" to CXSystemUtil.screenWidth,
             "screenHeight" to CXSystemUtil.screenHeight,

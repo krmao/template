@@ -1,4 +1,4 @@
-package com.smart.template.module.home.tab
+package com.smart.template.tab
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -6,9 +6,9 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.smart.template.module.home.*
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.widget.viewpager.CXFragmentPagerAdapter
+import com.smart.template.*
 import kotlinx.android.synthetic.main.home_tab_fragment.*
 
 class HomeTabFragment : CXBaseFragment() {
@@ -18,12 +18,12 @@ class HomeTabFragment : CXBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content_vp.adapter = CXFragmentPagerAdapter(context, childFragmentManager,
-                listOf(
-                        HomeFragment(),
-                        HybirdFragment(),
-                        MineFragment(),
-                        SettingFragment()
-                )
+            listOf(
+                HomeFragment(),
+                HybirdFragment(),
+                MineFragment(),
+                SettingFragment()
+            )
         )
         content_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

@@ -59,6 +59,8 @@ android {
 
     useLibrary 'org.apache.http.legacy'
 
+    resourcePrefix "home_"
+
     signingConfigs {
         debug {
             keyAlias 'debug'
@@ -202,7 +204,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile project(':library-template-base')
-    compile project(':module-template-home')
+    compile project(':module-template-hybird')
+    compile project(':module-template-react_native')
+    compile project(':module-template-mine')
+    compile project(':module-template-setting')
 
     // LeakCanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

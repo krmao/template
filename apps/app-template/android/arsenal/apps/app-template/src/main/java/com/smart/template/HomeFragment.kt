@@ -1,15 +1,13 @@
-package com.smart.template.module.home
+package com.smart.template
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.facebook.react.devsupport.DevSettingsActivity
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
-import com.smart.template.module.react.ReactActivity
+import com.smart.template.module.rn.ReactActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : CXBaseFragment() {

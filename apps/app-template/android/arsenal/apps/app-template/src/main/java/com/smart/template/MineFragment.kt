@@ -1,7 +1,6 @@
-package com.smart.template.module.home
+package com.smart.template
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +11,16 @@ import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXRouteManager
 
-class SettingFragment : CXBaseFragment() {
+class MineFragment : CXBaseFragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
-        textView.text = "setting"
+        textView.text = "mine"
         @Suppress("DEPRECATION")
-        textView.setTextColor(resources.getColor(R.color.cx_orange))
-        textView.setBackgroundColor(Color.DKGRAY)
+        textView.setBackgroundColor(resources.getColor(R.color.cx_pink))
         textView.setOnClickListener {
-            CXRouteManager.goToFragment(activity, "com.smart.template.module.setting.SettingFragment") {
+            CXRouteManager.goToFragment(activity, "com.smart.template.module.mine.MineFragment") {
                 CXLogUtil.w("krmao", it.toString())
             }
         }
@@ -31,16 +29,16 @@ class SettingFragment : CXBaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "SettingFragment:onStart");
+        Log.w("krmao", "MineFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "SettingFragment:onStop");
+        Log.w("krmao", "MineFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "SettingFragment:onDestroy");
+        Log.w("krmao", "MineFragment:onDestroy");
     }
 }

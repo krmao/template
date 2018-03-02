@@ -205,37 +205,55 @@ object CXSystemUtil {
 
     val versionName: String
         get() {
-            var versionName = ""
+            var name = ""
             try {
-                versionName = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
+                name = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            return versionName
+            return name
         }
 
     val appName: String
         get() {
-            var appName = ""
+            var name = ""
             try {
-                appName = CXBaseApplication.INSTANCE.resources.getString(CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.labelRes)
+                name = CXBaseApplication.INSTANCE.resources.getString(CXBaseApplication.INSTANCE.applicationInfo.labelRes)
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
 
-            return appName
+            return name
         }
 
-    val appIcon: Int
+    /**
+     * 如果 icon 是 vector xml 则会出现严重问题
+     * android.app.RemoteServiceException: Bad notification posted from package
+     * 详见:
+     * https://stackoverflow.com/a/40243036/4348530
+     * 建议使用 png
+     */
+    val appIcon: Int?
         get() {
-            var appIcon = 0
+            var icon: Int? = null
             try {
-                appIcon = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).applicationInfo.icon
+                icon = CXBaseApplication.INSTANCE.applicationInfo.icon
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
 
-            return appIcon
+            return icon
+        }
+
+    val appDrawable: Drawable?
+        get() {
+            var drawable: Drawable? = null
+            try {
+                drawable = CXBaseApplication.INSTANCE.packageManager.getApplicationIcon(CXBaseApplication.INSTANCE.packageName)
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+            return drawable
         }
 
     fun getAppMetaData(key: String): Any? {

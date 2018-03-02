@@ -1,4 +1,4 @@
-package com.smart.template.module.react_native
+package com.smart.template.module.rn
 
 import android.content.Intent
 import android.net.Uri
@@ -6,11 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.KeyEvent
+import com.facebook.react.LifecycleState
 import com.facebook.react.ReactInstanceManager
-import com.facebook.react.ReactPackage
-import com.facebook.react.common.LifecycleState
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
-import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.shell.MainReactPackage
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.CXBaseApplication
@@ -37,13 +35,9 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
             .setApplication(application)
             .setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
             .setBundleAssetName("index.android.bundle")
-            .setJSMainModulePath("index")
-            .addPackages(
-                mutableListOf<ReactPackage>(
-                    MainReactPackage(),
-                    ReactNativePackage()
-                )
-            )
+            .setJSMainModuleName("index")
+            .addPackage(MainReactPackage())
+            .addPackage(ReactNativePackage())
             .setUseDeveloperSupport(CXBaseApplication.DEBUG)
             .setInitialLifecycleState(LifecycleState.RESUMED)
             .build()
@@ -52,7 +46,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
         bundle.putInt("native_params", 1)
 
-        react_root_view?.startReactApplication(mReactInstanceManager, "react-module-home", bundle)
+        updateReactProperties(bundle)
 
         btn_menu?.setOnClickListener {
             mReactInstanceManager?.showDevOptionsDialog()
@@ -70,7 +64,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
          * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName)), OVERLAY_PERMISSION_REQ_CODE)
+            startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
         }
     }
 
@@ -78,7 +72,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
      * 重新设置 react 属性, 并重新渲染 react 界面
      */
     private fun updateReactProperties(bundle: Bundle?) {
-        react_root_view?.appProperties = bundle
+        react_root_view?.startReactApplication(mReactInstanceManager, "react-module-home", bundle)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -94,37 +88,27 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     override fun onPause() {
         super.onPause()
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager?.onHostPause(this)
-        }
+        mReactInstanceManager?.onPause()
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager?.onHostResume(this, this)
-        }
+        mReactInstanceManager?.onResume(this, this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager?.onHostDestroy(this)
-        }
+        mReactInstanceManager?.onDestroy()
     }
 
     override fun onBackPressed() {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager?.onBackPressed()
-        } else {
-            super.onBackPressed()
-        }
+        mReactInstanceManager?.onBackPressed() ?: super.onBackPressed()
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU && mReactInstanceManager != null) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             mReactInstanceManager?.showDevOptionsDialog()
             return true
         }

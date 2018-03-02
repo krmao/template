@@ -14,13 +14,26 @@
         android:name=".library.CXApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/cx_backup_descriptor"
-        android:icon="@drawable/home_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/cx_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/CXAppTheme.Light.NoActionBar"
-        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
+
+        <activity
+            android:name=".tab.HomeTabActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/CXAppTheme.Light.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="DEBUG"

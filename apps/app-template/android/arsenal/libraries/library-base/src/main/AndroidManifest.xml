@@ -3,7 +3,12 @@
     package="com.smart.library">
 
     <application>
-        c
+        <activity
+            android:name=".base.CXActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/CXAppTheme.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

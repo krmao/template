@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.view.RxView
-import com.smart.template.repository.remote.model.response.citylist.City
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.rx.RxBus
@@ -66,7 +65,7 @@ class TestFragment : CXBaseFragment(), TestContract.View {
         loading_view.hideAll()
     }
 
-    override fun showData(cityList: List<City>) {
+    override fun showData(cityList: List<Any>) {
         tv_city_list.text = cityList.toString()
     }
 

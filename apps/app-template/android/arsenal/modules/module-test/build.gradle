@@ -16,5 +16,5 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
     compile project(':library-base')
-    compile project(':library-cxj-repository')
+    compile project(':library-template-repository')
 }

@@ -1,4 +1,4 @@
-package com.smart.template.module.react_native
+package com.smart.template.module.rn
 
 import android.view.Gravity
 import android.widget.Toast

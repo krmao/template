@@ -19,7 +19,7 @@ import java.io.InputStream
  */
 object HybirdApplication {
 
-    fun init() {
+    fun init(initCallback: ((configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = null) {
         Log.v("HybirdApplication", "HybirdApplication:init")
 
         //异步 所有模块配置文件下载器
@@ -63,6 +63,6 @@ object HybirdApplication {
 
         val allConfigUrl = "http://10.47.58.14:8080/background/files/all.json"
         //初始化开始
-        CXHybird.init(false, CXBaseApplication.DEBUG, CXHybirdInitStrategy.DOWNLOAD, allConfigUrl, allConfiger, configer, downloader)
+        CXHybird.init(true, false, CXBaseApplication.DEBUG, CXHybirdInitStrategy.LOCAL, "index.html", allConfigUrl, allConfiger, configer, downloader, initCallback)
     }
 }

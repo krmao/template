@@ -22,13 +22,15 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
 
     companion object {
         @JvmStatic
-        fun goTo(activity: Activity?, url: String?) = goTo(activity, url, false)
+        fun goTo(activity: Activity?, url: String?) = goTo(activity, url, false, false, false)
 
         @JvmStatic
-        fun goTo(activity: Activity?, url: String?, hideBackAtFirstPage: Boolean) {
+        fun goTo(activity: Activity?, url: String?, hideTitleBar: Boolean, hideBackAtFirstPage: Boolean, fullScreenAndBehindStatusBar: Boolean) {
             val bundle = Bundle()
             bundle.putString("url", url)
+            bundle.putBoolean("hideTitleBar", hideTitleBar)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
+            bundle.putBoolean("fullScreenAndBehindStatusBar", fullScreenAndBehindStatusBar)
             CXActivity.start(activity, CXWebFragment::class.java, bundle)
         }
     }
@@ -36,62 +38,89 @@ open class CXWebFragment : CXBaseFragment(), CXBaseFragment.OnBackPressedListene
     private val url: String? by lazy {
         arguments?.getString("url", null)
     }
+    private val hideTitleBar: Boolean by lazy {
+        arguments?.getBoolean("hideTitleBar") == true
+    }
+    /**
+     * true  在状态栏的后面
+     * false 在状态栏的下面
+     */
+    private val fullScreenAndBehindStatusBar: Boolean by lazy {
+        arguments?.getBoolean("fullScreenAndBehindStatusBar") == true
+    }
     private val hideBackAtFirstPage: Boolean by lazy {
         arguments?.getBoolean("hideBackAtFirstPage") == true
     }
-    protected val webView: CXWebView by lazy { web_view }
+    private val webView: CXWebView by lazy { web_view }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.cx_fragment_webview, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        //在状态栏的下面还是后面
+        if (!fullScreenAndBehindStatusBar) {
+            super.onViewCreated(view, savedInstanceState)
+        }
 
-        title_bar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
+        if (hideTitleBar) {
+            title_bar.visibility = View.GONE
+        } else {
+            title_bar.left0BgView.visibility = if (hideBackAtFirstPage) GONE else VISIBLE
+        }
 
         webView.webViewClient = object : CXWebViewClient() {
 
             @Suppress("OverridingDeprecatedMember", "DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                title_bar.right0Btn.text = ""
+                if (hideTitleBar) {
+                    title_bar.right0Btn.text = ""
+                }
                 return super.shouldOverrideUrlLoading(view, url)
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                title_bar?.progressBar?.progress = 0
-                title_bar?.progressBar?.visibility = View.VISIBLE
+                if (hideTitleBar) {
+                    title_bar?.progressBar?.progress = 0
+                    title_bar?.progressBar?.visibility = View.VISIBLE
+                }
             }
 
             override fun onPageFinished(webView: WebView?, url: String?) {
                 super.onPageFinished(webView, url)
-                title_bar?.progressBar?.progress = 100
-                title_bar?.progressBar?.visibility = View.GONE
+                if (hideTitleBar) {
+                    title_bar?.progressBar?.progress = 100
+                    title_bar?.progressBar?.visibility = View.GONE
 
-                if (hideBackAtFirstPage) {
-                    if (web_view.canGoBack())
-                        title_bar?.left0BgView?.visibility = View.VISIBLE
-                    else
-                        title_bar?.left0BgView?.visibility = GONE
+                    if (hideBackAtFirstPage) {
+                        if (web_view.canGoBack())
+                            title_bar?.left0BgView?.visibility = View.VISIBLE
+                        else
+                            title_bar?.left0BgView?.visibility = GONE
+                    }
                 }
             }
         }
 
         webView.webChromeClient = object : CXWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
-                title_bar?.progressBar?.progress = newProgress
-                if (newProgress >= 100) {
-                    title_bar?.progressBar?.visibility = GONE
-                } else {
-                    if (title_bar?.progressBar?.visibility == GONE)
-                        title_bar?.progressBar?.visibility = View.VISIBLE
+                if (hideTitleBar) {
+                    title_bar?.progressBar?.progress = newProgress
+                    if (newProgress >= 100) {
+                        title_bar?.progressBar?.visibility = GONE
+                    } else {
+                        if (title_bar?.progressBar?.visibility == GONE)
+                            title_bar?.progressBar?.visibility = View.VISIBLE
+                    }
                 }
                 super.onProgressChanged(_view, newProgress)
             }
 
             override fun onReceivedTitle(view: WebView?, title: String?) {
                 super.onReceivedTitle(view, title)
-                title_bar?.titleText?.maxEms = 10
-                title_bar?.titleText?.text = title
+                if (hideTitleBar) {
+                    title_bar?.titleText?.maxEms = 10
+                    title_bar?.titleText?.text = title
+                }
             }
         }
 

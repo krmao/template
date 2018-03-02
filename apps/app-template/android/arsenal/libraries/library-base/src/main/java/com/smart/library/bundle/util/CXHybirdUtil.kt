@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.smart.library.bundle.util
 
 import android.net.Uri
@@ -140,10 +142,10 @@ object CXHybirdUtil {
 
                 if (tmpPath.isNotBlank()) {
 
-                    if (tmpPath.contains("#/")) {
+                    if (tmpPath.contains("#/") && !tmpPath.contains("html")) {
                         //  #/index?userInfo=
                         //  index.shtml#/index?userInfo=
-                        tmpPath = "index.shtml"
+                        tmpPath = CXHybird.indexPath
                     } else {
                         //  css/app.ae44e2d0f77af623eb2bcac61ceb2626.css
                         //  js/manifest.d01e227b32f52bdd60bd.js

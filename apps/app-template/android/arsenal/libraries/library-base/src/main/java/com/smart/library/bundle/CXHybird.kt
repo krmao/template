@@ -23,7 +23,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-@Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference")
+@Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference", "MemberVisibilityCanBePrivate")
 object CXHybird {
 
     @JvmStatic
@@ -36,9 +36,15 @@ object CXHybird {
     @JvmStatic
     var enable = false
         private set
+    @JvmStatic
+    var enableCheckUpdate = false
+        private set
 
     @JvmStatic
     val assetsDirName = "hybird"
+    @JvmStatic
+    var indexPath = "index.shtml"
+        private set
     @JvmStatic
     val bundleSuffix = ".zip"
     @JvmStatic
@@ -86,10 +92,11 @@ object CXHybird {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(enable: Boolean = false, debug: Boolean = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null) {
+    fun init(enable: Boolean = false, enableCheckUpdate: Boolean = false, debug: Boolean = true, initStrategy: CXHybirdInitStrategy = CXHybird.initStrategy, indexPath: String = CXHybird.indexPath, allConfigUrl: String = "", allConfiger: ((configUrl: String, callback: (configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null, configer: ((configUrl: String, callback: (CXHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null, downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null, callback: ((configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = null) {
         CXHybird.enable = enable
 
         if (!enable) {
+            callback?.invoke(null)
             return
         }
 
@@ -100,6 +107,8 @@ object CXHybird {
 
 
         CXHybird.debug = debug
+        CXHybird.enableCheckUpdate = enableCheckUpdate
+        CXHybird.indexPath = indexPath
         CXHybird.initStrategy = initStrategy
 
         if (configer != null) CXHybird.configer = configer
@@ -132,7 +141,7 @@ object CXHybird {
                         CXLogUtil.w(TAG, ">>>>----remoteConfigList->")
                         CXLogUtil.j(Log.WARN, TAG, CXJsonUtil.toJson(remoteConfigList))
 
-                        downloadAndInitModules(remoteConfigList)
+                        downloadAndInitModules(remoteConfigList, callback)
                     }
                 } else {
                     CXLogUtil.w(TAG, ">>>>----检测到下载器 allConfiger==null?${CXHybird.allConfiger == null} 尚未设置 或者 总配置信息的 allConfigUrl=$allConfigUrl 没有设置,return")
@@ -140,12 +149,12 @@ object CXHybird {
             } else {
                 CXLogUtil.w(TAG, ">>>>----由于未检测到缓存配置信息, 开始执行从 assets 读取总配置信息进行初始化")
                 CXHybirdUtil.getConfigListFromAssetsWithCopyAndUnzip { configList ->
-                    initAllModules(configList, true)
+                    initAllModules(configList, true, callback)
                 }
             }
         } else {
             CXLogUtil.w(TAG, ">>>>----检测本地有缓存配置信息, 根据缓存配置信息初始化")
-            initAllModules(bundles.values.mapNotNull { it.moduleConfigList.firstOrNull() }.toMutableList(), true)
+            initAllModules(bundles.values.mapNotNull { it.moduleConfigList.firstOrNull() }.toMutableList(), true, callback)
         }
 
         //应用程序前后台切换的时候执行一次异步检查更新
@@ -162,14 +171,15 @@ object CXHybird {
         CXLogUtil.w(TAG, ">>>>----------------------------------------------------------------------")
     }
 
-    private fun downloadAndInitModules(configList: MutableList<CXHybirdModuleConfigModel>?) {
+    private fun downloadAndInitModules(configList: MutableList<CXHybirdModuleConfigModel>?, callback: ((configList: MutableList<CXHybirdModuleConfigModel>?) -> Unit)? = null) {
         if (!enable) {
+            callback?.invoke(null)
             return
         }
 
         CXLogUtil.w(TAG, ">>>>----需要下载初始化的模块有 ${configList?.map { it.moduleName }}")
         CXHybirdUtil.downloadAllModules(configList) { validConfigList: MutableList<CXHybirdModuleConfigModel>? ->
-            initAllModules(validConfigList, false)
+            initAllModules(validConfigList, false, callback)
         }
     }
 
@@ -282,7 +292,7 @@ object CXHybird {
      * 只有各模块初始化成功后可以执行该方法, 因为会用到 modules
      */
     private fun checkAllUpdate() {
-        if (!enable) {
+        if (!enable || !enableCheckUpdate) {
             return
         }
 
@@ -314,7 +324,7 @@ object CXHybird {
     }
 
     private fun checkUpdate(remoteConfig: CXHybirdModuleConfigModel?) {
-        if (!enable) {
+        if (!enable || !enableCheckUpdate) {
             return
         }
 
@@ -360,7 +370,7 @@ object CXHybird {
 
     @JvmStatic
     fun checkUpdate(url: String?, callback: (() -> Unit?)? = null) {
-        if (!enable) {
+        if (!enable || !enableCheckUpdate) {
             callback?.invoke()
             return
         }
@@ -375,7 +385,7 @@ object CXHybird {
 
     @JvmStatic
     private fun checkUpdate(moduleManager: CXHybirdModuleManager?, callback: (() -> Unit?)? = null) {
-        if (!enable) {
+        if (!enable || !enableCheckUpdate) {
             callback?.invoke()
             return
         }

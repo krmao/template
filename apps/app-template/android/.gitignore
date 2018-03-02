@@ -56,5 +56,5 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-module-*.json
-module-*.zip
+*.json
+*.zip

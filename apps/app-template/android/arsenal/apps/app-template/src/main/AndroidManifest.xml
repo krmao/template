@@ -22,7 +22,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 
-        <activity
+        <!--<activity
             android:name=".tab.HomeTabActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -33,7 +33,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
 
         <meta-data
             android:name="DEBUG"

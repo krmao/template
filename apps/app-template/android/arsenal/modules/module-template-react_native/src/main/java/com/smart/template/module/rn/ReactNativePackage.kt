@@ -9,9 +9,6 @@ import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
 
 class ReactNativePackage : ReactPackage {
-    override fun createJSModules(): MutableList<Class<out JavaScriptModule>> {
-        return arrayListOf()
-    }
 
     override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
         return arrayListOf(
@@ -20,7 +17,7 @@ class ReactNativePackage : ReactPackage {
         )
     }
 
-    override fun createViewManagers(reactContext: ReactApplicationContext?): MutableList<ViewManager<View, ReactShadowNode>> {
+    override fun createViewManagers(reactContext: ReactApplicationContext?): MutableList<ViewManager<View, ReactShadowNode<*>>> {
         return arrayListOf()
     }
 }

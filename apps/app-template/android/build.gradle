@@ -53,7 +53,7 @@ allprojects {
         }
         maven {
             // All of React Native (JS, Android binaries) is installed from npm
-            url "$rootDir/../react/node_modules/react-native/android"
+            url "$rootDir/../react_native/node_modules/react-native/android"
         }
     }
     gradle.projectsEvaluated {

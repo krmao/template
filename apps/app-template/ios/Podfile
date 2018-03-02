@@ -30,7 +30,7 @@ target 'template' do
   # ==================== REACT NATIVE =============
   # Your 'node_modules' directory is probably in the root of your project,
   # but if not, adjust the `:path` accordingly
-  pod 'React', :path => '../react/node_modules/react-native', :subspecs => [
+  pod 'React', :path => '../react_native/node_modules/react-native', :subspecs => [
       'Core',
       'CxxBridge', # Include this for RN >= 0.47
       'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
@@ -40,36 +40,10 @@ target 'template' do
   # Add any other subspecs you want to use in your project
   ]
   # Explicitly include Yoga if you are using RN >= 0.42.0
-  pod "yoga", :path => "../react/node_modules/react-native/ReactCommon/yoga"
-
+  pod "yoga", :path => "../react_native/node_modules/react-native/ReactCommon/yoga"
   # Third party deps podspec link
-  pod 'DoubleConversion', :podspec => '../react/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'GLog', :podspec => '../react/node_modules/react-native/third-party-podspecs/GLog.podspec'
-  pod 'Folly', :podspec => '../react/node_modules/react-native/third-party-podspecs/Folly.podspec'
-  
+  pod 'DoubleConversion', :podspec => '../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../react_native/node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-
-end
-
-def remove_unused_yoga_headers
-  filepath = './Pods/Target Support Files/yoga/yoga-umbrella.h'
-
-  contents = []
-
-  file = File.open(filepath, 'r')
-  file.each_line do | line |
-    contents << line
-  end
-  file.close
-
-  contents.delete_at(14) # #import "YGNodePrint.h"
-  contents.delete_at(14) # #import "Yoga-internal.h"
-
-  file = File.open(filepath, 'w') do |f|
-    f.puts(contents)
-  end
-end
-
-post_install do | installer |
-  remove_unused_yoga_headers
 end

@@ -47,8 +47,7 @@
                     <use xlink:href="#icon-folder-close" v-else-if="isFolder&&!open"></use>
                     <use xlink:href="#icon-file-txt" v-else></use>
                 </svg>
-               {{  model.path }}
-                <!--{{  model.path.split("/").reverse()[0] }}-->
+                {{  model.path.split("/").reverse()[0] }}
             </span>
         </div>
         <ul v-show="open" v-if="isFolder">
@@ -320,6 +319,11 @@
         overflow-x: scroll;
         overflow-y: scroll;
         background-color: whitesmoke;
+
+        /*禁止鼠标拖动选中文本*/
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
 
     .touch_line {

@@ -4,6 +4,8 @@
     <meta charset="UTF-8"/>
     <title>template-files</title>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script src="https://cdn.bootcss.com/viewerjs/1.0.0-rc/viewer.js"></script>
     <link href="https://cdn.bootcss.com/viewerjs/1.0.0-rc/viewer.css" rel="stylesheet">
 
@@ -24,7 +26,7 @@
 <div id="app">
     <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)" @mousemove="onTouchMove($event)">
         <div class="file_list" :style="{width:curX+'px'}">
-            <item class="item" :model="treeData" :cur-path="currentPath" :callback="onCallback"></item>
+            <item class="item" :model="treeData" :cur-path="currentPath" :expand="true" :callback="onCallback"></item>
         </div>
         <div class="touch_line">
         </div>
@@ -64,6 +66,7 @@
                 model: Object,
                 index: Number,
                 curPath: String,
+                expand: Boolean,
                 callback: {
                     type: Function,
                     default: function (isFolder, path) {
@@ -73,7 +76,7 @@
             },
             data: function () {
                 return {
-                    open: false
+                    open: this.expand
                 }
             },
             computed: {
@@ -146,10 +149,11 @@
             treeData: data,
             currentPath: "",
             dragging: false,
-            curX: window.screen.width / 4,
+            curX: window.screen.width / 8,
             curY: 0
         },
         created: function () {
+
         },
         computed: {
             previewHeight: function () {
@@ -157,6 +161,13 @@
             }
         },
         mounted: function () {
+            axios.post('http://localhost:8080/', {})
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         methods: {
             onCallback: function (isFolder, path) {

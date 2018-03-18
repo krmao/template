@@ -4,6 +4,9 @@
     <meta charset="UTF-8"/>
     <title>template-files</title>
 
+    <script src="https://cdn.bootcss.com/viewerjs/1.0.0-rc/viewer.js"></script>
+    <link href="https://cdn.bootcss.com/viewerjs/1.0.0-rc/viewer.css" rel="stylesheet">
+
     <script src="https://at.alicdn.com/t/font_594941_47ptpmgll5idx6r.js"></script>
     <style type="text/css">
         .icon {
@@ -25,8 +28,8 @@
         </div>
         <div class="touch_line">
         </div>
-        <div class="preview">
-            <img :src="currentPath">
+        <div class="preview" :style="{height:previewHeight+'px'}">
+            <img ref="preview">
         </div>
     </div>
 </div>
@@ -80,9 +83,9 @@
             },
             methods: {
                 onClick: function (path) {
-                    console.log("curPath:"+this.curPath);
+                    console.log("curPath:" + this.curPath);
                     this.callback(this.isFolder, path);
-                    console.log("curPath:"+this.curPath);
+                    console.log("curPath:" + this.curPath);
                     if (this.isFolder) {
                         //文件夹
                         this.open = !this.open
@@ -141,17 +144,86 @@
         el: '#app',
         data: {
             treeData: data,
-            currentPath: "http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg",
+            currentPath: "",
             dragging: false,
             curX: window.screen.width / 4,
             curY: 0
         },
         created: function () {
         },
+        computed: {
+            previewHeight: function () {
+                return (document.documentElement.clientHeight || document.body.clientHeight) - 40
+            }
+        },
+        mounted: function () {
+        },
         methods: {
             onCallback: function (isFolder, path) {
+                var that = this;
+
                 if (!isFolder) {
-                    this.currentPath = path
+
+                    that.currentPath = path;
+
+                    if (that.viewer) {
+                        that.viewer.destroy();
+                    }
+
+                    //https://github.com/fengyuanchen/viewerjs
+                    that.viewer = new Viewer(this.$refs.preview, {
+                        inline: true,
+                        tooltip: true,
+                        movable: true,
+                        zoomable: true,
+                        rotatable: true,
+                        transition: true,
+                        scalable: true,
+                        keyboard: true,
+                        loading: true,
+                        button: true,
+                        container: 'body',
+                        fullscreen: false,
+                        navbar: false,
+                        title: true,
+                        toolbar: {
+                            zoomIn: 2,
+                            zoomOut: 2,
+                            oneToOne: 2,
+                            reset: 2,
+                            prev: 0,
+                            play: {
+                                show: 2,
+                                size: 'large'
+                            },
+                            next: 0,
+                            rotateLeft: 2,
+                            rotateRight: 2,
+                            flipHorizontal: 2,
+                            flipVertical: 2
+                        },
+                        loop: false,
+                        interval: 0,
+                        minWidth: 200,
+                        minHeight: 200,
+                        zoomRatio: 0.1,
+                        minZoomRatio: 0.01,
+                        maxZoomRatio: 100,
+                        zIndex: 2018,
+                        zIndexInline: 0,
+                        url: function (image) {
+                            return path;
+                        },
+                        ready: function () {
+                            // 2 methods are available here: "show" and "destroy".
+                        },
+                        shown: function () {
+                            // 9 methods are available here: "hide", "view", "prev", "next", "play", "stop", "full", "exit" and "destroy".
+                        },
+                        viewed: function () {
+                            that.viewer.zoomTo(1);
+                        }
+                    });
                 }
             },
             onTouchStart: function (event) {
@@ -166,6 +238,10 @@
                 if (this.dragging) {
                     this.curX = event.x;
                     this.curY = event.y;
+
+                    if (this.viewer) {
+                        this.viewer.resize();
+                    }
                 }
             }
         }
@@ -215,7 +291,7 @@
     }
 
     .container {
-        min-height: 60em;
+        min-height: 10em;
         padding: 10px;
         display: flex;
         flex-direction: row;
@@ -223,7 +299,7 @@
 
     .file_list {
         padding: 10px;
-        min-width: 10em;
+        min-width: 2em;
         overflow-x: scroll;
         overflow-y: scroll;
         background-color: whitesmoke;
@@ -236,6 +312,7 @@
 
     .preview {
         padding: 10px;
+        width: 100%;
         flex: 1;
         overflow-x: scroll;
         overflow-y: scroll;

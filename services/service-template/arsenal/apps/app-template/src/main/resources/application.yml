@@ -2,7 +2,7 @@ debug: ${server_debug}
 
 server:
     port: ${server_port}
-    contextPath: /background
+    contextPath: /
 
 security:
     user:

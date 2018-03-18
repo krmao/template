@@ -1,7 +1,279 @@
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>template-files</title>
 
+    <script src="https://at.alicdn.com/t/font_594941_47ptpmgll5idx6r.js"></script>
+    <style type="text/css">
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
 <body>
-<h1>Welcome Spring !</h1>
+
+<div id="app">
+    <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)" @mousemove="onTouchMove($event)">
+        <div class="file_list" :style="{width:curX+'px'}">
+            <item class="item" :model="treeData" :cur-path="currentPath" :callback="onCallback"></item>
+        </div>
+        <div class="touch_line">
+        </div>
+        <div class="preview">
+            <img :src="currentPath">
+        </div>
+    </div>
+</div>
+
 </body>
+
+<script type="text/x-template" id="item-template">
+    <li>
+        <div :class="{title_container: isFolder}" @click="onClick(model.path)">
+            <span :class="[isFolder?'folder':'file']" :style="{color:curPath==model.path?'red':'black'}">
+                <svg aria-hidden="true" width="1em" height="1em">
+                    <use xlink:href="#icon-folder-open" v-if="isFolder&&open"></use>
+                    <use xlink:href="#icon-folder-close" v-else-if="isFolder&&!open"></use>
+                    <use xlink:href="#icon-file-txt" v-else></use>
+                </svg>
+               {{  model.path.split("/").reverse()[0] }}
+            </span>
+        </div>
+        <ul v-show="open" v-if="isFolder">
+            <item class="item" v-for="(model, index) in model.children" :key="index" :model="model" :cur-path="curPath" :callback="callback"></item>
+        </ul>
+    </li>
+</script>
+
+<!--suppress ReservedWordAsName -->
+<script type="text/javascript" charset="utf-8">
+
+    Vue.component('item',
+        {
+            template: '#item-template',
+            props: {
+                model: Object,
+                index: Number,
+                curPath: String,
+                callback: {
+                    type: Function,
+                    default: function (isFolder, path) {
+                    }
+                }
+
+            },
+            data: function () {
+                return {
+                    open: false
+                }
+            },
+            computed: {
+                isFolder: function () {
+                    return this.model.children && this.model.children.length
+                }
+            },
+            methods: {
+                onClick: function (path) {
+                    console.log("curPath:"+this.curPath);
+                    this.callback(this.isFolder, path);
+                    console.log("curPath:"+this.curPath);
+                    if (this.isFolder) {
+                        //文件夹
+                        this.open = !this.open
+                    } else {
+                        //文件
+                    }
+                }/*,
+                 changeType: function () {
+                 if (!this.isFolder) {
+                 Vue.set(this.model, 'children', []);
+                 this.addChild();
+                 this.open = true
+                 }
+                 },
+                 addChild: function () {
+                 this.model.children.push({
+                 path: '新的节点(双击新建子节点)'
+                 })
+                 }*/
+            }
+        }
+    );
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    var data = {
+        path: '水果',
+        children: [
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_10.jpg'},
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_1.jpg'},
+            {
+                path: '苹果',
+                children: [
+                    {
+                        path: '红富士',
+                        children: [
+                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_14.jpg'},
+                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_11.jpg'}
+                        ]
+                    },
+                    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_4.jpg'},
+                    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_7.jpg'},
+                    {
+                        path: '金苹果',
+                        children: [
+                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_8.jpg'},
+                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_9.jpg'}
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            treeData: data,
+            currentPath: "http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg",
+            dragging: false,
+            curX: window.screen.width / 4,
+            curY: 0
+        },
+        created: function () {
+        },
+        methods: {
+            onCallback: function (isFolder, path) {
+                if (!isFolder) {
+                    this.currentPath = path
+                }
+            },
+            onTouchStart: function (event) {
+                if (event.target.className === "touch_line") {
+                    this.dragging = true;
+                }
+            },
+            onTouchEnd: function (event) {
+                this.dragging = false;
+            },
+            onTouchMove: function (event) {
+                if (this.dragging) {
+                    this.curX = event.x;
+                    this.curY = event.y;
+                }
+            }
+        }
+    });
+</script>
+
+<style type="text/css">
+
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video, input {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-weight: normal;
+        vertical-align: baseline;
+        font-style: normal;
+        list-style: none;
+    }
+
+    select,
+    input {
+        background: none;
+        outline: none;
+        border: 0;
+
+    }
+
+    body {
+        line-height: 1;
+        padding: 0;
+        margin: 0;
+        font-family: Menlo, Consolas, monospace;
+        color: black;
+        background: black;
+    }
+
+    .container {
+        min-height: 60em;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .file_list {
+        padding: 10px;
+        min-width: 10em;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        background-color: whitesmoke;
+    }
+
+    .touch_line {
+        width: 10px;
+        background-color: black;
+    }
+
+    .preview {
+        padding: 10px;
+        flex: 1;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        min-width: 30em;
+        background-color: whitesmoke;
+    }
+
+    .item {
+        cursor: pointer;
+    }
+
+    .title_container {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+        white-space: nowrap;
+        padding: 0.1em;
+        font-size: 12px;
+
+    }
+
+    .folder {
+        font-size: 12px;
+        color: black;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+
+    .file {
+        font-size: 12px;
+        white-space: nowrap;
+        font-style: italic;
+    }
+
+    ul {
+        padding-left: 1.5em;
+    }
+</style>
 
 </html>

@@ -1,17 +1,12 @@
 package com.smart.template.http.controller
 
-import com.smart.template.base.config.config.CXConfig
-import com.smart.template.base.util.CXChecksumUtil
-import com.smart.template.base.util.CXFileUtil
 import com.smart.template.http.model.HKResponse
 import io.swagger.annotations.ApiOperation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.multipart.MultipartFile
 import java.io.File
 
 @RestController
@@ -19,24 +14,68 @@ import java.io.File
 class DeveloperController() {
     private val log: Logger = LogManager.getLogger(DeveloperController::class.java.name)
 
-    @ApiOperation("上传文件", notes = "返回相对路径")
-    @PostMapping("/upload")
-    fun upload(@RequestPart("files") files: Array<MultipartFile>): HKResponse<Any> {
-        if (files.count() == 0) return HKResponse.ok()
+    @ApiOperation("获取UI切图", notes = "返回UI切图")
+    @GetMapping("/getAllFiles")
+    fun getAllFiles(): HKResponse<FileNode> {
+        val rootFile = File("./src/")
 
-        println("filesDir=${CXConfig.DEFAULT_FILES_DIR.absolutePath}")
-        println("filesDir.exists=${CXConfig.DEFAULT_FILES_DIR.exists()}")
+        val fileNode = getFileNode(rootFile)
 
-        val filePathMap = mutableMapOf<String, String>()
-
-        for (file in files) {
-            val oldName = file.originalFilename
-            val newName = CXChecksumUtil.genMD5Checksum(oldName + "-" + System.currentTimeMillis())
-            CXFileUtil.copy(file.inputStream, File(CXConfig.DEFAULT_FILES_DIR, newName))
-            filePathMap.put(oldName, newName)
-        }
-
-        log.warn("filePathMap:" + filePathMap)
-        return HKResponse(filePathMap)
+        log.error(fileNode)
+        return HKResponse(fileNode)
     }
+
+    data class FileNode(
+        var path: String,
+        var children: MutableList<FileNode> = arrayListOf()
+    ) {
+        override fun toString(): String {
+            return "\n$path"
+        }
+    }
+
+
+    fun getFileNode(file: File): FileNode {
+        val fileNode: FileNode = FileNode(file.path)
+        log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
+        fileNode.path = file.path
+        if (file.isDirectory) {
+            file.listFiles().filter { it.exists() }.forEach {
+                fileNode.children.add(getFileNode(it))
+            }
+        }
+        return fileNode
+    }
+
 }
+
+
+/*
+var data = {
+    path: '水果',
+    children: [
+    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_10.jpg'},
+    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_1.jpg'},
+    {
+        path: '苹果',
+        children: [
+        {
+            path: '红富士',
+            children: [
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_14.jpg'},
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_11.jpg'}
+            ]
+        },
+        {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_4.jpg'},
+        {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_7.jpg'},
+        {
+            path: '金苹果',
+            children: [
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_8.jpg'},
+            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_9.jpg'}
+            ]
+        }
+        ]
+    }
+    ]
+};*/

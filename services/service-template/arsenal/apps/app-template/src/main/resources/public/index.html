@@ -47,7 +47,8 @@
                     <use xlink:href="#icon-folder-close" v-else-if="isFolder&&!open"></use>
                     <use xlink:href="#icon-file-txt" v-else></use>
                 </svg>
-               {{  model.path.split("/").reverse()[0] }}
+               {{  model.path }}
+                <!--{{  model.path.split("/").reverse()[0] }}-->
             </span>
         </div>
         <ul v-show="open" v-if="isFolder">
@@ -76,12 +77,12 @@
             },
             data: function () {
                 return {
-                    open: this.expand
+                    open: this.expand || this.isFolder
                 }
             },
             computed: {
                 isFolder: function () {
-                    return this.model.children && this.model.children.length
+                    return this.model.children && this.model.children.length > 0
                 }
             },
             methods: {
@@ -161,9 +162,14 @@
             }
         },
         mounted: function () {
-            axios.post('http://localhost:8080/', {})
+            var that = this;
+
+            axios.get('http://localhost:8080/developer/getAllFiles')
                 .then(function (response) {
-                    console.log(response);
+                    //noinspection EqualityComparisonWithCoercionJS
+                    if (response && response.data && response.data.code == 200 && response.data.data) {
+                        that.treeData = response.data.data;
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);

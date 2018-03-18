@@ -75,6 +75,7 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
                 "/**/*.js"
             ).permitAll()
             .antMatchers("/api", "/api/**").permitAll()
+            .antMatchers("/developer/**").permitAll()
             .antMatchers("/file/upload").permitAll() //TODO 正式环境删除
             .antMatchers("/test/**").permitAll() //TODO 正式环境删除
             .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")

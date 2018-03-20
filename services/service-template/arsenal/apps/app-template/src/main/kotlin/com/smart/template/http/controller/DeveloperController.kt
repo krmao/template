@@ -47,7 +47,7 @@ class DeveloperController() {
             val rootPath = CXConfig.DEFAULT_FILES_DIR //用在tomcat部署的正式正产环境
             val fileNode: FileNode = FileNode(file.path.replace(rootPath.absolutePath, "/template-files"))
             log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
-            if (file.isDirectory) file.listFiles().filter { it.exists() }.forEach { fileNode.children.add(getFileNode(it)) }
+            if (file.isDirectory) file.listFiles().filter { it.exists() && it.name != "prd" }.forEach { fileNode.children.add(getFileNode(it)) }
             return fileNode
         } else {
             return FileNode("")

@@ -25,11 +25,13 @@
 
 <div id="app">
     <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)" @mousemove="onTouchMove($event)">
+
         <div class="file_list" :style="{width:curX+'px',height:previewHeight+'px'}">
+            <a class="prd" target="_Blank" href="/template-files/developer/prd/index.html">点击查看 PRD</a>
+            <div class="touch_line_horizontal"></div>
             <item class="item" :model="treeData" :cur-path="currentPath" :expand="true" :callback="onCallback"></item>
         </div>
-        <div class="touch_line">
-        </div>
+        <div class="touch_line"></div>
         <div class="preview" :style="{height:previewHeight+'px'}">
             <img ref="preview">
         </div>
@@ -121,7 +123,7 @@
             treeData: {},
             currentPath: "",
             dragging: false,
-            curX: window.screen.width / 8,
+            curX: window.screen.width / 6,
             curY: 0
         },
         created: function () {
@@ -259,6 +261,7 @@
         vertical-align: baseline;
         font-style: normal;
         list-style: none;
+        text-decoration: none;
     }
 
     select,
@@ -286,8 +289,10 @@
     }
 
     .file_list {
+        display: flex;
+        flex-direction: column;
         padding: 10px;
-        min-width: 2em;
+        min-width: 10em;
         overflow-x: scroll;
         overflow-y: scroll;
         background-color: whitesmoke;
@@ -298,8 +303,22 @@
         user-select: none;
     }
 
+    .prd {
+        color: black;
+        font-weight: bold;
+        text-align: center;
+    }
+
     .touch_line {
         width: 10px;
+        background-color: black;
+    }
+
+    .touch_line_horizontal {
+        height: 10px;
+        margin-left: -10px;
+        margin-right: -10px;
+        margin-top: 10px;
         background-color: black;
     }
 

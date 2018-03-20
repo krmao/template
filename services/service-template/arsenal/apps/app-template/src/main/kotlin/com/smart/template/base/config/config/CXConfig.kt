@@ -10,7 +10,10 @@ object CXConfig {
     var DEFAULT_PAGE_INDEX = 1
     var DEFAULT_PAGE_SIZE = 20
 
+    // "/usr/local/apache-tomcat-8.0.47/webapps"
     val PROJECT_DIR: File = File((RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request.session.servletContext.getRealPath("/"))
+
+    // "/usr/local/apache-tomcat-8.0.47/webapps/template-files"
     val DEFAULT_FILES_DIR: File = File(PROJECT_DIR.parent, PROJECT_DIR.name + "-files")
         get() {
             if (!field.exists()) field.mkdirs()

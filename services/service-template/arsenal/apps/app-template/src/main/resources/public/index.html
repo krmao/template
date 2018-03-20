@@ -39,7 +39,7 @@
 </body>
 
 <script type="text/x-template" id="item-template">
-    <li>
+    <li v-if="model && model.path && model.path.length>0">
         <div :class="{title_container: isFolder}" @click="onClick(model.path)">
             <span :class="[isFolder?'folder':'file']" :style="{color:curPath==model.path?'red':'black'}">
                 <svg aria-hidden="true" width="1em" height="1em">
@@ -47,7 +47,7 @@
                     <use xlink:href="#icon-folder-close" v-else-if="isFolder&&!open"></use>
                     <use xlink:href="#icon-file-txt" v-else></use>
                 </svg>
-                {{  model.path.split("/").reverse()[0] }}
+                {{  model.path && model.path.split("/").reverse()[0] }}
             </span>
         </div>
         <ul v-show="open" v-if="isFolder">
@@ -114,39 +114,11 @@
 </script>
 
 <script type="text/javascript" charset="utf-8">
-    var data = {
-        path: '水果',
-        children: [
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_10.jpg'},
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_1.jpg'},
-            {
-                path: '苹果',
-                children: [
-                    {
-                        path: '红富士',
-                        children: [
-                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_14.jpg'},
-                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_11.jpg'}
-                        ]
-                    },
-                    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_4.jpg'},
-                    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_7.jpg'},
-                    {
-                        path: '金苹果',
-                        children: [
-                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_8.jpg'},
-                            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_9.jpg'}
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
 
     var vue = new Vue({
         el: '#app',
         data: {
-            treeData: data,
+            treeData: {},
             currentPath: "",
             dragging: false,
             curX: window.screen.width / 8,
@@ -163,7 +135,7 @@
         mounted: function () {
             var that = this;
 
-            axios.get('http://localhost:8080/developer/getAllFiles')
+            axios.get('/template/developer/getAllFiles')
                 .then(function (response) {
                     //noinspection EqualityComparisonWithCoercionJS
                     if (response && response.data && response.data.code == 200 && response.data.data) {

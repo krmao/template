@@ -2,6 +2,7 @@ package com.smart.template.base.config.security.auth.oauth
 
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter
@@ -15,11 +16,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 class CXResourceServerConfigurerAdapter : ResourceServerConfigurerAdapter() {
     private val logger: Logger = LogManager.getLogger(CXResourceServerConfigurerAdapter::class.java.name)
 
-    private val resourceId = "clientA"
-
     override fun configure(resources: ResourceServerSecurityConfigurer?) {
         logger.warn("configure with resources:" + resources)
-        resources?.resourceId(resourceId)?.stateless(true)
+        resources?.stateless(true)
     }
 
     @Throws(Exception::class)
@@ -31,7 +30,11 @@ class CXResourceServerConfigurerAdapter : ResourceServerConfigurerAdapter() {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             .and()
             .authorizeRequests()
-            .antMatchers("/", "/api", "/swagger-ui.html", "/login", "/user/login").permitAll()
+            //http://d.hiphotos.baidu.com/image/pic/item/d833c895d143ad4b3ae286d88e025aafa50f06de.jpg
+            .antMatchers("/static/image/*").permitAll()
+            .and()
+            .requestMatchers()
+            .anyRequest()
         // .antMatchers("/product/**").access("#oauth2.hasScope('select') and hasRole('ROLE_USER')")
 //            .and()
 //            .anonymous().disable()

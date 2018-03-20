@@ -2,7 +2,7 @@ debug: ${server_debug}
 
 server:
     port: ${server_port}
-    contextPath: /
+    contextPath: /template
 
 security:
     user:
@@ -43,7 +43,7 @@ spring:
 #            useGlobalDataSourceStat: true                 # 合并多个DruidDataSource的监控数据
     resources:
         cache-period: 15
-#        static-locations: classpath:front-end,classpath:/META-INF/resources
+        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,classpath:/static/,file:/Users/webapps/
 #    thymeleaf:
 #        suffix: .html
 #        prefix: classpath:/templates/

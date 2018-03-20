@@ -1,5 +1,6 @@
 package com.smart.template.http.controller
 
+import com.smart.template.base.config.config.CXConfig
 import com.smart.template.http.model.HKResponse
 import io.swagger.annotations.ApiOperation
 import org.apache.logging.log4j.LogManager
@@ -17,9 +18,14 @@ class DeveloperController() {
     @ApiOperation("获取UI切图", notes = "返回UI切图")
     @GetMapping("/getAllFiles")
     fun getAllFiles(): HKResponse<FileNode> {
-        val rootFile = File("./src/")
+//        val rootPath = File("/Users/webapps/template-files")
+        val rootPath = CXConfig.DEFAULT_FILES_DIR
+        val rootDir = File(rootPath, "developer")
 
-        val fileNode = getFileNode(rootFile)
+        println("filesDir=${rootDir.absolutePath}")
+        println("filesDir.exists=${rootDir.exists()}")
+
+        val fileNode = getFileNode(rootDir)
 
         log.error(fileNode)
         return HKResponse(fileNode)
@@ -36,46 +42,15 @@ class DeveloperController() {
 
 
     fun getFileNode(file: File): FileNode {
-        val fileNode: FileNode = FileNode(file.path)
-        log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
-        fileNode.path = file.path
-        if (file.isDirectory) {
-            file.listFiles().filter { it.exists() }.forEach {
-                fileNode.children.add(getFileNode(it))
-            }
+        if (file.exists()) {
+//            val rootPath = File("/Users/webapps/template-files")
+            val rootPath = CXConfig.DEFAULT_FILES_DIR //用在tomcat部署的正式正产环境
+            val fileNode: FileNode = FileNode(file.path.replace(rootPath.absolutePath, "/template-files"))
+            log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
+            if (file.isDirectory) file.listFiles().filter { it.exists() }.forEach { fileNode.children.add(getFileNode(it)) }
+            return fileNode
+        } else {
+            return FileNode("")
         }
-        return fileNode
     }
-
 }
-
-
-/*
-var data = {
-    path: '水果',
-    children: [
-    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_10.jpg'},
-    {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_1.jpg'},
-    {
-        path: '苹果',
-        children: [
-        {
-            path: '红富士',
-            children: [
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_14.jpg'},
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_11.jpg'}
-            ]
-        },
-        {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_4.jpg'},
-        {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_7.jpg'},
-        {
-            path: '金苹果',
-            children: [
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_8.jpg'},
-            {path: 'http://oznsh6z3y.bkt.clouddn.com/banner_9.jpg'}
-            ]
-        }
-        ]
-    }
-    ]
-};*/

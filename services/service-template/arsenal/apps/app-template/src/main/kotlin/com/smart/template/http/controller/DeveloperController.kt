@@ -18,7 +18,6 @@ class DeveloperController() {
     @ApiOperation("获取UI切图", notes = "返回UI切图")
     @GetMapping("/getAllFiles")
     fun getAllFiles(): HKResponse<FileNode> {
-//        val rootPath = File("/Users/webapps/template-files")
         val rootPath = CXConfig.DEFAULT_FILES_DIR
         val rootDir = File(rootPath, "developer")
 
@@ -43,11 +42,10 @@ class DeveloperController() {
 
     fun getFileNode(file: File): FileNode {
         if (file.exists()) {
-//            val rootPath = File("/Users/webapps/template-files")
             val rootPath = CXConfig.DEFAULT_FILES_DIR //用在tomcat部署的正式正产环境
             val fileNode: FileNode = FileNode(file.path.replace(rootPath.absolutePath, "/template-files"))
             log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
-            if (file.isDirectory) file.listFiles().filter { it.exists() && it.name != "prd" }.forEach { fileNode.children.add(getFileNode(it)) }
+            if (file.isDirectory) file.listFiles().filter { it.exists() /*&& it.name != "prd"*/ }.forEach { fileNode.children.add(getFileNode(it)) }
             return fileNode
         } else {
             return FileNode("")

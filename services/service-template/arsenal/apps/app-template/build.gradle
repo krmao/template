@@ -73,7 +73,7 @@ deploy.dependsOn("clean", "war")
 
 task deployLocal(type: Copy) {
     from "$buildDir/libs/template.war"
-    into '/Users/maokangren/software/apache-tomcat-8.5.23/webapps/'
+    into '/Users/maokangren/software/apache-tomcat-8.5.29/webapps/'
     rename('template.war', 'template.war')
 }
 deployLocal.dependsOn("clean", "war")

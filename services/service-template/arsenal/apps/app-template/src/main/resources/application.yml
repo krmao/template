@@ -43,7 +43,7 @@ spring:
 #            useGlobalDataSourceStat: true                 # 合并多个DruidDataSource的监控数据
     resources:
         cache-period: 15
-        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,classpath:/static/,file:/Users/webapps/
+        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,classpath:/static/
 #    thymeleaf:
 #        suffix: .html
 #        prefix: classpath:/templates/

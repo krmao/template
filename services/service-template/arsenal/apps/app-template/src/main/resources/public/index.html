@@ -4,6 +4,16 @@
     <meta charset="UTF-8"/>
     <title>template-files</title>
 
+    <link href="https://cdn.bootcss.com/codemirror/5.36.0/codemirror.css" rel="stylesheet"/>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/codemirror.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/xml/xml.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/css/css.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/clike/clike.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/php/php.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script src="https://cdn.bootcss.com/viewerjs/1.0.0-rc/viewer.js"></script>
@@ -34,7 +44,7 @@
         <div class="touch_line"></div>
         <div class="preview" :style="{height:previewHeight+'px'}">
             <img ref="preview">
-            <section ref="preview_txt"></section>
+            <textarea title="code" ref="preview_txt">{{codeText}}</textarea>
         </div>
     </div>
 </div>
@@ -123,6 +133,7 @@
         data: {
             treeData: {},
             currentPath: "",
+            codeText: "",
             dragging: false,
             curX: window.screen.width / 6,
             curY: 0
@@ -137,6 +148,20 @@
         },
         mounted: function () {
             var that = this;
+
+            var editor = CodeMirror.fromTextArea(that.$refs.preview_txt, {
+                //mode: "text/groovy",    //实现groovy代码高亮
+                mode: "text/x-java", //实现Java代码高亮
+                lineNumbers: true,	//显示行号
+                theme: "dracula",	//设置主题
+                lineWrapping: true,	//代码折叠
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                matchBrackets: true,	//括号匹配
+                indentUnit: 4,              //缩进单位，值为空格数，默认为2
+                indentWithTabs: true,
+                readOnly: true,        //只读
+            });
 
             axios.get('/template/developer/getAllFiles')
                 .then(function (response) {
@@ -199,7 +224,8 @@
                                 console.log(response.headers);
                                 console.log(response.config);
 
-                                that.$refs.preview_txt.textContent = response.data;
+                                that.codeText = response.data;
+                                //that.$refs.preview_txt.textContent = response.data;
                             });
                     } else if (imgTypes.indexOf(fileType) !== -1) {
                         that.$refs.preview_txt.style.display = "none";
@@ -263,7 +289,8 @@
                         that.$refs.preview_txt.style.display = "block";
                         that.$refs.preview.style.display = "none";
                         console.log("未知的文件类型");
-                        that.$refs.preview_txt.textContent = "未知的文件类型";
+                        //that.$refs.preview_txt.textContent = "未知的文件类型";
+                        that.codeText = "未知的文件类型";
                     }
                 }
             },

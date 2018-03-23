@@ -4,15 +4,31 @@
     <meta charset="UTF-8"/>
     <title>template-files</title>
 
-    <link href="https://cdn.bootcss.com/codemirror/5.36.0/codemirror.css" rel="stylesheet"/>
+    <!-- ============================================================================================ -->
+    <!-- 引入喜欢的主题 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/codemirror/5.36.0/theme/dracula.css"/>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/codemirror/5.36.0/codemirror.css"/>
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/codemirror.js"></script>
+
+    <!-- 代码高亮 mode -->
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/xml/xml.js"></script>
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/javascript/javascript.min.js"></script>
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/css/css.js"></script>
-    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/clike/clike.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/clike/clike.js"></script><!-- java -->
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/groovy/groovy.js"></script><!-- groovy -->
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/php/php.js"></script>
     <script src="https://cdn.bootcss.com/codemirror/5.36.0/mode/htmlmixed/htmlmixed.min.js"></script>
 
+    <!-- 代码折叠 fold -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/codemirror/5.36.0/addon/fold/foldgutter.css"/>
+
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/addon/fold/foldcode.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/addon/fold/foldgutter.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/addon/fold/brace-fold.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.36.0/addon/fold/comment-fold.js"></script>
+
+    <!-- ============================================================================================ -->
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -43,8 +59,8 @@
         </div>
         <div class="touch_line"></div>
         <div class="preview" :style="{height:previewHeight+'px'}">
-            <img ref="preview">
-            <textarea title="code" ref="preview_txt">{{codeText}}</textarea>
+            <textarea id="code" style="{width: 0;height: 0}" title="code" ref="preview_txt"></textarea>
+            <img ref="preview_img">
         </div>
     </div>
 </div>
@@ -149,24 +165,25 @@
         mounted: function () {
             var that = this;
 
-            var editor = CodeMirror.fromTextArea(that.$refs.preview_txt, {
-                //mode: "text/groovy",    //实现groovy代码高亮
-                mode: "text/x-java", //实现Java代码高亮
-                lineNumbers: true,	//显示行号
-                theme: "dracula",	//设置主题
-                lineWrapping: true,	//代码折叠
+            that.editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                mode: "text/x-java",        //实现Java代码高亮
+                lineNumbers: true,	        //显示行号
+                theme: "dracula",	        //设置主题
+                lineWrapping: true,	        //代码折叠
                 foldGutter: true,
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                matchBrackets: true,	//括号匹配
+                matchBrackets: true,	    //括号匹配
                 indentUnit: 4,              //缩进单位，值为空格数，默认为2
                 indentWithTabs: true,
-                readOnly: true,        //只读
+                scrollbarStyle: "null",
+                readOnly: true              //只读
             });
+
+            that.editor.setSize(null, (that.previewHeight) + 'px');
 
             axios.get('/template/developer/getAllFiles')
                 .then(function (response) {
-                    //noinspection EqualityComparisonWithCoercionJS
-                    if (response && response.data && response.data.code == 200 && response.data.data) {
+                    if (response && response.data && response.data.code === 200 && response.data.data) {
                         that.treeData = response.data.data;
                     }
                 })
@@ -177,25 +194,11 @@
         methods: {
             onCallback: function (isFolder, path) {
                 var that = this;
-
                 if (!isFolder) {
-
                     that.currentPath = path;
-
-                    /*Array.prototype.contains = function (v) {
-                     var b = false;
-                     for (var i = 0; i < this.length; i++) {
-                     if (this[i] === v) {
-                     b = true;
-                     break;
-                     }
-                     }
-                     return b;
-                     };*/
-
-
                     if (that.viewer) {
                         that.viewer.destroy();
+                        that.editor.setValue("");
                     }
 
                     var docs = ["txt", "text", "md", "pro", "gitignore", "properties",
@@ -213,8 +216,9 @@
                     console.log("文件类型:" + fileType);
 
                     if (docs.indexOf(fileType) !== -1) {
-                        that.$refs.preview_txt.style.display = "block";
-                        that.$refs.preview.style.display = "none";
+                        that.$refs.preview_img.style.display = "none";
+                        that.editor.setSize(null, (that.previewHeight) + 'px');
+
                         console.log("检测文本类型");
                         axios.get(that.currentPath)
                             .then(function (response) {
@@ -225,14 +229,14 @@
                                 console.log(response.config);
 
                                 that.codeText = response.data;
-                                //that.$refs.preview_txt.textContent = response.data;
+                                that.editor.setValue(that.codeText);
                             });
                     } else if (imgTypes.indexOf(fileType) !== -1) {
-                        that.$refs.preview_txt.style.display = "none";
-                        that.$refs.preview.style.display = "block";
+                        that.$refs.preview_img.style.display = "";
+                        that.editor.setSize(null, '0px');
                         console.log("检测图片类型");
                         //https://github.com/fengyuanchen/viewerjs
-                        that.viewer = new Viewer(this.$refs.preview, {
+                        that.viewer = new Viewer(this.$refs.preview_img, {
                             inline: true,
                             tooltip: true,
                             movable: true,
@@ -286,11 +290,11 @@
                             }
                         });
                     } else {
-                        that.$refs.preview_txt.style.display = "block";
-                        that.$refs.preview.style.display = "none";
+                        that.$refs.preview_img.style.display = "none";
+                        that.editor.setSize(null, (that.previewHeight) + 'px');
                         console.log("未知的文件类型");
-                        //that.$refs.preview_txt.textContent = "未知的文件类型";
                         that.codeText = "未知的文件类型";
+                        that.editor.setValue(that.codeText);
                     }
                 }
             },

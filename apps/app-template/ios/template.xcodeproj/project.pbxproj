@@ -34,6 +34,7 @@
 		3D52A69875FB1EF98B6AAF1A /* CXToastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A75A52B118DD4AB1ED10 /* CXToastUtil.swift */; };
 		3D52A6B762F56D17B1D889DB /* CXHybirdUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2C01DA28A843EC75AFE /* CXHybirdUtil.swift */; };
 		3D52A715FBC8704FDD479C61 /* CXHybirdInitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A92B6A23B01357632FB2 /* CXHybirdInitStrategy.swift */; };
+		3D52A724CDFD1A41B063732A /* housekeeper-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A79305AB643A99C91521 /* housekeeper-1.0.zip */; };
 		3D52A7440203FD3265E7B6EE /* SearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ADF642546DCF1A0B3683 /* SearchData.swift */; };
 		3D52A748BEA71808823C5468 /* CXNSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A168C0B8C374184FBAB8 /* CXNSObjectExtension.swift */; };
 		3D52A7DB7DA90C3D0342D9CB /* IllegalArgumentException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A91A8CB203605AE0392D /* IllegalArgumentException.swift */; };
@@ -45,6 +46,7 @@
 		3D52A886D7A487B64F8AD90D /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A004966EF72B2F5CAA3B /* CategoryData.swift */; };
 		3D52A8D8AC2FCF6436C7565A /* CXStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A71BEC3E9D4B46058CEA /* CXStringExtension.swift */; };
 		3D52A91B9ED6E358D271757E /* CXURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2FDAE84E0C07657B63E /* CXURLManager.swift */; };
+		3D52A936AA962259D927C114 /* all.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AAB668C2A31533781CF3 /* all.json */; };
 		3D52A93A2B8501FD6E8D6EA8 /* CXCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AA948D98B9B192AF39FA /* CXCacheManager.swift */; };
 		3D52A9625751BD098194F692 /* CXSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A3510C6BDFB8901A1DC2 /* CXSystemUtil.swift */; };
 		3D52A96C5BF920C2046AFB0B /* FileNotFoundException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A684944C5F931A59EA27 /* FileNotFoundException.swift */; };
@@ -105,6 +107,7 @@
 		3D52A71135F2E34620455935 /* CXZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXZipUtil.swift; sourceTree = "<group>"; };
 		3D52A71BEC3E9D4B46058CEA /* CXStringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXStringExtension.swift; sourceTree = "<group>"; };
 		3D52A75A52B118DD4AB1ED10 /* CXToastUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXToastUtil.swift; sourceTree = "<group>"; };
+		3D52A79305AB643A99C91521 /* housekeeper-1.0.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "housekeeper-1.0.zip"; sourceTree = "<group>"; };
 		3D52A7C4F979A3B8EE586CC2 /* RecommendData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendData.swift; sourceTree = "<group>"; };
 		3D52A7C566D8912DE7B7CD94 /* CXChecksumUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXChecksumUtil.swift; sourceTree = "<group>"; };
 		3D52A7F838985AEB0C4B2F44 /* CXHybirdBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdBridge.swift; sourceTree = "<group>"; };
@@ -123,6 +126,7 @@
 		3D52AA688FA6746C47FAD32E /* CXUIWebViewURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIWebViewURLProtocol.swift; sourceTree = "<group>"; };
 		3D52AA7428C1B7681EEA553D /* CXLogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXLogUtil.swift; sourceTree = "<group>"; };
 		3D52AA948D98B9B192AF39FA /* CXCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXCacheManager.swift; sourceTree = "<group>"; };
+		3D52AAB668C2A31533781CF3 /* all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = all.json; sourceTree = "<group>"; };
 		3D52AAF116313A9E907BFDB3 /* CXHybirdModuleConfigModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdModuleConfigModel.swift; sourceTree = "<group>"; };
 		3D52AAF7F42EC88F1390ECA4 /* HybirdUIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdUIWebViewController.swift; sourceTree = "<group>"; };
 		3D52AB15C10C0A694D9E4FB7 /* HybirdWKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWKWebViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +230,8 @@
 		3D52A3F63EA611F0730B3B53 /* hybird */ = {
 			isa = PBXGroup;
 			children = (
+				3D52AAB668C2A31533781CF3 /* all.json */,
+				3D52A79305AB643A99C91521 /* housekeeper-1.0.zip */,
 			);
 			path = hybird;
 			sourceTree = "<group>";
@@ -643,6 +649,8 @@
 			files = (
 				87856D571F8E0FB800D053DA /* assets.xcassets in Resources */,
 				3D52A0885CC01144DF290BE8 /* Podfile in Resources */,
+				3D52A936AA962259D927C114 /* all.json in Resources */,
+				3D52A724CDFD1A41B063732A /* housekeeper-1.0.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

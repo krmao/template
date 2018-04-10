@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -53,7 +54,12 @@
     <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)" @mousemove="onTouchMove($event)">
 
         <div class="file_list" :style="{width:curX+'px',height:previewHeight+'px'}">
-            <a class="prd" target="_Blank" href="/template-files/developer/prd/index.html">点击查看 PRD</a>
+            <!--<a class="prd" target="_Blank" href="/template-files/developer/prd/index.html">点击查看 PRD</a>-->
+            <div style="font-size: 12px;font-style: italic;color: darkblue">
+                左击'文件夹'展开/收缩<br>
+                左击'文件'预览(文本/图片)<br>
+                右击'文件'下载
+            </div>
             <div class="touch_line_horizontal"></div>
             <item class="item" :model="treeData" :cur-path="currentPath" :expand="true" :callback="onCallback"></item>
         </div>
@@ -69,7 +75,7 @@
 
 <script type="text/x-template" id="item-template">
     <li v-if="model && model.path && model.path.length>0">
-        <div :class="{title_container: isFolder}" @click="onClick(model.path)">
+        <div :class="{title_container: isFolder}" @click="onClick(model.path)" @contextmenu.prevent="onRightClick(model.path)">
             <span :class="[isFolder?'folder':'file']" :style="{color:curPath==model.path?'red':'black'}">
                 <svg aria-hidden="true" width="1em" height="1em">
                     <use xlink:href="#icon-folder-open" v-if="isFolder&&open"></use>
@@ -80,7 +86,7 @@
             </span>
         </div>
         <ul v-show="open" v-if="isFolder">
-            <item class="item" v-for="(model, index) in model.children" :key="index" :model="model" :cur-path="curPath" :callback="callback"></item>
+            <item class="item" v-for="(model, index) in model.children" :key="index" :model="model" :cur-path="curPath" :expand="true" :callback="callback"></item>
         </ul>
     </li>
 </script>
@@ -110,21 +116,33 @@
             },
             computed: {
                 isFolder: function () {
-                    return this.model.children && this.model.children.length > 0
+                    //return this.model.children && this.model.children.length > 0
+                    return this.model.directory
                 }
             },
             methods: {
                 onClick: function (path) {
-                    console.log("curPath:" + this.curPath);
+                    console.log("onClick:curPath:" + this.curPath);
                     this.callback(this.isFolder, path);
-                    console.log("curPath:" + this.curPath);
                     if (this.isFolder) {
                         //文件夹
                         this.open = !this.open
                     } else {
                         //文件
                     }
-                }/*,
+                },
+                onRightClick: function (path) {
+                    console.log("onRightClick:path:" + path);
+                    if (this.isFolder) {
+                        //文件夹
+                    } else {
+                        //文件
+                        var href = /*"http://10.47.12.111" +*/ path;
+                        console.log("href=" + href);
+                        window.location.href = href
+                    }
+                }
+                /*,
                  changeType: function () {
                  if (!this.isFolder) {
                  Vue.set(this.model, 'children', []);
@@ -151,7 +169,7 @@
             currentPath: "",
             codeText: "",
             dragging: false,
-            curX: window.screen.width / 6,
+            curX: window.screen.width - window.screen.width / 6,
             curY: 0
         },
         created: function () {
@@ -181,8 +199,10 @@
 
             that.editor.setSize(null, (that.previewHeight) + 'px');
 
+            // axios.get('http://10.47.12.111/template/developer/getAllFiles')
             axios.get('/template/developer/getAllFiles')
                 .then(function (response) {
+                    console.log(response);
                     if (response && response.data && response.data.code === 200 && response.data.data) {
                         that.treeData = response.data.data;
                     }

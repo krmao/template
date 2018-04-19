@@ -16,10 +16,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: "libs", include: ["*.jar"])
+    api fileTree(dir: "libs", include: ["*.jar"])
 
-    compile project(':library-template-base')
+    api project(':library-template-base')
 
     //noinspection GradleDynamicVersion
-    compile "com.facebook.react:react-native:+" // From node_modules. cd react && npm install
+    api "com.facebook.react:react-native:+" // From node_modules. cd react && npm install
 }

@@ -3,6 +3,7 @@ package com.smart.library.widget.debug
 import CXNotificationManager
 import android.annotation.SuppressLint
 import android.app.Notification
+import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
@@ -82,7 +83,7 @@ open class CXDebugFragment : CXBaseFragment() {
 
             val intent = CXActivity.getNewTaskIntent(CXBaseApplication.INSTANCE, 0, CXDebugFragment::class.java)
             // val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, null)
-            val pendingIntent = CXNotificationManager.getPendingIntent(intent)
+            val pendingIntent = CXNotificationManager.getPendingIntent(intent, parentActivityName = ComponentName("com.smart.template.tab", "HomeTabActivity"))
             CXNotificationManager.showNotify(notificationId, Notification.FLAG_NO_CLEAR, builder, pendingIntent, channelId, channelName)
         }
 

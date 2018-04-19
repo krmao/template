@@ -3,7 +3,7 @@
     package="com.smart.template.module.hybird">
 
     <application>
-        <activity
+        <!--<activity
             android:name=".HybirdActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -14,6 +14,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
     </application>
 </manifest>

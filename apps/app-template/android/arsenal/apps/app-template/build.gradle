@@ -117,6 +117,7 @@ android {
     }
 
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/MANIFEST.MF'
         exclude 'META-INF/NOTICE.TXT'
         exclude 'META-INF/LICENSE.TXT'
@@ -208,6 +209,7 @@ dependencies {
     compile project(':module-template-react_native')
     compile project(':module-template-mine')
     compile project(':module-template-setting')
+    compile project(':module-template-im')
 
     // LeakCanary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

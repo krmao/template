@@ -28,7 +28,7 @@ import java.io.Serializable
 @Suppress("UNCHECKED_CAST", "unused")
 internal object CXApiManager {
 
-    fun init() {
+    fun init(smallIcon: Int) {
         if (CXBaseApplication.DEBUG) {
             CXURLManager.Environments.values().forEach { environment: CXURLManager.Environments ->
                 CXDebugFragment.addHost(environment.name, environment.map[CXURLManager.KEY_HOST]
@@ -41,10 +41,10 @@ internal object CXApiManager {
 
 
             val notificationId = 999999
-            CXDebugFragment.showDebugNotification(notificationId)
+            CXDebugFragment.showDebugNotification(notificationId, smallIcon = smallIcon)
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)
-                    CXDebugFragment.showDebugNotification(notificationId)
+                    CXDebugFragment.showDebugNotification(notificationId, smallIcon = smallIcon)
                 else
                     CXDebugFragment.cancelDebugNotification(notificationId)
             }

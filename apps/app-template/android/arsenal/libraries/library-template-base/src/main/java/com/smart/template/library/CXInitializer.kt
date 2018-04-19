@@ -9,14 +9,14 @@ object CXInitializer {
     var init: Boolean = false
         private set
 
-    fun init() {
+    fun init(smallIcon: Int) {
         if (!init) {
             //add all code here
             CXTitleBar.DEFAULT_BACKGROUND_COLOR = Color.BLACK
             CXTitleBar.DEFAULT_TEXT_COLOR = Color.WHITE
             CXTitleBar.DEFAULT_TEXT_SIZE = 16f
 
-            CXRepository.init()
+            CXRepository.init(smallIcon)
         }
         init = true
     }

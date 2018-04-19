@@ -21,6 +21,7 @@ class HomeTabFragment : CXBaseFragment() {
             listOf(
                 HomeFragment(),
                 HybirdFragment(),
+                ImFragment(),
                 MineFragment(),
                 SettingFragment()
             )

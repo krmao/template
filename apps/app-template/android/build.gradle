@@ -78,7 +78,7 @@ ext {
 
     // Sdk and tools
     minSdkVersion = 16 // react native >=16
-    targetSdkVersion = 22
+    targetSdkVersion = 26
     compileSdkVersion = 27
     buildToolsVersion = "27.0.2"
 

@@ -17,8 +17,8 @@ import java.io.InputStream
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object CXRepository {
 
-    fun init() {
-        CXApiManager.init()
+    fun init(smallIcon: Int) {
+        CXApiManager.init(smallIcon)
     }
 
     fun getBundleConfig(): Observable<String> =

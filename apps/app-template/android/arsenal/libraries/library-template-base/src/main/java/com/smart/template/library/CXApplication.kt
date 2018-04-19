@@ -15,6 +15,7 @@ open class CXApplication : CXBaseApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-        CXInitializer.init(R.mipmap.ic_notification)
+
+        CXInitializer.init()
     }
 }

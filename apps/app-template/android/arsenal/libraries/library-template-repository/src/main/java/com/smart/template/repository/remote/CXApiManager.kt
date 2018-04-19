@@ -6,6 +6,7 @@ import com.smart.template.repository.remote.exception.CXRetrofitException
 import com.smart.template.repository.remote.exception.CXRetrofitServerException
 import com.smart.library.base.CXApplicationVisibleChangedEvent
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.base.CXConfig
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheFileManager
@@ -28,7 +29,7 @@ import java.io.Serializable
 @Suppress("UNCHECKED_CAST", "unused")
 internal object CXApiManager {
 
-    fun init(smallIcon: Int) {
+    fun init() {
         if (CXBaseApplication.DEBUG) {
             CXURLManager.Environments.values().forEach { environment: CXURLManager.Environments ->
                 CXDebugFragment.addHost(environment.name, environment.map[CXURLManager.KEY_HOST]
@@ -41,10 +42,10 @@ internal object CXApiManager {
 
 
             val notificationId = 999999
-            CXDebugFragment.showDebugNotification(notificationId, smallIcon = smallIcon)
+            CXDebugFragment.showDebugNotification(notificationId, smallIcon = CXConfig.ICON_NOTIFICATION_SMALL, parentActivityClass = CXConfig.CLASS_ACTIVITY_MAIN)
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)
-                    CXDebugFragment.showDebugNotification(notificationId, smallIcon = smallIcon)
+                    CXDebugFragment.showDebugNotification(notificationId, smallIcon = CXConfig.ICON_NOTIFICATION_SMALL, parentActivityClass = CXConfig.CLASS_ACTIVITY_MAIN)
                 else
                     CXDebugFragment.cancelDebugNotification(notificationId)
             }

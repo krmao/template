@@ -1,5 +1,7 @@
 package com.smart.library.base
 
+import android.app.Activity
+import com.smart.library.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,4 +28,10 @@ object CXConfig {
 
     @JvmStatic
     var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印
+
+    @JvmStatic
+    var ICON_NOTIFICATION_SMALL: Int = R.drawable.cx_emo_im_happy
+
+    @JvmStatic
+    var CLASS_ACTIVITY_MAIN: Class<out Activity>? = null
 }

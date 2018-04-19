@@ -11,19 +11,21 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".library.CXApplication"
+        android:name=".CXFinalApplication"
         android:allowBackup="true"
+        android:allowTaskReparenting="false"
         android:fullBackupContent="@xml/cx_backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/cx_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
+        android:taskAffinity="com.smart.template"
         android:theme="@style/CXAppTheme.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 
         <activity
-            android:name=".tab.HomeTabActivity"
+            android:name="com.smart.template.tab.HomeTabActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/CXAppTheme.Light.NoActionBar"

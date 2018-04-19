@@ -2,9 +2,11 @@ package com.smart.library.widget.debug
 
 import CXNotificationManager
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Notification
-import android.content.ComponentName
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
@@ -70,7 +72,7 @@ open class CXDebugFragment : CXBaseFragment() {
 
         @JvmOverloads
         @JvmStatic
-        fun showDebugNotification(notificationId: Int, title: String = "${CXSystemUtil.appName} 调试助手", text: String = "点击跳转到调试界面", smallIcon: Int = R.drawable.cx_emo_im_happy, channelId: String = CXNotificationManager.getChannelId(notificationId) ?: "", channelName: String = "在通知栏上显示程式调试入口") {
+        fun showDebugNotification(notificationId: Int, title: String = "${CXSystemUtil.appName} 调试助手", text: String = "点击跳转到调试界面", smallIcon: Int = R.drawable.cx_emo_im_happy, parentActivityClass: Class<out Activity>? = null, channelId: String = CXNotificationManager.getChannelId(notificationId) ?: "", channelName: String = "在通知栏上显示程式调试入口") {
 
             val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
                 .setSmallIcon(smallIcon)
@@ -82,8 +84,9 @@ open class CXDebugFragment : CXBaseFragment() {
                 .setOngoing(true)
 
             val intent = CXActivity.getNewTaskIntent(CXBaseApplication.INSTANCE, 0, CXDebugFragment::class.java)
-            // val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, null)
-            val pendingIntent = CXNotificationManager.getPendingIntent(intent, parentActivityName = ComponentName("com.smart.template.tab", "HomeTabActivity"))
+             val pendingIntent = CXNotificationManager.getPendingIntent(intent, parentActivityClass = parentActivityClass, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+//            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             CXNotificationManager.showNotify(notificationId, Notification.FLAG_NO_CLEAR, builder, pendingIntent, channelId, channelName)
         }
 

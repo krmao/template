@@ -158,7 +158,7 @@ open class CXActivity : CXBaseActivity() {
                     fragment = Class.forName(fragmentObject).newInstance() as Fragment
                 } catch (_: Exception) {
                     /*try {
-                        @Suppress("DEPRECATION")
+                        @Suppress("DEPRECATION:$taskId")
                         fragment = Atlas.getInstance().delegateClassLoader.loadClass(fragmentObject).newInstance() as Fragment
                     } catch (e: Exception) {
                         CXLogUtil.e("ClassNotFoundException:$fragmentClassName", e)
@@ -172,5 +172,30 @@ open class CXActivity : CXBaseActivity() {
         } catch (e: Exception) {
             Log.e(CXActivity::javaClass.name, "Has error in new instance of fragment", e)
         }
+    }
+
+    override fun onStart() {
+        Log.w("CXActivity", "onStart:$taskId")
+        super.onStart()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.w("CXActivity", "onRestart:$taskId")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.w("CXActivity", "onResume:$taskId")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.w("CXActivity", "onPause:$taskId")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.w("CXActivity", "onStop:$taskId")
     }
 }

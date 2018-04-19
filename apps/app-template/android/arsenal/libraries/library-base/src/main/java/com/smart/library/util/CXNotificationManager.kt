@@ -2,19 +2,20 @@
 
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.ComponentName
+import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.TaskStackBuilder
 import com.smart.library.base.CXBaseApplication
 
+/**
+ * val intent = CXActivity.getNewTaskIntent(CXBaseApplication.INSTANCE, 0, CXDebugFragment::class.java)
+ * // val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, null)
+ * val pendingIntent = CXNotificationManager.getPendingIntent(intent, parentActivityName = ComponentName("com.smart.template", "com.smart.template.tab.HomeTabActivity"))
+ * CXNotificationManager.showNotify(notificationId, Notification.FLAG_NO_CLEAR, builder, pendingIntent, channelId, channelName)
+ */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object CXNotificationManager {
 
@@ -34,12 +35,14 @@ object CXNotificationManager {
      *              {@link PendingIntent#FLAG_CANCEL_CURRENT}, PendingIntent 如果已经存在, 则 new PendingIntent 之前会 先取消之前的那一个, 常用来更新数据, 不可以 new 一个新的 Intent
      *              {@link PendingIntent#FLAG_UPDATE_CURRENT}, PendingIntent 如果已经存在, 则继续使用, 但是数据会被替换成新的, 与 FLAG_CANCEL_CURRENT 的区别是 可以 new 一个新的 Intent
      *              {@link Intent#fillIn(Intent, int)}
+     *
+     * @see https://stackoverflow.com/questions/18934626/notification-destroying-and-creating-existing-activity
      */
     @JvmStatic
     @JvmOverloads
-    fun getPendingIntent(intent: Intent, parentActivityName: ComponentName? = null, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
+    fun getPendingIntent(intent: Intent, parentActivityClass: Class<out Activity>? = null, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
         val stackBuilder = TaskStackBuilder.create(CXBaseApplication.INSTANCE)
-        parentActivityName?.let { stackBuilder.addParentStack(it) }
+        // parentActivityClass?.let { stackBuilder.addParentStack(parentActivityClass) } // 这句代码导致 android o 以下版本的手机 mainActivity 换了一个新的实例
         stackBuilder.addNextIntent(intent)
         return stackBuilder.getPendingIntent(requestCode, flags)
     }

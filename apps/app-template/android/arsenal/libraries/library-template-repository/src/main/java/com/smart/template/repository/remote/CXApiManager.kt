@@ -40,8 +40,6 @@ internal object CXApiManager {
                 CXToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${CXURLManager.curEnvironment.name}")
             }
 
-
-            val notificationId = 12321
             CXDebugFragment.showDebugNotification()
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)

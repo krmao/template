@@ -30,17 +30,17 @@ object CXConfig {
     var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印
 
     @JvmStatic
-    val NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID: Int = System.currentTimeMillis().toInt()
+    val NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID: Int = 100000000
     @JvmStatic
     var NOTIFICATION_ICON_SMALL: Int = R.drawable.cx_emo_im_happy
     @JvmStatic
-    val NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY: String = "NOTIFICATION_DEFAULT_GROUP_KEY_${System.currentTimeMillis()}"
+    val NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY: String = "NOTIFICATION_DEFAULT_GROUP_KEY"
     @JvmStatic
     val NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT: String = "SETTINGS"
     @JvmStatic
-    val NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID: Int = System.currentTimeMillis().toInt()
+    val NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID: Int = 200000000
     @JvmStatic
-    val NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID: String = System.currentTimeMillis().toString()
+    val NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID: String = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID.toString()
     @JvmStatic
     val NOTIFICATION_DEFAULT_CHANNEL_GROUP_NAME: String = "DEBUG"
 

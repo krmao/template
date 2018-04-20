@@ -22,10 +22,7 @@ import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.base.CXConfig
-import com.smart.library.util.CXIntentUtil
-import com.smart.library.util.CXPreferencesUtil
-import com.smart.library.util.CXSystemUtil
-import com.smart.library.util.CXToastUtil
+import com.smart.library.util.*
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.cx_fragment_debug.*
 
@@ -83,11 +80,12 @@ open class CXDebugFragment : CXBaseFragment() {
             val title = "${CXSystemUtil.appName} 调试助手"
             val text = "点击跳转到调试界面"
             val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
-            val channelId = CXNotificationManager.getChannelId(notificationId)
+            val channelId: String = CXNotificationManager.getChannelId(notificationId)
             val channelName = "在通知栏上显示程式调试入口"
             val smallIcon = CXConfig.NOTIFICATION_ICON_SMALL
 
             // notification group ( 注意: 通知组只有 sdk >= 24 support )
+            // 注意 summaryGroupId 与 notificationId 不能相同, 否则会出现没有合并到一个组的意外情况
             val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
             val summaryGroupText = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
             val summaryGroupKey = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
@@ -95,6 +93,14 @@ open class CXDebugFragment : CXBaseFragment() {
             // channel group
             val channelGroupId = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID
             val channelGroupName = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_NAME
+
+            CXLogUtil.e("notification", "notificationId=$notificationId")
+            CXLogUtil.e("notification", "channelId=$summaryGroupId")
+            CXLogUtil.e("notification", "summaryGroupId=$summaryGroupId")
+            CXLogUtil.e("notification", "summaryGroupText=$summaryGroupText")
+            CXLogUtil.e("notification", "summaryGroupKey=$summaryGroupKey")
+            CXLogUtil.e("notification", "channelGroupId=$channelGroupId")
+            CXLogUtil.e("notification", "channelGroupName=$channelGroupName")
 
             val intent = Intent(CXBaseApplication.INSTANCE, CXDebugActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -119,7 +125,13 @@ open class CXDebugFragment : CXBaseFragment() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // 首先设置通知渠道组
-                notificationManager.createNotificationChannelGroup(NotificationChannelGroup(channelGroupId, channelGroupName))
+                val channelGroup = NotificationChannelGroup(channelGroupId, channelGroupName)
+                if (notificationManager.notificationChannelGroups.filter { it == channelGroup }.size > 1) {
+                    notificationManager.deleteNotificationChannelGroup(channelGroupId)
+                }
+                if (!notificationManager.notificationChannelGroups.contains(channelGroup)) {
+                    notificationManager.createNotificationChannelGroup(channelGroup)
+                }
 
                 // IMPORTANCE_HIGH      (紧急-发出声音并显示为提醒通知)
                 // IMPORTANCE_DEFAULT   (高级-发出声音)
@@ -131,17 +143,32 @@ open class CXDebugFragment : CXBaseFragment() {
                 channel.enableVibration(false)
                 channel.setSound(null, null)
                 channel.group = channelGroupId // 设置渠道组的归属关系
-                notificationManager.createNotificationChannel(channel)
+
+
+                if (notificationManager.notificationChannels.filter { it == channel }.size > 1) {
+                    notificationManager.deleteNotificationChannel(channelId)
+                }
+                if (!notificationManager.notificationChannels.contains(channel)) {
+                    notificationManager.createNotificationChannel(channel)
+                }
             }
 
             val notification = builder.build()
             notificationManager.notify(notificationId, notification)
-            // notificationManager.notify(2, notification) // 创建更多不同 id 的 notification 会归并到 group 里面
-            // notificationManager.notify(3, notification)
 
             //========== notification group
 
-            val summaryNotification = builder
+            val summaryNotification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+                .setSmallIcon(smallIcon)
+                .setLargeIcon(CXSystemUtil.appBitmap)
+                .setContentTitle(title)
+                .setContentText(text) // set content text to support devices running API level < 24
+                // .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
+                .setOngoing(true)
+                .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                .setAutoCancel(false) // automatically removes the notification when the user taps it
                 // build summary info into InboxStyle template
                 .setStyle(NotificationCompat.InboxStyle()
                     .addLine(text)

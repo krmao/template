@@ -28,7 +28,7 @@ open class CXActivity : CXBaseActivity() {
         @JvmOverloads
         @JvmStatic
         fun startNewTask(fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            CXBaseApplication.INSTANCE.startActivity(getNewTaskIntent(CXBaseApplication.INSTANCE, 0, fragmentClass, args))
+            CXBaseApplication.INSTANCE.startActivity(getNewTaskIntent(CXBaseApplication.INSTANCE, fragmentClass, args))
 
         @JvmOverloads
         @JvmStatic
@@ -115,11 +115,12 @@ open class CXActivity : CXBaseActivity() {
 
         @JvmOverloads
         @JvmStatic
-        fun getNewTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle = Bundle()): Intent {
+        fun getNewTaskIntent(context: Context, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int = 0): Intent {
             val intent = Intent(context, CXActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
             intent.putExtra(KEY_FRAGMENT_ARGS, args)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
             return intent
         }

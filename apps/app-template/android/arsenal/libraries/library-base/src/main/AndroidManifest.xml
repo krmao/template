@@ -8,6 +8,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/CXAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
+
+        <!-- [notification] HomeTabActivity is the parent for CXDebugActivity -->
+        <activity
+            android:name=".widget.debug.CXDebugActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:parentActivityName="com.smart.template.tab.HomeTabActivity"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:theme="@style/CXAppTheme.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

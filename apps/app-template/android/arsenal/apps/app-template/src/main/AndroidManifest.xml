@@ -19,7 +19,6 @@
         android:label="@string/cx_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:taskAffinity="com.smart.template"
         android:theme="@style/CXAppTheme.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">

@@ -1,12 +1,12 @@
 package com.smart.library.widget.debug
 
 import CXNotificationManager
+import CXNotificationManager.getNotificationManager
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Notification
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
@@ -17,6 +17,7 @@ import android.widget.BaseAdapter
 import android.widget.RadioButton
 import android.widget.TextView
 import com.smart.library.R
+import com.smart.library.R.id.*
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXBaseFragment
@@ -70,24 +71,51 @@ open class CXDebugFragment : CXBaseFragment() {
             return currentSelectedModel
         }
 
+        @SuppressLint("NewApi")
         @JvmOverloads
         @JvmStatic
         fun showDebugNotification(notificationId: Int, title: String = "${CXSystemUtil.appName} 调试助手", text: String = "点击跳转到调试界面", smallIcon: Int = R.drawable.cx_emo_im_happy, parentActivityClass: Class<out Activity>? = null, channelId: String = CXNotificationManager.getChannelId(notificationId) ?: "", channelName: String = "在通知栏上显示程式调试入口") {
 
-            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+            //========== ======================================================================== ==========
+            //========== notification example start
+            //========== ======================================================================== ==========
+
+            val intent = Intent(CXBaseApplication.INSTANCE, CXDebugActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            // val pendingIntent = CXNotificationManager.getPendingIntent(intent, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+            val notification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
                 .setSmallIcon(smallIcon)
                 .setLargeIcon(CXSystemUtil.appBitmap)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setAutoCancel(false)
-                .setDefaults(Notification.DEFAULT_LIGHTS)
+                // .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
                 .setOngoing(true)
+                .setAutoCancel(false) // automatically removes the notification when the user taps it
+                .build()
 
-            val intent = CXActivity.getNewTaskIntent(CXBaseApplication.INSTANCE, 0, CXDebugFragment::class.java)
-             val pendingIntent = CXNotificationManager.getPendingIntent(intent, parentActivityClass = parentActivityClass, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-//            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            CXNotificationManager.showNotify(notificationId, Notification.FLAG_NO_CLEAR, builder, pendingIntent, channelId, channelName)
+            val notificationManager = CXNotificationManager.getNotificationManager()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+                channel.enableLights(false) // 是否在桌面icon右上角展示小红点
+                channel.setShowBadge(false) // 是否在久按桌面图标时显示此渠道的通知
+                channel.enableVibration(false)
+                channel.setSound(null, null)
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            notificationManager.notify(notificationId, notification)
+
+            //========== ======================================================================== ==========
+            //========== notification example end
+            //========== ======================================================================== ==========
+
         }
 
         @JvmStatic

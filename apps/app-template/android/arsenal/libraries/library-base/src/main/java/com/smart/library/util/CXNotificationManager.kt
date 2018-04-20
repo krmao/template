@@ -1,5 +1,4 @@
-@file:Suppress("DEPRECATION")
-
+package com.smart.library.util
 
 import android.annotation.TargetApi
 import android.app.NotificationManager

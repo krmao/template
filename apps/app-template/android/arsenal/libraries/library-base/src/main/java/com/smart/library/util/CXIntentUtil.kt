@@ -19,6 +19,7 @@ import java.util.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object CXIntentUtil {
+
     /**
      * @param content  短信内容
      * @param phoneNum String "num,num,num"

@@ -1,63 +1,144 @@
 @file:Suppress("DEPRECATION")
 
 
-import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
+import android.annotation.TargetApi
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import android.support.v4.app.TaskStackBuilder
 import com.smart.library.base.CXBaseApplication
 
+
+/* 必备操作一:配置
+
+    <!-- [notification] HomeTabActivity is the parent for CXDebugActivity -->
+    <activity
+        android:name=".widget.debug.CXDebugActivity"
+        android:excludeFromRecents="true"
+        android:launchMode="singleTask"
+        android:parentActivityName="com.smart.template.tab.HomeTabActivity"
+        android:screenOrientation="portrait"
+        android:taskAffinity=""
+        android:theme="@style/CXAppTheme.Translucent"
+        android:windowSoftInputMode="stateHidden|adjustResize" />
+
+ */
+
+/* 必备操作二:代码
+
+    //========== ======================================================================== ==========
+    //========== notification example start
+    //========== ======================================================================== ==========
+
+    // notification
+    val title = "${CXSystemUtil.appName} 调试助手"
+    val text = "点击跳转到调试界面"
+    val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
+    val channelId: String = CXNotificationManager.getChannelId(notificationId)
+    val channelName = "在通知栏上显示程式调试入口"
+    val smallIcon = CXConfig.NOTIFICATION_ICON_SMALL
+
+    // notification group
+    val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
+    val summaryGroupText = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
+    val summaryGroupKey = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
+
+    // channel group
+    val channelGroupId = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID
+    val channelGroupName = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_NAME
+
+    val intent = Intent(CXBaseApplication.INSTANCE, CXDebugActivity::class.java)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+    val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+    // val pendingIntent = CXNotificationManager.getPendingIntent(intent, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+    val notification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+        .setSmallIcon(smallIcon)
+        .setLargeIcon(CXSystemUtil.appBitmap)
+        .setContentTitle(title)
+        .setContentText(text) // set content text to support devices running API level < 24
+        // .setDefaults(Notification.DEFAULT_ALL)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
+        .setOngoing(true)
+        .setGroup(summaryGroupKey) // specify which group this notification belongs to
+        .setAutoCancel(false) // automatically removes the notification when the user taps it
+        .build()
+
+    val notificationManager = CXNotificationManager.getNotificationManager()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        // 首先设置通知渠道组
+        notificationManager.createNotificationChannelGroup(NotificationChannelGroup(channelGroupId, channelGroupName))
+
+        // IMPORTANCE_HIGH      (紧急-发出声音并显示为提醒通知)
+        // IMPORTANCE_DEFAULT   (高级-发出声音)
+        // IMPORTANCE_LOW       (中等-没有声音)
+        // IMPORTANCE_MIN       (低级-无声音并且不会出现在状态栏中)
+        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
+        channel.enableLights(false) // 是否在桌面icon右上角展示小红点
+        channel.setShowBadge(false) // 是否在久按桌面图标时显示此渠道的通知
+        channel.enableVibration(false)
+        channel.setSound(null, null)
+        channel.description = "channel description"
+        channel.group = channelGroupId // 设置渠道组的归属关系
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    notificationManager.notify(notificationId, notification)
+    // notificationManager.notify(2, notification) // 创建更多不同 id 的 notification 会归并到 group 里面
+    // notificationManager.notify(3, notification)
+
+    //========== notification group
+
+    val summaryNotification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+        .setSmallIcon(smallIcon)
+        .setLargeIcon(CXSystemUtil.appBitmap)
+        .setContentTitle(title)
+        .setContentText(text) // set content text to support devices running API level < 24
+        .setStyle(NotificationCompat.InboxStyle() // build summary info into InboxStyle template
+            .addLine("info")
+            .setBigContentTitle(title)
+            .setSummaryText(summaryGroupText))
+        .setGroup(summaryGroupKey) // specify which group this notification belongs to
+        .setGroupSummary(true) // set this notification as the summary for the group
+        .build()
+
+    notificationManager.notify(summaryGroupId, summaryNotification)
+    //========== ======================================================================== ==========
+    //========== notification example end
+    //========== ======================================================================== ==========
+
+ */
+
+/**
+ * @see https://developer.android.com/training/notify-user/navigation.html
+ * @see https://developer.android.com/training/notify-user/navigation.html#ExtendedNotification
+ * @see https://developer.android.com/training/notify-user/build-notification.html#SimpleNotification
+ * @see https://developer.android.com/training/notify-user/channels.html
+ * @see https://developer.android.com/training/notify-user/group.html
+ * @see https://developer.android.com/training/notify-user/channels.html#CreateChannelGroup
+ */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object CXNotificationManager {
 
     @JvmStatic
-    fun getChannelId(notificationId: Int?): String? = if (notificationId == null) null else "channelId-$notificationId"
+    fun getChannelId(notificationId: Int): String = "NOTIFICATION_CHANNEL_ID_$notificationId"
 
     @JvmStatic
-    fun getChannelName(notificationId: Int?): String? = if (notificationId == null) null else "channelName-$notificationId"
+    fun getChannelName(notificationId: Int?): String? = if (notificationId == null) null else "NOTIFICATION_CHANNEL_NAME_$notificationId"
 
     @JvmStatic
     fun getNotificationManager(): NotificationManager = CXBaseApplication.INSTANCE.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    /**
-     * @see notification flags
-     *      Notification.FLAG_SHOW_LIGHTS         //三色灯提醒，在使用三色灯提醒时候必须加该标志符
-     *      Notification.FLAG_ONGOING_EVENT       //发起正在运行事件（活动中）
-     *      Notification.FLAG_INSISTENT           //让声音、振动无限循环，直到用户响应 （取消或者打开）
-     *      Notification.FLAG_ONLY_ALERT_ONCE     //发起Notification后，铃声和震动均只执行一次
-     *      Notification.FLAG_AUTO_CANCEL         //用户单击通知后自动消失
-     *      Notification.FLAG_NO_CLEAR            //只有全部清除时，Notification才会清除 ，不清除该通知(QQ的通知无法清除，就是用的这个)
-     *      Notification.FLAG_FOREGROUND_SERVICE  //表示正在运行的服务
-     */
     @JvmStatic
     @JvmOverloads
-    @SuppressLint("ObsoleteSdkInt", "NewApi")
-    fun showNotify(notificationId: Int, notification: Notification, channelId: String? = getChannelId(notificationId), channelName: String? = getChannelName(notificationId)) {
-
-        val notificationManager = getNotificationManager()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            channel.enableLights(false) // 是否在桌面icon右上角展示小红点
-            channel.setShowBadge(false) // 是否在久按桌面图标时显示此渠道的通知
-            channel.enableVibration(false);
-            channel.setSound(null, null);
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(notificationId, notification)
-
-    }
-
-    @JvmStatic
-    @JvmOverloads
-    fun cancelNotify(notificationId: Int? = null, channelId: String? = getChannelId(notificationId)) {
+    fun cancelNotify(notificationId: Int? = null, channelId: String? = if (notificationId == null) null else getChannelId(notificationId)) {
         val notificationManager = getNotificationManager()
         if (notificationId == null) {
             notificationManager.cancelAll()
@@ -73,11 +154,6 @@ object CXNotificationManager {
      * 获取 notification 所需的 pendingIntent
      *
      * @param intent 目标 activity 信息
-     * @param parentActivityName 当程序退出的时候,点击通知栏跳转的目标 DestinationActivity 后,点击返回按钮回到的页面,如果是空则返回到系统桌面
-     *              同时配置 AndroidManifest.xml
-     *              <activity android:name=".DestinationActivity"
-     *                        android:parentActivityName=".MainActivity"/>
-     *
      * @param requestCode Private request code for the sender
      * @param flags May be
      *              {@link PendingIntent#FLAG_ONE_SHOT}, PendingIntent 只能被使用一次,且触发后自动取消,后面所有的尝试将无效
@@ -89,10 +165,21 @@ object CXNotificationManager {
     @JvmStatic
     @JvmOverloads
     @Deprecated("使用后回退栈有问题,且mainActivity 重启或者 finish")
-    fun getPendingIntent(intent: Intent, parentActivityName: ComponentName? = null, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
+    fun getPendingIntent(intent: Intent, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
         val stackBuilder = TaskStackBuilder.create(CXBaseApplication.INSTANCE)
-        // parentActivityName?.let { stackBuilder.addParentStack(it) }
-        stackBuilder.addNextIntent(intent)
+        stackBuilder.addNextIntentWithParentStack(intent)
         return stackBuilder.getPendingIntent(requestCode, flags)
+    }
+
+    /**
+     * 跳转到该 channel 的通知设置页面
+     */
+    @JvmStatic
+    @TargetApi(Build.VERSION_CODES.O)
+    fun goToNotificationChannelSettings(context: Context, channelId: String) {
+        val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
+        context.startActivity(intent)
     }
 }

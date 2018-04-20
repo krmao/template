@@ -41,13 +41,13 @@ internal object CXApiManager {
             }
 
 
-            val notificationId = 999999
-            CXDebugFragment.showDebugNotification(notificationId, smallIcon = CXConfig.ICON_NOTIFICATION_SMALL, parentActivityClass = CXConfig.CLASS_ACTIVITY_MAIN)
+            val notificationId = 12321
+            CXDebugFragment.showDebugNotification()
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)
-                    CXDebugFragment.showDebugNotification(notificationId, smallIcon = CXConfig.ICON_NOTIFICATION_SMALL, parentActivityClass = CXConfig.CLASS_ACTIVITY_MAIN)
+                    CXDebugFragment.showDebugNotification()
                 else
-                    CXDebugFragment.cancelDebugNotification(notificationId)
+                    CXDebugFragment.cancelDebugNotification()
             }
         }
     }

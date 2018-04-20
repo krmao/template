@@ -10,7 +10,7 @@ class CXFinalApplication : CXApplication() {
     override fun onCreate() {
 
         // init before application onCreate
-        CXConfig.ICON_NOTIFICATION_SMALL = R.mipmap.ic_notification
+        CXConfig.NOTIFICATION_ICON_SMALL = R.mipmap.ic_notification
         CXConfig.CLASS_ACTIVITY_MAIN = HomeTabActivity::class.java
 
         super.onCreate()

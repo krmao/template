@@ -87,7 +87,7 @@ open class CXDebugFragment : CXBaseFragment() {
             val channelName = "在通知栏上显示程式调试入口"
             val smallIcon = CXConfig.NOTIFICATION_ICON_SMALL
 
-            // notification group
+            // notification group ( 注意: 通知组只有 sdk >= 24 support )
             val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
             val summaryGroupText = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
             val summaryGroupKey = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
@@ -103,7 +103,7 @@ open class CXDebugFragment : CXBaseFragment() {
             val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
             // val pendingIntent = CXNotificationManager.getPendingIntent(intent, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 
-            val notification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
                 .setSmallIcon(smallIcon)
                 .setLargeIcon(CXSystemUtil.appBitmap)
                 .setContentTitle(title)
@@ -114,7 +114,6 @@ open class CXDebugFragment : CXBaseFragment() {
                 .setOngoing(true)
                 .setGroup(summaryGroupKey) // specify which group this notification belongs to
                 .setAutoCancel(false) // automatically removes the notification when the user taps it
-                .build()
 
             val notificationManager = CXNotificationManager.getNotificationManager()
 
@@ -131,24 +130,21 @@ open class CXDebugFragment : CXBaseFragment() {
                 channel.setShowBadge(false) // 是否在久按桌面图标时显示此渠道的通知
                 channel.enableVibration(false)
                 channel.setSound(null, null)
-                channel.description = "channel description"
                 channel.group = channelGroupId // 设置渠道组的归属关系
                 notificationManager.createNotificationChannel(channel)
             }
 
+            val notification = builder.build()
             notificationManager.notify(notificationId, notification)
             // notificationManager.notify(2, notification) // 创建更多不同 id 的 notification 会归并到 group 里面
             // notificationManager.notify(3, notification)
 
             //========== notification group
 
-            val summaryNotification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
-                .setSmallIcon(smallIcon)
-                .setLargeIcon(CXSystemUtil.appBitmap)
-                .setContentTitle(title)
-                .setContentText(text) // set content text to support devices running API level < 24
-                .setStyle(NotificationCompat.InboxStyle() // build summary info into InboxStyle template
-                    .addLine("info")
+            val summaryNotification = builder
+                // build summary info into InboxStyle template
+                .setStyle(NotificationCompat.InboxStyle()
+                    .addLine(text)
                     .setBigContentTitle(title)
                     .setSummaryText(summaryGroupText))
                 .setGroup(summaryGroupKey) // specify which group this notification belongs to

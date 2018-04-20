@@ -1,6 +1,5 @@
 package com.smart.library.widget.debug
 
-import CXNotificationManager
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
@@ -158,17 +157,7 @@ open class CXDebugFragment : CXBaseFragment() {
 
             //========== notification group
 
-            val summaryNotification = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
-                .setSmallIcon(smallIcon)
-                .setLargeIcon(CXSystemUtil.appBitmap)
-                .setContentTitle(title)
-                .setContentText(text) // set content text to support devices running API level < 24
-                // .setDefaults(Notification.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
-                .setOngoing(true)
-                .setGroup(summaryGroupKey) // specify which group this notification belongs to
-                .setAutoCancel(false) // automatically removes the notification when the user taps it
+            val summaryNotification = builder
                 // build summary info into InboxStyle template
                 .setStyle(NotificationCompat.InboxStyle()
                     .addLine(text)

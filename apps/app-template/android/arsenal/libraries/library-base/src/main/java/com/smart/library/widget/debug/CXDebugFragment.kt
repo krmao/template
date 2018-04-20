@@ -83,7 +83,7 @@ open class CXDebugFragment : CXBaseFragment() {
             val title = "${CXSystemUtil.appName} 调试助手"
             val text = "点击跳转到调试界面"
             val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
-            val channelId: String = CXNotificationManager.getChannelId(notificationId)
+            val channelId = CXNotificationManager.getChannelId(notificationId)
             val channelName = "在通知栏上显示程式调试入口"
             val smallIcon = CXConfig.NOTIFICATION_ICON_SMALL
 

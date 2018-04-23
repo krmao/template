@@ -27,7 +27,7 @@
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.Left_Right</item>
     </style>
 
-    <style name="CXAppTheme.Translucent.NOTIFICATION" parent="@style/CXAppTheme.Translucent">
+    <style name="CXAppTheme.Translucent.Notification" parent="@style/CXAppTheme.Translucent">
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.FADE_IN_OUT</item>
     </style>
 

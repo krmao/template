@@ -28,26 +28,6 @@ open class CXDebugActivity : CXBaseActivity() {
         super.onStart()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        CXLogUtil.w(TAG, "onRestart:$taskId, $this")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CXLogUtil.w(TAG, "onResume:$taskId, $this")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        CXLogUtil.w(TAG, "onPause:$taskId, $this")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        CXLogUtil.w(TAG, "onStop:$taskId, $this")
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
             // 当前 activity 算一个
@@ -56,8 +36,13 @@ open class CXDebugActivity : CXBaseActivity() {
                     startActivity(Intent(this, it))
                     overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
                 }
+            } else {
+                val result = super.onKeyDown(keyCode, event)
+                overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
+                return result
             }
         }
+
         return super.onKeyDown(keyCode, event)
     }
 }

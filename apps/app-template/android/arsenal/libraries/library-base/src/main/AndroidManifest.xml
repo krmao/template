@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.smart.library">
 
     <application>
@@ -18,8 +19,9 @@
             android:parentActivityName="com.smart.template.tab.HomeTabActivity"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/CXAppTheme.Translucent.NOTIFICATION"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:theme="@style/CXAppTheme.Translucent.Notification"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="UnusedAttribute" />
     </application>
 
 </manifest>

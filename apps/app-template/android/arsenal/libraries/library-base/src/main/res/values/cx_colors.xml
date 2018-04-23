@@ -23,7 +23,7 @@
     <color name="cx_blue_light">#ADD8E6</color>
     <color name="cx_blue_dark">#00008B</color>
 
-    <color name="cx_primary">@color/primary_material_dark</color>
-    <color name="cx_primary_dark">@color/primary_dark_material_dark</color>
-    <color name="cx_accent">@color/accent_material_dark</color>
+    <color name="cx_primary">#ff212121</color>
+    <color name="cx_primary_dark">#ff000000</color>
+    <color name="cx_accent">#ff80cbc4</color>
 </resources>

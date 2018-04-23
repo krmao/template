@@ -9,6 +9,7 @@ import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.CXRouteManager
 import com.smart.library.util.CXToastUtil
 import com.smart.library.widget.debug.CXDebugFragment
+import io.reactivex.disposables.CompositeDisposable
 
 
 /**
@@ -31,6 +32,7 @@ import com.smart.library.widget.debug.CXDebugFragment
  * sdk >= 4.4 纯透明
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
+@Suppress("MemberVisibilityCanBePrivate")
 open class CXBaseActivity : AppCompatActivity() {
 
     /**
@@ -39,14 +41,20 @@ open class CXBaseActivity : AppCompatActivity() {
      */
     val callback: ((bundle: Bundle?) -> Unit?)? by lazy { CXRouteManager.getCallback(this) }
 
+    open val disposables: CompositeDisposable = CompositeDisposable()
+
     open var statusBar: ImmersionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
-        statusBar = ImmersionBar.with(this).navigationBarEnable(false)
-        statusBar?.init()
+        if (enableImmersionStatusBar) {
+            //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
+            statusBar = ImmersionBar.with(this)
+                .navigationBarEnable(false)
+                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, 0.2f) // 原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+            statusBar?.init()
+        }
 
         SwipeBackHelper.onCreate(this)
         SwipeBackHelper.getCurrentPage(this)//get current instance
@@ -77,9 +85,10 @@ open class CXBaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        CXRouteManager.removeCallback(this)
-        SwipeBackHelper.onDestroy(this)
+        disposables.dispose()
         statusBar?.destroy()
+        SwipeBackHelper.onDestroy(this)
+        CXRouteManager.removeCallback(this)
         super.onDestroy()
     }
 
@@ -123,9 +132,11 @@ open class CXBaseActivity : AppCompatActivity() {
         }
     }
 
-    protected var enableExitWithDoubleBackPressed = false
+    protected var exitTime: Long = 0
     protected var enableSwipeBack = true
-    private var exitTime: Long = 0
+    protected var enableImmersionStatusBar = true
+    protected var enableImmersionStatusBarWithDarkFont = false
+    protected var enableExitWithDoubleBackPressed = false
 
     private fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
         CXToastUtil.show("再按一次退出程序")

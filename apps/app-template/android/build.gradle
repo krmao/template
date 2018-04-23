@@ -78,7 +78,7 @@ ext {
 
     // Sdk and tools
     minSdkVersion = 16 // react native >=16
-    targetSdkVersion = 27 // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
+    targetSdkVersion = 26 // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
     compileSdkVersion = 27
     buildToolsVersion = "27.0.3"
 

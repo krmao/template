@@ -37,6 +37,10 @@ Small Contextual Icons
 .png	
 Small icons are used to surface actions and/or provide status for specific items. For example, in the Gmail app, each message has a star icon that marks the message as important.
 ```
+
+* 通知栏小图标必须为纯透明背景,白色 icon 内容
+    * @see https://blog.csdn.net/u013706904/article/details/51912634
+    * @see https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead
 ```
 Notification icons
 22 × 22 area in 24 × 24 (mdpi)

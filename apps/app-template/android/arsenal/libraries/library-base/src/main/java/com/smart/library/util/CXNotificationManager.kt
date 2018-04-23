@@ -159,6 +159,10 @@ import com.smart.library.base.CXBaseApplication
  * @see https://developer.android.com/training/notify-user/channels.html
  * @see https://developer.android.com/training/notify-user/group.html
  * @see https://developer.android.com/training/notify-user/channels.html#CreateChannelGroup
+ *
+ * 通知栏小图标必须为纯透明背景,白色 icon 内容
+ * @see https://blog.csdn.net/u013706904/article/details/51912634
+ * @see https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object CXNotificationManager {

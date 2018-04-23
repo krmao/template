@@ -18,7 +18,7 @@
             android:parentActivityName="com.smart.template.tab.HomeTabActivity"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/CXAppTheme.Translucent"
+            android:theme="@style/CXAppTheme.Translucent.NOTIFICATION"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 

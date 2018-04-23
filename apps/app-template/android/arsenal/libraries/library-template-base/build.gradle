@@ -17,9 +17,22 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-base')
-    api project(':library-template-repository')
+
+    /******* 官方支持库 ****************************************************************************/
+    //api "com.android.support:multidex:$rootProject.ext.multidex"
     api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    /******* 必备工具库 ****************************************************************************/
+    //api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
+
+    /******* 应用权限库 ****************************************************************************/
+    /******* 网络请求库 ****************************************************************************/
+
+    /******* 其它常用库 ****************************************************************************/
+    api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
     api 'com.github.evgenyneu:js-evaluator-for-android:v3.0.0'
+    api 'com.liaoinstan.springview:library:1.3.2'
+    // api 'me.dm7.barcodescanner:zbar:1.9.8' // 同时支持一维条形码和二维码
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 
     /*api("com.smart.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
         transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
@@ -50,16 +63,4 @@ dependencies {
           </p>
         *//*
     }*/
-
-    /******* 官方支持库 ****************************************************************************/
-    //api "com.android.support:multidex:$rootProject.ext.multidex"
-    //api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
-    /******* 必备工具库 ****************************************************************************/
-    //api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
-
-    /******* 应用权限库 ****************************************************************************/
-    /******* 网络请求库 ****************************************************************************/
-
-    /******* 其它常用库 ****************************************************************************/
-    api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
 }

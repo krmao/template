@@ -15,7 +15,5 @@ open class CXApplication : CXBaseApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-
-        CXInitializer.init()
     }
 }

@@ -46,4 +46,6 @@ object CXConfig {
 
     @JvmStatic
     var CLASS_ACTIVITY_MAIN: Class<out Activity>? = null
+    @JvmStatic
+    var CLASS_ACTIVITY_LOGIN: Class<out Activity>? = null
 }

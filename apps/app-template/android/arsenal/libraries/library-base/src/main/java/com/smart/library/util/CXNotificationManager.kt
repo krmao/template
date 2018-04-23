@@ -9,7 +9,6 @@ import android.os.Build
 import android.provider.Settings
 import android.support.v4.app.TaskStackBuilder
 import com.smart.library.base.CXBaseApplication
-import com.smart.library.base.CXConfig
 
 
 /* 必备操作一:配置
@@ -68,7 +67,6 @@ import com.smart.library.base.CXConfig
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
         val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        // val pendingIntent = CXNotificationManager.getPendingIntent(intent, flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 
         val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
             .setSmallIcon(smallIcon)

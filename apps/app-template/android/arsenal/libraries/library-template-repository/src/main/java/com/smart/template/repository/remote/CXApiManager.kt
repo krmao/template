@@ -29,6 +29,7 @@ import java.io.Serializable
 @Suppress("UNCHECKED_CAST", "unused")
 internal object CXApiManager {
 
+    @JvmStatic
     fun init() {
         if (CXBaseApplication.DEBUG) {
             CXURLManager.Environments.values().forEach { environment: CXURLManager.Environments ->
@@ -42,10 +43,10 @@ internal object CXApiManager {
 
             CXDebugFragment.showDebugNotification()
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
-//                if (changeEvent.isApplicationVisible)
+                if (changeEvent.isApplicationVisible)
                     CXDebugFragment.showDebugNotification()
-//                else
-//                    CXDebugFragment.cancelDebugNotification()
+                else
+                    CXDebugFragment.cancelDebugNotification()
             }
         }
     }

@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.JsonIOException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
+import com.smart.library.util.CXLogUtil
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -13,7 +14,7 @@ import java.net.UnknownHostException
 import java.text.ParseException
 
 object CXRetrofitException {
-    private val TAG: String = CXRetrofitException::class.java.name
+    private const val TAG = "[OKHTTP]"
 
     private val UNAUTHORIZED = 401
     private val FORBIDDEN = 403
@@ -25,6 +26,8 @@ object CXRetrofitException {
     private val GATEWAY_TIMEOUT = 504
 
     fun handleException(throwable: Throwable): CXRetrofitApiException {
+        CXLogUtil.e(TAG, "网络请求遇到错误", throwable)
+
         val apiException: CXRetrofitApiException
         if (throwable is HttpException) {
             apiException = CXRetrofitApiException(throwable, CXRetrofitError.HTTP_ERROR)

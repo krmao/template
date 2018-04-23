@@ -8,6 +8,7 @@ import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.CXRouteManager
 import com.smart.library.util.CXToastUtil
+import com.smart.library.widget.debug.CXDebugFragment
 
 
 /**
@@ -130,6 +131,8 @@ open class CXBaseActivity : AppCompatActivity() {
         CXToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
+        if (CXBaseApplication.DEBUG) CXDebugFragment.cancelDebugNotification()
+
         finish()
         System.exit(0)
     }

@@ -47,7 +47,7 @@ dependencies {
     api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
 
     /******* 应用权限库 ****************************************************************************/
-    api 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+    api "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.ext.rxpermissions2Version"
 
     /******* 数据库管理 ****************************************************************************/
     //api "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
@@ -65,7 +65,7 @@ dependencies {
     api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
     /******* 其它常用库 ****************************************************************************/
     api "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
-    api 'com.gyf.barlibrary:barlibrary:2.3.0'
+    api 'com.gyf.barlibrary:barlibrary:2.3.0' // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
 }
 

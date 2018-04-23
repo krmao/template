@@ -42,10 +42,10 @@ internal object CXApiManager {
 
             CXDebugFragment.showDebugNotification()
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
-                if (changeEvent.isApplicationVisible)
+//                if (changeEvent.isApplicationVisible)
                     CXDebugFragment.showDebugNotification()
-                else
-                    CXDebugFragment.cancelDebugNotification()
+//                else
+//                    CXDebugFragment.cancelDebugNotification()
             }
         }
     }

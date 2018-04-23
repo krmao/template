@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import android.support.v4.app.TaskStackBuilder
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.base.CXConfig
 
 
 /* 必备操作一:配置
@@ -200,9 +201,8 @@ object CXNotificationManager {
      *              {@link Intent#fillIn(Intent, int)}
      */
     @JvmStatic
-    @JvmOverloads
     @Deprecated("使用后回退栈有问题,且mainActivity 重启或者 finish")
-    fun getPendingIntent(intent: Intent, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
+    private fun getPendingIntent(intent: Intent, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
         val stackBuilder = TaskStackBuilder.create(CXBaseApplication.INSTANCE)
         stackBuilder.addNextIntentWithParentStack(intent)
         return stackBuilder.getPendingIntent(requestCode, flags)

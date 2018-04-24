@@ -51,8 +51,10 @@ open class CXBaseActivity : AppCompatActivity() {
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
             statusBar = ImmersionBar.with(this)
+                .transparentStatusBar()
+                .statusBarColorInt(Color.TRANSPARENT)
                 .navigationBarEnable(false)
-                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, 0.2f) // 原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
             statusBar?.init()
         }
 

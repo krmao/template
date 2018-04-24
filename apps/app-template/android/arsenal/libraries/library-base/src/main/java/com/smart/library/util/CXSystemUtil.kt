@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -19,6 +20,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.toBitmap
 import java.lang.reflect.Method
@@ -66,6 +68,20 @@ object CXSystemUtil {
         if (context is Activity) {
             val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
             context.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
+        }
+    }
+
+    /**
+     * 使得处于后台的 app 显示到前台
+     */
+    @JvmStatic
+    fun bringAppToFront(activity: Activity?) {
+        activity?.let {
+            val notificationIntent = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
+            notificationIntent.`package` = null // The golden row !!!
+            notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+            activity.startActivity(notificationIntent)
+            activity.overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
         }
     }
 

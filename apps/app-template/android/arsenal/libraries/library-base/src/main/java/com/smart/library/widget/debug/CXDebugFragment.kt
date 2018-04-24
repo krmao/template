@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
@@ -109,6 +110,8 @@ open class CXDebugFragment : CXBaseFragment() {
 
             val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
                 .setSmallIcon(smallIcon)
+                .setColor(Color.parseColor("#4E6A78"))
+                .setColorized(true)
                 .setLargeIcon(CXSystemUtil.appBitmap)
                 .setContentTitle(title)
                 .setContentText(text) // set content text to support devices running API level < 24

@@ -178,9 +178,11 @@ open class CXDebugFragment : CXBaseFragment() {
 
         @JvmStatic
         fun cancelDebugNotification() {
+            val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
             val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = CXNotificationManager.getChannelId(notificationId)
             CXNotificationManager.cancelNotify(notificationId, channelId)
+            CXNotificationManager.cancelNotify(summaryGroupId)
         }
     }
 

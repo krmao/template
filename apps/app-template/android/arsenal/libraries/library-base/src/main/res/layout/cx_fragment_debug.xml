@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -22,7 +23,9 @@
             <com.smart.library.widget.titlebar.CXTitleBar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cx_titlebar_height"
-                app:cxTitleText="配置环境" />
+                android:background="#000"
+                app:cxTitleText="配置环境"
+                app:cxTitleTxtColor="#fff" />
 
             <com.smart.library.widget.CXListView
                 android:id="@+id/listView"

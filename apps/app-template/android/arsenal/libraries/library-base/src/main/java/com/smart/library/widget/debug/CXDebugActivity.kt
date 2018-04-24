@@ -18,6 +18,8 @@ open class CXDebugActivity : CXBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
+        enableImmersionStatusBar = true
+        enableImmersionStatusBarWithDarkFont = true
         super.onCreate(savedInstanceState)
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, CXDebugFragment(), CXDebugFragment::class.java.name).commitAllowingStateLoss()

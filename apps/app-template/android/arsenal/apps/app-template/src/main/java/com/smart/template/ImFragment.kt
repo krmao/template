@@ -19,7 +19,7 @@ class ImFragment : CXBaseFragment() {
         val textView: TextView = TextView(activity)
         textView.text = "im"
         @Suppress("DEPRECATION")
-        textView.setTextColor(resources.getColor(R.color.cx_orange))
+        textView.setTextColor(resources.getColor(R.color.orange))
         textView.setBackgroundColor(Color.DKGRAY)
         textView.setOnClickListener {
             CXRouteManager.goToFragment(activity, "com.smart.template.module.im.IMFragment") {

@@ -64,7 +64,7 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="10dp"
-        app:backgroundTint="@color/cx_orange"
+        app:backgroundTint="@color/orange"
         app:borderWidth="0dp"
         app:elevation="8dp"
         app:pressedTranslationZ="16dp"

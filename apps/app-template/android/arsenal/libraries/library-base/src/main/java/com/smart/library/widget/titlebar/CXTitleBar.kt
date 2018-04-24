@@ -69,7 +69,7 @@ class CXTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             left0BgView.visibility = typedArray.getInt(R.styleable.CXTitleBar_cxLeft0Visible, View.VISIBLE)
             setTextAppearance(left0Btn, R.styleable.CXTitleBar_cxLeft0Appearance, typedArray)
             @Suppress("DEPRECATION")
-            val transparentColor = resources.getColor(R.color.cx_transparent)
+            val transparentColor = resources.getColor(R.color.transparent)
             setBackground(left0Btn, R.styleable.CXTitleBar_cxLeft0Background, transparentColor, -1, typedArray)
             setText(left0Btn, R.styleable.CXTitleBar_cxLeft0Text, null, typedArray)
             setTextColor(left0Btn, R.styleable.CXTitleBar_cxLeft0TextColor, DEFAULT_TEXT_COLOR, typedArray)

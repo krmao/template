@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cx_pink"
+                android:background="@color/pink"
                 android:gravity="center"
                 android:padding="15dp"
                 android:text="设置页面"

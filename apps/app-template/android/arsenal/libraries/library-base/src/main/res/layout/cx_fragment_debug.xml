@@ -31,9 +31,9 @@
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cx_pink"
-                android:cacheColorHint="@color/cx_transparent"
-                android:divider="@color/cx_transparent"
+                android:background="@color/pink"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/transparent"
                 android:dividerHeight="0dp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
@@ -49,7 +49,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@color/cx_blue_light"
+                android:background="@color/light_blue"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -101,7 +101,7 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="点击添加"
-                        android:textColor="@color/cx_black"
+                        android:textColor="@color/black"
                         android:textSize="14sp" />
                 </FrameLayout>
             </LinearLayout>
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="切换环境后请注意:\n当前页面之前的所有页面都是 **老的环境** 请求的数据, 会直接影响当前页面的测试结果, 如果依赖之前的数据正确性, **重启** app 即可"
-                android:textColor="@color/cx_gray"
+                android:textColor="@color/grey"
                 android:textSize="12sp"
                 android:textStyle="italic" />
 
@@ -153,7 +153,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="永久隐藏悬浮窗"
-            android:textColor="@color/cx_black"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -166,7 +166,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="程序详细信息"
-            android:textColor="@color/cx_black"
+            android:textColor="@color/black"
             android:textSize="14sp" />
     </android.support.v7.widget.LinearLayoutCompat>
 </LinearLayout>

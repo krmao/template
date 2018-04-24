@@ -30,8 +30,8 @@
                 <gradient
                     android:angle="270"
                     android:centerY="0.75"
-                    android:endColor="@color/cx_accent"
-                    android:startColor="@color/cx_accent" />
+                    android:endColor="@color/accent"
+                    android:startColor="@color/accent" />
             </shape>
         </clip>
     </item>

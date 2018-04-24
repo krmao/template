@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cx_black"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <com.smart.library.widget.titlebar.CXTitleBar
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:theme="@style/CXAppTheme.NoActionBar"
-                app:tabIndicatorColor="@color/cx_transparent"
+                app:tabIndicatorColor="@color/transparent"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="#FF33B5E5"

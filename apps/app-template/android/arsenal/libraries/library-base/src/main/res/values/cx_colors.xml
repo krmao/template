@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+
+    <color name="cx_primary">@color/primary</color>
+    <color name="cx_primary_dark">@color/primary_dark</color>
+    <color name="cx_accent">@color/accent</color>
+
     <color name="cx_pressed">#2B000000</color>
-    <color name="cx_background">#EFEFEF</color>
-    <color name="cx_title_bar">#000000</color>
+    <color name="cx_background">@color/grey_200</color>
+    <color name="cx_title_bar">@color/primary</color>
 
-    <color name="cx_transparent">#00000000</color>
-    <color name="cx_orange">#FFA500</color>
-    <color name="cx_green">#00FF00</color>
-    <color name="cx_yellow">#FFFF00</color>
-    <color name="cx_white">#FFFFFF</color>
-    <color name="cx_black">#000000</color>
-    <color name="cx_gold">#FFD700</color>
-    <color name="cx_cyan">#00FFFF</color>
-    <color name="cx_pink">#FFC0CB</color>
-    <color name="cx_red">#FF0000</color>
+    <color name="transparent">#00000000</color>
 
-    <color name="cx_gray">#808080</color>
-    <color name="cx_gray_light">#D3D3D3</color>
-    <color name="cx_gray_dark">#A9A9A9</color>
+    <color name="red">@color/red_500</color>
+    <color name="pink">@color/pink_500</color>
+    <color name="purple">@color/purple_500</color>
+    <color name="deep_purple">@color/deep_purple_500</color>
+    <color name="indigo">@color/indigo_500</color>
+    <color name="blue">@color/blue_500</color>
+    <color name="light_blue">@color/light_blue_500</color>
+    <color name="cyan">@color/cyan_500</color>
+    <color name="teal">@color/teal_500</color>
+    <color name="green">@color/green_500</color>
+    <color name="light_green">@color/light_green_500</color>
+    <color name="lime">@color/lime_500</color>
+    <color name="yellow">@color/yellow_500</color>
+    <color name="amber">@color/amber_500</color>
+    <color name="orange">@color/orange_500</color>
+    <color name="deep_orange">@color/deep_orange_500</color>
+    <color name="brown">@color/brown_500</color>
+    <color name="grey">@color/grey_500</color>
+    <color name="blue_grey">@color/blue_grey_500</color>
 
-    <color name="cx_blue">#0000FF</color>
-    <color name="cx_blue_light">#ADD8E6</color>
-    <color name="cx_blue_dark">#00008B</color>
-
-    <color name="cx_primary">#ff212121</color>
-    <color name="cx_primary_dark">#ff000000</color>
-    <color name="cx_accent">#ff80cbc4</color>
 </resources>

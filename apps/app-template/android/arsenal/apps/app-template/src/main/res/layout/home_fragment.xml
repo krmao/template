@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cx_accent"
+    android:background="@color/accent"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:text="直接从静态资源区获取json文件"
-        android:textColor="@color/cx_black"
+        android:textColor="@color/black"
         android:textSize="20sp"
         tools:ignore="HardcodedText" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:text="从GET接口获取json String内容"
-        android:textColor="@color/cx_black"
+        android:textColor="@color/black"
         android:textSize="20sp"
         tools:ignore="HardcodedText" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:text="react native"
-        android:textColor="@color/cx_black"
+        android:textColor="@color/black"
         android:textSize="20sp"
         tools:ignore="HardcodedText" />
 

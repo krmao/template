@@ -20,6 +20,7 @@ class HomeTabFragment : CXBaseFragment() {
         content_vp.adapter = CXFragmentPagerAdapter(context, childFragmentManager,
             listOf(
                 HomeFragment(),
+                ReactNativeFragment(),
                 HybirdFragment(),
                 MineFragment(),
                 SettingFragment()

@@ -39,7 +39,7 @@ class ReactViewController: UIViewController {
     }()
 
     private lazy var reactRootView: RCTRootView = {
-        let jsCodeLocation = URL(string: "http://10.47.56.224:8081/index.bundle?platform=ios")
+        let jsCodeLocation = URL(string: "http://10.47.57.114:8081/index.bundle?platform=ios")
 
         let _rootView: RCTRootView = RCTRootView(
                 bundleURL: jsCodeLocation,
@@ -79,8 +79,7 @@ class ReactViewController: UIViewController {
         }
     }
 
-*
-     * 重新设置 react 属性, 并重新渲染 react 界面
+//     * 重新设置 react 属性, 并重新渲染 react 界面
 
 
     func updateReactProperties(_ bundle: MutableMap<String, Any>?) {

@@ -34,7 +34,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
         mReactInstanceManager = ReactInstanceManager.builder()
             .setApplication(application)
-            .setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
+            //.setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
             .setBundleAssetName("index.android.bundle")
             .setJSMainModulePath("index")
             .addPackages(

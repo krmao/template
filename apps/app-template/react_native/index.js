@@ -97,7 +97,7 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'yellow'
+        backgroundColor: '#D3D3D3'
     },
     content: {
         fontSize: 20,

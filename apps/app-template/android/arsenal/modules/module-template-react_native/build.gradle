@@ -20,6 +20,5 @@ dependencies {
 
     compile project(':library-template-base')
 
-    //noinspection GradleDynamicVersion
-    compile "com.facebook.react:react-native:+" // From node_modules. cd react && npm install
+    compile "com.facebook.react:react-native:0.55.4" // From node_modules. cd react && npm install
 }

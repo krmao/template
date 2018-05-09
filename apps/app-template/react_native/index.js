@@ -1,5 +1,5 @@
 import React from "react";
-import {AppRegistry, DeviceEventEmitter, NativeModules, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {AppRegistry, DeviceEventEmitter, Dimensions, Image, NativeModules, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View} from "react-native";
 
 
 class HomeModule extends React.Component {
@@ -60,64 +60,146 @@ class HomeModule extends React.Component {
         console.debug("render -> " + this.props.native_params);
 
         return (
-            <View style={styles.container}>
-                <TouchableHighlight onPress={() => {
-                    this.reactBridge.callNative((this.state.dataToNative).toString())
-                        .then(
-                            (successResult) => {
-                                console.debug("successResult -> " + successResult);
-                                this.setState({
-                                    "dataToNative": Number(successResult) + 1,
-                                    "resultFromNative": successResult
-                                })
-                            },
-                            (errorCode, errorMsg, error) => {
-                                console.debug("errorCode -> " + errorCode);
-                                console.debug("errorMsg -> " + errorMsg);
-                                console.debug("error -> ");
-                                console.warn(error);
-                            }
-                        )
-                }}>
-                    <Text style={styles.button}>{"点击调用 native 方法 并传值:" + (this.state.dataToNative)}</Text>
-                </TouchableHighlight>
+            <View style={styles.root}>
+
+                <View style={styles.content}>
+
+                    <View style={styles.titleBar}>
+                        <Image
+                            style={{width: 38, height: 38}}
+                            source={require('./images/back.png')}
+                        />
+                        <Text style={styles.title}>轮毂清洁</Text>
+                        <Image
+                            style={{width: 38, height: 38}}
+                            source={require('./images/share.png')}
+                        />
+
+                    </View>
+
+                    <ScrollView>
 
 
-                <Text style={styles.content}>调用 native 后的返回结果: {this.state.resultFromNative}</Text>
-                <Text style={styles.content}>当前 REACT-NATIVE 启动参数: {this.props.native_params}</Text>
-                <Text style={styles.desc}>(只有双数才会重新渲染界面)</Text>
-                <Text style={styles.desc}>通过在 native 重新设置 react_root_view?.appProperties 修改 REACT-NATIVE 启动参数</Text>
-                <Text style={styles.desc}>通过 shouldComponentUpdate 判断是否需要重新渲染界面</Text>
+                        <Image
+                            style={styles.banner}
+                            resizeMode={"contain"}
+                            source={require('./images/banner.png')}
+                        />
+                        <View style={styles.description}>
+
+                            <Text style={styles.text}>轮毂清洁</Text>
+                            <Text style={styles.text}>轮毂去除铁粉, 去油去污</Text>
+                            <Text style={styles.text}>¥80.00</Text>
+                            <View style={{backgroundColor: "#eeeeee", height: 1, marginLeft: 15}}/>
+                            <Text style={styles.text}>可直接到店服务, 消费高峰时段需等候, 敬请谅解.</Text>
+                            <View style={{backgroundColor: "#eeeeee", height: 10, marginLeft: 0}}/>
+
+                            <View style={{flexDirection: "row", backgroundColor: "#ffffff"}}>
+                                <Text style={{flex: 1}}>客户体验(8)</Text>
+
+                                <Text>查看更多</Text>
+                            </View>
+
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+                            <Image style={styles.banner} resizeMode={"contain"} source={require('./images/banner.png')}/>
+
+                        </View>
+
+                    </ScrollView>
+                </View>
+
+
+                <View>
+                    <View style={{flexDirection: "row", backgroundColor: "#fff"}}>
+                        <TextInput style={{flex: 1}}>xxxx</TextInput>
+                        <Text>切换></Text>
+                    </View>
+                    <View style={{flexDirection: "row", backgroundColor: "#fff"}}>
+                        <View style={{flexDirection: "column", backgroundColor: "#fff"}}>
+                            <Image
+                                style={{width: 38, height: 38}}
+                                resizeMode={"contain"}
+                                source={require('./images/kefu.png')}
+                            />
+                            <Text>客服</Text>
+                        </View>
+                        <TouchableHighlight
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignContent: "center",
+                                margin: 5,
+                                alignItems: "center",
+                                backgroundColor: "red",
+                            }}
+                            onPress={() => {
+                            }}>
+                            <Text style={{textAlign: "center"}}>立即预约</Text>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+
             </View>
         );
     }
 
 }
 var styles = StyleSheet.create({
-    container: {
+
+    root: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#D3D3D3'
+        flexDirection: "column",
+        backgroundColor: '#efefef'
     },
+
     content: {
+        flex: 1,
+    },
+
+    titleBar: {
+        //沿着方向居中
+        justifyContent: "center",
+        //垂直方向居中
+        alignItems: "center",
+        flexDirection: "row",
+        marginTop: 22,
+        height: 48,
+        backgroundColor: "#ff00ff"
+    },
+
+    title: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'red',
         textAlign: 'center',
         margin: 10,
     },
-    desc: {
-        fontSize: 12,
-        textAlign: 'center'
+
+    banner: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width * 2.0 / 3.0,
     },
-    button: {
+
+    description: {
+        flexDirection: "column",
+        width: Dimensions.get('window').width
+    },
+
+    text: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center',
-        padding: 10,
-        backgroundColor: 'blue',
-    },
+        color: 'black',
+        textAlign: 'left',
+    }
+
 });
 
 AppRegistry.registerComponent('react-module-home', () => HomeModule);

@@ -28,10 +28,9 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var count: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableSwipeBack = false
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.react_activity)
-
         mReactInstanceManager = ReactInstanceManager.builder()
             .setApplication(application)
             //.setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
@@ -106,6 +105,15 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         super.onDestroy()
 
         mReactInstanceManager?.onHostDestroy(this)
+    }
+
+    override fun onBackPress(): Boolean {
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager!!.onBackPressed()
+            return true
+        } else {
+            return super.onBackPress()
+        }
     }
 
     override fun onBackPressed() {

@@ -1,8 +1,12 @@
 import React from "react";
-import {AppRegistry, DeviceEventEmitter, NativeModules, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {DeviceEventEmitter, NativeModules, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
+export default class BridgeScreen extends React.Component {
 
-class HomeModule extends React.Component {
+    static navigationOptions = ({navigation}) => ( {
+        title: "双向交互测试",
+        headerRight: <View/>
+    });
 
     constructor() {
         super();
@@ -61,7 +65,10 @@ class HomeModule extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TouchableHighlight onPress={() => {
+
+                <StatusBar translucent={false}/>
+
+                <TouchableOpacity onPress={() => {
                     this.reactBridge.callNative((this.state.dataToNative).toString())
                         .then(
                             (successResult) => {
@@ -80,7 +87,7 @@ class HomeModule extends React.Component {
                         )
                 }}>
                     <Text style={styles.button}>{"点击调用 native 方法 并传值:" + (this.state.dataToNative)}</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
 
 
                 <Text style={styles.content}>调用 native 后的返回结果: {this.state.resultFromNative}</Text>
@@ -119,5 +126,3 @@ var styles = StyleSheet.create({
         backgroundColor: 'blue',
     },
 });
-
-AppRegistry.registerComponent('react-module-home', () => HomeModule);

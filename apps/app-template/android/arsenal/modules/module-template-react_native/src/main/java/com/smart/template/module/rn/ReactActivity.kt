@@ -13,7 +13,9 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.facebook.react.shell.MainReactPackage
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.util.cache.CXCacheManager
 import kotlinx.android.synthetic.main.react_activity.*
+import java.io.File
 
 
 @Suppress("unused", "PrivatePropertyName")
@@ -21,6 +23,8 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     override fun invokeDefaultOnBackPressed() {
         super.onBackPressed()
     }
+
+    private var enableHotPatch = false
 
     private var mReactInstanceManager: ReactInstanceManager? = null
 
@@ -31,10 +35,14 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.react_activity)
+
+        val indexName = "index.android.bundle"
+        val localHotPatchIndexFile = File(CXCacheManager.getChildCacheDir("rn"), indexName)
+        val jsBundleFile = if (!enableHotPatch || !localHotPatchIndexFile.exists()) "assets://index.android.bundle" else localHotPatchIndexFile.absolutePath
+
         mReactInstanceManager = ReactInstanceManager.builder()
             .setApplication(application)
-            //.setJSBundleFile("assets://index.android.js") //"assets://index.android.js" or "/sdcard/smart/react/index.android.js" 热更新取决于此
-            .setBundleAssetName("index.android.bundle")
+            .setJSBundleFile(jsBundleFile) // "assets://index.android.bundle" or "/sdcard/smart/react/index.android.bundle" 热更新取决于此
             .setJSMainModulePath("index")
             .addPackages(
                 mutableListOf<ReactPackage>(

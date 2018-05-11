@@ -16,7 +16,7 @@ const RootStack = createStackNavigator(
         bridge: {screen: BridgeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)}
     },
     {
-        initialRouteName: "home",
+        initialRouteName: "bridge",
     }
 );
 

@@ -1,5 +1,5 @@
 ### 1: 在线调试
-* 在纯的 react-native 项目开启服务 **npm run start** 查看本地 IP 为 *10.10.10.111*
+* 在纯的 rn 项目开启服务 **npm run start** 查看本地 IP 为 *10.10.10.111*
 * 设置 **IP:PORT** *10.10.10.111:8081* (Dev Settings -> Debug server host & port for device)
 
 ### 2: 发布离线包

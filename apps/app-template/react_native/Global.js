@@ -10,7 +10,7 @@ const defaultHeaderTranslucentStyle = {
     backgroundColor: '#20aa80',
     height: 48 + STATUS_BAR_HEIGHT,
     paddingTop: STATUS_BAR_HEIGHT,
-    elevation: 2    //导航条底部阴影
+    elevation: 2
 };
 
 /**
@@ -19,7 +19,7 @@ const defaultHeaderTranslucentStyle = {
 const defaultHeaderStyle = {
     backgroundColor: '#fff',
     height: 48,
-    elevation: 2    //导航条底部阴影
+    elevation: 2
 };
 
 const defaultHeaderTitleStyle = {

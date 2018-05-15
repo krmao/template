@@ -6,3 +6,8 @@
 ```
 react-native bundle  --platform android  --dev false  --entry-file ./index.js  --bundle-output ./bundle/assets/index.android.bundle  --assets-dest ./bundle/res/
 ```
+
+### 3: adb 模拟按键 KEYCODE_MENU
+```
+adb shell input keyevent 82
+```

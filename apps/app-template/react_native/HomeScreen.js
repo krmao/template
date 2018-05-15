@@ -22,12 +22,16 @@ export default class HomeScreen extends React.Component {
 
                 <View style={styles.content}>
                     <ScrollView>
-
-                        <Image
-                            style={styles.banner}
-                            resizeMode={"contain"}
-                            source={require('./img/banner.png')}
-                        />
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.navigation.push('bridge')
+                            }}>
+                            <Image
+                                style={styles.banner}
+                                resizeMode={"contain"}
+                                source={require('./img/banner.png')}
+                            />
+                        </TouchableOpacity>
                         <View style={styles.description}>
 
                             <Text style={{fontSize: 18, lineHeight: 20, color: "#27343a"}}>轮毂清洁</Text>
@@ -146,7 +150,8 @@ export default class HomeScreen extends React.Component {
                                 borderWidth: 0
                             }}
                             onPress={() => {
-                                this.props.navigation.navigate('bridge')
+                                //this.props.navigation.navigate('bridge')
+                                this.props.navigation.navigate('order_commit')
                             }}>
                             <Text style={{textAlign: "center", fontSize: 16, color: "white"}}>立即预约</Text>
                         </TouchableOpacity>

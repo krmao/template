@@ -4,6 +4,7 @@ import {createStackNavigator} from "react-navigation";
 import global from "./Global";
 import HomeScreen from "./HomeScreen";
 import BridgeScreen from "./BridgeScreen";
+import OrderCommitScreen from "./OrderCommitScreen";
 
 console.log("OS:" + Platform.OS);
 console.log("STATUS_BAR_HEIGHT:" + global.STATUS_BAR_HEIGHT);
@@ -13,10 +14,11 @@ YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTIm
 const RootStack = createStackNavigator(
     {
         home: {screen: HomeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)},
-        bridge: {screen: BridgeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)}
+        bridge: {screen: BridgeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)},
+        order_commit: {screen: OrderCommitScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)}
     },
     {
-        initialRouteName: "bridge",
+        initialRouteName: "home",
     }
 );
 

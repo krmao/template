@@ -49,6 +49,8 @@
 	<integer>2</integer>
 	<key>versionName</key>
 	<string>1.51</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

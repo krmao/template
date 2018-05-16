@@ -40,19 +40,18 @@ class ReactViewController: UIViewController {
 
     private lazy var reactRootView: RCTRootView = {
         let jsCodeLocation = URL(string: "http://10.47.57.114:8081/index.bundle?platform=ios")
+//        let jsCodeLocation = URL(string: "http://10.47.60.35:8081/index.bundle?platform=ios")
 
         let _rootView: RCTRootView = RCTRootView(
                 bundleURL: jsCodeLocation,
                 moduleName: "react-module-home",
+//                moduleName: "chexiangjia",
                 initialProperties: ["native_params": 1] as [NSObject: AnyObject],
                 launchOptions: nil
         )
 
         return _rootView
     }()
-
-
-
 
     override func viewDidLoad() {
         super.viewDidLoad()

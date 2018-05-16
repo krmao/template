@@ -11,3 +11,5 @@ react-native bundle  --platform android  --dev false  --entry-file ./index.js  -
 ```
 adb shell input keyevent 82
 ```
+
+### 4: 首次加载白屏优化 [https://www.jianshu.com/p/78571e5435ec](https://www.jianshu.com/p/78571e5435ec)

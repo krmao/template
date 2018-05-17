@@ -15,12 +15,6 @@ class HomeTabActivity : CXBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
-
-        Looper.myQueue().addIdleHandler {
-            ReactManager.initialize(this@HomeTabActivity)
-
-            false
-        }
     }
 
     override fun onDestroy() {

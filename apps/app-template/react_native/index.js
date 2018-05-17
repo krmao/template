@@ -80,4 +80,4 @@ export default class App extends React.Component {
     };
 }
 
-AppRegistry.registerComponent("react-module-home", () => App);
+AppRegistry.registerComponent("chexiangjia", () => App);

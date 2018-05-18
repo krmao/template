@@ -69,12 +69,12 @@ export default class BridgeScreen extends React.Component {
                 <StatusBar translucent={false}/>
 
                 <TouchableOpacity onPress={() => {
-                    this.reactBridge.callNative((this.state.dataToNative).toString())
+                    this.reactBridge.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1).toString())
                         .then(
                             (successResult) => {
                                 console.debug("successResult -> " + successResult);
                                 this.setState({
-                                    "dataToNative": Number(successResult) + 1,
+                                    "dataToNative": Number(successResult),
                                     "resultFromNative": successResult
                                 })
                             },
@@ -86,7 +86,28 @@ export default class BridgeScreen extends React.Component {
                             }
                         )
                 }}>
-                    <Text style={styles.button}>{"点击调用 native 方法 并传值:" + (this.state.dataToNative)}</Text>
+                    <Text style={styles.button}>{"点击调用 native 方法并回调(每次肯定是正数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1)}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                    this.reactBridge.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100).toString())
+                        .then(
+                            (successResult) => {
+                                console.debug("successResult -> " + successResult);
+                                this.setState({
+                                    "dataToNative": Number(successResult),
+                                    "resultFromNative": successResult
+                                })
+                            },
+                            (errorCode, errorMsg, error) => {
+                                console.debug("errorCode -> " + errorCode);
+                                console.debug("errorMsg -> " + errorMsg);
+                                console.debug("error -> ");
+                                console.warn(error);
+                            }
+                        )
+                }}>
+                    <Text style={styles.button}>{"点击调用 native 方法 , 然后通过 native 调用 RN 方法(每次肯定是负数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100)}</Text>
                 </TouchableOpacity>
 
 

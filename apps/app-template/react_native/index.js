@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {Animated, AppRegistry, BackHandler, Easing, Platform, YellowBox} from "react-native";
 import {createStackNavigator} from "react-navigation";
-import global from "./Global";
-import HomeScreen from "./HomeScreen";
-import BridgeScreen from "./BridgeScreen";
-import OrderCommitScreen from "./OrderCommitScreen";
+import global from "./src/main/js/base/Global";
+import HomeScreen from "./src/main/js/pages/HomeScreen";
+import BridgeScreen from "./src/main/js/pages/BridgeScreen";
+import OrderCommitScreen from "./src/main/js/pages/OrderCommitScreen";
 
 console.log("OS:" + Platform.OS);
 console.log("STATUS_BAR_HEIGHT:" + global.STATUS_BAR_HEIGHT);
@@ -80,4 +80,4 @@ export default class App extends React.Component {
     };
 }
 
-AppRegistry.registerComponent("chexiangjia", () => App);
+AppRegistry.registerComponent("react-module-home", () => App);

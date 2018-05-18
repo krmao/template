@@ -19,7 +19,7 @@ export default class OrderCommitScreen extends React.Component {
                     <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffffff', height: 45, borderBottomWidth: 1, borderBottomColor: '#e7e7e7'}}>
                         <Text style={{flex: 1}}>服务时间</Text>
                         <Text style={{paddingHorizontal: 10}}>2018 -06-11 上午 10：00</Text>
-                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('./img/right_arrow.png')}/>
+                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('../../res/img/right_arrow.png')}/>
                     </View>
 
                     <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffffff', height: 45, borderBottomWidth: 1, borderBottomColor: '#e7e7e7'}}>
@@ -50,13 +50,13 @@ export default class OrderCommitScreen extends React.Component {
                     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10, paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffffff', height: 45, borderBottomWidth: 1, borderBottomColor: '#e7e7e7'}}>
                         <Text style={{flex: 1}}>优惠劵</Text>
                         <Text style={{color: '#cccccc', paddingHorizontal: 10}}>无可用券</Text>
-                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('./img/right_arrow.png')}/>
+                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('../../res/img/right_arrow.png')}/>
                     </View>
 
                     <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 10, paddingRight: 10, backgroundColor: '#ffffff', height: 45, borderBottomWidth: 1, borderBottomColor: '#e7e7e7'}}>
                         <Text style={{flex: 1}}>套餐卡</Text>
                         <Text style={{color: '#cccccc', paddingHorizontal: 10}}>无可用卡</Text>
-                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('./img/right_arrow.png')}/>
+                        <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('../../res/img/right_arrow.png')}/>
                     </View>
 
                 </ScrollView>

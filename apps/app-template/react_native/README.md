@@ -4,5 +4,5 @@
 
 ### 2: 发布离线包
 ```
-react-native bundle  --platform android  --dev false  --entry-file ./index.js  --bundle-output ./bundle/assets/index.android.bundle  --assets-dest ./bundle/res/
+react-native bundle  --platform android  --dev false  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
 ```

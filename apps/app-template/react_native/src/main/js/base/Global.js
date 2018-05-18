@@ -35,7 +35,7 @@ const defaultNavigationOptions = ({navigation}) => ( {
     headerStyle: global.defaultHeaderStyle,
     headerLeft: (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image style={{width: 38, height: 38}} source={require('./img/back.png')}/>
+            <Image style={{width: 38, height: 38}} source={require('../../res/img/back.png')}/>
         </TouchableOpacity>
     ),
     headerRight: <View/>

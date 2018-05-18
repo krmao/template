@@ -10,7 +10,7 @@ export default class HomeScreen extends React.Component {
                 onPress={() => {
                     ToastAndroid.show("分享", ToastAndroid.SHORT)
                 }}>
-                <Image style={{width: 38, height: 38}} source={require('./img/share.png')}/>
+                <Image style={{width: 38, height: 38}} source={require('../../res/img/share.png')}/>
             </TouchableOpacity>
         ),
     };
@@ -29,7 +29,7 @@ export default class HomeScreen extends React.Component {
                             <Image
                                 style={styles.banner}
                                 resizeMode={"contain"}
-                                source={require('./img/banner.png')}
+                                source={require('../../res/img/banner.png')}
                             />
                         </TouchableOpacity>
                         <View style={styles.description}>
@@ -60,21 +60,21 @@ export default class HomeScreen extends React.Component {
                                 }}>
                                 <Text style={{fontSize: 13, color: "#9a9a9a"}}>查看更多</Text>
 
-                                <Image style={{width: 16, height: 16}} resizeMode={"contain"} source={require('./img/right_arrow.png')}/>
+                                <Image style={{width: 16, height: 16}} resizeMode={"contain"} source={require('../../res/img/right_arrow.png')}/>
                             </TouchableOpacity>
                         </View>
 
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
-                        <Image style={styles.banner} resizeMode={"contain"} source={require('./img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
+                        <Image style={styles.banner} resizeMode={"contain"} source={require('../../res/img/banner.png')}/>
 
 
                     </ScrollView>
@@ -118,7 +118,7 @@ export default class HomeScreen extends React.Component {
                             }}>
                             <Text style={{fontSize: 13, color: "#2d2e30", marginRight: 3}}>切换</Text>
 
-                            <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('./img/right_arrow.png')}/>
+                            <Image style={{width: 16, height: 16, marginRight: 10}} resizeMode={"contain"} source={require('../../res/img/right_arrow.png')}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{backgroundColor: "#e8e8e8", height: 1}}/>
@@ -129,7 +129,7 @@ export default class HomeScreen extends React.Component {
                         }}>
 
                             <View style={{flexDirection: "column", backgroundColor: "#fff", alignItems: "center", justifyContent: "center", marginLeft: 23}}>
-                                <Image style={{width: 22, height: 22}} resizeMode={"contain"} source={require('./img/kefu.png')}/>
+                                <Image style={{width: 22, height: 22}} resizeMode={"contain"} source={require('../../res/img/kefu.png')}/>
                                 <Text style={{fontSize: 12, color: "#666666"}}>客服</Text>
                             </View>
 

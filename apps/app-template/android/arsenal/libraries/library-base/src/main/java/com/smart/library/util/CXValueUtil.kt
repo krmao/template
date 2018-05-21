@@ -112,7 +112,12 @@ object CXValueUtil {
             format = "0."
             (0 until decimalLength).forEach { format += "0" }
         }
-        return DecimalFormat(format).format(value)
+        try {
+            return DecimalFormat(format).format(value)
+        } catch (e: Exception) {
+            CXLogUtil.e(TAG, e)
+            return "$value"
+        }
     }
 
 }

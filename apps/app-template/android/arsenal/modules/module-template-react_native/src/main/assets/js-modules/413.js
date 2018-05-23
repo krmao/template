@@ -1,0 +1,1 @@
+__d(function(e,s,t,a,c){t.exports=s(c[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/src/main/res/img",width:44,height:44,scales:[1],hash:"149c616720f36ea049c52696edc69f3a",name:"kefu",type:"png"})},413,[143]);

@@ -19,6 +19,7 @@ react-native bundle  --platform android  --dev true  --entry-file ./index.js  --
 react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
 ```
 
+
 # Custom Metro To Split Modules For React Native
 
 🚇 Reference Metro From Native Path
@@ -40,4 +41,9 @@ npm install -g install-local
 cd ~/workspace/ReactNativeProject
 rm -rf node_modules/metro
 install-local --save ~/workspace/smart-metro/packages-release/metro
+```
+- **🚅 install and update local with one key**:
+
+```
+cd ~/workspace/smart-metro/ && npm run build-clean && npm run build && cd packages/metro && npm run package-release && cd ~/workspace/template/apps/app-template/react_native && install-local --save ~/workspace/smart-metro/packages-release/metro
 ```

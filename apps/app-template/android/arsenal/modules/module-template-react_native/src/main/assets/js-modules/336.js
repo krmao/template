@@ -1,0 +1,1 @@
+__d(function(s,e,a,t,c){a.exports=e(c[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/node_modules/react-navigation/src/views/assets",width:48,height:82,scales:[1],hash:"1c7339b1dcf76fbc66536a0728963705",name:"back-icon-mask",type:"png"})},336,[143]);

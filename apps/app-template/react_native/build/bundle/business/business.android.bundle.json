@@ -1,0 +1,37 @@
+{
+  "modules": {
+    "index.js": {
+      "id": "index_js"
+    },
+    "src/main/js/base/Global.js": {
+      "id": "src_main_js_base_Global_js"
+    },
+    "src/main/res/img/back.png": {
+      "id": "src_main_res_img_back_png"
+    },
+    "src/main/js/pages/HomeScreen.js": {
+      "id": "src_main_js_pages_HomeScreen_js"
+    },
+    "src/main/res/img/banner.png": {
+      "id": "src_main_res_img_banner_png"
+    },
+    "src/main/res/img/right_arrow.png": {
+      "id": "src_main_res_img_right_arrow_png"
+    },
+    "src/main/res/img/kefu.png": {
+      "id": "src_main_res_img_kefu_png"
+    },
+    "src/main/res/img/share.png": {
+      "id": "src_main_res_img_share_png"
+    },
+    "src/main/js/pages/BridgeScreen.js": {
+      "id": "src_main_js_pages_BridgeScreen_js"
+    },
+    "src/main/js/pages/OrderCommitScreen.js": {
+      "id": "src_main_js_pages_OrderCommitScreen_js"
+    },
+    "require-index_js": {
+      "id": "index_js"
+    }
+  }
+}

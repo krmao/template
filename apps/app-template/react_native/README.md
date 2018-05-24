@@ -19,6 +19,15 @@ react-native bundle  --platform android  --dev true  --entry-file ./index.js  --
 react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
 ```
 
+* base
+```
+react-native bundle  --platform android  --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/base.android.bundle
+```
+
+* business
+```
+react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/business.android.bundle  --exclude  ./build/bundle/base/base.android.bundle.json
+```
 
 # Custom Metro To Split Modules For React Native
 

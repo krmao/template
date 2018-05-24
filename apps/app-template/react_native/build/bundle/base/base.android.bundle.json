@@ -1,0 +1,1330 @@
+{
+  "modules": {
+    "__prelude__": {
+      "id": "__prelude__"
+    },
+    "node_modules/metro/src/lib/polyfills/require.js": {
+      "id": "node_modules_metro_src_lib_polyfills_require_js"
+    },
+    "Object.es6": {
+      "id": "node_modules_react-native_Libraries_polyfills_Object_es6.js"
+    },
+    "console": {
+      "id": "node_modules_react-native_Libraries_polyfills_console_js"
+    },
+    "error-guard": {
+      "id": "node_modules_react-native_Libraries_polyfills_error-guard_js"
+    },
+    "Number.es6": {
+      "id": "node_modules_react-native_Libraries_polyfills_Number_es6.js"
+    },
+    "String.prototype.es6": {
+      "id": "node_modules_react-native_Libraries_polyfills_String_prototype.es6.js"
+    },
+    "Array.prototype.es6": {
+      "id": "node_modules_react-native_Libraries_polyfills_Array_prototype.es6.js"
+    },
+    "Array.es6": {
+      "id": "node_modules_react-native_Libraries_polyfills_Array_es6.js"
+    },
+    "Object.es7": {
+      "id": "node_modules_react-native_Libraries_polyfills_Object_es7.js"
+    },
+    "babelHelpers": {
+      "id": "node_modules_react-native_Libraries_polyfills_babelHelpers_js"
+    },
+    "base.js": {
+      "id": "base_js"
+    },
+    "node_modules/react/index.js": {
+      "id": "node_modules_react_index_js"
+    },
+    "node_modules/react/cjs/react.production.min.js": {
+      "id": "node_modules_react_cjs_react_production.min.js"
+    },
+    "node_modules/object-assign/index.js": {
+      "id": "node_modules_object-assign_index_js"
+    },
+    "node_modules/fbjs/lib/emptyObject.js": {
+      "id": "node_modules_fbjs_lib_emptyObject_js"
+    },
+    "node_modules/fbjs/lib/emptyFunction.js": {
+      "id": "node_modules_fbjs_lib_emptyFunction_js"
+    },
+    "node_modules/react/cjs/react.development.js": {
+      "id": "node_modules_react_cjs_react_development.js"
+    },
+    "node_modules/fbjs/lib/invariant.js": {
+      "id": "node_modules_fbjs_lib_invariant_js"
+    },
+    "node_modules/fbjs/lib/warning.js": {
+      "id": "node_modules_fbjs_lib_warning_js"
+    },
+    "node_modules/prop-types/checkPropTypes.js": {
+      "id": "node_modules_prop-types_checkPropTypes_js"
+    },
+    "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+      "id": "node_modules_prop-types_lib_ReactPropTypesSecret_js"
+    },
+    "react-native-implementation": {
+      "id": "node_modules_react-native_Libraries_react-native_react-native-implementation_js"
+    },
+    "AccessibilityInfo": {
+      "id": "node_modules_react-native_Libraries_Components_AccessibilityInfo_AccessibilityInfo_android.js"
+    },
+    "NativeModules": {
+      "id": "node_modules_react-native_Libraries_BatchedBridge_NativeModules_js"
+    },
+    "BatchedBridge": {
+      "id": "node_modules_react-native_Libraries_BatchedBridge_BatchedBridge_js"
+    },
+    "MessageQueue": {
+      "id": "node_modules_react-native_Libraries_BatchedBridge_MessageQueue_js"
+    },
+    "ErrorUtils": {
+      "id": "node_modules_react-native_Libraries_vendor_core_ErrorUtils_js"
+    },
+    "Systrace": {
+      "id": "node_modules_react-native_Libraries_Performance_Systrace_js"
+    },
+    "deepFreezeAndThrowOnMutationInDev": {
+      "id": "node_modules_react-native_Libraries_Utilities_deepFreezeAndThrowOnMutationInDev_js"
+    },
+    "stringifySafe": {
+      "id": "node_modules_react-native_Libraries_Utilities_stringifySafe_js"
+    },
+    "JSTimers": {
+      "id": "node_modules_react-native_Libraries_Core_Timers_JSTimers_js"
+    },
+    "Platform": {
+      "id": "node_modules_react-native_Libraries_Utilities_Platform_android.js"
+    },
+    "node_modules/fbjs/lib/performanceNow.js": {
+      "id": "node_modules_fbjs_lib_performanceNow_js"
+    },
+    "node_modules/fbjs/lib/performance.js": {
+      "id": "node_modules_fbjs_lib_performance_js"
+    },
+    "node_modules/fbjs/lib/ExecutionEnvironment.js": {
+      "id": "node_modules_fbjs_lib_ExecutionEnvironment_js"
+    },
+    "parseErrorStack": {
+      "id": "node_modules_react-native_Libraries_Core_Devtools_parseErrorStack_js"
+    },
+    "node_modules/stacktrace-parser/index.js": {
+      "id": "node_modules_stacktrace-parser_index_js"
+    },
+    "node_modules/stacktrace-parser/lib/stacktrace-parser.js": {
+      "id": "node_modules_stacktrace-parser_lib_stacktrace-parser_js"
+    },
+    "defineLazyObjectProperty": {
+      "id": "node_modules_react-native_Libraries_Utilities_defineLazyObjectProperty_js"
+    },
+    "RCTDeviceEventEmitter": {
+      "id": "node_modules_react-native_Libraries_EventEmitter_RCTDeviceEventEmitter_js"
+    },
+    "EventEmitter": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventEmitter_js"
+    },
+    "EmitterSubscription": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EmitterSubscription_js"
+    },
+    "EventSubscription": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventSubscription_js"
+    },
+    "EventSubscriptionVendor": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventSubscriptionVendor_js"
+    },
+    "ActivityIndicator": {
+      "id": "node_modules_react-native_Libraries_Components_ActivityIndicator_ActivityIndicator_js"
+    },
+    "ColorPropType": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_ColorPropType_js"
+    },
+    "normalizeColor": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_normalizeColor_js"
+    },
+    "NativeMethodsMixin": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_NativeMethodsMixin_js"
+    },
+    "ReactNative": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_ReactNative_js"
+    },
+    "ReactNativeRenderer-dev": {
+      "id": "node_modules_react-native_Libraries_Renderer_ReactNativeRenderer-dev_js"
+    },
+    "InitializeCore": {
+      "id": "node_modules_react-native_Libraries_Core_InitializeCore_js"
+    },
+    "PolyfillFunctions": {
+      "id": "node_modules_react-native_Libraries_Utilities_PolyfillFunctions_js"
+    },
+    "_shouldPolyfillES6Collection": {
+      "id": "node_modules_react-native_Libraries_vendor_core__shouldPolyfillES6Collection_js"
+    },
+    "Map": {
+      "id": "node_modules_react-native_Libraries_vendor_core_Map_js"
+    },
+    "guid": {
+      "id": "node_modules_react-native_Libraries_vendor_core_guid_js"
+    },
+    "node_modules/fbjs/lib/isNode.js": {
+      "id": "node_modules_fbjs_lib_isNode_js"
+    },
+    "toIterator": {
+      "id": "node_modules_react-native_Libraries_vendor_core_toIterator_js"
+    },
+    "Set": {
+      "id": "node_modules_react-native_Libraries_vendor_core_Set_js"
+    },
+    "ExceptionsManager": {
+      "id": "node_modules_react-native_Libraries_Core_ExceptionsManager_js"
+    },
+    "symbolicateStackTrace": {
+      "id": "node_modules_react-native_Libraries_Core_Devtools_symbolicateStackTrace_js"
+    },
+    "getDevServer": {
+      "id": "node_modules_react-native_Libraries_Core_Devtools_getDevServer_js"
+    },
+    "fetch": {
+      "id": "node_modules_react-native_Libraries_Network_fetch_js"
+    },
+    "node_modules/react-native/node_modules/whatwg-fetch/fetch.js": {
+      "id": "node_modules_react-native_node_modules_whatwg-fetch_fetch_js"
+    },
+    "ReactNativeVersionCheck": {
+      "id": "node_modules_react-native_Libraries_Core_ReactNativeVersionCheck_js"
+    },
+    "ReactNativeVersion": {
+      "id": "node_modules_react-native_Libraries_Core_ReactNativeVersion_js"
+    },
+    "Promise": {
+      "id": "node_modules_react-native_Libraries_Promise_js"
+    },
+    "node_modules/fbjs/lib/Promise.native.js": {
+      "id": "node_modules_fbjs_lib_Promise_native.js"
+    },
+    "node_modules/promise/setimmediate/es6-extensions.js": {
+      "id": "node_modules_promise_setimmediate_es6-extensions_js"
+    },
+    "node_modules/promise/setimmediate/core.js": {
+      "id": "node_modules_promise_setimmediate_core_js"
+    },
+    "node_modules/promise/setimmediate/done.js": {
+      "id": "node_modules_promise_setimmediate_done_js"
+    },
+    "node_modules/promise/setimmediate/rejection-tracking.js": {
+      "id": "node_modules_promise_setimmediate_rejection-tracking_js"
+    },
+    "node_modules/pretty-format/index.js": {
+      "id": "node_modules_pretty-format_index_js"
+    },
+    "node_modules/pretty-format/printString.js": {
+      "id": "node_modules_pretty-format_printString_js"
+    },
+    "node_modules/regenerator-runtime/runtime.js": {
+      "id": "node_modules_regenerator-runtime_runtime_js"
+    },
+    "XMLHttpRequest": {
+      "id": "node_modules_react-native_Libraries_Network_XMLHttpRequest_js"
+    },
+    "node_modules/event-target-shim/lib/event-target.js": {
+      "id": "node_modules_event-target-shim_lib_event-target_js"
+    },
+    "node_modules/event-target-shim/lib/commons.js": {
+      "id": "node_modules_event-target-shim_lib_commons_js"
+    },
+    "node_modules/event-target-shim/lib/custom-event-target.js": {
+      "id": "node_modules_event-target-shim_lib_custom-event-target_js"
+    },
+    "node_modules/event-target-shim/lib/event-wrapper.js": {
+      "id": "node_modules_event-target-shim_lib_event-wrapper_js"
+    },
+    "RCTNetworking": {
+      "id": "node_modules_react-native_Libraries_Network_RCTNetworking_android.js"
+    },
+    "MissingNativeEventEmitterShim": {
+      "id": "node_modules_react-native_Libraries_EventEmitter_MissingNativeEventEmitterShim_js"
+    },
+    "NativeEventEmitter": {
+      "id": "node_modules_react-native_Libraries_EventEmitter_NativeEventEmitter_js"
+    },
+    "convertRequestBody": {
+      "id": "node_modules_react-native_Libraries_Network_convertRequestBody_js"
+    },
+    "binaryToBase64": {
+      "id": "node_modules_react-native_Libraries_Utilities_binaryToBase64_js"
+    },
+    "node_modules/base64-js/index.js": {
+      "id": "node_modules_base64-js_index_js"
+    },
+    "Blob": {
+      "id": "node_modules_react-native_Libraries_Blob_Blob_js"
+    },
+    "BlobManager": {
+      "id": "node_modules_react-native_Libraries_Blob_BlobManager_js"
+    },
+    "BlobRegistry": {
+      "id": "node_modules_react-native_Libraries_Blob_BlobRegistry_js"
+    },
+    "FormData": {
+      "id": "node_modules_react-native_Libraries_Network_FormData_js"
+    },
+    "WebSocket": {
+      "id": "node_modules_react-native_Libraries_WebSocket_WebSocket_js"
+    },
+    "WebSocketEvent": {
+      "id": "node_modules_react-native_Libraries_WebSocket_WebSocketEvent_js"
+    },
+    "File": {
+      "id": "node_modules_react-native_Libraries_Blob_File_js"
+    },
+    "FileReader": {
+      "id": "node_modules_react-native_Libraries_Blob_FileReader_js"
+    },
+    "URL": {
+      "id": "node_modules_react-native_Libraries_Blob_URL_js"
+    },
+    "Alert": {
+      "id": "node_modules_react-native_Libraries_Alert_Alert_js"
+    },
+    "AlertIOS": {
+      "id": "node_modules_react-native_Libraries_Alert_AlertIOS_js"
+    },
+    "Geolocation": {
+      "id": "node_modules_react-native_Libraries_Geolocation_Geolocation_js"
+    },
+    "logError": {
+      "id": "node_modules_react-native_Libraries_Utilities_logError_js"
+    },
+    "PermissionsAndroid": {
+      "id": "node_modules_react-native_Libraries_PermissionsAndroid_PermissionsAndroid_js"
+    },
+    "HeapCapture": {
+      "id": "node_modules_react-native_Libraries_Utilities_HeapCapture_js"
+    },
+    "SamplingProfiler": {
+      "id": "node_modules_react-native_Libraries_Performance_SamplingProfiler_js"
+    },
+    "RCTLog": {
+      "id": "node_modules_react-native_Libraries_Utilities_RCTLog_js"
+    },
+    "RCTNativeAppEventEmitter": {
+      "id": "node_modules_react-native_Libraries_EventEmitter_RCTNativeAppEventEmitter_js"
+    },
+    "PerformanceLogger": {
+      "id": "node_modules_react-native_Libraries_Utilities_PerformanceLogger_js"
+    },
+    "infoLog": {
+      "id": "node_modules_react-native_Libraries_Utilities_infoLog_js"
+    },
+    "JSDevSupportModule": {
+      "id": "node_modules_react-native_Libraries_Utilities_JSDevSupportModule_js"
+    },
+    "HMRClient": {
+      "id": "node_modules_react-native_Libraries_Utilities_HMRClient_js"
+    },
+    "node_modules/metro/src/lib/bundle-modules/HMRClient.js": {
+      "id": "node_modules_metro_src_lib_bundle-modules_HMRClient_js"
+    },
+    "node_modules/metro/src/lib/bundle-modules/MetroClient.js": {
+      "id": "node_modules_metro_src_lib_bundle-modules_MetroClient_js"
+    },
+    "node_modules/eventemitter3/index.js": {
+      "id": "node_modules_eventemitter3_index_js"
+    },
+    "HMRLoadingView": {
+      "id": "node_modules_react-native_Libraries_Utilities_HMRLoadingView_android.js"
+    },
+    "ToastAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_ToastAndroid_ToastAndroid_android.js"
+    },
+    "setupDevtools": {
+      "id": "node_modules_react-native_Libraries_Core_Devtools_setupDevtools_js"
+    },
+    "AppState": {
+      "id": "node_modules_react-native_Libraries_AppState_AppState_js"
+    },
+    "node_modules/react-devtools-core/build/backend.js": {
+      "id": "node_modules_react-devtools-core_build_backend_js"
+    },
+    "flattenStyle": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_flattenStyle_js"
+    },
+    "ReactNativePropRegistry": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_ReactNativePropRegistry_js"
+    },
+    "JSInspector": {
+      "id": "node_modules_react-native_Libraries_JSInspector_JSInspector_js"
+    },
+    "NetworkAgent": {
+      "id": "node_modules_react-native_Libraries_JSInspector_NetworkAgent_js"
+    },
+    "InspectorAgent": {
+      "id": "node_modules_react-native_Libraries_JSInspector_InspectorAgent_js"
+    },
+    "UIManager": {
+      "id": "node_modules_react-native_Libraries_ReactNative_UIManager_js"
+    },
+    "RCTEventEmitter": {
+      "id": "node_modules_react-native_Libraries_EventEmitter_RCTEventEmitter_js"
+    },
+    "TextInputState": {
+      "id": "node_modules_react-native_Libraries_Components_TextInput_TextInputState_js"
+    },
+    "deepDiffer": {
+      "id": "node_modules_react-native_Libraries_Utilities_differ_deepDiffer_js"
+    },
+    "node_modules/fbjs/lib/shallowEqual.js": {
+      "id": "node_modules_fbjs_lib_shallowEqual_js"
+    },
+    "ReactFeatureFlags": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_ReactFeatureFlags_js"
+    },
+    "ReactNativeRenderer-prod": {
+      "id": "node_modules_react-native_Libraries_Renderer_ReactNativeRenderer-prod_js"
+    },
+    "ProgressBarAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_ProgressBarAndroid_ProgressBarAndroid_android.js"
+    },
+    "node_modules/prop-types/index.js": {
+      "id": "node_modules_prop-types_index_js"
+    },
+    "node_modules/prop-types/factoryWithTypeCheckers.js": {
+      "id": "node_modules_prop-types_factoryWithTypeCheckers_js"
+    },
+    "node_modules/prop-types/factoryWithThrowingShims.js": {
+      "id": "node_modules_prop-types_factoryWithThrowingShims_js"
+    },
+    "React": {
+      "id": "node_modules_react-native_Libraries_react-native_React_js"
+    },
+    "ViewPropTypes": {
+      "id": "node_modules_react-native_Libraries_Components_View_ViewPropTypes_js"
+    },
+    "EdgeInsetsPropType": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_EdgeInsetsPropType_js"
+    },
+    "createStrictShapeTypeChecker": {
+      "id": "node_modules_react-native_Libraries_Utilities_createStrictShapeTypeChecker_js"
+    },
+    "merge": {
+      "id": "node_modules_react-native_Libraries_vendor_core_merge_js"
+    },
+    "mergeInto": {
+      "id": "node_modules_react-native_Libraries_vendor_core_mergeInto_js"
+    },
+    "mergeHelpers": {
+      "id": "node_modules_react-native_Libraries_vendor_core_mergeHelpers_js"
+    },
+    "PlatformViewPropTypes": {
+      "id": "node_modules_react-native_Libraries_Components_View_PlatformViewPropTypes_js"
+    },
+    "TVViewPropTypes": {
+      "id": "node_modules_react-native_Libraries_Components_AppleTV_TVViewPropTypes_js"
+    },
+    "StyleSheetPropType": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_StyleSheetPropType_js"
+    },
+    "ViewStylePropTypes": {
+      "id": "node_modules_react-native_Libraries_Components_View_ViewStylePropTypes_js"
+    },
+    "LayoutPropTypes": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_LayoutPropTypes_js"
+    },
+    "ShadowPropTypesIOS": {
+      "id": "node_modules_react-native_Libraries_Components_View_ShadowPropTypesIOS_js"
+    },
+    "TransformPropTypes": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_TransformPropTypes_js"
+    },
+    "deprecatedPropType": {
+      "id": "node_modules_react-native_Libraries_Utilities_deprecatedPropType_js"
+    },
+    "ViewAccessibility": {
+      "id": "node_modules_react-native_Libraries_Components_View_ViewAccessibility_js"
+    },
+    "requireNativeComponent": {
+      "id": "node_modules_react-native_Libraries_ReactNative_requireNativeComponent_js"
+    },
+    "ReactNativeBridgeEventPlugin": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_ReactNativeBridgeEventPlugin_js"
+    },
+    "ReactNativeStyleAttributes": {
+      "id": "node_modules_react-native_Libraries_Components_View_ReactNativeStyleAttributes_js"
+    },
+    "ImageStylePropTypes": {
+      "id": "node_modules_react-native_Libraries_Image_ImageStylePropTypes_js"
+    },
+    "ImageResizeMode": {
+      "id": "node_modules_react-native_Libraries_Image_ImageResizeMode_js"
+    },
+    "node_modules/fbjs/lib/keyMirror.js": {
+      "id": "node_modules_fbjs_lib_keyMirror_js"
+    },
+    "TextStylePropTypes": {
+      "id": "node_modules_react-native_Libraries_Text_TextStylePropTypes_js"
+    },
+    "processColor": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_processColor_js"
+    },
+    "processTransform": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_processTransform_js"
+    },
+    "MatrixMath": {
+      "id": "node_modules_react-native_Libraries_Utilities_MatrixMath_js"
+    },
+    "sizesDiffer": {
+      "id": "node_modules_react-native_Libraries_Utilities_differ_sizesDiffer_js"
+    },
+    "createReactNativeComponentClass": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_createReactNativeComponentClass_js"
+    },
+    "insetsDiffer": {
+      "id": "node_modules_react-native_Libraries_Utilities_differ_insetsDiffer_js"
+    },
+    "matricesDiffer": {
+      "id": "node_modules_react-native_Libraries_Utilities_differ_matricesDiffer_js"
+    },
+    "pointsDiffer": {
+      "id": "node_modules_react-native_Libraries_Utilities_differ_pointsDiffer_js"
+    },
+    "resolveAssetSource": {
+      "id": "node_modules_react-native_Libraries_Image_resolveAssetSource_js"
+    },
+    "AssetRegistry": {
+      "id": "node_modules_react-native_Libraries_Image_AssetRegistry_js"
+    },
+    "AssetSourceResolver": {
+      "id": "node_modules_react-native_Libraries_Image_AssetSourceResolver_js"
+    },
+    "PixelRatio": {
+      "id": "node_modules_react-native_Libraries_Utilities_PixelRatio_js"
+    },
+    "Dimensions": {
+      "id": "node_modules_react-native_Libraries_Utilities_Dimensions_js"
+    },
+    "DeviceInfo": {
+      "id": "node_modules_react-native_Libraries_Utilities_DeviceInfo_js"
+    },
+    "node_modules/react-native/local-cli/bundle/assetPathUtils.js": {
+      "id": "node_modules_react-native_local-cli_bundle_assetPathUtils_js"
+    },
+    "verifyPropTypes": {
+      "id": "node_modules_react-native_Libraries_ReactNative_verifyPropTypes_js"
+    },
+    "StyleSheet": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_StyleSheet_js"
+    },
+    "StyleSheetValidation": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_StyleSheetValidation_js"
+    },
+    "View": {
+      "id": "node_modules_react-native_Libraries_Components_View_View_js"
+    },
+    "ReactNativeViewAttributes": {
+      "id": "node_modules_react-native_Libraries_Components_View_ReactNativeViewAttributes_js"
+    },
+    "ViewContext": {
+      "id": "node_modules_react-native_Libraries_Components_View_ViewContext_js"
+    },
+    "node_modules/create-react-class/index.js": {
+      "id": "node_modules_create-react-class_index_js"
+    },
+    "node_modules/create-react-class/factory.js": {
+      "id": "node_modules_create-react-class_factory_js"
+    },
+    "ReactNativeART": {
+      "id": "node_modules_react-native_Libraries_ART_ReactNativeART_js"
+    },
+    "node_modules/art/core/color.js": {
+      "id": "node_modules_art_core_color_js"
+    },
+    "ARTSerializablePath": {
+      "id": "node_modules_react-native_Libraries_ART_ARTSerializablePath_js"
+    },
+    "node_modules/art/core/class.js": {
+      "id": "node_modules_art_core_class_js"
+    },
+    "node_modules/art/core/path.js": {
+      "id": "node_modules_art_core_path_js"
+    },
+    "node_modules/art/core/transform.js": {
+      "id": "node_modules_art_core_transform_js"
+    },
+    "Button": {
+      "id": "node_modules_react-native_Libraries_Components_Button_js"
+    },
+    "Text": {
+      "id": "node_modules_react-native_Libraries_Text_Text_js"
+    },
+    "TextPropTypes": {
+      "id": "node_modules_react-native_Libraries_Text_TextPropTypes_js"
+    },
+    "Touchable": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_Touchable_js"
+    },
+    "BoundingDimensions": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_BoundingDimensions_js"
+    },
+    "PooledClass": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_PooledClass_js"
+    },
+    "Position": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_Position_js"
+    },
+    "TVEventHandler": {
+      "id": "node_modules_react-native_Libraries_Components_AppleTV_TVEventHandler_js"
+    },
+    "node_modules/fbjs/lib/TouchEventUtils.js": {
+      "id": "node_modules_fbjs_lib_TouchEventUtils_js"
+    },
+    "mergeFast": {
+      "id": "node_modules_react-native_Libraries_Utilities_mergeFast_js"
+    },
+    "TouchableNativeFeedback": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_TouchableNativeFeedback_android.js"
+    },
+    "TouchableWithoutFeedback": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_TouchableWithoutFeedback_js"
+    },
+    "node_modules/react-timer-mixin/TimerMixin.js": {
+      "id": "node_modules_react-timer-mixin_TimerMixin_js"
+    },
+    "ensurePositiveDelayProps": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_ensurePositiveDelayProps_js"
+    },
+    "TouchableOpacity": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_TouchableOpacity_js"
+    },
+    "Animated": {
+      "id": "node_modules_react-native_Libraries_Animated_src_Animated_js"
+    },
+    "AnimatedImplementation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_AnimatedImplementation_js"
+    },
+    "AnimatedEvent": {
+      "id": "node_modules_react-native_Libraries_Animated_src_AnimatedEvent_js"
+    },
+    "AnimatedValue": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedValue_js"
+    },
+    "AnimatedInterpolation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedInterpolation_js"
+    },
+    "AnimatedNode": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedNode_js"
+    },
+    "NativeAnimatedHelper": {
+      "id": "node_modules_react-native_Libraries_Animated_src_NativeAnimatedHelper_js"
+    },
+    "AnimatedWithChildren": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedWithChildren_js"
+    },
+    "InteractionManager": {
+      "id": "node_modules_react-native_Libraries_Interaction_InteractionManager_js"
+    },
+    "TaskQueue": {
+      "id": "node_modules_react-native_Libraries_Interaction_TaskQueue_js"
+    },
+    "AnimatedAddition": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedAddition_js"
+    },
+    "AnimatedDiffClamp": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedDiffClamp_js"
+    },
+    "AnimatedDivision": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedDivision_js"
+    },
+    "AnimatedModulo": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedModulo_js"
+    },
+    "AnimatedMultiplication": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedMultiplication_js"
+    },
+    "AnimatedProps": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedProps_js"
+    },
+    "AnimatedStyle": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedStyle_js"
+    },
+    "AnimatedTransform": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedTransform_js"
+    },
+    "AnimatedTracking": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedTracking_js"
+    },
+    "AnimatedValueXY": {
+      "id": "node_modules_react-native_Libraries_Animated_src_nodes_AnimatedValueXY_js"
+    },
+    "DecayAnimation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_animations_DecayAnimation_js"
+    },
+    "Animation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_animations_Animation_js"
+    },
+    "SpringAnimation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_animations_SpringAnimation_js"
+    },
+    "SpringConfig": {
+      "id": "node_modules_react-native_Libraries_Animated_src_SpringConfig_js"
+    },
+    "TimingAnimation": {
+      "id": "node_modules_react-native_Libraries_Animated_src_animations_TimingAnimation_js"
+    },
+    "Easing": {
+      "id": "node_modules_react-native_Libraries_Animated_src_Easing_js"
+    },
+    "bezier": {
+      "id": "node_modules_react-native_Libraries_Animated_src_bezier_js"
+    },
+    "createAnimatedComponent": {
+      "id": "node_modules_react-native_Libraries_Animated_src_createAnimatedComponent_js"
+    },
+    "Image": {
+      "id": "node_modules_react-native_Libraries_Image_Image_android.js"
+    },
+    "ScrollView": {
+      "id": "node_modules_react-native_Libraries_Components_ScrollView_ScrollView_js"
+    },
+    "PointPropType": {
+      "id": "node_modules_react-native_Libraries_StyleSheet_PointPropType_js"
+    },
+    "ScrollResponder": {
+      "id": "node_modules_react-native_Libraries_Components_ScrollResponder_js"
+    },
+    "FrameRateLogger": {
+      "id": "node_modules_react-native_Libraries_Interaction_FrameRateLogger_js"
+    },
+    "Keyboard": {
+      "id": "node_modules_react-native_Libraries_Components_Keyboard_Keyboard_js"
+    },
+    "LayoutAnimation": {
+      "id": "node_modules_react-native_Libraries_LayoutAnimation_LayoutAnimation_js"
+    },
+    "dismissKeyboard": {
+      "id": "node_modules_react-native_Libraries_Utilities_dismissKeyboard_js"
+    },
+    "Subscribable": {
+      "id": "node_modules_react-native_Libraries_Components_Subscribable_js"
+    },
+    "node_modules/fbjs/lib/nullthrows.js": {
+      "id": "node_modules_fbjs_lib_nullthrows_js"
+    },
+    "ReactNativeComponentTree": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_ReactNativeComponentTree_js"
+    },
+    "ScrollViewStickyHeader": {
+      "id": "node_modules_react-native_Libraries_Components_ScrollView_ScrollViewStickyHeader_js"
+    },
+    "processDecelerationRate": {
+      "id": "node_modules_react-native_Libraries_Components_ScrollView_processDecelerationRate_js"
+    },
+    "CheckBox": {
+      "id": "node_modules_react-native_Libraries_Components_CheckBox_CheckBox_android.js"
+    },
+    "DatePickerIOS": {
+      "id": "node_modules_react-native_Libraries_Components_DatePicker_DatePickerIOS_android.js"
+    },
+    "DrawerLayoutAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_DrawerAndroid_DrawerLayoutAndroid_android.js"
+    },
+    "StatusBar": {
+      "id": "node_modules_react-native_Libraries_Components_StatusBar_StatusBar_js"
+    },
+    "FlatList": {
+      "id": "node_modules_react-native_Libraries_Lists_FlatList_js"
+    },
+    "MetroListView": {
+      "id": "node_modules_react-native_Libraries_Lists_MetroListView_js"
+    },
+    "ListView": {
+      "id": "node_modules_react-native_Libraries_Lists_ListView_ListView_js"
+    },
+    "ListViewDataSource": {
+      "id": "node_modules_react-native_Libraries_Lists_ListView_ListViewDataSource_js"
+    },
+    "isEmpty": {
+      "id": "node_modules_react-native_Libraries_vendor_core_isEmpty_js"
+    },
+    "StaticRenderer": {
+      "id": "node_modules_react-native_Libraries_Components_StaticRenderer_js"
+    },
+    "node_modules/react-clone-referenced-element/cloneReferencedElement.js": {
+      "id": "node_modules_react-clone-referenced-element_cloneReferencedElement_js"
+    },
+    "RefreshControl": {
+      "id": "node_modules_react-native_Libraries_Components_RefreshControl_RefreshControl_js"
+    },
+    "VirtualizedList": {
+      "id": "node_modules_react-native_Libraries_Lists_VirtualizedList_js"
+    },
+    "Batchinator": {
+      "id": "node_modules_react-native_Libraries_Interaction_Batchinator_js"
+    },
+    "FillRateHelper": {
+      "id": "node_modules_react-native_Libraries_Lists_FillRateHelper_js"
+    },
+    "ViewabilityHelper": {
+      "id": "node_modules_react-native_Libraries_Lists_ViewabilityHelper_js"
+    },
+    "VirtualizeUtils": {
+      "id": "node_modules_react-native_Libraries_Lists_VirtualizeUtils_js"
+    },
+    "ImageBackground": {
+      "id": "node_modules_react-native_Libraries_Image_ImageBackground_js"
+    },
+    "ensureComponentIsNative": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_ensureComponentIsNative_js"
+    },
+    "ImageEditor": {
+      "id": "node_modules_react-native_Libraries_Image_ImageEditor_js"
+    },
+    "ImageStore": {
+      "id": "node_modules_react-native_Libraries_Image_ImageStore_js"
+    },
+    "KeyboardAvoidingView": {
+      "id": "node_modules_react-native_Libraries_Components_Keyboard_KeyboardAvoidingView_js"
+    },
+    "MaskedViewIOS": {
+      "id": "node_modules_react-native_Libraries_Components_MaskedView_MaskedViewIOS_android.js"
+    },
+    "UnimplementedView": {
+      "id": "node_modules_react-native_Libraries_Components_UnimplementedViews_UnimplementedView_js"
+    },
+    "Modal": {
+      "id": "node_modules_react-native_Libraries_Modal_Modal_js"
+    },
+    "AppContainer": {
+      "id": "node_modules_react-native_Libraries_ReactNative_AppContainer_js"
+    },
+    "Inspector": {
+      "id": "node_modules_react-native_Libraries_Inspector_Inspector_js"
+    },
+    "InspectorOverlay": {
+      "id": "node_modules_react-native_Libraries_Inspector_InspectorOverlay_js"
+    },
+    "ElementBox": {
+      "id": "node_modules_react-native_Libraries_Inspector_ElementBox_js"
+    },
+    "BorderBox": {
+      "id": "node_modules_react-native_Libraries_Inspector_BorderBox_js"
+    },
+    "resolveBoxStyle": {
+      "id": "node_modules_react-native_Libraries_Inspector_resolveBoxStyle_js"
+    },
+    "InspectorPanel": {
+      "id": "node_modules_react-native_Libraries_Inspector_InspectorPanel_js"
+    },
+    "ElementProperties": {
+      "id": "node_modules_react-native_Libraries_Inspector_ElementProperties_js"
+    },
+    "BoxInspector": {
+      "id": "node_modules_react-native_Libraries_Inspector_BoxInspector_js"
+    },
+    "StyleInspector": {
+      "id": "node_modules_react-native_Libraries_Inspector_StyleInspector_js"
+    },
+    "TouchableHighlight": {
+      "id": "node_modules_react-native_Libraries_Components_Touchable_TouchableHighlight_js"
+    },
+    "mapWithSeparator": {
+      "id": "node_modules_react-native_Libraries_Utilities_mapWithSeparator_js"
+    },
+    "openFileInEditor": {
+      "id": "node_modules_react-native_Libraries_Core_Devtools_openFileInEditor_js"
+    },
+    "NetworkOverlay": {
+      "id": "node_modules_react-native_Libraries_Inspector_NetworkOverlay_js"
+    },
+    "WebSocketInterceptor": {
+      "id": "node_modules_react-native_Libraries_WebSocket_WebSocketInterceptor_js"
+    },
+    "XHRInterceptor": {
+      "id": "node_modules_react-native_Libraries_Network_XHRInterceptor_js"
+    },
+    "PerformanceOverlay": {
+      "id": "node_modules_react-native_Libraries_Inspector_PerformanceOverlay_js"
+    },
+    "YellowBox": {
+      "id": "node_modules_react-native_Libraries_ReactNative_YellowBox_js"
+    },
+    "SafeAreaView": {
+      "id": "node_modules_react-native_Libraries_Components_SafeAreaView_SafeAreaView_android.js"
+    },
+    "I18nManager": {
+      "id": "node_modules_react-native_Libraries_ReactNative_I18nManager_js"
+    },
+    "NavigatorIOS": {
+      "id": "node_modules_react-native_Libraries_Components_Navigation_NavigatorIOS_android.js"
+    },
+    "Picker": {
+      "id": "node_modules_react-native_Libraries_Components_Picker_Picker_js"
+    },
+    "PickerIOS": {
+      "id": "node_modules_react-native_Libraries_Components_Picker_PickerIOS_android.js"
+    },
+    "PickerAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_Picker_PickerAndroid_android.js"
+    },
+    "ProgressViewIOS": {
+      "id": "node_modules_react-native_Libraries_Components_ProgressViewIOS_ProgressViewIOS_android.js"
+    },
+    "SectionList": {
+      "id": "node_modules_react-native_Libraries_Lists_SectionList_js"
+    },
+    "VirtualizedSectionList": {
+      "id": "node_modules_react-native_Libraries_Lists_VirtualizedSectionList_js"
+    },
+    "SegmentedControlIOS": {
+      "id": "node_modules_react-native_Libraries_Components_SegmentedControlIOS_SegmentedControlIOS_android.js"
+    },
+    "Slider": {
+      "id": "node_modules_react-native_Libraries_Components_Slider_Slider_js"
+    },
+    "SnapshotViewIOS": {
+      "id": "node_modules_react-native_Libraries_RCTTest_SnapshotViewIOS_android.js"
+    },
+    "Switch": {
+      "id": "node_modules_react-native_Libraries_Components_Switch_Switch_js"
+    },
+    "SwipeableFlatList": {
+      "id": "node_modules_react-native_Libraries_Experimental_SwipeableRow_SwipeableFlatList_js"
+    },
+    "SwipeableRow": {
+      "id": "node_modules_react-native_Libraries_Experimental_SwipeableRow_SwipeableRow_js"
+    },
+    "PanResponder": {
+      "id": "node_modules_react-native_Libraries_Interaction_PanResponder_js"
+    },
+    "TouchHistoryMath": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_TouchHistoryMath_js"
+    },
+    "SwipeableListView": {
+      "id": "node_modules_react-native_Libraries_Experimental_SwipeableRow_SwipeableListView_js"
+    },
+    "SwipeableListViewDataSource": {
+      "id": "node_modules_react-native_Libraries_Experimental_SwipeableRow_SwipeableListViewDataSource_js"
+    },
+    "TabBarIOS": {
+      "id": "node_modules_react-native_Libraries_Components_TabBarIOS_TabBarIOS_android.js"
+    },
+    "TabBarItemIOS": {
+      "id": "node_modules_react-native_Libraries_Components_TabBarIOS_TabBarItemIOS_android.js"
+    },
+    "TextInput": {
+      "id": "node_modules_react-native_Libraries_Components_TextInput_TextInput_js"
+    },
+    "DocumentSelectionState": {
+      "id": "node_modules_react-native_Libraries_vendor_document_selection_DocumentSelectionState_js"
+    },
+    "mixInEventEmitter": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_mixInEventEmitter_js"
+    },
+    "EventEmitterWithHolding": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventEmitterWithHolding_js"
+    },
+    "EventHolder": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventHolder_js"
+    },
+    "node_modules/fbjs/lib/keyOf.js": {
+      "id": "node_modules_fbjs_lib_keyOf_js"
+    },
+    "EventValidator": {
+      "id": "node_modules_react-native_Libraries_vendor_emitter_EventValidator_js"
+    },
+    "ToolbarAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_ToolbarAndroid_ToolbarAndroid_android.js"
+    },
+    "ViewPagerAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_ViewPager_ViewPagerAndroid_android.js"
+    },
+    "WebView": {
+      "id": "node_modules_react-native_Libraries_Components_WebView_WebView_android.js"
+    },
+    "ActionSheetIOS": {
+      "id": "node_modules_react-native_Libraries_ActionSheetIOS_ActionSheetIOS_js"
+    },
+    "AppRegistry": {
+      "id": "node_modules_react-native_Libraries_ReactNative_AppRegistry_js"
+    },
+    "BugReporting": {
+      "id": "node_modules_react-native_Libraries_BugReporting_BugReporting_js"
+    },
+    "dumpReactTree": {
+      "id": "node_modules_react-native_Libraries_BugReporting_dumpReactTree_js"
+    },
+    "SceneTracker": {
+      "id": "node_modules_react-native_Libraries_Utilities_SceneTracker_js"
+    },
+    "renderApplication": {
+      "id": "node_modules_react-native_Libraries_ReactNative_renderApplication_js"
+    },
+    "BackHandler": {
+      "id": "node_modules_react-native_Libraries_Utilities_BackHandler_android.js"
+    },
+    "AsyncStorage": {
+      "id": "node_modules_react-native_Libraries_Storage_AsyncStorage_js"
+    },
+    "BackAndroid": {
+      "id": "node_modules_react-native_Libraries_Utilities_BackAndroid_js"
+    },
+    "CameraRoll": {
+      "id": "node_modules_react-native_Libraries_CameraRoll_CameraRoll_js"
+    },
+    "Clipboard": {
+      "id": "node_modules_react-native_Libraries_Components_Clipboard_Clipboard_js"
+    },
+    "DatePickerAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_DatePickerAndroid_DatePickerAndroid_android.js"
+    },
+    "ImagePickerIOS": {
+      "id": "node_modules_react-native_Libraries_CameraRoll_ImagePickerIOS_js"
+    },
+    "Linking": {
+      "id": "node_modules_react-native_Libraries_Linking_Linking_js"
+    },
+    "NetInfo": {
+      "id": "node_modules_react-native_Libraries_Network_NetInfo_js"
+    },
+    "PushNotificationIOS": {
+      "id": "node_modules_react-native_Libraries_PushNotificationIOS_PushNotificationIOS_js"
+    },
+    "Settings": {
+      "id": "node_modules_react-native_Libraries_Settings_Settings_android.js"
+    },
+    "Share": {
+      "id": "node_modules_react-native_Libraries_Share_Share_js"
+    },
+    "StatusBarIOS": {
+      "id": "node_modules_react-native_Libraries_Components_StatusBar_StatusBarIOS_android.js"
+    },
+    "TimePickerAndroid": {
+      "id": "node_modules_react-native_Libraries_Components_TimePickerAndroid_TimePickerAndroid_android.js"
+    },
+    "Vibration": {
+      "id": "node_modules_react-native_Libraries_Vibration_Vibration_js"
+    },
+    "VibrationIOS": {
+      "id": "node_modules_react-native_Libraries_Vibration_VibrationIOS_android.js"
+    },
+    "takeSnapshot": {
+      "id": "node_modules_react-native_Libraries_Renderer_shims_takeSnapshot_js"
+    },
+    "node_modules/react-navigation/src/react-navigation.js": {
+      "id": "node_modules_react-navigation_src_react-navigation_js"
+    },
+    "node_modules/react-navigation/src/createNavigationContainer.js": {
+      "id": "node_modules_react-navigation_src_createNavigationContainer_js"
+    },
+    "node_modules/react-lifecycles-compat/react-lifecycles-compat.cjs.js": {
+      "id": "node_modules_react-lifecycles-compat_react-lifecycles-compat_cjs.js"
+    },
+    "node_modules/react-navigation/src/PlatformHelpers.native.js": {
+      "id": "node_modules_react-navigation_src_PlatformHelpers_native.js"
+    },
+    "node_modules/react-navigation/src/NavigationActions.js": {
+      "id": "node_modules_react-navigation_src_NavigationActions_js"
+    },
+    "node_modules/react-navigation/src/utils/invariant.js": {
+      "id": "node_modules_react-navigation_src_utils_invariant_js"
+    },
+    "node_modules/react-navigation/src/routers/getNavigationActionCreators.js": {
+      "id": "node_modules_react-navigation_src_routers_getNavigationActionCreators_js"
+    },
+    "node_modules/react-navigation/src/utils/docsUrl.js": {
+      "id": "node_modules_react-navigation_src_utils_docsUrl_js"
+    },
+    "node_modules/react-navigation/src/StateUtils.js": {
+      "id": "node_modules_react-navigation_src_StateUtils_js"
+    },
+    "node_modules/react-navigation/src/navigators/createNavigator.js": {
+      "id": "node_modules_react-navigation_src_navigators_createNavigator_js"
+    },
+    "node_modules/react-navigation/src/getChildEventSubscriber.js": {
+      "id": "node_modules_react-navigation_src_getChildEventSubscriber_js"
+    },
+    "node_modules/react-navigation/src/navigators/createStackNavigator.js": {
+      "id": "node_modules_react-navigation_src_navigators_createStackNavigator_js"
+    },
+    "node_modules/react-navigation/src/navigators/createKeyboardAwareNavigator.js": {
+      "id": "node_modules_react-navigation_src_navigators_createKeyboardAwareNavigator_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackView.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_StackView_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewLayout.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_StackViewLayout_js"
+    },
+    "node_modules/clamp/index.js": {
+      "id": "node_modules_clamp_index_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewCard.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_StackViewCard_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/createPointerEventsContainer.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_createPointerEventsContainer_js"
+    },
+    "node_modules/react-navigation/src/views/AnimatedValueSubscription.js": {
+      "id": "node_modules_react-navigation_src_views_AnimatedValueSubscription_js"
+    },
+    "node_modules/react-navigation/src/views/Header/Header.js": {
+      "id": "node_modules_react-navigation_src_views_Header_Header_js"
+    },
+    "node_modules/react-native-safe-area-view/index.js": {
+      "id": "node_modules_react-native-safe-area-view_index_js"
+    },
+    "node_modules/react-native-safe-area-view/withOrientation.js": {
+      "id": "node_modules_react-native-safe-area-view_withOrientation_js"
+    },
+    "node_modules/hoist-non-react-statics/index.js": {
+      "id": "node_modules_hoist-non-react-statics_index_js"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderTitle.js": {
+      "id": "node_modules_react-navigation_src_views_Header_HeaderTitle_js"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderBackButton.js": {
+      "id": "node_modules_react-navigation_src_views_Header_HeaderBackButton_js"
+    },
+    "node_modules/react-navigation/src/views/TouchableItem.js": {
+      "id": "node_modules_react-navigation_src_views_TouchableItem_js"
+    },
+    "node_modules/react-navigation/src/views/assets/back-icon.png": {
+      "id": "node_modules_react-navigation_src_views_assets_back-icon_png"
+    },
+    "node_modules/react-navigation/src/views/Header/ModularHeaderBackButton.js": {
+      "id": "node_modules_react-navigation_src_views_Header_ModularHeaderBackButton_js"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderStyleInterpolator.js": {
+      "id": "node_modules_react-navigation_src_views_Header_HeaderStyleInterpolator_js"
+    },
+    "node_modules/react-navigation/src/utils/getSceneIndicesForInterpolationInputRange.js": {
+      "id": "node_modules_react-navigation_src_utils_getSceneIndicesForInterpolationInputRange_js"
+    },
+    "node_modules/react-navigation/src/views/withOrientation.js": {
+      "id": "node_modules_react-navigation_src_views_withOrientation_js"
+    },
+    "node_modules/react-navigation/src/views/assets/back-icon-mask.png": {
+      "id": "node_modules_react-navigation_src_views_assets_back-icon-mask_png"
+    },
+    "node_modules/react-navigation/src/routers/StackActions.js": {
+      "id": "node_modules_react-navigation_src_routers_StackActions_js"
+    },
+    "node_modules/react-navigation/src/views/SceneView.js": {
+      "id": "node_modules_react-navigation_src_views_SceneView_js"
+    },
+    "node_modules/react-navigation/src/views/NavigationContext.js": {
+      "id": "node_modules_react-navigation_src_views_NavigationContext_js"
+    },
+    "node_modules/create-react-context/lib/index.js": {
+      "id": "node_modules_create-react-context_lib_index_js"
+    },
+    "node_modules/create-react-context/lib/implementation.js": {
+      "id": "node_modules_create-react-context_lib_implementation_js"
+    },
+    "node_modules/gud/index.js": {
+      "id": "node_modules_gud_index_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewTransitionConfigs.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_StackViewTransitionConfigs_js"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewStyleInterpolator.js": {
+      "id": "node_modules_react-navigation_src_views_StackView_StackViewStyleInterpolator_js"
+    },
+    "node_modules/react-navigation/src/utils/ReactNativeFeatures.js": {
+      "id": "node_modules_react-navigation_src_utils_ReactNativeFeatures_js"
+    },
+    "node_modules/react-navigation/src/views/Transitioner.js": {
+      "id": "node_modules_react-navigation_src_views_Transitioner_js"
+    },
+    "node_modules/react-navigation/src/views/ScenesReducer.js": {
+      "id": "node_modules_react-navigation_src_views_ScenesReducer_js"
+    },
+    "node_modules/react-navigation/src/utils/shallowEqual.js": {
+      "id": "node_modules_react-navigation_src_utils_shallowEqual_js"
+    },
+    "node_modules/react-navigation/src/routers/StackRouter.js": {
+      "id": "node_modules_react-navigation_src_routers_StackRouter_js"
+    },
+    "node_modules/path-to-regexp/index.js": {
+      "id": "node_modules_path-to-regexp_index_js"
+    },
+    "node_modules/path-to-regexp/node_modules/isarray/index.js": {
+      "id": "node_modules_path-to-regexp_node_modules_isarray_index_js"
+    },
+    "node_modules/react-navigation/src/routers/createConfigGetter.js": {
+      "id": "node_modules_react-navigation_src_routers_createConfigGetter_js"
+    },
+    "node_modules/react-navigation/src/routers/getScreenForRouteName.js": {
+      "id": "node_modules_react-navigation_src_routers_getScreenForRouteName_js"
+    },
+    "node_modules/react-navigation/src/routers/validateScreenOptions.js": {
+      "id": "node_modules_react-navigation_src_routers_validateScreenOptions_js"
+    },
+    "node_modules/react-navigation/src/routers/validateRouteConfigMap.js": {
+      "id": "node_modules_react-navigation_src_routers_validateRouteConfigMap_js"
+    },
+    "node_modules/react-navigation/src/routers/KeyGenerator.js": {
+      "id": "node_modules_react-navigation_src_routers_KeyGenerator_js"
+    },
+    "node_modules/react-navigation/src/navigators/createSwitchNavigator.js": {
+      "id": "node_modules_react-navigation_src_navigators_createSwitchNavigator_js"
+    },
+    "node_modules/react-navigation/src/routers/SwitchRouter.js": {
+      "id": "node_modules_react-navigation_src_routers_SwitchRouter_js"
+    },
+    "node_modules/react-navigation/src/views/SwitchView/SwitchView.js": {
+      "id": "node_modules_react-navigation_src_views_SwitchView_SwitchView_js"
+    },
+    "node_modules/react-navigation/src/navigators/createDrawerNavigator.js": {
+      "id": "node_modules_react-navigation_src_navigators_createDrawerNavigator_js"
+    },
+    "node_modules/react-navigation/src/routers/DrawerRouter.js": {
+      "id": "node_modules_react-navigation_src_routers_DrawerRouter_js"
+    },
+    "node_modules/react-navigation/src/utils/withDefaultValue.js": {
+      "id": "node_modules_react-navigation_src_utils_withDefaultValue_js"
+    },
+    "node_modules/react-navigation/src/routers/DrawerActions.js": {
+      "id": "node_modules_react-navigation_src_routers_DrawerActions_js"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerScreen.js": {
+      "id": "node_modules_react-navigation_src_views_Drawer_DrawerScreen_js"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerView.js": {
+      "id": "node_modules_react-navigation_src_views_Drawer_DrawerView_js"
+    },
+    "node_modules/react-native-drawer-layout-polyfill/dist/index.android.js": {
+      "id": "node_modules_react-native-drawer-layout-polyfill_dist_index_android.js"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js": {
+      "id": "node_modules_react-navigation_src_views_Drawer_DrawerSidebar_js"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerNavigatorItems.js": {
+      "id": "node_modules_react-navigation_src_views_Drawer_DrawerNavigatorItems_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/index.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_index_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/createTabNavigator.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_createTabNavigator_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/views/TabView.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_views_TabView_js"
+    },
+    "node_modules/react-native-tab-view/src/index.js": {
+      "id": "node_modules_react-native-tab-view_src_index_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewAnimated.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewAnimated_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewPropTypes.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewPropTypes_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewPagerAndroid.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewPagerAndroid_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewPagerScroll.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewPagerScroll_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewPagerPan.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewPagerPan_js"
+    },
+    "node_modules/react-native-tab-view/src/TabViewPagerExperimental.js": {
+      "id": "node_modules_react-native-tab-view_src_TabViewPagerExperimental_js"
+    },
+    "node_modules/react-native-tab-view/src/TabBar.js": {
+      "id": "node_modules_react-native-tab-view_src_TabBar_js"
+    },
+    "node_modules/react-native-tab-view/src/TouchableItem.js": {
+      "id": "node_modules_react-native-tab-view_src_TouchableItem_js"
+    },
+    "node_modules/react-native-tab-view/src/SceneMap.js": {
+      "id": "node_modules_react-native-tab-view_src_SceneMap_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarTop.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_views_TabBarTop_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarIcon.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_views_TabBarIcon_js"
+    },
+    "node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarBottom.js": {
+      "id": "node_modules_react-navigation-deprecated-tab-navigator_src_views_TabBarBottom_js"
+    },
+    "node_modules/react-navigation-tabs/dist/index.js": {
+      "id": "node_modules_react-navigation-tabs_dist_index_js"
+    },
+    "node_modules/react-navigation-tabs/dist/navigators/createBottomTabNavigator.js": {
+      "id": "node_modules_react-navigation-tabs_dist_navigators_createBottomTabNavigator_js"
+    },
+    "node_modules/react-navigation-tabs/dist/utils/createTabNavigator.js": {
+      "id": "node_modules_react-navigation-tabs_dist_utils_createTabNavigator_js"
+    },
+    "node_modules/react-navigation-tabs/dist/views/BottomTabBar.js": {
+      "id": "node_modules_react-navigation-tabs_dist_views_BottomTabBar_js"
+    },
+    "node_modules/react-navigation-tabs/dist/views/CrossFadeIcon.js": {
+      "id": "node_modules_react-navigation-tabs_dist_views_CrossFadeIcon_js"
+    },
+    "node_modules/react-navigation-tabs/dist/utils/withDimensions.js": {
+      "id": "node_modules_react-navigation-tabs_dist_utils_withDimensions_js"
+    },
+    "node_modules/react-navigation-tabs/dist/views/ResourceSavingScene.js": {
+      "id": "node_modules_react-navigation-tabs_dist_views_ResourceSavingScene_js"
+    },
+    "node_modules/react-navigation-tabs/dist/navigators/createMaterialTopTabNavigator.js": {
+      "id": "node_modules_react-navigation-tabs_dist_navigators_createMaterialTopTabNavigator_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/index.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_index_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewAnimated.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewAnimated_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPropTypes.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewPropTypes_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerAndroid.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewPagerAndroid_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerScroll.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewPagerScroll_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerPan.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewPagerPan_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerExperimental.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabViewPagerExperimental_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabBar.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TabBar_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TouchableItem.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_TouchableItem_js"
+    },
+    "node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/SceneMap.js": {
+      "id": "node_modules_react-navigation-tabs_node_modules_react-native-tab-view_src_SceneMap_js"
+    },
+    "node_modules/react-navigation-tabs/dist/views/MaterialTopTabBar.js": {
+      "id": "node_modules_react-navigation-tabs_dist_views_MaterialTopTabBar_js"
+    },
+    "node_modules/react-navigation/src/routers/TabRouter.js": {
+      "id": "node_modules_react-navigation_src_routers_TabRouter_js"
+    },
+    "node_modules/react-navigation/src/views/ResourceSavingSceneView.js": {
+      "id": "node_modules_react-navigation_src_views_ResourceSavingSceneView_js"
+    },
+    "node_modules/react-navigation/src/views/withNavigation.js": {
+      "id": "node_modules_react-navigation_src_views_withNavigation_js"
+    },
+    "node_modules/react-navigation/src/views/withNavigationFocus.js": {
+      "id": "node_modules_react-navigation_src_views_withNavigationFocus_js"
+    },
+    "require-node_modules_react-native_Libraries_Core_InitializeCore_js": {
+      "id": "node_modules_react-native_Libraries_Core_InitializeCore_js"
+    },
+    "require-base_js": {
+      "id": "base_js"
+    }
+  }
+}

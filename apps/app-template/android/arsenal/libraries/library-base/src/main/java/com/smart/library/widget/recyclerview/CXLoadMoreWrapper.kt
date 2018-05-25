@@ -151,7 +151,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
             innerAdapter.onBindViewHolder(holder, position)
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         onAttachedToRecyclerView(innerAdapter, recyclerView, object : SpanSizeCallback {
             override fun getSpanSize(layoutManager: GridLayoutManager, oldLookup: GridLayoutManager.SpanSizeLookup, position: Int): Int {
                 if (position == itemCount - 1 && isHaveStatesView) {
@@ -162,12 +162,12 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 } else 1
             }
         })
-        recyclerView?.addOnScrollListener(mLoadMoreScrollListener)
+        recyclerView.addOnScrollListener(mLoadMoreScrollListener)
     }
 
-    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, recyclerView: RecyclerView?, callback: SpanSizeCallback) {
+    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, recyclerView: RecyclerView, callback: SpanSizeCallback) {
         innerAdapter.onAttachedToRecyclerView(recyclerView)
-        val layoutManager = recyclerView?.layoutManager
+        val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {
             val spanSizeLookup = layoutManager.spanSizeLookup
             layoutManager.spanCount = layoutManager.spanCount
@@ -178,10 +178,10 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder?) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         innerAdapter.onViewAttachedToWindow(holder)
 
-        if (holder!!.layoutPosition == itemCount - 1 && isHaveStatesView) {
+        if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
             val lp = holder.itemView.layoutParams
 
             if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams) {

@@ -16,9 +16,4 @@ class HomeTabActivity : CXBaseActivity() {
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
     }
-
-    override fun onDestroy() {
-        ReactManager.release()
-        super.onDestroy()
-    }
 }

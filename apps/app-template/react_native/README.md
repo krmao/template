@@ -29,6 +29,12 @@ react-native bundle  --platform android  --dev true  --entry-file ./base.js  --b
 react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/business.android.bundle  --exclude  ./build/bundle/base/base.android.bundle.json
 ```
 
+* normal
+```
+react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/index.android.bundle
+```
+
+
 # Custom Metro To Split Modules For React Native
 
 🚇 Reference Metro From Native Path

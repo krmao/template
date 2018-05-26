@@ -71,6 +71,7 @@ cd ~/workspace/smart-metro/ && npm run build-clean && npm run build && cd packag
         description: 'Manifest file name where modules to exclude are stored, ex. /tmp/manifest.json',
       }, {
     ```
+    ![modify 1](./readme/rn_local_cli_custom_1.jpeg)
 
 * 2 buildBundle.js
 
@@ -97,3 +98,4 @@ cd ~/workspace/smart-metro/ && npm run build-clean && npm run build && cd packag
             bundleOutput: args.bundleOutput,
           };
         ```
+   ![modify 2](./readme/rn_local_cli_custom_2.jpeg)

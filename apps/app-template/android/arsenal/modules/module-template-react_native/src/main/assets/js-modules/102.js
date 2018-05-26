@@ -1,1 +1,45 @@
-__d(function(r,t,n,e,f){'use strict';n.exports=function r(t,n){if(t===n)return!1;if('function'==typeof t&&'function'==typeof n)return!1;if('object'!=typeof t||null===t)return t!==n;if('object'!=typeof n||null===n)return!0;if(t.constructor!==n.constructor)return!0;if(Array.isArray(t)){var e=t.length;if(n.length!==e)return!0;for(var f=0;f<e;f++)if(r(t[f],n[f]))return!0}else{for(var i in t)if(r(t[i],n[i]))return!0;for(var o in n)if(void 0===t[o]&&void 0!==n[o])return!0}return!1}},102,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var invariant = _require(_dependencyMap[0], 'fbjs/lib/invariant');
+
+  var levelsMap = {
+    log: 'log',
+    info: 'info',
+    warn: 'warn',
+    error: 'error',
+    fatal: 'error'
+  };
+  var warningHandler = null;
+  var RCTLog = {
+    logIfNoNativeHook: function logIfNoNativeHook(level) {
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      if (typeof global.nativeLoggingHook === 'undefined') {
+        RCTLog.logToConsole.apply(RCTLog, [level].concat(babelHelpers.toConsumableArray(args)));
+      } else {
+        if (warningHandler && level === 'warn') {
+          warningHandler.apply(undefined, babelHelpers.toConsumableArray(args));
+        }
+      }
+    },
+    logToConsole: function logToConsole(level) {
+      var _console;
+
+      var logFn = levelsMap[level];
+      invariant(logFn, 'Level "' + level + '" not one of ' + Object.keys(levelsMap).toString());
+
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
+
+      (_console = console)[logFn].apply(_console, babelHelpers.toConsumableArray(args));
+    },
+    setWarningHandler: function setWarningHandler(handler) {
+      warningHandler = handler;
+    }
+  };
+  module.exports = RCTLog;
+},102,[18],"RCTLog");

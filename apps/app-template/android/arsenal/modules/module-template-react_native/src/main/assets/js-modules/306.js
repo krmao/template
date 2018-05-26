@@ -1,1 +1,88 @@
-__d(function(t,e,n,a,i){Object.defineProperty(a,"__esModule",{value:!0}),a._TESTING_ONLY_reset_container_count=function(){0},a.default=function(t){var e=(function(e){function n(e){var a=this;babelHelpers.classCallCheck(this,n);var i=babelHelpers.possibleConstructorReturn(this,(n.__proto__||Object.getPrototypeOf(n)).call(this,e));return i.subs=null,i._actionEventSubscribers=new Set,i._handleOpenURL=function(e){var n=e.url,a=i._urlToPathAndParams(n);if(a){var r=a.path,o=a.params,s=t.router.getActionForPathAndParams(r,o);s&&i.dispatch(s)}},i._persistNavigationState=function(t){var e;return regeneratorRuntime.async(function(n){for(;;)switch(n.prev=n.next){case 0:if(e=i.props.persistenceKey){n.next=3;break}return n.abrupt("return");case 3:return n.next=5,regeneratorRuntime.awrap(s.AsyncStorage.setItem(e,JSON.stringify(t)));case 5:case"end":return n.stop()}},null,a)},i.dispatch=function(e){if(i.props.navigation)return i.props.navigation.dispatch(e);i._navState=i._navState||i.state.nav;var n=i._navState;(0,v.default)(n,'should be set in constructor if stateful');var a=t.router.getStateForAction(e,n),r=null===a?n:a,o=function(){i._actionEventSubscribers.forEach(function(t){return t({type:'action',action:e,state:r,lastState:n})})};return null===a?(o(),!0):r!==n?(i._navState=r,i.setState({nav:r},function(){i._onNavigationStateChange(n,r,e),o(),i._persistNavigationState(r)}),!0):(o(),!1)},b(e),i._initialAction=p.default.init(),i._isStateful()&&(i.subs=l.BackHandler.addEventListener('hardwareBackPress',function(){if(i._isMounted)return i.dispatch(p.default.back());i.subs&&i.subs.remove()})),i.state={nav:i._isStateful()&&!e.persistenceKey?t.router.getStateForAction(i._initialAction):null},i}return babelHelpers.inherits(n,e),babelHelpers.createClass(n,null,[{key:"getDerivedStateFromProps",value:function(t,e){return b(t),null}}]),babelHelpers.createClass(n,[{key:"_renderLoading",value:function(){return this.props.renderLoadingExperimental?this.props.renderLoadingExperimental():null}},{key:"_isStateful",value:function(){return _(this.props)}},{key:"_validateProps",value:function(t){if(!this._isStateful()){t.navigation,t.screenProps;var e=babelHelpers.objectWithoutProperties(t,["navigation","screenProps"]),n=Object.keys(e);if(0!==n.length)throw new Error("This navigator has both navigation and container props, so it is unclear if it should own its own state. Remove props: \""+n.join(', ')+"\" if the navigator should get its state from the navigation prop. If the navigator should maintain its own state, do not pass a navigation prop.")}}},{key:"_urlToPathAndParams",value:function(t){var e=this.props.uriPrefix||'://',n=t.split(e)[1];return void 0===n?n=t:''===n&&(n='/'),{path:n,params:{}}}},{key:"_onNavigationStateChange",value:function(t,e,n){void 0===this.props.onNavigationStateChange&&this._isStateful()&&process.env.REACT_NAV_LOGGING?console.group?(console.group('Navigation Dispatch: '),console.log('Action: ',n),console.log('New State: ',e),console.log('Last State: ',t),console.groupEnd()):console.log('Navigation Dispatch: ',{action:n,newState:e,lastState:t}):'function'==typeof this.props.onNavigationStateChange&&this.props.onNavigationStateChange(t,e,n)}},{key:"componentDidUpdate",value:function(){this._navState===this.state.nav&&(this._navState=null)}},{key:"componentDidMount",value:function(){var e,n,a,i,r,o,u,l,c,p,h=this;return regeneratorRuntime.async(function(v){for(;;)switch(v.prev=v.next){case 0:if(this._isMounted=!0,this._isStateful()){v.next=3;break}return v.abrupt("return");case 3:if(0,s.Linking.addEventListener('url',this._handleOpenURL),e=this.props.persistenceKey,v.t0=e,!v.t0){v.next=11;break}return v.next=10,regeneratorRuntime.awrap(s.AsyncStorage.getItem(e));case 10:v.t0=v.sent;case 11:return n=v.t0,v.next=14,regeneratorRuntime.awrap(s.Linking.getInitialURL());case 14:if(a=v.sent,i=a&&this._urlToPathAndParams(a),r=this._initialAction,(o=this.state.nav)||(process.env.REACT_NAV_LOGGING&&console.log('Init new Navigation State'),o=t.router.getStateForAction(r)),n)try{o=JSON.parse(n),S=!0}catch(t){}if(i&&(u=i.path,l=i.params,(c=t.router.getActionForPathAndParams(u,l))&&(process.env.REACT_NAV_LOGGING&&console.log('Applying Navigation Action for Initial URL:',a),r=c,o=t.router.getStateForAction(c,o))),p=function(){return h._actionEventSubscribers.forEach(function(t){return t({type:'action',action:r,state:h.state.nav,lastState:null})})},o!==this.state.nav){v.next=25;break}return p(),v.abrupt("return");case 25:this.setState({nav:o},function(){S=!1,p()});case 26:case"end":return v.stop()}},null,this)}},{key:"componentDidCatch",value:function(t,e){S&&(S=!1,console.warn('Uncaught exception while starting app from persisted navigation state! Trying to render again with a fresh navigation state..'),this.dispatch(p.default.init()))}},{key:"componentWillUnmount",value:function(){this._isMounted=!1,s.Linking.removeEventListener('url',this._handleOpenURL),this.subs&&this.subs.remove(),this._isStateful()&&0}},{key:"render",value:function(){var e=this,n=this.props.navigation;if(this._isStateful()){var a=this.state.nav;if(!a)return this._renderLoading();if(!this._navigation||this._navigation.state!==a){this._navigation={dispatch:this.dispatch,state:a,addListener:function(t,n){return'action'!==t?{remove:function(){}}:(e._actionEventSubscribers.add(n),{remove:function(){e._actionEventSubscribers.delete(n)}})}};var i=(0,g.default)(a);Object.keys(i).forEach(function(t){e._navigation[t]=function(){return e.dispatch(i[t].apply(i,arguments))}})}n=this._navigation}return(0,v.default)(n,'failed to get navigation'),o.default.createElement(t,babelHelpers.extends({},this.props,{navigation:n}))}}]),n})(o.default.Component);return e.router=t.router,e.navigationOptions=null,(0,u.polyfill)(e)};var r=e(i[0]),o=babelHelpers.interopRequireDefault(r),s=e(i[1]),u=e(i[2]),l=e(i[3]),c=e(i[4]),p=babelHelpers.interopRequireDefault(c),h=e(i[5]),v=babelHelpers.interopRequireDefault(h),f=e(i[6]),g=babelHelpers.interopRequireDefault(f),d=e(i[7]);babelHelpers.interopRequireDefault(d);function _(t){return!t.navigation}function b(t){if(!_(t)){t.navigation,t.screenProps;var e=babelHelpers.objectWithoutProperties(t,["navigation","screenProps"]),n=Object.keys(e);if(0!==n.length)throw new Error("This navigator has both navigation and container props, so it is unclear if it should own its own state. Remove props: \""+n.join(', ')+"\" if the navigator should get its state from the navigation prop. If the navigator should maintain its own state, do not pass a navigation prop.")}}var S=!1},306,[12,17,307,308,309,310,311,312]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var EventEmitter = _require(_dependencyMap[0], 'EventEmitter');
+
+  var EventEmitterWithHolding = _require(_dependencyMap[1], 'EventEmitterWithHolding');
+
+  var EventHolder = _require(_dependencyMap[2], 'EventHolder');
+
+  var invariant = _require(_dependencyMap[3], 'fbjs/lib/invariant');
+
+  var keyOf = _require(_dependencyMap[4], 'fbjs/lib/keyOf');
+
+  var TYPES_KEY = keyOf({
+    __types: true
+  });
+
+  function mixInEventEmitter(cls, types) {
+    invariant(types, 'Must supply set of valid event types');
+    var target = cls.prototype || cls;
+    invariant(!target.__eventEmitter, 'An active emitter is already mixed in');
+    var ctor = cls.constructor;
+
+    if (ctor) {
+      invariant(ctor === Object || ctor === Function, 'Mix EventEmitter into a class, not an instance');
+    }
+
+    if (target.hasOwnProperty(TYPES_KEY)) {
+      babelHelpers.extends(target.__types, types);
+    } else if (target.__types) {
+      target.__types = babelHelpers.extends({}, target.__types, types);
+    } else {
+      target.__types = types;
+    }
+
+    babelHelpers.extends(target, EventEmitterMixin);
+  }
+
+  var EventEmitterMixin = {
+    emit: function emit(eventType, a, b, c, d, e, _) {
+      return this.__getEventEmitter().emit(eventType, a, b, c, d, e, _);
+    },
+    emitAndHold: function emitAndHold(eventType, a, b, c, d, e, _) {
+      return this.__getEventEmitter().emitAndHold(eventType, a, b, c, d, e, _);
+    },
+    addListener: function addListener(eventType, listener, context) {
+      return this.__getEventEmitter().addListener(eventType, listener, context);
+    },
+    once: function once(eventType, listener, context) {
+      return this.__getEventEmitter().once(eventType, listener, context);
+    },
+    addRetroactiveListener: function addRetroactiveListener(eventType, listener, context) {
+      return this.__getEventEmitter().addRetroactiveListener(eventType, listener, context);
+    },
+    addListenerMap: function addListenerMap(listenerMap, context) {
+      return this.__getEventEmitter().addListenerMap(listenerMap, context);
+    },
+    addRetroactiveListenerMap: function addRetroactiveListenerMap(listenerMap, context) {
+      return this.__getEventEmitter().addListenerMap(listenerMap, context);
+    },
+    removeAllListeners: function removeAllListeners() {
+      this.__getEventEmitter().removeAllListeners();
+    },
+    removeCurrentListener: function removeCurrentListener() {
+      this.__getEventEmitter().removeCurrentListener();
+    },
+    releaseHeldEventType: function releaseHeldEventType(eventType) {
+      this.__getEventEmitter().releaseHeldEventType(eventType);
+    },
+    __getEventEmitter: function __getEventEmitter() {
+      if (!this.__eventEmitter) {
+        var emitter = new EventEmitter();
+
+        if (__DEV__) {
+          var EventValidator = _require(_dependencyMap[5], 'EventValidator');
+
+          emitter = EventValidator.addValidation(emitter, this.__types);
+        }
+
+        var holder = new EventHolder();
+        this.__eventEmitter = new EventEmitterWithHolding(emitter, holder);
+      }
+
+      return this.__eventEmitter;
+    }
+  };
+  module.exports = mixInEventEmitter;
+},306,[41,307,308,18,309,310],"mixInEventEmitter");

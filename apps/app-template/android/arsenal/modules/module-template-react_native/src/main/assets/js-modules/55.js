@@ -1,1 +1,9 @@
-__d(function(n,o,t,_,c){t.exports=o(c[0])},55,[56]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function guid() {
+    return 'f' + (Math.random() * (1 << 30)).toString(16).replace('.', '');
+  }
+
+  module.exports = guid;
+},55,[],"guid");

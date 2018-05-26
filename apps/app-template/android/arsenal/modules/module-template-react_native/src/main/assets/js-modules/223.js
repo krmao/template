@@ -1,1 +1,137 @@
-__d(function(e,t,i,n,s){'use strict';var o=t(s[0]),r=t(s[1]),a=t(s[2]),l=t(s[3]),u=(t(s[4]),t(s[5])),c=babelHelpers.extends({},l.defaultProps,{numColumns:1}),p=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var i=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return i._hasWarnedLegacy=!1,i._virtualizedListPairs=[],i._captureRef=function(e){i._listRef=e},i._getItem=function(e,t){var n=i.props.numColumns;if(n>1){for(var s=[],o=0;o<n;o++){var r=e[t*n+o];r&&s.push(r)}return s}return e[t]},i._getItemCount=function(e){return e?Math.ceil(e.length/i.props.numColumns):0},i._keyExtractor=function(e,t){var n=i.props,s=n.keyExtractor,o=n.numColumns;return o>1?(u(Array.isArray(e),"FlatList: Encountered internal consistency error, expected each item to consist of an array with 1-%s columns; instead, received a single item.",o),e.map(function(e,i){return s(e,t*o+i)}).join(':')):s(e,t)},i._renderItem=function(e){var t=i.props,n=t.renderItem,s=t.numColumns,o=t.columnWrapperStyle;if(s>1){var l=e.item,c=e.index;return u(Array.isArray(l),'Expected array of items with numColumns > 1'),r.createElement(a,{style:[{flexDirection:'row'},o]},l.map(function(t,i){var o=n({item:t,index:c*s+i,separators:e.separators});return o&&r.cloneElement(o,{key:i})}))}return n(e)},i.props.viewabilityConfigCallbackPairs?i._virtualizedListPairs=i.props.viewabilityConfigCallbackPairs.map(function(e){return{viewabilityConfig:e.viewabilityConfig,onViewableItemsChanged:i._createOnViewableItemsChanged(e.onViewableItemsChanged)}}):i.props.onViewableItemsChanged&&i._virtualizedListPairs.push({viewabilityConfig:i.props.viewabilityConfig,onViewableItemsChanged:i._createOnViewableItemsChanged(i.props.onViewableItemsChanged)}),i}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"scrollToEnd",value:function(e){this._listRef&&this._listRef.scrollToEnd(e)}},{key:"scrollToIndex",value:function(e){this._listRef&&this._listRef.scrollToIndex(e)}},{key:"scrollToItem",value:function(e){this._listRef&&this._listRef.scrollToItem(e)}},{key:"scrollToOffset",value:function(e){this._listRef&&this._listRef.scrollToOffset(e)}},{key:"recordInteraction",value:function(){this._listRef&&this._listRef.recordInteraction()}},{key:"flashScrollIndicators",value:function(){this._listRef&&this._listRef.flashScrollIndicators()}},{key:"getScrollResponder",value:function(){if(this._listRef)return this._listRef.getScrollResponder()}},{key:"getScrollableNode",value:function(){if(this._listRef)return this._listRef.getScrollableNode()}},{key:"setNativeProps",value:function(e){this._listRef&&this._listRef.setNativeProps(e)}},{key:"UNSAFE_componentWillMount",value:function(){this._checkProps(this.props)}},{key:"UNSAFE_componentWillReceiveProps",value:function(e){u(e.numColumns===this.props.numColumns,"Changing numColumns on the fly is not supported. Change the key prop on FlatList when changing the number of columns to force a fresh render of the component."),u(e.onViewableItemsChanged===this.props.onViewableItemsChanged,'Changing onViewableItemsChanged on the fly is not supported'),u(e.viewabilityConfig===this.props.viewabilityConfig,'Changing viewabilityConfig on the fly is not supported'),u(e.viewabilityConfigCallbackPairs===this.props.viewabilityConfigCallbackPairs,'Changing viewabilityConfigCallbackPairs on the fly is not supported'),this._checkProps(e)}}]),babelHelpers.createClass(t,[{key:"_checkProps",value:function(e){var t=e.getItem,i=e.getItemCount,n=e.horizontal,s=e.legacyImplementation,o=e.numColumns,r=e.columnWrapperStyle,a=e.onViewableItemsChanged,l=e.viewabilityConfigCallbackPairs;u(!t&&!i,'FlatList does not support custom data formats.'),o>1?u(!n,'numColumns does not support horizontal.'):u(!r,'columnWrapperStyle not supported for single column lists'),s&&(u(1===o,'Legacy list does not support multiple columns.'),this._hasWarnedLegacy||(console.warn("FlatList: Using legacyImplementation - some features not supported and performance may suffer"),this._hasWarnedLegacy=!0)),u(!(a&&l),"FlatList does not support setting both onViewableItemsChanged and viewabilityConfigCallbackPairs.")}},{key:"_pushMultiColumnViewable",value:function(e,t){var i=this.props,n=i.numColumns,s=i.keyExtractor;t.item.forEach(function(i,o){u(null!=t.index,'Missing index!');var r=t.index*n+o;e.push(babelHelpers.extends({},t,{item:i,key:s(i,r),index:r}))})}},{key:"_createOnViewableItemsChanged",value:function(e){var t=this;return function(i){var n=t.props.numColumns;if(e)if(n>1){var s=[],o=[];i.viewableItems.forEach(function(e){return t._pushMultiColumnViewable(o,e)}),i.changed.forEach(function(e){return t._pushMultiColumnViewable(s,e)}),e({viewableItems:o,changed:s})}else e(i)}}},{key:"render",value:function(){return this.props.legacyImplementation?r.createElement(o,babelHelpers.extends({},this.props,{items:this.props.data,ref:this._captureRef})):r.createElement(l,babelHelpers.extends({},this.props,{renderItem:this._renderItem,getItem:this._getItem,getItemCount:this._getItemCount,keyExtractor:this._keyExtractor,ref:this._captureRef,viewabilityConfigCallbackPairs:this._virtualizedListPairs}))}}]),t})(r.PureComponent);p.defaultProps=c,i.exports=p},223,[224,111,152,231,225,18]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AnimatedValue = _require2(_dependencyMap[0], '../nodes/AnimatedValue');
+
+  var AnimatedValueXY = _require2(_dependencyMap[1], '../nodes/AnimatedValueXY');
+
+  var Animation = _require2(_dependencyMap[2], './Animation');
+
+  var _require = _require2(_dependencyMap[3], '../NativeAnimatedHelper'),
+      shouldUseNativeDriver = _require.shouldUseNativeDriver;
+
+  var _easeInOut = void 0;
+
+  function easeInOut() {
+    if (!_easeInOut) {
+      var Easing = _require2(_dependencyMap[4], 'Easing');
+
+      _easeInOut = Easing.inOut(Easing.ease);
+    }
+
+    return _easeInOut;
+  }
+
+  var TimingAnimation = function (_Animation) {
+    babelHelpers.inherits(TimingAnimation, _Animation);
+
+    function TimingAnimation(config) {
+      babelHelpers.classCallCheck(this, TimingAnimation);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (TimingAnimation.__proto__ || Object.getPrototypeOf(TimingAnimation)).call(this));
+
+      _this._toValue = config.toValue;
+      _this._easing = config.easing !== undefined ? config.easing : easeInOut();
+      _this._duration = config.duration !== undefined ? config.duration : 500;
+      _this._delay = config.delay !== undefined ? config.delay : 0;
+      _this.__iterations = config.iterations !== undefined ? config.iterations : 1;
+      _this.__isInteraction = config.isInteraction !== undefined ? config.isInteraction : true;
+      _this._useNativeDriver = shouldUseNativeDriver(config);
+      return _this;
+    }
+
+    babelHelpers.createClass(TimingAnimation, [{
+      key: "__getNativeAnimationConfig",
+      value: function __getNativeAnimationConfig() {
+        var frameDuration = 1000.0 / 60.0;
+        var frames = [];
+
+        for (var dt = 0.0; dt < this._duration; dt += frameDuration) {
+          frames.push(this._easing(dt / this._duration));
+        }
+
+        frames.push(this._easing(1));
+        return {
+          type: 'frames',
+          frames: frames,
+          toValue: this._toValue,
+          iterations: this.__iterations
+        };
+      }
+    }, {
+      key: "start",
+      value: function start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {
+        var _this2 = this;
+
+        this.__active = true;
+        this._fromValue = fromValue;
+        this._onUpdate = onUpdate;
+        this.__onEnd = onEnd;
+
+        var start = function start() {
+          if (_this2._duration === 0 && !_this2._useNativeDriver) {
+            _this2._onUpdate(_this2._toValue);
+
+            _this2.__debouncedOnEnd({
+              finished: true
+            });
+          } else {
+            _this2._startTime = Date.now();
+
+            if (_this2._useNativeDriver) {
+              _this2.__startNativeAnimation(animatedValue);
+            } else {
+              _this2._animationFrame = requestAnimationFrame(_this2.onUpdate.bind(_this2));
+            }
+          }
+        };
+
+        if (this._delay) {
+          this._timeout = setTimeout(start, this._delay);
+        } else {
+          start();
+        }
+      }
+    }, {
+      key: "onUpdate",
+      value: function onUpdate() {
+        var now = Date.now();
+
+        if (now >= this._startTime + this._duration) {
+          if (this._duration === 0) {
+            this._onUpdate(this._toValue);
+          } else {
+            this._onUpdate(this._fromValue + this._easing(1) * (this._toValue - this._fromValue));
+          }
+
+          this.__debouncedOnEnd({
+            finished: true
+          });
+
+          return;
+        }
+
+        this._onUpdate(this._fromValue + this._easing((now - this._startTime) / this._duration) * (this._toValue - this._fromValue));
+
+        if (this.__active) {
+          this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
+        }
+      }
+    }, {
+      key: "stop",
+      value: function stop() {
+        babelHelpers.get(TimingAnimation.prototype.__proto__ || Object.getPrototypeOf(TimingAnimation.prototype), "stop", this).call(this);
+        this.__active = false;
+        clearTimeout(this._timeout);
+        global.cancelAnimationFrame(this._animationFrame);
+
+        this.__debouncedOnEnd({
+          finished: false
+        });
+      }
+    }]);
+    return TimingAnimation;
+  }(Animation);
+
+  module.exports = TimingAnimation;
+},223,[202,218,220,205,224],"TimingAnimation");

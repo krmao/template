@@ -1,1 +1,65 @@
-__d(function(e,n,r,t,i){Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,n){var r=e[n];if(!r)throw new Error("There is no route defined for key "+n+".\nMust be one of: "+Object.keys(e).map(function(e){return"'"+e+"'"}).join(','));if(r.screen)return r.screen;if('function'==typeof r.getScreen){var t=r.getScreen();return(0,u.default)('function'==typeof t,"The getScreen defined for route '"+n+" didn't return a valid screen or navigator.\n\nPlease pass it like this:\n"+n+": {\n  getScreen: () => require('./MyScreen').default\n}"),t}return r};var o=n(i[0]),u=babelHelpers.interopRequireDefault(o)},353,[310]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/StackView/StackViewCard.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _createPointerEventsContainer = _require(_dependencyMap[2], "./createPointerEventsContainer");
+
+  var _createPointerEventsContainer2 = babelHelpers.interopRequireDefault(_createPointerEventsContainer);
+
+  var Card = function (_React$Component) {
+    babelHelpers.inherits(Card, _React$Component);
+
+    function Card() {
+      babelHelpers.classCallCheck(this, Card);
+      return babelHelpers.possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(Card, [{
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            children = _props.children,
+            pointerEvents = _props.pointerEvents,
+            style = _props.style;
+        return _react2.default.createElement(
+          _reactNative.Animated.View,
+          {
+            pointerEvents: pointerEvents,
+            ref: this.props.onComponentRef,
+            style: [styles.main, style],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 12
+            }
+          },
+          children
+        );
+      }
+    }]);
+    return Card;
+  }(_react2.default.Component);
+
+  var styles = _reactNative.StyleSheet.create({
+    main: babelHelpers.extends({}, _reactNative.StyleSheet.absoluteFillObject, {
+      backgroundColor: '#E9E9EF',
+      shadowColor: 'black',
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 5
+    })
+  });
+
+  Card = (0, _createPointerEventsContainer2.default)(Card);
+  exports.default = Card;
+},353,[12,22,354],"node_modules/react-navigation/src/views/StackView/StackViewCard.js");

@@ -1,1 +1,248 @@
-__d(function(o,n,e,t,s){'use strict';var i=n(s[0]),r=n(s[1]),c=n(s[2]),p=n(s[3]),l=(n(s[4]),n(s[5])),a=n(s[6]),h=n(s[7]),d=n(s[8]),v=n(s[9]),b=n(s[10]),f=p.oneOfType([i.propTypes.source,p.oneOf([])]),u=d({displayName:'ToolbarAndroid',mixins:[r],propTypes:babelHelpers.extends({},a,{actions:p.arrayOf(p.shape({title:p.string.isRequired,icon:f,show:p.oneOf(['always','ifRoom','never']),showWithText:p.bool})),logo:f,navIcon:f,onActionSelected:p.func,onIconClicked:p.func,overflowIcon:f,subtitle:p.string,subtitleColor:h,title:p.string,titleColor:h,contentInsetStart:p.number,contentInsetEnd:p.number,rtl:p.bool,testID:p.string}),render:function(){var o=babelHelpers.extends({},this.props);if(this.props.logo&&(o.logo=b(this.props.logo)),this.props.navIcon&&(o.navIcon=b(this.props.navIcon)),this.props.overflowIcon&&(o.overflowIcon=b(this.props.overflowIcon)),this.props.actions){for(var n=[],e=0;e<this.props.actions.length;e++){var t=babelHelpers.extends({},this.props.actions[e]);t.icon&&(t.icon=b(t.icon)),t.show&&(t.show=l.ToolbarAndroid.Constants.ShowAsAction[t.show]),n.push(t)}o.nativeActions=n}return c.createElement(I,babelHelpers.extends({onSelect:this._onSelect},o))},_onSelect:function(o){var n=o.nativeEvent.position;-1===n?this.props.onIconClicked&&this.props.onIconClicked():this.props.onActionSelected&&this.props.onActionSelected(n)}}),I=v('ToolbarAndroid',u,{nativeOnly:{nativeActions:!0}});e.exports=u},273,[206,42,111,108,153,99,112,40,155,127,142]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Inspector/BoxInspector.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var StyleSheet = _require(_dependencyMap[1], 'StyleSheet');
+
+  var Text = _require(_dependencyMap[2], 'Text');
+
+  var View = _require(_dependencyMap[3], 'View');
+
+  var resolveBoxStyle = _require(_dependencyMap[4], 'resolveBoxStyle');
+
+  var blank = {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  };
+
+  var BoxInspector = function (_React$Component) {
+    babelHelpers.inherits(BoxInspector, _React$Component);
+
+    function BoxInspector() {
+      babelHelpers.classCallCheck(this, BoxInspector);
+      return babelHelpers.possibleConstructorReturn(this, (BoxInspector.__proto__ || Object.getPrototypeOf(BoxInspector)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(BoxInspector, [{
+      key: "render",
+      value: function render() {
+        var frame = this.props.frame;
+        var style = this.props.style;
+        var margin = style && resolveBoxStyle('margin', style) || blank;
+        var padding = style && resolveBoxStyle('padding', style) || blank;
+        return React.createElement(
+          BoxContainer,
+          {
+            title: "margin",
+            titleStyle: styles.marginLabel,
+            box: margin,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 32
+            }
+          },
+          React.createElement(
+            BoxContainer,
+            {
+              title: "padding",
+              box: padding,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 33
+              }
+            },
+            React.createElement(
+              View,
+              {
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 34
+                }
+              },
+              React.createElement(
+                Text,
+                {
+                  style: styles.innerText,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 35
+                  }
+                },
+                "(",
+                (frame.left || 0).toFixed(1),
+                ", ",
+                (frame.top || 0).toFixed(1),
+                ")"
+              ),
+              React.createElement(
+                Text,
+                {
+                  style: styles.innerText,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 38
+                  }
+                },
+                (frame.width || 0).toFixed(1),
+                " \xD7 ",
+                (frame.height || 0).toFixed(1)
+              )
+            )
+          )
+        );
+      }
+    }]);
+    return BoxInspector;
+  }(React.Component);
+
+  var BoxContainer = function (_React$Component2) {
+    babelHelpers.inherits(BoxContainer, _React$Component2);
+
+    function BoxContainer() {
+      babelHelpers.classCallCheck(this, BoxContainer);
+      return babelHelpers.possibleConstructorReturn(this, (BoxContainer.__proto__ || Object.getPrototypeOf(BoxContainer)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(BoxContainer, [{
+      key: "render",
+      value: function render() {
+        var box = this.props.box;
+        return React.createElement(
+          View,
+          {
+            style: styles.box,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 52
+            }
+          },
+          React.createElement(
+            View,
+            {
+              style: styles.row,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 53
+              }
+            },
+            React.createElement(
+              Text,
+              {
+                style: [this.props.titleStyle, styles.label],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 56
+                }
+              },
+              this.props.title
+            ),
+            React.createElement(
+              Text,
+              {
+                style: styles.boxText,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 57
+                }
+              },
+              box.top
+            )
+          ),
+          React.createElement(
+            View,
+            {
+              style: styles.row,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 59
+              }
+            },
+            React.createElement(
+              Text,
+              {
+                style: styles.boxText,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 60
+                }
+              },
+              box.left
+            ),
+            this.props.children,
+            React.createElement(
+              Text,
+              {
+                style: styles.boxText,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 62
+                }
+              },
+              box.right
+            )
+          ),
+          React.createElement(
+            Text,
+            {
+              style: styles.boxText,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 64
+              }
+            },
+            box.bottom
+          )
+        );
+      }
+    }]);
+    return BoxContainer;
+  }(React.Component);
+
+  var styles = StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around'
+    },
+    marginLabel: {
+      width: 60
+    },
+    label: {
+      fontSize: 10,
+      color: 'rgb(255,100,0)',
+      marginLeft: 5,
+      flex: 1,
+      textAlign: 'left',
+      top: -3
+    },
+    buffer: {
+      fontSize: 10,
+      color: 'yellow',
+      flex: 1,
+      textAlign: 'center'
+    },
+    innerText: {
+      color: 'yellow',
+      fontSize: 12,
+      textAlign: 'center',
+      width: 70
+    },
+    box: {
+      borderWidth: 1,
+      borderColor: 'grey'
+    },
+    boxText: {
+      color: 'white',
+      fontSize: 12,
+      marginHorizontal: 3,
+      marginVertical: 2,
+      textAlign: 'center'
+    }
+  });
+  module.exports = BoxInspector;
+},273,[132,171,185,173,270],"BoxInspector");

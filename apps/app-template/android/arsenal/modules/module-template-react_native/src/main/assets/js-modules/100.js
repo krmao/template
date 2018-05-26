@@ -1,1 +1,20 @@
-__d(function(e,t,r,i,n){'use strict';var s=t(n[0]),l={register:function(e){s.registerCallableModule('RCTEventEmitter',e)}};r.exports=l},100,[21]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var HeapCapture = {
+    captureHeap: function captureHeap(path) {
+      var error = null;
+
+      try {
+        global.nativeCaptureHeap(path);
+        console.log('HeapCapture.captureHeap succeeded: ' + path);
+      } catch (e) {
+        console.log('HeapCapture.captureHeap error: ' + e.toString());
+        error = e.toString();
+      }
+
+      _require(_dependencyMap[0], 'NativeModules').JSCHeapCapture.captureComplete(path, error);
+    }
+  };
+  module.exports = HeapCapture;
+},100,[24],"HeapCapture");

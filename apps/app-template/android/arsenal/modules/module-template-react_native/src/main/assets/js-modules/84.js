@@ -1,1 +1,27 @@
-__d(function(e,t,a,s,n){'use strict';var l=t(n[0]),r=t(n[1]),i=(function(e){function t(e,a,s){babelHelpers.classCallCheck(this,t),r(null!=e&&null!=a,'Failed to construct `File`: Must pass both `parts` and `name` arguments.');var n=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e,s));return n.data.name=a,n}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"name",get:function(){return r(null!=this.data.name,'Files must have a name set.'),this.data.name}},{key:"lastModified",get:function(){return this.data.lastModified||0}}]),t})(l);a.exports=i},84,[76,18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var base64 = _require(_dependencyMap[0], 'base64-js');
+
+  function binaryToBase64(data) {
+    if (data instanceof ArrayBuffer) {
+      data = new Uint8Array(data);
+    }
+
+    if (data instanceof Uint8Array) {
+      return base64.fromByteArray(data);
+    }
+
+    if (!ArrayBuffer.isView(data)) {
+      throw new Error('data must be ArrayBuffer or typed array');
+    }
+
+    var _data = data,
+        buffer = _data.buffer,
+        byteOffset = _data.byteOffset,
+        byteLength = _data.byteLength;
+    return base64.fromByteArray(new Uint8Array(buffer, byteOffset, byteLength));
+  }
+
+  module.exports = binaryToBase64;
+},84,[85],"binaryToBase64");

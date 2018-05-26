@@ -1,1 +1,333 @@
-__d(function(e,t,n,s,o){'use strict';var i,a=t(o[0]),r=t(o[1]),l=t(o[2]),c=t(o[3]),u=(t(o[4]),t(o[5])),p=t(o[6]),h=t(o[7]),d=t(o[8]),f=t(o[9]),b=t(o[10]),g=t(o[11]),y=t(o[12]),v=t(o[13]),_=t(o[14]),S=t(o[15]),C=t(o[16]).ViewContextTypes,x=t(o[17]),m=t(o[18]),T=t(o[19]);t(o[20]);i=T('AndroidTextInput',null);var I=['phoneNumber','link','address','calendarEvent','none','all'],F=p({displayName:'TextInput',statics:{State:g},propTypes:babelHelpers.extends({},S,{autoCapitalize:h.oneOf(['none','sentences','words','characters']),autoCorrect:h.bool,spellCheck:h.bool,autoFocus:h.bool,allowFontScaling:h.bool,editable:h.bool,keyboardType:h.oneOf(['default','email-address','numeric','phone-pad','ascii-capable','numbers-and-punctuation','url','number-pad','name-phone-pad','decimal-pad','twitter','web-search','visible-password']),keyboardAppearance:h.oneOf(['default','light','dark']),returnKeyType:h.oneOf(['done','go','next','search','send','none','previous','default','emergency-call','google','join','route','yahoo']),returnKeyLabel:h.string,maxLength:h.number,numberOfLines:h.number,disableFullscreenUI:h.bool,enablesReturnKeyAutomatically:h.bool,multiline:h.bool,textBreakStrategy:h.oneOf(['simple','highQuality','balanced']),onBlur:h.func,onFocus:h.func,onChange:h.func,onChangeText:h.func,onContentSizeChange:h.func,onEndEditing:h.func,onSelectionChange:h.func,onSubmitEditing:h.func,onKeyPress:h.func,onLayout:h.func,onScroll:h.func,placeholder:h.string,placeholderTextColor:a,secureTextEntry:h.bool,selectionColor:a,selectionState:h.instanceOf(r),selection:h.shape({start:h.number.isRequired,end:h.number}),value:h.string,defaultValue:h.string,clearButtonMode:h.oneOf(['never','while-editing','unless-editing','always']),clearTextOnFocus:h.bool,selectTextOnFocus:h.bool,blurOnSubmit:h.bool,style:b.propTypes.style,underlineColorAndroid:a,inlineImageLeft:h.string,inlineImagePadding:h.number,dataDetectorTypes:h.oneOfType([h.oneOf(I),h.arrayOf(h.oneOf(I))]),caretHidden:h.bool,contextMenuHidden:h.bool,inputAccessoryViewID:h.string}),getDefaultProps:function(){return{allowFontScaling:!0}},mixins:[c,y],isFocused:function(){return g.currentlyFocusedField()===d.findNodeHandle(this._inputRef)},_inputRef:void 0,_focusSubscription:void 0,_lastNativeText:void 0,_lastNativeSelection:void 0,componentDidMount:function(){var e=this;this._lastNativeText=this.props.value,this.context.focusEmitter?(this._focusSubscription=this.context.focusEmitter.addListener('focus',function(t){e===t?e.requestAnimationFrame(e.focus):e.isFocused()&&e.blur()}),this.props.autoFocus&&this.context.onFocusRequested(this)):this.props.autoFocus&&this.requestAnimationFrame(this.focus)},componentWillUnmount:function(){this._focusSubscription&&this._focusSubscription.remove(),this.isFocused()&&this.blur()},getChildContext:function(){return{isInAParentText:!0}},childContextTypes:C,contextTypes:babelHelpers.extends({},C,{onFocusRequested:h.func,focusEmitter:h.instanceOf(l)}),clear:function(){this.setNativeProps({text:''})},render:function(){return this._renderAndroid()},_getText:function(){return'string'==typeof this.props.value?this.props.value:'string'==typeof this.props.defaultValue?this.props.defaultValue:''},_setNativeRef:function(e){this._inputRef=e},_renderIOSLegacy:function(){var e=void 0,t=babelHelpers.extends({},this.props);if(t.style=[this.props.style],t.selection&&null==t.selection.end&&(t.selection={start:t.selection.start,end:t.selection.start}),t.multiline){var n=t.children,s=0;u.Children.forEach(n,function(){return++s}),m(!(t.value&&s),'Cannot specify both value and children.'),s>=1&&(n=u.createElement(b,{style:t.style,allowFontScaling:t.allowFontScaling},n)),t.inputView&&(n=[n,t.inputView]),t.style.unshift(R.multilineInput),e=u.createElement(void 0,babelHelpers.extends({ref:this._setNativeRef},t,{children:n,onFocus:this._onFocus,onBlur:this._onBlur,onChange:this._onChange,onContentSizeChange:this.props.onContentSizeChange,onSelectionChange:this._onSelectionChange,onTextInput:this._onTextInput,onSelectionChangeShouldSetResponder:x.thatReturnsTrue,text:this._getText(),dataDetectorTypes:this.props.dataDetectorTypes,onScroll:this._onScroll}))}else e=u.createElement(void 0,babelHelpers.extends({ref:this._setNativeRef},t,{onFocus:this._onFocus,onBlur:this._onBlur,onChange:this._onChange,onSelectionChange:this._onSelectionChange,onSelectionChangeShouldSetResponder:x.thatReturnsTrue,text:this._getText()}));return u.createElement(v,{onLayout:t.onLayout,onPress:this._onPress,rejectResponderTermination:!0,accessible:t.accessible,accessibilityLabel:t.accessibilityLabel,accessibilityTraits:t.accessibilityTraits,nativeID:this.props.nativeID,testID:t.testID},e)},_renderIOS:function(){var e=babelHelpers.extends({},this.props);e.style=[this.props.style],e.selection&&null==e.selection.end&&(e.selection={start:e.selection.start,end:e.selection.start});var t=void e.multiline;e.multiline&&e.style.unshift(R.multilineInput);var n=u.createElement(t,babelHelpers.extends({ref:this._setNativeRef},e,{onFocus:this._onFocus,onBlur:this._onBlur,onChange:this._onChange,onContentSizeChange:this.props.onContentSizeChange,onSelectionChange:this._onSelectionChange,onTextInput:this._onTextInput,onSelectionChangeShouldSetResponder:x.thatReturnsTrue,text:this._getText(),dataDetectorTypes:this.props.dataDetectorTypes,onScroll:this._onScroll}));return u.createElement(v,{onLayout:e.onLayout,onPress:this._onPress,rejectResponderTermination:!0,accessible:e.accessible,accessibilityLabel:e.accessibilityLabel,accessibilityTraits:e.accessibilityTraits,nativeID:this.props.nativeID,testID:e.testID},n)},_renderAndroid:function(){var e=babelHelpers.extends({},this.props);e.style=[this.props.style],e.autoCapitalize=_.AndroidTextInput.Constants.AutoCapitalizationType[e.autoCapitalize||'sentences'];var t=this.props.children,n=0;u.Children.forEach(t,function(){return++n}),m(!(this.props.value&&n),'Cannot specify both value and children.'),n>1&&(t=u.createElement(b,null,t)),e.selection&&null==e.selection.end&&(e.selection={start:e.selection.start,end:e.selection.start});var s=u.createElement(i,babelHelpers.extends({ref:this._setNativeRef},e,{mostRecentEventCount:0,onFocus:this._onFocus,onBlur:this._onBlur,onChange:this._onChange,onSelectionChange:this._onSelectionChange,onTextInput:this._onTextInput,text:this._getText(),children:t,disableFullscreenUI:this.props.disableFullscreenUI,textBreakStrategy:this.props.textBreakStrategy,onScroll:this._onScroll}));return u.createElement(v,{onLayout:e.onLayout,onPress:this._onPress,accessible:this.props.accessible,accessibilityLabel:this.props.accessibilityLabel,accessibilityComponentType:this.props.accessibilityComponentType,nativeID:this.props.nativeID,testID:this.props.testID},s)},_onFocus:function(e){this.props.onFocus&&this.props.onFocus(e),this.props.selectionState&&this.props.selectionState.focus()},_onPress:function(e){(this.props.editable||void 0===this.props.editable)&&this.focus()},_onChange:function(e){this._inputRef&&this._inputRef.setNativeProps({mostRecentEventCount:e.nativeEvent.eventCount});var t=e.nativeEvent.text;this.props.onChange&&this.props.onChange(e),this.props.onChangeText&&this.props.onChangeText(t),this._inputRef&&(this._lastNativeText=t,this.forceUpdate())},_onSelectionChange:function(e){this.props.onSelectionChange&&this.props.onSelectionChange(e),this._inputRef&&(this._lastNativeSelection=e.nativeEvent.selection,(this.props.selection||this.props.selectionState)&&this.forceUpdate())},componentDidUpdate:function(){var e={};this._lastNativeText!==this.props.value&&'string'==typeof this.props.value&&(e.text=this.props.value);var t=this.props.selection;this._lastNativeSelection&&t&&(this._lastNativeSelection.start!==t.start||this._lastNativeSelection.end!==t.end)&&(e.selection=this.props.selection),Object.keys(e).length>0&&this._inputRef&&this._inputRef.setNativeProps(e),this.props.selectionState&&t&&this.props.selectionState.update(t.start,t.end)},_onBlur:function(e){this.blur(),this.props.onBlur&&this.props.onBlur(e),this.props.selectionState&&this.props.selectionState.blur()},_onTextInput:function(e){this.props.onTextInput&&this.props.onTextInput(e)},_onScroll:function(e){this.props.onScroll&&this.props.onScroll(e)}}),R=f.create({multilineInput:{paddingTop:5}});n.exports=F},266,[40,267,35,42,28,111,155,108,43,150,164,101,175,174,99,112,154,16,18,127,32]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Inspector/Inspector.js";
+
+  var Dimensions = _require(_dependencyMap[0], 'Dimensions');
+
+  var InspectorOverlay = _require(_dependencyMap[1], 'InspectorOverlay');
+
+  var InspectorPanel = _require(_dependencyMap[2], 'InspectorPanel');
+
+  var Platform = _require(_dependencyMap[3], 'Platform');
+
+  var React = _require(_dependencyMap[4], 'React');
+
+  var ReactNative = _require(_dependencyMap[5], 'ReactNative');
+
+  var StyleSheet = _require(_dependencyMap[6], 'StyleSheet');
+
+  var Touchable = _require(_dependencyMap[7], 'Touchable');
+
+  var UIManager = _require(_dependencyMap[8], 'UIManager');
+
+  var View = _require(_dependencyMap[9], 'View');
+
+  var emptyObject = _require(_dependencyMap[10], 'fbjs/lib/emptyObject');
+
+  var invariant = _require(_dependencyMap[11], 'fbjs/lib/invariant');
+
+  var hook = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+  var renderers = findRenderers();
+  hook.resolveRNStyle = _require(_dependencyMap[12], 'flattenStyle');
+
+  function findRenderers() {
+    var allRenderers = Object.keys(hook._renderers).map(function (key) {
+      return hook._renderers[key];
+    });
+    invariant(allRenderers.length >= 1, 'Expected to find at least one React Native renderer on DevTools hook.');
+    return allRenderers;
+  }
+
+  function getInspectorDataForViewTag(touchedViewTag) {
+    for (var i = 0; i < renderers.length; i++) {
+      var renderer = renderers[i];
+      var inspectorData = renderer.getInspectorDataForViewTag(touchedViewTag);
+
+      if (inspectorData.hierarchy.length > 0) {
+        return inspectorData;
+      }
+    }
+
+    throw new Error('Expected to find at least one React renderer.');
+  }
+
+  var Inspector = function (_React$Component) {
+    babelHelpers.inherits(Inspector, _React$Component);
+
+    function Inspector(props) {
+      babelHelpers.classCallCheck(this, Inspector);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (Inspector.__proto__ || Object.getPrototypeOf(Inspector)).call(this, props));
+
+      _initialiseProps.call(_this);
+
+      _this.state = {
+        devtoolsAgent: null,
+        hierarchy: null,
+        panelPos: 'bottom',
+        inspecting: true,
+        perfing: false,
+        inspected: null,
+        selection: null,
+        inspectedViewTag: _this.props.inspectedViewTag,
+        networking: false
+      };
+      return _this;
+    }
+
+    babelHelpers.createClass(Inspector, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        hook.on('react-devtools', this.attachToDevtools);
+
+        if (hook.reactDevtoolsAgent) {
+          this.attachToDevtools(hook.reactDevtoolsAgent);
+        }
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        if (this._subs) {
+          this._subs.map(function (fn) {
+            return fn();
+          });
+        }
+
+        hook.off('react-devtools', this.attachToDevtools);
+      }
+    }, {
+      key: "UNSAFE_componentWillReceiveProps",
+      value: function UNSAFE_componentWillReceiveProps(newProps) {
+        this.setState({
+          inspectedViewTag: newProps.inspectedViewTag
+        });
+      }
+    }, {
+      key: "setSelection",
+      value: function setSelection(i) {
+        var _this2 = this;
+
+        var hierarchyItem = this.state.hierarchy[i];
+
+        var _hierarchyItem$getIns = hierarchyItem.getInspectorData(ReactNative.findNodeHandle),
+            measure = _hierarchyItem$getIns.measure,
+            props = _hierarchyItem$getIns.props,
+            source = _hierarchyItem$getIns.source;
+
+        measure(function (x, y, width, height, left, top) {
+          _this2.setState({
+            inspected: {
+              frame: {
+                left: left,
+                top: top,
+                width: width,
+                height: height
+              },
+              style: props.style,
+              source: source
+            },
+            selection: i
+          });
+        });
+      }
+    }, {
+      key: "onTouchViewTag",
+      value: function onTouchViewTag(touchedViewTag, frame, pointerY) {
+        var _getInspectorDataForV = getInspectorDataForViewTag(touchedViewTag),
+            hierarchy = _getInspectorDataForV.hierarchy,
+            props = _getInspectorDataForV.props,
+            selection = _getInspectorDataForV.selection,
+            source = _getInspectorDataForV.source;
+
+        if (this.state.devtoolsAgent) {
+          var offsetFromLeaf = hierarchy.length - 1 - selection;
+          this.state.devtoolsAgent.selectFromDOMNode(touchedViewTag, true, offsetFromLeaf);
+        }
+
+        this.setState({
+          panelPos: pointerY > Dimensions.get('window').height / 2 ? 'top' : 'bottom',
+          selection: selection,
+          hierarchy: hierarchy,
+          inspected: {
+            style: props.style,
+            frame: frame,
+            source: source
+          }
+        });
+      }
+    }, {
+      key: "setPerfing",
+      value: function setPerfing(val) {
+        this.setState({
+          perfing: val,
+          inspecting: false,
+          inspected: null,
+          networking: false
+        });
+      }
+    }, {
+      key: "setInspecting",
+      value: function setInspecting(val) {
+        this.setState({
+          inspecting: val,
+          inspected: null
+        });
+      }
+    }, {
+      key: "setTouchTargeting",
+      value: function setTouchTargeting(val) {
+        var _this3 = this;
+
+        Touchable.TOUCH_TARGET_DEBUG = val;
+        this.props.onRequestRerenderApp(function (inspectedViewTag) {
+          _this3.setState({
+            inspectedViewTag: inspectedViewTag
+          });
+        });
+      }
+    }, {
+      key: "setNetworking",
+      value: function setNetworking(val) {
+        this.setState({
+          networking: val,
+          perfing: false,
+          inspecting: false,
+          inspected: null
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var panelContainerStyle = this.state.panelPos === 'bottom' ? {
+          bottom: 0
+        } : {
+          top: Platform.OS === 'ios' ? 20 : 0
+        };
+        return React.createElement(
+          View,
+          {
+            style: styles.container,
+            pointerEvents: "box-none",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 241
+            }
+          },
+          this.state.inspecting && React.createElement(InspectorOverlay, {
+            inspected: this.state.inspected,
+            inspectedViewTag: this.state.inspectedViewTag,
+            onTouchViewTag: this.onTouchViewTag.bind(this),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 243
+            }
+          }),
+          React.createElement(
+            View,
+            {
+              style: [styles.panelContainer, panelContainerStyle],
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 248
+              }
+            },
+            React.createElement(InspectorPanel, {
+              devtoolsIsOpen: !!this.state.devtoolsAgent,
+              inspecting: this.state.inspecting,
+              perfing: this.state.perfing,
+              setPerfing: this.setPerfing.bind(this),
+              setInspecting: this.setInspecting.bind(this),
+              inspected: this.state.inspected,
+              hierarchy: this.state.hierarchy,
+              selection: this.state.selection,
+              setSelection: this.setSelection.bind(this),
+              touchTargeting: Touchable.TOUCH_TARGET_DEBUG,
+              setTouchTargeting: this.setTouchTargeting.bind(this),
+              networking: this.state.networking,
+              setNetworking: this.setNetworking.bind(this),
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 249
+              }
+            })
+          )
+        );
+      }
+    }]);
+    return Inspector;
+  }(React.Component);
+
+  var _initialiseProps = function _initialiseProps() {
+    var _this4 = this;
+
+    this.attachToDevtools = function (agent) {
+      var _hideWait = null;
+      var hlSub = agent.sub('highlight', function (_ref) {
+        var node = _ref.node,
+            name = _ref.name,
+            props = _ref.props;
+        clearTimeout(_hideWait);
+
+        if (typeof node !== 'number') {
+          node = ReactNative.findNodeHandle(node);
+        }
+
+        UIManager.measure(node, function (x, y, width, height, left, top) {
+          _this4.setState({
+            hierarchy: [],
+            inspected: {
+              frame: {
+                left: left,
+                top: top,
+                width: width,
+                height: height
+              },
+              style: props ? props.style : emptyObject
+            }
+          });
+        });
+      });
+      var hideSub = agent.sub('hideHighlight', function () {
+        if (_this4.state.inspected === null) {
+          return;
+        }
+
+        _hideWait = setTimeout(function () {
+          _this4.setState({
+            inspected: null
+          });
+        }, 100);
+      });
+      _this4._subs = [hlSub, hideSub];
+      agent.on('shutdown', function () {
+        _this4.setState({
+          devtoolsAgent: null
+        });
+
+        _this4._subs = null;
+      });
+
+      _this4.setState({
+        devtoolsAgent: agent
+      });
+    };
+  };
+
+  var styles = StyleSheet.create({
+    container: {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0
+    },
+    panelContainer: {
+      position: 'absolute',
+      left: 0,
+      right: 0
+    }
+  });
+  module.exports = Inspector;
+},266,[167,267,271,32,132,49,171,187,121,173,15,18,116],"Inspector");

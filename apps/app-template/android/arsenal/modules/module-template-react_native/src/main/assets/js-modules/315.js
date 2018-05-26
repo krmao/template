@@ -1,1 +1,127 @@
-__d(function(e,t,n,i,r){Object.defineProperty(i,"__esModule",{value:!0}),i.default=function(e,t){var n=new Set,i=new Set,r=new Set,u=new Set,o=new Set,l=function(){[n,i,r,u,o].forEach(function(e){return e.clear()}),s.forEach(function(e){return e&&e.remove()})},c=function(e){switch(e){case'action':return n;case'willFocus':return i;case'didFocus':return r;case'willBlur':return u;case'didBlur':return o;default:return null}},d=function(e,t){var n=babelHelpers.extends({},t,{type:e}),i=c(e);i&&i.forEach(function(e){e(n)})},a='didBlur',s=['willFocus','didFocus','willBlur','didBlur','action'].map(function(n){return e(n,function(e){var i=e.state,r=e.lastState,u=e.action,o=r&&r.routes,c=i&&i.routes,s=(r&&r.routes&&r.routes[r.index].key,c&&c[i.index].key),f=s===t,w=o&&o.find(function(e){return e.key===t}),B=c&&c.find(function(e){return e.key===t}),F={context:t+":"+u.type+"_"+(e.context||'Root'),state:B,lastState:w,action:u,type:n},v=!!i&&i.isTransitioning,y=a;'didBlur'===a&&('willFocus'===n&&f?d(a='willFocus',F):'action'===n&&f&&d(a='willFocus',F)),'willFocus'===a&&('didFocus'===n&&f&&!v?d(a='didFocus',F):'action'===n&&f&&!v&&d(a='didFocus',F)),'didFocus'===a&&(f?'willBlur'===n?d(a='willBlur',F):'action'===n&&'didFocus'===y&&d('action',F):d(a='willBlur',F)),'willBlur'===a&&('action'!==n||f||v?'didBlur'===n&&d(a='didBlur',F):d(a='didBlur',F)),'didBlur'!==a||B||l()})});return{addListener:function(e,t){var n=c(e);if(!n)throw new Error("Invalid event name \""+e+"\"");n.add(t);return{remove:function(){n.delete(t)}}}}}},315,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var BatchedBridge = _require(_dependencyMap[0], 'BatchedBridge');
+
+  var BugReporting = _require(_dependencyMap[1], 'BugReporting');
+
+  var NativeModules = _require(_dependencyMap[2], 'NativeModules');
+
+  var ReactNative = _require(_dependencyMap[3], 'ReactNative');
+
+  var SceneTracker = _require(_dependencyMap[4], 'SceneTracker');
+
+  var infoLog = _require(_dependencyMap[5], 'infoLog');
+
+  var invariant = _require(_dependencyMap[6], 'fbjs/lib/invariant');
+
+  var renderApplication = _require(_dependencyMap[7], 'renderApplication');
+
+  var runnables = {};
+  var runCount = 1;
+  var sections = {};
+  var tasks = new Map();
+
+  var componentProviderInstrumentationHook = function componentProviderInstrumentationHook(component) {
+    return component();
+  };
+
+  var wrapperComponentProvider = void 0;
+  var AppRegistry = {
+    setWrapperComponentProvider: function setWrapperComponentProvider(provider) {
+      wrapperComponentProvider = provider;
+    },
+    registerConfig: function registerConfig(config) {
+      config.forEach(function (appConfig) {
+        if (appConfig.run) {
+          AppRegistry.registerRunnable(appConfig.appKey, appConfig.run);
+        } else {
+          invariant(appConfig.component != null, 'AppRegistry.registerConfig(...): Every config is expected to set ' + 'either `run` or `component`, but `%s` has neither.', appConfig.appKey);
+          AppRegistry.registerComponent(appConfig.appKey, appConfig.component, appConfig.section);
+        }
+      });
+    },
+    registerComponent: function registerComponent(appKey, componentProvider, section) {
+      runnables[appKey] = {
+        componentProvider: componentProvider,
+        run: function run(appParameters) {
+          return renderApplication(componentProviderInstrumentationHook(componentProvider), appParameters.initialProps, appParameters.rootTag, wrapperComponentProvider && wrapperComponentProvider(appParameters));
+        }
+      };
+
+      if (section) {
+        sections[appKey] = runnables[appKey];
+      }
+
+      return appKey;
+    },
+    registerRunnable: function registerRunnable(appKey, run) {
+      runnables[appKey] = {
+        run: run
+      };
+      return appKey;
+    },
+    registerSection: function registerSection(appKey, component) {
+      AppRegistry.registerComponent(appKey, component, true);
+    },
+    getAppKeys: function getAppKeys() {
+      return Object.keys(runnables);
+    },
+    getSectionKeys: function getSectionKeys() {
+      return Object.keys(sections);
+    },
+    getSections: function getSections() {
+      return babelHelpers.extends({}, sections);
+    },
+    getRunnable: function getRunnable(appKey) {
+      return runnables[appKey];
+    },
+    getRegistry: function getRegistry() {
+      return {
+        sections: AppRegistry.getSectionKeys(),
+        runnables: babelHelpers.extends({}, runnables)
+      };
+    },
+    setComponentProviderInstrumentationHook: function setComponentProviderInstrumentationHook(hook) {
+      componentProviderInstrumentationHook = hook;
+    },
+    runApplication: function runApplication(appKey, appParameters) {
+      var msg = 'Running application "' + appKey + '" with appParams: ' + JSON.stringify(appParameters) + '. ' + '__DEV__ === ' + String(__DEV__) + ', development-level warning are ' + (__DEV__ ? 'ON' : 'OFF') + ', performance optimizations are ' + (__DEV__ ? 'OFF' : 'ON');
+      infoLog(msg);
+      BugReporting.addSource('AppRegistry.runApplication' + runCount++, function () {
+        return msg;
+      });
+      invariant(runnables[appKey] && runnables[appKey].run, 'Application ' + appKey + ' has not been registered.\n\n' + "Hint: This error often happens when you're running the packager " + '(local dev server) from a wrong folder. For example you have ' + 'multiple apps and the packager is still running for the app you ' + 'were working on before.\nIf this is the case, simply kill the old ' + 'packager instance (e.g. close the packager terminal window) ' + 'and start the packager in the correct app folder (e.g. cd into app ' + "folder and run 'npm start').\n\n" + 'This error can also happen due to a require() error during ' + 'initialization or failure to call AppRegistry.registerComponent.\n\n');
+      SceneTracker.setActiveScene({
+        name: appKey
+      });
+      runnables[appKey].run(appParameters);
+    },
+    unmountApplicationComponentAtRootTag: function unmountApplicationComponentAtRootTag(rootTag) {
+      ReactNative.unmountComponentAtNodeAndRemoveContainer(rootTag);
+    },
+    registerHeadlessTask: function registerHeadlessTask(taskKey, task) {
+      if (tasks.has(taskKey)) {
+        console.warn("registerHeadlessTask called multiple times for same key '" + taskKey + "'");
+      }
+
+      tasks.set(taskKey, task);
+    },
+    startHeadlessTask: function startHeadlessTask(taskId, taskKey, data) {
+      var taskProvider = tasks.get(taskKey);
+
+      if (!taskProvider) {
+        throw new Error("No task registered for key " + taskKey);
+      }
+
+      taskProvider()(data).then(function () {
+        return NativeModules.HeadlessJsTaskSupport.notifyTaskFinished(taskId);
+      }).catch(function (reason) {
+        console.error(reason);
+        NativeModules.HeadlessJsTaskSupport.notifyTaskFinished(taskId);
+      });
+    }
+  };
+  BatchedBridge.registerCallableModule('AppRegistry', AppRegistry);
+  module.exports = AppRegistry;
+},315,[25,316,24,49,318,105,18,319],"AppRegistry");

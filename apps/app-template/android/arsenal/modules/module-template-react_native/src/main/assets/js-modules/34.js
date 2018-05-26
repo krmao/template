@@ -1,1 +1,13 @@
-__d(function(e,t,r,o,s){'use strict';var l=t(s[0]),i=t(s[1]);var p=(function(e){function t(){babelHelpers.classCallCheck(this,t);var e=new i,r=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return r.sharedSubscriber=e,r}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"addListener",value:function(e,r,o){return babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"addListener",this).call(this,e,r,o)}},{key:"removeAllListeners",value:function(e){babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"removeAllListeners",this).call(this,e)}},{key:"removeSubscription",value:function(e){e.emitter!==this?e.emitter.removeSubscription(e):babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"removeSubscription",this).call(this,e)}}]),t})(l);r.exports=new p},34,[35,38]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ExecutionEnvironment = _require(_dependencyMap[0], './ExecutionEnvironment');
+
+  var performance;
+
+  if (ExecutionEnvironment.canUseDOM) {
+    performance = window.performance || window.msPerformance || window.webkitPerformance;
+  }
+
+  module.exports = performance || {};
+},34,[35],"node_modules/fbjs/lib/performance.js");

@@ -1,1 +1,22 @@
-__d(function(t,n,e,i,a){'use strict';var o=n(a[0]),_=(function(){function t(){babelHelpers.classCallCheck(this,t)}return babelHelpers.createClass(t,[{key:"start",value:function(t,n,e,i,a){}},{key:"stop",value:function(){this.__nativeId&&o.API.stopAnimation(this.__nativeId)}},{key:"__getNativeAnimationConfig",value:function(){throw new Error('This animation type cannot be offloaded to native')}},{key:"__debouncedOnEnd",value:function(t){var n=this.__onEnd;this.__onEnd=null,n&&n(t)}},{key:"__startNativeAnimation",value:function(t){t.__makeNative(),this.__nativeId=o.generateNewAnimationId(),o.API.startAnimatingNode(this.__nativeId,t.__getNativeTag(),this.__getNativeAnimationConfig(),this.__debouncedOnEnd.bind(this))}}]),t})();e.exports=_},199,[184]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AnimatedImplementation = _require(_dependencyMap[0], 'AnimatedImplementation');
+
+  var Image = _require(_dependencyMap[1], 'Image');
+
+  var ScrollView = _require(_dependencyMap[2], 'ScrollView');
+
+  var Text = _require(_dependencyMap[3], 'Text');
+
+  var View = _require(_dependencyMap[4], 'View');
+
+  var Animated = {
+    View: AnimatedImplementation.createAnimatedComponent(View),
+    Text: AnimatedImplementation.createAnimatedComponent(Text),
+    Image: AnimatedImplementation.createAnimatedComponent(Image),
+    ScrollView: AnimatedImplementation.createAnimatedComponent(ScrollView)
+  };
+  babelHelpers.extends(Animated, AnimatedImplementation);
+  module.exports = Animated;
+},199,[200,227,228,185,173],"Animated");

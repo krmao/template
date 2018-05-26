@@ -1,1 +1,190 @@
-__d(function(t,e,n,i,r){'use strict';var o=e(r[0]),s=(e(r[1]),e(r[2])),a=e(r[3]),l=e(r[4]),c=(e(r[5]),e(r[6])),u=e(r[7]),p=(e(r[8]),e(r[9]),e(r[10])),g=new o,m=new Map,f=[];function d(t){return!!f.some(function(e){return t.startsWith(e)})||Array.isArray(console.ignoredYellowBox)&&console.ignoredYellowBox.some(function(e){return t.startsWith(String(e))})}var y=function(t){var n=t.count,i=t.warning,o=t.onPress,a=e(r[11]),l=e(r[12]),c=e(r[13]),u=n>1?s.createElement(a,{style:x.listRowCount},'('+n+') '):null;return s.createElement(c,{style:x.listRow},s.createElement(l,{activeOpacity:.5,onPress:o,style:x.listRowContent,underlayColor:"transparent"},s.createElement(a,{style:x.listRowText,numberOfLines:2},u,i)))},h=function(t){var n=t.frame,i=e(r[11]),o=e(r[12]),a=n.file,l=n.lineNumber,c=void 0;if(a){var p=a.split('/');c=p[p.length-1]}else c='<unknown file>';return s.createElement(o,{activeOpacity:.5,style:x.openInEditorButton,underlayColor:"transparent",onPress:u.bind(null,a,l)},s.createElement(i,{style:x.inspectorCountText},c,":",l))},w=function(t){var n=t.warningInfo,i=t.warning,o=t.stacktraceVisible,l=t.onDismiss,c=t.onDismissAll,u=t.onMinimize,p=t.toggleStacktrace,g=e(r[14]),m=e(r[11]),f=e(r[12]),d=e(r[13]),y=n||{},w=y.count,b=y.stacktrace,E='Warning encountered '+w+' time'+(w-1?'s':'')+'.',v=void 0;return o&&b&&(v=s.createElement(d,{style:x.stacktraceList},b.map(function(t,e){return s.createElement(h,{frame:t,key:e})}))),s.createElement(d,{style:x.inspector},s.createElement(a,{style:x.safeArea},s.createElement(d,{style:x.inspectorCount},s.createElement(m,{style:x.inspectorCountText},E),s.createElement(f,{onPress:p,underlayColor:"transparent"},s.createElement(m,{style:x.inspectorButtonText},o?"\u25bc":"\u25b6"," Stacktrace"))),s.createElement(g,{style:x.inspectorWarning},v,s.createElement(m,{style:x.inspectorWarningText},i)),s.createElement(d,{style:x.inspectorButtons},s.createElement(f,{activeOpacity:.5,onPress:u,style:x.inspectorButton,underlayColor:"transparent"},s.createElement(m,{style:x.inspectorButtonText},"Minimize")),s.createElement(f,{activeOpacity:.5,onPress:l,style:x.inspectorButton,underlayColor:"transparent"},s.createElement(m,{style:x.inspectorButtonText},"Dismiss")),s.createElement(f,{activeOpacity:.5,onPress:c,style:x.inspectorButton,underlayColor:"transparent"},s.createElement(m,{style:x.inspectorButtonText},"Dismiss All")))))},b=(function(t){function n(t,e){babelHelpers.classCallCheck(this,n);var i=babelHelpers.possibleConstructorReturn(this,(n.__proto__||Object.getPrototypeOf(n)).call(this,t,e));return i.state={inspecting:null,stacktraceVisible:!1,warningMap:m},i.dismissWarning=function(t){var e=i.state,n=e.inspecting,r=e.warningMap;t?r.delete(t):r.clear(),i.setState({inspecting:t&&n!==t?n:null,warningMap:r})},i}return babelHelpers.inherits(n,t),babelHelpers.createClass(n,[{key:"componentDidMount",value:function(){var t=this,e=null;this._listener=g.addListener('warning',function(n){e=e||setImmediate(function(){e=null,t.setState({warningMap:n})})})}},{key:"componentDidUpdate",value:function(){var t,e,n=this.state.inspecting;null!=n&&(t=n,(e=m.get(t))&&!e.symbolicated&&(e.symbolicated=!0,p(e.stacktrace).then(function(e){var n=m.get(t);n&&(n.stacktrace=e,g.emit('warning',m))},function(e){m.get(t)&&(c('Failed to symbolicate warning, "%s":',t,e),g.emit('warning',m))})))}},{key:"componentWillUnmount",value:function(){this._listener&&this._listener.remove()}},{key:"render",value:function(){var t=this;if(console.disableYellowBox||0===this.state.warningMap.size)return null;var n=e(r[14]),i=e(r[13]),o=this.state,a=o.inspecting,l=o.stacktraceVisible,c=null!==a?s.createElement(w,{warningInfo:this.state.warningMap.get(a),warning:a,stacktraceVisible:l,onDismiss:function(){return t.dismissWarning(a)},onDismissAll:function(){return t.dismissWarning(null)},onMinimize:function(){return t.setState({inspecting:null})},toggleStacktrace:function(){return t.setState({stacktraceVisible:!l})}}):null,u=[];this.state.warningMap.forEach(function(e,n){d(n)||u.push(s.createElement(y,{key:n,count:e.count,warning:n,onPress:function(){return t.setState({inspecting:n})},onDismiss:function(){return t.dismissWarning(n)}}))});var p=[x.list,{height:Math.min(u.length,4.4)*(v+k)}];return s.createElement(i,{style:c?x.fullScreen:p},s.createElement(n,{style:p,scrollsToTop:!1},u),c)}}],[{key:"ignoreWarnings",value:function(t){t.forEach(function(t){-1===f.indexOf(t)&&f.push(t)})}}]),n})(s.Component),E=function(t){return'rgba(250, 186, 48, '+t+')'},v=1,k=46,C=Number.MAX_SAFE_INTEGER,x=l.create({fullScreen:{height:'100%',width:'100%',elevation:C,position:'absolute'},inspector:{backgroundColor:E(.95),height:'100%',paddingTop:5,elevation:C},inspectorButtons:{flexDirection:'row'},inspectorButton:{flex:1,paddingVertical:22,backgroundColor:E(1)},safeArea:{flex:1},stacktraceList:{paddingBottom:5},inspectorButtonText:{color:"white",fontSize:14,opacity:.8,textAlign:'center'},openInEditorButton:{paddingTop:5,paddingBottom:5},inspectorCount:{padding:15,paddingBottom:0,flexDirection:'row',justifyContent:'space-between'},inspectorCountText:{color:"white",fontSize:14},inspectorWarning:{flex:1,paddingHorizontal:15},inspectorWarningText:{color:"white",fontSize:16,fontWeight:'600'},list:{backgroundColor:'transparent',position:'absolute',left:0,right:0,bottom:0,elevation:C},listRow:{backgroundColor:E(.95),height:k,marginTop:v},listRowContent:{flex:1},listRowCount:{color:'rgba(255, 255, 255, 0.5)'},listRowText:{color:"white",position:'absolute',left:0,top:5,marginLeft:15,marginRight:15}});n.exports=b},300,[35,28,111,251,150,94,97,301,54,26,303,164,274,152,207]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableListView.js";
+
+  var ListView = _require(_dependencyMap[0], 'ListView');
+
+  var PropTypes = _require(_dependencyMap[1], 'prop-types');
+
+  var React = _require(_dependencyMap[2], 'React');
+
+  var SwipeableListViewDataSource = _require(_dependencyMap[3], 'SwipeableListViewDataSource');
+
+  var SwipeableRow = _require(_dependencyMap[4], 'SwipeableRow');
+
+  var SwipeableListView = function (_React$Component) {
+    babelHelpers.inherits(SwipeableListView, _React$Component);
+    babelHelpers.createClass(SwipeableListView, null, [{
+      key: "getNewDataSource",
+      value: function getNewDataSource() {
+        return new SwipeableListViewDataSource({
+          getRowData: function getRowData(data, sectionID, rowID) {
+            return data[sectionID][rowID];
+          },
+          getSectionHeaderData: function getSectionHeaderData(data, sectionID) {
+            return data[sectionID];
+          },
+          rowHasChanged: function rowHasChanged(row1, row2) {
+            return row1 !== row2;
+          },
+          sectionHeaderHasChanged: function sectionHeaderHasChanged(s1, s2) {
+            return s1 !== s2;
+          }
+        });
+      }
+    }]);
+
+    function SwipeableListView(props, context) {
+      babelHelpers.classCallCheck(this, SwipeableListView);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (SwipeableListView.__proto__ || Object.getPrototypeOf(SwipeableListView)).call(this, props, context));
+
+      _this._listViewRef = null;
+      _this._shouldBounceFirstRowOnMount = false;
+
+      _this._onScroll = function (e) {
+        if (_this.props.dataSource.getOpenRowID()) {
+          _this.setState({
+            dataSource: _this.state.dataSource.setOpenRowID(null)
+          });
+        }
+
+        _this.props.onScroll && _this.props.onScroll(e);
+      };
+
+      _this._renderRow = function (rowData, sectionID, rowID) {
+        var slideoutView = _this.props.renderQuickActions(rowData, sectionID, rowID);
+
+        if (!slideoutView) {
+          return _this.props.renderRow(rowData, sectionID, rowID);
+        }
+
+        var shouldBounceOnMount = false;
+
+        if (_this._shouldBounceFirstRowOnMount) {
+          _this._shouldBounceFirstRowOnMount = false;
+          shouldBounceOnMount = rowID === _this.props.dataSource.getFirstRowID();
+        }
+
+        return React.createElement(
+          SwipeableRow,
+          {
+            slideoutView: slideoutView,
+            isOpen: rowData.id === _this.props.dataSource.getOpenRowID(),
+            maxSwipeDistance: _this._getMaxSwipeDistance(rowData, sectionID, rowID),
+            key: rowID,
+            onOpen: function onOpen() {
+              return _this._onOpen(rowData.id);
+            },
+            onClose: function onClose() {
+              return _this._onClose(rowData.id);
+            },
+            onSwipeEnd: function onSwipeEnd() {
+              return _this._setListViewScrollable(true);
+            },
+            onSwipeStart: function onSwipeStart() {
+              return _this._setListViewScrollable(false);
+            },
+            shouldBounceOnMount: shouldBounceOnMount,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 183
+            }
+          },
+          _this.props.renderRow(rowData, sectionID, rowID)
+        );
+      };
+
+      _this._shouldBounceFirstRowOnMount = _this.props.bounceFirstRowOnMount;
+      _this.state = {
+        dataSource: _this.props.dataSource
+      };
+      return _this;
+    }
+
+    babelHelpers.createClass(SwipeableListView, [{
+      key: "UNSAFE_componentWillReceiveProps",
+      value: function UNSAFE_componentWillReceiveProps(nextProps) {
+        if (this.state.dataSource.getDataSource() !== nextProps.dataSource.getDataSource()) {
+          this.setState({
+            dataSource: nextProps.dataSource
+          });
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        return React.createElement(ListView, babelHelpers.extends({}, this.props, {
+          ref: function ref(_ref) {
+            _this2._listViewRef = _ref;
+          },
+          dataSource: this.state.dataSource.getDataSource(),
+          onScroll: this._onScroll,
+          renderRow: this._renderRow,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 116
+          }
+        }));
+      }
+    }, {
+      key: "_setListViewScrollable",
+      value: function _setListViewScrollable(value) {
+        if (this._listViewRef && typeof this._listViewRef.setNativeProps === 'function') {
+          this._listViewRef.setNativeProps({
+            scrollEnabled: value
+          });
+        }
+      }
+    }, {
+      key: "getScrollResponder",
+      value: function getScrollResponder() {
+        if (this._listViewRef && typeof this._listViewRef.getScrollResponder === 'function') {
+          return this._listViewRef.getScrollResponder();
+        }
+      }
+    }, {
+      key: "_getMaxSwipeDistance",
+      value: function _getMaxSwipeDistance(rowData, sectionID, rowID) {
+        if (typeof this.props.maxSwipeDistance === 'function') {
+          return this.props.maxSwipeDistance(rowData, sectionID, rowID);
+        }
+
+        return this.props.maxSwipeDistance;
+      }
+    }, {
+      key: "_onOpen",
+      value: function _onOpen(rowID) {
+        this.setState({
+          dataSource: this.state.dataSource.setOpenRowID(rowID)
+        });
+      }
+    }, {
+      key: "_onClose",
+      value: function _onClose(rowID) {
+        this.setState({
+          dataSource: this.state.dataSource.setOpenRowID(null)
+        });
+      }
+    }]);
+    return SwipeableListView;
+  }(React.Component);
+
+  SwipeableListView.propTypes = {
+    bounceFirstRowOnMount: PropTypes.bool.isRequired,
+    dataSource: PropTypes.instanceOf(SwipeableListViewDataSource).isRequired,
+    maxSwipeDistance: PropTypes.oneOfType([PropTypes.number, PropTypes.func]).isRequired,
+    renderRow: PropTypes.func.isRequired,
+    renderQuickActions: PropTypes.func.isRequired
+  };
+  SwipeableListView.defaultProps = {
+    bounceFirstRowOnMount: false,
+    renderQuickActions: function renderQuickActions() {
+      return null;
+    }
+  };
+  module.exports = SwipeableListView;
+},300,[246,129,132,301,297],"SwipeableListView");

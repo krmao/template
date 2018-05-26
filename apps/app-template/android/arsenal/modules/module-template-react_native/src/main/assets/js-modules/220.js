@@ -1,1 +1,46 @@
-__d(function(e,t,r,n,o){'use strict';var s=t(o[0]),i=t(o[1]),l=t(o[2]),a=t(o[3]),c=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){return s.createElement(a,{style:[p.dummyDatePickerIOS,this.props.style]},s.createElement(l,{style:p.datePickerText},"DatePickerIOS is not supported on this platform!"))}}]),t})(s.Component),p=i.create({dummyDatePickerIOS:{height:100,width:300,backgroundColor:'#ffbcbc',borderWidth:1,borderColor:'red',alignItems:'center',justifyContent:'center',margin:10},datePickerText:{color:'#333333',margin:20}});r.exports=c},220,[111,150,164,152]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var NativeAnimatedHelper = _require(_dependencyMap[0], 'NativeAnimatedHelper');
+
+  var Animation = function () {
+    function Animation() {
+      babelHelpers.classCallCheck(this, Animation);
+    }
+
+    babelHelpers.createClass(Animation, [{
+      key: "start",
+      value: function start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {}
+    }, {
+      key: "stop",
+      value: function stop() {
+        if (this.__nativeId) {
+          NativeAnimatedHelper.API.stopAnimation(this.__nativeId);
+        }
+      }
+    }, {
+      key: "__getNativeAnimationConfig",
+      value: function __getNativeAnimationConfig() {
+        throw new Error('This animation type cannot be offloaded to native');
+      }
+    }, {
+      key: "__debouncedOnEnd",
+      value: function __debouncedOnEnd(result) {
+        var onEnd = this.__onEnd;
+        this.__onEnd = null;
+        onEnd && onEnd(result);
+      }
+    }, {
+      key: "__startNativeAnimation",
+      value: function __startNativeAnimation(animatedValue) {
+        animatedValue.__makeNative();
+
+        this.__nativeId = NativeAnimatedHelper.generateNewAnimationId();
+        NativeAnimatedHelper.API.startAnimatingNode(this.__nativeId, animatedValue.__getNativeTag(), this.__getNativeAnimationConfig(), this.__debouncedOnEnd.bind(this));
+      }
+    }]);
+    return Animation;
+  }();
+
+  module.exports = Animation;
+},220,[205],"Animation");

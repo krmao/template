@@ -1,1 +1,115 @@
-__d(function(e,t,n,r,i){'use strict';var s=t(i[0]),_=t(i[1]),a=t(i[2]),o=t(i[3]),v=t(i[4])({__types:!0});var E={emit:function(e,t,n,r,i,s,_){return this.__getEventEmitter().emit(e,t,n,r,i,s,_)},emitAndHold:function(e,t,n,r,i,s,_){return this.__getEventEmitter().emitAndHold(e,t,n,r,i,s,_)},addListener:function(e,t,n){return this.__getEventEmitter().addListener(e,t,n)},once:function(e,t,n){return this.__getEventEmitter().once(e,t,n)},addRetroactiveListener:function(e,t,n){return this.__getEventEmitter().addRetroactiveListener(e,t,n)},addListenerMap:function(e,t){return this.__getEventEmitter().addListenerMap(e,t)},addRetroactiveListenerMap:function(e,t){return this.__getEventEmitter().addListenerMap(e,t)},removeAllListeners:function(){this.__getEventEmitter().removeAllListeners()},removeCurrentListener:function(){this.__getEventEmitter().removeCurrentListener()},releaseHeldEventType:function(e){this.__getEventEmitter().releaseHeldEventType(e)},__getEventEmitter:function(){if(!this.__eventEmitter){var e=new s,t=new a;this.__eventEmitter=new _(e,t)}return this.__eventEmitter}};n.exports=function(e,t){o(t,'Must supply set of valid event types');var n=e.prototype||e;o(!n.__eventEmitter,'An active emitter is already mixed in');var r=e.constructor;r&&o(r===Object||r===Function,'Mix EventEmitter into a class, not an instance'),n.hasOwnProperty(v)?babelHelpers.extends(n.__types,t):n.__types?n.__types=babelHelpers.extends({},n.__types,t):n.__types=t,babelHelpers.extends(n,E)}},268,[35,269,270,18,271]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Inspector/ElementBox.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var View = _require(_dependencyMap[1], 'View');
+
+  var StyleSheet = _require(_dependencyMap[2], 'StyleSheet');
+
+  var BorderBox = _require(_dependencyMap[3], 'BorderBox');
+
+  var resolveBoxStyle = _require(_dependencyMap[4], 'resolveBoxStyle');
+
+  var flattenStyle = _require(_dependencyMap[5], 'flattenStyle');
+
+  var ElementBox = function (_React$Component) {
+    babelHelpers.inherits(ElementBox, _React$Component);
+
+    function ElementBox() {
+      babelHelpers.classCallCheck(this, ElementBox);
+      return babelHelpers.possibleConstructorReturn(this, (ElementBox.__proto__ || Object.getPrototypeOf(ElementBox)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(ElementBox, [{
+      key: "render",
+      value: function render() {
+        var style = flattenStyle(this.props.style) || {};
+        var margin = resolveBoxStyle('margin', style);
+        var padding = resolveBoxStyle('padding', style);
+        var frameStyle = this.props.frame;
+
+        if (margin) {
+          frameStyle = {
+            top: frameStyle.top - margin.top,
+            left: frameStyle.left - margin.left,
+            height: frameStyle.height + margin.top + margin.bottom,
+            width: frameStyle.width + margin.left + margin.right
+          };
+        }
+
+        var contentStyle = {
+          width: this.props.frame.width,
+          height: this.props.frame.height
+        };
+
+        if (padding) {
+          contentStyle = {
+            width: contentStyle.width - padding.left - padding.right,
+            height: contentStyle.height - padding.top - padding.bottom
+          };
+        }
+
+        return React.createElement(
+          View,
+          {
+            style: [styles.frame, frameStyle],
+            pointerEvents: "none",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 45
+            }
+          },
+          React.createElement(
+            BorderBox,
+            {
+              box: margin,
+              style: styles.margin,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 46
+              }
+            },
+            React.createElement(
+              BorderBox,
+              {
+                box: padding,
+                style: styles.padding,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 47
+                }
+              },
+              React.createElement(View, {
+                style: [styles.content, contentStyle],
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 48
+                }
+              })
+            )
+          )
+        );
+      }
+    }]);
+    return ElementBox;
+  }(React.Component);
+
+  var styles = StyleSheet.create({
+    frame: {
+      position: 'absolute'
+    },
+    content: {
+      backgroundColor: 'rgba(200, 230, 255, 0.8)'
+    },
+    padding: {
+      borderColor: 'rgba(77, 255, 0, 0.3)'
+    },
+    margin: {
+      borderColor: 'rgba(255, 132, 0, 0.3)'
+    }
+  });
+  module.exports = ElementBox;
+},268,[132,173,171,269,270,116],"ElementBox");

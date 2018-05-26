@@ -1,0 +1,1 @@
+__d(function(e,a,s,t,r){s.exports=a(r[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/src/main/res/img",width:29,height:29,scales:[1],hash:"66ff112faad357eb98de1a967a3a19d4",name:"right_arrow",type:"png"})},412,[143]);

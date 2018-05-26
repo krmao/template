@@ -1,1 +1,182 @@
-__d(function(t,e,i,n,s){'use strict';var a=e(s[0]),o=e(s[1]),r=e(s[2]);function h(t,e,i){return t[e][i]}function d(t,e){return t[e]}var c=(function(){function t(e){babelHelpers.classCallCheck(this,t),a(e&&'function'==typeof e.rowHasChanged,'Must provide a rowHasChanged function.'),this._rowHasChanged=e.rowHasChanged,this._getRowData=e.getRowData||h,this._sectionHeaderHasChanged=e.sectionHeaderHasChanged,this._getSectionHeaderData=e.getSectionHeaderData||d,this._dataBlob=null,this._dirtyRows=[],this._dirtySections=[],this._cachedRowCount=0,this.rowIdentities=[],this.sectionIdentities=[]}return babelHelpers.createClass(t,[{key:"cloneWithRows",value:function(t,e){var i=e?[[].concat(babelHelpers.toConsumableArray(e))]:null;return this._sectionHeaderHasChanged||(this._sectionHeaderHasChanged=function(){return!1}),this.cloneWithRowsAndSections({s1:t},['s1'],i)}},{key:"cloneWithRowsAndSections",value:function(e,i,n){a('function'==typeof this._sectionHeaderHasChanged,'Must provide a sectionHeaderHasChanged function with section data.'),a(!i||!n||i.length===n.length,'row and section ids lengths must be the same');var s=new t({getRowData:this._getRowData,getSectionHeaderData:this._getSectionHeaderData,rowHasChanged:this._rowHasChanged,sectionHeaderHasChanged:this._sectionHeaderHasChanged});return s._dataBlob=e,s.sectionIdentities=i||Object.keys(e),n?s.rowIdentities=n:(s.rowIdentities=[],s.sectionIdentities.forEach(function(t){s.rowIdentities.push(Object.keys(e[t]))})),s._cachedRowCount=u(s.rowIdentities),s._calculateDirtyArrays(this._dataBlob,this.sectionIdentities,this.rowIdentities),s}},{key:"getRowCount",value:function(){return this._cachedRowCount}},{key:"getRowAndSectionCount",value:function(){return this._cachedRowCount+this.sectionIdentities.length}},{key:"rowShouldUpdate",value:function(t,e){var i=this._dirtyRows[t][e];return r(void 0!==i,'missing dirtyBit for section, row: '+t+', '+e),i}},{key:"getRowData",value:function(t,e){var i=this.sectionIdentities[t],n=this.rowIdentities[t][e];return r(void 0!==i&&void 0!==n,'rendering invalid section, row: '+t+', '+e),this._getRowData(this._dataBlob,i,n)}},{key:"getRowIDForFlatIndex",value:function(t){for(var e=t,i=0;i<this.sectionIdentities.length;i++){if(!(e>=this.rowIdentities[i].length))return this.rowIdentities[i][e];e-=this.rowIdentities[i].length}return null}},{key:"getSectionIDForFlatIndex",value:function(t){for(var e=t,i=0;i<this.sectionIdentities.length;i++){if(!(e>=this.rowIdentities[i].length))return this.sectionIdentities[i];e-=this.rowIdentities[i].length}return null}},{key:"getSectionLengths",value:function(){for(var t=[],e=0;e<this.sectionIdentities.length;e++)t.push(this.rowIdentities[e].length);return t}},{key:"sectionHeaderShouldUpdate",value:function(t){var e=this._dirtySections[t];return r(void 0!==e,'missing dirtyBit for section: '+t),e}},{key:"getSectionHeaderData",value:function(t){if(!this._getSectionHeaderData)return null;var e=this.sectionIdentities[t];return r(void 0!==e,'renderSection called on invalid section: '+t),this._getSectionHeaderData(this._dataBlob,e)}},{key:"_calculateDirtyArrays",value:function(t,e,i){for(var n,s=l(e),a={},o=0;o<i.length;o++){var h=e[o];r(!a[h],'SectionID appears more than once: '+h),a[h]=l(i[o])}this._dirtySections=[],this._dirtyRows=[];for(var d=0;d<this.sectionIdentities.length;d++){n=!s[h=this.sectionIdentities[d]];var c=this._sectionHeaderHasChanged;!n&&c&&(n=c(this._getSectionHeaderData(t,h),this._getSectionHeaderData(this._dataBlob,h))),this._dirtySections.push(!!n),this._dirtyRows[d]=[];for(var u=0;u<this.rowIdentities[d].length;u++){var g=this.rowIdentities[d][u];n=!s[h]||!a[h][g]||this._rowHasChanged(this._getRowData(t,h,g),this._getRowData(this._dataBlob,h,g)),this._dirtyRows[d].push(!!n)}}}}]),t})();function u(t){for(var e=0,i=0;i<t.length;i++){e+=t[i].length}return e}function l(t){if(o(t))return{};for(var e={},i=0;i<t.length;i++){var n=t[i];r(!e[n],'Value appears more than once in array: '+n),e[n]=!0}return e}i.exports=c},226,[18,227,32]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Animated/src/createAnimatedComponent.js";
+
+  var _require = _require2(_dependencyMap[0], './AnimatedEvent'),
+      AnimatedEvent = _require.AnimatedEvent;
+
+  var AnimatedProps = _require2(_dependencyMap[1], './nodes/AnimatedProps');
+
+  var React = _require2(_dependencyMap[2], 'React');
+
+  var ViewStylePropTypes = _require2(_dependencyMap[3], 'ViewStylePropTypes');
+
+  var invariant = _require2(_dependencyMap[4], 'fbjs/lib/invariant');
+
+  function createAnimatedComponent(Component) {
+    invariant(typeof Component === 'string' || Component.prototype && Component.prototype.isReactComponent, '`createAnimatedComponent` does not support stateless functional components; ' + 'use a class component instead.');
+
+    var AnimatedComponent = function (_React$Component) {
+      babelHelpers.inherits(AnimatedComponent, _React$Component);
+
+      function AnimatedComponent(props) {
+        babelHelpers.classCallCheck(this, AnimatedComponent);
+
+        var _this = babelHelpers.possibleConstructorReturn(this, (AnimatedComponent.__proto__ || Object.getPrototypeOf(AnimatedComponent)).call(this, props));
+
+        _this._invokeAnimatedPropsCallbackOnMount = false;
+        _this._eventDetachers = [];
+
+        _this._animatedPropsCallback = function () {
+          if (_this._component == null) {
+            _this._invokeAnimatedPropsCallbackOnMount = true;
+          } else if (AnimatedComponent.__skipSetNativeProps_FOR_TESTS_ONLY || typeof _this._component.setNativeProps !== 'function') {
+            _this.forceUpdate();
+          } else if (!_this._propsAnimated.__isNative) {
+            _this._component.setNativeProps(_this._propsAnimated.__getAnimatedValue());
+          } else {
+            throw new Error('Attempting to run JS driven animation on animated ' + 'node that has been moved to "native" earlier by starting an ' + 'animation with `useNativeDriver: true`');
+          }
+        };
+
+        _this._setComponentRef = _this._setComponentRef.bind(_this);
+        return _this;
+      }
+
+      babelHelpers.createClass(AnimatedComponent, [{
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          this._propsAnimated && this._propsAnimated.__detach();
+
+          this._detachNativeEvents();
+        }
+      }, {
+        key: "setNativeProps",
+        value: function setNativeProps(props) {
+          this._component.setNativeProps(props);
+        }
+      }, {
+        key: "UNSAFE_componentWillMount",
+        value: function UNSAFE_componentWillMount() {
+          this._attachProps(this.props);
+        }
+      }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+          if (this._invokeAnimatedPropsCallbackOnMount) {
+            this._invokeAnimatedPropsCallbackOnMount = false;
+
+            this._animatedPropsCallback();
+          }
+
+          this._propsAnimated.setNativeView(this._component);
+
+          this._attachNativeEvents();
+        }
+      }, {
+        key: "_attachNativeEvents",
+        value: function _attachNativeEvents() {
+          var _this2 = this;
+
+          var scrollableNode = this._component.getScrollableNode ? this._component.getScrollableNode() : this._component;
+
+          var _loop = function _loop(key) {
+            var prop = _this2.props[key];
+
+            if (prop instanceof AnimatedEvent && prop.__isNative) {
+              prop.__attach(scrollableNode, key);
+
+              _this2._eventDetachers.push(function () {
+                return prop.__detach(scrollableNode, key);
+              });
+            }
+          };
+
+          for (var key in this.props) {
+            _loop(key);
+          }
+        }
+      }, {
+        key: "_detachNativeEvents",
+        value: function _detachNativeEvents() {
+          this._eventDetachers.forEach(function (remove) {
+            return remove();
+          });
+
+          this._eventDetachers = [];
+        }
+      }, {
+        key: "_attachProps",
+        value: function _attachProps(nextProps) {
+          var oldPropsAnimated = this._propsAnimated;
+          this._propsAnimated = new AnimatedProps(nextProps, this._animatedPropsCallback);
+          oldPropsAnimated && oldPropsAnimated.__detach();
+        }
+      }, {
+        key: "UNSAFE_componentWillReceiveProps",
+        value: function UNSAFE_componentWillReceiveProps(newProps) {
+          this._attachProps(newProps);
+        }
+      }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps) {
+          if (this._component !== this._prevComponent) {
+            this._propsAnimated.setNativeView(this._component);
+          }
+
+          if (this._component !== this._prevComponent || prevProps !== this.props) {
+            this._detachNativeEvents();
+
+            this._attachNativeEvents();
+          }
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          var props = this._propsAnimated.__getValue();
+
+          return React.createElement(Component, babelHelpers.extends({}, props, {
+            ref: this._setComponentRef,
+            collapsable: this._propsAnimated.__isNative ? false : props.collapsable,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 154
+            }
+          }));
+        }
+      }, {
+        key: "_setComponentRef",
+        value: function _setComponentRef(c) {
+          this._prevComponent = this._component;
+          this._component = c;
+        }
+      }, {
+        key: "getNode",
+        value: function getNode() {
+          return this._component;
+        }
+      }]);
+      return AnimatedComponent;
+    }(React.Component);
+
+    AnimatedComponent.__skipSetNativeProps_FOR_TESTS_ONLY = false;
+    var propTypes = Component.propTypes;
+    AnimatedComponent.propTypes = {
+      style: function style(props, propName, componentName) {
+        if (!propTypes) {
+          return;
+        }
+
+        for (var key in ViewStylePropTypes) {
+          if (!propTypes[key] && props[key] !== undefined) {
+            console.warn('You are setting the style `{ ' + key + ': ... }` as a prop. You ' + 'should nest it in a style object. ' + 'E.g. `{ style: { ' + key + ': ... } }`');
+          }
+        }
+      }
+    };
+    return AnimatedComponent;
+  }
+
+  module.exports = createAnimatedComponent;
+},226,[201,214,132,142,18],"createAnimatedComponent");

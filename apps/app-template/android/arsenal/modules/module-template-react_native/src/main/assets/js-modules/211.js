@@ -1,1 +1,81 @@
-__d(function(e,o,t,n,u){'use strict';var i=o(u[0]),d=o(u[1]),m=o(u[2]),s=o(u[3]).KeyboardObserver,r=o(u[4]),a={addListener:function(e,o){d(!1,'Dummy method used for documentation')},removeListener:function(e,o){d(!1,'Dummy method used for documentation')},removeAllListeners:function(e){d(!1,'Dummy method used for documentation')},dismiss:function(){d(!1,'Dummy method used for documentation')},scheduleLayoutAnimation:function(e){d(!1,'Dummy method used for documentation')}};(a=new m(s)).dismiss=r,a.scheduleLayoutAnimation=function(e){var o=e.duration,t=e.easing;o&&i.configureNext({duration:o,update:{duration:o,type:t&&i.Types[t]||'keyboard'}})},t.exports=a},211,[212,18,72,20,213]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AnimatedInterpolation = _require(_dependencyMap[0], './AnimatedInterpolation');
+
+  var AnimatedNode = _require(_dependencyMap[1], './AnimatedNode');
+
+  var AnimatedValue = _require(_dependencyMap[2], './AnimatedValue');
+
+  var AnimatedWithChildren = _require(_dependencyMap[3], './AnimatedWithChildren');
+
+  var AnimatedDivision = function (_AnimatedWithChildren) {
+    babelHelpers.inherits(AnimatedDivision, _AnimatedWithChildren);
+
+    function AnimatedDivision(a, b) {
+      babelHelpers.classCallCheck(this, AnimatedDivision);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (AnimatedDivision.__proto__ || Object.getPrototypeOf(AnimatedDivision)).call(this));
+
+      _this._a = typeof a === 'number' ? new AnimatedValue(a) : a;
+      _this._b = typeof b === 'number' ? new AnimatedValue(b) : b;
+      return _this;
+    }
+
+    babelHelpers.createClass(AnimatedDivision, [{
+      key: "__makeNative",
+      value: function __makeNative() {
+        this._a.__makeNative();
+
+        this._b.__makeNative();
+
+        babelHelpers.get(AnimatedDivision.prototype.__proto__ || Object.getPrototypeOf(AnimatedDivision.prototype), "__makeNative", this).call(this);
+      }
+    }, {
+      key: "__getValue",
+      value: function __getValue() {
+        var a = this._a.__getValue();
+
+        var b = this._b.__getValue();
+
+        if (b === 0) {
+          console.error('Detected division by zero in AnimatedDivision');
+        }
+
+        return a / b;
+      }
+    }, {
+      key: "interpolate",
+      value: function interpolate(config) {
+        return new AnimatedInterpolation(this, config);
+      }
+    }, {
+      key: "__attach",
+      value: function __attach() {
+        this._a.__addChild(this);
+
+        this._b.__addChild(this);
+      }
+    }, {
+      key: "__detach",
+      value: function __detach() {
+        this._a.__removeChild(this);
+
+        this._b.__removeChild(this);
+
+        babelHelpers.get(AnimatedDivision.prototype.__proto__ || Object.getPrototypeOf(AnimatedDivision.prototype), "__detach", this).call(this);
+      }
+    }, {
+      key: "__getNativeConfig",
+      value: function __getNativeConfig() {
+        return {
+          type: 'division',
+          input: [this._a.__getNativeTag(), this._b.__getNativeTag()]
+        };
+      }
+    }]);
+    return AnimatedDivision;
+  }(AnimatedWithChildren);
+
+  module.exports = AnimatedDivision;
+},211,[203,204,202,206],"AnimatedDivision");

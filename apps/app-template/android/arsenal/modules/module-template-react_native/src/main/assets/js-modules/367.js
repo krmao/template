@@ -1,1 +1,81 @@
-__d(function(e,t,r,o,n){Object.defineProperty(o,"__esModule",{value:!0});var s=t(n[0]),i=babelHelpers.interopRequireDefault(s),a=t(n[1]),l=t(n[2]),u=babelHelpers.interopRequireDefault(l),p=t(n[3]),c=babelHelpers.interopRequireDefault(p),d=t(n[4]),f=babelHelpers.interopRequireDefault(d),b=(function(e){function t(){var e,r,o,n;babelHelpers.classCallCheck(this,t);for(var s=arguments.length,i=Array(s),a=0;a<s;a++)i[a]=arguments[a];return r=o=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(i))),o._getScreenOptions=function(e){var t=o.props.descriptors[e];return(0,f.default)(t.options,'Cannot access screen descriptor options from drawer sidebar'),t.options},o._getLabel=function(e){var t=e.focused,r=e.tintColor,n=e.route,s=o._getScreenOptions(n.key),i=s.drawerLabel,a=s.title;return i?'function'==typeof i?i({tintColor:r,focused:t}):i:'string'==typeof a?a:n.routeName},o._renderIcon=function(e){var t=e.focused,r=e.tintColor,n=e.route,s=o._getScreenOptions(n.key).drawerIcon;return s?'function'==typeof s?s({tintColor:r,focused:t}):s:null},o._onItemPress=function(e){var t=e.route;if(!e.focused){var r=void 0;null!=t.index&&0!==t.index&&(r=c.default.reset({index:0,actions:[u.default.navigate({routeName:t.routes[0].routeName})]})),o.props.navigation.dispatch(u.default.navigate({routeName:t.routeName,action:r}))}},n=r,babelHelpers.possibleConstructorReturn(o,n)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props.contentComponent;if(!e)return null;var t=this.props.navigation.state;return(0,f.default)('number'==typeof t.index,'should be set'),i.default.createElement(a.View,{style:[v.container,this.props.style]},i.default.createElement(e,babelHelpers.extends({},this.props.contentOptions,{navigation:this.props.navigation,descriptors:this.props.descriptors,items:t.routes,activeItemKey:t.routes[t.index]?t.routes[t.index].key:null,screenProps:this.props.screenProps,getLabel:this._getLabel,renderIcon:this._renderIcon,onItemPress:this._onItemPress,drawerPosition:this.props.drawerPosition})))}}]),t})(i.default.PureComponent);o.default=b;var v=a.StyleSheet.create({container:{flex:1}})},367,[12,17,309,337,310]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.isOrientationLandscape = undefined;
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/withOrientation.js";
+
+  exports.default = function (WrappedComponent) {
+    var withOrientation = function (_React$Component) {
+      babelHelpers.inherits(withOrientation, _React$Component);
+
+      function withOrientation() {
+        babelHelpers.classCallCheck(this, withOrientation);
+
+        var _this = babelHelpers.possibleConstructorReturn(this, (withOrientation.__proto__ || Object.getPrototypeOf(withOrientation)).call(this));
+
+        _initialiseProps.call(_this);
+
+        var isLandscape = isOrientationLandscape(_reactNative.Dimensions.get('window'));
+        _this.state = {
+          isLandscape: isLandscape
+        };
+        return _this;
+      }
+
+      babelHelpers.createClass(withOrientation, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+          _reactNative.Dimensions.addEventListener('change', this.handleOrientationChange);
+        }
+      }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          _reactNative.Dimensions.removeEventListener('change', this.handleOrientationChange);
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          return _react2.default.createElement(WrappedComponent, babelHelpers.extends({}, this.props, this.state, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 30
+            }
+          }));
+        }
+      }]);
+      return withOrientation;
+    }(_react2.default.Component);
+
+    var _initialiseProps = function _initialiseProps() {
+      var _this2 = this;
+
+      this.handleOrientationChange = function (_ref2) {
+        var window = _ref2.window;
+        var isLandscape = isOrientationLandscape(window);
+
+        _this2.setState({
+          isLandscape: isLandscape
+        });
+      };
+    };
+
+    return (0, _hoistNonReactStatics2.default)(withOrientation, WrappedComponent);
+  };
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _hoistNonReactStatics = _require(_dependencyMap[2], "hoist-non-react-statics");
+
+  var _hoistNonReactStatics2 = babelHelpers.interopRequireDefault(_hoistNonReactStatics);
+
+  var isOrientationLandscape = exports.isOrientationLandscape = function isOrientationLandscape(_ref) {
+    var width = _ref.width,
+        height = _ref.height;
+    return width > height;
+  };
+},367,[12,22,359],"node_modules/react-navigation/src/views/withOrientation.js");

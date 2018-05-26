@@ -1,1 +1,79 @@
-__d(function(r,n,t,u,e){'use strict';var o=4,f=.001,i=1e-7,a=10,c=11,v=1/(c-1),s='function'==typeof Float32Array;function w(r,n){return 1-3*n+3*r}function l(r,n){return 3*n-6*r}function y(r){return 3*r}function b(r,n,t){return((w(n,t)*r+l(n,t))*r+y(n))*r}function h(r,n,t){return 3*w(n,t)*r*r+2*l(n,t)*r+y(n)}function A(r,n,t,u,e){var o,f,c=0;do{(o=b(f=n+(t-n)/2,u,e)-r)>0?t=f:n=f}while(Math.abs(o)>i&&++c<a);return f}function d(r,n,t,u){for(var e=0;e<o;++e){var f=h(n,t,u);if(0===f)return n;n-=(b(n,t,u)-r)/f}return n}t.exports=function(r,n,t,u){if(!(0<=r&&r<=1&&0<=t&&t<=1))throw new Error('bezier x values must be in [0, 1] range');var e=s?new Float32Array(c):new Array(c);if(r!==n||t!==u)for(var o=0;o<c;++o)e[o]=b(o*v,r,t);function i(n){for(var u=0,o=1,i=c-1;o!==i&&e[o]<=n;++o)u+=v;var a=u+(n-e[--o])/(e[o+1]-e[o])*v,s=h(a,r,t);return s>=f?d(n,a,r,t):0===s?a:A(n,u,u+v,r,t)}return function(e){return r===n&&t===u?e:0===e?0:1===e?1:b(i(e),n,u)}}},204,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var NativeAnimatedHelper = _require(_dependencyMap[0], '../NativeAnimatedHelper');
+
+  var invariant = _require(_dependencyMap[1], 'fbjs/lib/invariant');
+
+  var AnimatedNode = function () {
+    function AnimatedNode() {
+      babelHelpers.classCallCheck(this, AnimatedNode);
+    }
+
+    babelHelpers.createClass(AnimatedNode, [{
+      key: "__attach",
+      value: function __attach() {}
+    }, {
+      key: "__detach",
+      value: function __detach() {
+        if (this.__isNative && this.__nativeTag != null) {
+          NativeAnimatedHelper.API.dropAnimatedNode(this.__nativeTag);
+          this.__nativeTag = undefined;
+        }
+      }
+    }, {
+      key: "__getValue",
+      value: function __getValue() {}
+    }, {
+      key: "__getAnimatedValue",
+      value: function __getAnimatedValue() {
+        return this.__getValue();
+      }
+    }, {
+      key: "__addChild",
+      value: function __addChild(child) {}
+    }, {
+      key: "__removeChild",
+      value: function __removeChild(child) {}
+    }, {
+      key: "__getChildren",
+      value: function __getChildren() {
+        return [];
+      }
+    }, {
+      key: "__makeNative",
+      value: function __makeNative() {
+        if (!this.__isNative) {
+          throw new Error('This node cannot be made a "native" animated node');
+        }
+      }
+    }, {
+      key: "__getNativeTag",
+      value: function __getNativeTag() {
+        NativeAnimatedHelper.assertNativeAnimatedModule();
+        invariant(this.__isNative, 'Attempt to get native tag from node not marked as "native"');
+
+        if (this.__nativeTag == null) {
+          var nativeTag = NativeAnimatedHelper.generateNewNodeTag();
+          NativeAnimatedHelper.API.createAnimatedNode(nativeTag, this.__getNativeConfig());
+          this.__nativeTag = nativeTag;
+        }
+
+        return this.__nativeTag;
+      }
+    }, {
+      key: "__getNativeConfig",
+      value: function __getNativeConfig() {
+        throw new Error('This JS animated node type cannot be used as native animated node');
+      }
+    }, {
+      key: "toJSON",
+      value: function toJSON() {
+        return this.__getValue();
+      }
+    }]);
+    return AnimatedNode;
+  }();
+
+  module.exports = AnimatedNode;
+},204,[205,18],"AnimatedNode");

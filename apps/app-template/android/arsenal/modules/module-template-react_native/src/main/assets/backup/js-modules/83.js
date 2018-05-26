@@ -1,0 +1,1 @@
+__d(function(e,t,s,i,l){'use strict';s.exports=function e(t,s){babelHelpers.classCallCheck(this,e),this.type=t.toString(),babelHelpers.extends(this,s)}},83,[]);

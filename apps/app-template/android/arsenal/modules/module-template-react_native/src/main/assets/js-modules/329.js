@@ -1,1 +1,248 @@
-__d(function(e,t,i,r,a){Object.defineProperty(r,"__esModule",{value:!0});var n=t(a[0]),l=babelHelpers.interopRequireDefault(n),o=t(a[1]),s=t(a[2]),c=babelHelpers.interopRequireDefault(s),u=t(a[3]),d=(function(e){function t(){var e,i,r,a;babelHelpers.classCallCheck(this,t);for(var n=arguments.length,l=Array(n),o=0;o<n;o++)l[o]=arguments[o];return i=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(l))),r.state={},r._onTextLayout=function(e){r.state.initialTextWidth||r.setState({initialTextWidth:e.nativeEvent.layout.x+e.nativeEvent.layout.width})},a=i,babelHelpers.possibleConstructorReturn(r,a)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"_renderBackImage",value:function(){var e=this.props,t=e.backImage,i=e.title,r=e.tintColor,a=void 0,n=void 0;return l.default.isValidElement(t)?t:(t?(a=t,n={tintColor:r,title:i}):(a=o.Image,n={style:[b.icon,!!i&&b.iconWithTitle,!!r&&{tintColor:r}],source:u}),l.default.createElement(a,n))}},{key:"render",value:function(){var e=this.props,t=e.onPress,i=e.pressColorAndroid,r=e.width,a=e.title,n=(e.titleStyle,e.tintColor,e.truncatedTitle),s=!(!this.state.initialTextWidth||!r)&&this.state.initialTextWidth>r?n:a;return l.default.createElement(c.default,{accessibilityComponentType:"button",accessibilityLabel:s,accessibilityTraits:"button",testID:"header-back",delayPressIn:0,onPress:t,pressColor:i,style:b.container,borderless:!0},l.default.createElement(o.View,{style:b.container},this._renderBackImage(),!1))}}]),t})(l.default.PureComponent);d.defaultProps={pressColorAndroid:'rgba(0, 0, 0, .32)',tintColor:void 0,truncatedTitle:'Back'};var b=o.StyleSheet.create({container:{alignItems:'center',flexDirection:'row',backgroundColor:'transparent'},title:{fontSize:17,paddingRight:10},icon:{height:24,width:24,margin:16,resizeMode:'contain',transform:[{scaleX:o.I18nManager.isRTL?-1:1}]},iconWithTitle:{}});r.default=d},329,[12,17,330,331]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var NativeEventEmitter = _require(_dependencyMap[0], 'NativeEventEmitter');
+
+  var RCTPushNotificationManager = _require(_dependencyMap[1], 'NativeModules').PushNotificationManager;
+
+  var invariant = _require(_dependencyMap[2], 'fbjs/lib/invariant');
+
+  var PushNotificationEmitter = new NativeEventEmitter(RCTPushNotificationManager);
+
+  var _notifHandlers = new Map();
+
+  var DEVICE_NOTIF_EVENT = 'remoteNotificationReceived';
+  var NOTIF_REGISTER_EVENT = 'remoteNotificationsRegistered';
+  var NOTIF_REGISTRATION_ERROR_EVENT = 'remoteNotificationRegistrationError';
+  var DEVICE_LOCAL_NOTIF_EVENT = 'localNotificationReceived';
+
+  var PushNotificationIOS = function () {
+    babelHelpers.createClass(PushNotificationIOS, null, [{
+      key: "presentLocalNotification",
+      value: function presentLocalNotification(details) {
+        RCTPushNotificationManager.presentLocalNotification(details);
+      }
+    }, {
+      key: "scheduleLocalNotification",
+      value: function scheduleLocalNotification(details) {
+        RCTPushNotificationManager.scheduleLocalNotification(details);
+      }
+    }, {
+      key: "cancelAllLocalNotifications",
+      value: function cancelAllLocalNotifications() {
+        RCTPushNotificationManager.cancelAllLocalNotifications();
+      }
+    }, {
+      key: "removeAllDeliveredNotifications",
+      value: function removeAllDeliveredNotifications() {
+        RCTPushNotificationManager.removeAllDeliveredNotifications();
+      }
+    }, {
+      key: "getDeliveredNotifications",
+      value: function getDeliveredNotifications(callback) {
+        RCTPushNotificationManager.getDeliveredNotifications(callback);
+      }
+    }, {
+      key: "removeDeliveredNotifications",
+      value: function removeDeliveredNotifications(identifiers) {
+        RCTPushNotificationManager.removeDeliveredNotifications(identifiers);
+      }
+    }, {
+      key: "setApplicationIconBadgeNumber",
+      value: function setApplicationIconBadgeNumber(number) {
+        RCTPushNotificationManager.setApplicationIconBadgeNumber(number);
+      }
+    }, {
+      key: "getApplicationIconBadgeNumber",
+      value: function getApplicationIconBadgeNumber(callback) {
+        RCTPushNotificationManager.getApplicationIconBadgeNumber(callback);
+      }
+    }, {
+      key: "cancelLocalNotifications",
+      value: function cancelLocalNotifications(userInfo) {
+        RCTPushNotificationManager.cancelLocalNotifications(userInfo);
+      }
+    }, {
+      key: "getScheduledLocalNotifications",
+      value: function getScheduledLocalNotifications(callback) {
+        RCTPushNotificationManager.getScheduledLocalNotifications(callback);
+      }
+    }, {
+      key: "addEventListener",
+      value: function addEventListener(type, handler) {
+        invariant(type === 'notification' || type === 'register' || type === 'registrationError' || type === 'localNotification', 'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events');
+        var listener;
+
+        if (type === 'notification') {
+          listener = PushNotificationEmitter.addListener(DEVICE_NOTIF_EVENT, function (notifData) {
+            handler(new PushNotificationIOS(notifData));
+          });
+        } else if (type === 'localNotification') {
+          listener = PushNotificationEmitter.addListener(DEVICE_LOCAL_NOTIF_EVENT, function (notifData) {
+            handler(new PushNotificationIOS(notifData));
+          });
+        } else if (type === 'register') {
+          listener = PushNotificationEmitter.addListener(NOTIF_REGISTER_EVENT, function (registrationInfo) {
+            handler(registrationInfo.deviceToken);
+          });
+        } else if (type === 'registrationError') {
+          listener = PushNotificationEmitter.addListener(NOTIF_REGISTRATION_ERROR_EVENT, function (errorInfo) {
+            handler(errorInfo);
+          });
+        }
+
+        _notifHandlers.set(type, listener);
+      }
+    }, {
+      key: "removeEventListener",
+      value: function removeEventListener(type, handler) {
+        invariant(type === 'notification' || type === 'register' || type === 'registrationError' || type === 'localNotification', 'PushNotificationIOS only supports `notification`, `register`, `registrationError`, and `localNotification` events');
+
+        var listener = _notifHandlers.get(type);
+
+        if (!listener) {
+          return;
+        }
+
+        listener.remove();
+
+        _notifHandlers.delete(type);
+      }
+    }, {
+      key: "requestPermissions",
+      value: function requestPermissions(permissions) {
+        var requestedPermissions = {};
+
+        if (permissions) {
+          requestedPermissions = {
+            alert: !!permissions.alert,
+            badge: !!permissions.badge,
+            sound: !!permissions.sound
+          };
+        } else {
+          requestedPermissions = {
+            alert: true,
+            badge: true,
+            sound: true
+          };
+        }
+
+        return RCTPushNotificationManager.requestPermissions(requestedPermissions);
+      }
+    }, {
+      key: "abandonPermissions",
+      value: function abandonPermissions() {
+        RCTPushNotificationManager.abandonPermissions();
+      }
+    }, {
+      key: "checkPermissions",
+      value: function checkPermissions(callback) {
+        invariant(typeof callback === 'function', 'Must provide a valid callback');
+        RCTPushNotificationManager.checkPermissions(callback);
+      }
+    }, {
+      key: "getInitialNotification",
+      value: function getInitialNotification() {
+        return RCTPushNotificationManager.getInitialNotification().then(function (notification) {
+          return notification && new PushNotificationIOS(notification);
+        });
+      }
+    }]);
+
+    function PushNotificationIOS(nativeNotif) {
+      var _this = this;
+
+      babelHelpers.classCallCheck(this, PushNotificationIOS);
+      this._data = {};
+      this._remoteNotificationCompleteCallbackCalled = false;
+      this._isRemote = nativeNotif.remote;
+
+      if (this._isRemote) {
+        this._notificationId = nativeNotif.notificationId;
+      }
+
+      if (nativeNotif.remote) {
+        Object.keys(nativeNotif).forEach(function (notifKey) {
+          var notifVal = nativeNotif[notifKey];
+
+          if (notifKey === 'aps') {
+            _this._alert = notifVal.alert;
+            _this._sound = notifVal.sound;
+            _this._badgeCount = notifVal.badge;
+            _this._category = notifVal.category;
+            _this._contentAvailable = notifVal['content-available'];
+            _this._threadID = notifVal['thread-id'];
+          } else {
+            _this._data[notifKey] = notifVal;
+          }
+        });
+      } else {
+        this._badgeCount = nativeNotif.applicationIconBadgeNumber;
+        this._sound = nativeNotif.soundName;
+        this._alert = nativeNotif.alertBody;
+        this._data = nativeNotif.userInfo;
+        this._category = nativeNotif.category;
+      }
+    }
+
+    babelHelpers.createClass(PushNotificationIOS, [{
+      key: "finish",
+      value: function finish(fetchResult) {
+        if (!this._isRemote || !this._notificationId || this._remoteNotificationCompleteCallbackCalled) {
+          return;
+        }
+
+        this._remoteNotificationCompleteCallbackCalled = true;
+        RCTPushNotificationManager.onFinishRemoteNotification(this._notificationId, fetchResult);
+      }
+    }, {
+      key: "getMessage",
+      value: function getMessage() {
+        return this._alert;
+      }
+    }, {
+      key: "getSound",
+      value: function getSound() {
+        return this._sound;
+      }
+    }, {
+      key: "getCategory",
+      value: function getCategory() {
+        return this._category;
+      }
+    }, {
+      key: "getAlert",
+      value: function getAlert() {
+        return this._alert;
+      }
+    }, {
+      key: "getContentAvailable",
+      value: function getContentAvailable() {
+        return this._contentAvailable;
+      }
+    }, {
+      key: "getBadgeCount",
+      value: function getBadgeCount() {
+        return this._badgeCount;
+      }
+    }, {
+      key: "getData",
+      value: function getData() {
+        return this._data;
+      }
+    }, {
+      key: "getThreadID",
+      value: function getThreadID() {
+        return this._threadID;
+      }
+    }]);
+    return PushNotificationIOS;
+  }();
+
+  PushNotificationIOS.FetchResult = {
+    NewData: 'UIBackgroundFetchResultNewData',
+    NoData: 'UIBackgroundFetchResultNoData',
+    ResultFailed: 'UIBackgroundFetchResultFailed'
+  };
+  module.exports = PushNotificationIOS;
+},329,[82,24,18],"PushNotificationIOS");

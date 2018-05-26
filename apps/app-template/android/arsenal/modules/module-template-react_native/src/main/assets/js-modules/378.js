@@ -1,1 +1,295 @@
-__d(function(e,t,n,a,r){Object.defineProperty(a,"__esModule",{value:!0});var i=t(r[0]),s=babelHelpers.interopRequireWildcard(i),o=t(r[1]),l=babelHelpers.interopRequireDefault(o),p=t(r[2]),u=t(r[3]),d={timing:p.Animated.spring,tension:75,friction:25},h=(function(e){function t(){var e,n,a,r;babelHelpers.classCallCheck(this,t);for(var i=arguments.length,s=Array(i),o=0;o<i;o++)s[o]=arguments[o];return n=a=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(s))),a._handleHandlerStateChange=function(e){var t=a.props.GestureHandler;if(e.nativeEvent.state===t.State.END){var n=a.props,r=n.navigationState,i=n.layout,s=n.swipeDistanceThreshold,o=void 0===s?i.width/1.75:s,l=n.swipeVelocityThreshold,p=void 0===l?150:l,u=e.nativeEvent,d=u.translationX,h=u.translationY,b=u.velocityX,v=u.velocityY,c='number'==typeof a._pendingIndex?a._pendingIndex:r.index,f=c;Math.abs(d)>Math.abs(h)&&Math.abs(b)>Math.abs(v)&&(Math.abs(d)>o||Math.abs(b)>p)&&(f=Math.round(Math.min(Math.max(0,c-d/Math.abs(d)),r.routes.length-1))),isFinite(f)&&a.props.canJumpToTab(a.props.navigationState.routes[f])||(f=c),a._transitionTo(f,b)}},a._transitionTo=function(e,t){var n=-e*a.props.layout.width;if(!1===a.props.animationEnabled)return a.props.panX.setValue(0),void a.props.offsetX.setValue(n);var r=d.timing,i=babelHelpers.objectWithoutProperties(d,["timing"]),s=a.props.useNativeDriver;p.Animated.parallel([r(a.props.panX,babelHelpers.extends({},i,{toValue:0,velocity:t,useNativeDriver:s})),r(a.props.offsetX,babelHelpers.extends({},i,{toValue:n,velocity:t,useNativeDriver:s}))]).start(function(t){t.finished&&(a.props.jumpToIndex(e),a._pendingIndex=null)}),a._pendingIndex=e},r=n,babelHelpers.possibleConstructorReturn(a,r)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidUpdate",value:function(e){e.navigationState.index!==this.props.navigationState.index&&this._transitionTo(this.props.navigationState.index)}},{key:"render",value:function(){var e=this.props,t=e.GestureHandler,n=e.panX,a=e.offsetX,r=e.layout,i=e.navigationState,o=e.swipeEnabled,l=e.children,u=r.width,d=i.routes,h=u*(d.length-1),v=p.Animated.add(n,a).interpolate({inputRange:[-h,0],outputRange:[-h,0],extrapolate:'clamp'});return s.createElement(t.PanGestureHandler,{enabled:0!==r.width&&!1!==o,minDeltaX:10,onGestureEvent:p.Animated.event([{nativeEvent:{translationX:this.props.panX}}],{useNativeDriver:this.props.useNativeDriver}),onHandlerStateChange:this._handleHandlerStateChange},s.createElement(p.Animated.View,{style:[b.sheet,u?{width:d.length*u,transform:[{translateX:v}]}:null]},s.Children.map(l,function(e,t){return s.createElement(p.View,{key:i.routes[t].key,testID:i.routes[t].testID,style:u?{width:u}:t===i.index?p.StyleSheet.absoluteFill:null},t===i.index||u?e:null)})))}}]),t})(s.Component);h.propTypes=babelHelpers.extends({},u.PagerRendererPropType,{swipeDistanceThreshold:l.default.number,swipeVelocityThreshold:l.default.number,GestureHandler:l.default.object}),h.defaultProps={GestureHandler:e.__expo&&e.__expo.DangerZone?e.__expo.DangerZone.GestureHandler:void 0,canJumpToTab:function(){return!0}},a.default=h;var b=p.StyleSheet.create({sheet:{flex:1,flexDirection:'row',alignItems:'stretch'}})},378,[12,108,17,374]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/Transitioner.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _invariant = _require(_dependencyMap[2], "../utils/invariant");
+
+  var _invariant2 = babelHelpers.interopRequireDefault(_invariant);
+
+  var _ScenesReducer = _require(_dependencyMap[3], "./ScenesReducer");
+
+  var _ScenesReducer2 = babelHelpers.interopRequireDefault(_ScenesReducer);
+
+  var DefaultTransitionSpec = {
+    duration: 250,
+    easing: _reactNative.Easing.inOut(_reactNative.Easing.ease),
+    timing: _reactNative.Animated.timing
+  };
+
+  var Transitioner = function (_React$Component) {
+    babelHelpers.inherits(Transitioner, _React$Component);
+
+    function Transitioner(props, context) {
+      babelHelpers.classCallCheck(this, Transitioner);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (Transitioner.__proto__ || Object.getPrototypeOf(Transitioner)).call(this, props, context));
+
+      _initialiseProps.call(_this);
+
+      var layout = {
+        height: new _reactNative.Animated.Value(0),
+        initHeight: 0,
+        initWidth: 0,
+        isMeasured: false,
+        width: new _reactNative.Animated.Value(0)
+      };
+      _this.state = {
+        layout: layout,
+        position: new _reactNative.Animated.Value(_this.props.navigation.state.index),
+        progress: new _reactNative.Animated.Value(1),
+        scenes: (0, _ScenesReducer2.default)([], _this.props.navigation.state, null, _this.props.descriptors)
+      };
+      _this._prevTransitionProps = null;
+      _this._transitionProps = buildTransitionProps(props, _this.state);
+      _this._isMounted = false;
+      _this._isTransitionRunning = false;
+      _this._queuedTransition = null;
+      return _this;
+    }
+
+    babelHelpers.createClass(Transitioner, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this._isMounted = true;
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        this._isMounted = false;
+      }
+    }, {
+      key: "componentWillReceiveProps",
+      value: function componentWillReceiveProps(nextProps) {
+        var nextScenes = (0, _ScenesReducer2.default)(this.state.scenes, nextProps.navigation.state, this.props.navigation.state, nextProps.descriptors);
+
+        if (!nextProps.navigation.state.isTransitioning) {
+          nextScenes = filterStale(nextScenes);
+        }
+
+        if (nextScenes === this.state.scenes) {
+          return;
+        }
+
+        var indexHasChanged = nextProps.navigation.state.index !== this.props.navigation.state.index;
+
+        if (this._isTransitionRunning) {
+          this._queuedTransition = {
+            nextProps: nextProps,
+            nextScenes: nextScenes,
+            indexHasChanged: indexHasChanged
+          };
+          return;
+        }
+
+        this._startTransition(nextProps, nextScenes, indexHasChanged);
+      }
+    }, {
+      key: "_startTransition",
+      value: function _startTransition(nextProps, nextScenes, indexHasChanged) {
+        var _this2 = this;
+
+        var nextState = babelHelpers.extends({}, this.state, {
+          scenes: nextScenes
+        });
+        var position = nextState.position,
+            progress = nextState.progress;
+        progress.setValue(0);
+        this._prevTransitionProps = this._transitionProps;
+        this._transitionProps = buildTransitionProps(nextProps, nextState);
+        var transitionUserSpec = nextProps.configureTransition ? nextProps.configureTransition(this._transitionProps, this._prevTransitionProps) : null;
+        var transitionSpec = babelHelpers.extends({}, DefaultTransitionSpec, transitionUserSpec);
+        var timing = transitionSpec.timing;
+        delete transitionSpec.timing;
+        var toValue = nextProps.navigation.state.index;
+        var positionHasChanged = position.__getValue() !== toValue;
+        var animations = indexHasChanged && positionHasChanged ? [timing(progress, babelHelpers.extends({}, transitionSpec, {
+          toValue: 1
+        })), timing(position, babelHelpers.extends({}, transitionSpec, {
+          toValue: nextProps.navigation.state.index
+        }))] : [];
+        this._isTransitionRunning = true;
+        this.setState(nextState, function _callee() {
+          var result;
+          return regeneratorRuntime.async(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!nextProps.onTransitionStart) {
+                    _context.next = 5;
+                    break;
+                  }
+
+                  result = nextProps.onTransitionStart(_this2._transitionProps, _this2._prevTransitionProps);
+
+                  if (!(result instanceof Promise)) {
+                    _context.next = 5;
+                    break;
+                  }
+
+                  _context.next = 5;
+                  return regeneratorRuntime.awrap(result);
+
+                case 5:
+                  _reactNative.Animated.parallel(animations).start(_this2._onTransitionEnd);
+
+                case 6:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, null, _this2);
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            onLayout: this._onLayout,
+            style: [styles.main],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 146
+            }
+          },
+          this.props.render(this._transitionProps, this._prevTransitionProps)
+        );
+      }
+    }]);
+    return Transitioner;
+  }(_react2.default.Component);
+
+  var _initialiseProps = function _initialiseProps() {
+    var _this3 = this;
+
+    this._onLayout = function (event) {
+      var _event$nativeEvent$la = event.nativeEvent.layout,
+          height = _event$nativeEvent$la.height,
+          width = _event$nativeEvent$la.width;
+
+      if (_this3.state.layout.initWidth === width && _this3.state.layout.initHeight === height) {
+        return;
+      }
+
+      var layout = babelHelpers.extends({}, _this3.state.layout, {
+        initHeight: height,
+        initWidth: width,
+        isMeasured: true
+      });
+      layout.height.setValue(height);
+      layout.width.setValue(width);
+      var nextState = babelHelpers.extends({}, _this3.state, {
+        layout: layout
+      });
+      _this3._transitionProps = buildTransitionProps(_this3.props, nextState);
+
+      _this3.setState(nextState);
+    };
+
+    this._onTransitionEnd = function () {
+      if (!_this3._isMounted) {
+        return;
+      }
+
+      var prevTransitionProps = _this3._prevTransitionProps;
+      _this3._prevTransitionProps = null;
+      var scenes = filterStale(_this3.state.scenes);
+      var nextState = babelHelpers.extends({}, _this3.state, {
+        scenes: scenes
+      });
+      _this3._transitionProps = buildTransitionProps(_this3.props, nextState);
+
+      _this3.setState(nextState, function _callee2() {
+        var result;
+        return regeneratorRuntime.async(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!_this3.props.onTransitionEnd) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                result = _this3.props.onTransitionEnd(_this3._transitionProps, prevTransitionProps);
+
+                if (!(result instanceof Promise)) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _context2.next = 5;
+                return regeneratorRuntime.awrap(result);
+
+              case 5:
+                if (_this3._queuedTransition) {
+                  _this3._startTransition(_this3._queuedTransition.nextProps, _this3._queuedTransition.nextScenes, _this3._queuedTransition.indexHasChanged);
+
+                  _this3._queuedTransition = null;
+                } else {
+                  _this3._isTransitionRunning = false;
+                }
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, null, _this3);
+      });
+    };
+  };
+
+  function buildTransitionProps(props, state) {
+    var navigation = props.navigation;
+    var layout = state.layout,
+        position = state.position,
+        progress = state.progress,
+        scenes = state.scenes;
+    var scene = scenes.find(isSceneActive);
+    (0, _invariant2.default)(scene, 'Could not find active scene');
+    return {
+      layout: layout,
+      navigation: navigation,
+      position: position,
+      progress: progress,
+      scenes: scenes,
+      scene: scene,
+      index: scene.index
+    };
+  }
+
+  function isSceneNotStale(scene) {
+    return !scene.isStale;
+  }
+
+  function filterStale(scenes) {
+    var filtered = scenes.filter(isSceneNotStale);
+
+    if (filtered.length === scenes.length) {
+      return scenes;
+    }
+
+    return filtered;
+  }
+
+  function isSceneActive(scene) {
+    return scene.isActive;
+  }
+
+  var styles = _reactNative.StyleSheet.create({
+    main: {
+      flex: 1
+    }
+  });
+
+  exports.default = Transitioner;
+},378,[12,22,342,379],"node_modules/react-navigation/src/views/Transitioner.js");

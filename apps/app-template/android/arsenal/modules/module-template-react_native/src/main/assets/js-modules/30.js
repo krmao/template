@@ -1,1 +1,36 @@
-__d(function(e,n,r,o,w){'use strict';var c;n(w[0]).canUseDOM&&(c=window.performance||window.msPerformance||window.webkitPerformance),r.exports=c||{}},30,[31]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function stringifySafe(arg) {
+    var ret;
+    var type = typeof arg;
+
+    if (arg === undefined) {
+      ret = 'undefined';
+    } else if (arg === null) {
+      ret = 'null';
+    } else if (type === 'string') {
+      ret = '"' + arg + '"';
+    } else if (type === 'function') {
+      try {
+        ret = arg.toString();
+      } catch (e) {
+        ret = '[function unknown]';
+      }
+    } else {
+      try {
+        ret = JSON.stringify(arg);
+      } catch (e) {
+        if (typeof arg.toString === 'function') {
+          try {
+            ret = arg.toString();
+          } catch (E) {}
+        }
+      }
+    }
+
+    return ret || '["' + type + '" failed to stringify]';
+  }
+
+  module.exports = stringifySafe;
+},30,[],"stringifySafe");

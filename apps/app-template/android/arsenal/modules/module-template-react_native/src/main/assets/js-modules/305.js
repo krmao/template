@@ -1,1 +1,94 @@
-__d(function(e,t,a,r,i){a.exports={get createNavigationContainer(){return t(i[0]).default},get StateUtils(){return t(i[1]).default},get createNavigator(){return t(i[2]).default},get createStackNavigator(){return t(i[3]).default},get StackNavigator(){return console.warn('The StackNavigator function name is deprecated, please use createStackNavigator instead'),t(i[3]).default},get createSwitchNavigator(){return t(i[4]).default},get SwitchNavigator(){return console.warn('The SwitchNavigator function name is deprecated, please use createSwitchNavigator instead'),t(i[4]).default},get createDrawerNavigator(){return t(i[5]).default},get DrawerNavigator(){return console.warn('The DrawerNavigator function name is deprecated, please use createDrawerNavigator instead'),t(i[5]).default},get createTabNavigator(){return console.warn('createTabNavigator is deprecated. Please use the createBottomTabNavigator or createMaterialTopTabNavigator instead.'),t(i[6]).createTabNavigator},get TabNavigator(){return console.warn('TabNavigator is deprecated. Please use the createBottomTabNavigator or createMaterialTopTabNavigator instead.'),t(i[6]).createTabNavigator},get createBottomTabNavigator(){return t(i[7]).createBottomTabNavigator},get createMaterialTopTabNavigator(){return t(i[7]).createMaterialTopTabNavigator},get NavigationActions(){return t(i[8]).default},get StackActions(){return t(i[9]).default},get DrawerActions(){return t(i[10]).default},get StackRouter(){return t(i[11]).default},get TabRouter(){return t(i[12]).default},get SwitchRouter(){return t(i[13]).default},get Transitioner(){return t(i[14]).default},get StackView(){return t(i[15]).default},get StackViewCard(){return t(i[16]).default},get SafeAreaView(){return t(i[17]).default},get SceneView(){return t(i[18]).default},get ResourceSavingSceneView(){return t(i[19]).default},get Header(){return t(i[20]).default},get HeaderTitle(){return t(i[21]).default},get HeaderBackButton(){return t(i[22]).default},get DrawerView(){return t(i[23]).default},get DrawerItems(){return t(i[24]).default},get TabView(){return console.warn('TabView is deprecated. Please use the react-navigation-tabs package instead: https://github.com/react-navigation/react-navigation-tabs'),t(i[6]).TabView},get TabBarTop(){return console.warn('TabBarTop is deprecated. Please use the react-navigation-tabs package instead: https://github.com/react-navigation/react-navigation-tabs'),t(i[6]).TabBarTop},get TabBarBottom(){return console.warn('TabBarBottom is deprecated. Please use the react-navigation-tabs package instead: https://github.com/react-navigation/react-navigation-tabs'),t(i[6]).TabBarBottom},get SwitchView(){return t(i[25]).default},get withNavigation(){return t(i[26]).default},get withNavigationFocus(){return t(i[27]).default},get withOrientation(){return t(i[28]).default}}},305,[306,313,314,316,357,360,369,385,309,337,363,349,404,358,346,318,321,325,338,405,324,328,329,365,368,359,406,407,335]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var mixInEventEmitter = _require(_dependencyMap[0], 'mixInEventEmitter');
+
+  var DocumentSelectionState = function () {
+    function DocumentSelectionState(anchor, focus) {
+      babelHelpers.classCallCheck(this, DocumentSelectionState);
+      this._anchorOffset = anchor;
+      this._focusOffset = focus;
+      this._hasFocus = false;
+    }
+
+    babelHelpers.createClass(DocumentSelectionState, [{
+      key: "update",
+      value: function update(anchor, focus) {
+        if (this._anchorOffset !== anchor || this._focusOffset !== focus) {
+          this._anchorOffset = anchor;
+          this._focusOffset = focus;
+          this.emit('update');
+        }
+      }
+    }, {
+      key: "constrainLength",
+      value: function constrainLength(maxLength) {
+        this.update(Math.min(this._anchorOffset, maxLength), Math.min(this._focusOffset, maxLength));
+      }
+    }, {
+      key: "focus",
+      value: function focus() {
+        if (!this._hasFocus) {
+          this._hasFocus = true;
+          this.emit('focus');
+        }
+      }
+    }, {
+      key: "blur",
+      value: function blur() {
+        if (this._hasFocus) {
+          this._hasFocus = false;
+          this.emit('blur');
+        }
+      }
+    }, {
+      key: "hasFocus",
+      value: function hasFocus() {
+        return this._hasFocus;
+      }
+    }, {
+      key: "isCollapsed",
+      value: function isCollapsed() {
+        return this._anchorOffset === this._focusOffset;
+      }
+    }, {
+      key: "isBackward",
+      value: function isBackward() {
+        return this._anchorOffset > this._focusOffset;
+      }
+    }, {
+      key: "getAnchorOffset",
+      value: function getAnchorOffset() {
+        return this._hasFocus ? this._anchorOffset : null;
+      }
+    }, {
+      key: "getFocusOffset",
+      value: function getFocusOffset() {
+        return this._hasFocus ? this._focusOffset : null;
+      }
+    }, {
+      key: "getStartOffset",
+      value: function getStartOffset() {
+        return this._hasFocus ? Math.min(this._anchorOffset, this._focusOffset) : null;
+      }
+    }, {
+      key: "getEndOffset",
+      value: function getEndOffset() {
+        return this._hasFocus ? Math.max(this._anchorOffset, this._focusOffset) : null;
+      }
+    }, {
+      key: "overlaps",
+      value: function overlaps(start, end) {
+        return this.hasFocus() && this.getStartOffset() <= end && start <= this.getEndOffset();
+      }
+    }]);
+    return DocumentSelectionState;
+  }();
+
+  mixInEventEmitter(DocumentSelectionState, {
+    'blur': true,
+    'focus': true,
+    'update': true
+  });
+  module.exports = DocumentSelectionState;
+},305,[306],"DocumentSelectionState");

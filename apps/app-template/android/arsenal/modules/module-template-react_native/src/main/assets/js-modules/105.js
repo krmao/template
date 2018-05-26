@@ -1,1 +1,11 @@
-__d(function(t,e,r,n,o){'use strict';var u=Object.prototype.hasOwnProperty;function c(t,e){return t===e?0!==t||0!==e||1/t==1/e:t!=t&&e!=e}r.exports=function(t,e){if(c(t,e))return!0;if('object'!=typeof t||null===t||'object'!=typeof e||null===e)return!1;var r=Object.keys(t),n=Object.keys(e);if(r.length!==n.length)return!1;for(var o=0;o<r.length;o++)if(!u.call(e,r[o])||!c(t[r[o]],e[r[o]]))return!1;return!0}},105,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function infoLog() {
+    var _console;
+
+    return (_console = console).log.apply(_console, arguments);
+  }
+
+  module.exports = infoLog;
+},105,[],"infoLog");

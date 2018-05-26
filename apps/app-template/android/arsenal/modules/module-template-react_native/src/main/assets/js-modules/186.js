@@ -1,1 +1,35 @@
-__d(function(e,n,t,r,o){'use strict';var a=n(o[0]),i=n(o[1]),c=n(o[2]),s=n(o[3]),u=(n(o[4]),n(o[5])),d=n(o[6]),l=new i,f=0,m={Events:d({interactionStart:!0,interactionComplete:!0}),runAfterInteractions:function(e){var n=[],t=new Promise(function(t){b(),e&&n.push(e),n.push({run:t,name:'resolve '+(e&&e.name||'?')}),w.enqueueTasks(n)});return{then:t.then.bind(t),done:function(){if(t.done)return t.done.apply(t,arguments);console.warn('Tried to call done when not supported by current Promise implementation.')},cancel:function(){w.cancelTasks(n)}}},createInteractionHandle:function(){b();var e=++E;return v.add(e),e},clearInteractionHandle:function(e){u(!!e,'Must provide a handle to clear.'),b(),v.delete(e),h.add(e)},addListener:l.addListener.bind(l),setDeadline:function(e){k=e}},p=new c,v=new c,h=new c,w=new s({onMoreTasks:b}),T=0,E=0,k=-1;function b(){T||(T=k>0?setTimeout(I,0+f):setImmediate(I))}function I(){T=0;var e=p.size;v.forEach(function(e){return p.add(e)}),h.forEach(function(e){return p.delete(e)});var n=p.size;if(0!==e&&0===n?l.emit(m.Events.interactionComplete):0===e&&0!==n&&l.emit(m.Events.interactionStart),0===n)for(;w.hasTasksToProcess();)if(w.processNext(),k>0&&a.getEventLoopRunningTime()>=k){b();break}v.clear(),h.clear()}t.exports=m},186,[21,35,52,187,97,18,132]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ColorPropType = _require(_dependencyMap[0], 'ColorPropType');
+
+  var EdgeInsetsPropType = _require(_dependencyMap[1], 'EdgeInsetsPropType');
+
+  var PropTypes = _require(_dependencyMap[2], 'prop-types');
+
+  var StyleSheetPropType = _require(_dependencyMap[3], 'StyleSheetPropType');
+
+  var TextStylePropTypes = _require(_dependencyMap[4], 'TextStylePropTypes');
+
+  var stylePropType = StyleSheetPropType(TextStylePropTypes);
+  module.exports = {
+    ellipsizeMode: PropTypes.oneOf(['head', 'middle', 'tail', 'clip']),
+    numberOfLines: PropTypes.number,
+    textBreakStrategy: PropTypes.oneOf(['simple', 'highQuality', 'balanced']),
+    onLayout: PropTypes.func,
+    onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
+    pressRetentionOffset: EdgeInsetsPropType,
+    selectable: PropTypes.bool,
+    selectionColor: ColorPropType,
+    suppressHighlighting: PropTypes.bool,
+    style: stylePropType,
+    testID: PropTypes.string,
+    nativeID: PropTypes.string,
+    allowFontScaling: PropTypes.bool,
+    accessible: PropTypes.bool,
+    adjustsFontSizeToFit: PropTypes.bool,
+    minimumFontScale: PropTypes.number,
+    disabled: PropTypes.bool
+  };
+},186,[46,134,129,141,154],"TextPropTypes");

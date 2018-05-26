@@ -1,1 +1,34 @@
-__d(function(e,t,i,n,r){Object.defineProperty(n,"__esModule",{value:!0});var l=t(r[0]),o=babelHelpers.interopRequireDefault(l),a=t(r[1]),c=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props,t=e.route,i=e.activeOpacity,n=e.inactiveOpacity,r=e.activeTintColor,l=e.inactiveTintColor,c=e.renderIcon,u=e.style;return o.default.createElement(a.View,{style:u},o.default.createElement(a.Animated.View,{style:[s.icon,{opacity:i}]},c({route:t,focused:!0,tintColor:r})),o.default.createElement(a.Animated.View,{style:[s.icon,{opacity:n}]},c({route:t,focused:!1,tintColor:l})))}}]),t})(o.default.Component);n.default=c;var s=a.StyleSheet.create({icon:{position:'absolute',alignSelf:'center',alignItems:'center',justifyContent:'center',height:'100%',width:'100%',minWidth:25}})},389,[12,17]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _createNavigationContainer = _require(_dependencyMap[1], "../createNavigationContainer");
+
+  var _createNavigationContainer2 = babelHelpers.interopRequireDefault(_createNavigationContainer);
+
+  var _createNavigator = _require(_dependencyMap[2], "../navigators/createNavigator");
+
+  var _createNavigator2 = babelHelpers.interopRequireDefault(_createNavigator);
+
+  var _SwitchRouter = _require(_dependencyMap[3], "../routers/SwitchRouter");
+
+  var _SwitchRouter2 = babelHelpers.interopRequireDefault(_SwitchRouter);
+
+  var _SwitchView = _require(_dependencyMap[4], "../views/SwitchView/SwitchView");
+
+  var _SwitchView2 = babelHelpers.interopRequireDefault(_SwitchView);
+
+  function createSwitchNavigator(routeConfigMap) {
+    var switchConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var router = (0, _SwitchRouter2.default)(routeConfigMap, switchConfig);
+    var Navigator = (0, _createNavigator2.default)(_SwitchView2.default, router, switchConfig);
+    return (0, _createNavigationContainer2.default)(Navigator);
+  }
+
+  exports.default = createSwitchNavigator;
+},389,[12,338,346,390,391],"node_modules/react-navigation/src/navigators/createSwitchNavigator.js");

@@ -1,1 +1,67 @@
-__d(function(r,o,e,d,b){'use strict';var t=o(b[0]),i=o(b[1]),u=o(b[2]),n=o(b[3]),m=o(b[4]),a=babelHelpers.extends({},i,n,m,{backfaceVisibility:u.oneOf(['visible','hidden']),backgroundColor:t,borderColor:t,borderTopColor:t,borderRightColor:t,borderBottomColor:t,borderLeftColor:t,borderStartColor:t,borderEndColor:t,borderRadius:u.number,borderTopLeftRadius:u.number,borderTopRightRadius:u.number,borderTopStartRadius:u.number,borderTopEndRadius:u.number,borderBottomLeftRadius:u.number,borderBottomRightRadius:u.number,borderBottomStartRadius:u.number,borderBottomEndRadius:u.number,borderStyle:u.oneOf(['solid','dotted','dashed']),borderWidth:u.number,borderTopWidth:u.number,borderRightWidth:u.number,borderBottomWidth:u.number,borderLeftWidth:u.number,opacity:u.number,elevation:u.number});e.exports=a},121,[40,122,108,123,124]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var NativeModules = _require(_dependencyMap[0], 'NativeModules');
+
+  var Platform = _require(_dependencyMap[1], 'Platform');
+
+  var defineLazyObjectProperty = _require(_dependencyMap[2], 'defineLazyObjectProperty');
+
+  var invariant = _require(_dependencyMap[3], 'fbjs/lib/invariant');
+
+  var UIManager = NativeModules.UIManager;
+  invariant(UIManager, 'UIManager is undefined. The native module config is probably incorrect.');
+  UIManager.__takeSnapshot = UIManager.takeSnapshot;
+
+  UIManager.takeSnapshot = function () {
+    invariant(false, 'UIManager.takeSnapshot should not be called directly. ' + 'Use ReactNative.takeSnapshot instead.');
+  };
+
+  if (Platform.OS === 'ios') {
+    Object.keys(UIManager).forEach(function (viewName) {
+      var viewConfig = UIManager[viewName];
+
+      if (viewConfig.Manager) {
+        defineLazyObjectProperty(viewConfig, 'Constants', {
+          get: function get() {
+            var viewManager = NativeModules[viewConfig.Manager];
+            var constants = {};
+            viewManager && Object.keys(viewManager).forEach(function (key) {
+              var value = viewManager[key];
+
+              if (typeof value !== 'function') {
+                constants[key] = value;
+              }
+            });
+            return constants;
+          }
+        });
+        defineLazyObjectProperty(viewConfig, 'Commands', {
+          get: function get() {
+            var viewManager = NativeModules[viewConfig.Manager];
+            var commands = {};
+            var index = 0;
+            viewManager && Object.keys(viewManager).forEach(function (key) {
+              var value = viewManager[key];
+
+              if (typeof value === 'function') {
+                commands[key] = index++;
+              }
+            });
+            return commands;
+          }
+        });
+      }
+    });
+  } else if (UIManager.ViewManagerNames) {
+    UIManager.ViewManagerNames.forEach(function (viewManagerName) {
+      defineLazyObjectProperty(UIManager, viewManagerName, {
+        get: function get() {
+          return UIManager.getConstantsForViewManager(viewManagerName);
+        }
+      });
+    });
+  }
+
+  module.exports = UIManager;
+},121,[24,32,39,18],"UIManager");

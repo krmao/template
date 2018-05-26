@@ -1,1 +1,89 @@
-__d(function(e,n,t,o,s){'use strict';var r=n(s[0]),a=n(s[1]),i=n(s[2]),h=n(s[3]),p=n(s[4]),l=n(s[5]),u=n(s[6]),c=l({displayName:'CheckBox',propTypes:babelHelpers.extends({},p,{value:a.bool,disabled:a.bool,onChange:a.func,onValueChange:a.func,testID:a.string}),getDefaultProps:function(){return{value:!1,disabled:!1}},mixins:[r],_rctCheckBox:{},_onChange:function(e){this._rctCheckBox.setNativeProps({value:this.props.value}),this.props.onChange&&this.props.onChange(e),this.props.onValueChange&&this.props.onValueChange(e.nativeEvent.value)},render:function(){var e=this,n=babelHelpers.extends({},this.props);return n.onStartShouldSetResponder=function(){return!0},n.onResponderTerminationRequest=function(){return!1},n.enabled=!this.props.disabled,n.on=this.props.value,n.style=[d.rctCheckBox,this.props.style],i.createElement(C,babelHelpers.extends({},n,{ref:function(n){e._rctCheckBox=n},onChange:this._onChange}))}}),d=h.create({rctCheckBox:{height:32,width:32}}),C=u('AndroidCheckBox',c,{nativeOnly:{onChange:!0,on:!0,enabled:!0}});t.exports=c},219,[42,108,111,150,112,155,127]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Animation = _require2(_dependencyMap[0], './Animation');
+
+  var _require = _require2(_dependencyMap[1], '../NativeAnimatedHelper'),
+      shouldUseNativeDriver = _require.shouldUseNativeDriver;
+
+  var DecayAnimation = function (_Animation) {
+    babelHelpers.inherits(DecayAnimation, _Animation);
+
+    function DecayAnimation(config) {
+      babelHelpers.classCallCheck(this, DecayAnimation);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (DecayAnimation.__proto__ || Object.getPrototypeOf(DecayAnimation)).call(this));
+
+      _this._deceleration = config.deceleration !== undefined ? config.deceleration : 0.998;
+      _this._velocity = config.velocity;
+      _this._useNativeDriver = shouldUseNativeDriver(config);
+      _this.__isInteraction = config.isInteraction !== undefined ? config.isInteraction : true;
+      _this.__iterations = config.iterations !== undefined ? config.iterations : 1;
+      return _this;
+    }
+
+    babelHelpers.createClass(DecayAnimation, [{
+      key: "__getNativeAnimationConfig",
+      value: function __getNativeAnimationConfig() {
+        return {
+          type: 'decay',
+          deceleration: this._deceleration,
+          velocity: this._velocity,
+          iterations: this.__iterations
+        };
+      }
+    }, {
+      key: "start",
+      value: function start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {
+        this.__active = true;
+        this._lastValue = fromValue;
+        this._fromValue = fromValue;
+        this._onUpdate = onUpdate;
+        this.__onEnd = onEnd;
+        this._startTime = Date.now();
+
+        if (this._useNativeDriver) {
+          this.__startNativeAnimation(animatedValue);
+        } else {
+          this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
+        }
+      }
+    }, {
+      key: "onUpdate",
+      value: function onUpdate() {
+        var now = Date.now();
+        var value = this._fromValue + this._velocity / (1 - this._deceleration) * (1 - Math.exp(-(1 - this._deceleration) * (now - this._startTime)));
+
+        this._onUpdate(value);
+
+        if (Math.abs(this._lastValue - value) < 0.1) {
+          this.__debouncedOnEnd({
+            finished: true
+          });
+
+          return;
+        }
+
+        this._lastValue = value;
+
+        if (this.__active) {
+          this._animationFrame = requestAnimationFrame(this.onUpdate.bind(this));
+        }
+      }
+    }, {
+      key: "stop",
+      value: function stop() {
+        babelHelpers.get(DecayAnimation.prototype.__proto__ || Object.getPrototypeOf(DecayAnimation.prototype), "stop", this).call(this);
+        this.__active = false;
+        global.cancelAnimationFrame(this._animationFrame);
+
+        this.__debouncedOnEnd({
+          finished: false
+        });
+      }
+    }]);
+    return DecayAnimation;
+  }(Animation);
+
+  module.exports = DecayAnimation;
+},219,[220,205],"DecayAnimation");

@@ -1,1 +1,55 @@
-__d(function(e,t,n,r,i){'use strict';var o=t(i[0]),s=t(i[1]).LocationObserver,a=t(i[2]),u=t(i[3]),c=t(i[4]),v=new o(s),f=t(i[5]),g=t(i[6]),l=[],h=!1,p={setRNConfiguration:function(e){s.setConfiguration&&s.setConfiguration(e)},requestAuthorization:function(){s.requestAuthorization()},getCurrentPosition:function(e,t,n){var r,i;return regeneratorRuntime.async(function(o){for(;;)switch(o.prev=o.next){case 0:if(a('function'==typeof e,'Must provide a valid geo_success callback.'),r=!0,!(f.Version>=23)){o.next=11;break}return o.next=5,regeneratorRuntime.awrap(g.check(g.PERMISSIONS.ACCESS_FINE_LOCATION));case 5:if(r=o.sent){o.next=11;break}return o.next=9,regeneratorRuntime.awrap(g.request(g.PERMISSIONS.ACCESS_FINE_LOCATION));case 9:i=o.sent,r=i===g.RESULTS.GRANTED;case 11:r&&s.getCurrentPosition(n||{},e,t||u);case 12:case"end":return o.stop()}},null,this)},watchPosition:function(e,t,n){h||(s.startObserving(n||{}),h=!0);var r=l.length;return l.push([v.addListener('geolocationDidChange',e),t?v.addListener('geolocationError',t):null]),r},clearWatch:function(e){var t=l[e];if(t){t[0].remove();var n=t[1];n&&n.remove(),l[e]=void 0;for(var r=!0,i=0;i<l.length;i++)l[i]&&(r=!1);r&&p.stopObserving()}},stopObserving:function(){if(h){s.stopObserving(),h=!1;for(var e=0;e<l.length;e++){var t=l[e];if(t){c(!1,'Called stopObserving with existing subscriptions.'),t[0].remove();var n=t[1];n&&n.remove()}}l=[]}}};n.exports=p},89,[72,20,18,90,32,28,91]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var FormData = function () {
+    function FormData() {
+      babelHelpers.classCallCheck(this, FormData);
+      this._parts = [];
+    }
+
+    babelHelpers.createClass(FormData, [{
+      key: "append",
+      value: function append(key, value) {
+        this._parts.push([key, value]);
+      }
+    }, {
+      key: "getParts",
+      value: function getParts() {
+        return this._parts.map(function (_ref) {
+          var _ref2 = babelHelpers.slicedToArray(_ref, 2),
+              name = _ref2[0],
+              value = _ref2[1];
+
+          var contentDisposition = 'form-data; name="' + name + '"';
+          var headers = {
+            'content-disposition': contentDisposition
+          };
+
+          if (typeof value === 'object' && value) {
+            if (typeof value.name === 'string') {
+              headers['content-disposition'] += '; filename="' + value.name + '"';
+            }
+
+            if (typeof value.type === 'string') {
+              headers['content-type'] = value.type;
+            }
+
+            return babelHelpers.extends({}, value, {
+              headers: headers,
+              fieldName: name
+            });
+          }
+
+          return {
+            string: String(value),
+            headers: headers,
+            fieldName: name
+          };
+        });
+      }
+    }]);
+    return FormData;
+  }();
+
+  module.exports = FormData;
+},89,[],"FormData");

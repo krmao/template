@@ -1,1 +1,41 @@
-__d(function(e,t,n,s,i){'use strict';var r=t(i[0]),a=t(i[1]),u=t(i[2]);n.exports=(function(e){if(!a('Set'))return e.Set;var t=(function(){function e(t){if(babelHelpers.classCallCheck(this,e),null==this||'object'!=typeof this&&'function'!=typeof this)throw new TypeError('Wrong set object type.');if(n(this),null!=t)for(var s,i=u(t);!(s=i.next()).done;)this.add(s.value)}return babelHelpers.createClass(e,[{key:"add",value:function(e){return this._map.set(e,e),this.size=this._map.size,this}},{key:"clear",value:function(){n(this)}},{key:"delete",value:function(e){var t=this._map.delete(e);return this.size=this._map.size,t}},{key:"entries",value:function(){return this._map.entries()}},{key:"forEach",value:function(e){for(var t,n=arguments[1],s=this._map.keys();!(t=s.next()).done;)e.call(n,t.value,t.value,this)}},{key:"has",value:function(e){return this._map.has(e)}},{key:"values",value:function(){return this._map.values()}}]),e})();function n(e){e._map=new r,e.size=e._map.size}return t.prototype[u.ITERATOR_SYMBOL]=t.prototype.values,t.prototype.keys=t.prototype.values,t})(Function('return this')())},52,[48,47,51]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var defineLazyObjectProperty = _require(_dependencyMap[0], 'defineLazyObjectProperty');
+
+  function polyfillObjectProperty(object, name, getValue) {
+    var descriptor = Object.getOwnPropertyDescriptor(object, name);
+
+    if (__DEV__ && descriptor) {
+      var backupName = "original" + name[0].toUpperCase() + name.substr(1);
+      Object.defineProperty(object, backupName, babelHelpers.extends({}, descriptor, {
+        value: object[name]
+      }));
+    }
+
+    var _ref = descriptor || {},
+        enumerable = _ref.enumerable,
+        writable = _ref.writable,
+        configurable = _ref.configurable;
+
+    if (descriptor && !configurable) {
+      console.error('Failed to set polyfill. ' + name + ' is not configurable.');
+      return;
+    }
+
+    defineLazyObjectProperty(object, name, {
+      get: getValue,
+      enumerable: enumerable !== false,
+      writable: writable !== false
+    });
+  }
+
+  function polyfillGlobal(name, getValue) {
+    polyfillObjectProperty(global, name, getValue);
+  }
+
+  module.exports = {
+    polyfillObjectProperty: polyfillObjectProperty,
+    polyfillGlobal: polyfillGlobal
+  };
+},52,[39],"PolyfillFunctions");

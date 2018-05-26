@@ -1,1 +1,208 @@
-__d(function(e,a,t,n,r){"use strict";var l=a(r[0]).createUniqueKey,u=l("stop_immediate_propagation_flag"),i=l("canceled_flag"),o=l("original_event"),b=Object.freeze({stopPropagation:Object.freeze({value:function(){var e=this[o];"function"==typeof e.stopPropagation&&e.stopPropagation()},writable:!0,configurable:!0}),stopImmediatePropagation:Object.freeze({value:function(){this[u]=!0;var e=this[o];"function"==typeof e.stopImmediatePropagation&&e.stopImmediatePropagation()},writable:!0,configurable:!0}),preventDefault:Object.freeze({value:function(){!0===this.cancelable&&(this[i]=!0);var e=this[o];"function"==typeof e.preventDefault&&e.preventDefault()},writable:!0,configurable:!0}),defaultPrevented:Object.freeze({get:function(){return this[i]},enumerable:!0,configurable:!0})});n.STOP_IMMEDIATE_PROPAGATION_FLAG=u,n.createEventWrapper=function(e,a){var t="number"==typeof e.timeStamp?e.timeStamp:Date.now(),n={type:{value:e.type,enumerable:!0},target:{value:a,enumerable:!0},currentTarget:{value:a,enumerable:!0},eventPhase:{value:2,enumerable:!0},bubbles:{value:Boolean(e.bubbles),enumerable:!0},cancelable:{value:Boolean(e.cancelable),enumerable:!0},timeStamp:{value:t,enumerable:!0},isTrusted:{value:!1,enumerable:!0}};return n[u]={value:!1,writable:!0},n[i]={value:!1,writable:!0},n[o]={value:e},void 0!==e.detail&&(n.detail={value:e.detail,enumerable:!0}),Object.create(Object.create(e,b),n)}},69,[67]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function noop() {}
+
+  var LAST_ERROR = null;
+  var IS_ERROR = {};
+
+  function getThen(obj) {
+    try {
+      return obj.then;
+    } catch (ex) {
+      LAST_ERROR = ex;
+      return IS_ERROR;
+    }
+  }
+
+  function tryCallOne(fn, a) {
+    try {
+      return fn(a);
+    } catch (ex) {
+      LAST_ERROR = ex;
+      return IS_ERROR;
+    }
+  }
+
+  function tryCallTwo(fn, a, b) {
+    try {
+      fn(a, b);
+    } catch (ex) {
+      LAST_ERROR = ex;
+      return IS_ERROR;
+    }
+  }
+
+  module.exports = Promise;
+
+  function Promise(fn) {
+    if (typeof this !== 'object') {
+      throw new TypeError('Promises must be constructed via new');
+    }
+
+    if (typeof fn !== 'function') {
+      throw new TypeError('Promise constructor\'s argument is not a function');
+    }
+
+    this._40 = 0;
+    this._65 = 0;
+    this._55 = null;
+    this._72 = null;
+    if (fn === noop) return;
+    doResolve(fn, this);
+  }
+
+  Promise._37 = null;
+  Promise._87 = null;
+  Promise._61 = noop;
+
+  Promise.prototype.then = function (onFulfilled, onRejected) {
+    if (this.constructor !== Promise) {
+      return safeThen(this, onFulfilled, onRejected);
+    }
+
+    var res = new Promise(noop);
+    handle(this, new Handler(onFulfilled, onRejected, res));
+    return res;
+  };
+
+  function safeThen(self, onFulfilled, onRejected) {
+    return new self.constructor(function (resolve, reject) {
+      var res = new Promise(noop);
+      res.then(resolve, reject);
+      handle(self, new Handler(onFulfilled, onRejected, res));
+    });
+  }
+
+  function handle(self, deferred) {
+    while (self._65 === 3) {
+      self = self._55;
+    }
+
+    if (Promise._37) {
+      Promise._37(self);
+    }
+
+    if (self._65 === 0) {
+      if (self._40 === 0) {
+        self._40 = 1;
+        self._72 = deferred;
+        return;
+      }
+
+      if (self._40 === 1) {
+        self._40 = 2;
+        self._72 = [self._72, deferred];
+        return;
+      }
+
+      self._72.push(deferred);
+
+      return;
+    }
+
+    handleResolved(self, deferred);
+  }
+
+  function handleResolved(self, deferred) {
+    setImmediate(function () {
+      var cb = self._65 === 1 ? deferred.onFulfilled : deferred.onRejected;
+
+      if (cb === null) {
+        if (self._65 === 1) {
+          resolve(deferred.promise, self._55);
+        } else {
+          reject(deferred.promise, self._55);
+        }
+
+        return;
+      }
+
+      var ret = tryCallOne(cb, self._55);
+
+      if (ret === IS_ERROR) {
+        reject(deferred.promise, LAST_ERROR);
+      } else {
+        resolve(deferred.promise, ret);
+      }
+    });
+  }
+
+  function resolve(self, newValue) {
+    if (newValue === self) {
+      return reject(self, new TypeError('A promise cannot be resolved with itself.'));
+    }
+
+    if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+      var then = getThen(newValue);
+
+      if (then === IS_ERROR) {
+        return reject(self, LAST_ERROR);
+      }
+
+      if (then === self.then && newValue instanceof Promise) {
+        self._65 = 3;
+        self._55 = newValue;
+        finale(self);
+        return;
+      } else if (typeof then === 'function') {
+        doResolve(then.bind(newValue), self);
+        return;
+      }
+    }
+
+    self._65 = 1;
+    self._55 = newValue;
+    finale(self);
+  }
+
+  function reject(self, newValue) {
+    self._65 = 2;
+    self._55 = newValue;
+
+    if (Promise._87) {
+      Promise._87(self, newValue);
+    }
+
+    finale(self);
+  }
+
+  function finale(self) {
+    if (self._40 === 1) {
+      handle(self, self._72);
+      self._72 = null;
+    }
+
+    if (self._40 === 2) {
+      for (var i = 0; i < self._72.length; i++) {
+        handle(self, self._72[i]);
+      }
+
+      self._72 = null;
+    }
+  }
+
+  function Handler(onFulfilled, onRejected, promise) {
+    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+    this.promise = promise;
+  }
+
+  function doResolve(fn, promise) {
+    var done = false;
+    var res = tryCallTwo(fn, function (value) {
+      if (done) return;
+      done = true;
+      resolve(promise, value);
+    }, function (reason) {
+      if (done) return;
+      done = true;
+      reject(promise, reason);
+    });
+
+    if (!done && res === IS_ERROR) {
+      done = true;
+      reject(promise, LAST_ERROR);
+    }
+  }
+},69,[],"node_modules/promise/setimmediate/core.js");

@@ -1,1 +1,155 @@
-__d(function(e,t,n,a,r){Object.defineProperty(a,"__esModule",{value:!0});var i=t(r[0]),o=babelHelpers.interopRequireWildcard(i),s=t(r[1]),p=t(r[2]),l=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var n=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n._isIdle=!0,n._currentIndex=0,n._getPageIndex=function(e){return s.I18nManager.isRTL?n.props.navigationState.routes.length-(e+1):e},n._setPage=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],a=n._viewPager;if(a){var r=n._getPageIndex(e);!1===n.props.animationEnabled||!1===t?a.setPageWithoutAnimation(r):a.setPage(r)}},n._handlePageChange=function(e,t){n._isIdle&&n._currentIndex!==e&&(n._setPage(e,t),n._currentIndex=e)},n._handlePageScroll=function(e){n.props.offsetX.setValue(e.nativeEvent.position*n.props.layout.width*(s.I18nManager.isRTL?1:-1)),n.props.panX.setValue(e.nativeEvent.offset*n.props.layout.width*(s.I18nManager.isRTL?1:-1))},n._handlePageScrollStateChanged=function(e){n._isIdle='idle'===e;var t=n._currentIndex,a=n.props.navigationState.routes[t];switch(n.props.canJumpToTab(a)?n.props.jumpTo(a.key):(n._setPage(n.props.navigationState.index),n._currentIndex=n.props.navigationState.index),e){case'dragging':n.props.onSwipeStart&&n.props.onSwipeStart();break;case'settling':n.props.onSwipeEnd&&n.props.onSwipeEnd();break;case'idle':n.props.onAnimationEnd&&n.props.onAnimationEnd()}},n._handlePageSelected=function(e){var t=n._getPageIndex(e.nativeEvent.position);n._currentIndex=t},n._setRef=function(e){return n._viewPager=e},n._currentIndex=n.props.navigationState.index,n}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidUpdate",value:function(e){e.navigationState.routes!==this.props.navigationState.routes||e.layout.width!==this.props.layout.width?this._handlePageChange(this.props.navigationState.index,!1):e.navigationState.index!==this.props.navigationState.index&&this._handlePageChange(this.props.navigationState.index)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.navigationState,a=e.swipeEnabled,r=e.keyboardDismissMode,i=o.Children.map(t,function(e,t){return o.createElement(s.View,{key:n.routes[t].key,testID:n.routes[t].testID,style:d.page},e)});s.I18nManager.isRTL&&i.reverse();var p=this._getPageIndex(n.index);return o.createElement(s.ViewPagerAndroid,{key:n.routes.length,keyboardDismissMode:r,initialPage:p,scrollEnabled:!1!==a,onPageScroll:this._handlePageScroll,onPageScrollStateChanged:this._handlePageScrollStateChanged,onPageSelected:this._handlePageSelected,style:d.container,ref:this._setRef},i)}}]),t})(o.Component);l.propTypes=p.PagerRendererPropType,l.defaultProps={canJumpToTab:function(){return!0},keyboardDismissMode:'on-drag'},a.default=l;var d=s.StyleSheet.create({container:{flexGrow:1},page:{overflow:'hidden'}})},396,[12,17,395]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/Drawer/DrawerView.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _reactNativeDrawerLayoutPolyfill = _require(_dependencyMap[2], "react-native-drawer-layout-polyfill");
+
+  var _reactNativeDrawerLayoutPolyfill2 = babelHelpers.interopRequireDefault(_reactNativeDrawerLayoutPolyfill);
+
+  var _DrawerSidebar = _require(_dependencyMap[3], "./DrawerSidebar");
+
+  var _DrawerSidebar2 = babelHelpers.interopRequireDefault(_DrawerSidebar);
+
+  var _NavigationActions = _require(_dependencyMap[4], "../../NavigationActions");
+
+  var _NavigationActions2 = babelHelpers.interopRequireDefault(_NavigationActions);
+
+  var _DrawerActions = _require(_dependencyMap[5], "../../routers/DrawerActions");
+
+  var _DrawerActions2 = babelHelpers.interopRequireDefault(_DrawerActions);
+
+  var DrawerView = function (_React$PureComponent) {
+    babelHelpers.inherits(DrawerView, _React$PureComponent);
+
+    function DrawerView() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      babelHelpers.classCallCheck(this, DrawerView);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = DrawerView.__proto__ || Object.getPrototypeOf(DrawerView)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        drawerWidth: typeof _this.props.navigationConfig.drawerWidth === 'function' ? _this.props.navigationConfig.drawerWidth() : _this.props.navigationConfig.drawerWidth
+      }, _this._handleDrawerOpen = function () {
+        var navigation = _this.props.navigation;
+        var isDrawerOpen = navigation.state.isDrawerOpen;
+
+        if (!isDrawerOpen) {
+          navigation.dispatch({
+            type: _DrawerActions2.default.OPEN_DRAWER
+          });
+        }
+      }, _this._handleDrawerClose = function () {
+        var navigation = _this.props.navigation;
+        var isDrawerOpen = navigation.state.isDrawerOpen;
+
+        if (isDrawerOpen) {
+          navigation.dispatch({
+            type: _DrawerActions2.default.CLOSE_DRAWER
+          });
+        }
+      }, _this._updateWidth = function () {
+        var drawerWidth = typeof _this.props.navigationConfig.drawerWidth === 'function' ? _this.props.navigationConfig.drawerWidth() : _this.props.navigationConfig.drawerWidth;
+
+        if (_this.state.drawerWidth !== drawerWidth) {
+          _this.setState({
+            drawerWidth: drawerWidth
+          });
+        }
+      }, _this._renderNavigationView = function () {
+        return _react2.default.createElement(_DrawerSidebar2.default, babelHelpers.extends({
+          screenProps: _this.props.screenProps,
+          navigation: _this.props.navigation,
+          descriptors: _this.props.descriptors,
+          contentComponent: _this.props.navigationConfig.contentComponent,
+          contentOptions: _this.props.navigationConfig.contentOptions,
+          drawerPosition: _this.props.navigationConfig.drawerPosition,
+          style: _this.props.navigationConfig.style
+        }, _this.props.navigationConfig, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 68
+          }
+        }));
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+    }
+
+    babelHelpers.createClass(DrawerView, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        _reactNative.Dimensions.addEventListener('change', this._updateWidth);
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        _reactNative.Dimensions.removeEventListener('change', this._updateWidth);
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate(prevProps, prevState) {
+        var isDrawerOpen = this.props.navigation.state.isDrawerOpen;
+        var wasDrawerOpen = prevProps.navigation.state.isDrawerOpen;
+
+        if (isDrawerOpen && !wasDrawerOpen) {
+          this._drawer.openDrawer();
+        } else if (wasDrawerOpen && !isDrawerOpen) {
+          this._drawer.closeDrawer();
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        var state = this.props.navigation.state;
+        var activeKey = state.routes[state.index].key;
+        var descriptor = this.props.descriptors[activeKey];
+        var DrawerScreen = descriptor.getComponent();
+        var drawerLockMode = descriptor.options.drawerLockMode;
+        return _react2.default.createElement(
+          _reactNativeDrawerLayoutPolyfill2.default,
+          {
+            ref: function ref(c) {
+              _this2._drawer = c;
+            },
+            drawerLockMode: drawerLockMode || this.props.screenProps && this.props.screenProps.drawerLockMode || this.props.navigationConfig.drawerLockMode,
+            drawerBackgroundColor: this.props.navigationConfig.drawerBackgroundColor,
+            drawerWidth: this.state.drawerWidth,
+            onDrawerOpen: this._handleDrawerOpen,
+            onDrawerClose: this._handleDrawerClose,
+            useNativeAnimations: this.props.navigationConfig.useNativeAnimations,
+            renderNavigationView: this._renderNavigationView,
+            drawerPosition: this.props.navigationConfig.drawerPosition === 'right' ? _reactNativeDrawerLayoutPolyfill2.default.positions.Right : _reactNativeDrawerLayoutPolyfill2.default.positions.Left,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 91
+            }
+          },
+          _react2.default.createElement(DrawerScreen, {
+            screenProps: this.props.screenProps,
+            navigation: descriptor.navigation,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 114
+            }
+          })
+        );
+      }
+    }]);
+    return DrawerView;
+  }(_react2.default.PureComponent);
+
+  exports.default = DrawerView;
+},396,[12,22,397,398,341,395],"node_modules/react-navigation/src/views/Drawer/DrawerView.js");

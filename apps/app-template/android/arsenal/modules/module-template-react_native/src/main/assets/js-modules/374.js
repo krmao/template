@@ -1,1 +1,9 @@
-__d(function(e,i,u,a,t){Object.defineProperty(a,"__esModule",{value:!0}),a.PagerRendererPropType=a.SceneRendererPropType=a.NavigationStatePropType=a.NavigationRoutePropType=void 0;var d=i(t[0]),r=babelHelpers.interopRequireDefault(d),o=i(t[1]),n=a.NavigationRoutePropType=r.default.shape({title:r.default.string,key:r.default.string.isRequired}),l=a.NavigationStatePropType=r.default.shape({routes:r.default.arrayOf(n).isRequired,index:r.default.number.isRequired});a.SceneRendererPropType={panX:r.default.object.isRequired,offsetX:r.default.object.isRequired,layout:r.default.shape({measured:r.default.bool.isRequired,height:r.default.number.isRequired,width:r.default.number.isRequired}).isRequired,navigationState:l.isRequired,position:r.default.object.isRequired,jumpToIndex:r.default.func.isRequired,useNativeDriver:r.default.bool},a.PagerRendererPropType={layout:r.default.shape({measured:r.default.bool.isRequired,height:r.default.number.isRequired,width:r.default.number.isRequired}).isRequired,navigationState:l.isRequired,panX:r.default.instanceOf(o.Animated.Value).isRequired,offsetX:r.default.instanceOf(o.Animated.Value).isRequired,canJumpToTab:r.default.func.isRequired,jumpToIndex:r.default.func.isRequired,animationEnabled:r.default.bool,swipeEnabled:r.default.bool,useNativeDriver:r.default.bool,children:r.default.node.isRequired}},374,[108,17]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var key = '__global_unique_id__';
+
+  module.exports = function () {
+    return global[key] = (global[key] || 0) + 1;
+  };
+},374,[],"node_modules/gud/index.js");

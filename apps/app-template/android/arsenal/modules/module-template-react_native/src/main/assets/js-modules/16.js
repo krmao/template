@@ -1,1 +1,26 @@
-__d(function(t,n,u,r,e){"use strict";function s(t){return function(){return t}}var i=function(){};i.thatReturns=s,i.thatReturnsFalse=s(!1),i.thatReturnsTrue=s(!0),i.thatReturnsNull=s(null),i.thatReturnsThis=function(){return this},i.thatReturnsArgument=function(t){return t},u.exports=i},16,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  "use strict";
+
+  function makeEmptyFunction(arg) {
+    return function () {
+      return arg;
+    };
+  }
+
+  var emptyFunction = function emptyFunction() {};
+
+  emptyFunction.thatReturns = makeEmptyFunction;
+  emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+  emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+  emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+
+  emptyFunction.thatReturnsThis = function () {
+    return this;
+  };
+
+  emptyFunction.thatReturnsArgument = function (arg) {
+    return arg;
+  };
+
+  module.exports = emptyFunction;
+},16,[],"node_modules/fbjs/lib/emptyFunction.js");

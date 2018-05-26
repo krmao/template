@@ -1,1 +1,91 @@
-__d(function(e,t,a,i,_){'use strict';t(_[0]);var n=t(_[1]),o=t(_[2]),s=o.generateNewAnimationId,l=o.shouldUseNativeDriver,r=(function(e){function t(e,a,i,_,n){babelHelpers.classCallCheck(this,t);var o=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this));return o._value=e,o._parent=a,o._animationClass=i,o._animationConfig=_,o._useNativeDriver=l(_),o._callback=n,o.__attach(),o}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"__makeNative",value:function(){this.__isNative=!0,this._parent.__makeNative(),babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"__makeNative",this).call(this),this._value.__makeNative()}},{key:"__getValue",value:function(){return this._parent.__getValue()}},{key:"__attach",value:function(){this._parent.__addChild(this),this._useNativeDriver&&this.__makeNative()}},{key:"__detach",value:function(){this._parent.__removeChild(this),babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"__detach",this).call(this)}},{key:"update",value:function(){this._value.animate(new this._animationClass(babelHelpers.extends({},this._animationConfig,{toValue:this._animationConfig.toValue.__getValue()})),this._callback)}},{key:"__getNativeConfig",value:function(){var e=new this._animationClass(babelHelpers.extends({},this._animationConfig,{toValue:void 0})).__getNativeAnimationConfig();return{type:'tracking',animationId:s(),animationConfig:e,toValue:this._parent.__getNativeTag(),value:this._value.__getNativeTag()}}}]),t})(n);a.exports=r},196,[181,183,184]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var GLOBAL = typeof window === 'undefined' ? global : window;
+
+  var setter = function setter(_setter, _clearer, array) {
+    return function (callback, delta) {
+      var id = _setter(function () {
+        _clearer.call(this, id);
+
+        callback.apply(this, arguments);
+      }.bind(this), delta);
+
+      if (!this[array]) {
+        this[array] = [id];
+      } else {
+        this[array].push(id);
+      }
+
+      return id;
+    };
+  };
+
+  var clearer = function clearer(_clearer, array) {
+    return function (id) {
+      if (this[array]) {
+        var index = this[array].indexOf(id);
+
+        if (index !== -1) {
+          this[array].splice(index, 1);
+        }
+      }
+
+      _clearer(id);
+    };
+  };
+
+  var _timeouts = 'TimerMixin_timeouts';
+
+  var _clearTimeout = clearer(GLOBAL.clearTimeout, _timeouts);
+
+  var _setTimeout = setter(GLOBAL.setTimeout, _clearTimeout, _timeouts);
+
+  var _intervals = 'TimerMixin_intervals';
+
+  var _clearInterval = clearer(GLOBAL.clearInterval, _intervals);
+
+  var _setInterval = setter(GLOBAL.setInterval, function () {}, _intervals);
+
+  var _immediates = 'TimerMixin_immediates';
+
+  var _clearImmediate = clearer(GLOBAL.clearImmediate, _immediates);
+
+  var _setImmediate = setter(GLOBAL.setImmediate, _clearImmediate, _immediates);
+
+  var _rafs = 'TimerMixin_rafs';
+
+  var _cancelAnimationFrame = clearer(GLOBAL.cancelAnimationFrame, _rafs);
+
+  var _requestAnimationFrame = setter(GLOBAL.requestAnimationFrame, _cancelAnimationFrame, _rafs);
+
+  var TimerMixin = {
+    componentWillUnmount: function componentWillUnmount() {
+      this[_timeouts] && this[_timeouts].forEach(function (id) {
+        GLOBAL.clearTimeout(id);
+      });
+      this[_timeouts] = null;
+      this[_intervals] && this[_intervals].forEach(function (id) {
+        GLOBAL.clearInterval(id);
+      });
+      this[_intervals] = null;
+      this[_immediates] && this[_immediates].forEach(function (id) {
+        GLOBAL.clearImmediate(id);
+      });
+      this[_immediates] = null;
+      this[_rafs] && this[_rafs].forEach(function (id) {
+        GLOBAL.cancelAnimationFrame(id);
+      });
+      this[_rafs] = null;
+    },
+    setTimeout: _setTimeout,
+    clearTimeout: _clearTimeout,
+    setInterval: _setInterval,
+    clearInterval: _clearInterval,
+    setImmediate: _setImmediate,
+    clearImmediate: _clearImmediate,
+    requestAnimationFrame: _requestAnimationFrame,
+    cancelAnimationFrame: _cancelAnimationFrame
+  };
+  module.exports = TimerMixin;
+},196,[],"node_modules/react-timer-mixin/TimerMixin.js");

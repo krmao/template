@@ -1,1 +1,167 @@
-__d(function(t,e,n,o,i){Object.defineProperty(o,"__esModule",{value:!0});var a=e(i[0]),l=babelHelpers.interopRequireWildcard(a),r=e(i[1]),s=e(i[2]),p=(function(t){function e(t){babelHelpers.classCallCheck(this,e);var n=babelHelpers.possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));c.call(n);var o=n.props,i=o.navigationState,a=o.layout;return n.state={initialOffset:{x:i.index*a.width,y:0}},n}return babelHelpers.inherits(e,t),babelHelpers.createClass(e,[{key:"componentDidMount",value:function(){this._setInitialPage()}},{key:"componentDidUpdate",value:function(t){t.layout.width===this.props.layout.width&&t.navigationState===this.props.navigationState||this._scrollTo(this.props.navigationState.index*this.props.layout.width,t.layout.width===this.props.layout.width)}},{key:"render",value:function(){var t=this,e=this.props,n=e.children,o=e.layout,i=e.navigationState;return l.createElement(r.ScrollView,{horizontal:!0,pagingEnabled:!0,directionalLockEnabled:!0,keyboardDismissMode:"on-drag",keyboardShouldPersistTaps:"always",overScrollMode:"never",scrollEnabled:this.props.swipeEnabled,automaticallyAdjustContentInsets:!1,bounces:!1,alwaysBounceHorizontal:!1,scrollsToTop:!1,showsHorizontalScrollIndicator:!1,scrollEventThrottle:1,onScroll:this._handleScroll,onMomentumScrollEnd:this._handleMomentumScrollEnd,contentOffset:this.state.initialOffset,style:d.container,contentContainerStyle:o.width?null:d.container,ref:function(e){return t._scrollView=e}},l.Children.map(n,function(t,e){return l.createElement(r.View,{key:i.routes[e].key,testID:i.routes[e].testID,style:o.width?{width:o.width,overflow:'hidden'}:e===i.index?d.page:null},e===i.index||o.width?t:null)}))}}]),e})(l.Component);p.propTypes=s.PagerRendererPropType,p.defaultProps={canJumpToTab:function(){return!0}};var c=function(){var e=this;this._isIdle=!0,this._isInitial=!0,this._setInitialPage=function(){e.props.layout.width&&(e._isInitial=!0,e._scrollTo(e.props.navigationState.index*e.props.layout.width,!1)),setTimeout(function(){e._isInitial=!1},50)},this._scrollTo=function(t,n){e._isIdle&&e._scrollView&&e._scrollView.scrollTo({x:t,animated:n&&!1!==e.props.animationEnabled})},this._handleMomentumScrollEnd=function(n){var o=Math.round(n.nativeEvent.contentOffset.x/e.props.layout.width);e.props.canJumpToTab(e.props.navigationState.routes[o])?e.props.jumpToIndex(o):t.requestAnimationFrame(function(){e._scrollTo(e.props.navigationState.index*e.props.layout.width)})},this._handleScroll=function(n){if(!e._isInitial){var o=e.props,i=o.navigationState,a=o.layout,l=i.index*a.width;e.props.offsetX.setValue(-l),e.props.panX.setValue(l-n.nativeEvent.contentOffset.x),t.cancelAnimationFrame(e._idleCallback),e._isIdle=!1,e._idleCallback=t.requestAnimationFrame(function(){e._isIdle=!0})}}};o.default=p;var d=r.StyleSheet.create({container:{flex:1},page:{flex:1,overflow:'hidden'}})},376,[12,17,374]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var _getSceneIndicesForInterpolationInputRange = _require(_dependencyMap[1], "../../utils/getSceneIndicesForInterpolationInputRange");
+
+  var _getSceneIndicesForInterpolationInputRange2 = babelHelpers.interopRequireDefault(_getSceneIndicesForInterpolationInputRange);
+
+  function forInitial(props) {
+    var navigation = props.navigation,
+        scene = props.scene;
+    var focused = navigation.state.index === scene.index;
+    var opacity = focused ? 1 : 0;
+    var translate = focused ? 0 : 1000000;
+    return {
+      opacity: opacity,
+      transform: [{
+        translateX: translate
+      }, {
+        translateY: translate
+      }]
+    };
+  }
+
+  function forHorizontal(props) {
+    var layout = props.layout,
+        position = props.position,
+        scene = props.scene;
+
+    if (!layout.isMeasured) {
+      return forInitial(props);
+    }
+
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var opacity = position.interpolate({
+      inputRange: [first, first + 0.01, index, last - 0.01, last],
+      outputRange: [0, 1, 1, 0.85, 0]
+    });
+    var width = layout.initWidth;
+    var translateX = position.interpolate({
+      inputRange: [first, index, last],
+      outputRange: _reactNative.I18nManager.isRTL ? [-width, 0, width * 0.3] : [width, 0, width * -0.3]
+    });
+    var translateY = 0;
+    return {
+      opacity: opacity,
+      transform: [{
+        translateX: translateX
+      }, {
+        translateY: translateY
+      }]
+    };
+  }
+
+  function forVertical(props) {
+    var layout = props.layout,
+        position = props.position,
+        scene = props.scene;
+
+    if (!layout.isMeasured) {
+      return forInitial(props);
+    }
+
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var opacity = position.interpolate({
+      inputRange: [first, first + 0.01, index, last - 0.01, last],
+      outputRange: [0, 1, 1, 0.85, 0]
+    });
+    var height = layout.initHeight;
+    var translateY = position.interpolate({
+      inputRange: [first, index, last],
+      outputRange: [height, 0, 0]
+    });
+    var translateX = 0;
+    return {
+      opacity: opacity,
+      transform: [{
+        translateX: translateX
+      }, {
+        translateY: translateY
+      }]
+    };
+  }
+
+  function forFadeFromBottomAndroid(props) {
+    var layout = props.layout,
+        position = props.position,
+        scene = props.scene;
+
+    if (!layout.isMeasured) {
+      return forInitial(props);
+    }
+
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var inputRange = [first, index, last - 0.01, last];
+    var opacity = position.interpolate({
+      inputRange: inputRange,
+      outputRange: [0, 1, 1, 0]
+    });
+    var translateY = position.interpolate({
+      inputRange: inputRange,
+      outputRange: [50, 0, 0, 0]
+    });
+    var translateX = 0;
+    return {
+      opacity: opacity,
+      transform: [{
+        translateX: translateX
+      }, {
+        translateY: translateY
+      }]
+    };
+  }
+
+  function forFade(props) {
+    var layout = props.layout,
+        position = props.position,
+        scene = props.scene;
+
+    if (!layout.isMeasured) {
+      return forInitial(props);
+    }
+
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var opacity = position.interpolate({
+      inputRange: [first, index, last],
+      outputRange: [0, 1, 1]
+    });
+    return {
+      opacity: opacity
+    };
+  }
+
+  exports.default = {
+    forHorizontal: forHorizontal,
+    forVertical: forVertical,
+    forFadeFromBottomAndroid: forFadeFromBottomAndroid,
+    forFade: forFade
+  };
+},376,[22,366],"node_modules/react-navigation/src/views/StackView/StackViewStyleInterpolator.js");

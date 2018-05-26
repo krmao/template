@@ -1,1 +1,15 @@
-__d(function(n,r,i,t,u){'use strict';r(u[0]);var o=r(u[1]);i.exports=function(n){if(void 0===n||null===n)return n;var r=o(n);return null!==r&&void 0!==r?(r=(r<<24|r>>>8)>>>0,r|=0):void 0}},134,[28,41]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var PropTypes = _require(_dependencyMap[0], 'prop-types');
+
+  var createStrictShapeTypeChecker = _require(_dependencyMap[1], 'createStrictShapeTypeChecker');
+
+  var EdgeInsetsPropType = createStrictShapeTypeChecker({
+    top: PropTypes.number,
+    left: PropTypes.number,
+    bottom: PropTypes.number,
+    right: PropTypes.number
+  });
+  module.exports = EdgeInsetsPropType;
+},134,[129,135],"EdgeInsetsPropType");

@@ -1,1 +1,19 @@
-__d(function(e,t,i,a,n){'use strict';var s=t(n[0]).AnimatedEvent,_=t(n[1]),o=t(n[2]),r=t(n[3]),c=t(n[4]),l=t(n[5]),v=(function(e){function t(e,i){babelHelpers.classCallCheck(this,t);var a=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this));return e.style&&(e=babelHelpers.extends({},e,{style:new o(e.style)})),a._props=e,a._callback=i,a.__attach(),a}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"__getValue",value:function(){var e={};for(var t in this._props){var i=this._props[t];i instanceof _?(!i.__isNative||i instanceof o)&&(e[t]=i.__getValue()):e[t]=i instanceof s?i.__getHandler():i}return e}},{key:"__getAnimatedValue",value:function(){var e={};for(var t in this._props){var i=this._props[t];i instanceof _&&(e[t]=i.__getAnimatedValue())}return e}},{key:"__attach",value:function(){for(var e in this._props){var t=this._props[e];t instanceof _&&t.__addChild(this)}}},{key:"__detach",value:function(){for(var e in this.__isNative&&this._animatedView&&this.__disconnectAnimatedView(),this._props){var i=this._props[e];i instanceof _&&i.__removeChild(this)}babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"__detach",this).call(this)}},{key:"update",value:function(){this._callback()}},{key:"__makeNative",value:function(){if(!this.__isNative){for(var e in this.__isNative=!0,this._props){var t=this._props[e];t instanceof _&&t.__makeNative()}this._animatedView&&this.__connectAnimatedView()}}},{key:"setNativeView",value:function(e){this._animatedView!==e&&(this._animatedView=e,this.__isNative&&this.__connectAnimatedView())}},{key:"__connectAnimatedView",value:function(){l(this.__isNative,'Expected node to be marked as "native"');var e=c.findNodeHandle(this._animatedView);l(null!=e,'Unable to locate attached view in the native tree'),r.API.connectAnimatedNodeToView(this.__getNativeTag(),e)}},{key:"__disconnectAnimatedView",value:function(){l(this.__isNative,'Expected node to be marked as "native"');var e=c.findNodeHandle(this._animatedView);l(null!=e,'Unable to locate attached view in the native tree'),r.API.disconnectAnimatedNodeFromView(this.__getNativeTag(),e)}},{key:"__getNativeConfig",value:function(){var e={};for(var t in this._props){var i=this._props[t];i instanceof _&&(e[t]=i.__getNativeTag())}return{type:'props',props:e}}}]),t})(_);i.exports=v},193,[180,183,194,184,43,18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var mergeFast = function mergeFast(one, two) {
+    var ret = {};
+
+    for (var keyOne in one) {
+      ret[keyOne] = one[keyOne];
+    }
+
+    for (var keyTwo in two) {
+      ret[keyTwo] = two[keyTwo];
+    }
+
+    return ret;
+  };
+
+  module.exports = mergeFast;
+},193,[],"mergeFast");

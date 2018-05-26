@@ -1,1 +1,32 @@
-__d(function(e,t,n,r,o){Object.defineProperty(r,"__esModule",{value:!0});var a=t(o[0]),i=babelHelpers.interopRequireWildcard(a),l=t(o[1]),c=t(o[2]),u=t(o[3]),p=babelHelpers.interopRequireDefault(u),s=(function(e){function t(){var e,n,r,o;babelHelpers.classCallCheck(this,t);for(var a=arguments.length,c=Array(a),u=0;u<a;u++)c[u]=arguments[u];return n=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(c))),r._renderLabel=function(e){var t=e.route,n=e.index,o=e.focused,a=r.props,c=a.position,u=a.navigation,p=a.activeTintColor,s=a.inactiveTintColor,f=a.showLabel,d=a.upperCaseLabel,v=a.labelStyle,g=a.allowFontScaling;if(!1===f)return null;var C=u.state.routes,h=[-1].concat(babelHelpers.toConsumableArray(C.map(function(e,t){return t}))),y=h.map(function(e){return e===n?p:s}),m=c.interpolate({inputRange:h,outputRange:y}),T=o?p:s,_=r.props.getLabelText({route:t});return'string'==typeof _?i.createElement(l.Animated.Text,{style:[b.label,{color:m},v],allowFontScaling:g},d?_.toUpperCase():_):'function'==typeof _?_({focused:o,tintColor:T}):_},r._renderIcon=function(e){var t=e.route,n=e.index,o=r.props,a=o.position,l=o.navigation,c=o.activeTintColor,u=o.inactiveTintColor,s=o.renderIcon,f=o.showIcon,d=o.iconStyle;if(!1===f)return null;var v=[-1].concat(babelHelpers.toConsumableArray(l.state.routes.map(function(e,t){return t}))),g=a.interpolate({inputRange:v,outputRange:v.map(function(e){return e===n?1:0})}),C=a.interpolate({inputRange:v,outputRange:v.map(function(e){return e===n?0:1})});return i.createElement(p.default,{route:t,navigation:l,activeOpacity:g,inactiveOpacity:C,activeTintColor:c,inactiveTintColor:u,renderIcon:s,style:[b.icon,d]})},o=n,babelHelpers.possibleConstructorReturn(r,o)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props,t=e.navigation,n=(e.renderIcon,e.getLabelText,babelHelpers.objectWithoutProperties(e,["navigation","renderIcon","getLabelText"]));return i.createElement(c.TabBar,babelHelpers.extends({},n,{navigationState:t.state,renderIcon:this._renderIcon,renderLabel:this._renderLabel}))}}]),t})(i.PureComponent);s.defaultProps={activeTintColor:'#fff',inactiveTintColor:'#fff',showIcon:!1,showLabel:!0,upperCaseLabel:!0,allowFontScaling:!0},r.default=s;var b=l.StyleSheet.create({icon:{height:24,width:24},label:{textAlign:'center',fontSize:13,margin:8,backgroundColor:'transparent'}})},403,[12,17,393,389]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = {
+    get TabViewAnimated() {
+      return _require(_dependencyMap[0], './TabViewAnimated').default;
+    },
+
+    get TabViewPagerPan() {
+      return _require(_dependencyMap[1], './TabViewPagerPan').default;
+    },
+
+    get TabViewPagerScroll() {
+      return _require(_dependencyMap[2], './TabViewPagerScroll').default;
+    },
+
+    get TabViewPagerAndroid() {
+      return _require(_dependencyMap[3], './TabViewPagerAndroid').default;
+    },
+
+    get TabViewPagerExperimental() {
+      return _require(_dependencyMap[4], './TabViewPagerExperimental').default;
+    },
+
+    get TabBar() {
+      return _require(_dependencyMap[5], './TabBar').default;
+    },
+
+    get SceneMap() {
+      return _require(_dependencyMap[6], './SceneMap').default;
+    }
+
+  };
+},403,[404,408,407,406,409,410,412],"node_modules/react-navigation/node_modules/react-native-tab-view/src/index.js");

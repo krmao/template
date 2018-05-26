@@ -1,1 +1,92 @@
-__d(function(t,e,a,_,i){'use strict';var l=e(i[0]),s=(e(i[1]),(function(t){function e(t,a,_){babelHelpers.classCallCheck(this,e);var i=babelHelpers.possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).call(this));return i._a=t,i._min=a,i._max=_,i._value=i._lastValue=i._a.__getValue(),i}return babelHelpers.inherits(e,t),babelHelpers.createClass(e,[{key:"__makeNative",value:function(){this._a.__makeNative(),babelHelpers.get(e.prototype.__proto__||Object.getPrototypeOf(e.prototype),"__makeNative",this).call(this)}},{key:"interpolate",value:function(t){return new l(this,t)}},{key:"__getValue",value:function(){var t=this._a.__getValue(),e=t-this._lastValue;return this._lastValue=t,this._value=Math.min(Math.max(this._value+e,this._min),this._max),this._value}},{key:"__attach",value:function(){this._a.__addChild(this)}},{key:"__detach",value:function(){this._a.__removeChild(this),babelHelpers.get(e.prototype.__proto__||Object.getPrototypeOf(e.prototype),"__detach",this).call(this)}},{key:"__getNativeConfig",value:function(){return{type:'diffclamp',input:this._a.__getNativeTag(),min:this._min,max:this._max}}}]),e})(e(i[2])));a.exports=s},189,[182,183,185]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var invariant = _require(_dependencyMap[0], 'fbjs/lib/invariant');
+
+  var oneArgumentPooler = function oneArgumentPooler(copyFieldsFrom) {
+    var Klass = this;
+
+    if (Klass.instancePool.length) {
+      var _instance = Klass.instancePool.pop();
+
+      Klass.call(_instance, copyFieldsFrom);
+      return _instance;
+    } else {
+      return new Klass(copyFieldsFrom);
+    }
+  };
+
+  var twoArgumentPooler = function twoArgumentPooler(a1, a2) {
+    var Klass = this;
+
+    if (Klass.instancePool.length) {
+      var _instance2 = Klass.instancePool.pop();
+
+      Klass.call(_instance2, a1, a2);
+      return _instance2;
+    } else {
+      return new Klass(a1, a2);
+    }
+  };
+
+  var threeArgumentPooler = function threeArgumentPooler(a1, a2, a3) {
+    var Klass = this;
+
+    if (Klass.instancePool.length) {
+      var _instance3 = Klass.instancePool.pop();
+
+      Klass.call(_instance3, a1, a2, a3);
+      return _instance3;
+    } else {
+      return new Klass(a1, a2, a3);
+    }
+  };
+
+  var fourArgumentPooler = function fourArgumentPooler(a1, a2, a3, a4) {
+    var Klass = this;
+
+    if (Klass.instancePool.length) {
+      var _instance4 = Klass.instancePool.pop();
+
+      Klass.call(_instance4, a1, a2, a3, a4);
+      return _instance4;
+    } else {
+      return new Klass(a1, a2, a3, a4);
+    }
+  };
+
+  var standardReleaser = function standardReleaser(instance) {
+    var Klass = this;
+    invariant(instance instanceof Klass, 'Trying to release an instance into a pool of a different type.');
+    instance.destructor();
+
+    if (Klass.instancePool.length < Klass.poolSize) {
+      Klass.instancePool.push(instance);
+    }
+  };
+
+  var DEFAULT_POOL_SIZE = 10;
+  var DEFAULT_POOLER = oneArgumentPooler;
+
+  var addPoolingTo = function addPoolingTo(CopyConstructor, pooler) {
+    var NewKlass = CopyConstructor;
+    NewKlass.instancePool = [];
+    NewKlass.getPooled = pooler || DEFAULT_POOLER;
+
+    if (!NewKlass.poolSize) {
+      NewKlass.poolSize = DEFAULT_POOL_SIZE;
+    }
+
+    NewKlass.release = standardReleaser;
+    return NewKlass;
+  };
+
+  var PooledClass = {
+    addPoolingTo: addPoolingTo,
+    oneArgumentPooler: oneArgumentPooler,
+    twoArgumentPooler: twoArgumentPooler,
+    threeArgumentPooler: threeArgumentPooler,
+    fourArgumentPooler: fourArgumentPooler
+  };
+  module.exports = PooledClass;
+},189,[18],"PooledClass");

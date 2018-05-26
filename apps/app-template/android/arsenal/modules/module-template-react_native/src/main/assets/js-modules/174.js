@@ -1,1 +1,32 @@
-__d(function(e,s,t,o,n){'use strict';var i=s(n[0]),r=s(n[1]),p=s(n[2]),a=s(n[3]),l=s(n[4]),c=s(n[5]),h=s(n[6]),u=s(n[7]),d=s(n[8]),y=d.AccessibilityComponentTypes,b=d.AccessibilityTraits,f={top:20,left:20,right:20,bottom:30},P=c({displayName:'TouchableWithoutFeedback',mixins:[a,l.Mixin],propTypes:{accessible:p.bool,accessibilityComponentType:p.oneOf(y),accessibilityTraits:p.oneOfType([p.oneOf(b),p.arrayOf(p.oneOf(b))]),disabled:p.bool,onPress:p.func,onPressIn:p.func,onPressOut:p.func,onLayout:p.func,onLongPress:p.func,delayPressIn:p.number,delayPressOut:p.number,delayLongPress:p.number,pressRetentionOffset:i,hitSlop:i},getInitialState:function(){return this.touchableGetInitialState()},componentDidMount:function(){h(this.props)},UNSAFE_componentWillReceiveProps:function(e){h(e)},touchableHandlePress:function(e){this.props.onPress&&this.props.onPress(e)},touchableHandleActivePressIn:function(e){this.props.onPressIn&&this.props.onPressIn(e)},touchableHandleActivePressOut:function(e){this.props.onPressOut&&this.props.onPressOut(e)},touchableHandleLongPress:function(e){this.props.onLongPress&&this.props.onLongPress(e)},touchableGetPressRectOffset:function(){return this.props.pressRetentionOffset||f},touchableGetHitSlop:function(){return this.props.hitSlop},touchableGetHighlightDelayMS:function(){return this.props.delayPressIn||0},touchableGetLongPressDelayMS:function(){return 0===this.props.delayLongPress?0:this.props.delayLongPress||500},touchableGetPressOutDelayMS:function(){return this.props.delayPressOut||0},render:function(){var e=r.Children.only(this.props.children),s=e.props.children;u(!e.type||'Text'!==e.type.displayName,'TouchableWithoutFeedback does not work well with Text children. Wrap children in a View instead. See '+(e._owner&&e._owner.getName&&e._owner.getName()||'<unknown>')),l.TOUCH_TARGET_DEBUG&&e.type&&'View'===e.type.displayName&&(s=r.Children.toArray(s)).push(l.renderDebugView({color:'red',hitSlop:this.props.hitSlop}));var t=l.TOUCH_TARGET_DEBUG&&e.type&&'Text'===e.type.displayName?[e.props.style,{color:'red'}]:e.props.style;return r.cloneElement(e,{accessible:!1!==this.props.accessible,accessibilityLabel:this.props.accessibilityLabel,accessibilityComponentType:this.props.accessibilityComponentType,accessibilityTraits:this.props.accessibilityTraits,nativeID:this.props.nativeID,testID:this.props.testID,onLayout:this.props.onLayout,hitSlop:this.props.hitSlop,onStartShouldSetResponder:this.touchableHandleStartShouldSetResponder,onResponderTerminationRequest:this.touchableHandleResponderTerminationRequest,onResponderGrant:this.touchableHandleResponderGrant,onResponderMove:this.touchableHandleResponderMove,onResponderRelease:this.touchableHandleResponderRelease,onResponderTerminate:this.touchableHandleResponderTerminate,style:t,children:s})}});t.exports=P},174,[113,111,108,175,166,155,176,32,126]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ReactNativeStyleAttributes = _require(_dependencyMap[0], 'ReactNativeStyleAttributes');
+
+  var ReactNativeViewAttributes = {};
+  ReactNativeViewAttributes.UIView = {
+    pointerEvents: true,
+    accessible: true,
+    accessibilityActions: true,
+    accessibilityLabel: true,
+    accessibilityComponentType: true,
+    accessibilityLiveRegion: true,
+    accessibilityTraits: true,
+    importantForAccessibility: true,
+    nativeID: true,
+    testID: true,
+    renderToHardwareTextureAndroid: true,
+    shouldRasterizeIOS: true,
+    onLayout: true,
+    onAccessibilityAction: true,
+    onAccessibilityTap: true,
+    onMagicTap: true,
+    collapsable: true,
+    needsOffscreenAlphaCompositing: true,
+    style: ReactNativeStyleAttributes
+  };
+  ReactNativeViewAttributes.RCTView = babelHelpers.extends({}, ReactNativeViewAttributes.UIView, {
+    removeClippedSubviews: true
+  });
+  module.exports = ReactNativeViewAttributes;
+},174,[150],"ReactNativeViewAttributes");

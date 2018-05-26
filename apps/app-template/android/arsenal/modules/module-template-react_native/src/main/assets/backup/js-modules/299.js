@@ -1,0 +1,1 @@
+__d(function(t,i,o,n,r){'use strict';var s=i(r[0]),a={vibrate:function(){s('VibrationIOS is not supported on this platform!')}};o.exports=a},299,[32]);

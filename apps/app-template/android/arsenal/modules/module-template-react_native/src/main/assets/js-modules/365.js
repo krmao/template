@@ -1,1 +1,207 @@
-__d(function(e,t,n,r,i){Object.defineProperty(r,"__esModule",{value:!0});var o=t(i[0]),a=babelHelpers.interopRequireDefault(o),s=t(i[1]),p=t(i[2]),d=babelHelpers.interopRequireDefault(p),l=t(i[3]),u=babelHelpers.interopRequireDefault(l),c=t(i[4]),f=(babelHelpers.interopRequireDefault(c),t(i[5])),g=babelHelpers.interopRequireDefault(f),h=(function(e){function t(){var e,n,r,i;babelHelpers.classCallCheck(this,t);for(var o=arguments.length,s=Array(o),p=0;p<o;p++)s[p]=arguments[p];return n=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(s))),r.state={drawerWidth:'function'==typeof r.props.navigationConfig.drawerWidth?r.props.navigationConfig.drawerWidth():r.props.navigationConfig.drawerWidth},r._handleDrawerOpen=function(){var e=r.props.navigation;e.state.isDrawerOpen||e.dispatch({type:g.default.OPEN_DRAWER})},r._handleDrawerClose=function(){var e=r.props.navigation;e.state.isDrawerOpen&&e.dispatch({type:g.default.CLOSE_DRAWER})},r._updateWidth=function(){var e='function'==typeof r.props.navigationConfig.drawerWidth?r.props.navigationConfig.drawerWidth():r.props.navigationConfig.drawerWidth;r.state.drawerWidth!==e&&r.setState({drawerWidth:e})},r._renderNavigationView=function(){return a.default.createElement(u.default,babelHelpers.extends({screenProps:r.props.screenProps,navigation:r.props.navigation,descriptors:r.props.descriptors,contentComponent:r.props.navigationConfig.contentComponent,contentOptions:r.props.navigationConfig.contentOptions,drawerPosition:r.props.navigationConfig.drawerPosition,style:r.props.navigationConfig.style},r.props.navigationConfig))},i=n,babelHelpers.possibleConstructorReturn(r,i)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidMount",value:function(){s.Dimensions.addEventListener('change',this._updateWidth)}},{key:"componentWillUnmount",value:function(){s.Dimensions.removeEventListener('change',this._updateWidth)}},{key:"componentDidUpdate",value:function(e,t){var n=this.props.navigation.state.isDrawerOpen,r=e.navigation.state.isDrawerOpen;n&&!r?this._drawer.openDrawer():r&&!n&&this._drawer.closeDrawer()}},{key:"render",value:function(){var e=this,t=this.props.navigation.state,n=t.routes[t.index].key,r=this.props.descriptors[n],i=r.getComponent();r.options.drawerLockMode;return a.default.createElement(d.default,{ref:function(t){e._drawer=t},drawerLockMode:this.props.screenProps&&this.props.screenProps.drawerLockMode||this.props.navigationConfig.drawerLockMode,drawerBackgroundColor:this.props.navigationConfig.drawerBackgroundColor,drawerWidth:this.state.drawerWidth,onDrawerOpen:this._handleDrawerOpen,onDrawerClose:this._handleDrawerClose,useNativeAnimations:this.props.navigationConfig.useNativeAnimations,renderNavigationView:this._renderNavigationView,drawerPosition:'right'===this.props.navigationConfig.drawerPosition?d.default.positions.Right:d.default.positions.Left},a.default.createElement(i,{screenProps:this.props.screenProps,navigation:r.navigation}))}}]),t})(a.default.PureComponent);r.default=h},365,[12,17,366,367,309,363]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var _getSceneIndicesForInterpolationInputRange = _require(_dependencyMap[1], "../../utils/getSceneIndicesForInterpolationInputRange");
+
+  var _getSceneIndicesForInterpolationInputRange2 = babelHelpers.interopRequireDefault(_getSceneIndicesForInterpolationInputRange);
+
+  function hasHeader(scene) {
+    if (!scene) {
+      return true;
+    }
+
+    var descriptor = scene.descriptor;
+    return descriptor.options.header !== null;
+  }
+
+  var crossFadeInterpolation = function crossFadeInterpolation(scenes, first, index, last) {
+    return {
+      inputRange: [first, first + 0.001, index - 0.9, index - 0.2, index, last - 0.001, last],
+      outputRange: [0, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[first]) ? 0.3 : 1, hasHeader(scenes[index]) ? 1 : 0, hasHeader(scenes[last]) ? 0 : 1, 0]
+    };
+  };
+
+  function isGoingBack(scenes) {
+    var lastSceneIndexInScenes = scenes.length - 1;
+    return !scenes[lastSceneIndexInScenes].isActive;
+  }
+
+  function forLayout(props) {
+    var layout = props.layout,
+        position = props.position,
+        scene = props.scene,
+        scenes = props.scenes,
+        mode = props.mode;
+
+    if (mode !== 'float') {
+      return {};
+    }
+
+    var isBack = isGoingBack(scenes);
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {};
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var width = layout.initWidth;
+
+    if (isBack && !hasHeader(scenes[index]) && !hasHeader(scenes[last]) || !isBack && !hasHeader(scenes[first]) && !hasHeader(scenes[index])) {
+      return {
+        transform: [{
+          translateX: width
+        }]
+      };
+    }
+
+    var rtlMult = _reactNative.I18nManager.isRTL ? -1 : 1;
+    var translateX = position.interpolate({
+      inputRange: [first, index, last],
+      outputRange: [rtlMult * (hasHeader(scenes[first]) ? 0 : width), rtlMult * (hasHeader(scenes[index]) ? 0 : isBack ? width : -width), rtlMult * (hasHeader(scenes[last]) ? 0 : -width)]
+    });
+    return {
+      transform: [{
+        translateX: translateX
+      }]
+    };
+  }
+
+  function forLeft(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    return {
+      opacity: position.interpolate(crossFadeInterpolation(scenes, first, index, last))
+    };
+  }
+
+  function forCenter(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    return {
+      opacity: position.interpolate(crossFadeInterpolation(scenes, first, index, last))
+    };
+  }
+
+  function forRight(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    return {
+      opacity: position.interpolate(crossFadeInterpolation(scenes, first, index, last))
+    };
+  }
+
+  function forLeftButton(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var inputRange = [first, first + 0.001, first + Math.abs(index - first) / 2, index, last - Math.abs(last - index) / 2, last - 0.001, last];
+    var outputRange = [0, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[first]) ? 0.1 : 1, hasHeader(scenes[index]) ? 1 : 0, hasHeader(scenes[last]) ? 0.1 : 1, hasHeader(scenes[last]) ? 0 : 1, 0];
+    return {
+      opacity: position.interpolate({
+        inputRange: inputRange,
+        outputRange: outputRange
+      })
+    };
+  }
+
+  var LEFT_LABEL_OFFSET = _reactNative.Dimensions.get('window').width / 2 - 70 - 25;
+
+  function forLeftLabel(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var offset = LEFT_LABEL_OFFSET;
+    return {
+      opacity: position.interpolate({
+        inputRange: [first, first + 0.001, index - 0.35, index, index + 0.5, last - 0.001, last],
+        outputRange: [0, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[index]) ? 1 : 0, hasHeader(scenes[last]) ? 0.5 : 1, hasHeader(scenes[last]) ? 0 : 1, 0]
+      }),
+      transform: [{
+        translateX: position.interpolate({
+          inputRange: [first, first + 0.001, index, last - 0.001, last],
+          outputRange: _reactNative.I18nManager.isRTL ? [-offset * 1.5, hasHeader(scenes[first]) ? -offset * 1.5 : 0, 0, hasHeader(scenes[last]) ? offset : 0, offset] : [offset, hasHeader(scenes[first]) ? offset : 0, 0, hasHeader(scenes[last]) ? -offset * 1.5 : 0, -offset * 1.5]
+        })
+      }]
+    };
+  }
+
+  var TITLE_OFFSET_IOS = _reactNative.Dimensions.get('window').width / 2 - 70 + 25;
+
+  function forCenterFromLeft(props) {
+    var position = props.position,
+        scene = props.scene,
+        scenes = props.scenes;
+    var interpolate = (0, _getSceneIndicesForInterpolationInputRange2.default)(props);
+    if (!interpolate) return {
+      opacity: 0
+    };
+    var first = interpolate.first,
+        last = interpolate.last;
+    var index = scene.index;
+    var inputRange = [first, index - 0.5, index, index + 0.5, last];
+    var offset = TITLE_OFFSET_IOS;
+    return {
+      opacity: position.interpolate({
+        inputRange: [first, first + 0.001, index - 0.5, index, index + 0.7, last - 0.001, last],
+        outputRange: [0, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[first]) ? 0 : 1, hasHeader(scenes[index]) ? 1 : 0, hasHeader(scenes[last]) ? 0 : 1, hasHeader(scenes[last]) ? 0 : 1, 0]
+      }),
+      transform: [{
+        translateX: position.interpolate({
+          inputRange: [first, first + 0.001, index, last - 0.001, last],
+          outputRange: _reactNative.I18nManager.isRTL ? [-offset, hasHeader(scenes[first]) ? -offset : 0, 0, hasHeader(scenes[last]) ? offset : 0, offset] : [offset, hasHeader(scenes[first]) ? offset : 0, 0, hasHeader(scenes[last]) ? -offset : 0, -offset]
+        })
+      }]
+    };
+  }
+
+  exports.default = {
+    forLayout: forLayout,
+    forLeft: forLeft,
+    forLeftButton: forLeftButton,
+    forLeftLabel: forLeftLabel,
+    forCenterFromLeft: forCenterFromLeft,
+    forCenter: forCenter,
+    forRight: forRight
+  };
+},365,[22,366],"node_modules/react-navigation/src/views/Header/HeaderStyleInterpolator.js");

@@ -1,1 +1,22 @@
-__d(function(e,t,n,r,a){Object.defineProperty(r,"__esModule",{value:!0});var o=t(a[0]),i=babelHelpers.interopRequireDefault(o),s=t(a[1]),p=t(a[2]),l=t(a[3]),u=(function(e){function t(){var e,n,r,a;babelHelpers.classCallCheck(this,t);for(var o=arguments.length,s=Array(o),u=0;u<o;u++)s[u]=arguments[u];return n=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(s))),r._handlePageChanged=function(e){var t=r.props.navigation.state.routes[e].routeName;r.props.navigation.dispatch(l.NavigationActions.navigate({routeName:t}))},r._renderScene=function(e){var t=e.route,n=r.props,a=n.screenProps,o=n.navigation,s=n.descriptors,p=r.props.navigationConfig,u=p.lazy,d=p.removeClippedSubviews,c=p.animationEnabled,b=p.swipeEnabled,f=s[t.key],g=o.state.index,v=o.state.routes[g].key,P=t.key,h=f.getComponent();return i.default.createElement(l.ResourceSavingSceneView,{lazy:u,isFocused:v===P,removeClippedSubViews:d,animationEnabled:c,swipeEnabled:b,screenProps:a,component:h,navigation:o,childNavigation:f.navigation})},r._getLabel=function(e){var t=e.route,n=e.tintColor,a=e.focused,o=r.props,i=(o.screenProps,o.descriptors[t.key].options);return i.tabBarLabel?'function'==typeof i.tabBarLabel?i.tabBarLabel({tintColor:n,focused:a}):i.tabBarLabel:'string'==typeof i.title?i.title:t.routeName},r._getOnPress=function(e,t){var n=t.route;return r.props.descriptors[n.key].options.tabBarOnPress},r._getTestIDProps=function(e){var t=e.route,n=r.props.descriptors[t.key].options;return'function'==typeof n.tabBarTestIDProps?n.tabBarTestIDProps({focused:focused}):n.tabBarTestIDProps},r._renderIcon=function(e){var t=e.focused,n=e.route,a=e.tintColor,o=r.props.descriptors[n.key].options;return o.tabBarIcon?'function'==typeof o.tabBarIcon?o.tabBarIcon({tintColor:a,focused:t}):o.tabBarIcon:null},r._renderTabBar=function(e){var t=r.props.navigationConfig,n=t.tabBarOptions,a=t.tabBarComponent,o=t.animationEnabled,s=t.tabBarPosition;return void 0===a?null:i.default.createElement(a,babelHelpers.extends({},e,n,{tabBarPosition:s,screenProps:r.props.screenProps,navigation:r.props.navigation,getLabel:r._getLabel,getTestIDProps:r._getTestIDProps,getOnPress:r._getOnPress,renderIcon:r._renderIcon,animationEnabled:o}))},r._renderPager=function(e){return i.default.createElement(p.TabViewPagerPan,e)},a=n,babelHelpers.possibleConstructorReturn(r,a)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props.navigationConfig,t=e.tabBarComponent,n=e.tabBarPosition,r=e.animationEnabled,a=e.configureTransition,o=e.initialLayout,s=void 0,l=void 0,u=void 0,c=this.props.navigation.state,b=c.routes[c.index],f=this.props.descriptors[b.key].options,g=null==f.tabBarVisible||f.tabBarVisible,v=null==f.swipeEnabled?this.props.navigationConfig.swipeEnabled:f.swipeEnabled;'function'==typeof v&&(v=v(c)),void 0!==t&&g&&('bottom'===n?l=this._renderTabBar:s=this._renderTabBar),(!1===r&&!1===v||'function'==typeof a)&&(u=this._renderPager);var P={initialLayout:o,animationEnabled:r,configureTransition:a,swipeEnabled:v,renderPager:u,renderHeader:s,renderFooter:l,renderScene:this._renderScene,onIndexChange:this._handlePageChanged,navigationState:this.props.navigation.state,style:d.container};return i.default.createElement(p.TabViewAnimated,P)}}]),t})(i.default.PureComponent);u.defaultProps={lazy:!0,removedClippedSubviews:!0,initialLayout:{width:1,height:0}},r.default=u;var d=s.StyleSheet.create({container:{flex:1}})},371,[12,17,372,305]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.NavigationConsumer = exports.NavigationProvider = undefined;
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _propTypes = _require(_dependencyMap[1], "prop-types");
+
+  var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+  var _createReactContext = _require(_dependencyMap[2], "create-react-context");
+
+  var _createReactContext2 = babelHelpers.interopRequireDefault(_createReactContext);
+
+  var NavigationContext = (0, _createReactContext2.default)();
+  var NavigationProvider = exports.NavigationProvider = NavigationContext.Provider;
+  var NavigationConsumer = exports.NavigationConsumer = NavigationContext.Consumer;
+},371,[12,129,372],"node_modules/react-navigation/src/views/NavigationContext.js");

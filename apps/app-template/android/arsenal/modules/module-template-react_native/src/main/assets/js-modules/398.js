@@ -1,1 +1,152 @@
-__d(function(e,t,n,a,o){Object.defineProperty(a,"__esModule",{value:!0});var i=t(o[0]),r=babelHelpers.interopRequireWildcard(i),s=t(o[1]),p=babelHelpers.interopRequireDefault(s),l=t(o[2]),d=t(o[3]),u=12,h={timing:l.Animated.spring,tension:300,friction:35},c=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var n=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n._isMovingHorizontally=function(e,t){return Math.abs(t.dx)>Math.abs(2*t.dy)&&Math.abs(t.vx)>Math.abs(2*t.vy)},n._canMoveScreen=function(e,t){if(!1===n.props.swipeEnabled)return!1;var a=n.props.navigationState.routes;return n._isMovingHorizontally(e,t)&&(t.dx>=u&&n._currentIndex>0||t.dx<=-u&&n._currentIndex<a.length-1)},n._startGesture=function(){n.props.onSwipeStart&&n.props.onSwipeStart(),n.props.panX.stopAnimation()},n._respondToGesture=function(e,t){var a=n.props.navigationState,o=a.routes,i=a.index;t.dx>0&&i<=0||t.dx<0&&i>=o.length-1||n.props.panX.setValue(t.dx)},n._finishGesture=function(e,t){var a=n.props,o=a.navigationState,i=a.layout,r=a.swipeDistanceThreshold,s=void 0===r?i.width/1.75:r,p=n.props.swipeVelocityThreshold,l=void 0===p?.15:p;n.props.onSwipeEnd&&n.props.onSwipeEnd(),l/=1e6;var d='number'==typeof n._pendingIndex?n._pendingIndex:n._currentIndex,u=d;Math.abs(t.dx)>Math.abs(t.dy)&&Math.abs(t.vx)>Math.abs(t.vy)&&(Math.abs(t.dx)>s||Math.abs(t.vx)>l)&&(u=Math.round(Math.min(Math.max(0,d-t.dx/Math.abs(t.dx)),o.routes.length-1)),n._currentIndex=u),isFinite(u)&&n.props.canJumpToTab(n.props.navigationState.routes[u])||(u=d),n._transitionTo(u)},n._transitionTo=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],a=-e*n.props.layout.width;if(!1===n.props.animationEnabled||!1===t)return n.props.panX.setValue(0),void n.props.offsetX.setValue(a);var o=h.timing,i=babelHelpers.objectWithoutProperties(h,["timing"]);l.Animated.parallel([o(n.props.panX,babelHelpers.extends({},i,{toValue:0})),o(n.props.offsetX,babelHelpers.extends({},i,{toValue:a}))]).start(function(t){if(t.finished){var a=n.props.navigationState.routes[e];n.props.jumpTo(a.key),n.props.onAnimationEnd&&n.props.onAnimationEnd(),n._pendingIndex=null}}),n._pendingIndex=e},n._currentIndex=n.props.navigationState.index,n}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentWillMount",value:function(){this._panResponder=l.PanResponder.create({onMoveShouldSetPanResponder:this._canMoveScreen,onMoveShouldSetPanResponderCapture:this._canMoveScreen,onPanResponderGrant:this._startGesture,onPanResponderMove:this._respondToGesture,onPanResponderTerminate:this._finishGesture,onPanResponderRelease:this._finishGesture,onPanResponderTerminationRequest:function(){return!0}})}},{key:"componentDidUpdate",value:function(e){this._currentIndex=this.props.navigationState.index,e.navigationState.routes!==this.props.navigationState.routes||e.layout.width!==this.props.layout.width?this._transitionTo(this.props.navigationState.index,!1):e.navigationState.index!==this.props.navigationState.index&&this._transitionTo(this.props.navigationState.index)}},{key:"render",value:function(){var e=this.props,t=e.panX,n=e.offsetX,a=e.navigationState,o=e.layout,i=e.children,s=o.width,p=a.routes,d=s*(p.length-1),u=l.Animated.add(t,n).interpolate({inputRange:[-d,0],outputRange:[-d,0],extrapolate:'clamp'});return r.createElement(l.Animated.View,babelHelpers.extends({style:[v.sheet,s?{width:p.length*s,transform:[{translateX:u}]}:null]},this._panResponder.panHandlers),r.Children.map(i,function(e,t){return r.createElement(l.View,{key:a.routes[t].key,testID:a.routes[t].testID,style:s?{width:s}:t===a.index?l.StyleSheet.absoluteFill:null},t===a.index||s?e:null)}))}}]),t})(r.Component);c.propTypes=babelHelpers.extends({},d.PagerRendererPropType,{swipeDistanceThreshold:p.default.number,swipeVelocityThreshold:p.default.number}),c.defaultProps={canJumpToTab:function(){return!0},initialLayout:{height:0,width:0}},a.default=c;var v=l.StyleSheet.create({sheet:{flex:1,flexDirection:'row',alignItems:'stretch'}})},398,[12,108,17,395]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _NavigationActions = _require(_dependencyMap[2], "../../NavigationActions");
+
+  var _NavigationActions2 = babelHelpers.interopRequireDefault(_NavigationActions);
+
+  var _StackActions = _require(_dependencyMap[3], "../../routers/StackActions");
+
+  var _StackActions2 = babelHelpers.interopRequireDefault(_StackActions);
+
+  var _invariant = _require(_dependencyMap[4], "../../utils/invariant");
+
+  var _invariant2 = babelHelpers.interopRequireDefault(_invariant);
+
+  var DrawerSidebar = function (_React$PureComponent) {
+    babelHelpers.inherits(DrawerSidebar, _React$PureComponent);
+
+    function DrawerSidebar() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      babelHelpers.classCallCheck(this, DrawerSidebar);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = DrawerSidebar.__proto__ || Object.getPrototypeOf(DrawerSidebar)).call.apply(_ref, [this].concat(args))), _this), _this._getScreenOptions = function (routeKey) {
+        var descriptor = _this.props.descriptors[routeKey];
+        (0, _invariant2.default)(descriptor.options, 'Cannot access screen descriptor options from drawer sidebar');
+        return descriptor.options;
+      }, _this._getLabel = function (_ref2) {
+        var focused = _ref2.focused,
+            tintColor = _ref2.tintColor,
+            route = _ref2.route;
+
+        var _this$_getScreenOptio = _this._getScreenOptions(route.key),
+            drawerLabel = _this$_getScreenOptio.drawerLabel,
+            title = _this$_getScreenOptio.title;
+
+        if (drawerLabel) {
+          return typeof drawerLabel === 'function' ? drawerLabel({
+            tintColor: tintColor,
+            focused: focused
+          }) : drawerLabel;
+        }
+
+        if (typeof title === 'string') {
+          return title;
+        }
+
+        return route.routeName;
+      }, _this._renderIcon = function (_ref3) {
+        var focused = _ref3.focused,
+            tintColor = _ref3.tintColor,
+            route = _ref3.route;
+
+        var _this$_getScreenOptio2 = _this._getScreenOptions(route.key),
+            drawerIcon = _this$_getScreenOptio2.drawerIcon;
+
+        if (drawerIcon) {
+          return typeof drawerIcon === 'function' ? drawerIcon({
+            tintColor: tintColor,
+            focused: focused
+          }) : drawerIcon;
+        }
+
+        return null;
+      }, _this._onItemPress = function (_ref4) {
+        var route = _ref4.route,
+            focused = _ref4.focused;
+
+        if (!focused) {
+          var subAction = void 0;
+
+          if (route.index != null && route.index !== 0) {
+            subAction = _StackActions2.default.reset({
+              index: 0,
+              actions: [_NavigationActions2.default.navigate({
+                routeName: route.routes[0].routeName
+              })]
+            });
+          }
+
+          _this.props.navigation.dispatch(_NavigationActions2.default.navigate({
+            routeName: route.routeName,
+            action: subAction
+          }));
+        }
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+    }
+
+    babelHelpers.createClass(DrawerSidebar, [{
+      key: "render",
+      value: function render() {
+        var ContentComponent = this.props.contentComponent;
+
+        if (!ContentComponent) {
+          return null;
+        }
+
+        var state = this.props.navigation.state;
+        (0, _invariant2.default)(typeof state.index === 'number', 'should be set');
+        return _react2.default.createElement(
+          _reactNative.View,
+          {
+            style: [styles.container, this.props.style],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 79
+            }
+          },
+          _react2.default.createElement(ContentComponent, babelHelpers.extends({}, this.props.contentOptions, {
+            navigation: this.props.navigation,
+            descriptors: this.props.descriptors,
+            items: state.routes,
+            activeItemKey: state.routes[state.index] ? state.routes[state.index].key : null,
+            screenProps: this.props.screenProps,
+            getLabel: this._getLabel,
+            renderIcon: this._renderIcon,
+            onItemPress: this._onItemPress,
+            drawerPosition: this.props.drawerPosition,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 80
+            }
+          }))
+        );
+      }
+    }]);
+    return DrawerSidebar;
+  }(_react2.default.PureComponent);
+
+  exports.default = DrawerSidebar;
+
+  var styles = _reactNative.StyleSheet.create({
+    container: {
+      flex: 1
+    }
+  });
+},398,[12,22,341,369,342],"node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js");

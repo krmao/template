@@ -1,1 +1,106 @@
-__d(function(e,n,t,s,a){'use strict';n(a[0]);var l=n(a[1]),r=(n(a[2]),(function(){function e(){babelHelpers.classCallCheck(this,e)}return babelHelpers.createClass(e,null,[{key:"alert",value:function(e,n,t,s,a){o.alert(e,n,t,s)}}]),e})()),o=(function(){function e(){babelHelpers.classCallCheck(this,e)}return babelHelpers.createClass(e,null,[{key:"alert",value:function(e,n,t,s){var a={title:e||'',message:n||''};s&&(a=babelHelpers.extends({},a,{cancelable:s.cancelable}));var r=t?t.slice(0,3):[{text:'OK'}],o=r.pop(),i=r.pop(),u=r.pop();u&&(a=babelHelpers.extends({},a,{buttonNeutral:u.text||''})),i&&(a=babelHelpers.extends({},a,{buttonNegative:i.text||''})),o&&(a=babelHelpers.extends({},a,{buttonPositive:o.text||''})),l.DialogManagerAndroid.showAlert(a,function(e){return console.warn(e)},function(e,n){e===l.DialogManagerAndroid.buttonClicked?n===l.DialogManagerAndroid.buttonNeutral?u.onPress&&u.onPress():n===l.DialogManagerAndroid.buttonNegative?i.onPress&&i.onPress():n===l.DialogManagerAndroid.buttonPositive&&o.onPress&&o.onPress():e===l.DialogManagerAndroid.dismissed&&s&&s.onDismiss&&s.onDismiss()})}}]),e})();t.exports=r},87,[88,20,28]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Blob = _require2(_dependencyMap[0], 'Blob');
+
+  var BlobRegistry = _require2(_dependencyMap[1], 'BlobRegistry');
+
+  var _require = _require2(_dependencyMap[2], 'NativeModules'),
+      BlobModule = _require.BlobModule;
+
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : r & 0x3 | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  var BlobManager = function () {
+    function BlobManager() {
+      babelHelpers.classCallCheck(this, BlobManager);
+    }
+
+    babelHelpers.createClass(BlobManager, null, [{
+      key: "createFromParts",
+      value: function createFromParts(parts, options) {
+        var blobId = uuidv4();
+        var items = parts.map(function (part) {
+          if (part instanceof ArrayBuffer || global.ArrayBufferView && part instanceof global.ArrayBufferView) {
+            throw new Error("Creating blobs from 'ArrayBuffer' and 'ArrayBufferView' are not supported");
+          }
+
+          if (part instanceof Blob) {
+            return {
+              data: part.data,
+              type: 'blob'
+            };
+          } else {
+            return {
+              data: String(part),
+              type: 'string'
+            };
+          }
+        });
+        var size = items.reduce(function (acc, curr) {
+          if (curr.type === 'string') {
+            return acc + global.unescape(encodeURI(curr.data)).length;
+          } else {
+            return acc + curr.data.size;
+          }
+        }, 0);
+        BlobModule.createFromParts(items, blobId);
+        return BlobManager.createFromOptions({
+          blobId: blobId,
+          offset: 0,
+          size: size,
+          type: options ? options.type : '',
+          lastModified: options ? options.lastModified : Date.now()
+        });
+      }
+    }, {
+      key: "createFromOptions",
+      value: function createFromOptions(options) {
+        BlobRegistry.register(options.blobId);
+        return babelHelpers.extends(Object.create(Blob.prototype), {
+          data: options
+        });
+      }
+    }, {
+      key: "release",
+      value: function release(blobId) {
+        BlobRegistry.unregister(blobId);
+
+        if (BlobRegistry.has(blobId)) {
+          return;
+        }
+
+        BlobModule.release(blobId);
+      }
+    }, {
+      key: "addNetworkingHandler",
+      value: function addNetworkingHandler() {
+        BlobModule.addNetworkingHandler();
+      }
+    }, {
+      key: "addWebSocketHandler",
+      value: function addWebSocketHandler(socketId) {
+        BlobModule.addWebSocketHandler(socketId);
+      }
+    }, {
+      key: "removeWebSocketHandler",
+      value: function removeWebSocketHandler(socketId) {
+        BlobModule.removeWebSocketHandler(socketId);
+      }
+    }, {
+      key: "sendOverSocket",
+      value: function sendOverSocket(blob, socketId) {
+        BlobModule.sendOverSocket(blob.data, socketId);
+      }
+    }]);
+    return BlobManager;
+  }();
+
+  BlobManager.isAvailable = !!BlobModule;
+  module.exports = BlobManager;
+},87,[86,88,24],"BlobManager");

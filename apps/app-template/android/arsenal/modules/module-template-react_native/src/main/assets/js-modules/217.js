@@ -1,1 +1,93 @@
-__d(function(e,t,a,r,o){'use strict';var s=t(o[0]),n=t(o[1]),l=t(o[2]),u=t(o[3]),p=s.createAnimatedComponent(u),i=(function(e){function t(){var e,a,r,o;babelHelpers.classCallCheck(this,t);for(var s=arguments.length,l=Array(s),u=0;u<s;u++)l[u]=arguments[u];return a=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(l))),r.state={measured:!1,layoutY:0,layoutHeight:0,nextHeaderLayoutY:r.props.nextHeaderLayoutY},r._onLayout=function(e){r.setState({measured:!0,layoutY:e.nativeEvent.layout.y,layoutHeight:e.nativeEvent.layout.height}),r.props.onLayout(e);var t=n.Children.only(r.props.children);t.props.onLayout&&t.props.onLayout(e)},o=a,babelHelpers.possibleConstructorReturn(r,o)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"setNextHeaderY",value:function(e){this.setState({nextHeaderLayoutY:e})}},{key:"render",value:function(){var e=this.props,t=e.inverted,a=e.scrollViewHeight,r=this.state,o=r.measured,s=r.layoutHeight,l=r.layoutY,u=r.nextHeaderLayoutY,i=[-1,0],y=[0,0];if(o)if(t){if(null!=a){var c=l+s-a;if(c>0){i.push(c),y.push(0),i.push(c+1),y.push(1);var d=(u||0)-s-a;d>c&&(i.push(d,d+1),y.push(d-c,d-c))}}}else{i.push(l),y.push(0);var v=(u||0)-s;v>=l?(i.push(v,v+1),y.push(v-l,v-l)):(i.push(l+1),y.push(1))}var f=this.props.scrollAnimatedValue.interpolate({inputRange:i,outputRange:y}),b=n.Children.only(this.props.children);return n.createElement(p,{collapsable:!1,onLayout:this._onLayout,style:[b.props.style,h.header,{transform:[{translateY:f}]}]},n.cloneElement(b,{style:h.fill,onLayout:void 0}))}}]),t})(n.Component),h=l.create({header:{zIndex:10},fill:{flex:1}});a.exports=i},217,[179,111,150,152]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AnimatedValue = _require2(_dependencyMap[0], './AnimatedValue');
+
+  var AnimatedNode = _require2(_dependencyMap[1], './AnimatedNode');
+
+  var _require = _require2(_dependencyMap[2], '../NativeAnimatedHelper'),
+      generateNewAnimationId = _require.generateNewAnimationId,
+      shouldUseNativeDriver = _require.shouldUseNativeDriver;
+
+  var AnimatedTracking = function (_AnimatedNode) {
+    babelHelpers.inherits(AnimatedTracking, _AnimatedNode);
+
+    function AnimatedTracking(value, parent, animationClass, animationConfig, callback) {
+      babelHelpers.classCallCheck(this, AnimatedTracking);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (AnimatedTracking.__proto__ || Object.getPrototypeOf(AnimatedTracking)).call(this));
+
+      _this._value = value;
+      _this._parent = parent;
+      _this._animationClass = animationClass;
+      _this._animationConfig = animationConfig;
+      _this._useNativeDriver = shouldUseNativeDriver(animationConfig);
+      _this._callback = callback;
+
+      _this.__attach();
+
+      return _this;
+    }
+
+    babelHelpers.createClass(AnimatedTracking, [{
+      key: "__makeNative",
+      value: function __makeNative() {
+        this.__isNative = true;
+
+        this._parent.__makeNative();
+
+        babelHelpers.get(AnimatedTracking.prototype.__proto__ || Object.getPrototypeOf(AnimatedTracking.prototype), "__makeNative", this).call(this);
+
+        this._value.__makeNative();
+      }
+    }, {
+      key: "__getValue",
+      value: function __getValue() {
+        return this._parent.__getValue();
+      }
+    }, {
+      key: "__attach",
+      value: function __attach() {
+        this._parent.__addChild(this);
+
+        if (this._useNativeDriver) {
+          this.__makeNative();
+        }
+      }
+    }, {
+      key: "__detach",
+      value: function __detach() {
+        this._parent.__removeChild(this);
+
+        babelHelpers.get(AnimatedTracking.prototype.__proto__ || Object.getPrototypeOf(AnimatedTracking.prototype), "__detach", this).call(this);
+      }
+    }, {
+      key: "update",
+      value: function update() {
+        this._value.animate(new this._animationClass(babelHelpers.extends({}, this._animationConfig, {
+          toValue: this._animationConfig.toValue.__getValue()
+        })), this._callback);
+      }
+    }, {
+      key: "__getNativeConfig",
+      value: function __getNativeConfig() {
+        var animation = new this._animationClass(babelHelpers.extends({}, this._animationConfig, {
+          toValue: undefined
+        }));
+
+        var animationConfig = animation.__getNativeAnimationConfig();
+
+        return {
+          type: 'tracking',
+          animationId: generateNewAnimationId(),
+          animationConfig: animationConfig,
+          toValue: this._parent.__getNativeTag(),
+          value: this._value.__getNativeTag()
+        };
+      }
+    }]);
+    return AnimatedTracking;
+  }(AnimatedNode);
+
+  module.exports = AnimatedTracking;
+},217,[202,204,205],"AnimatedTracking");

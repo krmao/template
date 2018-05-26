@@ -1,1 +1,95 @@
-__d(function(t,e,n,o,i){'use strict';function p(){var t=this.constructor.getDerivedStateFromProps(this.props,this.state);null!==t&&void 0!==t&&this.setState(t)}function l(t){this.setState(function(e){var n=this.constructor.getDerivedStateFromProps(t,e);return null!==n&&void 0!==n?n:null})}function r(t,e){try{var n=this.props,o=this.state;this.props=t,this.state=e,this.__reactInternalSnapshotFlag=!0,this.__reactInternalSnapshot=this.getSnapshotBeforeUpdate(n,o)}finally{this.props=n,this.state=o}}Object.defineProperty(o,'__esModule',{value:!0}),p.__suppressDeprecationWarning=!0,l.__suppressDeprecationWarning=!0,r.__suppressDeprecationWarning=!0,o.polyfill=function(t){var e=t.prototype;if(!e||!e.isReactComponent)throw new Error('Can only polyfill class components');if('function'!=typeof t.getDerivedStateFromProps&&'function'!=typeof e.getSnapshotBeforeUpdate)return t;var n=null,o=null,i=null;if('function'==typeof e.componentWillMount?n='componentWillMount':'function'==typeof e.UNSAFE_componentWillMount&&(n='UNSAFE_componentWillMount'),'function'==typeof e.componentWillReceiveProps?o='componentWillReceiveProps':'function'==typeof e.UNSAFE_componentWillReceiveProps&&(o='UNSAFE_componentWillReceiveProps'),'function'==typeof e.componentWillUpdate?i='componentWillUpdate':'function'==typeof e.UNSAFE_componentWillUpdate&&(i='UNSAFE_componentWillUpdate'),null!==n||null!==o||null!==i){var s=t.displayName||t.name,a='function'==typeof t.getDerivedStateFromProps?'getDerivedStateFromProps()':'getSnapshotBeforeUpdate()';throw Error('Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n'+s+' uses '+a+' but also contains the following legacy lifecycles:'+(null!==n?'\n  '+n:'')+(null!==o?'\n  '+o:'')+(null!==i?'\n  '+i:'')+"\n\nThe above lifecycles should be removed. Learn more about this warning here:\nhttps://fb.me/react-async-component-lifecycle-hooks")}if('function'==typeof t.getDerivedStateFromProps&&(e.componentWillMount=p,e.componentWillReceiveProps=l),'function'==typeof e.getSnapshotBeforeUpdate){if('function'!=typeof e.componentDidUpdate)throw new Error('Cannot polyfill getSnapshotBeforeUpdate() for components that do not define componentDidUpdate() on the prototype');e.componentWillUpdate=r;var c=e.componentDidUpdate;e.componentDidUpdate=function(t,e,n){var o=this.__reactInternalSnapshotFlag?this.__reactInternalSnapshot:n;c.call(this,t,e,o)}}return t}},307,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var EventEmitterWithHolding = function () {
+    function EventEmitterWithHolding(emitter, holder) {
+      babelHelpers.classCallCheck(this, EventEmitterWithHolding);
+      this._emitter = emitter;
+      this._eventHolder = holder;
+      this._currentEventToken = null;
+      this._emittingHeldEvents = false;
+    }
+
+    babelHelpers.createClass(EventEmitterWithHolding, [{
+      key: "addListener",
+      value: function addListener(eventType, listener, context) {
+        return this._emitter.addListener(eventType, listener, context);
+      }
+    }, {
+      key: "once",
+      value: function once(eventType, listener, context) {
+        return this._emitter.once(eventType, listener, context);
+      }
+    }, {
+      key: "addRetroactiveListener",
+      value: function addRetroactiveListener(eventType, listener, context) {
+        var subscription = this._emitter.addListener(eventType, listener, context);
+
+        this._emittingHeldEvents = true;
+
+        this._eventHolder.emitToListener(eventType, listener, context);
+
+        this._emittingHeldEvents = false;
+        return subscription;
+      }
+    }, {
+      key: "removeAllListeners",
+      value: function removeAllListeners(eventType) {
+        this._emitter.removeAllListeners(eventType);
+      }
+    }, {
+      key: "removeCurrentListener",
+      value: function removeCurrentListener() {
+        this._emitter.removeCurrentListener();
+      }
+    }, {
+      key: "listeners",
+      value: function listeners(eventType) {
+        return this._emitter.listeners(eventType);
+      }
+    }, {
+      key: "emit",
+      value: function emit(eventType) {
+        var _emitter;
+
+        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
+        (_emitter = this._emitter).emit.apply(_emitter, [eventType].concat(babelHelpers.toConsumableArray(args)));
+      }
+    }, {
+      key: "emitAndHold",
+      value: function emitAndHold(eventType) {
+        var _eventHolder, _emitter2;
+
+        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+
+        this._currentEventToken = (_eventHolder = this._eventHolder).holdEvent.apply(_eventHolder, [eventType].concat(babelHelpers.toConsumableArray(args)));
+
+        (_emitter2 = this._emitter).emit.apply(_emitter2, [eventType].concat(babelHelpers.toConsumableArray(args)));
+
+        this._currentEventToken = null;
+      }
+    }, {
+      key: "releaseCurrentEvent",
+      value: function releaseCurrentEvent() {
+        if (this._currentEventToken) {
+          this._eventHolder.releaseEvent(this._currentEventToken);
+        } else if (this._emittingHeldEvents) {
+          this._eventHolder.releaseCurrentEvent();
+        }
+      }
+    }, {
+      key: "releaseHeldEventType",
+      value: function releaseHeldEventType(eventType) {
+        this._eventHolder.releaseEventType(eventType);
+      }
+    }]);
+    return EventEmitterWithHolding;
+  }();
+
+  module.exports = EventEmitterWithHolding;
+},307,[],"EventEmitterWithHolding");

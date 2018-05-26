@@ -1,1 +1,142 @@
-__d(function(e,t,r,o,n){'use strict';var s=t(n[0]),a=t(n[1]),i=t(n[2]),c=t(n[3]),l=t(n[4]),p=(function(e){function t(){var e,r,o,n,i=this;babelHelpers.classCallCheck(this,t);for(var c=arguments.length,p=Array(c),u=0;u<c;u++)p[u]=arguments[u];return r=o=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(p))),o.state=o._computeState(o.props,{ds:new s.DataSource({rowHasChanged:function(e,t){return!0},sectionHeaderHasChanged:function(){return!0},getSectionHeaderData:function(e,t){return o.state.sectionHeaderData[t]}}),sectionHeaderData:{}}),o._captureRef=function(e){o._listRef=e},o._renderFooter=function(){return a.createElement(i.props.FooterComponent,{key:"$footer"})},o._renderRow=function(e,t,r,n){return o.props.renderItem({item:e,index:r})},o._renderSectionHeader=function(e,t){var r=o.props.renderSectionHeader;return l(r,'Must provide renderSectionHeader with sections prop'),r({section:e})},o._renderSeparator=function(e,t){return a.createElement(i.props.SeparatorComponent,{key:e+t})},n=r,babelHelpers.possibleConstructorReturn(o,n)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"scrollToEnd",value:function(e){throw new Error('scrollToEnd not supported in legacy ListView.')}},{key:"scrollToIndex",value:function(e){throw new Error('scrollToIndex not supported in legacy ListView.')}},{key:"scrollToItem",value:function(e){throw new Error('scrollToItem not supported in legacy ListView.')}},{key:"scrollToLocation",value:function(e){throw new Error('scrollToLocation not supported in legacy ListView.')}},{key:"scrollToOffset",value:function(e){var t=e.animated,r=e.offset;this._listRef.scrollTo(this.props.horizontal?{x:r,animated:t}:{y:r,animated:t})}},{key:"getListRef",value:function(){return this._listRef}},{key:"setNativeProps",value:function(e){this._listRef&&this._listRef.setNativeProps(e)}},{key:"UNSAFE_componentWillReceiveProps",value:function(e){var t=this;this.setState(function(r){return t._computeState(e,r)})}},{key:"render",value:function(){return a.createElement(s,babelHelpers.extends({},this.props,{dataSource:this.state.ds,ref:this._captureRef,renderRow:this._renderRow,renderFooter:this.props.FooterComponent&&this._renderFooter,renderSectionHeader:this.props.sections&&this._renderSectionHeader,renderSeparator:this.props.SeparatorComponent&&this._renderSeparator}))}},{key:"_computeState",value:function(e,t){var r={};if(e.sections){l(!e.items,'Cannot have both sections and items props.');var o={};return e.sections.forEach(function(e,t){var n='s'+t;o[n]=e.data,r[n]=e}),{ds:t.ds.cloneWithRowsAndSections(o),sectionHeaderData:r}}return l(!e.sections,'Cannot have both sections and items props.'),{ds:t.ds.cloneWithRows(e.items),sectionHeaderData:r}}}]),t})(a.Component);p.defaultProps={keyExtractor:function(e,t){return e.key||String(t)},renderScrollComponent:function(e){return e.onRefresh?a.createElement(c,babelHelpers.extends({},e,{refreshControl:a.createElement(i,{refreshing:e.refreshing,onRefresh:e.onRefresh})})):a.createElement(c,e)}},r.exports=p},224,[225,111,230,207,18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _ease = void 0;
+
+  var Easing = function () {
+    function Easing() {
+      babelHelpers.classCallCheck(this, Easing);
+    }
+
+    babelHelpers.createClass(Easing, null, [{
+      key: "step0",
+      value: function step0(n) {
+        return n > 0 ? 1 : 0;
+      }
+    }, {
+      key: "step1",
+      value: function step1(n) {
+        return n >= 1 ? 1 : 0;
+      }
+    }, {
+      key: "linear",
+      value: function linear(t) {
+        return t;
+      }
+    }, {
+      key: "ease",
+      value: function ease(t) {
+        if (!_ease) {
+          _ease = Easing.bezier(0.42, 0, 1, 1);
+        }
+
+        return _ease(t);
+      }
+    }, {
+      key: "quad",
+      value: function quad(t) {
+        return t * t;
+      }
+    }, {
+      key: "cubic",
+      value: function cubic(t) {
+        return t * t * t;
+      }
+    }, {
+      key: "poly",
+      value: function poly(n) {
+        return function (t) {
+          return Math.pow(t, n);
+        };
+      }
+    }, {
+      key: "sin",
+      value: function sin(t) {
+        return 1 - Math.cos(t * Math.PI / 2);
+      }
+    }, {
+      key: "circle",
+      value: function circle(t) {
+        return 1 - Math.sqrt(1 - t * t);
+      }
+    }, {
+      key: "exp",
+      value: function exp(t) {
+        return Math.pow(2, 10 * (t - 1));
+      }
+    }, {
+      key: "elastic",
+      value: function elastic() {
+        var bounciness = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+        var p = bounciness * Math.PI;
+        return function (t) {
+          return 1 - Math.pow(Math.cos(t * Math.PI / 2), 3) * Math.cos(t * p);
+        };
+      }
+    }, {
+      key: "back",
+      value: function back(s) {
+        if (s === undefined) {
+          s = 1.70158;
+        }
+
+        return function (t) {
+          return t * t * ((s + 1) * t - s);
+        };
+      }
+    }, {
+      key: "bounce",
+      value: function bounce(t) {
+        if (t < 1 / 2.75) {
+          return 7.5625 * t * t;
+        }
+
+        if (t < 2 / 2.75) {
+          t -= 1.5 / 2.75;
+          return 7.5625 * t * t + 0.75;
+        }
+
+        if (t < 2.5 / 2.75) {
+          t -= 2.25 / 2.75;
+          return 7.5625 * t * t + 0.9375;
+        }
+
+        t -= 2.625 / 2.75;
+        return 7.5625 * t * t + 0.984375;
+      }
+    }, {
+      key: "bezier",
+      value: function bezier(x1, y1, x2, y2) {
+        var _bezier = _require(_dependencyMap[0], 'bezier');
+
+        return _bezier(x1, y1, x2, y2);
+      }
+    }, {
+      key: "in",
+      value: function _in(easing) {
+        return easing;
+      }
+    }, {
+      key: "out",
+      value: function out(easing) {
+        return function (t) {
+          return 1 - easing(1 - t);
+        };
+      }
+    }, {
+      key: "inOut",
+      value: function inOut(easing) {
+        return function (t) {
+          if (t < 0.5) {
+            return easing(t * 2) / 2;
+          }
+
+          return 1 - easing((1 - t) * 2) / 2;
+        };
+      }
+    }]);
+    return Easing;
+  }();
+
+  module.exports = Easing;
+},224,[225],"Easing");

@@ -1,1 +1,87 @@
-__d(function(e,t,o,n,i){'use strict';var r=t(i[0]),a=t(i[1]),s=t(i[2]),h=(t(i[3]),t(i[4])),l=t(i[5]),d=t(i[6]),u=t(i[7]),b=t(i[8]),c=r({displayName:'KeyboardAvoidingView',mixins:[d],propTypes:babelHelpers.extends({},b,{behavior:h.oneOf(['height','position','padding']),contentContainerStyle:b.style,keyboardVerticalOffset:h.number.isRequired,enabled:h.bool.isRequired}),getDefaultProps:function(){return{enabled:!0,keyboardVerticalOffset:0}},getInitialState:function(){return{bottom:0}},subscriptions:[],frame:null,_relativeKeyboardHeight:function(e){var t=this.frame;if(!t||!e)return 0;var o=e.screenY-this.props.keyboardVerticalOffset;return Math.max(t.y+t.height-o,0)},_onKeyboardChange:function(e){if(e){var t=e.duration,o=e.easing,n=e.endCoordinates,i=this._relativeKeyboardHeight(n);this.state.bottom!==i&&(t&&o&&s.configureNext({duration:t,update:{duration:t,type:s.Types[o]||'keyboard'}}),this.setState({bottom:i}))}else this.setState({bottom:0})},_onLayout:function(e){this.frame=e.nativeEvent.layout},UNSAFE_componentWillUpdate:function(e,t,o){t.bottom===this.state.bottom&&'height'===this.props.behavior&&'height'===e.behavior&&(t.bottom=0)},UNSAFE_componentWillMount:function(){this.subscriptions=[a.addListener('keyboardDidHide',this._onKeyboardChange),a.addListener('keyboardDidShow',this._onKeyboardChange)]},componentWillUnmount:function(){this.subscriptions.forEach(function(e){return e.remove()})},render:function(){var e=this.props,t=e.behavior,o=e.children,n=e.style,i=babelHelpers.objectWithoutProperties(e,["behavior","children","style"]),r=this.props.enabled?this.state.bottom:0;switch(t){case'height':var a=void 0;return this.frame&&(a={height:this.frame.height-r,flex:0}),l.createElement(u,babelHelpers.extends({ref:"VIEW",style:[n,a],onLayout:this._onLayout},i),o);case'position':var s={bottom:r},h=this.props.contentContainerStyle;return l.createElement(u,babelHelpers.extends({ref:"VIEW",style:n,onLayout:this._onLayout},i),l.createElement(u,{style:[h,s]},o));case'padding':var d={paddingBottom:r};return l.createElement(u,babelHelpers.extends({ref:"VIEW",style:[n,d],onLayout:this._onLayout},i),o);default:return l.createElement(u,babelHelpers.extends({ref:"VIEW",onLayout:this._onLayout,style:n},i),o)}}});o.exports=c},240,[155,211,212,28,108,111,175,152,112]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Components/CheckBox/CheckBox.android.js";
+
+  var NativeMethodsMixin = _require(_dependencyMap[0], 'NativeMethodsMixin');
+
+  var PropTypes = _require(_dependencyMap[1], 'prop-types');
+
+  var React = _require(_dependencyMap[2], 'React');
+
+  var StyleSheet = _require(_dependencyMap[3], 'StyleSheet');
+
+  var ViewPropTypes = _require(_dependencyMap[4], 'ViewPropTypes');
+
+  var createReactClass = _require(_dependencyMap[5], 'create-react-class');
+
+  var requireNativeComponent = _require(_dependencyMap[6], 'requireNativeComponent');
+
+  var CheckBox = createReactClass({
+    displayName: 'CheckBox',
+    propTypes: babelHelpers.extends({}, ViewPropTypes, {
+      value: PropTypes.bool,
+      disabled: PropTypes.bool,
+      onChange: PropTypes.func,
+      onValueChange: PropTypes.func,
+      testID: PropTypes.string
+    }),
+    getDefaultProps: function getDefaultProps() {
+      return {
+        value: false,
+        disabled: false
+      };
+    },
+    mixins: [NativeMethodsMixin],
+    _rctCheckBox: {},
+    _onChange: function _onChange(event) {
+      this._rctCheckBox.setNativeProps({
+        value: this.props.value
+      });
+
+      this.props.onChange && this.props.onChange(event);
+      this.props.onValueChange && this.props.onValueChange(event.nativeEvent.value);
+    },
+    render: function render() {
+      var _this = this;
+
+      var props = babelHelpers.extends({}, this.props);
+
+      props.onStartShouldSetResponder = function () {
+        return true;
+      };
+
+      props.onResponderTerminationRequest = function () {
+        return false;
+      };
+
+      props.enabled = !this.props.disabled;
+      props.on = this.props.value;
+      props.style = [styles.rctCheckBox, this.props.style];
+      return React.createElement(RCTCheckBox, babelHelpers.extends({}, props, {
+        ref: function ref(_ref) {
+          _this._rctCheckBox = _ref;
+        },
+        onChange: this._onChange,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 138
+        }
+      }));
+    }
+  });
+  var styles = StyleSheet.create({
+    rctCheckBox: {
+      height: 32,
+      width: 32
+    }
+  });
+  var RCTCheckBox = requireNativeComponent('AndroidCheckBox', CheckBox, {
+    nativeOnly: {
+      onChange: true,
+      on: true,
+      enabled: true
+    }
+  });
+  module.exports = CheckBox;
+},240,[48,129,132,171,133,176,148],"CheckBox");

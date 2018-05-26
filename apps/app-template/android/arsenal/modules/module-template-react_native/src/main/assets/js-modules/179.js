@@ -1,1 +1,264 @@
-__d(function(n,t,e,i,r){'use strict';var o=t(r[0]),a=o.AnimatedEvent,u=o.attachNativeEvent,s=t(r[1]),c=t(r[2]),f=t(r[3]),v=t(r[4]),p=t(r[5]),l=t(r[6]),d=t(r[7]),g=t(r[8]),h=t(r[9]),m=t(r[10]),_=t(r[11]),N=t(r[12]),w=t(r[13]),y=t(r[14]),E=t(r[15]),L=function(n,t){return n&&t.onComplete?function(){t.onComplete&&t.onComplete.apply(t,arguments),n&&n.apply(void 0,arguments)}:n||t.onComplete},A=function(n,t,e){if(n instanceof _){var i=babelHelpers.extends({},t),r=babelHelpers.extends({},t);for(var o in t){var a=t[o],u=a.x,s=a.y;void 0!==u&&void 0!==s&&(i[o]=u,r[o]=s)}var c=e(n.x,i),f=e(n.y,r);return x([c,f],{stopTogether:!1})}return null},D=function n(t,e){var i=function(n,t,e){e=L(e,t);var i=n,r=t;i.stopTracking(),t.toValue instanceof d?i.track(new h(i,t.toValue,y,r,e)):i.animate(new y(r),e)};return A(t,e,n)||{start:(function(n){function t(t){return n.apply(this,arguments)}return t.toString=function(){return n.toString()},t})(function(n){i(t,e,n)}),stop:function(){t.stopAnimation()},reset:function(){t.resetAnimation()},_startNativeLoop:function(n){var r=babelHelpers.extends({},e,{iterations:n});i(t,r)},_isUsingNativeDriver:function(){return e.useNativeDriver||!1}}},b=function(n){var t=0;return{start:function(e){0===n.length?e&&e({finished:!0}):n[t].start(function i(r){r.finished&&++t!==n.length?n[t].start(i):e&&e(r)})},stop:function(){t<n.length&&n[t].stop()},reset:function(){n.forEach(function(n,e){e<=t&&n.reset()}),t=0},_startNativeLoop:function(){throw new Error('Loops run using the native driver cannot contain Animated.sequence animations')},_isUsingNativeDriver:function(){return!1}}},x=function(n,t){var e=0,i={},r=!(t&&!1===t.stopTogether),o={start:function(t){e!==n.length?n.forEach(function(a,u){var s=function(a){if(i[u]=!0,++e===n.length)return e=0,void(t&&t(a));!a.finished&&r&&o.stop()};a?a.start(s):s({finished:!0})}):t&&t({finished:!0})},stop:function(){n.forEach(function(n,t){!i[t]&&n.stop(),i[t]=!0})},reset:function(){n.forEach(function(n,t){n.reset(),i[t]=!1,e=0})},_startNativeLoop:function(){throw new Error('Loops run using the native driver cannot contain Animated.parallel animations')},_isUsingNativeDriver:function(){return!1}};return o},U=function(n){return D(new m(0),{toValue:0,delay:n,duration:0})};e.exports={Value:m,ValueXY:_,Interpolation:v,Node:d,decay:function n(t,e){var i=function(n,t,e){e=L(e,t);var i=n,r=t;i.stopTracking(),i.animate(new N(r),e)};return A(t,e,n)||{start:(function(n){function t(t){return n.apply(this,arguments)}return t.toString=function(){return n.toString()},t})(function(n){i(t,e,n)}),stop:function(){t.stopAnimation()},reset:function(){t.resetAnimation()},_startNativeLoop:function(n){var r=babelHelpers.extends({},e,{iterations:n});i(t,r)},_isUsingNativeDriver:function(){return e.useNativeDriver||!1}}},timing:D,spring:function n(t,e){var i=function(n,t,e){e=L(e,t);var i=n,r=t;i.stopTracking(),t.toValue instanceof d?i.track(new h(i,t.toValue,w,r,e)):i.animate(new w(r),e)};return A(t,e,n)||{start:(function(n){function t(t){return n.apply(this,arguments)}return t.toString=function(){return n.toString()},t})(function(n){i(t,e,n)}),stop:function(){t.stopAnimation()},reset:function(){t.resetAnimation()},_startNativeLoop:function(n){var r=babelHelpers.extends({},e,{iterations:n});i(t,r)},_isUsingNativeDriver:function(){return e.useNativeDriver||!1}}},add:function(n,t){return new s(n,t)},divide:function(n,t){return new f(n,t)},multiply:function(n,t){return new l(n,t)},modulo:function(n,t){return new p(n,t)},diffClamp:function(n,t,e){return new c(n,t,e)},delay:U,sequence:b,parallel:x,stagger:function(n,t){return x(t.map(function(t,e){return b([U(n*e),t])}))},loop:function(n){var t=(arguments.length>1&&void 0!==arguments[1]?arguments[1]:{}).iterations,e=void 0===t?-1:t,i=!1,r=0;return{start:function(t){n&&0!==e?n._isUsingNativeDriver()?n._startNativeLoop(e):(function o(){var a=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{finished:!0};i||r===e||!1===a.finished?t&&t(a):(r++,n.reset(),n.start(o))})():t&&t({finished:!0})},stop:function(){i=!0,n.stop()},reset:function(){r=0,i=!1,n.reset()},_startNativeLoop:function(){throw new Error('Loops run using the native driver cannot contain Animated.loop animations')},_isUsingNativeDriver:function(){return n._isUsingNativeDriver()}}},event:function(n,t){var e=new a(n,t);return e.__isNative?e:e.__getHandler()},createAnimatedComponent:E,attachNativeEvent:u,forkEvent:function(n,t){return n?n instanceof a?(n.__addListener(t),n):function(){'function'==typeof n&&n.apply(void 0,arguments),t.apply(void 0,arguments)}:t},unforkEvent:function(n,t){n&&n instanceof a&&n.__removeListener(t)},__PropsOnlyForTests:g}},179,[180,188,189,190,182,191,192,183,193,196,181,197,198,200,202,205]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+	var colors = {
+		maroon: '#800000',
+		red: '#ff0000',
+		orange: '#ffA500',
+		yellow: '#ffff00',
+		olive: '#808000',
+		purple: '#800080',
+		fuchsia: "#ff00ff",
+		white: '#ffffff',
+		lime: '#00ff00',
+		green: '#008000',
+		navy: '#000080',
+		blue: '#0000ff',
+		aqua: '#00ffff',
+		teal: '#008080',
+		black: '#000000',
+		silver: '#c0c0c0',
+		gray: '#808080'
+	};
+
+	var map = function map(array, fn) {
+		var results = [];
+
+		for (var i = 0, l = array.length; i < l; i++) {
+			results[i] = fn(array[i], i);
+		}
+
+		return results;
+	};
+
+	var Color = function Color(color, type) {
+		if (color.isColor) {
+			this.red = color.red;
+			this.green = color.green;
+			this.blue = color.blue;
+			this.alpha = color.alpha;
+		} else {
+			var namedColor = colors[color];
+
+			if (namedColor) {
+				color = namedColor;
+				type = 'hex';
+			}
+
+			switch (typeof color) {
+				case 'string':
+					if (!type) type = (type = color.match(/^rgb|^hsb|^hsl/)) ? type[0] : 'hex';
+					break;
+
+				case 'object':
+					type = type || 'rgb';
+					color = color.toString();
+					break;
+
+				case 'number':
+					type = 'hex';
+					color = color.toString(16);
+					break;
+			}
+
+			color = Color['parse' + type.toUpperCase()](color);
+			this.red = color[0];
+			this.green = color[1];
+			this.blue = color[2];
+			this.alpha = color[3];
+		}
+
+		this.isColor = true;
+	};
+
+	var limit = function limit(number, min, max) {
+		return Math.min(max, Math.max(min, number));
+	};
+
+	var listMatch = /([-.\d]+\%?)\s*,\s*([-.\d]+\%?)\s*,\s*([-.\d]+\%?)\s*,?\s*([-.\d]*\%?)/;
+	var hexMatch = /^#?([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{0,2})$/i;
+
+	Color.parseRGB = function (color) {
+		return map(color.match(listMatch).slice(1), function (bit, i) {
+			if (bit) bit = parseFloat(bit) * (bit[bit.length - 1] == '%' ? 2.55 : 1);
+			return i < 3 ? Math.round((bit %= 256) < 0 ? bit + 256 : bit) : limit(bit === '' ? 1 : Number(bit), 0, 1);
+		});
+	};
+
+	Color.parseHEX = function (color) {
+		if (color.length == 1) color = color + color + color;
+		return map(color.match(hexMatch).slice(1), function (bit, i) {
+			if (i == 3) return bit ? parseInt(bit, 16) / 255 : 1;
+			return parseInt(bit.length == 1 ? bit + bit : bit, 16);
+		});
+	};
+
+	Color.parseHSB = function (color) {
+		var hsb = map(color.match(listMatch).slice(1), function (bit, i) {
+			if (bit) bit = parseFloat(bit);
+			if (i === 0) return Math.round((bit %= 360) < 0 ? bit + 360 : bit);else if (i < 3) return limit(Math.round(bit), 0, 100);else return limit(bit === '' ? 1 : Number(bit), 0, 1);
+		});
+		var a = hsb[3];
+		var br = Math.round(hsb[2] / 100 * 255);
+		if (hsb[1] == 0) return [br, br, br, a];
+		var hue = hsb[0];
+		var f = hue % 60;
+		var p = Math.round(hsb[2] * (100 - hsb[1]) / 10000 * 255);
+		var q = Math.round(hsb[2] * (6000 - hsb[1] * f) / 600000 * 255);
+		var t = Math.round(hsb[2] * (6000 - hsb[1] * (60 - f)) / 600000 * 255);
+
+		switch (Math.floor(hue / 60)) {
+			case 0:
+				return [br, t, p, a];
+
+			case 1:
+				return [q, br, p, a];
+
+			case 2:
+				return [p, br, t, a];
+
+			case 3:
+				return [p, q, br, a];
+
+			case 4:
+				return [t, p, br, a];
+
+			default:
+				return [br, p, q, a];
+		}
+	};
+
+	Color.parseHSL = function (color) {
+		var hsb = map(color.match(listMatch).slice(1), function (bit, i) {
+			if (bit) bit = parseFloat(bit);
+			if (i === 0) return Math.round((bit %= 360) < 0 ? bit + 360 : bit);else if (i < 3) return limit(Math.round(bit), 0, 100);else return limit(bit === '' ? 1 : Number(bit), 0, 1);
+		});
+		var h = hsb[0] / 60;
+		var s = hsb[1] / 100;
+		var l = hsb[2] / 100;
+		var a = hsb[3];
+		var c = (1 - Math.abs(2 * l - 1)) * s;
+		var x = c * (1 - Math.abs(h % 2 - 1));
+		var m = l - c / 2;
+		var p = Math.round((c + m) * 255);
+		var q = Math.round((x + m) * 255);
+		var t = Math.round(m * 255);
+
+		switch (Math.floor(h)) {
+			case 0:
+				return [p, q, t, a];
+
+			case 1:
+				return [q, p, t, a];
+
+			case 2:
+				return [t, p, q, a];
+
+			case 3:
+				return [t, q, p, a];
+
+			case 4:
+				return [q, t, p, a];
+
+			default:
+				return [p, t, q, a];
+		}
+	};
+
+	var toString = function toString(type, array) {
+		if (array[3] != 1) type += 'a';else array.pop();
+		return type + '(' + array.join(', ') + ')';
+	};
+
+	Color.prototype = {
+		toHSB: function toHSB(array) {
+			var red = this.red,
+			    green = this.green,
+			    blue = this.blue,
+			    alpha = this.alpha;
+			var max = Math.max(red, green, blue),
+			    min = Math.min(red, green, blue),
+			    delta = max - min;
+			var hue = 0,
+			    saturation = delta != 0 ? delta / max : 0,
+			    brightness = max / 255;
+
+			if (saturation) {
+				var rr = (max - red) / delta,
+				    gr = (max - green) / delta,
+				    br = (max - blue) / delta;
+				hue = red == max ? br - gr : green == max ? 2 + rr - br : 4 + gr - rr;
+				if ((hue /= 6) < 0) hue++;
+			}
+
+			var hsb = [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100), alpha];
+			return array ? hsb : toString('hsb', hsb);
+		},
+		toHSL: function toHSL(array) {
+			var red = this.red,
+			    green = this.green,
+			    blue = this.blue,
+			    alpha = this.alpha;
+			var max = Math.max(red, green, blue),
+			    min = Math.min(red, green, blue),
+			    delta = max - min;
+			var hue = 0,
+			    saturation = delta != 0 ? delta / (255 - Math.abs(max + min - 255)) : 0,
+			    lightness = (max + min) / 512;
+
+			if (saturation) {
+				var rr = (max - red) / delta,
+				    gr = (max - green) / delta,
+				    br = (max - blue) / delta;
+				hue = red == max ? br - gr : green == max ? 2 + rr - br : 4 + gr - rr;
+				if ((hue /= 6) < 0) hue++;
+			}
+
+			var hsl = [Math.round(hue * 360), Math.round(saturation * 100), Math.round(lightness * 100), alpha];
+			return array ? hsl : toString('hsl', hsl);
+		},
+		toHEX: function toHEX(array) {
+			var a = this.alpha;
+			var alpha = (a = Math.round(a * 255).toString(16)).length == 1 ? a + a : a;
+			var hex = map([this.red, this.green, this.blue], function (bit) {
+				bit = bit.toString(16);
+				return bit.length == 1 ? '0' + bit : bit;
+			});
+			return array ? hex.concat(alpha) : '#' + hex.join('') + (alpha == 'ff' ? '' : alpha);
+		},
+		toRGB: function toRGB(array) {
+			var rgb = [this.red, this.green, this.blue, this.alpha];
+			return array ? rgb : toString('rgb', rgb);
+		}
+	};
+	Color.prototype.toString = Color.prototype.toRGB;
+
+	Color.hex = function (hex) {
+		return new Color(hex, 'hex');
+	};
+
+	if (this.hex == null) this.hex = Color.hex;
+
+	Color.hsb = function (h, s, b, a) {
+		return new Color([h || 0, s || 0, b || 0, a == null ? 1 : a], 'hsb');
+	};
+
+	if (this.hsb == null) this.hsb = Color.hsb;
+
+	Color.hsl = function (h, s, l, a) {
+		return new Color([h || 0, s || 0, l || 0, a == null ? 1 : a], 'hsl');
+	};
+
+	if (this.hsl == null) this.hsl = Color.hsl;
+
+	Color.rgb = function (r, g, b, a) {
+		return new Color([r || 0, g || 0, b || 0, a == null ? 1 : a], 'rgb');
+	};
+
+	if (this.rgb == null) this.rgb = Color.rgb;
+
+	Color.detach = function (color) {
+		color = new Color(color);
+		return [Color.rgb(color.red, color.green, color.blue).toString(), color.alpha];
+	};
+
+	module.exports = Color;
+},179,[],"node_modules/art/core/color.js");

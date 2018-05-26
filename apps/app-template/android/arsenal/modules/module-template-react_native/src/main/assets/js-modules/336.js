@@ -1,1 +1,8 @@
-__d(function(s,e,a,t,c){a.exports=e(c[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/node_modules/react-navigation/src/views/assets",width:48,height:82,scales:[1],hash:"1c7339b1dcf76fbc66536a0728963705",name:"back-icon-mask",type:"png"})},336,[143]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _require = _require2(_dependencyMap[0], 'ReactNative'),
+      __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = _require.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+  module.exports = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.takeSnapshot;
+},336,[49],"takeSnapshot");

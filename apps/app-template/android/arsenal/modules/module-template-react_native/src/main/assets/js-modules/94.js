@@ -1,1 +1,42 @@
-__d(function(o,r,e,n,a){'use strict';var l=r(a[0]),t={log:'log',info:'info',warn:'warn',error:'error',fatal:'error'},i=null,s={logIfNoNativeHook:function(r){for(var e=arguments.length,n=Array(e>1?e-1:0),a=1;a<e;a++)n[a-1]=arguments[a];void 0===o.nativeLoggingHook?s.logToConsole.apply(s,[r].concat(babelHelpers.toConsumableArray(n))):i&&'warn'===r&&i.apply(void 0,babelHelpers.toConsumableArray(n))},logToConsole:function(o){var r,e=t[o];l(e,'Level "'+o+'" not one of '+Object.keys(t).toString());for(var n=arguments.length,a=Array(n>1?n-1:0),i=1;i<n;i++)a[i-1]=arguments[i];(r=console)[e].apply(r,babelHelpers.toConsumableArray(a))},setWarningHandler:function(o){i=o}};e.exports=s},94,[18]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Blob = _require2(_dependencyMap[0], 'Blob');
+
+  var _require = _require2(_dependencyMap[1], 'NativeModules'),
+      BlobModule = _require.BlobModule;
+
+  var BLOB_URL_PREFIX = null;
+
+  if (BlobModule && typeof BlobModule.BLOB_URI_SCHEME === 'string') {
+    BLOB_URL_PREFIX = BlobModule.BLOB_URI_SCHEME + ':';
+
+    if (typeof BlobModule.BLOB_URI_HOST === 'string') {
+      BLOB_URL_PREFIX += "//" + BlobModule.BLOB_URI_HOST + "/";
+    }
+  }
+
+  var URL = function () {
+    function URL() {
+      babelHelpers.classCallCheck(this, URL);
+      throw new Error('Creating URL objects is not supported yet.');
+    }
+
+    babelHelpers.createClass(URL, null, [{
+      key: "createObjectURL",
+      value: function createObjectURL(blob) {
+        if (BLOB_URL_PREFIX === null) {
+          throw new Error('Cannot create URL for blob!');
+        }
+
+        return "" + BLOB_URL_PREFIX + blob.data.blobId + "?offset=" + blob.data.offset + "&size=" + blob.size;
+      }
+    }, {
+      key: "revokeObjectURL",
+      value: function revokeObjectURL(url) {}
+    }]);
+    return URL;
+  }();
+
+  module.exports = URL;
+},94,[86,24],"URL");

@@ -1,1 +1,223 @@
-__d(function(e,t,n,a,i){Object.defineProperty(a,"__esModule",{value:!0});var r=t(i[0]),o=babelHelpers.interopRequireWildcard(r),u=t(i[1]),d=babelHelpers.interopRequireDefault(u),s=t(i[2]),l=t(i[3]),p=void 0;p=t(i[4]).default;var c=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var n=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));f.call(n);var a=n.props.navigationState,i=babelHelpers.extends({},n.props.initialLayout,{measured:!1}),r=new s.Animated.Value(0),o=new s.Animated.Value(-a.index*i.width),u=new s.Animated.ValueXY({x:i.width||.001,y:i.height||.001}),d=s.Animated.multiply(s.Animated.divide(s.Animated.add(r,o),u.x),-1);return n.state={loaded:[a.index],layout:i,layoutXY:u,panX:r,offsetX:o,position:d},n}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidMount",value:function(){this._mounted=!0}},{key:"componentWillUnmount",value:function(){this._mounted=!1}},{key:"render",value:function(){var e=this,t=this.props,n=t.navigationState,a=(t.onIndexChange,t.initialLayout,t.renderScene,t.renderPager),i=t.renderHeader,r=t.renderFooter,u=babelHelpers.objectWithoutProperties(t,["navigationState","onIndexChange","initialLayout","renderScene","renderPager","renderHeader","renderFooter"]),d=this._buildSceneRendererProps();return o.createElement(s.View,{onLayout:this._handleLayout,loaded:this.state.loaded,style:[h.container,this.props.style]},i&&i(d),a(babelHelpers.extends({},d,u,{panX:this.state.panX,offsetX:this.state.offsetX,children:n.routes.map(function(t,a){var i=e._renderScene(babelHelpers.extends({},d,{route:t,index:a,focused:a===n.index}));return i?o.cloneElement(i,{key:t.key}):i})})),r&&r(d))}}]),t})(o.Component);c.propTypes={navigationState:l.NavigationStatePropType.isRequired,onIndexChange:d.default.func.isRequired,initialLayout:d.default.shape({height:d.default.number.isRequired,width:d.default.number.isRequired}),canJumpToTab:d.default.func.isRequired,renderPager:d.default.func.isRequired,renderScene:d.default.func.isRequired,renderHeader:d.default.func,renderFooter:d.default.func},c.defaultProps={canJumpToTab:function(){return!0},renderPager:function(e){return o.createElement(p,e)},initialLayout:{height:0,width:0},useNativeDriver:!1};var f=function(){var e=this;this._mounted=!1,this._renderScene=function(t){return e.props.renderScene(t)},this._handleLayout=function(t){var n=t.nativeEvent.layout,a=n.height,i=n.width;e.state.layout.width===i&&e.state.layout.height===a||(e.state.offsetX.setValue(-e.props.navigationState.index*i),e.state.layoutXY.setValue({x:i||.001,y:a||.001}),e.setState({layout:{measured:!0,height:a,width:i}}))},this._buildSceneRendererProps=function(){return{panX:e.state.panX,offsetX:e.state.offsetX,position:e.state.position,layout:e.state.layout,navigationState:e.props.navigationState,jumpToIndex:e._jumpToIndex,useNativeDriver:!0===e.props.useNativeDriver}},this._jumpToIndex=function(t){if(e._mounted){var n=e.props,a=n.canJumpToTab,i=n.navigationState;a(i.routes[t])&&t!==i.index&&e.props.onIndexChange(t)}}};a.default=c;var h=s.StyleSheet.create({container:{flex:1,overflow:'hidden'}})},373,[12,108,17,374,375,376,377]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  var _react = _require(_dependencyMap[0], 'react');
+
+  var _react2 = _interopRequireDefault(_react);
+
+  var _propTypes = _require(_dependencyMap[1], 'prop-types');
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _gud = _require(_dependencyMap[2], 'gud');
+
+  var _gud2 = _interopRequireDefault(_gud);
+
+  var _warning = _require(_dependencyMap[3], 'fbjs/lib/warning');
+
+  var _warning2 = _interopRequireDefault(_warning);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var MAX_SIGNED_31_BIT_INT = 1073741823;
+
+  function objectIs(x, y) {
+    if (x === y) {
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      return x !== x && y !== y;
+    }
+  }
+
+  function createEventEmitter(value) {
+    var handlers = [];
+    return {
+      on: function on(handler) {
+        handlers.push(handler);
+      },
+      off: function off(handler) {
+        handlers = handlers.filter(function (h) {
+          return h !== handler;
+        });
+      },
+      get: function get() {
+        return value;
+      },
+      set: function set(newValue, changedBits) {
+        value = newValue;
+        handlers.forEach(function (handler) {
+          return handler(value, changedBits);
+        });
+      }
+    };
+  }
+
+  function onlyChild(children) {
+    return Array.isArray(children) ? children[0] : children;
+  }
+
+  function createReactContext(defaultValue, calculateChangedBits) {
+    var _Provider$childContex, _Consumer$contextType;
+
+    var contextProp = '__create-react-context-' + (0, _gud2.default)() + '__';
+
+    var Provider = function (_Component) {
+      _inherits(Provider, _Component);
+
+      function Provider() {
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, Provider);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.emitter = createEventEmitter(_this.props.value), _temp), _possibleConstructorReturn(_this, _ret);
+      }
+
+      Provider.prototype.getChildContext = function getChildContext() {
+        var _ref;
+
+        return _ref = {}, _ref[contextProp] = this.emitter, _ref;
+      };
+
+      Provider.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+        if (this.props.value !== nextProps.value) {
+          var oldValue = this.props.value;
+          var newValue = nextProps.value;
+          var changedBits = void 0;
+
+          if (objectIs(oldValue, newValue)) {
+            changedBits = 0;
+          } else {
+            changedBits = typeof calculateChangedBits === 'function' ? calculateChangedBits(oldValue, newValue) : MAX_SIGNED_31_BIT_INT;
+
+            if (process.env.NODE_ENV !== 'production') {
+              (0, _warning2.default)((changedBits & MAX_SIGNED_31_BIT_INT) === changedBits, 'calculateChangedBits: Expected the return value to be a ' + '31-bit integer. Instead received: %s', changedBits);
+            }
+
+            changedBits |= 0;
+
+            if (changedBits !== 0) {
+              this.emitter.set(nextProps.value, changedBits);
+            }
+          }
+        }
+      };
+
+      Provider.prototype.render = function render() {
+        return this.props.children;
+      };
+
+      return Provider;
+    }(_react.Component);
+
+    Provider.childContextTypes = (_Provider$childContex = {}, _Provider$childContex[contextProp] = _propTypes2.default.object.isRequired, _Provider$childContex);
+
+    var Consumer = function (_Component2) {
+      _inherits(Consumer, _Component2);
+
+      function Consumer() {
+        var _temp2, _this2, _ret2;
+
+        _classCallCheck(this, Consumer);
+
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, _Component2.call.apply(_Component2, [this].concat(args))), _this2), _this2.state = {
+          value: _this2.getValue()
+        }, _this2.onUpdate = function (newValue, changedBits) {
+          var observedBits = _this2.observedBits | 0;
+
+          if ((observedBits & changedBits) !== 0) {
+            _this2.setState({
+              value: _this2.getValue()
+            });
+          }
+        }, _temp2), _possibleConstructorReturn(_this2, _ret2);
+      }
+
+      Consumer.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+        var observedBits = nextProps.observedBits;
+        this.observedBits = observedBits === undefined || observedBits === null ? MAX_SIGNED_31_BIT_INT : observedBits;
+      };
+
+      Consumer.prototype.componentDidMount = function componentDidMount() {
+        if (this.context[contextProp]) {
+          this.context[contextProp].on(this.onUpdate);
+        }
+
+        var observedBits = this.props.observedBits;
+        this.observedBits = observedBits === undefined || observedBits === null ? MAX_SIGNED_31_BIT_INT : observedBits;
+      };
+
+      Consumer.prototype.componentWillUnmount = function componentWillUnmount() {
+        if (this.context[contextProp]) {
+          this.context[contextProp].off(this.onUpdate);
+        }
+      };
+
+      Consumer.prototype.getValue = function getValue() {
+        if (this.context[contextProp]) {
+          return this.context[contextProp].get();
+        } else {
+          return defaultValue;
+        }
+      };
+
+      Consumer.prototype.render = function render() {
+        return onlyChild(this.props.children)(this.state.value);
+      };
+
+      return Consumer;
+    }(_react.Component);
+
+    Consumer.contextTypes = (_Consumer$contextType = {}, _Consumer$contextType[contextProp] = _propTypes2.default.object, _Consumer$contextType);
+    return {
+      Provider: Provider,
+      Consumer: Consumer
+    };
+  }
+
+  exports.default = createReactContext;
+  module.exports = exports['default'];
+},373,[12,129,374,19],"node_modules/create-react-context/lib/implementation.js");

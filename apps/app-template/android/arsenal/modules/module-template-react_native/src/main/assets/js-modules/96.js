@@ -1,1 +1,86 @@
-__d(function(e,n,t,i,r){'use strict';var a=n(r[0]),o=n(r[1]),s=e.nativePerformanceNow||n(r[2]),c={},m={},u={},T={addTimespan:function(e,n,t){c[e]||(c[e]={description:t,totalTime:n})},startTimespan:function(e,n){c[e]||(c[e]={description:n,startTime:s()},u[e]=a.beginAsyncEvent(e))},stopTimespan:function(e){var n=c[e];n&&n.startTime&&(n.endTime||(n.endTime=s(),n.totalTime=n.endTime-(n.startTime||0),a.endAsyncEvent(e,u[e]),delete u[e]))},clear:function(){c={},m={}},clearCompleted:function(){for(var e in c)c[e].totalTime&&delete c[e];m={}},clearExceptTimespans:function(e){c=Object.keys(c).reduce(function(n,t){return-1!==e.indexOf(t)&&(n[t]=c[t]),n},{}),m={}},currentTimestamp:function(){return s()},getTimespans:function(){return c},hasTimespan:function(e){return!!c[e]},logTimespans:function(){for(var e in c)c[e].totalTime&&o(e+': '+c[e].totalTime+'ms')},addTimespans:function(e,n){for(var t=0,i=e.length;t<i;t+=2){var r=n[t/2];T.addTimespan(r,e[t+1]-e[t],r)}},setExtra:function(e,n){m[e]||(m[e]=n)},getExtras:function(){return m}};t.exports=T},96,[24,97,29]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var RCTAlertManager = _require(_dependencyMap[0], 'NativeModules').AlertManager;
+
+  var AlertIOS = function () {
+    function AlertIOS() {
+      babelHelpers.classCallCheck(this, AlertIOS);
+    }
+
+    babelHelpers.createClass(AlertIOS, null, [{
+      key: "alert",
+      value: function alert(title, message, callbackOrButtons, type) {
+        if (typeof type !== 'undefined') {
+          console.warn('AlertIOS.alert() with a 4th "type" parameter is deprecated and will be removed. Use AlertIOS.prompt() instead.');
+          this.prompt(title, message, callbackOrButtons, type);
+          return;
+        }
+
+        this.prompt(title, message, callbackOrButtons, 'default');
+      }
+    }, {
+      key: "prompt",
+      value: function prompt(title, message, callbackOrButtons) {
+        var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'plain-text';
+        var defaultValue = arguments[4];
+        var keyboardType = arguments[5];
+
+        if (typeof type === 'function') {
+          console.warn('You passed a callback function as the "type" argument to AlertIOS.prompt(). React Native is ' + 'assuming  you want to use the deprecated AlertIOS.prompt(title, defaultValue, buttons, callback) ' + 'signature. The current signature is AlertIOS.prompt(title, message, callbackOrButtons, type, defaultValue, ' + 'keyboardType) and the old syntax will be removed in a future version.');
+          var callback = type;
+          RCTAlertManager.alertWithArgs({
+            title: title || '',
+            type: 'plain-text',
+            defaultValue: message
+          }, function (id, value) {
+            callback(value);
+          });
+          return;
+        }
+
+        var callbacks = [];
+        var buttons = [];
+        var cancelButtonKey;
+        var destructiveButtonKey;
+
+        if (typeof callbackOrButtons === 'function') {
+          callbacks = [callbackOrButtons];
+        } else if (callbackOrButtons instanceof Array) {
+          callbackOrButtons.forEach(function (btn, index) {
+            callbacks[index] = btn.onPress;
+
+            if (btn.style === 'cancel') {
+              cancelButtonKey = String(index);
+            } else if (btn.style === 'destructive') {
+              destructiveButtonKey = String(index);
+            }
+
+            if (btn.text || index < (callbackOrButtons || []).length - 1) {
+              var btnDef = {};
+              btnDef[index] = btn.text || '';
+              buttons.push(btnDef);
+            }
+          });
+        }
+
+        RCTAlertManager.alertWithArgs({
+          title: title || '',
+          message: message || undefined,
+          buttons: buttons,
+          type: type || undefined,
+          defaultValue: defaultValue,
+          cancelButtonKey: cancelButtonKey,
+          destructiveButtonKey: destructiveButtonKey,
+          keyboardType: keyboardType
+        }, function (id, value) {
+          var cb = callbacks[id];
+          cb && cb(value);
+        });
+      }
+    }]);
+    return AlertIOS;
+  }();
+
+  module.exports = AlertIOS;
+},96,[24],"AlertIOS");

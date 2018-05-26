@@ -1,1 +1,11 @@
-__d(function(t,o,i,r,e){'use strict';var d={top:void 0,left:void 0,right:void 0,bottom:void 0};i.exports=function(t,o){return(t=t||d)!==(o=o||d)&&(t.top!==o.top||t.left!==o.left||t.right!==o.right||t.bottom!==o.bottom)}},139,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  var Platform = _require(_dependencyMap[0], 'Platform');
+
+  var TVViewPropTypes = {};
+
+  if (Platform.isTV || Platform.OS === 'android') {
+    TVViewPropTypes = _require(_dependencyMap[1], 'TVViewPropTypes');
+  }
+
+  module.exports = TVViewPropTypes;
+},139,[32,140],"PlatformViewPropTypes");

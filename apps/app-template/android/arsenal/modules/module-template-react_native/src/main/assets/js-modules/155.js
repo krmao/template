@@ -1,1 +1,29 @@
-__d(function(e,t,a,r,o){'use strict';var c=t(o[0]),s=t(o[1]);if(void 0===c)throw Error("create-react-class could not find the React object. If you are using script tags, make sure that React is being loaded before create-react-class.");var n=(new c.Component).updater;a.exports=s(c.Component,c.isValidElement,n)},155,[12,156]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Platform = _require(_dependencyMap[0], 'Platform');
+
+  var normalizeColor = _require(_dependencyMap[1], 'normalizeColor');
+
+  function processColor(color) {
+    if (color === undefined || color === null) {
+      return color;
+    }
+
+    var int32Color = normalizeColor(color);
+
+    if (int32Color === null || int32Color === undefined) {
+      return undefined;
+    }
+
+    int32Color = (int32Color << 24 | int32Color >>> 8) >>> 0;
+
+    if (Platform.OS === 'android') {
+      int32Color = int32Color | 0x0;
+    }
+
+    return int32Color;
+  }
+
+  module.exports = processColor;
+},155,[32,47],"processColor");

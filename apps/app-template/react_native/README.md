@@ -31,7 +31,8 @@ react-native bundle  --platform android  --dev true  --entry-file ./index.js  --
 
 * normal
 ```
-react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/index.android.bundle
+react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/index.android.bundle --assets-dest ./build/bundle/normal/unbundle
+react-native   bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/index.android.bundle --assets-dest ./build/bundle/normal/bundle
 ```
 
 
@@ -62,3 +63,37 @@ install-local --save ~/workspace/smart-metro/packages-release/metro
 ```
 cd ~/workspace/smart-metro/ && npm run build-clean && npm run build && cd packages/metro && npm run package-release && cd ~/workspace/template/apps/app-template/react_native && install-local --save ~/workspace/smart-metro/packages-release/metro
 ```
+
+# node_modules/react-native/local-cli/bundle modify
+* 1 bundleCommandLineArgs.js add command
+    ```
+        command: '--exclude [string]',
+        description: 'Manifest file name where modules to exclude are stored, ex. /tmp/manifest.json',
+      }, {
+    ```
+
+* 2 buildBundle.js
+
+   * from:
+        ```
+          const requestOpts: RequestOptions = {
+            entryFile: args.entryFile,
+            sourceMapUrl,
+            dev: args.dev,
+            minify: args.minify !== undefined ? args.minify : !args.dev,
+            platform: args.platform,
+          };
+        ```
+
+   * to:
+        ```
+          const requestOpts: RequestOptions = {
+            entryFile: args.entryFile,
+            sourceMapUrl,
+            dev: args.dev,
+            minify: args.minify !== undefined ? args.minify : !args.dev,
+            platform: args.platform,
+            exclude: args.exclude,
+            bundleOutput: args.bundleOutput,
+          };
+        ```

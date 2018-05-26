@@ -1,1 +1,16 @@
-__d(function(t,n,r,u,c){'use strict';r.exports=function(t,n){return!(t===n||t&&n&&t[12]===n[12]&&t[13]===n[13]&&t[14]===n[14]&&t[5]===n[5]&&t[10]===n[10]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]&&t[4]===n[4]&&t[6]===n[6]&&t[7]===n[7]&&t[8]===n[8]&&t[9]===n[9]&&t[11]===n[11]&&t[15]===n[15])}},140,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var PropTypes = _require(_dependencyMap[0], 'prop-types');
+
+  var TVViewPropTypes = {
+    isTVSelectable: PropTypes.bool,
+    hasTVPreferredFocus: PropTypes.bool,
+    tvParallaxProperties: PropTypes.object,
+    tvParallaxShiftDistanceX: PropTypes.number,
+    tvParallaxShiftDistanceY: PropTypes.number,
+    tvParallaxTiltAngle: PropTypes.number,
+    tvParallaxMagnification: PropTypes.number
+  };
+  module.exports = TVViewPropTypes;
+},140,[129],"TVViewPropTypes");

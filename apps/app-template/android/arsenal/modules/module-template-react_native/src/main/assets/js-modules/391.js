@@ -1,1 +1,45 @@
-__d(function(e,t,r,l,s){Object.defineProperty(l,"__esModule",{value:!0});var a=t(s[0]),n=babelHelpers.interopRequireWildcard(a),o=t(s[1]),i=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props,t=e.isFocused,r=e.children,l=e.style,s=babelHelpers.objectWithoutProperties(e,["isFocused","children","style"]);return n.createElement(o.View,babelHelpers.extends({style:[c.container,l],collapsable:!1,removeClippedSubviews:!0,pointerEvents:t?'auto':'none'},s),n.createElement(o.View,{style:t?c.attached:c.detached},r))}}]),t})(n.Component);l.default=i;var c=o.StyleSheet.create({container:{flex:1,overflow:'hidden'},attached:{flex:1},detached:{flex:1,top:3e3}})},391,[12,17]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/SwitchView/SwitchView.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _SceneView = _require(_dependencyMap[1], "../SceneView");
+
+  var _SceneView2 = babelHelpers.interopRequireDefault(_SceneView);
+
+  var SwitchView = function (_React$Component) {
+    babelHelpers.inherits(SwitchView, _React$Component);
+
+    function SwitchView() {
+      babelHelpers.classCallCheck(this, SwitchView);
+      return babelHelpers.possibleConstructorReturn(this, (SwitchView.__proto__ || Object.getPrototypeOf(SwitchView)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(SwitchView, [{
+      key: "render",
+      value: function render() {
+        var state = this.props.navigation.state;
+        var activeKey = state.routes[state.index].key;
+        var descriptor = this.props.descriptors[activeKey];
+        var ChildComponent = descriptor.getComponent();
+        return _react2.default.createElement(_SceneView2.default, {
+          component: ChildComponent,
+          navigation: descriptor.navigation,
+          screenProps: this.props.screenProps,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 12
+          }
+        });
+      }
+    }]);
+    return SwitchView;
+  }(_react2.default.Component);
+
+  exports.default = SwitchView;
+},391,[12,370],"node_modules/react-navigation/src/views/SwitchView/SwitchView.js");

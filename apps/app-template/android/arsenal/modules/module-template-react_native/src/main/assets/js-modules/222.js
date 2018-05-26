@@ -1,1 +1,73 @@
-__d(function(e,t,n,a,r){'use strict';var l=t(r[0]),o=t(r[1]),i=t(r[2]),s=(t(r[3]),t(r[4])),u=t(r[5]).StatusBarManager;function c(e){return{backgroundColor:null!=e.backgroundColor?{value:e.backgroundColor,animated:e.animated}:null,barStyle:null!=e.barStyle?{value:e.barStyle,animated:e.animated}:null,translucent:e.translucent,hidden:null!=e.hidden?{value:e.hidden,animated:e.animated,transition:e.showHideTransition}:null,networkActivityIndicatorVisible:e.networkActivityIndicatorVisible}}var d=(function(e){function t(){var e,n,a,r;babelHelpers.classCallCheck(this,t);for(var l=arguments.length,o=Array(l),i=0;i<l;i++)o[i]=arguments[i];return n=a=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(o))),a._stackEntry=null,a._updatePropsStack=function(){clearImmediate(t._updateImmediate),t._updateImmediate=setImmediate(function(){var e,n,a=t._currentValues,r=(e=t._propsStack,n=t._defaultProps,e.reduce(function(e,t){for(var n in t)null!=t[n]&&(e[n]=t[n]);return e},babelHelpers.extends({},n)));a&&a.barStyle.value===r.barStyle.value||u.setStyle(r.barStyle.value),a&&a.backgroundColor.value===r.backgroundColor.value||u.setColor(s(r.backgroundColor.value),r.backgroundColor.animated),a&&a.hidden.value===r.hidden.value||u.setHidden(r.hidden.value),a&&a.translucent===r.translucent||u.setTranslucent(r.translucent),t._currentValues=r})},r=n,babelHelpers.possibleConstructorReturn(a,r)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidMount",value:function(){this._stackEntry=c(this.props),t._propsStack.push(this._stackEntry),this._updatePropsStack()}},{key:"componentWillUnmount",value:function(){var e=t._propsStack.indexOf(this._stackEntry);t._propsStack.splice(e,1),this._updatePropsStack()}},{key:"componentDidUpdate",value:function(){var e=t._propsStack.indexOf(this._stackEntry);this._stackEntry=c(this.props),t._propsStack[e]=this._stackEntry,this._updatePropsStack()}},{key:"render",value:function(){return null}}],[{key:"setHidden",value:function(e,n){n=n||'none',t._defaultProps.hidden.value=e,u.setHidden(e)}},{key:"setBarStyle",value:function(e,n){n=n||!1,t._defaultProps.barStyle.value=e,u.setStyle(e)}},{key:"setNetworkActivityIndicatorVisible",value:function(e){console.warn('`setNetworkActivityIndicatorVisible` is only available on iOS')}},{key:"setBackgroundColor",value:function(e,n){n=n||!1,t._defaultProps.backgroundColor.value=e,u.setColor(s(e),n)}},{key:"setTranslucent",value:function(e){t._defaultProps.translucent=e,u.setTranslucent(e)}}]),t})(l.Component);d._propsStack=[],d._defaultProps=c({animated:!1,showHideTransition:'fade',backgroundColor:'black',barStyle:'default',translucent:!1,hidden:!1,networkActivityIndicatorVisible:!1}),d._updateImmediate=null,d._currentValues=null,d.currentHeight=u.HEIGHT,d.propTypes={hidden:o.bool,animated:o.bool,backgroundColor:i,translucent:o.bool,barStyle:o.oneOf(['default','light-content','dark-content']),networkActivityIndicatorVisible:o.bool,showHideTransition:o.oneOf(['fade','slide'])},d.defaultProps={animated:!1,showHideTransition:'fade'},n.exports=d},222,[111,108,40,28,134,20]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function stiffnessFromOrigamiValue(oValue) {
+    return (oValue - 30) * 3.62 + 194;
+  }
+
+  function dampingFromOrigamiValue(oValue) {
+    return (oValue - 8) * 3 + 25;
+  }
+
+  function fromOrigamiTensionAndFriction(tension, friction) {
+    return {
+      stiffness: stiffnessFromOrigamiValue(tension),
+      damping: dampingFromOrigamiValue(friction)
+    };
+  }
+
+  function fromBouncinessAndSpeed(bounciness, speed) {
+    function normalize(value, startValue, endValue) {
+      return (value - startValue) / (endValue - startValue);
+    }
+
+    function projectNormal(n, start, end) {
+      return start + n * (end - start);
+    }
+
+    function linearInterpolation(t, start, end) {
+      return t * end + (1 - t) * start;
+    }
+
+    function quadraticOutInterpolation(t, start, end) {
+      return linearInterpolation(2 * t - t * t, start, end);
+    }
+
+    function b3Friction1(x) {
+      return 0.0007 * Math.pow(x, 3) - 0.031 * Math.pow(x, 2) + 0.64 * x + 1.28;
+    }
+
+    function b3Friction2(x) {
+      return 0.000044 * Math.pow(x, 3) - 0.006 * Math.pow(x, 2) + 0.36 * x + 2;
+    }
+
+    function b3Friction3(x) {
+      return 0.00000045 * Math.pow(x, 3) - 0.000332 * Math.pow(x, 2) + 0.1078 * x + 5.84;
+    }
+
+    function b3Nobounce(tension) {
+      if (tension <= 18) {
+        return b3Friction1(tension);
+      } else if (tension > 18 && tension <= 44) {
+        return b3Friction2(tension);
+      } else {
+        return b3Friction3(tension);
+      }
+    }
+
+    var b = normalize(bounciness / 1.7, 0, 20);
+    b = projectNormal(b, 0, 0.8);
+    var s = normalize(speed / 1.7, 0, 20);
+    var bouncyTension = projectNormal(s, 0.5, 200);
+    var bouncyFriction = quadraticOutInterpolation(b, b3Nobounce(bouncyTension), 0.01);
+    return {
+      stiffness: stiffnessFromOrigamiValue(bouncyTension),
+      damping: dampingFromOrigamiValue(bouncyFriction)
+    };
+  }
+
+  module.exports = {
+    fromOrigamiTensionAndFriction: fromOrigamiTensionAndFriction,
+    fromBouncinessAndSpeed: fromBouncinessAndSpeed
+  };
+},222,[],"SpringConfig");

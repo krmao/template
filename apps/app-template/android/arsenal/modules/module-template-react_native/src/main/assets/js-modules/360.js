@@ -1,1 +1,41 @@
-__d(function(e,t,a,r,l){Object.defineProperty(r,"__esModule",{value:!0});var i=t(l[0]),n=babelHelpers.interopRequireDefault(i),o=t(l[1]),u=t(l[2]),b=babelHelpers.interopRequireDefault(u),d=t(l[3]),f=babelHelpers.interopRequireDefault(d),p=t(l[4]),s=babelHelpers.interopRequireDefault(p),c=t(l[5]),h=babelHelpers.interopRequireDefault(c),m=t(l[6]),R=(babelHelpers.interopRequireDefault(m),t(l[7])),v=babelHelpers.interopRequireDefault(R),w=t(l[8]),H=babelHelpers.interopRequireDefault(w),D={drawerWidth:function(){var e=o.Dimensions.get('window'),t=e.height,a=e.width,r=Math.min(t,a),l=r>=600?320:280;return Math.min(r-56,l)},contentComponent:function(e){return n.default.createElement(o.ScrollView,{alwaysBounceVertical:!1},n.default.createElement(b.default,{forceInset:{top:'always',horizontal:'never'}},n.default.createElement(H.default,e)))},drawerPosition:'left',drawerBackgroundColor:'white',useNativeAnimations:!0};r.default=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},a=babelHelpers.extends({},D,t),r=a.order,l=a.paths,i=a.initialRouteName,n=a.backBehavior,o=babelHelpers.objectWithoutProperties(a,["order","paths","initialRouteName","backBehavior"]),u={order:r,paths:l,initialRouteName:i,backBehavior:n},b=(0,h.default)(e,u),d=(0,f.default)(v.default,b,o);return(0,s.default)(d)}},360,[12,17,325,314,306,361,364,365,368]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/Header/HeaderTitle.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var AnimatedText = _reactNative.Animated.Text;
+
+  var HeaderTitle = function HeaderTitle(_ref) {
+    var style = _ref.style,
+        rest = babelHelpers.objectWithoutProperties(_ref, ["style"]);
+    return _react2.default.createElement(AnimatedText, babelHelpers.extends({
+      numberOfLines: 1
+    }, rest, {
+      style: [styles.title, style],
+      accessibilityTraits: "header",
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 7
+      }
+    }));
+  };
+
+  var styles = _reactNative.StyleSheet.create({
+    title: {
+      fontSize: _reactNative.Platform.OS === 'ios' ? 17 : 20,
+      fontWeight: _reactNative.Platform.OS === 'ios' ? '700' : '500',
+      color: 'rgba(0, 0, 0, .9)',
+      textAlign: _reactNative.Platform.OS === 'ios' ? 'center' : 'left',
+      marginHorizontal: 16
+    }
+  });
+
+  exports.default = HeaderTitle;
+},360,[12,22],"node_modules/react-navigation/src/views/Header/HeaderTitle.js");

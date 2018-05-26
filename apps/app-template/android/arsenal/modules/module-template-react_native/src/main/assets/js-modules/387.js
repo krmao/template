@@ -1,1 +1,36 @@
-__d(function(e,t,n,r,o){Object.defineProperty(r,"__esModule",{value:!0}),r.default=function(e){var t=(function(t){function n(){var e,t,r,o;babelHelpers.classCallCheck(this,n);for(var a=arguments.length,p=Array(a),c=0;c<a;c++)p[c]=arguments[c];return r=babelHelpers.possibleConstructorReturn(this,(e=n.__proto__||Object.getPrototypeOf(n)).call.apply(e,[this].concat(p))),t=r,r._renderScene=function(e){var t=e.route,n=r.props,o=n.screenProps,a=n.descriptors,p=a[t.key],c=p.getComponent();return s.createElement(i.SceneView,{screenProps:o,navigation:p.navigation,component:c})},r._renderIcon=function(e){var t=e.route,n=e.focused,o=void 0===n||n,a=e.tintColor,s=r.props.descriptors,i=s[t.key],p=i.options;return p.tabBarIcon?'function'==typeof p.tabBarIcon?p.tabBarIcon({focused:o,tintColor:a}):p.tabBarIcon:null},r._getLabelText=function(e){var t=e.route,n=r.props.descriptors,o=n[t.key],a=o.options;return a.tabBarLabel?a.tabBarLabel:'string'==typeof a.title?a.title:t.routeName},r._handleOnTabPress=function(e){var t=e.route,n=r.props.descriptors,o=n[t.key],a=o.navigation,s=o.options;if(s.tabBarOnPress)s.tabBarOnPress({navigation:a});else{var p=r.props.navigation.state.index===r.props.navigation.state.routes.indexOf(t);p&&t.hasOwnProperty('index')&&t.index>0&&a.dispatch(i.StackActions.popToTop({key:t.key}))}},r._handleIndexChange=function(e){var t=r.props.navigation;t.dispatch(i.NavigationActions.navigate({routeName:t.state.routes[e].routeName}))},o=t,babelHelpers.possibleConstructorReturn(r,o)}return babelHelpers.inherits(n,t),babelHelpers.createClass(n,[{key:"render",value:function(){var t=this.props,n=t.descriptors,r=t.navigation,o=t.screenProps,a=r.state,i=a.routes[a.index],p=n[i.key],c=babelHelpers.extends({},this.props.navigationConfig,p.options);return s.createElement(e,babelHelpers.extends({},c,{getLabelText:this._getLabelText,renderIcon:this._renderIcon,renderScene:this._renderScene,onIndexChange:this._handleIndexChange,onTabPress:this._handleOnTabPress,navigation:r,descriptors:n,screenProps:o}))}}]),n})(s.Component);return function(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=(0,i.TabRouter)(e,n),o=(0,i.createNavigator)(t,r,n);return(0,i.createNavigationContainer)(o)}};var a=t(o[0]),s=babelHelpers.interopRequireWildcard(a),i=t(o[1])},387,[12,305]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _invariant = _require(_dependencyMap[0], "../utils/invariant");
+
+  var _invariant2 = babelHelpers.interopRequireDefault(_invariant);
+
+  function validateRouteConfigMap(routeConfigs) {
+    var routeNames = Object.keys(routeConfigs);
+    (0, _invariant2.default)(routeNames.length > 0, 'Please specify at least one route when configuring a navigator.');
+    routeNames.forEach(function (routeName) {
+      var routeConfig = routeConfigs[routeName];
+      var screenComponent = getScreenComponent(routeConfig);
+
+      if (!screenComponent || typeof screenComponent !== 'function' && typeof screenComponent !== 'string' && !routeConfig.getScreen) {
+        throw new Error("The component for route '" + routeName + "' must be a " + 'React component. For example:\n\n' + "import MyScreen from './MyScreen';\n" + '...\n' + (routeName + ": MyScreen,\n") + '}\n\n' + 'You can also use a navigator:\n\n' + "import MyNavigator from './MyNavigator';\n" + '...\n' + (routeName + ": MyNavigator,\n") + '}');
+      }
+
+      if (routeConfig.screen && routeConfig.getScreen) {
+        throw new Error("Route '" + routeName + "' should declare a screen or " + 'a getScreen, not both.');
+      }
+    });
+  }
+
+  function getScreenComponent(routeConfig) {
+    if (!routeConfig) {
+      return null;
+    }
+
+    return routeConfig.screen ? routeConfig.screen : routeConfig;
+  }
+
+  exports.default = validateRouteConfigMap;
+},387,[342],"node_modules/react-navigation/src/routers/validateRouteConfigMap.js");

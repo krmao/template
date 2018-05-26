@@ -1,1 +1,35 @@
-__d(function(e,i,u,a,t){Object.defineProperty(a,"__esModule",{value:!0}),a.PagerRendererPropType=a.SceneRendererPropType=a.NavigationStatePropType=a.NavigationRoutePropType=void 0;var d=i(t[0]),r=babelHelpers.interopRequireDefault(d),n=i(t[1]),o=a.NavigationRoutePropType=r.default.shape({title:r.default.string,key:r.default.string.isRequired}),l=a.NavigationStatePropType=r.default.shape({routes:r.default.arrayOf(o).isRequired,index:r.default.number.isRequired});a.SceneRendererPropType={panX:r.default.object.isRequired,offsetX:r.default.object.isRequired,layout:r.default.shape({measured:r.default.bool.isRequired,height:r.default.number.isRequired,width:r.default.number.isRequired}).isRequired,navigationState:l.isRequired,position:r.default.object.isRequired,jumpTo:r.default.func.isRequired,jumpToIndex:r.default.func.isRequired,useNativeDriver:r.default.bool},a.PagerRendererPropType={layout:r.default.shape({measured:r.default.bool.isRequired,height:r.default.number.isRequired,width:r.default.number.isRequired}).isRequired,navigationState:l.isRequired,panX:r.default.instanceOf(n.Animated.Value).isRequired,offsetX:r.default.instanceOf(n.Animated.Value).isRequired,canJumpToTab:r.default.func.isRequired,jumpTo:r.default.func.isRequired,animationEnabled:r.default.bool,swipeEnabled:r.default.bool,useNativeDriver:r.default.bool,onSwipeStart:r.default.func,onSwipeEnd:r.default.func,onAnimationEnd:r.default.func,children:r.default.node.isRequired}},395,[108,17]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var OPEN_DRAWER = 'Navigation/OPEN_DRAWER';
+  var CLOSE_DRAWER = 'Navigation/CLOSE_DRAWER';
+  var TOGGLE_DRAWER = 'Navigation/TOGGLE_DRAWER';
+
+  var openDrawer = function openDrawer(payload) {
+    return babelHelpers.extends({
+      type: OPEN_DRAWER
+    }, payload);
+  };
+
+  var closeDrawer = function closeDrawer(payload) {
+    return babelHelpers.extends({
+      type: CLOSE_DRAWER
+    }, payload);
+  };
+
+  var toggleDrawer = function toggleDrawer(payload) {
+    return babelHelpers.extends({
+      type: TOGGLE_DRAWER
+    }, payload);
+  };
+
+  exports.default = {
+    OPEN_DRAWER: OPEN_DRAWER,
+    CLOSE_DRAWER: CLOSE_DRAWER,
+    TOGGLE_DRAWER: TOGGLE_DRAWER,
+    openDrawer: openDrawer,
+    closeDrawer: closeDrawer,
+    toggleDrawer: toggleDrawer
+  };
+},395,[],"node_modules/react-navigation/src/routers/DrawerActions.js");

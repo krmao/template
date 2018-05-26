@@ -1,1 +1,56 @@
-__d(function(e,a,t,o,i){Object.defineProperty(o,"__esModule",{value:!0});var n=a(i[0]),r=(babelHelpers.interopRequireDefault(n),a(i[1]),a(i[2])),l=a(i[3]),b=babelHelpers.interopRequireDefault(l),d=a(i[4]),s=babelHelpers.interopRequireDefault(d),u=a(i[5]),p=function e(a){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},o=babelHelpers.extends({},e.Presets.Default,t),i=(0,r.TabRouter)(a,o),n=(0,r.createNavigator)(b.default,i,o);return(0,r.createNavigationContainer)(n)},f={iOSBottomTabs:{tabBarComponent:babelHelpers.interopRequireDefault(u).default,tabBarPosition:'bottom',swipeEnabled:!1,animationEnabled:!1,initialLayout:void 0},AndroidTopTabs:{tabBarComponent:s.default,tabBarPosition:'top',swipeEnabled:!0,animationEnabled:!0,initialLayout:void 0}};p.Presets={iOSBottomTabs:f.iOSBottomTabs,AndroidTopTabs:f.AndroidTopTabs,Default:f.AndroidTopTabs},o.default=p},370,[12,17,305,371,382,384]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/SceneView.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _propTypes = _require(_dependencyMap[1], "prop-types");
+
+  var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+  var _NavigationContext = _require(_dependencyMap[2], "./NavigationContext");
+
+  var SceneView = function (_React$PureComponent) {
+    babelHelpers.inherits(SceneView, _React$PureComponent);
+
+    function SceneView() {
+      babelHelpers.classCallCheck(this, SceneView);
+      return babelHelpers.possibleConstructorReturn(this, (SceneView.__proto__ || Object.getPrototypeOf(SceneView)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(SceneView, [{
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            screenProps = _props.screenProps,
+            Component = _props.component,
+            navigation = _props.navigation;
+        return _react2.default.createElement(
+          _NavigationContext.NavigationProvider,
+          {
+            value: navigation,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 9
+            }
+          },
+          _react2.default.createElement(Component, {
+            screenProps: screenProps,
+            navigation: navigation,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 10
+            }
+          })
+        );
+      }
+    }]);
+    return SceneView;
+  }(_react2.default.PureComponent);
+
+  exports.default = SceneView;
+},370,[12,129,371],"node_modules/react-navigation/src/views/SceneView.js");

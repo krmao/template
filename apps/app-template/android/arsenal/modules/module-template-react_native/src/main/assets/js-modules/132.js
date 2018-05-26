@@ -1,1 +1,5 @@
-__d(function(r,n,t,a,e){'use strict';var i=n(e[0]);t.exports=function(r){var n,t={};for(n in r instanceof Object&&!Array.isArray(r)||i(!1),r)r.hasOwnProperty(n)&&(t[n]=n);return t}},132,[18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  module.exports = _require(_dependencyMap[0], 'react');
+},132,[12],"React");

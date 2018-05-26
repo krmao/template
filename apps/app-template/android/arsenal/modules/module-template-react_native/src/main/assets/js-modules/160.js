@@ -1,1 +1,18 @@
-__d(function(t,i,n,o,r){n.exports=function(t){for(var i={},n=0,o=arguments.length;n<o;n++){var r=arguments[n];for(var e in'function'==typeof r&&(r=r.prototype),r)i[e]=r[e]}return i.initialize||(i.initialize=function(){}),i.constructor=function(t,n,o,r,e,c,u,f){return new i.initialize(t,n,o,r,e,c,u,f)},i.constructor.prototype=i.initialize.prototype=i,i.constructor}},160,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var dummyInsets = {
+    top: undefined,
+    left: undefined,
+    right: undefined,
+    bottom: undefined
+  };
+
+  var insetsDiffer = function insetsDiffer(one, two) {
+    one = one || dummyInsets;
+    two = two || dummyInsets;
+    return one !== two && (one.top !== two.top || one.left !== two.left || one.right !== two.right || one.bottom !== two.bottom);
+  };
+
+  module.exports = insetsDiffer;
+},160,[],"insetsDiffer");

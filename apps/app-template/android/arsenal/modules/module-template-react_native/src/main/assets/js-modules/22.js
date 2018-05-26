@@ -1,1 +1,401 @@
-__d(function(e,l,t,u,s){'use strict';var a=l(s[0]),i=l(s[1]),n=(l(s[2]),l(s[3])),h=(l(s[4]),null),r=(function(){function t(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];babelHelpers.classCallCheck(this,t),this._lazyCallableModules={},this._queue=[[],[],[],0],this._successCallbacks=[],this._failureCallbacks=[],this._callID=0,this._lastFlush=0,this._eventLoopStartTime=(new Date).getTime(),e?this.uninstallGlobalErrorHandler():this.installGlobalErrorHandler(),this.callFunctionReturnFlushedQueue=this.callFunctionReturnFlushedQueue.bind(this),this.callFunctionReturnResultAndFlushedQueue=this.callFunctionReturnResultAndFlushedQueue.bind(this),this.flushedQueue=this.flushedQueue.bind(this),this.invokeCallbackAndReturnFlushedQueue=this.invokeCallbackAndReturnFlushedQueue.bind(this)}return babelHelpers.createClass(t,[{key:"callFunctionReturnFlushedQueue",value:function(e,l,t){var u=this;return this.__guard(function(){u.__callFunction(e,l,t)}),this.flushedQueue()}},{key:"callFunctionReturnResultAndFlushedQueue",value:function(e,l,t){var u=this,s=void 0;return this.__guard(function(){s=u.__callFunction(e,l,t)}),[s,this.flushedQueue()]}},{key:"invokeCallbackAndReturnFlushedQueue",value:function(e,l){var t=this;return this.__guard(function(){t.__invokeCallback(e,l)}),this.flushedQueue()}},{key:"flushedQueue",value:function(){var e=this;this.__guard(function(){e.__callImmediates()});var l=this._queue;return this._queue=[[],[],[],this._callID],l[0].length?l:null}},{key:"getEventLoopRunningTime",value:function(){return(new Date).getTime()-this._eventLoopStartTime}},{key:"registerCallableModule",value:function(e,l){this._lazyCallableModules[e]=function(){return l}}},{key:"registerLazyCallableModule",value:function(e,l){var t=void 0,u=l;this._lazyCallableModules[e]=function(){return u&&(t=u(),u=null),t}}},{key:"getCallableModule",value:function(e){var l=this._lazyCallableModules[e];return l?l():null}},{key:"enqueueNativeCall",value:function(l,t,u,s,a){(s||a)&&(s&&u.push(this._callID<<1),a&&u.push(this._callID<<1|1),this._successCallbacks[this._callID]=a,this._failureCallbacks[this._callID]=s),this._callID++,this._queue[0].push(l),this._queue[1].push(t),this._queue[2].push(u);var n=(new Date).getTime();if(e.nativeFlushQueueImmediate&&(n-this._lastFlush>=5||0===this._inCall)){var h=this._queue;this._queue=[[],[],[],this._callID],this._lastFlush=n,e.nativeFlushQueueImmediate(h)}i.counterEvent('pending_js_to_native_queue',this._queue[0].length),this.__spy&&this.__spy({type:1,module:l+'',method:t,args:u})}},{key:"createDebugLookup",value:function(e,l,t){}},{key:"uninstallGlobalErrorHandler",value:function(){this.__guard=this.__guardUnsafe}},{key:"installGlobalErrorHandler",value:function(){this.__guard=this.__guardSafe}},{key:"__guardUnsafe",value:function(e){this._inCall++,e(),this._inCall--}},{key:"__guardSafe",value:function(e){this._inCall++;try{e()}catch(e){a.reportFatalError(e)}finally{this._inCall--}}},{key:"__callImmediates",value:function(){i.beginEvent('JSTimers.callImmediates()'),h||(h=l(s[5])),h.callImmediates(),i.endEvent()}},{key:"__callFunction",value:function(e,l,t){this._lastFlush=(new Date).getTime(),this._eventLoopStartTime=this._lastFlush,i.beginEvent(e+"."+l+"()"),this.__spy&&this.__spy({type:0,module:e,method:l,args:t});var u=this.getCallableModule(e);n(!!u,'Module %s is not a registered callable module (calling %s)',e,l),n(!!u[l],'Method %s does not exist on module %s',l,e);var s=u[l].apply(u,t);return i.endEvent(),s}},{key:"__invokeCallback",value:function(e,l){this._lastFlush=(new Date).getTime(),this._eventLoopStartTime=this._lastFlush;var t=e>>>1,u=1&e?this._successCallbacks[t]:this._failureCallbacks[t];u&&(this._successCallbacks[t]=this._failureCallbacks[t]=null,u.apply(void 0,babelHelpers.toConsumableArray(l)))}}],[{key:"spy",value:function(e){t.prototype.__spy=!0===e?function(e){console.log((0===e.type?'N->JS':'JS->N')+" : "+(e.module?e.module+'.':'')+e.method+"("+JSON.stringify(e.args)+")")}:!1===e?null:e}}]),t})();t.exports=r},22,[23,24,25,18,26,27]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var invariant = _require(_dependencyMap[0], 'fbjs/lib/invariant');
+
+  var ReactNative = {
+    get AccessibilityInfo() {
+      return _require(_dependencyMap[1], 'AccessibilityInfo');
+    },
+
+    get ActivityIndicator() {
+      return _require(_dependencyMap[2], 'ActivityIndicator');
+    },
+
+    get ART() {
+      return _require(_dependencyMap[3], 'ReactNativeART');
+    },
+
+    get Button() {
+      return _require(_dependencyMap[4], 'Button');
+    },
+
+    get CheckBox() {
+      return _require(_dependencyMap[5], 'CheckBox');
+    },
+
+    get DatePickerIOS() {
+      return _require(_dependencyMap[6], 'DatePickerIOS');
+    },
+
+    get DrawerLayoutAndroid() {
+      return _require(_dependencyMap[7], 'DrawerLayoutAndroid');
+    },
+
+    get FlatList() {
+      return _require(_dependencyMap[8], 'FlatList');
+    },
+
+    get Image() {
+      return _require(_dependencyMap[9], 'Image');
+    },
+
+    get ImageBackground() {
+      return _require(_dependencyMap[10], 'ImageBackground');
+    },
+
+    get ImageEditor() {
+      return _require(_dependencyMap[11], 'ImageEditor');
+    },
+
+    get ImageStore() {
+      return _require(_dependencyMap[12], 'ImageStore');
+    },
+
+    get KeyboardAvoidingView() {
+      return _require(_dependencyMap[13], 'KeyboardAvoidingView');
+    },
+
+    get ListView() {
+      return _require(_dependencyMap[14], 'ListView');
+    },
+
+    get MaskedViewIOS() {
+      return _require(_dependencyMap[15], 'MaskedViewIOS');
+    },
+
+    get Modal() {
+      return _require(_dependencyMap[16], 'Modal');
+    },
+
+    get NavigatorIOS() {
+      return _require(_dependencyMap[17], 'NavigatorIOS');
+    },
+
+    get Picker() {
+      return _require(_dependencyMap[18], 'Picker');
+    },
+
+    get PickerIOS() {
+      return _require(_dependencyMap[19], 'PickerIOS');
+    },
+
+    get ProgressBarAndroid() {
+      return _require(_dependencyMap[20], 'ProgressBarAndroid');
+    },
+
+    get ProgressViewIOS() {
+      return _require(_dependencyMap[21], 'ProgressViewIOS');
+    },
+
+    get SafeAreaView() {
+      return _require(_dependencyMap[22], 'SafeAreaView');
+    },
+
+    get ScrollView() {
+      return _require(_dependencyMap[23], 'ScrollView');
+    },
+
+    get SectionList() {
+      return _require(_dependencyMap[24], 'SectionList');
+    },
+
+    get SegmentedControlIOS() {
+      return _require(_dependencyMap[25], 'SegmentedControlIOS');
+    },
+
+    get Slider() {
+      return _require(_dependencyMap[26], 'Slider');
+    },
+
+    get SnapshotViewIOS() {
+      return _require(_dependencyMap[27], 'SnapshotViewIOS');
+    },
+
+    get Switch() {
+      return _require(_dependencyMap[28], 'Switch');
+    },
+
+    get RefreshControl() {
+      return _require(_dependencyMap[29], 'RefreshControl');
+    },
+
+    get StatusBar() {
+      return _require(_dependencyMap[30], 'StatusBar');
+    },
+
+    get SwipeableFlatList() {
+      return _require(_dependencyMap[31], 'SwipeableFlatList');
+    },
+
+    get SwipeableListView() {
+      return _require(_dependencyMap[32], 'SwipeableListView');
+    },
+
+    get TabBarIOS() {
+      return _require(_dependencyMap[33], 'TabBarIOS');
+    },
+
+    get Text() {
+      return _require(_dependencyMap[34], 'Text');
+    },
+
+    get TextInput() {
+      return _require(_dependencyMap[35], 'TextInput');
+    },
+
+    get ToastAndroid() {
+      return _require(_dependencyMap[36], 'ToastAndroid');
+    },
+
+    get ToolbarAndroid() {
+      return _require(_dependencyMap[37], 'ToolbarAndroid');
+    },
+
+    get Touchable() {
+      return _require(_dependencyMap[38], 'Touchable');
+    },
+
+    get TouchableHighlight() {
+      return _require(_dependencyMap[39], 'TouchableHighlight');
+    },
+
+    get TouchableNativeFeedback() {
+      return _require(_dependencyMap[40], 'TouchableNativeFeedback');
+    },
+
+    get TouchableOpacity() {
+      return _require(_dependencyMap[41], 'TouchableOpacity');
+    },
+
+    get TouchableWithoutFeedback() {
+      return _require(_dependencyMap[42], 'TouchableWithoutFeedback');
+    },
+
+    get View() {
+      return _require(_dependencyMap[43], 'View');
+    },
+
+    get ViewPagerAndroid() {
+      return _require(_dependencyMap[44], 'ViewPagerAndroid');
+    },
+
+    get VirtualizedList() {
+      return _require(_dependencyMap[45], 'VirtualizedList');
+    },
+
+    get WebView() {
+      return _require(_dependencyMap[46], 'WebView');
+    },
+
+    get ActionSheetIOS() {
+      return _require(_dependencyMap[47], 'ActionSheetIOS');
+    },
+
+    get Alert() {
+      return _require(_dependencyMap[48], 'Alert');
+    },
+
+    get AlertIOS() {
+      return _require(_dependencyMap[49], 'AlertIOS');
+    },
+
+    get Animated() {
+      return _require(_dependencyMap[50], 'Animated');
+    },
+
+    get AppRegistry() {
+      return _require(_dependencyMap[51], 'AppRegistry');
+    },
+
+    get AppState() {
+      return _require(_dependencyMap[52], 'AppState');
+    },
+
+    get AsyncStorage() {
+      return _require(_dependencyMap[53], 'AsyncStorage');
+    },
+
+    get BackAndroid() {
+      return _require(_dependencyMap[54], 'BackAndroid');
+    },
+
+    get BackHandler() {
+      return _require(_dependencyMap[55], 'BackHandler');
+    },
+
+    get CameraRoll() {
+      return _require(_dependencyMap[56], 'CameraRoll');
+    },
+
+    get Clipboard() {
+      return _require(_dependencyMap[57], 'Clipboard');
+    },
+
+    get DatePickerAndroid() {
+      return _require(_dependencyMap[58], 'DatePickerAndroid');
+    },
+
+    get DeviceInfo() {
+      return _require(_dependencyMap[59], 'DeviceInfo');
+    },
+
+    get Dimensions() {
+      return _require(_dependencyMap[60], 'Dimensions');
+    },
+
+    get Easing() {
+      return _require(_dependencyMap[61], 'Easing');
+    },
+
+    get findNodeHandle() {
+      return _require(_dependencyMap[62], 'ReactNative').findNodeHandle;
+    },
+
+    get I18nManager() {
+      return _require(_dependencyMap[63], 'I18nManager');
+    },
+
+    get ImagePickerIOS() {
+      return _require(_dependencyMap[64], 'ImagePickerIOS');
+    },
+
+    get InteractionManager() {
+      return _require(_dependencyMap[65], 'InteractionManager');
+    },
+
+    get Keyboard() {
+      return _require(_dependencyMap[66], 'Keyboard');
+    },
+
+    get LayoutAnimation() {
+      return _require(_dependencyMap[67], 'LayoutAnimation');
+    },
+
+    get Linking() {
+      return _require(_dependencyMap[68], 'Linking');
+    },
+
+    get NativeEventEmitter() {
+      return _require(_dependencyMap[69], 'NativeEventEmitter');
+    },
+
+    get NetInfo() {
+      return _require(_dependencyMap[70], 'NetInfo');
+    },
+
+    get PanResponder() {
+      return _require(_dependencyMap[71], 'PanResponder');
+    },
+
+    get PermissionsAndroid() {
+      return _require(_dependencyMap[72], 'PermissionsAndroid');
+    },
+
+    get PixelRatio() {
+      return _require(_dependencyMap[73], 'PixelRatio');
+    },
+
+    get PushNotificationIOS() {
+      return _require(_dependencyMap[74], 'PushNotificationIOS');
+    },
+
+    get Settings() {
+      return _require(_dependencyMap[75], 'Settings');
+    },
+
+    get Share() {
+      return _require(_dependencyMap[76], 'Share');
+    },
+
+    get StatusBarIOS() {
+      return _require(_dependencyMap[77], 'StatusBarIOS');
+    },
+
+    get StyleSheet() {
+      return _require(_dependencyMap[78], 'StyleSheet');
+    },
+
+    get Systrace() {
+      return _require(_dependencyMap[79], 'Systrace');
+    },
+
+    get TimePickerAndroid() {
+      return _require(_dependencyMap[80], 'TimePickerAndroid');
+    },
+
+    get TVEventHandler() {
+      return _require(_dependencyMap[81], 'TVEventHandler');
+    },
+
+    get UIManager() {
+      return _require(_dependencyMap[82], 'UIManager');
+    },
+
+    get unstable_batchedUpdates() {
+      return _require(_dependencyMap[62], 'ReactNative').unstable_batchedUpdates;
+    },
+
+    get Vibration() {
+      return _require(_dependencyMap[83], 'Vibration');
+    },
+
+    get VibrationIOS() {
+      return _require(_dependencyMap[84], 'VibrationIOS');
+    },
+
+    get YellowBox() {
+      return _require(_dependencyMap[85], 'YellowBox');
+    },
+
+    get DeviceEventEmitter() {
+      return _require(_dependencyMap[86], 'RCTDeviceEventEmitter');
+    },
+
+    get NativeAppEventEmitter() {
+      return _require(_dependencyMap[87], 'RCTNativeAppEventEmitter');
+    },
+
+    get NativeModules() {
+      return _require(_dependencyMap[88], 'NativeModules');
+    },
+
+    get Platform() {
+      return _require(_dependencyMap[89], 'Platform');
+    },
+
+    get processColor() {
+      return _require(_dependencyMap[90], 'processColor');
+    },
+
+    get requireNativeComponent() {
+      return _require(_dependencyMap[91], 'requireNativeComponent');
+    },
+
+    get takeSnapshot() {
+      return _require(_dependencyMap[92], 'takeSnapshot');
+    },
+
+    get ColorPropType() {
+      return _require(_dependencyMap[93], 'ColorPropType');
+    },
+
+    get EdgeInsetsPropType() {
+      return _require(_dependencyMap[94], 'EdgeInsetsPropType');
+    },
+
+    get PointPropType() {
+      return _require(_dependencyMap[95], 'PointPropType');
+    },
+
+    get ViewPropTypes() {
+      return _require(_dependencyMap[96], 'ViewPropTypes');
+    },
+
+    get Navigator() {
+      invariant(false, 'Navigator is deprecated and has been removed from this package. It can now be installed ' + 'and imported from `react-native-deprecated-custom-components` instead of `react-native`. ' + 'Learn about alternative navigation solutions at http://facebook.github.io/react-native/docs/navigation.html');
+    }
+
+  };
+  module.exports = ReactNative;
+},22,[18,23,45,178,184,240,241,242,244,227,257,259,260,261,246,262,264,285,286,287,128,289,283,228,290,292,293,294,295,251,243,296,300,302,185,304,112,311,187,275,194,198,195,173,312,252,313,314,95,96,199,315,114,321,322,320,323,324,325,168,167,224,49,284,326,207,232,233,327,82,328,298,99,166,329,330,331,332,171,28,333,191,121,334,335,282,40,103,24,32,155,148,336,46,134,229,133],"react-native-implementation");

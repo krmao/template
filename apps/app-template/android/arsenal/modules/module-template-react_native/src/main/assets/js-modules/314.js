@@ -1,1 +1,28 @@
-__d(function(e,t,n,r,s){Object.defineProperty(r,"__esModule",{value:!0});var i=t(s[0]),o=babelHelpers.interopRequireDefault(i),a=t(s[1]),u=babelHelpers.interopRequireDefault(a);r.default=function(e,t,n){var r=(function(r){function s(){var e,t,n,r;babelHelpers.classCallCheck(this,s);for(var i=arguments.length,o=Array(i),a=0;a<i;a++)o[a]=arguments[a];return t=n=babelHelpers.possibleConstructorReturn(this,(e=s.__proto__||Object.getPrototypeOf(s)).call.apply(e,[this].concat(o))),n.childEventSubscribers={},n._isRouteFocused=function(e){var t=n.props.navigation.state;return e===t.routes[t.index]},n._dangerouslyGetParent=function(){return n.props.navigation},r=t,babelHelpers.possibleConstructorReturn(n,r)}return babelHelpers.inherits(s,r),babelHelpers.createClass(s,[{key:"componentDidUpdate",value:function(){var e=this,t=this.props.navigation.state.routes.map(function(e){return e.key});Object.keys(this.childEventSubscribers).forEach(function(n){t.includes(n)||delete e.childEventSubscribers[n]})}},{key:"componentWillUnmount",value:function(){this.childEventSubscribers={}}},{key:"render",value:function(){var r=this,s=this.props,i=s.navigation,a=s.screenProps,c=i.dispatch,l=i.state,p=i.addListener,b={};return l.routes.forEach(function(e){r.childEventSubscribers[e.key]||(r.childEventSubscribers[e.key]=(0,u.default)(p,e.key));var n=babelHelpers.extends({},i.actions,t.getActionCreators(e,l.key)),s={};Object.keys(n).forEach(function(e){s[e]=function(){var t=n[e].apply(void 0,arguments);c(t)}});var o=babelHelpers.extends({},s,{actions:n,dispatch:c,state:e,isFocused:function(){return r._isRouteFocused(e)},dangerouslyGetParent:r._dangerouslyGetParent,addListener:r.childEventSubscribers[e.key].addListener,getParam:function(t,n){var r=e.params;return r&&t in r?r[t]:n}}),d=t.getScreenOptions(o,a);b[e.key]={key:e.key,getComponent:function(){return t.getComponentForRouteName(e.routeName)},options:d,state:e,navigation:o}}),o.default.createElement(e,babelHelpers.extends({},this.props,{screenProps:a,navigation:i,navigationConfig:n,descriptors:b}))}}]),s})(o.default.Component);return r.router=t,r.navigationOptions=null,r}},314,[12,315]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var RCTActionSheetManager = _require(_dependencyMap[0], 'NativeModules').ActionSheetManager;
+
+  var invariant = _require(_dependencyMap[1], 'fbjs/lib/invariant');
+
+  var processColor = _require(_dependencyMap[2], 'processColor');
+
+  var ActionSheetIOS = {
+    showActionSheetWithOptions: function showActionSheetWithOptions(options, callback) {
+      invariant(typeof options === 'object' && options !== null, 'Options must be a valid object');
+      invariant(typeof callback === 'function', 'Must provide a valid callback');
+      RCTActionSheetManager.showActionSheetWithOptions(babelHelpers.extends({}, options, {
+        tintColor: processColor(options.tintColor)
+      }), callback);
+    },
+    showShareActionSheetWithOptions: function showShareActionSheetWithOptions(options, failureCallback, successCallback) {
+      invariant(typeof options === 'object' && options !== null, 'Options must be a valid object');
+      invariant(typeof failureCallback === 'function', 'Must provide a valid failureCallback');
+      invariant(typeof successCallback === 'function', 'Must provide a valid successCallback');
+      RCTActionSheetManager.showShareActionSheetWithOptions(babelHelpers.extends({}, options, {
+        tintColor: processColor(options.tintColor)
+      }), failureCallback, successCallback);
+    }
+  };
+  module.exports = ActionSheetIOS;
+},314,[24,18,155],"ActionSheetIOS");

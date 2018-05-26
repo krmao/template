@@ -1,1 +1,143 @@
-__d(function(e,t,n,r,a){Object.defineProperty(r,"__esModule",{value:!0});var i=t(a[0]),o=babelHelpers.interopRequireDefault(i),l=t(a[1]),u=t(a[2]),s=t(a[3]),c=babelHelpers.interopRequireDefault(s),d=t(a[4]),p=babelHelpers.interopRequireDefault(d),f=t(a[5]),g=babelHelpers.interopRequireDefault(f),b=t(a[6]),m=babelHelpers.interopRequireDefault(b);console.log("OS:android"),console.log("STATUS_BAR_HEIGHT:"+c.default.STATUS_BAR_HEIGHT);var v=t.getModules(),h=Object.keys(v),H=h.filter(function(e){return v[e].isInitialized}).map(function(e){return v[e].verboseName}),R=h.filter(function(e){return!v[e].isInitialized}).map(function(e){return v[e].verboseName});console.log('loaded:',H.length,'waiting:',R.length),console.log("module.exports = "+JSON.stringify(H.sort())+";"),l.YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated','Module RCTImageLoader']);var k=(0,u.createStackNavigator)({home:{screen:p.default,navigationOptions:function(e){return c.default.defaultNavigationOptions(e)}},bridge:{screen:g.default,navigationOptions:function(e){return c.default.defaultNavigationOptions(e)}},order_commit:{screen:m.default,navigationOptions:function(e){return c.default.defaultNavigationOptions(e)}}},{initialRouteName:"home",navigationOptions:{gesturesEnabled:!0},mode:"card",headerMode:"screen",headerTransitionPreset:"uikit",transitionConfig:function(){return{transitionSpec:{duration:300,easing:l.Easing.out(l.Easing.poly(4)),timing:l.Animated.timing},screenInterpolator:function(e){var t=e.layout,n=e.position,r=e.scene.index,a=t.initWidth,i=n.interpolate({inputRange:[r-1,r,r+1],outputRange:[a,0,0]});return{opacity:n.interpolate({inputRange:[r-1,r-.99,r],outputRange:[0,1,1]}),transform:[{translateX:i}]}}}}}),y=(function(e){function t(){var e,n,r,a;babelHelpers.classCallCheck(this,t);for(var i=arguments.length,o=Array(i),l=0;l<i;l++)o[l]=arguments[l];return n=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(o))),r.onBackPressed=function(){return!1},a=n,babelHelpers.possibleConstructorReturn(r,a)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentWillMount",value:function(){l.BackHandler.addEventListener("hardwareBackPress",this.onBackPressed)}},{key:"componentWillUnmount",value:function(){l.BackHandler.removeEventListener("hardwareBackPress",this.onBackPressed)}},{key:"render",value:function(){return o.default.createElement(k,null)}}]),t})(o.default.Component);r.default=y,l.AppRegistry.registerComponent("react-module-home",function(){return y})},11,[12,17,305,408,410,415,416]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/index.js";
+
+    var _react = _require(_dependencyMap[0], "react");
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactNative = _require(_dependencyMap[1], "react-native");
+
+    var _reactNavigation = _require(_dependencyMap[2], "react-navigation");
+
+    var _Global = _require(_dependencyMap[3], "./src/main/js/base/Global");
+
+    var _Global2 = babelHelpers.interopRequireDefault(_Global);
+
+    var _HomeScreen = _require(_dependencyMap[4], "./src/main/js/pages/HomeScreen");
+
+    var _HomeScreen2 = babelHelpers.interopRequireDefault(_HomeScreen);
+
+    var _BridgeScreen = _require(_dependencyMap[5], "./src/main/js/pages/BridgeScreen");
+
+    var _BridgeScreen2 = babelHelpers.interopRequireDefault(_BridgeScreen);
+
+    var _OrderCommitScreen = _require(_dependencyMap[6], "./src/main/js/pages/OrderCommitScreen");
+
+    var _OrderCommitScreen2 = babelHelpers.interopRequireDefault(_OrderCommitScreen);
+
+    console.log("OS:" + _reactNative.Platform.OS);
+    console.log("STATUS_BAR_HEIGHT:" + _Global2.default.STATUS_BAR_HEIGHT);
+
+    _reactNative.YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+
+    var RootStack = (0, _reactNavigation.createStackNavigator)({
+        home: {
+            screen: _HomeScreen2.default,
+            navigationOptions: function navigationOptions(navigation) {
+                return _Global2.default.defaultNavigationOptions(navigation);
+            }
+        },
+        bridge: {
+            screen: _BridgeScreen2.default,
+            navigationOptions: function navigationOptions(navigation) {
+                return _Global2.default.defaultNavigationOptions(navigation);
+            }
+        },
+        order_commit: {
+            screen: _OrderCommitScreen2.default,
+            navigationOptions: function navigationOptions(navigation) {
+                return _Global2.default.defaultNavigationOptions(navigation);
+            }
+        }
+    }, {
+        initialRouteName: "home",
+        navigationOptions: {
+            gesturesEnabled: true
+        },
+        mode: "card",
+        headerMode: "screen",
+        headerTransitionPreset: "uikit",
+        transitionConfig: function transitionConfig() {
+            return {
+                transitionSpec: {
+                    duration: 300,
+                    easing: _reactNative.Easing.out(_reactNative.Easing.poly(4)),
+                    timing: _reactNative.Animated.timing
+                },
+                screenInterpolator: function screenInterpolator(sceneProps) {
+                    var layout = sceneProps.layout,
+                        position = sceneProps.position,
+                        scene = sceneProps.scene;
+                    var index = scene.index;
+                    var width = layout.initWidth;
+                    var translateX = position.interpolate({
+                        inputRange: [index - 1, index, index + 1],
+                        outputRange: [width, 0, 0]
+                    });
+                    var opacity = position.interpolate({
+                        inputRange: [index - 1, index - 0.99, index],
+                        outputRange: [0, 1, 1]
+                    });
+                    return {
+                        opacity: opacity,
+                        transform: [{
+                            translateX: translateX
+                        }]
+                    };
+                }
+            };
+        }
+    });
+
+    var App = function (_React$Component) {
+        babelHelpers.inherits(App, _React$Component);
+
+        function App() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
+            babelHelpers.classCallCheck(this, App);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.onBackPressed = function () {
+                return false;
+            }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+        }
+
+        babelHelpers.createClass(App, [{
+            key: "componentWillMount",
+            value: function componentWillMount() {
+                _reactNative.BackHandler.addEventListener("hardwareBackPress", this.onBackPressed);
+            }
+        }, {
+            key: "componentWillUnmount",
+            value: function componentWillUnmount() {
+                _reactNative.BackHandler.removeEventListener("hardwareBackPress", this.onBackPressed);
+            }
+        }, {
+            key: "render",
+            value: function render() {
+                return _react2.default.createElement(RootStack, {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 75
+                    }
+                });
+            }
+        }]);
+        return App;
+    }(_react2.default.Component);
+
+    exports.default = App;
+
+    _reactNative.AppRegistry.registerComponent("react-module-home", function () {
+        return App;
+    });
+},11,[12,22,337,442,444,449,450],"index.js");

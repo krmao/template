@@ -1,1 +1,24 @@
-__d(function(e,t,_,a,i){'use strict';var o=t(i[0]),r=(t(i[1]),t(i[2])),s=(function(e){function t(e,_){babelHelpers.classCallCheck(this,t);var a=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this));return a._a='number'==typeof e?new r(e):e,a._b='number'==typeof _?new r(_):_,a}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"__makeNative",value:function(){this._a.__makeNative(),this._b.__makeNative(),babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"__makeNative",this).call(this)}},{key:"__getValue",value:function(){return this._a.__getValue()+this._b.__getValue()}},{key:"interpolate",value:function(e){return new o(this,e)}},{key:"__attach",value:function(){this._a.__addChild(this),this._b.__addChild(this)}},{key:"__detach",value:function(){this._a.__removeChild(this),this._b.__removeChild(this),babelHelpers.get(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"__detach",this).call(this)}},{key:"__getNativeConfig",value:function(){return{type:'addition',input:[this._a.__getNativeTag(),this._b.__getNativeTag()]}}}]),t})(t(i[3]));_.exports=s},188,[182,183,181,185]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var PooledClass = _require(_dependencyMap[0], 'PooledClass');
+
+  var twoArgumentPooler = PooledClass.twoArgumentPooler;
+
+  function BoundingDimensions(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  BoundingDimensions.prototype.destructor = function () {
+    this.width = null;
+    this.height = null;
+  };
+
+  BoundingDimensions.getPooledFromElement = function (element) {
+    return BoundingDimensions.getPooled(element.offsetWidth, element.offsetHeight);
+  };
+
+  PooledClass.addPoolingTo(BoundingDimensions, twoArgumentPooler);
+  module.exports = BoundingDimensions;
+},188,[189],"BoundingDimensions");

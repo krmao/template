@@ -1,1 +1,23 @@
-__d(function(e,i,s,t,c){'use strict';var a=i(c[0]),o={};o.UIView={pointerEvents:!0,accessible:!0,accessibilityActions:!0,accessibilityLabel:!0,accessibilityComponentType:!0,accessibilityLiveRegion:!0,accessibilityTraits:!0,importantForAccessibility:!0,nativeID:!0,testID:!0,renderToHardwareTextureAndroid:!0,shouldRasterizeIOS:!0,onLayout:!0,onAccessibilityAction:!0,onAccessibilityTap:!0,onMagicTap:!0,collapsable:!0,needsOffscreenAlphaCompositing:!0,style:a},o.RCTView=babelHelpers.extends({},o.UIView,{removeClippedSubviews:!0}),s.exports=o},153,[129]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var invariant = _require(_dependencyMap[0], './invariant');
+
+  var keyMirror = function keyMirror(obj) {
+    var ret = {};
+    var key;
+    !(obj instanceof Object && !Array.isArray(obj)) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'keyMirror(...): Argument must be an object.') : invariant(false) : void 0;
+
+    for (key in obj) {
+      if (!obj.hasOwnProperty(key)) {
+        continue;
+      }
+
+      ret[key] = key;
+    }
+
+    return ret;
+  };
+
+  module.exports = keyMirror;
+},153,[18],"node_modules/fbjs/lib/keyMirror.js");

@@ -1,1 +1,50 @@
-__d(function(e,t,n,r,i){'use strict';var s=(function(){function e(t,n){babelHelpers.classCallCheck(this,e),this._emitter=t,this._eventHolder=n,this._currentEventToken=null,this._emittingHeldEvents=!1}return babelHelpers.createClass(e,[{key:"addListener",value:function(e,t,n){return this._emitter.addListener(e,t,n)}},{key:"once",value:function(e,t,n){return this._emitter.once(e,t,n)}},{key:"addRetroactiveListener",value:function(e,t,n){var r=this._emitter.addListener(e,t,n);return this._emittingHeldEvents=!0,this._eventHolder.emitToListener(e,t,n),this._emittingHeldEvents=!1,r}},{key:"removeAllListeners",value:function(e){this._emitter.removeAllListeners(e)}},{key:"removeCurrentListener",value:function(){this._emitter.removeCurrentListener()}},{key:"listeners",value:function(e){return this._emitter.listeners(e)}},{key:"emit",value:function(e){for(var t,n=arguments.length,r=Array(n>1?n-1:0),i=1;i<n;i++)r[i-1]=arguments[i];(t=this._emitter).emit.apply(t,[e].concat(babelHelpers.toConsumableArray(r)))}},{key:"emitAndHold",value:function(e){for(var t,n,r=arguments.length,i=Array(r>1?r-1:0),s=1;s<r;s++)i[s-1]=arguments[s];this._currentEventToken=(t=this._eventHolder).holdEvent.apply(t,[e].concat(babelHelpers.toConsumableArray(i))),(n=this._emitter).emit.apply(n,[e].concat(babelHelpers.toConsumableArray(i))),this._currentEventToken=null}},{key:"releaseCurrentEvent",value:function(){this._currentEventToken?this._eventHolder.releaseEvent(this._currentEventToken):this._emittingHeldEvents&&this._eventHolder.releaseCurrentEvent()}},{key:"releaseHeldEventType",value:function(e){this._eventHolder.releaseEventType(e)}}]),e})();n.exports=s},269,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Inspector/BorderBox.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var View = _require(_dependencyMap[1], 'View');
+
+  var BorderBox = function (_React$Component) {
+    babelHelpers.inherits(BorderBox, _React$Component);
+
+    function BorderBox() {
+      babelHelpers.classCallCheck(this, BorderBox);
+      return babelHelpers.possibleConstructorReturn(this, (BorderBox.__proto__ || Object.getPrototypeOf(BorderBox)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(BorderBox, [{
+      key: "render",
+      value: function render() {
+        var box = this.props.box;
+
+        if (!box) {
+          return this.props.children;
+        }
+
+        var style = {
+          borderTopWidth: box.top,
+          borderBottomWidth: box.bottom,
+          borderLeftWidth: box.left,
+          borderRightWidth: box.right
+        };
+        return React.createElement(
+          View,
+          {
+            style: [style, this.props.style],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 28
+            }
+          },
+          this.props.children
+        );
+      }
+    }]);
+    return BorderBox;
+  }(React.Component);
+
+  module.exports = BorderBox;
+},269,[132,173],"BorderBox");

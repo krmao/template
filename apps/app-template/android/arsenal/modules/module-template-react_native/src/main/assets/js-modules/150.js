@@ -1,1 +1,43 @@
-__d(function(e,t,r,o,i){'use strict';var l=t(i[0]),n=t(i[1]),s=t(i[2]),a=t(i[3]),u=t(i[4]),c=l.roundToNearestPixel(.4);0===c&&(c=1/l.get());var f={position:'absolute',left:0,right:0,top:0,bottom:0},b=n.register(f);r.exports={hairlineWidth:c,absoluteFill:b,absoluteFillObject:f,compose:function(e,t){return null!=e&&null!=t?[e,t]:null!=e?e:t},flatten:u,setStyleAttributePreprocessor:function(e,t){var r=void 0;if('string'==typeof s[e])r={};else{if('object'!=typeof s[e])return void console.error(e+" is not a valid style attribute");r=s[e]}s[e]=babelHelpers.extends({},r,{process:t})},create:function(e){var t={};for(var r in e)a.validateStyle(r,e),t[r]=e[r]&&n.register(e[r]);return t}}},150,[145,104,129,151,103]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ImageStylePropTypes = _require(_dependencyMap[0], 'ImageStylePropTypes');
+
+  var TextStylePropTypes = _require(_dependencyMap[1], 'TextStylePropTypes');
+
+  var ViewStylePropTypes = _require(_dependencyMap[2], 'ViewStylePropTypes');
+
+  var keyMirror = _require(_dependencyMap[3], 'fbjs/lib/keyMirror');
+
+  var processColor = _require(_dependencyMap[4], 'processColor');
+
+  var processTransform = _require(_dependencyMap[5], 'processTransform');
+
+  var sizesDiffer = _require(_dependencyMap[6], 'sizesDiffer');
+
+  var ReactNativeStyleAttributes = babelHelpers.extends({}, keyMirror(ViewStylePropTypes), keyMirror(TextStylePropTypes), keyMirror(ImageStylePropTypes));
+  ReactNativeStyleAttributes.transform = {
+    process: processTransform
+  };
+  ReactNativeStyleAttributes.shadowOffset = {
+    diff: sizesDiffer
+  };
+  var colorAttributes = {
+    process: processColor
+  };
+  ReactNativeStyleAttributes.backgroundColor = colorAttributes;
+  ReactNativeStyleAttributes.borderBottomColor = colorAttributes;
+  ReactNativeStyleAttributes.borderColor = colorAttributes;
+  ReactNativeStyleAttributes.borderLeftColor = colorAttributes;
+  ReactNativeStyleAttributes.borderRightColor = colorAttributes;
+  ReactNativeStyleAttributes.borderTopColor = colorAttributes;
+  ReactNativeStyleAttributes.borderStartColor = colorAttributes;
+  ReactNativeStyleAttributes.borderEndColor = colorAttributes;
+  ReactNativeStyleAttributes.color = colorAttributes;
+  ReactNativeStyleAttributes.shadowColor = colorAttributes;
+  ReactNativeStyleAttributes.textDecorationColor = colorAttributes;
+  ReactNativeStyleAttributes.tintColor = colorAttributes;
+  ReactNativeStyleAttributes.textShadowColor = colorAttributes;
+  ReactNativeStyleAttributes.overlayColor = colorAttributes;
+  module.exports = ReactNativeStyleAttributes;
+},150,[151,154,142,153,155,156,158],"ReactNativeStyleAttributes");

@@ -1,1 +1,59 @@
-__d(function(e,r,t,n,a){'use strict';var s=r(a[0]),o=r(a[1]).SourceCode,c=void 0;t.exports=function(t){var n,u,i,d,f;return regeneratorRuntime.async(function(p){for(;;)switch(p.prev=p.next){case 0:if(c||(c=e.fetch||r(a[2]).fetch),(n=s()).bundleLoadedFromServer){p.next=4;break}throw new Error('Bundle was not loaded from the packager');case 4:return u=t,o.scriptURL&&(i=!1,u=t.map(function(e){return i||(r=e.file,/^http/.test(r)||!/[\\/]/.test(r))?(i=!0,e):babelHelpers.extends({},e,{file:o.scriptURL});var r})),p.next=8,regeneratorRuntime.awrap(c(n.url+'symbolicate',{method:'POST',body:JSON.stringify({stack:u})}));case 8:return d=p.sent,p.next=11,regeneratorRuntime.awrap(d.json());case 11:return f=p.sent,p.abrupt("return",f.stack);case 13:case"end":return p.stop()}},null,this)}},303,[302,20,80]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Components/TabBarIOS/TabBarItemIOS.android.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var View = _require(_dependencyMap[1], 'View');
+
+  var StyleSheet = _require(_dependencyMap[2], 'StyleSheet');
+
+  var DummyTab = function (_React$Component) {
+    babelHelpers.inherits(DummyTab, _React$Component);
+
+    function DummyTab() {
+      babelHelpers.classCallCheck(this, DummyTab);
+      return babelHelpers.possibleConstructorReturn(this, (DummyTab.__proto__ || Object.getPrototypeOf(DummyTab)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(DummyTab, [{
+      key: "render",
+      value: function render() {
+        if (!this.props.selected) {
+          return React.createElement(View, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 19
+            }
+          });
+        }
+
+        return React.createElement(
+          View,
+          {
+            style: [this.props.style, styles.tab],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 22
+            }
+          },
+          this.props.children
+        );
+      }
+    }]);
+    return DummyTab;
+  }(React.Component);
+
+  var styles = StyleSheet.create({
+    tab: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      borderColor: 'red',
+      borderWidth: 1
+    }
+  });
+  module.exports = DummyTab;
+},303,[132,173,171],"TabBarItemIOS");

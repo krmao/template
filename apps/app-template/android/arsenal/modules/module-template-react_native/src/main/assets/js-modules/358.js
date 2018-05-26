@@ -1,1 +1,81 @@
-__d(function(e,t,r,a,n){Object.defineProperty(a,"__esModule",{value:!0});var i=t(n[0]),o=babelHelpers.interopRequireDefault(i),u=t(n[1]),s=babelHelpers.interopRequireDefault(u),l=t(n[2]),d=babelHelpers.interopRequireDefault(l),f=t(n[3]),p=babelHelpers.interopRequireDefault(f),b=t(n[4]),c=babelHelpers.interopRequireDefault(b),m=t(n[5]),x=babelHelpers.interopRequireDefault(m),v=t(n[6]),g=babelHelpers.interopRequireDefault(v),h=function(e,t){return{}};a.default=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};(0,x.default)(e);var r=t.order||Object.keys(e),a=t.paths||{},n=t.getCustomActionCreators||h,i=t.initialRouteParams,u=t.initialRouteName||r[0],l='initialRoute'===(t.backBehavior||'none'),f=!t.hasOwnProperty('resetOnBlur')||t.resetOnBlur,b=r.indexOf(u),m={};if(r.forEach(function(t){var r=e[t];a[t]||(a[t]='string'==typeof r.path?r.path:t),m[t]=null;var n=(0,s.default)(e,t);n.router&&(m[t]=n.router)}),-1===b)throw new Error("Invalid initialRouteName '"+u+"'.Should be one of "+r.map(function(e){return"\""+e+"\""}).join(', '));function v(e){var t=e===u?i:void 0,r=m[e];if(r){var a=p.default.init();return babelHelpers.extends({},r.getStateForAction(a),{key:e,routeName:e,params:t})}return{key:e,routeName:e,params:t}}return{getInitialState:function(){return{routes:r.map(v),index:b,isTransitioning:!1}},getNextState:function(e,t){if(!e)return t;if(e.index!==t.index&&f){var r=e.routes[e.index].routeName,a=[].concat(babelHelpers.toConsumableArray(t.routes));return a[e.index]=v(r),babelHelpers.extends({},t,{routes:a})}return t},getActionCreators:function(e,t){return babelHelpers.extends({},(0,g.default)(e),n(e,t))},getStateForAction:function(e,t){var a=t?babelHelpers.extends({},t):t,n=t||this.getInitialState(),o=n.index;if(e.type===p.default.INIT){var s=e.params;s&&(n.routes=n.routes.map(function(e){return babelHelpers.extends({},e,{params:babelHelpers.extends({},e.params,s,e.routeName===u?i:null)})}))}var d=n.routes[n.index],f=m[r[n.index]];if(f){var x=f.getStateForAction(e,d);if(!x&&t)return null;if(x&&x!==d){var v=[].concat(babelHelpers.toConsumableArray(n.routes));return v[n.index]=x,this.getNextState(a,babelHelpers.extends({},n,{routes:v}))}}var g=null==e.key||e.key===d.key;if(e.type===p.default.BACK){if(!g||!l)return n;o=b}var h=!1;if(e.type===p.default.NAVIGATE&&(h=!!r.find(function(t,r){return t===e.routeName&&(o=r,!0)}))){var A=n.routes[o],H=m[e.routeName],S=void 0;if(e.action?S=H?H.getStateForAction(e.action,A):null:e.action||H||!e.params||(S=babelHelpers.extends({},A,{params:babelHelpers.extends({},A.params||{},e.params)})),S&&S!==A){var y=[].concat(babelHelpers.toConsumableArray(n.routes));return y[o]=S,this.getNextState(a,babelHelpers.extends({},n,{routes:y,index:o}))}if(!S&&n.index===o&&a)return null}if(e.type===p.default.SET_PARAMS){var N=e.key,P=n.routes.find(function(e){return e.key===N});if(P){var R=babelHelpers.extends({},P.params,e.params),C=[].concat(babelHelpers.toConsumableArray(n.routes));return C[n.routes.indexOf(P)]=babelHelpers.extends({},P,{params:R}),this.getNextState(a,babelHelpers.extends({},n,{routes:C}))}}if(o!==n.index)return this.getNextState(a,babelHelpers.extends({},n,{index:o}));if(h&&!t)return n;if(h)return babelHelpers.extends({},n);var F,O=n.index,k=n.routes;return r.find(function(t,r){var a=m[t];if(r===O)return!1;var n=k[r];return a&&(n=a.getStateForAction(e,n)),n?n!==k[r]&&((k=[].concat(babelHelpers.toConsumableArray(k)))[r]=n,O=r,!0):(O=r,!0)}),F=e.type,[p.default.SET_PARAMS,c.default.COMPLETE_TRANSITION].includes(F)&&(O=n.index),O!==n.index||k!==n.routes?this.getNextState(a,babelHelpers.extends({},n,{index:O,routes:k})):n},getComponentForState:function(t){var r=t.routes[t.index].routeName;(0,o.default)(r,"There is no route defined for index "+t.index+". Check that\n        that you passed in a navigation state with a valid tab/screen index.");var a=m[r];return a?a.getComponentForState(t.routes[t.index]):(0,s.default)(e,r)},getComponentForRouteName:function(t){return(0,s.default)(e,t)},getPathAndParamsForState:function(t){var n=t.routes[t.index],i=r[t.index],o=a[i],u=(0,s.default)(e,i),l=o,d=n.params;if(u&&u.router){var f=n,p=u.router.getPathAndParamsForState(f);l=o?o+"/"+p.path:p.path,d=p.params?babelHelpers.extends({},d,p.params):d}return{path:l,params:d}},getActionForPathAndParams:function(e,t){return e?r.map(function(r){var n=e.split('/'),i=a[r],o=i.split('/').length;if(n.slice(0,o).join('/')===i){var u=m[r],s=p.default.navigate({routeName:r});return u&&u.getActionForPathAndParams&&(s.action=u.getActionForPathAndParams(n.slice(o).join('/'),t)),t&&(s.params=t),s}return null}).find(function(e){return!!e})||r.map(function(r){var a=m[r];return a&&a.getActionForPathAndParams(e,t)}).find(function(e){return!!e})||null:p.default.navigate({routeName:u,params:t})},getScreenOptions:(0,d.default)(e,t.navigationOptions)}}},358,[310,353,352,309,337,355,311]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.isOrientationLandscape = undefined;
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/node_modules/react-native-safe-area-view/withOrientation.js";
+
+  exports.default = function (WrappedComponent) {
+    var withOrientation = function (_React$Component) {
+      babelHelpers.inherits(withOrientation, _React$Component);
+
+      function withOrientation() {
+        babelHelpers.classCallCheck(this, withOrientation);
+
+        var _this = babelHelpers.possibleConstructorReturn(this, (withOrientation.__proto__ || Object.getPrototypeOf(withOrientation)).call(this));
+
+        _initialiseProps.call(_this);
+
+        var isLandscape = isOrientationLandscape(_reactNative.Dimensions.get('window'));
+        _this.state = {
+          isLandscape: isLandscape
+        };
+        return _this;
+      }
+
+      babelHelpers.createClass(withOrientation, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+          _reactNative.Dimensions.addEventListener('change', this.handleOrientationChange);
+        }
+      }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          _reactNative.Dimensions.removeEventListener('change', this.handleOrientationChange);
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          return React.createElement(WrappedComponent, babelHelpers.extends({}, this.props, this.state, {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 50
+            }
+          }));
+        }
+      }]);
+      return withOrientation;
+    }(React.Component);
+
+    var _initialiseProps = function _initialiseProps() {
+      var _this2 = this;
+
+      this.handleOrientationChange = function (_ref2) {
+        var window = _ref2.window;
+        var isLandscape = isOrientationLandscape(window);
+
+        _this2.setState({
+          isLandscape: isLandscape
+        });
+      };
+    };
+
+    return (0, _hoistNonReactStatics2.default)(withOrientation, WrappedComponent);
+  };
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var React = babelHelpers.interopRequireWildcard(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _hoistNonReactStatics = _require(_dependencyMap[2], "hoist-non-react-statics");
+
+  var _hoistNonReactStatics2 = babelHelpers.interopRequireDefault(_hoistNonReactStatics);
+
+  var isOrientationLandscape = exports.isOrientationLandscape = function isOrientationLandscape(_ref) {
+    var width = _ref.width,
+        height = _ref.height;
+    return width > height;
+  };
+},358,[12,22,359],"node_modules/react-navigation/node_modules/react-native-safe-area-view/withOrientation.js");

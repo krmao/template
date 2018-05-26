@@ -1,1 +1,56 @@
-__d(function(e,t,l,a,i){Object.defineProperty(a,"__esModule",{value:!0});var r=t(i[0]),n=babelHelpers.interopRequireDefault(r),s=t(i[1]),o=t(i[2]),u=(babelHelpers.interopRequireDefault(o),t(i[3])),p=t(i[4]),b=babelHelpers.interopRequireDefault(p),c=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var l=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this));return l._mustAlwaysBeVisible=function(){return l.props.animationEnabled||l.props.swipeEnabled},l.state={awake:!e.lazy||e.isFocused},l}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,null,[{key:"getDerivedStateFromProps",value:function(e,t){return e.isFocused&&!t.awake?{awake:!0}:null}}]),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.state.awake,t=this.props,l=t.isFocused,a=t.childNavigation,i=(t.navigation,t.removeClippedSubviews),r=(t.lazy,babelHelpers.objectWithoutProperties(t,["isFocused","childNavigation","navigation","removeClippedSubviews","lazy"]));return n.default.createElement(s.View,{style:d.container,collapsable:!1,removeClippedSubviews:i},n.default.createElement(s.View,{style:this._mustAlwaysBeVisible()||l?d.innerAttached:d.innerDetached},e?n.default.createElement(b.default,babelHelpers.extends({},r,{navigation:a})):null))}}]),t})(n.default.PureComponent),d=s.StyleSheet.create({container:{flex:1,overflow:'hidden'},innerAttached:{flex:1},innerDetached:{flex:1,top:3e3}});a.default=(0,u.polyfill)(c)},405,[12,17,108,307,338]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.PagerRendererPropType = exports.SceneRendererPropType = exports.NavigationStatePropType = exports.NavigationRoutePropType = undefined;
+
+  var _propTypes = _require(_dependencyMap[0], "prop-types");
+
+  var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var NavigationRoutePropType = exports.NavigationRoutePropType = _propTypes2.default.shape({
+    title: _propTypes2.default.string,
+    key: _propTypes2.default.string.isRequired
+  });
+
+  var NavigationStatePropType = exports.NavigationStatePropType = _propTypes2.default.shape({
+    routes: _propTypes2.default.arrayOf(NavigationRoutePropType).isRequired,
+    index: _propTypes2.default.number.isRequired
+  });
+
+  var SceneRendererPropType = exports.SceneRendererPropType = {
+    panX: _propTypes2.default.object.isRequired,
+    offsetX: _propTypes2.default.object.isRequired,
+    layout: _propTypes2.default.shape({
+      measured: _propTypes2.default.bool.isRequired,
+      height: _propTypes2.default.number.isRequired,
+      width: _propTypes2.default.number.isRequired
+    }).isRequired,
+    navigationState: NavigationStatePropType.isRequired,
+    position: _propTypes2.default.object.isRequired,
+    jumpTo: _propTypes2.default.func.isRequired,
+    jumpToIndex: _propTypes2.default.func.isRequired,
+    useNativeDriver: _propTypes2.default.bool
+  };
+  var PagerRendererPropType = exports.PagerRendererPropType = {
+    layout: _propTypes2.default.shape({
+      measured: _propTypes2.default.bool.isRequired,
+      height: _propTypes2.default.number.isRequired,
+      width: _propTypes2.default.number.isRequired
+    }).isRequired,
+    navigationState: NavigationStatePropType.isRequired,
+    panX: _propTypes2.default.instanceOf(_reactNative.Animated.Value).isRequired,
+    offsetX: _propTypes2.default.instanceOf(_reactNative.Animated.Value).isRequired,
+    canJumpToTab: _propTypes2.default.func.isRequired,
+    jumpTo: _propTypes2.default.func.isRequired,
+    animationEnabled: _propTypes2.default.bool,
+    swipeEnabled: _propTypes2.default.bool,
+    useNativeDriver: _propTypes2.default.bool,
+    onSwipeStart: _propTypes2.default.func,
+    onSwipeEnd: _propTypes2.default.func,
+    onAnimationEnd: _propTypes2.default.func,
+    children: _propTypes2.default.node.isRequired
+  };
+},405,[129,22],"node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPropTypes.js");

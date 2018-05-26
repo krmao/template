@@ -1,1 +1,124 @@
-__d(function(e,r,t,n,o){'use strict';var a=r(o[0]),i=a.polyfillObjectProperty,l=a.polyfillGlobal;void 0===e.GLOBAL&&(e.GLOBAL=e),void 0===e.window&&(e.window=e);var u=r(o[1]);if(u('Map')&&l('Map',function(){return r(o[2])}),u('Set')&&l('Set',function(){return r(o[3])}),e.process=e.process||{},e.process.env=e.process.env||{},e.process.env.NODE_ENV||(e.process.env.NODE_ENV='production'),e.__RCTProfileIsProfiling){var c=r(o[4]);c.installReactHook(),c.setEnabled(!0)}var s=r(o[5]);if(s.installConsoleErrorReporter(),!e.__fbDisableExceptionsManager){r(o[6]).setGlobalHandler(function(e,r){try{s.handleException(e,r)}catch(r){throw console.log('Failed to print error: ',r.message),e}})}r(o[7]).checkVersions(),l('Promise',function(){return r(o[8])}),l('regeneratorRuntime',function(){return delete e.regeneratorRuntime,r(o[9]),e.regeneratorRuntime});var f=function(e){l(e,function(){return r(o[10])[e]})};f('setTimeout'),f('setInterval'),f('setImmediate'),f('clearTimeout'),f('clearInterval'),f('clearImmediate'),f('requestAnimationFrame'),f('cancelAnimationFrame'),f('requestIdleCallback'),f('cancelIdleCallback'),l('XMLHttpRequest',function(){return r(o[11])}),l('FormData',function(){return r(o[12])}),l('fetch',function(){return r(o[13]).fetch}),l('Headers',function(){return r(o[13]).Headers}),l('Request',function(){return r(o[13]).Request}),l('Response',function(){return r(o[13]).Response}),l('WebSocket',function(){return r(o[14])}),l('Blob',function(){return r(o[15])}),l('File',function(){return r(o[16])}),l('FileReader',function(){return r(o[17])}),l('URL',function(){return r(o[18])}),e.alert||(e.alert=function(e){r(o[19]).alert('Alert',''+e)});var d=e.navigator;void 0===d&&(e.navigator=d={}),i(d,'product',function(){return'ReactNative'}),i(d,'geolocation',function(){return r(o[20])});var g=r(o[21]);g.registerLazyCallableModule('Systrace',function(){return r(o[4])}),g.registerLazyCallableModule('JSTimers',function(){return r(o[10])}),g.registerLazyCallableModule('HeapCapture',function(){return r(o[22])}),g.registerLazyCallableModule('SamplingProfiler',function(){return r(o[23])}),g.registerLazyCallableModule('RCTLog',function(){return r(o[24])}),g.registerLazyCallableModule('RCTDeviceEventEmitter',function(){return r(o[25])}),g.registerLazyCallableModule('RCTNativeAppEventEmitter',function(){return r(o[26])}),g.registerLazyCallableModule('PerformanceLogger',function(){return r(o[27])}),g.registerLazyCallableModule('JSDevSupportModule',function(){return r(o[28])}),e.__fetchSegment=function(e,t){var n=r(o[29]).SegmentFetcher;if(!n)throw new Error("SegmentFetcher is missing. Please ensure that it is included as a NativeModule.");n.fetchSegment(e,function(e){if(e){var r=new Error(e.message);r.code=e.code,t(r)}t(null)})}},45,[46,47,48,52,24,53,23,57,59,64,27,65,79,80,82,76,84,85,86,87,89,21,92,93,94,34,95,96,98,20]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Components/ActivityIndicator/ActivityIndicator.js";
+
+  var ColorPropType = _require(_dependencyMap[0], 'ColorPropType');
+
+  var NativeMethodsMixin = _require(_dependencyMap[1], 'NativeMethodsMixin');
+
+  var Platform = _require(_dependencyMap[2], 'Platform');
+
+  var ProgressBarAndroid = _require(_dependencyMap[3], 'ProgressBarAndroid');
+
+  var PropTypes = _require(_dependencyMap[4], 'prop-types');
+
+  var React = _require(_dependencyMap[5], 'React');
+
+  var StyleSheet = _require(_dependencyMap[6], 'StyleSheet');
+
+  var View = _require(_dependencyMap[7], 'View');
+
+  var ViewPropTypes = _require(_dependencyMap[8], 'ViewPropTypes');
+
+  var createReactClass = _require(_dependencyMap[9], 'create-react-class');
+
+  var requireNativeComponent = _require(_dependencyMap[10], 'requireNativeComponent');
+
+  var RCTActivityIndicator = void 0;
+  var GRAY = '#999999';
+  var ActivityIndicator = createReactClass({
+    displayName: 'ActivityIndicator',
+    mixins: [NativeMethodsMixin],
+    propTypes: babelHelpers.extends({}, ViewPropTypes, {
+      animating: PropTypes.bool,
+      color: ColorPropType,
+      size: PropTypes.oneOfType([PropTypes.oneOf(['small', 'large']), PropTypes.number]),
+      hidesWhenStopped: PropTypes.bool
+    }),
+    getDefaultProps: function getDefaultProps() {
+      return {
+        animating: true,
+        color: Platform.OS === 'ios' ? GRAY : undefined,
+        hidesWhenStopped: true,
+        size: 'small'
+      };
+    },
+    render: function render() {
+      var _props = this.props,
+          onLayout = _props.onLayout,
+          style = _props.style,
+          props = babelHelpers.objectWithoutProperties(_props, ["onLayout", "style"]);
+      var sizeStyle = void 0;
+
+      switch (props.size) {
+        case 'small':
+          sizeStyle = styles.sizeSmall;
+          break;
+
+        case 'large':
+          sizeStyle = styles.sizeLarge;
+          break;
+
+        default:
+          sizeStyle = {
+            height: props.size,
+            width: props.size
+          };
+          break;
+      }
+
+      var nativeProps = babelHelpers.extends({}, props, {
+        style: sizeStyle,
+        styleAttr: 'Normal',
+        indeterminate: true
+      });
+      return React.createElement(
+        View,
+        {
+          onLayout: onLayout,
+          style: [styles.container, style],
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 113
+          }
+        },
+        Platform.OS === 'ios' ? React.createElement(RCTActivityIndicator, babelHelpers.extends({}, nativeProps, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 115
+          }
+        })) : React.createElement(ProgressBarAndroid, babelHelpers.extends({}, nativeProps, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 117
+          }
+        }))
+      );
+    }
+  });
+
+  if (Platform.OS === 'ios') {
+    RCTActivityIndicator = requireNativeComponent('RCTActivityIndicatorView', ActivityIndicator, {
+      nativeOnly: {
+        activityIndicatorViewStyle: true
+      }
+    });
+  }
+
+  var styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    sizeSmall: {
+      width: 20,
+      height: 20
+    },
+    sizeLarge: {
+      width: 36,
+      height: 36
+    }
+  });
+  module.exports = ActivityIndicator;
+},45,[46,48,32,128,129,132,171,173,133,176,148],"ActivityIndicator");

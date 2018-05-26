@@ -1,1 +1,113 @@
-__d(function(e,t,r,n,i){var o=t(i[0]);r.exports=m,r.exports.parse=a,r.exports.compile=function(e,t){return l(a(e,t))},r.exports.tokensToFunction=l,r.exports.tokensToRegExp=v;var p=new RegExp(['(\\\\.)','([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'].join('|'),'g');function a(e,t){for(var r,n=[],i=0,o=0,a='',u=t&&t.delimiter||'/';null!=(r=p.exec(e));){var l=r[0],s=r[1],g=r.index;if(a+=e.slice(o,g),o=g+l.length,s)a+=s[1];else{var h=e[o],x=r[2],d=r[3],v=r[4],m=r[5],w=r[6],E=r[7];a&&(n.push(a),a='');var y=null!=x&&null!=h&&h!==x,R='+'===w||'*'===w,$='?'===w||'*'===w,b=r[2]||u,T=v||m;n.push({name:d||i++,prefix:x||'',delimiter:b,optional:$,repeat:R,partial:y,asterisk:!!E,pattern:T?f(T):E?'.*':'[^'+c(b)+']+?'})}}return o<e.length&&(a+=e.substr(o)),a&&n.push(a),n}function u(e){return encodeURI(e).replace(/[\/?#]/g,function(e){return'%'+e.charCodeAt(0).toString(16).toUpperCase()})}function l(e){for(var t=new Array(e.length),r=0;r<e.length;r++)'object'==typeof e[r]&&(t[r]=new RegExp('^(?:'+e[r].pattern+')$'));return function(r,n){for(var i='',p=r||{},a=(n||{}).pretty?u:encodeURIComponent,l=0;l<e.length;l++){var c=e[l];if('string'!=typeof c){var f,s=p[c.name];if(null==s){if(c.optional){c.partial&&(i+=c.prefix);continue}throw new TypeError('Expected "'+c.name+'" to be defined')}if(o(s)){if(!c.repeat)throw new TypeError('Expected "'+c.name+'" to not repeat, but received `'+JSON.stringify(s)+'`');if(0===s.length){if(c.optional)continue;throw new TypeError('Expected "'+c.name+'" to not be empty')}for(var g=0;g<s.length;g++){if(f=a(s[g]),!t[l].test(f))throw new TypeError('Expected all "'+c.name+'" to match "'+c.pattern+'", but received `'+JSON.stringify(f)+'`');i+=(0===g?c.prefix:c.delimiter)+f}}else{if(f=c.asterisk?encodeURI(s).replace(/[?#]/g,function(e){return'%'+e.charCodeAt(0).toString(16).toUpperCase()}):a(s),!t[l].test(f))throw new TypeError('Expected "'+c.name+'" to match "'+c.pattern+'", but received "'+f+'"');i+=c.prefix+f}}else i+=c}return i}}function c(e){return e.replace(/([.+*?=^!:${}()[\]|\/\\])/g,'\\$1')}function f(e){return e.replace(/([=!:$\/()])/g,'\\$1')}function s(e,t){return e.keys=t,e}function g(e){return e.sensitive?'':'i'}function h(e,t){var r=e.source.match(/\((?!\?)/g);if(r)for(var n=0;n<r.length;n++)t.push({name:n,prefix:null,delimiter:null,optional:!1,repeat:!1,partial:!1,asterisk:!1,pattern:null});return s(e,t)}function x(e,t,r){for(var n=[],i=0;i<e.length;i++)n.push(m(e[i],t,r).source);return s(new RegExp('(?:'+n.join('|')+')',g(r)),t)}function d(e,t,r){return v(a(e,r),t,r)}function v(e,t,r){o(t)||(r=t||r,t=[]);for(var n=(r=r||{}).strict,i=!1!==r.end,p='',a=0;a<e.length;a++){var u=e[a];if('string'==typeof u)p+=c(u);else{var l=c(u.prefix),f='(?:'+u.pattern+')';t.push(u),u.repeat&&(f+='(?:'+l+f+')*'),p+=f=u.optional?u.partial?l+'('+f+')?':'(?:'+l+'('+f+'))?':l+'('+f+')'}}var h=c(r.delimiter||'/'),x=p.slice(-h.length)===h;return n||(p=(x?p.slice(0,-h.length):p)+'(?:'+h+'(?=$))?'),p+=i?'$':n&&x?'':'(?='+h+'|$)',s(new RegExp('^'+p,g(r)),t)}function m(e,t,r){return o(t)||(r=t||r,t=[]),r=r||{},e instanceof RegExp?h(e,t):o(e)?x(e,t,r):d(e,t,r)}},350,[351]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/views/StackView/StackView.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var React = babelHelpers.interopRequireWildcard(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _StackViewLayout = _require(_dependencyMap[2], "./StackViewLayout");
+
+  var _StackViewLayout2 = babelHelpers.interopRequireDefault(_StackViewLayout);
+
+  var _Transitioner = _require(_dependencyMap[3], "../Transitioner");
+
+  var _Transitioner2 = babelHelpers.interopRequireDefault(_Transitioner);
+
+  var _NavigationActions = _require(_dependencyMap[4], "../../NavigationActions");
+
+  var _NavigationActions2 = babelHelpers.interopRequireDefault(_NavigationActions);
+
+  var _StackActions = _require(_dependencyMap[5], "../../routers/StackActions");
+
+  var _StackActions2 = babelHelpers.interopRequireDefault(_StackActions);
+
+  var _StackViewTransitionConfigs = _require(_dependencyMap[6], "./StackViewTransitionConfigs");
+
+  var _StackViewTransitionConfigs2 = babelHelpers.interopRequireDefault(_StackViewTransitionConfigs);
+
+  var NativeAnimatedModule = _reactNative.NativeModules && _reactNative.NativeModules.NativeAnimatedModule;
+
+  var StackView = function (_React$Component) {
+    babelHelpers.inherits(StackView, _React$Component);
+
+    function StackView() {
+      var _ref;
+
+      var _temp, _this, _ret;
+
+      babelHelpers.classCallCheck(this, StackView);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = StackView.__proto__ || Object.getPrototypeOf(StackView)).call.apply(_ref, [this].concat(args))), _this), _this._configureTransition = function (transitionProps, prevTransitionProps) {
+        return babelHelpers.extends({}, _StackViewTransitionConfigs2.default.getTransitionConfig(_this.props.navigationConfig.transitionConfig, transitionProps, prevTransitionProps, _this.props.navigationConfig.mode === 'modal').transitionSpec, {
+          useNativeDriver: !!NativeAnimatedModule
+        });
+      }, _this._render = function (transitionProps, lastTransitionProps) {
+        var _this$props = _this.props,
+            screenProps = _this$props.screenProps,
+            navigationConfig = _this$props.navigationConfig;
+        return React.createElement(_StackViewLayout2.default, babelHelpers.extends({}, navigationConfig, {
+          onGestureBegin: _this.props.onGestureBegin,
+          onGestureCanceled: _this.props.onGestureCanceled,
+          onGestureEnd: _this.props.onGestureEnd,
+          screenProps: screenProps,
+          descriptors: _this.props.descriptors,
+          transitionProps: transitionProps,
+          lastTransitionProps: lastTransitionProps,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 58
+          }
+        }));
+      }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+    }
+
+    babelHelpers.createClass(StackView, [{
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        return React.createElement(_Transitioner2.default, {
+          render: this._render,
+          configureTransition: this._configureTransition,
+          navigation: this.props.navigation,
+          descriptors: this.props.descriptors,
+          onTransitionStart: this.props.onTransitionStart,
+          onTransitionEnd: function onTransitionEnd(transition, lastTransition) {
+            var _props = _this2.props,
+                onTransitionEnd = _props.onTransitionEnd,
+                navigation = _props.navigation;
+
+            if (transition.navigation.state.isTransitioning) {
+              navigation.dispatch(_StackActions2.default.completeTransition({
+                key: navigation.state.key
+              }));
+            }
+
+            onTransitionEnd && onTransitionEnd(transition, lastTransition);
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 22
+          }
+        });
+      }
+    }]);
+    return StackView;
+  }(React.Component);
+
+  StackView.defaultProps = {
+    navigationConfig: {
+      mode: 'card'
+    }
+  };
+  exports.default = StackView;
+},350,[12,22,351,378,341,369,375],"node_modules/react-navigation/src/views/StackView/StackView.js");

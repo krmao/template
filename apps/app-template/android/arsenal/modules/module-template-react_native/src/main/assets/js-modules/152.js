@@ -1,1 +1,14 @@
-__d(function(e,t,n,r,i){'use strict';t(i[0]);var o=t(i[1]),s=t(i[2]),a=(t(i[3]),t(i[4])),l=t(i[5]),p=t(i[6]).ViewContextTypes,u=t(i[7]),c=t(i[8]),C=(function(e){function t(){var e,n,r,i;babelHelpers.classCallCheck(this,t);for(var o=arguments.length,s=Array(o),l=0;l<o;l++)s[l]=arguments[l];return n=r=babelHelpers.possibleConstructorReturn(this,(e=t.__proto__||Object.getPrototypeOf(t)).call.apply(e,[this].concat(s))),r.viewConfig={uiViewClassName:'RCTView',validAttributes:a.RCTView},i=n,babelHelpers.possibleConstructorReturn(r,i)}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"getChildContext",value:function(){return{isInAParentText:!1}}},{key:"render",value:function(){return u(!this.context.isInAParentText,'Nesting of <View> within <Text> is not supported on Android.'),o.createElement(b,this.props)}}]),t})(s.NativeComponent);C.propTypes=l,C.childContextTypes=p;var b=c('RCTView',C,{nativeOnly:{nativeBackgroundAndroid:!0,nativeForegroundAndroid:!0}}),d=b;n.exports=d},152,[28,111,43,129,153,112,154,18,127]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var keyMirror = _require(_dependencyMap[0], 'fbjs/lib/keyMirror');
+
+  var ImageResizeMode = keyMirror({
+    contain: null,
+    cover: null,
+    stretch: null,
+    center: null,
+    repeat: null
+  });
+  module.exports = ImageResizeMode;
+},152,[153],"ImageResizeMode");

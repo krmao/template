@@ -1,1 +1,50 @@
-__d(function(t,e,i,n,s){'use strict';var o=e(s[0]),a=(function(){function t(e){var i=this;babelHelpers.classCallCheck(this,t),this._dataSource=new o({getRowData:e.getRowData,getSectionHeaderData:e.getSectionHeaderData,rowHasChanged:function(t,n){return t.id!==i._previousOpenRowID&&n.id===i._openRowID||t.id===i._previousOpenRowID&&n.id!==i._openRowID||e.rowHasChanged(t,n)},sectionHeaderHasChanged:e.sectionHeaderHasChanged})}return babelHelpers.createClass(t,[{key:"cloneWithRowsAndSections",value:function(t,e,i){return this._dataSource=this._dataSource.cloneWithRowsAndSections(t,e,i),this._dataBlob=t,this.rowIdentities=this._dataSource.rowIdentities,this.sectionIdentities=this._dataSource.sectionIdentities,this}},{key:"getDataSource",value:function(){return this._dataSource}},{key:"getOpenRowID",value:function(){return this._openRowID}},{key:"getFirstRowID",value:function(){return this.rowIdentities?this.rowIdentities[0]&&this.rowIdentities[0][0]:Object.keys(this._dataBlob)[0]}},{key:"getLastRowID",value:function(){if(this.rowIdentities&&this.rowIdentities.length){var t=this.rowIdentities[this.rowIdentities.length-1];if(t&&t.length)return t[t.length-1]}return Object.keys(this._dataBlob)[this._dataBlob.length-1]}},{key:"setOpenRowID",value:function(t){return this._previousOpenRowID=this._openRowID,this._openRowID=t,this._dataSource=this._dataSource.cloneWithRowsAndSections(this._dataBlob,this.sectionIdentities,this.rowIdentities),this}}]),t})();i.exports=a},263,[226]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Components/UnimplementedViews/UnimplementedView.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var StyleSheet = _require(_dependencyMap[1], 'StyleSheet');
+
+  var UnimplementedView = function (_React$Component) {
+    babelHelpers.inherits(UnimplementedView, _React$Component);
+
+    function UnimplementedView() {
+      babelHelpers.classCallCheck(this, UnimplementedView);
+      return babelHelpers.possibleConstructorReturn(this, (UnimplementedView.__proto__ || Object.getPrototypeOf(UnimplementedView)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(UnimplementedView, [{
+      key: "setNativeProps",
+      value: function setNativeProps() {}
+    }, {
+      key: "render",
+      value: function render() {
+        var View = _require(_dependencyMap[2], 'View');
+
+        return React.createElement(
+          View,
+          {
+            style: [styles.unimplementedView, this.props.style],
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 31
+            }
+          },
+          this.props.children
+        );
+      }
+    }]);
+    return UnimplementedView;
+  }(React.Component);
+
+  var styles = StyleSheet.create({
+    unimplementedView: __DEV__ ? {
+      alignSelf: 'flex-start',
+      borderColor: 'red',
+      borderWidth: 1
+    } : {}
+  });
+  module.exports = UnimplementedView;
+},263,[132,171,173],"UnimplementedView");

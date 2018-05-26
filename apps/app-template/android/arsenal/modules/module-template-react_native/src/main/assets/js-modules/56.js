@@ -1,1 +1,11 @@
-__d(function(e,n,o,t,l){var u={parse:function(e){for(var n,o,t=/^\s*at (?:(?:(?:Anonymous function)?|((?:\[object object\])?\S+(?: \[as \S+\])?)) )?\(?((?:file|http|https):.*?):(\d+)(?::(\d+))?\)?\s*$/i,l=/^(?:\s*([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i,u=/^\s*at (?:((?:\[object object\])?\S+(?: \[as \S+\])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i,i=e.split('\n'),s=[],c=0,m=i.length;c<m;++c){if(n=l.exec(i[c]))o={file:n[3],methodName:n[1]||"<unknown>",lineNumber:+n[4],column:n[5]?+n[5]:null};else if(n=t.exec(i[c]))o={file:n[2],methodName:n[1]||"<unknown>",lineNumber:+n[3],column:n[4]?+n[4]:null};else{if(!(n=u.exec(i[c])))continue;o={file:n[2],methodName:n[1]||"<unknown>",lineNumber:+n[3],column:n[4]?+n[4]:null}}s.push(o)}return s}};o.exports=u},56,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function isNode(object) {
+    var doc = object ? object.ownerDocument || object : document;
+    var defaultView = doc.defaultView || window;
+    return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+  }
+
+  module.exports = isNode;
+},56,[],"node_modules/fbjs/lib/isNode.js");

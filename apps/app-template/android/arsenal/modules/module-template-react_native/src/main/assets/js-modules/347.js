@@ -1,1 +1,142 @@
-__d(function(e,t,n,r,i){Object.defineProperty(r,"__esModule",{value:!0}),r.default=function(e,t,n,r){if(n===t)return e;var i=new Map,a=new Map,o=new Map;e.forEach(function(e){var t=e.key;e.isStale&&o.set(t,e),i.set(t,e)});var s=new Set;t.routes.forEach(function(e,t){var n=c+e.key,i={index:t,isActive:!1,isStale:!1,key:n,route:e,descriptor:r&&r[e.key]};(0,u.default)(!s.has(n),"navigation.state.routes["+t+"].key \""+n+"\" conflicts with another route!"),s.add(n),o.has(n)&&o.delete(n),a.set(n,i)}),n&&n.routes.forEach(function(t,n){var r=c+t.key;if(!a.has(r)){var i=e.find(function(e){return e.route.key===t.key}),u=i&&i.descriptor;o.set(r,{index:n,isActive:!1,isStale:!0,key:r,route:t,descriptor:u})}});var f=[],v=function(e){var t=e.key,n=i.has(t)?i.get(t):null;n&&d(n,e)?f.push(n):f.push(e)};o.forEach(v),a.forEach(v),f.sort(l);var h=0;if(f.forEach(function(e,n){var r=!e.isStale&&e.index===t.index;r!==e.isActive&&(f[n]=babelHelpers.extends({},e,{isActive:r})),r&&h++}),(0,u.default)(1===h,'there should always be only one scene active, not %s.',h),f.length!==e.length)return f;if(f.some(function(t,n){return!d(e[n],t)}))return f;return e};var a=t(i[0]),u=babelHelpers.interopRequireDefault(a),o=t(i[1]),s=babelHelpers.interopRequireDefault(o),c='scene_';function f(e,t){var n=e.length-t.length;return n>0?1:n<0?-1:e>t?1:-1}function l(e,t){return e.index>t.index?1:e.index<t.index?-1:f(e.key,t.key)}function d(e,t){return e.key===t.key&&e.index===t.index&&e.isStale===t.isStale&&e.isActive===t.isActive&&v(e.route,t.route)}function v(e,t){return e&&t?e.key===t.key&&(0,s.default)(e,t):e===t}},347,[310,348]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getChildEventSubscriber;
+
+  function getChildEventSubscriber(addListener, key) {
+    var actionSubscribers = new Set();
+    var willFocusSubscribers = new Set();
+    var didFocusSubscribers = new Set();
+    var willBlurSubscribers = new Set();
+    var didBlurSubscribers = new Set();
+
+    var removeAll = function removeAll() {
+      [actionSubscribers, willFocusSubscribers, didFocusSubscribers, willBlurSubscribers, didBlurSubscribers].forEach(function (set) {
+        return set.clear();
+      });
+      upstreamSubscribers.forEach(function (subs) {
+        return subs && subs.remove();
+      });
+    };
+
+    var getChildSubscribers = function getChildSubscribers(evtName) {
+      switch (evtName) {
+        case 'action':
+          return actionSubscribers;
+
+        case 'willFocus':
+          return willFocusSubscribers;
+
+        case 'didFocus':
+          return didFocusSubscribers;
+
+        case 'willBlur':
+          return willBlurSubscribers;
+
+        case 'didBlur':
+          return didBlurSubscribers;
+
+        default:
+          return null;
+      }
+    };
+
+    var emit = function emit(type, payload) {
+      var payloadWithType = babelHelpers.extends({}, payload, {
+        type: type
+      });
+      var subscribers = getChildSubscribers(type);
+      subscribers && subscribers.forEach(function (subs) {
+        subs(payloadWithType);
+      });
+    };
+
+    var lastEmittedEvent = 'didBlur';
+    var upstreamEvents = ['willFocus', 'didFocus', 'willBlur', 'didBlur', 'action'];
+    var upstreamSubscribers = upstreamEvents.map(function (eventName) {
+      return addListener(eventName, function (payload) {
+        var state = payload.state,
+            lastState = payload.lastState,
+            action = payload.action;
+        var lastRoutes = lastState && lastState.routes;
+        var routes = state && state.routes;
+        var lastFocusKey = lastState && lastState.routes && lastState.routes[lastState.index].key;
+        var focusKey = routes && routes[state.index].key;
+        var isChildFocused = focusKey === key;
+        var lastRoute = lastRoutes && lastRoutes.find(function (route) {
+          return route.key === key;
+        });
+        var newRoute = routes && routes.find(function (route) {
+          return route.key === key;
+        });
+        var childPayload = {
+          context: key + ":" + action.type + "_" + (payload.context || 'Root'),
+          state: newRoute,
+          lastState: lastRoute,
+          action: action,
+          type: eventName
+        };
+        var isTransitioning = !!state && state.isTransitioning;
+        var previouslyLastEmittedEvent = lastEmittedEvent;
+
+        if (lastEmittedEvent === 'didBlur') {
+          if (eventName === 'willFocus' && isChildFocused) {
+            emit(lastEmittedEvent = 'willFocus', childPayload);
+          } else if (eventName === 'action' && isChildFocused) {
+            emit(lastEmittedEvent = 'willFocus', childPayload);
+          }
+        }
+
+        if (lastEmittedEvent === 'willFocus') {
+          if (eventName === 'didFocus' && isChildFocused && !isTransitioning) {
+            emit(lastEmittedEvent = 'didFocus', childPayload);
+          } else if (eventName === 'action' && isChildFocused && !isTransitioning) {
+            emit(lastEmittedEvent = 'didFocus', childPayload);
+          }
+        }
+
+        if (lastEmittedEvent === 'didFocus') {
+          if (!isChildFocused) {
+            emit(lastEmittedEvent = 'willBlur', childPayload);
+          } else if (eventName === 'willBlur') {
+            emit(lastEmittedEvent = 'willBlur', childPayload);
+          } else if (eventName === 'action' && previouslyLastEmittedEvent === 'didFocus') {
+            emit('action', childPayload);
+          }
+        }
+
+        if (lastEmittedEvent === 'willBlur') {
+          if (eventName === 'action' && !isChildFocused && !isTransitioning) {
+            emit(lastEmittedEvent = 'didBlur', childPayload);
+          } else if (eventName === 'didBlur') {
+            emit(lastEmittedEvent = 'didBlur', childPayload);
+          }
+        }
+
+        if (lastEmittedEvent === 'didBlur' && !newRoute) {
+          removeAll();
+        }
+      });
+    });
+    return {
+      addListener: function addListener(eventName, eventHandler) {
+        var subscribers = getChildSubscribers(eventName);
+
+        if (!subscribers) {
+          throw new Error("Invalid event name \"" + eventName + "\"");
+        }
+
+        subscribers.add(eventHandler);
+
+        var remove = function remove() {
+          subscribers.delete(eventHandler);
+        };
+
+        return {
+          remove: remove
+        };
+      }
+    };
+  }
+},347,[],"node_modules/react-navigation/src/getChildEventSubscriber.js");

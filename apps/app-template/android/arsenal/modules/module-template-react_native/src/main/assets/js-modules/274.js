@@ -1,1 +1,129 @@
-__d(function(e,t,s,o,i){'use strict';var r=t(i[0]),n=t(i[1]),l=t(i[2]),a=t(i[3]),p=t(i[4]),h=t(i[5]),u=t(i[6]),d=t(i[7]),c=t(i[8]),y=t(i[9]),b=t(i[10]),P=t(i[11]),S=t(i[12]),m={activeOpacity:.85,delayPressOut:100,underlayColor:'black'},f={top:20,left:20,right:20,bottom:30},T=P({displayName:'TouchableHighlight',propTypes:babelHelpers.extends({},c.propTypes,{activeOpacity:l.number,underlayColor:r,style:b.style,onShowUnderlay:l.func,onHideUnderlay:l.func,hasTVPreferredFocus:l.bool,tvParallaxProperties:l.object,testOnly_pressed:l.bool}),mixins:[n,d.Mixin],getDefaultProps:function(){return m},getInitialState:function(){return this._isMounted=!1,this.props.testOnly_pressed?babelHelpers.extends({},this.touchableGetInitialState(),{extraChildStyle:{opacity:this.props.activeOpacity},extraUnderlayStyle:{backgroundColor:this.props.underlayColor}}):babelHelpers.extends({},this.touchableGetInitialState(),{extraChildStyle:null,extraUnderlayStyle:null})},componentDidMount:function(){this._isMounted=!0,S(this.props)},componentWillUnmount:function(){this._isMounted=!1,clearTimeout(this._hideTimeout)},UNSAFE_componentWillReceiveProps:function(e){S(e)},viewConfig:{uiViewClassName:'RCTView',validAttributes:h.RCTView},touchableHandleActivePressIn:function(e){clearTimeout(this._hideTimeout),this._hideTimeout=null,this._showUnderlay(),this.props.onPressIn&&this.props.onPressIn(e)},touchableHandleActivePressOut:function(e){this._hideTimeout||this._hideUnderlay(),this.props.onPressOut&&this.props.onPressOut(e)},touchableHandlePress:function(e){clearTimeout(this._hideTimeout),a.isTVOS||(this._showUnderlay(),this._hideTimeout=setTimeout(this._hideUnderlay,this.props.delayPressOut)),this.props.onPress&&this.props.onPress(e)},touchableHandleLongPress:function(e){this.props.onLongPress&&this.props.onLongPress(e)},touchableGetPressRectOffset:function(){return this.props.pressRetentionOffset||f},touchableGetHitSlop:function(){return this.props.hitSlop},touchableGetHighlightDelayMS:function(){return this.props.delayPressIn},touchableGetLongPressDelayMS:function(){return this.props.delayLongPress},touchableGetPressOutDelayMS:function(){return this.props.delayPressOut},_showUnderlay:function(){this._isMounted&&this._hasPressHandler()&&(this.setState({extraChildStyle:{opacity:this.props.activeOpacity},extraUnderlayStyle:{backgroundColor:this.props.underlayColor}}),this.props.onShowUnderlay&&this.props.onShowUnderlay())},_hideUnderlay:function(){clearTimeout(this._hideTimeout),this._hideTimeout=null,this.props.testOnly_pressed||this._hasPressHandler()&&(this.setState({extraChildStyle:null,extraUnderlayStyle:null}),this.props.onHideUnderlay&&this.props.onHideUnderlay())},_hasPressHandler:function(){return!!(this.props.onPress||this.props.onPressIn||this.props.onPressOut||this.props.onLongPress)},render:function(){var e=p.Children.only(this.props.children);return p.createElement(y,{accessible:!1!==this.props.accessible,accessibilityLabel:this.props.accessibilityLabel,accessibilityComponentType:this.props.accessibilityComponentType,accessibilityTraits:this.props.accessibilityTraits,style:u.compose(this.props.style,this.state.extraUnderlayStyle),onLayout:this.props.onLayout,hitSlop:this.props.hitSlop,isTVSelectable:!0,tvParallaxProperties:this.props.tvParallaxProperties,hasTVPreferredFocus:this.props.hasTVPreferredFocus,onStartShouldSetResponder:this.touchableHandleStartShouldSetResponder,onResponderTerminationRequest:this.touchableHandleResponderTerminationRequest,onResponderGrant:this.touchableHandleResponderGrant,onResponderMove:this.touchableHandleResponderMove,onResponderRelease:this.touchableHandleResponderRelease,onResponderTerminate:this.touchableHandleResponderTerminate,nativeID:this.props.nativeID,testID:this.props.testID},p.cloneElement(e,{style:u.compose(e.props.style,this.state.extraChildStyle)}),d.renderDebugView({color:'green',hitSlop:this.props.hitSlop}))}});s.exports=T},274,[40,42,108,28,111,153,150,166,174,152,112,155,176]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-native/Libraries/Inspector/StyleInspector.js";
+
+  var React = _require(_dependencyMap[0], 'React');
+
+  var StyleSheet = _require(_dependencyMap[1], 'StyleSheet');
+
+  var Text = _require(_dependencyMap[2], 'Text');
+
+  var View = _require(_dependencyMap[3], 'View');
+
+  var StyleInspector = function (_React$Component) {
+    babelHelpers.inherits(StyleInspector, _React$Component);
+
+    function StyleInspector() {
+      babelHelpers.classCallCheck(this, StyleInspector);
+      return babelHelpers.possibleConstructorReturn(this, (StyleInspector.__proto__ || Object.getPrototypeOf(StyleInspector)).apply(this, arguments));
+    }
+
+    babelHelpers.createClass(StyleInspector, [{
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        if (!this.props.style) {
+          return React.createElement(
+            Text,
+            {
+              style: styles.noStyle,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 20
+              }
+            },
+            "No style"
+          );
+        }
+
+        var names = Object.keys(this.props.style);
+        return React.createElement(
+          View,
+          {
+            style: styles.container,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 24
+            }
+          },
+          React.createElement(
+            View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 25
+              }
+            },
+            names.map(function (name) {
+              return React.createElement(
+                Text,
+                {
+                  key: name,
+                  style: styles.attr,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 26
+                  }
+                },
+                name,
+                ":"
+              );
+            })
+          ),
+          React.createElement(
+            View,
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 29
+              }
+            },
+            names.map(function (name) {
+              var value = typeof _this2.props.style[name] === 'object' ? JSON.stringify(_this2.props.style[name]) : _this2.props.style[name];
+              return React.createElement(
+                Text,
+                {
+                  key: name,
+                  style: styles.value,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 32
+                  }
+                },
+                value
+              );
+            })
+          )
+        );
+      }
+    }]);
+    return StyleInspector;
+  }(React.Component);
+
+  var styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row'
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around'
+    },
+    attr: {
+      fontSize: 10,
+      color: '#ccc'
+    },
+    value: {
+      fontSize: 10,
+      color: 'white',
+      marginLeft: 10
+    },
+    noStyle: {
+      color: 'white',
+      fontSize: 10
+    }
+  });
+  module.exports = StyleInspector;
+},274,[132,171,185,173],"StyleInspector");

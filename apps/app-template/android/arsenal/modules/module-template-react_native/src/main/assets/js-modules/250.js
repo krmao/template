@@ -1,1 +1,35 @@
-__d(function(e,t,r,o,s){'use strict';var n=t(s[0]),l=t(s[1]),i=t(s[2]),c=t(s[3]),a=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){return n.createElement(c,{style:[p.dummy,this.props.style]},n.createElement(i,{style:p.text},"ProgressViewIOS is not supported on this platform!"))}}]),t})(n.Component),p=l.create({dummy:{width:120,height:20,backgroundColor:'#ffbcbc',borderWidth:1,borderColor:'red',alignItems:'center',justifyContent:'center'},text:{color:'#333333',margin:5,fontSize:10}});r.exports=a},250,[111,150,164,152]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var React = _require(_dependencyMap[0], 'react');
+
+  function cloneReferencedElement(element, config) {
+    var cloneRef = config.ref;
+    var originalRef = element.ref;
+
+    for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      children[_key - 2] = arguments[_key];
+    }
+
+    if (originalRef == null || cloneRef == null) {
+      return React.cloneElement.apply(React, [element, config].concat(children));
+    }
+
+    if (typeof originalRef !== 'function') {
+      if (__DEV__) {
+        console.warn('Cloning an element with a ref that will be overwritten because it ' + 'is not a function. Use a composable callback-style ref instead. ' + 'Ignoring ref: ' + originalRef);
+      }
+
+      return React.cloneElement.apply(React, [element, config].concat(children));
+    }
+
+    return React.cloneElement.apply(React, [element, babelHelpers.extends({}, config, {
+      ref: function ref(component) {
+        cloneRef(component);
+        originalRef(component);
+      }
+    })].concat(children));
+  }
+
+  module.exports = cloneReferencedElement;
+},250,[12],"node_modules/react-clone-referenced-element/cloneReferencedElement.js");

@@ -1,1 +1,109 @@
-__d(function(n,t,e,u,r){"use strict";var o=t(r[0]),l=o.LISTENERS,i=o.ATTRIBUTE,c=o.newNode;function f(n,t){for(var e=n[l][t];null!=e;){if(e.kind===i)return e.listener;e=e.next}return null}function a(n,t,e){"function"!=typeof e&&"object"!=typeof e&&(e=null);for(var u=null,r=n[l][t];null!=r;)r.kind===i?null==u?n[l][t]=r.next:u.next=r.next:u=r,r=r.next;null!=e&&(null==u?n[l][t]=c(e,i):u.next=c(e,i))}u.defineCustomEventTarget=function(n,t){function e(){n.call(this)}var u={constructor:{value:e,configurable:!0,writable:!0}};return t.forEach(function(n){u["on"+n]={get:function(){return f(this,n)},set:function(t){a(this,n,t)},configurable:!0,enumerable:!0}}),e.prototype=Object.create(n.prototype,u),e}},68,[67]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Promise = _require(_dependencyMap[0], './core.js');
+
+  module.exports = Promise;
+  var TRUE = valuePromise(true);
+  var FALSE = valuePromise(false);
+  var NULL = valuePromise(null);
+  var UNDEFINED = valuePromise(undefined);
+  var ZERO = valuePromise(0);
+  var EMPTYSTRING = valuePromise('');
+
+  function valuePromise(value) {
+    var p = new Promise(Promise._61);
+    p._65 = 1;
+    p._55 = value;
+    return p;
+  }
+
+  Promise.resolve = function (value) {
+    if (value instanceof Promise) return value;
+    if (value === null) return NULL;
+    if (value === undefined) return UNDEFINED;
+    if (value === true) return TRUE;
+    if (value === false) return FALSE;
+    if (value === 0) return ZERO;
+    if (value === '') return EMPTYSTRING;
+
+    if (typeof value === 'object' || typeof value === 'function') {
+      try {
+        var then = value.then;
+
+        if (typeof then === 'function') {
+          return new Promise(then.bind(value));
+        }
+      } catch (ex) {
+        return new Promise(function (resolve, reject) {
+          reject(ex);
+        });
+      }
+    }
+
+    return valuePromise(value);
+  };
+
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+    return new Promise(function (resolve, reject) {
+      if (args.length === 0) return resolve([]);
+      var remaining = args.length;
+
+      function res(i, val) {
+        if (val && (typeof val === 'object' || typeof val === 'function')) {
+          if (val instanceof Promise && val.then === Promise.prototype.then) {
+            while (val._65 === 3) {
+              val = val._55;
+            }
+
+            if (val._65 === 1) return res(i, val._55);
+            if (val._65 === 2) reject(val._55);
+            val.then(function (val) {
+              res(i, val);
+            }, reject);
+            return;
+          } else {
+            var then = val.then;
+
+            if (typeof then === 'function') {
+              var p = new Promise(then.bind(val));
+              p.then(function (val) {
+                res(i, val);
+              }, reject);
+              return;
+            }
+          }
+        }
+
+        args[i] = val;
+
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        res(i, args[i]);
+      }
+    });
+  };
+
+  Promise.reject = function (value) {
+    return new Promise(function (resolve, reject) {
+      reject(value);
+    });
+  };
+
+  Promise.race = function (values) {
+    return new Promise(function (resolve, reject) {
+      values.forEach(function (value) {
+        Promise.resolve(value).then(resolve, reject);
+      });
+    });
+  };
+
+  Promise.prototype['catch'] = function (onRejected) {
+    return this.then(null, onRejected);
+  };
+},68,[69],"node_modules/promise/setimmediate/es6-extensions.js");

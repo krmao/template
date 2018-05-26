@@ -1,1 +1,19 @@
-__d(function(e,t,n,r,i){'use strict';n.exports=function(e,t,n){var r=n.get,i=!1!==n.enumerable,u=!1!==n.writable,o=void 0,a=!1;function b(n){o=n,a=!0,Object.defineProperty(e,t,{value:n,configurable:!0,enumerable:i,writable:u})}Object.defineProperty(e,t,{get:function(){return a||(a=!0,b(r())),o},set:b,configurable:!0,enumerable:i})}},33,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var performance = _require(_dependencyMap[0], './performance');
+
+  var performanceNow;
+
+  if (performance.now) {
+    performanceNow = function performanceNow() {
+      return performance.now();
+    };
+  } else {
+    performanceNow = function performanceNow() {
+      return Date.now();
+    };
+  }
+
+  module.exports = performanceNow;
+},33,[34],"node_modules/fbjs/lib/performanceNow.js");

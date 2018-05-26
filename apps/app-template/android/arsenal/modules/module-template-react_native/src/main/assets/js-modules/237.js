@@ -1,1 +1,8 @@
-__d(function(t,e,o,i,n){'use strict';var r=e(n[0]);o.exports=function(t){r(t&&'function'==typeof t.setNativeProps,"Touchable child must either be native or forward setNativeProps to a native component")}},237,[18]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _require = _require2(_dependencyMap[0], 'ReactNative'),
+      __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = _require.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+  module.exports = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactNativeComponentTree;
+},237,[49],"ReactNativeComponentTree");

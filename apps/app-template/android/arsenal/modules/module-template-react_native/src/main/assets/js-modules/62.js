@@ -1,1 +1,18 @@
-__d(function(n,t,o,e,i){'use strict';function r(){}var u=null,f={};function c(n){try{return n.then}catch(n){return u=n,f}}function _(n,t){try{return n(t)}catch(n){return u=n,f}}function s(n,t,o){try{n(t,o)}catch(n){return u=n,f}}function l(n){if('object'!=typeof this)throw new TypeError('Promises must be constructed via new');if('function'!=typeof n)throw new TypeError('Promise constructor\'s argument is not a function');this._40=0,this._65=0,this._55=null,this._72=null,n!==r&&w(n,this)}function h(n,t,o){return new n.constructor(function(e,i){var u=new l(r);u.then(e,i),p(n,new m(t,o,u))})}function p(n,t){for(;3===n._65;)n=n._55;if(l._37&&l._37(n),0===n._65)return 0===n._40?(n._40=1,void(n._72=t)):1===n._40?(n._40=2,void(n._72=[n._72,t])):void n._72.push(t);a(n,t)}function a(n,t){setImmediate(function(){var o=1===n._65?t.onFulfilled:t.onRejected;if(null!==o){var e=_(o,n._55);e===f?d(t.promise,u):v(t.promise,e)}else 1===n._65?v(t.promise,n._55):d(t.promise,n._55)})}function v(n,t){if(t===n)return d(n,new TypeError('A promise cannot be resolved with itself.'));if(t&&('object'==typeof t||'function'==typeof t)){var o=c(t);if(o===f)return d(n,u);if(o===n.then&&t instanceof l)return n._65=3,n._55=t,void y(n);if('function'==typeof o)return void w(o.bind(t),n)}n._65=1,n._55=t,y(n)}function d(n,t){n._65=2,n._55=t,l._87&&l._87(n,t),y(n)}function y(n){if(1===n._40&&(p(n,n._72),n._72=null),2===n._40){for(var t=0;t<n._72.length;t++)p(n,n._72[t]);n._72=null}}function m(n,t,o){this.onFulfilled='function'==typeof n?n:null,this.onRejected='function'==typeof t?t:null,this.promise=o}function w(n,t){var o=!1,e=s(n,function(n){o||(o=!0,v(t,n))},function(n){o||(o=!0,d(t,n))});o||e!==f||(o=!0,d(t,u))}o.exports=l,l._37=null,l._87=null,l._61=r,l.prototype.then=function(n,t){if(this.constructor!==l)return h(this,n,t);var o=new l(r);return p(this,new m(n,t,o)),o}},62,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _whatwgFetch = _require(_dependencyMap[0], "whatwg-fetch");
+
+  var _whatwgFetch2 = babelHelpers.interopRequireDefault(_whatwgFetch);
+
+  if (_whatwgFetch2.default && _whatwgFetch2.default.fetch) {
+    module.exports = _whatwgFetch2.default;
+  } else {
+    module.exports = {
+      fetch: fetch,
+      Headers: Headers,
+      Request: Request,
+      Response: Response
+    };
+  }
+},62,[63],"fetch");

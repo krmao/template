@@ -1,1 +1,387 @@
-__d(function(e,t,r,n,i){'use strict';var l=t(i[0]),o=t(i[1]),s=t(i[2]),a=t(i[3]),u=t(i[4]),f=t(i[5]),c=t(i[6]),h=t(i[7]),p=t(i[8]);function b(e,t){if(null==e||null==t)return!0;if(e.length!==t.length)return!0;for(var r=0;r<e.length;r++)if(e[r]!==t[r])return!0;return!1}var d=h(f.UIView,{}),y={transform:{diff:b},opacity:!0},g=h(y,{clipping:{diff:b}}),v=h(y,{fill:{diff:b},stroke:{diff:b},strokeWidth:!0,strokeCap:!0,strokeJoin:!0,strokeDash:{diff:b}}),m=h(v,{d:{diff:b}}),C=h(v,{alignment:!0,frame:{diff:function(e,t){if(e===t)return!1;if(e.font!==t.font){if(null===e.font)return!0;if(null===t.font)return!0;if(e.font.fontFamily!==t.font.fontFamily||e.font.fontSize!==t.font.fontSize||e.font.fontWeight!==t.font.fontWeight||e.font.fontStyle!==t.font.fontStyle)return!0}return b(e.lines,t.lines)}},path:{diff:b}}),k=c('ARTSurfaceView',function(){return{validAttributes:d,uiViewClassName:'ARTSurfaceView'}}),_=c('ARTGroup',function(){return{validAttributes:g,uiViewClassName:'ARTGroup'}}),S=c('ARTShape',function(){return{validAttributes:m,uiViewClassName:'ARTShape'}}),w=c('ARTText',function(){return{validAttributes:C,uiViewClassName:'ARTText'}});function x(e){return e?'string'==typeof e?e:e.length?e.join('\n'):'':''}var H=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"getChildContext",value:function(){return{isInSurface:!0}}},{key:"render",value:function(){var e=this.props,t=R(e.width,0),r=R(e.height,0);return a.createElement(k,{style:[e.style,{width:t,height:r}]},this.props.children)}}]),t})(a.Component);function R(e,t){return null==e?t:+e}H.childContextTypes={isInSurface:u.bool};var T=new s;function A(e){var t=null!=e.scaleX?e.scaleX:null!=e.scale?e.scale:1,r=null!=e.scaleY?e.scaleY:null!=e.scale?e.scale:1;return T.transformTo(1,0,0,1,0,0).move(e.x||0,e.y||0).rotate(e.rotation||0,e.originX,e.originY).scale(t,r,e.originX,e.originY),null!=e.transform&&T.transform(e.transform),[T.xx,T.yx,T.xy,T.yy,T.x,T.y]}function O(e){return!1===e.visible?0:null==e.opacity?1:+e.opacity}var W=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props;return p(this.context.isInSurface,'ART: <Group /> must be a child of a <Surface />'),a.createElement(_,{opacity:O(e),transform:A(e)},this.props.children)}}]),t})(a.Component);W.contextTypes={isInSurface:u.bool.isRequired};var P=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props,t=[R(e.x,0),R(e.y,0),R(e.width,0),R(e.height,0)],r=h(e);return delete r.x,delete r.y,a.createElement(_,{clipping:t,opacity:O(e),transform:A(r)},this.props.children)}}]),t})(a.Component),J=0,V=1,j=2,G=3;function I(e,t,r){var n=new l(e);t[r+0]=n.red/255,t[r+1]=n.green/255,t[r+2]=n.blue/255,t[r+3]=n.alpha}function N(e,t,r){var n=0;if('length'in e)for(;n<e.length;)I(e[n],t,r+4*n),n++;else for(var i in e)I(e[i],t,r+4*n),n++;return r+4*n}function z(e,t,r,n,i){var l,o=0;if('length'in e)for(;o<e.length;)l=o/(e.length-1)*n,t[r+o]=i?1-l:l,o++;else for(var s in e)l=+s*n,t[r+o]=i?1-l:l,o++;return r+o}function D(e,t,r){z(e,t,N(e,t,r),1,!1)}function E(e,t,r){var n=N(e,t,r);z(e,t,n=z(e,t,n=N(e,t,n),.5,!1),.5,!0)}function F(e,t){var r=e[0],n=+t.width,i=+t.height;r===V?(e[1]*=n,e[2]*=i,e[3]*=n,e[4]*=i):r===j&&(e[1]*=n,e[2]*=i,e[3]*=n,e[4]*=i,e[5]*=n,e[6]*=i)}function M(e,t){if(null==e)return null;if(e._brush)return e._bb&&(F(e._brush,t),e._bb=!1),e._brush;var r=new l(e);return[J,r.red/255,r.green/255,r.blue/255,r.alpha]}function X(e){if(null==e)return null;var t=new l(e);return[t.red/255,t.green/255,t.blue/255,t.alpha]}function Y(e){switch(e){case'butt':return 0;case'square':return 2;default:return 1}}function q(e){switch(e){case'miter':return 0;case'bevel':return 2;default:return 1}}var L=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e=this.props,t=e.d||x(e.children),r=(t instanceof o?t:new o(t)).toJSON();return a.createElement(S,{fill:M(e.fill,e),opacity:O(e),stroke:X(e.stroke),strokeCap:Y(e.strokeCap),strokeDash:e.strokeDash||null,strokeJoin:q(e.strokeJoin),strokeWidth:R(e.strokeWidth,1),transform:A(e),d:r})}}]),t})(a.Component),U={},$=/^[\s"']*/,B=/[\s"']*$/;function K(e){return e.split(',')[0].replace($,'').replace(B,'')}function Q(e){if(U.hasOwnProperty(e))return U[e];var t=/^\s*((?:(?:normal|bold|italic)\s+)*)(?:(\d+(?:\.\d+)?)[ptexm\%]*(?:\s*\/.*?)?\s+)?\s*\"?([^\"]*)/i.exec(e);if(!t)return null;var r=K(t[3]),n=+t[2]||12,i=/bold/.exec(t[1]),l=/italic/.exec(t[1]);return U[e]={fontFamily:r,fontSize:n,fontWeight:i?'bold':'normal',fontStyle:l?'italic':'normal'},U[e]}function Z(e){return null==e?null:'string'==typeof e?Q(e):{fontFamily:K(e.fontFamily),fontSize:+e.fontSize||12,fontWeight:null!=e.fontWeight?e.fontWeight.toString():'400',fontStyle:e.fontStyle}}var ee=/\n/g;function te(e){switch(e){case'right':return 1;case'center':return 2;default:return 0}}var re=(function(e){function t(){return babelHelpers.classCallCheck(this,t),babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"render",value:function(){var e,t,r=this.props,n=r.path,i=n?(n instanceof o?n:new o(n)).toJSON():null,l=(e=r.font,t=x(r.children),{font:Z(e),lines:t.split(ee)});return a.createElement(w,{fill:M(r.fill,r),opacity:O(r),stroke:X(r.stroke),strokeCap:Y(r.strokeCap),strokeDash:r.strokeDash||null,strokeJoin:q(r.strokeJoin),strokeWidth:R(r.strokeWidth,1),transform:A(r),alignment:te(r.alignment),frame:l,path:i})}}]),t})(a.Component);var ne={LinearGradient:function(e,t,r,n,i){var l=V;if(arguments.length<5){var o=(null==t?270:t)*Math.PI/180,s=Math.cos(o),a=-Math.sin(o),u=(Math.abs(s)+Math.abs(a))/2;t=.5-(s*=u),n=.5+s,r=.5-(a*=u),i=.5+a,this._bb=!0}else this._bb=!1;var f=[l,+t,+r,+n,+i];D(e,f,5),this._brush=f},RadialGradient:function(e,t,r,n,i,l,o){null==i&&(i=n),null==l&&(l=t),null==o&&(o=r),null==t?(t=r=n=i=l=o=.5,this._bb=!0):this._bb=!1;var s=[j,+t,+r,2*+n,2*+i,+l,+o];E(e,s,7),this._brush=s},Pattern:function(e,t,r,n,i){this._brush=[G,e,+n||0,+i||0,+t,+r]},Transform:s,Path:o,Surface:H,Group:W,ClippingRectangle:P,Shape:L,Text:re};r.exports=ne},157,[158,159,162,111,108,153,138,115,18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var invariant = _require(_dependencyMap[0], 'fbjs/lib/invariant');
+
+  var MatrixMath = {
+    createIdentityMatrix: function createIdentityMatrix() {
+      return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    },
+    createCopy: function createCopy(m) {
+      return [m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]];
+    },
+    createOrthographic: function createOrthographic(left, right, bottom, top, near, far) {
+      var a = 2 / (right - left);
+      var b = 2 / (top - bottom);
+      var c = -2 / (far - near);
+      var tx = -(right + left) / (right - left);
+      var ty = -(top + bottom) / (top - bottom);
+      var tz = -(far + near) / (far - near);
+      return [a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, tx, ty, tz, 1];
+    },
+    createFrustum: function createFrustum(left, right, bottom, top, near, far) {
+      var r_width = 1 / (right - left);
+      var r_height = 1 / (top - bottom);
+      var r_depth = 1 / (near - far);
+      var x = 2 * (near * r_width);
+      var y = 2 * (near * r_height);
+      var A = (right + left) * r_width;
+      var B = (top + bottom) * r_height;
+      var C = (far + near) * r_depth;
+      var D = 2 * (far * near * r_depth);
+      return [x, 0, 0, 0, 0, y, 0, 0, A, B, C, -1, 0, 0, D, 0];
+    },
+    createPerspective: function createPerspective(fovInRadians, aspect, near, far) {
+      var h = 1 / Math.tan(fovInRadians / 2);
+      var r_depth = 1 / (near - far);
+      var C = (far + near) * r_depth;
+      var D = 2 * (far * near * r_depth);
+      return [h / aspect, 0, 0, 0, 0, h, 0, 0, 0, 0, C, -1, 0, 0, D, 0];
+    },
+    createTranslate2d: function createTranslate2d(x, y) {
+      var mat = MatrixMath.createIdentityMatrix();
+      MatrixMath.reuseTranslate2dCommand(mat, x, y);
+      return mat;
+    },
+    reuseTranslate2dCommand: function reuseTranslate2dCommand(matrixCommand, x, y) {
+      matrixCommand[12] = x;
+      matrixCommand[13] = y;
+    },
+    reuseTranslate3dCommand: function reuseTranslate3dCommand(matrixCommand, x, y, z) {
+      matrixCommand[12] = x;
+      matrixCommand[13] = y;
+      matrixCommand[14] = z;
+    },
+    createScale: function createScale(factor) {
+      var mat = MatrixMath.createIdentityMatrix();
+      MatrixMath.reuseScaleCommand(mat, factor);
+      return mat;
+    },
+    reuseScaleCommand: function reuseScaleCommand(matrixCommand, factor) {
+      matrixCommand[0] = factor;
+      matrixCommand[5] = factor;
+    },
+    reuseScale3dCommand: function reuseScale3dCommand(matrixCommand, x, y, z) {
+      matrixCommand[0] = x;
+      matrixCommand[5] = y;
+      matrixCommand[10] = z;
+    },
+    reusePerspectiveCommand: function reusePerspectiveCommand(matrixCommand, p) {
+      matrixCommand[11] = -1 / p;
+    },
+    reuseScaleXCommand: function reuseScaleXCommand(matrixCommand, factor) {
+      matrixCommand[0] = factor;
+    },
+    reuseScaleYCommand: function reuseScaleYCommand(matrixCommand, factor) {
+      matrixCommand[5] = factor;
+    },
+    reuseScaleZCommand: function reuseScaleZCommand(matrixCommand, factor) {
+      matrixCommand[10] = factor;
+    },
+    reuseRotateXCommand: function reuseRotateXCommand(matrixCommand, radians) {
+      matrixCommand[5] = Math.cos(radians);
+      matrixCommand[6] = Math.sin(radians);
+      matrixCommand[9] = -Math.sin(radians);
+      matrixCommand[10] = Math.cos(radians);
+    },
+    reuseRotateYCommand: function reuseRotateYCommand(matrixCommand, amount) {
+      matrixCommand[0] = Math.cos(amount);
+      matrixCommand[2] = -Math.sin(amount);
+      matrixCommand[8] = Math.sin(amount);
+      matrixCommand[10] = Math.cos(amount);
+    },
+    reuseRotateZCommand: function reuseRotateZCommand(matrixCommand, radians) {
+      matrixCommand[0] = Math.cos(radians);
+      matrixCommand[1] = Math.sin(radians);
+      matrixCommand[4] = -Math.sin(radians);
+      matrixCommand[5] = Math.cos(radians);
+    },
+    createRotateZ: function createRotateZ(radians) {
+      var mat = MatrixMath.createIdentityMatrix();
+      MatrixMath.reuseRotateZCommand(mat, radians);
+      return mat;
+    },
+    reuseSkewXCommand: function reuseSkewXCommand(matrixCommand, radians) {
+      matrixCommand[4] = Math.tan(radians);
+    },
+    reuseSkewYCommand: function reuseSkewYCommand(matrixCommand, radians) {
+      matrixCommand[1] = Math.tan(radians);
+    },
+    multiplyInto: function multiplyInto(out, a, b) {
+      var a00 = a[0],
+          a01 = a[1],
+          a02 = a[2],
+          a03 = a[3],
+          a10 = a[4],
+          a11 = a[5],
+          a12 = a[6],
+          a13 = a[7],
+          a20 = a[8],
+          a21 = a[9],
+          a22 = a[10],
+          a23 = a[11],
+          a30 = a[12],
+          a31 = a[13],
+          a32 = a[14],
+          a33 = a[15];
+      var b0 = b[0],
+          b1 = b[1],
+          b2 = b[2],
+          b3 = b[3];
+      out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+      out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+      out[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+      out[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+      b0 = b[4];
+      b1 = b[5];
+      b2 = b[6];
+      b3 = b[7];
+      out[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+      out[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+      out[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+      out[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+      b0 = b[8];
+      b1 = b[9];
+      b2 = b[10];
+      b3 = b[11];
+      out[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+      out[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+      out[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+      out[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+      b0 = b[12];
+      b1 = b[13];
+      b2 = b[14];
+      b3 = b[15];
+      out[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+      out[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+      out[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+      out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+    },
+    determinant: function determinant(matrix) {
+      var _matrix = babelHelpers.slicedToArray(matrix, 16),
+          m00 = _matrix[0],
+          m01 = _matrix[1],
+          m02 = _matrix[2],
+          m03 = _matrix[3],
+          m10 = _matrix[4],
+          m11 = _matrix[5],
+          m12 = _matrix[6],
+          m13 = _matrix[7],
+          m20 = _matrix[8],
+          m21 = _matrix[9],
+          m22 = _matrix[10],
+          m23 = _matrix[11],
+          m30 = _matrix[12],
+          m31 = _matrix[13],
+          m32 = _matrix[14],
+          m33 = _matrix[15];
+
+      return m03 * m12 * m21 * m30 - m02 * m13 * m21 * m30 - m03 * m11 * m22 * m30 + m01 * m13 * m22 * m30 + m02 * m11 * m23 * m30 - m01 * m12 * m23 * m30 - m03 * m12 * m20 * m31 + m02 * m13 * m20 * m31 + m03 * m10 * m22 * m31 - m00 * m13 * m22 * m31 - m02 * m10 * m23 * m31 + m00 * m12 * m23 * m31 + m03 * m11 * m20 * m32 - m01 * m13 * m20 * m32 - m03 * m10 * m21 * m32 + m00 * m13 * m21 * m32 + m01 * m10 * m23 * m32 - m00 * m11 * m23 * m32 - m02 * m11 * m20 * m33 + m01 * m12 * m20 * m33 + m02 * m10 * m21 * m33 - m00 * m12 * m21 * m33 - m01 * m10 * m22 * m33 + m00 * m11 * m22 * m33;
+    },
+    inverse: function inverse(matrix) {
+      var det = MatrixMath.determinant(matrix);
+
+      if (!det) {
+        return matrix;
+      }
+
+      var _matrix2 = babelHelpers.slicedToArray(matrix, 16),
+          m00 = _matrix2[0],
+          m01 = _matrix2[1],
+          m02 = _matrix2[2],
+          m03 = _matrix2[3],
+          m10 = _matrix2[4],
+          m11 = _matrix2[5],
+          m12 = _matrix2[6],
+          m13 = _matrix2[7],
+          m20 = _matrix2[8],
+          m21 = _matrix2[9],
+          m22 = _matrix2[10],
+          m23 = _matrix2[11],
+          m30 = _matrix2[12],
+          m31 = _matrix2[13],
+          m32 = _matrix2[14],
+          m33 = _matrix2[15];
+
+      return [(m12 * m23 * m31 - m13 * m22 * m31 + m13 * m21 * m32 - m11 * m23 * m32 - m12 * m21 * m33 + m11 * m22 * m33) / det, (m03 * m22 * m31 - m02 * m23 * m31 - m03 * m21 * m32 + m01 * m23 * m32 + m02 * m21 * m33 - m01 * m22 * m33) / det, (m02 * m13 * m31 - m03 * m12 * m31 + m03 * m11 * m32 - m01 * m13 * m32 - m02 * m11 * m33 + m01 * m12 * m33) / det, (m03 * m12 * m21 - m02 * m13 * m21 - m03 * m11 * m22 + m01 * m13 * m22 + m02 * m11 * m23 - m01 * m12 * m23) / det, (m13 * m22 * m30 - m12 * m23 * m30 - m13 * m20 * m32 + m10 * m23 * m32 + m12 * m20 * m33 - m10 * m22 * m33) / det, (m02 * m23 * m30 - m03 * m22 * m30 + m03 * m20 * m32 - m00 * m23 * m32 - m02 * m20 * m33 + m00 * m22 * m33) / det, (m03 * m12 * m30 - m02 * m13 * m30 - m03 * m10 * m32 + m00 * m13 * m32 + m02 * m10 * m33 - m00 * m12 * m33) / det, (m02 * m13 * m20 - m03 * m12 * m20 + m03 * m10 * m22 - m00 * m13 * m22 - m02 * m10 * m23 + m00 * m12 * m23) / det, (m11 * m23 * m30 - m13 * m21 * m30 + m13 * m20 * m31 - m10 * m23 * m31 - m11 * m20 * m33 + m10 * m21 * m33) / det, (m03 * m21 * m30 - m01 * m23 * m30 - m03 * m20 * m31 + m00 * m23 * m31 + m01 * m20 * m33 - m00 * m21 * m33) / det, (m01 * m13 * m30 - m03 * m11 * m30 + m03 * m10 * m31 - m00 * m13 * m31 - m01 * m10 * m33 + m00 * m11 * m33) / det, (m03 * m11 * m20 - m01 * m13 * m20 - m03 * m10 * m21 + m00 * m13 * m21 + m01 * m10 * m23 - m00 * m11 * m23) / det, (m12 * m21 * m30 - m11 * m22 * m30 - m12 * m20 * m31 + m10 * m22 * m31 + m11 * m20 * m32 - m10 * m21 * m32) / det, (m01 * m22 * m30 - m02 * m21 * m30 + m02 * m20 * m31 - m00 * m22 * m31 - m01 * m20 * m32 + m00 * m21 * m32) / det, (m02 * m11 * m30 - m01 * m12 * m30 - m02 * m10 * m31 + m00 * m12 * m31 + m01 * m10 * m32 - m00 * m11 * m32) / det, (m01 * m12 * m20 - m02 * m11 * m20 + m02 * m10 * m21 - m00 * m12 * m21 - m01 * m10 * m22 + m00 * m11 * m22) / det];
+    },
+    transpose: function transpose(m) {
+      return [m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]];
+    },
+    multiplyVectorByMatrix: function multiplyVectorByMatrix(v, m) {
+      var _v = babelHelpers.slicedToArray(v, 4),
+          vx = _v[0],
+          vy = _v[1],
+          vz = _v[2],
+          vw = _v[3];
+
+      return [vx * m[0] + vy * m[4] + vz * m[8] + vw * m[12], vx * m[1] + vy * m[5] + vz * m[9] + vw * m[13], vx * m[2] + vy * m[6] + vz * m[10] + vw * m[14], vx * m[3] + vy * m[7] + vz * m[11] + vw * m[15]];
+    },
+    v3Length: function v3Length(a) {
+      return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+    },
+    v3Normalize: function v3Normalize(vector, v3Length) {
+      var im = 1 / (v3Length || MatrixMath.v3Length(vector));
+      return [vector[0] * im, vector[1] * im, vector[2] * im];
+    },
+    v3Dot: function v3Dot(a, b) {
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    },
+    v3Combine: function v3Combine(a, b, aScale, bScale) {
+      return [aScale * a[0] + bScale * b[0], aScale * a[1] + bScale * b[1], aScale * a[2] + bScale * b[2]];
+    },
+    v3Cross: function v3Cross(a, b) {
+      return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    },
+    quaternionToDegreesXYZ: function quaternionToDegreesXYZ(q, matrix, row) {
+      var _q = babelHelpers.slicedToArray(q, 4),
+          qx = _q[0],
+          qy = _q[1],
+          qz = _q[2],
+          qw = _q[3];
+
+      var qw2 = qw * qw;
+      var qx2 = qx * qx;
+      var qy2 = qy * qy;
+      var qz2 = qz * qz;
+      var test = qx * qy + qz * qw;
+      var unit = qw2 + qx2 + qy2 + qz2;
+      var conv = 180 / Math.PI;
+
+      if (test > 0.49999 * unit) {
+        return [0, 2 * Math.atan2(qx, qw) * conv, 90];
+      }
+
+      if (test < -0.49999 * unit) {
+        return [0, -2 * Math.atan2(qx, qw) * conv, -90];
+      }
+
+      return [MatrixMath.roundTo3Places(Math.atan2(2 * qx * qw - 2 * qy * qz, 1 - 2 * qx2 - 2 * qz2) * conv), MatrixMath.roundTo3Places(Math.atan2(2 * qy * qw - 2 * qx * qz, 1 - 2 * qy2 - 2 * qz2) * conv), MatrixMath.roundTo3Places(Math.asin(2 * qx * qy + 2 * qz * qw) * conv)];
+    },
+    roundTo3Places: function roundTo3Places(n) {
+      var arr = n.toString().split('e');
+      return Math.round(arr[0] + 'e' + (arr[1] ? +arr[1] - 3 : 3)) * 0.001;
+    },
+    decomposeMatrix: function decomposeMatrix(transformMatrix) {
+      invariant(transformMatrix.length === 16, 'Matrix decomposition needs a list of 3d matrix values, received %s', transformMatrix);
+      var perspective = [];
+      var quaternion = [];
+      var scale = [];
+      var skew = [];
+      var translation = [];
+
+      if (!transformMatrix[15]) {
+        return;
+      }
+
+      var matrix = [];
+      var perspectiveMatrix = [];
+
+      for (var i = 0; i < 4; i++) {
+        matrix.push([]);
+
+        for (var j = 0; j < 4; j++) {
+          var value = transformMatrix[i * 4 + j] / transformMatrix[15];
+          matrix[i].push(value);
+          perspectiveMatrix.push(j === 3 ? 0 : value);
+        }
+      }
+
+      perspectiveMatrix[15] = 1;
+
+      if (!MatrixMath.determinant(perspectiveMatrix)) {
+        return;
+      }
+
+      if (matrix[0][3] !== 0 || matrix[1][3] !== 0 || matrix[2][3] !== 0) {
+        var rightHandSide = [matrix[0][3], matrix[1][3], matrix[2][3], matrix[3][3]];
+        var inversePerspectiveMatrix = MatrixMath.inverse(perspectiveMatrix);
+        var transposedInversePerspectiveMatrix = MatrixMath.transpose(inversePerspectiveMatrix);
+        var perspective = MatrixMath.multiplyVectorByMatrix(rightHandSide, transposedInversePerspectiveMatrix);
+      } else {
+        perspective[0] = perspective[1] = perspective[2] = 0;
+        perspective[3] = 1;
+      }
+
+      for (var i = 0; i < 3; i++) {
+        translation[i] = matrix[3][i];
+      }
+
+      var row = [];
+
+      for (i = 0; i < 3; i++) {
+        row[i] = [matrix[i][0], matrix[i][1], matrix[i][2]];
+      }
+
+      scale[0] = MatrixMath.v3Length(row[0]);
+      row[0] = MatrixMath.v3Normalize(row[0], scale[0]);
+      skew[0] = MatrixMath.v3Dot(row[0], row[1]);
+      row[1] = MatrixMath.v3Combine(row[1], row[0], 1.0, -skew[0]);
+      skew[0] = MatrixMath.v3Dot(row[0], row[1]);
+      row[1] = MatrixMath.v3Combine(row[1], row[0], 1.0, -skew[0]);
+      scale[1] = MatrixMath.v3Length(row[1]);
+      row[1] = MatrixMath.v3Normalize(row[1], scale[1]);
+      skew[0] /= scale[1];
+      skew[1] = MatrixMath.v3Dot(row[0], row[2]);
+      row[2] = MatrixMath.v3Combine(row[2], row[0], 1.0, -skew[1]);
+      skew[2] = MatrixMath.v3Dot(row[1], row[2]);
+      row[2] = MatrixMath.v3Combine(row[2], row[1], 1.0, -skew[2]);
+      scale[2] = MatrixMath.v3Length(row[2]);
+      row[2] = MatrixMath.v3Normalize(row[2], scale[2]);
+      skew[1] /= scale[2];
+      skew[2] /= scale[2];
+      var pdum3 = MatrixMath.v3Cross(row[1], row[2]);
+
+      if (MatrixMath.v3Dot(row[0], pdum3) < 0) {
+        for (i = 0; i < 3; i++) {
+          scale[i] *= -1;
+          row[i][0] *= -1;
+          row[i][1] *= -1;
+          row[i][2] *= -1;
+        }
+      }
+
+      quaternion[0] = 0.5 * Math.sqrt(Math.max(1 + row[0][0] - row[1][1] - row[2][2], 0));
+      quaternion[1] = 0.5 * Math.sqrt(Math.max(1 - row[0][0] + row[1][1] - row[2][2], 0));
+      quaternion[2] = 0.5 * Math.sqrt(Math.max(1 - row[0][0] - row[1][1] + row[2][2], 0));
+      quaternion[3] = 0.5 * Math.sqrt(Math.max(1 + row[0][0] + row[1][1] + row[2][2], 0));
+
+      if (row[2][1] > row[1][2]) {
+        quaternion[0] = -quaternion[0];
+      }
+
+      if (row[0][2] > row[2][0]) {
+        quaternion[1] = -quaternion[1];
+      }
+
+      if (row[1][0] > row[0][1]) {
+        quaternion[2] = -quaternion[2];
+      }
+
+      var rotationDegrees;
+
+      if (quaternion[0] < 0.001 && quaternion[0] >= 0 && quaternion[1] < 0.001 && quaternion[1] >= 0) {
+        rotationDegrees = [0, 0, MatrixMath.roundTo3Places(Math.atan2(row[0][1], row[0][0]) * 180 / Math.PI)];
+      } else {
+        rotationDegrees = MatrixMath.quaternionToDegreesXYZ(quaternion, matrix, row);
+      }
+
+      return {
+        rotationDegrees: rotationDegrees,
+        perspective: perspective,
+        quaternion: quaternion,
+        scale: scale,
+        skew: skew,
+        translation: translation,
+        rotate: rotationDegrees[2],
+        rotateX: rotationDegrees[0],
+        rotateY: rotationDegrees[1],
+        scaleX: scale[0],
+        scaleY: scale[1],
+        translateX: translation[0],
+        translateY: translation[1]
+      };
+    }
+  };
+  module.exports = MatrixMath;
+},157,[18],"MatrixMath");

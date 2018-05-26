@@ -1,1 +1,12 @@
-__d(function(e,t,u,d,a){'use strict';d.__esModule=!0;var f=n(t(a[0])),l=n(t(a[1]));function n(e){return e&&e.__esModule?e:{default:e}}d.default=f.default.createContext||l.default,u.exports=d.default},340,[12,341]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.MaskedViewIOS = exports.BackHandler = undefined;
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var BackHandler = _reactNative.BackHandler || _reactNative.BackAndroid;
+  exports.BackHandler = BackHandler;
+  exports.MaskedViewIOS = _reactNative.MaskedViewIOS;
+},340,[22],"node_modules/react-navigation/src/PlatformHelpers.native.js");

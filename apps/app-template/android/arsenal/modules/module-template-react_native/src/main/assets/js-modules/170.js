@@ -1,1 +1,37 @@
-__d(function(t,i,e,n,a){'use strict';i(a[0]);var v=i(a[1]).TVNavigationEventEmitter,o=i(a[2]);function _(){this.__nativeTVNavigationEventListener=null,this.__nativeTVNavigationEventEmitter=null}_.prototype.enable=function(t,i){this.__nativeTVNavigationEventEmitter=new o(v),this.__nativeTVNavigationEventListener=this.__nativeTVNavigationEventEmitter.addListener('onHWKeyEvent',function(e){i&&i(t,e)})},_.prototype.disable=function(){this.__nativeTVNavigationEventListener&&(this.__nativeTVNavigationEventListener.remove(),delete this.__nativeTVNavigationEventListener),this.__nativeTVNavigationEventEmitter&&delete this.__nativeTVNavigationEventEmitter},e.exports=_},170,[28,20,72]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ReactNativeStyleAttributes = _require(_dependencyMap[0], 'ReactNativeStyleAttributes');
+
+  function verifyPropTypes(componentInterface, viewConfig, nativePropsToIgnore) {
+    if (!viewConfig) {
+      return;
+    }
+
+    var componentName = componentInterface.displayName || componentInterface.name || 'unknown';
+    var propTypes = componentInterface.__propTypesSecretDontUseThesePlease || componentInterface.propTypes;
+
+    if (!propTypes) {
+      return;
+    }
+
+    var nativeProps = viewConfig.NativeProps;
+
+    for (var prop in nativeProps) {
+      if (!propTypes[prop] && !ReactNativeStyleAttributes[prop] && (!nativePropsToIgnore || !nativePropsToIgnore[prop])) {
+        var message;
+
+        if (propTypes.hasOwnProperty(prop)) {
+          message = '`' + componentName + '` has incorrectly defined propType for native prop `' + viewConfig.uiViewClassName + '.' + prop + '` of native type `' + nativeProps[prop];
+        } else {
+          message = '`' + componentName + '` has no propType for native prop `' + viewConfig.uiViewClassName + '.' + prop + '` of native type `' + nativeProps[prop] + '`';
+        }
+
+        message += "\nIf you haven't changed this prop yourself, this usually means that " + 'your versions of the native code and JavaScript code are out of sync. Updating both ' + 'should make this error go away.';
+        throw new Error(message);
+      }
+    }
+  }
+
+  module.exports = verifyPropTypes;
+},170,[150],"verifyPropTypes");

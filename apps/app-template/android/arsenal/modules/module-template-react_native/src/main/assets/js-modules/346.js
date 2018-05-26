@@ -1,1 +1,138 @@
-__d(function(e,t,n,i,s){Object.defineProperty(i,"__esModule",{value:!0});var a=t(s[0]),r=babelHelpers.interopRequireDefault(a),o=t(s[1]),u=t(s[2]),l=babelHelpers.interopRequireDefault(u),p=t(s[3]),d=babelHelpers.interopRequireDefault(p),c={duration:250,easing:o.Easing.inOut(o.Easing.ease),timing:o.Animated.timing},h=(function(e){function t(e,n){babelHelpers.classCallCheck(this,t);var i=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e,n));v.call(i);var s={height:new o.Animated.Value(0),initHeight:0,initWidth:0,isMeasured:!1,width:new o.Animated.Value(0)};return i.state={layout:s,position:new o.Animated.Value(i.props.navigation.state.index),progress:new o.Animated.Value(1),scenes:(0,d.default)([],i.props.navigation.state,null,i.props.descriptors)},i._prevTransitionProps=null,i._transitionProps=_(e,i.state),i._isMounted=!1,i._isTransitionRunning=!1,i._queuedTransition=null,i}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidMount",value:function(){this._isMounted=!0}},{key:"componentWillUnmount",value:function(){this._isMounted=!1}},{key:"componentWillReceiveProps",value:function(e){var t=(0,d.default)(this.state.scenes,e.navigation.state,this.props.navigation.state,e.descriptors);if(e.navigation.state.isTransitioning||(t=g(t)),t!==this.state.scenes){var n=e.navigation.state.index!==this.props.navigation.state.index;this._isTransitionRunning?this._queuedTransition={nextProps:e,nextScenes:t,indexHasChanged:n}:this._startTransition(e,t,n)}}},{key:"_startTransition",value:function(e,t,n){var i=this,s=babelHelpers.extends({},this.state,{scenes:t}),a=s.position,r=s.progress;r.setValue(0),this._prevTransitionProps=this._transitionProps,this._transitionProps=_(e,s);var u=e.configureTransition?e.configureTransition(this._transitionProps,this._prevTransitionProps):null,l=babelHelpers.extends({},c,u),p=l.timing;delete l.timing;var d=e.navigation.state.index,h=a.__getValue()!==d,v=n&&h?[p(r,babelHelpers.extends({},l,{toValue:1})),p(a,babelHelpers.extends({},l,{toValue:e.navigation.state.index}))]:[];this._isTransitionRunning=!0,this.setState(s,function(){var t;return regeneratorRuntime.async(function(n){for(;;)switch(n.prev=n.next){case 0:if(!e.onTransitionStart){n.next=5;break}if(!((t=e.onTransitionStart(i._transitionProps,i._prevTransitionProps))instanceof Promise)){n.next=5;break}return n.next=5,regeneratorRuntime.awrap(t);case 5:o.Animated.parallel(v).start(i._onTransitionEnd);case 6:case"end":return n.stop()}},null,i)})}},{key:"render",value:function(){return r.default.createElement(o.View,{onLayout:this._onLayout,style:[T.main]},this.props.render(this._transitionProps,this._prevTransitionProps))}}]),t})(r.default.Component),v=function(){var e=this;this._onLayout=function(t){var n=t.nativeEvent.layout,i=n.height,s=n.width;if(e.state.layout.initWidth!==s||e.state.layout.initHeight!==i){var a=babelHelpers.extends({},e.state.layout,{initHeight:i,initWidth:s,isMeasured:!0});a.height.setValue(i),a.width.setValue(s);var r=babelHelpers.extends({},e.state,{layout:a});e._transitionProps=_(e.props,r),e.setState(r)}},this._onTransitionEnd=function(){if(e._isMounted){var t=e._prevTransitionProps;e._prevTransitionProps=null;var n=g(e.state.scenes),i=babelHelpers.extends({},e.state,{scenes:n});e._transitionProps=_(e.props,i),e.setState(i,function(){var n;return regeneratorRuntime.async(function(i){for(;;)switch(i.prev=i.next){case 0:if(!e.props.onTransitionEnd){i.next=5;break}if(!((n=e.props.onTransitionEnd(e._transitionProps,t))instanceof Promise)){i.next=5;break}return i.next=5,regeneratorRuntime.awrap(n);case 5:e._queuedTransition?(e._startTransition(e._queuedTransition.nextProps,e._queuedTransition.nextScenes,e._queuedTransition.indexHasChanged),e._queuedTransition=null):e._isTransitionRunning=!1;case 6:case"end":return i.stop()}},null,e)})}}};function _(e,t){var n=e.navigation,i=t.layout,s=t.position,a=t.progress,r=t.scenes,o=r.find(b);return(0,l.default)(o,'Could not find active scene'),{layout:i,navigation:n,position:s,progress:a,scenes:r,scene:o,index:o.index}}function f(e){return!e.isStale}function g(e){var t=e.filter(f);return t.length===e.length?e:t}function b(e){return e.isActive}var T=o.StyleSheet.create({main:{flex:1}});i.default=h},346,[12,17,310,347]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/navigators/createNavigator.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _getChildEventSubscriber = _require(_dependencyMap[1], "../getChildEventSubscriber");
+
+  var _getChildEventSubscriber2 = babelHelpers.interopRequireDefault(_getChildEventSubscriber);
+
+  function createNavigator(NavigatorView, router, navigationConfig) {
+    var Navigator = function (_React$Component) {
+      babelHelpers.inherits(Navigator, _React$Component);
+
+      function Navigator() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        babelHelpers.classCallCheck(this, Navigator);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = Navigator.__proto__ || Object.getPrototypeOf(Navigator)).call.apply(_ref, [this].concat(args))), _this), _this.childEventSubscribers = {}, _this._isRouteFocused = function (route) {
+          var state = _this.props.navigation.state;
+          var focusedRoute = state.routes[state.index];
+          return route === focusedRoute;
+        }, _this._dangerouslyGetParent = function () {
+          return _this.props.navigation;
+        }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+      }
+
+      babelHelpers.createClass(Navigator, [{
+        key: "componentDidUpdate",
+        value: function componentDidUpdate() {
+          var _this2 = this;
+
+          var activeKeys = this.props.navigation.state.routes.map(function (r) {
+            return r.key;
+          });
+          Object.keys(this.childEventSubscribers).forEach(function (key) {
+            if (!activeKeys.includes(key)) {
+              delete _this2.childEventSubscribers[key];
+            }
+          });
+        }
+      }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+          this.childEventSubscribers = {};
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          var _this3 = this;
+
+          var _props = this.props,
+              navigation = _props.navigation,
+              screenProps = _props.screenProps;
+          var dispatch = navigation.dispatch,
+              state = navigation.state,
+              addListener = navigation.addListener;
+          var routes = state.routes;
+          var descriptors = {};
+          routes.forEach(function (route) {
+            var getComponent = function getComponent() {
+              return router.getComponentForRouteName(route.routeName);
+            };
+
+            if (!_this3.childEventSubscribers[route.key]) {
+              _this3.childEventSubscribers[route.key] = (0, _getChildEventSubscriber2.default)(addListener, route.key);
+            }
+
+            var actionCreators = babelHelpers.extends({}, navigation.actions, router.getActionCreators(route, state.key));
+            var actionHelpers = {};
+            Object.keys(actionCreators).forEach(function (actionName) {
+              actionHelpers[actionName] = function () {
+                var actionCreator = actionCreators[actionName];
+                var action = actionCreator.apply(undefined, arguments);
+                dispatch(action);
+              };
+            });
+            var childNavigation = babelHelpers.extends({}, actionHelpers, {
+              actions: actionCreators,
+              dispatch: dispatch,
+              state: route,
+              isFocused: function isFocused() {
+                return _this3._isRouteFocused(route);
+              },
+              dangerouslyGetParent: _this3._dangerouslyGetParent,
+              addListener: _this3.childEventSubscribers[route.key].addListener,
+              getParam: function getParam(paramName, defaultValue) {
+                var params = route.params;
+
+                if (params && paramName in params) {
+                  return params[paramName];
+                }
+
+                return defaultValue;
+              }
+            });
+            var options = router.getScreenOptions(childNavigation, screenProps);
+            descriptors[route.key] = {
+              key: route.key,
+              getComponent: getComponent,
+              options: options,
+              state: route,
+              navigation: childNavigation
+            };
+          });
+          return _react2.default.createElement(NavigatorView, babelHelpers.extends({}, this.props, {
+            screenProps: screenProps,
+            navigation: navigation,
+            navigationConfig: navigationConfig,
+            descriptors: descriptors,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 96
+            }
+          }));
+        }
+      }]);
+      return Navigator;
+    }(_react2.default.Component);
+
+    Navigator.router = router;
+    Navigator.navigationOptions = null;
+    return Navigator;
+  }
+
+  exports.default = createNavigator;
+},346,[12,347],"node_modules/react-navigation/src/navigators/createNavigator.js");

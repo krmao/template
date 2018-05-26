@@ -1,1 +1,29 @@
-__d(function(n,u,t,e,r){'use strict';u(r[0]);var c=u(r[1]),l={_currentlyFocusedID:null,currentlyFocusedField:function(){return this._currentlyFocusedID},focusTextInput:function(n){this._currentlyFocusedID!==n&&null!==n&&(this._currentlyFocusedID=n,c.dispatchViewManagerCommand(n,c.AndroidTextInput.Commands.focusTextInput,null))},blurTextInput:function(n){this._currentlyFocusedID===n&&null!==n&&(this._currentlyFocusedID=null,c.dispatchViewManagerCommand(n,c.AndroidTextInput.Commands.blurTextInput,null))}};t.exports=l},101,[28,99]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var SamplingProfiler = {
+    poke: function poke(token) {
+      var error = null;
+      var result = null;
+
+      try {
+        result = global.pokeSamplingProfiler();
+
+        if (result === null) {
+          console.log('The JSC Sampling Profiler has started');
+        } else {
+          console.log('The JSC Sampling Profiler has stopped');
+        }
+      } catch (e) {
+        console.log('Error occurred when restarting Sampling Profiler: ' + e.toString());
+        error = e.toString();
+      }
+
+      var _require = _require2(_dependencyMap[0], 'NativeModules'),
+          JSCSamplingProfiler = _require.JSCSamplingProfiler;
+
+      JSCSamplingProfiler.operationComplete(token, result, error);
+    }
+  };
+  module.exports = SamplingProfiler;
+},101,[24],"SamplingProfiler");

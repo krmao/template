@@ -1,1 +1,110 @@
-__d(function(n,e,t,i,r){'use strict';var o=e(r[0]),a=e(r[1]);t.exports=function(n){function e(e,t,i,r,l){if(t[i]){var c=t[i],s=typeof c;'object'!==s&&o(!1,"Invalid "+(l||'(unknown)')+" `"+i+"` of type `"+s+"` supplied to `"+r+"`, expected `object`.");for(var u=a(t[i],n),d=arguments.length,p=Array(d>5?d-5:0),f=5;f<d;f++)p[f-5]=arguments[f];for(var y in u){var v=n[y];v||o(!1,"Invalid props."+i+" key `"+y+"` supplied to `"+r+"`.\nBad object: "+JSON.stringify(t[i],null,'  ')+'\nValid keys: '+JSON.stringify(Object.keys(n),null,'  '));var b=v.apply(void 0,[c,y,r,l].concat(p));b&&o(!1,b.message+'\nBad object: '+JSON.stringify(t[i],null,'  '))}}else e&&o(!1,"Required object `"+i+"` was not specified in `"+r+"`.")}function t(n,t,i,r){for(var o=arguments.length,a=Array(o>4?o-4:0),l=4;l<o;l++)a[l-4]=arguments[l];return e.apply(void 0,[!1,n,t,i,r].concat(a))}return t.isRequired=e.bind(null,!0),t}},114,[18,115]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var MissingNativeEventEmitterShim = _require(_dependencyMap[0], 'MissingNativeEventEmitterShim');
+
+  var NativeEventEmitter = _require(_dependencyMap[1], 'NativeEventEmitter');
+
+  var NativeModules = _require(_dependencyMap[2], 'NativeModules');
+
+  var RCTAppState = NativeModules.AppState;
+
+  var logError = _require(_dependencyMap[3], 'logError');
+
+  var invariant = _require(_dependencyMap[4], 'fbjs/lib/invariant');
+
+  var AppState = function (_NativeEventEmitter) {
+    babelHelpers.inherits(AppState, _NativeEventEmitter);
+
+    function AppState() {
+      babelHelpers.classCallCheck(this, AppState);
+
+      var _this = babelHelpers.possibleConstructorReturn(this, (AppState.__proto__ || Object.getPrototypeOf(AppState)).call(this, RCTAppState));
+
+      _this.isAvailable = true;
+      _this.isAvailable = true;
+      _this._eventHandlers = {
+        change: new Map(),
+        memoryWarning: new Map()
+      };
+      _this.currentState = RCTAppState.initialAppState || 'active';
+      var eventUpdated = false;
+
+      _this.addListener('appStateDidChange', function (appStateData) {
+        eventUpdated = true;
+        _this.currentState = appStateData.app_state;
+      });
+
+      RCTAppState.getCurrentAppState(function (appStateData) {
+        if (!eventUpdated) {
+          _this.currentState = appStateData.app_state;
+        }
+      }, logError);
+      return _this;
+    }
+
+    babelHelpers.createClass(AppState, [{
+      key: "addEventListener",
+      value: function addEventListener(type, handler) {
+        invariant(['change', 'memoryWarning'].indexOf(type) !== -1, 'Trying to subscribe to unknown event: "%s"', type);
+
+        if (type === 'change') {
+          this._eventHandlers[type].set(handler, this.addListener('appStateDidChange', function (appStateData) {
+            handler(appStateData.app_state);
+          }));
+        } else if (type === 'memoryWarning') {
+          this._eventHandlers[type].set(handler, this.addListener('memoryWarning', handler));
+        }
+      }
+    }, {
+      key: "removeEventListener",
+      value: function removeEventListener(type, handler) {
+        invariant(['change', 'memoryWarning'].indexOf(type) !== -1, 'Trying to remove listener for unknown event: "%s"', type);
+
+        if (!this._eventHandlers[type].has(handler)) {
+          return;
+        }
+
+        this._eventHandlers[type].get(handler).remove();
+
+        this._eventHandlers[type].delete(handler);
+      }
+    }]);
+    return AppState;
+  }(NativeEventEmitter);
+
+  if (__DEV__ && !RCTAppState) {
+    var MissingNativeAppStateShim = function (_MissingNativeEventEm) {
+      babelHelpers.inherits(MissingNativeAppStateShim, _MissingNativeEventEm);
+
+      function MissingNativeAppStateShim() {
+        babelHelpers.classCallCheck(this, MissingNativeAppStateShim);
+        return babelHelpers.possibleConstructorReturn(this, (MissingNativeAppStateShim.__proto__ || Object.getPrototypeOf(MissingNativeAppStateShim)).call(this, 'RCTAppState', 'AppState'));
+      }
+
+      babelHelpers.createClass(MissingNativeAppStateShim, [{
+        key: "addEventListener",
+        value: function addEventListener() {
+          this.throwMissingNativeModule();
+        }
+      }, {
+        key: "removeEventListener",
+        value: function removeEventListener() {
+          this.throwMissingNativeModule();
+        }
+      }, {
+        key: "currentState",
+        get: function get() {
+          this.throwMissingNativeModule();
+        }
+      }]);
+      return MissingNativeAppStateShim;
+    }(MissingNativeEventEmitterShim);
+
+    AppState = new MissingNativeAppStateShim();
+  } else {
+    AppState = new AppState();
+  }
+
+  module.exports = AppState;
+},114,[81,82,24,98,18],"AppState");

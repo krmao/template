@@ -1,1 +1,15 @@
-__d(function(i,n,o,r,s){var t={};n(s[0]).isTV,t=n(s[1]),o.exports=t},118,[28,119]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var JSInspector = {
+    registerAgent: function registerAgent(type) {
+      if (global.__registerInspectorAgent) {
+        global.__registerInspectorAgent(type);
+      }
+    },
+    getTimestamp: function getTimestamp() {
+      return global.__inspectorTimestamp();
+    }
+  };
+  module.exports = JSInspector;
+},118,[],"JSInspector");

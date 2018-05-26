@@ -1,1 +1,3 @@
-__d(function(e,s,r,t,i){'use strict';var c=(function(){function e(s){babelHelpers.classCallCheck(this,e),this.subscriber=s}return babelHelpers.createClass(e,[{key:"remove",value:function(){this.subscriber.removeSubscription(this)}}]),e})();r.exports=c},37,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], './lib/stacktrace-parser.js');
+},37,[38],"node_modules/stacktrace-parser/index.js");

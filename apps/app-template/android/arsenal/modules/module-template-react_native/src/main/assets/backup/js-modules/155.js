@@ -1,0 +1,1 @@
+__d(function(e,t,a,r,o){'use strict';var c=t(o[0]),s=t(o[1]);if(void 0===c)throw Error("create-react-class could not find the React object. If you are using script tags, make sure that React is being loaded before create-react-class.");var n=(new c.Component).updater;a.exports=s(c.Component,c.isValidElement,n)},155,[12,156]);

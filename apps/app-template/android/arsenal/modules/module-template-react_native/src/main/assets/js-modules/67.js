@@ -1,1 +1,13 @@
-__d(function(e,n,t,i,r){"use strict";var o=i.createUniqueKey="undefined"!=typeof Symbol?Symbol:function(e){return"[["+e+"_"+Math.random().toFixed(8).slice(2)+"]]"};i.LISTENERS=o("listeners"),i.CAPTURE=1,i.BUBBLE=2,i.ATTRIBUTE=3,i.newNode=function(e,n){return{listener:e,kind:n,next:null}}},67,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var Promise = _require(_dependencyMap[0], 'promise/setimmediate/es6-extensions');
+
+  _require(_dependencyMap[1], 'promise/setimmediate/done');
+
+  Promise.prototype['finally'] = function (onSettled) {
+    return this.then(onSettled, onSettled);
+  };
+
+  module.exports = Promise;
+},67,[68,70],"node_modules/fbjs/lib/Promise.native.js");

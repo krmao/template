@@ -1,1 +1,10 @@
-__d(function(t,e,a,n,r){Object.defineProperty(n,"__esModule",{value:!0});var i=e(r[0]),o=e(r[1]),u=babelHelpers.interopRequireDefault(o);function s(t){var e=t.navigation,a=t.scene,n=e.state.index===a.index,r=n?0:1e6;return{opacity:n?1:0,transform:[{translateX:r},{translateY:r}]}}n.default={forHorizontal:function(t){var e=t.layout,a=t.position,n=t.scene;if(!e.isMeasured)return s(t);var r=(0,u.default)(t);if(!r)return{opacity:0};var o=r.first,p=r.last,l=n.index,f=a.interpolate({inputRange:[o,o+.01,l,p-.01,p],outputRange:[0,1,1,.85,0]}),d=e.initWidth;return{opacity:f,transform:[{translateX:a.interpolate({inputRange:[o,l,p],outputRange:i.I18nManager.isRTL?[-d,0,.3*d]:[d,0,-.3*d]})},{translateY:0}]}},forVertical:function(t){var e=t.layout,a=t.position,n=t.scene;if(!e.isMeasured)return s(t);var r=(0,u.default)(t);if(!r)return{opacity:0};var i=r.first,o=r.last,p=n.index,l=a.interpolate({inputRange:[i,i+.01,p,o-.01,o],outputRange:[0,1,1,.85,0]}),f=e.initHeight;return{opacity:l,transform:[{translateX:0},{translateY:a.interpolate({inputRange:[i,p,o],outputRange:[f,0,0]})}]}},forFadeFromBottomAndroid:function(t){var e=t.layout,a=t.position,n=t.scene;if(!e.isMeasured)return s(t);var r=(0,u.default)(t);if(!r)return{opacity:0};var i=r.first,o=r.last,p=[i,n.index,o-.01,o];return{opacity:a.interpolate({inputRange:p,outputRange:[0,1,1,0]}),transform:[{translateX:0},{translateY:a.interpolate({inputRange:p,outputRange:[50,0,0,0]})}]}},forFade:function(t){var e=t.layout,a=t.position,n=t.scene;if(!e.isMeasured)return s(t);var r=(0,u.default)(t);if(!r)return{opacity:0};var i=r.first,o=r.last,p=n.index;return{opacity:a.interpolate({inputRange:[i,p,o],outputRange:[0,1,1]})}}}},344,[17,334]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = docsUrl;
+
+  function docsUrl(path) {
+    return "https://v2.reactnavigation.org/docs/" + path;
+  }
+},344,[],"node_modules/react-navigation/src/utils/docsUrl.js");

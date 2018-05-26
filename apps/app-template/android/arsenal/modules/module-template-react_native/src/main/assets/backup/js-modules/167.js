@@ -1,0 +1,1 @@
+__d(function(t,o,e,i,n){'use strict';var h=o(n[0]),r=h.twoArgumentPooler;function s(t,o){this.width=t,this.height=o}s.prototype.destructor=function(){this.width=null,this.height=null},s.getPooledFromElement=function(t){return s.getPooled(t.offsetWidth,t.offsetHeight)},h.addPoolingTo(s,r),e.exports=s},167,[168]);

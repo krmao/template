@@ -1,1 +1,56 @@
-__d(function(t,e,n,o,i){'use strict';var r=e(i[0]),l=e(i[1]),a=e(i[2]),u=babelHelpers.extends({},a,{color:r,fontFamily:l.string,fontSize:l.number,fontStyle:l.oneOf(['normal','italic']),fontWeight:l.oneOf(['normal','bold','100','200','300','400','500','600','700','800','900']),fontVariant:l.arrayOf(l.oneOf(['small-caps','oldstyle-nums','lining-nums','tabular-nums','proportional-nums'])),textShadowOffset:l.shape({width:l.number,height:l.number}),textShadowRadius:l.number,textShadowColor:r,letterSpacing:l.number,lineHeight:l.number,textAlign:l.oneOf(['auto','left','right','center','justify']),textAlignVertical:l.oneOf(['auto','top','bottom','center']),includeFontPadding:l.bool,textDecorationLine:l.oneOf(['none','underline','line-through','underline line-through']),textDecorationStyle:l.oneOf(['solid','double','dotted','dashed']),textDecorationColor:r,writingDirection:l.oneOf(['auto','ltr','rtl'])});n.exports=u},133,[40,108,121]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var React = _require2(_dependencyMap[0], 'React');
+
+  var EdgeInsetsPropType = _require2(_dependencyMap[1], 'EdgeInsetsPropType');
+
+  var PlatformViewPropTypes = _require2(_dependencyMap[2], 'PlatformViewPropTypes');
+
+  var PropTypes = _require2(_dependencyMap[3], 'prop-types');
+
+  var StyleSheetPropType = _require2(_dependencyMap[4], 'StyleSheetPropType');
+
+  var ViewStylePropTypes = _require2(_dependencyMap[5], 'ViewStylePropTypes');
+
+  var _require = _require2(_dependencyMap[6], 'ViewAccessibility'),
+      AccessibilityComponentTypes = _require.AccessibilityComponentTypes,
+      AccessibilityTraits = _require.AccessibilityTraits;
+
+  var stylePropType = StyleSheetPropType(ViewStylePropTypes);
+  module.exports = babelHelpers.extends({}, PlatformViewPropTypes, {
+    accessible: PropTypes.bool,
+    accessibilityLabel: PropTypes.node,
+    accessibilityActions: PropTypes.arrayOf(PropTypes.string),
+    accessibilityComponentType: PropTypes.oneOf(AccessibilityComponentTypes),
+    accessibilityLiveRegion: PropTypes.oneOf(['none', 'polite', 'assertive']),
+    importantForAccessibility: PropTypes.oneOf(['auto', 'yes', 'no', 'no-hide-descendants']),
+    accessibilityTraits: PropTypes.oneOfType([PropTypes.oneOf(AccessibilityTraits), PropTypes.arrayOf(PropTypes.oneOf(AccessibilityTraits))]),
+    accessibilityViewIsModal: PropTypes.bool,
+    accessibilityElementsHidden: PropTypes.bool,
+    onAccessibilityAction: PropTypes.func,
+    onAccessibilityTap: PropTypes.func,
+    onMagicTap: PropTypes.func,
+    testID: PropTypes.string,
+    nativeID: PropTypes.string,
+    onResponderGrant: PropTypes.func,
+    onResponderMove: PropTypes.func,
+    onResponderReject: PropTypes.func,
+    onResponderRelease: PropTypes.func,
+    onResponderTerminate: PropTypes.func,
+    onResponderTerminationRequest: PropTypes.func,
+    onStartShouldSetResponder: PropTypes.func,
+    onStartShouldSetResponderCapture: PropTypes.func,
+    onMoveShouldSetResponder: PropTypes.func,
+    onMoveShouldSetResponderCapture: PropTypes.func,
+    hitSlop: EdgeInsetsPropType,
+    onLayout: PropTypes.func,
+    pointerEvents: PropTypes.oneOf(['box-none', 'none', 'box-only', 'auto']),
+    style: stylePropType,
+    removeClippedSubviews: PropTypes.bool,
+    renderToHardwareTextureAndroid: PropTypes.bool,
+    shouldRasterizeIOS: PropTypes.bool,
+    collapsable: PropTypes.bool,
+    needsOffscreenAlphaCompositing: PropTypes.bool
+  });
+},133,[132,134,139,129,141,142,147],"ViewPropTypes");

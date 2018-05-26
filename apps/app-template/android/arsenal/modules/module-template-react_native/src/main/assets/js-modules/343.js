@@ -1,1 +1,53 @@
-__d(function(i,n,e,t,r){Object.defineProperty(t,"__esModule",{value:!0});var a=n(r[0]),o=n(r[1]),d=babelHelpers.interopRequireDefault(o),s=n(r[2]),l=void 0,g=(l=babelHelpers.interopRequireWildcard(s).supportsImprovedSpringAnimation()?{timing:a.Animated.spring,stiffness:1e3,damping:500,mass:3}:{duration:500,easing:a.Easing.bezier(.2833,.99,.31833,.99),timing:a.Animated.timing},d.default.forHorizontal,d.default.forVertical,{transitionSpec:{duration:350,easing:a.Easing.out(a.Easing.poly(5)),timing:a.Animated.timing},screenInterpolator:d.default.forFadeFromBottomAndroid}),u={transitionSpec:{duration:230,easing:a.Easing.in(a.Easing.poly(4)),timing:a.Animated.timing},screenInterpolator:d.default.forFadeFromBottomAndroid};function f(i,n,e){return n&&i.index<n.index?u:g}t.default={defaultTransitionConfig:f,getTransitionConfig:function(i,n,e,t){var r=f(n,e);return i?babelHelpers.extends({},r,i(n,e,t)):r}}},343,[17,344,345]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _NavigationActions = _require(_dependencyMap[0], "../NavigationActions");
+
+  var _NavigationActions2 = babelHelpers.interopRequireDefault(_NavigationActions);
+
+  var _invariant = _require(_dependencyMap[1], "../utils/invariant");
+
+  var _invariant2 = babelHelpers.interopRequireDefault(_invariant);
+
+  var getNavigationActionCreators = function getNavigationActionCreators(route) {
+    return {
+      goBack: function goBack(key) {
+        var actualizedKey = key;
+
+        if (key === undefined && route.key) {
+          (0, _invariant2.default)(typeof route.key === 'string', 'key should be a string');
+          actualizedKey = route.key;
+        }
+
+        return _NavigationActions2.default.back({
+          key: actualizedKey
+        });
+      },
+      navigate: function navigate(navigateTo, params, action) {
+        if (typeof navigateTo === 'string') {
+          return _NavigationActions2.default.navigate({
+            routeName: navigateTo,
+            params: params,
+            action: action
+          });
+        }
+
+        (0, _invariant2.default)(typeof navigateTo === 'object', 'Must navigateTo an object or a string');
+        (0, _invariant2.default)(params == null, 'Params must not be provided to .navigate() when specifying an object');
+        (0, _invariant2.default)(action == null, 'Child action must not be provided to .navigate() when specifying an object');
+        return _NavigationActions2.default.navigate(navigateTo);
+      },
+      setParams: function setParams(params) {
+        (0, _invariant2.default)(route.key && typeof route.key === 'string', 'setParams cannot be called by root navigator');
+        return _NavigationActions2.default.setParams({
+          params: params,
+          key: route.key
+        });
+      }
+    };
+  };
+
+  exports.default = getNavigationActionCreators;
+},343,[341,342],"node_modules/react-navigation/src/routers/getNavigationActionCreators.js");

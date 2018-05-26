@@ -1,1 +1,34 @@
-__d(function(r,o,e,n,s){'use strict';var i=0;function c(r,e){var n=o(s[0]).ExceptionsManager;if(n){var c=o(s[1])(r),l=++i;e?n.reportFatalException(r.message,c,l):n.reportSoftException(r.message,c,l)}}function l(){if(console._errorOriginal.apply(console,arguments),console.reportErrorsAsExceptions)if(arguments[0]&&arguments[0].stack)c(arguments[0],!1);else{var r=o(s[2]),e=Array.prototype.map.call(arguments,r).join(', ');if('"Warning: '===e.slice(0,10))return;var n=new Error('console.error: '+e);n.framesToPop=1,c(n,!1)}}e.exports={handleException:function(r,o){r.message||(r=new Error(r)),console._errorOriginal?console._errorOriginal(r.message):console.error(r.message),c(r,o)},installConsoleErrorReporter:function(){console._errorOriginal||(console._errorOriginal=console.error.bind(console),console.error=l,void 0===console.reportErrorsAsExceptions&&(console.reportErrorsAsExceptions=!0))}}},53,[20,54,26]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function _shouldActuallyPolyfillES6Collection(collectionName) {
+    var Collection = global[collectionName];
+
+    if (Collection == null) {
+      return true;
+    }
+
+    if (typeof global.Symbol !== 'function') {
+      return true;
+    }
+
+    var proto = Collection.prototype;
+    return Collection == null || typeof Collection !== 'function' || typeof proto.clear !== 'function' || new Collection().size !== 0 || typeof proto.keys !== 'function' || typeof proto.forEach !== 'function';
+  }
+
+  var cache = {};
+
+  function _shouldPolyfillES6Collection(collectionName) {
+    var result = cache[collectionName];
+
+    if (result !== undefined) {
+      return result;
+    }
+
+    result = _shouldActuallyPolyfillES6Collection(collectionName);
+    cache[collectionName] = result;
+    return result;
+  }
+
+  module.exports = _shouldPolyfillES6Collection;
+},53,[],"_shouldPolyfillES6Collection");

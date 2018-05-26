@@ -1,1 +1,93 @@
-__d(function(e,t,n,a,r){Object.defineProperty(a,"__esModule",{value:!0});var i=t(r[0]),o=babelHelpers.interopRequireWildcard(i),s=t(r[1]),l=t(r[2]),d=(function(e){function t(e){babelHelpers.classCallCheck(this,t);var n=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n._isIdle=!0,n._currentIndex=0,n._getPageIndex=function(e){return s.I18nManager.isRTL?n.props.navigationState.routes.length-(e+1):e},n._setPage=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],a=n._viewPager;if(a){var r=n._getPageIndex(e);!1===n.props.animationEnabled||!1===t?a.setPageWithoutAnimation(r):a.setPage(r)}},n._handlePageChange=function(e){n._isIdle&&n._currentIndex!==e&&(n._setPage(e),n._currentIndex=e)},n._handlePageScroll=function(e){n.props.offsetX.setValue(e.nativeEvent.position*n.props.layout.width*(s.I18nManager.isRTL?1:-1)),n.props.panX.setValue(e.nativeEvent.offset*n.props.layout.width*(s.I18nManager.isRTL?1:-1))},n._handlePageScrollStateChanged=function(e){n._isIdle='idle'===e;var t=n._currentIndex;n.props.canJumpToTab(n.props.navigationState.routes[t])?n.props.jumpToIndex(t):(n._setPage(n.props.navigationState.index),n._currentIndex=n.props.navigationState.index)},n._handlePageSelected=function(e){var t=n._getPageIndex(e.nativeEvent.position);n._currentIndex=t},n._setRef=function(e){return n._viewPager=e},n._currentIndex=n.props.navigationState.index,n}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"componentDidUpdate",value:function(e){this.props.layout===e.layout&&this.props.navigationState.routes.length===e.navigationState.routes.length&&this.props.navigationState.index===e.navigationState.index||this._handlePageChange(this.props.navigationState.index)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.navigationState,a=e.swipeEnabled,r=o.Children.map(t,function(e,t){return o.createElement(s.View,{key:n.routes[t].key,testID:n.routes[t].testID,style:p.page},e)});s.I18nManager.isRTL&&r.reverse();var i=this._getPageIndex(n.index);return o.createElement(s.ViewPagerAndroid,{key:n.routes.length,keyboardDismissMode:"on-drag",initialPage:i,scrollEnabled:!1!==a,onPageScroll:this._handlePageScroll,onPageScrollStateChanged:this._handlePageScrollStateChanged,onPageSelected:this._handlePageSelected,style:p.container,ref:this._setRef},r)}}]),t})(o.Component);d.propTypes=l.PagerRendererPropType,d.defaultProps={canJumpToTab:function(){return!0}},a.default=d;var p=s.StyleSheet.create({container:{flexGrow:1},page:{overflow:'hidden'}})},375,[12,17,374]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _reactNative = _require(_dependencyMap[0], "react-native");
+
+  var _StackViewStyleInterpolator = _require(_dependencyMap[1], "./StackViewStyleInterpolator");
+
+  var _StackViewStyleInterpolator2 = babelHelpers.interopRequireDefault(_StackViewStyleInterpolator);
+
+  var _ReactNativeFeatures = _require(_dependencyMap[2], "../../utils/ReactNativeFeatures");
+
+  var ReactNativeFeatures = babelHelpers.interopRequireWildcard(_ReactNativeFeatures);
+  var IOSTransitionSpec = void 0;
+
+  if (ReactNativeFeatures.supportsImprovedSpringAnimation()) {
+    IOSTransitionSpec = {
+      timing: _reactNative.Animated.spring,
+      stiffness: 1000,
+      damping: 500,
+      mass: 3
+    };
+  } else {
+    IOSTransitionSpec = {
+      duration: 500,
+      easing: _reactNative.Easing.bezier(0.2833, 0.99, 0.31833, 0.99),
+      timing: _reactNative.Animated.timing
+    };
+  }
+
+  var SlideFromRightIOS = {
+    transitionSpec: IOSTransitionSpec,
+    screenInterpolator: _StackViewStyleInterpolator2.default.forHorizontal,
+    containerStyle: {
+      backgroundColor: '#000'
+    }
+  };
+  var ModalSlideFromBottomIOS = {
+    transitionSpec: IOSTransitionSpec,
+    screenInterpolator: _StackViewStyleInterpolator2.default.forVertical,
+    containerStyle: {
+      backgroundColor: '#000'
+    }
+  };
+  var FadeInFromBottomAndroid = {
+    transitionSpec: {
+      duration: 350,
+      easing: _reactNative.Easing.out(_reactNative.Easing.poly(5)),
+      timing: _reactNative.Animated.timing
+    },
+    screenInterpolator: _StackViewStyleInterpolator2.default.forFadeFromBottomAndroid
+  };
+  var FadeOutToBottomAndroid = {
+    transitionSpec: {
+      duration: 230,
+      easing: _reactNative.Easing.in(_reactNative.Easing.poly(4)),
+      timing: _reactNative.Animated.timing
+    },
+    screenInterpolator: _StackViewStyleInterpolator2.default.forFadeFromBottomAndroid
+  };
+
+  function defaultTransitionConfig(transitionProps, prevTransitionProps, isModal) {
+    if (_reactNative.Platform.OS === 'android') {
+      if (prevTransitionProps && transitionProps.index < prevTransitionProps.index) {
+        return FadeOutToBottomAndroid;
+      }
+
+      return FadeInFromBottomAndroid;
+    }
+
+    if (isModal) {
+      return ModalSlideFromBottomIOS;
+    }
+
+    return SlideFromRightIOS;
+  }
+
+  function getTransitionConfig(transitionConfigurer, transitionProps, prevTransitionProps, isModal) {
+    var defaultConfig = defaultTransitionConfig(transitionProps, prevTransitionProps, isModal);
+
+    if (transitionConfigurer) {
+      return babelHelpers.extends({}, defaultConfig, transitionConfigurer(transitionProps, prevTransitionProps, isModal));
+    }
+
+    return defaultConfig;
+  }
+
+  exports.default = {
+    defaultTransitionConfig: defaultTransitionConfig,
+    getTransitionConfig: getTransitionConfig
+  };
+},375,[22,376,377],"node_modules/react-navigation/src/views/StackView/StackViewTransitionConfigs.js");

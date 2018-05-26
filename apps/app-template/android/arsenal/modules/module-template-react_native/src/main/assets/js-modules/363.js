@@ -1,1 +1,12 @@
-__d(function(e,t,n,a,E){Object.defineProperty(a,"__esModule",{value:!0});a.default={OPEN_DRAWER:"Navigation/OPEN_DRAWER",CLOSE_DRAWER:"Navigation/CLOSE_DRAWER",TOGGLE_DRAWER:"Navigation/TOGGLE_DRAWER",openDrawer:function(e){return babelHelpers.extends({type:"Navigation/OPEN_DRAWER"},e)},closeDrawer:function(e){return babelHelpers.extends({type:"Navigation/CLOSE_DRAWER"},e)},toggleDrawer:function(e){return babelHelpers.extends({type:"Navigation/TOGGLE_DRAWER"},e)}}},363,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  module.exports = _require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
+    "__packager_asset": true,
+    "httpServerLocation": "/assets/node_modules/react-navigation/src/views/assets",
+    "width": 24,
+    "height": 24,
+    "scales": [1, 1.5, 2, 3, 4],
+    "hash": "a364dc7a784101f7c8f6791c7b4514ce",
+    "name": "back-icon",
+    "type": "png"
+  });
+},363,[164],"node_modules/react-navigation/src/views/assets/back-icon.png");

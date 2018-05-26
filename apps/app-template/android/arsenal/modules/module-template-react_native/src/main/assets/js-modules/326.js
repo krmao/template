@@ -1,1 +1,28 @@
-__d(function(e,n,t,i,a){Object.defineProperty(i,"__esModule",{value:!0}),i.isOrientationLandscape=void 0,i.default=function(e){var n=(function(n){function i(){babelHelpers.classCallCheck(this,i);var e=babelHelpers.possibleConstructorReturn(this,(i.__proto__||Object.getPrototypeOf(i)).call(this));t.call(e);var n=c(o.Dimensions.get('window'));return e.state={isLandscape:n},e}return babelHelpers.inherits(i,n),babelHelpers.createClass(i,[{key:"componentDidMount",value:function(){o.Dimensions.addEventListener('change',this.handleOrientationChange)}},{key:"componentWillUnmount",value:function(){o.Dimensions.removeEventListener('change',this.handleOrientationChange)}},{key:"render",value:function(){return s.createElement(e,babelHelpers.extends({},this.props,this.state))}}]),i})(s.Component),t=function(){var e=this;this.handleOrientationChange=function(n){var t=n.window,i=c(t);e.setState({isLandscape:i})}};return(0,u.default)(n,e)};var r=n(a[0]),s=babelHelpers.interopRequireWildcard(r),o=n(a[1]),l=n(a[2]),u=babelHelpers.interopRequireDefault(l),c=i.isOrientationLandscape=function(e){return e.width>e.height}},326,[12,17,327]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var RCTImagePicker = _require(_dependencyMap[0], 'NativeModules').ImagePickerIOS;
+
+  var ImagePickerIOS = {
+    canRecordVideos: function canRecordVideos(callback) {
+      return RCTImagePicker.canRecordVideos(callback);
+    },
+    canUseCamera: function canUseCamera(callback) {
+      return RCTImagePicker.canUseCamera(callback);
+    },
+    openCameraDialog: function openCameraDialog(config, successCallback, cancelCallback) {
+      config = babelHelpers.extends({
+        videoMode: false
+      }, config);
+      return RCTImagePicker.openCameraDialog(config, successCallback, cancelCallback);
+    },
+    openSelectDialog: function openSelectDialog(config, successCallback, cancelCallback) {
+      config = babelHelpers.extends({
+        showImages: true,
+        showVideos: false
+      }, config);
+      return RCTImagePicker.openSelectDialog(config, successCallback, cancelCallback);
+    }
+  };
+  module.exports = ImagePickerIOS;
+},326,[24],"ImagePickerIOS");

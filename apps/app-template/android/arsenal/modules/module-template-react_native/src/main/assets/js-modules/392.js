@@ -1,1 +1,108 @@
-__d(function(e,r,t,n,o){Object.defineProperty(n,"__esModule",{value:!0});var a=r(o[0]),s=babelHelpers.interopRequireWildcard(a),i=(r(o[1]),r(o[2])),p=r(o[3]),l=babelHelpers.interopRequireDefault(p),b=r(o[4]),u=babelHelpers.interopRequireDefault(b),d=r(o[5]),c=babelHelpers.interopRequireDefault(d),f=(function(e){function r(){var e,t,n,o;babelHelpers.classCallCheck(this,r);for(var a=arguments.length,p=Array(a),l=0;l<a;l++)p[l]=arguments[l];return t=n=babelHelpers.possibleConstructorReturn(this,(e=r.__proto__||Object.getPrototypeOf(r)).call.apply(e,[this].concat(p))),n._getLabel=function(e){var r=e.route,t=e.tintColor,o=e.focused,a=n.props.descriptors[r.key].options;return a.tabBarLabel?'function'==typeof a.tabBarLabel?a.tabBarLabel({tintColor:t,focused:o}):a.tabBarLabel:'string'==typeof a.title?a.title:r.routeName},n._getOnPress=function(e,r){var t=r.route;return n.props.descriptors[t.key].options.tabBarOnPress},n._getTestIDProps=function(e){var r=e.route,t=e.focused,o=n.props.descriptors[r.key].options;return'function'==typeof o.tabBarTestIDProps?o.tabBarTestIDProps({focused:t}):o.tabBarTestIDProps},n._renderIcon=function(e){var r=e.focused,t=e.route,o=e.tintColor,a=n.props.descriptors[t.key].options;return a.tabBarIcon?'function'==typeof a.tabBarIcon?a.tabBarIcon({tintColor:o,focused:r}):a.tabBarIcon:null},n._renderTabBar=function(e){var r=n.props.navigation.state,t=r.routes[r.index],o=n.props.descriptors[t.key].options,a=null==o.tabBarVisible||o.tabBarVisible,i=n.props,p=i.tabBarComponent,l=void 0===p?u.default:p,b=i.tabBarPosition,d=i.tabBarOptions;return null!==l&&a?s.createElement(l,babelHelpers.extends({},d,e,{tabBarPosition:b,screenProps:n.props.screenProps,navigation:n.props.navigation,getLabelText:n.props.getLabelText,getTestIDProps:n._getTestIDProps,renderIcon:n._renderIcon})):null},n._renderPanPager=function(e){return s.createElement(i.TabViewPagerPan,e)},n._renderScene=function(e){var r=e.route,t=e.focused,o=n.props,a=o.renderScene,i=o.animationEnabled,p=o.swipeEnabled;return!1===i&&!1===p?s.createElement(c.default,{isFocused:t},a({route:r})):a({route:r})},o=t,babelHelpers.possibleConstructorReturn(n,o)}return babelHelpers.inherits(r,e),babelHelpers.createClass(r,[{key:"render",value:function(){var e=this.props,r=e.navigation,t=e.tabBarPosition,n=e.animationEnabled,o=(e.renderScene,babelHelpers.objectWithoutProperties(e,["navigation","tabBarPosition","animationEnabled","renderScene"])),a=void 0,p=void 0,l=void 0,b=this.props.navigation.state,u=b.routes[b.index],d=this.props.descriptors[u.key].options,c=null==d.swipeEnabled?this.props.swipeEnabled:d.swipeEnabled;return'function'==typeof c&&(c=c(b)),'bottom'===t?p=this._renderTabBar:a=this._renderTabBar,!1===n&&!1===c&&(l=this._renderPanPager),s.createElement(i.TabViewAnimated,babelHelpers.extends({},o,{navigationState:r.state,animationEnabled:n,swipeEnabled:c,renderPager:l,renderHeader:a,renderFooter:p,renderScene:this._renderScene}))}}]),r})(s.PureComponent);f.defaultProps={initialLayout:{width:1,height:0}},n.default=(0,l.default)(f)},392,[12,17,393,387,403,391]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/node_modules/react-navigation/src/navigators/createDrawerNavigator.js";
+
+  var _react = _require(_dependencyMap[0], "react");
+
+  var _react2 = babelHelpers.interopRequireDefault(_react);
+
+  var _reactNative = _require(_dependencyMap[1], "react-native");
+
+  var _reactNativeSafeAreaView = _require(_dependencyMap[2], "react-native-safe-area-view");
+
+  var _reactNativeSafeAreaView2 = babelHelpers.interopRequireDefault(_reactNativeSafeAreaView);
+
+  var _createNavigator = _require(_dependencyMap[3], "./createNavigator");
+
+  var _createNavigator2 = babelHelpers.interopRequireDefault(_createNavigator);
+
+  var _createNavigationContainer = _require(_dependencyMap[4], "../createNavigationContainer");
+
+  var _createNavigationContainer2 = babelHelpers.interopRequireDefault(_createNavigationContainer);
+
+  var _DrawerRouter = _require(_dependencyMap[5], "../routers/DrawerRouter");
+
+  var _DrawerRouter2 = babelHelpers.interopRequireDefault(_DrawerRouter);
+
+  var _DrawerView = _require(_dependencyMap[6], "../views/Drawer/DrawerView");
+
+  var _DrawerView2 = babelHelpers.interopRequireDefault(_DrawerView);
+
+  var _DrawerNavigatorItems = _require(_dependencyMap[7], "../views/Drawer/DrawerNavigatorItems");
+
+  var _DrawerNavigatorItems2 = babelHelpers.interopRequireDefault(_DrawerNavigatorItems);
+
+  var defaultContentComponent = function defaultContentComponent(props) {
+    return _react2.default.createElement(
+      _reactNative.ScrollView,
+      {
+        alwaysBounceVertical: false,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 16
+        }
+      },
+      _react2.default.createElement(
+        _reactNativeSafeAreaView2.default,
+        {
+          forceInset: {
+            top: 'always',
+            horizontal: 'never'
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 17
+          }
+        },
+        _react2.default.createElement(_DrawerNavigatorItems2.default, babelHelpers.extends({}, props, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 18
+          }
+        }))
+      )
+    );
+  };
+
+  var DefaultDrawerConfig = {
+    drawerWidth: function drawerWidth() {
+      var _Dimensions$get = _reactNative.Dimensions.get('window'),
+          height = _Dimensions$get.height,
+          width = _Dimensions$get.width;
+
+      var smallerAxisSize = Math.min(height, width);
+      var isLandscape = width > height;
+      var isTablet = smallerAxisSize >= 600;
+      var appBarHeight = _reactNative.Platform.OS === 'ios' ? isLandscape ? 32 : 44 : 56;
+      var maxWidth = isTablet ? 320 : 280;
+      return Math.min(smallerAxisSize - appBarHeight, maxWidth);
+    },
+    contentComponent: defaultContentComponent,
+    drawerPosition: 'left',
+    drawerBackgroundColor: 'white',
+    useNativeAnimations: true
+  };
+
+  var DrawerNavigator = function DrawerNavigator(routeConfigs) {
+    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var mergedConfig = babelHelpers.extends({}, DefaultDrawerConfig, config);
+    var order = mergedConfig.order,
+        paths = mergedConfig.paths,
+        initialRouteName = mergedConfig.initialRouteName,
+        backBehavior = mergedConfig.backBehavior,
+        drawerConfig = babelHelpers.objectWithoutProperties(mergedConfig, ["order", "paths", "initialRouteName", "backBehavior"]);
+    var routerConfig = {
+      order: order,
+      paths: paths,
+      initialRouteName: initialRouteName,
+      backBehavior: backBehavior
+    };
+    var drawerRouter = (0, _DrawerRouter2.default)(routeConfigs, routerConfig);
+    var navigator = (0, _createNavigator2.default)(_DrawerView2.default, drawerRouter, drawerConfig);
+    return (0, _createNavigationContainer2.default)(navigator);
+  };
+
+  exports.default = DrawerNavigator;
+},392,[12,22,357,346,338,393,396,399],"node_modules/react-navigation/src/navigators/createDrawerNavigator.js");

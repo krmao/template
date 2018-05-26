@@ -1,1 +1,62 @@
-__d(function(t,e,r,o,n){!(function(t,e){'object'==typeof o&&void 0!==r?r.exports=e():'function'==typeof define&&define.amd?define(e):t.hoistNonReactStatics=e()})(this,function(){'use strict';var t={childContextTypes:!0,contextTypes:!0,defaultProps:!0,displayName:!0,getDefaultProps:!0,getDerivedStateFromProps:!0,mixins:!0,propTypes:!0,type:!0},e={name:!0,length:!0,prototype:!0,caller:!0,callee:!0,arguments:!0,arity:!0},r=Object.defineProperty,o=Object.getOwnPropertyNames,n=Object.getOwnPropertySymbols,i=Object.getOwnPropertyDescriptor,c=Object.getPrototypeOf,a=c&&c(Object);return function p(f,s,y){if('string'!=typeof s){if(a){var u=c(s);u&&u!==a&&p(f,u,y)}var d=o(s);n&&(d=d.concat(n(s)));for(var l=0;l<d.length;++l){var g=d[l];if(!(t[g]||e[g]||y&&y[g])){var O=i(s,g);try{r(f,g,O)}catch(t){}}}return f}return f}})},327,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var NativeEventEmitter = _require(_dependencyMap[0], 'NativeEventEmitter');
+
+  var NativeModules = _require(_dependencyMap[1], 'NativeModules');
+
+  var Platform = _require(_dependencyMap[2], 'Platform');
+
+  var invariant = _require(_dependencyMap[3], 'fbjs/lib/invariant');
+
+  var LinkingManager = Platform.OS === 'android' ? NativeModules.IntentAndroid : NativeModules.LinkingManager;
+
+  var Linking = function (_NativeEventEmitter) {
+    babelHelpers.inherits(Linking, _NativeEventEmitter);
+
+    function Linking() {
+      babelHelpers.classCallCheck(this, Linking);
+      return babelHelpers.possibleConstructorReturn(this, (Linking.__proto__ || Object.getPrototypeOf(Linking)).call(this, LinkingManager));
+    }
+
+    babelHelpers.createClass(Linking, [{
+      key: "addEventListener",
+      value: function addEventListener(type, handler) {
+        this.addListener(type, handler);
+      }
+    }, {
+      key: "removeEventListener",
+      value: function removeEventListener(type, handler) {
+        this.removeListener(type, handler);
+      }
+    }, {
+      key: "openURL",
+      value: function openURL(url) {
+        this._validateURL(url);
+
+        return LinkingManager.openURL(url);
+      }
+    }, {
+      key: "canOpenURL",
+      value: function canOpenURL(url) {
+        this._validateURL(url);
+
+        return LinkingManager.canOpenURL(url);
+      }
+    }, {
+      key: "getInitialURL",
+      value: function getInitialURL() {
+        return LinkingManager.getInitialURL();
+      }
+    }, {
+      key: "_validateURL",
+      value: function _validateURL(url) {
+        invariant(typeof url === 'string', 'Invalid URL: should be a string. Was: ' + url);
+        invariant(url, 'Invalid URL: cannot be empty');
+      }
+    }]);
+    return Linking;
+  }(NativeEventEmitter);
+
+  module.exports = new Linking();
+},327,[82,24,32,18],"Linking");

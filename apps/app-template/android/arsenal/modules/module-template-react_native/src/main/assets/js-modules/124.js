@@ -1,1 +1,55 @@
-__d(function(e,r,t,s,a){'use strict';var n=r(a[0]),o=r(a[1]),p={transform:n.arrayOf(n.oneOfType([n.shape({perspective:n.number}),n.shape({rotate:n.string}),n.shape({rotateX:n.string}),n.shape({rotateY:n.string}),n.shape({rotateZ:n.string}),n.shape({scale:n.number}),n.shape({scaleX:n.number}),n.shape({scaleY:n.number}),n.shape({translateX:n.number}),n.shape({translateY:n.number}),n.shape({skewX:n.string}),n.shape({skewY:n.string})])),transformMatrix:function(e,r,t){if(e[r])return new Error("The transformMatrix style property is deprecated. Use `transform: [{ matrix: ... }]` instead.")},decomposedMatrix:function(e,r,t){if(e[r])return new Error("The decomposedMatrix style property is deprecated. Use `transform: [...]` instead.")},scaleX:o(n.number,'Use the transform prop instead.'),scaleY:o(n.number,'Use the transform prop instead.'),rotation:o(n.number,'Use the transform prop instead.'),translateX:o(n.number,'Use the transform prop instead.'),translateY:o(n.number,'Use the transform prop instead.')};t.exports=p},124,[108,125]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var deepDiffer = function deepDiffer(one, two) {
+    if (one === two) {
+      return false;
+    }
+
+    if (typeof one === 'function' && typeof two === 'function') {
+      return false;
+    }
+
+    if (typeof one !== 'object' || one === null) {
+      return one !== two;
+    }
+
+    if (typeof two !== 'object' || two === null) {
+      return true;
+    }
+
+    if (one.constructor !== two.constructor) {
+      return true;
+    }
+
+    if (Array.isArray(one)) {
+      var len = one.length;
+
+      if (two.length !== len) {
+        return true;
+      }
+
+      for (var ii = 0; ii < len; ii++) {
+        if (deepDiffer(one[ii], two[ii])) {
+          return true;
+        }
+      }
+    } else {
+      for (var key in one) {
+        if (deepDiffer(one[key], two[key])) {
+          return true;
+        }
+      }
+
+      for (var twoKey in two) {
+        if (one[twoKey] === undefined && two[twoKey] !== undefined) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  module.exports = deepDiffer;
+},124,[],"deepDiffer");

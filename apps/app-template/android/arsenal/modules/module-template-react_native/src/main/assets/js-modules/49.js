@@ -1,1 +1,13 @@
-__d(function(t,n,r,e,o){'use strict';r.exports=function(){return'f'+(1073741824*Math.random()).toString(16).replace('.','')}},49,[]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ReactNative = void 0;
+
+  if (__DEV__) {
+    ReactNative = _require(_dependencyMap[0], 'ReactNativeRenderer-dev');
+  } else {
+    ReactNative = _require(_dependencyMap[1], 'ReactNativeRenderer-prod');
+  }
+
+  module.exports = ReactNative;
+},49,[50,127],"ReactNative");

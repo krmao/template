@@ -1,1 +1,12 @@
-__d(function(e,t,n,a,r){'use strict';t(r[0]);var s=t(r[1]),i=t(r[2]).AppState,l=t(r[3]),o=t(r[4]),p=(function(e){function t(){babelHelpers.classCallCheck(this,t);var e=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,i));e.isAvailable=!0,e.isAvailable=!0,e._eventHandlers={change:new Map,memoryWarning:new Map},e.currentState=i.initialAppState||'active';var n=!1;return e.addListener('appStateDidChange',function(t){n=!0,e.currentState=t.app_state}),i.getCurrentAppState(function(t){n||(e.currentState=t.app_state)},l),e}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"addEventListener",value:function(e,t){o(-1!==['change','memoryWarning'].indexOf(e),'Trying to subscribe to unknown event: "%s"',e),'change'===e?this._eventHandlers[e].set(t,this.addListener('appStateDidChange',function(e){t(e.app_state)})):'memoryWarning'===e&&this._eventHandlers[e].set(t,this.addListener('memoryWarning',t))}},{key:"removeEventListener",value:function(e,t){o(-1!==['change','memoryWarning'].indexOf(e),'Trying to remove listener for unknown event: "%s"',e),this._eventHandlers[e].has(t)&&(this._eventHandlers[e].get(t).remove(),this._eventHandlers[e].delete(t))}}]),t})(s);p=new p,n.exports=p},284,[71,72,20,90,18]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var I18nManager = _require(_dependencyMap[0], 'NativeModules').I18nManager || {
+    isRTL: false,
+    doLeftAndRightSwapInRTL: true,
+    allowRTL: function allowRTL() {},
+    forceRTL: function forceRTL() {},
+    swapLeftAndRightInRTL: function swapLeftAndRightInRTL() {}
+  };
+  module.exports = I18nManager;
+},284,[24],"I18nManager");

@@ -1,1 +1,51 @@
-__d(function(t,a,e,l,n){'use strict';var s=a(n[0]),i=(function(){function t(a,e){babelHelpers.classCallCheck(this,t),this._delay=e,this._callback=a}return babelHelpers.createClass(t,[{key:"dispose",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{abort:!1};this._taskHandle&&(this._taskHandle.cancel(),t.abort||this._callback(),this._taskHandle=null)}},{key:"schedule",value:function(){var t=this;if(!this._taskHandle){var a=setTimeout(function(){t._taskHandle=s.runAfterInteractions(function(){t._taskHandle=null,t._callback()})},this._delay);this._taskHandle={cancel:function(){return clearTimeout(a)}}}}}]),t})();e.exports=i},232,[186]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var LayoutAnimation = _require(_dependencyMap[0], 'LayoutAnimation');
+
+  var invariant = _require(_dependencyMap[1], 'fbjs/lib/invariant');
+
+  var NativeEventEmitter = _require(_dependencyMap[2], 'NativeEventEmitter');
+
+  var KeyboardObserver = _require(_dependencyMap[3], 'NativeModules').KeyboardObserver;
+
+  var dismissKeyboard = _require(_dependencyMap[4], 'dismissKeyboard');
+
+  var KeyboardEventEmitter = new NativeEventEmitter(KeyboardObserver);
+  var Keyboard = {
+    addListener: function addListener(eventName, callback) {
+      invariant(false, 'Dummy method used for documentation');
+    },
+    removeListener: function removeListener(eventName, callback) {
+      invariant(false, 'Dummy method used for documentation');
+    },
+    removeAllListeners: function removeAllListeners(eventName) {
+      invariant(false, 'Dummy method used for documentation');
+    },
+    dismiss: function dismiss() {
+      invariant(false, 'Dummy method used for documentation');
+    },
+    scheduleLayoutAnimation: function scheduleLayoutAnimation(event) {
+      invariant(false, 'Dummy method used for documentation');
+    }
+  };
+  Keyboard = KeyboardEventEmitter;
+  Keyboard.dismiss = dismissKeyboard;
+
+  Keyboard.scheduleLayoutAnimation = function (event) {
+    var duration = event.duration,
+        easing = event.easing;
+
+    if (duration) {
+      LayoutAnimation.configureNext({
+        duration: duration,
+        update: {
+          duration: duration,
+          type: easing && LayoutAnimation.Types[easing] || 'keyboard'
+        }
+      });
+    }
+  };
+
+  module.exports = Keyboard;
+},232,[233,18,82,24,234],"Keyboard");

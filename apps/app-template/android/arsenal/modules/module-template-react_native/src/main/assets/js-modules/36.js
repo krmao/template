@@ -1,1 +1,22 @@
-__d(function(e,t,r,s,i){'use strict';var l=(function(e){function t(e,r,s,i){babelHelpers.classCallCheck(this,t);var l=babelHelpers.possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,r));return l.emitter=e,l.listener=s,l.context=i,l}return babelHelpers.inherits(t,e),babelHelpers.createClass(t,[{key:"remove",value:function(){this.emitter.removeSubscription(this)}}]),t})(t(i[0]));r.exports=l},36,[37]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function parseErrorStack(e) {
+    if (!e || !e.stack) {
+      return [];
+    }
+
+    var stacktraceParser = _require(_dependencyMap[0], 'stacktrace-parser');
+
+    var stack = Array.isArray(e.stack) ? e.stack : stacktraceParser.parse(e.stack);
+    var framesToPop = typeof e.framesToPop === 'number' ? e.framesToPop : 0;
+
+    while (framesToPop--) {
+      stack.shift();
+    }
+
+    return stack;
+  }
+
+  module.exports = parseErrorStack;
+},36,[37],"parseErrorStack");

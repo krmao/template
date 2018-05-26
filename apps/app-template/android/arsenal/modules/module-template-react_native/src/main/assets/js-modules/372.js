@@ -1,1 +1,22 @@
-__d(function(e,t,r,a,u){r.exports={get TabViewAnimated(){return t(u[0]).default},get TabViewPagerPan(){return t(u[1]).default},get TabViewPagerScroll(){return t(u[2]).default},get TabViewPagerAndroid(){return t(u[3]).default},get TabViewPagerExperimental(){return t(u[4]).default},get TabBar(){return t(u[5]).default},get SceneMap(){return t(u[6]).default}}},372,[373,377,376,375,378,379,381]);
+__d(function (global, _require, module, exports, _dependencyMap) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  var _react = _require(_dependencyMap[0], 'react');
+
+  var _react2 = _interopRequireDefault(_react);
+
+  var _implementation = _require(_dependencyMap[1], './implementation');
+
+  var _implementation2 = _interopRequireDefault(_implementation);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = _react2.default.createContext || _implementation2.default;
+  module.exports = exports['default'];
+},372,[12,373],"node_modules/create-react-context/lib/index.js");

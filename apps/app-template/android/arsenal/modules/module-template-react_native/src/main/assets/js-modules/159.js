@@ -1,1 +1,8 @@
-__d(function(t,i,n,h,o){'use strict';var s=i(o[0]),e=i(o[1]),p=s(e,{initialize:function(t){this.reset(),t instanceof p?this.path=t.path.slice(0):t&&(t.applyToPath?t.applyToPath(this):this.push(t))},onReset:function(){this.path=[]},onMove:function(t,i,n,h){this.path.push(0,n,h)},onLine:function(t,i,n,h){this.path.push(2,n,h)},onBezierCurve:function(t,i,n,h,o,s,e,p){this.path.push(3,n,h,o,s,e,p)},_arcToBezier:e.prototype.onArc,onArc:function(t,i,n,h,o,s,e,p,u,a,r,c){if(e!==p||c)return this._arcToBezier(t,i,n,h,o,s,e,p,u,a,r,c);this.path.push(4,o,s,e,u,a,r?0:1)},onClose:function(){this.path.push(1)},toJSON:function(){return this.path}});n.exports=p},159,[160,161]);
+__d(function (global, _require2, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _require = _require2(_dependencyMap[0], 'ReactNative'),
+      __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = _require.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+
+  module.exports = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.createReactNativeComponentClass;
+},159,[49],"createReactNativeComponentClass");

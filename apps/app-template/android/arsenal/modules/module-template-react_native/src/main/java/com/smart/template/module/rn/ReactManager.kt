@@ -6,6 +6,7 @@ import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactPackage
 import com.facebook.react.common.LifecycleState
 import com.facebook.react.shell.MainReactPackage
+import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
 import java.io.File
 
@@ -24,13 +25,21 @@ object ReactManager {
     fun init(application: Application, debug: Boolean) {
         if (reactInstanceManager == null) {
 
-            val enableHotPatch = false
+            val enableHotPatch = true
             val indexName = "index.android.bundle"
 
             val localHotPatchIndexFile = File(CXCacheManager.getChildCacheDir("rn"), indexName)
 
-            // "assets://index.android.bundle" or "/sdcard/smart/react/index.android.bundle" 热更新取决于此
-            val jsBundleFile = if (!enableHotPatch || !localHotPatchIndexFile.exists()) "assets://$indexName" else localHotPatchIndexFile.absolutePath
+            // assets://index.android.bundle
+            // /sdcard/Android/data/com.smart.template/cache/rn/index.android.bundle
+            // /sdcard/Android/data/com.smart.template/cache/rn/js-modules
+            // /sdcard/Android/data/com.smart.template/cache/rn/drawable-xxxhdpi
+
+            // val jsBundleFile = if (!enableHotPatch || !localHotPatchIndexFile.exists()) "assets://$indexName" else localHotPatchIndexFile.absolutePath
+            var jsBundleFile = localHotPatchIndexFile.absolutePath
+            jsBundleFile = "assets://$indexName"
+
+            CXLogUtil.e(TAG, "localHotPatchIndexFile:exists=${localHotPatchIndexFile.exists()} , $jsBundleFile")
 
             reactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(application)

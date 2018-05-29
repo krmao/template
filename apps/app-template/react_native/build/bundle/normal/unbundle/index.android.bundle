@@ -57,7 +57,7 @@ var __DEV__=true,__BUNDLE_START_TIME__=this.nativePerformanceNow?nativePerforman
   }
 
   function _require(moduleId) {
-    if (__DEV__ && typeof moduleId === 'string') {
+    if (__DEV__ && typeof moduleId === 'string' && !/[a-z,0-9]{32}/.test(moduleId)) {
       var verboseName = moduleId;
       moduleId = verboseNamesToModuleIds[verboseName];
 
@@ -68,9 +68,9 @@ var __DEV__=true,__BUNDLE_START_TIME__=this.nativePerformanceNow?nativePerforman
       }
     }
 
-    var moduleIdReallyIsNumber = moduleId;
-    var module = modules[moduleIdReallyIsNumber];
-    return module && module.isInitialized ? module.exports : guardedLoadModule(moduleIdReallyIsNumber, module);
+    var finalModuleId = moduleId;
+    var module = modules[finalModuleId];
+    return module && module.isInitialized ? module.exports : guardedLoadModule(finalModuleId, module);
   }
 
   var inGuard = false;
@@ -1420,4 +1420,4 @@ var __DEV__=true,__BUNDLE_START_TIME__=this.nativePerformanceNow?nativePerforman
     }
   };
 })(this);
-require(11);
+require("e8e01fe2fc84cccf8e642d42a9a40555");

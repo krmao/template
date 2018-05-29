@@ -21,18 +21,20 @@ react-native unbundle  --platform android  --dev true  --entry-file ./index.js  
 
 * base
 ```
-react-native bundle  --platform android  --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/base.android.bundle
+react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/bundle/base.android.bundle --assets-dest ./build/bundle/base/bundle
+react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/unbundle/base.android.bundle --assets-dest ./build/bundle/base/unbundle
 ```
 
 * business
 ```
-react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/business.android.bundle  --exclude  ./build/bundle/base/base.android.bundle.json
+react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/bundle/business.android.bundle --assets-dest ./build/bundle/business/bundle --exclude  ./build/bundle/base/bundle/base.android.bundle.json
+react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/unbundle/business.android.bundle --assets-dest ./build/bundle/business/unbundle --exclude  ./build/bundle/base/unbundle/base.android.bundle.json
 ```
 
 * normal
 ```
-react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/index.android.bundle --assets-dest ./build/bundle/normal/unbundle
-react-native   bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/index.android.bundle --assets-dest ./build/bundle/normal/bundle
+react-native unbundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/index.android.bundle --assets-dest ./build/bundle/normal/unbundle
+react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/index.android.bundle --assets-dest ./build/bundle/normal/bundle
 ```
 
 

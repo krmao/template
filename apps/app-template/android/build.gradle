@@ -78,7 +78,11 @@ ext {
 
     // Sdk and tools
     minSdkVersion = 16 // react native >=16
-    targetSdkVersion = 26 // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
+
+    // 设置为 26 如果适配Android 8.0 (targetSdkVersion = 26) 应用图标会出现适配问题, 如果已经做了适配操作,在谷歌 Pixel 2 图标显示正常, 但是在华为 Mate10 显示的却是圆形; 如果不适配则谷歌 Pixel 2 图标显示被一个框框包裹进去,
+    //          所以目前设置为 targetSdkVersion = 25, 直接让 UI 给 5套图即可, 不做 android 8.0  Adaptive icons 适配
+    // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
+    targetSdkVersion = 25
     compileSdkVersion = 27
     buildToolsVersion = "27.0.3"
 

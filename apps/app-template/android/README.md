@@ -18,6 +18,9 @@ Sizes (px)	        Format and naming	Notes
 * Image Asset 自动生成应用图标
     * 如果选择 **自动生成兼容 7.1** 以下的图片, 生成的图标**四周会有留白**, 在 **5.0** 等机器上**图标变小**的问题, 如果不合适, 则需要**UI提供适配7.1以下**的**五套图**
 
+* **Warning** 如果适配Android 8.0 (targetSdkVersion = 26) 应用图标会出现适配问题, 如果已经做了适配操作,在谷歌 Pixel 2 图标显示正常, 但是在华为 Mate10 显示的却是圆形; 如果不适配则谷歌 Pixel 2 图标显示被一个框框包裹进去, 
+所以目前设置为 targetSdkVersion = 25, 直接让 UI 给 5套图即可, 不做 android 8.0  Adaptive icons 适配
+
 * [Pixel Densities](http://iconhandbook.co.uk/reference/chart/android/)
     * Android icons require five separate sizes for different screen pixel densities. Icons for lower resolution are created automatically from the baseline.
 

@@ -14,6 +14,10 @@ Sizes (px)	        Format and naming	Notes
         * 两层的尺寸必须为108 x 108 dp。
         * 图标的内部72 x 72 dp出现在蒙版视口内。
         * 系统在四面各留出18dp，以产生有趣的视觉效果，如视差或脉冲。
+
+* Image Asset 自动生成应用图标
+    * 如果选择 **自动生成兼容 7.1** 以下的图片, 生成的图标**四周会有留白**, 在 **5.0** 等机器上**图标变小**的问题, 如果不合适, 则需要**UI提供适配7.1以下**的**五套图**
+
 * [Pixel Densities](http://iconhandbook.co.uk/reference/chart/android/)
     * Android icons require five separate sizes for different screen pixel densities. Icons for lower resolution are created automatically from the baseline.
 

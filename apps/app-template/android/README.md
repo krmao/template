@@ -10,6 +10,7 @@ xxhdpi:	480 dpi	3×
 xxxhdpi:	640 dpi	4×
 Sizes (px)	Format and naming	Notes
 ```
+### 应用图标 api <= 7.1(25)
 ```
 Launcher icons
 48 × 48 (mdpi)
@@ -19,6 +20,29 @@ Launcher icons
 192 × 192 (xxxhdpi)
 512 × 512 (Google Play store)	.png	Three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.
 ```
+
+### 应用图标 api >= 8.0(26) [adaptive icons](https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive)
+
+* 在Android 7.1（API级别25）及更早版本中，启动器图标大小为48 x 48 dp。您现在必须使用以下准则来调整图标图层的大小：
+    * 两层的尺寸必须为108 x 108 dp。
+    * 图标的内部72 x 72 dp出现在蒙版视口内。
+    * 系统在四面各留出18dp，以产生有趣的视觉效果，如视差或脉冲。
+
+![android 8.0 adaptive icons](readme/adaptive_icons.gif)
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+|  target  |    layer      |   icon(6:4)      |   padding(6:1)  |    final   |
+|   :-:    |      :-:      |        :-:       |       :-:       |     :-:    |
+|anydpi-v26|               |                  |                 |            |
+|xxxhdpi   |  432 x 432    | 288 x 288(6:4)   |  72 x 72(6:1)   |  192 × 192 |
+| xxhdpi   |  324 x 324    |                  |                 |  144 × 144 |
+|  xhdpi   |  216 x 216    |                  |                 |  96 × 96   |
+|   hdpi   |  162 x 162    |                  |                 |  72 × 72   |
+|   mdpi   |  108 x 108    |  72 x 72 (6:4)   |  18 x 18(6:1)   |  48 × 48   |
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+
 ```
 Action bar, Dialog & Tab icons
 24 × 24 area in 32 × 32 (mdpi)

@@ -30,6 +30,12 @@ Sizes (px)	        Format and naming	Notes
 |   mdpi   |  108 x 108    |  72 x 72 (6:4)   |  18 x 18(6:1)   |   48 × 48  |   160(x1  ) |
 |  store   |               |                  |                 |  512 × 512 |             |
 
+* Config in AndroidManifest.xml
+    ```
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
+    ```
 
 ### Action bar, Dialog & Tab icons
 * These icons are used in the action bar menu. The first number is the size of the icon area, and the second is file size.

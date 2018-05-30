@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
+    android:background="#000"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -17,6 +17,7 @@
     <com.smart.library.widget.loading.CXFrameLoadingLayout
         android:id="@+id/loading_view"
         android:layout_width="match_parent"
+        android:background="#efefef"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -29,7 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cx_pink"
+                android:background="@color/pink"
                 android:gravity="center"
                 android:padding="15dp"
                 android:text="设置页面"

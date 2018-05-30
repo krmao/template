@@ -18,7 +18,7 @@ class MineFragment : CXBaseFragment() {
         val textView: TextView = TextView(activity)
         textView.text = "mine"
         @Suppress("DEPRECATION")
-        textView.setBackgroundColor(resources.getColor(R.color.cx_pink))
+        textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
             CXRouteManager.goToFragment(activity, "com.smart.template.module.mine.MineFragment") {
                 CXLogUtil.w("krmao", it.toString())

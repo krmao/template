@@ -3,16 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smart.template">
 
+    <!-- 网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 读写 SDCard -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- 定位 -->
     <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".library.CXApplication"
+        android:name=".CXFinalApplication"
         android:allowBackup="true"
+        android:allowTaskReparenting="false"
         android:fullBackupContent="@xml/cx_backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/cx_app_name"
@@ -22,8 +32,8 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 
-        <!--<activity
-            android:name=".tab.HomeTabActivity"
+        <activity
+            android:name="com.smart.template.tab.HomeTabActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/CXAppTheme.Light.NoActionBar"
@@ -33,7 +43,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
 
         <meta-data
             android:name="DEBUG"

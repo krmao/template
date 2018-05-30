@@ -10,21 +10,34 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.io.File
 
+@Suppress("MemberVisibilityCanBePrivate")
 @RestController
 @RequestMapping("/developer")
 class DeveloperController() {
     private val log: Logger = LogManager.getLogger(DeveloperController::class.java.name)
 
+    private var rootDirName = "apps"
+
+    private var rootPath = File("")
+
     @ApiOperation("获取UI切图", notes = "返回UI切图")
     @GetMapping("/getAllFiles")
     fun getAllFiles(): HKResponse<FileNode> {
-        val rootPath = CXConfig.DEFAULT_FILES_DIR
-        val rootDir = File(rootPath, "developer")
+        val rootDir = File(CXConfig.PROJECT_DIR.parent, rootDirName)
 
-        println("filesDir=${rootDir.absolutePath}")
-        println("filesDir.exists=${rootDir.exists()}")
+        println("rootDir.path=${rootDir.path}")
+        println("rootDir.absolutePath=${rootDir.absolutePath}")
+        println("rootDir.canonicalPath=${rootDir.canonicalPath}")
+        println("rootDir.exists=${rootDir.exists()}")
 
-        val fileNode = getFileNode(rootDir)
+        rootPath = rootDir.canonicalFile
+
+        println("rootPath.path=${rootPath.path}")
+        println("rootPath.absolutePath=${rootPath.absolutePath}")
+        println("rootPath.canonicalPath=${rootPath.canonicalPath}")
+        println("rootPath.exists=${rootPath.exists()}")
+
+        val fileNode = getFileNode(rootDir.canonicalFile)
 
         log.error(fileNode)
         return HKResponse(fileNode)
@@ -32,6 +45,7 @@ class DeveloperController() {
 
     data class FileNode(
         var path: String,
+        var directory: Boolean = false,
         var children: MutableList<FileNode> = arrayListOf()
     ) {
         override fun toString(): String {
@@ -42,8 +56,7 @@ class DeveloperController() {
 
     fun getFileNode(file: File): FileNode {
         if (file.exists()) {
-            val rootPath = CXConfig.DEFAULT_FILES_DIR //用在tomcat部署的正式正产环境
-            val fileNode: FileNode = FileNode(file.path.replace(rootPath.absolutePath, "/template-files"))
+            val fileNode = FileNode(file.path.replace(rootPath.absolutePath, "/$rootDirName"), file.isDirectory)
             log.warn("${if (file.isDirectory) "dire" else "file"}:" + file.path)
             if (file.isDirectory) file.listFiles().filter { it.exists() /*&& it.name != "prd"*/ }.forEach { fileNode.children.add(getFileNode(it)) }
             return fileNode

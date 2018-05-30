@@ -1,9 +1,14 @@
 package com.smart.library.widget.debug
 
 import android.annotation.SuppressLint
-import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationChannelGroup
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
@@ -63,26 +68,121 @@ open class CXDebugFragment : CXBaseFragment() {
             return currentSelectedModel
         }
 
+        @SuppressLint("NewApi")
         @JvmStatic
-        fun showDebugNotification(notificationId: Int) {
-            showDebugNotification(notificationId, "${CXSystemUtil.appName} 调试助手", "点击跳转到调试界面", CXSystemUtil.appIcon ?: R.drawable.cx_emo_im_happy)
-        }
+        fun showDebugNotification() {
 
-        @JvmStatic
-        fun showDebugNotification(notificationId: Int, title: String, text: String, icon: Int) {
-            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, notificationId.toString())
-                .setSmallIcon(icon)
+            //========== ======================================================================== ==========
+            //========== notification example start
+            //========== ======================================================================== ==========
+
+            // notification
+            val title = "${CXSystemUtil.appName} 调试助手"
+            val text = "点击跳转到调试界面"
+            val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
+            val channelId: String = CXNotificationManager.getChannelId(notificationId)
+            val channelName = "在通知栏上显示程式调试入口"
+            val smallIcon = CXConfig.NOTIFICATION_ICON_SMALL
+
+            // notification group ( 注意: 通知组只有 sdk >= 24 support )
+            // 注意 summaryGroupId 与 notificationId 不能相同, 否则会出现没有合并到一个组的意外情况
+            val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
+            val summaryGroupText = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
+            val summaryGroupKey = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
+
+            // channel group
+            val channelGroupId = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID
+            val channelGroupName = CXConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_NAME
+
+            CXLogUtil.e("notification", "notificationId=$notificationId")
+            CXLogUtil.e("notification", "channelId=$summaryGroupId")
+            CXLogUtil.e("notification", "summaryGroupId=$summaryGroupId")
+            CXLogUtil.e("notification", "summaryGroupText=$summaryGroupText")
+            CXLogUtil.e("notification", "summaryGroupKey=$summaryGroupKey")
+            CXLogUtil.e("notification", "channelGroupId=$channelGroupId")
+            CXLogUtil.e("notification", "channelGroupName=$channelGroupName")
+
+            val intent = Intent(CXBaseApplication.INSTANCE, CXDebugActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+            val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+
+            val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
+                .setSmallIcon(smallIcon)
+                .setColor(Color.parseColor("#4E6A78"))
+                .setColorized(true)
+                .setLargeIcon(CXSystemUtil.appBitmap)
                 .setContentTitle(title)
-                .setContentText(text)
-                .setAutoCancel(false)
-                .setDefaults(Notification.DEFAULT_LIGHTS)
+                .setContentText(text) // set content text to support devices running API level < 24
+                // .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
                 .setOngoing(true)
-            CXNotificationManager.showNotifyToFragment(CXBaseApplication.INSTANCE, notificationId, Notification.FLAG_NO_CLEAR, builder, CXDebugFragment::class.java, Bundle(), PendingIntent.FLAG_CANCEL_CURRENT)
+                .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                .setAutoCancel(false) // automatically removes the notification when the user taps it
+
+            val notificationManager = CXNotificationManager.getNotificationManager()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // 首先设置通知渠道组
+                val channelGroup = NotificationChannelGroup(channelGroupId, channelGroupName)
+                if (notificationManager.notificationChannelGroups.filter { it == channelGroup }.size > 1) {
+                    notificationManager.deleteNotificationChannelGroup(channelGroupId)
+                }
+                if (!notificationManager.notificationChannelGroups.contains(channelGroup)) {
+                    notificationManager.createNotificationChannelGroup(channelGroup)
+                }
+
+                // IMPORTANCE_HIGH      (紧急-发出声音并显示为提醒通知)
+                // IMPORTANCE_DEFAULT   (高级-发出声音)
+                // IMPORTANCE_LOW       (中等-没有声音)
+                // IMPORTANCE_MIN       (低级-无声音并且不会出现在状态栏中)
+                val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
+                channel.enableLights(false) // 是否在桌面icon右上角展示小红点
+                channel.setShowBadge(false) // 是否在久按桌面图标时显示此渠道的通知
+                channel.enableVibration(false)
+                channel.setSound(null, null)
+                channel.group = channelGroupId // 设置渠道组的归属关系
+
+
+                if (notificationManager.notificationChannels.filter { it == channel }.size > 1) {
+                    notificationManager.deleteNotificationChannel(channelId)
+                }
+                if (!notificationManager.notificationChannels.contains(channel)) {
+                    notificationManager.createNotificationChannel(channel)
+                }
+            }
+
+            val notification = builder.build()
+            notificationManager.notify(notificationId, notification)
+
+            //========== notification group
+
+            val summaryNotification = builder
+                // build summary info into InboxStyle template
+                .setStyle(NotificationCompat.InboxStyle()
+                    .addLine(text)
+                    .setBigContentTitle(title)
+                    .setSummaryText(summaryGroupText))
+                .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                .setGroupSummary(true) // set this notification as the summary for the group
+                .build()
+
+            notificationManager.notify(summaryGroupId, summaryNotification)
+            //========== ======================================================================== ==========
+            //========== notification example end
+            //========== ======================================================================== ==========
+
         }
 
         @JvmStatic
-        fun cancelDebugNotification(notificationId: Int) {
-            CXNotificationManager.cancelNotify(CXBaseApplication.INSTANCE, notificationId)
+        fun cancelDebugNotification() {
+            val summaryGroupId = CXConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
+            val notificationId = CXConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
+            val channelId: String = CXNotificationManager.getChannelId(notificationId)
+            CXNotificationManager.cancelNotify(notificationId, channelId)
+            CXNotificationManager.cancelNotify(summaryGroupId)
         }
     }
 

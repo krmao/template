@@ -1,6 +1,5 @@
 package com.smart.template.base.config.filter
 
-import com.smart.template.base.util.CXContextManager
 import org.slf4j.LoggerFactory
 import org.springframework.core.annotation.Order
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter
@@ -20,8 +19,10 @@ class CXResourceUrlFilter : ResourceUrlEncodingFilter() {
 
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
         val httpRequest = request as HttpServletRequest
-        log.error("---------->doFilter start " + httpRequest.requestURI)
+        log.error("---------->doFilter start(${response?.contentType}) " + httpRequest.requestURI)
+        response?.contentType = "UTF-8"
+
         super.doFilter(request, response, filterChain)
-        log.error("---------->doFilter end " + httpRequest.requestURI)
+        log.error("---------->doFilter end(${response?.contentType}) " + httpRequest.requestURI)
     }
 }

@@ -18,10 +18,10 @@ import android.widget.TextView
 class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        val ITEM_TYPE_LOAD_FAILED_VIEW = Integer.MAX_VALUE - 1
-        val ITEM_TYPE_NO_MORE_VIEW = Integer.MAX_VALUE - 2
-        val ITEM_TYPE_LOAD_MORE_VIEW = Integer.MAX_VALUE - 3
-        val ITEM_TYPE_NO_VIEW = Integer.MAX_VALUE - 4//不展示footer view
+        const val ITEM_TYPE_LOAD_FAILED_VIEW = Integer.MAX_VALUE - 1
+        const val ITEM_TYPE_NO_MORE_VIEW = Integer.MAX_VALUE - 2
+        const val ITEM_TYPE_LOAD_MORE_VIEW = Integer.MAX_VALUE - 3
+        const val ITEM_TYPE_NO_VIEW = Integer.MAX_VALUE - 4//不展示footer view
     }
 
     private var mLoadMoreView: View? = null
@@ -151,7 +151,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
             innerAdapter.onBindViewHolder(holder, position)
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         onAttachedToRecyclerView(innerAdapter, recyclerView, object : SpanSizeCallback {
             override fun getSpanSize(layoutManager: GridLayoutManager, oldLookup: GridLayoutManager.SpanSizeLookup, position: Int): Int {
                 if (position == itemCount - 1 && isHaveStatesView) {
@@ -162,12 +162,12 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 } else 1
             }
         })
-        recyclerView?.addOnScrollListener(mLoadMoreScrollListener)
+        recyclerView.addOnScrollListener(mLoadMoreScrollListener)
     }
 
-    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, recyclerView: RecyclerView?, callback: SpanSizeCallback) {
+    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, recyclerView: RecyclerView, callback: SpanSizeCallback) {
         innerAdapter.onAttachedToRecyclerView(recyclerView)
-        val layoutManager = recyclerView?.layoutManager
+        val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {
             val spanSizeLookup = layoutManager.spanSizeLookup
             layoutManager.spanCount = layoutManager.spanCount
@@ -178,10 +178,10 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder?) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         innerAdapter.onViewAttachedToWindow(holder)
 
-        if (holder!!.layoutPosition == itemCount - 1 && isHaveStatesView) {
+        if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
             val lp = holder.itemView.layoutParams
 
             if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams) {
@@ -226,9 +226,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
      * Time:16:12
      * Desc:用于RecyclerView加载更多的监听，实现滑动到底部自动加载更多
      */
-
     abstract inner class LoadMoreScrollListener : RecyclerView.OnScrollListener() {
-
 
         private var previousTotal: Int = 0
         private var isLoading = true
@@ -276,7 +274,6 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
             }
 
         }
-
 
         abstract fun loadMore()
     }

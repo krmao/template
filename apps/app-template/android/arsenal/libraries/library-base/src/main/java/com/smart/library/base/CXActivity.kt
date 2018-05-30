@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.widget.FrameLayout
 
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class CXActivity : CXBaseActivity() {
 
     companion object {
@@ -20,30 +20,32 @@ open class CXActivity : CXBaseActivity() {
         @JvmStatic
         val KEY_FRAGMENT_ARGS = "KEY_FRAGMENT_ARGS"
 
+        @JvmOverloads
         @JvmStatic
-        fun start(from: Context?, fragmentClass: Class<*>) = start(from, fragmentClass, null)
-
-        @JvmStatic
-        fun start(from: Context?, fragmentClass: Class<*>, args: Bundle?) =
+        fun start(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             start(from, fragmentClass, args, 0)
 
+        @JvmOverloads
         @JvmStatic
-        fun startNewTask(fragmentClass: Class<*>, args: Bundle?) =
-            CXBaseApplication.INSTANCE.startActivity(getNewTaskIntent(CXBaseApplication.INSTANCE, 0, fragmentClass, args))
+        fun startNewTask(fragmentClass: Class<*>, args: Bundle = Bundle()) =
+            CXBaseApplication.INSTANCE.startActivity(getNewTaskIntent(CXBaseApplication.INSTANCE, fragmentClass, args))
 
+        @JvmOverloads
         @JvmStatic
-        fun startSingleTask(from: Context?, fragmentClass: Class<*>, args: Bundle) =
+        fun startSingleTask(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             CXBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
 
+        @JvmOverloads
         @JvmStatic
-        fun start(activity: Context?, fragmentClass: Class<*>, args: Bundle?, themResId: Int) =
+        fun start(activity: Context?, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int) =
             activity?.startActivity(getIntent(activity, themResId, fragmentClass, args))
 
         @JvmStatic
         fun start(activity: Context?, intent: Intent?) = activity?.startActivity(intent)
 
+        @JvmOverloads
         @JvmStatic
-        fun start(activity: Activity?, fragmentClassName: String?, args: Bundle? = null) {
+        fun start(activity: Activity?, fragmentClassName: String?, args: Bundle = Bundle()) {
             activity?.startActivity(getIntent(activity, 0, fragmentClassName, args))
         }
 
@@ -78,61 +80,59 @@ open class CXActivity : CXBaseActivity() {
         //base
         /* Activity页面发起的，再由Activity来接收结果 如果由Fragment来接收结果，需要使用 {@link #startForResult(Fragment, int, Class, Bundle)} */
         @JvmStatic
-        fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
+        fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             startForResult(activity, 0, reqCode, fragmentClass, args)
 
         @JvmStatic
-        fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
+        fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             activity?.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
+        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             startForResult(fragment, 0, reqCode, fragmentClass, args)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle? = null) =
+        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
             fragment.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
 
         @JvmStatic
         fun getIntent(context: Context?, fragmentClass: Class<*>, args: Bundle): Intent = getIntent(context, 0, fragmentClass, args)
 
         @JvmStatic
-        fun getIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent = getIntent(context, themResId, fragmentClass.canonicalName, args)
+        fun getIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle = Bundle()): Intent = getIntent(context, themResId, fragmentClass.canonicalName, args)
 
+        @JvmOverloads
         @JvmStatic
-        fun getIntent(context: Context?, themResId: Int, fragmentClassName: String?, args: Bundle?): Intent {
+        fun getIntent(context: Context?, themResId: Int, fragmentClassName: String?, args: Bundle = Bundle()): Intent {
             val intent = Intent(context, CXActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
-            if (args != null)
-                intent.putExtra(KEY_FRAGMENT_ARGS, args)
-            if (themResId > 0)
-                intent.putExtra(KEY_THEME, themResId)
+            intent.putExtra(KEY_FRAGMENT_ARGS, args)
+            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
             return intent
         }
 
+        @JvmOverloads
         @JvmStatic
-        fun getNewTaskIntent(context: Context, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
+        fun getNewTaskIntent(context: Context, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int = 0): Intent {
             val intent = Intent(context, CXActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
-            if (args != null)
-                intent.putExtra(KEY_FRAGMENT_ARGS, args)
+            intent.putExtra(KEY_FRAGMENT_ARGS, args)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            if (themResId > 0)
-                intent.putExtra(KEY_THEME, themResId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
             return intent
         }
 
+        @JvmOverloads
         @JvmStatic
-        fun getSingleTaskIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle?): Intent {
+        fun getSingleTaskIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle = Bundle()): Intent {
             val intent = Intent(context, CXActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
-            if (args != null)
-                intent.putExtra(KEY_FRAGMENT_ARGS, args)
+            intent.putExtra(KEY_FRAGMENT_ARGS, args)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            if (themResId > 0)
-                intent.putExtra(KEY_THEME, themResId)
+            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
             return intent
         }
     }
@@ -141,8 +141,7 @@ open class CXActivity : CXBaseActivity() {
         try {
             val args = intent.extras
             val themResId = args.getInt(KEY_THEME, 0)
-            if (themResId > 0)
-                setTheme(themResId)
+            if (themResId > 0) setTheme(themResId)
             super.onCreate(savedInstanceState)
 
             setContentView(FrameLayout(this))
@@ -160,7 +159,7 @@ open class CXActivity : CXBaseActivity() {
                     fragment = Class.forName(fragmentObject).newInstance() as Fragment
                 } catch (_: Exception) {
                     /*try {
-                        @Suppress("DEPRECATION")
+                        @Suppress("DEPRECATION:$taskId")
                         fragment = Atlas.getInstance().delegateClassLoader.loadClass(fragmentObject).newInstance() as Fragment
                     } catch (e: Exception) {
                         CXLogUtil.e("ClassNotFoundException:$fragmentClassName", e)
@@ -174,5 +173,30 @@ open class CXActivity : CXBaseActivity() {
         } catch (e: Exception) {
             Log.e(CXActivity::javaClass.name, "Has error in new instance of fragment", e)
         }
+    }
+
+    override fun onStart() {
+        Log.w("CXActivity", "onStart:$taskId")
+        super.onStart()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.w("CXActivity", "onRestart:$taskId")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.w("CXActivity", "onResume:$taskId")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.w("CXActivity", "onPause:$taskId")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.w("CXActivity", "onStop:$taskId")
     }
 }

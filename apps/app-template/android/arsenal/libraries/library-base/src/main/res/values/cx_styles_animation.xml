@@ -31,6 +31,21 @@
         <item name="android:taskToBackExitAnimation">@anim/cx_slide_out_right</item>
     </style>
 
+    <style name="CXWidget.Animation.Activity.FADE_IN_OUT" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/cx_fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/cx_fade_out</item>
+        <item name="android:taskOpenEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:taskOpenExitAnimation">@anim/cx_fade_out</item>
+        <item name="android:taskCloseEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:taskCloseExitAnimation">@anim/cx_fade_out</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:taskToFrontExitAnimation">@anim/cx_fade_out</item>
+        <item name="android:taskToBackEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:taskToBackExitAnimation">@anim/cx_fade_out</item>
+    </style>
+
     <style name="CXWidget.Animation.FromBottom" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/cx_translate_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/cx_translate_out_bottom</item>

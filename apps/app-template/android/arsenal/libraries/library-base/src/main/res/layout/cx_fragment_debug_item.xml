@@ -17,7 +17,7 @@
         android:maxLength="4"
         android:padding="5dp"
         android:text="测试环境"
-        android:textColor="@color/cx_black"
+        android:textColor="@color/black"
         android:textSize="14dp" />
 
     <TextView

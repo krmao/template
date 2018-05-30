@@ -6,7 +6,9 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
@@ -18,13 +20,16 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.base.toBitmap
 import java.lang.reflect.Method
+
 
 /**
  * 所有与系统相关的方法
  */
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 object CXSystemUtil {
 
     val isSdCardExist: Boolean
@@ -63,6 +68,20 @@ object CXSystemUtil {
         if (context is Activity) {
             val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
             context.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
+        }
+    }
+
+    /**
+     * 使得处于后台的 app 显示到前台
+     */
+    @JvmStatic
+    fun bringAppToFront(activity: Activity?) {
+        activity?.let {
+            val notificationIntent = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
+            notificationIntent.`package` = null // The golden row !!!
+            notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+            activity.startActivity(notificationIntent)
+            activity.overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
         }
     }
 
@@ -227,6 +246,9 @@ object CXSystemUtil {
         }
 
     /**
+     * android 图标尺寸大小
+     * http://iconhandbook.co.uk/reference/chart/android/
+     *
      * 如果 icon 是 vector xml 则会出现严重问题
      * android.app.RemoteServiceException: Bad notification posted from package
      * 详见:
@@ -241,11 +263,17 @@ object CXSystemUtil {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-
+            if (icon == null || icon <= 0) {
+                icon = null
+            }
             return icon
         }
 
-    val appDrawable: Drawable?
+    /**
+     * "android o appIcon 获取不到"
+     * 所以只提供 appBitmap
+     */
+    val appBitmap: Bitmap?
         get() {
             var drawable: Drawable? = null
             try {
@@ -253,7 +281,10 @@ object CXSystemUtil {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            return drawable
+            if (drawable == CXBaseApplication.INSTANCE.packageManager.defaultActivityIcon) {
+                drawable = null
+            }
+            return drawable?.toBitmap()
         }
 
     fun getAppMetaData(key: String): Any? {

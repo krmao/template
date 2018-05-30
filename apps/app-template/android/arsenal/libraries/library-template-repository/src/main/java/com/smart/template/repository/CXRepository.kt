@@ -17,6 +17,7 @@ import java.io.InputStream
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object CXRepository {
 
+    @JvmStatic
     fun init() {
         CXApiManager.init()
     }

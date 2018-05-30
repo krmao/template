@@ -17,10 +17,12 @@ class HomeTabFragment : CXBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        content_vp.offscreenPageLimit = 5
         content_vp.adapter = CXFragmentPagerAdapter(context, childFragmentManager,
             listOf(
                 HomeFragment(),
                 HybirdFragment(),
+                ImFragment(),
                 MineFragment(),
                 SettingFragment()
             )

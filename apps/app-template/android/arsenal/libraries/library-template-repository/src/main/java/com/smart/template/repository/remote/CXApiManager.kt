@@ -6,6 +6,7 @@ import com.smart.template.repository.remote.exception.CXRetrofitException
 import com.smart.template.repository.remote.exception.CXRetrofitServerException
 import com.smart.library.base.CXApplicationVisibleChangedEvent
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.base.CXConfig
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheFileManager
@@ -28,6 +29,7 @@ import java.io.Serializable
 @Suppress("UNCHECKED_CAST", "unused")
 internal object CXApiManager {
 
+    @JvmStatic
     fun init() {
         if (CXBaseApplication.DEBUG) {
             CXURLManager.Environments.values().forEach { environment: CXURLManager.Environments ->
@@ -39,14 +41,12 @@ internal object CXApiManager {
                 CXToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${CXURLManager.curEnvironment.name}")
             }
 
-
-            val notificationId = 999999
-            CXDebugFragment.showDebugNotification(notificationId)
+            CXDebugFragment.showDebugNotification()
             RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
                 if (changeEvent.isApplicationVisible)
-                    CXDebugFragment.showDebugNotification(notificationId)
+                    CXDebugFragment.showDebugNotification()
                 else
-                    CXDebugFragment.cancelDebugNotification(notificationId)
+                    CXDebugFragment.cancelDebugNotification()
             }
         }
     }

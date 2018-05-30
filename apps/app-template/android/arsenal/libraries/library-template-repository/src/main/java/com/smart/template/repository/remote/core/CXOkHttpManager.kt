@@ -9,6 +9,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
+@Suppress("unused")
 object CXOkHttpManager {
     private var CONNECT_TIMEOUT_SECONDS = 20
     private var READ_TIMEOUT_SECONDS = 20
@@ -24,6 +25,17 @@ object CXOkHttpManager {
             .readTimeout(READ_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(CONNECT_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val origRequest = chain.request()
+                val request: Request = origRequest.newBuilder()
+                    .header("Accept-Language", "en,zh-CN,zh")
+                    .header("Accept-Charset", "utf-8")
+                    .header("Content-type", "application/json")
+                    .header("Connection", "close")
+                    // .header("accessToken", CXUserManager.accessToken)
+                    .build()
+                chain.proceed(request)
+            }
             .addNetworkInterceptor(
                 CXOkHttpProgressInterceptor { requestUrl, current, total ->
                     RxBus.post(CXOkHttpProgressResponseBody.OnProgressEvent(requestUrl, current, total))

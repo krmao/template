@@ -11,7 +11,7 @@
         android:right="0dp"
         android:top="@dimen/cx_line_height">
         <shape android:shape="rectangle">
-            <solid android:color="@color/cx_white" />
+            <solid android:color="@color/white" />
             <padding
                 android:bottom="0dp"
                 android:left="0dp"

@@ -29,7 +29,6 @@ object CXConfig {
     @JvmStatic
     var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印
 
-
     @JvmStatic
     val NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID: Int = 100000000
     @JvmStatic

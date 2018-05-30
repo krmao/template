@@ -16,7 +16,7 @@
     </style>
 
     <style name="CXWidget.App.DrawerArrowToggle" parent="@style/Base.Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/cx_white</item>
+        <item name="color">@color/white</item>
     </style>
 
     <style name="CXWidget.App.ProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">

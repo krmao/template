@@ -4,13 +4,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.CXRouteManager
 import com.smart.library.util.CXToastUtil
+import com.smart.library.widget.debug.CXDebugFragment
+import io.reactivex.disposables.CompositeDisposable
 
 
 /**
@@ -33,6 +32,7 @@ import com.smart.library.util.CXToastUtil
  * sdk >= 4.4 纯透明
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
+@Suppress("MemberVisibilityCanBePrivate")
 open class CXBaseActivity : AppCompatActivity() {
 
     /**
@@ -41,14 +41,22 @@ open class CXBaseActivity : AppCompatActivity() {
      */
     val callback: ((bundle: Bundle?) -> Unit?)? by lazy { CXRouteManager.getCallback(this) }
 
+    open val disposables: CompositeDisposable = CompositeDisposable()
+
     open var statusBar: ImmersionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
-        statusBar = ImmersionBar.with(this).navigationBarEnable(false)
-        statusBar?.init()
+        if (enableImmersionStatusBar) {
+            //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
+            statusBar = ImmersionBar.with(this)
+                .transparentStatusBar()
+                .statusBarColorInt(Color.TRANSPARENT)
+                .navigationBarEnable(false)
+                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
+            statusBar?.init()
+        }
 
         SwipeBackHelper.onCreate(this)
         SwipeBackHelper.getCurrentPage(this)//get current instance
@@ -79,9 +87,10 @@ open class CXBaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        CXRouteManager.removeCallback(this)
-        SwipeBackHelper.onDestroy(this)
+        disposables.dispose()
         statusBar?.destroy()
+        SwipeBackHelper.onDestroy(this)
+        CXRouteManager.removeCallback(this)
         super.onDestroy()
     }
 
@@ -125,14 +134,18 @@ open class CXBaseActivity : AppCompatActivity() {
         }
     }
 
-    protected var enableExitWithDoubleBackPressed = false
+    protected var exitTime: Long = 0
     protected var enableSwipeBack = true
-    private var exitTime: Long = 0
+    protected var enableImmersionStatusBar = true
+    protected var enableImmersionStatusBarWithDarkFont = false
+    protected var enableExitWithDoubleBackPressed = false
 
     private fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
         CXToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
+        if (CXBaseApplication.DEBUG) CXDebugFragment.cancelDebugNotification()
+
         finish()
         System.exit(0)
     }

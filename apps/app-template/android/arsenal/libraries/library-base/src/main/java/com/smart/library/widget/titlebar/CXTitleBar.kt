@@ -24,8 +24,11 @@ import kotlinx.android.synthetic.main.cx_widget_titlebar.view.*
 class CXTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(mContext, attrs) {
 
     companion object {
+        @JvmStatic
         var DEFAULT_TEXT_SIZE = 18f
+        @JvmStatic
         var DEFAULT_TEXT_COLOR = Color.parseColor("#333333")
+        @JvmStatic
         var DEFAULT_BACKGROUND_COLOR = Color.parseColor("#FAFBFC")
     }
 
@@ -66,7 +69,7 @@ class CXTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             left0BgView.visibility = typedArray.getInt(R.styleable.CXTitleBar_cxLeft0Visible, View.VISIBLE)
             setTextAppearance(left0Btn, R.styleable.CXTitleBar_cxLeft0Appearance, typedArray)
             @Suppress("DEPRECATION")
-            val transparentColor = resources.getColor(R.color.cx_transparent)
+            val transparentColor = resources.getColor(R.color.transparent)
             setBackground(left0Btn, R.styleable.CXTitleBar_cxLeft0Background, transparentColor, -1, typedArray)
             setText(left0Btn, R.styleable.CXTitleBar_cxLeft0Text, null, typedArray)
             setTextColor(left0Btn, R.styleable.CXTitleBar_cxLeft0TextColor, DEFAULT_TEXT_COLOR, typedArray)

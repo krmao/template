@@ -19,7 +19,7 @@ class SettingFragment : CXBaseFragment() {
         val textView: TextView = TextView(activity)
         textView.text = "setting"
         @Suppress("DEPRECATION")
-        textView.setTextColor(resources.getColor(R.color.cx_orange))
+        textView.setTextColor(resources.getColor(R.color.orange))
         textView.setBackgroundColor(Color.DKGRAY)
         textView.setOnClickListener {
             CXRouteManager.goToFragment(activity, "com.smart.template.module.setting.SettingFragment") {

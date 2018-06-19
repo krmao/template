@@ -72205,574 +72205,574 @@ __d(function (global, _require, module, exports, _dependencyMap) {
     });
 },"aa3441b497f0a727ed708d5a9e65b326",["c42a5e17831e80ed1e1c8cf91f5ddb40","cc757a791ecb3cd320f65c256a791c04","6b30517a7f2a94e8009abc053da3142b"],"src/main/js/pages/OrderCommitScreen.js");
 __d(function (global, _require, module, exports, _dependencyMap) {
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/scroll.js";
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var _jsxFileName = "/Users/maokangren/workspace/template/apps/app-template/react_native/scroll.js";
 
-  var _react = _require(_dependencyMap[0], "react");
+	var _react = _require(_dependencyMap[0], "react");
 
-  var _react2 = babelHelpers.interopRequireDefault(_react);
+	var _react2 = babelHelpers.interopRequireDefault(_react);
 
-  var _reactNative = _require(_dependencyMap[1], "react-native");
+	var _reactNative = _require(_dependencyMap[1], "react-native");
 
-  var ApiComponent = function (_React$PureComponent) {
-    babelHelpers.inherits(ApiComponent, _React$PureComponent);
+	var ApiComponent = function (_React$PureComponent) {
+		babelHelpers.inherits(ApiComponent, _React$PureComponent);
 
-    function ApiComponent() {
-      var _ref;
+		function ApiComponent() {
+			var _ref;
 
-      var _temp, _this, _ret;
+			var _temp, _this, _ret;
 
-      babelHelpers.classCallCheck(this, ApiComponent);
+			babelHelpers.classCallCheck(this, ApiComponent);
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
 
-      return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = ApiComponent.__proto__ || Object.getPrototypeOf(ApiComponent)).call.apply(_ref, [this].concat(args))), _this), _this._testInitialProperties = function () {}, _this._testToastApi = function () {}, _this._testPostRequestApi = function () {}, _this._testGetRequestApi = function () {}, _this._testGetVersionInfo = function () {}, _this._testLoginInfo = function () {}, _this._testGetLocaleApi = function () {}, _this._testSelectDate = function () {}, _this._testGetNetworkParams = function () {}, _this._testGetRequestDomain = function () {}, _this._testOpenScene = function () {}, _this._testOpenH5Page = function () {}, _this._testOpenSchema = function () {}, _this._testFinishSelf = function () {}, _this._testNativeCommunication = function () {}, _this._testEventBus = function () {}, _this._testLongList = function () {}, _this._testIconFont = function () {}, _this._testGradient = function () {}, _this._testPollution = function () {
-        if (!_reactNative.ToastAndroid.clickCount) {
-          _reactNative.ToastAndroid.clickCount = 0;
-        } else {
-          _reactNative.ToastAndroid.clickCount += 1;
-        }
+			return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = ApiComponent.__proto__ || Object.getPrototypeOf(ApiComponent)).call.apply(_ref, [this].concat(args))), _this), _this._testInitialProperties = function () {}, _this._testToastApi = function () {}, _this._testPostRequestApi = function () {}, _this._testGetRequestApi = function () {}, _this._testGetVersionInfo = function () {}, _this._testLoginInfo = function () {}, _this._testGetLocaleApi = function () {}, _this._testSelectDate = function () {}, _this._testGetNetworkParams = function () {}, _this._testGetRequestDomain = function () {}, _this._testOpenScene = function () {}, _this._testOpenH5Page = function () {}, _this._testOpenSchema = function () {}, _this._testFinishSelf = function () {}, _this._testNativeCommunication = function () {}, _this._testEventBus = function () {}, _this._testLongList = function () {}, _this._testIconFont = function () {}, _this._testGradient = function () {}, _this._testPollution = function () {
+				if (!_reactNative.ToastAndroid.clickCount) {
+					_reactNative.ToastAndroid.clickCount = 0;
+				}
 
-        var str = "ToastAndroid.clickCount -> " + _reactNative.ToastAndroid.clickCount.toString();
+				_reactNative.ToastAndroid.clickCount = _reactNative.ToastAndroid.clickCount + 1;
 
-        console.log(str);
-      }, _this._testPreference = function () {}, _this._testFakeApp = function () {}, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
-    }
+				var str = "ToastAndroid.clickCount -> " + _reactNative.ToastAndroid.clickCount.toString();
 
-    babelHelpers.createClass(ApiComponent, [{
-      key: "render",
-      value: function render() {
-        return _react2.default.createElement(
-          _reactNative.ScrollView,
-          {
-            style: styles.box,
-            showsVerticalScrollIndicator: true,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 8
-            }
-          },
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testInitialProperties,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 9
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 10
-                }
-              },
-              "\u663E\u793AinitialProperties"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testToastApi,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 12
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 13
-                }
-              },
-              "brn.showToast \u663E\u793A\u6D88\u606F"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGetRequestApi,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 15
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 16
-                }
-              },
-              "brn.request GET\u6267\u884C\u8BF7\u6C42"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testPostRequestApi,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 18
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 19
-                }
-              },
-              "brn.request POST\u6267\u884C\u8BF7\u6C42"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGetLocaleApi,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 21
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 22
-                }
-              },
-              "brn.getLocale \u83B7\u53D6\u5F53\u524DLocale"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testLoginInfo,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 24
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 25
-                }
-              },
-              "brn.getLoginInfo \u83B7\u53D6\u767B\u5F55\u7528\u6237\u4FE1\u606F"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGetVersionInfo,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 27
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 28
-                }
-              },
-              "brn.getVersionInfo \u83B7\u53D6\u7248\u672C\u4FE1\u606F"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testSelectDate,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 30
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 31
-                }
-              },
-              "brn.selectDate \u9009\u62E9\u65E5\u671F"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGetNetworkParams,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 33
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 34
-                }
-              },
-              "brn.getNetworkParams \u83B7\u53D6\u8BF7\u6C42\u53C2\u6570"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGetRequestDomain,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 36
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 37
-                }
-              },
-              "brn.getRequestDomain \u6839\u636Eurl\u83B7\u53D6\u6700\u4F18\u94FE\u8DEF"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testOpenScene,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 39
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 40
-                }
-              },
-              "brn.openScene \u6839\u636EcomponentName\u8DF3\u8F6C\u53E6\u4E00\u4E2ARN\u9875\u9762"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testOpenH5Page,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 43
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 44
-                }
-              },
-              "brn.openH5Page \u6839\u636EcomponentName\u8DF3\u8F6C\u53E6\u4E00\u4E2AH5\u9875\u9762"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testOpenSchema,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 47
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 48
-                }
-              },
-              "brn.openSchema \u547C\u53EB\u6296\u97F3\u7684schema,\u5F53\u7136\u522B\u7684\u4E5F\u53EF\u4EE5"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testPreference,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 51
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 52
-                }
-              },
-              "brn.savePreference brn.getPreference \u6D4B\u8BD5\u5B58\u50A8\u80FD\u529B"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testFinishSelf,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 55
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 56
-                }
-              },
-              "brn.close \u5173\u95ED\u5F53\u524D\u9875\u9762"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testNativeCommunication,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 59
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 60
-                }
-              },
-              "Native\u5C42\u901A\u4FE1\u65B9\u6848"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testEventBus,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 63
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 64
-                }
-              },
-              "Js\u5C42EventBus\u901A\u4FE1\u65B9\u6848"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testLongList,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 67
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 68
-                }
-              },
-              "\u5927\u5217\u8868\u6D4B\u8BD5"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testIconFont,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 71
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 72
-                }
-              },
-              "\u652F\u6301IconFont"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testGradient,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 75
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 76
-                }
-              },
-              "gradient\u6307\u5317"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testPollution,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 79
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 80
-                }
-              },
-              "\u6570\u636E\u6C61\u67D3\u6D4B\u8BD5"
-            )
-          ),
-          _react2.default.createElement(
-            _reactNative.TouchableHighlight,
-            {
-              style: styles.textWrapper,
-              onPress: this._testFakeApp,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 83
-              }
-            },
-            _react2.default.createElement(
-              _reactNative.Text,
-              {
-                style: styles.centerText,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 84
-                }
-              },
-              "Fake App\u52A0\u8F7D\u5B9E\u9A8C"
-            )
-          )
-        );
-      }
-    }]);
-    return ApiComponent;
-  }(_react2.default.PureComponent);
+				console.log(str);
+			}, _this._testPreference = function () {}, _this._testFakeApp = function () {}, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+		}
 
-  exports.default = ApiComponent;
+		babelHelpers.createClass(ApiComponent, [{
+			key: "render",
+			value: function render() {
+				return _react2.default.createElement(
+					_reactNative.ScrollView,
+					{
+						style: styles.box,
+						showsVerticalScrollIndicator: true,
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 8
+						}
+					},
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testInitialProperties,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 9
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 10
+								}
+							},
+							"\u663E\u793AinitialProperties"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testToastApi,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 12
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 13
+								}
+							},
+							"brn.showToast \u663E\u793A\u6D88\u606F"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGetRequestApi,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 15
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 16
+								}
+							},
+							"brn.request GET\u6267\u884C\u8BF7\u6C42"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testPostRequestApi,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 18
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 19
+								}
+							},
+							"brn.request POST\u6267\u884C\u8BF7\u6C42"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGetLocaleApi,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 21
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 22
+								}
+							},
+							"brn.getLocale \u83B7\u53D6\u5F53\u524DLocale"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testLoginInfo,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 24
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 25
+								}
+							},
+							"brn.getLoginInfo \u83B7\u53D6\u767B\u5F55\u7528\u6237\u4FE1\u606F"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGetVersionInfo,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 27
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 28
+								}
+							},
+							"brn.getVersionInfo \u83B7\u53D6\u7248\u672C\u4FE1\u606F"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testSelectDate,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 30
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 31
+								}
+							},
+							"brn.selectDate \u9009\u62E9\u65E5\u671F"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGetNetworkParams,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 33
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 34
+								}
+							},
+							"brn.getNetworkParams \u83B7\u53D6\u8BF7\u6C42\u53C2\u6570"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGetRequestDomain,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 36
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 37
+								}
+							},
+							"brn.getRequestDomain \u6839\u636Eurl\u83B7\u53D6\u6700\u4F18\u94FE\u8DEF"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testOpenScene,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 39
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 40
+								}
+							},
+							"brn.openScene \u6839\u636EcomponentName\u8DF3\u8F6C\u53E6\u4E00\u4E2ARN\u9875\u9762"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testOpenH5Page,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 43
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 44
+								}
+							},
+							"brn.openH5Page \u6839\u636EcomponentName\u8DF3\u8F6C\u53E6\u4E00\u4E2AH5\u9875\u9762"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testOpenSchema,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 47
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 48
+								}
+							},
+							"brn.openSchema \u547C\u53EB\u6296\u97F3\u7684schema,\u5F53\u7136\u522B\u7684\u4E5F\u53EF\u4EE5"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testPreference,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 51
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 52
+								}
+							},
+							"brn.savePreference brn.getPreference \u6D4B\u8BD5\u5B58\u50A8\u80FD\u529B"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testFinishSelf,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 55
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 56
+								}
+							},
+							"brn.close \u5173\u95ED\u5F53\u524D\u9875\u9762"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testNativeCommunication,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 59
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 60
+								}
+							},
+							"Native\u5C42\u901A\u4FE1\u65B9\u6848"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testEventBus,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 63
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 64
+								}
+							},
+							"Js\u5C42EventBus\u901A\u4FE1\u65B9\u6848"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testLongList,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 67
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 68
+								}
+							},
+							"\u5927\u5217\u8868\u6D4B\u8BD5"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testIconFont,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 71
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 72
+								}
+							},
+							"\u652F\u6301IconFont"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testGradient,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 75
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 76
+								}
+							},
+							"gradient\u6307\u5317"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testPollution,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 79
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 80
+								}
+							},
+							"\u6570\u636E\u6C61\u67D3\u6D4B\u8BD5"
+						)
+					),
+					_react2.default.createElement(
+						_reactNative.TouchableHighlight,
+						{
+							style: styles.textWrapper,
+							onPress: this._testFakeApp,
+							__source: {
+								fileName: _jsxFileName,
+								lineNumber: 83
+							}
+						},
+						_react2.default.createElement(
+							_reactNative.Text,
+							{
+								style: styles.centerText,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 84
+								}
+							},
+							"Fake App\u52A0\u8F7D\u5B9E\u9A8C"
+						)
+					)
+				);
+			}
+		}]);
+		return ApiComponent;
+	}(_react2.default.PureComponent);
 
-  var styles = _reactNative.StyleSheet.create({
-    box: {
-      marginBottom: 30,
-      marginTop: 30,
-      width: '100%',
-      height: '100%'
-    },
-    textWrapper: {
-      width: '100%',
-      height: 50,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#666666",
-      marginBottom: 10
-    },
-    centerText: {
-      color: 'white',
-      fontSize: 12
-    }
-  });
+	exports.default = ApiComponent;
 
-  _reactNative.AppRegistry.registerComponent('test_land', function () {
-    return ApiComponent;
-  });
+	var styles = _reactNative.StyleSheet.create({
+		box: {
+			marginBottom: 30,
+			marginTop: 30,
+			width: '100%',
+			height: '100%'
+		},
+		textWrapper: {
+			width: '100%',
+			height: 50,
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: "#666666",
+			marginBottom: 10
+		},
+		centerText: {
+			color: 'white',
+			fontSize: 12
+		}
+	});
+
+	_reactNative.AppRegistry.registerComponent('test_land', function () {
+		return ApiComponent;
+	});
 },"9998d9fadb889b647f95d1f5ce715488",["c42a5e17831e80ed1e1c8cf91f5ddb40","cc757a791ecb3cd320f65c256a791c04"],"scroll.js");
 require("36707ef8c51a3d4168c7191597117671");
 require("e8e01fe2fc84cccf8e642d42a9a40555");

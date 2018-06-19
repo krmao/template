@@ -1,1 +1,0 @@
-__d(function(e,o,n,t,f){'use strict';n.exports=function(e){var o=(e?e.ownerDocument||e:document).defaultView||window;return!(!e||!('function'==typeof o.Node?e instanceof o.Node:'object'==typeof e&&'number'==typeof e.nodeType&&'string'==typeof e.nodeName))}},50,[]);

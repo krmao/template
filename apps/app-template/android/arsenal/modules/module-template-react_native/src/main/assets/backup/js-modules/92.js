@@ -1,1 +1,0 @@
-__d(function(e,t,a,r,p){'use strict';var c={captureHeap:function(a){var r=null;try{e.nativeCaptureHeap(a),console.log('HeapCapture.captureHeap succeeded: '+a)}catch(e){console.log('HeapCapture.captureHeap error: '+e.toString()),r=e.toString()}t(p[0]).JSCHeapCapture.captureComplete(a,r)}};a.exports=c},92,[20]);

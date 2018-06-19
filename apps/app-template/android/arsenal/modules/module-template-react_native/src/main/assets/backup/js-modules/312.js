@@ -1,1 +1,0 @@
-__d(function(e,t,n,o,r){Object.defineProperty(o,"__esModule",{value:!0}),o.default=function(e){return"https://v2.reactnavigation.org/docs/"+e}},312,[]);

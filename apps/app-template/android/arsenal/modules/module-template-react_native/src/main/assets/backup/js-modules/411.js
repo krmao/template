@@ -1,1 +1,0 @@
-__d(function(e,s,t,a,r){t.exports=s(r[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/src/main/res/img",width:750,height:498,scales:[1],hash:"08dac7f263259ee0e6f53298c040d1fc",name:"banner",type:"png"})},411,[143]);

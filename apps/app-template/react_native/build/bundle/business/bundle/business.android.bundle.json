@@ -4,8 +4,8 @@
       "id": "e8e01fe2fc84cccf8e642d42a9a40555",
       "type": "module"
     },
-    "src/main/js/base/Global.js": {
-      "id": "2ad333485e5e104d31df2773d83b031c",
+    "src/main/js/base/cx_navigation_util.js": {
+      "id": "78534e5ead69b3a868d4cc6452faa8e9",
       "type": "module"
     },
     "src/main/js/pages/HomeScreen.js": {
@@ -18,6 +18,10 @@
     },
     "src/main/js/pages/OrderCommitScreen.js": {
       "id": "aa3441b497f0a727ed708d5a9e65b326",
+      "type": "module"
+    },
+    "scroll.js": {
+      "id": "9998d9fadb889b647f95d1f5ce715488",
       "type": "module"
     }
   }

@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="cx_title_bar" tools:ignore="ResourceName">#000000</color>
+
+    <color name="transparent" tools:ignore="ResourceName">#00000000</color>
+    <color name="pressed" tools:ignore="ResourceName">#2B000000</color>
+    <color name="background" tools:ignore="ResourceName">#EEEEEE</color>
+
+    <color name="orange" tools:ignore="ResourceName">#FFA500</color>
+    <color name="green" tools:ignore="ResourceName">#00FF00</color>
+    <color name="yellow" tools:ignore="ResourceName">#FFFF00</color>
+    <color name="gold" tools:ignore="ResourceName">#FFD700</color>
+    <color name="cyan" tools:ignore="ResourceName">#00FFFF</color>
+    <color name="pink" tools:ignore="ResourceName">#FFC0CB</color>
+    <color name="red" tools:ignore="ResourceName">#FF0000</color>
+
+    <color name="gray" tools:ignore="ResourceName">#808080</color>
+    <color name="gray_light" tools:ignore="ResourceName">#D3D3D3</color>
+    <color name="gray_dark" tools:ignore="ResourceName">#A9A9A9</color>
+
+    <color name="blue" tools:ignore="ResourceName">#0000FF</color>
+    <color name="blue_light" tools:ignore="ResourceName">#ADD8E6</color>
+    <color name="blue_dark" tools:ignore="ResourceName">#00008B</color>
+
     <color name="cx_pressed">#2B000000</color>
-    <color name="cx_background">#EFEFEF</color>
-    <color name="cx_title_bar">#000000</color>
+    <color name="cx_background">#EEEEEE</color>
 
     <color name="cx_transparent">#00000000</color>
     <color name="cx_orange">#FFA500</color>
@@ -23,7 +45,7 @@
     <color name="cx_blue_light">#ADD8E6</color>
     <color name="cx_blue_dark">#00008B</color>
 
-    <color name="cx_primary">@color/primary_material_dark</color>
-    <color name="cx_primary_dark">@color/primary_dark_material_dark</color>
-    <color name="cx_accent">@color/accent_material_dark</color>
+    <color name="cx_primary">@color/primary</color>
+    <color name="cx_primary_dark">@color/primary_dark</color>
+    <color name="cx_accent">@color/accent</color>
 </resources>

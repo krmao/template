@@ -25,7 +25,7 @@ export default class BridgeScreen extends React.Component {
         console.debug("componentDidMount -> " + this.props.native_params);
         console.debug(this.props);
 
-        this.reactBridge = NativeModules.ReactBridge;
+        this.NativeManager = NativeModules.NativeManager;
 
 
         var CXToastUtil = NativeModules.CXToastUtil;
@@ -69,7 +69,7 @@ export default class BridgeScreen extends React.Component {
                 <StatusBar translucent={false}/>
 
                 <TouchableOpacity onPress={() => {
-                    this.reactBridge.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1).toString())
+                    this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1).toString())
                         .then(
                             (successResult) => {
                                 console.debug("successResult -> " + successResult);
@@ -90,7 +90,7 @@ export default class BridgeScreen extends React.Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => {
-                    this.reactBridge.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100).toString())
+                    this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100).toString())
                         .then(
                             (successResult) => {
                                 console.debug("successResult -> " + successResult);

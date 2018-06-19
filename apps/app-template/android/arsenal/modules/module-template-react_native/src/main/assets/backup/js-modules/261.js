@@ -1,1 +1,0 @@
-__d(function(_,t,E,o,r){'use strict';var s=t(r[0]).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;E.exports=s.TouchHistoryMath},261,[43]);

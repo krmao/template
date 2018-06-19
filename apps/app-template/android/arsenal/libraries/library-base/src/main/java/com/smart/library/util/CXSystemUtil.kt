@@ -2,29 +2,31 @@
 
 package com.smart.library.util
 
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
-import android.support.annotation.RequiresPermission
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
-import java.lang.reflect.Method
+import com.smart.library.base.toBitmap
+import org.jetbrains.annotations.Nullable
 
 /**
  * 所有与系统相关的方法
  */
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused")
 object CXSystemUtil {
 
     val isSdCardExist: Boolean
@@ -59,10 +61,49 @@ object CXSystemUtil {
             return sdCardInfo
         }
 
-    fun sendKeyBackEvent(context: Context) {
+    @JvmStatic
+    fun sendKeyDownEventBack(context: Context?) {
         if (context is Activity) {
             val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
             context.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
+        }
+    }
+
+    @JvmStatic
+    fun sendKeyDownEvent(context: Context?, keyCode: Int) {
+        if (context is Activity) {
+            val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
+            context.onKeyDown(keyCode, keyEvent)
+        }
+    }
+
+    @JvmStatic
+    fun sendKeyUpEvent(context: Context?, keyCode: Int) {
+        if (context is Activity) {
+            val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, keyCode)
+            context.onKeyUp(keyCode, keyEvent)
+        }
+    }
+
+    @JvmStatic
+    fun sendKeyUpEventMenu(context: Context?) {
+        if (context is Activity) {
+            val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU)
+            context.onKeyUp(KeyEvent.KEYCODE_MENU, keyEvent)
+        }
+    }
+
+    /**
+     * 使得处于后台的 app 显示到前台
+     */
+    @JvmStatic
+    fun bringAppToFront(activity: Activity?) {
+        activity?.let {
+            val notificationIntent = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
+            notificationIntent.`package` = null // The golden row !!!
+            notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+            activity.startActivity(notificationIntent)
+            activity.overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
         }
     }
 
@@ -115,11 +156,17 @@ object CXSystemUtil {
         get() = CXBaseApplication.INSTANCE.resources.displayMetrics.heightPixels
 
 
-    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
+    fun getPxFromDp(value: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
+    }
 
-    fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
+    fun getPxFromPx(value: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
+    }
 
-    fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
+    fun getPxFromSp(value: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
+    }
 
     val statusBarHeight: Int
         get() {
@@ -136,14 +183,14 @@ object CXSystemUtil {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     fun copyToClipboard(label: String, contentText: String): Boolean {
-        return try {
+        try {
             val cm = CXBaseApplication.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(label, contentText)
             cm.primaryClip = clip
-            true
+            return true
         } catch (e: Exception) {
             e.printStackTrace()
-            false
+            return false
         }
 
     }
@@ -203,15 +250,15 @@ object CXSystemUtil {
             return versionCode
         }
 
-    val versionName: String
+    val versionName: String?
         get() {
-            var name = ""
+            var versionName: String? = null
             try {
-                name = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
+                versionName = CXBaseApplication.INSTANCE.packageManager.getPackageInfo(CXBaseApplication.INSTANCE.packageName, 0).versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            return name
+            return versionName
         }
 
     val appName: String
@@ -227,6 +274,9 @@ object CXSystemUtil {
         }
 
     /**
+     * android 图标尺寸大小
+     * http://iconhandbook.co.uk/reference/chart/android/
+     *
      * 如果 icon 是 vector xml 则会出现严重问题
      * android.app.RemoteServiceException: Bad notification posted from package
      * 详见:
@@ -241,11 +291,17 @@ object CXSystemUtil {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-
+            if (icon == null || icon <= 0) {
+                icon = null
+            }
             return icon
         }
 
-    val appDrawable: Drawable?
+    /**
+     * "android o appIcon 获取不到"
+     * 所以只提供 appBitmap
+     */
+    val appBitmap: Bitmap?
         get() {
             var drawable: Drawable? = null
             try {
@@ -253,9 +309,13 @@ object CXSystemUtil {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            return drawable
+            if (drawable == CXBaseApplication.INSTANCE.packageManager.defaultActivityIcon) {
+                drawable = null
+            }
+            return drawable?.toBitmap()
         }
 
+    @Nullable
     fun getAppMetaData(key: String): Any? {
         var metaData: Any? = null
         try {
@@ -295,20 +355,8 @@ object CXSystemUtil {
     /**
      * 收起下拉通知栏
      */
-    @SuppressLint("WrongConstant")
-    @RequiresPermission(value = "android.permission.EXPAND_STATUS_BAR")
-    fun closeStatusBar() {
-        try {
-            val statusBarManager = CXBaseApplication.INSTANCE.getSystemService("statusbar")
-            val collapse: Method
-            collapse = if (Build.VERSION.SDK_INT <= 16) {
-                statusBarManager.javaClass.getMethod("collapse")
-            } else {
-                statusBarManager.javaClass.getMethod("collapsePanels")
-            }
-            collapse.invoke(statusBarManager)
-        } catch (localException: Exception) {
-            localException.printStackTrace()
-        }
+    @JvmStatic
+    fun collapseStatusBar() {
+        CXBaseApplication.INSTANCE.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
     }
 }

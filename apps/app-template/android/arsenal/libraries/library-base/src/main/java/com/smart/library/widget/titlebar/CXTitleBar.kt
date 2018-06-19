@@ -112,7 +112,7 @@ class CXTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
 
             typedArray.recycle()
         }
-        left0BgView.setOnClickListener { CXSystemUtil.sendKeyBackEvent(context) }
+        left0BgView.setOnClickListener { CXSystemUtil.sendKeyDownEventBack(context) }
     }
 
     private fun setLayoutParams(bgView: View, childView: View, index: Int, typedArray: TypedArray) = try {

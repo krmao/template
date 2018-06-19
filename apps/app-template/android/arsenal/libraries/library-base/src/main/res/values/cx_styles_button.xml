@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CXButton.Default" parent="@style/CXAppTheme.NoActionBar">
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="colorButtonNormal">@color/accent</item>
+    </style>
+
+</resources>

@@ -21,14 +21,17 @@ react-native unbundle  --platform android  --dev true  --entry-file ./index.js  
 
 * base
 ```
-react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/bundle/base.android.bundle --assets-dest ./build/bundle/base/bundle
-react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./base.js  --bundle-output ./build/bundle/base/unbundle/base.android.bundle --assets-dest ./build/bundle/base/unbundle
+react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ./build/bundle/base/bundle/common.android.bundle --assets-dest ./build/bundle/base/bundle
+react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ./build/bundle/base/unbundle/common.android.bundle --assets-dest ./build/bundle/base/unbundle
+
+// 直接打包到 android rn 模块 assets 目录 和 res 目录
+react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ../android/arsenal/modules/module-template-react_native/src/main/assets/common.android.bundle --assets-dest ../android/arsenal/modules/module-template-react_native/src/main/res
 ```
 
 * business
 ```
-react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/bundle/business.android.bundle --assets-dest ./build/bundle/business/bundle --exclude  ./build/bundle/base/bundle/base.android.bundle.json
-react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/unbundle/business.android.bundle --assets-dest ./build/bundle/business/unbundle --exclude  ./build/bundle/base/unbundle/base.android.bundle.json
+react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/bundle/business.android.bundle --assets-dest ./build/bundle/business/bundle --exclude  ./build/bundle/base/bundle/common.android.bundle.json
+react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/unbundle/business.android.bundle --assets-dest ./build/bundle/business/unbundle --exclude  ./build/bundle/base/unbundle/common.android.bundle.json
 ```
 
 * normal

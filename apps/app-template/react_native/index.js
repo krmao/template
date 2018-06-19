@@ -1,21 +1,23 @@
 import React, {Component} from "react";
 import {Animated, AppRegistry, BackHandler, Easing, Platform, YellowBox} from "react-native";
 import {createStackNavigator} from "react-navigation";
-import global from "./src/main/js/base/Global";
+
+import cx_navigation_util from "./src/main/js/base/cx_navigation_util";
 import HomeScreen from "./src/main/js/pages/HomeScreen";
 import BridgeScreen from "./src/main/js/pages/BridgeScreen";
 import OrderCommitScreen from "./src/main/js/pages/OrderCommitScreen";
+import ApiComponent from './scroll';
 
 console.log("OS:" + Platform.OS);
-console.log("STATUS_BAR_HEIGHT:" + global.STATUS_BAR_HEIGHT);
+console.log("STATUS_BAR_HEIGHT:" + cx_navigation_util.STATUS_BAR_HEIGHT);
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 const RootStack = createStackNavigator(
     {
-        home: {screen: HomeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)},
-        bridge: {screen: BridgeScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)},
-        order_commit: {screen: OrderCommitScreen, navigationOptions: (navigation) => global.defaultNavigationOptions(navigation)}
+        home: {screen: HomeScreen, navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)},
+        bridge: {screen: BridgeScreen, navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)},
+        order_commit: {screen: OrderCommitScreen, navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)}
     },
     {
         initialRouteName: "home",
@@ -80,4 +82,4 @@ export default class App extends React.Component {
     };
 }
 
-AppRegistry.registerComponent("react-module-home", () => App);
+AppRegistry.registerComponent("cxj", () => ApiComponent);

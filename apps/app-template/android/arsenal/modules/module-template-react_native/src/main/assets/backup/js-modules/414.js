@@ -1,1 +1,0 @@
-__d(function(e,s,t,a,r){t.exports=s(r[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/src/main/res/img",width:80,height:80,scales:[1],hash:"366add38db4c0d2fd43bcc3312040b63",name:"share",type:"png"})},414,[143]);

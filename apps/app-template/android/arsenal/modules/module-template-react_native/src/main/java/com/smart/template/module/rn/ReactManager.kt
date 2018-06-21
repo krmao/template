@@ -149,8 +149,8 @@ object ReactManager {
                 }
             })
             // .setJSBundleFile(jsBundleFile)
-            // .setJSMainModulePath(jsMainModulePath)
-            .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, true))
+             .setJSMainModulePath(jsMainModulePath)
+            .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, false))
             .addPackages(
                 mutableListOf<ReactPackage>(
                     MainReactPackage(MainPackageConfig.Builder().apply {

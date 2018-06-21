@@ -53,7 +53,7 @@ object ReactManager {
     val devSettingsManager: ReactDevSettingsManager by lazy { ReactDevSettingsManager(application, debug) }
 
     const val enableHotPatch = true
-    const val indexName = "common.android.bundle"
+    const val indexName = "index.android.bundle"
 
     @JvmStatic
     val localHotPatchIndexFile by lazy { File(CXCacheManager.getChildCacheDir("rn"), indexName) }

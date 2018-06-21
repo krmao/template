@@ -24,28 +24,12 @@
       "id": "7be5aa3f60ced36f3bf5972d0a12f299",
       "type": "module"
     },
-    "node_modules/react/cjs/react.development.js": {
-      "id": "a0336f28b5d8fe3a1450da5e32b7a631",
+    "react-native-implementation": {
+      "id": "cc757a791ecb3cd320f65c256a791c04",
       "type": "module"
     },
     "node_modules/fbjs/lib/invariant.js": {
       "id": "8940a4ad43b101ffc23e725363c70f8d",
-      "type": "module"
-    },
-    "node_modules/fbjs/lib/warning.js": {
-      "id": "09babf511a081d9520406a63f452d2ef",
-      "type": "module"
-    },
-    "node_modules/prop-types/checkPropTypes.js": {
-      "id": "3e62d20b75ceb973c783743618b412c0",
-      "type": "module"
-    },
-    "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
-      "id": "5622ec09fe8f3b606d0426f1d9c8d253",
-      "type": "module"
-    },
-    "react-native-implementation": {
-      "id": "cc757a791ecb3cd320f65c256a791c04",
       "type": "module"
     },
     "AccessibilityInfo": {
@@ -100,16 +84,8 @@
       "id": "8aee437d234c0bc340e2b5c81b6dc884",
       "type": "module"
     },
-    "parseErrorStack": {
-      "id": "b4f0ccd7cff0ac06b921f6ec722eba98",
-      "type": "module"
-    },
-    "node_modules/stacktrace-parser/index.js": {
-      "id": "69773e09a24b641b783e09f5c26d7e17",
-      "type": "module"
-    },
-    "node_modules/stacktrace-parser/lib/stacktrace-parser.js": {
-      "id": "fb643f3f6041812920e592011600c7f5",
+    "node_modules/fbjs/lib/warning.js": {
+      "id": "09babf511a081d9520406a63f452d2ef",
       "type": "module"
     },
     "defineLazyObjectProperty": {
@@ -156,8 +132,8 @@
       "id": "1102b68d89d7a6aede9677567aa01362",
       "type": "module"
     },
-    "ReactNativeRenderer-dev": {
-      "id": "e8b1ff97f94492f70485eaf5085880a7",
+    "ReactNativeRenderer-prod": {
+      "id": "b1200c8892cc7d485110adf7a46f4f27",
       "type": "module"
     },
     "InitializeCore": {
@@ -196,20 +172,16 @@
       "id": "884bc352f97b270ddc347d577771af2d",
       "type": "module"
     },
-    "symbolicateStackTrace": {
-      "id": "989261d5f68bc4ada2cf64b6bdcc3362",
+    "parseErrorStack": {
+      "id": "b4f0ccd7cff0ac06b921f6ec722eba98",
       "type": "module"
     },
-    "getDevServer": {
-      "id": "760b6f2c9fa353738d851f7c59cb5365",
+    "node_modules/stacktrace-parser/index.js": {
+      "id": "69773e09a24b641b783e09f5c26d7e17",
       "type": "module"
     },
-    "fetch": {
-      "id": "bd82c605a16f8c2f5185d959b02a54dc",
-      "type": "module"
-    },
-    "node_modules/react-native/node_modules/whatwg-fetch/fetch.js": {
-      "id": "c5ed53acccc9bf89ed9697d3686274c9",
+    "node_modules/stacktrace-parser/lib/stacktrace-parser.js": {
+      "id": "fb643f3f6041812920e592011600c7f5",
       "type": "module"
     },
     "ReactNativeVersionCheck": {
@@ -238,18 +210,6 @@
     },
     "node_modules/promise/setimmediate/done.js": {
       "id": "468ca029c2f1a246aeab8a13b00bdc2d",
-      "type": "module"
-    },
-    "node_modules/promise/setimmediate/rejection-tracking.js": {
-      "id": "a746aeac0009f0e5dc560b0d81b2ff44",
-      "type": "module"
-    },
-    "node_modules/pretty-format/index.js": {
-      "id": "c38fe993638abcd0f2fb0fa93884d321",
-      "type": "module"
-    },
-    "node_modules/pretty-format/printString.js": {
-      "id": "f78855266233c4a74e40fc5dea8e4030",
       "type": "module"
     },
     "node_modules/regenerator-runtime/runtime.js": {
@@ -314,6 +274,14 @@
     },
     "FormData": {
       "id": "b090ac9e0b10c45b80ebd8c19c20504a",
+      "type": "module"
+    },
+    "fetch": {
+      "id": "bd82c605a16f8c2f5185d959b02a54dc",
+      "type": "module"
+    },
+    "node_modules/react-native/node_modules/whatwg-fetch/fetch.js": {
+      "id": "c5ed53acccc9bf89ed9697d3686274c9",
       "type": "module"
     },
     "WebSocket": {
@@ -384,62 +352,6 @@
       "id": "b33721b03d3ba9dbccc1a2744ae23d68",
       "type": "module"
     },
-    "HMRClient": {
-      "id": "87dfc7fd955cf83a76561aa8b152e5c4",
-      "type": "module"
-    },
-    "node_modules/metro/src/lib/bundle-modules/HMRClient.js": {
-      "id": "cf50f95a09a027140117345b71c6f8d8",
-      "type": "module"
-    },
-    "node_modules/metro/src/lib/bundle-modules/MetroClient.js": {
-      "id": "640f3d527708051c317da9f2e00787d6",
-      "type": "module"
-    },
-    "node_modules/eventemitter3/index.js": {
-      "id": "403d3a3adcf0a85f44100f9d486f85cb",
-      "type": "module"
-    },
-    "HMRLoadingView": {
-      "id": "7f55a3d818da0194661c07883032e611",
-      "type": "module"
-    },
-    "ToastAndroid": {
-      "id": "a489583f1c19d395ba290d98db795c2c",
-      "type": "module"
-    },
-    "setupDevtools": {
-      "id": "9ce443f0435b534a4b0cfc7f0a97c5e0",
-      "type": "module"
-    },
-    "AppState": {
-      "id": "b2885f10a3cd281ac7558b783d308764",
-      "type": "module"
-    },
-    "node_modules/react-devtools-core/build/backend.js": {
-      "id": "3901ae74c84a5184d0a5b56392882ced",
-      "type": "module"
-    },
-    "flattenStyle": {
-      "id": "869f0bd4eed428d95df80a8c03d71093",
-      "type": "module"
-    },
-    "ReactNativePropRegistry": {
-      "id": "fa81bb30364d914a3fc2c9c4a20e13d8",
-      "type": "module"
-    },
-    "JSInspector": {
-      "id": "2bf7838d360efae9f2a55682481f7cb7",
-      "type": "module"
-    },
-    "NetworkAgent": {
-      "id": "6c76943e9c4343ad8e7106a115144a15",
-      "type": "module"
-    },
-    "InspectorAgent": {
-      "id": "d81b534ee623c501596afae504fb9795",
-      "type": "module"
-    },
     "UIManager": {
       "id": "467cd3365342d9aaa2e941fe7ace641c",
       "type": "module"
@@ -456,16 +368,20 @@
       "id": "0a1901203be944fdc0e69b9f986d4f9f",
       "type": "module"
     },
+    "flattenStyle": {
+      "id": "869f0bd4eed428d95df80a8c03d71093",
+      "type": "module"
+    },
+    "ReactNativePropRegistry": {
+      "id": "fa81bb30364d914a3fc2c9c4a20e13d8",
+      "type": "module"
+    },
     "node_modules/fbjs/lib/shallowEqual.js": {
       "id": "882d9bafc9c6028f5d0f723b114f93ba",
       "type": "module"
     },
     "ReactFeatureFlags": {
       "id": "fc42548e56ef78dcd36eb6169f445e16",
-      "type": "module"
-    },
-    "ReactNativeRenderer-prod": {
-      "id": "b1200c8892cc7d485110adf7a46f4f27",
       "type": "module"
     },
     "ProgressBarAndroid": {
@@ -476,12 +392,12 @@
       "id": "18eeaf4e01377a466daaccc6ba8ce6f5",
       "type": "module"
     },
-    "node_modules/prop-types/factoryWithTypeCheckers.js": {
-      "id": "1a9a8da21919720f7b2a3f003a72ea10",
-      "type": "module"
-    },
     "node_modules/prop-types/factoryWithThrowingShims.js": {
       "id": "83fd0f3694f5e1c2f77d83470a455f09",
+      "type": "module"
+    },
+    "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+      "id": "5622ec09fe8f3b606d0426f1d9c8d253",
       "type": "module"
     },
     "React": {
@@ -1020,78 +936,6 @@
       "id": "8d15d828d16b1b09c317f6dc4df2df48",
       "type": "module"
     },
-    "Inspector": {
-      "id": "064fcb318481e83bf3ad0815294e76a2",
-      "type": "module"
-    },
-    "InspectorOverlay": {
-      "id": "664571e32b5433e678fc5ea87be9b300",
-      "type": "module"
-    },
-    "ElementBox": {
-      "id": "bc1d1fc40bc039c47736d7a7862dfab2",
-      "type": "module"
-    },
-    "BorderBox": {
-      "id": "76e0c295202604af97a93c883df4e77b",
-      "type": "module"
-    },
-    "resolveBoxStyle": {
-      "id": "91ca9ebf378ea906277ffee2784ae076",
-      "type": "module"
-    },
-    "InspectorPanel": {
-      "id": "1f3dc5e64b748b6c689aa1472d5e6963",
-      "type": "module"
-    },
-    "ElementProperties": {
-      "id": "c67cbc1f8e28d7d9d5520a26e742e9b6",
-      "type": "module"
-    },
-    "BoxInspector": {
-      "id": "145eafc81690b097a402bd375a5a9358",
-      "type": "module"
-    },
-    "StyleInspector": {
-      "id": "5c149b58cbcea317762e960d5dd30aba",
-      "type": "module"
-    },
-    "TouchableHighlight": {
-      "id": "0d3968e3413084f66ce651afdba962c2",
-      "type": "module"
-    },
-    "mapWithSeparator": {
-      "id": "f583e01cf65abd4f4d1c5e0871a76e9c",
-      "type": "module"
-    },
-    "openFileInEditor": {
-      "id": "74b32f55a0bb628f9e8dc4e21b02d7a1",
-      "type": "module"
-    },
-    "NetworkOverlay": {
-      "id": "d22216a4351a4224118d463bcb0726f1",
-      "type": "module"
-    },
-    "WebSocketInterceptor": {
-      "id": "7361c13d8fc22924c7b3ce34396a013e",
-      "type": "module"
-    },
-    "XHRInterceptor": {
-      "id": "2bd8a70ec5d8820effbbea25d4a80ad1",
-      "type": "module"
-    },
-    "PerformanceOverlay": {
-      "id": "0480fd806aa0c21fcbc44eeb3e4455fe",
-      "type": "module"
-    },
-    "YellowBox": {
-      "id": "e45dc56a70bc3ee305d92368ab79dad0",
-      "type": "module"
-    },
-    "SafeAreaView": {
-      "id": "c02e66b7c74c6322d5fe39b551ce352c",
-      "type": "module"
-    },
     "I18nManager": {
       "id": "d4f47991055a71c91b56160302f3fadc",
       "type": "module"
@@ -1114,6 +958,10 @@
     },
     "ProgressViewIOS": {
       "id": "c1db3fdd78db6eff9d7ad78819e5910b",
+      "type": "module"
+    },
+    "SafeAreaView": {
+      "id": "c02e66b7c74c6322d5fe39b551ce352c",
       "type": "module"
     },
     "SectionList": {
@@ -1196,12 +1044,16 @@
       "id": "c3fc1c3123a4d0bcadefb6e75134743a",
       "type": "module"
     },
-    "EventValidator": {
-      "id": "9d43bbcafbecc3519300a22d368d41ec",
+    "ToastAndroid": {
+      "id": "a489583f1c19d395ba290d98db795c2c",
       "type": "module"
     },
     "ToolbarAndroid": {
       "id": "0c3ad3c7bb5c4f24a344b8e817908918",
+      "type": "module"
+    },
+    "TouchableHighlight": {
+      "id": "0d3968e3413084f66ce651afdba962c2",
       "type": "module"
     },
     "ViewPagerAndroid": {
@@ -1238,6 +1090,10 @@
     },
     "BackHandler": {
       "id": "e9ee99a5cbb074c7100807fd71239211",
+      "type": "module"
+    },
+    "AppState": {
+      "id": "b2885f10a3cd281ac7558b783d308764",
       "type": "module"
     },
     "AsyncStorage": {
@@ -1298,6 +1154,22 @@
     },
     "VibrationIOS": {
       "id": "ddb45dbd942ab1f7eed811ab8ff07394",
+      "type": "module"
+    },
+    "YellowBox": {
+      "id": "e45dc56a70bc3ee305d92368ab79dad0",
+      "type": "module"
+    },
+    "openFileInEditor": {
+      "id": "74b32f55a0bb628f9e8dc4e21b02d7a1",
+      "type": "module"
+    },
+    "getDevServer": {
+      "id": "760b6f2c9fa353738d851f7c59cb5365",
+      "type": "module"
+    },
+    "symbolicateStackTrace": {
+      "id": "989261d5f68bc4ada2cf64b6bdcc3362",
       "type": "module"
     },
     "takeSnapshot": {

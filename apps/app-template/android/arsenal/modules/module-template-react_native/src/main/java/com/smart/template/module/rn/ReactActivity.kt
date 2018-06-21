@@ -140,7 +140,9 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     @SuppressLint("SdCardPath")
     private fun startReact() {
         CXLogUtil.w(TAG, "startReact")
-//        reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+        reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+
+        return
 
         var businessBundlePath = "assets://business.android.bundle"
         //businessBundlePath = "/sdcard/Android/data/com.smart.template/cache/rn/business.android.bundle"

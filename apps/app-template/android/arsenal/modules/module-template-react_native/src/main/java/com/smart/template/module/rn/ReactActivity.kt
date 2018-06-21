@@ -1,5 +1,6 @@
 package com.smart.template.module.rn
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -18,8 +19,7 @@ import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
-import org.jetbrains.anko.activityUiThreadWithContext
-import org.jetbrains.anko.async
+
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -91,7 +91,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
             if (CXBaseApplication.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
                 startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
             } else {
-                CXLogUtil.w(TAG, "startReactApplication")
                 startReact()
                 // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
                 if (CXBaseApplication.DEBUG && ReactManager.isCurrentLoadModeServer()) {
@@ -122,7 +121,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                     finish()
                     return
                 } else {
-                    CXLogUtil.w(TAG, "startReactApplication")
                     startReact()
                     // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
                     if (CXBaseApplication.DEBUG && ReactManager.isCurrentLoadModeServer()) {
@@ -139,26 +137,59 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         }
     }
 
-    fun startReact(){
-        reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+    @SuppressLint("SdCardPath")
+    private fun startReact() {
+        CXLogUtil.w(TAG, "startReact")
+//        reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
 
-        /*async {
-            val businessBundlePath = "assets://business.android.bundle"
+        var businessBundlePath = "assets://business.android.bundle"
+        //businessBundlePath = "/sdcard/Android/data/com.smart.template/cache/rn/business.android.bundle"
 
-            (reactInstanceManager?.currentReactContext?.catalystInstance as? CatalystInstanceImpl)?.let {
+        /**
+         * Called when the react context is initialized (all modules registered). Always called on the
+         * UI thread.
+         */
 
-                try {
-                    JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, true).loadScript(it)
-                    CXLogUtil.e("ReactNativeHost", "loadBusinessBundle $businessBundlePath done.")
-                } catch (e: Throwable) {
-                    CXLogUtil.e("ReactNativeHost", "loadBusinessBundle $businessBundlePath error.", e)
+        reactInstanceManager?.addReactInstanceEventListener {
+            CXLogUtil.e(TAG, "initialized success")
+
+            try {
+                (reactInstanceManager?.currentReactContext?.catalystInstance as? CatalystInstanceImpl)?.let { catalystInstance ->
+                    JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, true).loadScript(catalystInstance)
                 }
+                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath done.")
+            } catch (e: Throwable) {
+                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath error.", e)
+            }
 
-                activityUiThreadWithContext {
-                    reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+//            (reactInstanceManager?.currentReactContext?.catalystInstance as? CatalystInstanceImpl)?.let { catalystInstance ->
+//                JSBundleLoader.createFileLoader(businessBundlePath, businessBundlePath, true).loadScript(catalystInstance)
+//            }
+
+            /*var loadScriptFile: Method? = null
+            if (loadScriptFile == null) {
+                try {
+                    loadScriptFile = CatalystInstanceImpl::class.java.getDeclaredMethod("loadScriptFromFile", String::class.java, String::class.java, java.lang.Boolean.TYPE)
+                    loadScriptFile.isAccessible = true
+                } catch (e: NoSuchMethodException) {
+                    CXLogUtil.e(TAG, "cannot found method: CatalystInstanceImpl.loadScriptFromFile(String, String)", e)
                 }
             }
-        }*/
+
+            val catalystInstance = reactInstanceManager?.currentReactContext?.catalystInstance
+            CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath start...")
+            try {
+                loadScriptFile?.invoke(catalystInstance, businessBundlePath, businessBundlePath, true)
+                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath done.")
+            } catch (e: Throwable) {
+                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath error.")
+                CXLogUtil.e(TAG, "error invoke method: CatalystInstanceImpl.loadScriptFromFile(String, String)", e)
+            }*/
+
+//            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+        }
+
+        reactInstanceManager?.createReactContextInBackground()
     }
 
     /**

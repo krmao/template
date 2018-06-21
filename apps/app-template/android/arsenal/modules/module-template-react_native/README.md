@@ -13,3 +13,5 @@ adb shell input keyevent 82
 ```
 
 ### 4: 首次加载白屏优化 [https://www.jianshu.com/p/78571e5435ec](https://www.jianshu.com/p/78571e5435ec)
+
+### 5: debug chrome host [https://github.com/facebook/react-native/blob/0.52-stable/local-cli/server/middleware/getDevToolsMiddleware.js](https://github.com/facebook/react-native/blob/0.52-stable/local-cli/server/middleware/getDevToolsMiddleware.js)

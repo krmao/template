@@ -8,13 +8,14 @@ import com.facebook.react.ReactInstanceManagerBuilder
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.Promise
 import com.facebook.react.common.LifecycleState
+import com.facebook.react.common.ReactConstants
 import com.facebook.react.shell.MainPackageConfig
 import com.facebook.react.shell.MainReactPackage
-import com.smart.template.module.rn.dev.ReactDevSettingsManager
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
+import com.smart.template.module.rn.dev.ReactDevSettingsManager
 import com.smart.template.module.rn.packages.ReactCustomPackage
 import java.io.File
 
@@ -22,7 +23,7 @@ import java.io.File
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
 object ReactManager {
-    const val TAG: String = "react native"
+    const val TAG: String = ReactConstants.TAG
 
     @JvmStatic
     var application: Application = CXBaseApplication.INSTANCE
@@ -52,7 +53,7 @@ object ReactManager {
     val devSettingsManager: ReactDevSettingsManager by lazy { ReactDevSettingsManager(application, debug) }
 
     const val enableHotPatch = true
-    const val indexName = "index.android.bundle"
+    const val indexName = "common.android.bundle"
 
     @JvmStatic
     val localHotPatchIndexFile by lazy { File(CXCacheManager.getChildCacheDir("rn"), indexName) }
@@ -73,7 +74,7 @@ object ReactManager {
         this.debug = debug
         this.onCallNativeListener = onCallNativeListener
 
-        instanceManager?.createReactContextInBackground()
+        //instanceManager?.createReactContextInBackground()
         CXLogUtil.e(TAG, "react native did${if (instanceManager == null) " not " else " "}run createReactContextInBackground")
     }
 

@@ -12,7 +12,6 @@ import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactRootView
-import com.facebook.react.bridge.CatalystInstanceImpl
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
@@ -59,7 +58,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private val moduleName: String
         get() = intent.getStringExtra(KEY_START_COMPONENT)
-            ?: ReactManager.devSettingsManager.getDefaultStartComponent()
+            ?: ReactConstant.COMPONENT_NAME //ReactManager.devSettingsManager.getDefaultStartComponent()
 
     private val pageName: String
         get() = intent.getStringExtra(KEY_START_COMPONENT_PAGE)
@@ -140,58 +139,14 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     @SuppressLint("SdCardPath")
     private fun startReact() {
         CXLogUtil.w(TAG, "startReact")
-        reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
-
-        return
-
-        var businessBundlePath = "assets://business.android.bundle"
+        val businessBundlePath = ReactConstant.PATH_ASSETS_BUSINESS_BUNDLE
         //businessBundlePath = "/sdcard/Android/data/com.smart.template/cache/rn/business.android.bundle"
 
-        /**
-         * Called when the react context is initialized (all modules registered). Always called on the
-         * UI thread.
-         */
-
-        reactInstanceManager?.addReactInstanceEventListener {
-            CXLogUtil.e(TAG, "initialized success")
-
-            try {
-                (reactInstanceManager?.currentReactContext?.catalystInstance as? CatalystInstanceImpl)?.let { catalystInstance ->
-                    JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, true).loadScript(catalystInstance)
-                }
-                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath done.")
-            } catch (e: Throwable) {
-                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath error.", e)
-            }
-
-//            (reactInstanceManager?.currentReactContext?.catalystInstance as? CatalystInstanceImpl)?.let { catalystInstance ->
-//                JSBundleLoader.createFileLoader(businessBundlePath, businessBundlePath, true).loadScript(catalystInstance)
-//            }
-
-            /*var loadScriptFile: Method? = null
-            if (loadScriptFile == null) {
-                try {
-                    loadScriptFile = CatalystInstanceImpl::class.java.getDeclaredMethod("loadScriptFromFile", String::class.java, String::class.java, java.lang.Boolean.TYPE)
-                    loadScriptFile.isAccessible = true
-                } catch (e: NoSuchMethodException) {
-                    CXLogUtil.e(TAG, "cannot found method: CatalystInstanceImpl.loadScriptFromFile(String, String)", e)
-                }
-            }
-
-            val catalystInstance = reactInstanceManager?.currentReactContext?.catalystInstance
-            CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath start...")
-            try {
-                loadScriptFile?.invoke(catalystInstance, businessBundlePath, businessBundlePath, true)
-                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath done.")
-            } catch (e: Throwable) {
-                CXLogUtil.e(TAG, "loadBusinessBundle $businessBundlePath error.")
-                CXLogUtil.e(TAG, "error invoke method: CatalystInstanceImpl.loadScriptFromFile(String, String)", e)
-            }*/
-
-//            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+        ReactManager.loadBundle(JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false))
+        Looper.myQueue().addIdleHandler {
+            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+            false
         }
-
-        reactInstanceManager?.createReactContextInBackground()
     }
 
     /**

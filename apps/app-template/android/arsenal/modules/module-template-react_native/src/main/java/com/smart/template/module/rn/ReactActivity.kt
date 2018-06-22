@@ -1,6 +1,5 @@
 package com.smart.template.module.rn
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,9 +12,9 @@ import android.widget.FrameLayout
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactRootView
 import com.facebook.react.bridge.JSBundleLoader
+import com.facebook.react.devsupport.DoubleTapReloadRecognizer
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
-import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 
@@ -56,6 +55,8 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var reactInstanceManager: ReactInstanceManager? = null
 
+    private val doubleTapReloadRecognizer by lazy { DoubleTapReloadRecognizer() }
+
     private val moduleName: String
         get() = intent.getStringExtra(KEY_START_COMPONENT)
             ?: ReactConstant.COMPONENT_NAME //ReactManager.devSettingsManager.getDefaultStartComponent()
@@ -87,17 +88,16 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
              * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
              * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
              */
-            if (CXBaseApplication.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            if (ReactManager.devSupportEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
                 startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
             } else {
-                startReact()
+                startReactApplication()
                 // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
-                if (CXBaseApplication.DEBUG && ReactManager.isCurrentLoadModeServer()) {
+                if (ReactManager.devSupportEnabled() && ReactManager.isCurrentLoadModeServer()) {
                     Looper.myQueue().addIdleHandler {
-                        CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
-                        CXToastUtil.show("debug 模式下自动 reload -->")
-//                        ReactManager.devSettingsManager.reload()
-
+                        // CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
+                        // CXToastUtil.show("debug 模式下自动 reload -->")
+                        // ReactManager.devSettingsManager.reload()
                         false
                     }
                 }
@@ -120,33 +120,31 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                     finish()
                     return
                 } else {
-                    startReact()
+                    startReactApplication()
                     // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
-                    if (CXBaseApplication.DEBUG && ReactManager.isCurrentLoadModeServer()) {
+                    if (ReactManager.devSupportEnabled() && ReactManager.isCurrentLoadModeServer()) {
                         Looper.myQueue().addIdleHandler {
-                            CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
-                            CXToastUtil.show("debug 模式下自动 reload -->")
-//                            ReactManager.devSettingsManager.reload()
-
+                            // CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
+                            // CXToastUtil.show("debug 模式下自动 reload -->")
+                            // ReactManager.devSettingsManager.reload()
                             false
                         }
                     }
                 }
             }
+        } else {
+            reactInstanceManager?.onActivityResult(this, requestCode, resultCode, data)
         }
     }
 
-    @SuppressLint("SdCardPath")
-    private fun startReact() {
-        CXLogUtil.w(TAG, "startReact")
+    private fun startReactApplication() {
+        CXLogUtil.w(TAG, "startReactApplication")
         val businessBundlePath = ReactConstant.PATH_ASSETS_BUSINESS_BUNDLE
         //businessBundlePath = "/sdcard/Android/data/com.smart.template/cache/rn/business.android.bundle"
 
-        ReactManager.loadBundle(JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false))
-        Looper.myQueue().addIdleHandler {
-            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
-            false
-        }
+        ReactManager.loadBundle(ReactBundle(businessBundlePath, JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false)))
+
+        reactRootView?.post { reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties) }
     }
 
     /**
@@ -154,6 +152,10 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
      */
     fun updateReactProperties(appProperties: Bundle?) {
         reactRootView?.appProperties = appProperties
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        reactInstanceManager?.onNewIntent(intent) ?: super.onNewIntent(intent)
     }
 
 
@@ -167,10 +169,9 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactInstanceManager?.onHostPause(this)
     }
 
-    override fun onBackPress(): Boolean {
+    override fun onBackPressed() {
         CXLogUtil.d(TAG, "onBackPress")
-        reactInstanceManager?.onBackPressed()
-        return true
+        reactInstanceManager?.onBackPressed() ?: super.onBackPressed()
     }
 
     override fun invokeDefaultOnBackPressed() {
@@ -178,15 +179,39 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         super.onBackPressed()
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            reactInstanceManager?.showDevOptionsDialog()
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (reactInstanceManager != null && ReactManager.devSupportEnabled() && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+            event.startTracking()
             return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (reactInstanceManager != null) {
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                reactInstanceManager?.showDevOptionsDialog()
+                return true
+            }
+            if (doubleTapReloadRecognizer.didDoubleTapR(keyCode, currentFocus)) {
+                reactInstanceManager?.devSupportManager?.handleReloadJS()
+                return true
+            }
         }
         return super.onKeyUp(keyCode, event)
     }
 
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+        if (reactInstanceManager != null && ReactManager.devSupportEnabled() && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+            reactInstanceManager?.showDevOptionsDialog()
+            return true
+        }
+        return super.onKeyLongPress(keyCode, event)
+    }
+
     override fun onDestroy() {
+        reactRootView?.unmountReactApplication()
+        reactRootView = null
         reactInstanceManager?.onHostDestroy(this)
         super.onDestroy()
     }

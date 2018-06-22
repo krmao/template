@@ -4,9 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.CXRouteManager
@@ -89,36 +86,21 @@ open class CXBaseActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (onBackPress())
-                return true
+            if (onBackPress()) return true
 
             window.decorView.clearAnimation()
-            val fragments = supportFragmentManager.fragments
-            if (fragments != null && fragments.size > 0) {
-                val fragment = fragments[0]
-                if (fragment is CXBaseFragment.OnBackPressedListener) {
-                    val canPropagate = fragment.onBackPressed()
-                    if (canPropagate) {
-                        try {
-                            supportFragmentManager.popBackStackImmediate()
-                        } catch (ignored: Exception) {
-                        }
+            supportFragmentManager.fragments?.firstOrNull()?.let {
+                if (it is CXBaseFragment.OnBackPressedListener) {
+                    if (it.onBackPressed()) {
+                        supportFragmentManager.popBackStackImmediate()
                         return true
                     }
                 }
             }
+
             if (supportFragmentManager.backStackEntryCount == 0) {
-                if (enableExitWithDoubleBackPressed) {
-                    exitApp()
-                } else {
-                    finish()
-                }
-            } else {
-                try {
-                    supportFragmentManager.popBackStackImmediate()
-                } catch (ignored: Exception) {
-                }
-            }
+                if (enableExitWithDoubleBackPressed) exitApp() else finish()
+            } else supportFragmentManager.popBackStackImmediate()
             return true
         } else {
             return super.onKeyDown(keyCode, event)

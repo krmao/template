@@ -51,10 +51,7 @@ object ReactManager {
                             isInitialized = true
                             CXLogUtil.w(TAG, "initialized base bundle success")
 
-                            getCatalystInstance()?.let {
-                                loadBundleTasks.forEach { loader -> loader.loadScript(it) }
-                                loadBundleTasks.clear()
-                            }
+                            getCatalystInstance()?.let { loadBundleTasks.forEach { bundle -> bundle.loadScript(it) } }
                         }
                         CXLogUtil.w(TAG, "createReactContextInBackground start...")
                         createReactContextInBackground()
@@ -67,19 +64,23 @@ object ReactManager {
 
     @Volatile
     private var isInitialized = false
-    private val loadBundleTasks: Vector<JSBundleLoader> = Vector()
+    private val loadBundleTasks: Vector<ReactBundle> = Vector()
     @JvmStatic
-    fun loadBundle(bundleLoader: JSBundleLoader?) {
-        bundleLoader?.let { loader ->
+    fun loadBundle(bundle: ReactBundle?) {
+        bundle?.let {
             if (!isInitialized) {
                 synchronized(isInitialized) {
                     if (!isInitialized) {
-                        loadBundleTasks.add(loader)
+                        if (!loadBundleTasks.contains(bundle)) loadBundleTasks.add(it)
                         return
                     }
                 }
             }
-            getCatalystInstance()?.let { loader.loadScript(it) }
+
+            if (loadBundleTasks.contains(bundle)) loadBundleTasks.elementAt(loadBundleTasks.indexOf(bundle)).loadScript(getCatalystInstance())
+            else loadBundleTasks.add(it.loadScript(getCatalystInstance()))
+
+            Unit
         }
     }
 
@@ -130,6 +131,9 @@ object ReactManager {
     fun isCurrentLoadModeServer(): Boolean = devSettingsManager.getDebugHttpHost().isNotEmpty()
 
     @JvmStatic
+    fun devSupportEnabled(): Boolean = instanceManager?.devSupportManager?.devSupportEnabled == true
+
+    @JvmStatic
     @JvmOverloads
     fun getInstanceBuilder(jsBundleFile: String, jsMainModulePath: String = "index"): ReactInstanceManagerBuilder {
         return ReactInstanceManager.builder()
@@ -149,7 +153,7 @@ object ReactManager {
                 }
             })
             // .setJSBundleFile(jsBundleFile)
-             .setJSMainModulePath(jsMainModulePath)
+            .setJSMainModulePath(jsMainModulePath)
             .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, false))
             .addPackages(
                 mutableListOf<ReactPackage>(

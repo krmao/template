@@ -68,9 +68,8 @@ var __DEV__=true,__BUNDLE_START_TIME__=this.nativePerformanceNow?nativePerforman
       }
     }
 
-    var finalModuleId = moduleId;
-    var module = modules[finalModuleId];
-    return module && module.isInitialized ? module.exports : guardedLoadModule(finalModuleId, module);
+    var module = modules[moduleId];
+    return module && module.isInitialized ? module.exports : guardedLoadModule(moduleId, module);
   }
 
   var inGuard = false;
@@ -116,7 +115,7 @@ var __DEV__=true,__BUNDLE_START_TIME__=this.nativePerformanceNow?nativePerforman
   function loadModuleImplementation(moduleId, module) {
     var nativeRequire = global.nativeRequire;
 
-    if (!module && nativeRequire) {
+    if (!module && nativeRequire && typeof moduleId === 'number') {
       var _unpackModuleId = unpackModuleId(moduleId);
 
       var segmentId = _unpackModuleId.segmentId,

@@ -1,5 +1,49 @@
 {
   "modules": {
+    "__prelude__": {
+      "id": "e3a49e5615248395556ce6fcec915282",
+      "type": "script"
+    },
+    "node_modules/metro/src/lib/polyfills/require.js": {
+      "id": "2d37ac07bc2367890c450d944f5ea44c",
+      "type": "script"
+    },
+    "Object.es6": {
+      "id": "a856e31600ede8a9eb073291254b42a7",
+      "type": "script"
+    },
+    "console": {
+      "id": "7b36d117e2ebfc24efc312b514f90796",
+      "type": "script"
+    },
+    "error-guard": {
+      "id": "073294c00e60bf4fac483d5269c95b2e",
+      "type": "script"
+    },
+    "Number.es6": {
+      "id": "aa1b117088cf8074496f0c2369d13aae",
+      "type": "script"
+    },
+    "String.prototype.es6": {
+      "id": "52dbec1698970f660fe259d9dc74eae0",
+      "type": "script"
+    },
+    "Array.prototype.es6": {
+      "id": "07a49ad734c5a595fc64b386f3ad4d26",
+      "type": "script"
+    },
+    "Array.es6": {
+      "id": "88c312d10cd2278c2676924e8f3ef864",
+      "type": "script"
+    },
+    "Object.es7": {
+      "id": "7220944d811fd3c4adcc96538277bdf6",
+      "type": "script"
+    },
+    "babelHelpers": {
+      "id": "b35a48e4b041e93771db00cef4bd0b8c",
+      "type": "script"
+    },
     "common_entry.js": {
       "id": "01b5cd203eaceee51e29c55a1150cf31",
       "type": "module"
@@ -1408,6 +1452,10 @@
       "id": "e56e3b4f6f7f1318e519a227d65a0b65",
       "type": "module"
     },
+    "node_modules/react-navigation/src/views/assets/back-icon.png": {
+      "id": "3e2a0266dca84c2581ac272919646f18",
+      "type": "asset"
+    },
     "node_modules/react-navigation/src/views/Header/ModularHeaderBackButton.js": {
       "id": "d7ee1c5e978421ded0e34c807c02b781",
       "type": "module"
@@ -1423,6 +1471,10 @@
     "node_modules/react-navigation/src/views/withOrientation.js": {
       "id": "36c636e765f427a2f89641e81f1ebba9",
       "type": "module"
+    },
+    "node_modules/react-navigation/src/views/assets/back-icon-mask.png": {
+      "id": "92b87c7477e3d34e3cb77423c01963f7",
+      "type": "asset"
     },
     "node_modules/react-navigation/src/routers/StackActions.js": {
       "id": "6bd004bef2f53ff343e677f2e121d275",
@@ -1715,6 +1767,14 @@
     "node_modules/react-navigation/src/views/withNavigationFocus.js": {
       "id": "82debb848906769fd4f1cbb5c9a9cc7a",
       "type": "module"
+    },
+    "require-36707ef8c51a3d4168c7191597117671": {
+      "id": "36707ef8c51a3d4168c7191597117671",
+      "type": "require"
+    },
+    "require-01b5cd203eaceee51e29c55a1150cf31": {
+      "id": "01b5cd203eaceee51e29c55a1150cf31",
+      "type": "require"
     }
   }
 }

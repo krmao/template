@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.AbsListView
 import android.widget.TextView
+import com.smart.library.util.CXChecksumUtil
 import com.smart.library.util.CXViewUtil
 import org.jetbrains.anko.AnkoAsyncContext
 
@@ -53,3 +54,4 @@ fun TextView.setTextAndVisible(text: String?) {
     this.text = text
     this.visibility = if (TextUtils.isEmpty(text?.trim())) View.GONE else View.VISIBLE
 }
+fun String.md5(): String = CXChecksumUtil.genMD5Checksum(this)

@@ -10,14 +10,12 @@
             android:name=".ReactActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait"
-            android:theme="@style/CXAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/CXAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
     </application>

@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor("#FFEFEFEF")
         window?.makeKeyAndVisible()
 
-        URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
+        /*URLProtocol.registerClass(CXUIWebViewURLProtocol.self)
         // CXURLProtocol.registerSchemeForWKWebView("http", "https")
         // CXHybirdBridge.addNativeClass("hybird://hybird:1234", "native", NSStringFromClass(CXHybirdMethods.self))
 
@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     timeoutInterval: 0.2
             ))
 
-            /*CXRepository.downloadHybirdModuleConfiguration(
+            *//*CXRepository.downloadHybirdModuleConfiguration(
                     url: configUrl,
                     timeoutInterval: 0.2, //200 ms
                     success: { response in
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     failure: { message in
                         callback(nil)
                     }
-            )*/
+            )*//*
         }
         let downloader: ((_ downloadUrl: String, _ file: File?, _ callback: @escaping  (File?) -> Void?) -> Void?)? = { (downloadUrl, file, callback) in
 
@@ -110,10 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 rootViewController.pushViewController(HybirdUIWebViewController("http://wx.hfgjia.cn/wx/index.html"), animated: false)
 
             }
-        }
+        }*/
 
 
-//        rootViewController.pushViewController(ReactViewController(), animated: false)
+        rootViewController.pushViewController(ReactViewController(), animated: false)
 
         CXLogUtil.i("application init end <--")
         return true

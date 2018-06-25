@@ -57,6 +57,14 @@
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:icon="@drawable/home_bar_item_rn_selector"
+                    android:layout="@layout/home_tab_item"
+                    android:text="rn"
+                    tools:ignore="HardcodedText" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:icon="@drawable/home_bar_item_find_selector"
                     android:layout="@layout/home_tab_item"
                     android:text="hybird"

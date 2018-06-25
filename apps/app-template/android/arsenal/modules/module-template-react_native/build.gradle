@@ -20,6 +20,5 @@ dependencies {
 
     api project(':library-template-base')
 
-    //noinspection GradleDynamicVersion
-    api "com.facebook.react:react-native:+" // From node_modules. cd react && npm install
+    api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
 }

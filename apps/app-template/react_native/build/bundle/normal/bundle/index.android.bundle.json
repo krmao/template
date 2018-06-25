@@ -1,0 +1,1612 @@
+{
+  "modules": {
+    "index.js": {
+      "id": "e8e01fe2fc84cccf8e642d42a9a40555",
+      "type": "module"
+    },
+    "node_modules/react/index.js": {
+      "id": "c42a5e17831e80ed1e1c8cf91f5ddb40",
+      "type": "module"
+    },
+    "node_modules/react/cjs/react.production.min.js": {
+      "id": "f633b4df9bb24abbced2514340d9ed79",
+      "type": "module"
+    },
+    "node_modules/object-assign/index.js": {
+      "id": "8af2bf7b94417b5c71327646f65c8821",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/emptyObject.js": {
+      "id": "da32f9ead03e97a13bff4dea57a4330e",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/emptyFunction.js": {
+      "id": "7be5aa3f60ced36f3bf5972d0a12f299",
+      "type": "module"
+    },
+    "react-native-implementation": {
+      "id": "cc757a791ecb3cd320f65c256a791c04",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/invariant.js": {
+      "id": "8940a4ad43b101ffc23e725363c70f8d",
+      "type": "module"
+    },
+    "AccessibilityInfo": {
+      "id": "73fa690922381d7b2ad44d215274a11d",
+      "type": "module"
+    },
+    "NativeModules": {
+      "id": "ce21807d4d291be64fa852393519f6c8",
+      "type": "module"
+    },
+    "BatchedBridge": {
+      "id": "fb53f04427490b2bd8fd29ce5c52844e",
+      "type": "module"
+    },
+    "MessageQueue": {
+      "id": "a85985c373d93e0fd200bd438fe5e038",
+      "type": "module"
+    },
+    "ErrorUtils": {
+      "id": "e8f159f7acd84ab33d81898fe639be0f",
+      "type": "module"
+    },
+    "Systrace": {
+      "id": "f2c19e474cad2bfe5e78b9a682b019c8",
+      "type": "module"
+    },
+    "deepFreezeAndThrowOnMutationInDev": {
+      "id": "bf458906dba1090c46644daf0b3c1062",
+      "type": "module"
+    },
+    "stringifySafe": {
+      "id": "4f3a854c228e18b0fe847f9fff3dcfac",
+      "type": "module"
+    },
+    "JSTimers": {
+      "id": "d58aebb81f3200b441491ee71f343dd5",
+      "type": "module"
+    },
+    "Platform": {
+      "id": "9493a89f5d95c3a8a47c65cfed9b5542",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/performanceNow.js": {
+      "id": "132e221ae2b81367ff1b4124cfdfb0aa",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/performance.js": {
+      "id": "310cd7ddef5a265d0c8315d8d98227f4",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/ExecutionEnvironment.js": {
+      "id": "8aee437d234c0bc340e2b5c81b6dc884",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/warning.js": {
+      "id": "09babf511a081d9520406a63f452d2ef",
+      "type": "module"
+    },
+    "defineLazyObjectProperty": {
+      "id": "e5152f0f2bf6d1f6699dd98929954a20",
+      "type": "module"
+    },
+    "RCTDeviceEventEmitter": {
+      "id": "1060a7fdd4114915bad6b6943cf86a21",
+      "type": "module"
+    },
+    "EventEmitter": {
+      "id": "6ab4a8e3cdc2c08a793730abd92b6eff",
+      "type": "module"
+    },
+    "EmitterSubscription": {
+      "id": "bfead221247b162887cda7d2b4ca630b",
+      "type": "module"
+    },
+    "EventSubscription": {
+      "id": "4cf90e7f25a44be75e528ef2effe7473",
+      "type": "module"
+    },
+    "EventSubscriptionVendor": {
+      "id": "1206b7c3420c22f521eae17efd495587",
+      "type": "module"
+    },
+    "ActivityIndicator": {
+      "id": "446c314de88c8d6e75f5fb760a2cc27f",
+      "type": "module"
+    },
+    "ColorPropType": {
+      "id": "63c61c7eda525c10d0670d2ef8475012",
+      "type": "module"
+    },
+    "normalizeColor": {
+      "id": "16e4ebd2e425393d17dd977daf378657",
+      "type": "module"
+    },
+    "NativeMethodsMixin": {
+      "id": "e2817b4a53aaef19afef34f031e1b9c9",
+      "type": "module"
+    },
+    "ReactNative": {
+      "id": "1102b68d89d7a6aede9677567aa01362",
+      "type": "module"
+    },
+    "ReactNativeRenderer-prod": {
+      "id": "b1200c8892cc7d485110adf7a46f4f27",
+      "type": "module"
+    },
+    "InitializeCore": {
+      "id": "36707ef8c51a3d4168c7191597117671",
+      "type": "module"
+    },
+    "PolyfillFunctions": {
+      "id": "7d7d78f5a0c234251af47713b1e4b4cc",
+      "type": "module"
+    },
+    "_shouldPolyfillES6Collection": {
+      "id": "ee4b9bb0852a41afb06d2c68334f0f19",
+      "type": "module"
+    },
+    "Map": {
+      "id": "3ca231031f859f6a9deeb308a64495f7",
+      "type": "module"
+    },
+    "guid": {
+      "id": "64db148920110163e29d54a1e3046610",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/isNode.js": {
+      "id": "d53475fc6035d1db4b728ec49bcf05ca",
+      "type": "module"
+    },
+    "toIterator": {
+      "id": "1de9aa85c939144deee9416ef1890ac1",
+      "type": "module"
+    },
+    "Set": {
+      "id": "a140e1090b5f286a36e432887e992109",
+      "type": "module"
+    },
+    "ExceptionsManager": {
+      "id": "884bc352f97b270ddc347d577771af2d",
+      "type": "module"
+    },
+    "parseErrorStack": {
+      "id": "b4f0ccd7cff0ac06b921f6ec722eba98",
+      "type": "module"
+    },
+    "node_modules/stacktrace-parser/index.js": {
+      "id": "69773e09a24b641b783e09f5c26d7e17",
+      "type": "module"
+    },
+    "node_modules/stacktrace-parser/lib/stacktrace-parser.js": {
+      "id": "fb643f3f6041812920e592011600c7f5",
+      "type": "module"
+    },
+    "ReactNativeVersionCheck": {
+      "id": "d03068cfc94974673502036011366fe2",
+      "type": "module"
+    },
+    "ReactNativeVersion": {
+      "id": "c6f1e8c07876430b23ba4e5d37e3b170",
+      "type": "module"
+    },
+    "Promise": {
+      "id": "671e0d3f7a033da96d1450e1878fc16f",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/Promise.native.js": {
+      "id": "1955ab0229a3b0d990b6cc4b263f6681",
+      "type": "module"
+    },
+    "node_modules/promise/setimmediate/es6-extensions.js": {
+      "id": "6d59fa2d58547d22bb0d53d94e07a807",
+      "type": "module"
+    },
+    "node_modules/promise/setimmediate/core.js": {
+      "id": "004be1e3b93c14310ddbd367a1c079df",
+      "type": "module"
+    },
+    "node_modules/promise/setimmediate/done.js": {
+      "id": "468ca029c2f1a246aeab8a13b00bdc2d",
+      "type": "module"
+    },
+    "node_modules/regenerator-runtime/runtime.js": {
+      "id": "0a19f3ab228a275f5b22079b817bcfca",
+      "type": "module"
+    },
+    "XMLHttpRequest": {
+      "id": "79c7f38aacaf813c729418c91402b91c",
+      "type": "module"
+    },
+    "node_modules/event-target-shim/lib/event-target.js": {
+      "id": "720d63c49f383f153c021e592c9e6989",
+      "type": "module"
+    },
+    "node_modules/event-target-shim/lib/commons.js": {
+      "id": "6d77002344308dbe7a483da6d3a6a4c0",
+      "type": "module"
+    },
+    "node_modules/event-target-shim/lib/custom-event-target.js": {
+      "id": "3ec9ff9c4da15502227db5a451c8d3b7",
+      "type": "module"
+    },
+    "node_modules/event-target-shim/lib/event-wrapper.js": {
+      "id": "10a841c12006d861f8e8a05a7fc56a7d",
+      "type": "module"
+    },
+    "RCTNetworking": {
+      "id": "a37e4be6be1b0ee1c58e652f0d542442",
+      "type": "module"
+    },
+    "MissingNativeEventEmitterShim": {
+      "id": "7148cfaf6290e068c4da6dec574e9d5d",
+      "type": "module"
+    },
+    "NativeEventEmitter": {
+      "id": "522e0292cd937e7e7dc15e8d27ea9246",
+      "type": "module"
+    },
+    "convertRequestBody": {
+      "id": "6e26159b1cf7f094fbd7a1008a9994da",
+      "type": "module"
+    },
+    "binaryToBase64": {
+      "id": "2c5c0b8cc147ed9fc3c48f037910a196",
+      "type": "module"
+    },
+    "node_modules/base64-js/index.js": {
+      "id": "350961b4c78178ca4358ee1e601c5e2f",
+      "type": "module"
+    },
+    "Blob": {
+      "id": "096007123c886a641b5b7e629326a442",
+      "type": "module"
+    },
+    "BlobManager": {
+      "id": "6432c6a42bdc71908935daf61e70dba8",
+      "type": "module"
+    },
+    "BlobRegistry": {
+      "id": "8e00b38c0f6b9516213946d0873f43f4",
+      "type": "module"
+    },
+    "FormData": {
+      "id": "b090ac9e0b10c45b80ebd8c19c20504a",
+      "type": "module"
+    },
+    "fetch": {
+      "id": "bd82c605a16f8c2f5185d959b02a54dc",
+      "type": "module"
+    },
+    "node_modules/react-native/node_modules/whatwg-fetch/fetch.js": {
+      "id": "c5ed53acccc9bf89ed9697d3686274c9",
+      "type": "module"
+    },
+    "WebSocket": {
+      "id": "b54f8d6a8fec03e3197a9d378e32fbd2",
+      "type": "module"
+    },
+    "WebSocketEvent": {
+      "id": "ca06df4ad17f8f158e9a75d28b8dff00",
+      "type": "module"
+    },
+    "File": {
+      "id": "fa51b6ea7707c76b9c6fd243fa47e907",
+      "type": "module"
+    },
+    "FileReader": {
+      "id": "3be364ddfbdd844dd00f981b5bc4da3e",
+      "type": "module"
+    },
+    "URL": {
+      "id": "a9f6e522b9deca7a3cff0ca4420ffce4",
+      "type": "module"
+    },
+    "Alert": {
+      "id": "0c8048c84a9b8e4bf9556e3d67e355e7",
+      "type": "module"
+    },
+    "AlertIOS": {
+      "id": "c80b578920da20660170a7b3984163ee",
+      "type": "module"
+    },
+    "Geolocation": {
+      "id": "f01475cdda1d6eb3c4ae0a2b485aaba1",
+      "type": "module"
+    },
+    "logError": {
+      "id": "a714f18e0e5e29fe585e1b62a28844f0",
+      "type": "module"
+    },
+    "PermissionsAndroid": {
+      "id": "be963805cb6d0666a620727bacebd6d6",
+      "type": "module"
+    },
+    "HeapCapture": {
+      "id": "9339c066c5d7ca261099796dfd4c05ea",
+      "type": "module"
+    },
+    "SamplingProfiler": {
+      "id": "d4716000500953e0fb2e4fe61254eaf0",
+      "type": "module"
+    },
+    "RCTLog": {
+      "id": "e33cf0ee3b102c64134b83b27856d5d6",
+      "type": "module"
+    },
+    "RCTNativeAppEventEmitter": {
+      "id": "ac06206498d0d7a7483261a1a9746d1d",
+      "type": "module"
+    },
+    "PerformanceLogger": {
+      "id": "f933a225f808397a1fa97f6bdd87af23",
+      "type": "module"
+    },
+    "infoLog": {
+      "id": "ee890a01982619b17df5249a8a8fb462",
+      "type": "module"
+    },
+    "JSDevSupportModule": {
+      "id": "b33721b03d3ba9dbccc1a2744ae23d68",
+      "type": "module"
+    },
+    "UIManager": {
+      "id": "467cd3365342d9aaa2e941fe7ace641c",
+      "type": "module"
+    },
+    "RCTEventEmitter": {
+      "id": "808ccd8f6989097bdad06b22e71c23ca",
+      "type": "module"
+    },
+    "TextInputState": {
+      "id": "a54fbb2d9dfc450c68d1d302d42f00e1",
+      "type": "module"
+    },
+    "deepDiffer": {
+      "id": "0a1901203be944fdc0e69b9f986d4f9f",
+      "type": "module"
+    },
+    "flattenStyle": {
+      "id": "869f0bd4eed428d95df80a8c03d71093",
+      "type": "module"
+    },
+    "ReactNativePropRegistry": {
+      "id": "fa81bb30364d914a3fc2c9c4a20e13d8",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/shallowEqual.js": {
+      "id": "882d9bafc9c6028f5d0f723b114f93ba",
+      "type": "module"
+    },
+    "ReactFeatureFlags": {
+      "id": "fc42548e56ef78dcd36eb6169f445e16",
+      "type": "module"
+    },
+    "ProgressBarAndroid": {
+      "id": "9fe16a26fb98b4a15283ba3fb0cbadf9",
+      "type": "module"
+    },
+    "node_modules/prop-types/index.js": {
+      "id": "18eeaf4e01377a466daaccc6ba8ce6f5",
+      "type": "module"
+    },
+    "node_modules/prop-types/factoryWithThrowingShims.js": {
+      "id": "83fd0f3694f5e1c2f77d83470a455f09",
+      "type": "module"
+    },
+    "node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+      "id": "5622ec09fe8f3b606d0426f1d9c8d253",
+      "type": "module"
+    },
+    "React": {
+      "id": "e6db4f0efed6b72f641ef0ffed29569f",
+      "type": "module"
+    },
+    "ViewPropTypes": {
+      "id": "9ff7e107ed674a99182e71b796d889aa",
+      "type": "module"
+    },
+    "EdgeInsetsPropType": {
+      "id": "20099b775ac7bd546d3c34ceb85c88e4",
+      "type": "module"
+    },
+    "createStrictShapeTypeChecker": {
+      "id": "b6f8c243191994e825e2bab87dc439b4",
+      "type": "module"
+    },
+    "merge": {
+      "id": "a02d3c2e8a09d16754c1a3b806847366",
+      "type": "module"
+    },
+    "mergeInto": {
+      "id": "f3718d296d8986c9c44d4cd08ac2cd62",
+      "type": "module"
+    },
+    "mergeHelpers": {
+      "id": "2bd83cc7b22b1a52dd73bd77e69e815b",
+      "type": "module"
+    },
+    "PlatformViewPropTypes": {
+      "id": "790dec3eba5569b328f412e9e7a6101d",
+      "type": "module"
+    },
+    "TVViewPropTypes": {
+      "id": "54816097bcd607377ccff2567a7d892a",
+      "type": "module"
+    },
+    "StyleSheetPropType": {
+      "id": "60dc775dcc40daa6b8d0b23f322ce91f",
+      "type": "module"
+    },
+    "ViewStylePropTypes": {
+      "id": "007a69250301e98c7330c9706693fadc",
+      "type": "module"
+    },
+    "LayoutPropTypes": {
+      "id": "8ea8f5ebe2044017e275a1899793cb51",
+      "type": "module"
+    },
+    "ShadowPropTypesIOS": {
+      "id": "43ea09fa0639e14101d7b13aa049f25d",
+      "type": "module"
+    },
+    "TransformPropTypes": {
+      "id": "b5616b617f746142e26b40e74fea4035",
+      "type": "module"
+    },
+    "deprecatedPropType": {
+      "id": "93d4b710f8acc2917f528f76878c245a",
+      "type": "module"
+    },
+    "ViewAccessibility": {
+      "id": "f436935d9ebc8f545189df019c06c4b6",
+      "type": "module"
+    },
+    "requireNativeComponent": {
+      "id": "98c1697e1928b0d4ea4ae3837ea09d48",
+      "type": "module"
+    },
+    "ReactNativeBridgeEventPlugin": {
+      "id": "db93fd96da41c37ebddb0a4dd07d62b4",
+      "type": "module"
+    },
+    "ReactNativeStyleAttributes": {
+      "id": "48a8d189c373be9b55e02c49ac64e2e8",
+      "type": "module"
+    },
+    "ImageStylePropTypes": {
+      "id": "0d090424fe83a777e288ec81a9063c81",
+      "type": "module"
+    },
+    "ImageResizeMode": {
+      "id": "b33f31a24ba813e4eb6eda74806436a0",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/keyMirror.js": {
+      "id": "61a2e2589ea976cf04a51cc242a466dd",
+      "type": "module"
+    },
+    "TextStylePropTypes": {
+      "id": "45e1de962d0658d8cb6946a3c4531cbf",
+      "type": "module"
+    },
+    "processColor": {
+      "id": "1b69977972a3b6ad650756d07de7954c",
+      "type": "module"
+    },
+    "processTransform": {
+      "id": "78f1439346fef507ba07b7154bf4073c",
+      "type": "module"
+    },
+    "MatrixMath": {
+      "id": "9aa9bc9596021860f5dbc6ace42b9687",
+      "type": "module"
+    },
+    "sizesDiffer": {
+      "id": "6c409739fa041eb532d3fa5aba97376a",
+      "type": "module"
+    },
+    "createReactNativeComponentClass": {
+      "id": "c24d6856e671b47ee028a906101ebc28",
+      "type": "module"
+    },
+    "insetsDiffer": {
+      "id": "90dc71e85a99fc9b43a10d73bc17ba05",
+      "type": "module"
+    },
+    "matricesDiffer": {
+      "id": "2f9aaa1a5b1c60f2a370d5ef0c3bf4ed",
+      "type": "module"
+    },
+    "pointsDiffer": {
+      "id": "7750843dc82365b5bf30f49ab3c5940f",
+      "type": "module"
+    },
+    "resolveAssetSource": {
+      "id": "44f3331120795bb6870e1cc836af450b",
+      "type": "module"
+    },
+    "AssetRegistry": {
+      "id": "3460196fc04a83462159353697669da3",
+      "type": "module"
+    },
+    "AssetSourceResolver": {
+      "id": "f1e83c29d722f795d8515019b6ad3714",
+      "type": "module"
+    },
+    "PixelRatio": {
+      "id": "5bfe6eda84801186b4f4d5a2ee123653",
+      "type": "module"
+    },
+    "Dimensions": {
+      "id": "cbac9baa189a2fa69f7f5fdd76e9bc71",
+      "type": "module"
+    },
+    "DeviceInfo": {
+      "id": "bbcc69856ded422ceb1f7386b087a4ad",
+      "type": "module"
+    },
+    "node_modules/react-native/local-cli/bundle/assetPathUtils.js": {
+      "id": "e922964159b73e9ec4ff4d464275464d",
+      "type": "module"
+    },
+    "verifyPropTypes": {
+      "id": "83ac9e8b5524ececa8ed348575f4453c",
+      "type": "module"
+    },
+    "StyleSheet": {
+      "id": "d31e8c1a3f9844becc88973ecddac872",
+      "type": "module"
+    },
+    "StyleSheetValidation": {
+      "id": "eb7ef982be4edbf853fc16e2d4603c0e",
+      "type": "module"
+    },
+    "View": {
+      "id": "30a3b04291b6e1f01b778ff31271ccc5",
+      "type": "module"
+    },
+    "ReactNativeViewAttributes": {
+      "id": "6477887be0d285a967d42967386335cd",
+      "type": "module"
+    },
+    "ViewContext": {
+      "id": "a0a67b647dff8a7e11698d04fd60772b",
+      "type": "module"
+    },
+    "node_modules/create-react-class/index.js": {
+      "id": "29cb0e104e5fce198008f3e789631772",
+      "type": "module"
+    },
+    "node_modules/create-react-class/factory.js": {
+      "id": "c4d7c5b2fcc6d490ff5514c0f74aaa0b",
+      "type": "module"
+    },
+    "ReactNativeART": {
+      "id": "8d14c6b03bba86ef5985c909d17fc83e",
+      "type": "module"
+    },
+    "node_modules/art/core/color.js": {
+      "id": "9a9afbe459d3e9fcdc7cd8f0952639a6",
+      "type": "module"
+    },
+    "ARTSerializablePath": {
+      "id": "d09f9eb90729add943e86b1e930fbe11",
+      "type": "module"
+    },
+    "node_modules/art/core/class.js": {
+      "id": "7f4f8b3a9932865ee435f23e3e085604",
+      "type": "module"
+    },
+    "node_modules/art/core/path.js": {
+      "id": "d2b369ec28179057734134c426b3cd40",
+      "type": "module"
+    },
+    "node_modules/art/core/transform.js": {
+      "id": "ae7cd8236c7c54db7d84f0777ed82e73",
+      "type": "module"
+    },
+    "Button": {
+      "id": "2bfe2f7207f7306e0bd391bde54155b1",
+      "type": "module"
+    },
+    "Text": {
+      "id": "c03ca8878a60b3cdaf32e10931ff258d",
+      "type": "module"
+    },
+    "TextPropTypes": {
+      "id": "98dc3d7a81acedddf558bd7f3ed6cba7",
+      "type": "module"
+    },
+    "Touchable": {
+      "id": "9be7bff2ec732c7f9f96a83cea3bc22f",
+      "type": "module"
+    },
+    "BoundingDimensions": {
+      "id": "a065931349324c289e730ba053baa086",
+      "type": "module"
+    },
+    "PooledClass": {
+      "id": "3ed69876e5214ca722938144dcab1ad4",
+      "type": "module"
+    },
+    "Position": {
+      "id": "dd806f6b8b68635a2f6c16fac8b6e51d",
+      "type": "module"
+    },
+    "TVEventHandler": {
+      "id": "62d7d2f98a3339bcd69cd68459d15603",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/TouchEventUtils.js": {
+      "id": "f0932a556da42c02ab62fb684fb409cb",
+      "type": "module"
+    },
+    "mergeFast": {
+      "id": "cd2f3074586691ca138857438f8ba498",
+      "type": "module"
+    },
+    "TouchableNativeFeedback": {
+      "id": "c0d6127359adee60e42e0d2a170972b5",
+      "type": "module"
+    },
+    "TouchableWithoutFeedback": {
+      "id": "9e4c8667cb3e1e5fa7d33d9679f26159",
+      "type": "module"
+    },
+    "node_modules/react-timer-mixin/TimerMixin.js": {
+      "id": "5c0ec7f0bbb23ef3f86807b9f50421dc",
+      "type": "module"
+    },
+    "ensurePositiveDelayProps": {
+      "id": "6ba49cd3c30b475f38fef604b303c1ac",
+      "type": "module"
+    },
+    "TouchableOpacity": {
+      "id": "5df1ad9630614dcb5c10b152b20df075",
+      "type": "module"
+    },
+    "Animated": {
+      "id": "aa60784a16237acb3eb8cebbae24ef82",
+      "type": "module"
+    },
+    "AnimatedImplementation": {
+      "id": "a5a3455ec2263330f8d878126eaa4345",
+      "type": "module"
+    },
+    "AnimatedEvent": {
+      "id": "73cfdce39648875fdc7a47dfedb7b199",
+      "type": "module"
+    },
+    "AnimatedValue": {
+      "id": "9afc2783fb30bfb04619192598012491",
+      "type": "module"
+    },
+    "AnimatedInterpolation": {
+      "id": "6600ec16bed8e746dbd0612d3959e262",
+      "type": "module"
+    },
+    "AnimatedNode": {
+      "id": "20e798e3651306aa73cc9b93f8a1fa75",
+      "type": "module"
+    },
+    "NativeAnimatedHelper": {
+      "id": "0efe8cba4f7d1f6a111a4698dabb344c",
+      "type": "module"
+    },
+    "AnimatedWithChildren": {
+      "id": "432262d84c52a4f1a29f541ab0bb0c48",
+      "type": "module"
+    },
+    "InteractionManager": {
+      "id": "000e46d8eda06a212663acb7d3fd4965",
+      "type": "module"
+    },
+    "TaskQueue": {
+      "id": "260fc98af4b4410ef36f3fdcb630681c",
+      "type": "module"
+    },
+    "AnimatedAddition": {
+      "id": "87d345447ff8524ef1083730fa66155b",
+      "type": "module"
+    },
+    "AnimatedDiffClamp": {
+      "id": "7d1a23da15861380f540aa93491d6349",
+      "type": "module"
+    },
+    "AnimatedDivision": {
+      "id": "05a34124470df954c273edcc137aaf55",
+      "type": "module"
+    },
+    "AnimatedModulo": {
+      "id": "5a8298f73fb94a31591b709be837310b",
+      "type": "module"
+    },
+    "AnimatedMultiplication": {
+      "id": "704f78956d56345ec4b7195fc460b587",
+      "type": "module"
+    },
+    "AnimatedProps": {
+      "id": "52f8bc76ea3b5dc5a28a372c22a5af34",
+      "type": "module"
+    },
+    "AnimatedStyle": {
+      "id": "d9ec695655c5c9e2886dd0b8b8f324c8",
+      "type": "module"
+    },
+    "AnimatedTransform": {
+      "id": "83ab086bc646a982b8f23888710ebff2",
+      "type": "module"
+    },
+    "AnimatedTracking": {
+      "id": "1d9359c5b65dc7de4b94550842f4d1a4",
+      "type": "module"
+    },
+    "AnimatedValueXY": {
+      "id": "102bcc80321cf27de460e84b6a0fa755",
+      "type": "module"
+    },
+    "DecayAnimation": {
+      "id": "66baee365b4ecfd2573bde0343411f81",
+      "type": "module"
+    },
+    "Animation": {
+      "id": "53a6c9e0c45aaaee15cb89af1a206518",
+      "type": "module"
+    },
+    "SpringAnimation": {
+      "id": "d9be8953a9cd8b1321d10cefbe46f28c",
+      "type": "module"
+    },
+    "SpringConfig": {
+      "id": "c38b8df852b00076589078d4f36c917a",
+      "type": "module"
+    },
+    "TimingAnimation": {
+      "id": "b03d7590bfba8c7e84e5c64e75484aaf",
+      "type": "module"
+    },
+    "Easing": {
+      "id": "e46cf7251fbac892dc24fe03407b8803",
+      "type": "module"
+    },
+    "bezier": {
+      "id": "27040b8656233a1b2fa7929990ea9a5a",
+      "type": "module"
+    },
+    "createAnimatedComponent": {
+      "id": "2463ee3450db94dcbc82bdcdf9f77ea1",
+      "type": "module"
+    },
+    "Image": {
+      "id": "717234c0b5cb768e5677b97d7b48fff8",
+      "type": "module"
+    },
+    "ScrollView": {
+      "id": "aa8514022050149acc8c46c0b18dc75a",
+      "type": "module"
+    },
+    "PointPropType": {
+      "id": "c43d1769d42e0448cede2719cf5debfb",
+      "type": "module"
+    },
+    "ScrollResponder": {
+      "id": "8e58ceb0d552a877aab98690121b12d7",
+      "type": "module"
+    },
+    "FrameRateLogger": {
+      "id": "7ce68119ca8cc878ecda6c429e543689",
+      "type": "module"
+    },
+    "Keyboard": {
+      "id": "a78d5645d35f0086ade08580dc4b6985",
+      "type": "module"
+    },
+    "LayoutAnimation": {
+      "id": "c49af8845a46d9e34f4f556b366e752b",
+      "type": "module"
+    },
+    "dismissKeyboard": {
+      "id": "9bc80013596b455d6a897518595d41ba",
+      "type": "module"
+    },
+    "Subscribable": {
+      "id": "297ca1965b3a80427c025ba042b06a22",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/nullthrows.js": {
+      "id": "414343d6c18458363152ad20d294a37b",
+      "type": "module"
+    },
+    "ReactNativeComponentTree": {
+      "id": "5f0acb3793a716210fc3ff0aec1d1f30",
+      "type": "module"
+    },
+    "ScrollViewStickyHeader": {
+      "id": "cc7a48154b35440313a4df9da559dcf2",
+      "type": "module"
+    },
+    "processDecelerationRate": {
+      "id": "432b5a4e24973de1461ae840f9e0905c",
+      "type": "module"
+    },
+    "CheckBox": {
+      "id": "dda771e22d321fcbbdee4c22e34bcbbb",
+      "type": "module"
+    },
+    "DatePickerIOS": {
+      "id": "35091c3024add07f1b7acf79457ee9eb",
+      "type": "module"
+    },
+    "DrawerLayoutAndroid": {
+      "id": "a28f8a2db2bc87a3ceedb498ea3689f4",
+      "type": "module"
+    },
+    "StatusBar": {
+      "id": "3b9e8669111967f90ad28e9ee872e85e",
+      "type": "module"
+    },
+    "FlatList": {
+      "id": "4e300ae15b8ba38c3d72e292b852c3f1",
+      "type": "module"
+    },
+    "MetroListView": {
+      "id": "4297680cb8b66ff3508edfa2ae182462",
+      "type": "module"
+    },
+    "ListView": {
+      "id": "f7953c54cdefedbfed49ad61cce46031",
+      "type": "module"
+    },
+    "ListViewDataSource": {
+      "id": "5af28862bae859ebbe0413bc29e556a2",
+      "type": "module"
+    },
+    "isEmpty": {
+      "id": "22f4957a8dfdf9b2393880addce36ff6",
+      "type": "module"
+    },
+    "StaticRenderer": {
+      "id": "2a3b918a2dbde47333fd60d9eb86ecb6",
+      "type": "module"
+    },
+    "node_modules/react-clone-referenced-element/cloneReferencedElement.js": {
+      "id": "b5bf80ec634bf7384bb40ddaeec9c818",
+      "type": "module"
+    },
+    "RefreshControl": {
+      "id": "9f3ff99e5e0f1e9644e8a1222733210c",
+      "type": "module"
+    },
+    "VirtualizedList": {
+      "id": "acd0db067821acba68e31f8e1998a3c5",
+      "type": "module"
+    },
+    "Batchinator": {
+      "id": "35fcc2415adbe7c9d61c43ec7632939d",
+      "type": "module"
+    },
+    "FillRateHelper": {
+      "id": "02933ae517f504391cd5df131490a413",
+      "type": "module"
+    },
+    "ViewabilityHelper": {
+      "id": "a8ea75c38a911a17cdc7cc33ba49ca4e",
+      "type": "module"
+    },
+    "VirtualizeUtils": {
+      "id": "880bb3ad6cffca7c7958f9770e6baf87",
+      "type": "module"
+    },
+    "ImageBackground": {
+      "id": "fcb3673519c382049b8fd2d30ab2876b",
+      "type": "module"
+    },
+    "ensureComponentIsNative": {
+      "id": "1422daa580d530201ccfee48c0551a95",
+      "type": "module"
+    },
+    "ImageEditor": {
+      "id": "0d548931044eeba3f6aa389f2d1543ff",
+      "type": "module"
+    },
+    "ImageStore": {
+      "id": "55df084072d4388897914e0e1700a338",
+      "type": "module"
+    },
+    "KeyboardAvoidingView": {
+      "id": "9dd9a51855fc1ea1c9ddf4af397a2177",
+      "type": "module"
+    },
+    "MaskedViewIOS": {
+      "id": "6ad87323dc6b1a08765e40cfdd5c6906",
+      "type": "module"
+    },
+    "UnimplementedView": {
+      "id": "2048fde248982a55be3eceb4c402bf60",
+      "type": "module"
+    },
+    "Modal": {
+      "id": "f5c5bfaff1d5fd9bd015292e20813c1d",
+      "type": "module"
+    },
+    "AppContainer": {
+      "id": "8d15d828d16b1b09c317f6dc4df2df48",
+      "type": "module"
+    },
+    "I18nManager": {
+      "id": "d4f47991055a71c91b56160302f3fadc",
+      "type": "module"
+    },
+    "NavigatorIOS": {
+      "id": "c5b7ebd6244b78e36ed56c78d3390727",
+      "type": "module"
+    },
+    "Picker": {
+      "id": "599ef60c4f08ff3ffef5afb68c38f7ae",
+      "type": "module"
+    },
+    "PickerIOS": {
+      "id": "44043422e24050ffa2c9428763aa54dd",
+      "type": "module"
+    },
+    "PickerAndroid": {
+      "id": "f62affb2eab7b3b63d7fb70c61e91808",
+      "type": "module"
+    },
+    "ProgressViewIOS": {
+      "id": "c1db3fdd78db6eff9d7ad78819e5910b",
+      "type": "module"
+    },
+    "SafeAreaView": {
+      "id": "c02e66b7c74c6322d5fe39b551ce352c",
+      "type": "module"
+    },
+    "SectionList": {
+      "id": "6906fe1ba8331785c7e8d8a39741106e",
+      "type": "module"
+    },
+    "VirtualizedSectionList": {
+      "id": "77576e8f76491543bfcecd3e2a2e853c",
+      "type": "module"
+    },
+    "SegmentedControlIOS": {
+      "id": "310fd40dcc3ce7a36765eae667b2cd82",
+      "type": "module"
+    },
+    "Slider": {
+      "id": "ea942a7398616d1018c703a89331d11a",
+      "type": "module"
+    },
+    "SnapshotViewIOS": {
+      "id": "db263007709343abf595a8c48e80bda9",
+      "type": "module"
+    },
+    "Switch": {
+      "id": "c2cbe6678768638ce187b2abe5fef874",
+      "type": "module"
+    },
+    "SwipeableFlatList": {
+      "id": "2a0b9d2b81f4a46ad03ebafa14761d84",
+      "type": "module"
+    },
+    "SwipeableRow": {
+      "id": "c5007eec13dd84314183ba16a055e41c",
+      "type": "module"
+    },
+    "PanResponder": {
+      "id": "8abd37c8c5e32ebd0eb01f71634b256a",
+      "type": "module"
+    },
+    "TouchHistoryMath": {
+      "id": "de310a9959d3667f2781d3b3090a3d2c",
+      "type": "module"
+    },
+    "SwipeableListView": {
+      "id": "f97779b6a1ea8aa7e00fb259dfe5c710",
+      "type": "module"
+    },
+    "SwipeableListViewDataSource": {
+      "id": "811a4c4541a09802ac4c52b20ad185f9",
+      "type": "module"
+    },
+    "TabBarIOS": {
+      "id": "755ea8e27f579f2d7865f732fdbc28e0",
+      "type": "module"
+    },
+    "TabBarItemIOS": {
+      "id": "1bbf7d0cbae439e58e827cb49e484a73",
+      "type": "module"
+    },
+    "TextInput": {
+      "id": "e80660ff6e98e7a3974b80923bcdfd85",
+      "type": "module"
+    },
+    "DocumentSelectionState": {
+      "id": "cc8beba56f5bc4be4647cd4a6f1d8996",
+      "type": "module"
+    },
+    "mixInEventEmitter": {
+      "id": "0eb13c8b81942ae25b210ccb3dbd88bb",
+      "type": "module"
+    },
+    "EventEmitterWithHolding": {
+      "id": "e06c4edc1aed80d686aacbb60aa9d103",
+      "type": "module"
+    },
+    "EventHolder": {
+      "id": "b02be26a2f90bff94ecc1f64626d97ad",
+      "type": "module"
+    },
+    "node_modules/fbjs/lib/keyOf.js": {
+      "id": "c3fc1c3123a4d0bcadefb6e75134743a",
+      "type": "module"
+    },
+    "ToastAndroid": {
+      "id": "a489583f1c19d395ba290d98db795c2c",
+      "type": "module"
+    },
+    "ToolbarAndroid": {
+      "id": "0c3ad3c7bb5c4f24a344b8e817908918",
+      "type": "module"
+    },
+    "TouchableHighlight": {
+      "id": "0d3968e3413084f66ce651afdba962c2",
+      "type": "module"
+    },
+    "ViewPagerAndroid": {
+      "id": "47ee317a5466e3dd1e9a6c1e5821a602",
+      "type": "module"
+    },
+    "WebView": {
+      "id": "7200ca53a69ab79c1ca64da67c3e89aa",
+      "type": "module"
+    },
+    "ActionSheetIOS": {
+      "id": "04856e5fd79e2e21740f32f3cc510f18",
+      "type": "module"
+    },
+    "AppRegistry": {
+      "id": "678a9708f2b8f1301d32e61850b31874",
+      "type": "module"
+    },
+    "BugReporting": {
+      "id": "432f03d473313e462d36aa91969cadef",
+      "type": "module"
+    },
+    "dumpReactTree": {
+      "id": "81df05e5dc9f8543292c0f7ef334c5d3",
+      "type": "module"
+    },
+    "SceneTracker": {
+      "id": "860ea624e11af795a48395a46f27393b",
+      "type": "module"
+    },
+    "renderApplication": {
+      "id": "edfdfc63759f727adf359906657551ca",
+      "type": "module"
+    },
+    "BackHandler": {
+      "id": "e9ee99a5cbb074c7100807fd71239211",
+      "type": "module"
+    },
+    "AppState": {
+      "id": "b2885f10a3cd281ac7558b783d308764",
+      "type": "module"
+    },
+    "AsyncStorage": {
+      "id": "8603ff24215399b75f33af3dd72dfd3f",
+      "type": "module"
+    },
+    "BackAndroid": {
+      "id": "1e1d6894ed34bc8775949250b7fec081",
+      "type": "module"
+    },
+    "CameraRoll": {
+      "id": "e0ee297477e89bb44a6f378df39464ee",
+      "type": "module"
+    },
+    "Clipboard": {
+      "id": "157cd0ce684e7a966e7304bc72144cb0",
+      "type": "module"
+    },
+    "DatePickerAndroid": {
+      "id": "349332a15be0ccf87388ea977fc1fd6c",
+      "type": "module"
+    },
+    "ImagePickerIOS": {
+      "id": "cfece4bdbb77fc9ff9a39eddb36572f7",
+      "type": "module"
+    },
+    "Linking": {
+      "id": "8b3fdabf1c6fdcf16438603a0beb57a3",
+      "type": "module"
+    },
+    "NetInfo": {
+      "id": "e15e0d5c517e49b2ee81f831ba039418",
+      "type": "module"
+    },
+    "PushNotificationIOS": {
+      "id": "aefb6993a5100f7ffef7c6273cea73cf",
+      "type": "module"
+    },
+    "Settings": {
+      "id": "3763f5a9c38680e04a2b819b6a5931cb",
+      "type": "module"
+    },
+    "Share": {
+      "id": "2873fbc02acdb2392310fd8078ece860",
+      "type": "module"
+    },
+    "StatusBarIOS": {
+      "id": "af8da36ca751db152f4e6f15195fcadf",
+      "type": "module"
+    },
+    "TimePickerAndroid": {
+      "id": "07adf7180e4a352bcf2fa348733f43df",
+      "type": "module"
+    },
+    "Vibration": {
+      "id": "6b57df2f4396e843b4835e1f3ca65ed3",
+      "type": "module"
+    },
+    "VibrationIOS": {
+      "id": "ddb45dbd942ab1f7eed811ab8ff07394",
+      "type": "module"
+    },
+    "YellowBox": {
+      "id": "e45dc56a70bc3ee305d92368ab79dad0",
+      "type": "module"
+    },
+    "openFileInEditor": {
+      "id": "74b32f55a0bb628f9e8dc4e21b02d7a1",
+      "type": "module"
+    },
+    "getDevServer": {
+      "id": "760b6f2c9fa353738d851f7c59cb5365",
+      "type": "module"
+    },
+    "symbolicateStackTrace": {
+      "id": "989261d5f68bc4ada2cf64b6bdcc3362",
+      "type": "module"
+    },
+    "takeSnapshot": {
+      "id": "bf305ec4526982a5a5d2d0cfe6f36d1a",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/react-navigation.js": {
+      "id": "3cedea3227936aea9cc98d4a11eaf70c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/createNavigationContainer.js": {
+      "id": "2682705ec52ed4b42777ccfb240eb792",
+      "type": "module"
+    },
+    "node_modules/react-lifecycles-compat/react-lifecycles-compat.cjs.js": {
+      "id": "9b11863b437a9ee794a44444ae115a3b",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/PlatformHelpers.native.js": {
+      "id": "96119f6541fc2eb680448e5350aaae93",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/NavigationActions.js": {
+      "id": "e91a423170a2d063c973900187b02b24",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/invariant.js": {
+      "id": "09df40ab147e7353903f31659d93ee58",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/getNavigationActionCreators.js": {
+      "id": "1c61d573044491492645aa9a9dd9fc34",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/docsUrl.js": {
+      "id": "06279d3845dec407e734489e2336fee3",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/StateUtils.js": {
+      "id": "8bf70c0b333358752c448c44a6a8f9ab",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/navigators/createNavigator.js": {
+      "id": "80bc0b30071534809c7bc11f7396fe43",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/getChildEventSubscriber.js": {
+      "id": "b00f70989b181b053baf833c33435a78",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/navigators/createStackNavigator.js": {
+      "id": "53633159adb3fa4b6e34bb38c107c293",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/navigators/createKeyboardAwareNavigator.js": {
+      "id": "898c82a210fc063cc8e3896490509f64",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackView.js": {
+      "id": "e4b2ccf4e724c26e8054886e2cde54c1",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewLayout.js": {
+      "id": "17c948a8b371a835ee443a36d2883b9f",
+      "type": "module"
+    },
+    "node_modules/clamp/index.js": {
+      "id": "611a3127f00958fcce78b0ac7984a010",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewCard.js": {
+      "id": "77563c833b96b601648a52bbb84413e8",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/createPointerEventsContainer.js": {
+      "id": "dd583e8c465bf5c47bb614a6c4772b80",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/AnimatedValueSubscription.js": {
+      "id": "5996b123533d41d9344d41942fceb30c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Header/Header.js": {
+      "id": "1ee12e34263a5c37106b178984ec4d9b",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-safe-area-view/index.js": {
+      "id": "3a4dc8c54e97a0cf03c38b0fb8563a28",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-safe-area-view/withOrientation.js": {
+      "id": "6ba6f4eb3be9d0de17f26368b3f996e5",
+      "type": "module"
+    },
+    "node_modules/hoist-non-react-statics/index.js": {
+      "id": "f907f0073e464c1cfd16c432b370b585",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderTitle.js": {
+      "id": "9b2d8d757c32a5aade25f6f151e5a821",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderBackButton.js": {
+      "id": "d507133210f4c812c4a882e06f689725",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/TouchableItem.js": {
+      "id": "e56e3b4f6f7f1318e519a227d65a0b65",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Header/ModularHeaderBackButton.js": {
+      "id": "d7ee1c5e978421ded0e34c807c02b781",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Header/HeaderStyleInterpolator.js": {
+      "id": "02587ec87a737fcc0d5a839c59ae7bb9",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/getSceneIndicesForInterpolationInputRange.js": {
+      "id": "d8d72c13dd55d655057618fb929c2c29",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/withOrientation.js": {
+      "id": "36c636e765f427a2f89641e81f1ebba9",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/StackActions.js": {
+      "id": "6bd004bef2f53ff343e677f2e121d275",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/SceneView.js": {
+      "id": "642023f04391babe6960216152f851fe",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/NavigationContext.js": {
+      "id": "98e5c747c38d3feee7f297880784e291",
+      "type": "module"
+    },
+    "node_modules/create-react-context/lib/index.js": {
+      "id": "1b7bbc51b6e63a0c92d8311081556013",
+      "type": "module"
+    },
+    "node_modules/create-react-context/lib/implementation.js": {
+      "id": "ff52935c3aaeef814c8e8625d15ae1bf",
+      "type": "module"
+    },
+    "node_modules/gud/index.js": {
+      "id": "dbb421498ca47cd5ab1606b82043fbe4",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewTransitionConfigs.js": {
+      "id": "79b022a09e7e5daf4ec8b2b903c645dc",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/StackView/StackViewStyleInterpolator.js": {
+      "id": "deea33604847a0b888ebc73068625bba",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/ReactNativeFeatures.js": {
+      "id": "b886806cc3f4ad8d13158780908d3098",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Transitioner.js": {
+      "id": "07f0214b33d7d02821e9126871ddee24",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/ScenesReducer.js": {
+      "id": "f056d3e7dd42bd17dd233d2158d31ff3",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/shallowEqual.js": {
+      "id": "7ee4d2c2b3a7e508f2d8e74d01006498",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/StackRouter.js": {
+      "id": "b0a0a8203dafaf12fbd104b343b6497a",
+      "type": "module"
+    },
+    "node_modules/path-to-regexp/index.js": {
+      "id": "85fa27528c1b11a9e3e1afdf078215ff",
+      "type": "module"
+    },
+    "node_modules/path-to-regexp/node_modules/isarray/index.js": {
+      "id": "dbfbbce5cb4bf3d3cc5dfa60d8feeb1c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/createConfigGetter.js": {
+      "id": "b4f5a74289f659543a354c90625eb19f",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/getScreenForRouteName.js": {
+      "id": "6405153adc2f639554606506cfaae361",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/validateScreenOptions.js": {
+      "id": "3e2d6d17cc819a32f7afe1a74e40b3e1",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/validateRouteConfigMap.js": {
+      "id": "af70b47f27a9c71070efb68d037eb634",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/KeyGenerator.js": {
+      "id": "6c34e398fab8e8ba6a28ce8ad1a65882",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/navigators/createSwitchNavigator.js": {
+      "id": "1ed5f0fc7766d995af463fa28301e999",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/SwitchRouter.js": {
+      "id": "9f5d5448f569850fd5db4a2e7fe03ee2",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/SwitchView/SwitchView.js": {
+      "id": "90b6bc7b10f4e683231c018cad5699c0",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/navigators/createDrawerNavigator.js": {
+      "id": "b5cdce2e70756f7cd58b738ed07cf530",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/DrawerRouter.js": {
+      "id": "8002f3a49b3e2f1b4db38c0522a53ac6",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/utils/withDefaultValue.js": {
+      "id": "cf4d0ac993e09ede88fc6b8df3b19ab0",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/DrawerActions.js": {
+      "id": "0585470f8233b750e0e3e018473efb42",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerView.js": {
+      "id": "e97bf41bf3f59b2bfe30b0c2eda9c31f",
+      "type": "module"
+    },
+    "node_modules/react-native-drawer-layout-polyfill/dist/index.android.js": {
+      "id": "9e694533937068cb94b48e59bbc2ae8e",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerSidebar.js": {
+      "id": "4325b3aa6189efc5ba91d75239de749c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/Drawer/DrawerNavigatorItems.js": {
+      "id": "45dc52dd040d415ff6823373cc17144c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/index.js": {
+      "id": "6bd0d432e058233d5647b8c4e8003cd6",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/createTabNavigator.js": {
+      "id": "6e8427944356dd97e2c1f1886eecfbcd",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/views/TabView.js": {
+      "id": "0cae5872e45c02bf0136566e7ced9b0d",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/index.js": {
+      "id": "e5951afd0a464307310339f6e20fba72",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewAnimated.js": {
+      "id": "e000b057c3045d95ae0b3bbf893b8867",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPropTypes.js": {
+      "id": "703f6c0239fe76a156bf7b78cbf1643c",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPagerAndroid.js": {
+      "id": "e7c032776872bb9326b3291232a3f559",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPagerScroll.js": {
+      "id": "515e262562d27f1c199c457e651acb99",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPagerPan.js": {
+      "id": "90a5de644fa6346a04926ca51da1d320",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabViewPagerExperimental.js": {
+      "id": "15c735e520655f2e8229ca576d55cdfe",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TabBar.js": {
+      "id": "99387fc75e0caf95a9ac0dfd076c5f0a",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/TouchableItem.js": {
+      "id": "732e863282a76b408bdb4a9618f2f38f",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-native-tab-view/src/SceneMap.js": {
+      "id": "523ba86af10c7feccc50bc7e0e11a8cc",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarTop.js": {
+      "id": "524637b4103a08a14246fb7a134fc448",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarIcon.js": {
+      "id": "b4c880aab035c4092bd2859d9f45c628",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-deprecated-tab-navigator/src/views/TabBarBottom.js": {
+      "id": "3b6ec151a732138fe2d98b4f7aee435a",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/index.js": {
+      "id": "06fb5f04009e0f6892e8fec935f1d499",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/navigators/createBottomTabNavigator.js": {
+      "id": "b198b03b0c2fc5513c0571e39ff0c2a8",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-lifecycles-compat/react-lifecycles-compat.cjs.js": {
+      "id": "04f36bbcb68de9b1a3736a25bd8827bc",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/utils/createTabNavigator.js": {
+      "id": "c237d25f932c60ab5f6da545341f2bb9",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/views/BottomTabBar.js": {
+      "id": "3428988f13d25a50f5c1799805d11334",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-safe-area-view/index.js": {
+      "id": "b0bb30f1c83a60f88a385dc921d7caeb",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-safe-area-view/withOrientation.js": {
+      "id": "41d03ebdb9019e699faa9ed04e4ea67a",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/views/CrossFadeIcon.js": {
+      "id": "4b9f50aabe1bfc273eedec5ed59a00b4",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/utils/withDimensions.js": {
+      "id": "96d800472136f99b1eedfa07b802b481",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/views/ResourceSavingScene.js": {
+      "id": "8f33bf7f32df11cb95b924f216218e25",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/navigators/createMaterialTopTabNavigator.js": {
+      "id": "920f873b2c6dfac1e53d27d987410d16",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/index.js": {
+      "id": "71fe908006d7688fb9fb0e7762d600b1",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewAnimated.js": {
+      "id": "49c5a1e6008abdd5770662ff05452dd8",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPropTypes.js": {
+      "id": "b1e48d98aae16da0d57958d903d17014",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerAndroid.js": {
+      "id": "e70668b7931e986d05284ff52e9b9aa8",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerScroll.js": {
+      "id": "fde86a8bad6a270dec5a4d8cb1c0693b",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerPan.js": {
+      "id": "f92ed25ac41d98f9a546c094d4218a50",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabViewPagerExperimental.js": {
+      "id": "c55c6f35fcf1f41d8db684aa45435d0e",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TabBar.js": {
+      "id": "b672e6241c7dd11590f6d9e4f74a8015",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/TouchableItem.js": {
+      "id": "799c5a0889ba5da0686336c2eebe1b56",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/node_modules/react-native-tab-view/src/SceneMap.js": {
+      "id": "f690e7df70d6a8cedde6c29544306ed9",
+      "type": "module"
+    },
+    "node_modules/react-navigation/node_modules/react-navigation-tabs/dist/views/MaterialTopTabBar.js": {
+      "id": "084bb08bba1c65dfbdd218e16c5e104f",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/routers/TabRouter.js": {
+      "id": "679113a46e8db0d210be300fb377ea4f",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/ResourceSavingSceneView.js": {
+      "id": "c3be15fe301c34ea6c6abea8e37ffde4",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/withNavigation.js": {
+      "id": "c22ef7269d48d3e10a1207c748eab698",
+      "type": "module"
+    },
+    "node_modules/react-navigation/src/views/withNavigationFocus.js": {
+      "id": "82debb848906769fd4f1cbb5c9a9cc7a",
+      "type": "module"
+    },
+    "src/main/js/base/cx_navigation_util.js": {
+      "id": "78534e5ead69b3a868d4cc6452faa8e9",
+      "type": "module"
+    },
+    "src/main/js/pages/HomeScreen.js": {
+      "id": "fad32daa29eacd62cf9b88ef2e370da5",
+      "type": "module"
+    },
+    "src/main/js/pages/BridgeScreen.js": {
+      "id": "7ccaaeae03efdf020a34c5afd14c7984",
+      "type": "module"
+    },
+    "src/main/js/pages/OrderCommitScreen.js": {
+      "id": "aa3441b497f0a727ed708d5a9e65b326",
+      "type": "module"
+    },
+    "scroll.js": {
+      "id": "9998d9fadb889b647f95d1f5ce715488",
+      "type": "module"
+    }
+  }
+}

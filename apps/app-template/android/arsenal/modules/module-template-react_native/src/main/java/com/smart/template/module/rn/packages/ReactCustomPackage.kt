@@ -1,18 +1,19 @@
-package com.smart.template.module.rn
+package com.smart.template.module.rn.packages
 
 import android.view.View
 import com.facebook.react.ReactPackage
-import com.facebook.react.bridge.JavaScriptModule
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
+import com.smart.template.module.rn.ReactBridge
+import com.smart.template.module.rn.components.ReactToastComponent
 
-class ReactNativePackage : ReactPackage {
+class ReactCustomPackage : ReactPackage {
 
     override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
         return arrayListOf(
-            ReactToastUtil(reactContext),
+            ReactToastComponent(reactContext),
             ReactBridge(reactContext)
         )
     }

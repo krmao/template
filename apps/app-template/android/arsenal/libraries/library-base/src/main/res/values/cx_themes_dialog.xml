@@ -14,4 +14,8 @@
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.FromBottom</item>
     </style>
 
+    <style name="CXDialog.App.FromFadeInOut" parent="@style/CXDialog.App">
+        <item name="android:windowAnimationStyle">@style/CXWidget.Animation.FromFadeInOut</item>
+    </style>
+
 </resources>

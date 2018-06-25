@@ -3,12 +3,19 @@
     package="com.smart.template.module.hybird">
 
     <application>
+        <activity
+            android:name=".HybirdActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/CXAppTheme.Light.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <!--<activity
             android:name=".HybirdActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/CXAppTheme.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

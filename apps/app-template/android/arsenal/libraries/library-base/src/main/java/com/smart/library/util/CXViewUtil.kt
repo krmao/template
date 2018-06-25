@@ -2,6 +2,8 @@
 
 package com.smart.library.util
 
+import android.text.TextUtils
+import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
 import android.widget.TextView
@@ -56,4 +58,12 @@ object CXViewUtil {
 //            })
         }
     }
+}
+
+/**
+ * 如果 text 为空 隐藏 TextView
+ */
+fun TextView.setTextAndVisible(text: String?) {
+    this.text = text
+    this.visibility = if (TextUtils.isEmpty(text?.trim())) View.GONE else View.VISIBLE
 }

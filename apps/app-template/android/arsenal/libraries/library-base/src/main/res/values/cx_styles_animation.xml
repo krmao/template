@@ -51,4 +51,9 @@
         <item name="android:windowExitAnimation">@anim/cx_translate_out_bottom</item>
     </style>
 
+    <style name="CXWidget.Animation.FromFadeInOut" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/cx_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/cx_fade_out</item>
+    </style>
+
 </resources>

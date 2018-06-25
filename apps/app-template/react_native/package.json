@@ -6,7 +6,12 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^16.2.0",
-    "react-native": "^0.54.0"
+    "eslint": "4.0.0",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-navigation": "^2.0.2"
+  },
+  "localDependencies": {
+    "metro": "../../../../smart-metro/packages-release/metro"
   }
 }

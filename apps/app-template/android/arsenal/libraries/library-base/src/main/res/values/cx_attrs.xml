@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+    <declare-styleable name="CXRoundImageView">
+        <!-- 描边宽度-->
+        <attr name="cxBorderWidth" format="dimension" />
+        <!-- 描边颜色-->
+        <attr name="cxBorderColor" format="color" />
+        <!-- 进度条颜色-->
+        <attr name="cxProgressColor" format="color" />
+        <!-- 进度条进度-->
+        <attr name="cxProgressBorder" format="integer" />
+        <!--圆角大小-->
+        <attr name="cxCornerRadius" format="dimension" />
+        <!--左上圆角大小-->
+        <attr name="cxLeftTopCornerRadius" format="dimension" />
+        <!--右上圆角大小-->
+        <attr name="cxRightTopCornerRadius" format="dimension" />
+        <!--左下圆角大小-->
+        <attr name="cxLeftBottomCornerRadius" format="dimension" />
+        <!--右下圆角大小-->
+        <attr name="cxRightBottomCornerRadius" format="dimension" />
+        <!--图片类型：圆角或者圆形-->
+        <attr name="cxType" format="enum">
+            <enum name="oval" value="2" />
+            <enum name="round" value="1" />
+            <enum name="circle" value="0" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="CXFrameLoadingLayout">
         <attr name="cxLoadingView" format="reference" />
         <attr name="cxFailureView" format="reference" />
@@ -101,22 +130,4 @@
             <enum name="gone" value="2" />
         </attr>
     </declare-styleable>
-    
-    <declare-styleable name="CXRoundImageView">
-        <attr name="cxBorderWidth" format="dimension" />
-        <attr name="cxBorderColor" format="color" />
-        <attr name="cxProgressColor" format="color" />
-        <attr name="cxProgressBorder" format="integer" />
-        <attr name="cxCornerRadius" format="dimension" />
-        <attr name="cxLeftTopCornerRadius" format="dimension" />
-        <attr name="cxRightTopCornerRadius" format="dimension" />
-        <attr name="cxLeftBottomCornerRadius" format="dimension" />
-        <attr name="cxRightBottomCornerRadius" format="dimension" />
-        <attr name="cxType" format="enum">
-            <enum name="oval" value="2" />
-            <enum name="round" value="1" />
-            <enum name="circle" value="0" />
-        </attr>
-    </declare-styleable>
-
 </resources>

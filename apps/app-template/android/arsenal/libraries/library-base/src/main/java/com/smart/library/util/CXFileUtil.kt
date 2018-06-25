@@ -2,15 +2,16 @@ package com.smart.library.util
 
 import android.graphics.Bitmap
 import android.text.TextUtils
+import com.smart.library.base.CXBaseApplication
 import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
 
+
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object CXFileUtil {
 
-    private val ENCODING_UTF8 = "UTF-8"
-    private val TAG = CXFileUtil::class.java.simpleName
+    val ENCODING_UTF8 = "UTF-8"
 
     fun fileChannelCopy(sourceFile: File, destFile: File) {
         var fileInputStream: FileInputStream? = null
@@ -98,21 +99,17 @@ object CXFileUtil {
     }
 
     fun deleteDirectory(file: File?) {
-        if (file == null) {
-        } else {
-            var childFiles: Array<File>? = null
-            var isDirectory = false
-            try {
-                childFiles = file.listFiles()
-                isDirectory = file.isDirectory
-            } catch (exception: SecurityException) {
-                CXLogUtil.e(TAG, "", exception)
+        try {
+            if (file != null) {
+                val childFiles = file.listFiles()
+                if (file.isDirectory && childFiles != null && childFiles.isNotEmpty()) {
+                    for (childFile in childFiles)
+                        deleteDirectory(childFile)
+                }
+                file.delete()
             }
-            if (isDirectory && childFiles?.isNotEmpty() == true) {
-                for (childFile: File? in childFiles)
-                    deleteDirectory(childFile)
-            }
-            deleteFile(file)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -130,10 +127,45 @@ object CXFileUtil {
         var result: Long = 0
         if (dir.exists()) {
             for (tmpFile in dir.listFiles()) {
-                result += if (tmpFile.isDirectory) getDirSize(tmpFile) else tmpFile.length()
+                if (tmpFile.isDirectory)
+                    result += getDirSize(tmpFile)
+                else
+                    result += tmpFile.length()
             }
         }
         return result
+    }
+
+    @JvmStatic
+    fun getFileSize(file: File): Long {
+        var rslt: Long = 0
+        if (file.exists()) {
+            rslt = file.length()
+        }
+        return rslt
+    }
+
+    @JvmStatic
+    fun existsInAssets(pathInAssetsDir: String?): Boolean {
+        if (!pathInAssetsDir.isNullOrBlank()) {
+            val assetManager = CXBaseApplication.INSTANCE.resources.assets
+            var inputStream: InputStream? = null
+            try {
+                inputStream = assetManager.open(pathInAssetsDir?.replace("assets://", ""))
+                if (null != inputStream) {
+                    return true
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                try {
+                    inputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        return false
     }
 
     fun readTextFromFile(inputStream: InputStream): String {
@@ -205,7 +237,9 @@ object CXFileUtil {
         return isWriteSuccess
     }
 
-    fun writeTextToFile(content: String, file: File): Boolean = writeTextToFile(content, null, file)
+    fun writeTextToFile(content: String, file: File): Boolean {
+        return writeTextToFile(content, null, file)
+    }
 
     fun writeTextToFile(content: String, throwable: Throwable?, file: File): Boolean {
         var isAppendSuccess = false

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/arsenal/apps/app-template/app-template.iml" filepath="$PROJECT_DIR$/arsenal/apps/app-template/app-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/libraries/library-base/library-base.iml" filepath="$PROJECT_DIR$/arsenal/libraries/library-base/library-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/libraries/library-template-base/library-template-base.iml" filepath="$PROJECT_DIR$/arsenal/libraries/library-template-base/library-template-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/libraries/library-template-repository/library-template-repository.iml" filepath="$PROJECT_DIR$/arsenal/libraries/library-template-repository/library-template-repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-template-hybird/module-template-hybird.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-template-hybird/module-template-hybird.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-template-im/module-template-im.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-template-im/module-template-im.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-template-mine/module-template-mine.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-template-mine/module-template-mine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-template-react_native/module-template-react_native.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-template-react_native/module-template-react_native.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-template-setting/module-template-setting.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-template-setting/module-template-setting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arsenal/modules/module-test/module-test.iml" filepath="$PROJECT_DIR$/arsenal/modules/module-test/module-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/template.iml" filepath="$PROJECT_DIR$/template.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,6 +1,0 @@
-{
-    "devDependencies": {
-        "gulp": "github:gulpjs/gulp#4.0",
-        "gulp-builders": "^1.0.1"
-    }
-}

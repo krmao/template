@@ -1,5 +1,3 @@
-### hybird framework template [html]
-
 # [gulp-builders](https://www.npmjs.com/package/gulp-builders)
 
 ## make gulp build easier !
@@ -267,4 +265,3 @@ not find custom template: Error: ENOENT: no such file or directory, access './sr
 [17:27:36] Finished 'build' after 5.27 s
 maokangren:gulp maokangren$
 ```
-

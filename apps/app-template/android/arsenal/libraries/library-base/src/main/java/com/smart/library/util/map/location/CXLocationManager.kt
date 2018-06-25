@@ -1,12 +1,12 @@
-package com.saike.library.util.map.location
+package com.smart.library.util.map.location
 
 import android.Manifest
 import android.app.Activity
 import android.location.Location
-import com.saike.library.util.CXPreferencesUtil
-import com.saike.library.util.location.client.CXILocationClient
-import com.saike.library.util.location.client.impl.CXAMapLocationClient
-import com.saike.library.util.map.CXMapUtil
+import com.smart.library.util.map.location.client.CXILocationClient
+import com.smart.library.util.map.location.client.impl.CXAMapLocationClient
+import com.smart.library.util.map.CXMapUtil
+import com.smart.library.util.CXPreferencesUtil
 import com.smart.library.util.rx.permission.RxPermissions
 
 /**

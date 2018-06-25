@@ -1,13 +1,13 @@
-package com.saike.library.util.location.client.impl
+package com.smart.library.util.map.location.client.impl
 
 import android.location.Location
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
-import com.saike.library.base.CXBaseApplication
-import com.saike.library.util.CXLogUtil
-import com.saike.library.util.map.CXLatLng
-import com.saike.library.util.location.client.CXILocationClient
+import com.smart.library.base.CXBaseApplication
+import com.smart.library.util.CXLogUtil
+import com.smart.library.util.map.CXLatLng
+import com.smart.library.util.map.location.client.CXILocationClient
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit

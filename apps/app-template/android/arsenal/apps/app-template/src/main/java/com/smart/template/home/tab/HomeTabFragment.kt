@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.widget.viewpager.CXFragmentPagerAdapter
 import com.smart.template.*
+import com.smart.template.home.*
 import kotlinx.android.synthetic.main.home_tab_fragment.*
 
 class HomeTabFragment : CXBaseFragment() {
@@ -20,12 +21,12 @@ class HomeTabFragment : CXBaseFragment() {
         content_vp.offscreenPageLimit = 5
         content_vp.adapter = CXFragmentPagerAdapter(context, childFragmentManager,
             listOf(
-                HomeFragment(),
-                ReactNativeFragment(),
-                HybirdFragment(),
-                ImFragment(),
-                MineFragment(),
-                SettingFragment()
+                    HomeFragment(),
+                    ReactNativeFragment(),
+                    HybirdFragment(),
+                    ImFragment(),
+                    MineFragment(),
+                    SettingFragment()
             )
         )
         content_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

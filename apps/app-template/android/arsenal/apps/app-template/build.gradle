@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.taobao.atlas'
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'walle'
@@ -9,21 +8,6 @@ walle {
     apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';// 定制渠道包的APK的文件名称
     channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
 }
-
-//atlas {
-//    atlasEnabled true
-//    tBuildConfig {
-//        autoStartBundles = [
-//            'com.smart.template.module.setting',
-//            //'com.smart.template.module.mine',
-//        ]
-//        autoPackageId = true
-//        outOfApkBundles = [
-//            //'module-template-hybird', //adb push arsenal/apps/app-template/build/outputs/remote-bundles-debug/libcom_smart_template_android_module_hybird.so /sdcard/Android/data/com.smart.template/cache/
-//        ]
-//        preLaunch = 'com.smart.template.library.CXPreLaunch' //initBeforeAtlas
-//    }
-//}
 
 //上传bugly符号表配置
 /*apply plugin: 'bugly'

@@ -1,14 +1,9 @@
 apply plugin: "com.android.library"
-//apply plugin: "com.taobao.atlas"
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
 
 group = 'com.template'
 version = '1.0.0'
-
-//atlas {
-//    bundleConfig { awbBundle true }
-//}
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion

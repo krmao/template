@@ -1,4 +1,4 @@
-package com.smart.template
+package com.smart.template.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
+import com.smart.template.R
 import com.smart.template.module.rn.ReactActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 

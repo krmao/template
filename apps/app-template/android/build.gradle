@@ -2,12 +2,7 @@
 buildscript {
     ext.kotlinVersion = "1.2.40"
     ext.ankoVersion = "0.8.2"
-    ext.greendaoVersion = "3.2.0"
     ext.walleVersion = "1.1.6"
-
-    ext.atlasPluginVersion = "2.3.3.rc12"
-    ext.atlasCoreVersion = "5.0.7.42"
-    ext.atlasUpdateVersion = "1.1.4.11"
 
     repositories {
         jcenter()
@@ -19,31 +14,21 @@ buildscript {
     }
 
     dependencies {
-        //classpath "com.taobao.android:atlasplugin:$atlasPluginVersion"
         classpath "com.meituan.android.walle:plugin:$walleVersion"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
-        classpath "com.android.tools.build:gradle:3.1.2"
-        //classpath "org.greenrobot:greendao-gradle-plugin:$rootProject.ext.greendaoVersion"
+        classpath "com.android.tools.build:gradle:3.1.3"
         //classpath "com.tencent.bugly:symtabfileuploader:1.3.9"
         //classpath "com.tencent.bugly:tinker-support:1.0.8"
     }
 }
 
 allprojects {
-    ext.frepository_url = ""
-    ext.prepository_url = ""
-    ext.prepository_url_snapshot = ""
-    ext.prepository_username = ""
-    ext.prepository_password = ""
-
     repositories {
         flatDir {
             dirs "file://$rootProject.projectDir/arsenal/libraries/thirdparty/thirdparty-aars"
         }
-        //maven { url frepository_url }
-        //maven { url "http://maven.dds.com/nexus/content/groups/public" }
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
@@ -88,7 +73,7 @@ ext {
 
     // App dependencies
     supportLibraryVersion = "27.1.1"
-    constraintLayoutVersion = "1.1.0"
+    constraintLayoutVersion = "1.1.2"
     multidex = "1.0.3"
 
     // React Native Version
@@ -103,11 +88,11 @@ ext {
     rxandroidVersion = "2.0.1"
     rxlifecycleVersion = "2.0.1"
     rxbindingVersion = "2.0.0"
-    frescoVersion = "1.3.0"
+    frescoVersion = "1.9.0"
     okhttp3Version = "3.8.0"
     retrofitVersion = "2.3.0"
     retrofit2rxjava2Version = "1.0.0"
-    leakcanaryVersion = "1.5.1"
+    leakcanaryVersion = "1.5.4"
     crashreportUpgradeVersion = "1.3.1"
     swipebackhelperVersion = "3.1.2"
     libraryBaseVersion = "0.0.1-SNAPSHOT"

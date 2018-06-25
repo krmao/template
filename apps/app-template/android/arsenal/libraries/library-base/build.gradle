@@ -15,9 +15,7 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
-    /******* ATLAS     ****************************************************************************/
-    //api("com.taobao.android:atlas_core:$rootProject.ext.atlasCoreVersion@aar") { transitive = true }
-    //api "com.taobao.android:atlasupdate:$rootProject.ext.atlasUpdateVersion@aar" // 如果不需要用到atlas的动态部署功能，不需要依赖atlasupdate
+
     /******* 官方支持库 ****************************************************************************/
     api "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
@@ -26,8 +24,8 @@ dependencies {
     api "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:multidex:$rootProject.ext.multidex"
+    api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     //api "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    //api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     //api "com.android.support:leanback-v17:$rootProject.ext.supportLibraryVersion"
 
     /******* kotlin支持 ***************************************************************************/
@@ -58,50 +56,19 @@ dependencies {
     //api "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
 
     /******* 网络图片库 ****************************************************************************/
-    api "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
-    api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    compileOnly "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
+    compileOnly "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
     /******* 其它常用库 ****************************************************************************/
     api "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
     api 'com.gyf.barlibrary:barlibrary:2.3.0' // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
+    api 'com.liaoinstan.springview:library:1.3.2'
 
     /******* 定位相关 ******************************************************************************/
     compileOnly "com.amap.api:location:4.0.1"  // 定位功能
 }
 
-/*外部依赖方式
-api("com.smart.android:library-base:$rootProject.ext.libraryBaseVersion@aar") {
-    transitive = true   //设置传递依赖，即支持依赖依赖的依赖(aar中的依赖)
-    *//*contains:
-      <p>
-        api "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
-        api "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
-        api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
-        api "com.android.support:design:$rootProject.ext.supportLibraryVersion"
-        api "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
-        api "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
-        api "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
-        api "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
-        api "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
-        api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
-        api "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
-        api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
-        api "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.ext.rxbindingVersion"
-        api "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rootProject.ext.rxbindingVersion"
-        api "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxbindingVersion"
-        api "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
-        api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
-        api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
-        api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-        api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
-        api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
-        api "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
-      </p>
-    *//*
-}
-*/
-
-apply plugin: 'maven'
+/*apply plugin: 'maven'
 
 group = "com.smart.android"
 def artifactID = "library-base"
@@ -110,11 +77,11 @@ version = rootProject.ext.libraryBaseVersion
 uploadArchives {
     repositories {
         mavenDeployer {
-            snapshotRepository(url: rootProject.ext.prepository_url_snapshot) {
-                authentication(userName: rootProject.ext.prepository_username, password: rootProject.ext.prepository_password)
+            snapshotRepository(url: "") {
+                authentication(userName: "", password: "")
             }
             repository(url: rootProject.ext.prepository_url) {
-                authentication(userName: rootProject.ext.prepository_username, password: rootProject.ext.prepository_password)
+                authentication(userName: "", password: "")
             }
             pom.packaging = 'aar'
             pom.groupId = project.group
@@ -122,4 +89,4 @@ uploadArchives {
             pom.version = project.version
         }
     }
-}
+}*/

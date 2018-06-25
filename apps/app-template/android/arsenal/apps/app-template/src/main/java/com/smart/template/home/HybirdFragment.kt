@@ -1,6 +1,5 @@
-package com.smart.template
+package com.smart.template.home
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -12,17 +11,14 @@ import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXRouteManager
 
-class ImFragment : CXBaseFragment() {
+class HybirdFragment : CXBaseFragment() {
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
-        textView.text = "im"
-        @Suppress("DEPRECATION")
-        textView.setTextColor(resources.getColor(R.color.orange))
-        textView.setBackgroundColor(Color.DKGRAY)
+        textView.text = "hybird"
+        textView.setBackgroundColor(Color.parseColor("#FF33B5E5"))
         textView.setOnClickListener {
-            CXRouteManager.goToFragment(activity, "com.smart.template.module.im.IMFragment") {
+            CXRouteManager.goToFragment(activity, "com.smart.template.module.hybird.HybirdFragment") {
                 CXLogUtil.w("krmao", it.toString())
             }
         }
@@ -31,16 +27,16 @@ class ImFragment : CXBaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "IMFragment:onStart");
+        Log.w("krmao", "HybirdFragment:onStart")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "IMFragment:onStop");
+        Log.w("krmao", "HybirdFragment:onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "IMFragment:onDestroy");
+        Log.w("krmao", "HybirdFragment:onDestroy")
     }
 }

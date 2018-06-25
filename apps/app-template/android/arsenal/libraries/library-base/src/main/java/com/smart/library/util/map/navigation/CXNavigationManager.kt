@@ -1,4 +1,4 @@
-package com.saike.library.util.map.navigation
+package com.smart.library.util.map.navigation
 
 import android.app.Dialog
 import android.content.Context
@@ -6,8 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
-import com.smart.library.util.CXSystemUtil
-import com.smart.library.util.CXValueUtil
+import com.smart.library.util.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object CXNavigationManager {
@@ -39,7 +38,7 @@ object CXNavigationManager {
          */
         fun open(context: Context?, fromGCJ02Lat: String, fromGCJ02Lon: String, fromWGS84Lat: String? = null, fromWGS84Lon: String? = null, fromAddressName: String?, toGCJ02Lat: String, toGCJ02Lon: String, toWGS84Lat: String? = null, toWGS84Lon: String? = null, toAddressName: String?, navigateMode: String = "driving") {
             when (this) {
-                CXNavigationManager.MapType.AMAP -> {
+                AMAP -> {
                     try {
                         val versionNo = CXSystemUtil.getAppVersionCode("com.autonavi.minimap")
                         CXLogUtil.d("versionNo:$versionNo")
@@ -66,7 +65,7 @@ object CXNavigationManager {
                         CXToastUtil.show("您当前地图版本可能不支持导航功能")
                     }
                 }
-                CXNavigationManager.MapType.BMAP -> { // http://lbsyun.baidu.com/index.php?title=uri/api/android
+                BMAP -> { // http://lbsyun.baidu.com/index.php?title=uri/api/android
                     try {
                         val intentUri = StringBuffer()
                         intentUri.append("intent://map/direction?coord_type=gcj02&&origin=latlng:$fromGCJ02Lat,$fromGCJ02Lon${if (fromAddressName.isNullOrBlank()) "|name:起点" else "|name:$fromAddressName"}")
@@ -81,7 +80,7 @@ object CXNavigationManager {
                         CXToastUtil.show("您当前地图版本可能不支持导航功能")
                     }
                 }
-                CXNavigationManager.MapType.GOOGLE -> {
+                GOOGLE -> {
                     try {
                         val intentUri = StringBuffer()
                         intentUri.append("http://maps.google.com/maps?saddr=$fromWGS84Lat,$fromWGS84Lon&daddr=$toWGS84Lat,$toWGS84Lon")
@@ -137,9 +136,9 @@ object CXNavigationManager {
 
         if (installedMapTypeList.isEmpty()) {
             when (mapSupportScope) {
-                CXNavigationManager.MapSupportScope.CHINA -> CXToastUtil.show("请安装地图应用")
-                CXNavigationManager.MapSupportScope.OVERSEA -> CXToastUtil.show("请安装Google地图应用")
-                CXNavigationManager.MapSupportScope.ALL -> CXToastUtil.show("请安装地图应用")
+                MapSupportScope.CHINA -> CXToastUtil.show("请安装地图应用")
+                MapSupportScope.OVERSEA -> CXToastUtil.show("请安装Google地图应用")
+                MapSupportScope.ALL -> CXToastUtil.show("请安装地图应用")
                 null -> CXToastUtil.show("请安装地图应用")
             }
             return null

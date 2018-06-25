@@ -1,4 +1,4 @@
-package com.smart.template
+package com.smart.template.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXRouteManager
+import com.smart.template.R
 
 class MineFragment : CXBaseFragment() {
 

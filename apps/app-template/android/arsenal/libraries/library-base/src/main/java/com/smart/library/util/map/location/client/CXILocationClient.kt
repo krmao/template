@@ -1,4 +1,4 @@
-package com.saike.library.util.location.client
+package com.smart.library.util.map.location.client
 
 import android.location.Location
 

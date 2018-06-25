@@ -1,4 +1,4 @@
-package com.saike.library.util.map
+package com.smart.library.util.map
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object CXMapUtil {

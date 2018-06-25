@@ -1,5 +1,6 @@
-.idea/
+# Created by .ignore support plugin (hsz.mobi)
+build
+node_modules
+package-lock.json
+.idea
 .DS_Store
-Pods
-module-*.json
-module-*.zip

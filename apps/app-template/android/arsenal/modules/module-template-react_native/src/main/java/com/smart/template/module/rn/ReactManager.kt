@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactInstanceManagerBuilder
 import com.facebook.react.ReactPackage
@@ -46,7 +47,7 @@ object ReactManager {
         get() {
             if (field == null) {
                 if (checkValidPackageOrServer(jsBundleFile)) {
-                    field = getInstanceBuilder(jsBundleFile).build()?.apply {
+                    field = getInstanceBuilder(jsBundleFile, frescoConfig = frescoConfig).build()?.apply {
                         addReactInstanceEventListener {
                             isInitialized = true
                             CXLogUtil.w(TAG, "initialized base bundle success")
@@ -107,12 +108,15 @@ object ReactManager {
     // val jsBundleFile = localHotPatchIndexFile.absolutePath
     const val jsBundleFile = ReactConstant.PATH_ASSETS_BASE_BUNDLE
 
+    var frescoConfig: ImagePipelineConfig? = null
+
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(application: Application, debug: Boolean, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
+    fun init(application: Application, debug: Boolean, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
         this.application = application
         this.debug = debug
+        this.frescoConfig = frescoConfig
         this.onCallNativeListener = onCallNativeListener
 
         // sure to call instanceManager one time
@@ -135,36 +139,35 @@ object ReactManager {
 
     @JvmStatic
     @JvmOverloads
-    fun getInstanceBuilder(jsBundleFile: String, jsMainModulePath: String = "index"): ReactInstanceManagerBuilder {
+    fun getInstanceBuilder(jsBundleFile: String, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {
         return ReactInstanceManager.builder()
-            .setApplication(application)
-            .setUIImplementationProvider(UIImplementationProvider())
-            .setRedBoxHandler(object : RedBoxHandler {
-                override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: RedBoxHandler.ErrorType?) {
-                    CXLogUtil.e(TAG, "handleRedbox errorType:${errorType?.name}, title:$title, stack:$stack")
-                }
+                .setApplication(application)
+                .setUIImplementationProvider(UIImplementationProvider())
+                .setRedBoxHandler(object : RedBoxHandler {
+                    override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: RedBoxHandler.ErrorType?) {
+                        CXLogUtil.e(TAG, "handleRedbox errorType:${errorType?.name}, title:$title, stack:$stack")
+                    }
 
-                override fun isReportEnabled(): Boolean {
-                    return false
-                }
+                    override fun isReportEnabled(): Boolean {
+                        return false
+                    }
 
-                override fun reportRedbox(context: Context?, title: String?, stack: Array<out StackFrame>?, sourceUrl: String?, reportCompletedListener: RedBoxHandler.ReportCompletedListener?) {
-                    CXLogUtil.e(TAG, "reportRedbox title:$title, stack:$stack, sourceUrl:$sourceUrl")
-                }
-            })
-            // .setJSBundleFile(jsBundleFile)
-            .setJSMainModulePath(jsMainModulePath)
-            .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, false))
-            .addPackages(
-                mutableListOf<ReactPackage>(
-                    MainReactPackage(MainPackageConfig.Builder().apply {
-                        //setFrescoConfig() fixme
-                    }.build()),
-                    ReactCustomPackage()
+                    override fun reportRedbox(context: Context?, title: String?, stack: Array<out StackFrame>?, sourceUrl: String?, reportCompletedListener: RedBoxHandler.ReportCompletedListener?) {
+                        CXLogUtil.e(TAG, "reportRedbox title:$title, stack:$stack, sourceUrl:$sourceUrl")
+                    }
+                })
+                .setJSMainModulePath(jsMainModulePath)
+                .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, false))
+                .addPackages(
+                        mutableListOf<ReactPackage>(
+                                MainReactPackage(MainPackageConfig.Builder().apply {
+                                    frescoConfig?.let { setFrescoConfig(it) }
+                                }.build()),
+                                ReactCustomPackage()
+                        )
                 )
-            )
-            .setUseDeveloperSupport(debug)
-            .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
+                .setUseDeveloperSupport(debug)
+                .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
     }
 
 }

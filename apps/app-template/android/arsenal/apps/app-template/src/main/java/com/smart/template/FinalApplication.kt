@@ -3,10 +3,13 @@ package com.smart.template
 import android.graphics.Color
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXConfig
+import com.smart.library.util.image.CXImageManager
+import com.smart.library.util.image.impl.CXImageFrescoHandler
 import com.smart.library.widget.titlebar.CXTitleBar
 import com.smart.template.library.R
 import com.smart.template.module.rn.ReactManager
 import com.smart.template.repository.CXRepository
+import com.smart.template.repository.remote.core.CXOkHttpManager
 import com.smart.template.tab.HomeTabActivity
 
 class FinalApplication : CXBaseApplication() {
@@ -23,6 +26,10 @@ class FinalApplication : CXBaseApplication() {
         super.onCreate()
 
         CXRepository.init()
-        ReactManager.init(this, CXBaseApplication.DEBUG)
+
+        // image manager with fresco and react native init together
+        val frescoConfig = CXImageFrescoHandler.getConfigBuilder(CXBaseApplication.DEBUG,CXOkHttpManager.client).build()
+        CXImageManager.initialize(CXImageFrescoHandler(frescoConfig))
+        ReactManager.init(this, CXBaseApplication.DEBUG, frescoConfig)
     }
 }

@@ -1,5 +1,9 @@
 package com.smart.library.util
 
+import android.app.Activity
+import android.content.Context
+import android.support.v4.app.Fragment
+import org.jetbrains.anko.AnkoAsyncContext
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -7,10 +11,28 @@ import java.text.DecimalFormat
 object CXValueUtil {
     private val TAG = CXValueUtil::class.java.name
 
+    fun isValid(context: Context?): Boolean {
+        if (context != null) {
+            if (context is Activity) {
+                if (!context.isFinishing) return true
+            } else {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun isValid(context: AnkoAsyncContext<*>?): Boolean = context?.weakRef?.get() != null
+    fun isValid(fragment: Fragment?): Boolean = fragment != null && !fragment.isDetached
+    fun isValid(fragment: android.app.Fragment?): Boolean = fragment != null && !fragment.isDetached
+
+
     /**
      * 是否 A 等于 B
      */
     @JvmStatic
+    fun isAEqualB(valueA: Double?, valueB: Double?): Boolean = if (valueA == null || valueB == null) false else isAEqualB(BigDecimal.valueOf(valueA), BigDecimal.valueOf(valueB))
+
     fun isAEqualB(valueA: BigDecimal, valueB: BigDecimal): Boolean = valueA.compareTo(valueB) == 0
 
     /**

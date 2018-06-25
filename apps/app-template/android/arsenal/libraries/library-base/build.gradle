@@ -46,9 +46,6 @@ dependencies {
     api "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
     api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
 
-    /******* 应用权限库 ****************************************************************************/
-    api "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.ext.rxpermissions2Version"
-
     /******* 数据库管理 ****************************************************************************/
     //api "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
 
@@ -67,6 +64,9 @@ dependencies {
     api "com.jude:swipebackhelper:$rootProject.ext.swipebackhelperVersion"
     api 'com.gyf.barlibrary:barlibrary:2.3.0' // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
+
+    /******* 定位相关 ******************************************************************************/
+    compileOnly "com.amap.api:location:4.0.1"  // 定位功能
 }
 
 /*外部依赖方式

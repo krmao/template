@@ -19,7 +19,7 @@ class ReactNativeFragment : CXBaseFragment() {
         val textView: TextView = TextView(activity)
         textView.text = "react native"
         @Suppress("DEPRECATION")
-        textView.setBackgroundColor(resources.getColor(R.color.cx_pink))
+        textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
             activity?.startActivity(Intent(activity,Class.forName("com.smart.template.module.rn.ReactActivity")))

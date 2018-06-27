@@ -1,6 +1,7 @@
 package com.smart.template.module.rn.dev
 
 import android.content.Context
+import android.content.Intent
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.template.module.rn.R
 import com.smart.template.module.rn.ReactActivity
+import com.smart.template.module.rn.ReactJumper
 import com.smart.template.module.rn.ReactManager
 import kotlinx.android.synthetic.main.rn_dev_settings_view.view.*
 
@@ -117,7 +119,7 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             CXSystemUtil.sendKeyDownEventBack(context)
 
             Looper.myQueue().addIdleHandler {
-                ReactActivity.startWithNewTask(context, component_et.text.toString(), page_et.text.toString())
+                ReactJumper.goTo(context, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
                 false
             }
         }

@@ -25,24 +25,14 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     companion object {
         const val KEY_RESULT: String = "rn_result"
         const val KEY_START_COMPONENT: String = "rn_start_component"
-        const val KEY_START_COMPONENT_PAGE: String = "rn_start_component_page"
 
         @JvmStatic
         @JvmOverloads
-        fun start(context: Context?, component: String? = null, page: String? = null) {
+        internal fun start(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null) {
             val intent = Intent(context, ReactActivity::class.java)
+            intentFlag?.let { intent.addFlags(it) }
             intent.putExtra(KEY_START_COMPONENT, component)
-            intent.putExtra(KEY_START_COMPONENT_PAGE, page)
-            context?.startActivity(intent)
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun startWithNewTask(context: Context?, component: String? = null, page: String? = null) {
-            val intent = Intent(context, ReactActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.putExtra(KEY_START_COMPONENT, component)
-            intent.putExtra(KEY_START_COMPONENT_PAGE, page)
+            intent.putExtras(extras)
             context?.startActivity(intent)
         }
     }
@@ -57,25 +47,20 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private val doubleTapReloadRecognizer by lazy { DoubleTapReloadRecognizer() }
 
-    private val moduleName: String
+    private val moduleName: String?
         get() = intent.getStringExtra(KEY_START_COMPONENT)
-            ?: ReactConstant.COMPONENT_NAME //ReactManager.devSettingsManager.getDefaultStartComponent()
 
-    private val pageName: String
-        get() = intent.getStringExtra(KEY_START_COMPONENT_PAGE)
-            ?: ReactManager.devSettingsManager.getDefaultStartComponentPage()
-
-    private val initialProperties by lazy { Bundle().apply { putString("page", pageName) } }
+    private val initialProperties: Bundle? by lazy { intent.extras }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
         reactRootView = ReactRootView(this)
         setContentView(
-            FrameLayout(this).apply {
-                this.fitsSystemWindows = true
-                this.addView(reactRootView)
-            }
+                FrameLayout(this).apply {
+                    this.fitsSystemWindows = true
+                    this.addView(reactRootView)
+                }
         )
 
         reactInstanceManager = ReactManager.instanceManager

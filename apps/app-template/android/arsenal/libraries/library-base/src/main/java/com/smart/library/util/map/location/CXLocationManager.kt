@@ -1,74 +1,70 @@
 package com.smart.library.util.map.location
 
-import android.Manifest
-import android.app.Activity
 import android.location.Location
+import com.smart.library.util.CXPreferencesUtil
+import com.smart.library.util.map.CXMapUtil
 import com.smart.library.util.map.location.client.CXILocationClient
 import com.smart.library.util.map.location.client.impl.CXAMapLocationClient
-import com.smart.library.util.map.CXMapUtil
-import com.smart.library.util.CXPreferencesUtil
-import com.smart.library.util.rx.permission.RxPermissions
 
 /**
- * @param activity 请求权限时需要
- * @param useAmap true:高德定位 false 百度定位(暂未实现)
+ * 使用代理模式构造
+ *
+ * @see CXAMapLocationClient
  */
 @Suppress("PrivatePropertyName", "unused", "MemberVisibilityCanBePrivate")
-class CXLocationManager(val activity: Activity? = null, val useAmap: Boolean = true) {
+open class CXLocationManager(protected val locationClient: CXILocationClient) {
 
     companion object {
         private val KEY_CACHE_LOCATION = "KEY_CACHE_LOCATION_${CXLocationManager::class.java.name}"
 
+        /**
+         * 缓存定位
+         */
         @JvmStatic
         var cacheLocation: Location? = CXPreferencesUtil.getEntity(KEY_CACHE_LOCATION, Location::class.java)
             internal set(value) {
                 if (CXMapUtil.isValidLatLng(value?.latitude, value?.longitude)) {
                     field = value
+                    cacheLocationTime = System.currentTimeMillis()
                     CXPreferencesUtil.putEntity(KEY_CACHE_LOCATION, value)
                 }
             }
-    }
 
-    private val ensurePermissions: () -> Unit? = {
-        activity?.let { RxPermissions(it).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).subscribe { } }
-        Unit
-    }
+        /**
+         * 缓存定位时的时间
+         */
+        @JvmStatic
+        var cacheLocationTime: Long = 0
+            private set(value) {
+                field = value
+            }
 
-    private val locationClient: CXILocationClient by lazy {
-        if (useAmap) CXAMapLocationClient(ensurePermissions) {
-            cacheLocation = it
-            Unit
-        } else CXAMapLocationClient(ensurePermissions) {
-            cacheLocation = it
-            Unit
-        }
+        /**
+         * 缓存定位时的时间距离现在的时间差
+         */
+        @JvmStatic
+        var cacheLocationTimeDelta: Long = System.currentTimeMillis()
+            get() = System.currentTimeMillis() - cacheLocationTime
+            private set
     }
 
     /**
      * 一次定位
      */
-    fun startLocation(timeout: Long = 5000, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) {
-        locationClient.startLocation(timeout, onSuccess, onFailure)
-    }
+    fun startLocation(timeout: Long = 5000, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient.startLocation(timeout, onSuccess, onFailure)
 
     /**
      * 循环定位
      */
-    fun startLocationLoop(interval: Long = 30000, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) {
-        locationClient.startLocationLoop(interval, onSuccess, onFailure)
-    }
+    fun startLocationLoop(interval: Long = 30000, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient.startLocationLoop(interval, onSuccess, onFailure)
 
     /**
      * 停止循环定位
      */
-    fun stopLocationLoop() {
-        locationClient.stopLocationLoop()
-    }
+    fun stopLocationLoop() = locationClient.stopLocationLoop()
 
     /**
      * 停止定位
      */
-    fun stopLocation() {
-        locationClient.stopLocation()
-    }
+    fun stopLocation() = locationClient.stopLocation()
 }

@@ -1,28 +1,36 @@
 package com.smart.library.util.map.location.client.impl
 
+import android.Manifest
+import android.app.Activity
 import android.location.Location
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXValueUtil
 import com.smart.library.util.map.CXLatLng
+import com.smart.library.util.map.location.CXLocationManager
 import com.smart.library.util.map.location.client.CXILocationClient
+import com.smart.library.util.rx.permission.RxPermissions
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 /**
  * 高德定位
+ *
+ * @param activity 请求权限时需要
  */
-@Suppress("MemberVisibilityCanBePrivate", "unused", "PrivatePropertyName")
-internal class CXAMapLocationClient(val ensurePermissions: (() -> Unit?)? = null, val refreshCache: ((Location) -> Unit?)? = null) : CXILocationClient {
+@Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
+open class CXAMapLocationClient(activity: Activity?, val ensurePermissions: () -> Unit? = { if (CXValueUtil.isValid(activity)) activity?.let { RxPermissions(it).request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).subscribe { } };Unit }) : CXILocationClient {
 
-    private val TAG: String = CXAMapLocationClient::class.java.name
+    protected val TAG: String = CXAMapLocationClient::class.java.name
 
-    private var locationTimerDisposable: Disposable? = null
-    private var locationClient: AMapLocationClient? = null
-    private var locationLoopClient: AMapLocationClient? = null
+    protected var locationTimerDisposable: Disposable? = null
+    protected var locationClient: AMapLocationClient? = null
+    protected var locationLoopClient: AMapLocationClient? = null
+    protected val refreshCache: ((Location) -> Unit?) = { CXLocationManager.cacheLocation = it;Unit }
 
     /**
      * 一次定位
@@ -52,7 +60,7 @@ internal class CXAMapLocationClient(val ensurePermissions: (() -> Unit?)? = null
                     if (latLng.isValid()) {
 
                         CXLogUtil.d(TAG, "定位成功, 有效经纬度:$latLng")
-                        refreshCache?.invoke(location) // 更新定位缓存
+                        refreshCache.invoke(location) // 更新定位缓存
 
                         onSuccess?.invoke(location)
                     } else {
@@ -60,7 +68,7 @@ internal class CXAMapLocationClient(val ensurePermissions: (() -> Unit?)? = null
                         onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "UN_VALID LATLNG :$latLng")
                     }
                 } else {
-                    if (location?.errorCode == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) ensurePermissions?.invoke()
+                    if (location?.errorCode == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) ensurePermissions.invoke()
 
                     onFailure?.invoke(location.errorCode, location.locationDetail)
                 }
@@ -101,7 +109,7 @@ internal class CXAMapLocationClient(val ensurePermissions: (() -> Unit?)? = null
                     if (latLng.isValid()) {
 
                         CXLogUtil.d(TAG, "定位成功, 有效经纬度:$latLng")
-                        refreshCache?.invoke(location) // 更新定位缓存
+                        refreshCache.invoke(location) // 更新定位缓存
 
                         onSuccess?.invoke(location)
                     } else {
@@ -111,7 +119,7 @@ internal class CXAMapLocationClient(val ensurePermissions: (() -> Unit?)? = null
                 } else {
                     CXLogUtil.v(TAG, "定位失败, ${location.errorCode}:${location.locationDetail}")
 
-                    if (location?.errorCode == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) ensurePermissions?.invoke()
+                    if (location?.errorCode == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) ensurePermissions.invoke()
 
                     onFailure?.invoke(location.errorCode, location.locationDetail)
                 }

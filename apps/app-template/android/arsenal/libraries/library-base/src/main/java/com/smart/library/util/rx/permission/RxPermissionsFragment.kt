@@ -5,6 +5,7 @@ import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXLogUtil
 import io.reactivex.subjects.PublishSubject
 import java.util.*
@@ -14,13 +15,13 @@ class RxPermissionsFragment : Fragment() {
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 42
-        private const val TAG = "[RxPermissions]"
+        private const val TAG = RxPermissions.TAG
     }
 
     // Contains all the current permission requests.
     // Once granted or denied, they are removed from it.
     private val mSubjects = HashMap<String, PublishSubject<Permission>>()
-    var enableLog: Boolean = false
+    var enableLog: Boolean = CXBaseApplication.DEBUG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +29,7 @@ class RxPermissionsFragment : Fragment() {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    fun requestPermissions(permissions: Array<String>) {
-        requestPermissions(permissions, PERMISSIONS_REQUEST_CODE)
-    }
+    fun requestPermissions(permissions: Array<String>) = requestPermissions(permissions, PERMISSIONS_REQUEST_CODE)
 
     @TargetApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

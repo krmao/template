@@ -3,16 +3,18 @@ package com.smart.library.util
 import android.graphics.Bitmap
 import android.text.TextUtils
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.util.cache.CXCacheManager
 import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
 
 
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 object CXFileUtil {
 
-    val ENCODING_UTF8 = "UTF-8"
+    const val ENCODING_UTF8 = "UTF-8"
 
+    @JvmStatic
     fun fileChannelCopy(sourceFile: File, destFile: File) {
         var fileInputStream: FileInputStream? = null
         var fileOutputStream: FileOutputStream? = null
@@ -23,7 +25,7 @@ object CXFileUtil {
             fileOutputStream = FileOutputStream(destFile)
             fileChannelIn = fileInputStream.channel// 得到对应的文件通道
             fileChannelOut = fileOutputStream.channel// 得到对应的文件通道
-            fileChannelIn!!.transferTo(0, fileChannelIn.size(), fileChannelOut)// 连接两个通道，并且从in通道读取，然后写入out通道
+            fileChannelIn?.transferTo(0, fileChannelIn.size(), fileChannelOut)// 连接两个通道，并且从in通道读取，然后写入out通道
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -44,6 +46,7 @@ object CXFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
+    @JvmStatic
     fun copy(inputStream: InputStream?, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
         var outputStream: OutputStream? = null
         try {
@@ -60,6 +63,7 @@ object CXFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
+    @JvmStatic
     fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)
 
     /**
@@ -75,6 +79,7 @@ object CXFileUtil {
      * @throws IOException if an I/O error occurs
      */
     @Throws(IOException::class)
+    @JvmStatic
     fun copy(from: InputStream?, to: OutputStream?, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
         checkNotNull(from)
         checkNotNull(to)
@@ -93,11 +98,13 @@ object CXFileUtil {
         return current
     }
 
+    @JvmStatic
     fun deleteDirectory(filePath: String?) {
         if (!TextUtils.isEmpty(filePath))
             deleteDirectory(File(filePath))
     }
 
+    @JvmStatic
     fun deleteDirectory(file: File?) {
         try {
             if (file != null) {
@@ -113,24 +120,24 @@ object CXFileUtil {
         }
     }
 
+    @JvmStatic
     fun deleteFile(filePath: String?) {
         if (!TextUtils.isEmpty(filePath))
             deleteFile(File(filePath))
     }
 
+    @JvmStatic
     fun deleteFile(file: File?) {
         file?.delete()
     }
 
     //返回文件夹的大小(bytes)
+    @JvmStatic
     fun getDirSize(dir: File): Long {
         var result: Long = 0
         if (dir.exists()) {
             for (tmpFile in dir.listFiles()) {
-                if (tmpFile.isDirectory)
-                    result += getDirSize(tmpFile)
-                else
-                    result += tmpFile.length()
+                result += if (tmpFile.isDirectory) getDirSize(tmpFile) else tmpFile.length()
             }
         }
         return result
@@ -168,6 +175,7 @@ object CXFileUtil {
         return false
     }
 
+    @JvmStatic
     fun readTextFromFile(inputStream: InputStream): String {
         var content = ""
         try {
@@ -185,6 +193,7 @@ object CXFileUtil {
         return content
     }
 
+    @JvmStatic
     fun readTextFromFile(file: File): String {
         var content = ""
         try {
@@ -202,6 +211,7 @@ object CXFileUtil {
         return content
     }
 
+    @JvmStatic
     fun readLinesFromFile(file: File): List<String> {
         val contentList = ArrayList<String>()
         try {
@@ -219,6 +229,7 @@ object CXFileUtil {
         return contentList
     }
 
+    @JvmStatic
     fun writeLinesToFile(contentList: List<String>, file: File): Boolean {
         var isWriteSuccess = false
         try {
@@ -237,10 +248,19 @@ object CXFileUtil {
         return isWriteSuccess
     }
 
+    @JvmStatic
     fun writeTextToFile(content: String, file: File): Boolean {
         return writeTextToFile(content, null, file)
     }
 
+
+    @JvmStatic
+    fun saveUncaughtException(thread: Thread?, throwable: Throwable?) {
+        CXLogUtil.e("crash", "app crash, thread=${thread?.name}\n", throwable)
+        CXFileUtil.writeTextToFile("app crash, thread=${thread?.name}\n", throwable, File(CXCacheManager.getChildCacheDir("crash"), CXTimeUtil.yMdHmsSWithoutSeparator() + ".txt"))
+    }
+
+    @JvmStatic
     fun writeTextToFile(content: String, throwable: Throwable?, file: File): Boolean {
         var isAppendSuccess = false
         try {
@@ -258,6 +278,7 @@ object CXFileUtil {
         return isAppendSuccess
     }
 
+    @JvmStatic
     fun saveBitmapToFile(bitmap: Bitmap, file: File): Boolean {
         var isAppendSuccess = false
         try {
@@ -273,6 +294,7 @@ object CXFileUtil {
         return isAppendSuccess
     }
 
+    @JvmStatic
     fun updateBitmapToFile(bitmap: Bitmap, file: File): Boolean {
         var isAppendSuccess = false
         if (file.exists()) {
@@ -297,6 +319,7 @@ object CXFileUtil {
         return isAppendSuccess
     }
 
+    @JvmStatic
     fun appendLine(filePath: String, oneLine: String): Boolean {
         var isAppendSuccess = false
         var outputStreamWriter: OutputStreamWriter? = null
@@ -324,9 +347,9 @@ object CXFileUtil {
         return isAppendSuccess
     }
 
-    fun getFileList(dirPath: String): List<File> =
-        getFileList(File(dirPath))
+    @JvmStatic
+    fun getFileList(dirPath: String): List<File> = getFileList(File(dirPath))
 
-    fun getFileList(dir: File): List<File> =
-        dir.walkTopDown().filter { it.isFile }.toList()
+    @JvmStatic
+    fun getFileList(dir: File): List<File> = dir.walkTopDown().filter { it.isFile }.toList()
 }

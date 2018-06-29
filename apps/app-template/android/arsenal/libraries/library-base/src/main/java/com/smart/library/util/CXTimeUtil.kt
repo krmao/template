@@ -33,28 +33,59 @@ import java.util.*
  *       z 时区
  * </p>
  */
-@Suppress("unused", "MemberVisibilityCanPrivate", "FunctionName")
+@Suppress("unused", "MemberVisibilityCanPrivate", "FunctionName", "MemberVisibilityCanBePrivate")
 object CXTimeUtil {
 
-    fun yMdHmsS(): String = yMdHmsS(Date())
-    fun yMdHmsS(date: Long): String = yMdHmsS(Date(date))
+    /**
+     * yyyyMMddHHmmssSSS
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun yMdHmsSWithoutSeparator(date: Long = System.currentTimeMillis()): String = format("yyyyMMddHHmmssSSS", Date(date))
+
+    /**
+     * yyyy-MM-dd HH:mm:ss SSS
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun yMdHmsS(date: Long = System.currentTimeMillis()): String = yMdHmsS(Date(date))
+
+    @JvmStatic
     fun yMdHmsS(date: Date): String = format("yyyy-MM-dd HH:mm:ss SSS", date)
 
-    fun HmsS(): String = HmsS(Date())
-    fun HmsS(date: Long): String = HmsS(Date(date))
+    @JvmStatic
+    @JvmOverloads
+    fun HmsS(date: Long = System.currentTimeMillis()): String = HmsS(Date(date))
+
+    @JvmStatic
     fun HmsS(date: Date): String = format("HH:mm:ss SSS", date)
 
-    fun Hms(): String = Hms(Date())
-    fun Hms(date: Long): String = Hms(Date(date))
+    @JvmStatic
+    @JvmOverloads
+    fun Hms(date: Long = System.currentTimeMillis()): String = Hms(Date(date))
+
+    @JvmStatic
     fun Hms(date: Date): String = format("HH:mm:ss", date)
 
-    fun format(pattern: String, date: Date): String =
-        SimpleDateFormat(pattern, Locale.getDefault()).format(date)
+    /**
+     * H 时 在一天中 (0~23)
+     */
+    @JvmStatic
+    fun HH(date: Date): String = format("HH", date)
+
+    @JvmStatic
+    @JvmOverloads
+    fun HH(date: Long = System.currentTimeMillis()): String = HH(Date(date))
+
+    @JvmStatic
+    fun format(pattern: String, date: Date): String = SimpleDateFormat(pattern, Locale.getDefault()).format(date)
 
     /**
      * @see okhttp3.internal.http.HttpDate.parse
      */
+    @JvmStatic
     fun parseHttp(httpValue: String): Date = HttpDate.parse(httpValue)
 
+    @JvmStatic
     fun parse(pattern: String, value: String): Date = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)
 }

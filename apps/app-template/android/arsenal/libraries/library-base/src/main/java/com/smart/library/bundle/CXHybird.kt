@@ -50,7 +50,7 @@ object CXHybird {
     @JvmStatic
     val configSuffix = ".json"
     @JvmStatic
-    val localRootDir = CXCacheManager.getChildCacheDir(assetsDirName)
+    val localRootDir = CXCacheManager.getFilesHotPatchChildDir(assetsDirName)
 
     @JvmStatic
     var initStrategy = CXHybirdInitStrategy.LOCAL

@@ -98,7 +98,7 @@ object ReactManager {
     const val indexName = "base.bundle"
 
     @JvmStatic
-    val localHotPatchIndexFile by lazy { File(CXCacheManager.getChildCacheDir("rn"), indexName) }
+    val localHotPatchIndexFile by lazy { File(CXCacheManager.getFilesHotPatchReactNativeDir(), indexName) }
 
     // assets://index.android.bundle
     // /sdcard/Android/data/com.smart.template/cache/rn/index.android.bundle

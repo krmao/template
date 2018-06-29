@@ -46,6 +46,18 @@ object CXCacheManager {
     fun getFilesHotPatchDir(): File = getChildDir(getFilesDir(), "hot-patch")
 
     @JvmStatic
+    fun getFilesHotPatchChildDir(childDirName: String): File = getChildDir(getFilesHotPatchDir(), childDirName)
+
+    @JvmStatic
+    fun getFilesHotPatchAndroidDir(): File = getFilesHotPatchChildDir("android")
+
+    @JvmStatic
+    fun getFilesHotPatchHybirdDir(): File = getFilesHotPatchChildDir("hybird")
+
+    @JvmStatic
+    fun getFilesHotPatchReactNativeDir(): File = getFilesHotPatchChildDir("react-native")
+
+    @JvmStatic
     fun getCacheDir(): File = getChildDir(getPackageDir(), "cache")
 
     @JvmStatic
@@ -75,8 +87,7 @@ object CXCacheManager {
     @JvmStatic
     fun put(module: String, key: String, value: Any) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
-            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
-                    ?: ConcurrentHashMap()
+            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
             subModuleCacheMap[key] = value
             allModuleCacheMap[module] = subModuleCacheMap
         }
@@ -107,8 +118,7 @@ object CXCacheManager {
     @JvmStatic
     fun remove(module: String, key: String) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
-            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
-                    ?: ConcurrentHashMap()
+            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
             subModuleCacheMap.remove(key)
             allModuleCacheMap[module] = subModuleCacheMap
         }

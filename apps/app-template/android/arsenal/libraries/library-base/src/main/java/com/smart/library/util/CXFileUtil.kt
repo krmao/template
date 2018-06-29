@@ -257,7 +257,7 @@ object CXFileUtil {
     @JvmStatic
     fun saveUncaughtException(thread: Thread?, throwable: Throwable?) {
         CXLogUtil.e("crash", "app crash, thread=${thread?.name}\n", throwable)
-        CXFileUtil.writeTextToFile("app crash, thread=${thread?.name}\n", throwable, File(CXCacheManager.getChildCacheDir("crash"), CXTimeUtil.yMdHmsSWithoutSeparator() + ".txt"))
+        CXFileUtil.writeTextToFile("app crash, thread=${thread?.name}\n", throwable, File(CXCacheManager.getCacheCrashDir(), CXTimeUtil.yMdHmsSWithoutSeparator() + ".txt"))
     }
 
     @JvmStatic

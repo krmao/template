@@ -48,7 +48,7 @@ open class CXImageFrescoHandler(val config: ImagePipelineConfig) : CXIImageHandl
 
         @JvmStatic
         @JvmOverloads
-        fun getConfigBuilder(debug: Boolean = CXBaseApplication.DEBUG, okHttpClient: OkHttpClient, cacheDir: File = CXCacheManager.getChildCacheDir(if (debug) "fresco" else "fresco".md5()), mainCacheDirName: String = if (debug) "main" else "main".md5(), smallCacheDirName: String = if (debug) "small" else "small".md5(), maxCacheSize: Long = 70 * 1024 * 1024, maxCacheSizeOnLowDiskSpace: Long = 40 * 1024 * 1024, maxCacheSizeOnVeryLowDiskSpace: Long = 10 * 1024 * 1024): ImagePipelineConfig.Builder {
+        fun getConfigBuilder(debug: Boolean = CXBaseApplication.DEBUG, okHttpClient: OkHttpClient, cacheDir: File = CXCacheManager.getCacheImageChildDir(if (debug) "fresco" else "fresco".md5()), mainCacheDirName: String = if (debug) "main" else "main".md5(), smallCacheDirName: String = if (debug) "small" else "small".md5(), maxCacheSize: Long = 70 * 1024 * 1024, maxCacheSizeOnLowDiskSpace: Long = 40 * 1024 * 1024, maxCacheSizeOnVeryLowDiskSpace: Long = 10 * 1024 * 1024): ImagePipelineConfig.Builder {
             return OkHttpImagePipelineConfigFactory
                     .newBuilder(CXBaseApplication.INSTANCE, okHttpClient)
                     .setMainDiskCacheConfig(

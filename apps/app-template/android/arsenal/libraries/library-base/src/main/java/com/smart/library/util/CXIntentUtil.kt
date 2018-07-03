@@ -252,17 +252,20 @@ object CXIntentUtil {
      * 拨打电话
      * return false 代表 拨号页面不存在
      */
-    fun openPhone(context: Context, phoneNo: String): Boolean {
+    @JvmStatic
+    fun openPhone(context: Context?, phoneNo: String?): Boolean {
         var isOpenSuccess = true
-        try {
-
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNo))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            isOpenSuccess = false
+        context?.let {
+            if (!phoneNo.isNullOrBlank()) {
+                try {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNo"))
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    isOpenSuccess = false
+                }
+            }
         }
-
         return isOpenSuccess
     }
 

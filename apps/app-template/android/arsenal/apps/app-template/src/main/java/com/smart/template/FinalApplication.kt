@@ -7,6 +7,7 @@ import com.smart.library.util.CXFileUtil
 import com.smart.library.util.image.CXImageManager
 import com.smart.library.util.image.impl.CXImageFrescoHandler
 import com.smart.library.widget.titlebar.CXTitleBar
+import com.smart.template.handlers.OnRNCallNativeHandler
 import com.smart.template.library.R
 import com.smart.template.module.rn.ReactManager
 import com.smart.template.repository.CXRepository
@@ -35,6 +36,6 @@ class FinalApplication : CXBaseApplication() {
         // image manager with fresco and react native init together
         val frescoConfig = CXImageFrescoHandler.getConfigBuilder(CXBaseApplication.DEBUG, CXOkHttpManager.client).build()
         CXImageManager.initialize(CXImageFrescoHandler(frescoConfig))
-        ReactManager.init(this, CXBaseApplication.DEBUG, frescoConfig)
+        ReactManager.init(this, CXBaseApplication.DEBUG, frescoConfig, OnRNCallNativeHandler())
     }
 }

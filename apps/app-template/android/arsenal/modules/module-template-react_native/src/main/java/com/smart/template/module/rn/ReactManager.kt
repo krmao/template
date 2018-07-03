@@ -33,6 +33,9 @@ import java.util.*
 object ReactManager {
     const val TAG: String = ReactConstants.TAG
 
+    const val KEY_RN_TO_NATIVE_PARAMS_HASH_MAP: String = "KEY_RN_TO_NATIVE_PARAMS_HASH_MAP"
+    const val KEY_RN_TO_NATIVE_RESULT_HASH_MAP: String = "KEY_RN_TO_NATIVE_RESULT_HASH_MAP"
+
     @JvmStatic
     var application: Application = CXBaseApplication.INSTANCE
         private set

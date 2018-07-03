@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
 import android.widget.TextView
+import com.smart.library.base.animateAlphaToVisibility
 
 
 object CXViewUtil {
     private val TAG = CXViewUtil::class.java.simpleName
+
+    @JvmStatic
+    fun animateAlphaToVisibility(visibility: Int, duration: Long = 300, vararg views: View?) = views.forEach { it?.animateAlphaToVisibility(visibility, duration) }
 
     @JvmStatic
     fun performItemClick(listView: AbsListView?, position: Int) {

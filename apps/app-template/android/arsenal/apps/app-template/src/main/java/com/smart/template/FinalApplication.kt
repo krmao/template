@@ -31,6 +31,10 @@ class FinalApplication : CXBaseApplication() {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> CXFileUtil.saveUncaughtException(t, e) }
         //}
 
+        // init global location
+        // CXLocationManager.initialize(CXAMapLocationClient())
+
+        // init global repository
         CXRepository.init()
 
         // image manager with fresco and react native init together

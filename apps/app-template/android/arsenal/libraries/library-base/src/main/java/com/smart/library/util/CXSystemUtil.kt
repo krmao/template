@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
+import android.support.v4.content.PermissionChecker
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.KeyEvent
@@ -43,6 +44,12 @@ object CXSystemUtil {
     val screenWidth: Int by lazy { CXBaseApplication.INSTANCE.resources.displayMetrics.widthPixels }
     @JvmStatic
     val screenHeight: Int by lazy { CXBaseApplication.INSTANCE.resources.displayMetrics.heightPixels }
+
+    /**
+     * If your application is targeting an API level before 23 (Android M) then both:ContextCompat.CheckSelfPermission and Context.checkSelfPermission doesn't work and always returns 0 (PERMISSION_GRANTED). Even if you run the application on Android 6.0 (API 23).
+     */
+    @JvmStatic
+    fun checkSelfPermission(vararg permission: String): Boolean = permission.all { PermissionChecker.checkSelfPermission(CXBaseApplication.INSTANCE, it) == PermissionChecker.PERMISSION_GRANTED }
 
     @JvmStatic
     fun sendKeyDownEventBack(context: Context?) = (context as? Activity)?.onKeyDown(KeyEvent.KEYCODE_BACK, KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))

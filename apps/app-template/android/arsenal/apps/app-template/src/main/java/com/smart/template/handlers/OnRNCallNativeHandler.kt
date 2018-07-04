@@ -57,9 +57,9 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                             }
                             "pageGoodsDetail" -> {
                                 startActivityForResult(currentActivity, Intent(currentActivity, HomeTabActivity::class.java).apply {
-                                    putExtra(ReactManager.KEY_RN_TO_NATIVE_PARAMS_HASH_MAP, paramsMap)
+                                    putExtra(ReactManager.KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP, paramsMap)
                                 }, requestCode, null) { _requestCode: Int, resultCode: Int, data: Intent? ->
-                                    promise?.resolve(CXJsonUtil.toJson(data?.getSerializableExtra(ReactManager.KEY_RN_TO_NATIVE_RESULT_HASH_MAP))) // hashMap to json
+                                    promise?.resolve(CXJsonUtil.toJson(data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP))) // hashMap to json
                                 }
                             }
                             "pageGoodsList" -> {

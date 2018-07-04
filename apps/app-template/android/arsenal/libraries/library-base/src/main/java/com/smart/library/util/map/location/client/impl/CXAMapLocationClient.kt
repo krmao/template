@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  * @param activity 请求权限时需要
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
-open class CXAMapLocationClient(activity: Activity?, val ensurePermissions: (client: CXAMapLocationClient, callback: (Permission) -> Unit?) -> Unit? = { client, callback ->
+open class CXAMapLocationClient(activity: Activity?, private val isNeedAddress: Boolean = true, val ensurePermissions: (client: CXAMapLocationClient, callback: (Permission) -> Unit?) -> Unit? = { client, callback ->
     if (!client.isPermissionHandling && activity != null && !activity.isFinishing) {
         client.isPermissionHandling = true
         RxPermissions(activity).requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).subscribe {
@@ -65,7 +65,7 @@ open class CXAMapLocationClient(activity: Activity?, val ensurePermissions: (cli
                         isLocationCacheEnable = true    // 默认 true
                         isOnceLocation = true           // 强制非单次定位
                         isMockEnable = false            // 禁止模拟数据
-                        isNeedAddress = false           // 不需要返回地址
+                        isNeedAddress = this@CXAMapLocationClient.isNeedAddress           // 不需要返回地址
                         isWifiScan = true               // 设置是否允许调用WIFI刷新 默认值为true，当设置为false时会停止主动调用WIFI刷新，将会极大程度影响定位精度，但可以有效的降低定位耗电
                         locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
                     })
@@ -122,7 +122,7 @@ open class CXAMapLocationClient(activity: Activity?, val ensurePermissions: (cli
                 isLocationCacheEnable = true    // 默认 true
                 isOnceLocation = false          // 强制非单次定位
                 isMockEnable = false            // 禁止模拟数据
-                isNeedAddress = false           // 不需要返回地址
+                isNeedAddress = this@CXAMapLocationClient.isNeedAddress           // 不需要返回地址
                 isWifiScan = true               // 设置是否允许调用WIFI刷新 默认值为true，当设置为false时会停止主动调用WIFI刷新，将会极大程度影响定位精度，但可以有效的降低定位耗电
                 locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
             })

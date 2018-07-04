@@ -117,6 +117,6 @@ object CXJsonUtil {
 
     @JvmStatic
     fun toJson(any: Any?): String {
-        return GSON.toJson(any) ?: ""
+        return if (any != null) (any as? String ?: GSON.toJson(any)) else ""
     }
 }

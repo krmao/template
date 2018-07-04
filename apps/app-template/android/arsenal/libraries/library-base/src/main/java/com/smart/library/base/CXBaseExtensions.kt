@@ -129,9 +129,13 @@ private val FragmentActivity.callbackFragmentV4: ActivityCallbackFragmentV4?
 
 internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
     companion object {
-        const val TAG: String = "ActivityCallbackFragment"
+        const val TAG: String = "ActivityCallbackFragmentV4"
     }
 
+    /**
+     *
+     * @see {@link https://stackoverflow.com/questions/698638/why-does-concurrenthashmap-prevent-null-keys-and-values}
+     */
     private val callbackMap: MutableMap<Int, ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)?> = ConcurrentHashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,13 +144,13 @@ internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
     }
 
     fun startForResult(@RequiresPermission intent: Intent, requestCode: Int, options: Bundle?, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
-        callbackMap[requestCode] = callback
+        if (callback != null) callbackMap[requestCode] = callback
         startActivityForResult(intent, requestCode, options)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackMap.remove(requestCode)?.invoke(requestCode, resultCode, data)
+        if (callbackMap.containsKey(requestCode)) callbackMap.remove(requestCode)?.invoke(requestCode, resultCode, data)
     }
 }
 
@@ -155,6 +159,10 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
         const val TAG: String = "ActivityCallbackFragment"
     }
 
+    /**
+     *
+     * @see {@link https://stackoverflow.com/questions/698638/why-does-concurrenthashmap-prevent-null-keys-and-values}
+     */
     private val callbackMap: MutableMap<Int, ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)?> = ConcurrentHashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,13 +171,13 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
     }
 
     fun startForResult(@RequiresPermission intent: Intent, requestCode: Int, options: Bundle?, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
-        callbackMap[requestCode] = callback
+        if (callback != null) callbackMap[requestCode] = callback
         startActivityForResult(intent, requestCode, options)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackMap.remove(requestCode)?.invoke(requestCode, resultCode, data)
+        if (callbackMap.containsKey(requestCode)) callbackMap.remove(requestCode)?.invoke(requestCode, resultCode, data)
     }
 }
 

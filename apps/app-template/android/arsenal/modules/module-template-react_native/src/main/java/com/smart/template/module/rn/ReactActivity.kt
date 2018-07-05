@@ -1,5 +1,6 @@
 package com.smart.template.module.rn
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,6 +16,7 @@ import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.devsupport.DoubleTapReloadRecognizer
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
+import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 
@@ -25,15 +27,19 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     companion object {
         const val KEY_RESULT: String = "rn_result"
         const val KEY_START_COMPONENT: String = "rn_start_component"
+        const val KEY_REQUEST_CODE: String = "rn_request_code"
 
         @JvmStatic
         @JvmOverloads
-        internal fun start(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null) {
+        internal fun startForResult(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null, requestCode: Int, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
+
             val intent = Intent(context, ReactActivity::class.java)
             intentFlag?.let { intent.addFlags(it) }
+            intent.putExtra(KEY_REQUEST_CODE, requestCode)
             intent.putExtra(KEY_START_COMPONENT, component)
             intent.putExtras(extras)
-            context?.startActivity(intent)
+
+            startActivityForResult(context as? Activity?, intent, 0, null, callback)
         }
     }
 
@@ -46,6 +52,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     private var reactInstanceManager: ReactInstanceManager? = null
 
     private val doubleTapReloadRecognizer by lazy { DoubleTapReloadRecognizer() }
+    private val requestCode: Int by lazy { intent?.getIntExtra(KEY_REQUEST_CODE, 0) ?: 0 }
 
     private val moduleName: String?
         get() = intent.getStringExtra(KEY_START_COMPONENT)

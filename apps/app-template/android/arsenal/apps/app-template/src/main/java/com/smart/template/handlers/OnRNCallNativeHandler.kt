@@ -24,7 +24,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
      *
      * @param data
      *                  pageName    :String
-     *                  requestCode :Int?
+     *                  requestCode :Int?   must be in [0, 65535]
      *                  params      :HashMap<String, String | Number>?
      *
      * @param promise

@@ -14,7 +14,7 @@ object ReactJumper {
 
     @JvmStatic
     @JvmOverloads
-    fun goTo(context: Context?, page: RNPages? = null, param: HashMap<String, Any?> = hashMapOf(), component: String = ReactManager.devSettingsManager.getDefaultStartComponent(), intentFlag: Int? = null, _requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
+    fun goTo(context: Context?, pageName: String = ReactManager.devSettingsManager.getDefaultStartComponentPage(), param: HashMap<String, Any?> = hashMapOf(), component: String = ReactManager.devSettingsManager.getDefaultStartComponent(), intentFlag: Int? = null, _requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
         var requestCode = _requestCode
         if (requestCode < 0 || requestCode > 65536) {
             CXLogUtil.e(ReactManager.TAG, "requestCode:$requestCode can only use lower 16 bits for requestCode")
@@ -22,12 +22,10 @@ object ReactJumper {
         }
 
         ReactActivity.startForResult(context, component, Bundle().apply {
-            putString("page", page?.pageName ?: ReactManager.devSettingsManager.getDefaultStartComponentPage())
+            putString("page", pageName)
             putString("param", CXJsonUtil.toJson(param))
         }, intentFlag, requestCode, callback)
     }
 
-    enum class RNPages(val pageName: String) {
-        GOODS_DETAIL("GOODS_DETAIL")
-    }
+    const val GOODS_DETAIL = "GOODS_DETAIL"
 }

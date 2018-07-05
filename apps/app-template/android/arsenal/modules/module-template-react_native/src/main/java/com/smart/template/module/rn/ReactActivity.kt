@@ -39,7 +39,13 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
             intent.putExtra(KEY_START_COMPONENT, component)
             intent.putExtras(extras)
 
-            startActivityForResult(context as? Activity?, intent, 0, null, callback)
+            if (context is Activity) {
+                startActivityForResult(context, intent, 0, null, callback)
+            } else {
+                context?.startActivity(intent)
+                CXLogUtil.e(ReactManager.TAG, "context is not Activity, can't startForResult!")
+                callback?.invoke(requestCode, Activity.RESULT_CANCELED, null)
+            }
         }
     }
 

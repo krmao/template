@@ -119,7 +119,7 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             CXSystemUtil.sendKeyDownEventBack(context)
 
             Looper.myQueue().addIdleHandler {
-                ReactJumper.goTo(context, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+                ReactJumper.goTo(CXBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
                 false
             }
         }

@@ -28,7 +28,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
      *                  params      :HashMap<String, String | Number>?
      *
      * @param promise
-     *                  promise?.resolve(result or null)    :null is failure, otherwise is success , result:HashMap<String, String | Number>
+     *                  promise?.resolve(RNResult.successJson())
      *                  promise?.reject("0", "functionName not found !")
      */
     override fun invoke(currentActivity: Activity?, functionName: String?, data: String?, promise: Promise?) {
@@ -41,7 +41,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                         intent.putExtra(ReactActivity.KEY_RESULT, dataJsonObject?.toString())
                         currentActivity.setResult(Activity.RESULT_OK, intent)
                         currentActivity.finish()
-                        promise?.resolve(null)
+                        promise?.resolve(RNResult.successJson())
                         return@Runnable
                     }
                     "startForResult" -> {
@@ -59,7 +59,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                                 startActivityForResult(currentActivity, Intent(currentActivity, HomeTabActivity::class.java).apply {
                                     putExtra(ReactManager.KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP, paramsMap)
                                 }, requestCode, null) { _requestCode: Int, resultCode: Int, data: Intent? ->
-                                    promise?.resolve(RNResult(RNResult.parse(resultCode), data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP)).toJsonString()) // hashMap to json
+                                    promise?.resolve(RNResult.resultJson(resultCode, data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP))) // hashMap to json
                                 }
                             }
                             "pageGoodsList" -> {
@@ -67,7 +67,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                                     override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
                                         super.onActivityResult(activity, requestCode, resultCode, data)
                                         // add code here
-                                        promise?.resolve(RNResult(RNResult.parse(resultCode), data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP)).toJsonString()) // hashMap to json
+                                        promise?.resolve(RNResult.resultJson(resultCode, data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP))) // hashMap to json
 
                                         ReactManager.instanceManager?.currentReactContext?.removeActivityEventListener(this)
                                     }
@@ -80,37 +80,28 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                         }
                         return@Runnable
                     }
-                    "mapNavigate" -> { // 打开/mapNavigate 返回值 Null
-                        //TODO
-                    }
-                    "trace" -> { // 打点/dataCollection 返回值 Null
-                        //TODO
-                    }
-                    "pay" -> { // 打点/dataCollection 返回值 Null
-                        //TODO
-                    }
                     "openPhone" -> { // 打点/dataCollection 返回值 Null
                         CXIntentUtil.openPhone(currentActivity, dataJsonObject?.optString("text"))
 
-                        promise?.resolve(null)
+                        promise?.resolve(RNResult.successJson())
                         return@Runnable
                     }
                     "toast" -> {
                         CXToastUtil.show(dataJsonObject?.optString("text"))
 
-                        promise?.resolve(null)
+                        promise?.resolve(RNResult.successJson())
                         return@Runnable
                     }
                     "getCacheLocation" -> {
-                        promise?.resolve(CXJsonUtil.toJson(CXLocationManager.cacheLocation))
+                        promise?.resolve(RNResult.successJson(CXLocationManager.cacheLocation))
                         return@Runnable
                     }
                     "getUserInfo" -> {
-                        promise?.resolve(CXJsonUtil.toJson(CXUserManager.userModel))
+                        promise?.resolve(RNResult.successJson(CXUserManager.userModel))
                         return@Runnable
                     }
                     "isLogin" -> {
-                        promise?.resolve(CXUserManager.isLogin())
+                        promise?.resolve(RNResult.resultJson(CXUserManager.isLogin()))
                         return@Runnable
                     }
                     else -> {
@@ -119,14 +110,13 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                         return@Runnable
                     }
                 }
-                promise?.reject("0", "some params parse error!")
             })
         } else {
             promise?.reject("0", "functionName:" + functionName + " is empty or activity:" + (currentActivity == null) + " is null or finishing:" + currentActivity?.isFinishing)
         }
     }
 
-    private data class RNResult(val status: RNResult.Status, val data: Any? = null) {
+    private data class RNResult(val status: RNResult.Status = Status.SUCCESS, val data: Any? = null) {
         private data class JsonModel(val resultCode: Int, val data: Any? = null)
         internal enum class Status(val code: Int) {
             SUCCESS(0),
@@ -135,9 +125,23 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
 
         companion object {
             @JvmStatic
-            fun parse(activityResultCode: Int): RNResult.Status = if (activityResultCode == Activity.RESULT_OK) RNResult.Status.SUCCESS else RNResult.Status.FAILURE
-        }
+            @JvmOverloads
+            fun successJson(data: Any? = null) = CXJsonUtil.toJson(JsonModel(Status.SUCCESS.code, data))
 
-        fun toJsonString(): String = CXJsonUtil.toJson(JsonModel(status.code, data))
+            @JvmStatic
+            @JvmOverloads
+            fun failureJson(data: Any? = null) = CXJsonUtil.toJson(JsonModel(Status.FAILURE.code, data))
+
+            @JvmStatic
+            @JvmOverloads
+            fun resultJson(success: Boolean, data: Any? = null) = CXJsonUtil.toJson(JsonModel(if (success) Status.SUCCESS.code else Status.FAILURE.code, data))
+
+            @JvmStatic
+            @JvmOverloads
+            fun resultJson(activityResultCode: Int, data: Any? = null) = CXJsonUtil.toJson(JsonModel(parseStatusFromActivityResultCode(activityResultCode).code, data))
+
+            @JvmStatic
+            private fun parseStatusFromActivityResultCode(activityResultCode: Int): RNResult.Status = if (activityResultCode == Activity.RESULT_OK) RNResult.Status.SUCCESS else RNResult.Status.FAILURE
+        }
     }
 }

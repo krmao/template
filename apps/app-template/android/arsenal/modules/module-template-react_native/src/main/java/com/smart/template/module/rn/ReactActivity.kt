@@ -43,7 +43,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         }
     }
 
-    private val OVERLAY_PERMISSION_REQ_CODE = 666
+    private val OVERLAY_PERMISSION_REQ_CODE = 103
 
     private val TAG: String = ReactManager.TAG
 

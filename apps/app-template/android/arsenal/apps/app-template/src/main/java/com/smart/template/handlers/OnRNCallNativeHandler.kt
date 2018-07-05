@@ -116,32 +116,37 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
         }
     }
 
-    private data class RNResult(val status: RNResult.Status = Status.SUCCESS, val data: Any? = null) {
-        private data class JsonModel(val resultCode: Int, val data: Any? = null)
-        internal enum class Status(val code: Int) {
-            SUCCESS(0),
-            FAILURE(-1);
-        }
+    /**
+     *   {
+     *      "resultCode": 0,
+     *      "data"      : {}
+     *   }
+     */
+    private object RNResult {
 
-        companion object {
-            @JvmStatic
-            @JvmOverloads
-            fun successJson(data: Any? = null) = CXJsonUtil.toJson(JsonModel(Status.SUCCESS.code, data))
+        const val STATUS_SUCCESS = 0
+        const val STATUS_FAILURE = -1
 
-            @JvmStatic
-            @JvmOverloads
-            fun failureJson(data: Any? = null) = CXJsonUtil.toJson(JsonModel(Status.FAILURE.code, data))
+        @JvmStatic
+        @JvmOverloads
+        fun successJson(data: Any? = null) = CXJsonUtil.toJson(hashMapOf("resultCode" to STATUS_SUCCESS, "data" to data))
 
-            @JvmStatic
-            @JvmOverloads
-            fun resultJson(success: Boolean, data: Any? = null) = CXJsonUtil.toJson(JsonModel(if (success) Status.SUCCESS.code else Status.FAILURE.code, data))
+        @JvmStatic
+        @JvmOverloads
+        fun failureJson(data: Any? = null) = CXJsonUtil.toJson(hashMapOf("resultCode" to STATUS_FAILURE, "data" to data))
 
-            @JvmStatic
-            @JvmOverloads
-            fun resultJson(activityResultCode: Int, data: Any? = null) = CXJsonUtil.toJson(JsonModel(parseStatusFromActivityResultCode(activityResultCode).code, data))
+        @JvmStatic
+        @JvmOverloads
+        fun resultJson(success: Boolean, data: Any? = null) = CXJsonUtil.toJson(hashMapOf("resultCode" to (if (success) STATUS_SUCCESS else STATUS_FAILURE), "data" to data))
 
-            @JvmStatic
-            private fun parseStatusFromActivityResultCode(activityResultCode: Int): RNResult.Status = if (activityResultCode == Activity.RESULT_OK) RNResult.Status.SUCCESS else RNResult.Status.FAILURE
-        }
+        @JvmStatic
+        @JvmOverloads
+        fun resultJson(activityResultCode: Int, data: Any? = null) = CXJsonUtil.toJson(hashMapOf("resultCode" to parseStatusFromActivityResultCode(activityResultCode), "data" to data))
+
+        /**
+         * @return STATUS_SUCCESS or STATUS_FAILURE
+         */
+        @JvmStatic
+        private fun parseStatusFromActivityResultCode(activityResultCode: Int): Int = if (activityResultCode == Activity.RESULT_OK) STATUS_SUCCESS else STATUS_FAILURE
     }
 }

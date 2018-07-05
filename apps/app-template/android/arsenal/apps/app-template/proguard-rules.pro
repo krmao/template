@@ -45,5 +45,3 @@
 -dontnote com.jude.**
 -dontwarn com.jude.**
 -keep class com.jude.** { *; }
-
--keep class com.smart.template.handlers.OnRNCallNativeHandler$RNResult { *; }

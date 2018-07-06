@@ -11,6 +11,20 @@ import java.text.DecimalFormat
 object CXValueUtil {
     private val TAG = CXValueUtil::class.java.name
 
+    @Volatile
+    private var lastClickedTime: Long = System.currentTimeMillis()
+
+    @JvmStatic
+    fun isDoubleClicked(): Boolean {
+        var isDoubleClicked = false
+        synchronized(lastClickedTime) {
+            isDoubleClicked = System.currentTimeMillis() - lastClickedTime <= 200 // double check
+            lastClickedTime = System.currentTimeMillis()
+        }
+        return isDoubleClicked
+    }
+
+    @JvmStatic
     fun isValid(context: Context?): Boolean {
         if (context != null) {
             if (context is Activity) {
@@ -22,8 +36,13 @@ object CXValueUtil {
         return false
     }
 
+    @JvmStatic
     fun isValid(context: AnkoAsyncContext<*>?): Boolean = context?.weakRef?.get() != null
+
+    @JvmStatic
     fun isValid(fragment: Fragment?): Boolean = fragment != null && !fragment.isDetached
+
+    @JvmStatic
     fun isValid(fragment: android.app.Fragment?): Boolean = fragment != null && !fragment.isDetached
 
 

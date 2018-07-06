@@ -5,6 +5,7 @@ import android.location.Location
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
+import com.amap.api.location.AMapLocationListener
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXSystemUtil
@@ -32,7 +33,7 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
                 interval = 800L
                 httpTimeOut = 10000             // 默认 10s
                 isLocationCacheEnable = true    // 默认 true
-                isOnceLocation = true           // 强制非单次定位
+                isOnceLocation = true           // 强制单次定位
                 isMockEnable = false            // 禁止模拟数据
                 isNeedAddress = this@CXAMapLocationClient.isNeedAddress           // 不需要返回地址
                 isWifiScan = true               // 设置是否允许调用WIFI刷新 默认值为true，当设置为false时会停止主动调用WIFI刷新，将会极大程度影响定位精度，但可以有效的降低定位耗电
@@ -55,38 +56,36 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
      *  定位前会确认是否开启权限, 开启后才会真正的定位, 不开启则返回 onFailure
      */
     override fun startLocation(timeout: Long, onSuccess: ((location: Location) -> Unit?)?, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)?) {
-        CXLogUtil.e("getLastKnownLocation", getLastKnownLocation().toStr())
-
         stopLocation()
         if (CXSystemUtil.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            locationClient.setLocationListener { location ->
-                this@CXAMapLocationClient.stopLocation()
+            locationClient.setLocationListener(object : AMapLocationListener {
+                override fun onLocationChanged(location: AMapLocation?) {
+                    locationClient.unRegisterLocationListener(this)
+                    this@CXAMapLocationClient.stopLocation()
 
-                if (location?.errorCode == AMapLocation.LOCATION_SUCCESS) {
-                    val latLng = CXLatLng(location.latitude, location.longitude)
-                    if (latLng.isValid()) {
+                    if (location?.errorCode == AMapLocation.LOCATION_SUCCESS) {
+                        val latLng = CXLatLng(location.latitude, location.longitude)
+                        if (latLng.isValid()) {
+                            CXLogUtil.d(TAG, "[单次定位]定位成功, 有效经纬度:$latLng")
+                            refreshCache.invoke(location) // 更新定位缓存
 
-                        CXLogUtil.d(TAG, "定位成功, 有效经纬度:$latLng")
-                        refreshCache.invoke(location) // 更新定位缓存
-
-                        onSuccess?.invoke(location)
-                    } else {
-                        CXLogUtil.v(TAG, "定位成功, 无效经纬度:$latLng")
-                        onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "UN_VALID LATLNG :$latLng")
+                            onSuccess?.invoke(location)
+                            return
+                        }
                     }
-                } else {
-                    onFailure?.invoke(location.errorCode, location.locationDetail)
+                    CXLogUtil.d(TAG, "定位失败[单次定位], location=$location")
+                    onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "[单次定位]定位失败, location=$location")
                 }
-            }
+            })
 
             locationClient.startLocation()
             locationTimerDisposable = Observable.timer(timeout, TimeUnit.MILLISECONDS).subscribe {
-                this@CXAMapLocationClient.stopLocation()
+                stopLocation()
 
-                onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "LOCATION TIME OUT")
+                onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "[单次定位]LOCATION TIME OUT")
             }
         } else {
-            onFailure?.invoke(AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION, "尚未开启定位权限")
+            onFailure?.invoke(AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION, "[单次定位]尚未开启定位权限")
         }
     }
 
@@ -101,6 +100,7 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
         startLocationLoop(interval, null, onSuccess, onFailure)
     }
 
+    private var onLoopLocationListener: AMapLocationListener? = null
     override fun startLocationLoop(interval: Long, ensurePermissions: ((callback: (allPermissionsGranted: Boolean) -> Unit?) -> Unit?)?, onSuccess: ((location: Location) -> Unit?)?, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)?) {
         stopLocationLoop()
 
@@ -117,33 +117,33 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
                 locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
             })
 
-            setLocationListener { location ->
-
+            onLoopLocationListener = AMapLocationListener { location ->
                 if (location?.errorCode == AMapLocation.LOCATION_SUCCESS) {
                     val latLng = CXLatLng(location.latitude, location.longitude)
                     if (latLng.isValid()) {
 
-                        CXLogUtil.d(TAG, "定位成功, 有效经纬度:$latLng")
+                        CXLogUtil.w(TAG, "[循环定位]定位成功, 有效经纬度:$latLng")
                         refreshCache.invoke(location) // 更新定位缓存
 
                         onSuccess?.invoke(location)
                     } else {
-                        CXLogUtil.v(TAG, "定位成功, 无效经纬度:$latLng")
+                        CXLogUtil.w(TAG, "[循环定位]定位成功, 无效经纬度:$latLng")
                         onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "UN_VALID LATLNG :$latLng")
                     }
                 } else {
-                    CXLogUtil.v(TAG, "定位失败, ${location.errorCode}:${location.locationDetail}")
+                    CXLogUtil.w(TAG, "[循环定位]定位失败, ${location?.errorCode}:${location?.locationDetail}")
 
                     if (location?.errorCode == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) ensurePermissions?.invoke {
                         if (it) { // 开启定位权限后立即定位一次
-                            this.stopLocation()
-                            this.startLocation()
+                            this@apply.stopLocation()
+                            this@apply.startLocation()
                         }
                     }
-
-                    onFailure?.invoke(location.errorCode, location.locationDetail)
+                    CXLogUtil.w(TAG, "[循环定位]定位失败, location=$location")
+                    onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "[循环定位]定位失败, location=$location")
                 }
             }
+            this.setLocationListener(onLoopLocationListener)
             this.startLocation()
         }
 
@@ -154,7 +154,6 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
      */
     override fun stopLocation() {
         locationTimerDisposable?.dispose()
-        locationClient.setLocationListener({})
         locationClient.stopLocation()
     }
 
@@ -162,7 +161,10 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
      * 停止循环定位
      */
     override fun stopLocationLoop() {
-        locationLoopClient?.setLocationListener({})
+        if (onLoopLocationListener != null) {
+            locationLoopClient?.unRegisterLocationListener(onLoopLocationListener)
+            onLoopLocationListener = null
+        }
         locationLoopClient?.stopLocation()
         locationLoopClient?.onDestroy() // 销毁定位,释放定位资源, 当不再需要进行定位时调用此方法 该方法会释放所有定位资源，调用后再进行定位需要重新实例化AMapLocationClient
         locationLoopClient = null

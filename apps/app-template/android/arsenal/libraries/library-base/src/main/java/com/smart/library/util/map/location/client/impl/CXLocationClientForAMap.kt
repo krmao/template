@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit
  * 注意:单次定位是定位前检查权限, 循环定位是定位失败后检查权限
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
-open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXILocationClient {
+open class CXLocationClientForAMap(private val isNeedAddress: Boolean = true) : CXILocationClient {
 
-    protected val TAG: String = CXAMapLocationClient::class.java.name
+    protected val TAG: String = CXLocationClientForAMap::class.java.name
 
     protected var locationTimerDisposable: Disposable? = null
     protected val locationClient: AMapLocationClient by lazy {
@@ -35,7 +35,7 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
                 isLocationCacheEnable = true    // 默认 true
                 isOnceLocation = true           // 强制单次定位
                 isMockEnable = false            // 禁止模拟数据
-                isNeedAddress = this@CXAMapLocationClient.isNeedAddress           // 不需要返回地址
+                isNeedAddress = this@CXLocationClientForAMap.isNeedAddress           // 不需要返回地址
                 isWifiScan = true               // 设置是否允许调用WIFI刷新 默认值为true，当设置为false时会停止主动调用WIFI刷新，将会极大程度影响定位精度，但可以有效的降低定位耗电
                 locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
             })
@@ -61,7 +61,7 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
             locationClient.setLocationListener(object : AMapLocationListener {
                 override fun onLocationChanged(location: AMapLocation?) {
                     locationClient.unRegisterLocationListener(this)
-                    this@CXAMapLocationClient.stopLocation()
+                    this@CXLocationClientForAMap.stopLocation()
 
                     if (location?.errorCode == AMapLocation.LOCATION_SUCCESS) {
                         val latLng = CXLatLng(location.latitude, location.longitude)
@@ -112,7 +112,7 @@ open class CXAMapLocationClient(private val isNeedAddress: Boolean = true) : CXI
                 isLocationCacheEnable = true    // 默认 true
                 isOnceLocation = false          // 强制非单次定位
                 isMockEnable = false            // 禁止模拟数据
-                isNeedAddress = this@CXAMapLocationClient.isNeedAddress           // 不需要返回地址
+                isNeedAddress = this@CXLocationClientForAMap.isNeedAddress           // 不需要返回地址
                 isWifiScan = true               // 设置是否允许调用WIFI刷新 默认值为true，当设置为false时会停止主动调用WIFI刷新，将会极大程度影响定位精度，但可以有效的降低定位耗电
                 locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
             })

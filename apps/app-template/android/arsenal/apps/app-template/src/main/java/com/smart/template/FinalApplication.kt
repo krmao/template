@@ -32,7 +32,7 @@ class FinalApplication : CXBaseApplication() {
         //}
 
         // init global location
-        // CXLocationManager.initialize(CXAMapLocationClient())
+        // CXLocationManager.initialize(CXLocationClientForAMap())
 
         // init global repository
         CXRepository.init()

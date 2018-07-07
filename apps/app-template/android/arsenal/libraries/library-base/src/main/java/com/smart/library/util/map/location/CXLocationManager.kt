@@ -7,13 +7,13 @@ import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.map.CXMapUtil
 import com.smart.library.util.map.location.client.CXILocationClient
-import com.smart.library.util.map.location.client.impl.CXAMapLocationClient
+import com.smart.library.util.map.location.client.impl.CXLocationClientForAMap
 import com.smart.library.util.rx.permission.RxPermissions
 
 /**
  * 使用代理模式构造
  *
- * @see CXAMapLocationClient
+ * @see CXLocationClientForAMap
  */
 @Suppress("PrivatePropertyName", "unused", "MemberVisibilityCanBePrivate")
 object CXLocationManager {

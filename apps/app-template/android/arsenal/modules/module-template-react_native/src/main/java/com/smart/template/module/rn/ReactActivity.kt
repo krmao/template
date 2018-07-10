@@ -167,11 +167,23 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactInstanceManager?.onHostPause(this)
     }
 
+    override fun onBackPress(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     override fun onBackPressed() {
         CXLogUtil.d(TAG, "onBackPress")
         reactInstanceManager?.onBackPressed() ?: super.onBackPressed()
     }
 
+    /**
+     * 1: 这里的实现一定是调用系统默认的 super.onBackPressed()
+     * 2: BackAndroid.exitApp() 执行的是 this.invokeDefaultOnBackPressed()
+     * 3: 当点击返回键时,强制拦截调用 this.onBackPressed(), 然后会判断 react native 是否会拦截消费该事件(BackAndroid.addEventListener('hardwareBackPress', function() { return false; });),
+     *    如果没有拦截消费, 接着会判断 react native 是否含有页面堆栈, 如果有则会自动 goBack() 到上一页,
+     *    如果没有页面堆栈则会 调用 this.invokeDefaultOnBackPressed() 即调用 super.onBackPressed() 退出整个 activity
+     */
     override fun invokeDefaultOnBackPressed() {
         CXLogUtil.d(TAG, "invokeDefaultOnBackPressed")
         super.onBackPressed()

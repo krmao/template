@@ -54,7 +54,8 @@ open class CXWebViewClient : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         Log.d(CXHybirdBridge.TAG, "shouldOverrideUrlLoading: $url")
 
-        if (url?.isNotBlank() == true && !CXHybirdBridge.shouldOverrideUrlLoading(view, this, url)) {
+        val shouldOverrideUrlLoading = CXHybirdBridge.shouldOverrideUrlLoading(view, this, url)
+        if (url?.isNotBlank() == true && !shouldOverrideUrlLoading) {
             // 处理 hybird 异步检查更新操作
             if (CXHybird.getModule(url) != null) {
                 view?.loadUrl(url)
@@ -70,7 +71,8 @@ open class CXWebViewClient : WebViewClient() {
                 }
             }
         }
-        return false
+
+        return shouldOverrideUrlLoading
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

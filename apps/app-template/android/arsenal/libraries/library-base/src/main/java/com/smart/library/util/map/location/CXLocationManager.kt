@@ -11,7 +11,7 @@ import com.smart.library.util.map.location.client.impl.CXLocationClientForAMap
 import com.smart.library.util.rx.permission.RxPermissions
 
 /**
- * 使用代理模式构造
+ * 外观模式(门面模式) 结合 静态代理模式
  *
  * @see CXLocationClientForAMap
  */

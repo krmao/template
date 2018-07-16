@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatDelegate
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.compat.CXIMMLeaksUtil
+import com.smart.library.util.network.CXNetworkChangedReceiver
 import com.smart.library.util.rx.RxBus
 
 open class CXBaseApplication : Application() {
@@ -64,5 +65,8 @@ open class CXBaseApplication : Application() {
                 CXIMMLeaksUtil.fixFocusedViewLeak(activity)
             }
         })
+
+        CXNetworkChangedReceiver.register(this)
+
     }
 }

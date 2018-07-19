@@ -1,6 +1,12 @@
 package com.smart.library.deploy
 
+import com.smart.library.deploy.client.impl.BundleInfo
+import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.model.CXDeployType
+import com.smart.library.util.CXLogUtil
+import com.smart.library.util.cache.CXCacheManager
+import org.jetbrains.anko.async
+import java.io.File
 
 /**
  * 动态部署管理器
@@ -12,19 +18,44 @@ import com.smart.library.deploy.model.CXDeployType
  *
  */
 object CXDeployManager {
+    const val TAG = "[deploy]"
 
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
-    fun initialize(supportTypes: MutableSet<CXDeployType>) {
+    @JvmStatic
+    fun initialize(supportTypes: MutableSet<CXDeployType>, callback: (indexBundleFile: File?) -> Unit) {
         this.supportTypes.addAll(supportTypes)
-    }
 
-    fun check() {
 
-    }
+        val rnCXIDeployClient = CXDeployClientForReactNative(
+                BundleInfo("bundle-rn.zip", 1),
+                CXCacheManager.getFilesHotPatchReactNativeDir(),
+                {
+                    CXLogUtil.d(CXDeployManager.TAG, "check start")
+                    async {
+                        Thread.sleep(1000)
+                        CXLogUtil.d(CXDeployManager.TAG, "check end")
+                        it.invoke(null, null)
+                    }
 
-    fun checkSync() {
+                    Unit
+                },
+                { patchDownloadUrl: String?, downloadCallback: (file: File?) -> Unit ->
+                    CXLogUtil.d(CXDeployManager.TAG, "download start")
+                    async {
+                        Thread.sleep(1000)
+                        CXLogUtil.d(CXDeployManager.TAG, "download end")
+                        downloadCallback.invoke(null)
+                    }
 
+                    Unit
+                }
+        )
+
+        rnCXIDeployClient.initialize {
+            CXLogUtil.w(CXDeployManager.TAG, "initialize end, indexBundleFile=${it?.absolutePath}")
+            callback.invoke(it)
+        }
     }
 
 }

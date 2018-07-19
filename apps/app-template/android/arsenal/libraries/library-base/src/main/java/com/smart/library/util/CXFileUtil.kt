@@ -62,6 +62,30 @@ object CXFileUtil {
         }
     }
 
+    /**
+     * 根据文件路径获取文件名称
+     */
+    fun getFileName(path: String, removeSuffix: Boolean = true): String {
+        val nameWithSuffix = path.substringAfterLast(File.separatorChar, path)
+        return (if (removeSuffix) path.substringBefore('.', path) else nameWithSuffix)
+    }
+
+    @Throws(FileNotFoundException::class, IOException::class)
+    @JvmStatic
+    fun copyFromAssets(fromPathInAssetsDir: String?, toFile: File?): Boolean {
+        var success = false
+        if (!fromPathInAssetsDir.isNullOrBlank() && toFile != null) {
+            try {
+                CXFileUtil.deleteFile(toFile)
+                CXFileUtil.copy(CXBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
+                success = true
+            } catch (exception: FileNotFoundException) {
+            } catch (exception: IOException) {
+            }
+        }
+        return success
+    }
+
     @Throws(FileNotFoundException::class, IOException::class)
     @JvmStatic
     fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)

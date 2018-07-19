@@ -12,7 +12,6 @@ import com.facebook.react.bridge.CatalystInstanceImpl
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.bridge.Promise
 import com.facebook.react.common.LifecycleState
-import com.facebook.react.common.ReactConstants
 import com.facebook.react.devsupport.RedBoxHandler
 import com.facebook.react.devsupport.interfaces.StackFrame
 import com.facebook.react.shell.MainPackageConfig
@@ -31,7 +30,7 @@ import java.util.*
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
 object ReactManager {
-    const val TAG: String = ReactConstants.TAG
+    const val TAG: String = "[rn]"
 
     const val KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP: String = "KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP"
     const val KEY_RN_CALL_NATIVE_RESULT_HASH_MAP: String = "KEY_RN_CALL_NATIVE_RESULT_HASH_MAP"
@@ -45,27 +44,48 @@ object ReactManager {
     var debug: Boolean = CXBaseApplication.DEBUG
         private set
 
+    private var indexBundleFileInSdcard: File? = null
     @JvmStatic
     var instanceManager: ReactInstanceManager? = null
         private set
         get() {
             if (field == null) {
-                if (checkValidPackageOrServer(jsBundleFile)) {
-                    field = getInstanceBuilder(jsBundleFile, frescoConfig = frescoConfig).build()?.apply {
-                        addReactInstanceEventListener {
-                            isInitialized = true
-                            CXLogUtil.w(TAG, "initialized base bundle success")
-
-                            getCatalystInstance()?.let { loadBundleTasks.forEach { bundle -> bundle.loadScript(it) } }
-                        }
-                        CXLogUtil.w(TAG, "createReactContextInBackground start...")
-                        createReactContextInBackground()
+                val bundlePathInAssets = ReactConstant.PATH_ASSETS_BASE_BUNDLE
+                if (checkValidBundleInAssets(bundlePathInAssets)) {
+                    val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
+                    field = initInstanceManager(bundleLoader)
+                } else if (checkValidBundleInSdcard(indexBundleFileInSdcard)) {
+                    val bundleLoader = JSBundleLoader.createFileLoader(CXFileUtil.getFileName(bundlePathInAssets), bundlePathInAssets, false)
+                    field = initInstanceManager(bundleLoader)
+                } else if (checkValidRemoteDebugServer()) {
+                    if (isRemoteJSDebugEnabled()) {
+                        val remoteDebugServer = devSettingsManager.getDebugHttpHost()
+                        val bundleLoader = JSBundleLoader.createRemoteDebuggerBundleLoader(remoteDebugServer, instanceManager?.devSupportManager?.jsBundleURLForRemoteDebugging)
+                        field = initInstanceManager(bundleLoader)
+                    } else {
+                        val remoteDebugServer = devSettingsManager.getDebugHttpHost()
+                        val cacheFile = File(CXCacheManager.getChildDir(CXCacheManager.getFilesHotPatchReactNativeDir(), "cacheBundleFromNetwork"), "index.android.location")
+                        val bundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(remoteDebugServer, cacheFile.absolutePath)
+                        field = initInstanceManager(bundleLoader)
                     }
                 }
             }
             CXLogUtil.e(TAG, "react native instance==null?${field == null}")
             return field
         }
+
+    private fun initInstanceManager(bundleLoader: JSBundleLoader): ReactInstanceManager? {
+        return getInstanceBuilder(bundleLoader, frescoConfig = frescoConfig).build()?.apply {
+            addReactInstanceEventListener {
+                isInitialized = true
+                CXLogUtil.w(TAG, "initialized base bundle success")
+
+                getCatalystInstance()?.let { loadBundleTasks.forEach { bundle -> bundle.loadScript(it) } }
+            }
+            CXLogUtil.w(TAG, "createReactContextInBackground start...")
+            createReactContextInBackground()
+        }
+    }
 
     @Volatile
     private var isInitialized = false
@@ -110,29 +130,44 @@ object ReactManager {
     // /sdcard/Android/data/com.smart.template/cache/rn/drawable-xxxhdpi
     // val jsBundleFile = if (!enableHotPatch || !localHotPatchIndexFile.exists()) "assets://$indexName" else localHotPatchIndexFile.absolutePath
     // val jsBundleFile = localHotPatchIndexFile.absolutePath
-    const val jsBundleFile = ReactConstant.PATH_ASSETS_BASE_BUNDLE
 
     var frescoConfig: ImagePipelineConfig? = null
 
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(application: Application, debug: Boolean, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
+    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
         this.application = application
         this.debug = debug
+        this.indexBundleFileInSdcard = indexBundleFileInSdcard
         this.frescoConfig = frescoConfig
         this.onCallNativeListener = onCallNativeListener
 
         // sure to call instanceManager one time
         if (instanceManager == null) {
             CXLogUtil.e(TAG, "instanceManager is null, please check the bundle path or debug server is set")
+        } else {
+            CXLogUtil.i(TAG, "instanceManager init success")
         }
     }
 
     @JvmStatic
-    fun checkValidPackageOrServer(jsBundleFile: String?): Boolean {
-        CXLogUtil.d(TAG, "checkValidPackageOrServer jsBundleFile(exists=${CXFileUtil.existsInAssets(jsBundleFile)}):$jsBundleFile")
-        return (jsBundleFile?.isNotEmpty() == true && CXFileUtil.existsInAssets(jsBundleFile)) || isCurrentLoadModeServer()
+    fun checkValidBundleInAssets(bundlePathInAssets: String?): Boolean {
+        CXLogUtil.d(TAG, "checkValidBundleInAssets bundle(exists=${CXFileUtil.existsInAssets(bundlePathInAssets)}):$bundlePathInAssets")
+        return (bundlePathInAssets?.isNotEmpty() == true && CXFileUtil.existsInAssets(bundlePathInAssets))
+    }
+
+    @JvmStatic
+    fun checkValidBundleInSdcard(bundleFileInSdcard: File?): Boolean {
+        CXLogUtil.d(TAG, "checkValidBundleInSdcard bundle(exists=${bundleFileInSdcard?.exists()}):${bundleFileInSdcard?.absolutePath}")
+        return bundleFileInSdcard?.exists() == true
+    }
+
+    @JvmStatic
+    fun checkValidRemoteDebugServer(): Boolean {
+        val isCurrentLoadModeServer = isCurrentLoadModeServer()
+        CXLogUtil.d(TAG, "checkValidRemoteDebugServer $isCurrentLoadModeServer")
+        return isCurrentLoadModeServer
     }
 
     @JvmStatic
@@ -142,8 +177,10 @@ object ReactManager {
     fun devSupportEnabled(): Boolean = instanceManager?.devSupportManager?.devSupportEnabled == true
 
     @JvmStatic
-    @JvmOverloads
-    fun getInstanceBuilder(jsBundleFile: String, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {
+    fun isRemoteJSDebugEnabled(): Boolean = instanceManager?.devSupportManager?.devSettings?.isRemoteJSDebugEnabled == true
+
+    @JvmStatic
+    private fun getInstanceBuilder(bundleLoader: JSBundleLoader, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {
         return ReactInstanceManager.builder()
                 .setApplication(application)
                 .setUIImplementationProvider(UIImplementationProvider())
@@ -161,7 +198,7 @@ object ReactManager {
                     }
                 })
                 .setJSMainModulePath(jsMainModulePath)
-                .setJSBundleLoader(JSBundleLoader.createAssetLoader(application, jsBundleFile, false))
+                .setJSBundleLoader(bundleLoader)
                 .addPackages(
                         mutableListOf<ReactPackage>(
                                 MainReactPackage(MainPackageConfig.Builder().apply {

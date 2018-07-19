@@ -63,6 +63,7 @@ dependencies {
     api 'com.gyf.barlibrary:barlibrary:2.3.0' // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
     api 'com.liaoinstan.springview:library:1.3.2'
+    api 'com.mlibrary:mbspatchlib:0.0.1'
 
     /******* 定位相关 ******************************************************************************/
     compileOnly "com.amap.api:location:4.0.1"  // 定位功能

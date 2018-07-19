@@ -3,6 +3,8 @@ package com.smart.template
 import android.graphics.Color
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXConfig
+import com.smart.library.deploy.CXDeployManager
+import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.image.CXImageManager
 import com.smart.library.util.image.impl.CXImageFrescoHandler
@@ -40,6 +42,22 @@ class FinalApplication : CXBaseApplication() {
         // image manager with fresco and react native init together
         val frescoConfig = CXImageFrescoHandler.getConfigBuilder(CXBaseApplication.DEBUG, CXOkHttpManager.client).build()
         CXImageManager.initialize(CXImageFrescoHandler(frescoConfig))
-        ReactManager.init(this, CXBaseApplication.DEBUG, frescoConfig, OnRNCallNativeHandler())
+
+        CXDeployManager.initialize(
+                mutableSetOf(
+                        CXDeployType.REACT_NATIVE.apply {
+                            this.supportCheckTypes.addAll(listOf(
+                                    CXDeployType.CheckType.APP_START,
+                                    CXDeployType.CheckType.APP_FORGROUND_TO_BACKGROUND,
+                                    CXDeployType.CheckType.APP_CLOSE_ALL_PAGES
+
+                            ))
+                        }
+                )
+        ) {
+            if (it != null) {
+                ReactManager.init(this, CXBaseApplication.DEBUG, it, frescoConfig, OnRNCallNativeHandler())
+            }
+        }
     }
 }

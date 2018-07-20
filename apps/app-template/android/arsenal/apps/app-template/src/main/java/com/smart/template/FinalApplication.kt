@@ -12,6 +12,7 @@ import com.smart.library.widget.debug.CXDebugFragment
 import com.smart.library.widget.titlebar.CXTitleBar
 import com.smart.template.handlers.OnRNCallNativeHandler
 import com.smart.template.library.R
+import com.smart.template.module.rn.ReactActivity
 import com.smart.template.module.rn.ReactManager
 import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
@@ -62,12 +63,6 @@ class FinalApplication : CXBaseApplication() {
                 { indexBundleFile: File? ->
                     // 无论 copy 成功还是失败, 都应该初始化, 方便远程加载
                     ReactManager.init(this, CXBaseApplication.DEBUG, indexBundleFile, frescoConfig, OnRNCallNativeHandler())
-                },
-                {
-
-                },
-                {
-
-                })
+                }, { ReactManager.instanceManager?.recreateReactContextInBackground() }, { ReactActivity.isAtLeastOnePageOpened() })
     }
 }

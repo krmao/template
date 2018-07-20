@@ -8,10 +8,12 @@ import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.image.CXImageManager
 import com.smart.library.util.image.impl.CXImageFrescoHandler
+import com.smart.library.widget.debug.CXDebugFragment
 import com.smart.library.widget.titlebar.CXTitleBar
 import com.smart.template.handlers.OnRNCallNativeHandler
 import com.smart.template.library.R
 import com.smart.template.module.rn.ReactManager
+import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
 import com.smart.template.repository.remote.core.CXOkHttpManager
 import com.smart.template.tab.HomeTabActivity
@@ -38,6 +40,8 @@ class FinalApplication : CXBaseApplication() {
 
         // init global repository
         CXRepository.init()
+
+        CXDebugFragment.childViewList.add(ReactDevSettingsView::class.java)
 
         // image manager with fresco and react native init together
         val frescoConfig = CXImageFrescoHandler.getConfigBuilder(CXBaseApplication.DEBUG, CXOkHttpManager.client).build()

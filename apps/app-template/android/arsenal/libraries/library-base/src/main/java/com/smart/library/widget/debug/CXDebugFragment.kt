@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import com.smart.library.R
@@ -34,12 +35,19 @@ open class CXDebugFragment : CXBaseFragment() {
         private const val KEY_CUSTOM_LIST = "KEY_CUSTOM_LIST"
         private var hostList: MutableList<HostModel> = CXPreferencesUtil.getList(KEY_CUSTOM_LIST, HostModel::class.java)
 
+
+        @JvmStatic
+        val actionList: MutableList<NotificationCompat.Action> = arrayListOf()
+
+        @JvmStatic
+        val childViewList: MutableList<Class<out View>> = arrayListOf()
+
         @JvmStatic
         fun addHost(vararg hostModels: HostModel) {
             if (hostModels.isNotEmpty()) {
                 hostModels
-                    .filterNot { hostList.contains(it) }
-                    .forEach { hostList.add(it) }
+                        .filterNot { hostList.contains(it) }
+                        .forEach { hostList.add(it) }
                 saveHostList()
             }
         }
@@ -109,18 +117,20 @@ open class CXDebugFragment : CXBaseFragment() {
             val pendingIntent = PendingIntent.getActivity(CXBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
             val builder = NotificationCompat.Builder(CXBaseApplication.INSTANCE, channelId)
-                .setSmallIcon(smallIcon)
-                .setColor(Color.parseColor("#4E6A78"))
-                .setColorized(true)
-                .setLargeIcon(CXSystemUtil.appBitmap)
-                .setContentTitle(title)
-                .setContentText(text) // set content text to support devices running API level < 24
-                // .setDefaults(Notification.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
-                .setOngoing(true)
-                .setGroup(summaryGroupKey) // specify which group this notification belongs to
-                .setAutoCancel(false) // automatically removes the notification when the user taps it
+                    .setSmallIcon(smallIcon)
+                    .setColor(Color.parseColor("#4E6A78"))
+                    .setColorized(true)
+                    .setLargeIcon(CXSystemUtil.appBitmap)
+                    .setContentTitle(title)
+                    .setContentText(text) // set content text to support devices running API level < 24
+                    // .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
+                    .setOngoing(true)
+                    .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                    .setAutoCancel(false) // automatically removes the notification when the user taps it
+
+            actionList.forEach { builder.addAction(it) }
 
             val notificationManager = CXNotificationManager.getNotificationManager()
 
@@ -160,14 +170,14 @@ open class CXDebugFragment : CXBaseFragment() {
             //========== notification group
 
             val summaryNotification = builder
-                // build summary info into InboxStyle template
-                .setStyle(NotificationCompat.InboxStyle()
-                    .addLine(text)
-                    .setBigContentTitle(title)
-                    .setSummaryText(summaryGroupText))
-                .setGroup(summaryGroupKey) // specify which group this notification belongs to
-                .setGroupSummary(true) // set this notification as the summary for the group
-                .build()
+                    // build summary info into InboxStyle template
+                    .setStyle(NotificationCompat.InboxStyle()
+                            .addLine(text)
+                            .setBigContentTitle(title)
+                            .setSummaryText(summaryGroupText))
+                    .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                    .setGroupSummary(true) // set this notification as the summary for the group
+                    .build()
 
             notificationManager.notify(summaryGroupId, summaryNotification)
             //========== ======================================================================== ==========
@@ -190,6 +200,8 @@ open class CXDebugFragment : CXBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        childViewList.forEach { addChildView(it.getConstructor(Context::class.java).newInstance(context)) }
 
         trace_cb.isChecked = CXConfig.ENABLE_TRACE_DEBUG
         trace_cb.setOnCheckedChangeListener { _, isChecked -> CXConfig.ENABLE_TRACE_DEBUG = isChecked }
@@ -218,6 +230,15 @@ open class CXDebugFragment : CXBaseFragment() {
         })
 
         clearCacheTV.setOnClickListener { CXIntentUtil.goToAppDetails(activity) }
+    }
+
+    fun getChildCount(): Int {
+        return container_view_group.childCount
+    }
+
+    @JvmOverloads
+    fun addChildView(child: View, index: Int = -1, params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)) {
+        container_view_group?.addView(child, index, params)
     }
 
     private class DebugAdapter(var list: List<HostModel>, private val context: Context?) : BaseAdapter() {

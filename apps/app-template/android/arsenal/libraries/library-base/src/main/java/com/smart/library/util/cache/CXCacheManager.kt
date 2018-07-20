@@ -1,6 +1,5 @@
 package com.smart.library.util.cache
 
-import android.os.Environment
 import android.support.annotation.NonNull
 import android.text.TextUtils
 import com.smart.library.base.CXBaseApplication
@@ -35,12 +34,11 @@ object CXCacheManager {
     @JvmStatic
     fun getChildDir(@NonNull parent: File, @NonNull childDirName: String): File = File(parent, childDirName).apply { if (!this.exists()) this.mkdirs() }
 
-    // 荣耀6 会有很多警告
+    /**
+     * @see https://stackoverflow.com/a/40741881/4348530
+     */
     @JvmStatic
-    fun getPackageDir(): File = File(if (CXSystemUtil.isSdCardExist) Environment.getExternalStorageDirectory().absolutePath + "/Android/data/" + CXBaseApplication.INSTANCE.packageName else CXBaseApplication.INSTANCE.filesDir.absolutePath).apply { if (!this.exists()) this.mkdirs() }
-
-    @JvmStatic
-    fun getFilesDir(): File = getChildDir(getPackageDir(), "files")
+    fun getFilesDir(): File = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.getExternalFilesDir(null) else CXBaseApplication.INSTANCE.filesDir
 
     @JvmStatic
     fun getFilesHotPatchDir(): File = getChildDir(getFilesDir(), "hot-patch")
@@ -57,8 +55,11 @@ object CXCacheManager {
     @JvmStatic
     fun getFilesHotPatchReactNativeDir(): File = getFilesHotPatchChildDir("react-native")
 
+    /**
+     * @see https://stackoverflow.com/a/40741881/4348530
+     */
     @JvmStatic
-    fun getCacheDir(): File = getChildDir(getPackageDir(), "cache")
+    fun getCacheDir(): File = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.externalCacheDir else CXBaseApplication.INSTANCE.cacheDir
 
     @JvmStatic
     fun getCacheChildDir(childDir: String): File = getChildDir(getCacheDir(), childDir)
@@ -87,7 +88,8 @@ object CXCacheManager {
     @JvmStatic
     fun put(module: String, key: String, value: Any) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
-            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
+            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
+                    ?: ConcurrentHashMap()
             subModuleCacheMap[key] = value
             allModuleCacheMap[module] = subModuleCacheMap
         }
@@ -118,7 +120,8 @@ object CXCacheManager {
     @JvmStatic
     fun remove(module: String, key: String) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
-            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module] ?: ConcurrentHashMap()
+            val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
+                    ?: ConcurrentHashMap()
             subModuleCacheMap.remove(key)
             allModuleCacheMap[module] = subModuleCacheMap
         }

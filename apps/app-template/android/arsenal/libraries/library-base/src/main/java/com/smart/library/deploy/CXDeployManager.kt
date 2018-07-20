@@ -18,7 +18,7 @@ import java.io.File
  *
  */
 object CXDeployManager {
-    const val TAG = "[deploy]"
+    const val TAG = "[rn-deploy]"
 
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
@@ -53,7 +53,7 @@ object CXDeployManager {
         )
 
         rnCXIDeployClient.initialize {
-            CXLogUtil.w(CXDeployManager.TAG, "initialize end, indexBundleFile=${it?.absolutePath}")
+            CXLogUtil.e(CXDeployManager.TAG, "initialize end, indexBundleFile=${it?.absolutePath}")
             callback.invoke(it)
         }
     }

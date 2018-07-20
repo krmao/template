@@ -52,25 +52,22 @@ object ReactManager {
             if (field == null) {
                 val bundlePathInAssets = ReactConstant.PATH_ASSETS_BASE_BUNDLE
                 if (checkValidBundleInAssets(bundlePathInAssets)) {
+                    CXLogUtil.e(TAG, "checkValidBundleInAssets=true")
                     val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
                     field = initInstanceManager(bundleLoader)
                 } else if (checkValidBundleInSdcard(indexBundleFileInSdcard)) {
-                    val bundleLoader = JSBundleLoader.createFileLoader(CXFileUtil.getFileName(bundlePathInAssets), bundlePathInAssets, false)
+                    CXLogUtil.e(TAG, "checkValidBundleInSdcard=true")
+                    val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInAssets, bundlePathInAssets, false)
                     field = initInstanceManager(bundleLoader)
                 } else if (checkValidRemoteDebugServer()) {
-                    if (isRemoteJSDebugEnabled()) {
-                        val remoteDebugServer = devSettingsManager.getDebugHttpHost()
-                        val bundleLoader = JSBundleLoader.createRemoteDebuggerBundleLoader(remoteDebugServer, instanceManager?.devSupportManager?.jsBundleURLForRemoteDebugging)
-                        field = initInstanceManager(bundleLoader)
-                    } else {
-                        val remoteDebugServer = devSettingsManager.getDebugHttpHost()
-                        val cacheFile = File(CXCacheManager.getChildDir(CXCacheManager.getFilesHotPatchReactNativeDir(), "cacheBundleFromNetwork"), "index.android.location")
-                        val bundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(remoteDebugServer, cacheFile.absolutePath)
-                        field = initInstanceManager(bundleLoader)
-                    }
+                    CXLogUtil.e(TAG, "checkValidRemoteDebugServer=true")
+                    val bundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(devSettingsManager.getDebugHttpHost(), null)
+                    field = initInstanceManager(bundleLoader)
+                } else {
+                    CXLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 }
             }
-            CXLogUtil.e(TAG, "react native instance==null?${field == null}")
+            CXLogUtil.e(TAG, "init instanceManager ${if(field == null) "failure" else "success"}")
             return field
         }
 
@@ -175,9 +172,6 @@ object ReactManager {
 
     @JvmStatic
     fun devSupportEnabled(): Boolean = instanceManager?.devSupportManager?.devSupportEnabled == true
-
-    @JvmStatic
-    fun isRemoteJSDebugEnabled(): Boolean = instanceManager?.devSupportManager?.devSettings?.isRemoteJSDebugEnabled == true
 
     @JvmStatic
     private fun getInstanceBuilder(bundleLoader: JSBundleLoader, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {

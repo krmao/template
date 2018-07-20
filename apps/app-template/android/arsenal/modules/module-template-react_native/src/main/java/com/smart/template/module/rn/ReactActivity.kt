@@ -137,12 +137,14 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private fun startReactApplication() {
         CXLogUtil.w(TAG, "startReactApplication")
-        val businessBundlePath = ReactConstant.PATH_ASSETS_BUSINESS_BUNDLE
-        //businessBundlePath = "/sdcard/Android/data/com.smart.template/cache/rn/business.android.bundle"
-
-        ReactManager.loadBundle(ReactBundle(businessBundlePath, JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false)))
-
+        // loadBusinessCode()
         reactRootView?.post { reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties) }
+    }
+
+    private fun loadBusinessCode() {
+        CXLogUtil.w(TAG, "loadBusinessCode")
+        val businessBundlePath = ReactConstant.PATH_ASSETS_BUSINESS_BUNDLE
+        ReactManager.loadBundle(ReactBundle(businessBundlePath, JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false)))
     }
 
     /**

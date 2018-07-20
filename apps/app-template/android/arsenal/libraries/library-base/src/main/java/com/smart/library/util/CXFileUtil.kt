@@ -73,6 +73,7 @@ object CXFileUtil {
     @Throws(FileNotFoundException::class, IOException::class)
     @JvmStatic
     fun copyFromAssets(fromPathInAssetsDir: String?, toFile: File?): Boolean {
+        CXLogUtil.d("copyFromAssets, fromPathInAssetsDir=$fromPathInAssetsDir, toFile=${toFile?.absolutePath}")
         var success = false
         if (!fromPathInAssetsDir.isNullOrBlank() && toFile != null) {
             try {
@@ -80,8 +81,12 @@ object CXFileUtil {
                 CXFileUtil.copy(CXBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
                 success = true
             } catch (exception: FileNotFoundException) {
+                CXLogUtil.e("copyFromAssets, FileNotFoundException", exception)
             } catch (exception: IOException) {
+                CXLogUtil.e("copyFromAssets, IOException", exception)
             }
+        } else {
+            CXLogUtil.e("copyFromAssets, arguments invalid")
         }
         return success
     }

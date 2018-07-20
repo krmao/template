@@ -49,7 +49,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@color/light_blue"
+                android:background="@color/blue_500"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -110,27 +110,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="切换环境后请注意:\n当前页面之前的所有页面都是 **老的环境** 请求的数据, 会直接影响当前页面的测试结果, 如果依赖之前的数据正确性, **重启** app 即可"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
+                android:text="切换环境后请注意上下文, 必要时 **重启** app"
+                android:textColor="@color/grey_400"
+                android:textSize="10sp"
                 android:textStyle="italic" />
 
+            <CheckBox
+                android:id="@+id/trace_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="10dp"
+                android:button="@drawable/cx_check_button"
+                android:checked="false"
+                android:text="埋点提示"
+                android:textSize="10sp" />
+
             <LinearLayout
+                android:id="@+id/container_view_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="80dp"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <CheckBox
-                    android:id="@+id/trace_cb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="埋点提示"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 

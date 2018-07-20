@@ -51,13 +51,16 @@ object ReactManager {
         get() {
             if (field == null) {
                 val bundlePathInAssets = ReactConstant.PATH_ASSETS_BASE_BUNDLE
-                if (checkValidBundleInAssets(bundlePathInAssets)) {
+                val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
+
+                // 率先检查 sdCard, 然后再检查 assets, 注意先后顺序
+                if (checkValidBundleInSdcard(indexBundleFileInSdcard) && bundlePathInSdcard != null && !bundlePathInSdcard.isNullOrBlank()) {
+                    CXLogUtil.e(TAG, "checkValidBundleInSdcard=true")
+                    val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInSdcard, bundlePathInSdcard, false)
+                    field = initInstanceManager(bundleLoader)
+                } else if (checkValidBundleInAssets(bundlePathInAssets)) {
                     CXLogUtil.e(TAG, "checkValidBundleInAssets=true")
                     val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
-                    field = initInstanceManager(bundleLoader)
-                } else if (checkValidBundleInSdcard(indexBundleFileInSdcard)) {
-                    CXLogUtil.e(TAG, "checkValidBundleInSdcard=true")
-                    val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInAssets, bundlePathInAssets, false)
                     field = initInstanceManager(bundleLoader)
                 } else if (checkValidRemoteDebugServer()) {
                     CXLogUtil.e(TAG, "checkValidRemoteDebugServer=true")
@@ -67,7 +70,7 @@ object ReactManager {
                     CXLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 }
             }
-            CXLogUtil.e(TAG, "init instanceManager ${if(field == null) "failure" else "success"}")
+            CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}")
             return field
         }
 
@@ -75,7 +78,7 @@ object ReactManager {
         return getInstanceBuilder(bundleLoader, frescoConfig = frescoConfig).build()?.apply {
             addReactInstanceEventListener {
                 isInitialized = true
-                CXLogUtil.w(TAG, "initialized base bundle success")
+                CXLogUtil.w(TAG, "initialized react instance success")
 
                 getCatalystInstance()?.let { loadBundleTasks.forEach { bundle -> bundle.loadScript(it) } }
             }

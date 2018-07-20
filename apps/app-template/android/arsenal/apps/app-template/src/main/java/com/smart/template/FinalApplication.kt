@@ -59,9 +59,8 @@ class FinalApplication : CXBaseApplication() {
                         }
                 )
         ) {
-            if (it != null) {
-                ReactManager.init(this, CXBaseApplication.DEBUG, it, frescoConfig, OnRNCallNativeHandler())
-            }
+            // 无论 copy 成功还是失败, 都应该初始化, 方便远程加载
+            ReactManager.init(this, CXBaseApplication.DEBUG, it, frescoConfig, OnRNCallNativeHandler())
         }
     }
 }

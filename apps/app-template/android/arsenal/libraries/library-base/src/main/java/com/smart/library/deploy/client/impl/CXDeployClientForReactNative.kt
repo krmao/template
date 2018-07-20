@@ -4,33 +4,18 @@ package com.smart.library.deploy.client.impl
 
 import com.mlibrary.util.bspatch.MBSPatchUtil
 import com.smart.library.deploy.client.CXIDeployClient
+import com.smart.library.deploy.model.CXDeployType
+import com.smart.library.deploy.model.bundle.CXBaseBundleHelper
+import com.smart.library.deploy.model.bundle.CXBundleInfo
+import com.smart.library.deploy.model.bundle.CXDeployBundleHelper
+import com.smart.library.deploy.model.bundle.CXIBundleHelper
+import com.smart.library.deploy.preference.CXDeployPreferenceManager
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXPreferencesUtil
 import com.smart.library.util.CXZipUtil
 import com.smart.library.util.cache.CXCacheManager
 import java.io.File
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
-data class BundleInfo(
-        val fullName: String? = "bundle.zip",
-        val version: Int,
-        val checksum: String = ""
-) {
-    fun getZipFileName(): String? = if (fullName == null || fullName.isNullOrBlank()) null else CXFileUtil.getFileName(fullName, false)
-
-    fun getUnzipDirName(): String? = if (fullName == null || fullName.isNullOrBlank()) null else CXFileUtil.getFileName(fullName, true)
-
-    fun getApplyZipFile(applyDir: File): File = File(applyDir, getZipFileName())
-    fun getApplyUnzipDir(applyDir: File): File = File(applyDir, getUnzipDirName())
-
-    fun getTempZipFile(tempDir: File): File = File(tempDir, getZipFileName())
-
-    fun getBaseZipFile(baseDir: File): File = File(baseDir, getZipFileName())
-    fun getBaseUnzipDir(baseDir: File): File = File(baseDir, getUnzipDirName())
-}
-
-@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
 /**
  *
  * 负责 react-native 动态部署相关处理
@@ -44,22 +29,21 @@ data class BundleInfo(
  * patch:   具体应用后的新版本的代码
  *
  */
+@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
 class CXDeployClientForReactNative(
-        val baseBundleInfo: BundleInfo,
+        private val baseInfoOfBundle: CXBundleInfo,
         val rootDir: File = CXCacheManager.getFilesHotPatchReactNativeDir(),
-        val checkHandler: ((bundleInfo: BundleInfo?, patchDownloadUrl: String?) -> Unit?) -> Unit?,
+        val checkHandler: ((bundleInfo: CXBundleInfo?, patchDownloadUrl: String?) -> Unit?) -> Unit?,
         val downloadHandler: (patchDownloadUrl: String?, callback: (file: File?) -> Unit) -> Unit?
 ) : CXIDeployClient {
-    private val TAG: String = "[rn-deploy]"
 
-    private val applyDirName = "apply"
-    private val tempDirName = "temp"
-    private val baseDirName = "base"
-    fun getBaseDir(rootDir: File): File = CXCacheManager.getChildDir(rootDir, baseDirName)
-    fun getTempDir(rootDir: File): File = CXCacheManager.getChildDir(rootDir, tempDirName)
-    fun getApplyDir(rootDir: File): File = CXCacheManager.getChildDir(rootDir, applyDirName)
+    companion object {
+        private val TAG: String = "[rn-deploy]"
+    }
 
     private val bsPatchUtil: MBSPatchUtil by lazy { MBSPatchUtil() }
+    private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir) }
+    private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployType.REACT_NATIVE, rootDir) }
 
     /**
      * ensure base unzipDir valid
@@ -72,21 +56,16 @@ class CXDeployClientForReactNative(
     private fun getIndexBundleFile(): File? {
         var finalIndexBundleFile: File? = null
 
-        val appliedBundleInfo: BundleInfo? = getAppliedBundleInfo()
+        val appliedBundleInfo: CXBundleInfo? = preferenceManager.getAppliedBundleInfo()
         if (appliedBundleInfo != null) {
-            val appliedIndexBundleFile = File(appliedBundleInfo.getApplyUnzipDir(getApplyDir(rootDir)), "index.android.bundle")
+            val appliedIndexBundleFile = CXDeployBundleHelper(appliedBundleInfo, rootDir).getIndexFile()
             if (appliedIndexBundleFile.exists()) {
                 finalIndexBundleFile = appliedIndexBundleFile
             }
         }
         if (finalIndexBundleFile == null) {
-            val baseDir = getBaseDir(rootDir)
-            val baseZipFile = baseBundleInfo.getBaseZipFile(baseDir)
-            val baseUnzipDir = baseBundleInfo.getBaseUnzipDir(baseDir)
-            val baseIndexBundleFile = File(baseBundleInfo.getBaseUnzipDir(getBaseDir(rootDir)), "index.android.bundle")
-
-            if (checkUnzipDirValid(baseUnzipDir) || ((checkZipFileValid(baseZipFile) || copyBundleToSDCardFromAssets(baseZipFile)) && unzipToDir(baseZipFile, baseUnzipDir))) {
-                finalIndexBundleFile = baseIndexBundleFile
+            if (baseBundleHelper.checkUnzipDirValid() || ((baseBundleHelper.checkZipFileValid(baseBundleHelper.getBaseZipFile()) || copyBundleToSDCardFromAssets(baseBundleHelper.getBaseZipFile())) && unzipToDir(baseBundleHelper.getBaseZipFile(), baseBundleHelper.getBaseUnzipDir(), baseBundleHelper))) {
+                finalIndexBundleFile = baseBundleHelper.getIndexFile()
             }
         }
         return finalIndexBundleFile
@@ -95,10 +74,10 @@ class CXDeployClientForReactNative(
     /**
      * 将 assets 中的基础数据copy并解压到 sdcard
      */
-    fun copyBundleToSDCardFromAssets(baseZipFile: File = baseBundleInfo.getBaseZipFile(baseBundleInfo.getBaseZipFile(rootDir))): Boolean {
+    fun copyBundleToSDCardFromAssets(baseZipFile: File = baseBundleHelper.getBaseZipFile()): Boolean {
         CXLogUtil.w(TAG, "copyBundleToSDCardFromAssets start")
         CXFileUtil.deleteFile(baseZipFile)
-        val copyAndCheckSuccess = CXFileUtil.copyFromAssets(baseBundleInfo.fullName, baseZipFile) && checkZipFileValid(baseZipFile)
+        val copyAndCheckSuccess = CXFileUtil.copyFromAssets(baseBundleHelper.info.fullName, baseZipFile) && baseBundleHelper.checkZipFileValid(baseZipFile)
         CXLogUtil.w(TAG, "copyBundleToSDCardFromAssets end, copyAndCheckSuccess=$copyAndCheckSuccess")
         return copyAndCheckSuccess
     }
@@ -106,9 +85,9 @@ class CXDeployClientForReactNative(
     /**
      * 解压 bundle 到指定文件夹
      */
-    fun unzipToDir(zipFile: File, unZipDir: File?): Boolean {
+    fun unzipToDir(zipFile: File, unZipDir: File?, helper: CXIBundleHelper): Boolean {
         CXLogUtil.w(TAG, "unzipToDir start")
-        val unzipAndCheckSuccess = CXZipUtil.unzipOrFalse(zipFile, unZipDir) && checkUnzipDirValid(unZipDir)
+        val unzipAndCheckSuccess = CXZipUtil.unzipOrFalse(zipFile, unZipDir) && helper.checkUnzipDirValid()
         CXLogUtil.w(TAG, "unzipToDir end, unzipAndCheckSuccess=$unzipAndCheckSuccess")
         return unzipAndCheckSuccess
     }
@@ -119,8 +98,8 @@ class CXDeployClientForReactNative(
      */
     fun check() {
         checkHandler.invoke { bundleInfo, patchDownloadUrl ->
-            if (bundleInfo != null && patchDownloadUrl != null && bundleInfo.version > baseBundleInfo.version) {
-                download(bundleInfo, patchDownloadUrl)
+            if (bundleInfo != null && patchDownloadUrl != null && bundleInfo.version > baseBundleHelper.info.version) {
+                download(CXDeployBundleHelper(bundleInfo, rootDir), patchDownloadUrl)
             }
         }
     }
@@ -128,17 +107,17 @@ class CXDeployClientForReactNative(
     /**
      * 下载新的更新数据
      */
-    fun download(bundleInfo: BundleInfo, patchDownloadUrl: String) {
+    fun download(deployBundleHelper: CXDeployBundleHelper, patchDownloadUrl: String) {
         downloadHandler.invoke(patchDownloadUrl) { patchFile: File? ->
             if (patchFile != null && patchFile.exists()) {
                 val isNeedMerge = true //TODO
 
                 @Suppress("ConstantConditionIf")
                 if (isNeedMerge) {
-                    val tempZipFile = bundleInfo.getTempZipFile(rootDir)
+                    val tempZipFile = deployBundleHelper.getTempZipFile()
                     merge(patchFile, tempZipFile)
                     if (tempZipFile.exists()) {
-                        saveTempBundleInfo(bundleInfo)
+                        preferenceManager.saveTempBundleInfo(deployBundleHelper.info)
                         apply()
                     }
                 }
@@ -156,7 +135,7 @@ class CXDeployClientForReactNative(
         if (toFile.exists()) CXFileUtil.deleteFile(toFile)
 
         try {
-            bsPatchUtil.bspatch(baseBundleInfo.getBaseZipFile(rootDir).absolutePath, toFile.absolutePath, patchFile.absolutePath)
+            bsPatchUtil.bspatch(baseBundleHelper.getBaseZipFile().absolutePath, toFile.absolutePath, patchFile.absolutePath)
         } catch (e: Exception) {
             CXLogUtil.e(TAG, e)
         }
@@ -168,25 +147,30 @@ class CXDeployClientForReactNative(
     @Synchronized
     fun apply() {
         if (!isRNRunningNow()) {
-            val tempBundleInfo: BundleInfo? = getTempBundleInfo()
+            val tempBundleInfo: CXBundleInfo? = preferenceManager.getTempBundleInfo()
             if (tempBundleInfo != null) {
-                clearApplyDir()
+                val deployBundleHelper = CXDeployBundleHelper(tempBundleInfo, rootDir)
 
-                val fromZipFile = tempBundleInfo.getTempZipFile(getTempDir(rootDir))
-                val toZipFile = tempBundleInfo.getApplyZipFile(getApplyDir(rootDir))
+                deployBundleHelper.clearApplyDir()
+                preferenceManager.saveAppliedBundleInfo(null)
+
+                val fromZipFile = deployBundleHelper.getTempZipFile()
+                val toZipFile = deployBundleHelper.getApplyZipFile()
 
                 CXFileUtil.fileChannelCopy(fromZipFile, toZipFile)
 
                 if (toZipFile.exists()) {
                     CXLogUtil.d(TAG, "copy bundle.zip to apply dir success")
 
-                    val toUnzipDir = tempBundleInfo.getApplyUnzipDir(getApplyDir(rootDir))
+                    val toUnzipDir = deployBundleHelper.getApplyUnzipDir()
                     CXZipUtil.unzipOrFalse(toZipFile, toUnzipDir)
-                    if (checkUnzipDirValid(toUnzipDir)) {
+
+                    if (unzipToDir(toZipFile, toUnzipDir, deployBundleHelper)) {
                         CXLogUtil.d(TAG, "unzip bundle.zip success")
 
-                        saveAppliedBundleInfo(tempBundleInfo)
-                        clearTempDir()
+                        preferenceManager.saveAppliedBundleInfo(tempBundleInfo)
+                        deployBundleHelper.clearTempDir()
+                        preferenceManager.saveTempBundleInfo(null)
 
                         reload()
                     } else {
@@ -200,35 +184,6 @@ class CXDeployClientForReactNative(
         }
     }
 
-    fun checkUnzipDirValid(dir: File?): Boolean {
-        val indexFileExists = File(dir, "index.android.bundle").exists()
-        val valid = dir?.listFiles()?.isNotEmpty() == true && indexFileExists
-
-        CXLogUtil.d(TAG, "checkUnzipDirValid=$valid, path=${dir?.absolutePath}, indexFileExists=$indexFileExists")
-        return valid
-    }
-
-    fun checkZipFileValid(zipFile: File?): Boolean {
-        val valid = zipFile?.exists() == true
-        CXLogUtil.d(TAG, "checkZipFileValid=$valid, path=${zipFile?.absolutePath}")
-        return valid
-    }
-
-    fun clearApplyDir() {
-        CXLogUtil.d(TAG, "clearApplyDir")
-        saveAppliedBundleInfo(null)
-        val applyDir: File = getApplyDir(rootDir)
-        CXFileUtil.deleteDirectory(applyDir)
-        applyDir.mkdirs()
-    }
-
-    fun clearTempDir() {
-        CXLogUtil.d(TAG, "clearTempDir")
-        saveTempBundleInfo(null)
-        val tempDir: File = getTempDir(rootDir)
-        CXFileUtil.deleteDirectory(tempDir)
-        tempDir.mkdirs()
-    }
 
     /**
      * 合适的时候刷新 instance 加载的代码, 应用新的更新
@@ -252,47 +207,5 @@ class CXDeployClientForReactNative(
      */
     fun isRNRunningNow() = reactNativeStartCount > 0
 
-    private val KEY_BUNDLE_RN_APPLIED = "KEY_BUNDLE_RN_APPLIED"
-    private val KEY_BUNDLE_RN_TEMP = "KEY_BUNDLE_RN_APPLIED"
-
-    /**
-     * tempZipFile 准备好后, 保存
-     */
-    private fun saveTempBundleInfo(bundleInfo: BundleInfo?) {
-        CXPreferencesUtil.putEntity(KEY_BUNDLE_RN_TEMP, bundleInfo)
-        CXLogUtil.d(TAG, "saveTempBundleInfo success, bundleInfo=$bundleInfo")
-    }
-
-    private fun getTempBundleInfo(): BundleInfo? {
-        val bundleInfo: BundleInfo? = CXPreferencesUtil.getEntity(KEY_BUNDLE_RN_TEMP, BundleInfo::class.java)
-        if (bundleInfo != null && bundleInfo.getTempZipFile(getTempDir(rootDir)).exists()) {
-            CXLogUtil.d(TAG, "getTempBundleInfo success, bundleInfo=$bundleInfo")
-            return bundleInfo
-        } else {
-            saveTempBundleInfo(null)
-            CXLogUtil.e(TAG, "getTempBundleInfo failure")
-            return null
-        }
-    }
-
-    /**
-     * 成功将 tempZipFile 应用后, 保存
-     */
-    private fun saveAppliedBundleInfo(bundleInfo: BundleInfo?) {
-        CXPreferencesUtil.putEntity(KEY_BUNDLE_RN_APPLIED, bundleInfo)
-        CXLogUtil.d(TAG, "saveAppliedBundleInfo success, bundleInfo=$bundleInfo")
-    }
-
-    private fun getAppliedBundleInfo(): BundleInfo? {
-        val bundleInfo: BundleInfo? = CXPreferencesUtil.getEntity(KEY_BUNDLE_RN_APPLIED, BundleInfo::class.java)
-        if (bundleInfo != null && checkUnzipDirValid(bundleInfo.getApplyUnzipDir(getApplyDir(rootDir)))) {
-            CXLogUtil.d(TAG, "getAppliedBundleInfo success, bundleInfo=$bundleInfo")
-            return bundleInfo
-        } else {
-            saveAppliedBundleInfo(null)
-            CXLogUtil.e(TAG, "getAppliedBundleInfo failure")
-            return null
-        }
-    }
 
 }

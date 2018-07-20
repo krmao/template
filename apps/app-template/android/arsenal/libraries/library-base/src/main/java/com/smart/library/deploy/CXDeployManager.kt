@@ -1,8 +1,8 @@
 package com.smart.library.deploy
 
-import com.smart.library.deploy.client.impl.BundleInfo
 import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.model.CXDeployType
+import com.smart.library.deploy.model.bundle.CXBundleInfo
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
 import org.jetbrains.anko.async
@@ -28,7 +28,7 @@ object CXDeployManager {
 
 
         val rnCXIDeployClient = CXDeployClientForReactNative(
-                BundleInfo("bundle-rn.zip", 1),
+                CXBundleInfo("bundle-rn.zip", 1),
                 CXCacheManager.getFilesHotPatchReactNativeDir(),
                 {
                     CXLogUtil.d(CXDeployManager.TAG, "check start")

@@ -17,8 +17,10 @@ import com.facebook.react.devsupport.DoubleTapReloadRecognizer
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
+import com.smart.library.deploy.model.bundle.CXRNAllPagesClosedEvent
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
+import com.smart.library.util.rx.RxBus
 
 
 @Suppress("unused", "PrivatePropertyName")
@@ -28,6 +30,23 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         const val KEY_RESULT: String = "rn_result"
         const val KEY_START_COMPONENT: String = "rn_start_component"
         const val KEY_REQUEST_CODE: String = "rn_request_code"
+
+        @Volatile
+        @JvmStatic
+        private var activityStartedCount: Int = 0
+            set(value) {
+                field = value
+                CXLogUtil.v(ReactManager.TAG, "rn opened pages count = $value")
+                if (value == 0) RxBus.post(CXRNAllPagesClosedEvent())
+            }
+
+        fun isAtLeastOnePageOpened(): Boolean {
+            return activityStartedCount > 0
+        }
+
+        fun isAllPagesClosed(): Boolean {
+            return activityStartedCount == 0
+        }
 
         @JvmStatic
         @JvmOverloads
@@ -66,6 +85,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     private val initialProperties: Bundle? by lazy { intent.extras }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        activityStartedCount++
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
         reactRootView = ReactRootView(this)
@@ -226,6 +246,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactRootView = null
         reactInstanceManager?.onHostDestroy(this)
         super.onDestroy()
+        activityStartedCount--
     }
 
 }

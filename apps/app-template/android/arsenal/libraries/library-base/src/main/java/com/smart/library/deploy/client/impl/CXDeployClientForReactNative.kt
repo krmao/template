@@ -5,16 +5,15 @@ package com.smart.library.deploy.client.impl
 import com.mlibrary.util.bspatch.MBSPatchUtil
 import com.smart.library.deploy.client.CXIDeployClient
 import com.smart.library.deploy.model.CXDeployType
-import com.smart.library.deploy.model.bundle.CXBaseBundleHelper
-import com.smart.library.deploy.model.bundle.CXBundleInfo
-import com.smart.library.deploy.model.bundle.CXDeployBundleHelper
-import com.smart.library.deploy.model.bundle.CXIBundleHelper
+import com.smart.library.deploy.model.bundle.*
 import com.smart.library.deploy.preference.CXDeployPreferenceManager
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXZipUtil
 import com.smart.library.util.cache.CXCacheManager
+import com.smart.library.util.rx.RxBus
 import java.io.File
+import java.util.*
 
 /**
  *
@@ -34,7 +33,8 @@ class CXDeployClientForReactNative(
         private val baseInfoOfBundle: CXBundleInfo,
         val rootDir: File = CXCacheManager.getFilesHotPatchReactNativeDir(),
         val checkHandler: ((bundleInfo: CXBundleInfo?, patchDownloadUrl: String?) -> Unit?) -> Unit?,
-        val downloadHandler: (patchDownloadUrl: String?, callback: (file: File?) -> Unit) -> Unit?
+        val downloadHandler: (patchDownloadUrl: String?, toFile: File, callback: (file: File) -> Unit) -> Unit?,
+        val isRNOpenedHandler: () -> Boolean
 ) : CXIDeployClient {
 
     companion object {
@@ -45,12 +45,29 @@ class CXDeployClientForReactNative(
     private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir) }
     private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployType.REACT_NATIVE, rootDir) }
 
+    private var reloadHandler: (() -> Unit?)? = null
     /**
      * ensure base unzipDir valid
      */
-    fun initialize(callback: (indexBundleFile: File?) -> Unit) {
+    fun initialize(initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: () -> Unit?) {
         CXLogUtil.w(TAG, "initialize start")
-        callback.invoke(getIndexBundleFile())
+        isReadyForOpen = false
+
+        // 初始化之前检查是否有可以应用的更新, 且不用回调 reload
+        this.reloadHandler = null
+        apply()
+        this.reloadHandler = reloadHandler
+
+        val indexFile = getIndexBundleFile()
+        initCallback.invoke(indexFile)
+
+        detectRNAllPagesClosedEvent()
+    }
+
+    private fun detectRNAllPagesClosedEvent() {
+        RxBus.toObservable(CXRNAllPagesClosedEvent::class.java).subscribe {
+            apply()
+        }
     }
 
     private fun getIndexBundleFile(): File? {
@@ -98,7 +115,7 @@ class CXDeployClientForReactNative(
      */
     fun check() {
         checkHandler.invoke { bundleInfo, patchDownloadUrl ->
-            if (bundleInfo != null && patchDownloadUrl != null && bundleInfo.version > baseBundleHelper.info.version) {
+            if (bundleInfo != null && patchDownloadUrl != null && (bundleInfo.version ?: 0) > (baseBundleHelper.info.version ?: 0)) {
                 download(CXDeployBundleHelper(bundleInfo, rootDir), patchDownloadUrl)
             }
         }
@@ -107,37 +124,49 @@ class CXDeployClientForReactNative(
     /**
      * 下载新的更新数据
      */
-    fun download(deployBundleHelper: CXDeployBundleHelper, patchDownloadUrl: String) {
-        downloadHandler.invoke(patchDownloadUrl) { patchFile: File? ->
-            if (patchFile != null && patchFile.exists()) {
-                val isNeedMerge = true //TODO
-
-                @Suppress("ConstantConditionIf")
-                if (isNeedMerge) {
-                    val tempZipFile = deployBundleHelper.getTempZipFile()
-                    merge(patchFile, tempZipFile)
-                    if (tempZipFile.exists()) {
-                        preferenceManager.saveTempBundleInfo(deployBundleHelper.info)
-                        apply()
-                    }
-                }
+    fun download(deployBundleHelper: CXDeployBundleHelper, downloadUrl: String) {
+        downloadHandler.invoke(downloadUrl, deployBundleHelper.getTempZipFile()) { bundleFile: File? ->
+            if (deployBundleHelper.checkZipFileValid(bundleFile)) {
+                preferenceManager.saveTempBundleInfo(deployBundleHelper.info)
+                apply()
             }
         }
     }
 
     /**
-     * 通过基础数据合并生成新的数据
+     * 下载新的更新数据
      */
-    fun merge(patchFile: File?, toFile: File?) {
-        if (patchFile == null || !patchFile.exists() || toFile == null) {
-            return
+    fun downloadPatch(patchHelper: CXPatchHelper, downloadUrl: String) {
+        downloadHandler.invoke(downloadUrl, patchHelper.getTempPatchFile()) { patchFile: File? ->
+            if (patchHelper.checkPatchFileValid()) {
+                if (patchHelper.merge(baseBundleHelper)) {
+                    preferenceManager.saveTempBundleInfo(patchHelper.getTempBundleInfo())
+                    apply()
+                }
+            }
         }
-        if (toFile.exists()) CXFileUtil.deleteFile(toFile)
+    }
 
-        try {
-            bsPatchUtil.bspatch(baseBundleHelper.getBaseZipFile().absolutePath, toFile.absolutePath, patchFile.absolutePath)
-        } catch (e: Exception) {
-            CXLogUtil.e(TAG, e)
+    private val onReadyCallbackList: Vector<() -> Unit?> = Vector()
+    @Volatile
+    private var isReadyForOpen: Boolean = false
+        private set(value) {
+            field = value
+            if (value) {
+                synchronized(isReadyForOpen) {
+                    onReadyCallbackList.forEach { it.invoke() }
+                    onReadyCallbackList.clear()
+                }
+            }
+        }
+
+    fun checkIsReadyForLoad(onReadyCallback: () -> Unit?) {
+        if (isReadyForOpen) {
+            onReadyCallback.invoke()
+        } else {
+            synchronized(isReadyForOpen) {
+                onReadyCallbackList.add(onReadyCallback)
+            }
         }
     }
 
@@ -146,66 +175,45 @@ class CXDeployClientForReactNative(
      */
     @Synchronized
     fun apply() {
-        if (!isRNRunningNow()) {
-            val tempBundleInfo: CXBundleInfo? = preferenceManager.getTempBundleInfo()
-            if (tempBundleInfo != null) {
-                val deployBundleHelper = CXDeployBundleHelper(tempBundleInfo, rootDir)
+        if (!isRNOpenedHandler.invoke()) {
 
-                deployBundleHelper.clearApplyDir()
-                preferenceManager.saveAppliedBundleInfo(null)
+            synchronized(this) {
 
-                val fromZipFile = deployBundleHelper.getTempZipFile()
-                val toZipFile = deployBundleHelper.getApplyZipFile()
+                val tempBundleInfo: CXBundleInfo? = preferenceManager.getTempBundleInfo()
+                if (tempBundleInfo != null) {
+                    val deployBundleHelper = CXDeployBundleHelper(tempBundleInfo, rootDir)
 
-                CXFileUtil.fileChannelCopy(fromZipFile, toZipFile)
+                    deployBundleHelper.clearApplyDir()
+                    preferenceManager.saveAppliedBundleInfo(null)
 
-                if (toZipFile.exists()) {
-                    CXLogUtil.d(TAG, "copy bundle.zip to apply dir success")
+                    val fromZipFile = deployBundleHelper.getTempZipFile()
+                    val toZipFile = deployBundleHelper.getApplyZipFile()
 
-                    val toUnzipDir = deployBundleHelper.getApplyUnzipDir()
-                    CXZipUtil.unzipOrFalse(toZipFile, toUnzipDir)
+                    CXFileUtil.fileChannelCopy(fromZipFile, toZipFile)
 
-                    if (unzipToDir(toZipFile, toUnzipDir, deployBundleHelper)) {
-                        CXLogUtil.d(TAG, "unzip bundle.zip success")
+                    if (toZipFile.exists()) {
+                        CXLogUtil.d(TAG, "copy bundle.zip to apply dir success")
 
-                        preferenceManager.saveAppliedBundleInfo(tempBundleInfo)
-                        deployBundleHelper.clearTempDir()
-                        preferenceManager.saveTempBundleInfo(null)
+                        val toUnzipDir = deployBundleHelper.getApplyUnzipDir()
+                        CXZipUtil.unzipOrFalse(toZipFile, toUnzipDir)
 
-                        reload()
+                        if (unzipToDir(toZipFile, toUnzipDir, deployBundleHelper)) {
+                            CXLogUtil.d(TAG, "unzip bundle.zip success")
+
+                            preferenceManager.saveAppliedBundleInfo(tempBundleInfo)
+                            deployBundleHelper.clearTempDir()
+                            preferenceManager.saveTempBundleInfo(null)
+
+                            reloadHandler?.invoke()
+                        } else {
+                            CXLogUtil.e(TAG, "unzip bundle.zip failure")
+                        }
                     } else {
-                        CXLogUtil.e(TAG, "unzip bundle.zip failure")
+                        CXLogUtil.e(TAG, "copy bundle.zip to apply dir failure")
                     }
-                } else {
-                    CXLogUtil.e(TAG, "copy bundle.zip to apply dir failure")
                 }
+
             }
-
         }
     }
-
-
-    /**
-     * 合适的时候刷新 instance 加载的代码, 应用新的更新
-     */
-    fun reload() {
-        if (!isRNRunningNow()) {
-            CXLogUtil.d(TAG, "reload now ...")
-        } else {
-            CXLogUtil.e(TAG, "can't reload !")
-        }
-    }
-
-    fun isReloadingNow(): Boolean {
-        return false //todo
-    }
-
-    var reactNativeStartCount: Int = 0
-
-    /**
-     * 是否有rn页面被打开, 如果没有打开过, 可以立即应用热部署, 重新加载代码
-     */
-    fun isRNRunningNow() = reactNativeStartCount > 0
-
-
 }

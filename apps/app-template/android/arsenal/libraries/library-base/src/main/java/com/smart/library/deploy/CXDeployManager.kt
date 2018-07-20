@@ -23,7 +23,7 @@ object CXDeployManager {
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
     @JvmStatic
-    fun initialize(supportTypes: MutableSet<CXDeployType>, callback: (indexBundleFile: File?) -> Unit) {
+    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: () -> Unit?, isRNOpenedHandler: () -> Boolean) {
         this.supportTypes.addAll(supportTypes)
 
 
@@ -40,22 +40,25 @@ object CXDeployManager {
 
                     Unit
                 },
-                { patchDownloadUrl: String?, downloadCallback: (file: File?) -> Unit ->
+                { patchDownloadUrl: String?, file: File, downloadCallback: (file: File) -> Unit ->
                     CXLogUtil.d(CXDeployManager.TAG, "download start")
                     async {
                         Thread.sleep(1000)
                         CXLogUtil.d(CXDeployManager.TAG, "download end")
-                        downloadCallback.invoke(null)
+                        downloadCallback.invoke(file)
                     }
 
                     Unit
-                }
+                },
+                isRNOpenedHandler
         )
 
-        rnCXIDeployClient.initialize {
+        rnCXIDeployClient.initialize({
             CXLogUtil.e(CXDeployManager.TAG, "initialize end, indexBundleFile=${it?.absolutePath}")
-            callback.invoke(it)
-        }
+            initCallback.invoke(it)
+        }, reloadHandler)
+
+        rnCXIDeployClient.apply()
     }
 
 }

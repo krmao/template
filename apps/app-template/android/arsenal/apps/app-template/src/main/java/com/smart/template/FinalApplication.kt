@@ -17,6 +17,7 @@ import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
 import com.smart.template.repository.remote.core.CXOkHttpManager
 import com.smart.template.tab.HomeTabActivity
+import java.io.File
 
 class FinalApplication : CXBaseApplication() {
 
@@ -57,10 +58,16 @@ class FinalApplication : CXBaseApplication() {
 
                             ))
                         }
-                )
-        ) {
-            // 无论 copy 成功还是失败, 都应该初始化, 方便远程加载
-            ReactManager.init(this, CXBaseApplication.DEBUG, it, frescoConfig, OnRNCallNativeHandler())
-        }
+                ),
+                { indexBundleFile: File? ->
+                    // 无论 copy 成功还是失败, 都应该初始化, 方便远程加载
+                    ReactManager.init(this, CXBaseApplication.DEBUG, indexBundleFile, frescoConfig, OnRNCallNativeHandler())
+                },
+                {
+
+                },
+                {
+
+                })
     }
 }

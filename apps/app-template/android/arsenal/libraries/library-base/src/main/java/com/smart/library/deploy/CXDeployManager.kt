@@ -1,5 +1,6 @@
 package com.smart.library.deploy
 
+import com.loc.r
 import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.deploy.model.bundle.CXBundleInfo
@@ -20,12 +21,14 @@ import java.io.File
 object CXDeployManager {
     const val TAG = "[rn-deploy]"
 
+    @JvmStatic var debug = true
+        private set
+
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
     @JvmStatic
     fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: () -> Unit?, isRNOpenedHandler: () -> Boolean) {
         this.supportTypes.addAll(supportTypes)
-
 
         val rnCXIDeployClient = CXDeployClientForReactNative(
                 CXBundleInfo("bundle-rn.zip", 1),

@@ -63,8 +63,12 @@ fun TextView.setTextAndVisible(text: String?) {
     this.text = text
     this.visibility = if (TextUtils.isEmpty(text?.trim())) View.GONE else View.VISIBLE
 }
-fun String.md5(): String = CXChecksumUtil.genMD5Checksum(this)
 
+/**
+ * @param debug true 返回自身, false 返回 md5
+ */
+@JvmOverloads
+fun String.md5(debug: Boolean = false): String = if (debug) this else CXChecksumUtil.genMD5Checksum(this)
 
 fun Fragment.uiThread(fn: () -> Unit) {
     if (this.isDetached) return

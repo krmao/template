@@ -47,13 +47,13 @@ object CXCacheManager {
     fun getFilesHotPatchChildDir(childDirName: String): File = getChildDir(getFilesHotPatchDir(), childDirName)
 
     @JvmStatic
-    fun getFilesHotPatchAndroidDir(): File = getFilesHotPatchChildDir("android")
+    fun getFilesHotPatchAndroidDir(): File = getFilesHotPatchChildDir("android".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
-    fun getFilesHotPatchHybirdDir(): File = getFilesHotPatchChildDir("hybird")
+    fun getFilesHotPatchHybirdDir(): File = getFilesHotPatchChildDir("hybird".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
-    fun getFilesHotPatchReactNativeDir(): File = getFilesHotPatchChildDir("react-native")
+    fun getFilesHotPatchReactNativeDir(): File = getFilesHotPatchChildDir("react-native".md5(CXBaseApplication.DEBUG))
 
     /**
      * @see https://stackoverflow.com/a/40741881/4348530
@@ -68,19 +68,19 @@ object CXCacheManager {
     fun getCacheCrashDir(): File = getCacheChildDir("crash")
 
     @JvmStatic
-    fun getCacheMediaDir(): File = getCacheChildDir("media")
+    fun getCacheMediaDir(): File = getCacheChildDir("media".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
     fun getCacheMediaChildDir(childDirName: String): File = getChildDir(getCacheMediaDir(), childDirName)
 
     @JvmStatic
-    fun getCacheMusicDir(): File = getChildDir(getCacheMediaDir(), "music")
+    fun getCacheMusicDir(): File = getChildDir(getCacheMediaDir(), "music".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
-    fun getCacheVideoDir(): File = getChildDir(getCacheMediaDir(), "video")
+    fun getCacheVideoDir(): File = getChildDir(getCacheMediaDir(), "video".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
-    fun getCacheImageDir(): File = getChildDir(getCacheMediaDir(), "image")
+    fun getCacheImageDir(): File = getChildDir(getCacheMediaDir(), "image".md5(CXBaseApplication.DEBUG))
 
     @JvmStatic
     fun getCacheImageChildDir(childDirName: String): File = getChildDir(getCacheImageDir(), childDirName)

@@ -13,7 +13,7 @@ import java.io.File
 class CXDeployBundleHelper(info: CXBundleInfo, rootDir: File) : CXIBundleHelper(info, rootDir) {
 
     fun getApplyZipFile(): File = File(getApplyDir(), info.getZipFileName())
-    fun getApplyUnzipDir(): File = File(getApplyDir(), info.getUnzipDirName())
+    fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(CXDeployConstants.DIR_NAME_APPLY_UNZIP, info.version))
 
     fun getTempZipFile(): File = File(getTempDir(), info.getZipFileName())
     fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP)

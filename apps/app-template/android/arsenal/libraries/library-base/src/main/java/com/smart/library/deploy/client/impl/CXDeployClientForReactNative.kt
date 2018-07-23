@@ -104,7 +104,7 @@ class CXDeployClientForReactNative(
      */
     fun unzipToDir(zipFile: File, unZipDir: File?, helper: CXIBundleHelper): Boolean {
         CXLogUtil.w(TAG, "unzipToDir start")
-        val unzipAndCheckSuccess = CXZipUtil.unzipOrFalse(zipFile, unZipDir) && helper.checkUnzipDirValid()
+        val unzipAndCheckSuccess = CXZipUtil.unzipToDirOrFalse(zipFile, unZipDir) && helper.checkUnzipDirValid()
         CXLogUtil.w(TAG, "unzipToDir end, unzipAndCheckSuccess=$unzipAndCheckSuccess")
         return unzipAndCheckSuccess
     }
@@ -195,8 +195,6 @@ class CXDeployClientForReactNative(
                         CXLogUtil.d(TAG, "copy bundle.zip to apply dir success")
 
                         val toUnzipDir = deployBundleHelper.getApplyUnzipDir()
-                        CXZipUtil.unzipOrFalse(toZipFile, toUnzipDir)
-
                         if (unzipToDir(toZipFile, toUnzipDir, deployBundleHelper)) {
                             CXLogUtil.d(TAG, "unzip bundle.zip success")
 

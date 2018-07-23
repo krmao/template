@@ -73,7 +73,7 @@ object CXHybirdUtil {
         var success = false
         CXFileUtil.deleteDirectory(unZipDir)
         try {
-            CXZipUtil.unzip(zipFile, unZipDir)
+            CXZipUtil.unzipInDir(zipFile, unZipDir)
             success = true
         } catch (exception: FileNotFoundException) {
             CXLogUtil.e(CXHybird.TAG, "--------[unzipToLocal]: 解压失败:文件不存在", exception)

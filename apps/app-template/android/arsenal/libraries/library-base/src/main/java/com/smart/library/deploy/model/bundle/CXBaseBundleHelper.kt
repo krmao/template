@@ -11,7 +11,7 @@ class CXBaseBundleHelper(info: CXBundleInfo, rootDir: File) : CXIBundleHelper(in
 
     fun getBaseDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_BASE)
     fun getBaseZipFile(): File = File(getBaseDir(), info.getZipFileName())
-    fun getBaseUnzipDir(): File = File(getBaseDir(), info.getUnzipDirName())
+    fun getBaseUnzipDir(): File = File(getBaseDir(), String.format(CXDeployConstants.DIR_NAME_BASE_UNZIP, info.version))
 
     override fun getIndexFile(): File = File(getBaseUnzipDir(), info.indexName)
 }

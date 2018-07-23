@@ -85,65 +85,89 @@ object CXZipUtil {
     }
 
     /**
-     * Example: unzip("downloads/images.zip", "downloads/");
-     */
-    @Throws(ZipException::class, IOException::class)
-    fun unzip(zipFilePath: String, inNotToDirPath: String) = unzip(File(zipFilePath), File(inNotToDirPath))
-
-    /**
-     * Example: unzip("downloads/images.zip", "downloads/");
+     * Example: unzipInDir("android-rn-1.zip", ".../react-native/base/")
+     *
+     * @param unzipTopParentDir .../react-native/base/android-rn-1/
      */
     @Throws(ZipException::class, IOException::class, FileNotFoundException::class)
-    fun unzip(zipFile: File, inNotToDir: File?) {
-        var zip: ZipFile? = null
+    fun unzipInDir(zipSrcFile: File, unzipTopParentDir: File?) = unzip(zipSrcFile, unzipTopParentDir, true)
+
+    /**
+     * Example: unzipToDir("android-rn-1.zip", ".../react-native/base/base-rn-1/")
+     *
+     * @param unzipTopDir .../react-native/base/base-rn-1/
+     */
+    @JvmStatic
+    @Throws(ZipException::class, IOException::class, FileNotFoundException::class)
+    fun unzipToDir(zipSrcFile: File?, unzipTopDir: File?) = unzip(zipSrcFile, unzipTopDir, false)
+
+    @JvmStatic
+    fun unzipToDirOrFalse(zipSrcFile: File?, unzipTopDir: File?): Boolean = unzipOrFalse(zipSrcFile, unzipTopDir, false)
+
+    @JvmStatic
+    fun unzipInDirOrFalse(zipSrcFile: File?, unzipTopParentDir: File?): Boolean = unzipOrFalse(zipSrcFile, unzipTopParentDir, true)
+
+    /**
+     * @param unzipInNotTo true:    unZipDir 为待解压文件夹的父文件夹, 解压后的文件夹名称为压缩时的文件夹名称, 不可更改
+     *                     false:   unZipDir 为带解压文件夹, 解压的的内容直接放到该文件夹内, 过滤掉了压缩时的文件夹本身
+     */
+    @Throws(ZipException::class, IOException::class, FileNotFoundException::class)
+    private fun unzip(zipSrcFile: File?, unZipDir: File?, unzipInNotTo: Boolean) {
+        var zipFile: ZipFile? = null
 
         try {
-            val targetFinalFile = File(inNotToDir?.absolutePath)
-            targetFinalFile.mkdirs()
-            zip = ZipFile(zipFile)
-            val zipFileEntries = zip.entries()
-            while (zipFileEntries.hasMoreElements()) {
-                val entry = zipFileEntries.nextElement()
-                CXLogUtil.e("unzip", "name=${entry.name}, isDirectory=${entry.isDirectory}")
-                val destFile = File(targetFinalFile, entry.name)
-                destFile.parentFile.mkdirs()
-                if (!entry.isDirectory) {
-                    val bufferedInputStream = BufferedInputStream(zip.getInputStream(entry))
-                    val dataBytes = ByteArray(BUFFER)
-                    val bufferedOutputStream = BufferedOutputStream(FileOutputStream(destFile), BUFFER)
-                    var currentByte: Int = bufferedInputStream.read(dataBytes, 0, BUFFER)
-                    while (currentByte != -1) {
-                        bufferedOutputStream.write(dataBytes, 0, currentByte)
-                        currentByte = bufferedInputStream.read(dataBytes, 0, BUFFER)
+            zipFile = ZipFile(zipSrcFile)
+            val zipEntries = zipFile.entries()
+
+            var originTopDirName: String? = null
+
+            while (zipEntries.hasMoreElements()) {
+                val entry: ZipEntry = zipEntries.nextElement()
+
+                if (!unzipInNotTo && entry.isDirectory && originTopDirName == null) {
+                    CXLogUtil.e("unzip", "originName=${entry.name}, is top dir")
+                    originTopDirName = entry.name   // 'android-rn-1/'
+                } else {
+                    val entryName = if (originTopDirName == null) entry.name else entry.name.replace(originTopDirName, "")
+
+                    CXLogUtil.v("unzip", "name=$entryName, isDirectory=${entry.isDirectory}")
+                    val destFile = File(unZipDir, entryName)
+                    destFile.parentFile.mkdirs()
+                    if (!entry.isDirectory) {
+                        val bufferedInputStream = BufferedInputStream(zipFile.getInputStream(entry))
+                        val dataBytes = ByteArray(BUFFER)
+                        val bufferedOutputStream = BufferedOutputStream(FileOutputStream(destFile), BUFFER)
+                        var currentByte: Int = bufferedInputStream.read(dataBytes, 0, BUFFER)
+                        while (currentByte != -1) {
+                            bufferedOutputStream.write(dataBytes, 0, currentByte)
+                            currentByte = bufferedInputStream.read(dataBytes, 0, BUFFER)
+                        }
+                        bufferedOutputStream.flush()
+                        bufferedOutputStream.close()
+                        bufferedInputStream.close()
                     }
-                    bufferedOutputStream.flush()
-                    bufferedOutputStream.close()
-                    bufferedInputStream.close()
                 }
             }
         } finally {
-            zip?.close()
+            zipFile?.close()
         }
     }
 
     @JvmStatic
-    fun unzipOrFalse(zipFile: File, unZipDir: File?, unzipInNotTo: Boolean = false): Boolean {
-        if (!zipFile.exists() || unZipDir == null)
+    @JvmOverloads
+    fun unzipOrFalse(zipSrcFile: File?, unZipDir: File?, unzipInNotTo: Boolean = false): Boolean {
+        if (zipSrcFile?.exists() != true || unZipDir == null)
             return false
 
         var success = false
-        val inNotToDir: File
-
-        if (unzipInNotTo) {
-            CXFileUtil.deleteDirectory(File(unZipDir, CXFileUtil.getFileName(zipFile.absolutePath, true)))
-            inNotToDir = unZipDir
-        } else {
-            CXFileUtil.deleteDirectory(unZipDir)
-            inNotToDir = unZipDir.parentFile
-        }
-
         try {
-            CXZipUtil.unzip(zipFile, inNotToDir)
+            if (unzipInNotTo) {
+                CXFileUtil.deleteDirectory(File(unZipDir, CXFileUtil.getFileName(zipSrcFile.absolutePath, true)))
+                CXZipUtil.unzipInDir(zipSrcFile, unZipDir)
+            } else {
+                CXFileUtil.deleteDirectory(unZipDir)
+                CXZipUtil.unzipToDir(zipSrcFile, unZipDir)
+            }
             success = true
         } catch (exception: FileNotFoundException) {
             CXLogUtil.e(CXHybird.TAG, "解压失败:文件不存在", exception)
@@ -152,6 +176,7 @@ object CXZipUtil {
         } catch (exception: ZipException) {
             CXLogUtil.e(CXHybird.TAG, "解压失败:压缩包错误", exception)
         }
+
         return success
     }
 }

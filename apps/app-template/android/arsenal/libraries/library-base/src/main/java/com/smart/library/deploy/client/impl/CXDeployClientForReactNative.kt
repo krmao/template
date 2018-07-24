@@ -32,7 +32,8 @@ import java.util.*
 class CXDeployClientForReactNative(
         private val baseInfoOfBundle: CXBundleInfo,
         val rootDir: File = CXCacheManager.getFilesHotPatchReactNativeDir(),
-        val checkHandler: ((bundleInfo: CXBundleInfo?, patchDownloadUrl: String?) -> Unit?) -> Unit?,
+        val pathInAssets: String,
+        val checkHandler: ((bundleInfo: CXBundleInfo?, patchInfo: CXPatchInfo?, downloadUrl: String?, isPatch: Boolean) -> Unit?) -> Unit?,
         val downloadHandler: (patchDownloadUrl: String?, toFile: File, callback: (file: File) -> Unit) -> Unit?,
         val isRNOpenedHandler: () -> Boolean
 ) : CXIDeployClient {
@@ -42,7 +43,7 @@ class CXDeployClientForReactNative(
     }
 
     private val bsPatchUtil: MBSPatchUtil by lazy { MBSPatchUtil() }
-    private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir) }
+    private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir, pathInAssets) }
     private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployType.REACT_NATIVE, rootDir) }
 
     private var reloadHandler: (() -> Unit?)? = null
@@ -94,7 +95,7 @@ class CXDeployClientForReactNative(
     fun copyBundleToSDCardFromAssets(baseZipFile: File = baseBundleHelper.getBaseZipFile()): Boolean {
         CXLogUtil.w(TAG, "copyBundleToSDCardFromAssets start")
         CXFileUtil.deleteFile(baseZipFile)
-        val copyAndCheckSuccess = CXFileUtil.copyFromAssets(baseBundleHelper.info.fullName, baseZipFile) && baseBundleHelper.checkZipFileValid(baseZipFile)
+        val copyAndCheckSuccess = CXFileUtil.copyFromAssets(baseBundleHelper.pathInAssets, baseZipFile) && baseBundleHelper.checkZipFileValid(baseZipFile)
         CXLogUtil.w(TAG, "copyBundleToSDCardFromAssets end, copyAndCheckSuccess=$copyAndCheckSuccess")
         return copyAndCheckSuccess
     }
@@ -114,9 +115,15 @@ class CXDeployClientForReactNative(
      * bundle-rn-1.zip
      */
     fun check() {
-        checkHandler.invoke { bundleInfo, patchDownloadUrl ->
-            if (bundleInfo != null && patchDownloadUrl != null && (bundleInfo.version ?: 0) > (baseBundleHelper.info.version ?: 0)) {
-                download(CXDeployBundleHelper(bundleInfo, rootDir), patchDownloadUrl)
+        checkHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
+            if (isPatch && patchInfo != null) {
+                if (downloadUrl != null && (patchInfo.baseVersion == baseBundleHelper.info.version ?: 1) && patchInfo.toVersion > patchInfo.baseVersion) {
+                    downloadPatch(CXPatchHelper(patchInfo, rootDir), downloadUrl)
+                }
+            } else if (bundleInfo != null) {
+                if (downloadUrl != null && bundleInfo.version ?: 0 > baseBundleHelper.info.version ?: 1) {
+                    download(CXDeployBundleHelper(bundleInfo, rootDir), downloadUrl)
+                }
             }
         }
     }

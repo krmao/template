@@ -1,7 +1,9 @@
 package com.smart.library.deploy.model.bundle
 
 import com.mlibrary.util.bspatch.MBSPatchUtil
+import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
+import com.smart.library.deploy.CXDeployManager
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
@@ -15,9 +17,9 @@ class CXPatchHelper(val info: CXPatchInfo, val rootDir: File) {
 
     private val TAG: String = "[rn-deploy]"
 
-    fun getTempPatchFile(): File = File(getTempDir(), info.patchName)
-    fun getTempZipFile(): File = File(getTempDir(), info.bundleFullName)
-    fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP)
+    fun getTempPatchFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_PATCH, info.baseVersion, info.toVersion).md5(CXDeployManager.debug))
+    fun getTempZipFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_TEMP_ZIP, info.toVersion).md5(CXDeployManager.debug))
+    fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP.md5(CXDeployManager.debug))
 
     fun checkPatchFileValid(): Boolean = getTempPatchFile().exists()
     fun checkTempBundleFileValid(): Boolean = getTempZipFile().exists()
@@ -49,7 +51,7 @@ class CXPatchHelper(val info: CXPatchInfo, val rootDir: File) {
     }
 
     fun getTempBundleInfo(): CXBundleInfo {
-        return CXBundleInfo(info.bundleFullName, info.toVersion, info.bundleChecksum, info.indexName)
+        return CXBundleInfo(info.toVersion, info.bundleChecksum, info.indexName)
     }
 
 }

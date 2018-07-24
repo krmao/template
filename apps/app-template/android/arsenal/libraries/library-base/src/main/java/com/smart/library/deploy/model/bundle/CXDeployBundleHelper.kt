@@ -14,10 +14,10 @@ import java.io.File
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
 class CXDeployBundleHelper(info: CXBundleInfo, rootDir: File) : CXIBundleHelper(info, rootDir) {
 
-    fun getApplyZipFile(): File = File(getApplyDir(), info.getZipFileName()?.md5(CXDeployManager.debug))
+    fun getApplyZipFile(): File = File(getApplyDir(), String.format(CXDeployConstants.FILE_NAME_APPLY_ZIP, info.version).md5(CXDeployManager.debug))
     fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(CXDeployConstants.DIR_NAME_APPLY_UNZIP, info.version).md5(CXDeployManager.debug))
 
-    fun getTempZipFile(): File = File(getTempDir(), info.getZipFileName()?.md5(CXDeployManager.debug))
+    fun getTempZipFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_TEMP_ZIP, info.version).md5(CXDeployManager.debug))
     fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP.md5(CXDeployManager.debug))
 
     fun getApplyDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_APPLY.md5(CXDeployManager.debug))

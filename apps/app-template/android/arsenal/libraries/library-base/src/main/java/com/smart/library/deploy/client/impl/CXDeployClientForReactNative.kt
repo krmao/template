@@ -2,7 +2,6 @@
 
 package com.smart.library.deploy.client.impl
 
-import com.mlibrary.util.bspatch.MBSPatchUtil
 import com.smart.library.deploy.client.CXIDeployClient
 import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.deploy.model.bundle.*
@@ -42,7 +41,6 @@ class CXDeployClientForReactNative(
         private val TAG: String = "[rn-deploy]"
     }
 
-    private val bsPatchUtil: MBSPatchUtil by lazy { MBSPatchUtil() }
     private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir, pathInAssets) }
     private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployType.REACT_NATIVE, rootDir) }
 

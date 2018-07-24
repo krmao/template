@@ -1,11 +1,11 @@
 package com.smart.library.deploy.model.bundle
 
-import com.mlibrary.util.bspatch.MBSPatchUtil
 import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
 import com.smart.library.deploy.CXDeployManager
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.bspatch.BSPatchUtil
 import com.smart.library.util.cache.CXCacheManager
 import java.io.File
 
@@ -32,11 +32,11 @@ class CXPatchHelper(val info: CXPatchInfo, val rootDir: File) {
 
                     if (temZipFile.exists()) {
                         CXFileUtil.deleteFile(temZipFile)
-                        temZipFile.createNewFile()
                     }
 
                     try {
-                        MBSPatchUtil().bspatch(baseBundleHelper.getBaseZipFile().absolutePath, getTempPatchFile().absolutePath, temZipFile.absolutePath)
+                        val result = BSPatchUtil.bspatch(baseBundleHelper.getBaseZipFile().absolutePath, temZipFile.absolutePath, getTempPatchFile().absolutePath)
+                        CXLogUtil.w(TAG, "bspatch success, result=$result")
                     } catch (e: Exception) {
                         CXLogUtil.e(TAG, e)
                     }

@@ -81,6 +81,11 @@ object CXDeployManager {
             }
         }
 
+        async {
+            Thread.sleep(5000)
+            rnCXIDeployClient.check()
+        }
+
     }
 
 }

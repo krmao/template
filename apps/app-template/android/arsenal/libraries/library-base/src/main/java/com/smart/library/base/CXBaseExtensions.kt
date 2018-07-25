@@ -13,14 +13,14 @@ import android.os.Bundle
 import android.support.annotation.RequiresPermission
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import android.text.TextUtils
 import android.view.View
 import android.widget.AbsListView
-import android.widget.TextView
 import com.smart.library.util.CXChecksumUtil
+import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXValueUtil
 import com.smart.library.util.CXViewUtil
 import org.jetbrains.anko.AnkoAsyncContext
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -56,19 +56,7 @@ fun AbsListView.performItemClick(position: Int) {
     CXViewUtil.performItemClick(this, position)
 }
 
-/**
- * 如果 text 为空 隐藏 TextView
- */
-fun TextView.setTextAndVisible(text: String?) {
-    this.text = text
-    this.visibility = if (TextUtils.isEmpty(text?.trim())) View.GONE else View.VISIBLE
-}
-
-/**
- * @param debug true 返回自身, false 返回 md5
- */
-@JvmOverloads
-fun String.md5(debug: Boolean = false): String = if (debug) this else CXChecksumUtil.genMD5Checksum(this)
+fun String.md5(): String = CXChecksumUtil.genMD5Checksum(this)
 
 fun Fragment.uiThread(fn: () -> Unit) {
     if (this.isDetached) return
@@ -99,6 +87,12 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300) {
 
 // startActivityForResult with call back -->
 
+/**
+ * @param options Additional options for how the Activity should be started.
+ * May be null if there are no options.  See {@link android.app.ActivityOptions}
+ * for how to build the Bundle supplied here; there are no supported definitions
+ * for building it manually.
+ */
 @JvmOverloads
 fun startActivityForResult(activity: Activity?, @RequiresPermission intent: Intent, requestCode: Int, options: Bundle? = null, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
     activity?.let {
@@ -114,22 +108,56 @@ fun startActivityForResult(activity: Activity?, @RequiresPermission intent: Inte
 
 private val Activity.callbackFragment: ActivityCallbackFragment?
     get() {
-        return (fragmentManager?.findFragmentByTag(ActivityCallbackFragment.TAG) as ActivityCallbackFragment?) ?: ActivityCallbackFragment().apply {
-            fragmentManager?.let {
-                it.beginTransaction().add(this, ActivityCallbackFragment.TAG).commitAllowingStateLoss()
-                it.executePendingTransactions()
+        val tmpFragmentManager = fragmentManager
+        if (tmpFragmentManager != null) {
+            var fragment = tmpFragmentManager.findFragmentByTag(ActivityCallbackFragment.TAG) as ActivityCallbackFragment?
+
+            // remove unused fragment
+            if (fragment?.isRemoving == true) {
+                tmpFragmentManager.beginTransaction()?.remove(fragment)?.commitAllowingStateLoss()
+                tmpFragmentManager.executePendingTransactions()
+                fragment = null
             }
+
+            if (fragment == null) {
+                fragment = ActivityCallbackFragment()
+                tmpFragmentManager.beginTransaction().add(fragment, ActivityCallbackFragment.TAG).commitAllowingStateLoss()
+                tmpFragmentManager.executePendingTransactions()
+                return fragment
+            } else {
+                return fragment
+            }
+        } else {
+            return null
         }
     }
 private val FragmentActivity.callbackFragmentV4: ActivityCallbackFragmentV4?
     get() {
-        return (supportFragmentManager?.findFragmentByTag(ActivityCallbackFragment.TAG) as ActivityCallbackFragmentV4?) ?: ActivityCallbackFragmentV4().apply {
-            supportFragmentManager?.let {
-                it.beginTransaction().add(this, ActivityCallbackFragment.TAG).commitAllowingStateLoss()
-                it.executePendingTransactions()
+        val tmpFragmentManager = supportFragmentManager
+        if (tmpFragmentManager != null) {
+            var fragment = tmpFragmentManager.findFragmentByTag(ActivityCallbackFragmentV4.TAG) as ActivityCallbackFragmentV4?
+
+            // remove unused fragment
+            if (fragment?.isRemoving == true) {
+                tmpFragmentManager.beginTransaction()?.remove(fragment)?.commitAllowingStateLoss()
+                tmpFragmentManager.executePendingTransactions()
+                fragment = null
             }
+
+            if (fragment == null) {
+                fragment = ActivityCallbackFragmentV4()
+                tmpFragmentManager.beginTransaction().add(fragment, ActivityCallbackFragmentV4.TAG).commitAllowingStateLoss()
+                tmpFragmentManager.executePendingTransactions()
+                return fragment
+            } else {
+                return fragment
+            }
+        } else {
+            return null
         }
     }
+
+internal data class StartForResultModel(val intent: Intent, val requestCode: Int, val options: Bundle?)
 
 internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
     companion object {
@@ -141,15 +169,50 @@ internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
      * @see {@link https://stackoverflow.com/questions/698638/why-does-concurrenthashmap-prevent-null-keys-and-values}
      */
     private val callbackMap: MutableMap<Int, ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)?> = ConcurrentHashMap()
+    private val startForResultList: Vector<StartForResultModel> = Vector()
+
+    @Volatile
+    private var isAttachedToActivity: Boolean = false
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        CXLogUtil.w("onAttach to Activity")
+
+        isAttachedToActivity = true
+
+        startForResultList.forEach {
+            if (activity != null && !isDetached) {
+                startActivityForResult(it.intent, it.requestCode, it.options)
+            } else {
+                CXLogUtil.e("startActivityForResult failure, not attached to Activity")
+            }
+        }
+        startForResultList.clear()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
     }
 
+    @Synchronized
     fun startForResult(@RequiresPermission intent: Intent, requestCode: Int, options: Bundle?, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
         if (callback != null) callbackMap[requestCode] = callback
-        startActivityForResult(intent, requestCode, options)
+        if (isAttachedToActivity) {
+            if (activity != null && !isDetached) {
+                startActivityForResult(intent, requestCode, options)
+            } else {
+                CXLogUtil.e("startActivityForResult failure, not attached to Activity")
+            }
+        } else {
+            CXLogUtil.w("wait attached to Activity")
+            startForResultList.addElement(StartForResultModel(intent, requestCode, options))
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isAttachedToActivity = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -168,15 +231,50 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
      * @see {@link https://stackoverflow.com/questions/698638/why-does-concurrenthashmap-prevent-null-keys-and-values}
      */
     private val callbackMap: MutableMap<Int, ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)?> = ConcurrentHashMap()
+    private val startForResultList: Vector<StartForResultModel> = Vector()
+
+    @Volatile
+    private var isAttachedToActivity: Boolean = false
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        CXLogUtil.w("onAttach to Activity")
+
+        isAttachedToActivity = true
+
+        startForResultList.forEach {
+            if (activity != null && !isDetached) {
+                startActivityForResult(it.intent, it.requestCode, it.options)
+            } else {
+                CXLogUtil.e("startActivityForResult failure, not attached to Activity")
+            }
+        }
+        startForResultList.clear()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
     }
 
+    @Synchronized
     fun startForResult(@RequiresPermission intent: Intent, requestCode: Int, options: Bundle?, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
         if (callback != null) callbackMap[requestCode] = callback
-        startActivityForResult(intent, requestCode, options)
+        if (isAttachedToActivity) {
+            if (activity != null && !isDetached) {
+                startActivityForResult(intent, requestCode, options)
+            } else {
+                CXLogUtil.e("startActivityForResult failure, not attached to Activity")
+            }
+        } else {
+            CXLogUtil.w("wait attached to Activity")
+            startForResultList.addElement(StartForResultModel(intent, requestCode, options))
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isAttachedToActivity = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

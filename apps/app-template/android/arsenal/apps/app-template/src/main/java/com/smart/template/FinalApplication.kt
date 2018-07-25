@@ -6,6 +6,7 @@ import com.smart.library.base.CXConfig
 import com.smart.library.deploy.CXDeployManager
 import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.util.CXFileUtil
+import com.smart.library.util.CXLogUtil
 import com.smart.library.util.image.CXImageManager
 import com.smart.library.util.image.impl.CXImageFrescoHandler
 import com.smart.library.widget.debug.CXDebugFragment
@@ -63,6 +64,21 @@ class FinalApplication : CXBaseApplication() {
                 { indexBundleFile: File? ->
                     // 无论 copy 成功还是失败, 都应该初始化, 方便远程加载
                     ReactManager.init(this, CXBaseApplication.DEBUG, indexBundleFile, frescoConfig, OnRNCallNativeHandler())
-                }, { ReactManager.instanceManager?.recreateReactContextInBackground() }, { ReactActivity.isAtLeastOnePageOpened() })
+                },
+                {
+                    if (ReactManager.instanceManager != null) {
+                        CXLogUtil.e(CXDeployManager.TAG, "recreateReactContextInBackground start")
+                        ReactManager.reloadBundleFromSdcard(it)
+                        true
+                    } else {
+                        ReactManager.indexBundleFileInSdcard = it
+                        CXLogUtil.e(CXDeployManager.TAG, "recreateReactContextInBackground failure, instanceManager is null")
+                        false
+                    }
+                },
+                {
+                    ReactActivity.isAtLeastOnePageOpened()
+                }
+        )
     }
 }

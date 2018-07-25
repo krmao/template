@@ -44,7 +44,12 @@ object ReactManager {
     var debug: Boolean = CXBaseApplication.DEBUG
         private set
 
-    private var indexBundleFileInSdcard: File? = null
+    var indexBundleFileInSdcard: File? = null
+        set(value) {
+            CXLogUtil.w(TAG, "indexBundleFileInSdcard has changed from ${field?.absolutePath} to ${value?.absolutePath}")
+            field = value
+        }
+
     @JvmStatic
     var instanceManager: ReactInstanceManager? = null
         private set
@@ -73,6 +78,29 @@ object ReactManager {
             CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}")
             return field
         }
+
+    @JvmStatic
+    @Synchronized
+    fun reloadBundleFromSdcard(indexBundleFileInSdcard: File?) {
+        if (indexBundleFileInSdcard?.exists() == true) {
+            CXLogUtil.w(TAG, "reloadBundleFromSdcard start")
+            this.indexBundleFileInSdcard = indexBundleFileInSdcard
+            CXLogUtil.w(TAG, "reloadBundleFromSdcard destroy old instanceManager")
+            instanceManager?.destroy()
+            CXLogUtil.w(TAG, "reloadBundleFromSdcard set old instanceManager null")
+            instanceManager = null
+
+            // sure to call instanceManager one time
+            if (instanceManager == null) {
+                CXLogUtil.e(TAG, "instanceManager is null, please check the bundle path or debug server is set")
+            } else {
+                CXLogUtil.i(TAG, "instanceManager reCreate success")
+            }
+
+        } else {
+            CXLogUtil.e(TAG, "reloadBundleFromSdcard failure, indexBundleFileInSdcard is not exists")
+        }
+    }
 
     private fun initInstanceManager(bundleLoader: JSBundleLoader): ReactInstanceManager? {
         return getInstanceBuilder(bundleLoader, frescoConfig = frescoConfig).build()?.apply {

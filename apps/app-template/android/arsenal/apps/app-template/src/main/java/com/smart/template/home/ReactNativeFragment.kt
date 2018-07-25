@@ -1,7 +1,6 @@
 package com.smart.template.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.CXBaseFragment
 import com.smart.template.R
+import com.smart.template.module.rn.ReactJumper
 
 class ReactNativeFragment : CXBaseFragment() {
 
@@ -21,7 +21,10 @@ class ReactNativeFragment : CXBaseFragment() {
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
-            activity?.startActivity(Intent(activity,Class.forName("com.smart.template.module.rn.ReactActivity")))
+            ReactJumper.goTo(context, ReactJumper.SELECT_SERVICE, hashMapOf(
+                    "storeInfo" to null
+            ))
+
         }
         return textView
     }

@@ -33,7 +33,7 @@ object CXDeployManager {
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
     @JvmStatic
-    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: () -> Unit?, isRNOpenedHandler: () -> Boolean) {
+    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: (indexBundleFileInSdcard:File) -> Boolean, isRNOpenedHandler: () -> Boolean) {
         this.supportTypes.addAll(supportTypes)
 
         val rnCXIDeployClient = CXDeployClientForReactNative(

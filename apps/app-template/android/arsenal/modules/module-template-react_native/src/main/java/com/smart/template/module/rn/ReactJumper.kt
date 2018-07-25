@@ -28,4 +28,5 @@ object ReactJumper {
     }
 
     const val GOODS_DETAIL = "GOODS_DETAIL"
+    const val SELECT_SERVICE = "SelectService"
 }

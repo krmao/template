@@ -5,7 +5,6 @@ import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.model.CXDeployType
 import com.smart.library.deploy.model.bundle.CXBundleInfo
 import com.smart.library.deploy.model.bundle.CXPatchInfo
-import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
 import com.smart.library.util.rx.RxBus
@@ -28,43 +27,24 @@ object CXDeployManager {
     var debug = true
         private set
 
-    val URI_SCHEME_ASSETS = "asset://"
+    const val URI_SCHEME_ASSETS = "asset://"
 
     private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
 
     @JvmStatic
-    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: (indexBundleFileInSdcard:File) -> Boolean, isRNOpenedHandler: () -> Boolean) {
+    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?,
+                   checkHandler: ((bundleInfo: CXBundleInfo?, patchInfo: CXPatchInfo?, downloadUrl: String?, isPatch: Boolean) -> Unit?) -> Unit?,
+                   downloadHandler: (patchDownloadUrl: String?, toFile: File, callback: (file: File) -> Unit) -> Unit?,
+
+                   reloadHandler: (indexBundleFileInSdcard: File) -> Boolean, isRNOpenedHandler: () -> Boolean) {
         this.supportTypes.addAll(supportTypes)
 
         val rnCXIDeployClient = CXDeployClientForReactNative(
                 CXBundleInfo(1),
                 CXCacheManager.getFilesHotPatchReactNativeDir(),
                 "bundle-rn.zip",
-                {
-                    CXLogUtil.d(CXDeployManager.TAG, "check start")
-                    async {
-                        Thread.sleep(1000)
-                        CXLogUtil.d(CXDeployManager.TAG, "check end")
-                        it.invoke(null, CXPatchInfo(1, 2), "${URI_SCHEME_ASSETS}app50-rn1-rn2.patch", true)
-                    }
-
-                    Unit
-                },
-                { patchDownloadUrl: String?, file: File, downloadCallback: (file: File) -> Unit ->
-                    CXLogUtil.d(CXDeployManager.TAG, "download start")
-                    async {
-                        Thread.sleep(1000)
-                        CXLogUtil.d(CXDeployManager.TAG, "download end")
-
-                        if (patchDownloadUrl?.startsWith(URI_SCHEME_ASSETS) == true) {
-                            CXFileUtil.copyFromAssets(patchDownloadUrl.substringAfter(URI_SCHEME_ASSETS), file)
-                        }
-
-                        downloadCallback.invoke(file)
-                    }
-
-                    Unit
-                },
+                checkHandler,
+                downloadHandler,
                 isRNOpenedHandler
         )
 

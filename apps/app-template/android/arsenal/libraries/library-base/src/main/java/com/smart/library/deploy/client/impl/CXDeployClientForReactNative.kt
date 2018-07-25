@@ -107,11 +107,11 @@ class CXDeployClientForReactNative(
     fun check() {
         checkHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
             if (isPatch && patchInfo != null) {
-                if (downloadUrl != null && (patchInfo.baseVersion == baseBundleHelper.info.version ?: 1) && patchInfo.toVersion > patchInfo.baseVersion) {
+                if (downloadUrl != null && (patchInfo.baseVersion == baseBundleHelper.info.version) && patchInfo.toVersion > patchInfo.baseVersion) {
                     downloadPatch(CXPatchHelper(patchInfo, rootDir, preferenceManager), downloadUrl)
                 }
             } else if (bundleInfo != null) {
-                if (downloadUrl != null && bundleInfo.version ?: 0 > baseBundleHelper.info.version ?: 1) {
+                if (downloadUrl != null && bundleInfo.version > baseBundleHelper.info.version) {
                     download(CXDeployBundleHelper(bundleInfo, rootDir), downloadUrl)
                 }
             }

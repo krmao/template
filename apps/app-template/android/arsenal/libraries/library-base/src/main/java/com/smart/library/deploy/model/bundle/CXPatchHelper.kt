@@ -5,6 +5,7 @@ import com.smart.library.deploy.CXDeployConstants
 import com.smart.library.deploy.CXDeployManager
 import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.preference.CXDeployPreferenceManager
+import com.smart.library.util.CXChecksumUtil
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXZipUtil
@@ -29,7 +30,15 @@ class CXPatchHelper(val info: CXPatchInfo, val rootDir: File, val preferenceMana
     fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP.md5(CXDeployManager.debug))
 
     fun checkPatchFileValid(): Boolean = getTempPatchFile().exists()
-    fun checkTempBundleFileValid(): Boolean = getTempZipFile().exists()
+    fun checkTempBundleFileValid(): Boolean {
+        val tempZipFile = getTempZipFile()
+        val md5 = CXChecksumUtil.genMD5Checksum(tempZipFile)
+        val fileExists = tempZipFile.exists()
+        val md5Check = md5 == info.bundleChecksum
+        val checkTempBundleFileValid = fileExists && md5Check
+        CXLogUtil.e(TAG, "checkTempBundleFileValid=$checkTempBundleFileValid, fileExists=$fileExists, md5Check=$md5Check, read-md5=$md5 , right-md5=${info.bundleChecksum}, path=${tempZipFile.absolutePath}")
+        return checkTempBundleFileValid
+    }
 
     fun merge(baseBundleHelper: CXBaseBundleHelper): Boolean {
         CXLogUtil.v(CXDeployClientForReactNative.TAG, "merge start")

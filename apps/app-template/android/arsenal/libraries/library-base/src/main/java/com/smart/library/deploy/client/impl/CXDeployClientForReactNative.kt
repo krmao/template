@@ -44,11 +44,11 @@ class CXDeployClientForReactNative(
     private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(baseInfoOfBundle, rootDir, pathInAssets) }
     private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployType.REACT_NATIVE, rootDir) }
 
-    private var reloadHandler: ((indexBundleFileInSdcard:File) -> Boolean)? = null
+    private var reloadHandler: ((indexBundleFileInSdcard: File) -> Boolean)? = null
     /**
      * ensure base unzipDir valid
      */
-    fun initialize(initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: (indexBundleFileInSdcard:File) -> Boolean) {
+    fun initialize(initCallback: (indexBundleFile: File?) -> Unit?, reloadHandler: (indexBundleFileInSdcard: File) -> Boolean) {
         CXLogUtil.w(TAG, "initialize start")
         isReadyForOpen = false
 
@@ -107,12 +107,28 @@ class CXDeployClientForReactNative(
     fun check() {
         checkHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
             if (isPatch && patchInfo != null) {
+
                 if (downloadUrl != null && (patchInfo.baseVersion == baseBundleHelper.info.version) && patchInfo.toVersion > patchInfo.baseVersion) {
-                    downloadPatch(CXPatchHelper(patchInfo, rootDir, preferenceManager), downloadUrl)
+                    val patchHelper = CXPatchHelper(patchInfo, rootDir, preferenceManager)
+                    if (!patchHelper.checkZipFileValid(patchHelper.getApplyZipFile()) && !patchHelper.checkUnzipDirValid()) {
+
+                        if (!patchHelper.checkTempBundleFileValid()) {
+                            if (!patchHelper.checkPatchFileValid()) {
+                                CXLogUtil.w(TAG,"checkPatchFileValid invalid, start download patch")
+                                downloadPatch(CXPatchHelper(patchInfo, rootDir, preferenceManager), downloadUrl)
+                            }else{
+                                CXLogUtil.w(TAG,"checkPatchFileValid valid, check end")
+                            }
+                        }
+                    }
                 }
             } else if (bundleInfo != null) {
                 if (downloadUrl != null && bundleInfo.version > baseBundleHelper.info.version) {
-                    download(CXDeployBundleHelper(bundleInfo, rootDir), downloadUrl)
+
+                    val deployBundleHelper = CXDeployBundleHelper(bundleInfo, rootDir)
+                    if (!deployBundleHelper.checkZipFileValid(deployBundleHelper.getTempZipFile()) && !deployBundleHelper.checkUnzipDirValid()) {
+                        download(CXDeployBundleHelper(bundleInfo, rootDir), downloadUrl)
+                    }
                 }
             }
         }
@@ -184,24 +200,21 @@ class CXDeployClientForReactNative(
                     if (deployBundleHelper.checkUnzipDirValid()) {
                         CXLogUtil.w(TAG, "apply checkUnzipDirValid(${deployBundleHelper.getApplyUnzipDir()}) success")
 
-                        if (reloadHandler?.invoke(deployBundleHelper.getIndexFile()) == true) {
-                            CXLogUtil.d(TAG, "apply reload success")
+                        reloadHandler?.invoke(deployBundleHelper.getIndexFile())
 
-                            // remove old
-                            val oldAppliedInfo: CXBundleInfo? = preferenceManager.getAppliedBundleInfo()
-                            if (oldAppliedInfo != null) {
-                                CXDeployBundleHelper(oldAppliedInfo, rootDir).clearApplyFiles()
-                            }
+                        CXLogUtil.d(TAG, "apply reload success")
 
-                            // apply new
-                            preferenceManager.saveAppliedBundleInfo(tempBundleInfo)
-                            preferenceManager.saveTempBundleInfo(null)
-
-                            CXLogUtil.d(TAG, "apply success")
-                            return
-                        } else {
-                            CXLogUtil.e(TAG, "apply reload failure")
+                        // remove old
+                        val oldAppliedInfo: CXBundleInfo? = preferenceManager.getAppliedBundleInfo()
+                        if (oldAppliedInfo != null) {
+                            CXDeployBundleHelper(oldAppliedInfo, rootDir).clearApplyFiles()
                         }
+
+                        // apply new
+                        preferenceManager.saveAppliedBundleInfo(tempBundleInfo)
+                        preferenceManager.saveTempBundleInfo(null)
+
+                        CXLogUtil.d(TAG, "apply success")
                     } else {
                         preferenceManager.saveTempBundleInfo(null)
                         CXLogUtil.e(TAG, "apply checkUnzipDirValid(${deployBundleHelper.getApplyUnzipDir()}) failure, clear temp info")
@@ -209,8 +222,8 @@ class CXDeployClientForReactNative(
                 } else {
                     CXLogUtil.e(TAG, "apply getTempBundleInfo failure")
                 }
-            }
 
+            }
         } else {
             CXLogUtil.e(TAG, "apply rn did opened, apply cancel")
         }

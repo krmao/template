@@ -77,17 +77,23 @@ class FinalApplication : CXBaseApplication() {
                             { result: String ->
                                 val jsonObject = CXJsonUtil.toJSONObjectOrNull(result)
                                 if (jsonObject != null) {
-                                    val baseVersion = jsonObject.optInt("baseVersion", -1)
-                                    val toVersion = jsonObject.optInt("toVersion", -1)
-                                    val downloadUrl = jsonObject.optString("downloadUrl")
-                                    val bundleChecksum = jsonObject.optString("bundleChecksum")
+                                    val errorCode = jsonObject.optInt("errorCode", -1)
+                                    if (errorCode == 0) {
+                                        val resultObject = jsonObject.optJSONObject("result")
+                                        val baseVersion = resultObject.optInt("baseVersion", -1)
+                                        val toVersion = resultObject.optInt("toVersion", -1)
+                                        val downloadUrl = resultObject.optString("downloadUrl")
+                                        val bundleChecksum = resultObject.optString("bundleChecksum")
 
-                                    if (baseVersion != -1 && toVersion != -1 && !downloadUrl.isNullOrBlank() && !bundleChecksum.isNullOrBlank()) {
-                                        CXLogUtil.w(CXDeployManager.TAG, "check success")
-                                        it.invoke(null, CXPatchInfo(baseVersion, toVersion, bundleChecksum = bundleChecksum), downloadUrl, true)
-                                    } else {
-                                        CXLogUtil.e(CXDeployManager.TAG, "check failure with error result !")
+                                        if (baseVersion != -1 && toVersion != -1 && !downloadUrl.isNullOrBlank() && !bundleChecksum.isNullOrBlank()) {
+                                            CXLogUtil.w(CXDeployManager.TAG, "check success, $result")
+                                            it.invoke(null, CXPatchInfo(baseVersion, toVersion, bundleChecksum = bundleChecksum), downloadUrl, true)
+                                            return@subscribe
+                                        }
+
                                     }
+
+                                    CXLogUtil.e(CXDeployManager.TAG, "check failure with error result ! $result")
                                 }
                             },
                             { e: Throwable ->
@@ -117,17 +123,6 @@ class FinalApplication : CXBaseApplication() {
                                         }
                                 )
                     }
-                    async {
-                        Thread.sleep(1000)
-                        CXLogUtil.d(CXDeployManager.TAG, "download end")
-
-                        if (patchDownloadUrl?.startsWith(CXDeployManager.URI_SCHEME_ASSETS) == true) {
-                            CXFileUtil.copyFromAssets(patchDownloadUrl.substringAfter(CXDeployManager.URI_SCHEME_ASSETS), file)
-                        }
-
-                        downloadCallback.invoke(file)
-                    }
-
                     Unit
                 },
                 {

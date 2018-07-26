@@ -2,7 +2,6 @@ package com.smart.library.deploy.model.bundle
 
 import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
-import com.smart.library.deploy.CXDeployManager
 import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
 import com.smart.library.deploy.preference.CXDeployPreferenceManager
 import com.smart.library.util.CXChecksumUtil
@@ -17,17 +16,17 @@ import java.io.File
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
-class CXPatchHelper(val info: CXPatchInfo, val rootDir: File, val preferenceManager: CXDeployPreferenceManager) {
+class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File, val preferenceManager: CXDeployPreferenceManager) {
 
     private val TAG: String = "[rn-deploy]"
 
-    fun getApplyDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_APPLY.md5(CXDeployManager.debug))
-    fun getApplyZipFile(): File = File(getApplyDir(), String.format(CXDeployConstants.FILE_NAME_APPLY_ZIP, info.toVersion).md5(CXDeployManager.debug))
-    fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(CXDeployConstants.DIR_NAME_APPLY_UNZIP, info.toVersion).md5(CXDeployManager.debug))
+    fun getApplyDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_APPLY.md5(debug))
+    fun getApplyZipFile(): File = File(getApplyDir(), String.format(CXDeployConstants.FILE_NAME_APPLY_ZIP, info.toVersion).md5(debug))
+    fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(CXDeployConstants.DIR_NAME_APPLY_UNZIP, info.toVersion).md5(debug))
 
-    fun getTempPatchFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_PATCH, info.baseVersion, info.toVersion).md5(CXDeployManager.debug))
-    fun getTempZipFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_TEMP_ZIP, info.toVersion).md5(CXDeployManager.debug))
-    fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP.md5(CXDeployManager.debug))
+    fun getTempPatchFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_PATCH, info.baseVersion, info.toVersion).md5(debug))
+    fun getTempZipFile(): File = File(getTempDir(), String.format(CXDeployConstants.FILE_NAME_TEMP_ZIP, info.toVersion).md5(debug))
+    fun getTempDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_TEMP.md5(debug))
 
     fun checkPatchFileValid(): Boolean = getTempPatchFile().exists()
     fun checkTempBundleFileValid(): Boolean {

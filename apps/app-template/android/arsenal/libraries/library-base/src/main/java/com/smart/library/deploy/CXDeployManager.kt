@@ -1,71 +1,36 @@
 package com.smart.library.deploy
 
-import com.smart.library.base.CXApplicationVisibleChangedEvent
-import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
-import com.smart.library.deploy.model.CXDeployType
-import com.smart.library.deploy.model.bundle.CXBundleInfo
-import com.smart.library.deploy.model.bundle.CXPatchInfo
-import com.smart.library.util.CXLogUtil
-import com.smart.library.util.cache.CXCacheManager
-import com.smart.library.util.rx.RxBus
-import org.jetbrains.anko.async
-import java.io.File
+import com.smart.library.deploy.client.CXIDeployClient
 
 /**
- * 动态部署管理器
- *
- *
- * android              hotfix + dynamic deployment(contain hotfix)
- * hybird               hotfix + dynamic deployment(contain hotfix)
- * react-native         hotfix + dynamic deployment(contain hotfix)
- *
+ * 动态部署支持的类型
  */
-object CXDeployManager {
-    const val TAG = "[rn-deploy]"
+enum class CXDeployManager(val supportCheckTypes: MutableSet<CheckType>) : CXIDeployClient {
 
-    @JvmStatic
-    var debug = true
-        private set
+    ANDROID(mutableSetOf()),
+    HYBIRD(mutableSetOf()),
+    REACT_NATIVE(mutableSetOf());
 
-    const val URI_SCHEME_ASSETS = "asset://"
-
-    private val supportTypes: MutableSet<CXDeployType> = mutableSetOf()
-
-    @JvmStatic
-    fun initialize(supportTypes: MutableSet<CXDeployType>, initCallback: (indexBundleFile: File?) -> Unit?,
-                   checkHandler: ((bundleInfo: CXBundleInfo?, patchInfo: CXPatchInfo?, downloadUrl: String?, isPatch: Boolean) -> Unit?) -> Unit?,
-                   downloadHandler: (patchDownloadUrl: String?, toFile: File, callback: (file: File) -> Unit) -> Unit?,
-
-                   reloadHandler: (indexBundleFileInSdcard: File) -> Boolean, isRNOpenedHandler: () -> Boolean) {
-        this.supportTypes.addAll(supportTypes)
-
-        val rnCXIDeployClient = CXDeployClientForReactNative(
-                CXBundleInfo(1),
-                CXCacheManager.getFilesHotPatchReactNativeDir(),
-                "bundle-rn.zip",
-                checkHandler,
-                downloadHandler,
-                isRNOpenedHandler
-        )
-
-        rnCXIDeployClient.initialize({
-            CXLogUtil.e(CXDeployManager.TAG, "initialize end, indexBundleFile=${it?.absolutePath}")
-            initCallback.invoke(it)
-        }, reloadHandler)
-
-        rnCXIDeployClient.apply()
-
-        RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe {
-            if (!it.isApplicationVisible) {
-                rnCXIDeployClient.check()
-            }
-        }
-
-        async {
-            Thread.sleep(5000)
-            rnCXIDeployClient.check()
-        }
-
+    /**
+     * 动态部署检查更新的时机
+     */
+    enum class CheckType {
+        APP_START,
+        APP_FORGROUND_TO_BACKGROUND,
+        APP_BACKGROUND_TO_FORGROUND,
+        APP_OPEN_FIRST_PAGE,
+        APP_OPEN_EVERY_PAGE,
+        APP_CLOSE_ALL_PAGES,
+        APP_RECEIVE_PUSH,
     }
 
+    companion object {
+        const val TAG: String = "[rn-deploy]"
+    }
+
+    var client: CXIDeployClient? = null
+
+    override fun check() {
+        client?.check()
+    }
 }

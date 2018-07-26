@@ -1,6 +1,6 @@
 package com.smart.library.deploy.preference
 
-import com.smart.library.deploy.model.CXDeployType
+import com.smart.library.deploy.CXDeployManager
 import com.smart.library.deploy.model.bundle.CXBundleInfo
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXPreferencesUtil
@@ -8,7 +8,7 @@ import java.io.File
 
 
 @Suppress("PrivatePropertyName", "unused", "LiftReturnOrAssignment")
-class CXDeployPreferenceManager(private val type: CXDeployType, private val rootDir: File) {
+class CXDeployPreferenceManager(private val type: CXDeployManager, private val rootDir: File) {
 
     private val TAG = "[rn-deploy-preference]"
 

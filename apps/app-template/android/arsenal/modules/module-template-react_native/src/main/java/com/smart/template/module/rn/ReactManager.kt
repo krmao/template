@@ -26,7 +26,6 @@ import com.smart.template.module.rn.packages.ReactCustomPackage
 import java.io.File
 import java.util.*
 
-
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
 object ReactManager {

@@ -64,9 +64,8 @@ dependencies {
     api "com.andkulikov:transitionseverywhere:1.7.8"
     api 'com.liaoinstan.springview:library:1.3.2'
 
-//    api 'com.smart.library.util:bspatch:0.0.2'
-    api(name: "library-bspatch-release-1.0", ext: "aar")
-    // at android/arsenal/libraries/thirdparty/thirdparty-aars
+    api(name: "bspatch-0.0.2", ext: "aar")
+    // api 'com.smart.library.util:bspatch:0.0.2'
 
     /******* 定位相关 ******************************************************************************/
     compileOnly "com.amap.api:location:4.0.1"  // 定位功能

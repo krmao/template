@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.provider.Settings
 import android.view.KeyEvent
 import android.widget.FrameLayout
@@ -21,7 +20,6 @@ import com.smart.library.deploy.model.bundle.CXRNAllPagesClosedEvent
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.rx.RxBus
-
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -110,15 +108,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                 startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
             } else {
                 startReactApplication()
-                // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
-                if (ReactManager.devSupportEnabled() && ReactManager.isCurrentLoadModeServer()) {
-                    Looper.myQueue().addIdleHandler {
-                        // CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
-                        // CXToastUtil.show("debug 模式下自动 reload -->")
-                        // ReactManager.devSettingsManager.reload()
-                        false
-                    }
-                }
             }
 
         } else {
@@ -139,15 +128,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                     return
                 } else {
                     startReactApplication()
-                    // debug 模式下每次进来强制重新加载, 避免摇晃手机等操作
-                    if (ReactManager.devSupportEnabled() && ReactManager.isCurrentLoadModeServer()) {
-                        Looper.myQueue().addIdleHandler {
-                            // CXLogUtil.e(TAG, "debug 模式下自动 reload -->")
-                            // CXToastUtil.show("debug 模式下自动 reload -->")
-                            // ReactManager.devSettingsManager.reload()
-                            false
-                        }
-                    }
                 }
             }
         } else {

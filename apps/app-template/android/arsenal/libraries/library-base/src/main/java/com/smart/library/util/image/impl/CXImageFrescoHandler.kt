@@ -21,6 +21,7 @@ import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig
 import com.facebook.imagepipeline.image.CloseableBitmap
 import com.facebook.imagepipeline.image.CloseableImage
+import com.facebook.imagepipeline.postprocessors.IterativeBoxBlurPostProcessor
 import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.smart.library.base.CXBaseApplication
@@ -84,6 +85,20 @@ open class CXImageFrescoHandler(val config: ImagePipelineConfig) : CXIImageHandl
         } else {
             val request = ImageRequestBuilder.newBuilderWithSource(uri).setProgressiveRenderingEnabled(true).build()
             imageView.controller = ((Fresco.newDraweeControllerBuilder().setImageRequest(request) as PipelineDraweeControllerBuilder).setOldController(imageView.controller) as PipelineDraweeControllerBuilder).build()
+        }
+    }
+
+    /**
+     * blur
+     */
+    override fun showBlur(imageView: ImageView?, uri: Uri?, blurRadius: Int?) {
+        if (uri == null || imageView == null || imageView !is SimpleDraweeView) {
+            CXLogUtil.w(TAG, "uri == null or imageView !is SimpleDraweeView, return. ")
+        } else {
+            val requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
+            if (blurRadius != null) requestBuilder.setPostprocessor(IterativeBoxBlurPostProcessor(blurRadius))
+            requestBuilder.setProgressiveRenderingEnabled(true).build()
+            imageView.controller = ((Fresco.newDraweeControllerBuilder().setImageRequest(requestBuilder.build()) as PipelineDraweeControllerBuilder).setOldController(imageView.controller) as PipelineDraweeControllerBuilder).build()
         }
     }
 

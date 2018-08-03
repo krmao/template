@@ -29,6 +29,15 @@ object CXImageManager {
     fun show(imageView: ImageView?, resId: Int?) = show(imageView, getResUriString(resId))
 
     @JvmStatic
+    fun showBlur(imageView: ImageView?, uri: Uri?, blurRadius: Int?) = imageHandler?.showBlur(imageView, uri, blurRadius)
+
+    @JvmStatic
+    fun showBlur(imageView: ImageView?, uriString: String?, blurRadius: Int?) = showBlur(imageView, getUri(uriString), blurRadius)
+
+    @JvmStatic
+    fun showBlur(imageView: ImageView?, resId: Int?, blurRadius: Int?) = showBlur(imageView, getResUriString(resId), blurRadius)
+
+    @JvmStatic
     fun download(uri: Uri?, callback: (bitmap: Bitmap?) -> Unit?) = imageHandler?.download(uri, callback)
 
     @JvmStatic

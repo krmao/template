@@ -200,8 +200,9 @@ object ReactManager {
     @JvmStatic
     fun isCurrentLoadModeServer(): Boolean = devSettingsManager.getDebugHttpHost().isNotEmpty()
 
+    @Deprecated("只有第一次进入 ReactActivity 的时候是 true, 后面再调用却变成了 false, 未知缘由", ReplaceWith(""))
     @JvmStatic
-    fun devSupportEnabled(): Boolean = instanceManager?.devSupportManager?.devSupportEnabled == true
+    private fun devSupportEnabled(): Boolean = instanceManager?.devSupportManager?.devSupportEnabled == true
 
     @JvmStatic
     private fun getInstanceBuilder(bundleLoader: JSBundleLoader, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {

@@ -1,23 +1,17 @@
-package com.smart.library.deploy.preference
+package com.smart.library.deploy
 
-import com.smart.library.deploy.CXDeployManager
-import com.smart.library.deploy.model.bundle.CXBundleInfo
+import com.smart.library.deploy.model.CXBundleInfo
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXPreferencesUtil
-import java.io.File
 
 
 @Suppress("PrivatePropertyName", "unused", "LiftReturnOrAssignment")
-class CXDeployPreferenceManager(private val type: CXDeployManager, private val rootDir: File) {
+class CXDeployPreferenceManager internal constructor(private val type: CXDeployManager) {
 
-    private val TAG = "[rn-deploy-preference]"
+    private val TAG = "[deploy-${type.name}-preference]"
 
-    private val KEY_BUNDLE_APPLIED by lazy {
-        "KEY_BUNDLE_APPLIED_${type.name}"
-    }
-    private val KEY_BUNDLE_TEMP by lazy {
-        "KEY_BUNDLE_TEMP_${type.name}"
-    }
+    private val KEY_BUNDLE_APPLIED by lazy { "KEY_DEPLOY_BUNDLE_APPLIED_${type.name}" }
+    private val KEY_BUNDLE_TEMP by lazy { "KEY_DEPLOY_BUNDLE_TEMP_${type.name}" }
 
     /**
      * tempZipFile 准备好后, 保存

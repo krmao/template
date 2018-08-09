@@ -6,7 +6,7 @@
     android:background="@color/pink"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:ignore="HardcodedText,SpUsage">
+    tools:ignore="HardcodedText,SpUsage,SmallSp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -270,6 +270,16 @@
             android:textStyle="bold|italic" />
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/rn_info_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_50"
+        android:padding="5dp"
+        android:textColor="#999"
+        android:textSize="10sp"
+        android:textStyle="italic" />
+
     <Button
         android:id="@+id/start_tv"
         android:layout_width="match_parent"
@@ -278,6 +288,19 @@
         android:gravity="center"
         android:padding="20dp"
         android:text="click to start"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold|italic"
+        android:theme="@style/CXButton.Default" />
+
+    <Button
+        android:id="@+id/back_to_offline_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="back to offline"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold|italic"

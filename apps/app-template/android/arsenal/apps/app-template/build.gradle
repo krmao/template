@@ -37,7 +37,7 @@ android {
             abiFilters 'armeabi-v7a', 'x86' // ,'x86_64', 'arm64-v8a'
         }
 
-        manifestPlaceholders = [DEBUG: rootProject.ext.debug]
+        manifestPlaceholders = [DEBUG: rootProject.ext.debug, VERSION_RN: rootProject.ext.versionRN]
     }
 
     useLibrary 'org.apache.http.legacy'

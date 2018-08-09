@@ -1,17 +1,18 @@
-package com.smart.library.deploy.model.bundle
+package com.smart.library.deploy.model
 
 import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.cache.CXCacheManager
+import com.smart.library.deploy.model.CXBundleInfo
 import java.io.File
 
 /**
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
-class CXDeployBundleHelper(val debug: Boolean, info: CXBundleInfo, rootDir: File) : CXIBundleHelper(info, rootDir) {
+class CXDeployBundleHelper(val debug: Boolean, info: CXBundleInfo, rootDir: File, TAG: String) : CXIBundleHelper(info, rootDir, TAG) {
 
     fun getApplyZipFile(): File = File(getApplyDir(), String.format(CXDeployConstants.FILE_NAME_APPLY_ZIP, info.version).md5(debug))
     fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(CXDeployConstants.DIR_NAME_APPLY_UNZIP, info.version).md5(debug))

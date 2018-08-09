@@ -1,5 +1,6 @@
 package com.smart.template.module.rn.dev
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
@@ -11,13 +12,12 @@ import android.widget.LinearLayout
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXToastUtil
-import com.smart.template.module.rn.R
-import com.smart.template.module.rn.ReactActivity
-import com.smart.template.module.rn.ReactJumper
-import com.smart.template.module.rn.ReactManager
+import com.smart.template.module.rn.*
 import kotlinx.android.synthetic.main.rn_dev_settings_view.view.*
 
+@SuppressLint("SetTextI18n")
 class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+
     init {
         LayoutInflater.from(context).inflate(R.layout.rn_dev_settings_view, this)
 
@@ -124,6 +124,12 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             }
         }
 
+        back_to_offline_tv.setOnClickListener {
+            CXSystemUtil.sendKeyDownEventBack(context)
+
+            ReactManager.reloadBundleFromOnlineToOffline()
+        }
+
         show_rn_dev_dialog_tv.setOnClickListener {
             CXSystemUtil.sendKeyDownEventBack(context)
 
@@ -133,6 +139,8 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             }
 
         }
+
+        rn_info_tv.text = "VERSION_RN_BASE: ${ReactConstant.VERSION_RN_BASE}\nVERSION_RN_CURRENT: ${ReactConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
     }
 
 }

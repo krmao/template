@@ -1,9 +1,9 @@
-package com.smart.library.deploy.model.bundle
+package com.smart.library.deploy.model
 
 import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
-import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
-import com.smart.library.deploy.preference.CXDeployPreferenceManager
+import com.smart.library.deploy.CXDeployManager
+import com.smart.library.deploy.CXDeployPreferenceManager
 import com.smart.library.util.CXChecksumUtil
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
@@ -16,9 +16,12 @@ import java.io.File
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
-class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File, val preferenceManager: CXDeployPreferenceManager) {
+class CXPatchHelper(type: CXDeployManager, val info: CXPatchInfo) {
 
-    private val TAG: String = "[rn-deploy]"
+    val TAG: String by lazy { type.TAG }
+    val debug: Boolean by lazy { type.isDebug() }
+    val rootDir: File by lazy { type.getRootDir() }
+    val preferenceManager: CXDeployPreferenceManager by lazy { type.preferenceManager }
 
     fun getApplyDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_APPLY.md5(debug))
     fun getApplyZipFile(): File = File(getApplyDir(), String.format(CXDeployConstants.FILE_NAME_APPLY_ZIP, info.toVersion).md5(debug))
@@ -40,13 +43,14 @@ class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File
     }
 
     fun merge(baseBundleHelper: CXBaseBundleHelper): Boolean {
-        CXLogUtil.v(CXDeployClientForReactNative.TAG, "merge start")
+        CXLogUtil.v(TAG, "merge start")
         if (!checkTempBundleFileValid()) {
             if (checkPatchFileValid()) {
                 if (baseBundleHelper.info.version == info.baseVersion) {
                     val tempZipFile = getTempZipFile()
 
                     if (tempZipFile.exists()) {
+                        CXLogUtil.e(TAG, "rm dest zip file ${tempZipFile.absolutePath}")
                         CXFileUtil.deleteFile(tempZipFile)
                     }
 
@@ -57,12 +61,17 @@ class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File
                             return checkTempBundleFileValid() && copyAndUnzipToApplyDir()
                         }
                     } catch (e: Exception) {
-                        CXLogUtil.e(TAG, e)
+                        CXLogUtil.e(TAG, "merge exception", e)
                     }
+                } else {
+                    CXLogUtil.e(TAG, "merge failure, local base version is not equal to path's base version")
                 }
+            } else {
+                CXLogUtil.e(TAG, "merge failure, checkPatchFileValid == false")
             }
             return false
         } else {
+            CXLogUtil.w(TAG, "merge checkTempBundleFileValid == true, start copyAndUnzipToApplyDir")
             return copyAndUnzipToApplyDir()
         }
     }
@@ -84,7 +93,7 @@ class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File
 
     @Synchronized
     fun copyAndUnzipToApplyDir(): Boolean {
-        CXLogUtil.v(CXDeployClientForReactNative.TAG, "copyAndUnzipToApplyDir start")
+        CXLogUtil.v(TAG, "copyAndUnzipToApplyDir start")
         val fromZipFile = getTempZipFile()
         val toZipFile = getApplyZipFile()
         val toUnzipDir = getApplyUnzipDir()
@@ -93,20 +102,20 @@ class CXPatchHelper(val debug: Boolean, val info: CXPatchInfo, val rootDir: File
             if (toZipFile.exists()) toZipFile.delete()
             CXFileUtil.fileChannelCopy(fromZipFile, toZipFile)
             if (checkZipFileValid(toZipFile)) {
-                CXLogUtil.d(CXDeployClientForReactNative.TAG, "copy bundle.zip to apply dir success")
+                CXLogUtil.d(TAG, "copy bundle.zip to apply dir success")
                 if (CXZipUtil.unzipToDirOrFalse(toZipFile, toUnzipDir) && checkUnzipDirValid()) {
-                    CXLogUtil.d(CXDeployClientForReactNative.TAG, "unzip bundle.zip success")
+                    CXLogUtil.d(TAG, "unzip bundle.zip success")
                     preferenceManager.saveTempBundleInfo(getTempBundleInfo())
                     clearTempFiles()
                     return true
                 } else {
-                    CXLogUtil.e(CXDeployClientForReactNative.TAG, "unzip bundle.zip failure")
+                    CXLogUtil.e(TAG, "unzip bundle.zip failure")
                 }
             } else {
-                CXLogUtil.e(CXDeployClientForReactNative.TAG, "copy bundle.zip to apply dir failure")
+                CXLogUtil.e(TAG, "copy bundle.zip to apply dir failure")
             }
         }
-        CXLogUtil.e(CXDeployClientForReactNative.TAG, "copyAndUnzipToApplyDir failure")
+        CXLogUtil.e(TAG, "copyAndUnzipToApplyDir failure")
         return false
     }
 

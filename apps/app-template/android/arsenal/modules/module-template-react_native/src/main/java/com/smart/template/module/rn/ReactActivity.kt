@@ -16,10 +16,10 @@ import com.facebook.react.devsupport.DoubleTapReloadRecognizer
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
-import com.smart.library.deploy.model.bundle.CXRNAllPagesClosedEvent
+import com.smart.library.deploy.CXDeployManager
+import com.smart.library.deploy.model.CXIDeployCheckUpdateCallback
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
-import com.smart.library.util.rx.RxBus
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -28,23 +28,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         const val KEY_RESULT: String = "rn_result"
         const val KEY_START_COMPONENT: String = "rn_start_component"
         const val KEY_REQUEST_CODE: String = "rn_request_code"
-
-        @Volatile
-        @JvmStatic
-        private var activityStartedCount: Int = 0
-            set(value) {
-                field = value
-                CXLogUtil.v(ReactManager.TAG, "rn opened pages count = $value")
-                if (value == 0) RxBus.post(CXRNAllPagesClosedEvent())
-            }
-
-        fun isAtLeastOnePageOpened(): Boolean {
-            return activityStartedCount > 0
-        }
-
-        fun isAllPagesClosed(): Boolean {
-            return activityStartedCount == 0
-        }
 
         @JvmStatic
         @JvmOverloads
@@ -83,7 +66,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     private val initialProperties: Bundle? by lazy { intent.extras }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityStartedCount++
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
         reactRootView = ReactRootView(this)
@@ -100,16 +82,32 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
         if (reactInstanceManager != null) {
 
-            /**
-             * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
-             * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
-             */
-            if (ReactManager.debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-                startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
-            } else {
-                startReactApplication()
-            }
+            CXDeployManager.REACT_NATIVE.onCreate(object : CXIDeployCheckUpdateCallback {
+                override fun onCheckUpdateCallback(isHaveNewVersion: Boolean) {
+                    CXLogUtil.w(TAG, "onCheckUpdateCallback($isHaveNewVersion)")
+                }
 
+                override fun onDownloadCallback(downloadSuccess: Boolean) {
+                    CXLogUtil.w(TAG, "onDownloadCallback($downloadSuccess)")
+                }
+
+                override fun onMergePatchCallback(mergeSuccess: Boolean) {
+                    CXLogUtil.w(TAG, "onMergePatchCallback($mergeSuccess)")
+                }
+
+                override fun onApplyCallback(applySuccess: Boolean) {
+                    CXLogUtil.w(TAG, "onApplyCallback($applySuccess)")
+                    /**
+                     * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
+                     * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
+                     */
+                    if (ReactManager.debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this@ReactActivity)) {
+                        startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
+                    } else {
+                        startReactApplication()
+                    }
+                }
+            })
         } else {
             CXLogUtil.e(TAG, "请提供可以被 RN 初始化的离线包或者远程调试主机")
             CXToastUtil.show("请提供可以被 RN 初始化的离线包或者远程调试主机")
@@ -226,7 +224,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactRootView = null
         reactInstanceManager?.onHostDestroy(this)
         super.onDestroy()
-        activityStartedCount--
+        CXDeployManager.REACT_NATIVE.onDestroy()
     }
 
 }

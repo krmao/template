@@ -1,4 +1,4 @@
-package com.smart.library.deploy.model.bundle
+package com.smart.library.deploy.model
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 data class CXPatchInfo(

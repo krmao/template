@@ -1,4 +1,4 @@
-package com.smart.library.deploy.model.bundle
+package com.smart.library.deploy.model
 
 import com.smart.library.base.md5
 import com.smart.library.deploy.CXDeployConstants
@@ -8,7 +8,7 @@ import java.io.File
 /**
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
-class CXBaseBundleHelper(val debug: Boolean, info: CXBundleInfo, rootDir: File, val pathInAssets: String) : CXIBundleHelper(info, rootDir) {
+class CXBaseBundleHelper(val debug: Boolean, info: CXBundleInfo, rootDir: File, val pathInAssets: String, TAG: String) : CXIBundleHelper(info, rootDir, TAG) {
 
     fun getBaseDir(): File = CXCacheManager.getChildDir(rootDir, CXDeployConstants.DIR_NAME_BASE.md5(debug))
     fun getBaseZipFile(): File = File(getBaseDir(), String.format(CXDeployConstants.FILE_NAME_BASE_ZIP, info.version).md5(debug))

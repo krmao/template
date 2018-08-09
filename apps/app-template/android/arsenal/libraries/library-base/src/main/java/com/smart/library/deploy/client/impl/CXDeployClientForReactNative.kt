@@ -4,14 +4,15 @@ package com.smart.library.deploy.client.impl
 
 import com.smart.library.base.CXApplicationVisibleChangedEvent
 import com.smart.library.deploy.CXDeployManager
+import com.smart.library.deploy.CXDeployPreferenceManager
 import com.smart.library.deploy.client.CXIDeployClient
-import com.smart.library.deploy.model.bundle.*
-import com.smart.library.deploy.preference.CXDeployPreferenceManager
+import com.smart.library.deploy.model.*
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXZipUtil
-import com.smart.library.util.cache.CXCacheManager
 import com.smart.library.util.rx.RxBus
+import com.smart.library.deploy.model.CXBaseBundleHelper
+import com.smart.library.deploy.model.CXBundleInfo
 import java.io.File
 import java.util.*
 
@@ -29,24 +30,17 @@ import java.util.*
  *
  */
 @Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
-open class CXDeployClientForReactNative(
-        val debug: Boolean,
-        val baseInfoOfBundle: CXBundleInfo,
-        val rootDir: File = CXCacheManager.getFilesHotPatchReactNativeDir(),
-        val pathInAssets: String,
-        val checkHandler: ((bundleInfo: CXBundleInfo?, patchInfo: CXPatchInfo?, downloadUrl: String?, isPatch: Boolean) -> Unit?) -> Unit?,
-        val downloadHandler: (patchDownloadUrl: String?, toFile: File, callback: (file: File) -> Unit) -> Unit?,
-        val reloadHandler: (indexBundleFileInSdcard: File) -> Boolean,
-        val isRNOpenedHandler: () -> Boolean,
-        val initCallback: (indexBundleFile: File?) -> Unit?
+internal class CXDeployClientForReactNative(
+        private val debug: Boolean,
+        private val rootDir: File,
+        private val deployConfig: CXDeployConfigModel,
+        private val TAG: String = CXDeployManager.REACT_NATIVE.TAG
 ) : CXIDeployClient {
 
-    companion object {
-        const val TAG: String = "[rn-deploy]"
-    }
+    override fun getRootDir(): File = this.rootDir
 
-    private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(debug, baseInfoOfBundle, rootDir, pathInAssets) }
-    private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployPreferenceManager(CXDeployManager.REACT_NATIVE, rootDir) }
+    private val baseBundleHelper: CXBaseBundleHelper by lazy { CXBaseBundleHelper(debug, deployConfig.baseBundle, rootDir, deployConfig.baseBundlePathInAssets, TAG) }
+    private val preferenceManager: CXDeployPreferenceManager by lazy { CXDeployManager.REACT_NATIVE.preferenceManager }
 
     private val onReadyCallbackList: Vector<() -> Unit?> = Vector()
     @Volatile
@@ -71,17 +65,11 @@ open class CXDeployClientForReactNative(
         }
     }
 
-    private fun detectRNAllPagesClosedEvent() {
-        RxBus.toObservable(CXRNAllPagesClosedEvent::class.java).subscribe {
-            apply()
-        }
-    }
-
     private fun getLatestValidAppliedBundleHelper(): CXIBundleHelper? {
         val appliedBundleInfo: CXBundleInfo? = preferenceManager.getAppliedBundleInfo()
 
         if (appliedBundleInfo != null) {
-            val appliedBundleHelper = CXDeployBundleHelper(debug, appliedBundleInfo, rootDir)
+            val appliedBundleHelper = CXDeployBundleHelper(debug, appliedBundleInfo, rootDir, TAG)
             if (appliedBundleHelper.checkUnzipDirValid()) {
                 return appliedBundleHelper
             }
@@ -107,12 +95,26 @@ open class CXDeployClientForReactNative(
         return copyAndCheckSuccess
     }
 
+
+    private var isChecking = false
     /**
      * 检查是否有需要处理的更新
      * bundle-rn-1.zip
      */
-    override fun check() {
-        checkHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
+    override fun checkUpdate(checkUpdateCallback: CXIDeployCheckUpdateCallback?) {
+        CXLogUtil.e(TAG, "checkUpdate beginning -->")
+        //todo 临时处理, 上一次更新没处理结束, 禁止开始下一次更新, 多线程问题
+        if (isChecking) {
+            CXLogUtil.e(TAG, "checkUpdate, last checking is not completely")
+            checkUpdateCallback?.onCheckUpdateCallback(false)
+            checkUpdateCallback?.onDownloadCallback(false)
+            checkUpdateCallback?.onMergePatchCallback(false)
+            checkUpdateCallback?.onApplyCallback(false)
+            return
+        }
+        isChecking = true
+
+        deployConfig.checkUpdateHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
             val latestValidAppliedBundleHelper = getLatestValidAppliedBundleHelper()
             CXLogUtil.w(TAG, "isPatch=$isPatch, baseBundleInfo   = ${baseBundleHelper.info}")
             CXLogUtil.w(TAG, "isPatch=$isPatch, latestValidAppliedBundleInfo   = ${latestValidAppliedBundleHelper?.info}")
@@ -121,52 +123,99 @@ open class CXDeployClientForReactNative(
                 val latestValidAppliedBundleVersion = latestValidAppliedBundleHelper?.info?.version ?: patchInfo.baseVersion
                 CXLogUtil.e(TAG, "isPatch=$isPatch, latestValidAppliedBundleVersion=$latestValidAppliedBundleVersion, remoteVersion=${patchInfo.toVersion} ")
                 if (downloadUrl != null && (patchInfo.baseVersion == baseBundleHelper.info.version) && patchInfo.toVersion > latestValidAppliedBundleVersion) {
-                    val patchHelper = CXPatchHelper(debug, patchInfo, rootDir, preferenceManager)
+                    checkUpdateCallback?.onCheckUpdateCallback(true)
+                    val patchHelper = CXPatchHelper(CXDeployManager.REACT_NATIVE, patchInfo)
                     if (!patchHelper.checkZipFileValid(patchHelper.getApplyZipFile()) && !patchHelper.checkUnzipDirValid()) {
 
                         if (!patchHelper.checkTempBundleFileValid()) {
                             if (!patchHelper.checkPatchFileValid()) {
                                 CXLogUtil.w(TAG, "checkPatchFileValid invalid, start download patch")
-                                downloadPatch(CXPatchHelper(debug, patchInfo, rootDir, preferenceManager), downloadUrl)
+                                downloadPatch(CXPatchHelper(CXDeployManager.REACT_NATIVE, patchInfo), downloadUrl,
+                                        downloadCallback = {
+                                            checkUpdateCallback?.onDownloadCallback(it)
+                                        },
+                                        mergeCallback = {
+                                            checkUpdateCallback?.onMergePatchCallback(it)
+                                        },
+                                        applyCallback = {
+                                            checkUpdateCallback?.onApplyCallback(it)
+                                        }
+                                )
                             } else {
                                 CXLogUtil.e(TAG, "patch file is valid now, no need to download, need merge and copy to apply")
-                                merge(patchHelper)
+                                checkUpdateCallback?.onDownloadCallback(true)
+                                merge(patchHelper,
+                                        mergeCallback = {
+                                            checkUpdateCallback?.onMergePatchCallback(it)
+                                        },
+                                        applyCallback = {
+                                            checkUpdateCallback?.onApplyCallback(it)
+                                        })
+                                isChecking = false
                             }
                         } else {
                             CXLogUtil.e(TAG, "checkTempBundleFileValid is valid now, no need to download, need copy to apply")
-                            merge(patchHelper)
+                            checkUpdateCallback?.onDownloadCallback(true)
+                            merge(patchHelper,
+                                    mergeCallback = {
+                                        checkUpdateCallback?.onMergePatchCallback(it)
+                                    },
+                                    applyCallback = {
+                                        checkUpdateCallback?.onApplyCallback(it)
+                                    })
+                            isChecking = false
                         }
                     } else {
+                        isChecking = false
                         CXLogUtil.e(TAG, "apply zip and unzip files is valid now, no need to download")
+                        checkUpdateCallback?.onDownloadCallback(true)
+                        checkUpdateCallback?.onMergePatchCallback(true)
+                        tryApply { checkUpdateCallback?.onApplyCallback(it) }
                     }
                 } else {
-                    CXLogUtil.e(TAG, "check version is no need to download")
+                    isChecking = false
+                    CXLogUtil.e(TAG, "checkUpdate version is no need to download")
+                    checkUpdateCallback?.onCheckUpdateCallback(false)
+                    checkUpdateCallback?.onDownloadCallback(false)
+                    checkUpdateCallback?.onMergePatchCallback(false)
+                    checkUpdateCallback?.onApplyCallback(false)
                 }
             } else if (bundleInfo != null) {
                 CXLogUtil.w(TAG, "isPatch=$isPatch, remoteBundleInfo = $bundleInfo")
                 // todo not complete
                 if (downloadUrl != null && bundleInfo.version > baseBundleHelper.info.version) {
-                    val deployBundleHelper = CXDeployBundleHelper(debug, bundleInfo, rootDir)
+                    val deployBundleHelper = CXDeployBundleHelper(debug, bundleInfo, rootDir, TAG)
                     if (!deployBundleHelper.checkZipFileValid(deployBundleHelper.getTempZipFile()) && !deployBundleHelper.checkUnzipDirValid()) {
-                        download(CXDeployBundleHelper(debug, bundleInfo, rootDir), downloadUrl)
+                        download(CXDeployBundleHelper(debug, bundleInfo, rootDir, TAG), downloadUrl)
                     } else {
                         CXLogUtil.e(TAG, "apply zip and unzip files is valid now, no need to download")
                     }
                 } else {
-                    CXLogUtil.e(TAG, "check version is no need to download")
+                    CXLogUtil.e(TAG, "checkUpdate version is no need to download")
                 }
+            } else {
+                checkUpdateCallback?.onCheckUpdateCallback(false)
+                checkUpdateCallback?.onDownloadCallback(false)
+                checkUpdateCallback?.onMergePatchCallback(false)
+                checkUpdateCallback?.onApplyCallback(false)
             }
         }
+    }
+
+    override fun checkUpdate() {
+        checkUpdate(null)
     }
 
     /**
      * 下载新的更新数据
      */
-    fun download(deployBundleHelper: CXDeployBundleHelper, downloadUrl: String) {
-        downloadHandler.invoke(downloadUrl, deployBundleHelper.getTempZipFile()) { bundleFile: File? ->
+    fun download(deployBundleHelper: CXDeployBundleHelper, downloadUrl: String, applyCallback: ((applySuccess: Boolean) -> Unit?)? = null) {
+        deployConfig.downloadHandler.invoke(downloadUrl, deployBundleHelper.getTempZipFile()) { bundleFile: File? ->
             if (deployBundleHelper.checkZipFileValid(bundleFile)) {
                 preferenceManager.saveTempBundleInfo(deployBundleHelper.info)
-                apply()
+                tryApply(applyCallback)
+            } else {
+                applyCallback?.invoke(false)
             }
         }
     }
@@ -174,38 +223,60 @@ open class CXDeployClientForReactNative(
     /**
      * 下载新的更新数据
      */
-    fun downloadPatch(patchHelper: CXPatchHelper, downloadUrl: String) {
-        downloadHandler.invoke(downloadUrl, patchHelper.getTempPatchFile()) { patchFile: File? ->
-            merge(patchHelper)
+    fun downloadPatch(patchHelper: CXPatchHelper, downloadUrl: String, downloadCallback: ((applySuccess: Boolean) -> Unit?)? = null, mergeCallback: ((mergeSuccess: Boolean) -> Unit?)? = null, applyCallback: ((applySuccess: Boolean) -> Unit?)? = null) {
+        CXLogUtil.e(TAG, "downloadHandler invoke start")
+        deployConfig.downloadHandler.invoke(downloadUrl, patchHelper.getTempPatchFile()) { patchFile: File? ->
+            CXLogUtil.e(TAG, "downloadHandler invoke end, patchFile=${patchFile?.absolutePath}")
+            if (patchFile?.exists() == true) {
+                CXLogUtil.e(TAG, "downloadPatch success, start merge ${patchFile.absolutePath}")
+                downloadCallback?.invoke(true)
+                merge(patchHelper, mergeCallback, applyCallback)
+                isChecking = false
+            } else {
+                CXLogUtil.e(TAG, "downloadPatch failure, end checkUpdate")
+                isChecking = false
+                downloadCallback?.invoke(false)
+                mergeCallback?.invoke(false)
+                applyCallback?.invoke(false)
+            }
         }
     }
 
-    fun merge(patchHelper: CXPatchHelper) {
-        CXLogUtil.e(TAG, "merge")
+    fun merge(patchHelper: CXPatchHelper, mergeCallback: ((mergeSuccess: Boolean) -> Unit?)? = null, applyCallback: ((applySuccess: Boolean) -> Unit?)? = null) {
+        CXLogUtil.e(TAG, "merge, tempPatchFilePath=${patchHelper.getTempPatchFile().absolutePath}")
         if (patchHelper.merge(baseBundleHelper)) {
-            apply()
+            mergeCallback?.invoke(true)
+            tryApply(applyCallback)
+        } else {
+            mergeCallback?.invoke(false)
+            applyCallback?.invoke(false)
         }
+    }
+
+    override fun tryApply() {
+        tryApply(null)
     }
 
     /**
      * 在合适的实际删除老的更新数据, 并拷贝新的更新数据到目标位置
+     * @param only apply valid tempInfo, return success:true
      */
     @Synchronized
-    fun apply() {
-        CXLogUtil.d(TAG, "apply check start")
-        if (!isRNOpenedHandler.invoke()) {
+    override fun tryApply(applyCallback: ((applySuccess: Boolean) -> Unit?)?) {
+        CXLogUtil.d(TAG, "tryApply ...")
+        if (CXDeployManager.REACT_NATIVE.isAllPagesClosed()) {
             CXLogUtil.e(TAG, "apply rn didn't opened, apply start")
 
             synchronized(this) {
 
                 val tempBundleInfo: CXBundleInfo? = preferenceManager.getTempBundleInfo()
                 if (tempBundleInfo != null) {
-                    val deployBundleHelper = CXDeployBundleHelper(debug, tempBundleInfo, rootDir)
+                    val deployBundleHelper = CXDeployBundleHelper(debug, tempBundleInfo, rootDir, TAG)
 
                     if (deployBundleHelper.checkUnzipDirValid()) {
                         CXLogUtil.w(TAG, "apply checkUnzipDirValid(${deployBundleHelper.getApplyUnzipDir()}) success")
 
-                        reloadHandler.invoke(deployBundleHelper.getIndexFile())
+                        deployConfig.reloadHandler.invoke(deployBundleHelper.getIndexFile(), deployBundleHelper.info.version)
 
                         CXLogUtil.d(TAG, "apply reload success")
 
@@ -217,7 +288,7 @@ open class CXDeployClientForReactNative(
 
                         if (oldAppliedInfo != null && oldAppliedInfo.version != tempBundleInfo.version) {
                             CXLogUtil.d(TAG, "apply clearOldApplyFiles")
-                            CXDeployBundleHelper(debug, oldAppliedInfo, rootDir).clearApplyFiles()
+                            CXDeployBundleHelper(debug, oldAppliedInfo, rootDir, TAG).clearApplyFiles()
                         } else {
                             CXLogUtil.d(TAG, "apply oldAppliedInfo == null, or oldAppliedInfo.version == tempBundleInfo.version, just save")
                         }
@@ -227,30 +298,36 @@ open class CXDeployClientForReactNative(
                         preferenceManager.saveTempBundleInfo(null)
 
                         CXLogUtil.d(TAG, "apply success")
+                        applyCallback?.invoke(true)
                     } else {
                         preferenceManager.saveTempBundleInfo(null)
                         CXLogUtil.e(TAG, "apply checkUnzipDirValid(${deployBundleHelper.getApplyUnzipDir()}) failure, clear temp info")
+                        applyCallback?.invoke(false)
                     }
                 } else {
                     CXLogUtil.e(TAG, "apply getTempBundleInfo failure")
+                    applyCallback?.invoke(false)
                 }
 
             }
         } else {
             CXLogUtil.e(TAG, "apply rn did opened, apply cancel")
+            applyCallback?.invoke(false)
         }
     }
 
     init {
         CXLogUtil.w(TAG, "initialize start")
         isReadyForOpen = false
-        apply()
-        val indexFile = getIndexBundleFile()
-        initCallback.invoke(indexFile)
-        detectRNAllPagesClosedEvent()
+        tryApply()
+
+        val validBundleHelper = getLatestValidAppliedBundleHelper()
+
+        deployConfig.initCallback.invoke(validBundleHelper?.getIndexFile(), validBundleHelper?.info?.version)
         RxBus.toObservable(CXApplicationVisibleChangedEvent::class.java).subscribe {
             if (!it.isApplicationVisible) {
-                check()
+                CXLogUtil.e(TAG, "detect isApplicationVisible=false, start checkUpdate")
+                checkUpdate()
             }
         }
     }

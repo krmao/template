@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.support.annotation.UiThread
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactInstanceManagerBuilder
@@ -18,18 +19,22 @@ import com.facebook.react.shell.MainPackageConfig
 import com.facebook.react.shell.MainReactPackage
 import com.facebook.react.uimanager.UIImplementationProvider
 import com.smart.library.base.CXBaseApplication
+import com.smart.library.deploy.CXDeployManager
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheManager
 import com.smart.template.module.rn.dev.ReactDevSettingsManager
 import com.smart.template.module.rn.packages.ReactCustomPackage
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
 object ReactManager {
-    const val TAG: String = "[rn]"
+    const val TAG: String = "[REACT_NATIVE]"
 
     const val KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP: String = "KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP"
     const val KEY_RN_CALL_NATIVE_RESULT_HASH_MAP: String = "KEY_RN_CALL_NATIVE_RESULT_HASH_MAP"
@@ -43,6 +48,7 @@ object ReactManager {
     var debug: Boolean = CXBaseApplication.DEBUG
         private set
 
+    var versionOfIndexBundleFileInSdcard: Int? = null
     var indexBundleFileInSdcard: File? = null
         set(value) {
             CXLogUtil.w(TAG, "indexBundleFileInSdcard has changed from ${field?.absolutePath} to ${value?.absolutePath}")
@@ -59,31 +65,56 @@ object ReactManager {
 
                 // 率先检查 sdCard, 然后再检查 assets, 注意先后顺序
                 if (checkValidBundleInSdcard(indexBundleFileInSdcard) && bundlePathInSdcard != null && !bundlePathInSdcard.isNullOrBlank()) {
+                    ReactConstant.VERSION_RN_CURRENT = versionOfIndexBundleFileInSdcard ?: 0
                     CXLogUtil.e(TAG, "checkValidBundleInSdcard=true")
                     val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInSdcard, bundlePathInSdcard, false)
                     field = initInstanceManager(bundleLoader)
                 } else if (checkValidBundleInAssets(bundlePathInAssets)) {
+                    ReactConstant.VERSION_RN_CURRENT = ReactConstant.VERSION_RN_BASE
                     CXLogUtil.e(TAG, "checkValidBundleInAssets=true")
                     val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
                     field = initInstanceManager(bundleLoader)
                 } else if (checkValidRemoteDebugServer()) {
+                    ReactConstant.VERSION_RN_CURRENT = -1
                     CXLogUtil.e(TAG, "checkValidRemoteDebugServer=true")
                     val bundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(devSettingsManager.getDebugHttpHost(), null)
                     field = initInstanceManager(bundleLoader)
                 } else {
+                    ReactConstant.VERSION_RN_CURRENT = 0
                     CXLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 }
             }
-            CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}")
+            CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
             return field
         }
 
+    @UiThread
     @JvmStatic
     @Synchronized
-    fun reloadBundleFromSdcard(indexBundleFileInSdcard: File?) {
-        if (indexBundleFileInSdcard?.exists() == true) {
-            CXLogUtil.w(TAG, "reloadBundleFromSdcard start")
+    fun reloadBundleFromOnlineToOffline() {
+        if (!CXDeployManager.REACT_NATIVE.isAllPagesClosed()) {
+            CXToastUtil.show("请先关闭所有的 RN 相关页面")
+            return
+        }
+        Flowable.fromCallable {
+            devSettingsManager.setDebugHttpHost("")
+            val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
+            CXLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
+            CXFileUtil.deleteFile(downloadedJSBundleFilePath)
+            CXToastUtil.show("reloadBundleFromSdcard now\ncurrentHost:${devSettingsManager.getDebugHttpHost()}")
+            reloadBundleFromSdcard()
+        }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    @UiThread
+    @JvmStatic
+    @JvmOverloads
+    @Synchronized
+    fun reloadBundleFromSdcard(indexBundleFileInSdcard: File? = this.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = this.versionOfIndexBundleFileInSdcard) {
+        Flowable.fromCallable {
+            CXLogUtil.w(TAG, "reloadBundleFromSdcard start, thread name = ${Thread.currentThread().name}")
             this.indexBundleFileInSdcard = indexBundleFileInSdcard
+            this.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
             CXLogUtil.w(TAG, "reloadBundleFromSdcard destroy old instanceManager")
             instanceManager?.destroy()
             CXLogUtil.w(TAG, "reloadBundleFromSdcard set old instanceManager null")
@@ -95,10 +126,7 @@ object ReactManager {
             } else {
                 CXLogUtil.i(TAG, "instanceManager reCreate success")
             }
-
-        } else {
-            CXLogUtil.e(TAG, "reloadBundleFromSdcard failure, indexBundleFileInSdcard is not exists")
-        }
+        }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     private fun initInstanceManager(bundleLoader: JSBundleLoader): ReactInstanceManager? {
@@ -163,10 +191,11 @@ object ReactManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
+    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
         this.application = application
         this.debug = debug
         this.indexBundleFileInSdcard = indexBundleFileInSdcard
+        this.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
         this.frescoConfig = frescoConfig
         this.onCallNativeListener = onCallNativeListener
 

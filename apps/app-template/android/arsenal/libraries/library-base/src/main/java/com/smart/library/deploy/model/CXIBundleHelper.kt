@@ -1,11 +1,9 @@
-package com.smart.library.deploy.model.bundle
+package com.smart.library.deploy.model
 
 import com.smart.library.util.CXLogUtil
 import java.io.File
 
-abstract class CXIBundleHelper(val info: CXBundleInfo, val rootDir: File) {
-
-    protected val TAG = "[rn-deploy]"
+abstract class CXIBundleHelper(val info: CXBundleInfo, val rootDir: File, val TAG: String) {
 
     fun checkUnzipDirValid(): Boolean {
         val indexFile = getIndexFile()

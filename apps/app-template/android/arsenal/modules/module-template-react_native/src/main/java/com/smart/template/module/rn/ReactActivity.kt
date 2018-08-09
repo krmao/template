@@ -76,27 +76,26 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                 }
         )
 
-        reactInstanceManager = ReactManager.instanceManager
+        CXDeployManager.REACT_NATIVE.onCreate(this, object : CXIDeployCheckUpdateCallback {
+            override fun onCheckUpdateCallback(isHaveNewVersion: Boolean) {
+                CXLogUtil.w(TAG, "onCheckUpdateCallback($isHaveNewVersion)")
+            }
 
-        CXLogUtil.w(TAG, "reactInstanceManager==null?${reactInstanceManager == null}")
+            override fun onDownloadCallback(downloadSuccess: Boolean) {
+                CXLogUtil.w(TAG, "onDownloadCallback($downloadSuccess)")
+            }
 
-        if (reactInstanceManager != null) {
+            override fun onMergePatchCallback(mergeSuccess: Boolean) {
+                CXLogUtil.w(TAG, "onMergePatchCallback($mergeSuccess)")
+            }
 
-            CXDeployManager.REACT_NATIVE.onCreate(object : CXIDeployCheckUpdateCallback {
-                override fun onCheckUpdateCallback(isHaveNewVersion: Boolean) {
-                    CXLogUtil.w(TAG, "onCheckUpdateCallback($isHaveNewVersion)")
-                }
+            override fun onApplyCallback(applySuccess: Boolean) {
+                CXLogUtil.w(TAG, "onApplyCallback($applySuccess)")
+                isOnCreateAppliedSuccess = true
 
-                override fun onDownloadCallback(downloadSuccess: Boolean) {
-                    CXLogUtil.w(TAG, "onDownloadCallback($downloadSuccess)")
-                }
-
-                override fun onMergePatchCallback(mergeSuccess: Boolean) {
-                    CXLogUtil.w(TAG, "onMergePatchCallback($mergeSuccess)")
-                }
-
-                override fun onApplyCallback(applySuccess: Boolean) {
-                    CXLogUtil.w(TAG, "onApplyCallback($applySuccess)")
+                reactInstanceManager = ReactManager.instanceManager
+                CXLogUtil.w(TAG, "reactInstanceManager==null?${reactInstanceManager == null}")
+                if (reactInstanceManager != null) {
                     /**
                      * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
                      * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
@@ -106,15 +105,17 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                     } else {
                         startReactApplication()
                     }
+                } else {
+                    CXLogUtil.e(TAG, "请提供可以被 RN 初始化的离线包或者远程调试主机")
+                    CXToastUtil.show("请提供可以被 RN 初始化的离线包或者远程调试主机")
+                    finish()
+                    return
                 }
-            })
-        } else {
-            CXLogUtil.e(TAG, "请提供可以被 RN 初始化的离线包或者远程调试主机")
-            CXToastUtil.show("请提供可以被 RN 初始化的离线包或者远程调试主机")
-            finish()
-            return
-        }
+            }
+        })
     }
+
+    private var isOnCreateAppliedSuccess = false
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
@@ -224,7 +225,8 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactRootView = null
         reactInstanceManager?.onHostDestroy(this)
         super.onDestroy()
-        CXDeployManager.REACT_NATIVE.onDestroy()
+
+        if (isOnCreateAppliedSuccess) CXDeployManager.REACT_NATIVE.onDestroy()
     }
 
 }

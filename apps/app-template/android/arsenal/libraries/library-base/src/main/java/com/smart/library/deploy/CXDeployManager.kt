@@ -1,5 +1,7 @@
 package com.smart.library.deploy
 
+import android.app.Activity
+import android.support.annotation.UiThread
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.deploy.client.CXIDeployClient
 import com.smart.library.deploy.client.impl.CXDeployClientForReactNative
@@ -8,6 +10,7 @@ import com.smart.library.deploy.model.CXDeployCheckUpdateType
 import com.smart.library.deploy.model.CXDeployConfigModel
 import com.smart.library.deploy.model.CXIDeployCheckUpdateCallback
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXValueUtil
 import com.smart.library.util.cache.CXCacheManager
 import java.io.File
 
@@ -36,7 +39,8 @@ enum class CXDeployManager(private var debug: Boolean, private var rootDir: File
     /**
      * call on Activity or Fragment create lifecycle
      */
-    fun onCreate(checkUpdateCallback: CXIDeployCheckUpdateCallback) {
+    @UiThread
+    fun onCreate(activity: Activity?, checkUpdateCallback: CXIDeployCheckUpdateCallback) {
         beforePageOpeningListener(isAllPagesClosed(), object : CXIDeployCheckUpdateCallback {
             override fun onCheckUpdateCallback(isHaveNewVersion: Boolean) {
                 checkUpdateCallback.onCheckUpdateCallback(isHaveNewVersion)
@@ -51,8 +55,12 @@ enum class CXDeployManager(private var debug: Boolean, private var rootDir: File
             }
 
             override fun onApplyCallback(applySuccess: Boolean) {
-                startedCount++
-                checkUpdateCallback.onApplyCallback(applySuccess)
+                if (CXValueUtil.isValid(activity)) {
+                    startedCount++
+                    checkUpdateCallback.onApplyCallback(applySuccess)
+                } else {
+                    CXLogUtil.e(TAG, "activity is invalid, cancel init react view")
+                }
             }
         })
     }
@@ -60,6 +68,7 @@ enum class CXDeployManager(private var debug: Boolean, private var rootDir: File
     /**
      * call on Activity or Fragment destroy lifecycle
      */
+    @UiThread
     fun onDestroy() {
         startedCount--
 

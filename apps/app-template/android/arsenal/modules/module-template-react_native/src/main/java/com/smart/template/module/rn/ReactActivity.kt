@@ -138,6 +138,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactRootView?.post {
             reactInstanceManager = ReactManager.instanceManager
             reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+            if (isResumed) reactInstanceManager?.onHostResume(this, this)
         }
     }
 
@@ -158,10 +159,11 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
         reactInstanceManager?.onNewIntent(intent) ?: super.onNewIntent(intent)
     }
 
-
+    private var isResumed: Boolean = false
     override fun onResume() {
         super.onResume()
         reactInstanceManager?.onHostResume(this, this)
+        isResumed = true
     }
 
     override fun onPause() {

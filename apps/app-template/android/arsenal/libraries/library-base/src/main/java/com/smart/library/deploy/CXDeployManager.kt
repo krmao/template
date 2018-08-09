@@ -38,8 +38,8 @@ enum class CXDeployManager(private var debug: Boolean, private var rootDir: File
 
     /**
      * call on Activity or Fragment create lifecycle
+     * should call at main thread
      */
-    @UiThread
     fun onCreate(activity: Activity?, checkUpdateCallback: CXIDeployCheckUpdateCallback) {
         beforePageOpeningListener(isAllPagesClosed(), object : CXIDeployCheckUpdateCallback {
             override fun onCheckUpdateCallback(isHaveNewVersion: Boolean) {
@@ -67,8 +67,8 @@ enum class CXDeployManager(private var debug: Boolean, private var rootDir: File
 
     /**
      * call on Activity or Fragment destroy lifecycle
+     * should call at main thread
      */
-    @UiThread
     fun onDestroy() {
         startedCount--
 

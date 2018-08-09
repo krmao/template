@@ -9,6 +9,7 @@ import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.CXRouteManager
 import com.smart.library.util.CXToastUtil
 import com.smart.library.widget.debug.CXDebugFragment
+import com.smart.library.widget.debug.CXDebugManager
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -84,6 +85,11 @@ open class CXBaseActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         SwipeBackHelper.onPostCreate(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CXDebugManager.showActivityInfo(this)
     }
 
     override fun onDestroy() {

@@ -27,7 +27,10 @@ object CXConfig {
         get() = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 
     @JvmStatic
-    var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印
+    var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印, 只有debug包可用
+
+    @JvmStatic
+    var ENABLE_ACTIVITY_INFO_DEBUG = false //开启页面信息提示开关, 只有debug包可用
 
     @JvmStatic
     val NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID: Int = 100000000

@@ -7,7 +7,7 @@
     android:background="#000000"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText,SmallSp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -115,16 +115,33 @@
                 android:textSize="10sp"
                 android:textStyle="italic" />
 
-            <CheckBox
-                android:id="@+id/trace_cb"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="10dp"
-                android:button="@drawable/cx_check_button"
-                android:checked="false"
-                android:text="埋点提示"
-                android:textSize="10sp" />
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/activity_info_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:button="@drawable/cx_check_button"
+                    android:checked="false"
+                    android:text="页面信息提示"
+                    android:textSize="10sp" />
+
+                <CheckBox
+                    android:id="@+id/trace_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:button="@drawable/cx_check_button"
+                    android:checked="false"
+                    android:text="埋点提示"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/container_view_group"

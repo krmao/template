@@ -203,6 +203,9 @@ open class CXDebugFragment : CXBaseFragment() {
 
         childViewList.forEach { addChildView(it.getConstructor(Context::class.java).newInstance(context)) }
 
+        activity_info_cb.isChecked = CXConfig.ENABLE_ACTIVITY_INFO_DEBUG
+        activity_info_cb.setOnCheckedChangeListener { _, isChecked -> CXConfig.ENABLE_ACTIVITY_INFO_DEBUG = isChecked }
+
         trace_cb.isChecked = CXConfig.ENABLE_TRACE_DEBUG
         trace_cb.setOnCheckedChangeListener { _, isChecked -> CXConfig.ENABLE_TRACE_DEBUG = isChecked }
 

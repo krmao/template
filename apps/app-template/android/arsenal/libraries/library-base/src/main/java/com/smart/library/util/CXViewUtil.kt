@@ -2,16 +2,33 @@
 
 package com.smart.library.util
 
+import android.app.Activity
+import android.support.annotation.UiThread
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewConfiguration
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.webkit.WebView
 import android.widget.AbsListView
 import android.widget.TextView
 import com.smart.library.base.animateAlphaToVisibility
+import org.jetbrains.anko.forEachChild
 
-
+@Suppress("MemberVisibilityCanBePrivate")
 object CXViewUtil {
     private val TAG = CXViewUtil::class.java.simpleName
+
+    @Volatile
+    private var lastClickedTime: Long = System.currentTimeMillis()
+
+    @UiThread
+    @JvmStatic
+    fun isDoubleClicked(): Boolean {
+        val isDoubleClicked = System.currentTimeMillis() - lastClickedTime <= ViewConfiguration.getDoubleTapTimeout() // double check
+        lastClickedTime = System.currentTimeMillis()
+        return isDoubleClicked
+    }
 
     @JvmStatic
     fun animateAlphaToVisibility(visibility: Int, duration: Long = 300, vararg views: View?) = views.forEach { it?.animateAlphaToVisibility(visibility, duration) }
@@ -31,16 +48,6 @@ object CXViewUtil {
             CXLogUtil.d(TAG, "tv.width > 0 , call invoke")
             callback.invoke(tv.paint.measureText(tv.text.toString()) > (lines * (tv.width - tv.paddingLeft - tv.paddingRight)))
         } else {
-            // 一个view的有效requestLayout，会导致触发onGlobalLayout
-            // http://blog.csdn.net/litefish/article/details/53886469
-            /*tv.viewTreeObserver.addOnGlobalLayoutListener {
-                object : ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        tv.viewTreeObserver.removeGlobalOnLayoutListener(this)
-                        callback.invoke(tv.paint.measureText(tv.text.toString()) > (lines * (tv.width - tv.paddingLeft - tv.paddingRight)))
-                    }
-                }
-            }*/
             CXLogUtil.d(TAG, "tv.width <= 0 , call addOnLayoutChangeListener")
             tv.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
@@ -50,18 +57,41 @@ object CXViewUtil {
                     return true
                 }
             })
-//            tv.post {
-//                CXLogUtil.d(TAG, "onLayoutChange, width:" + tv.width)
-//                callback.invoke(tv.paint.measureText(tv.text.toString()) > (lines * (tv.width - tv.paddingLeft - tv.paddingRight)))
-//            }
-//            tv.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-//                override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-//                    tv.removeOnLayoutChangeListener(this)
-//
-//                }
-//            })
         }
     }
+
+    @JvmStatic
+    fun getAllViews(activity: Activity?): MutableList<View> = getAllChildViews(activity?.getWindow()?.getDecorView())
+
+    @JvmStatic
+    fun getAllChildViews(view: View?): MutableList<View> {
+        val allChildren = mutableListOf<View>()
+        if (view is ViewGroup) {
+            view.forEachChild {
+                allChildren.add(it)
+                allChildren.addAll(getAllChildViews(it))
+            }
+        }
+        return allChildren
+    }
+
+    private var reactViewClass: Class<*>? = null
+        get() {
+            if (field == null) {
+                try {
+                    field = java.lang.Class.forName("com.facebook.react.ReactRootView")
+                } catch (e: Exception) {
+                }
+            }
+            return field
+        }
+
+    @JvmStatic
+    fun isHaveReactView(activity: Activity?): Boolean = getAllChildViews(activity?.getWindow()?.getDecorView()).any { reactViewClass?.isInstance(it) ?: false }
+
+    @JvmStatic
+    fun isHaveWebView(activity: Activity?): Boolean = getAllChildViews(activity?.getWindow()?.getDecorView()).any { it is WebView }
+
 }
 
 /**

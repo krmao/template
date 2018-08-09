@@ -83,8 +83,8 @@ object ReactManager {
                     ReactConstant.VERSION_RN_CURRENT = 0
                     CXLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 }
+                CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
             }
-            CXLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
             return field
         }
 

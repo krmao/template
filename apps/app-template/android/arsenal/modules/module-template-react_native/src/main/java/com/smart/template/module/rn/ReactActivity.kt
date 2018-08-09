@@ -93,9 +93,7 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
                 CXLogUtil.w(TAG, "onApplyCallback($applySuccess)")
                 isOnCreateAppliedSuccess = true
 
-                reactInstanceManager = ReactManager.instanceManager
-                CXLogUtil.w(TAG, "reactInstanceManager==null?${reactInstanceManager == null}")
-                if (reactInstanceManager != null) {
+                if (ReactManager.instanceManager != null) {
                     /**
                      * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
                      * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
@@ -137,7 +135,10 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     private fun startReactApplication() {
         CXLogUtil.w(TAG, "startReactApplication")
         // loadBusinessCode()
-        reactRootView?.post { reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties) }
+        reactRootView?.post {
+            reactInstanceManager = ReactManager.instanceManager
+            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+        }
     }
 
     private fun loadBusinessCode() {

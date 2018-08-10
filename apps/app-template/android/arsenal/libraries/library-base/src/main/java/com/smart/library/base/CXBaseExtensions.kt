@@ -240,12 +240,24 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
     @Volatile
     private var isAttachedToActivity: Boolean = false
 
+    /**
+     * 备注
+     * VERSION_CODES < M (23 - Android 6.0) 时，执行onAttach(Activity)
+     * VERSION_CODES >= M (23 - Android 6.0) 时，执行onAttach(Context)
+     * V4 无此问题
+     */
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        callOnAttach()
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        CXLogUtil.w("onAttach to Activity")
+        callOnAttach()
+    }
 
+    private fun callOnAttach() {
         isAttachedToActivity = true
-
         startForResultList.forEach {
             if (activity != null && !isDetached) {
                 startActivityForResult(it.intent, it.requestCode, it.options)

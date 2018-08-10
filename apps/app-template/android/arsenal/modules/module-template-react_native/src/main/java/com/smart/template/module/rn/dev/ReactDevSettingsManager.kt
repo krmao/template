@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.facebook.react.modules.debug.interfaces.DeveloperSettings
+import com.smart.library.util.CXRegexManager
 import com.smart.template.module.rn.ReactManager
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
@@ -84,23 +85,14 @@ class ReactDevSettingsManager internal constructor(val application: Application,
      * defaultValue=""
      * example: 127.0.0.1:8081
      */
-    fun setDebugHttpHost(host: String): Boolean {
-        /*val pattern = Pattern.compile("^"
-                + "(((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}" // Domain name
-                + "|"
-                + "localhost" // localhost
-                + "|"
-                + "(([0-9]{1,3}\\.){3})[0-9]{1,3})" // Ip
-                + ":"
-                + "[0-9]{1,5}$") // Port)
-
+    fun setDebugHttpHost(host: String?): Boolean {
         if (debug) {
-            if (pattern.matcher(host).matches()) {*/
-        preferences.edit().putString("debug_http_host", host).apply()
-        return true
-        /*}
-    }
-    return false*/
+            if (host.isNullOrBlank() || CXRegexManager.isValidIPPort(host)) {
+                preferences.edit().putString("debug_http_host", host).apply()
+                return true
+            }
+        }
+        return false
     }
 
     fun getDebugHttpHost(): String {
@@ -159,10 +151,6 @@ class ReactDevSettingsManager internal constructor(val application: Application,
 
     fun getDefaultStartComponentPage(): String {
         return preferences.getString(KEY_DEFAULT_START_COMPONENT_PAGE, "")
-    }
-
-    fun reload() {
-        ReactManager.instanceManager?.devSupportManager?.handleReloadJS()
     }
 
     fun showDevOptionsDialog() {

@@ -67,53 +67,31 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             }
         })
 
-        host_et.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                ReactManager.devSettingsManager.setDebugHttpHost(s.toString())
-                //if (!ReactManager.devSettingsManager.setDebugHttpHost(s.toString())) {
-                //    CXToastUtil.show("设置 ip & port 失败, 正确的格式为 0.0.0.0:8081")
-                //}
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-
-        reload_tv.setOnClickListener {
-            CXSystemUtil.sendKeyDownEventBack(context)
-
-            Looper.myQueue().addIdleHandler {
-                ReactManager.devSettingsManager.reload()
-                false
-            }
+        clear_host_iv.setOnClickListener {
+            host_et.setText("")
+            save_tv.callOnClick()
+        }
+        host_tv.setOnLongClickListener {
+            host_et.setText("10.47.62.17:8081")
+            save_tv.callOnClick()
+            true
         }
 
-        component_et.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                ReactManager.devSettingsManager.setDefaultStartComponent(s.toString())
-            }
+        save_tv.setOnClickListener {
+            if (ReactManager.debug) {
+                ReactManager.devSettingsManager.setDefaultStartComponent(component_et.text.toString().trim())
+                ReactManager.devSettingsManager.setDefaultStartComponentPage(page_et.text.toString().trim())
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                val host = host_et.text.toString().trim().replace(" ", "").replace("．", ".").replace("：", ":")
+                if (!ReactManager.devSettingsManager.setDebugHttpHost(host)) {
+                    CXToastUtil.show("保存配置成功, IP 保存失败, 请填写有效格式")
+                } else {
+                    CXToastUtil.show("保存配置成功")
+                }
+            } else {
+                CXToastUtil.show("保存配置失败, 当前非 debug 环境")
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-
-        page_et.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                ReactManager.devSettingsManager.setDefaultStartComponentPage(s.toString())
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        }
 
         start_tv.setOnClickListener {
             CXSystemUtil.sendKeyDownEventBack(context)

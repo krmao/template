@@ -13,6 +13,7 @@ import com.facebook.react.bridge.CatalystInstanceImpl
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.bridge.Promise
 import com.facebook.react.common.LifecycleState
+import com.facebook.react.devsupport.DevLoadingViewController
 import com.facebook.react.devsupport.RedBoxHandler
 import com.facebook.react.devsupport.interfaces.StackFrame
 import com.facebook.react.shell.MainPackageConfig
@@ -97,12 +98,16 @@ object ReactManager {
             return
         }
         Flowable.fromCallable {
-            devSettingsManager.setDebugHttpHost("")
-            val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
-            CXLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
-            CXFileUtil.deleteFile(downloadedJSBundleFilePath)
-            CXToastUtil.show("reloadBundleFromSdcard now\ncurrentHost:${devSettingsManager.getDebugHttpHost()}")
-            reloadBundleFromSdcard()
+            if (devSettingsManager.setDebugHttpHost("")) {
+                CXToastUtil.show("保存配置成功(IP清空成功)")
+                val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
+                CXLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
+                CXFileUtil.deleteFile(downloadedJSBundleFilePath)
+                CXToastUtil.show("reloadBundleFromSdcard now\ncurrentHost:${devSettingsManager.getDebugHttpHost()}")
+                reloadBundleFromSdcard()
+            } else {
+                CXToastUtil.show("保存配置失败(IP清空失败)")
+            }
         }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
@@ -198,6 +203,11 @@ object ReactManager {
         this.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
         this.frescoConfig = frescoConfig
         this.onCallNativeListener = onCallNativeListener
+
+        // 禁止显示该 Dev Loading PopupWindow
+        // for bug of android.view.WindowManager$BadTokenException
+        // at com.facebook.react.devsupport.DevLoadingViewController.void showInternal()
+        DevLoadingViewController.setDevLoadingEnabled(false)
 
         // sure to call instanceManager one time
         if (instanceManager == null) {

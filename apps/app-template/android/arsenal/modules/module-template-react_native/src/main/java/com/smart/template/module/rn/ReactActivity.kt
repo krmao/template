@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactRootView
 import com.facebook.react.bridge.JSBundleLoader
-import com.facebook.react.devsupport.DoubleTapReloadRecognizer
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
@@ -57,7 +56,6 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var reactInstanceManager: ReactInstanceManager? = null
 
-    private val doubleTapReloadRecognizer by lazy { DoubleTapReloadRecognizer() }
     private val requestCode: Int by lazy { intent?.getIntExtra(KEY_REQUEST_CODE, 0) ?: 0 }
 
     private val moduleName: String?
@@ -194,29 +192,23 @@ class ReactActivity : CXBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (reactInstanceManager != null && ReactManager.debug && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
-            event.startTracking()
+        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            event.startTracking() // 追踪该按键以判断是否触发 onKeyLongPress
             return true
         }
         return super.onKeyDown(keyCode, event)
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (reactInstanceManager != null) {
-            if (keyCode == KeyEvent.KEYCODE_MENU) {
-                reactInstanceManager?.showDevOptionsDialog()
-                return true
-            }
-            if (doubleTapReloadRecognizer.didDoubleTapR(keyCode, currentFocus)) {
-                reactInstanceManager?.devSupportManager?.handleReloadJS()
-                return true
-            }
+        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_MENU) {
+            reactInstanceManager?.showDevOptionsDialog()
+            return true
         }
         return super.onKeyUp(keyCode, event)
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        if (reactInstanceManager != null && ReactManager.debug && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             reactInstanceManager?.showDevOptionsDialog()
             return true
         }

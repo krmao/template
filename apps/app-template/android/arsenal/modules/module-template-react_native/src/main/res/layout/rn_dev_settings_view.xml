@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/pink"
+    android:background="#E91E63"
     android:orientation="vertical"
     android:padding="5dp"
     tools:ignore="HardcodedText,SpUsage,SmallSp">
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/blue_300"
+                android:background="#64B5F6"
                 android:gravity="center_vertical"
                 android:padding="5dp"
                 android:text="interval"
@@ -116,7 +116,7 @@
                 android:id="@+id/profiler_interval_et"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="@color/grey_50"
+                android:background="#FAFAFA"
                 android:hint="1000"
                 android:inputType="number"
                 android:maxLines="1"
@@ -138,50 +138,47 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="130dp"
+            android:id="@+id/host_tv"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/blue_300"
+            android:background="#64B5F6"
+            android:foreground="@drawable/cx_selector"
             android:gravity="center_vertical|end"
-            android:padding="10dp"
-            android:text="host : port"
+            android:minWidth="100dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:text="地址\n长按默认"
             android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="15dp"
+            android:textStyle="bold|italic"
+            tools:ignore="RtlSymmetry" />
 
         <EditText
             android:id="@+id/host_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/grey_50"
-            android:hint="0.0.0.0:8081"
+            android:background="#FAFAFA"
+            android:digits="0123456789.:"
+            android:hint="10.47.62.17:8081"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#333"
-            android:textSize="20dp"
+            android:textSize="14dp"
             android:textStyle="italic" />
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/clear_host_iv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/accent"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/reload_tv"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/cx_selector"
-                android:gravity="center"
-                android:text="click to reload"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textStyle="bold|italic" />
-        </FrameLayout>
+            android:background="#FAFAFA"
+            android:contentDescription="@null"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_delete" />
     </LinearLayout>
 
     <LinearLayout
@@ -193,22 +190,24 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/blue_300"
+            android:background="#64B5F6"
             android:gravity="center_vertical|end"
-            android:padding="10dp"
-            android:text="component"
+            android:minWidth="100dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="模块"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <EditText
             android:id="@+id/component_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/grey_50"
+            android:background="#FAFAFA"
             android:hint="component"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -216,26 +215,26 @@
             android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#333"
-            android:textSize="20dp"
+            android:textSize="14dp"
             android:textStyle="italic" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/blue_300"
+            android:background="#64B5F6"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="to"
+            android:text="页面"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <EditText
             android:id="@+id/page_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/grey_50"
+            android:background="#FAFAFA"
             android:hint="page"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -243,9 +242,33 @@
             android:minHeight="48dp"
             android:padding="5dp"
             android:textColor="#333"
-            android:textSize="20dp"
+            android:textSize="14dp"
             android:textStyle="italic" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1px"
+        android:background="#CCFFFFFF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/save_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#64B5F6"
+            android:foreground="@drawable/cx_selector"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="━━ 点 击 保 存 ━━"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <FrameLayout
@@ -274,7 +297,7 @@
         android:id="@+id/rn_info_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey_50"
+        android:background="#FAFAFA"
         android:padding="5dp"
         android:textColor="#999"
         android:textSize="10sp"

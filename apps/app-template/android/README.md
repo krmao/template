@@ -1,3 +1,11 @@
+### query granted permissions
+```
+adb shell dumpsys package packagename
+
+// and check grantedPermissions section at the bottom of the output
+// android 6.0 为分界线, 6.0 以下都是不用询问直接赋值
+```
+
 ### [Pixel Densities](http://iconhandbook.co.uk/reference/chart/android/)
 ```
 mdpi (Baseline):	160 dpi	1×

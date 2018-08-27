@@ -112,6 +112,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }*/
 
+        if(ReactManager.bridge != nil){
+            CXLogUtil.i("bridge init success")
+        }else{
+            CXLogUtil.i("bridge init failure")
+        }
 
         rootViewController.pushViewController(ReactViewController(), animated: false)
 

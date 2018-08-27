@@ -26,6 +26,10 @@ class CXFileUtil {
         return Bundle.main.path(forResource: fileFullName, ofType: nil)
     }
 
+    static func getFileURLFromResource(_  fileFullName: String?) -> URL? {
+        return Bundle.main.url(forResource: fileFullName, withExtension: nil)
+    }
+
     static func getFileContentFromResource(_  fileFullName: String?) -> String {
         return CXFileUtil.readTextFromFile(getFilePathFromResource(fileFullName))
     }

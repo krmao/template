@@ -58,11 +58,26 @@ class CXReflectUtil {
      * 2: 被反射的方法 必须添加 @objc 标签 , #注意, 不要加 static
      *
      */
-    public static func invoke(_ className: String, _ methodName: String, _ params: [String]) -> String? {
+    public static func invokeObjectMethod(_ object: NSObject, _ methodName: String, _ params: [Any?]) -> Any? {
+        CXLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
+        CXLogUtil.d(TAG, "\(object).\(methodName) \(params)")
+        let result: Any? = CXHybirdManagerOC.invokeObjectMethod(object, methodName: methodName, params: params)
+        CXLogUtil.d(TAG, "return \(result)")
+        CXLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
+        return result
+    }
+
+    /**
+     * 不限参数
+     * 1: 被反射的类 必须继承 NObject
+     * 2: 被反射的方法 必须添加 @objc 标签 , #注意, 不要加 static
+     *
+     */
+    public static func invokeStaticMethod(_ className: String, _ methodName: String, _ params: [Any?]) -> Any? {
         CXLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
         CXLogUtil.d(TAG, "\(className).\(methodName) \(params)")
-        let result: String? = CXHybirdManagerOC.invoke(className, methodName: methodName, params: params)
-        CXLogUtil.d(TAG, "return \(String(describing: result))")
+        let result: Any? = CXHybirdManagerOC.invokeStaticMethod(className, methodName: methodName, params: params)
+        CXLogUtil.d(TAG, "return \(result)")
         CXLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
         return result
     }
@@ -72,9 +87,9 @@ class CXReflectUtil {
     //UnsafePointer:                const int*          c语言中的 不可变指针
     //UnsafeMutablePointer:         int*                c语言中的 可变指针
     //
-    private static func invokeTest(_ className: String, _ methodName: String, _ params: [String]) -> String? {
+    private static func invokeTest(_ className: String, _ methodName: String, _ params: [String]) -> Any? {
         CXLogUtil.d(TAG, "invokeByNSInvocation:start \(className).\(methodName)(\(params)")
-        let result = CXHybirdManagerOC.invoke(className, methodName: methodName, params: params)
+        let result = CXHybirdManagerOC.invokeStaticMethod(className, methodName: methodName, params: params)
         let clazz = NSClassFromString(className) as? NSObject.Type
         let methodSelector = Selector(("showToast:"))//Selector(methodName + (params.isEmpty ? "" : ":"))
 

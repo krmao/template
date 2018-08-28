@@ -14,8 +14,8 @@ class CXHybirdBridge {
     private static var schemeMap = [String: (webView: WKWebView?, url: URL?) -> Bool?]()
 //    private static var requestMap: HashMap<String, (webView: WebView?, url: String?) -> WebResourceResponse?> = hashMapOf()
 
-    static func callNativeMethod(_ className: String, _ methodName: String, _ params: [String]) -> String? {
-        return CXReflectUtil.invoke(className, methodName, params)
+    static func callNativeMethod(_ className: String, _ methodName: String, _ params: [String]) -> Any? {
+        return CXReflectUtil.invokeStaticMethod(className, methodName, params)
     }
 
     /**

@@ -19,22 +19,18 @@ react-native bundle  --platform android  --dev true  --entry-file ./index.js  --
 react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
 ```
 
-* base
+* base & business for android
 ```
 react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ./build/bundle/base/bundle/base.android.bundle --assets-dest ./build/bundle/base/bundle
-react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ./build/bundle/base/unbundle/base.android.bundle --assets-dest ./build/bundle/base/unbundle
-
-// 直接打包到 android rn 模块 assets 目录 和 res 目录
-react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ../android/arsenal/modules/module-template-react_native/src/main/assets/base.android.bundle --assets-dest ../android/arsenal/modules/module-template-react_native/src/main/res
-```
-
-* business
-```
 react-native   bundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/bundle/business.android.bundle --assets-dest ./build/bundle/business/bundle --exclude  ./build/bundle/base/bundle/base.android.bundle.json
-react-native unbundle  --platform android --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/business/unbundle/business.android.bundle --assets-dest ./build/bundle/business/unbundle --exclude  ./build/bundle/base/unbundle/base.android.bundle.json
 ```
 
-* normal
+* base & business for ios
+```
+react-native   bundle  --platform ios --verbose --minify false --dev true  --entry-file ./common_entry.js  --bundle-output ~/Desktop/base/base.ios.bundle --assets-dest ~/Desktop/base
+react-native   bundle  --platform ios --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ~/Desktop/business/business.ios.bundle --assets-dest ~/Desktop/business --exclude  ~/Desktop/base/base.ios.bundle.json
+```
+* normal for android bundle and unbundle
 ```
 react-native unbundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/index.android.bundle --assets-dest ./build/bundle/normal/unbundle
 react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/index.android.bundle --assets-dest ./build/bundle/normal/bundle

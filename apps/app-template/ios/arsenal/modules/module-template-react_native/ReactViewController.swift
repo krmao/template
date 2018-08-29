@@ -4,8 +4,17 @@ import React
 
 class ReactViewController: UIViewController {
 
+    private static var startCount: Int = 0
+
+    public static func isAllPagesClosed() -> Bool {
+        return ReactViewController.startCount == 0
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        ReactViewController.startCount += 1
+        CXLogUtil.d("startCount:\(ReactViewController.startCount)")
 
         self.initReact()
     }
@@ -45,6 +54,10 @@ class ReactViewController: UIViewController {
                 }
             }
         }
+    }
+
+    deinit {
+        ReactViewController.startCount -= 1
     }
 
 //    private var count: Int = 0

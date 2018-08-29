@@ -22,41 +22,16 @@ class ReactManager {
     public static var bridge: RCTBridge? {
         get {
             if (_bridge == nil) {
-
                 // let url = URL(string: "http://10.47.57.114:8081/index.bundle?platform=ios")
-
                 let fileURL = CXFileUtil.getFileURLFromResource("base.ios.bundle")!
                 CXLogUtil.i(TAG, "fileURL=\(fileURL), isExists=\(CXFileUtil.fileExists(fileURL.path))")
                 _bridge = RCTBridge.init(bundleURL: fileURL, moduleProvider: nil, launchOptions: nil)
-
-//                let businessFileURL = CXFileUtil.getFileURLFromResource("business.ios.bundle")!
-
-//                    _bridge!.bundleURL = businessFileURL
-
-                /*CXReflectUtil.invokeObjectMethod(_bridge!.batched, "loadSource",
-                        [
-                            { (error: NSError?, source: RCTSource?) in
-                                if (error == nil && source != nil) {
-                                    CXLogUtil.d(TAG, "loadBusinessBundle success")
-                                    CXReflectUtil.invokeObjectMethod(_bridge!.batched, "executeSourceCode", [source, true])
-                                } else {
-                                    CXLogUtil.d(TAG, "loadBusinessBundle failure \(error)")
-                                }
-                            },
-                            { (progressData: RCTLoadingProgress?) in
-                                CXLogUtil.d(TAG, "loadBusinessBundle progress \(progressData?.done)")
-                            }
-                        ]
-                )*/
-
-                /*RCTJavaScriptLoader.loadBundle(at: businessFileURL, onProgress: { progress in
-                    CXLogUtil.d(TAG, "loadBundle, onProgress progress=\(progress)")
-                }, onComplete: { error, source in
-                    CXLogUtil.d(TAG, "loadBundle, onComplete error=\(error), source=\(source)")
-                    CXReflectUtil.invokeObjectMethod(_bridge!.batched, "executeSourceCode", [source!, NSNumber.init(value: false)])
-                })*/
             }
             return _bridge
         }
+    }
+
+    public static func loadBundle(_ bundleFullName: String?) {
+        ReactManagerOC.loadBundle(_bridge, bundleFullName: bundleFullName)
     }
 }

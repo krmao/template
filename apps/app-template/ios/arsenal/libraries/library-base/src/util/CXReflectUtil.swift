@@ -61,7 +61,7 @@ class CXReflectUtil {
     public static func invokeObjectMethod(_ object: NSObject, _ methodName: String, _ params: [Any?]) -> Any? {
         CXLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
         CXLogUtil.d(TAG, "\(object).\(methodName) \(params)")
-        let result: Any? = CXHybirdManagerOC.invokeObjectMethod(object, methodName: methodName, params: params)
+        let result: Any? = CXReflectUtilOC.invokeObjectMethod(object, methodName: methodName, params: params)
         CXLogUtil.d(TAG, "return \(result)")
         CXLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
         return result
@@ -76,7 +76,7 @@ class CXReflectUtil {
     public static func invokeStaticMethod(_ className: String, _ methodName: String, _ params: [Any?]) -> Any? {
         CXLogUtil.d(TAG, ">>>>>>>>>>-------------------->>>>>>>>>>")
         CXLogUtil.d(TAG, "\(className).\(methodName) \(params)")
-        let result: Any? = CXHybirdManagerOC.invokeStaticMethod(className, methodName: methodName, params: params)
+        let result: Any? = CXReflectUtilOC.invokeStaticMethod(className, methodName: methodName, params: params)
         CXLogUtil.d(TAG, "return \(result)")
         CXLogUtil.d(TAG, "<<<<<<<<<<--------------------<<<<<<<<<<")
         return result
@@ -89,7 +89,7 @@ class CXReflectUtil {
     //
     private static func invokeTest(_ className: String, _ methodName: String, _ params: [String]) -> Any? {
         CXLogUtil.d(TAG, "invokeByNSInvocation:start \(className).\(methodName)(\(params)")
-        let result = CXHybirdManagerOC.invokeStaticMethod(className, methodName: methodName, params: params)
+        let result = CXReflectUtilOC.invokeStaticMethod(className, methodName: methodName, params: params)
         let clazz = NSClassFromString(className) as? NSObject.Type
         let methodSelector = Selector(("showToast:"))//Selector(methodName + (params.isEmpty ? "" : ":"))
 

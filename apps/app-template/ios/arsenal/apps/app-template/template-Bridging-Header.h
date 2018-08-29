@@ -4,7 +4,8 @@
 
 #import <CommonCrypto/CommonCrypto.h>
 
-#import "CXHybirdManagerOC.h"
+#import "ReactManagerOC.h"
+#import "CXReflectUtilOC.h"
 
 #import "React/RCTEventDispatcher.h"
 #import "React/RCTEventEmitter.h"

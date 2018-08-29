@@ -3,9 +3,9 @@
 // Copyright (c) 2017 com.smart. All rights reserved.
 //
 
-#import "CXHybirdManagerOC.h"
+#import "CXReflectUtilOC.h"
 
-@implementation CXHybirdManagerOC {
+@implementation CXReflectUtilOC {
 
 }
 
@@ -112,40 +112,6 @@
 
 + (id)setObjectField:(NSObject *)object fieldName:(NSString *)fieldName value:(id)value {
     return nil;
-}
-
-
-+ (void)loadSource:(RCTBridge *)bridge {
-//    Bundle.main.url(forResource: fileFullName, withExtension: nil)
-//    RCTBridge *_bridge = [[RCTBridge alloc] initWithBundleURL:[[NSBundle mainBundle] URLForResource:@"business.ios.bundle" withExtension:nil] moduleProvider:nil launchOptions:nil];
-
-//    [self invokeObjectMethod:_bridge methodName:@"loadSource" params:[NSArray arrayWithObjects:^(NSError *error, RCTSource *source) {
-//        if (error) {
-//            NSLog(@"loadSource failure %@", error);
-//        } else if (source) {
-//            NSLog(@"loadSource success");
-//        } else {
-//            NSLog(@"loadSource failure");
-//        }
-//    }, ^(RCTLoadingProgress *progressData) {
-//        NSLog(@"loadSource progress %d/%d", [progressData.done intValue], [progressData.total intValue]);
-//    }]];
-
-//
-//    NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:@"business.ios.bundle" withExtension:nil];
-//
-//    [RCTJavaScriptLoader loadBundleAtURL:bundleURL
-//                              onProgress:^(RCTLoadingProgress *progressData) {
-//                              }
-//                              onComplete:^(NSError *error, RCTSource *source) {
-//                                  if (error) {
-//                                      NSLog(@"FAILURE");
-//                                      return;
-//                                  }
-//                                  NSLog(@"START");
-//                                  [self invokeObjectMethod:_bridge methodName:@"executeSourceCode" params:[NSArray arrayWithObjects:source, [NSNumber numberWithBool:true]]];
-//                                  NSLog(@"END");
-//                              }];
 }
 
 @end

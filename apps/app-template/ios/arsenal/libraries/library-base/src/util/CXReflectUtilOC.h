@@ -5,10 +5,8 @@
 
 #import <Foundation/Foundation.h>
 #import <RxCocoa/_RX.h>
-#import <React/RCTBridge.h>
-#import <React/RCTJavaScriptLoader.h>
 
-@interface CXHybirdManagerOC : NSObject
+@interface CXReflectUtilOC : NSObject
 
 + (SEL)getObjectMethodSelectorByName:(NSObject *)object methodName:(NSString *)methodName paramsCount:(int)paramsCount;
 
@@ -19,7 +17,5 @@
 + (id)invokeObjectMethod:(NSObject *)object methodName:(NSString *)methodName params:(NSArray<id> *)params;
 
 + (id)setObjectField:(NSObject *)object fieldName:(NSString *)fieldName value:(id)value;
-
-+ (void)loadSource:(RCTBridge *)bridge;
 
 @end

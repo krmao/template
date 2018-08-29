@@ -39,7 +39,9 @@ class ReactViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             //code
             print("3 秒后输出")
-            _bridge?.loadCustomBundle("business.ios.bundle")
+
+            ReactManager.loadBundle("business.ios.bundle")
+            //_bridge?.loadCustomBundle("business.ios.bundle")
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
                 print("6 秒后输出")
@@ -49,7 +51,6 @@ class ReactViewController: UIViewController {
                         initialProperties: nil //["native_params": 1] as [NSObject: AnyObject]
                 )
 
-
                 self.view.addSubview(_rootView)
 
                 _rootView.snp.makeConstraints { (make) in
@@ -58,7 +59,6 @@ class ReactViewController: UIViewController {
                     make.bottom.equalTo(self.view)
                 }
             }
-
 
         }
     }

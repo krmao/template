@@ -4,7 +4,43 @@ import React
 
 class ReactViewController: UIViewController {
 
-    private var count: Int = 0
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+//            print("1 秒后输出")
+        self.initReact()
+//        }
+
+    }
+
+    private func initReact() {
+        ReactManager.checkLoad {
+            ReactManager.loadBundle("business.ios.bundle") { loadSuccess in
+                if (loadSuccess) {
+                    CXLogUtil.w("load business.ios.bundle success")
+
+                    let _rootView: RCTRootView = RCTRootView(
+                            bridge: ReactManager.bridge,
+                            moduleName: "cxj",
+                            initialProperties: ["native_params": 1] as [NSObject: AnyObject]
+                    )
+
+                    self.view.addSubview(_rootView)
+
+                    _rootView.snp.makeConstraints { (make) in
+                        make.width.equalTo(self.view)
+                        make.top.equalTo(self.view)
+                        make.bottom.equalTo(self.view)
+                    }
+                } else {
+                    CXLogUtil.w("load business.ios.bundle failure")
+                }
+            }
+        }
+    }
+
+//    private var count: Int = 0
 
 //    @objc
 //    func onButtonClick(button: UIButton) {
@@ -30,39 +66,6 @@ class ReactViewController: UIViewController {
 //
 //        return _rootView
 //    }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let _bridge = ReactManager.bridge
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            //code
-            print("3 秒后输出")
-
-            ReactManager.loadBundle("business.ios.bundle")
-            //_bridge?.loadCustomBundle("business.ios.bundle")
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-                print("6 秒后输出")
-                let _rootView: RCTRootView = RCTRootView(
-                        bridge: _bridge,
-                        moduleName: "cxj",
-                        initialProperties: nil //["native_params": 1] as [NSObject: AnyObject]
-                )
-
-                self.view.addSubview(_rootView)
-
-                _rootView.snp.makeConstraints { (make) in
-                    make.width.equalTo(self.view)
-                    make.top.equalTo(self.view)
-                    make.bottom.equalTo(self.view)
-                }
-            }
-
-        }
-    }
-
 //    func updateReactProperties(_ bundle: MutableMap<String, Any>?) {
 //        self.reactRootView.appProperties = bundle
 //    }

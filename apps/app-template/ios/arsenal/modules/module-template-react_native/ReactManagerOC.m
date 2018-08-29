@@ -15,6 +15,10 @@
 }
 
 + (void)loadBundle:(RCTBridge *)bridge bundleFullName:(NSString *)bundleFullName {
+    [self loadBundle:bridge bundleFullName:bundleFullName callback:nil];
+}
+
++ (void)loadBundle:(RCTBridge *)bridge bundleFullName:(NSString *)bundleFullName callback:(void (^)(BOOL))callback {
     NSLog(@"loadBundle bundleFullName=%@", bundleFullName);
     if (bundleFullName != nil && bundleFullName.length > 0 && bridge != nil) {
 
@@ -39,6 +43,9 @@
                             NSLog(@"loadBundle loadSource success");
                             NSLog(@"loadBundle start executeSourceCode");
                             [CXReflectUtilOC invokeObjectMethod:strongSelf methodName:@"executeSourceCode" params:@[sourceCode, @NO]];
+                            if (callback) callback(true);
+                        } else {
+                            if (callback) callback(false);
                         }
                     } copy],
                     [(id) ^(RCTLoadingProgress *progressData) { // http://matrixzk.github.io/blog/20150518/store_blocks_in_NSArray/
@@ -51,9 +58,11 @@
             ]];
         } else {
             NSLog(@"loadBundle failure bundleURL is null");
+            if (callback) callback(false);
         }
     } else {
         NSLog(@"loadBundle failure bridge or bundleFullName is null");
+        if (callback) callback(false);
     }
 }
 

@@ -112,6 +112,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }*/
 
+        if(ReactManager.bridge != nil){
+            CXLogUtil.i("react native 初始化成功")
+        }else{
+            CXLogUtil.i("react native 初始化失败")
+        }
+
         rootViewController.pushViewController(ReactViewController(), animated: false)
 
         CXLogUtil.i("application init end <--")

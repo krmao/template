@@ -12,4 +12,6 @@
 
 + (void)loadBundle:(RCTBridge *)bridge bundleFullName:(NSString *)bundleFullName;
 
++ (void)loadBundle:(RCTBridge *)bridge bundleFullName:(NSString *)bundleFullName callback:(void (^)(BOOL))callback;
+
 @end

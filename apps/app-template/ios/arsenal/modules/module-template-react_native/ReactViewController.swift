@@ -7,32 +7,39 @@ class ReactViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-//            print("1 秒后输出")
         self.initReact()
-//        }
-
     }
 
     private func initReact() {
+        // 非分步加载
+        // self.start()
+
+        // 分步加载
+        self.startWithLoadBusinessBundle()
+    }
+
+    private func start() {
+        let _rootView: RCTRootView = RCTRootView(
+                bridge: ReactManager.bridge,
+                moduleName: "cxj",
+                initialProperties: ["native_params": 1] as [NSObject: AnyObject]
+        )
+
+        self.view.addSubview(_rootView)
+
+        _rootView.snp.makeConstraints { (make) in
+            make.width.equalTo(self.view)
+            make.top.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+        }
+    }
+
+    private func startWithLoadBusinessBundle() {
         ReactManager.checkLoad {
             ReactManager.loadBundle("business.ios.bundle") { loadSuccess in
                 if (loadSuccess) {
                     CXLogUtil.w("load business.ios.bundle success")
-
-                    let _rootView: RCTRootView = RCTRootView(
-                            bridge: ReactManager.bridge,
-                            moduleName: "cxj",
-                            initialProperties: ["native_params": 1] as [NSObject: AnyObject]
-                    )
-
-                    self.view.addSubview(_rootView)
-
-                    _rootView.snp.makeConstraints { (make) in
-                        make.width.equalTo(self.view)
-                        make.top.equalTo(self.view)
-                        make.bottom.equalTo(self.view)
-                    }
+                    self.start()
                 } else {
                     CXLogUtil.w("load business.ios.bundle failure")
                 }

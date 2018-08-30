@@ -10,6 +10,8 @@ inhibit_all_warnings!
 target 'template' do
   # pod '**', :git => 'http://**.git'
 
+  pod 'TransitionableTab', '~> 0.1.2'
+
   # ==================== 布局库 ====================
   pod 'SnapKit', '~> 4.0.0'
 

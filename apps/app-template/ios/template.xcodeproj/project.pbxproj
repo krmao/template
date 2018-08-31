@@ -108,6 +108,7 @@
 		3D52A0785B937FC7023AEBF2 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		3D52A0D0D9BA0321C25F9132 /* RecommendData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendData.swift; sourceTree = "<group>"; };
 		3D52A0D0EB736EC191E73FF2 /* CXApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXApiManager.swift; sourceTree = "<group>"; };
+		3D52A0D1951AC80018491C26 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
 		3D52A0DF71A90295397D57D4 /* housekeeper-1.0.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "housekeeper-1.0.zip"; sourceTree = "<group>"; };
 		3D52A18BF22ADFAC083A153C /* CXDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXDataExtension.swift; sourceTree = "<group>"; };
 		3D52A1A674DA7D04C34A65E7 /* CXUIWebViewURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIWebViewURLProtocol.swift; sourceTree = "<group>"; };
@@ -628,6 +629,7 @@
 				3D52ADA69716FD24AB51BA37 /* template */,
 				3F3EBB366FCD28203667A0A9 /* Pods */,
 				32B4A4164C0C07D16EDF486D /* Frameworks */,
+				3D52A0D1951AC80018491C26 /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};

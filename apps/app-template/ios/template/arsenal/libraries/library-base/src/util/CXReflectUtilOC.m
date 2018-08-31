@@ -49,7 +49,7 @@
 }
 
 + (id)invokeObjectMethod:(NSObject *)object methodName:(NSString *)methodName params:(NSArray<id> *)params {
-    SEL methodSelector = [self getObjectMethodSelectorByName:object methodName:methodName paramsCount:params.count];
+    SEL methodSelector = [self getObjectMethodSelectorByName:object methodName:methodName paramsCount:(int)params.count];
     return [self executeMethod:object methodSelector:methodSelector params:params];
 }
 

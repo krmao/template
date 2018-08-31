@@ -179,12 +179,12 @@ class CXHybird: NSObject {
 
     private static func initModule(_ config: CXHybirdModuleConfigModel?, _ callback: ((_ config: CXHybirdModuleConfigModel?) -> Void)? = nil) {
         let start = System.currentTimeMillis()
-        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始]-----------------------------------------------------------------------------------")
-        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
+        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName ?? "")初始化开始]-----------------------------------------------------------------------------------")
+        CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName ?? "")初始化开始], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date(start)))")
         if (config == nil) {
-            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束], 没有模块需要初始化")
-            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
-            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName)初始化结束]-----------------------------------------------------------------------------------")
+            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName ?? "")初始化结束], 没有模块需要初始化")
+            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName ?? "")初始化结束], 当前线程:\(Thread.currentThread()), 当前时间:\(CXTimeUtil.yMdHmsS(Date())) ,最终成功初始化的模块:\(modules.map { $0.key }) , 一共耗时:\(System.currentTimeMillis() - start)ms")
+            CXLogUtil.e(TAG, "--[initModule:\(config?.moduleName ?? "")初始化结束]-----------------------------------------------------------------------------------")
             callback?(nil)
         } else {
             Observable.from {

@@ -18,7 +18,6 @@
 		3D52A191B9CCD8060038E69C /* CXLogUtil2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC64F53F7953172D3AB9 /* CXLogUtil2.swift */; };
 		3D52A19E300A6EA8EE525158 /* HybirdUIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7DE0139E5E5DB2EBB84 /* HybirdUIWebViewController.swift */; };
 		3D52A1A9ADFBE58249AE8439 /* CXPreferencesUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEF6D125B2B4EDB951A1 /* CXPreferencesUtil.swift */; };
-		3D52A1D2D2BAC1EA630067CF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AD65AF915420AC1A61A5 /* Info.plist */; };
 		3D52A1EA9BE77BAB5F82C113 /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A346F2303932D252CEF4 /* CategoryData.swift */; };
 		3D52A21813F357C6B169DF10 /* CXJsonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A47B5DEC76A26CAACF3B /* CXJsonUtil.swift */; };
 		3D52A23C90CD381A23B92E39 /* CXTimeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF865AB3C81AB4D9548C /* CXTimeUtil.swift */; };
@@ -29,7 +28,6 @@
 		3D52A2A12F1EB20B84D7F310 /* CXWKWebViewURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A2C28D0F5158B54B4BD8 /* CXWKWebViewURLProtocol.swift */; };
 		3D52A3001FDD838217B85CA7 /* business.ios.bundle.meta in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A487BEA3705094A15CD2 /* business.ios.bundle.meta */; };
 		3D52A30B90FAD775A73984E2 /* IllegalArgumentException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A420E2F332D70198188A /* IllegalArgumentException.swift */; };
-		3D52A3165C3C2191E09F9F8D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A98BC62BC595185A2D67 /* .gitkeep */; };
 		3D52A363E05D0966E461EE8F /* CXURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A85783C0D47376337F9D /* CXURLManager.swift */; };
 		3D52A3710D109807E8E21EA5 /* CXThreadExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB04AFBC0854407744AD /* CXThreadExtension.swift */; };
 		3D52A3F95AF63A398666F6BA /* all.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AEE71239C88AC8B0FCA5 /* all.json */; };
@@ -37,7 +35,6 @@
 		3D52A425909DB97D2493BDE1 /* HybirdWKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEA839A00DE5A8E82394 /* HybirdWKWebViewController.swift */; };
 		3D52A42DC9D8BE3D61F6992D /* CXChecksumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A70BDA455218B639ADF4 /* CXChecksumUtil.swift */; };
 		3D52A4AC24560E065286438C /* base.ios.bundle.meta in Resources */ = {isa = PBXBuildFile; fileRef = 3D52ABBF809DC7BA98CFA700 /* base.ios.bundle.meta */; };
-		3D52A4D0751846F1C849637A /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52ADB04421072ADF57F821 /* .gitkeep */; };
 		3D52A4F2AE801729F19F0795 /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AF28FFC0EDFF49EAB34A /* back-icon.png */; };
 		3D52A54AF321D2F79766B05C /* CXHybirdUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AB1EFFC823A7E9B4984A /* CXHybirdUtil.swift */; };
 		3D52A54CE233495ED57C166E /* CXHybirdUpdateStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A4D99FD20B65DDDACFC3 /* CXHybirdUpdateStrategy.swift */; };
@@ -59,7 +56,6 @@
 		3D52A860958E9E4A15179916 /* HomeChildReactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF8A57306F3EAC4DD588 /* HomeChildReactController.swift */; };
 		3D52A87ACC587284DB775760 /* right_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A80BA30F68130F3C7771 /* right_arrow.png */; };
 		3D52A8822E31EF2F30FF2B12 /* CXHybirdBundleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEA8AAC017CCE2BA75A5 /* CXHybirdBundleInfoManager.swift */; };
-		3D52A8A71D486F552E225FCC /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AB5F3CC9AB84E6D0EE31 /* .gitkeep */; };
 		3D52A8F1FCF37F0930A43673 /* CXHybirdInitStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52ACDD3E73EEF9C3D4B627 /* CXHybirdInitStrategy.swift */; };
 		3D52A8FFF5AE8BC798A8B203 /* CXReflectUtilOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A9F7922811BCE10F29F3 /* CXReflectUtilOC.m */; };
 		3D52A9399A146C5E91AE982A /* CXHybirdLifecycleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A43CB240C9EBE102625C /* CXHybirdLifecycleManager.swift */; };
@@ -96,9 +92,9 @@
 		3D52AED7CC3C4C952FC53CD6 /* CXRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7A2608616628E4D11BE /* CXRepository.swift */; };
 		3D52AEF800ECEB808095E3FE /* RecommendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A0D0D9BA0321C25F9132 /* RecommendData.swift */; };
 		3D52AF4F8B82F687533CDF0B /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AADD687912E6ED6FEF2F /* UIButtonWithImage.swift */; };
-		3D52AFB084C44063E85271EB /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AE7BEABB286804B14F5D /* Contents.json */; };
 		3D52AFC69556282B30959DBC /* CXApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A0D0EB736EC191E73FF2 /* CXApiManager.swift */; };
 		3D52AFFC6B78945B7AB5444B /* back-icon-mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AC4681292E89864229ED /* back-icon-mask.png */; };
+		87ED7CBD2138E5090016B6E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87ED7CBC2138E5090016B6E9 /* Assets.xcassets */; };
 		D34F39CACB6630DCCCEF54B2 /* Pods_template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72E14D0098F581A730273010 /* Pods_template.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,16 +153,15 @@
 		3D52A8C6A011CA302D1EB8AB /* ReactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactManager.swift; sourceTree = "<group>"; };
 		3D52A8EA82A91A780BFB831E /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		3D52A952A763E15891A08C76 /* back-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon@2x.png"; sourceTree = "<group>"; };
-		3D52A98BC62BC595185A2D67 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52A9A785828C499238343C /* BaseRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseRequestModel.swift; sourceTree = "<group>"; };
 		3D52A9F7922811BCE10F29F3 /* CXReflectUtilOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXReflectUtilOC.m; sourceTree = "<group>"; };
 		3D52AA0B782718A511AB64C0 /* CXHybirdModuleConfigModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdModuleConfigModel.swift; sourceTree = "<group>"; };
 		3D52AA1F5062C37F14636383 /* CXHybirdMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdMethods.swift; sourceTree = "<group>"; };
+		3D52AADC27AB9439D1B1F5AF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3D52AADD687912E6ED6FEF2F /* UIButtonWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonWithImage.swift; sourceTree = "<group>"; };
 		3D52AB04AFBC0854407744AD /* CXThreadExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXThreadExtension.swift; sourceTree = "<group>"; };
 		3D52AB1A668BC67B2ABACFE5 /* CXSystemUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXSystemUtil.swift; sourceTree = "<group>"; };
 		3D52AB1EFFC823A7E9B4984A /* CXHybirdUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdUtil.swift; sourceTree = "<group>"; };
-		3D52AB5F3CC9AB84E6D0EE31 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52ABB1397CD63EAD1F9DA4 /* TextUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
 		3D52ABBF809DC7BA98CFA700 /* base.ios.bundle.meta */ = {isa = PBXFileReference; lastKnownFileType = file.meta; path = base.ios.bundle.meta; sourceTree = "<group>"; };
 		3D52AC4681292E89864229ED /* back-icon-mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon-mask.png"; sourceTree = "<group>"; };
@@ -178,12 +173,11 @@
 		3D52AC97D6AA35E3EA30F6CE /* CXZipUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXZipUtil.swift; sourceTree = "<group>"; };
 		3D52ACDD3E73EEF9C3D4B627 /* CXHybirdInitStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdInitStrategy.swift; sourceTree = "<group>"; };
 		3D52AD3BA095BD63779AF6A6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3D52AD5D7DEBC3565DE5DAEA /* autoExportAppIcon.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = autoExportAppIcon.py; sourceTree = "<group>"; };
 		3D52AD65AF915420AC1A61A5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		3D52AD6BFA9847806ED5A5E8 /* CXUIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXUIColorExtension.swift; sourceTree = "<group>"; };
 		3D52ADA9C5570CDF1A1D6467 /* back-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon@3x.png"; sourceTree = "<group>"; };
-		3D52ADB04421072ADF57F821 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = file.gitkeep; path = .gitkeep; sourceTree = "<group>"; };
 		3D52AE14B1013A4901BDC458 /* base.ios.bundle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = base.ios.bundle.json; sourceTree = "<group>"; };
-		3D52AE7BEABB286804B14F5D /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
 		3D52AEA839A00DE5A8E82394 /* HybirdWKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybirdWKWebViewController.swift; sourceTree = "<group>"; };
 		3D52AEA8AAC017CCE2BA75A5 /* CXHybirdBundleInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybirdBundleInfoManager.swift; sourceTree = "<group>"; };
 		3D52AEAE41920A4DD68E33C7 /* CXHybird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CXHybird.swift; sourceTree = "<group>"; };
@@ -202,6 +196,7 @@
 		3D52AFEFC89BEA9C9765EEE7 /* back-icon-mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon-mask.png"; sourceTree = "<group>"; };
 		4F9F36D9E8589126598C87F1 /* Pods-template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.release.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.release.xcconfig"; sourceTree = "<group>"; };
 		72E14D0098F581A730273010 /* Pods_template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		87ED7CBC2138E5090016B6E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB21F4F07871C6C880C2736A /* Pods-template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-template/Pods-template.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -236,17 +231,17 @@
 		3D52A024CB28D7098C22D997 /* res */ = {
 			isa = PBXGroup;
 			children = (
-				3D52ABA01E96A644E777D8A0 /* Assets.xcassets */,
+				87ED7CBC2138E5090016B6E9 /* Assets.xcassets */,
 			);
 			path = res;
 			sourceTree = "<group>";
 		};
-		3D52A03778F7E993DC29977F /* module-template-setting */ = {
+		3D52A0628265D8ECE14BD713 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				3D52ADB04421072ADF57F821 /* .gitkeep */,
+				3D52A1BD14553B5F6A8E0789 /* scripts */,
 			);
-			path = "module-template-setting";
+			path = Others;
 			sourceTree = "<group>";
 		};
 		3D52A0A9350C38E29522DB38 /* bundle */ = {
@@ -300,6 +295,14 @@
 				3D52AEA839A00DE5A8E82394 /* HybirdWKWebViewController.swift */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		3D52A1BD14553B5F6A8E0789 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				3D52AD5D7DEBC3565DE5DAEA /* autoExportAppIcon.py */,
+			);
+			path = scripts;
 			sourceTree = "<group>";
 		};
 		3D52A1D537DDE2DE99178A2D /* src */ = {
@@ -384,9 +387,7 @@
 		3D52A41D5A7EE2B7DE584D73 /* modules */ = {
 			isa = PBXGroup;
 			children = (
-				3D52AFD93B955C385405681C /* module-template-mine */,
 				3D52A4E51927C427F9C9BDBE /* module-template-hybird */,
-				3D52A03778F7E993DC29977F /* module-template-setting */,
 				3D52A31A27C844A8057FA144 /* module-template-react_native */,
 			);
 			path = modules;
@@ -600,7 +601,6 @@
 		3D52AA5CB0CE9B8472ADE797 /* library-template-base */ = {
 			isa = PBXGroup;
 			children = (
-				3D52A98BC62BC595185A2D67 /* .gitkeep */,
 			);
 			path = "library-template-base";
 			sourceTree = "<group>";
@@ -630,6 +630,8 @@
 				3F3EBB366FCD28203667A0A9 /* Pods */,
 				32B4A4164C0C07D16EDF486D /* Frameworks */,
 				3D52A0D1951AC80018491C26 /* .gitignore */,
+				3D52A0628265D8ECE14BD713 /* Others */,
+				3D52AADC27AB9439D1B1F5AF /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -654,14 +656,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		3D52ABA01E96A644E777D8A0 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				3D52AC2B33C36A9F4880347E /* AppIcon.appiconset */,
-			);
-			path = Assets.xcassets;
-			sourceTree = "<group>";
-		};
 		3D52AC27EA1A399EB5AC7388 /* exception */ = {
 			isa = PBXGroup;
 			children = (
@@ -669,14 +663,6 @@
 				3D52A420E2F332D70198188A /* IllegalArgumentException.swift */,
 			);
 			path = exception;
-			sourceTree = "<group>";
-		};
-		3D52AC2B33C36A9F4880347E /* AppIcon.appiconset */ = {
-			isa = PBXGroup;
-			children = (
-				3D52AE7BEABB286804B14F5D /* Contents.json */,
-			);
-			path = AppIcon.appiconset;
 			sourceTree = "<group>";
 		};
 		3D52AC7C7F6E64B87A2E7599 /* src */ = {
@@ -834,14 +820,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		3D52AFD93B955C385405681C /* module-template-mine */ = {
-			isa = PBXGroup;
-			children = (
-				3D52AB5F3CC9AB84E6D0EE31 /* .gitkeep */,
-			);
-			path = "module-template-mine";
-			sourceTree = "<group>";
-		};
 		3F3EBB366FCD28203667A0A9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -879,7 +857,13 @@
 		3D52AFB401C9E620869C119C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = smart;
+				TargetAttributes = {
+					3D52AEE5B7D8579C0470F985 = {
+						DevelopmentTeam = LGX92YQMNM;
+					};
+				};
 			};
 			buildConfigurationList = 3D52AA62ABD79F4C568D27CC /* Build configuration list for PBXProject "template" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -903,13 +887,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D52AFB084C44063E85271EB /* Contents.json in Resources */,
-				3D52A1D2D2BAC1EA630067CF /* Info.plist in Resources */,
-				3D52A8A71D486F552E225FCC /* .gitkeep in Resources */,
 				3D52A3F95AF63A398666F6BA /* all.json in Resources */,
 				3D52ABC99D884577B6F3BA5A /* housekeeper-1.0.zip in Resources */,
-				3D52A4D0751846F1C849637A /* .gitkeep in Resources */,
 				3D52A4F2AE801729F19F0795 /* back-icon.png in Resources */,
+				87ED7CBD2138E5090016B6E9 /* Assets.xcassets in Resources */,
 				3D52A0BF81FBB859537D850D /* back-icon@2x.png in Resources */,
 				3D52ADFA946EF61E1293F917 /* back-icon@3x.png in Resources */,
 				3D52AB48C8B0425C3B773E5B /* back-icon-mask.png in Resources */,
@@ -928,7 +909,6 @@
 				3D52AD12D84B5AFBC2E297B8 /* business.ios.bundle in Resources */,
 				3D52ACD6EA02473187158F31 /* business.ios.bundle.json in Resources */,
 				3D52A3001FDD838217B85CA7 /* business.ios.bundle.meta in Resources */,
-				3D52A3165C3C2191E09F9F8D /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,7 +1062,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB21F4F07871C6C880C2736A /* Pods-template.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = LGX92YQMNM;
 				INFOPLIST_FILE = "template/arsenal/apps/app-template/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1140,7 +1124,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1153,7 +1137,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4F9F36D9E8589126598C87F1 /* Pods-template.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = LGX92YQMNM;
 				INFOPLIST_FILE = "template/arsenal/apps/app-template/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1205,7 +1193,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

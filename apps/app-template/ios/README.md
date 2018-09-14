@@ -34,4 +34,21 @@ python autoExportAppIcon.py ~/Desktop/appIcon1024x1024.png
 | 2x                | iOS 5,6   | Portrait (Without Status Bar) | 1536 x 2008           |
 | 2x                | iOS 5,6   | Landscape(Without Status Bar) | 2048 x 1496           |
 
+
+### [ios LaunchScreen.storyboard]
+
+* launch image size
+
+| Name              | Size in px (pixels)   |
+| :----:            | :----:                |
+| 3x                | 1125x x 2001          | 
+| 2x                | 750   x 1334          | 
+| 1x                | 375   x 667           | 
+
+* Show the File Inspector
+```
+check 'Use as Launch Sceen'
+
+```
+
 ### others

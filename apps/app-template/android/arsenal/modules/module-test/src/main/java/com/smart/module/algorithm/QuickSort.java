@@ -37,7 +37,6 @@ public class QuickSort {
         return 0;
     }
 
-    @Tes
     public void main() {
 
         int array[] = {10, 5, 4, 1, 5, 2, 7, 3, 0, 4, 9, 6, 8};

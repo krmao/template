@@ -11,7 +11,7 @@ import com.smart.library.util.map.location.CXLocationManager
 import com.smart.template.library.user.CXUserManager
 import com.smart.template.module.rn.ReactActivity
 import com.smart.template.module.rn.ReactManager
-import com.smart.template.tab.HomeTabActivity
+import com.smart.template.home.tab.HomeTabActivity
 
 /**
  * react native call native processors

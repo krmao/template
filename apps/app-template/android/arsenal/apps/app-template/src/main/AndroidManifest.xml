@@ -33,7 +33,7 @@
         tools:replace="android:label">
 
         <activity
-            android:name="com.smart.template.tab.HomeTabActivity"
+            android:name="com.smart.template.home.tab.HomeTabActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/CXAppTheme.Light.NoActionBar"

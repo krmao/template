@@ -13,7 +13,7 @@ import com.smart.template.library.R
 import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
 import com.smart.template.repository.remote.core.CXOkHttpManager
-import com.smart.template.tab.HomeTabActivity
+import com.smart.template.home.tab.HomeTabActivity
 
 @Suppress("unused")
 class FinalApplication : CXBaseApplication() {

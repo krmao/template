@@ -196,6 +196,8 @@ dependencies {
     api project(':module-template-setting')
     api project(':module-template-im')
 
+    implementation project(':module-template-flutter')
+
     // LeakCanary
     debugApi "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
     releaseApi "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanaryVersion"

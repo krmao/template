@@ -83,7 +83,7 @@
                     android:layout_height="match_parent"
                     android:icon="@drawable/home_bar_item_mine_selector"
                     android:layout="@layout/home_tab_item"
-                    android:text="我的"
+                    android:text="flutter"
                     tools:ignore="HardcodedText" />
 
                 <android.support.design.widget.TabItem

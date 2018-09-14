@@ -1,4 +1,4 @@
-package com.smart.template.tab
+package com.smart.template.home.tab
 
 import android.os.Bundle
 import android.widget.FrameLayout

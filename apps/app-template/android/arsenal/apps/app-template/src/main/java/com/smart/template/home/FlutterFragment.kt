@@ -12,16 +12,16 @@ import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXRouteManager
 import com.smart.template.R
 
-class MineFragment : CXBaseFragment() {
+class FlutterFragment : CXBaseFragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val textView: TextView = TextView(activity)
-        textView.text = "mine"
+        textView.text = "flutter"
         @Suppress("DEPRECATION")
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
-            CXRouteManager.goToFragment(activity, "com.smart.template.module.mine.MineFragment") {
+            CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {
                 CXLogUtil.w("krmao", it.toString())
             }
         }
@@ -30,16 +30,16 @@ class MineFragment : CXBaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "MineFragment:onStart");
+        Log.w("krmao", "FlutterFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "MineFragment:onStop");
+        Log.w("krmao", "FlutterFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "MineFragment:onDestroy");
+        Log.w("krmao", "FlutterFragment:onDestroy");
     }
 }

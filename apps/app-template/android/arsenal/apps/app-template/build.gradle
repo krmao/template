@@ -42,7 +42,7 @@ android {
 
     useLibrary 'org.apache.http.legacy'
 
-    resourcePrefix "home_"
+    resourcePrefix ""
 
     signingConfigs {
         debug {

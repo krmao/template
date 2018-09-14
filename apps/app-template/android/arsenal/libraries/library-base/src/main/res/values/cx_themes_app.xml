@@ -10,6 +10,12 @@
         <item name="colorAccent">@color/cx_accent</item>
     </style>
 
+    <style name="CXAppTheme.Light.Launch" parent="@style/CXAppTheme.Light.NoActionBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+            Flutter draws its first frame -->
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
     <style name="CXAppTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.Left_Right</item>
         <item name="colorPrimary">@color/cx_primary</item>
@@ -32,6 +38,12 @@
     <style name="CXAppTheme.Translucent" parent="@style/CXAppTheme.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.Left_Right</item>
+    </style>
+
+    <style name="CXAppTheme.Translucent.Launch" parent="@style/CXAppTheme.Translucent">
+        <!-- Show a splash screen on the activity. Automatically removed when
+            Flutter draws its first frame -->
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="CXAppTheme.Translucent.Notification" parent="@style/CXAppTheme.Translucent">

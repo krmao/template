@@ -11,13 +11,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 相机 -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
 
     <!-- 定位 -->
-    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--<uses-permission android:name="android.permission.LOCATION_HARDWARE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
     <application
         android:name=".FinalApplication"
@@ -28,7 +28,7 @@
         android:label="@string/cx_app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/CXAppTheme.Light.NoActionBar"
+        android:theme="@style/LaunchTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 

@@ -9,7 +9,8 @@
             android:name=".FlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
+            android:launchMode="standard"
+            android:theme="@style/CXAppTheme.Translucent.Launch"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
@@ -17,7 +18,7 @@
                  defined in @style/LaunchTheme). -->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="false" />
+                android:value="true" />
         </activity>
     </application>
 

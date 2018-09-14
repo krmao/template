@@ -52,25 +52,26 @@ open class CXBaseActivity : AppCompatActivity() {
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
             statusBar = ImmersionBar.with(this)
-                .transparentStatusBar()
-                .statusBarColorInt(Color.TRANSPARENT)
-                .navigationBarEnable(false)
-                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
+                    .transparentStatusBar()
+                    .statusBarColorInt(Color.TRANSPARENT)
+                    .navigationBarEnable(false)
+                    .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
             statusBar?.init()
         }
 
-        SwipeBackHelper.onCreate(this)
-        SwipeBackHelper.getCurrentPage(this)//get current instance
-            .setSwipeBackEnable(enableSwipeBack)//on-off
-            //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-            .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-            .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-            .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-            .setClosePercent(0.7f)//close activity when swipe over this
-            .setSwipeRelateEnable(true)//if should move together with the following Activity
-            .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-            .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
-        /*.addListener(object : SwipeListener {
+        if (enableSwipeBack) {
+            SwipeBackHelper.onCreate(this)
+            SwipeBackHelper.getCurrentPage(this)//get current instance
+                    .setSwipeBackEnable(enableSwipeBack)//on-off
+                    //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+                    .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
+                    .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
+                    .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
+                    .setClosePercent(0.7f)//close activity when swipe over this
+                    .setSwipeRelateEnable(true)//if should move together with the following Activity
+                    .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
+                    .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+            /*.addListener(object : SwipeListener {
             override fun onScrollToClose() {
             }
 
@@ -80,11 +81,14 @@ open class CXBaseActivity : AppCompatActivity() {
             override fun onScroll(p0: Float, p1: Int) {
             }
         })*/
+
+        }
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        SwipeBackHelper.onPostCreate(this)
+        if (enableSwipeBack) SwipeBackHelper.onPostCreate(this)
     }
 
     override fun onResume() {
@@ -95,7 +99,7 @@ open class CXBaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         disposables.dispose()
         statusBar?.destroy()
-        SwipeBackHelper.onDestroy(this)
+        if (enableSwipeBack) SwipeBackHelper.onDestroy(this)
         CXRouteManager.removeCallback(this)
         super.onDestroy()
     }

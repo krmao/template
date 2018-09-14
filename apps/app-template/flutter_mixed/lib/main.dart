@@ -7,7 +7,7 @@ void main() => runApp(_widgetForRoute(window.defaultRouteName));
 Widget _widgetForRoute(String route) {
   switch (route) {
     case 'route1':
-      return MyApp();
+      return new MyHomePage(title: 'Flutter Demo Home Page 1');
     case 'route2':
       return  MyApp(); // MyHomePage(title: 'route2');
     default:

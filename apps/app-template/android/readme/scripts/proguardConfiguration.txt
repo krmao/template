@@ -1,92 +1,129 @@
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/a9283170b7305c8d92d25aff02a6ab7e45d06cbe/okio-1.13.0.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jude/swipebackhelper/3.1.2/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains.anko/anko-common/0.8.2/8974e9997afe8701e4207a315d4aa9bf7f05a8f4/anko-common-0.8.2.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.3-2/9b44c139a4ec57031e0c84ba0e49ba16df6d801c/kotlin-stdlib-1.1.3-2.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-v4/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar(**.class)
--injars /Users/smart/libs/sdk_android/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.meituan.android.walle/payload_reader/1.1.4/908f575a3a222ad7f12c9027689f09e74afc5115/payload_reader-1.1.4.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.8.0/f765f004f3e201bd6ad0904266e605d7fb776d5/logging-interceptor-3.8.0.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.3.0/9e09011e9767bb76b5e27c9b8223476b93b14631/converter-gson-2.3.0.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-design/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/22.0-android/7b2fc7ef242f35bc2c9a3b816ed846c9345e3f95/guava-22.0-android.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.tbruyelle.rxpermissions/rxpermissions/0.9.4/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/bcacde6a8ccedcc56c127403d26b76072fe6214d/retrofit-2.3.0.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.0/14b8c877d98005ba3941c9257cfe09f6ed0e0d74/reactive-streams-1.0.0.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.0/2fdf84dedcaaeabb9d70cde9dbb8aad4eccb80a1/rxjava-2.1.0.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-compat/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/976d8d30bebc251db406f2bdb3eb01962b5685b3/j2objc-annotations-1.1.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-recyclerview-v7-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava2/2.3.0/f436637f9500ab5b8bc32afe556373180894b4a5/adapter-rxjava2-2.3.0.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-support-v4-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxkotlin/2.0.3/5898dbe86fbc7d807359b199aa8b7078f07229af/rxkotlin-2.0.3.jar(**.class)
--injars /Users/smart/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/5a11f020cce2d11eb71ba916700600e18c4547e7/okhttp-3.8.0.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/io.reactivex.rxjava2/rxandroid/2.0.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/support-fragment/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/1.3.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.meituan.android.walle/library/1.1.4/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android-no-op/1.5.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.jakewharton.rxbinding2/rxbinding-appcompat-v7-kotlin/2.0.0/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/fruit-shop-android/module-template-home/unspecified/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/fruit-shop-android/library-template-base/unspecified/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/exploded-aar/com.smart.android/library-base/0.0.1-SNAPSHOT/jars/classes.jar(**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/transforms/mergeJavaRes/release/jars/2/1f/main.jar(!**.class)
--injars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/classes/release(**.class)
--outjars /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/intermediates/transforms/proguard/release/jars/3/1f/main.jar
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/leakcanary-android-no-op-1.5.4.aar/fb680470e2a29d14cd543d74c02c51c6/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/multidex-1.0.3.aar/200ba4632834c493eb93fc0d318ff513/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/library-1.1.6.aar/95685bcac9955160508ce02f8f92cb31/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/js-evaluator-for-android-v3.0.0.aar/e431a7321a1f2d80109b135318e193c2/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/0dc8b310d8d29c62df4b6b8d414c536b/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/react-native-0.55.4.aar/0dc8b310d8d29c62df4b6b8d414c536b/jars/libs/infer-annotations-4.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.apache.rocketmq/rocketmq-client/4.2.0/971a56b8152f0618e620a101800556daf08b4e41/rocketmq-client-4.2.0.jar(**.class)
+-injars /Users/maokangren/workspace/flutter/bin/cache/artifacts/engine/android-arm-release/flutter.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-v13-27.1.1.aar/383d7c8acce652164d0b6b6826059856/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/library-1.3.2.aar/3f45c46603c66e8eedc5773ee9f727ac/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-design-kotlin-2.0.0.aar/c28a5afb41192d5f73836d39e928f0af/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-design-2.0.0.aar/9d021dc740306d2b6547e46e001f9261/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/6c8ca774bc9f93c02c98e743ed0e80ce/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/swipebackhelper-3.1.2.aar/edbad183d401740ffbc6e70e00df692f/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/barlibrary-2.3.0.aar/1accd1b6c36866f2cdfda863c4cef0d0/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-appcompat-v7-kotlin-2.0.0.aar/12c407f4a655b6347c1db18f93bf937c/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-appcompat-v7-2.0.0.aar/50e0a908fe5082b0252ee5b1d6cbfe9e/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-recyclerview-v7-kotlin-2.0.0.aar/89393b20c0bbd09ba9d42b5654d458d2/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-recyclerview-v7-2.0.0.aar/ddf9d1e972439149feef0ca325c0f421/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/6574ba8ef076b8c403871603f53637cd/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.1.aar/b615e6767026d2b883b89cc0d3c78f22/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/ee885eec59b9575a37b8d25781bd0591/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.2.aar/5c219c90d3c080f2a358220e61f39bd6/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.2.40/d984261ef3ff59acfa4e8c0480c6e01df40853a4/kotlin-reflect-1.2.40.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxkotlin/2.0.3/5898dbe86fbc7d807359b199aa8b7078f07229af/rxkotlin-2.0.3.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-support-v4-kotlin-2.0.0.aar/7383e9027daf0031f452549bdd057f92/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-kotlin-2.0.0.aar/d6c836ffce853917f25bf33af3ae7a86/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.40/d39920020ab3e74f406a8e142fb94b360f3f80f8/kotlin-stdlib-1.2.40.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains.anko/anko-common/0.8.2/8974e9997afe8701e4207a315d4aa9bf7f05a8f4/anko-common-0.8.2.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/22.0-android/7b2fc7ef242f35bc2c9a3b816ed846c9345e3f95/guava-22.0-android.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava2/2.3.0/f436637f9500ab5b8bc32afe556373180894b4a5/adapter-rxjava2-2.3.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-support-v4-2.0.0.aar/e2418cb93a751768ebc2b57fb430afa5/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxbinding-2.0.0.aar/fc1bb773bc09125e6f6af3c588e88870/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/rxandroid-2.0.1.aar/5b64843cdc03cc135ccf19a7cd689dfe/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.0/2fdf84dedcaaeabb9d70cde9dbb8aad4eccb80a1/rxjava-2.1.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.3.0/9e09011e9767bb76b5e27c9b8223476b93b14631/converter-gson-2.3.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/bcacde6a8ccedcc56c127403d26b76072fe6214d/retrofit-2.3.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/transitionseverywhere-1.7.8.aar/d7fbf664a7d78a09b0ccf555d62bc86f/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/bspatch-0.0.2.aar/50fb29760309d1f5afae59625c65f6e5/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/f3ca268e1d77231580edd696a5e09528/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/ed5e69fcd14507449d18dc4168244ede/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/cf60c538c802ad298b1a6ded59fa414a/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/5d428b811c0090e8a74fe43e29dea52f/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/c39ea1a40b3798ea1a06cba16a0c0480/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/fe9491d86d19b58ad4e9c91f7d5450c2/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/b3d107a2e6fa07774cd6ec61dd996fb6/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/27.1.1/39ded76b5e1ce1c5b2688e1d25cdc20ecee32007/support-annotations-27.1.1.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.meituan.android.walle/payload_reader/1.1.6/8843d9fdc57bca7966d57ff190f941a6aa679499/payload_reader-1.1.6.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/textlayoutbuilder-1.0.0.aar/f7c4783034e390f193887fdfb87a8b8a/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/fresco-1.3.0.aar/bc24a93c4459d6ac21e46e85eb09ab4a/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.3.0.aar/e02cc074172f7092831a3a9ac00b939c/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/soloader-0.1.0.aar/c5606fbaf11b255c983016b6b6047d24/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.6.0/3f9b16b774f2c36cfd86dd2053d0b3059531dacc/okhttp-urlconnection-3.6.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/5a11f020cce2d11eb71ba916700600e18c4547e7/okhttp-3.8.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/a9283170b7305c8d92d25aff02a6ab7e45d06cbe/okio-1.13.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/android-jsc-r174650.aar/c907034ba0fbe60d78d98b0bd844d74e/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.apache.rocketmq/rocketmq-common/4.2.0/80c69776efc45705778c2792fa02e62d453895e2/rocketmq-common-4.2.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.apache.rocketmq/rocketmq-remoting/4.2.0/3b4334d560b54f6315c3ff9941e27b9b848bf5f3/rocketmq-remoting-4.2.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.7/2b8019b6249bb05d81d3a3094e468753e2b21311/slf4j-api-1.7.7.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.android.support.constraint/constraint-layout-solver/1.1.2/bfc967828daffc35ba01c9ee204d98b664930a0f/constraint-layout-solver-1.1.2.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/976d8d30bebc251db406f2bdb3eb01962b5685b3/j2objc-annotations-1.1.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.0/14b8c877d98005ba3941c9257cfe09f6ed0e0d74/reactive-streams-1.0.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.facebook.fbui.textlayoutbuilder/staticlayout-proxy/1.0/f162442a19fff13995fbd51ba414d9ee05579080/staticlayout-proxy-1.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/drawee-1.3.0.aar/4435e92e821a61b47dac21199fc4b573/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/imagepipeline-1.3.0.aar/46023043bed4d4a60a5ae94bde7d0369/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/imagepipeline-base-1.3.0.aar/b25d742d7dba06030df3a52b4487d5cb/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/fbcore-1.3.0.aar/c4bacf098c4bee9f377eab702829a26e/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/d43b5f96657356255383b970a8483b21/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/b91418c98629f214e63431370695ceca/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.29/2878958d7631337dcfe3bb4e541aa34478367e66/fastjson-1.2.29.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.0.42.Final/8b504f4a88c636839d47cffe303ba613792762ed/netty-all-4.0.42.Final.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/f582bcb2a5d555d0d16154383d93fb98/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.1.0/edf3f7bfb84a7521d0599efa3b0113a0ee90f85/common-1.1.0.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/37b9490eea9a711210e940f90384a834/jars/classes.jar(**.class)
+-injars /Users/maokangren/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.1.0/8007981f7d7540d89cd18471b8e5dcd2b4f99167/common-1.1.0.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-hybird/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-template-repository/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-react_native/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-mine/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-setting/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-im/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-flutter/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-template-base/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/flutter_mixed/.android/Flutter/build/intermediates/intermediate-jars/release/classes.jar(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/classes/release(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/tmp/kotlin-classes/release(**.class)
+-injars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/transforms/mergeJavaRes/release/0.jar(!**.class)
+-outjars /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/transforms/proguard/release/0.jar
 
--libraryjars /Users/smart/libs/sdk_android/platforms/android-25/android.jar
--libraryjars /Users/smart/libs/sdk_android/platforms/android-25/optional/org.apache.http.legacy.jar
+-libraryjars /Users/maokangren/sdks/android/sdk/platforms/android-27/android.jar
+-libraryjars /Users/maokangren/sdks/android/sdk/platforms/android-27/optional/org.apache.http.legacy.jar
 
 -forceprocessing
 -dontshrink
--printusage /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/outputs/mapping/release/usage.txt
+-printusage /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/outputs/mapping/release/usage.txt
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 -optimizationpasses 5
 -allowaccessmodification
--printmapping /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/outputs/mapping/release/mapping.txt
+-printmapping /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/outputs/mapping/release/mapping.txt
 -overloadaggressively
 -useuniqueclassmembernames
 -dontusemixedcaseclassnames
 -flattenpackagehierarchy M
 -repackageclasses template
--keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,javax.xml.bind.annotation.*,javax.annotation.processing.*,*Annotation*,*Annotation*
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,javax.xml.bind.annotation.*,javax.annotation.processing.*,JavascriptInterface,*Annotation*,*Annotation*,*Annotation*
 -keepparameternames
 -renamesourcefileattribute SourceFile
 -adaptclassstrings com.example.Test
 -dontpreverify
 -verbose
--dontnote android.net.http.*,org.apache.commons.codec.**,org.apache.http.**,java.lang.invoke.SerializedLambda,fqcn.of.**,com.google.vending.licensing.ILicensingService,com.android.vending.licensing.ILicensingService
--dontwarn android.support.**,android.support.**,freemarker.**,fqcn.of.**
--printconfiguration /Users/smart/workspace/fruit-shop/fruit-shop-android/readme/scripts/proguardConfiguration.txt
--dump /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/outputs/mapping/release/dump.txt
--printseeds /Users/smart/workspace/fruit-shop/fruit-shop-android/arsenal/apps/app-template/build/outputs/mapping/release/seeds.txt
+-dontnote android.net.http.*,org.apache.commons.codec.**,org.apache.http.**,java.lang.invoke.SerializedLambda,android.support.**,fqcn.of.**,com.google.vending.licensing.ILicensingService,com.android.vending.licensing.ILicensingService,android.**,com.google.**,com.tbruyelle.**,com.facebook.**,org.jetbrains.**,kotlin.**,io.reactivex.**,com.gyf.**,com.transitionseverywhere.**,okhttp3.**,okio.**,retrofit2.**,com.jude.**
+-dontwarn android.support.**,android.support.**,freemarker.**,fqcn.of.**,com.google.**,com.tbruyelle.**,com.facebook.**,org.jetbrains.**,kotlin.**,io.reactivex.**,com.gyf.**,com.transitionseverywhere.**,okhttp3.**,okio.**,retrofit2.**,com.jude.**
+-printconfiguration /Users/maokangren/workspace/template/apps/app-template/android/readme/scripts/proguardConfiguration.txt
+-dump /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/outputs/mapping/release/dump.txt
+-printseeds /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/outputs/mapping/release/seeds.txt
 
 
 # 保护属性 end
@@ -226,6 +263,10 @@
 }
 
 # javascript interface webview end
+-keepclassmembers class * extends android.webkit.WebChromeClient {
+    public void openFileChooser(...);
+}
+
 -keep public class com.google.vending.licensing.ILicensingService
 
 -keep public class com.android.vending.licensing.ILicensingService
@@ -246,14 +287,343 @@
 
 -keep interface  android.**
 
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_bottom_navigation_item.xml:26
+-keep class android.support.design.internal.BaselineLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_navigation_item.xml:17
+-keep class android.support.design.internal.NavigationMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_navigation_menu.xml:17
+-keep class android.support.design.internal.NavigationMenuView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_layout_snackbar_include.xml:18
+-keep class android.support.design.internal.SnackbarContentLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_text_input_password_icon.xml:18
+-keep class android.support.design.widget.CheckableImageButton {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_bottom_sheet_dialog.xml:26
+-keep class android.support.design.widget.CoordinatorLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout-sw600dp-v13/design_layout_snackbar.xml:18
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/f32967632be3e2005d9542850fe03884/res/layout/design_layout_snackbar.xml:18
+-keep class android.support.design.widget.Snackbar$SnackbarLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:49
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:57
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:65
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:73
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:81
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:89
+-keep class android.support.design.widget.TabItem {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:38
+-keep class android.support.design.widget.TabLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:88
+-keep class android.support.v4.content.FileProvider {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:24
+-keep class android.support.v4.view.ViewPager {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_widget_titlebar.xml:135
+-keep class android.support.v4.widget.ContentLoadingProgressBar {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_material.xml:41
+-keep class android.support.v4.widget.NestedScrollView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_select_dialog_material.xml:23
+-keep class android.support.v7.app.AlertController$RecycleListView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_action_menu_item_layout.xml:17
+-keep class android.support.v7.view.menu.ActionMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_expanded_menu_layout.xml:17
+-keep class android.support.v7.view.menu.ExpandedMenuView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_list_menu_item_layout.xml:17
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_popup_menu_item_layout.xml:17
+-keep class android.support.v7.view.menu.ListMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-v26/abc_screen_toolbar.xml:27
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_toolbar.xml:27
+-keep class android.support.v7.widget.ActionBarContainer {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-v26/abc_screen_toolbar.xml:44
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_action_mode_bar.xml:19
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_toolbar.xml:43
+-keep class android.support.v7.widget.ActionBarContextView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-v26/abc_screen_toolbar.xml:17
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_toolbar.xml:17
+-keep class android.support.v7.widget.ActionBarOverlayLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_action_menu_layout.xml:17
+-keep class android.support.v7.widget.ActionMenuView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_activity_chooser_view.xml:19
+-keep class android.support.v7.widget.ActivityChooserView$InnerLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_material.xml:18
+-keep class android.support.v7.widget.AlertDialogLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-watch-v20/abc_alert_dialog_button_bar_material.xml:18
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_button_bar_material.xml:26
+-keep class android.support.v7.widget.ButtonBarLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_content_include.xml:19
+-keep class android.support.v7.widget.ContentFrameLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-watch-v20/abc_alert_dialog_title_material.xml:44
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_title_material.xml:45
+-keep class android.support.v7.widget.DialogTitle {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_simple_overlay_action_mode.xml:23
+-keep class android.support.v7.widget.FitWindowsFrameLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_dialog_title_material.xml:22
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_simple.xml:17
+-keep class android.support.v7.widget.FitWindowsLinearLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_fragment_debug.xml:154
+-keep class android.support.v7.widget.LinearLayoutCompat {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_search_view.xml:75
+-keep class android.support.v7.widget.SearchView$SearchAutoComplete {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-v26/abc_screen_toolbar.xml:37
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_toolbar.xml:36
+-keep class android.support.v7.widget.Toolbar {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_simple.xml:25
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_screen_simple_overlay_action_mode.xml:32
+-keep class android.support.v7.widget.ViewStubCompat {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout-watch-v20/abc_alert_dialog_title_material.xml:53
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_button_bar_material.xml:43
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_material.xml:52
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_material.xml:66
+# Referenced at /Users/maokangren/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/ab4ff2c4a7d4e857aa01348ab8624ecf/res/layout/abc_alert_dialog_title_material.xml:56
+-keep class android.widget.Space {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:66
+-keep class com.facebook.react.devsupport.DevSettingsActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:98
+-keep class com.smart.library.base.CXActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_fragment_debug.xml:30
+-keep class com.smart.library.widget.CXListView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:103
+-keep class com.smart.library.widget.debug.CXDebugActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:17
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:27
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:34
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:42
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:53
+-keep class com.smart.library.widget.imageview.CXRoundImageView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-im/build/intermediates/packaged_res/release/layout/im_fragment.xml:17
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-mine/build/intermediates/packaged_res/release/layout/mine_fragment.xml:17
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-setting/build/intermediates/packaged_res/release/layout/setting_fragment.xml:17
+-keep class com.smart.library.widget.loading.CXFrameLoadingLayout {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_fragment_test_1.xml:10
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_fragment_test_2.xml:10
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/src/main/res/layout/home_tab_fragment.xml:10
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_fragment_debug.xml:23
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_fragment_webview.xml:9
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_test.xml:11
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-im/build/intermediates/packaged_res/release/layout/im_fragment.xml:11
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-mine/build/intermediates/packaged_res/release/layout/mine_fragment.xml:11
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/modules/module-template-setting/build/intermediates/packaged_res/release/layout/setting_fragment.xml:11
+-keep class com.smart.library.widget.titlebar.CXTitleBar {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/libraries/library-base/build/intermediates/packaged_res/release/layout/cx_fragment_webview.xml:16
+-keep class com.smart.library.widget.webview.client.CXWebView {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:25
+-keep class com.smart.template.FinalApplication {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:35
+-keep class com.smart.template.home.tab.HomeTabActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:71
+-keep class com.smart.template.module.flutter.FlutterActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:55
+-keep class com.smart.template.module.hybird.HybirdActivity {
+    <init>(...);
+}
+
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:61
+-keep class com.smart.template.module.rn.ReactActivity {
+    <init>(...);
+}
+
+-keep class com.google.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.tbruyelle.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.facebook.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class org.jetbrains.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class kotlin.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class io.reactivex.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.gyf.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.transitionseverywhere.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class okhttp3.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class okio.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class retrofit2.** {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.jude.** {
+    <fields>;
+    <methods>;
+}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface
+    <methods>;
+}
+
 # Copyright (C) 2015 The Android Open Source Project
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -265,14 +635,31 @@
     public <init>();
 }
 
-# Copyright (C) 2015 The Android Open Source Project
-#
+# Copyright (C) 2018 The Android Open Source Project
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# Ensure that reflectively-loaded inflater is not obfuscated. This can be
+# removed when we stop supporting AAPT1 builds.
+-keep,allowshrinking class android.support.v7.app.AppCompatViewInflater
+
+# Copyright (C) 2015 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -285,13 +672,13 @@
 }
 
 # Copyright (C) 2016 The Android Open Source Project
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -303,183 +690,83 @@
     *** get*();
 }
 
-# view res/layout/design_bottom_navigation_item.xml #generated:26
--keep class android.support.design.internal.BaselineLayout {
+# Copyright (C) 2017 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# Prevent Parcelable objects from being removed or renamed.
+-keep class android.support.v4.media.** extends android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+# Copyright (C) 2016 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context,android.util.AttributeSet);
+    public <init>();
+}
+
+# Copyright (C) 2017 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# FragmentTransitionSupport is instantiated in support-fragment via reflection.
+-keep public class android.support.transition.FragmentTransitionSupport
+
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class android.support.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+    android.support.transition.ChangeBounds$ViewBounds mViewBounds;
+}
+
+-keep class * extends android.arch.lifecycle.ViewModel {
+    <init>();
+}
+
+-keepclassmembers enum  android.arch.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep class * extends android.arch.lifecycle.LifecycleObserver
+
+-keep class * extends android.arch.lifecycle.GeneratedAdapter {
     <init>(...);
 }
 
-# view res/layout/design_navigation_item.xml #generated:17
--keep class android.support.design.internal.NavigationMenuItemView {
-    <init>(...);
-}
-
-# view res/layout/design_navigation_menu.xml #generated:17
--keep class android.support.design.internal.NavigationMenuView {
-    <init>(...);
-}
-
-# view res/layout/design_layout_snackbar_include.xml #generated:18
--keep class android.support.design.internal.SnackbarContentLayout {
-    <init>(...);
-}
-
-# view res/layout/design_text_input_password_icon.xml #generated:18
--keep class android.support.design.widget.CheckableImageButton {
-    <init>(...);
-}
-
-# view res/layout/design_bottom_sheet_dialog.xml #generated:17
--keep class android.support.design.widget.CoordinatorLayout {
-    <init>(...);
-}
-
-# view res/layout/design_layout_snackbar.xml #generated:18
-# view sw600dp-v13/res/layout-sw600dp-v13/design_layout_snackbar.xml #generated:18
--keep class android.support.design.widget.Snackbar$SnackbarLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_material.xml #generated:41
--keep class android.support.v4.widget.NestedScrollView {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_button_bar_material.xml #generated:43
-# view res/layout/abc_alert_dialog_material.xml #generated:52
-# view res/layout/abc_alert_dialog_material.xml #generated:66
-# view res/layout/abc_alert_dialog_title_material.xml #generated:56
--keep class android.support.v4.widget.Space {
-    <init>(...);
-}
-
-# view res/layout/abc_select_dialog_material.xml #generated:23
--keep class android.support.v7.app.AlertController$RecycleListView {
-    <init>(...);
-}
-
-# view res/layout/abc_action_menu_item_layout.xml #generated:17
--keep class android.support.v7.view.menu.ActionMenuItemView {
-    <init>(...);
-}
-
-# view res/layout/abc_expanded_menu_layout.xml #generated:17
--keep class android.support.v7.view.menu.ExpandedMenuView {
-    <init>(...);
-}
-
-# view res/layout/abc_list_menu_item_layout.xml #generated:17
-# view res/layout/abc_popup_menu_item_layout.xml #generated:17
--keep class android.support.v7.view.menu.ListMenuItemView {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:27
--keep class android.support.v7.widget.ActionBarContainer {
-    <init>(...);
-}
-
-# view res/layout/abc_action_mode_bar.xml #generated:19
-# view res/layout/abc_screen_toolbar.xml #generated:43
--keep class android.support.v7.widget.ActionBarContextView {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:17
--keep class android.support.v7.widget.ActionBarOverlayLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_action_menu_layout.xml #generated:17
--keep class android.support.v7.widget.ActionMenuView {
-    <init>(...);
-}
-
-# view res/layout/abc_activity_chooser_view.xml #generated:19
--keep class android.support.v7.widget.ActivityChooserView$InnerLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_material.xml #generated:18
--keep class android.support.v7.widget.AlertDialogLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_button_bar_material.xml #generated:26
--keep class android.support.v7.widget.ButtonBarLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_content_include.xml #generated:19
--keep class android.support.v7.widget.ContentFrameLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_title_material.xml #generated:45
--keep class android.support.v7.widget.DialogTitle {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_simple_overlay_action_mode.xml #generated:23
--keep class android.support.v7.widget.FitWindowsFrameLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_dialog_title_material.xml #generated:22
-# view res/layout/abc_screen_simple.xml #generated:17
--keep class android.support.v7.widget.FitWindowsLinearLayout {
-    <init>(...);
-}
-
-# view res/layout/cx_fragment_debug.xml #generated:107
--keep class android.support.v7.widget.LinearLayoutCompat {
-    <init>(...);
-}
-
-# view res/layout/abc_search_view.xml #generated:75
--keep class android.support.v7.widget.SearchView$SearchAutoComplete {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:36
--keep class android.support.v7.widget.Toolbar {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_simple.xml #generated:25
-# view res/layout/abc_screen_simple_overlay_action_mode.xml #generated:32
--keep class android.support.v7.widget.ViewStubCompat {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:18
--keep class com.smart.template.library.CXApplication {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:31
--keep class com.smart.template.module.home.HomeActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:43
--keep class com.smart.library.base.CXActivity {
-    <init>(...);
-}
-
-# view res/layout/cx_fragment_debug.xml #generated:26
--keep class com.smart.library.widget.CXListView {
-    <init>(...);
-}
-
-# view res/layout/cx_fragment_webview.xml #generated:14
--keep class com.smart.library.widget.loading.CXFrameLoadingLayout {
-    <init>(...);
-}
-
-# view res/layout/cx_fragment_debug.xml #generated:21
-# view res/layout/cx_fragment_webview.xml #generated:8
--keep class com.smart.library.widget.titlebar.CXTitleBar {
-    <init>(...);
+-keepclassmembers class ** {
+    @android.arch.lifecycle.OnLifecycleEvent
+    <fields>;
+    @android.arch.lifecycle.OnLifecycleEvent
+    <methods>;
 }
 
 # #############################################

@@ -29,7 +29,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         @JvmStatic
         @JvmOverloads
-        fun goTo(activity: Activity?, routeName: String, routeParams: HashMap<String, Any>? = null, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {
+        fun goTo(activity: Activity?, routeName: String, routeParams: HashMap<String, Any>? = null, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
             val paramsBuffer = StringBuffer()
             routeParams?.entries?.let {
                 it.forEachIndexed { index, mutableEntry ->
@@ -38,7 +38,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                 }
             }
             val routeFullPath = "$ROUTE_PATH_PREFIX$routeName?${if (routeParams?.isEmpty() == true) "" else paramsBuffer.toString()}"
-            goToByFullPath(activity, routeFullPath, requestCode, callback, options)
+            goToByFullPath(activity, routeFullPath, requestCode, callback, null)
         }
 
         /**
@@ -87,8 +87,14 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
             CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}")
             when (call?.method) {
                 "goTo" -> {
-                    FlutterActivity.goTo(this@FlutterActivity, "route2", hashMapOf("name" to "jack"))
-                    result.success(call.arguments)
+                    FlutterActivity.goTo(this@FlutterActivity, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
+                        result.success(call.arguments)
+                    }
+                }
+                "finish" -> {
+                    setResult(Activity.RESULT_OK, Intent())
+                    result.success(1)
+                    finish()
                 }
                 else -> {
                     result.error("0", "can't find the method:${call?.method}", call?.arguments)

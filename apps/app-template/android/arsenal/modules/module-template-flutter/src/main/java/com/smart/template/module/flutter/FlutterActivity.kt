@@ -11,9 +11,11 @@ import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
+
 
 @Suppress("MemberVisibilityCanBePrivate")
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
@@ -23,6 +25,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
         private const val ROUTE_PATH_PREFIX = "flutter://"
         private const val TAG = "flutter"
+        private const val CHANNEL_METHOD = "flutter.channel.method";
 
         @JvmStatic
         @JvmOverloads
@@ -79,6 +82,19 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         super.onCreate(savedInstanceState)
         intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         this.eventDelegate.onCreate(savedInstanceState)
+
+        MethodChannel(flutterView, CHANNEL_METHOD).setMethodCallHandler { call, result ->
+            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}")
+            when (call?.method) {
+                "goTo" -> {
+                    FlutterActivity.goTo(this@FlutterActivity, "route2", hashMapOf("name" to "jack"))
+                    result.success(call.arguments)
+                }
+                else -> {
+                    result.error("0", "can't find the method:${call?.method}", call?.arguments)
+                }
+            }
+        }
     }
 
     override fun onStart() {
@@ -121,7 +137,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         this.eventDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!this.eventDelegate.onActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data)
         }

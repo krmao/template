@@ -9,6 +9,35 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # rx
+  rxdart: ^0.18.1
+
+  # http
+  dio: ^1.0.3
+
+  # banner
+  flutter_swiper: ^1.0.6
+
+  # shared_preferences
+  shared_preferences: ^0.4.2
+
+  # pull_to_refresh
+  pull_to_refresh: ^1.1.5
+
+  # image_picker: ^0.4.10
+  image_picker: ^0.4.10
+
+  # flutter_html
+  flutter_html: ^0.7.1
+
+  # image
+  cached_network_image: ^0.4.2
+  transparent_image: ^0.1.0
+
+  cupertino_icons: ^0.1.2
+  intl: ^0.15.7
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -18,3 +47,7 @@ flutter:
   module:
     androidPackage: com.smart.flutter_mixed
     iosBundleIdentifier: com.smart.flutter_mixed
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - images/

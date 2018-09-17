@@ -18,29 +18,19 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private val viewProvider: FlutterView.Provider by lazy { delegate }
     private val pluginRegistry: PluginRegistry by lazy { delegate }
 
-    override fun getFlutterView(): FlutterView {
-        return this.viewProvider.flutterView
-    }
+    override fun getFlutterView(): FlutterView = this.viewProvider.flutterView
 
     override fun createFlutterView(context: Context): FlutterView? = null
 
     override fun createFlutterNativeView(): FlutterNativeView? = null
 
-    override fun retainFlutterNativeView(): Boolean {
-        return true
-    }
+    override fun retainFlutterNativeView(): Boolean = false
 
-    override fun hasPlugin(key: String): Boolean {
-        return this.pluginRegistry.hasPlugin(key)
-    }
+    override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
 
-    override fun <T> valuePublishedByPlugin(pluginKey: String): T {
-        return this.pluginRegistry.valuePublishedByPlugin(pluginKey)
-    }
+    override fun <T> valuePublishedByPlugin(pluginKey: String): T = this.pluginRegistry.valuePublishedByPlugin(pluginKey)
 
-    override fun registrarFor(pluginKey: String): PluginRegistry.Registrar {
-        return this.pluginRegistry.registrarFor(pluginKey)
-    }
+    override fun registrarFor(pluginKey: String): PluginRegistry.Registrar = this.pluginRegistry.registrarFor(pluginKey)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

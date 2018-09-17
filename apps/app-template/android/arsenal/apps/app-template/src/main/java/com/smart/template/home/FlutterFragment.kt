@@ -22,7 +22,7 @@ class FlutterFragment : CXBaseFragment() {
         textView.setOnClickListener {
 
             (1..1).forEach {
-                FlutterActivity.goTo(activity, "route2")
+                FlutterActivity.goTo(activity, "route2", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
             }
 
             /*CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {

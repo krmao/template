@@ -9,20 +9,45 @@ void main() {
   runApp(_widgetForRoute(window.defaultRouteName));
 }
 
-Widget _widgetForRoute(String route) {
-  switch (route) {
+Widget _widgetForRoute(String routeFullPath) {
+  var arguments = routeFullPath.split("?");
+
+  var routeName = arguments.length > 0 ? arguments[0] : null;
+  var routeParams = Map<String, dynamic>();
+
+  if (arguments.length > 1) {
+    arguments[1].split("&").forEach((keyValue) {
+      var kv = keyValue.split("=");
+      if (kv.length >= 2) routeParams[kv[0]] = kv[1];
+    });
+  }
+
+  switch (routeName) {
     case 'route1':
-      return new MyHomePage(title: 'Flutter Demo Home Page 1');
+      return new MyHomePage(title: routeParams.entries.toString());
     case 'route2':
-      return MyApp(); // MyHomePage(title: 'route2');
+      return MyApp(title: routeParams.entries.toString()); // MyHomePage(title: 'route2');
     default:
       return Center(
-        child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
+        child: Text('Unknown route: $routeName', textDirection: TextDirection.ltr),
       );
   }
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,7 +60,7 @@ class MyApp extends StatelessWidget {
       home: new Scaffold(
         backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
         body: new SafeArea(
-          child: new MyHomePage(title: "hello word"),
+          child: new MyHomePage(title: title),
           bottom: true,
         ),
       ),
@@ -59,11 +84,14 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => new _MyHomePageState(title: title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final String title;
+
+  _MyHomePageState({this.title}) : super();
 
   void _incrementCounter() {
     setState(() {
@@ -105,6 +133,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Text(
+              this.title,
+            ),
             new Text(
               'You have pushed the button this many times:',
             ),

@@ -13,21 +13,35 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
+@Suppress("MemberVisibilityCanBePrivate")
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
 
     companion object {
 
-        private const val KEY_ROUTE = "route"
-        private const val KEY_PARAM = "param"
+        private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
 
         @JvmStatic
         @JvmOverloads
-        fun goTo(activity: Activity?, route: String, requestCode: Int = 0, param: HashMap<String, Any>? = null, options: Bundle? = null, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
-            startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE, route).putExtra(KEY_PARAM, param), requestCode, options, callback)
+        fun goTo(activity: Activity?, routeName: String, routeParams: HashMap<String, Any>? = null, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {
+            val paramsBuffer = StringBuffer()
+            routeParams?.entries?.let {
+                it.forEachIndexed { index, mutableEntry ->
+                    paramsBuffer.append("${mutableEntry.key}=${mutableEntry.value}")
+                    if (index < it.size - 1) paramsBuffer.append("&")
+                }
+            }
+            val routeFullPath = "$routeName?${if (routeParams?.isEmpty() == true) "" else paramsBuffer.toString()}"
+            goToByFullPath(activity, routeFullPath, requestCode, callback, options)
+        }
+
+        @JvmStatic
+        @JvmOverloads
+        fun goToByFullPath(activity: Activity?, routeFullPath: String, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {
+            startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE_FULL_PATH, routeFullPath), requestCode, options, callback)
         }
     }
 
-    private val route: String? by lazy { intent?.getStringExtra(KEY_ROUTE) }
+    private val routeFullPath: String? by lazy { intent?.getStringExtra(KEY_ROUTE_FULL_PATH) }
 
     private val delegate by lazy { FlutterActivityDelegate(this, this) }
     private val eventDelegate: FlutterActivityEvents by lazy { delegate }
@@ -52,7 +66,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        intent = Intent("android.intent.action.RUN").putExtra("route", route)
+        intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         this.eventDelegate.onCreate(savedInstanceState)
     }
 

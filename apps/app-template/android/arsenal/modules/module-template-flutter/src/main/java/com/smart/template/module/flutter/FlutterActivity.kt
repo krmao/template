@@ -19,6 +19,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     companion object {
 
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
+        private const val ROUTE_PATH_PREFIX = "flutter://"
 
         @JvmStatic
         @JvmOverloads
@@ -30,10 +31,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                     if (index < it.size - 1) paramsBuffer.append("&")
                 }
             }
-            val routeFullPath = "$routeName?${if (routeParams?.isEmpty() == true) "" else paramsBuffer.toString()}"
+            val routeFullPath = "$ROUTE_PATH_PREFIX$routeName?${if (routeParams?.isEmpty() == true) "" else paramsBuffer.toString()}"
             goToByFullPath(activity, routeFullPath, requestCode, callback, options)
         }
 
+        /**
+         * @param routeFullPath flutter://routeName?key=value&key1=value1
+         */
         @JvmStatic
         @JvmOverloads
         fun goToByFullPath(activity: Activity?, routeFullPath: String, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {

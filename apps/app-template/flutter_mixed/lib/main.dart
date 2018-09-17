@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+const _ROUTE_PATH_PREFIX = "flutter://";
+
 void main() {
   debugPaintSizeEnabled = false;
   runApp(_widgetForRoute(window.defaultRouteName));
 }
 
 Widget _widgetForRoute(String routeFullPath) {
-  var arguments = routeFullPath.split("?");
+  if (!routeFullPath.startsWith(_ROUTE_PATH_PREFIX)) {
+    return new Container();
+  }
+
+  var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
 
   var routeName = arguments.length > 0 ? arguments[0] : null;
   var routeParams = Map<String, dynamic>();

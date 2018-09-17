@@ -7,6 +7,8 @@ import android.content.res.Configuration
 import android.os.Bundle
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
+import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.PluginRegistry
@@ -20,6 +22,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
         private const val ROUTE_PATH_PREFIX = "flutter://"
+        private const val TAG = "flutter"
 
         @JvmStatic
         @JvmOverloads
@@ -41,6 +44,10 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         @JvmStatic
         @JvmOverloads
         fun goToByFullPath(activity: Activity?, routeFullPath: String, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {
+            if (CXValueUtil.isDoubleClicked(700)) {
+                CXLogUtil.e(TAG, "detected jump to flutter with doubleClicked, cancel jump !")
+                return
+            }
             startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE_FULL_PATH, routeFullPath), requestCode, options, callback)
         }
     }

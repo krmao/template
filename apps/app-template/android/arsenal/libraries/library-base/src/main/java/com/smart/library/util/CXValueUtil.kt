@@ -2,7 +2,6 @@ package com.smart.library.util
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.UiThread
 import android.support.v4.app.Fragment
 import org.jetbrains.anko.AnkoAsyncContext
 import java.math.BigDecimal
@@ -15,10 +14,10 @@ object CXValueUtil {
     @Volatile
     private var lastClickedTime: Long = System.currentTimeMillis()
 
-    @UiThread
     @JvmStatic
-    fun isDoubleClicked(): Boolean {
-        val isDoubleClicked = System.currentTimeMillis() - lastClickedTime <= 200 // double check
+    @JvmOverloads
+    fun isDoubleClicked(interval: Int = 200): Boolean {
+        val isDoubleClicked = System.currentTimeMillis() - lastClickedTime <= interval // double check
         lastClickedTime = System.currentTimeMillis()
         return isDoubleClicked
     }

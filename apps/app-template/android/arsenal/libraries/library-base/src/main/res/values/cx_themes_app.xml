@@ -43,7 +43,7 @@
     <style name="CXAppTheme.Translucent.Launch" parent="@style/CXAppTheme.Translucent">
         <!-- Show a splash screen on the activity. Automatically removed when
             Flutter draws its first frame -->
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/cx_primary_dark</item>
     </style>
 
     <style name="CXAppTheme.Translucent.Notification" parent="@style/CXAppTheme.Translucent">

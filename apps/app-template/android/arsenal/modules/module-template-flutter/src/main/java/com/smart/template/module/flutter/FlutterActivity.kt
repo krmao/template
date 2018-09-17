@@ -1,10 +1,12 @@
 package com.smart.template.module.flutter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import com.smart.library.base.CXBaseActivity
+import com.smart.library.base.startActivityForResult
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.PluginRegistry
@@ -12,6 +14,20 @@ import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
+
+    companion object {
+
+        private const val KEY_ROUTE = "route"
+        private const val KEY_PARAM = "param"
+
+        @JvmStatic
+        @JvmOverloads
+        fun goTo(activity: Activity?, route: String, requestCode: Int = 0, param: HashMap<String, Any>? = null, options: Bundle? = null, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
+            startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE, route).putExtra(KEY_PARAM, param), requestCode, options, callback)
+        }
+    }
+
+    private val route: String? by lazy { intent?.getStringExtra(KEY_ROUTE) }
 
     private val delegate by lazy { FlutterActivityDelegate(this, this) }
     private val eventDelegate: FlutterActivityEvents by lazy { delegate }
@@ -22,9 +38,11 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun createFlutterView(context: Context): FlutterView? = null
 
-    override fun createFlutterNativeView(): FlutterNativeView? = FlutterManager.flutterNativeView
+    /// override fun createFlutterNativeView(): FlutterNativeView? = FlutterManager.flutterNativeView
+    /// override fun retainFlutterNativeView(): Boolean = true
 
-    override fun retainFlutterNativeView(): Boolean = true
+    override fun createFlutterNativeView(): FlutterNativeView? = FlutterNativeView(this)
+    override fun retainFlutterNativeView(): Boolean = false
 
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
 
@@ -34,7 +52,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        intent = Intent("android.intent.action.RUN").putExtra("route", "route2")
+        intent = Intent("android.intent.action.RUN").putExtra("route", route)
         this.eventDelegate.onCreate(savedInstanceState)
     }
 

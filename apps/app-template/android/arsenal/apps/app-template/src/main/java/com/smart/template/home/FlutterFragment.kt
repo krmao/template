@@ -8,9 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.CXBaseFragment
-import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXRouteManager
 import com.smart.template.R
+import com.smart.template.module.flutter.FlutterActivity
 
 class FlutterFragment : CXBaseFragment() {
 
@@ -21,9 +20,14 @@ class FlutterFragment : CXBaseFragment() {
         @Suppress("DEPRECATION")
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
-            CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {
-                CXLogUtil.w("krmao", it.toString())
+
+            (1..1).forEach {
+                FlutterActivity.goTo(activity, "route2")
             }
+
+            /*CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {
+                CXLogUtil.w("krmao", it.toString())
+            }*/
         }
         return textView
     }

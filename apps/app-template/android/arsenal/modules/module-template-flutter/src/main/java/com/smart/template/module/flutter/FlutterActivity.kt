@@ -22,9 +22,9 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun createFlutterView(context: Context): FlutterView? = null
 
-    override fun createFlutterNativeView(): FlutterNativeView? = null
+    override fun createFlutterNativeView(): FlutterNativeView? = FlutterManager.flutterNativeView
 
-    override fun retainFlutterNativeView(): Boolean = false
+    override fun retainFlutterNativeView(): Boolean = true
 
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
 

@@ -338,7 +338,7 @@
     <init>(...);
 }
 
-# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:88
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:89
 -keep class android.support.v4.content.FileProvider {
     <init>(...);
 }
@@ -477,7 +477,7 @@
     <init>(...);
 }
 
-# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:98
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:99
 -keep class com.smart.library.base.CXActivity {
     <init>(...);
 }
@@ -487,7 +487,7 @@
     <init>(...);
 }
 
-# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:103
+# Referenced at /Users/maokangren/workspace/template/apps/app-template/android/arsenal/apps/app-template/build/intermediates/manifests/full/release/AndroidManifest.xml:104
 -keep class com.smart.library.widget.debug.CXDebugActivity {
     <init>(...);
 }

@@ -13,7 +13,9 @@ void main() {
 
 Widget _widgetForRoute(String routeFullPath) {
   if (!routeFullPath.startsWith(_ROUTE_PATH_PREFIX)) {
-    return new Container();
+    return Center(
+      child: Text('Unknown route path prefix: $routeFullPath', textDirection: TextDirection.ltr),
+    );
   }
 
   var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
@@ -30,9 +32,9 @@ Widget _widgetForRoute(String routeFullPath) {
 
   switch (routeName) {
     case 'route1':
-      return new MyHomePage(title: routeParams.entries.toString());
+      return new MyHomePage(params: routeParams);
     case 'route2':
-      return MyApp(title: routeParams.entries.toString()); // MyHomePage(title: 'route2');
+      return MyApp(params: routeParams); // MyHomePage(title: 'route2');
     default:
       return Center(
         child: Text('Unknown route: $routeName', textDirection: TextDirection.ltr),
@@ -41,7 +43,7 @@ Widget _widgetForRoute(String routeFullPath) {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key, this.title}) : super(key: key);
+  MyApp({Key key, this.params}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -52,7 +54,7 @@ class MyApp extends StatelessWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final dynamic params;
 
   // This widget is the root of your application.
   @override
@@ -66,7 +68,7 @@ class MyApp extends StatelessWidget {
       home: new Scaffold(
         backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
         body: new SafeArea(
-          child: new MyHomePage(title: title),
+          child: new MyHomePage(params: params),
           bottom: true,
         ),
       ),
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.params}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -87,17 +89,17 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final dynamic params;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState(title: title);
+  _MyHomePageState createState() => new _MyHomePageState(params: params);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final String title;
+  final dynamic params;
 
-  _MyHomePageState({this.title}) : super();
+  _MyHomePageState({this.params}) : super();
 
   void _incrementCounter() {
     setState(() {
@@ -140,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
-              this.title,
+              "${params["name"]}, ${params["isBoy"]}, ${params["age"]}",
             ),
             new Text(
               'You have pushed the button this many times:',

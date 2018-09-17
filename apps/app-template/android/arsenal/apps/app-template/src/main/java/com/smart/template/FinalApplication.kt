@@ -14,6 +14,7 @@ import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
 import com.smart.template.repository.remote.core.CXOkHttpManager
 import com.smart.template.home.tab.HomeTabActivity
+import io.flutter.view.FlutterMain
 
 @Suppress("unused")
 class FinalApplication : CXBaseApplication() {
@@ -46,5 +47,7 @@ class FinalApplication : CXBaseApplication() {
         CXImageManager.initialize(CXImageFrescoHandler(frescoConfig))
 
         CXDeployInitManager.init(this, frescoConfig)
+
+        FlutterMain.startInitialization(this)
     }
 }

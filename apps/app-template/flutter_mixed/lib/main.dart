@@ -1,15 +1,20 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(_widgetForRoute(window.defaultRouteName));
+void main() {
+  debugPaintSizeEnabled = false;
+  runApp(_widgetForRoute(window.defaultRouteName));
+}
 
 Widget _widgetForRoute(String route) {
   switch (route) {
     case 'route1':
       return new MyHomePage(title: 'Flutter Demo Home Page 1');
     case 'route2':
-      return  MyApp(); // MyHomePage(title: 'route2');
+      return MyApp(); // MyHomePage(title: 'route2');
     default:
       return Center(
         child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
@@ -21,20 +26,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//      statusBarColor: Colors.black45, // android >= M
+//      statusBarBrightness: Brightness.light, // ios
+//      statusBarIconBrightness: Brightness.light, // android >= M
+//    ));
     return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+      home: new Scaffold(
+        backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
+        body: new SafeArea(
+          child: new MyHomePage(title: "hello word"),
+          bottom: true,
+        ),
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: new ThemeData(primaryColor: Colors.blue, accentColor: Colors.lightBlueAccent, primaryColorBrightness: Brightness.dark, hintColor: Colors.black26, highlightColor: Colors.transparent, inputDecorationTheme: new InputDecorationTheme(labelStyle: new TextStyle(color: Color(0xffdddddd)))),
     );
   }
 }
@@ -80,11 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
-      ),
+      backgroundColor: Colors.orange,
       body: new Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.

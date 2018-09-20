@@ -12,12 +12,12 @@ object CXValueUtil {
     private val TAG = CXValueUtil::class.java.name
 
     @Volatile
-    private var lastClickedTime: Long = System.currentTimeMillis()
+    private var lastClickedTime: Long = 0L
 
     @JvmStatic
     @JvmOverloads
     fun isDoubleClicked(interval: Int = 200): Boolean {
-        val isDoubleClicked = System.currentTimeMillis() - lastClickedTime <= interval // double check
+        val isDoubleClicked = (System.currentTimeMillis() - lastClickedTime) <= interval // double check
         lastClickedTime = System.currentTimeMillis()
         return isDoubleClicked
     }
@@ -81,7 +81,8 @@ object CXValueUtil {
 
     @JvmOverloads
     @JvmStatic
-    fun toDouble(value: String?, defaultValue: Double = 0.0): Double = value?.toDoubleOrNull() ?: defaultValue
+    fun toDouble(value: String?, defaultValue: Double = 0.0): Double = value?.toDoubleOrNull()
+            ?: defaultValue
 
     @JvmStatic
     fun toIntOrNull(value: String?): Int? = value?.toIntOrNull()
@@ -95,15 +96,18 @@ object CXValueUtil {
 
     @JvmOverloads
     @JvmStatic
-    fun toInt(value: String?, defaultValue: Float = 0f): Float = value?.toFloatOrNull() ?: defaultValue
+    fun toInt(value: String?, defaultValue: Float = 0f): Float = value?.toFloatOrNull()
+            ?: defaultValue
 
     @JvmOverloads
     @JvmStatic
-    fun formatDecimal(value: Double?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength) ?: defaultValue
+    fun formatDecimal(value: Double?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength)
+            ?: defaultValue
 
     @JvmOverloads
     @JvmStatic
-    fun formatDecimal(value: String?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength) ?: defaultValue
+    fun formatDecimal(value: String?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength)
+            ?: defaultValue
 
     /**
      * 四舍五入 decimalLength：小数位数

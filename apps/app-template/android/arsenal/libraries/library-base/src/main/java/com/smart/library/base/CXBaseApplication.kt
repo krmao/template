@@ -1,7 +1,7 @@
 package com.smart.library.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
@@ -10,11 +10,13 @@ import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.compat.CXIMMLeaksUtil
 import com.smart.library.util.network.CXNetworkChangedReceiver
 import com.smart.library.util.rx.RxBus
+import io.flutter.app.FlutterApplication
 
-open class CXBaseApplication : Application() {
+open class CXBaseApplication : FlutterApplication() {
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak")
         @JvmStatic
         lateinit var INSTANCE: CXBaseApplication
             private set

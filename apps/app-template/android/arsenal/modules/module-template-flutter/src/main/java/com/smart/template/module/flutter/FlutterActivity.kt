@@ -1,14 +1,21 @@
 package com.smart.template.module.flutter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.FrameLayout
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
+import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
+import com.smart.library.widget.loading.CXFrameLoadingLayout
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
@@ -17,6 +24,7 @@ import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
 
+@SuppressLint("InflateParams")
 @Suppress("MemberVisibilityCanBePrivate")
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
 
@@ -64,13 +72,35 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun getFlutterView(): FlutterView = this.viewProvider.flutterView
 
-    override fun createFlutterView(context: Context): FlutterView? = null
+    private val loadingView: View by lazy {
+        LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false)
+    }
 
-    /// override fun createFlutterNativeView(): FlutterNativeView? = FlutterManager.flutterNativeView
-    /// override fun retainFlutterNativeView(): Boolean = true
+    override fun createFlutterView(context: Context): FlutterView? {
+        FlutterManager.flutterView = FlutterView(this@FlutterActivity, null, FlutterNativeView(this@FlutterActivity))
+        setContentView(FrameLayout(this).apply {
+            addView(FlutterManager.flutterView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+                topMargin = CXSystemUtil.statusBarHeight
+            })
+        })
 
-    override fun createFlutterNativeView(): FlutterNativeView? = FlutterNativeView(this)
-    override fun retainFlutterNativeView(): Boolean = false
+        FlutterManager.flutterView?.let {
+            it.addFirstFrameListener(object : FlutterView.FirstFrameListener {
+                override fun onFirstFrame() {
+                    it.removeFirstFrameListener(this)
+                    loadingView.visibility = View.GONE
+                }
+            })
+        }
+        return FlutterManager.flutterView
+    }
+
+    override fun createFlutterNativeView(): FlutterNativeView? = null // ?FlutterManager.flutterNativeView
+    override fun retainFlutterNativeView(): Boolean = true
+
+//    override fun createFlutterNativeView(): FlutterNativeView? = FlutterNativeView(this)
+//    override fun retainFlutterNativeView(): Boolean = false
 
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
 
@@ -92,7 +122,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                     }
                 }
                 "finish" -> {
-                    setResult(Activity.RESULT_OK, Intent())
+                    setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
                     result.success(1)
                     finish()
                 }

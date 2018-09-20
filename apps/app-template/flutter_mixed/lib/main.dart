@@ -60,14 +60,14 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white70, // android >= M
-      statusBarBrightness: Brightness.light, // ios
-      statusBarIconBrightness: Brightness.dark, // android >= M
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//      statusBarColor: Colors.black, // android >= M
+//      statusBarBrightness: Brightness.light, // ios
+//      statusBarIconBrightness: Brightness.light, // android >= M
+//    ));
     return new MaterialApp(
       home: new Scaffold(
-        backgroundColor: Colors.white, // android status bar and iphone X top and bottom edges color
+        backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
         body: new SafeArea(
           child: new MainTabWidget(),
           bottom: true,

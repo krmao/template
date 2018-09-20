@@ -21,9 +21,7 @@ class FlutterFragment : CXBaseFragment() {
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
-            (1..1).forEach {
-                FlutterActivity.goTo(activity, "route2", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
-            }
+            FlutterActivity.goTo(activity, "route1", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
 
             /*CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {
                 CXLogUtil.w("krmao", it.toString())

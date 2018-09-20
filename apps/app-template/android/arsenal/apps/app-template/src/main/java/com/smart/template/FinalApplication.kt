@@ -48,6 +48,6 @@ class FinalApplication : CXBaseApplication() {
 
         CXDeployInitManager.init(this, frescoConfig)
 
-        FlutterManager.startInitialization(this)
+        // FlutterManager.startInitialization(this)
     }
 }

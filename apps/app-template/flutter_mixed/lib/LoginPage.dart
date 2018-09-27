@@ -24,19 +24,28 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Builder(builder: (BuildContext context) {
-        _scaffoldContext = context;
-        return CommonWidgetManager.getCommonPageWidget(
-          context,
-          new Container(
-            child: _body(),
+    return new MaterialApp(
+      home: new Scaffold(
+        backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
+        body: new SafeArea(
+          child: new Scaffold(
+            body: new Builder(builder: (BuildContext context) {
+              _scaffoldContext = context;
+              return CommonWidgetManager.getCommonPageWidget(
+                context,
+                new Container(
+                  child: _body(),
+                ),
+                showLoading: _isShow,
+                title: "登录",
+                titleBackgroundColor: Color(0xFF0f0544),
+              );
+            }),
           ),
-          showLoading: _isShow,
-          title: "登录",
-          titleBackgroundColor: Color(0xFF0f0544),
-        );
-      }),
+          bottom: true,
+        ),
+      ),
+      theme: new ThemeData(primaryColor: Colors.blue, accentColor: Colors.lightBlueAccent, primaryColorBrightness: Brightness.dark, hintColor: Colors.black26, highlightColor: Colors.transparent, inputDecorationTheme: new InputDecorationTheme(labelStyle: new TextStyle(color: Color(0xffdddddd)))),
     );
   }
 

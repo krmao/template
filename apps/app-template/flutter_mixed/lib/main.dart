@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+import 'LoginPage.dart';
 import 'TemplatePage.dart';
 
 const _ROUTE_PATH_PREFIX = "flutter://";
@@ -22,6 +23,8 @@ Widget _widgetForRoute(String routeFullPath) {
 
   var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
 
+  print("routeFullPath->$routeFullPath");
+
   var routeName = arguments.length > 0 ? arguments[0] : null;
   var routeParams = Map<String, dynamic>();
 
@@ -36,7 +39,7 @@ Widget _widgetForRoute(String routeFullPath) {
     case 'route1':
       return App(params: routeParams);
     case 'route2':
-      return App(params: routeParams); // MyHomePage(title: 'route2');
+      return LoginPage(); // MyHomePage(title: 'route2');
     default:
       return Center(
         child: Text('Unknown route: $routeName', textDirection: TextDirection.ltr),
@@ -134,7 +137,7 @@ class MainTabWidgetState extends State<MainTabWidget> {
             icon: new ImageIcon(
               new AssetImage("images/home_menu_mine.png"),
               size: 48.0,
-              color: currentIndex == 3 ? Color(0xff0c0435) : Color(0xffb6b6b6),
+              color: currentIndex == 1 ? Color(0xff0c0435) : Color(0xffb6b6b6),
             ),
             title: new Container())
       ],

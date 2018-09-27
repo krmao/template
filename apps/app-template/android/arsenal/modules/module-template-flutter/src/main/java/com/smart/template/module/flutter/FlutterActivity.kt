@@ -8,14 +8,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
-import com.smart.library.widget.loading.CXFrameLoadingLayout
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
@@ -33,7 +32,14 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
         private const val ROUTE_PATH_PREFIX = "flutter://"
         private const val TAG = "flutter"
-        private const val CHANNEL_METHOD = "flutter.channel.method";
+        const val CHANNEL_METHOD = "flutter.channel.method";
+
+        @SuppressLint("StaticFieldLeak")
+        private var mFlutterNativeView: FlutterNativeView? = null
+        @SuppressLint("StaticFieldLeak")
+        private var mFlutterView: FlutterView? = null
+        val ID_PARENT = System.currentTimeMillis().toInt()
+        private var methodChannel: MethodChannel? = null
 
         @JvmStatic
         @JvmOverloads
@@ -70,37 +76,109 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private val viewProvider: FlutterView.Provider by lazy { delegate }
     private val pluginRegistry: PluginRegistry by lazy { delegate }
 
-    override fun getFlutterView(): FlutterView = this.viewProvider.flutterView
+    override fun getFlutterView(): FlutterView? = this.viewProvider.flutterView
 
     private val loadingView: View by lazy {
         LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false)
     }
 
     override fun createFlutterView(context: Context): FlutterView? {
-        FlutterManager.flutterView = FlutterView(this@FlutterActivity, null, FlutterNativeView(this@FlutterActivity))
+        CXLogUtil.e(TAG, "createFlutterView")
+        if (mFlutterView == null) {
+            mFlutterView = FlutterView(this, null, createFlutterNativeView())
+            methodChannel = MethodChannel(mFlutterView, CHANNEL_METHOD)
+            methodChannel?.setMethodCallHandler { call, result ->
+                val activity = FlutterManager.currentActivity
+                CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(activity)}")
+                when (call?.method) {
+                    "goTo" -> {
+                        FlutterActivity.goTo(activity, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
+                            result.success(call.arguments)
+                        }
+                    }
+                    "finish" -> {
+                        activity?.setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
+                        result.success(1)
+                        activity?.finish()
+                    }
+                    else -> {
+                        result.error("0", "can't find the method:${call?.method}", call?.arguments)
+                    }
+                }
+            }
+        }
         setContentView(FrameLayout(this).apply {
-            addView(FlutterManager.flutterView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
-            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+            id = ID_PARENT
+
+            /*addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
                 topMargin = CXSystemUtil.statusBarHeight
-            })
+            })*/
+        })
+        checkIfAddFlutterView()
+
+        mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
+            override fun onFirstFrame() {
+                mFlutterView?.removeFirstFrameListener(this)
+                loadingView.visibility = View.GONE
+            }
         })
 
-        FlutterManager.flutterView?.let {
-            it.addFirstFrameListener(object : FlutterView.FirstFrameListener {
-                override fun onFirstFrame() {
-                    it.removeFirstFrameListener(this)
-                    loadingView.visibility = View.GONE
-                }
-            })
-        }
-        return FlutterManager.flutterView
+        return mFlutterView
     }
 
-    override fun createFlutterNativeView(): FlutterNativeView? = null // ?FlutterManager.flutterNativeView
-    override fun retainFlutterNativeView(): Boolean = true
+    override fun createFlutterNativeView(): FlutterNativeView? {
+        if (mFlutterNativeView == null) {
+            mFlutterNativeView = FlutterNativeView(applicationContext)
+        }
+        return mFlutterNativeView
+    }
 
-//    override fun createFlutterNativeView(): FlutterNativeView? = FlutterNativeView(this)
-//    override fun retainFlutterNativeView(): Boolean = false
+    fun isFlutterViewAttachedOnMe(): Boolean {
+        return findViewById<FrameLayout>(ID_PARENT) == (flutterView?.parent as? ViewGroup?)
+    }
+
+    fun checkIfAddFlutterView():Boolean {
+        val rootView: FrameLayout = findViewById(ID_PARENT)
+        val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
+        if (priorParent != null && priorParent == rootView) {
+            return false
+        } else {
+            detachFlutterView()
+            rootView.addView(mFlutterView, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+            FlutterManager.resetActivity(mFlutterView, this)
+            return true
+        }
+    }
+
+    fun push() {
+        methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
+            override fun notImplemented() {
+            }
+
+            override fun error(p0: String?, p1: String?, p2: Any?) {
+            }
+
+            override fun success(p0: Any?) {
+            }
+        })
+        isPushed = true
+    }
+
+    fun pop() {
+        methodChannel?.invokeMethod("pop", null, object : MethodChannel.Result {
+            override fun notImplemented() {
+            }
+
+            override fun error(p0: String?, p1: String?, p2: Any?) {
+            }
+
+            override fun success(p0: Any?) {
+            }
+        })
+        isPushed = false
+    }
+
+    override fun retainFlutterNativeView(): Boolean = true
 
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
 
@@ -112,40 +190,58 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         super.onCreate(savedInstanceState)
         intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         this.eventDelegate.onCreate(savedInstanceState)
-
-        MethodChannel(flutterView, CHANNEL_METHOD).setMethodCallHandler { call, result ->
-            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}")
-            when (call?.method) {
-                "goTo" -> {
-                    FlutterActivity.goTo(this@FlutterActivity, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
-                        result.success(call.arguments)
-                    }
-                }
-                "finish" -> {
-                    setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
-                    result.success(1)
-                    finish()
-                }
-                else -> {
-                    result.error("0", "can't find the method:${call?.method}", call?.arguments)
-                }
-            }
-        }
     }
 
     override fun onStart() {
         super.onStart()
-        this.eventDelegate.onStart()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStart()
     }
 
+    private var isPushed = false
     override fun onResume() {
+        CXLogUtil.e(TAG, "onResume")
         super.onResume()
-        this.eventDelegate.onResume()
+        FlutterManager.currentActivity = this
+        if(checkIfAddFlutterView()){
+            push()
+        }
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
+    }
+
+    override fun onPause() {
+        CXLogUtil.e(TAG, "onPause")
+        super.onPause()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPause()
+        if (FlutterManager.currentActivity == this) {
+            FlutterManager.currentActivity = null
+        }
+    }
+
+    override fun onRestart() {
+        CXLogUtil.e(TAG, "onRestart")
+        super.onRestart()
+    }
+
+    override fun onStop() {
+        CXLogUtil.e(TAG, "onStop")
+        super.onStop()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStop()
     }
 
     override fun onDestroy() {
-        this.eventDelegate.onDestroy()
+        CXLogUtil.e(TAG, "onDestroy")
         super.onDestroy()
+        // if (isFlutterViewAttachedOnMe()) this.eventDelegate.onDestroy()
+        detachFlutterView()
+    }
+
+    fun detachFlutterView() {
+        val rootView: FrameLayout = findViewById(ID_PARENT)
+        val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
+        if (priorParent != null && priorParent != rootView) {
+            pop()
+            priorParent.removeView(mFlutterView)
+        }
     }
 
     override fun onBackPressed() {
@@ -154,50 +250,40 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         }
     }
 
-    override fun onStop() {
-        this.eventDelegate.onStop()
-        super.onStop()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        this.eventDelegate.onPause()
-    }
-
     override fun onPostResume() {
         super.onPostResume()
-        this.eventDelegate.onPostResume()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPostResume()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        this.eventDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (!this.eventDelegate.onActivityResult(requestCode, resultCode, data)) {
+        if (!(isFlutterViewAttachedOnMe() && this.eventDelegate.onActivityResult(requestCode, resultCode, data))) {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     override fun onNewIntent(intent: Intent) {
-        this.eventDelegate.onNewIntent(intent)
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onNewIntent(intent)
     }
 
     public override fun onUserLeaveHint() {
-        this.eventDelegate.onUserLeaveHint()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onUserLeaveHint()
     }
 
     override fun onTrimMemory(level: Int) {
-        this.eventDelegate.onTrimMemory(level)
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onTrimMemory(level)
     }
 
     override fun onLowMemory() {
-        this.eventDelegate.onLowMemory()
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onLowMemory()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        this.eventDelegate.onConfigurationChanged(newConfig)
+        if (isFlutterViewAttachedOnMe()) this.eventDelegate.onConfigurationChanged(newConfig)
     }
 }
 

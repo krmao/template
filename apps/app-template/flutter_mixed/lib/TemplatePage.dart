@@ -22,7 +22,23 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
     print("[TemplatePage] initSatte");
     WidgetsBinding.instance.addObserver(this);
 
+    platform.setMethodCallHandler(_onNativeCallHandler);
+
     _request();
+  }
+
+  Future<dynamic> _onNativeCallHandler(MethodCall methodCall) async {
+    print("_onNativeCallHandler -> ${methodCall.method}");
+    switch (methodCall.method) {
+      case 'push':
+        CommonWidgetManager.goTo(context, CommonWidgetManager.widgetByRoute(methodCall.arguments), animation: false);
+        return null;
+      case 'pop':
+        CommonWidgetManager.pop(context);
+        return null;
+      default:
+        return null;
+    }
   }
 
   @override

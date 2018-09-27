@@ -1,8 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/rendering.dart';
 
+import 'LoginPage.dart';
+import 'TemplatePage.dart';
 import 'UserManager.dart';
+
+const _ROUTE_PATH_PREFIX = "flutter://";
 
 const title_height = 50.0;
 
@@ -174,20 +180,76 @@ class CommonWidgetManager {
     return new Material(type: MaterialType.transparency, child: new InkWell(onDoubleTap: onDoubleTap, child: child));
   }
 
-  static void goTo(BuildContext context, Widget toPage, {bool ensureLogin = false}) {
+  static void goTo(BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
     if (ensureLogin) {
       UserManager.ensureLogin(context).then((userModel) {
-        Navigator.push(context, CupertinoPageRoute(builder: (context) => toPage));
+        if (animation)
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => toPage));
+        else
+          Navigator.push(context, MyCustomRoute(builder: (_) => toPage));
       }).catchError((error) {});
     } else {
-      Navigator.push(context, CupertinoPageRoute(builder: (context) => toPage));
+      if (animation)
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => toPage));
+      else
+        Navigator.push(context, MyCustomRoute(builder: (_) => toPage));
     }
+  }
+
+  static bool pop<T extends Object>(BuildContext context, [T result]) {
+    return Navigator.pop(context, result);
   }
 
   static DateTime getCurrentTime = new DateTime.now();
 
   /// yyyy年MM月dd
-  static String getTimeText(int millisecondsSinceEpoch, {String newPattern = "yyyyMMdd"}) {
-    return millisecondsSinceEpoch == -1 ? "" : "${new DateFormat(newPattern).format(new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}";
+//  static String getTimeText(int millisecondsSinceEpoch, {String newPattern = "yyyyMMdd"}) {
+//    import 'package:intl/intl.dart';
+//    return millisecondsSinceEpoch == -1 ? "" : "${new DateFormat(newPattern).format(new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}";
+//  }
+
+  static Widget widgetByRoute(String routeFullPath) {
+    if (!routeFullPath.startsWith(_ROUTE_PATH_PREFIX)) {
+      return Center(
+        child: Text('Unknown route path prefix: $routeFullPath', textDirection: TextDirection.ltr),
+      );
+    }
+
+    var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
+
+    print("routeFullPath->$routeFullPath");
+
+    var routeName = arguments.length > 0 ? arguments[0] : null;
+    var routeParams = Map<String, dynamic>();
+
+    if (arguments.length > 1) {
+      arguments[1].split("&").forEach((keyValue) {
+        var kv = keyValue.split("=");
+        if (kv.length >= 2) routeParams[kv[0]] = kv[1];
+      });
+    }
+
+    switch (routeName) {
+      case 'route1':
+        return TemplatePage();
+      case 'route2':
+        return LoginPage(); // MyHomePage(title: 'route2');
+      default:
+        return Center(
+          child: Text('Unknown route: $routeName', textDirection: TextDirection.ltr),
+        );
+    }
+  }
+}
+
+class MyCustomRoute<T> extends MaterialPageRoute<T> {
+  MyCustomRoute({WidgetBuilder builder, RouteSettings settings}) : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+    return child;
+    // Fades between routes. (If you don't want any animation,
+    // just return child.)
+    // return new FadeTransition(opacity: animation, child: child);
   }
 }

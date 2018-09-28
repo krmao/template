@@ -30,7 +30,7 @@ open class CXToast {
         protected const val SHORT_DURATION_TIMEOUT: Int = 2000
         protected const val LONG_DURATION_TIMEOUT: Int = 3500
 
-        var debug = false
+        var debug = true
 
         protected val windowManager: WindowManager by lazy { CXBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
         protected val handler by lazy { Handler(Looper.getMainLooper()) }

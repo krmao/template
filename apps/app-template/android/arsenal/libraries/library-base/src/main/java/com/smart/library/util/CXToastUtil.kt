@@ -34,7 +34,7 @@ object CXToastUtil {
     @JvmOverloads
     @JvmStatic
     fun showTop(msg: String?, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
-        show(msg = msg, toastGravity = Gravity.BOTTOM, textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
+        show(msg = msg, toastGravity = Gravity.TOP, textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads

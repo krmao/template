@@ -102,6 +102,7 @@ open class CXToast {
     protected fun addView() = view?.let { windowManager.addView(it, layoutParams) }
     protected fun removeView() = view?.let { if (it.parent != null) windowManager.removeView(it) } // note: checking parent() just to make sure the view has  been added...  i have seen cases where we get here when the view isn't yet added, so let's try not to crash.
 
+    @SuppressLint("ObsoleteSdkInt")
     @JvmOverloads
     fun setGravity(gravity: Int, xOffset: Int = 0, yOffset: Int = 0): CXToast {
         val finalGravity: Int = if (Build.VERSION.SDK_INT >= 17) Gravity.getAbsoluteGravity(gravity, view!!.context.resources.configuration.layoutDirection) else gravity

@@ -10,7 +10,6 @@ import com.smart.library.base.CXBaseFragment
 import com.smart.library.widget.viewpager.CXFragmentPagerAdapter
 import com.smart.template.*
 import com.smart.template.home.*
-import com.smart.template.module.mine.MineFragment
 import kotlinx.android.synthetic.main.home_tab_fragment.*
 
 class HomeTabFragment : CXBaseFragment() {
@@ -25,7 +24,7 @@ class HomeTabFragment : CXBaseFragment() {
                     HomeFragment(),
                     ReactNativeFragment(),
                     HybirdFragment(),
-                    ImFragment(),
+                    OtherFragment(),
                     FlutterFragment(),
                     SettingFragment()
             )

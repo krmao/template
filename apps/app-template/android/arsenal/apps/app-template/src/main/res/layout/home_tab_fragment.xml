@@ -75,7 +75,7 @@
                     android:layout_height="match_parent"
                     android:icon="@drawable/home_bar_item_chat_selector"
                     android:layout="@layout/home_tab_item"
-                    android:text="chat"
+                    android:text="other"
                     tools:ignore="HardcodedText" />
 
                 <android.support.design.widget.TabItem

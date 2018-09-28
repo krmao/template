@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
+import com.smart.library.util.CXToastUtil
 import com.smart.template.R
 import com.smart.template.module.rn.ReactActivity
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -26,7 +27,7 @@ class HomeFragment : CXBaseFragment() {
             CXActivity.start(activity, Test2Fragment::class.java)
         }
         text3.setOnClickListener {
-            startActivity(Intent(activity, ReactActivity::class.java))
+            CXToastUtil.show("system toast")
         }
     }
 }

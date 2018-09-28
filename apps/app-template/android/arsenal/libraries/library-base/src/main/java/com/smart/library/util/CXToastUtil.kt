@@ -3,7 +3,6 @@ package com.smart.library.util
 
 import android.annotation.SuppressLint
 import android.support.annotation.StringRes
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,12 @@ import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
 
 @SuppressLint("InflateParams")
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "StaticFieldLeak", "MemberVisibilityCanBePrivate")
 object CXToastUtil {
     private var toast: Toast? = null
 
+    // 是否使用 自定义 Toast, 不受通知权限约束
+    var enableCustomToast = true
 
     @JvmOverloads
     @JvmStatic
@@ -48,27 +49,34 @@ object CXToastUtil {
         show(msg = msg, toastGravity = Gravity.CENTER, textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
+    @Suppress("UsePropertyAccessSyntax")
     @JvmOverloads
     @JvmStatic
     fun show(msg: String?, toastGravity: Int = Gravity.BOTTOM, duration: Int = Toast.LENGTH_SHORT, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
-        if (!TextUtils.isEmpty(msg)) {
-            if (cancelLastImmediately)
-                toast?.cancel()
-            toast = Toast(CXBaseApplication.INSTANCE)
-            viewHolder.textView.text = msg
-            viewHolder.textView.gravity = textGravity
-            toast?.view = viewHolder.rootView
-            toast?.duration = duration
-            toast?.setGravity(toastGravity, xOffset, yOffset)
-            toast?.show()
+        if (msg?.isNotBlank() == true) {
+            if (!enableCustomToast) {
+                if (cancelLastImmediately)
+                    toast?.cancel()
+                toast = Toast(CXBaseApplication.INSTANCE)
+                val viewHolder = CXToastUtil.ViewHolder(LayoutInflater.from(CXBaseApplication.INSTANCE).inflate(R.layout.cx_widget_transient_notification, null))
+                viewHolder.textView.text = msg
+                viewHolder.textView.gravity = textGravity
+                toast?.setView(viewHolder.rootView)
+                toast?.setDuration(duration)
+                toast?.setGravity(toastGravity, xOffset, yOffset)
+                toast?.show()
+            } else {
+                val customToast = CXToast().setText(msg, textGravity).setDuration(duration).setGravity(toastGravity, xOffset, yOffset)
+                if (cancelLastImmediately) {
+                    CXToast.cancelAll { customToast.show() }
+                } else {
+                    customToast.show()
+                }
+            }
         }
     }
 
-    private class ViewHolder(val rootView: View) {
+    class ViewHolder(val rootView: View) {
         val textView: TextView by lazy { rootView.findViewById(R.id.message) as TextView }
-    }
-
-    private val viewHolder: ViewHolder by lazy {
-        ViewHolder(LayoutInflater.from(CXBaseApplication.INSTANCE).inflate(R.layout.cx_widget_transient_notification, null))
     }
 }

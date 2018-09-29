@@ -194,7 +194,6 @@ dependencies {
     api project(':module-template-react_native')
     api project(':module-template-mine')
     api project(':module-template-setting')
-    api project(':module-template-im')
 
     implementation project(':module-template-flutter')
 

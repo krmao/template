@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
+import com.smart.template.module.flutter.FlutterActivity.Companion.ID_PARENT
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
@@ -209,6 +211,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     private var isPushed = false
+    private val handler:Handler by lazy { Handler() }
     override fun onResume() {
         CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name} ")
         super.onResume()
@@ -224,10 +227,12 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
             CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
             when (call?.method) {
                 "goTo" -> {
-                    FlutterActivity.goTo(this, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
-                        result.success(call.arguments)
+                    handler.post {
+                        saveSnap()
+                        FlutterActivity.goTo(this, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
+                            result.success(call.arguments)
+                        }
                     }
-                    saveSnap()
                 }
                 "finish" -> {
                     setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
@@ -242,12 +247,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-        async {
-            Thread.sleep(300)
-            runOnUiThread {
-                snapShootImageView.visibility = View.GONE
-            }
+
+        handler.post {
+            snapShootImageView.visibility = View.GONE
         }
+//        async {
+//            Thread.sleep(300)
+//            runOnUiThread {
+                snapShootImageView.visibility = View.GONE
+//            }
+//        }
     }
 
     override fun onPause() {
@@ -280,6 +289,11 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     fun saveSnap() {
         mFlutterView?.bitmap?.let {
             bitmap = it
+        }
+        bitmap?.let {
+            snapShootImageView.setImageBitmap(it)
+            snapShootImageView.visibility = View.VISIBLE
+            CXLogUtil.w(TAG, "show snap now")
         }
         CXLogUtil.e(TAG, "saveSnap ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
     }

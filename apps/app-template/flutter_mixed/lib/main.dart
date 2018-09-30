@@ -70,7 +70,7 @@ class AppState extends State<App> {
 //    ));
     return new MaterialApp(
       home: new Scaffold(
-        backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
+        backgroundColor: Color(0xFF0f0544), // android status bar and iphone X top and bottom edges color
         body: new SafeArea(
           child: new MainTabWidget(),
           bottom: true,

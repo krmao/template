@@ -48,7 +48,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new MaterialApp(
       home: new Scaffold(
-        backgroundColor: Colors.black, // android status bar and iphone X top and bottom edges color
+        backgroundColor: Color(0xFF0f0544), // android status bar and iphone X top and bottom edges color
         body: new SafeArea(
           child: new Scaffold(
             body: new Builder(builder: (BuildContext context) {

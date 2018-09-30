@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -95,25 +96,6 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (mFlutterView == null) {
             mFlutterView = FlutterView(this, null, createFlutterNativeView())
             methodChannel = MethodChannel(mFlutterView, CHANNEL_METHOD)
-            methodChannel?.setMethodCallHandler { call, result ->
-                val activity = FlutterManager.currentActivity
-                CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(activity)}")
-                when (call?.method) {
-                    "goTo" -> {
-                        FlutterActivity.goTo(activity, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
-                            result.success(call.arguments)
-                        }
-                    }
-                    "finish" -> {
-                        activity?.setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
-                        result.success(1)
-                        activity?.finish()
-                    }
-                    else -> {
-                        result.error("0", "can't find the method:${call?.method}", call?.arguments)
-                    }
-                }
-            }
         }
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
@@ -131,7 +113,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
             override fun onFirstFrame() {
                 CXLogUtil.e(TAG, "addFirstFrameListener -> onFirstFrame")
                 mFlutterView?.removeFirstFrameListener(this)
-                async { Thread.sleep(3000);runOnUiThread { loadingView.visibility = View.GONE } }
+                loadingView.visibility = View.GONE
             }
         })
 
@@ -228,7 +210,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     private var isPushed = false
     override fun onResume() {
-        CXLogUtil.e(TAG, "onResume")
+        CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name} ")
         super.onResume()
 
         FlutterManager.currentActivity = this
@@ -236,6 +218,28 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         }
         push()
+
+
+        methodChannel?.setMethodCallHandler { call, result ->
+            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
+            when (call?.method) {
+                "goTo" -> {
+                    FlutterActivity.goTo(this, "route2", hashMapOf("name" to "jack")) { requestCode: Int, resultCode: Int, data: Intent? ->
+                        result.success(call.arguments)
+                    }
+                    saveSnap()
+                }
+                "finish" -> {
+                    setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
+                    result.success(1)
+                    finish()
+                }
+                else -> {
+                    result.error("0", "can't find the method:${call?.method}", call?.arguments)
+                }
+            }
+        }
+
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
         async {
@@ -247,18 +251,17 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onPause() {
-        CXLogUtil.e(TAG, "onPause")
+        CXLogUtil.e(TAG, "onPause ${this}:${Thread.currentThread().name} ")
         super.onPause()
-
-        mFlutterView?.bitmap?.let {
-            snapShootImageView.visibility = View.VISIBLE
-            snapShootImageView.setImageBitmap(it)
-        }
-
+        CXLogUtil.e(TAG, "onPause0 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPause()
         if (FlutterManager.currentActivity == this) {
             FlutterManager.currentActivity = null
         }
+        CXLogUtil.e(TAG, "onPause1 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
+        snapShootImageView.visibility = View.VISIBLE
+        snapShootImageView.setImageBitmap(bitmap)
+        CXLogUtil.e(TAG, "onPause2 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
     }
 
     override fun onRestart() {
@@ -272,8 +275,20 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStop()
     }
 
+    var bitmap: Bitmap? = null
+
+    fun saveSnap() {
+        mFlutterView?.bitmap?.let {
+            bitmap = it
+        }
+        CXLogUtil.e(TAG, "saveSnap ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
+    }
+
     override fun onDestroy() {
-        CXLogUtil.e(TAG, "onDestroy")
+        CXLogUtil.e(TAG, "onDestroy ${this}:${Thread.currentThread().name} ")
+        bitmap?.recycle()
+        bitmap = null
+        snapShootImageView.setImageBitmap(null)
         super.onDestroy()
         // if (isFlutterViewAttachedOnMe()) this.eventDelegate.onDestroy()
 //        detachFlutterView()

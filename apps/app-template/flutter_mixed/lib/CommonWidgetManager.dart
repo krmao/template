@@ -91,14 +91,14 @@ class CommonWidgetManager {
     );
   }
 
-  static Widget getTitleWidget(BuildContext context, {String title, String rightText, final VoidCallback onRightPressed, Color titleBackgroundColor, bool disableBack = false}) {
+  static Widget getTitleWidget(BuildContext context, {String title, String rightText, final VoidCallback onBackPressed, final VoidCallback onRightPressed, Color titleBackgroundColor, bool disableBack = false}) {
     return new Container(
       color: titleBackgroundColor,
       width: double.infinity,
       height: title_height,
       child: new Stack(
         children: <Widget>[
-          disableBack ? new Container() : new Align(alignment: Alignment.centerLeft, child: CommonWidgetManager.getTitleBackWidget(context)),
+          disableBack ? new Container() : new Align(alignment: Alignment.centerLeft, child: CommonWidgetManager.getTitleBackWidget(context, onBackPressed: onBackPressed)),
           (title == null || title.length <= 0)
               ? new Container()
               : new Align(
@@ -111,7 +111,7 @@ class CommonWidgetManager {
     );
   }
 
-  static Widget getCommonPageWidget(BuildContext context, Widget child, {bool showLoading, String title, String rightText, final VoidCallback onRightPressed, Color titleBackgroundColor, bool disableBack = false}) {
+  static Widget getCommonPageWidget(BuildContext context, Widget child, {bool showLoading, String title, String rightText, final VoidCallback onBackPressed, final VoidCallback onRightPressed, Color titleBackgroundColor, bool disableBack = false}) {
     return new SafeArea(
         child: new Container(
             color: Colors.white,
@@ -119,17 +119,15 @@ class CommonWidgetManager {
             height: double.infinity,
             child: new Stack(children: <Widget>[
               child,
-              getTitleWidget(context, title: title, rightText: rightText, onRightPressed: onRightPressed, titleBackgroundColor: titleBackgroundColor, disableBack: disableBack),
+              getTitleWidget(context, title: title, rightText: rightText, onBackPressed: onBackPressed, onRightPressed: onRightPressed, titleBackgroundColor: titleBackgroundColor, disableBack: disableBack),
               CommonWidgetManager.getLoadingWidget(showLoading),
             ])));
   }
 
-  static Widget getTitleBackWidget(BuildContext context) {
+  static Widget getTitleBackWidget(BuildContext context, {final VoidCallback onBackPressed}) {
     return new Container(
       child: new FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: onBackPressed ?? () => Navigator.pop(context),
         child: new Image.asset(
           "images/arrow_left_white.png",
           fit: BoxFit.contain,
@@ -208,6 +206,22 @@ class CommonWidgetManager {
 //    return millisecondsSinceEpoch == -1 ? "" : "${new DateFormat(newPattern).format(new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}";
 //  }
 
+  static List<dynamic> routeNameByFullPath(String routeFullPath) {
+    var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
+    print("\nrouteFullPath->$routeFullPath");
+    var routeName = arguments.length > 0 ? arguments[0] : null;
+    var routeParams = Map<String, dynamic>();
+    print("\trouteName->$routeName");
+    print("\trouteParams->$routeParams");
+    if (arguments.length > 1) {
+      arguments[1].split("&").forEach((keyValue) {
+        var kv = keyValue.split("=");
+        if (kv.length >= 2) routeParams[kv[0]] = kv[1];
+      });
+    }
+    return [routeName, routeParams];
+  }
+
   static Widget widgetByRoute(String routeFullPath) {
     if (!routeFullPath.startsWith(_ROUTE_PATH_PREFIX)) {
       return Center(
@@ -215,19 +229,9 @@ class CommonWidgetManager {
       );
     }
 
-    var arguments = routeFullPath.replaceAll(_ROUTE_PATH_PREFIX, "").split("?");
-
-    print("routeFullPath->$routeFullPath");
-
-    var routeName = arguments.length > 0 ? arguments[0] : null;
-    var routeParams = Map<String, dynamic>();
-
-    if (arguments.length > 1) {
-      arguments[1].split("&").forEach((keyValue) {
-        var kv = keyValue.split("=");
-        if (kv.length >= 2) routeParams[kv[0]] = kv[1];
-      });
-    }
+    var routeList = routeNameByFullPath(routeFullPath);
+    String routeName = routeList[0];
+    Map<String, dynamic> routeParams = routeList[1];
 
     switch (routeName) {
       case 'route1':

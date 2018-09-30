@@ -32,6 +32,7 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
     switch (methodCall.method) {
       case 'push':
         CommonWidgetManager.goTo(context, CommonWidgetManager.widgetByRoute(methodCall.arguments), animation: false);
+        print("_onNativeCallHandler -> ${methodCall.method}");
         return null;
       case 'pop':
         CommonWidgetManager.pop(context);
@@ -90,9 +91,9 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
             showLoading: _isShow,
             title: "文章详情",
             titleBackgroundColor: Color(0xFF0f0544),
-            rightText: "通过Native跳转", onRightPressed: () {
-          goToByNative();
-        });
+            rightText: "通过Native跳转",
+            onBackPressed: () => finish(),
+            onRightPressed: () => goToByNative());
       }),
     );
   }
@@ -105,6 +106,17 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
 
   void _request() {}
 
+  void finish() {
+    platform.invokeMethod('finish', ["finish with argument"]).then((value) {
+      print("onNativeCallback:success:$value");
+      _showToast("success:$value");
+    }).catchError((error) {
+      print("onNativeCallback:error:$error");
+      _showToast("failure:$error");
+    });
+  }
+
+// -
   void goToByNative() {
     platform.invokeMethod('goTo', ["haha, I am from flutter, nice to meet you :)"]).then((value) {
       print("onNativeCallback:success:$value");

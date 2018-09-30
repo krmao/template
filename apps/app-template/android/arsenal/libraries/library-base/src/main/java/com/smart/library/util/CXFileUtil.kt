@@ -191,13 +191,11 @@ object CXFileUtil {
                 if (null != inputStream) {
                     return true
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
+            } catch (_: IOException) {
             } finally {
                 try {
                     inputStream?.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                } catch (_: IOException) {
                 }
             }
         }

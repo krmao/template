@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'CommonWidgetManager.dart';
+
+const _CHANNEL_METHOD = "flutter.channel.method";
+const platform = const MethodChannel(_CHANNEL_METHOD);
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,7 +14,25 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   @override
-  void initState() => super.initState();
+  void initState() {
+    super.initState();
+    platform.setMethodCallHandler(_onNativeCallHandler);
+  }
+
+  Future<dynamic> _onNativeCallHandler(MethodCall methodCall) async {
+    print("_onNativeCallHandler -> ${methodCall.method}");
+    switch (methodCall.method) {
+      case 'push':
+        CommonWidgetManager.goTo(context, CommonWidgetManager.widgetByRoute(methodCall.arguments), animation: false);
+        print("_onNativeCallHandler -> ${methodCall.method}");
+        return null;
+      case 'pop':
+        CommonWidgetManager.pop(context);
+        return null;
+      default:
+        return null;
+    }
+  }
 
   bool _isShow = false;
 
@@ -32,14 +54,16 @@ class LoginPageState extends State<LoginPage> {
             body: new Builder(builder: (BuildContext context) {
               _scaffoldContext = context;
               return CommonWidgetManager.getCommonPageWidget(
-                context,
-                new Container(
-                  child: _body(),
-                ),
-                showLoading: _isShow,
-                title: "登录",
-                titleBackgroundColor: Color(0xFF0f0544),
-              );
+                  context,
+                  new Container(
+                    child: _body(),
+                  ),
+                  showLoading: _isShow,
+                  title: "登录",
+                  titleBackgroundColor: Color(0xFF0f0544), onBackPressed: () {
+                print("login onBackPressed-> finish");
+                finish();
+              });
             }),
           ),
           bottom: true,
@@ -58,4 +82,15 @@ class LoginPageState extends State<LoginPage> {
   void _request() {}
 
 // --CUSTOM ----------------------
+
+  void finish() {
+    _showToast("finish");
+    print("call finish");
+//    platform.invokeMethod('finish', ["finish with argument"]).then((value) {
+//      print("onNativeCallback:success:$value");
+//    }).catchError((error) {
+//      print("onNativeCallback:error:$error");
+//    });
+//
+  }
 }

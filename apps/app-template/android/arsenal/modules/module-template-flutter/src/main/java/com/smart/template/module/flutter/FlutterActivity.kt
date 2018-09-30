@@ -4,16 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
@@ -21,6 +24,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
+import org.jetbrains.anko.async
 
 
 @SuppressLint("InflateParams")
@@ -61,7 +65,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         @JvmStatic
         @JvmOverloads
         fun goToByFullPath(activity: Activity?, routeFullPath: String, requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null, options: Bundle? = null) {
-            if (CXValueUtil.isDoubleClicked(700)) {
+            if (!CXValueUtil.isValid(activity) && CXValueUtil.isDoubleClicked(700)) {
                 CXLogUtil.e(TAG, "detected jump to flutter with doubleClicked, cancel jump !")
                 return
             }
@@ -80,6 +84,10 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     private val loadingView: View by lazy {
         LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false)
+    }
+
+    private val snapShootImageView: ImageView by lazy {
+        ImageView(this).apply { visibility = View.GONE }
     }
 
     override fun createFlutterView(context: Context): FlutterView? {
@@ -109,22 +117,42 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         }
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
-
-            /*addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+            checkIfAddFlutterView(this)
+            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
                 topMargin = CXSystemUtil.statusBarHeight
-            })*/
+            })
+            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+                topMargin = 0//CXSystemUtil.statusBarHeight
+            })
         })
-        checkIfAddFlutterView()
 
+        loadingView.visibility = View.VISIBLE
         mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
             override fun onFirstFrame() {
+                CXLogUtil.e(TAG, "addFirstFrameListener -> onFirstFrame")
                 mFlutterView?.removeFirstFrameListener(this)
-                loadingView.visibility = View.GONE
+                async { Thread.sleep(3000);runOnUiThread { loadingView.visibility = View.GONE } }
             }
         })
 
+        mFlutterView?.addActivityLifecycleListener {
+            CXLogUtil.e(TAG, "addActivityLifecycleListener -> onPostResume")
+        }
+        CXLogUtil.e(TAG, "createFlutterView mFlutterView==null?${mFlutterView == null}, showSplashScreenUntilFirstFrame=${showSplashScreenUntilFirstFrame()}")
         return mFlutterView
     }
+
+    private fun showSplashScreenUntilFirstFrame(): Boolean {
+        try {
+            val activityInfo = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA)
+            val metadata = activityInfo.metaData
+            return metadata != null && metadata.getBoolean("io.flutter.app.android.SplashScreenUntilFirstFrame")
+        } catch (var3: PackageManager.NameNotFoundException) {
+            return false
+        }
+
+    }
+
 
     override fun createFlutterNativeView(): FlutterNativeView? {
         if (mFlutterNativeView == null) {
@@ -137,20 +165,21 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         return findViewById<FrameLayout>(ID_PARENT) == (flutterView?.parent as? ViewGroup?)
     }
 
-    fun checkIfAddFlutterView():Boolean {
-        val rootView: FrameLayout = findViewById(ID_PARENT)
+    fun checkIfAddFlutterView(rootLayout: FrameLayout? = null): Boolean {
+        val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
         val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
         if (priorParent != null && priorParent == rootView) {
             return false
         } else {
-            detachFlutterView()
-            rootView.addView(mFlutterView, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+            detachFlutterView(rootView)
+            rootView.addView(mFlutterView, 0, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             FlutterManager.resetActivity(mFlutterView, this)
             return true
         }
     }
 
     fun push() {
+        CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath")
         methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
@@ -165,7 +194,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     fun pop() {
-        methodChannel?.invokeMethod("pop", null, object : MethodChannel.Result {
+        methodChannel?.invokeMethod("pop", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
 
@@ -179,16 +208,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun retainFlutterNativeView(): Boolean = true
-
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
-
     override fun <T> valuePublishedByPlugin(pluginKey: String): T = this.pluginRegistry.valuePublishedByPlugin(pluginKey)
-
     override fun registrarFor(pluginKey: String): PluginRegistry.Registrar = this.pluginRegistry.registrarFor(pluginKey)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableSwipeBack = true
         super.onCreate(savedInstanceState)
         intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
+        CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
         this.eventDelegate.onCreate(savedInstanceState)
     }
 
@@ -201,16 +230,31 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     override fun onResume() {
         CXLogUtil.e(TAG, "onResume")
         super.onResume()
+
         FlutterManager.currentActivity = this
-        if(checkIfAddFlutterView()){
-            push()
+        if (checkIfAddFlutterView()) {
+
         }
+        push()
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
+
+        async {
+            Thread.sleep(300)
+            runOnUiThread {
+                snapShootImageView.visibility = View.GONE
+            }
+        }
     }
 
     override fun onPause() {
         CXLogUtil.e(TAG, "onPause")
         super.onPause()
+
+        mFlutterView?.bitmap?.let {
+            snapShootImageView.visibility = View.VISIBLE
+            snapShootImageView.setImageBitmap(it)
+        }
+
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPause()
         if (FlutterManager.currentActivity == this) {
             FlutterManager.currentActivity = null
@@ -232,14 +276,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         CXLogUtil.e(TAG, "onDestroy")
         super.onDestroy()
         // if (isFlutterViewAttachedOnMe()) this.eventDelegate.onDestroy()
-        detachFlutterView()
+//        detachFlutterView()
     }
 
-    fun detachFlutterView() {
-        val rootView: FrameLayout = findViewById(ID_PARENT)
+    fun detachFlutterView(rootLayout: FrameLayout? = null) {
+        val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
         val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
         if (priorParent != null && priorParent != rootView) {
-            pop()
             priorParent.removeView(mFlutterView)
         }
     }

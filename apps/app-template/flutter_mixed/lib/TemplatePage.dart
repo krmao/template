@@ -80,7 +80,7 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.black,
       body: new Builder(builder: (BuildContext context) {
         _scaffoldContext = context;
         return CommonWidgetManager.getCommonPageWidget(

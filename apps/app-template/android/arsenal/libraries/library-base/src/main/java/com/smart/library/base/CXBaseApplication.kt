@@ -2,6 +2,7 @@ package com.smart.library.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
@@ -10,9 +11,8 @@ import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.compat.CXIMMLeaksUtil
 import com.smart.library.util.network.CXNetworkChangedReceiver
 import com.smart.library.util.rx.RxBus
-import io.flutter.app.FlutterApplication
 
-open class CXBaseApplication : FlutterApplication() {
+open class CXBaseApplication : Application() {
 
     companion object {
 
@@ -44,7 +44,6 @@ open class CXBaseApplication : FlutterApplication() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(base)
-        //Thread(Runnable { MultiDex.install(base) }).start()
     }
 
     override fun onCreate() {

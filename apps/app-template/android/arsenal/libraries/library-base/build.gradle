@@ -69,8 +69,6 @@ dependencies {
 
     /******* 定位相关 ******************************************************************************/
     compileOnly "com.amap.api:location:4.0.1"  // 定位功能
-
-    api project(':flutter')
 }
 
 /*apply plugin: 'maven'

@@ -18,17 +18,13 @@ import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
-import com.smart.template.module.flutter.FlutterActivity.Companion.ID_PARENT
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
-import org.jetbrains.anko.async
-
 
 @SuppressLint("InflateParams")
 @Suppress("MemberVisibilityCanBePrivate")
@@ -102,12 +98,12 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
             checkIfAddFlutterView(this)
-            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
-                topMargin = CXSystemUtil.statusBarHeight
-            })
-            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
-                topMargin = 0//CXSystemUtil.statusBarHeight
-            })
+//            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+//                topMargin = CXSystemUtil.statusBarHeight
+//            })
+//            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+//                topMargin = 0//CXSystemUtil.statusBarHeight
+//            })
         })
 
         loadingView.visibility = View.VISIBLE
@@ -211,7 +207,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     private var isPushed = false
-    private val handler:Handler by lazy { Handler() }
+    private val handler: Handler by lazy { Handler() }
     override fun onResume() {
         CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name} ")
         super.onResume()
@@ -254,7 +250,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 //        async {
 //            Thread.sleep(300)
 //            runOnUiThread {
-                snapShootImageView.visibility = View.GONE
+        snapShootImageView.visibility = View.GONE
 //            }
 //        }
     }

@@ -42,6 +42,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  http: ^0.12.0
+
 flutter:
   uses-material-design: true
   module:

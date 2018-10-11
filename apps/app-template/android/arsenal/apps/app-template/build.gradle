@@ -193,7 +193,6 @@ dependencies {
     api project(':module-template-hybird')
     api project(':module-template-react_native')
     api project(':module-template-mine')
-    api project(':module-template-setting')
 
     implementation project(':module-template-flutter')
 

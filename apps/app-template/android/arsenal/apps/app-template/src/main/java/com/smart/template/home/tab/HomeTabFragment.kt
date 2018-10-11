@@ -24,9 +24,7 @@ class HomeTabFragment : CXBaseFragment() {
                     HomeFragment(),
                     ReactNativeFragment(),
                     HybirdFragment(),
-                    OtherFragment(),
-                    FlutterFragment(),
-                    SettingFragment()
+                    FlutterFragment()
             )
         )
         content_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

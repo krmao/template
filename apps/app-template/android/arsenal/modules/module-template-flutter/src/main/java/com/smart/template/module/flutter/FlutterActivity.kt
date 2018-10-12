@@ -18,6 +18,7 @@ import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
@@ -36,6 +37,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         private const val ROUTE_PATH_PREFIX = "flutter://"
         private const val TAG = "flutter"
         const val CHANNEL_METHOD = "flutter.channel.method";
+
+
+        var PUSH_COUNT: Int = 0
+            internal set
+
+        var PAGES_COUNT: Int = 0
+            internal set
 
         @SuppressLint("StaticFieldLeak")
         private var mFlutterNativeView: FlutterNativeView? = null
@@ -97,13 +105,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         }
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
-            checkIfAddFlutterView(this)
-//            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
-//                topMargin = CXSystemUtil.statusBarHeight
-//            })
-//            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
-//                topMargin = 0//CXSystemUtil.statusBarHeight
-//            })
+            // checkIfAddFlutterView(this)
+            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+                topMargin = CXSystemUtil.statusBarHeight
+            })
+            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply {
+                topMargin = 0//CXSystemUtil.statusBarHeight
+            })
         })
 
         loadingView.visibility = View.VISIBLE
@@ -159,7 +167,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     fun push() {
-        CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath")
+        PUSH_COUNT++
+        CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
         methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
@@ -174,6 +183,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     fun pop() {
+        PUSH_COUNT--
+        CXLogUtil.w(TAG, "pop routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
         methodChannel?.invokeMethod("pop", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
@@ -195,6 +206,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = true
+        PAGES_COUNT++
         super.onCreate(savedInstanceState)
         intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
@@ -206,18 +218,38 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStart()
     }
 
+    private var currentPageNum: Int = -1
     private var isPushed = false
     private val handler: Handler by lazy { Handler() }
     override fun onResume() {
-        CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name} ")
+
+        var debugLog = ""
+        when {
+            currentPageNum == -1 -> {
+                // 第一次进入该页面
+                debugLog = "第一次进入该页面"
+                currentPageNum = PAGES_COUNT
+                push()
+            }
+            currentPageNum < PAGES_COUNT -> {
+                // 从B页面返回到A页面, 执行完A的onResume 才会执行B的onDestroy
+                debugLog = "从B页面返回到A页面, 执行完A的onResume 才会执行B的onDestroy"
+                pop()
+            }
+            currentPageNum == PAGES_COUNT -> {
+                // 从后台切回前台
+                debugLog = "从后台切回前台"
+            }
+        }
+
+        CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum, PUSH_COUNT=$PUSH_COUNT, debugLog=$debugLog")
         super.onResume()
 
         FlutterManager.currentActivity = this
+        // 是否需要重新添加 flutterView
         if (checkIfAddFlutterView()) {
 
         }
-        push()
-
 
         methodChannel?.setMethodCallHandler { call, result ->
             CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
@@ -243,21 +275,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-
-        handler.post {
+        handler.postDelayed({
             snapShootImageView.visibility = View.GONE
-        }
-//        async {
-//            Thread.sleep(300)
-//            runOnUiThread {
-        snapShootImageView.visibility = View.GONE
-//            }
-//        }
+        }, 300)
     }
 
     override fun onPause() {
-        CXLogUtil.e(TAG, "onPause ${this}:${Thread.currentThread().name} ")
+        CXLogUtil.e(TAG, "onPause ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum")
         super.onPause()
+
+
         CXLogUtil.e(TAG, "onPause0 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPause()
         if (FlutterManager.currentActivity == this) {
@@ -295,11 +322,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onDestroy() {
-        CXLogUtil.e(TAG, "onDestroy ${this}:${Thread.currentThread().name} ")
+        PAGES_COUNT--
+        if (currentPageNum == 1) {
+            pop()
+        }
+        CXLogUtil.e(TAG, "onDestroy ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum, PUSH_COUNT=$PUSH_COUNT")
         bitmap?.recycle()
         bitmap = null
         snapShootImageView.setImageBitmap(null)
         super.onDestroy()
+
         // if (isFlutterViewAttachedOnMe()) this.eventDelegate.onDestroy()
 //        detachFlutterView()
     }

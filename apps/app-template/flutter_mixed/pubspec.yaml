@@ -1,9 +1,12 @@
 name: flutter_mixed
 description: A new flutter module project.
-version: 1.0.0+1
+author: 767709667@qq.com
+homepage: https://github.com/krmao
+version: 1.0.0
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.0.0-dev.68.0 <3.0.0" # dart sdk
+  flutter: ">=0.8.3 <3.0.0"      # flutter sdk
 
 dependencies:
   flutter:
@@ -43,7 +46,7 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-  http: ^0.12.0
+   http: ^0.12.0
 
 flutter:
   uses-material-design: true
@@ -54,3 +57,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #         weight: 700

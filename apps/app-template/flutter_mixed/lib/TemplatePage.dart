@@ -29,13 +29,15 @@ class TemplatePageState extends State<TemplatePage> with AutomaticKeepAliveClien
 
   Future<dynamic> _onNativeCallHandler(MethodCall methodCall) async {
     print("_onNativeCallHandler -> ${methodCall.method}");
+    print("flutter route");
+
     switch (methodCall.method) {
       case 'push':
         CommonWidgetManager.goTo(context, CommonWidgetManager.widgetByRoute(methodCall.arguments), animation: false);
         print("_onNativeCallHandler -> ${methodCall.method}");
         return null;
       case 'pop':
-        CommonWidgetManager.pop(context);
+        if (Navigator.canPop(context)) Navigator.pop(context);
         return null;
       default:
         return null;

@@ -46,7 +46,7 @@ class FinalApplication : CXBaseApplication() {
         val frescoConfig = CXImageFrescoHandler.getConfigBuilder(CXBaseApplication.DEBUG, CXOkHttpManager.client).build()
         CXImageManager.initialize(CXImageFrescoHandler(frescoConfig))
 
-        CXDeployInitManager.init(this, frescoConfig)
+        // CXDeployInitManager.init(this, frescoConfig)
 
         FlutterManager.startInitialization(this)
     }

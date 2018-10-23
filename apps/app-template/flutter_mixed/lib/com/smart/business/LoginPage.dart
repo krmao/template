@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'CommonWidgetManager.dart';
+import 'package:flutter_mixed/com/smart/business/CommonWidgetManager.dart';
 
 const _CHANNEL_METHOD = "flutter.channel.method";
 const platform = const MethodChannel(_CHANNEL_METHOD);

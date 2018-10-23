@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'LoginOrLogoutEvent.dart';
-import 'LoginPage.dart';
-import 'RxBus.dart';
+import 'package:flutter_mixed/com/smart/business/LoginOrLogoutEvent.dart';
+import 'package:flutter_mixed/com/smart/business/LoginPage.dart';
+import 'package:flutter_mixed/com/smart/business/RxBus.dart';
 
 class UserManager {
   static UserModel _user;

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'LoginPage.dart';
-import 'TemplatePage.dart';
-import 'UserManager.dart';
+import 'package:flutter_mixed/com/smart/business/LoginPage.dart';
+import 'package:flutter_mixed/com/smart/business/TemplatePage.dart';
+import 'package:flutter_mixed/com/smart/business/UserManager.dart';
 
 const _ROUTE_PATH_PREFIX = "flutter://";
 

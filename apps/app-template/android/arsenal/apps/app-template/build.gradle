@@ -194,7 +194,7 @@ dependencies {
     api project(':module-template-react_native')
     api project(':module-template-mine')
 
-    implementation project(':module-template-flutter')
+    // implementation project(':module-template-flutter')
 
     // LeakCanary
     debugApi "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

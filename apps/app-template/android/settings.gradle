@@ -16,7 +16,7 @@ include(":module-test"); project(":module-test").projectDir = new File(settingsD
 //thirdparty
 
 //flutter
-include(":module-template-flutter"); project(":module-template-flutter").projectDir = new File(settingsDir, "arsenal/modules/module-template-flutter")
-setBinding(new Binding([gradle: this]))
-evaluate(new File(settingsDir.parentFile, 'flutter_mixed/.android/include_flutter.groovy'))
+//include(":module-template-flutter"); project(":module-template-flutter").projectDir = new File(settingsDir, "arsenal/modules/module-template-flutter")
+//setBinding(new Binding([gradle: this]))
+//evaluate(new File(settingsDir.parentFile, 'flutter_mixed/.android/include_flutter.groovy'))
 //evaluate(new File(settingsDir, 'include_flutter.groovy'))

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.CXBaseFragment
 import com.smart.template.R
-import com.smart.template.module.flutter.FlutterActivity
 
 class FlutterFragment : CXBaseFragment() {
 
@@ -21,7 +20,7 @@ class FlutterFragment : CXBaseFragment() {
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
-            FlutterActivity.goTo(activity, "route1", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
+            // FlutterActivity.goTo(activity, "route1", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
 
             /*CXRouteManager.goToActivity(activity, "com.smart.template.module.flutter.FlutterActivity") {
                 CXLogUtil.w("krmao", it.toString())

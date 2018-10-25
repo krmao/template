@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../base/BasePageState.dart';
-import '../base/widgets/Loading.dart';
-import '../base/widgets/TitleBar.dart';
+import 'package:smart/headers.dart';
 
 class HomePage extends StatefulWidget {
     @override
@@ -11,9 +6,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends BasePageState<HomePage> {
-
-    @override
-    bool get wantKeepAlive => false;
 
     @override
     void initState() {
@@ -25,6 +17,11 @@ class HomePageState extends BasePageState<HomePage> {
     @override
     Widget body() {
         return Container(color: Colors.blueGrey,);
+    }
+
+    @override
+    bool get wantKeepAlive {
+        return true;
     }
 
 }

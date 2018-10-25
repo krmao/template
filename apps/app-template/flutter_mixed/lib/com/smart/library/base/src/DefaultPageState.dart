@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'widgets/Loading.dart';
 import 'widgets/TitleBar.dart';
-
-typedef WidgetBuildFunction = Widget Function();
+import 'BaseDefinition.dart';
 
 class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver {
 

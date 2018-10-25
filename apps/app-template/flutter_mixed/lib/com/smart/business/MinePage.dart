@@ -1,29 +1,28 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../base/BasePageState.dart';
-import '../base/widgets/Loading.dart';
-import '../base/widgets/TitleBar.dart';
+import 'package:smart/headers.dart';
 
 class MinePage extends StatefulWidget {
     @override
     createState() => MinePageState();
 }
 
-class MinePageState extends BasePageState<MinePage> {
+class MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin<MinePage> {
 
     @override
-    bool get wantKeepAlive => false;
+    bool get wantKeepAlive => true;
 
     @override
     void initState() {
-        titleBar = TitleBar(disableBack: true, title: "我的",);
-        loading = Loading(isShow: false);
+//        titleBar = TitleBar(disableBack: true, title: "我的",);
+//        loading = Loading(isShow: false);
         super.initState();
     }
 
-    @override
     Widget body() {
+        return Container(color: Colors.deepOrangeAccent,);
+    }
+
+    @override
+    Widget build(BuildContext context) {
         return Container(color: Colors.deepOrangeAccent,);
     }
 

@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:smart/com/smart/base/user/UserManager.dart';
+import 'package:smart/headers.dart';
 
 const _ROUTE_PATH_PREFIX = "flutter://";
 

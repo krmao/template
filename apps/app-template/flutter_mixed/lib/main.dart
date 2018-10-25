@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'com/smart/base/DefaultApp.dart';
-import 'com/smart/base/DefaultPage.dart';
+import 'package:smart/com/smart/library/base/src/DefaultApp.dart';
+import 'package:smart/com/smart/library/base/src/DefaultPage.dart';
 import 'com/smart/business/HomePage.dart';
 import 'com/smart/business/MinePage.dart';
 

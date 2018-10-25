@@ -3,14 +3,14 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import 'package:smart/com/smart/base/utils/HttpManager.dart';
+//import 'package:smart/com/smart/library/base/utils/HttpManager.dart';
 import 'package:smart/com/smart/repository/ResponseModel.dart';
 
 class Repository {
   /// base request
   static Future<ResponseModel> _requestFormPost(String path, {data, Options options, CancelToken cancelToken}) async {
     Completer<ResponseModel> completer = new Completer();
-    HttpManager.getClient().post(path, data: data, options: options, cancelToken: cancelToken).then((response) {
+   /* HttpManager.getClient().post(path, data: data, options: options, cancelToken: cancelToken).then((response) {
       var responseData = response.data;
       var responseModel = ResponseModel(responseData["code"], responseData["msg"], responseData["time"], responseData["data"]);
       if (responseModel.code == 1) {
@@ -18,7 +18,7 @@ class Repository {
       } else {
         completer.completeError("${responseModel.msg}");
       }
-    }).catchError((error) => completer.completeError(error));
+    }).catchError((error) => completer.completeError(error));*/
 
     return completer.future;
   }

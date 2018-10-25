@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:smart/com/smart/base/user/LoginOrLogoutEvent.dart';
-import 'package:smart/com/smart/base/RxBus.dart';
+//import 'package:smart/com/smart/library/base/user/LoginOrLogoutEvent.dart';
+import 'package:smart/com/smart/library/base/src/RxBus.dart';
 
 class UserManager {
   static UserModel _user;
@@ -32,7 +32,7 @@ class UserManager {
 
   static void logout() {
     saveUser(null);
-    RxBus.post(LoginOrLogoutEvent(false));
+//    RxBus.post(LoginOrLogoutEvent(false));
   }
 
   static Future<bool> isLoginSuccess() {

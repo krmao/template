@@ -18,7 +18,7 @@ class TitleBar extends StatefulWidget {
     final Color titleBackgroundColor;
     final bool disableBack;
 
-    const TitleBar({this.title, this.width = double.infinity, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = false, Key key}) : super(key: key);
+    TitleBar({this.title, this.width = double.infinity, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = true, Key key}) : super(key: key);
 
     @override
     createState() => _TitleBarState();

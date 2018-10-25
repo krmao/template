@@ -2,153 +2,62 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_mixed/com/smart/business/LoginPage.dart';
-import 'package:flutter_mixed/com/smart/business/TemplatePage.dart';
+
+import 'com/smart/base/DefaultApp.dart';
+import 'com/smart/base/DefaultPage.dart';
+import 'com/smart/business/HomePage.dart';
+import 'com/smart/business/MinePage.dart';
 
 const PATH_ROUTE_PREFIX = "flutter://";
 const MIXED_WITH_NATIVE = false;
 
 void main() {
     debugPaintSizeEnabled = false;
-    runApp(MIXED_WITH_NATIVE ? _widgetForRoute(window.defaultRouteName) : App());
+    runApp(DefaultApp(body: () => DefaultPage(state: MainTabWidgetState(),)));
 }
 
-Widget _widgetForRoute(String routeFullPath) {
-    if (!routeFullPath.startsWith(PATH_ROUTE_PREFIX)) {
-        return Center(
-            child: Text('Unknown route path prefix: $routeFullPath', textDirection: TextDirection.ltr),
-        );
-    }
-
-    var arguments = routeFullPath.replaceAll(PATH_ROUTE_PREFIX, "").split("?");
-
-    print("routeFullPath->$routeFullPath");
-
-    var routeName = arguments.length > 0 ? arguments[0] : null;
-    var routeParams = Map<String, dynamic>();
-
-    if (arguments.length > 1) {
-        arguments[1].split("&").forEach((keyValue) {
-            var kv = keyValue.split("=");
-            if (kv.length >= 2) routeParams[kv[0]] = kv[1];
-        });
-    }
-
-    switch (routeName) {
-        case 'route1':
-            return App();
-        case 'route2':
-            return LoginPage(); // MyHomePage(title: 'route2');
-        default:
-            return Center(
-                child: Text('Unknown route: $routeName', textDirection: TextDirection.ltr),
-            );
-    }
-}
-
-class App extends StatefulWidget {
-    App({Key key}) : super(key: key);
-
-    @override
-    createState() => new AppState();
-}
-
-class AppState extends State<App> {
-
-    @override
-    Widget build(BuildContext context) {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//      statusBarColor: Colors.black, // android >= M
-//      statusBarBrightness: Brightness.light, // ios
-//      statusBarIconBrightness: Brightness.light, // android >= M
-//    ));
-        return new MaterialApp(
-            home: new Scaffold(
-                backgroundColor: Color(0xFF0f0544), // android status bar and iphone X top and bottom edges color
-                body: new SafeArea(
-                    child: new MainTabWidget(),
-                    bottom: true,
-                ),
-            ),
-            theme: new ThemeData(primaryColor: Colors.blue,
-                accentColor: Colors.lightBlueAccent,
-                primaryColorBrightness: Brightness.dark,
-                hintColor: Colors.black26,
-                highlightColor: Colors.transparent,
-                inputDecorationTheme: new InputDecorationTheme(labelStyle: new TextStyle(color: Color(0xffdddddd)))),
-        );
-    }
-}
-
-class MainTabWidget extends StatefulWidget {
-    @override
-    createState() => new MainTabWidgetState();
-}
-
-class MainTabWidgetState extends State<MainTabWidget> {
+class MainTabWidgetState extends State<StatefulWidget> {
     PageController controller;
-    var pages = [TemplatePage(), TemplatePage()];
+    var pages = [HomePage(), MinePage()];
     var currentIndex = 0;
 
     @override
     Widget build(BuildContext context) {
-        controller = new PageController(initialPage: 0);
-        return new Scaffold(
+        Size size = MediaQuery
+            .of(context)
+            .size;
+        print("defaultRouteName:${window.defaultRouteName}, size:$size");
+        controller = PageController(initialPage: 0);
+        return Scaffold(
             backgroundColor: Colors.white,
-            body: new Column(
-                children: <Widget>[
-                    new Expanded(
-                        flex: 1,
-                        child: new PageView.builder(
-                            itemBuilder: (BuildContext context, int index) {
-                                return pages[index];
-                            },
-                            itemCount: pages.length,
-                            onPageChanged: (index) {
-                                print("onPageChanged:$index");
-                                if (currentIndex != index) {
-                                    setState(() {
-                                        currentIndex = index;
-                                    });
-                                }
-                            },
-                            controller: controller,
-                        ),
+            body: Column(children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: PageView.builder(itemBuilder: (BuildContext context, int index) => pages[index],
+                        itemCount: pages.length,
+                        onPageChanged: (index) {
+                            print("onPageChanged:$index");
+                            if (currentIndex != index) setState(() => currentIndex = index);
+                        },
+                        controller: controller,
                     ),
-                    bottomNavigationBar(),
-                ],
-            ),
-//      bottomNavigationBar: new Container(child: bottomNavigationBar(), color: Colors.white,),
-        );
+                ),
+                bottomNavigationBar()
+            ]));
     }
 
     Widget bottomNavigationBar() {
-        return new BottomNavigationBar(
+        return BottomNavigationBar(
             items: [
-                new BottomNavigationBarItem(
-                    icon: new ImageIcon(
-                        new AssetImage("images/home_menu_home.png"),
-                        size: 48.0,
-                        color: currentIndex == 0 ? Color(0xff0c0435) : Color(0xffb6b6b6),
-                    ),
-                    title: new Container()),
-                new BottomNavigationBarItem(
-                    icon: new ImageIcon(
-                        new AssetImage("images/home_menu_mine.png"),
-                        size: 48.0,
-                        color: currentIndex == 1 ? Color(0xff0c0435) : Color(0xffb6b6b6),
-                    ),
-                    title: new Container())
+                BottomNavigationBarItem(icon: ImageIcon(AssetImage("images/home_menu_home.png"), size: 48.0, color: currentIndex == 0 ? Color(0xff0c0435) : Color(0xffb6b6b6),), title: Container()),
+                BottomNavigationBarItem(icon: ImageIcon(AssetImage("images/home_menu_mine.png"), size: 48.0, color: currentIndex == 1 ? Color(0xff0c0435) : Color(0xffb6b6b6),), title: Container())
             ],
             onTap: (index) {
                 print("onTap:$index");
                 controller.jumpToPage(index); // https://github.com/flutter/flutter/issues/11895 fixed in v0.8.2-pre.26
-                // controller.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.linear);
             },
             currentIndex: 0,
             type: BottomNavigationBarType.fixed,
-            fixedColor: Color(0xff0c0435),
-        );
+            fixedColor: Color(0xff0c0435));
     }
 }

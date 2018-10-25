@@ -5,9 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter_mixed/com/smart/business/LoginOrLogoutEvent.dart';
-import 'package:flutter_mixed/com/smart/business/LoginPage.dart';
-import 'package:flutter_mixed/com/smart/business/RxBus.dart';
+import 'package:smart/com/smart/base/user/LoginOrLogoutEvent.dart';
+import 'package:smart/com/smart/base/RxBus.dart';
 
 class UserManager {
   static UserModel _user;
@@ -71,7 +70,7 @@ class UserManager {
 
   static Future<UserModel> requestLogin(BuildContext context) async {
     Completer<UserModel> completer = new Completer();
-    final UserModel userModel = await Navigator.of(context).push(CupertinoPageRoute(builder: (context) => LoginPage()));
+    final UserModel userModel = await Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Container()));
     if (userModel != null) {
       completer.complete(userModel);
     } else {

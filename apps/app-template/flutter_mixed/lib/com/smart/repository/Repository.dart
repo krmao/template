@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import 'package:flutter_mixed/com/smart/business/HttpManager.dart';
-import 'package:flutter_mixed/com/smart/business/ResponseModel.dart';
+import 'package:smart/com/smart/base/utils/HttpManager.dart';
+import 'package:smart/com/smart/repository/ResponseModel.dart';
 
 class Repository {
   /// base request

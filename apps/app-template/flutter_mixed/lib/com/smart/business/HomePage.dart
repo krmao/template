@@ -8,6 +8,9 @@ class HomePage extends StatefulWidget {
 class HomePageState extends BasePageState<HomePage> {
 
     @override
+    bool get wantKeepAlive => true;
+
+    @override
     void initState() {
         titleBar = TitleBar(disableBack: true, title: "首页",);
         loading = Loading(isShow: false);
@@ -17,11 +20,6 @@ class HomePageState extends BasePageState<HomePage> {
     @override
     Widget body() {
         return Container(color: Colors.blueGrey,);
-    }
-
-    @override
-    bool get wantKeepAlive {
-        return true;
     }
 
 }

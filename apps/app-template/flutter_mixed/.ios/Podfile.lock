@@ -1,0 +1,43 @@
+PODS:
+  - Flutter (1.0.0)
+  - FlutterPluginRegistrant (0.0.1):
+    - Flutter
+    - image_picker
+    - path_provider
+    - shared_preferences
+  - image_picker (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `../.ios/Flutter/engine`)
+  - FlutterPluginRegistrant (from `../.ios/Flutter/FlutterPluginRegistrant`)
+  - image_picker (from `../.ios/Flutter/.symlinks/image_picker/ios`)
+  - path_provider (from `../.ios/Flutter/.symlinks/path_provider/ios`)
+  - shared_preferences (from `../.ios/Flutter/.symlinks/shared_preferences/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: "../.ios/Flutter/engine"
+  FlutterPluginRegistrant:
+    :path: "../.ios/Flutter/FlutterPluginRegistrant"
+  image_picker:
+    :path: "../.ios/Flutter/.symlinks/image_picker/ios"
+  path_provider:
+    :path: "../.ios/Flutter/.symlinks/path_provider/ios"
+  shared_preferences:
+    :path: "../.ios/Flutter/.symlinks/shared_preferences/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  FlutterPluginRegistrant: b939ec2e5b4603562f0fd062c25a98e3a54f808c
+  image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
+
+PODFILE CHECKSUM: 72e1e8175dfc89701dce64d331963d9d73fd85e9
+
+COCOAPODS: 1.5.3

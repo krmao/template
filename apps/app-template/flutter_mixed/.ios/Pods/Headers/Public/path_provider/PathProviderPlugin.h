@@ -1,0 +1,1 @@
+../../../../Flutter/.symlinks/path_provider/ios/Classes/PathProviderPlugin.h

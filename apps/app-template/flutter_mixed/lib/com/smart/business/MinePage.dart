@@ -5,25 +5,21 @@ class MinePage extends StatefulWidget {
     createState() => MinePageState();
 }
 
-class MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin<MinePage> {
+class MinePageState extends BasePageState<MinePage> {
 
     @override
     bool get wantKeepAlive => true;
 
     @override
     void initState() {
-//        titleBar = TitleBar(disableBack: true, title: "我的",);
-//        loading = Loading(isShow: false);
+        titleBar = TitleBar(disableBack: true, title: "我的",);
+        loading = Loading(isShow: false);
         super.initState();
     }
 
-    Widget body() {
-        return Container(color: Colors.deepOrangeAccent,);
-    }
-
     @override
-    Widget build(BuildContext context) {
-        return Container(color: Colors.deepOrangeAccent,);
+    Widget body() {
+        return Container(color: Colors.pink,);
     }
 
 }

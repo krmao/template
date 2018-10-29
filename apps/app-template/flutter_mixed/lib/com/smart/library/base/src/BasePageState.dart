@@ -9,7 +9,8 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
     String tag;
     Loading loading;
     TitleBar titleBar;
-    BuildContext context;
+
+    BuildContext _context;
 
     @override
     bool get wantKeepAlive => false;
@@ -40,7 +41,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
             backgroundColor: Color(0xFF0f0544),
             body: Builder(
                 builder: (BuildContext context) {
-                    this.context = context;
+                    this._context = context;
                     return SafeArea(
                         child: Container(
                             color: Colors.white,

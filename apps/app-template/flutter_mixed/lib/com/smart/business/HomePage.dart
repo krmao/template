@@ -19,7 +19,7 @@ class HomePageState extends BasePageState<HomePage> {
 
     @override
     Widget body() {
-        return Container(color: Colors.blueGrey,);
+        return Container(color: Colors.blueAccent,);
     }
 
 }

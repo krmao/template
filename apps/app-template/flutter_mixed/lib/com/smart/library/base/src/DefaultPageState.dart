@@ -87,10 +87,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
     // -- common functions definition
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    void showSnackBar(String msg) =>
-        Scaffold.of(context).showSnackBar(SnackBar(content: ConstrainedBox(child: Text(msg), constraints: new BoxConstraints(
-            minHeight: 28.0,
-        ),)));
+    void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg), duration: Duration(milliseconds: 2000)));
 
     Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
         WidgetUtils.getVerticalLine(lineColor: lineColor,

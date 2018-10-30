@@ -6,11 +6,12 @@ import 'DefaultPageState.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
 
+// ignore: must_be_immutable
 class DefaultPage extends StatefulWidget {
 
-    LoadingWidget loadingWidget;
-    TitleBarWidget titleBarWidget;
-    WidgetBuildFunction child;
+    final LoadingWidget loadingWidget;
+    final TitleBarWidget titleBarWidget;
+    final WidgetBuildFunction child;
     bool keepAlive = false;
     bool enableSafeArea = true;
     bool enableSafeAreaTop = true;

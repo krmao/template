@@ -13,7 +13,7 @@ const MIXED_WITH_NATIVE = false;
 
 void main() {
     debugPaintSizeEnabled = false;
-    runApp(DefaultApp(enableSafeArea: false, statusBarColor: Colors.cyan, child: DefaultPage(enableSafeArea: false, statusBarColor: Colors.orange, state: MainTabWidgetState())));
+    runApp(DefaultApp(enableSafeArea: false, statusBarColor: Color(0x40000000), child: DefaultPage(enableSafeArea: false, statusBarColor: Colors.orange, state: MainTabWidgetState())));
 }
 
 class MainTabWidgetState extends State<StatefulWidget> {

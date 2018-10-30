@@ -6,16 +6,14 @@ import 'Constants.dart';
 var _lastTime = 0;
 
 class DefaultApp extends StatefulWidget {
-    StatefulWidget child;
-    Color statusBarColor;
-    bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
+    final StatefulWidget child;
+    final Color statusBarColor;
+    final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
     DefaultApp({Key key, @required this.child, this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true}) :super(key: key);
 
     @override
-    State<StatefulWidget> createState() {
-        return _DefaultAppState();
-    }
+    State<StatefulWidget> createState() => _DefaultAppState();
 }
 
 class _DefaultAppState extends State<DefaultApp> {
@@ -36,12 +34,12 @@ class _DefaultAppState extends State<DefaultApp> {
                     right: widget.enableSafeArea && widget.enableSafeAreaRight,
                     bottom: widget.enableSafeArea && widget.enableSafeAreaBottom,
                     child: WillPopScope(child: widget.child, onWillPop: () => _processExit(context)))),
-            theme: ThemeData(primaryColor: Colors.yellow,
-                accentColor: Colors.limeAccent,
-                primaryColorBrightness: Brightness.light,
-                hintColor: Colors.black12,
-                highlightColor: Colors.transparent,
-                inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Color(0xffdddddd)))));
+            theme: ThemeData(primaryColor: Constants.PRIMARY_COLOR,
+                accentColor: Constants.ACCENT_COLOR,
+                primaryColorBrightness: Brightness.dark,
+                hintColor: Constants.HINT_COLOR,
+                highlightColor: Constants.HIGHLIGHT_COLOR,
+                inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
     }
 }
 

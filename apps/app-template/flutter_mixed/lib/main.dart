@@ -20,13 +20,18 @@ class MainTabWidgetState extends State<StatefulWidget> {
     PageController controller;
     var pages = [HomePage(), MinePage()];
     var currentIndex = 0;
+    var firstTime = true;
 
     @override
     Widget build(BuildContext context) {
-        Size size = MediaQuery
-            .of(context)
-            .size;
-        print("defaultRouteName:${window.defaultRouteName}, size:$size");
+        if (firstTime) {
+            Size size = MediaQuery
+                .of(context)
+                .size;
+            print("defaultRouteName:${window.defaultRouteName}, screen:$size");
+            firstTime = false;
+        }
+
         controller = PageController(initialPage: 0);
         return Scaffold(
             backgroundColor: Colors.white,

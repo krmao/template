@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'Constants.dart';
 
@@ -19,12 +20,11 @@ class DefaultApp extends StatefulWidget {
 class _DefaultAppState extends State<DefaultApp> {
     @override
     Widget build(BuildContext context) {
-
-        /*SystemChrome.setSystemUIOverlayStyle(SytemUiOverlayStyle(
-            statusBarColor: Colors.black, // android >= M
-            statusBarBrightness: Brightness.light, // ios
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent, // android >= M
+            statusBarBrightness: Brightness.dark, // ios
             statusBarIconBrightness: Brightness.light, // android >= M
-            ));*/
+        ));
 
         return MaterialApp(
             home: Scaffold(backgroundColor: widget.statusBarColor, // android status bar and iphone X top and bottom edges color
@@ -36,7 +36,7 @@ class _DefaultAppState extends State<DefaultApp> {
                     child: WillPopScope(child: widget.child, onWillPop: () => _processExit(context)))),
             theme: ThemeData(primaryColor: Constants.PRIMARY_COLOR,
                 accentColor: Constants.ACCENT_COLOR,
-                primaryColorBrightness: Brightness.dark,
+                primaryColorBrightness: Brightness.light,
                 hintColor: Constants.HINT_COLOR,
                 highlightColor: Constants.HIGHLIGHT_COLOR,
                 inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Constants.INPUT_DECORATION_COLOR))));

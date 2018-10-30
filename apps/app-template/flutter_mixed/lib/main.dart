@@ -7,13 +7,14 @@ import 'package:smart/com/smart/library/base/src/DefaultPage.dart';
 
 import 'com/smart/business/HomePage.dart';
 import 'com/smart/business/MinePage.dart';
+import 'headers.dart';
 
 const PATH_ROUTE_PREFIX = "flutter://";
 const MIXED_WITH_NATIVE = false;
 
 void main() {
     debugPaintSizeEnabled = false;
-    runApp(DefaultApp(enableSafeArea: false, statusBarColor: Color(0x40000000), child: DefaultPage(enableSafeArea: false, statusBarColor: Colors.orange, state: MainTabWidgetState())));
+    runApp(DefaultApp(enableSafeArea: false, statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR, child: DefaultPage(enableSafeArea: false, statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR, state: MainTabWidgetState())));
 }
 
 class MainTabWidgetState extends State<StatefulWidget> {
@@ -38,7 +39,9 @@ class MainTabWidgetState extends State<StatefulWidget> {
             body: Column(children: <Widget>[
                 Expanded(
                     flex: 1,
-                    child: PageView.builder(itemBuilder: (BuildContext context, int index) => pages[index],
+                    child: PageView.builder(
+                        pageSnapping: true,
+                        itemBuilder: (BuildContext context, int index) => pages[index],
                         itemCount: pages.length,
                         onPageChanged: (index) {
                             print("onPageChanged:$index");

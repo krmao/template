@@ -27,6 +27,9 @@ class _DefaultAppState extends State<DefaultApp> {
         ));
 
         return MaterialApp(
+            builder: (context, child) {
+                return ScrollConfiguration(child: child, behavior: NoOverScrollBehavior());
+            },
             home: Scaffold(backgroundColor: widget.statusBarColor, // android status bar and iphone X top and bottom edges color
                 body: SafeArea(
                     top: widget.enableSafeArea && widget.enableSafeAreaTop,
@@ -40,6 +43,13 @@ class _DefaultAppState extends State<DefaultApp> {
                 hintColor: Constants.HINT_COLOR,
                 highlightColor: Constants.HIGHLIGHT_COLOR,
                 inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
+    }
+}
+
+class NoOverScrollBehavior extends ScrollBehavior {
+    @override
+    Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+        return child;
     }
 }
 

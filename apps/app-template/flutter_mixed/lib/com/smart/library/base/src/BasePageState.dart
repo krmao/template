@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/Loading.dart';
-import 'widgets/TitleBar.dart';
+import 'Constants.dart';
+import 'package:smart/com/smart/library/base/src/utils/WidgetUtils.dart';
+import 'widgets/LoadingWidget.dart';
+import 'widgets/TitleBarWidget.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver {
 
     String tag;
-    Loading loading;
-    TitleBar titleBar;
-
-    BuildContext _context;
+    LoadingWidget loadingWidget;
+    TitleBarWidget titleBarWidget;
 
     @override
     bool get wantKeepAlive => false;
@@ -22,8 +22,8 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
         print("[$tag] initSatte");
         WidgetsBinding.instance.addObserver(this);
 
-        if (loading == null) loading = Loading();
-        if (titleBar == null) titleBar = TitleBar();
+        if (loadingWidget == null) loadingWidget = LoadingWidget();
+        if (titleBarWidget == null) titleBarWidget = TitleBarWidget();
     }
 
     @override
@@ -32,8 +32,6 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
         print("[$tag] didChangeAppLifecycleState state=${state.toString()}");
     }
 
-    void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
-
     @override
     Widget build(BuildContext context) {
         print("[$tag] build");
@@ -41,13 +39,12 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
             backgroundColor: Color(0xFF0f0544),
             body: Builder(
                 builder: (BuildContext context) {
-                    this._context = context;
                     return SafeArea(
                         child: Container(
                             color: Colors.white,
                             width: double.infinity,
                             height: double.infinity,
-                            child: Stack(children: <Widget>[body(), titleBar, loading])
+                            child: Stack(children: <Widget>[body(), titleBarWidget, loadingWidget])
                         )
                     );
                 }
@@ -55,7 +52,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
         );
     }
 
-    Widget body();
+    Widget body(); // abstract
 
     @override
     void dispose() {
@@ -63,4 +60,31 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> with Aut
         WidgetsBinding.instance.removeObserver(this);
         super.dispose();
     }
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- common functions definition
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
+
+    Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
+        WidgetUtils.getVerticalLine(lineColor: lineColor,
+            height: height,
+            width: width,
+            margin: margin,
+            padding: padding);
+
+    Widget getHorizontalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = 1.0, double width = double.infinity, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
+        WidgetUtils.getHorizontalLine(lineColor: lineColor,
+            height: height,
+            width: width,
+            margin: margin,
+            padding: padding);
+
+    Widget getOnTapWidget(Widget child, GestureTapCallback onTap) => WidgetUtils.getOnTapWidget(child, onTap);
+
+    Widget getOnDoubleTapWidget(Widget child, GestureTapCallback onDoubleTap) => WidgetUtils.getOnDoubleTapWidget(child, onDoubleTap);
+
+    Widget getOnLongPressWidget(Widget child, GestureLongPressCallback onLongPress) => WidgetUtils.getOnLongPressWidget(child, onLongPress);
+
 }

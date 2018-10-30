@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/Loading.dart';
-import 'widgets/TitleBar.dart';
+import 'widgets/LoadingWidget.dart';
+import 'widgets/TitleBarWidget.dart';
 import 'BaseDefinition.dart';
 
 class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver {
 
     String tag;
-    Loading loading;
-    TitleBar titleBar;
+    LoadingWidget loadingWidget;
+    TitleBarWidget titleBarWidget;
     BuildContext context;
     WidgetBuildFunction buildRoot;
     WidgetBuildFunction body;
     bool keepAlive = false;
 
-    DefaultPageState({this.body, this.buildRoot, this.titleBar, this.loading, this.keepAlive=false });
+    DefaultPageState({this.body, this.buildRoot, this.titleBarWidget, this.loadingWidget, this.keepAlive=false });
 
     @override
     bool get wantKeepAlive => keepAlive;
@@ -27,8 +27,8 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
         print("[$tag] initSatte");
         WidgetsBinding.instance.addObserver(this);
 
-        if (loading == null) loading = Loading();
-        if (titleBar == null) titleBar = TitleBar();
+        if (loadingWidget == null) loadingWidget = LoadingWidget();
+        if (titleBarWidget == null) titleBarWidget = TitleBarWidget();
         if (buildRoot == null) {
             buildRoot = () {
                 return Scaffold(
@@ -41,7 +41,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
                                     color: Colors.white,
                                     width: double.infinity,
                                     height: double.infinity,
-                                    child: Stack(children: <Widget>[body(), titleBar, loading])
+                                    child: Stack(children: <Widget>[body(), titleBarWidget, loadingWidget])
                                 )
                             );
                         }

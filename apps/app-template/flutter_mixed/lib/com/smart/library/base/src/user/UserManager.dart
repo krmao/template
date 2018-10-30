@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //import 'package:smart/com/smart/library/base/user/LoginOrLogoutEvent.dart';
-import 'package:smart/com/smart/library/base/src/RxBus.dart';
+import 'package:smart/com/smart/library/base/src/utils/RxBus.dart';
 
 class UserManager {
   static UserModel _user;

@@ -12,14 +12,16 @@ class HomePageState extends BasePageState<HomePage> {
 
     @override
     void initState() {
-        titleBar = TitleBar(disableBack: true, title: "首页",);
-        loading = Loading(isShow: false);
+        titleBarWidget = TitleBarWidget(disableBack: true, title: "首页",);
+        loadingWidget = LoadingWidget(isShow: false);
         super.initState();
     }
 
     @override
     Widget body() {
-        return Container(color: Colors.blueAccent,);
+        return getOnTapWidget(Container(color: Colors.blueAccent), () {
+            showSnackBar("you clicked");
+        });
     }
 
 }

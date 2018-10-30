@@ -12,14 +12,16 @@ class MinePageState extends BasePageState<MinePage> {
 
     @override
     void initState() {
-        titleBar = TitleBar(disableBack: true, title: "我的",);
-        loading = Loading(isShow: false);
+        titleBarWidget = TitleBarWidget(disableBack: true, title: "我的",);
+        loadingWidget = LoadingWidget(isShow: false);
         super.initState();
     }
 
     @override
     Widget body() {
-        return Container(color: Colors.pink,);
+        return getOnTapWidget(Container(color: Colors.pink,), (){
+            showSnackBar("haha");
+        });
     }
 
 }

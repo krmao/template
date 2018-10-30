@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 
 import 'Constants.dart';
 
-var _lastTime = 0;
-
 class DefaultApp extends StatefulWidget {
     final StatefulWidget child;
     final Color statusBarColor;
@@ -25,18 +23,20 @@ class _DefaultAppState extends State<DefaultApp> {
             statusBarBrightness: Brightness.dark, // ios
             statusBarIconBrightness: Brightness.light, // android >= M
         ));
-
         return MaterialApp(
             builder: (context, child) {
                 return ScrollConfiguration(child: child, behavior: NoOverScrollBehavior());
             },
             home: Scaffold(backgroundColor: widget.statusBarColor, // android status bar and iphone X top and bottom edges color
-                body: SafeArea(
-                    top: widget.enableSafeArea && widget.enableSafeAreaTop,
-                    left: widget.enableSafeArea && widget.enableSafeAreaLeft,
-                    right: widget.enableSafeArea && widget.enableSafeAreaRight,
-                    bottom: widget.enableSafeArea && widget.enableSafeAreaBottom,
-                    child: WillPopScope(child: widget.child, onWillPop: () => _processExit(context)))),
+                body: Builder(builder: (BuildContext context) {
+                    return SafeArea(
+                        top: widget.enableSafeArea && widget.enableSafeAreaTop,
+                        left: widget.enableSafeArea && widget.enableSafeAreaLeft,
+                        right: widget.enableSafeArea && widget.enableSafeAreaRight,
+                        bottom: widget.enableSafeArea && widget.enableSafeAreaBottom,
+                        child: WillPopScope(child: widget.child, onWillPop: () => _processExit(context))
+                    );
+                })),
             theme: ThemeData(primaryColor: Constants.PRIMARY_COLOR,
                 accentColor: Constants.ACCENT_COLOR,
                 primaryColorBrightness: Brightness.light,
@@ -53,6 +53,8 @@ class NoOverScrollBehavior extends ScrollBehavior {
     }
 }
 
+var _lastTime = 0;
+
 Future<bool> _processExit(BuildContext context) {
     int now = DateTime
         .now()
@@ -61,7 +63,8 @@ Future<bool> _processExit(BuildContext context) {
     print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
     _lastTime = now;
     if (duration > 1500) {
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出")));
+        print("_processExit -> context==null?${context == null}");
+        Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
         return Future.value(false);
     } else {
         return Future.value(true);

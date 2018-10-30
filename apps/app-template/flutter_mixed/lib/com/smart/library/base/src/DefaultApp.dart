@@ -1,23 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'BaseDefinition.dart';
-
-const DEFAULT_STATUS_BAR_COLOR = Color(0xFFFFFFFF); // android status bar and iphone X top and bottom edges color
+import 'DefaultPage.dart';
 
 var _lastTime = 0;
-BuildContext _context;
 
-class DefaultApp extends StatefulWidget {
-    WidgetBuildFunction body;
+class DefaultApp extends DefaultPage {
+    StatefulWidget _child;
     Color statusBarColor;
 
-    DefaultApp({this.body, this.statusBarColor = DEFAULT_STATUS_BAR_COLOR, Key key}) :super(key: key) {
-        if (this.body == null) this.body = () => Container();
-    }
-
-    @override
-    State createState() => _DefaultAppState();
+    DefaultApp(this._child) :super(state: _DefaultAppState());
 }
 
 class _DefaultAppState extends State<DefaultApp> {
@@ -32,9 +24,9 @@ class _DefaultAppState extends State<DefaultApp> {
 
         return MaterialApp(
             home: Scaffold(backgroundColor: widget.statusBarColor, // android status bar and iphone X top and bottom edges color
-                body: SafeArea(child: WillPopScope(child: widget.body(), onWillPop: () {
+                body: SafeArea(child: WillPopScope(child: widget._child, onWillPop: () {
                     print('onWillPop');
-                    return _processExit();
+                    return _processExit(context);
                 }), bottom: true)),
             theme: ThemeData(primaryColor: Colors.blue,
                 accentColor: Colors.lightBlueAccent,
@@ -45,7 +37,7 @@ class _DefaultAppState extends State<DefaultApp> {
     }
 }
 
-Future<bool> _processExit() {
+Future<bool> _processExit(BuildContext context) {
     int now = DateTime
         .now()
         .millisecondsSinceEpoch;
@@ -53,7 +45,7 @@ Future<bool> _processExit() {
     print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
     _lastTime = now;
     if (duration > 1500) {
-        Scaffold.of(_context).showSnackBar(SnackBar(content: Text("再按一次退出")));
+        Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出")));
         return Future.value(false);
     } else {
         return Future.value(true);

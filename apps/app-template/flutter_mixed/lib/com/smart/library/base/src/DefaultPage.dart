@@ -1,31 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'BaseDefinition.dart';
+
 import 'DefaultPageState.dart';
+import 'Constants.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
 
-// ignore: must_be_immutable
 class DefaultPage extends StatefulWidget {
 
     LoadingWidget loadingWidget;
     TitleBarWidget titleBarWidget;
-    BuildContext context;
-    WidgetBuildFunction body;
-    WidgetBuildFunction buildRoot;
+    WidgetBuildFunction child;
     bool keepAlive = false;
     State state;
 
-    DefaultPage({ this.state, this.buildRoot, this.body, this.loadingWidget, this.titleBarWidget, this.keepAlive = false}) {
+    DefaultPage({this.child, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.state });
+
+    @override
+    State createState() {
         if (this.state == null) {
-            this.state = DefaultPageState(body: this.body,
-                buildRoot: this.buildRoot,
+            this.state = DefaultPageState(child: this.child,
                 loadingWidget: this.loadingWidget,
                 titleBarWidget: this.titleBarWidget,
                 keepAlive: this.keepAlive);
         }
+        return this.state;
     }
 
-    @override
-    State createState() => this.state;
 }

@@ -5,7 +5,7 @@ class HomePage extends StatefulWidget {
     createState() => HomePageState();
 }
 
-class HomePageState extends BasePageState<HomePage> {
+class HomePageState extends DefaultPageState<HomePage> {
 
     @override
     bool get wantKeepAlive => true;
@@ -18,7 +18,7 @@ class HomePageState extends BasePageState<HomePage> {
     }
 
     @override
-    Widget body() {
+    Widget buildBody() {
         return getOnTapWidget(Container(color: Colors.blueAccent), () {
             showSnackBar("you clicked");
         });

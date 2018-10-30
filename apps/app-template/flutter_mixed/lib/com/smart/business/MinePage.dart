@@ -5,7 +5,7 @@ class MinePage extends StatefulWidget {
     createState() => MinePageState();
 }
 
-class MinePageState extends BasePageState<MinePage> {
+class MinePageState extends DefaultPageState<MinePage> {
 
     @override
     bool get wantKeepAlive => true;
@@ -18,7 +18,7 @@ class MinePageState extends BasePageState<MinePage> {
     }
 
     @override
-    Widget body() {
+    Widget buildBody() {
         return getOnTapWidget(Container(color: Colors.pink,), (){
             showSnackBar("haha");
         });

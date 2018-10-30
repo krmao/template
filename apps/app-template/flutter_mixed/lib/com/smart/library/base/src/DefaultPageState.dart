@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smart/com/smart/library/base/src/utils/WidgetUtils.dart';
 
+import 'Constants.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
-import 'BaseDefinition.dart';
 
 class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver {
 
     String tag;
+    WidgetBuildFunction child;
+    bool keepAlive = false;
     LoadingWidget loadingWidget;
     TitleBarWidget titleBarWidget;
-    BuildContext context;
-    WidgetBuildFunction buildRoot;
-    WidgetBuildFunction body;
-    bool keepAlive = false;
-
-    DefaultPageState({this.body, this.buildRoot, this.titleBarWidget, this.loadingWidget, this.keepAlive=false });
 
     @override
-    bool get wantKeepAlive => keepAlive;
+    bool get wantKeepAlive => this.keepAlive;
+
+    DefaultPageState({this.loadingWidget, this.titleBarWidget, this.child, this.keepAlive});
 
     @override
     void initState() {
@@ -29,28 +28,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
 
         if (loadingWidget == null) loadingWidget = LoadingWidget();
         if (titleBarWidget == null) titleBarWidget = TitleBarWidget();
-        if (buildRoot == null) {
-            buildRoot = () {
-                return Scaffold(
-                    backgroundColor: Color(0xFF0f0544),
-                    body: Builder(
-                        builder: (BuildContext context) {
-                            this.context = context;
-                            return SafeArea(
-                                child: Container(
-                                    color: Colors.white,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    child: Stack(children: <Widget>[body(), titleBarWidget, loadingWidget])
-                                )
-                            );
-                        }
-                    )
-                );
-            };
-        }
-
-        if (body == null) body = () => Container();
+        if (child == null) child = () => Container();
     }
 
     @override
@@ -59,13 +37,32 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
         print("[$tag] didChangeAppLifecycleState state=${state.toString()}");
     }
 
-    void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
-
     @override
     Widget build(BuildContext context) {
         print("[$tag] build");
-        return this.buildRoot();
+        return buildRoot();
     }
+
+    Widget buildRoot() {
+        print("[$tag] buildRoot");
+        return Scaffold(
+            backgroundColor: Color(0xFF0f0544),
+            body: Builder(
+                builder: (BuildContext context) {
+                    return SafeArea(
+                        child: Container(
+                            color: Colors.white,
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Stack(children: <Widget>[buildBody(), titleBarWidget, loadingWidget])
+                        )
+                    );
+                }
+            )
+        );
+    }
+
+    Widget buildBody() => child();
 
     @override
     void dispose() {
@@ -73,4 +70,31 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
         WidgetsBinding.instance.removeObserver(this);
         super.dispose();
     }
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- common functions definition
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
+
+    Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
+        WidgetUtils.getVerticalLine(lineColor: lineColor,
+            height: height,
+            width: width,
+            margin: margin,
+            padding: padding);
+
+    Widget getHorizontalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = 1.0, double width = double.infinity, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
+        WidgetUtils.getHorizontalLine(lineColor: lineColor,
+            height: height,
+            width: width,
+            margin: margin,
+            padding: padding);
+
+    Widget getOnTapWidget(Widget child, GestureTapCallback onTap) => WidgetUtils.getOnTapWidget(child, onTap);
+
+    Widget getOnDoubleTapWidget(Widget child, GestureTapCallback onDoubleTap) => WidgetUtils.getOnDoubleTapWidget(child, onDoubleTap);
+
+    Widget getOnLongPressWidget(Widget child, GestureLongPressCallback onLongPress) => WidgetUtils.getOnLongPressWidget(child, onLongPress);
+
 }

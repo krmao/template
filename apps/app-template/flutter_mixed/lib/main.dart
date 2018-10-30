@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:smart/com/smart/library/base/src/DefaultApp.dart';
 import 'package:smart/com/smart/library/base/src/DefaultPage.dart';
+
 import 'com/smart/business/HomePage.dart';
 import 'com/smart/business/MinePage.dart';
 
@@ -13,7 +13,7 @@ const MIXED_WITH_NATIVE = false;
 
 void main() {
     debugPaintSizeEnabled = false;
-    runApp(DefaultApp(body: () => DefaultPage(state: MainTabWidgetState(),)));
+    runApp(DefaultApp(DefaultPage(state: MainTabWidgetState())));
 }
 
 class MainTabWidgetState extends State<StatefulWidget> {

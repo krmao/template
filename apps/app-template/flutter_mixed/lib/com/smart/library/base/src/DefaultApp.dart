@@ -1,15 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'DefaultPage.dart';
+import 'Constants.dart';
 
 var _lastTime = 0;
 
-class DefaultApp extends DefaultPage {
-    StatefulWidget _child;
+class DefaultApp extends StatefulWidget {
+    StatefulWidget child;
     Color statusBarColor;
+    bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
-    DefaultApp(this._child) :super(state: _DefaultAppState());
+    DefaultApp({Key key, @required this.child, this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true}) :super(key: key);
+
+    @override
+    State<StatefulWidget> createState() {
+        return _DefaultAppState();
+    }
 }
 
 class _DefaultAppState extends State<DefaultApp> {
@@ -24,14 +30,16 @@ class _DefaultAppState extends State<DefaultApp> {
 
         return MaterialApp(
             home: Scaffold(backgroundColor: widget.statusBarColor, // android status bar and iphone X top and bottom edges color
-                body: SafeArea(child: WillPopScope(child: widget._child, onWillPop: () {
-                    print('onWillPop');
-                    return _processExit(context);
-                }), bottom: true)),
-            theme: ThemeData(primaryColor: Colors.blue,
-                accentColor: Colors.lightBlueAccent,
-                primaryColorBrightness: Brightness.dark,
-                hintColor: Colors.black26,
+                body: SafeArea(
+                    top: widget.enableSafeArea && widget.enableSafeAreaTop,
+                    left: widget.enableSafeArea && widget.enableSafeAreaLeft,
+                    right: widget.enableSafeArea && widget.enableSafeAreaRight,
+                    bottom: widget.enableSafeArea && widget.enableSafeAreaBottom,
+                    child: WillPopScope(child: widget.child, onWillPop: () => _processExit(context)))),
+            theme: ThemeData(primaryColor: Colors.yellow,
+                accentColor: Colors.limeAccent,
+                primaryColorBrightness: Brightness.light,
+                hintColor: Colors.black12,
                 highlightColor: Colors.transparent,
                 inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Color(0xffdddddd)))));
     }

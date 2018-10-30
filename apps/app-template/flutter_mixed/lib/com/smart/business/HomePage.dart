@@ -14,6 +14,7 @@ class HomePageState extends DefaultPageState<HomePage> {
     void initState() {
         titleBarWidget = TitleBarWidget(disableBack: true, title: "首页",);
         loadingWidget = LoadingWidget(isShow: false);
+        statusBarColor = Colors.blueAccent;
         super.initState();
     }
 

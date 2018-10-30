@@ -13,11 +13,18 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
     bool keepAlive = false;
     LoadingWidget loadingWidget;
     TitleBarWidget titleBarWidget;
+    Color statusBarColor;
+
+    bool enableSafeArea = true;
+    bool enableSafeAreaTop = true;
+    bool enableSafeAreaBottom = true;
+    bool enableSafeAreaLeft = true;
+    bool enableSafeAreaRight = true;
 
     @override
     bool get wantKeepAlive => this.keepAlive;
 
-    DefaultPageState({this.loadingWidget, this.titleBarWidget, this.child, this.keepAlive});
+    DefaultPageState({this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.child, this.keepAlive, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
 
     @override
     void initState() {
@@ -28,6 +35,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
 
         if (loadingWidget == null) loadingWidget = LoadingWidget();
         if (titleBarWidget == null) titleBarWidget = TitleBarWidget();
+        if (statusBarColor == null) statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR;
         if (child == null) child = () => Container();
     }
 
@@ -46,12 +54,16 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
     Widget buildRoot() {
         print("[$tag] buildRoot");
         return Scaffold(
-            backgroundColor: Color(0xFF0f0544),
+            backgroundColor: statusBarColor,
             body: Builder(
                 builder: (BuildContext context) {
                     return SafeArea(
+                        top: enableSafeArea && enableSafeAreaTop,
+                        left: enableSafeArea && enableSafeAreaLeft,
+                        right: enableSafeArea && enableSafeAreaRight,
+                        bottom: enableSafeArea && enableSafeAreaBottom,
                         child: Container(
-                            color: Colors.white,
+                            color: statusBarColor,
                             width: double.infinity,
                             height: double.infinity,
                             child: Stack(children: <Widget>[buildBody(), titleBarWidget, loadingWidget])

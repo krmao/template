@@ -11,12 +11,7 @@ include(":library-template-repository"); project(":library-template-repository")
 include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "arsenal/modules/module-template-mine")
 include(":module-template-hybird"); project(":module-template-hybird").projectDir = new File(settingsDir, "arsenal/modules/module-template-hybird")
 include(":module-template-react_native"); project(":module-template-react_native").projectDir = new File(settingsDir, "arsenal/modules/module-template-react_native")
+include(":module-template-flutter"); project(":module-template-flutter").projectDir = new File(settingsDir, "arsenal/modules/module-template-flutter")
 include(":module-test"); project(":module-test").projectDir = new File(settingsDir, "arsenal/modules/module-test")
 
 //thirdparty
-
-//flutter
-//include(":module-template-flutter"); project(":module-template-flutter").projectDir = new File(settingsDir, "arsenal/modules/module-template-flutter")
-//setBinding(new Binding([gradle: this]))
-//evaluate(new File(settingsDir.parentFile, 'flutter_mixed/.android/include_flutter.groovy'))
-//evaluate(new File(settingsDir, 'include_flutter.groovy'))

@@ -5,7 +5,8 @@ apply plugin: 'walle'
 
 walle {
     apkOutputFolder = new File("${buildDir}/outputs/channels");// 指定渠道包的输出路径
-    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';// 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+// 定制渠道包的APK的文件名称
     channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
 }
 
@@ -26,7 +27,8 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        vectorDrawables.useSupportLibrary = true // Gradle Plugin 2.0以上,AppCompat23.2以上,Android 5.0之前使用Vector
+        vectorDrawables.useSupportLibrary = true
+        // Gradle Plugin 2.0以上,AppCompat23.2以上,Android 5.0之前使用Vector
 
         multiDexEnabled true
         multiDexKeepProguard file('multiDexKeep.pro')
@@ -193,8 +195,7 @@ dependencies {
     api project(':module-template-hybird')
     api project(':module-template-react_native')
     api project(':module-template-mine')
-
-    // implementation project(':module-template-flutter')
+    api project(':module-template-flutter')
 
     // LeakCanary
     debugApi "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"

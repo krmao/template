@@ -92,8 +92,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         enableSwipeBack = true
         PAGES_COUNT++
         super.onCreate(savedInstanceState)
-        intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
-        CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
+        // intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
+        // CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
         this.eventDelegate.onCreate(savedInstanceState)
     }
 
@@ -103,7 +103,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onResume() {
-        var debugLog = ""
+        /*var debugLog = ""
         when {
             currentPageNum == -1 -> {
                 // 第一次进入该页面
@@ -123,6 +123,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         }
 
         CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum, PUSH_COUNT=$PUSH_COUNT, debugLog=$debugLog")
+        */
         super.onResume()
 
         FlutterManager.currentActivity = this
@@ -131,7 +132,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         }
 
-        methodChannel?.setMethodCallHandler { call, result ->
+        /*methodChannel?.setMethodCallHandler { call, result ->
             CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
             when (call?.method) {
                 "goTo" -> {
@@ -151,13 +152,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                     result.error("0", "can't find the method:${call?.method}", call?.arguments)
                 }
             }
-        }
+        }*/
 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-        handler.postDelayed({
+        /*handler.postDelayed({
             snapShootImageView.visibility = View.GONE
-        }, 300)
+        }, 300)*/
     }
 
     override fun onPostResume() {
@@ -234,16 +235,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         CXLogUtil.e(TAG, "createFlutterView")
         if (mFlutterView == null) {
             mFlutterView = FlutterView(this, null, createFlutterNativeView())
-            methodChannel = MethodChannel(mFlutterView, CHANNEL_METHOD)
+            // methodChannel = MethodChannel(mFlutterView, CHANNEL_METHOD)
         }
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
-            addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
-            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
+            // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
+            // addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
         })
 
-        loadingView.visibility = View.VISIBLE
-        mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
+        // loadingView.visibility = View.VISIBLE
+        /*mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
             override fun onFirstFrame() {
                 CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
                 mFlutterView?.removeFirstFrameListener(this)
@@ -252,7 +253,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         })
         mFlutterView?.addActivityLifecycleListener {
             CXLogUtil.i(TAG, "addActivityLifecycleListener -> onPostResume")
-        }
+        }*/
         return mFlutterView
     }
 
@@ -288,7 +289,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     private fun push() {
         PUSH_COUNT++
-        CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
+       /* CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
         methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
@@ -298,12 +299,12 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
             override fun success(p0: Any?) {
             }
-        })
+        })*/
     }
 
     private fun pop() {
         PUSH_COUNT--
-        CXLogUtil.w(TAG, "pop routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
+        /*CXLogUtil.w(TAG, "pop routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
         methodChannel?.invokeMethod("pop", routeFullPath, object : MethodChannel.Result {
             override fun notImplemented() {
             }
@@ -313,7 +314,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
             override fun success(p0: Any?) {
             }
-        })
+        })*/
     }
 
     private fun saveSnap() {

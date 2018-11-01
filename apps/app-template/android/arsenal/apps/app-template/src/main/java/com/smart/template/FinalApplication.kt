@@ -9,8 +9,8 @@ import com.smart.library.util.image.impl.CXImageFrescoHandler
 import com.smart.library.widget.debug.CXDebugFragment
 import com.smart.library.widget.titlebar.CXTitleBar
 import com.smart.template.home.tab.HomeTabActivity
-import com.smart.template.init.CXDeployInitManager
 import com.smart.template.library.R
+import com.smart.template.module.flutter.FlutterManager
 import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.CXRepository
 import com.smart.template.repository.remote.core.CXOkHttpManager
@@ -47,6 +47,6 @@ class FinalApplication : CXBaseApplication() {
 
         // CXDeployInitManager.init(this, frescoConfig)
 
-        // FlutterManager.startInitialization(this)
+        FlutterManager.startInitialization(this)
     }
 }

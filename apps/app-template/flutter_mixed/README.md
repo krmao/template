@@ -47,6 +47,7 @@ flutter build bundle --suppress-analytics --target lib/main.dart --verbose --tar
 
 // debug
 ---------------------
+./gradlew -Pverbose=true -Ptarget=lib/main.dart -Ptrack-widget-creation=false -Ptarget-platform=android-arm assembleDebug --info --stacktrace
 flutter build aot --suppress-analytics --quiet --target lib/main.dart --target-platform android-arm --output-dir output/debug --target-platform android-arm --debug
 flutter build bundle --suppress-analytics --target lib/main.dart --verbose --target-platform android-arm --precompiled --asset-dir output/debug/flutter_assets --debug
 

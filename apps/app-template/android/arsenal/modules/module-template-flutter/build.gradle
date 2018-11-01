@@ -20,5 +20,6 @@ dependencies {
 
     api project(':library-template-base')
     api(name: "flutter-release", ext: "aar")
+//    api(name: "flutter-debug", ext: "aar")
 
 }

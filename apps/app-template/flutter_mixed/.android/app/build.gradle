@@ -24,20 +24,8 @@ android {
         }
     }
 
-
-    afterEvaluate {
-        android.applicationVariants.all {
-            Task flutterX86Jar = project.tasks.findByName("flutterBuildX86Jar")
-            Task checkClasspath = project.tasks.findByName("check${it.name.capitalize()}Classpath")
-            if (flutterX86Jar && checkClasspath) {
-                checkClasspath.dependsOn flutterX86Jar
-            }
-        }
-    }
-
 }
 buildDir = new File(rootProject.projectDir, "../build/host")
-
 dependencies {
     implementation project(':flutter')
     implementation fileTree(dir: 'libs', include: ['*.jar'])

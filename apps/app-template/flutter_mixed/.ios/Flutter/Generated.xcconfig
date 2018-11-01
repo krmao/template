@@ -2,7 +2,6 @@
 FLUTTER_ROOT=/Users/maokangren/workspace/flutter
 FLUTTER_APPLICATION_PATH=/Users/maokangren/workspace/template/apps/app-template/flutter_mixed
 FLUTTER_TARGET=lib/main.dart
-FLUTTER_BUILD_MODE=debug
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
 FLUTTER_BUILD_NAME=1.0.0

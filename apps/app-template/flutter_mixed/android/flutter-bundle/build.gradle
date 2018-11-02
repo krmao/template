@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def bundleName = 'flutter-bundle'
+
+android {
+    compileSdkVersion 27
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode project.flutterVersionCode.toInteger()
+        versionName project.flutterVersionName
+    }
+
+    android.libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "$bundleName-${defaultConfig.versionName}-${variant.getBuildType().getName()}.aar"
+        }
+    }
+}
+
+
+afterEvaluate {
+    assembleRelease.doLast {
+        copyBundle.execute()
+    }
+}
+
+task copyBundle(type: Copy) {
+    from('./build/outputs/aar')
+    into('../../../android/arsenal/libraries/thirdparty/thirdparty-aars')
+    include('**/*.aar')
+}
+
+flutter {
+    source '../..'
+}

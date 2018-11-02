@@ -84,3 +84,24 @@ Sizes (px)	        Format and naming	Notes
 66 × 66 area in 72 × 72 (xxhdpi)
 88 × 88 area in 96 × 96 (xxxhdpi)
 ```
+
+### ABI
+```
+/**
+ * https://developer.android.com/ndk/guides/abis?hl=zh-cn
+ * Android 系统运行时 会优先寻找 主要ABI(主要ABI可以实现系统最佳性能), 没有的话会选择 辅助ABI, 如果找都找不到, 应用可以安装但会在运行时奔溃
+ * --------------------------------------------------------------------------------
+ * cpu arch                 primary-abi             secondary-abi
+ * --------------------------------------------------------------------------------
+ * armeabi                  armeabi                 none
+ * armeabi-v7a              armeabi-v7a             armeabi
+ * arm64-v8a                arm64-v8a               armeabi-v7a / armeabi
+ * --------------------------------------------------------------------------------
+ * x86                      x86                     armeabi-v7a / armeabi
+ * x86_64                   x86_64                  x86_64 / x86 / armeabi
+ * --------------------------------------------------------------------------------
+ * mips                     mips                    none
+ * mips64                   mips64                  mips
+ * --------------------------------------------------------------------------------
+ */
+```

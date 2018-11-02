@@ -54,3 +54,6 @@ freeline_project_description.json
 
 *.json
 *.zip
+*.project
+*.classpath
+**/.settings

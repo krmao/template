@@ -26,14 +26,15 @@ android {
 
 
 afterEvaluate {
-    assembleRelease.doLast {
-        copyBundle.execute()
-    }
+    assembleDebug.doLast { copyBundle.execute() }
+    assembleRelease.doLast { copyBundle.execute() }
 }
 
+def srcDir="../../build/$bundleName/outputs/aar"
+def targetDir="../../../android/arsenal/libraries/thirdparty/thirdparty-aars"
 task copyBundle(type: Copy) {
-    from('./build/outputs/aar')
-    into('../../../android/arsenal/libraries/thirdparty/thirdparty-aars')
+    from srcDir
+    into targetDir
     include('**/*.aar')
 }
 

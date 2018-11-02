@@ -11,6 +11,17 @@ For help getting started with Flutter, view our online
 /**
  * https://developer.android.com/ndk/guides/abis?hl=zh-cn
  * Android 系统运行时 会优先寻找 主要ABI(主要ABI可以实现系统最佳性能), 没有的话会选择 辅助ABI, 如果找都找不到, 应用可以安装但会在运行时奔溃
+ *
+ * https://android.stackexchange.com/questions/34958/what-are-the-minimum-hardware-specifications-for-android
+ * https://stackoverflow.com/questions/28926101/is-it-safe-to-support-only-armeabi-v7a-for-android-4-and-above
+ * 自r16以来NDK已弃用armeabi和mips。因此默认情况下不会生成这些体系结构的文件。虽然在abifilters可以通过修改得到这样的文件,但实际上意味着 armeabi 和 mips 现在绝对不需要
+ *
+ * Android 4+ 仅支持 armeabi-v7a 安全吗？
+ * 1: 原则上，armeabi 如果您的应用需要Android 4.0，您可以放弃，但不确定是否有任何此类官方保证。如果是 Android 4.4+，应该绝对没问题。
+ * 2: 没有支持 armeabi 但不支持的 Android 4+ 设备 armeabi-v7a，因此可以安全地放弃armeabi。
+ *
+ * 总结: android 4.0+ 可以只用 armeabi-v7a 不用 armeabi 但可能有风险, android 4.4+ 绝对没问题
+ *
  * --------------------------------------------------------------------------------
  * cpu arch                 primary-abi             secondary-abi
  * --------------------------------------------------------------------------------
@@ -19,11 +30,12 @@ For help getting started with Flutter, view our online
  * arm64-v8a                arm64-v8a               armeabi-v7a / armeabi
  * --------------------------------------------------------------------------------
  * x86                      x86                     armeabi-v7a / armeabi
- * x86_64                   x86_64                  x86_64 / x86 / armeabi
+ * x86_64                   x86_64                  x86 / armeabi-v7a / armeabi
  * --------------------------------------------------------------------------------
  * mips                     mips                    none
  * mips64                   mips64                  mips
  * --------------------------------------------------------------------------------
+ *
  */
 ```
 

@@ -5,10 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.CXActivity
+import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXBaseFragment
+import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXToastUtil
+import com.smart.library.util.cache.CXCacheManager
 import com.smart.template.R
+import io.flutter.util.PathUtils
 import kotlinx.android.synthetic.main.home_fragment.*
+import java.io.File
 
 class HomeFragment : CXBaseFragment() {
 
@@ -27,6 +32,11 @@ class HomeFragment : CXBaseFragment() {
         text3.setOnClickListener {
             CXToastUtil.show("Hello World")
             CXToastUtil.show("system toast")
+        }
+        text4.setOnClickListener {
+            //adb push assets/ /sdcard/Android/data/com.smart.template/cache/
+            val copySuccess = CXFileUtil.copyDirectory(CXCacheManager.getCacheChildDir("assets"), File(PathUtils.getDataDirectory(CXBaseApplication.INSTANCE)))
+            CXToastUtil.show("copySuccess?$copySuccess")
         }
     }
 }

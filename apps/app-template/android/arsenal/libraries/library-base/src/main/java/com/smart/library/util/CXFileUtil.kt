@@ -141,9 +141,8 @@ object CXFileUtil {
                 CXLogUtil.e("copyDirectory", "Cannot create dir ${fromLocation.absolutePath}")
                 copySuccess = false
             } else {
-                val children = fromLocation.list()
-                for (child in children.indices) {
-                    if (!copyDirectory(File(fromLocation, children[child]), File(toLocation, children[child]))) {
+                fromLocation.list().filter { it?.isNotBlank() == true }.forEach {
+                    if (!copyDirectory(File(fromLocation, it), File(toLocation, it))) {
                         copySuccess = false
                     }
                 }

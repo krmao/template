@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-println "project.name=${project.name}"
 android {
     compileSdkVersion 27
 
@@ -24,7 +23,7 @@ android {
 
     sourceSets {
         main {
-            java{
+            java {
                 srcDirs '../app/src/main/java/io'
             }
         }
@@ -40,8 +39,8 @@ afterEvaluate {
     assembleRelease.doLast { copyBundle.execute() }
 }
 
-def srcDir="../../build/${project.name}/outputs/aar"
-def targetDir="../../../android/arsenal/libraries/thirdparty/thirdparty-aars"
+def srcDir = "../../build/${project.name}/outputs/aar"
+def targetDir = "../../../android/arsenal/libraries/thirdparty/thirdparty-aars"
 task copyBundle(type: Copy) {
     from srcDir
     into targetDir

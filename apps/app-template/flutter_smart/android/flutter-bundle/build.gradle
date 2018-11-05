@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+println "project.name=${project.name}"
 android {
     compileSdkVersion 27
 
@@ -17,7 +18,15 @@ android {
     }
     android.libraryVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "$name-${defaultConfig.versionName}-${variant.getBuildType().getName()}.aar"
+            outputFileName = "${project.name}-${defaultConfig.versionName}-${variant.getBuildType().getName()}.aar"
+        }
+    }
+
+    sourceSets {
+        main {
+            java{
+                srcDirs '../app/src/main/java/io'
+            }
         }
     }
 }
@@ -31,7 +40,7 @@ afterEvaluate {
     assembleRelease.doLast { copyBundle.execute() }
 }
 
-def srcDir="../../build/$name/outputs/aar"
+def srcDir="../../build/${project.name}/outputs/aar"
 def targetDir="../../../android/arsenal/libraries/thirdparty/thirdparty-aars"
 task copyBundle(type: Copy) {
     from srcDir

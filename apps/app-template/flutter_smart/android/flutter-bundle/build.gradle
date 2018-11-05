@@ -15,10 +15,28 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    android.libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "$name-${defaultConfig.versionName}-${variant.getBuildType().getName()}.aar"
+        }
+    }
 }
 
 flutter {
     source '../..'
+}
+
+afterEvaluate {
+    assembleDebug.doLast { copyBundle.execute() }
+    assembleRelease.doLast { copyBundle.execute() }
+}
+
+def srcDir="../../build/$name/outputs/aar"
+def targetDir="../../../android/arsenal/libraries/thirdparty/thirdparty-aars"
+task copyBundle(type: Copy) {
+    from srcDir
+    into targetDir
+    include('**/*.aar')
 }
 
 dependencies {

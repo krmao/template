@@ -90,6 +90,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = true
+        enableImmersionStatusBar = false
         PAGES_COUNT++
         super.onCreate(savedInstanceState)
         // intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)

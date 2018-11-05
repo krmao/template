@@ -20,7 +20,7 @@ class HomePageState extends DefaultPageState<HomePage> {
 
     @override
     Widget buildBody() {
-        return getOnTapWidget(Container(color: Colors.blueAccent), () {
+        return getOnTapWidget(Container(color: Colors.blueAccent, child: Image.asset("images/defalut.jpg",width: 300,height: 150,)), () {
             showSnackBar("you clicked");
         });
     }

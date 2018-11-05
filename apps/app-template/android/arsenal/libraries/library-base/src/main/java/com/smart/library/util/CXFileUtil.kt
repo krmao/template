@@ -15,7 +15,7 @@ object CXFileUtil {
     const val ENCODING_UTF8 = "UTF-8"
 
     @JvmStatic
-    fun fileChannelCopy(sourceFile: File, destFile: File) {
+    fun fileChannelCopy(sourceFile: File, destFile: File): Boolean {
         var fileInputStream: FileInputStream? = null
         var fileOutputStream: FileOutputStream? = null
         var fileChannelIn: FileChannel? = null
@@ -26,8 +26,10 @@ object CXFileUtil {
             fileChannelIn = fileInputStream.channel// 得到对应的文件通道
             fileChannelOut = fileOutputStream.channel// 得到对应的文件通道
             fileChannelIn?.transferTo(0, fileChannelIn.size(), fileChannelOut)// 连接两个通道，并且从in通道读取，然后写入out通道
+            return true
         } catch (e: Exception) {
             e.printStackTrace()
+            CXLogUtil.e("fileChannelCopy", "copy failure", e)
         } finally {
             try {
                 if (fileInputStream != null)
@@ -43,6 +45,7 @@ object CXFileUtil {
             }
 
         }
+        return false
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
@@ -125,6 +128,36 @@ object CXFileUtil {
             onProgress?.invoke(current, total)
         }
         return current
+    }
+
+    /**
+     * If toLocation does not exist, it will be created.
+     */
+    @JvmStatic
+    fun copyDirectory(fromLocation: File, toLocation: File): Boolean {
+        var copySuccess = true
+        if (fromLocation.isDirectory) {
+            if (!toLocation.exists() && !toLocation.mkdirs()) {
+                CXLogUtil.e("copyDirectory", "Cannot create dir ${fromLocation.absolutePath}")
+                copySuccess = false
+            } else {
+                val children = fromLocation.list()
+                for (child in children.indices) {
+                    if (!copyDirectory(File(fromLocation, children[child]), File(toLocation, children[child]))) {
+                        copySuccess = false
+                    }
+                }
+            }
+        } else {
+            // make sure the directory we plan to store the recording in exists
+            val directory = toLocation.parentFile
+            if (directory != null && !directory.exists() && !directory.mkdirs()) {
+                CXLogUtil.e("copyDirectory", "Cannot create dir ${directory.absolutePath}")
+                return false
+            }
+            return fileChannelCopy(fromLocation, toLocation)
+        }
+        return copySuccess
     }
 
     @JvmStatic

@@ -1,4 +1,4 @@
-package com.example.fluttersmart;
+package com.smart.flutter.template;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

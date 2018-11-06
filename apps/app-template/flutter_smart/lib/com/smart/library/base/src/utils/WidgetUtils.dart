@@ -50,25 +50,18 @@ class WidgetUtils {
         Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
       }).catchError((error) {});
     } else {*/
-    print("flutter --> goTo start ${toPage.toStringShort()}");
     // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
-    Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
-    return NativeManager.goTo(toPage.toStringShort(), "haha").then((result) {
-      print("flutter --> goTo success result:$result");
+    var future = NativeManager.goTo(context, toPage.toStringShort(), "haha").then((result) {
+      print("${NativeManager.TAG} goTo success result:$result");
     }).catchError((error) {
-      print("flutter --> goTo failure error:$error");
+      print("${NativeManager.TAG} goTo failure error:$error");
     });
     /*}*/
-  }
 
-  static Future pop(BuildContext context, [dynamic result]) {
-    print("flutter --> pop start param:$result");
-    Navigator.pop(context, result);
-    return NativeManager.finish("hehe").then((result) {
-      print("flutter --> pop success result:$result");
-    }).catchError((error) {
-      print("flutter --> pop failure error:$error");
-    });
+    print("${NativeManager.TAG} will push ${toPage.toStringShort()}");
+    Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
+
+    return future;
   }
 }
 

@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager.LayoutParams
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.smart.library.base.CXBaseActivity
@@ -22,8 +24,10 @@ import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
+import io.flutter.plugin.platform.PlatformPlugin
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
+
 
 @SuppressLint("InflateParams", "StaticFieldLeak")
 @Suppress("MemberVisibilityCanBePrivate")
@@ -37,7 +41,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         var PAGES_COUNT: Int = 0
             internal set
 
-        private const val TAG = "flutter"
+        private const val TAG = "[flutter:native]"
         private const val ROUTE_PATH_PREFIX = "flutter://"
         private const val CHANNEL_METHOD = "smart.flutter.io/methods"
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
@@ -93,9 +97,16 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         enableImmersionStatusBar = false
         PAGES_COUNT++
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = 0x40000000
+            window.decorView.systemUiVisibility = PlatformPlugin.DEFAULT_SYSTEM_UI
+        }
+
         // intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         // CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
-        this.eventDelegate.onCreate(savedInstanceState)
+        this.delegate.onCreate(savedInstanceState)
         // GeneratedPluginRegistrant.registerWith(this);
     }
 
@@ -137,57 +148,40 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         methodChannel = MethodChannel(flutterView, FlutterManager.CHANNEL_METHOD)
         methodChannel?.setMethodCallHandler { call, result ->
-            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
+            CXLogUtil.w(TAG, "onMethodCallHandler method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
             when (call?.method) {
                 "goTo" -> {
-                    CXLogUtil.w(TAG, "onChannelCall goTo with value ${call.arguments}")
+                    saveSnap()
+                    CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
                     FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
-                        val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result";
-                        CXLogUtil.w(TAG, "onChannelCall goTo callback, result:$resultValue")
+                        val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result"
+                        CXLogUtil.w(TAG, "onMethodCallHandler goTo callback, result:$resultValue")
                         result.success(resultValue)
                     }
                 }
                 "finish" -> {
-                    val resultValue = CXJsonUtil.toJson(call.arguments)
-                    CXLogUtil.w(TAG, "onChannelCall finish with value:$resultValue")
-                    setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
-                    result.success(1)
-                    finish()
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    saveSnap()
+                    handler.postDelayed({
+                        val resultValue = CXJsonUtil.toJson(call.arguments)
+                        CXLogUtil.w(TAG, "onMethodCallHandler finish with value:$resultValue")
+                        setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
+                        result.success(1)
+
+                        finish()
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    }, 0)
                 }
                 else -> {
-                    result.error("0", "onChannelCall can't find the method:${call?.method}", call?.arguments)
+                    result.error("0", "onMethodCallHandler can't find the method:${call?.method}", call?.arguments)
                 }
             }
         }
 
-        /*methodChannel?.setMethodCallHandler { call, result ->
-            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
-            when (call?.method) {
-                "goTo" -> {
-                    handler.post {
-                        saveSnap()
-                        FlutterActivity.goTo(this, "route2", hashMapOf("name" to "jack")) { _: Int, _: Int, _: Intent? ->
-                            result.success(call.arguments)
-                        }
-                    }
-                }
-                "finish" -> {
-                    setResult(Activity.RESULT_OK, Intent().putExtra("result", CXJsonUtil.toJson(call.arguments)))
-                    result.success(1)
-                    finish()
-                }
-                else -> {
-                    result.error("0", "can't find the method:${call?.method}", call?.arguments)
-                }
-            }
-        }*/
-
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-        /*handler.postDelayed({
-            snapShootImageView.visibility = View.GONE
-        }, 300)*/
+//        handler.postDelayed({
+//            snapShootImageView.visibility = View.GONE
+//        }, 2000)
     }
 
     override fun onPostResume() {
@@ -267,7 +261,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
             // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
-            // addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
+            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
         })
 
         // loadingView.visibility = View.VISIBLE

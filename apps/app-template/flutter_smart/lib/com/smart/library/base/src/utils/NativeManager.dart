@@ -5,10 +5,11 @@ import 'package:flutter/services.dart';
 
 class NativeManager {
   // 开启flutter native 混合模式
+  static const TAG = "[flutter]";
   static var enableNative = true;
   static const platform = const MethodChannel('smart.flutter.io/methods');
 
-  static void initialize() {
+  static void resetMethodCallHandler(BuildContext context) {
     platform.setMethodCallHandler((MethodCall call) {
       switch (call.method) {
         case "pop":
@@ -23,34 +24,37 @@ class NativeManager {
     });
   }
 
-  static Future<dynamic> goTo(String pageName, String arguments) async {
+  static Future<dynamic> goTo(BuildContext context, String pageName, String arguments) async {
     try {
+      print("${NativeManager.TAG} will goTo with arguments:$arguments");
       var result = await platform.invokeMethod('goTo', {pageName: pageName, arguments: arguments});
-      print("[NativeManager] goTo result:$result");
+      print("${NativeManager.TAG} did goTo with result:$result");
       return result;
-    } on PlatformException catch (e) {
-      print("[NativeManager] goTo failure:${e.message}");
+    } on PlatformException catch (error) {
+      print("${NativeManager.TAG} goTo failure with error:$error");
     }
   }
 
-  static Future<dynamic> finish(dynamic arguments) async {
+  static Future<Null> finish(dynamic arguments) async {
     try {
-      var result = await platform.invokeMethod('finish', {arguments: arguments});
-      print("[NativeManager] finish result:$result");
-      return result;
-    } on PlatformException catch (e) {
-      print("[NativeManager] finish failure:${e.message}");
+      print("${NativeManager.TAG} will finish with arguments:$arguments");
+      var finishResult = await platform.invokeMethod('finish', {arguments: arguments});
+      print("${NativeManager.TAG} did finish with finishResult:$finishResult");
+    } on PlatformException catch (error) {
+      print("${NativeManager.TAG} finish failure with error:$error");
     }
   }
 
-  static Future pop(BuildContext context, [dynamic result]) {
-    print("flutter --> pop will pop with param:$result");
-    var popSuccess = Navigator.pop(context, result);
-    print("flutter --> pop popSuccess:$popSuccess");
-    return NativeManager.finish("hehe").then((result) {
-      print("flutter --> pop finish success result:$result");
+  static Future<Null> pop(BuildContext context, [dynamic arguments]) {
+    var future = NativeManager.finish("hehe").then((result) {
+      print("${NativeManager.TAG} finish success with result:$result");
     }).catchError((error) {
-      print("flutter --> pop finish failure error:$error");
+      print("${NativeManager.TAG} finish failure with error:$error");
     });
+
+    print("${NativeManager.TAG} will pop with arguments:$arguments");
+    var popSuccess = Navigator.pop(context, arguments);
+    print("${NativeManager.TAG} pop did success?$popSuccess");
+    return future;
   }
 }

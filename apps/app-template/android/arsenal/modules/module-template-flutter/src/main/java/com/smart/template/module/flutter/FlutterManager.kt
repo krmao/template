@@ -4,6 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.support.annotation.NonNull
+import com.smart.library.util.CXReflectUtil
+import io.flutter.plugin.common.ActivityLifecycleListener
+import io.flutter.plugin.common.JSONMethodCodec
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.platform.PlatformPlugin
 import io.flutter.view.FlutterMain
 import io.flutter.view.FlutterView
 
@@ -42,9 +47,9 @@ object FlutterManager {
             println("In new implementation for FlutterPluginRegistry,AssertionError is thrown when try to attach twice, it doesn't matter even we ignore it.")
         }
 
-        //val mActivityLifecycleListeners: MutableList<ActivityLifecycleListener>? = CXReflectUtil.get(flutterView, "mActivityLifecycleListeners") as MutableList<ActivityLifecycleListener>
-        //mActivityLifecycleListeners?.clear()
-        //flutterView?.addActivityLifecycleListener(PlatformPlugin(activity).apply { MethodChannel(flutterView, "flutter/platform", JSONMethodCodec.INSTANCE).setMethodCallHandler(this) })
+        // val mActivityLifecycleListeners: MutableList<ActivityLifecycleListener>? = CXReflectUtil.get(flutterView, "mActivityLifecycleListeners") as MutableList<ActivityLifecycleListener>
+        // mActivityLifecycleListeners?.clear()
+        // flutterView?.addActivityLifecycleListener(PlatformPlugin(activity).apply { MethodChannel(flutterView, "flutter/platform", JSONMethodCodec.INSTANCE).setMethodCallHandler(this) })
     }
 
 }

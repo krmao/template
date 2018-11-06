@@ -24,6 +24,17 @@ class NativeManager {
     });
   }
 
+  static Future<dynamic> beforeGoTo() async {
+    try {
+      print("${NativeManager.TAG} will beforeGoTo");
+      var result = await platform.invokeMethod('beforeGoTo');
+      print("${NativeManager.TAG} did beforeGoTo with result:$result");
+      return result;
+    } on PlatformException catch (error) {
+      print("${NativeManager.TAG} beforeGoTo failure with error:$error");
+    }
+  }
+
   static Future<dynamic> goTo(BuildContext context, String pageName, String arguments) async {
     try {
       print("${NativeManager.TAG} will goTo with arguments:$arguments");
@@ -32,6 +43,16 @@ class NativeManager {
       return result;
     } on PlatformException catch (error) {
       print("${NativeManager.TAG} goTo failure with error:$error");
+    }
+  }
+
+  static Future<Null> willFinish() async {
+    try {
+      print("${NativeManager.TAG} will willFinish");
+      var finishResult = await platform.invokeMethod('willFinish');
+      print("${NativeManager.TAG} did willFinish with finishResult:$finishResult");
+    } on PlatformException catch (error) {
+      print("${NativeManager.TAG} finish willFinish with error:$error");
     }
   }
 
@@ -46,15 +67,17 @@ class NativeManager {
   }
 
   static Future<Null> pop(BuildContext context, [dynamic arguments]) {
-    var future = NativeManager.finish("hehe").then((result) {
-      print("${NativeManager.TAG} finish success with result:$result");
-    }).catchError((error) {
-      print("${NativeManager.TAG} finish failure with error:$error");
+    return willFinish().then((value) {
+      print("${NativeManager.TAG} will pop with arguments:$arguments");
+      var popSuccess = Navigator.pop(context, arguments);
+      print("${NativeManager.TAG} pop did success?$popSuccess");
+      if (popSuccess) {
+        NativeManager.finish("hehe").then((result) {
+          print("${NativeManager.TAG} finish success with result:$result");
+        }).catchError((error) {
+          print("${NativeManager.TAG} finish failure with error:$error");
+        });
+      }
     });
-
-    print("${NativeManager.TAG} will pop with arguments:$arguments");
-    var popSuccess = Navigator.pop(context, arguments);
-    print("${NativeManager.TAG} pop did success?$popSuccess");
-    return future;
   }
 }

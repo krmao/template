@@ -51,17 +51,18 @@ class WidgetUtils {
       }).catchError((error) {});
     } else {*/
     // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
-    var future = NativeManager.goTo(context, toPage.toStringShort(), "haha").then((result) {
-      print("${NativeManager.TAG} goTo success result:$result");
-    }).catchError((error) {
-      print("${NativeManager.TAG} goTo failure error:$error");
+
+    return NativeManager.beforeGoTo().then((value) {
+      print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
+      Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
+      print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
+      print("${NativeManager.TAG} goTo will start new activity");
+      NativeManager.goTo(context, toPage.toStringShort(), "haha").then((result) {
+        print("${NativeManager.TAG} goTo did start new activity with result:$result");
+      }).catchError((error) {
+        print("${NativeManager.TAG} goTo start new activity failure with error:$error");
+      });
     });
-    /*}*/
-
-    print("${NativeManager.TAG} will push ${toPage.toStringShort()}");
-    Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
-
-    return future;
   }
 }
 

@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
@@ -90,7 +89,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private val delegate by lazy { FlutterActivityDelegate(this, this) }
     private val routeFullPath: String? by lazy { intent?.getStringExtra(KEY_ROUTE_FULL_PATH) }
     private val snapShootImageView: ImageView by lazy { ImageView(this).apply { visibility = View.GONE } }
-    private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false) }
+    // private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
@@ -100,7 +99,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = 0x40000000
+            window.statusBarColor = 0x00000000 // 0x40000000
             window.decorView.systemUiVisibility = PlatformPlugin.DEFAULT_SYSTEM_UI
         }
 
@@ -108,6 +107,34 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         // CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
         this.delegate.onCreate(savedInstanceState)
         // GeneratedPluginRegistrant.registerWith(this);
+    }
+
+    override fun getFlutterView(): FlutterView? = this.viewProvider.flutterView
+    override fun createFlutterView(context: Context): FlutterView? {
+        CXLogUtil.e(TAG, "createFlutterView")
+        if (mFlutterView == null) mFlutterView = FlutterView(this, null, createFlutterNativeView())
+
+        setContentView(FrameLayout(this).apply {
+            id = ID_PARENT
+            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
+            // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
+        })
+
+        mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
+            override fun onFirstFrame() {
+                CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
+                mFlutterView?.removeFirstFrameListener(this)
+            }
+        })
+        mFlutterView?.addActivityLifecycleListener {
+            CXLogUtil.i(TAG, "addActivityLifecycleListener -> onPostResume")
+        }
+        return mFlutterView
+    }
+
+    override fun createFlutterNativeView(): FlutterNativeView? {
+        if (mFlutterNativeView == null) mFlutterNativeView = FlutterNativeView(applicationContext)
+        return mFlutterNativeView
     }
 
     override fun onStart() {
@@ -150,8 +177,12 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         methodChannel?.setMethodCallHandler { call, result ->
             CXLogUtil.w(TAG, "onMethodCallHandler method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
             when (call?.method) {
-                "goTo" -> {
+                "beforeGoTo" -> {
                     saveSnap()
+                    CXLogUtil.w(TAG, "onMethodCallHandler beforeGoTo saveSnap")
+                    result.success(0)
+                }
+                "goTo" -> {
                     CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
                     FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
                         val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result"
@@ -159,17 +190,18 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                         result.success(resultValue)
                     }
                 }
-                "finish" -> {
+                "willFinish" -> {
                     saveSnap()
-                    handler.postDelayed({
-                        val resultValue = CXJsonUtil.toJson(call.arguments)
-                        CXLogUtil.w(TAG, "onMethodCallHandler finish with value:$resultValue")
-                        setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
-                        result.success(1)
+                    result.success(1)
+                }
+                "finish" -> {
+                    val resultValue = CXJsonUtil.toJson(call.arguments)
+                    CXLogUtil.w(TAG, "onMethodCallHandler finish with value:$resultValue")
+                    setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
+                    finish()
+                    // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
 
-                        finish()
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                    }, 0)
+                    result.success(1)
                 }
                 else -> {
                     result.error("0", "onMethodCallHandler can't find the method:${call?.method}", call?.arguments)
@@ -179,9 +211,9 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-//        handler.postDelayed({
-//            snapShootImageView.visibility = View.GONE
-//        }, 2000)
+        handler.postDelayed({
+            snapShootImageView.visibility = View.GONE
+        }, 300)
     }
 
     override fun onPostResume() {
@@ -251,36 +283,6 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         bitmap = null
         snapShootImageView.setImageBitmap(null)
         super.onDestroy()
-    }
-
-    override fun getFlutterView(): FlutterView? = this.viewProvider.flutterView
-    override fun createFlutterView(context: Context): FlutterView? {
-        CXLogUtil.e(TAG, "createFlutterView")
-        if (mFlutterView == null) mFlutterView = FlutterView(this, null, createFlutterNativeView())
-
-        setContentView(FrameLayout(this).apply {
-            id = ID_PARENT
-            // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
-            addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
-        })
-
-        // loadingView.visibility = View.VISIBLE
-        /*mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
-            override fun onFirstFrame() {
-                CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
-                mFlutterView?.removeFirstFrameListener(this)
-                loadingView.visibility = View.GONE
-            }
-        })
-        mFlutterView?.addActivityLifecycleListener {
-            CXLogUtil.i(TAG, "addActivityLifecycleListener -> onPostResume")
-        }*/
-        return mFlutterView
-    }
-
-    override fun createFlutterNativeView(): FlutterNativeView? {
-        if (mFlutterNativeView == null) mFlutterNativeView = FlutterNativeView(applicationContext)
-        return mFlutterNativeView
     }
 
     override fun retainFlutterNativeView(): Boolean = true

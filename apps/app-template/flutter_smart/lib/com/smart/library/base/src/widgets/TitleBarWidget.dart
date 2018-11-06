@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 import '../utils/NativeManager.dart';
 
@@ -16,10 +17,11 @@ class TitleBarWidget extends StatefulWidget {
   final String rightText;
   final VoidCallback onBackPressed;
   final VoidCallback onRightPressed;
+  final MethodChannel methodChannel;
   final Color titleBackgroundColor;
   final bool disableBack;
 
-  TitleBarWidget({this.title, this.width = double.infinity, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = true, Key key}) : super(key: key);
+  TitleBarWidget({this.title, this.width = double.infinity, this.methodChannel, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = true, Key key}) : super(key: key);
 
   @override
   createState() => _TitleBarWidgetState();
@@ -40,7 +42,7 @@ class _TitleBarWidgetState extends State<TitleBarWidget> {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     child: FlatButton(
-                      onPressed: widget.onBackPressed ?? () => NativeManager.enableNative ? NativeManager.pop(context) : Navigator.pop(context),
+                      onPressed: widget.onBackPressed ?? () => NativeManager.enableNative ? NativeManager.pop(widget.methodChannel, context) : Navigator.pop(context),
                       child: Image.asset(
                         "images/arrow_left_white.png",
                         fit: BoxFit.contain,

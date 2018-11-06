@@ -285,6 +285,11 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         super.onDestroy()
     }
 
+    override fun onBackPress(): Boolean {
+        methodChannel?.invokeMethod("pop", null)
+        return true
+    }
+
     override fun retainFlutterNativeView(): Boolean = true
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
     override fun <T> valuePublishedByPlugin(pluginKey: String): T = this.pluginRegistry.valuePublishedByPlugin(pluginKey)

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smart/com/smart/library/base/src/utils/WidgetUtils.dart';
 
 import 'Constants.dart';
+import 'utils/NativeManager.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
 
@@ -14,6 +16,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   TitleBarWidget titleBarWidget;
   Color statusBarColor;
   BuildContext scaffoldContext;
+  MethodChannel methodChannel;
 
   bool enableSafeArea = true;
   bool enableSafeAreaTop = true;
@@ -49,7 +52,8 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
 
   @override
   Widget build(BuildContext context) {
-    print("[$tag] build");
+    print("[$tag] build context==null?${context == null}");
+    methodChannel = NativeManager.createMethodChannel(context);
     return buildRoot();
   }
 

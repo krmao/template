@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:smart/com/smart/library/base/src/Constants.dart';
 import 'package:smart/headers.dart';
 
@@ -44,7 +45,7 @@ class WidgetUtils {
 
   static Widget getOnLongPressWidget(Widget child, GestureLongPressCallback onLongPress) => Material(type: MaterialType.transparency, child: InkWell(onLongPress: onLongPress, child: child));
 
-  static Future goTo(BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
+  static Future goTo(MethodChannel methodChannel, BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
     /*if (ensureLogin) {
       UserManager.ensureLogin(context).then((userModel) {
         Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
@@ -52,12 +53,12 @@ class WidgetUtils {
     } else {*/
     // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
 
-    return NativeManager.beforeGoTo().then((value) {
+    return NativeManager.beforeGoTo(methodChannel).then((value) {
       print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
       Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
       print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
       print("${NativeManager.TAG} goTo will start new activity");
-      NativeManager.goTo(context, toPage.toStringShort(), "haha").then((result) {
+      NativeManager.goTo(methodChannel, context, toPage.toStringShort(), "haha").then((result) {
         print("${NativeManager.TAG} goTo did start new activity with result:$result");
       }).catchError((error) {
         print("${NativeManager.TAG} goTo start new activity failure with error:$error");

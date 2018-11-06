@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:smart/com/smart/library/base/src/Constants.dart';
 import 'package:smart/headers.dart';
 
+import 'NativeManager.dart';
+
 class WidgetUtils {
   static Widget getNetworkImageWidget(String imageUrl, {double width = double.infinity, double height = double.infinity, BoxFit fit = BoxFit.cover, String defaultImage = Constants.DEFAULT_IMAGE}) {
     return Container(
@@ -42,17 +44,32 @@ class WidgetUtils {
 
   static Widget getOnLongPressWidget(Widget child, GestureLongPressCallback onLongPress) => Material(type: MaterialType.transparency, child: InkWell(onLongPress: onLongPress, child: child));
 
-  static void goTo(BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
-    if (ensureLogin) {
+  static Future goTo(BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
+    /*if (ensureLogin) {
       UserManager.ensureLogin(context).then((userModel) {
         Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
       }).catchError((error) {});
-    } else {
-      Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
-    }
+    } else {*/
+    print("flutter --> goTo start ${toPage.toStringShort()}");
+    // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
+    Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
+    return NativeManager.goTo(toPage.toStringShort(), "haha").then((result) {
+      print("flutter --> goTo success result:$result");
+    }).catchError((error) {
+      print("flutter --> goTo failure error:$error");
+    });
+    /*}*/
   }
 
-  static bool pop<T extends Object>(BuildContext context, [T result]) => Navigator.pop(context, result);
+  static Future pop(BuildContext context, [dynamic result]) {
+    print("flutter --> pop start param:$result");
+    Navigator.pop(context, result);
+    return NativeManager.finish("hehe").then((result) {
+      print("flutter --> pop success result:$result");
+    }).catchError((error) {
+      print("flutter --> pop failure error:$error");
+    });
+  }
 }
 
 class NoAnimationRoute<T> extends MaterialPageRoute<T> {

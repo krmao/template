@@ -13,6 +13,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   LoadingWidget loadingWidget;
   TitleBarWidget titleBarWidget;
   Color statusBarColor;
+  BuildContext scaffoldContext;
 
   bool enableSafeArea = true;
   bool enableSafeAreaTop = true;
@@ -24,7 +25,8 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  DefaultPageState({this.statusBarColor, this.loadingWidget, this.enableTitleBar=true, this.titleBarWidget, this.child, this.keepAlive, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
+  DefaultPageState(
+      {this.statusBarColor, this.loadingWidget, this.enableTitleBar = true, this.titleBarWidget, this.child, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
 
   @override
   void initState() {
@@ -56,6 +58,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
     return Scaffold(
         backgroundColor: statusBarColor,
         body: Builder(builder: (BuildContext context) {
+          scaffoldContext = context;
           return SafeArea(
               top: enableSafeArea && enableSafeAreaTop,
               left: enableSafeArea && enableSafeAreaLeft,
@@ -89,7 +92,11 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   // -- common functions definition
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  void showSnackBar(String msg) => Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg), duration: Duration(milliseconds: 2000)));
+  void showSnackBar(String msg) {
+    if (scaffoldContext != null && msg?.trim()?.isNotEmpty == true) {
+      Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text(msg), duration: Duration(milliseconds: 2000)));
+    }
+  }
 
   Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) => WidgetUtils.getVerticalLine(lineColor: lineColor, height: height, width: width, margin: margin, padding: padding);
 

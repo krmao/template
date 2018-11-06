@@ -9,5 +9,6 @@ export 'src/user/UserManager.dart';
 export 'src/utils/HttpManager.dart';
 export 'src/utils/RxBus.dart';
 export 'src/utils/WidgetUtils.dart';
+export 'src/utils/NativeManager.dart';
 export 'src/widgets/LoadingWidget.dart';
 export 'src/widgets/TitleBarWidget.dart';

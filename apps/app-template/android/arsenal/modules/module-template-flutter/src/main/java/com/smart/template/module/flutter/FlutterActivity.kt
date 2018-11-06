@@ -17,7 +17,6 @@ import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXSystemUtil
 import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
@@ -40,7 +39,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         private const val TAG = "flutter"
         private const val ROUTE_PATH_PREFIX = "flutter://"
-        private const val CHANNEL_METHOD = "flutter.channel.method"
+        private const val CHANNEL_METHOD = "smart.flutter.io/methods"
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
 
         private var mFlutterView: FlutterView? = null
@@ -73,6 +72,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                 return
             }
             startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE_FULL_PATH, routeFullPath), requestCode, options, callback)
+            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
     }
@@ -89,13 +89,14 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = true
+        enableSwipeBack = false
         enableImmersionStatusBar = false
         PAGES_COUNT++
         super.onCreate(savedInstanceState)
         // intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         // CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
         this.eventDelegate.onCreate(savedInstanceState)
+        // GeneratedPluginRegistrant.registerWith(this);
     }
 
     override fun onStart() {
@@ -103,6 +104,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStart()
     }
 
+    var methodChannel: MethodChannel? = null
     override fun onResume() {
         /*var debugLog = ""
         when {
@@ -131,6 +133,32 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         // 是否需要重新添加 flutterView
         if (checkIfAddFlutterView()) {
 
+        }
+
+        methodChannel = MethodChannel(flutterView, FlutterManager.CHANNEL_METHOD)
+        methodChannel?.setMethodCallHandler { call, result ->
+            CXLogUtil.w(TAG, "onChannelCall: method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
+            when (call?.method) {
+                "goTo" -> {
+                    CXLogUtil.w(TAG, "onChannelCall goTo with value ${call.arguments}")
+                    FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
+                        val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result";
+                        CXLogUtil.w(TAG, "onChannelCall goTo callback, result:$resultValue")
+                        result.success(resultValue)
+                    }
+                }
+                "finish" -> {
+                    val resultValue = CXJsonUtil.toJson(call.arguments)
+                    CXLogUtil.w(TAG, "onChannelCall finish with value:$resultValue")
+                    setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
+                    result.success(1)
+                    finish()
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
+                else -> {
+                    result.error("0", "onChannelCall can't find the method:${call?.method}", call?.arguments)
+                }
+            }
         }
 
         /*methodChannel?.setMethodCallHandler { call, result ->
@@ -218,7 +246,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onBackPressed() {
-        if (!this.eventDelegate.onBackPressed()) super.onBackPressed()
+        // if (!this.eventDelegate.onBackPressed()) super.onBackPressed()
     }
 
     override fun onDestroy() {
@@ -234,10 +262,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     override fun getFlutterView(): FlutterView? = this.viewProvider.flutterView
     override fun createFlutterView(context: Context): FlutterView? {
         CXLogUtil.e(TAG, "createFlutterView")
-        if (mFlutterView == null) {
-            mFlutterView = FlutterView(this, null, createFlutterNativeView())
-            // methodChannel = MethodChannel(mFlutterView, CHANNEL_METHOD)
-        }
+        if (mFlutterView == null) mFlutterView = FlutterView(this, null, createFlutterNativeView())
+
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
             // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
@@ -290,17 +316,17 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     private fun push() {
         PUSH_COUNT++
-       /* CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
-        methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
-            override fun notImplemented() {
-            }
+        /* CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
+         methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
+             override fun notImplemented() {
+             }
 
-            override fun error(p0: String?, p1: String?, p2: Any?) {
-            }
+             override fun error(p0: String?, p1: String?, p2: Any?) {
+             }
 
-            override fun success(p0: Any?) {
-            }
-        })*/
+             override fun success(p0: Any?) {
+             }
+         })*/
     }
 
     private fun pop() {

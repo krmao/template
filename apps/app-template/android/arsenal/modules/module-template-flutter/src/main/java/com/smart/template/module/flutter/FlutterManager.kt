@@ -4,19 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.support.annotation.NonNull
-import com.smart.library.util.CXReflectUtil
-import io.flutter.plugin.common.ActivityLifecycleListener
-import io.flutter.plugin.common.JSONMethodCodec
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.platform.PlatformPlugin
 import io.flutter.view.FlutterMain
 import io.flutter.view.FlutterView
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 @SuppressLint("StaticFieldLeak")
 object FlutterManager {
 
-    private const val TAG = "FlutterManager"
     const val CHANNEL_METHOD = "smart.flutter.io/methods"
     const val KEY_FLUTTER_STRING_RESULT = "KEY_FLUTTER_STRING_RESULT"
 
@@ -33,7 +27,6 @@ object FlutterManager {
 
     @JvmStatic
     fun resetActivity(flutterView: FlutterView?, activity: Activity?) {
-
         /*
         CXReflectUtil.set(flutterView?.flutterNativeView, "mFlutterView", flutterView)
         CXReflectUtil.set(flutterView?.flutterNativeView?.pluginRegistry, "mFlutterView", flutterView)

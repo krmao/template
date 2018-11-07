@@ -26,7 +26,6 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
-
 @SuppressLint("InflateParams", "StaticFieldLeak")
 @Suppress("MemberVisibilityCanBePrivate")
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
@@ -38,11 +37,9 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         private const val TAG = "[flutter:native]"
         private const val ROUTE_PATH_PREFIX = "flutter://"
-        private const val CHANNEL_METHOD = "smart.flutter.io/methods"
         private const val KEY_ROUTE_FULL_PATH = "FLUTTER_ROUTE_FULL_PATH"
 
         private var mFlutterView: FlutterView? = null
-        private var methodChannel: MethodChannel? = null
         private var mFlutterNativeView: FlutterNativeView? = null
         private val ID_PARENT = System.currentTimeMillis().toInt()
 
@@ -77,13 +74,15 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     private var bitmap: Bitmap? = null
+    private var methodChannel: MethodChannel? = null
     private val handler: Handler by lazy { Handler() }
     private val pluginRegistry: PluginRegistry by lazy { delegate }
     private val viewProvider: FlutterView.Provider by lazy { delegate }
     private val eventDelegate: FlutterActivityEvents by lazy { delegate }
     private val delegate by lazy { FlutterActivityDelegate(this, this) }
-    private val routeFullPath: String? by lazy { intent?.getStringExtra(KEY_ROUTE_FULL_PATH) }
     private val snapShootImageView: ImageView by lazy { ImageView(this).apply { visibility = View.GONE } }
+
+    // private val routeFullPath: String? by lazy { intent?.getStringExtra(KEY_ROUTE_FULL_PATH) }
     // private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,17 +108,21 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         // GeneratedPluginRegistrant.registerWith(this);
     }
 
+
+    override fun createFlutterNativeView(): FlutterNativeView? {
+        if (mFlutterNativeView == null) mFlutterNativeView = FlutterNativeView(applicationContext)
+        return mFlutterNativeView
+    }
+
     override fun getFlutterView(): FlutterView? = this.viewProvider.flutterView
     override fun createFlutterView(context: Context): FlutterView? {
         CXLogUtil.e(TAG, "createFlutterView")
         if (mFlutterView == null) mFlutterView = FlutterView(this, null, createFlutterNativeView())
-
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
             addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
             // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
         })
-
         mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
             override fun onFirstFrame() {
                 CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
@@ -132,17 +135,11 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         return mFlutterView
     }
 
-    override fun createFlutterNativeView(): FlutterNativeView? {
-        if (mFlutterNativeView == null) mFlutterNativeView = FlutterNativeView(applicationContext)
-        return mFlutterNativeView
-    }
-
     override fun onStart() {
         super.onStart()
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onStart()
     }
 
-    var methodChannel: MethodChannel? = null
     override fun onResume() {
         CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
         super.onResume()

@@ -15,13 +15,12 @@ class TitleBarWidget extends StatefulWidget {
   final double height;
   final String title;
   final String rightText;
-  final VoidCallback onBackPressed;
+  VoidCallback onBackPressed;
   final VoidCallback onRightPressed;
-  final MethodChannel methodChannel;
   final Color titleBackgroundColor;
   final bool disableBack;
 
-  TitleBarWidget({this.title, this.width = double.infinity, this.methodChannel, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = true, Key key}) : super(key: key);
+  TitleBarWidget({this.title, this.width = double.infinity, this.height = DEFAULT_TITLE_HEIGHT, this.rightText, this.onBackPressed, this.onRightPressed, this.titleBackgroundColor, this.disableBack = true, Key key}) : super(key: key);
 
   @override
   createState() => _TitleBarWidgetState();
@@ -42,7 +41,7 @@ class _TitleBarWidgetState extends State<TitleBarWidget> {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     child: FlatButton(
-                      onPressed: widget.onBackPressed ?? () => NativeManager.enableNative ? NativeManager.pop(widget.methodChannel, context) : Navigator.pop(context),
+                      onPressed: widget.onBackPressed ?? Navigator.pop(context),
                       child: Image.asset(
                         "images/arrow_left_white.png",
                         fit: BoxFit.contain,

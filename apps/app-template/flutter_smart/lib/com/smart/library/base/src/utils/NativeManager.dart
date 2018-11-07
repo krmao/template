@@ -8,85 +8,149 @@ class NativeManager {
   static const TAG = "[flutter]";
 
   static var enableNative = true;
+  static const methodChannel = MethodChannel('smart.flutter.io/methods');
+  static NavigatorState navigatorState;
 
-  static MethodChannel createMethodChannel(BuildContext context) {
-    const methodChannel = MethodChannel('smart.flutter.io/methods');
+  // init at widget which parent state is MaterialApp
+  static void initialize(BuildContext context) {
+    if (navigatorState == null) {
+      debugPrint("$TAG initialize context=$context");
 
-    methodChannel.setMethodCallHandler((MethodCall call) {
-      switch (call.method) {
-        case "pop":
-          {
-            return pop(methodChannel, context, call.arguments).then((result) {});
-          }
-        default:
-          {
-            return Future.error(null);
-          }
+      try {
+        debugPrint("Navigator.of(context, rootNavigator=true, nullOk=false)=" + (Navigator.of(context, rootNavigator: true, nullOk: false)).toString());
+        if (navigatorState == null) navigatorState = Navigator.of(context, rootNavigator: true, nullOk: false);
+      } catch (e) {
+        debugPrint("error1 " + e.toString());
       }
-    });
-    return methodChannel;
+      try {
+        if (navigatorState == null) {
+          debugPrint("Navigator.of(context, rootNavigator=false, nullOk=false)=" + (Navigator.of(context, rootNavigator: false, nullOk: false)).toString());
+          navigatorState = Navigator.of(context, rootNavigator: false, nullOk: false);
+        }
+      } catch (e) {
+        debugPrint("error2 " + e.toString());
+      }
+      try {
+        if (navigatorState == null) {
+          debugPrint("Navigator.of(context, rootNavigator=false, nullOk=true)=" + (Navigator.of(context, rootNavigator: false, nullOk: true)).toString());
+          navigatorState = Navigator.of(context, rootNavigator: false, nullOk: true);
+        }
+      } catch (e) {
+        debugPrint("error3 " + e.toString());
+      }
+
+      navigatorState = Navigator.of(context);
+      methodChannel.setMethodCallHandler((MethodCall call) {
+        switch (call.method) {
+          case "pop":
+            {
+              return NativeManager.finish(call.arguments).then((result) {});
+            }
+          default:
+            {
+              return Future.error(null);
+            }
+        }
+      });
+    }
+
+    if (navigatorState == null) {
+      throw Exception("must be init success at first time and right place");
+    }
   }
 
-  static Future<dynamic> beforeGoTo(MethodChannel methodChannel) async {
+  static Future<dynamic> invokeNativeBeforeGoTo() async {
     try {
-      print("${NativeManager.TAG} will beforeGoTo");
+      debugPrint("${NativeManager.TAG} will beforeGoTo methodChannel==null?${methodChannel == null}");
       var result = await methodChannel.invokeMethod('beforeGoTo');
-      print("${NativeManager.TAG} did beforeGoTo with result:$result");
+      debugPrint("${NativeManager.TAG} did beforeGoTo with result:$result");
       return result;
     } on PlatformException catch (error) {
-      print("${NativeManager.TAG} beforeGoTo failure with error:$error");
+      debugPrint("${NativeManager.TAG} beforeGoTo failure with error:$error");
     }
   }
 
-  static Future<dynamic> goTo(MethodChannel methodChannel, BuildContext context, String pageName, String arguments) async {
+  static Future<dynamic> invokeNativeGoTo(String pageName, String arguments) async {
     try {
-      print("${NativeManager.TAG} will goTo with arguments:$arguments");
+      debugPrint("${NativeManager.TAG} will goTo with arguments:$arguments methodChannel==null?${methodChannel == null}");
       var result = await methodChannel.invokeMethod('goTo', {pageName: pageName, arguments: arguments});
-      print("${NativeManager.TAG} did goTo with result:$result");
+      debugPrint("${NativeManager.TAG} did goTo with result:$result");
       return result;
     } on PlatformException catch (error) {
-      print("${NativeManager.TAG} goTo failure with error:$error");
+      debugPrint("${NativeManager.TAG} goTo failure with error:$error");
     }
   }
 
-  static Future<Null> willFinish(MethodChannel methodChannel) async {
+  static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
+    var navigator = navigatorState;
+    print("${NativeManager.TAG} goTo navigator=$navigator");
+    /*if (ensureLogin) {
+      UserManager.ensureLogin(context).then((userModel) {
+        Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
+      }).catchError((error) {});
+    } else {*/
+    // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
+    return NativeManager.invokeNativeBeforeGoTo().then((value) {
+      print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
+      navigator.push(NoAnimationRoute(builder: (_) => toPage));
+      print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
+      print("${NativeManager.TAG} goTo will start new activity");
+      NativeManager.invokeNativeGoTo(toPage.toStringShort(), "haha").then((result) {
+        print("${NativeManager.TAG} goTo did start new activity with result:$result");
+      }).catchError((error) {
+        print("${NativeManager.TAG} goTo start new activity failure with error:$error");
+      });
+    });
+  }
+
+  static Future<Null> invokeNativeWillFinish() async {
     try {
-      print("${NativeManager.TAG} will willFinish");
+      debugPrint("${NativeManager.TAG} will willFinish methodChannel==null?${methodChannel == null}");
       var finishResult = await methodChannel.invokeMethod('willFinish');
-      print("${NativeManager.TAG} did willFinish with finishResult:$finishResult");
+      debugPrint("${NativeManager.TAG} did willFinish with finishResult:$finishResult");
     } on PlatformException catch (error) {
-      print("${NativeManager.TAG} finish willFinish with error:$error");
+      debugPrint("${NativeManager.TAG} finish willFinish with error:$error");
     }
   }
 
-  static Future<Null> finish(MethodChannel methodChannel, dynamic arguments) async {
+  static Future<Null> invokeNativeFinish(dynamic arguments) async {
     try {
-      print("${NativeManager.TAG} will finish with arguments:$arguments");
+      debugPrint("${NativeManager.TAG} will finish with arguments:$arguments methodChannel==null?${methodChannel == null}");
       var finishResult = await methodChannel.invokeMethod('finish', {arguments: arguments});
-      print("${NativeManager.TAG} did finish with finishResult:$finishResult");
+      debugPrint("${NativeManager.TAG} did finish with finishResult:$finishResult");
     } on PlatformException catch (error) {
-      print("${NativeManager.TAG} finish failure with error:$error");
+      debugPrint("${NativeManager.TAG} finish failure with error:$error");
     }
   }
 
-  static Future<Null> pop(MethodChannel methodChannel, BuildContext context, [dynamic arguments]) {
-    return willFinish(methodChannel).then((value) {
-      var canPop = Navigator.canPop(context);
-      print("${NativeManager.TAG} canPop?$canPop, arguments:$arguments, context:$context");
+  static Future<Null> finish([dynamic arguments]) {
+    var navigator = navigatorState;
+    debugPrint("${NativeManager.TAG} do willFinish... methodChannel==null?${methodChannel == null} navigator==null?${navigator == null}");
+    return invokeNativeWillFinish().then((value) {
+      debugPrint("${NativeManager.TAG} after will finish and check canPop ... methodChannel==null?${methodChannel == null} navigator==null?${navigator == null}");
+      var canPop = navigator.canPop();
+      debugPrint("${NativeManager.TAG} canPop?$canPop, arguments:$arguments navigator==null?${navigator == null}");
       if (canPop) {
-        print("${NativeManager.TAG} will pop");
-        var popSuccess = Navigator.pop(context, arguments);
-        print("${NativeManager.TAG} pop did success?$popSuccess");
+        debugPrint("${NativeManager.TAG} will pop navigator==null?${navigator == null}");
+        var popSuccess = navigatorState.pop(arguments);
+        debugPrint("${NativeManager.TAG} pop did success?$popSuccess navigator==null?${navigator == null}");
         if (popSuccess) {
-          NativeManager.finish(methodChannel, "hehe").then((result) {
-            print("${NativeManager.TAG} finish success with result:$result");
+          NativeManager.invokeNativeFinish("hehe").then((result) {
+            debugPrint("${NativeManager.TAG} finish success with result:$result navigator==null?${navigator == null}");
           }).catchError((error) {
-            print("${NativeManager.TAG} finish failure with error:$error");
+            debugPrint("${NativeManager.TAG} finish failure with error:$error navigator==null?${navigator == null}");
           });
         }
       } else {
-        print("${NativeManager.TAG} pop failure, canPop=false");
+        debugPrint("${NativeManager.TAG} pop failure, canPop=false navigator==null?${navigator == null}");
       }
     });
   }
+}
+
+class NoAnimationRoute<T> extends MaterialPageRoute<T> {
+  NoAnimationRoute({WidgetBuilder builder, RouteSettings settings}) : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child; // FadeTransition(opacity: animation, child: child)
 }

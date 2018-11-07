@@ -6,14 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.os.Build
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager.LayoutParams
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.gyf.barlibrary.ImmersionBar
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
@@ -23,7 +23,6 @@ import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
-import io.flutter.plugin.platform.PlatformPlugin
 import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
@@ -33,9 +32,6 @@ import io.flutter.view.FlutterView
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
 
     companion object {
-
-        var PUSH_COUNT: Int = 0
-            internal set
 
         var PAGES_COUNT: Int = 0
             internal set
@@ -81,7 +77,6 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     private var bitmap: Bitmap? = null
-    private var currentPageNum: Int = -1
     private val handler: Handler by lazy { Handler() }
     private val pluginRegistry: PluginRegistry by lazy { delegate }
     private val viewProvider: FlutterView.Provider by lazy { delegate }
@@ -97,15 +92,20 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         PAGES_COUNT++
         super.onCreate(savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = 0x00000000 // 0x40000000
-            window.decorView.systemUiVisibility = PlatformPlugin.DEFAULT_SYSTEM_UI
-        }
-
         // intent = Intent("android.intent.action.RUN").putExtra("route", routeFullPath)
         // CXLogUtil.w(TAG, "onCreate routeFullPath->$routeFullPath")
         this.delegate.onCreate(savedInstanceState)
+
+        enableImmersionStatusBar = true
+        if (enableImmersionStatusBar) {
+            statusBar = ImmersionBar.with(this)
+                    .transparentStatusBar()
+                    .statusBarColorInt(Color.TRANSPARENT)
+                    .navigationBarEnable(false)
+                    .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
+            statusBar?.init()
+        }
+
         // GeneratedPluginRegistrant.registerWith(this);
     }
 
@@ -144,27 +144,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     var methodChannel: MethodChannel? = null
     override fun onResume() {
-        /*var debugLog = ""
-        when {
-            currentPageNum == -1 -> {
-                // 第一次进入该页面
-                debugLog = "第一次进入该页面"
-                currentPageNum = PAGES_COUNT
-                push()
-            }
-            currentPageNum < PAGES_COUNT -> {
-                // 从B页面返回到A页面, 执行完A的onResume 才会执行B的onDestroy
-                debugLog = "从B页面返回到A页面, 执行完A的onResume 才会执行B的onDestroy"
-                pop()
-            }
-            currentPageNum == PAGES_COUNT -> {
-                // 从后台切回前台
-                debugLog = "从后台切回前台"
-            }
-        }
-
-        CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum, PUSH_COUNT=$PUSH_COUNT, debugLog=$debugLog")
-        */
+        CXLogUtil.e(TAG, "onResume ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
         super.onResume()
 
         FlutterManager.currentActivity = this
@@ -251,18 +231,13 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onPause() {
-        CXLogUtil.e(TAG, "onPause ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum")
         super.onPause()
-
-        CXLogUtil.e(TAG, "onPause0 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onPause()
         if (FlutterManager.currentActivity == this) {
             FlutterManager.currentActivity = null
         }
-        CXLogUtil.e(TAG, "onPause1 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
         snapShootImageView.visibility = View.VISIBLE
         snapShootImageView.setImageBitmap(bitmap)
-        CXLogUtil.e(TAG, "onPause2 ${this}:${Thread.currentThread().name} bitmap==null?${bitmap == null}")
     }
 
     override fun onStop() {
@@ -277,8 +252,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
     override fun onDestroy() {
         PAGES_COUNT--
-        if (currentPageNum == 1) pop()
-        CXLogUtil.e(TAG, "onDestroy ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT, currentPageNum=$currentPageNum, PUSH_COUNT=$PUSH_COUNT")
+        CXLogUtil.e(TAG, "onDestroy ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
         bitmap?.recycle()
         bitmap = null
         snapShootImageView.setImageBitmap(null)
@@ -286,8 +260,9 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onBackPress(): Boolean {
+        CXLogUtil.e(TAG, "onBackPress ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
         methodChannel?.invokeMethod("pop", null)
-        return true
+        return PAGES_COUNT > 1
     }
 
     override fun retainFlutterNativeView(): Boolean = true
@@ -313,36 +288,6 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
         val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
         if (priorParent != null && priorParent != rootView) priorParent.removeView(mFlutterView)
-    }
-
-    private fun push() {
-        PUSH_COUNT++
-        /* CXLogUtil.w(TAG, "push routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
-         methodChannel?.invokeMethod("push", routeFullPath, object : MethodChannel.Result {
-             override fun notImplemented() {
-             }
-
-             override fun error(p0: String?, p1: String?, p2: Any?) {
-             }
-
-             override fun success(p0: Any?) {
-             }
-         })*/
-    }
-
-    private fun pop() {
-        PUSH_COUNT--
-        /*CXLogUtil.w(TAG, "pop routeFullPath->$routeFullPath, PUSH_COUNT=$PUSH_COUNT")
-        methodChannel?.invokeMethod("pop", routeFullPath, object : MethodChannel.Result {
-            override fun notImplemented() {
-            }
-
-            override fun error(p0: String?, p1: String?, p2: Any?) {
-            }
-
-            override fun success(p0: Any?) {
-            }
-        })*/
     }
 
     private fun saveSnap() {

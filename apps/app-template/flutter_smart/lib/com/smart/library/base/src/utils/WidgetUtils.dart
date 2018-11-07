@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:smart/com/smart/library/base/src/Constants.dart';
 import 'package:smart/headers.dart';
-
-import 'NativeManager.dart';
 
 class WidgetUtils {
   static Widget getNetworkImageWidget(String imageUrl, {double width = double.infinity, double height = double.infinity, BoxFit fit = BoxFit.cover, String defaultImage = Constants.DEFAULT_IMAGE}) {
@@ -44,32 +41,4 @@ class WidgetUtils {
   static Widget getOnDoubleTapWidget(Widget child, GestureTapCallback onDoubleTap) => Material(type: MaterialType.transparency, child: InkWell(onDoubleTap: onDoubleTap, child: child));
 
   static Widget getOnLongPressWidget(Widget child, GestureLongPressCallback onLongPress) => Material(type: MaterialType.transparency, child: InkWell(onLongPress: onLongPress, child: child));
-
-  static Future goTo(MethodChannel methodChannel, BuildContext context, Widget toPage, {bool ensureLogin = false, bool animation = true}) {
-    /*if (ensureLogin) {
-      UserManager.ensureLogin(context).then((userModel) {
-        Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
-      }).catchError((error) {});
-    } else {*/
-    // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
-
-    return NativeManager.beforeGoTo(methodChannel).then((value) {
-      print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
-      Navigator.push(context, NoAnimationRoute(builder: (_) => toPage));
-      print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
-      print("${NativeManager.TAG} goTo will start new activity");
-      NativeManager.goTo(methodChannel, context, toPage.toStringShort(), "haha").then((result) {
-        print("${NativeManager.TAG} goTo did start new activity with result:$result");
-      }).catchError((error) {
-        print("${NativeManager.TAG} goTo start new activity failure with error:$error");
-      });
-    });
-  }
-}
-
-class NoAnimationRoute<T> extends MaterialPageRoute<T> {
-  NoAnimationRoute({WidgetBuilder builder, RouteSettings settings}) : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child; // FadeTransition(opacity: animation, child: child)
 }

@@ -22,7 +22,7 @@ class APageState extends DefaultPageState<APage> {
   @override
   Widget buildBody() {
     return getOnTapWidget(Container(color: Colors.blueGrey), () {
-      WidgetUtils.goTo(methodChannel, context, BPage());
+      NativeManager.goTo(BPage());
     });
   }
 }

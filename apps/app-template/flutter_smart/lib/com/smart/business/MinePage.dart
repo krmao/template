@@ -25,7 +25,8 @@ class MinePageState extends DefaultPageState<MinePage> {
   @override
   Widget buildBody() {
     return getOnTapWidget(Container(color: Colors.pink), () {
-      WidgetUtils.goTo(methodChannel,context, APage());
+      print("MinePageState content=$context");
+      NativeManager.goTo(APage());
     });
   }
 }

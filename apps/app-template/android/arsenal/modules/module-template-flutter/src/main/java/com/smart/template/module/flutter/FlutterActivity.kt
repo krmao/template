@@ -236,34 +236,35 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (priorParent != null && priorParent == rootView) {
             return false
         } else {
-            // detachFlutterView(rootView)
             attachFlutterView(rootView)
             return true
         }
     }
 
     private fun detachFlutterView(rootLayout: FrameLayout? = null) {
-        val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
-        val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
-        if (priorParent != null && priorParent != rootView) {
-            priorParent.removeView(mFlutterView)
-        }
-    }
-
-    private fun attachFlutterView(rootLayout: FrameLayout? = null) {
+        CXLogUtil.w(TAG, "detachFlutterView now...")
         mFlutterView?.let {
             val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
-
-            // detach
             val priorParent: ViewGroup? = it.parent as? ViewGroup?
             if (priorParent != null && priorParent != rootView) priorParent.removeView(it)
+
+            // flutterNativeView.mContext && flutterNativeView.pluginRegistry.mAppContext
+            // is applicationContext, no worried about activity leak
             it.flutterNativeView?.pluginRegistry?.let { flutterPluginRegistry ->
+                CXReflectUtil.set(flutterPluginRegistry, "mActivity", null)
                 CXReflectUtil.get(flutterPluginRegistry, "mPlatformViewsController")?.let { mPlatformViewsController ->
                     CXReflectUtil.set(mPlatformViewsController, "mContext", null)
                 }
             }
+        }
+    }
 
-            // attach
+    private fun attachFlutterView(rootLayout: FrameLayout? = null) {
+        CXLogUtil.w(TAG, "attachFlutterView mFlutterView==null?${mFlutterView == null}")
+        mFlutterView?.let {
+            val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
+            detachFlutterView(rootView)
+            CXLogUtil.w(TAG, "begin attachFlutterView")
             rootView.addView(it, 0, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             try {
                 it.flutterNativeView?.attachViewAndActivity(it, this)
@@ -271,6 +272,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                 CXLogUtil.e(TAG, "attachFlutterView failure", e)
             }
 
+            // after attach
             //----------------------------------------------------------------------
             methodChannel = MethodChannel(it, FlutterManager.CHANNEL_METHOD)
             methodChannel?.setMethodCallHandler { call, result ->
@@ -292,6 +294,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                     }
                     "willFinish" -> {
                         saveSnap()
+                        detachFlutterView() // detach context before finish
                         result.success(1)
                     }
                     "finish" -> {

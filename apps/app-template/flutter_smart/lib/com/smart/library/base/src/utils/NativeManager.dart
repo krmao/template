@@ -105,19 +105,22 @@ class NativeManager {
 
   static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
     var navigator = navigatorState;
+
+    if (!enableNative) {
+      navigator.push(NoAnimationRoute(builder: (_) => toPage));
+      return Future.value(null);
+    }
+
     print("${NativeManager.TAG} goTo navigator=$navigator");
     return NativeManager.invokeNativeBeforeGoTo().then((value) {
       print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
-      navigator.push(NoAnimationRoute(builder: (_) => toPage)).then((value) {
-        print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
-        print("${NativeManager.TAG} goTo will start new activity");
-        NativeManager.invokeNativeGoTo(toPage.toStringShort(), "haha").then((result) {
-          print("${NativeManager.TAG} goTo did start new activity with result:$result");
-        }).catchError((error) {
-          print("${NativeManager.TAG} goTo start new activity failure with error:$error");
-        });
+      navigator.push(NoAnimationRoute(builder: (_) => toPage));
+      print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
+      print("${NativeManager.TAG} goTo will start new activity");
+      NativeManager.invokeNativeGoTo(toPage.toStringShort(), "haha").then((result) {
+        print("${NativeManager.TAG} goTo did start new activity with result:$result");
       }).catchError((error) {
-        print("${NativeManager.TAG} goTo did push failure with error $error");
+        print("${NativeManager.TAG} goTo start new activity failure with error:$error");
       });
     });
   }
@@ -144,6 +147,12 @@ class NativeManager {
 
   static Future<Null> finish([dynamic arguments]) {
     var navigator = navigatorState;
+
+    if (!enableNative) {
+      navigator.pop(arguments);
+      return Future.value(null);
+    }
+
     debugPrint("${NativeManager.TAG} do willFinish... methodChannel==null?${methodChannel == null} navigator==null?${navigator == null}");
     return invokeNativeWillFinish().then((value) {
       debugPrint("${NativeManager.TAG} after will finish and check canPop ... methodChannel==null?${methodChannel == null} navigator==null?${navigator == null}");
@@ -168,8 +177,6 @@ class NativeManager {
 }
 
 class NoAnimationRoute<T> extends MaterialPageRoute<T> {
-
-
   NoAnimationRoute({WidgetBuilder builder, RouteSettings settings}) : super(builder: builder, settings: settings);
 
   @override

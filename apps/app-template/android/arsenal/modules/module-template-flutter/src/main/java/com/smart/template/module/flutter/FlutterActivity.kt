@@ -18,6 +18,7 @@ import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
 import com.smart.library.util.CXJsonUtil
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXReflectUtil
 import com.smart.library.util.CXValueUtil
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
@@ -235,7 +236,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (priorParent != null && priorParent == rootView) {
             return false
         } else {
-            detachFlutterView(rootView)
+            // detachFlutterView(rootView)
             attachFlutterView(rootView)
             return true
         }
@@ -244,12 +245,25 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private fun detachFlutterView(rootLayout: FrameLayout? = null) {
         val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
         val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
-        if (priorParent != null && priorParent != rootView) priorParent.removeView(mFlutterView)
+        if (priorParent != null && priorParent != rootView) {
+            priorParent.removeView(mFlutterView)
+        }
     }
 
     private fun attachFlutterView(rootLayout: FrameLayout? = null) {
         mFlutterView?.let {
             val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
+
+            // detach
+            val priorParent: ViewGroup? = it.parent as? ViewGroup?
+            if (priorParent != null && priorParent != rootView) priorParent.removeView(it)
+            it.flutterNativeView?.pluginRegistry?.let { flutterPluginRegistry ->
+                CXReflectUtil.get(flutterPluginRegistry, "mPlatformViewsController")?.let { mPlatformViewsController ->
+                    CXReflectUtil.set(mPlatformViewsController, "mContext", null)
+                }
+            }
+
+            // attach
             rootView.addView(it, 0, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             try {
                 it.flutterNativeView?.attachViewAndActivity(it, this)

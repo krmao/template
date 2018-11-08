@@ -10,9 +10,9 @@ import android.view.View
 @Suppress("unused", "MemberVisibilityCanPrivate")
 class CXRecyclerViewItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val itemPosition = parent.getChildAdapterPosition(view)
-        val itemCount = parent.adapter.itemCount
+        val itemCount = parent.adapter?.itemCount ?: 0
         val columnCount = getColumnCount(parent)
         val rowCount = (itemCount - 1) / columnCount + 1
         val rightSpace = if (isLastColumn(itemPosition, columnCount)) 0 else space  // 最后一列
@@ -21,10 +21,10 @@ class CXRecyclerViewItemDecoration(private val space: Int) : RecyclerView.ItemDe
     }
 
     fun isLastRow(itemPosition: Int, rowCount: Int, colCount: Int): Boolean =
-        itemPosition / colCount == rowCount - 1
+            itemPosition / colCount == rowCount - 1
 
     fun isLastColumn(itemPosition: Int, colCount: Int): Boolean =
-        itemPosition % colCount == colCount - 1
+            itemPosition % colCount == colCount - 1
 
     fun getColumnCount(parent: RecyclerView): Int {
         val layoutManager = parent.layoutManager

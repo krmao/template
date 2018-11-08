@@ -81,14 +81,14 @@ class NativeManager {
     }
   }
 
-  static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
+  /*static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
     var navigator = navigatorState;
     print("${NativeManager.TAG} goTo navigator=$navigator");
-    /*if (ensureLogin) {
+    */ /*if (ensureLogin) {
       UserManager.ensureLogin(context).then((userModel) {
         Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
       }).catchError((error) {});
-    } else {*/
+    } else {*/ /*
     // Navigator.push(context, animation ? CupertinoPageRoute(builder: (_) => toPage) : NoAnimationRoute(builder: (_) => toPage));
     return NativeManager.invokeNativeBeforeGoTo().then((value) {
       print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
@@ -99,6 +99,25 @@ class NativeManager {
         print("${NativeManager.TAG} goTo did start new activity with result:$result");
       }).catchError((error) {
         print("${NativeManager.TAG} goTo start new activity failure with error:$error");
+      });
+    });
+  }*/
+
+  static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
+    var navigator = navigatorState;
+    print("${NativeManager.TAG} goTo navigator=$navigator");
+    return NativeManager.invokeNativeBeforeGoTo().then((value) {
+      print("${NativeManager.TAG} goTo will push ${toPage.toStringShort()}");
+      navigator.push(NoAnimationRoute(builder: (_) => toPage)).then((value) {
+        print("${NativeManager.TAG} goTo did push ${toPage.toStringShort()}");
+        print("${NativeManager.TAG} goTo will start new activity");
+        NativeManager.invokeNativeGoTo(toPage.toStringShort(), "haha").then((result) {
+          print("${NativeManager.TAG} goTo did start new activity with result:$result");
+        }).catchError((error) {
+          print("${NativeManager.TAG} goTo start new activity failure with error:$error");
+        });
+      }).catchError((error) {
+        print("${NativeManager.TAG} goTo did push failure with error $error");
       });
     });
   }
@@ -149,7 +168,14 @@ class NativeManager {
 }
 
 class NoAnimationRoute<T> extends MaterialPageRoute<T> {
+
+
   NoAnimationRoute({WidgetBuilder builder, RouteSettings settings}) : super(builder: builder, settings: settings);
+
+  @override
+  TickerFuture didPush() {
+    return super.didPush();
+  }
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child; // FadeTransition(opacity: animation, child: child)

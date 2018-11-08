@@ -68,7 +68,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                 return
             }
             startActivityForResult(activity, Intent(activity, FlutterActivity::class.java).putExtra(KEY_ROUTE_FULL_PATH, routeFullPath), requestCode, options, callback)
-            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            // activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
     }
@@ -122,7 +122,9 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
             id = ID_PARENT
             addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
             // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
+            setBackgroundColor(Color.WHITE)
         })
+        checkIfAddFlutterView()
         mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
             override fun onFirstFrame() {
                 CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
@@ -145,52 +147,11 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         super.onResume()
 
         FlutterManager.currentActivity = this
-        // 是否需要重新添加 flutterView
-        if (checkIfAddFlutterView()) {
-
-        }
-
-        methodChannel = MethodChannel(flutterView, FlutterManager.CHANNEL_METHOD)
-        methodChannel?.setMethodCallHandler { call, result ->
-            CXLogUtil.w(TAG, "onMethodCallHandler method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
-            when (call?.method) {
-                "beforeGoTo" -> {
-                    saveSnap()
-                    CXLogUtil.w(TAG, "onMethodCallHandler beforeGoTo saveSnap")
-                    result.success(0)
-                }
-                "goTo" -> {
-                    CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
-                    FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
-                        val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result"
-                        CXLogUtil.w(TAG, "onMethodCallHandler goTo callback, result:$resultValue")
-                        result.success(resultValue)
-                    }
-                }
-                "willFinish" -> {
-                    saveSnap()
-                    result.success(1)
-                }
-                "finish" -> {
-                    val resultValue = CXJsonUtil.toJson(call.arguments)
-                    CXLogUtil.w(TAG, "onMethodCallHandler finish with value:$resultValue")
-                    setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
-                    finish()
-                    // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-
-                    result.success(1)
-                }
-                else -> {
-                    result.error("0", "onMethodCallHandler can't find the method:${call?.method}", call?.arguments)
-                }
-            }
-        }
+        checkIfAddFlutterView()
 
         if (isFlutterViewAttachedOnMe()) this.eventDelegate.onResume()
 
-        handler.postDelayed({
-            snapShootImageView.visibility = View.GONE
-        }, 300)
+        handler.postDelayed({ snapShootImageView.visibility = View.GONE }, 300)
     }
 
     override fun onPostResume() {
@@ -275,8 +236,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
             return false
         } else {
             detachFlutterView(rootView)
-            rootView.addView(mFlutterView, 0, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
-            FlutterManager.resetActivity(mFlutterView, this)
+            attachFlutterView(rootView)
             return true
         }
     }
@@ -285,6 +245,57 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
         val priorParent: ViewGroup? = mFlutterView?.parent as? ViewGroup?
         if (priorParent != null && priorParent != rootView) priorParent.removeView(mFlutterView)
+    }
+
+    private fun attachFlutterView(rootLayout: FrameLayout? = null) {
+        mFlutterView?.let {
+            val rootView: FrameLayout = rootLayout ?: findViewById(ID_PARENT)
+            rootView.addView(it, 0, ViewGroup.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+            try {
+                it.flutterNativeView?.attachViewAndActivity(it, this)
+            } catch (e: AssertionError) {
+                CXLogUtil.e(TAG, "attachFlutterView failure", e)
+            }
+
+            //----------------------------------------------------------------------
+            methodChannel = MethodChannel(it, FlutterManager.CHANNEL_METHOD)
+            methodChannel?.setMethodCallHandler { call, result ->
+                CXLogUtil.w(TAG, "onMethodCallHandler method=${call?.method}, params=${call?.arguments}, thread=${Thread.currentThread().name}, activity.valid=${CXValueUtil.isValid(this)}")
+                when (call?.method) {
+                    "beforeGoTo" -> {
+                        saveSnap()
+                        CXLogUtil.w(TAG, "onMethodCallHandler beforeGoTo saveSnap")
+                        result.success(0)
+                    }
+                    "goTo" -> {
+                        CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
+
+                        FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
+                            val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result"
+                            CXLogUtil.w(TAG, "onMethodCallHandler goTo callback, result:$resultValue")
+                            result.success(resultValue)
+                        }
+                    }
+                    "willFinish" -> {
+                        saveSnap()
+                        result.success(1)
+                    }
+                    "finish" -> {
+                        val resultValue = CXJsonUtil.toJson(call.arguments)
+                        CXLogUtil.w(TAG, "onMethodCallHandler finish with value:$resultValue")
+                        setResult(Activity.RESULT_OK, Intent().putExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT, resultValue))
+                        finish()
+                        // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
+                        result.success(1)
+                    }
+                    else -> {
+                        result.error("0", "onMethodCallHandler can't find the method:${call?.method}", call?.arguments)
+                    }
+                }
+            }
+            //----------------------------------------------------------------------
+        }
     }
 
     private fun saveSnap() {

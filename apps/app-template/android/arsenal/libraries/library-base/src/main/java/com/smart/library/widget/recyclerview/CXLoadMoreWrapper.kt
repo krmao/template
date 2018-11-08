@@ -51,7 +51,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 (mLoadMoreView as TextView).text = "正在加载中"
                 (mLoadMoreView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreView))
+            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreView!!))
         }
 
     private val loadFailedViewHolder: CXRecyclerViewAdapter.ViewHolder
@@ -63,7 +63,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 (mLoadMoreFailedView as TextView).text = "加载失败，请点我重试"
                 (mLoadMoreFailedView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreFailedView))
+            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreFailedView!!))
         }
 
 
@@ -76,7 +76,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 (mNoMoreView as TextView).text = "--end--"
                 (mNoMoreView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mNoMoreView))
+            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mNoMoreView!!))
         }
 
     private var mOnLoadListener: OnLoadListener? = null
@@ -236,16 +236,16 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
         private var totalItemCount: Int = 0
         private var lastVisibleItemPosition: Int = 0
 
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (recyclerView?.layoutManager is LinearLayoutManager)
+            if (recyclerView.layoutManager is LinearLayoutManager)
                 lm = recyclerView.layoutManager as LinearLayoutManager
-            else if (recyclerView?.layoutManager is StaggeredGridLayoutManager) {
+            else if (recyclerView.layoutManager is StaggeredGridLayoutManager) {
                 sm = recyclerView.layoutManager as StaggeredGridLayoutManager
                 lastPositions = sm!!.findLastVisibleItemPositions(null)
             }
 
-            val visibleItemCount = recyclerView?.childCount ?: 0
+            val visibleItemCount = recyclerView.childCount
             if (lm != null) {
                 totalItemCount = lm!!.itemCount
                 lastVisibleItemPosition = lm!!.findLastVisibleItemPosition()
@@ -269,7 +269,7 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 }
 
             }
-            if (!isLoading && visibleItemCount > 0 && totalItemCount - 1 == lastVisibleItemPosition && recyclerView?.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+            if (!isLoading && visibleItemCount > 0 && totalItemCount - 1 == lastVisibleItemPosition && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
                 loadMore()
             }
 

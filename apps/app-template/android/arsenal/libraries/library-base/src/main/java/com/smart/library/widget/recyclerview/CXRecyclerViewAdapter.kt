@@ -9,7 +9,7 @@ import java.util.*
 @Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), CXRecyclerViewItemTouchHelperAdapter {
 
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int = dataList.size
 

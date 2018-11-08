@@ -4,8 +4,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'walle'
 
 walle {
-    apkOutputFolder = new File("${buildDir}/outputs/channels");// 指定渠道包的输出路径
-    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+    apkOutputFolder = new File("${buildDir}/outputs/channels")// 指定渠道包的输出路径
+    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
 // 定制渠道包的APK的文件名称
     channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
 }
@@ -159,8 +159,8 @@ android {
                             if (it.name.contains("-mapping.txt")) {
                                 println("output:copy from:${it.path}")
                                 println("output:copy to:${it.parent}" + "/mapping.txt")
-                                def fromFile = it;
-                                def toDir = it.parent;
+                                def fromFile = it
+                                def toDir = it.parent
                                 copy {
                                     println("output:copy from:${fromFile}")
                                     println("output:copy to:${toDir}" + "/mapping.txt")

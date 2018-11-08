@@ -46,6 +46,10 @@
         <item name="android:windowBackground">@color/cx_primary_dark</item>
     </style>
 
+    <style name="CXAppTheme.Translucent.Transparent" parent="@style/CXAppTheme.Translucent">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
     <style name="CXAppTheme.Translucent.Notification" parent="@style/CXAppTheme.Translucent">
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.FADE_IN_OUT</item>
     </style>

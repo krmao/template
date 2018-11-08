@@ -82,9 +82,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     private val eventDelegate: FlutterActivityEvents by lazy { delegate }
     private val delegate by lazy { FlutterActivityDelegate(this, this) }
     private val snapShootImageView: ImageView by lazy { ImageView(this).apply { visibility = View.GONE } }
-
+    // private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false).apply { visibility = View.VISIBLE } }
     // private val routeFullPath: String? by lazy { intent?.getStringExtra(KEY_ROUTE_FULL_PATH) }
-    // private val loadingView: View by lazy { LayoutInflater.from(this).inflate(R.layout.cx_widget_frameloading_loading, null, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
@@ -121,15 +120,17 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
         if (mFlutterView == null) mFlutterView = FlutterView(this, null, createFlutterNativeView())
         setContentView(FrameLayout(this).apply {
             id = ID_PARENT
+
             addView(snapShootImageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 })
-            // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = CXSystemUtil.statusBarHeight })
-            setBackgroundColor(Color.WHITE)
+            // addView(loadingView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT).apply { topMargin = 0 /*CXSystemUtil.statusBarHeight*/ })
         })
+
         checkIfAddFlutterView()
         mFlutterView?.addFirstFrameListener(object : FlutterView.FirstFrameListener {
             override fun onFirstFrame() {
                 CXLogUtil.i(TAG, "addFirstFrameListener -> onFirstFrame")
                 mFlutterView?.removeFirstFrameListener(this)
+                // mFlutterView?.postDelayed({ loadingView.visibility = View.GONE }, resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
             }
         })
         mFlutterView?.addActivityLifecycleListener {

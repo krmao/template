@@ -42,6 +42,7 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
 
         private var mFlutterView: FlutterView? = null
         private var mFlutterNativeView: FlutterNativeView? = null
+
         private val ID_PARENT = System.currentTimeMillis().toInt()
 
         @JvmStatic
@@ -220,10 +221,17 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
     }
 
     override fun onBackPress(): Boolean {
+        CXLogUtil.e(TAG, "onBackPress flutter/navigation ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
+        // if (!this.eventDelegate.onBackPressed()) super.onBackPressed()
+        // MethodChannel(mFlutterView, "flutter/navigation", JSONMethodCodec.INSTANCE).invokeMethod("popRoute", null)
+        methodChannel?.invokeMethod("backPressed", null)
+        return true
+    }
+    /*override fun onBackPress(): Boolean {
         CXLogUtil.e(TAG, "onBackPress ${this}:${Thread.currentThread().name}, PAGES_COUNT=$PAGES_COUNT")
         methodChannel?.invokeMethod("pop", null)
         return PAGES_COUNT > 1
-    }
+    }*/
 
     override fun retainFlutterNativeView(): Boolean = true
     override fun hasPlugin(key: String): Boolean = this.pluginRegistry.hasPlugin(key)
@@ -288,7 +296,8 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                         CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
 
                         FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
-                            val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT) ?: "no result"
+                            val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT)
+                                    ?: "no result"
                             CXLogUtil.w(TAG, "onMethodCallHandler goTo callback, result:$resultValue")
                             result.success(resultValue)
                         }

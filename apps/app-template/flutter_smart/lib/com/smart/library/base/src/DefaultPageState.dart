@@ -7,7 +7,7 @@ import 'utils/NativeManager.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
 
-class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver {
+class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver, WidgetsBackPressedEvent {
   String tag;
   WidgetBuildFunction child;
   bool keepAlive = false;
@@ -36,7 +36,8 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
     super.initState();
     tag = this.toStringShort();
     print("[$tag] initSatte");
-    WidgetsBinding.instance.addObserver(this);
+    // WidgetsBinding.instance.addObserver(this);
+    NativeManager.onBackPressedEventList.add(this);
 
     if (loadingWidget == null) loadingWidget = LoadingWidget();
     if (titleBarWidget == null) titleBarWidget = TitleBarWidget();
@@ -89,9 +90,21 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   Widget buildBody() => child();
 
   @override
+  Future<bool> didPopRoute() {
+    debugPrint("$tag didPopRoute");
+    return Future.value(false);
+  }
+
+  @override
+  bool onBackPressed() {
+    return false;
+  }
+
+  @override
   void dispose() {
     print("[$tag] dispose");
-    WidgetsBinding.instance.removeObserver(this);
+    // WidgetsBinding.instance.removeObserver(this);
+    NativeManager.onBackPressedEventList.remove(this);
     super.dispose();
   }
 

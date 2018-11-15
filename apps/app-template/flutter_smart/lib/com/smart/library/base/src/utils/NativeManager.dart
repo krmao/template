@@ -7,6 +7,7 @@ class NativeManager {
   // 开启flutter native 混合模式
   static const TAG = "[flutter]";
 
+  static final List<WidgetsBackPressedEvent> onBackPressedEventList = <WidgetsBackPressedEvent>[];
   static var enableNative = true;
   static const methodChannel = MethodChannel('smart.flutter.io/methods');
   static NavigatorState navigatorState;
@@ -17,34 +18,40 @@ class NativeManager {
       debugPrint("$TAG initialize context=$context");
 
       try {
-        debugPrint("Navigator.of(context, rootNavigator=true, nullOk=false)=" + (Navigator.of(context, rootNavigator: true, nullOk: false)).toString());
+        debugPrint("$TAG Navigator.of(context, rootNavigator=true, nullOk=false)=" + (Navigator.of(context, rootNavigator: true, nullOk: false)).toString());
         if (navigatorState == null) navigatorState = Navigator.of(context, rootNavigator: true, nullOk: false);
       } catch (e) {
-        debugPrint("error1 " + e.toString());
+        debugPrint("$TAG error1 " + e.toString());
       }
       try {
         if (navigatorState == null) {
-          debugPrint("Navigator.of(context, rootNavigator=false, nullOk=false)=" + (Navigator.of(context, rootNavigator: false, nullOk: false)).toString());
+          debugPrint("$TAG Navigator.of(context, rootNavigator=false, nullOk=false)=" + (Navigator.of(context, rootNavigator: false, nullOk: false)).toString());
           navigatorState = Navigator.of(context, rootNavigator: false, nullOk: false);
         }
       } catch (e) {
-        debugPrint("error2 " + e.toString());
+        debugPrint("$TAG error2 " + e.toString());
       }
       try {
         if (navigatorState == null) {
-          debugPrint("Navigator.of(context, rootNavigator=false, nullOk=true)=" + (Navigator.of(context, rootNavigator: false, nullOk: true)).toString());
+          debugPrint("$TAG Navigator.of(context, rootNavigator=false, nullOk=true)=" + (Navigator.of(context, rootNavigator: false, nullOk: true)).toString());
           navigatorState = Navigator.of(context, rootNavigator: false, nullOk: true);
         }
       } catch (e) {
-        debugPrint("error3 " + e.toString());
+        debugPrint("$TAG error3 " + e.toString());
       }
 
       navigatorState = Navigator.of(context);
       methodChannel.setMethodCallHandler((MethodCall call) {
+        debugPrint("$TAG onMethodCall ${call.method} ${call.arguments}");
         switch (call.method) {
           case "pop":
             {
               return NativeManager.finish(call.arguments).then((result) {});
+            }
+          case "backPressed":
+            {
+              handlePopRoute();
+              break;
             }
           default:
             {
@@ -56,6 +63,16 @@ class NativeManager {
 
     if (navigatorState == null) {
       throw Exception("must be init success at first time and right place");
+    }
+  }
+
+  static void handlePopRoute() {
+    if (!onBackPressedEventList.last.onBackPressed()) {
+      debugPrint("$TAG handlePopRoute SystemNavigator.pop()");
+      // SystemNavigator.pop();
+      finish();
+    } else {
+      debugPrint("$TAG handlePopRoute onBackPressed intercept");
     }
   }
 
@@ -162,16 +179,17 @@ class NativeManager {
         debugPrint("${NativeManager.TAG} will pop navigator==null?${navigator == null}");
         var popSuccess = navigatorState.pop(arguments);
         debugPrint("${NativeManager.TAG} pop did success?$popSuccess navigator==null?${navigator == null}");
-        if (popSuccess) {
-          NativeManager.invokeNativeFinish("hehe").then((result) {
-            debugPrint("${NativeManager.TAG} finish success with result:$result navigator==null?${navigator == null}");
-          }).catchError((error) {
-            debugPrint("${NativeManager.TAG} finish failure with error:$error navigator==null?${navigator == null}");
-          });
-        }
-      } else {
-        debugPrint("${NativeManager.TAG} pop failure, canPop=false navigator==null?${navigator == null}");
       }
+      /*if (popSuccess) {*/
+      NativeManager.invokeNativeFinish("hehe").then((result) {
+        debugPrint("${NativeManager.TAG} finish success with result:$result navigator==null?${navigator == null}");
+      }).catchError((error) {
+        debugPrint("${NativeManager.TAG} finish failure with error:$error navigator==null?${navigator == null}");
+      });
+      /*}*/
+      /*} else {
+        debugPrint("${NativeManager.TAG} pop failure, canPop=false navigator==null?${navigator == null}");
+      }*/
     });
   }
 }
@@ -186,4 +204,8 @@ class NoAnimationRoute<T> extends MaterialPageRoute<T> {
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child; // FadeTransition(opacity: animation, child: child)
+}
+
+abstract class WidgetsBackPressedEvent {
+  bool onBackPressed();
 }

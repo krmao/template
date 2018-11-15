@@ -25,4 +25,5 @@ class BPageState extends DefaultPageState<BPage> {
       NativeManager.goTo(CPage());
     });
   }
+
 }

@@ -1,7 +1,5 @@
 import 'package:smart/headers.dart';
 
-import 'CPage.dart';
-
 class BPage extends StatefulWidget {
   @override
   createState() => BPageState();
@@ -59,7 +57,7 @@ class BPageState extends DefaultPageState<BPage> {
             new FlatButton(
               child: new Text('下一页'),
               onPressed: () {
-                NativeManager.goTo(CPage());
+                NativeManager.invokeNativeGoToNative("K", "");
               },
             ),
           ],

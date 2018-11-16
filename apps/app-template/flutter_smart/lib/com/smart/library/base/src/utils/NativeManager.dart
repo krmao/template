@@ -98,6 +98,17 @@ class NativeManager {
     }
   }
 
+  static Future<dynamic> invokeNativeGoToNative(String pageName, String arguments) async {
+    try {
+      debugPrint("${NativeManager.TAG} will goTo with arguments:$arguments methodChannel==null?${methodChannel == null}");
+      var result = await methodChannel.invokeMethod('goToNative', {"pageName": pageName, "arguments": arguments});
+      debugPrint("${NativeManager.TAG} did goTo with result:$result");
+      return result;
+    } on PlatformException catch (error) {
+      debugPrint("${NativeManager.TAG} goTo failure with error:$error");
+    }
+  }
+
   /*static Future goTo(Widget toPage, {bool ensureLogin = false, bool animation = true}) {
     var navigator = navigatorState;
     print("${NativeManager.TAG} goTo navigator=$navigator");

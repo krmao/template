@@ -16,10 +16,7 @@ import android.widget.ImageView
 import com.gyf.barlibrary.ImmersionBar
 import com.smart.library.base.CXBaseActivity
 import com.smart.library.base.startActivityForResult
-import com.smart.library.util.CXJsonUtil
-import com.smart.library.util.CXLogUtil
-import com.smart.library.util.CXReflectUtil
-import com.smart.library.util.CXValueUtil
+import com.smart.library.util.*
 import io.flutter.app.FlutterActivityDelegate
 import io.flutter.app.FlutterActivityEvents
 import io.flutter.plugin.common.MethodChannel
@@ -293,13 +290,26 @@ class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, 
                         result.success(0)
                     }
                     "goTo" -> {
-                        CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments}")
+                        CXLogUtil.w(TAG, "onMethodCallHandler goTo with value ${call.arguments} ${call.arguments.javaClass.name}")
 
                         FlutterActivity.goTo(this, "B", hashMapOf("name" to "jack")) { _: Int, _: Int, intent: Intent? ->
                             val resultValue = intent?.getStringExtra(FlutterManager.KEY_FLUTTER_STRING_RESULT)
                                     ?: "no result"
                             CXLogUtil.w(TAG, "onMethodCallHandler goTo callback, result:$resultValue")
                             result.success(resultValue)
+                        }
+                    }
+                    "goToNative" -> {
+                        CXLogUtil.e(TAG, "onMethodCallHandler goToNative with value ${call.arguments} ${call.arguments.javaClass.name}")
+                        val map: java.util.HashMap<String, Any?> = call.arguments as? java.util.HashMap<String, Any?>?
+                                ?: hashMapOf()
+                        val pageName = map["pageName"]
+                        val arguments = map["arguments"]
+                        if (pageName == "K") {
+
+                            KFragment.goTo(this@FlutterActivity)
+                        } else {
+                            CXToastUtil.show("not found page about pageName:$pageName, arguments:$arguments")
                         }
                     }
                     "willFinish" -> {

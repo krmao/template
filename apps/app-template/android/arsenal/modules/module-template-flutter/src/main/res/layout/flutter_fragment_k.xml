@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:background="@color/transparent"
         app:cxLeft0Visible="invisible"
-        app:cxTitleSize="15dp"
+        app:cxTitleSize="17dp"
         app:cxTitleText="K"
         app:cxTitleTxtColor="@color/white" />
 

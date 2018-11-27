@@ -63,6 +63,7 @@
     beforeCreate () { console.log('vue [page-index] beforeCreate') },
     created () {
       console.log('vue [page-index] created')
+      // console.log('vue [page-index] created, options=' + this.$root.$mp.query)
       this.getUserInfo() // 调用应用实例的方法获取全局数据
     },
     beforeMount () { console.log('vue [page-index] beforeMount') },

@@ -59,10 +59,21 @@
       }
     },
 
+    // vue 生命周期 ========================================================================================================
+    beforeCreate () { console.log('vue [page-index] beforeCreate') },
     created () {
-      // 调用应用实例的方法获取全局数据
-      this.getUserInfo()
+      console.log('vue [page-index] created')
+      this.getUserInfo() // 调用应用实例的方法获取全局数据
     },
+    beforeMount () { console.log('vue [page-index] beforeMount') },
+    mounted () { console.log('vue [page-index] mounted') },
+    beforeUpdate () { console.log('vue [page-index] beforeUpdate') },
+    updated () { console.log('vue [page-index] updated') },
+    activated () { console.log('vue [page-index] activated, mpvue 实际运行并没有回调, 原因不支持 keep-alive') },
+    deactivated () { console.log('vue [page-index] deactivated, mpvue 实际运行并没有回调, 原因不支持 keep-alive') },
+    beforeDestroy () { console.log('vue [page-index] beforeDestroy, mpvue 实际运行并没有回调, bug') },
+    destroyed () { console.log('vue [page-index] destroyed, mpvue 实际运行并没有回调, bug') },
+    // vue 生命周期 ========================================================================================================
 
     // 小程序自有生命周期 ====================================================================================================
     onLoad () { console.log('小程序 [page-index] 生命周期: onLoad: 监听页面加载') },
@@ -74,7 +85,8 @@
     onReachBottom () { console.log('小程序 [page-index] 生命周期: onReachBottom: 页面上拉触底事件的处理函数') },
     onShareAppMessage () { console.log('小程序 [page-index] 生命周期: onShareAppMessage: 用户点击右上角分享') },
     onPageScroll () { console.log('小程序 [page-index] 生命周期: onPageScroll: 页面滚动') },
-    onTabItemTap () { console.log('小程序 [page-index] 生命周期: onTabItemTap: 当前是 tab 页时，点击 tab 时触发 （mpvue 0.0.16 支持）') }
+    onResize () { console.log('小程序 [page-index] 生命周期: onResize: 宽高改变') },
+    onTabItemTap (item) { console.log('小程序 [page-index] 生命周期: onTabItemTap: 当前是 tab 页时，点击 tab 时触发 （mpvue 0.0.16 支持）') }
     // 小程序自有生命周期 ====================================================================================================
   }
 </script>

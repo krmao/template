@@ -23,10 +23,22 @@ export default {
     }
   },
 
+  // vue 生命周期 ========================================================================================================
+  beforeCreate () { console.log('vue [page-logs] beforeCreate') },
   created () {
+    console.log('vue [page-logs] created')
     const logs = (wx.getStorageSync('logs') || [])
     this.logs = logs.map(log => formatTime(new Date(log)))
   },
+  beforeMount () { console.log('vue [page-logs] beforeMount') },
+  mounted () { console.log('vue [page-logs] mounted') },
+  beforeUpdate () { console.log('vue [page-logs] beforeUpdate') },
+  updated () { console.log('vue [page-logs] updated') },
+  activated () { console.log('vue [page-logs] activated, mpvue 实际运行并没有回调, 原因不支持 keep-alive') },
+  deactivated () { console.log('vue [page-logs] deactivated, mpvue 实际运行并没有回调, 原因不支持 keep-alive') },
+  beforeDestroy () { console.log('vue [page-logs] beforeDestroy, mpvue 实际运行并没有回调, bug') },
+  destroyed () { console.log('vue [page-logs] destroyed, mpvue 实际运行并没有回调, bug') },
+  // vue 生命周期 ========================================================================================================
 
   // 小程序自有生命周期 ====================================================================================================
   onLoad () { console.log('小程序 [page-logs] 生命周期: onLoad: 监听页面加载') },

@@ -1,4 +1,3 @@
-import Vue from 'vue'
 <script>
   export default {
     // vue 生命周期 ========================================================================================================
@@ -29,6 +28,7 @@ import Vue from 'vue'
 
     // 捕获 app error
     onError (err) {
+      console.log('捕获到程序异常信息:')
       console.log(err)
     }
   }
@@ -41,7 +41,7 @@ import Vue from 'vue'
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 200 rpx 0;
+    padding: 200rpx 0;
     box-sizing: border-box;
   }
 

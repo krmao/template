@@ -19,6 +19,7 @@
       <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy"/>
     </form>
     <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <button class="btn-login" type="primary" open-type="getUserInfo" @getuserinfo="getUserInfo2">授权</button>
   </div>
 </template>
 
@@ -42,13 +43,17 @@
         const url = '../logs/main'
         wx.navigateTo({url})
       },
+      getUserInfo2 (res) {
+        this.userInfo = res.target.userInfo
+        console.log('userInfo2', this.userInfo)
+      },
       getUserInfo () {
-        // 调用登录接口
         wx.login({
           success: () => {
             wx.getUserInfo({
               success: (res) => {
                 this.userInfo = res.userInfo
+                console.log('userInfo1', this.userInfo)
               }
             })
           }
@@ -93,6 +98,10 @@
 </script>
 
 <style scoped>
+  .btn-login {
+
+  }
+
   .userinfo {
     display: flex;
     flex-direction: column;

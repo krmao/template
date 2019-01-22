@@ -18,20 +18,18 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private val tag: String = PullToNextPageView::class.java.name
     private var thresholdDistance = CXSystemUtil.screenHeight / 5
+    private var pageViewList = mutableListOf<View>()
+    private var pageIndex = 1
+    private var nextPageIndex = pageIndex
+
     private val dragHelper: ViewDragHelper by lazy {
         ViewDragHelper.create(this, 1.0f, object : ViewDragHelper.Callback() {
 
-            /**
-             * 決定parent view中哪些child view可被拖動
-             */
             override fun tryCaptureView(child: View, pointerId: Int): Boolean {
                 CXLogUtil.d(tag, "tryCaptureView, pointerId=$pointerId")
                 return child == pageViewList[pageIndex]
             }
 
-            /**
-             * 將要移動到的位置座標
-             */
             override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
                 CXLogUtil.d(tag, "transformValue clampViewPositionVertical, top=$top, dy=$dy")
                 return transformValue(dy.toFloat(), top.toFloat(), measuredHeight.toFloat()).toInt()
@@ -39,10 +37,7 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
 
             override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
                 CXLogUtil.d(tag, "onViewPositionChanged, top=$top, dy=$dy")
-
-                if (changedView == pageViewList[pageIndex]) {
-                    pageViewList.forEach { if (it != changedView) it.offsetTopAndBottom(dy) }
-                }
+                pageViewList.forEach { if (it != changedView) it.offsetTopAndBottom(dy) }
             }
 
             override fun onEdgeDragStarted(edgeFlags: Int, pointerId: Int) {
@@ -87,15 +82,12 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         })
     }
 
-    private var pageViewList = mutableListOf<View>()
-    private var pageIndex = 1
-
     override fun onFinishInflate() {
         CXLogUtil.d(tag, "onFinishInflate")
         super.onFinishInflate()
         pageViewList.add(getChildAt(0))
         pageViewList.add(getChildAt(1))
-        pageViewList.add(getChildAt(2))
+        // pageViewList.add(getChildAt(2))
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -125,9 +117,6 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         }
     }
 
-    /**
-     * 滑动时松手后会以一定的速度继续滑动并逐渐停止
-     */
     override fun computeScroll() {
         CXLogUtil.d(tag, "computeScroll")
         if (dragHelper.continueSettling(true)) {
@@ -163,7 +152,6 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         return super.onInterceptTouchEvent(event)
     }
 
-    private var nextPageIndex = pageIndex
     private fun smoothScrollAfterReleased(releasedChild: View, @Suppress("UNUSED_PARAMETER") yvel: Float) {
         val isPullingDown = releasedChild.top >= 0
         CXLogUtil.d(tag, "smoothScrollAfterReleased: top=${releasedChild.top}, isPullingDown=$isPullingDown")
@@ -202,8 +190,9 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         if (dragHelper.smoothSlideViewTo(releasedChild, 0, top)) ViewCompat.postInvalidateOnAnimation(this)
     }
 
-
-    //获取拉升处理后的位移(达到越拉越难拉动的效果)
+    /**
+     * 获取拉升处理后的位移(达到越拉越难拉动的效果)
+     */
     private fun transformValue(offset: Float, originValue: Float, totalValue: Float): Float {
         //x 为0的时候 y 一直为0, 所以当x==0的时候,给一个0.1的最小值
         val x = Math.min(Math.max(Math.abs(originValue).toDouble(), 0.1) / Math.abs(totalValue), 1.0).toFloat()
@@ -213,6 +202,5 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         CXLogUtil.e(tag, "transformValue originValue=$originValue, transformValue=$transformValue, totalValue=$totalValue, x=$x, y=$y")
         return transformValue
     }
-
 
 }

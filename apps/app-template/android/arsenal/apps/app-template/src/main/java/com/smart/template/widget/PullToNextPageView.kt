@@ -26,7 +26,7 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
              */
             override fun tryCaptureView(child: View, pointerId: Int): Boolean {
                 CXLogUtil.d(tag, "tryCaptureView, pointerId=$pointerId")
-                return child == childView1
+                return child == pageViewList[pageIndex]
             }
 
             /**
@@ -34,15 +34,14 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
              */
             override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
                 CXLogUtil.d(tag, "transformValue clampViewPositionVertical, top=$top, dy=$dy")
-                return transformValue(dy.toFloat(), top.toFloat(), childView1.measuredHeight.toFloat()).toInt()
+                return transformValue(dy.toFloat(), top.toFloat(), measuredHeight.toFloat()).toInt()
             }
 
             override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
                 CXLogUtil.d(tag, "onViewPositionChanged, top=$top, dy=$dy")
 
-                if (changedView == childView1) {
-                    childView0.offsetTopAndBottom(dy)
-                    childView2.offsetTopAndBottom(dy)
+                if (changedView == pageViewList[pageIndex]) {
+                    pageViewList.forEach { if (it != changedView) it.offsetTopAndBottom(dy) }
                 }
             }
 
@@ -63,7 +62,10 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
                 var stateDesc = "NONE"
                 when (state) {
                     ViewDragHelper.STATE_DRAGGING -> stateDesc = "DRAGGING"
-                    ViewDragHelper.STATE_IDLE -> stateDesc = "IDLE"
+                    ViewDragHelper.STATE_IDLE -> {
+                        stateDesc = "IDLE"
+                        onSmoothScrollAnimationEnd()
+                    }
                     ViewDragHelper.STATE_SETTLING -> stateDesc = "SETTLING"
                 }
                 CXLogUtil.d(tag, "onViewDragStateChanged, state=$stateDesc")
@@ -84,16 +86,16 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
             }
         })
     }
-    private lateinit var childView0: View
-    private lateinit var childView1: View
-    private lateinit var childView2: View
+
+    private var pageViewList = mutableListOf<View>()
+    private var pageIndex = 1
 
     override fun onFinishInflate() {
         CXLogUtil.d(tag, "onFinishInflate")
         super.onFinishInflate()
-        childView0 = getChildAt(0)
-        childView1 = getChildAt(1)
-        childView2 = getChildAt(2)
+        pageViewList.add(getChildAt(0))
+        pageViewList.add(getChildAt(1))
+        pageViewList.add(getChildAt(2))
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -113,13 +115,14 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         CXLogUtil.d(tag, "onLayout:left=$left, top=$top, right=$right, bottom=$bottom")
-        childView0.layout(left, -bottom, right, top)
-        childView1.layout(left, top, right, bottom)
-        childView2.layout(left, bottom, right, bottom + bottom)
+        val containerViewHeight = bottom - top
 
-        CXLogUtil.d(tag, "onLayout:childView0, top=${-bottom}, bottom=$top")
-        CXLogUtil.d(tag, "onLayout:childView1, top=${top}, bottom=$bottom")
-        CXLogUtil.d(tag, "onLayout:childView2, top=${bottom}, bottom=${bottom + bottom}")
+        for (i in 0 until pageViewList.size) {
+            val itemTop = top + (i - pageIndex) * containerViewHeight
+            val itemBottom = bottom + (i - pageIndex) * containerViewHeight
+            pageViewList[i].layout(left, itemTop, right, itemBottom)
+            CXLogUtil.d(tag, "onLayout:childView$i, top=$itemTop, bottom=$itemBottom")
+        }
     }
 
     /**
@@ -160,24 +163,45 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         return super.onInterceptTouchEvent(event)
     }
 
-    private fun smoothScrollAfterReleased(releasedChild: View, yvel: Float) {
-        CXLogUtil.d(tag, "smoothScrollAfterReleased: top=${releasedChild.top}")
+    private var nextPageIndex = pageIndex
+    private fun smoothScrollAfterReleased(releasedChild: View, @Suppress("UNUSED_PARAMETER") yvel: Float) {
+        val isPullingDown = releasedChild.top >= 0
+        CXLogUtil.d(tag, "smoothScrollAfterReleased: top=${releasedChild.top}, isPullingDown=$isPullingDown")
         val finalTop: Int
-        if (releasedChild == childView1) {
+        if (releasedChild == pageViewList[pageIndex]) {
             if (Math.abs(releasedChild.top) < thresholdDistance) {
                 finalTop = 0
             } else {
-                val isPullingDown = releasedChild.top >= 0
-                CXLogUtil.d(tag, "isPullingDown:$isPullingDown")
-                finalTop = if (isPullingDown) releasedChild.measuredHeight else -releasedChild.measuredHeight
+                if (isPullingDown && pageIndex >= 1) {
+                    nextPageIndex = pageIndex - 1
+                } else if (!isPullingDown && pageIndex < pageViewList.size - 1) {
+                    nextPageIndex = pageIndex + 1
+                }
+                if (nextPageIndex != pageIndex) {
+                    finalTop = if (isPullingDown) releasedChild.measuredHeight else -releasedChild.measuredHeight
+                } else {
+                    finalTop = 0  // 第一个和最后一个view 禁止滑动到上一个/下一个页面
+                }
             }
             smoothScroll(releasedChild, finalTop)
         }
     }
 
+    private fun onSmoothScrollAnimationEnd() {
+        if (nextPageIndex != pageIndex) {
+            pageIndex = nextPageIndex
+            onPageChanged(pageIndex)
+        }
+    }
+
+    private fun onPageChanged(pageIndex: Int) {
+        CXLogUtil.e(tag, "onPageChanged, pageIndex=$pageIndex")
+    }
+
     private fun smoothScroll(releasedChild: View, top: Int) {
         if (dragHelper.smoothSlideViewTo(releasedChild, 0, top)) ViewCompat.postInvalidateOnAnimation(this)
     }
+
 
     //获取拉升处理后的位移(达到越拉越难拉动的效果)
     private fun transformValue(offset: Float, originValue: Float, totalValue: Float): Float {

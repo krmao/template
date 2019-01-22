@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_700"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.smart.library.widget.titlebar.CXTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_title_bar_height"
+        android:background="@color/blue_700"
+        app:cxTitleText="pull to next page" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/home_root_background">
+
+        <com.smart.template.widget.PullToNextPageView
+            android:id="@+id/pullToNextPageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/blue_700" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/orange_700" />
+        </com.smart.template.widget.PullToNextPageView>
+    </LinearLayout>
+</LinearLayout>

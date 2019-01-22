@@ -1,51 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent"
-    android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="直接从静态资源区获取json文件"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        android:fitsSystemWindows="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="从GET接口获取json String内容"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="直接从静态资源区获取json文件"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/text3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="react native"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="从GET接口获取json String内容"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/text4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:text="flutter hot update"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="react native"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="flutter hot update"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="pull to next page"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

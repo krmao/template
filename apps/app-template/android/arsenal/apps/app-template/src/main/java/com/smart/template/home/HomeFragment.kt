@@ -38,5 +38,8 @@ class HomeFragment : CXBaseFragment() {
             val copySuccess = CXFileUtil.copyDirectory(CXCacheManager.getCacheChildDir("assets"), File(PathUtils.getDataDirectory(CXBaseApplication.INSTANCE)))
             CXToastUtil.show("copySuccess?$copySuccess")
         }
+        text5.setOnClickListener {
+            PullToNextPageFragment.goTo(context)
+        }
     }
 }

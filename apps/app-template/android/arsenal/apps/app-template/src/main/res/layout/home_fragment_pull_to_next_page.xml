@@ -8,10 +8,15 @@
     android:orientation="vertical">
 
     <com.smart.library.widget.titlebar.CXTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_title_bar_height"
         android:background="@color/blue_700"
-        app:cxTitleText="pull to next page" />
+        app:cxRight0Text="下一页"
+        app:cxRight0TextColor="@color/red_700"
+        app:cxRight1Text="上一页"
+        app:cxRight1TextColor="@color/white"
+        app:cxTitleText="pull demo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,22 +30,45 @@
             android:layout_height="match_parent">
 
             <View
-                android:id="@+id/view0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/blue_700" />
 
             <View
-                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pink_700" />
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/pink_700" />
 
             <!--<View-->
-                <!--android:id="@+id/view2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@color/orange_700" />-->
+            <!--android:id="@+id/view2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/orange_700" />-->
         </com.smart.template.widget.PullToNextPageView>
     </LinearLayout>
 </LinearLayout>

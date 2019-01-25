@@ -19,7 +19,8 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
     private val tag: String = PullToNextPageView::class.java.name
     private var thresholdDistance = CXSystemUtil.screenHeight / 5
     private var pageViewList = mutableListOf<View>()
-    private var pageIndex = 1
+    var pageIndex = 1
+        private set
     private var nextPageIndex = pageIndex
 
     private val dragHelper: ViewDragHelper by lazy {
@@ -85,9 +86,7 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
     override fun onFinishInflate() {
         CXLogUtil.d(tag, "onFinishInflate")
         super.onFinishInflate()
-        pageViewList.add(getChildAt(0))
-        pageViewList.add(getChildAt(1))
-        // pageViewList.add(getChildAt(2))
+        (0..6).forEach { pageViewList.add(getChildAt(it)) }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -115,6 +114,8 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
             pageViewList[i].layout(left, itemTop, right, itemBottom)
             CXLogUtil.d(tag, "onLayout:childView$i, top=$itemTop, bottom=$itemBottom")
         }
+
+        invalidate()
     }
 
     override fun computeScroll() {
@@ -186,6 +187,14 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         CXLogUtil.e(tag, "onPageChanged, pageIndex=$pageIndex")
     }
 
+    fun smoothScrollTo(toPageIndex: Int) {
+        if (toPageIndex >= 0 && toPageIndex < pageViewList.size && toPageIndex != pageIndex) {
+            val finalTop: Int = (pageIndex - toPageIndex) * measuredHeight
+            nextPageIndex = toPageIndex
+            smoothScroll(pageViewList[pageIndex], finalTop)
+        }
+    }
+
     private fun smoothScroll(releasedChild: View, top: Int) {
         if (dragHelper.smoothSlideViewTo(releasedChild, 0, top)) ViewCompat.postInvalidateOnAnimation(this)
     }
@@ -201,6 +210,12 @@ class PullToNextPageView @JvmOverloads constructor(context: Context, attrs: Attr
         val transformValue = originValue - offset * y
         CXLogUtil.e(tag, "transformValue originValue=$originValue, transformValue=$transformValue, totalValue=$totalValue, x=$x, y=$y")
         return transformValue
+    }
+
+    interface IPageView {
+        fun canScrollTopToBottom(): Boolean
+        fun canScrollBottomToTop(): Boolean
+        fun onLoad(pageIndex: Int)
     }
 
 }

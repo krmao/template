@@ -41,7 +41,6 @@
 		3D52A54D31DB96BB5070B0C8 /* CXLogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7DAAE53A40BDA21A57A /* CXLogUtil.swift */; };
 		3D52A57FBB48FF7FAFEB26DA /* CXCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A1B5083DBFE845B40DAB /* CXCacheManager.swift */; };
 		3D52A5E07BE52BA76D5BA111 /* ReactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEE9136D2BC91066D3AE /* ReactViewController.swift */; };
-		3D52A6C51DF5E78200697C66 /* back-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AC4DF3D22E33696C8F90 /* back-icon@3x.png */; };
 		3D52A733FA3A58B356797F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AD3BA095BD63779AF6A6 /* AppDelegate.swift */; };
 		3D52A7526D4FF924723B8E63 /* CXHybirdModuleBundleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AC55409359030AABB713 /* CXHybirdModuleBundleModel.swift */; };
 		3D52A79032E891352AE2DA33 /* ReactManagerOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF9F34A138601CFC7472 /* ReactManagerOC.m */; };
@@ -75,14 +74,12 @@
 		3D52ABC99D884577B6F3BA5A /* housekeeper-1.0.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A0DF71A90295397D57D4 /* housekeeper-1.0.zip */; };
 		3D52ABCF63C2B71BAE40DC2C /* CXHybird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AEAE41920A4DD68E33C7 /* CXHybird.swift */; };
 		3D52ABD3A215D59F8706CD20 /* CXConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A8C25CD5FF24F41669CA /* CXConfig.swift */; };
-		3D52AC071D5AFC3FAF489420 /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A737A7430D7B66A19467 /* back-icon.png */; };
 		3D52AC9644964F24827F753B /* CXHybirdModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A7AB21F8C1F9A80C8809 /* CXHybirdModuleManager.swift */; };
 		3D52ACB9F45D71AC6BD4A1BF /* CXNSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AF9C32C746FC69B972AD /* CXNSObjectExtension.swift */; };
 		3D52ACD6EA02473187158F31 /* business.ios.bundle.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A64E9AA916122B1E5E3A /* business.ios.bundle.json */; };
 		3D52AD12D84B5AFBC2E297B8 /* business.ios.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A209D2BB5010738832C6 /* business.ios.bundle */; };
 		3D52AD5C8988C09C890BD2EC /* CXHybirdBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A64089699FB1FB5CB72C /* CXHybirdBridge.swift */; };
 		3D52AD8549B92CADAA480686 /* FileNotFoundException.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A8A8DB8F029DA619ECFE /* FileNotFoundException.swift */; };
-		3D52ADD72F1DE547FDCD28D4 /* back-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52A952A763E15891A08C76 /* back-icon@2x.png */; };
 		3D52ADD995EA8FD2D73F06A1 /* base.ios.bundle.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AE14B1013A4901BDC458 /* base.ios.bundle.json */; };
 		3D52ADFA946EF61E1293F917 /* back-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52ADA9C5570CDF1A1D6467 /* back-icon@3x.png */; };
 		3D52AE2F28982F6EBAF39D64 /* CXDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A18BF22ADFAC083A153C /* CXDataExtension.swift */; };
@@ -93,7 +90,6 @@
 		3D52AEF800ECEB808095E3FE /* RecommendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A0D0D9BA0321C25F9132 /* RecommendData.swift */; };
 		3D52AF4F8B82F687533CDF0B /* UIButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52AADD687912E6ED6FEF2F /* UIButtonWithImage.swift */; };
 		3D52AFC69556282B30959DBC /* CXApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D52A0D0EB736EC191E73FF2 /* CXApiManager.swift */; };
-		3D52AFFC6B78945B7AB5444B /* back-icon-mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D52AC4681292E89864229ED /* back-icon-mask.png */; };
 		87ED7CBD2138E5090016B6E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87ED7CBC2138E5090016B6E9 /* Assets.xcassets */; };
 		D34F39CACB6630DCCCEF54B2 /* Pods_template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72E14D0098F581A730273010 /* Pods_template.framework */; };
 /* End PBXBuildFile section */
@@ -406,7 +402,6 @@
 			children = (
 				3D52A024CB28D7098C22D997 /* res */,
 				3D52A1D537DDE2DE99178A2D /* src */,
-				3D52AD55098FCA3991AC1B33 /* Base.lproj */,
 				3D52AD65AF915420AC1A61A5 /* Info.plist */,
 			);
 			path = "app-template";
@@ -415,9 +410,7 @@
 		3D52A49FB601336EEF6D8C3D /* remote */ = {
 			isa = PBXGroup;
 			children = (
-				3D52AE92AD32DDA4209ABFF7 /* core */,
 				3D52A5FA39C7AD67294FF9F0 /* model */,
-				3D52A9B3AF10CD90593E049D /* exception */,
 				3D52A0D0EB736EC191E73FF2 /* CXApiManager.swift */,
 				3D52A85783C0D47376337F9D /* CXURLManager.swift */,
 			);
@@ -563,13 +556,6 @@
 			path = "react-navigation";
 			sourceTree = "<group>";
 		};
-		3D52A96B47BF10D1A66F008E /* deploy */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = deploy;
-			sourceTree = "<group>";
-		};
 		3D52A99B543D0C9B9862C2F2 /* data */ = {
 			isa = PBXGroup;
 			children = (
@@ -582,13 +568,6 @@
 			path = data;
 			sourceTree = "<group>";
 		};
-		3D52A9B3AF10CD90593E049D /* exception */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = exception;
-			sourceTree = "<group>";
-		};
 		3D52A9FA282AF19E15CD147C /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -596,13 +575,6 @@
 				3D52AA0B782718A511AB64C0 /* CXHybirdModuleConfigModel.swift */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		3D52AA5CB0CE9B8472ADE797 /* library-template-base */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "library-template-base";
 			sourceTree = "<group>";
 		};
 		3D52AA6C14E984F7BAF092A1 /* library-template-repository */ = {
@@ -650,7 +622,6 @@
 				3D52A7C9859B1C3FD19842B3 /* base */,
 				3D52ADC3A2AF2CCC8C9AD815 /* util */,
 				3D52A0A9350C38E29522DB38 /* bundle */,
-				3D52A96B47BF10D1A66F008E /* deploy */,
 				3D52AB3C45100D93D11761F6 /* widget */,
 			);
 			path = src;
@@ -694,13 +665,6 @@
 				3D52A3F47A352B07DED40E0A /* CXThreadExtension copy.swift */,
 			);
 			path = extension;
-			sourceTree = "<group>";
-		};
-		3D52AD55098FCA3991AC1B33 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Base.lproj;
 			sourceTree = "<group>";
 		};
 		3D52AD82AA109F23630396F2 /* assets */ = {
@@ -771,13 +735,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3D52AE92AD32DDA4209ABFF7 /* core */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = core;
-			sourceTree = "<group>";
-		};
 		3D52AE98F84368A9AB6CDE51 /* node_modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,7 +755,6 @@
 			isa = PBXGroup;
 			children = (
 				3D52A83C8D257E7BA2DD6650 /* library-base */,
-				3D52AA5CB0CE9B8472ADE797 /* library-template-base */,
 				3D52AA6C14E984F7BAF092A1 /* library-template-repository */,
 			);
 			path = libraries;
@@ -902,10 +858,6 @@
 				3D52AAE9422CA4638DD6FE51 /* share.png in Resources */,
 				3D52A423DDBA93FEFCC1047B /* banner.png in Resources */,
 				3D52A87ACC587284DB775760 /* right_arrow.png in Resources */,
-				3D52AC071D5AFC3FAF489420 /* back-icon.png in Resources */,
-				3D52ADD72F1DE547FDCD28D4 /* back-icon@2x.png in Resources */,
-				3D52A6C51DF5E78200697C66 /* back-icon@3x.png in Resources */,
-				3D52AFFC6B78945B7AB5444B /* back-icon-mask.png in Resources */,
 				3D52AD12D84B5AFBC2E297B8 /* business.ios.bundle in Resources */,
 				3D52ACD6EA02473187158F31 /* business.ios.bundle.json in Resources */,
 				3D52A3001FDD838217B85CA7 /* business.ios.bundle.meta in Resources */,

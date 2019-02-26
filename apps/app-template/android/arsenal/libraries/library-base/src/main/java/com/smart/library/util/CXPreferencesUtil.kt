@@ -11,7 +11,6 @@ import com.google.gson.reflect.TypeToken
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXConfig
 import java.util.*
-import kotlin.collections.HashMap
 
 @Suppress("unused")
 /**
@@ -33,7 +32,7 @@ object CXPreferencesUtil {
     private var mGson: Gson = Gson()
 
     fun getBoolean(name: String, bDefault: Boolean): Boolean =
-        mSharedPreferences.getBoolean(name, bDefault)
+            mSharedPreferences.getBoolean(name, bDefault)
 
     fun putBoolean(name: String, value: Boolean): Boolean {
         val editor = mSharedPreferences.edit()
@@ -53,10 +52,9 @@ object CXPreferencesUtil {
         return editor.commit()
     }
 
-    fun getString(key: String): String = mSharedPreferences.getString(key, "")
+    fun getString(key: String): String? = mSharedPreferences.getString(key, "")
 
-    fun getString(key: String, default: String? = null): String =
-        mSharedPreferences.getString(key, default)
+    fun getString(key: String, default: String = ""): String = mSharedPreferences.getString(key, default) ?: default
 
     fun putInt(key: String, value: Int): Boolean {
         val editor = mSharedPreferences.edit()

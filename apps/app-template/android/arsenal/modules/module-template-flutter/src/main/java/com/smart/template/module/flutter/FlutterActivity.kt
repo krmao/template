@@ -25,7 +25,7 @@ import io.flutter.view.FlutterNativeView
 import io.flutter.view.FlutterView
 
 @SuppressLint("InflateParams", "StaticFieldLeak")
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 class FlutterActivity : CXBaseActivity(), FlutterView.Provider, PluginRegistry, FlutterActivityDelegate.ViewFactory {
 
     companion object {

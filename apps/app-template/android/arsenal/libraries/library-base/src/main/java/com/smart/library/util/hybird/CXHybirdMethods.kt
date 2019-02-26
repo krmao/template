@@ -21,7 +21,7 @@ class CXHybirdMethods {
             CXPreferencesUtil.putString(key, value)
         }
 
-        fun getFromLocal(key: String, default: String? = null) {
+        fun getFromLocal(key: String, default: String = "") {
             CXPreferencesUtil.getString(key, default)
         }
 

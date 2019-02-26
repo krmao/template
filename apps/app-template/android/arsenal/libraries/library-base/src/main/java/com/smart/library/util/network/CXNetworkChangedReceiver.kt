@@ -10,6 +10,7 @@ import com.smart.library.util.CXLogUtil
 import com.smart.library.util.rx.RxBus
 
 
+@Suppress("DEPRECATION", "unused")
 class CXNetworkChangedReceiver : BroadcastReceiver() {
 
     companion object {

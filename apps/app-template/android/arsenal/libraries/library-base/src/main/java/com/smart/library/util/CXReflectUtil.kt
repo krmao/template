@@ -9,7 +9,7 @@ import kotlin.reflect.full.declaredFunctions
 
 @Suppress("unused")
 object CXReflectUtil {
-    private val TAG = "[reflect]"
+    private const val TAG = "[reflect]"
 
     /**
      * 根据方法的名字调用方法，适合 object 定义的单例静态方法
@@ -26,7 +26,7 @@ object CXReflectUtil {
     fun set(obj: Any?, fieldName: String?, value: Any?) {
         CXLogUtil.e(TAG, "do set ${obj?.javaClass?.simpleName}.$fieldName = $value start ...")
         try {
-            val filed = obj?.javaClass?.getDeclaredField(fieldName)
+            val filed = obj?.javaClass?.getDeclaredField(fieldName ?: "")
             filed?.isAccessible = true
             filed?.set(obj, value)
             CXLogUtil.e(TAG, "do set ${obj?.javaClass?.simpleName}.$fieldName = $value success !!!")
@@ -51,7 +51,7 @@ object CXReflectUtil {
     fun get(obj: Any?, fieldName: String?): Any? {
         CXLogUtil.e(TAG, "do get ${obj?.javaClass?.simpleName}.$fieldName start ...")
         try {
-            val filed = obj?.javaClass?.getDeclaredField(fieldName)
+            val filed = obj?.javaClass?.getDeclaredField(fieldName ?: "")
             filed?.isAccessible = true
             val value = filed?.get(obj)
             CXLogUtil.e(TAG, "do get ${obj?.javaClass?.simpleName}.$fieldName = $value success !!!")

@@ -12,7 +12,7 @@ import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 object CXNetworkUtil {
 
     enum class Type {

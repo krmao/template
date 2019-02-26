@@ -1,5 +1,6 @@
 package com.smart.module.test
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
@@ -28,19 +29,20 @@ class TestFragment : CXBaseFragment(), TestContract.View {
         TestPresenter(this)
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.test_fragment_test, null, false)
+        return inflater.inflate(R.layout.test_fragment_test, null, false)
     }
 
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         RxView.clicks(fab_test).concatWith(RxView.clicks(btn_test)).debounce(5000, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             Log.w("TestRouteManager", "start from self")
             RxBus.post(RxRouteEvent().apply {
-                activity = activity
                 targetUrl = "test://detail"
                 bundle = null
-                id = javaClass.canonicalName
+                id = javaClass.canonicalName ?: ""
             })
         }
         RxView.clicks(btn_test).debounce(300, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
@@ -54,7 +56,7 @@ class TestFragment : CXBaseFragment(), TestContract.View {
     }
 
     override fun showException(message: String) {
-        loading_view.showView(CXFrameLoadingLayout.ViewType.NETWORK_EXCEPTION,message,true)
+        loading_view.showView(CXFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, message, true)
     }
 
     override fun showLoading() {

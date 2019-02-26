@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object CXRouteManager {
-    private val KEY_ID_CALLBACK = "id_callback"
+    private const val KEY_ID_CALLBACK = "id_callback"
 
     private val callbackMap: MutableMap<String, ((bundle: Bundle?) -> Unit?)?> = ConcurrentHashMap()
 
@@ -45,10 +45,10 @@ object CXRouteManager {
                 callback(null)
             return
         }
-        val intent = Intent().setClassName(activity, activityName).putExtras(bundle ?: Bundle())
+        val intent = Intent().setClassName(activity, activityName?:"").putExtras(bundle ?: Bundle())
         if (callback != null) {
             val id = activityName + ":" + System.currentTimeMillis()
-            callbackMap.put(id, callback)
+            callbackMap[id] = callback
             intent.putExtra(KEY_ID_CALLBACK, id)
         }
         CXLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
@@ -148,7 +148,7 @@ object CXRouteManager {
         if (callback != null) {
             val id = fragmentName + ":" + System.currentTimeMillis()
             tmpBundle.putString(KEY_ID_CALLBACK, id)
-            callbackMap.put(id, callback)
+            callbackMap[id] = callback
         }
         CXLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
         CXActivity.start(activity, fragmentName, tmpBundle)
@@ -192,7 +192,7 @@ object CXRouteManager {
 
         goToFragment(activity, fragmentName, bundle)
         goToFragment(activity, fragmentName, bundle, callback)
-        goToFragment(activity, fragmentName, bundle) { _: Bundle? ->
+        goToFragment(activity, fragmentName, bundle) {
 
         }
     }
@@ -200,7 +200,7 @@ object CXRouteManager {
     fun testGoToActivity(activity: Activity, activityName: String, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
         goToActivity(activity, activityName, bundle)
         goToActivity(activity, activityName, bundle, callback)
-        goToActivity(activity, activityName, bundle) { _: Bundle? ->
+        goToActivity(activity, activityName, bundle) {
 
         }
     }

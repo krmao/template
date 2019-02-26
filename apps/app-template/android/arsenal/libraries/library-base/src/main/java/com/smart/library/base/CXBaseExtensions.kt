@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "DEPRECATION")
 
 package com.smart.library.base
 
@@ -143,7 +143,7 @@ private val FragmentActivity.callbackFragmentV4: ActivityCallbackFragmentV4?
 
             // remove unused fragment
             if (fragment?.isRemoving == true) {
-                tmpFragmentManager.beginTransaction()?.remove(fragment)?.commitAllowingStateLoss()
+                tmpFragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss()
                 tmpFragmentManager.executePendingTransactions()
                 fragment = null
             }
@@ -246,6 +246,7 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
      * VERSION_CODES >= M (23 - Android 6.0) 时，执行onAttach(Context)
      * V4 无此问题
      */
+    @Suppress("OverridingDeprecatedMember")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
         callOnAttach()

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.smart.library.util.rx.permission
 
 import android.annotation.TargetApi

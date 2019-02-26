@@ -19,7 +19,7 @@ dependencies {
     api project(':library-base')
 
     //api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
-    api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
+    //api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
     api 'com.github.evgenyneu:js-evaluator-for-android:v3.0.0'
 
     /*

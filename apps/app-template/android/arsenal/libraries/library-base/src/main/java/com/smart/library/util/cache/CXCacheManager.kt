@@ -38,7 +38,10 @@ object CXCacheManager {
      * @see https://stackoverflow.com/a/40741881/4348530
      */
     @JvmStatic
-    fun getFilesDir(): File = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.getExternalFilesDir(null) else CXBaseApplication.INSTANCE.filesDir
+    fun getFilesDir(): File {
+        val file = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.getExternalFilesDir(null) else CXBaseApplication.INSTANCE.filesDir
+        return file ?: CXBaseApplication.INSTANCE.filesDir
+    }
 
     @JvmStatic
     fun getFilesHotPatchDir(): File = getChildDir(getFilesDir(), "hot-patch")
@@ -59,7 +62,10 @@ object CXCacheManager {
      * @see https://stackoverflow.com/a/40741881/4348530
      */
     @JvmStatic
-    fun getCacheDir(): File = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.externalCacheDir else CXBaseApplication.INSTANCE.cacheDir
+    fun getCacheDir(): File {
+        val file = if (CXSystemUtil.isSdCardExist) CXBaseApplication.INSTANCE.externalCacheDir else CXBaseApplication.INSTANCE.cacheDir
+        return file ?: CXBaseApplication.INSTANCE.cacheDir
+    }
 
     @JvmStatic
     fun getCacheChildDir(childDir: String): File = getChildDir(getCacheDir(), childDir)

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate", "PropertyName")
 abstract class CXListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> : BaseAdapter {
     protected var TAG: String? = CXListAdapter::class.java.simpleName
     protected var dataList: List<ItemEntity> = arrayListOf()
@@ -35,7 +35,7 @@ abstract class CXListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> :
         if (convertView == null) {
             viewHolder = onCreateViewHolder(parent, getItemViewType(position))
             convertView = viewHolder.itemView
-            convertView!!.tag = viewHolder
+            convertView.tag = viewHolder
         } else {
             @Suppress("UNCHECKED_CAST")
             viewHolder = convertView.tag as ViewHolder

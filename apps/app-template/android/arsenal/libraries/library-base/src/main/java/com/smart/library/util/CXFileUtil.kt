@@ -32,14 +32,10 @@ object CXFileUtil {
             CXLogUtil.e("fileChannelCopy", "copy failure", e)
         } finally {
             try {
-                if (fileInputStream != null)
-                    fileInputStream.close()
-                if (fileChannelIn != null)
-                    fileChannelIn.close()
-                if (fileOutputStream != null)
-                    fileOutputStream.close()
-                if (fileChannelOut != null)
-                    fileChannelOut.close()
+                fileInputStream?.close()
+                fileChannelIn?.close()
+                fileOutputStream?.close()
+                fileChannelOut?.close()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -99,9 +95,6 @@ object CXFileUtil {
     fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)
 
     /**
-     * copy from
-     * @see com.google.common.io.ByteStreams.copy
-     *
      * Copies all bytes from the input stream to the output stream. Does not close or flush either
      * stream.
      *
@@ -115,7 +108,7 @@ object CXFileUtil {
     fun copy(from: InputStream?, to: OutputStream?, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
         checkNotNull(from)
         checkNotNull(to)
-        val total = from!!.available().toLong()
+        val total = from.available().toLong()
         val buf = ByteArray(8192)
         var current: Long = 0
         while (true) {
@@ -123,7 +116,7 @@ object CXFileUtil {
             if (r == -1) {
                 break
             }
-            to!!.write(buf, 0, r)
+            to.write(buf, 0, r)
             current += r.toLong()
             onProgress?.invoke(current, total)
         }
@@ -219,7 +212,7 @@ object CXFileUtil {
             val assetManager = CXBaseApplication.INSTANCE.resources.assets
             var inputStream: InputStream? = null
             try {
-                inputStream = assetManager.open(pathInAssetsDir?.replace("assets://", ""))
+                inputStream = assetManager.open(pathInAssetsDir.replace("assets://", ""))
                 if (null != inputStream) {
                     return true
                 }
@@ -394,10 +387,8 @@ object CXFileUtil {
             e.printStackTrace()
         } finally {
             try {
-                if (outputStreamWriter != null)
-                    outputStreamWriter.close()
-                if (printWriter != null)
-                    printWriter.close()
+                outputStreamWriter?.close()
+                printWriter?.close()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

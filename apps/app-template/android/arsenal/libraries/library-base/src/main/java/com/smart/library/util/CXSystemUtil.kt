@@ -23,7 +23,7 @@ import com.smart.library.R
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.toBitmap
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
 object CXSystemUtil {
 
     @JvmStatic
@@ -76,7 +76,7 @@ object CXSystemUtil {
     fun collapseStatusBar() = CXBaseApplication.INSTANCE.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) // 收起下拉通知栏
 
     @JvmStatic
-    fun hideKeyboard(view: View?) = view?.let { (it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.let { if (it.isActive) it.hideSoftInputFromWindow(view.applicationWindowToken, 0) } }
+    fun hideKeyboard(view: View?) = view?.let { _view -> (_view.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.let { if (it.isActive) it.hideSoftInputFromWindow(view.applicationWindowToken, 0) } }
 
     @JvmStatic
     fun hideKeyboard(activity: Activity?) = activity?.currentFocus?.let { view -> (view.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.let { if (it.isActive) it.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS) } }
@@ -170,8 +170,8 @@ object CXSystemUtil {
     fun bringAppToFront(activity: Activity?) {
         activity?.let {
             val notificationIntent = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
-            notificationIntent.`package` = null // The golden row !!!
-            notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+            notificationIntent?.`package` = null // The golden row !!!
+            notificationIntent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
             activity.startActivity(notificationIntent)
             activity.overridePendingTransition(R.anim.cx_fade_in, R.anim.cx_fade_out)
         }

@@ -48,7 +48,7 @@ import java.util.*
 @Suppress("unused", "MemberVisibilityCan", "MemberVisibilityCan", "MemberVisibilityCanPrivate")
 object CXLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
-    private val PAGE_SUFFIX = "#_PAGE_#"
+    private const val PAGE_SUFFIX = "#_PAGE_#"
 
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
 
@@ -59,7 +59,7 @@ object CXLogUtil {
     @JvmStatic
     fun open() {
         if (debug) {
-            MODULE_MAP_ASC.put(getLocationPackageName(getStackTraceElement()), true)
+            MODULE_MAP_ASC[getLocationPackageName(getStackTraceElement())] = true
         }
     }
 
@@ -67,14 +67,14 @@ object CXLogUtil {
     fun openPage() {
         if (debug) {
             val locationClassName = getLocationClassName(getStackTraceElement()) + PAGE_SUFFIX
-            MODULE_MAP_ASC.put(locationClassName, true)
+            MODULE_MAP_ASC[locationClassName] = true
         }
     }
 
     @JvmStatic
     fun close() {
         if (debug) {
-            MODULE_MAP_ASC.put(getLocationPackageName(getStackTraceElement()), false)
+            MODULE_MAP_ASC[getLocationPackageName(getStackTraceElement())] = false
         }
     }
 
@@ -82,7 +82,7 @@ object CXLogUtil {
     fun closePage() {
         if (debug) {
             val locationClassName = getLocationClassName(getStackTraceElement()) + PAGE_SUFFIX
-            MODULE_MAP_ASC.put(locationClassName, false)
+            MODULE_MAP_ASC[locationClassName] = false
         }
     }
 
@@ -230,7 +230,7 @@ object CXLogUtil {
     fun getLocation(stackTraceElement: StackTraceElement?): String = "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
 
     @JvmStatic
-    fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className).`package`.name ?: ""
+    fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className?:"").`package`?.name ?: ""
 
     @JvmStatic
     fun getLocationMethodName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.methodName ?: ""
@@ -276,7 +276,7 @@ object CXLogUtil {
                 p(level, tag, "╔═══════════════════════════════════════════════════════════════════════════════════════", false)
                 val lines = message.split(LINE_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 for (line in lines) {
-                    p(level, tag, "║ " + line, false)
+                    p(level, tag, "║ $line", false)
                 }
                 p(level, tag, "╚═══════════════════════════════════════════════════════════════════════════════════════", false)
             }
@@ -312,6 +312,6 @@ object CXLogUtil {
             }
 
         }
-        return tmpTag + ":" + tmpMsg
+        return "$tmpTag:$tmpMsg"
     }
 }

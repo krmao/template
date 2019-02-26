@@ -48,7 +48,8 @@ dependencies {
     //api "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
 
     /******* 网络请求库 ****************************************************************************/
-    //api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version" //CXHttpLoggingInterceptor
+    api "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
+    // api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion" //CXHttpLoggingInterceptor
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"

@@ -140,7 +140,7 @@ open class CXActivity : CXBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             val args = intent.extras
-            val themResId = args.getInt(KEY_THEME, 0)
+            val themResId = args?.getInt(KEY_THEME, 0) ?: 0
             if (themResId > 0) setTheme(themResId)
             super.onCreate(savedInstanceState)
 
@@ -148,7 +148,7 @@ open class CXActivity : CXBaseActivity() {
 
             var fragment: Fragment? = null
             val fragmentClassName: String
-            val fragmentObject = args.get(KEY_FRAGMENT_CLASS)
+            val fragmentObject = args?.get(KEY_FRAGMENT_CLASS)
 
             if (fragmentObject is Class<*>) {
                 fragmentClassName = fragmentObject.name

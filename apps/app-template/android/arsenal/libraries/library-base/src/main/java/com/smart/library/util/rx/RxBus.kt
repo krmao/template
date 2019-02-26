@@ -59,11 +59,11 @@ object RxBus {
         return if (event != null) observable.mergeWith(io.reactivex.Observable.just(eventType.cast(event))) else observable
     }
 
-    fun <T> getStickyEvent(eventType: Class<T>): T {
+    fun <T> getStickyEvent(eventType: Class<T>): T? {
         return eventType.cast(stickyEventMap[eventType])
     }
 
-    fun <T> removeStickyEvent(eventType: Class<T>): T {
+    fun <T> removeStickyEvent(eventType: Class<T>): T? {
         return eventType.cast(stickyEventMap.remove(eventType))
     }
 

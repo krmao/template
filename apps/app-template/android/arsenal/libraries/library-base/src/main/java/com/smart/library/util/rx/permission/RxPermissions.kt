@@ -12,7 +12,7 @@ import io.reactivex.functions.Function
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 class RxPermissions(activity: Activity) {
 
     companion object {
@@ -131,13 +131,13 @@ class RxPermissions(activity: Activity) {
             if (isGranted(permission)) {
                 // Already granted, or not Android M
                 // Return a granted Permission object.
-                list.add(Observable.just(Permission(permission, true, false)))
+                list.add(Observable.just(Permission(permission, granted = true, shouldShowRequestPermissionRationale = false)))
                 continue
             }
 
             if (isRevoked(permission)) {
                 // Revoked by a policy, return a denied Permission object.
-                list.add(Observable.just(Permission(permission, false, false)))
+                list.add(Observable.just(Permission(permission, granted = false, shouldShowRequestPermissionRationale = false)))
                 continue
             }
 

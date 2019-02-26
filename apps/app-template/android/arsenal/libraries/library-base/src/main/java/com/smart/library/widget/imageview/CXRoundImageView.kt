@@ -18,9 +18,9 @@ import com.smart.library.R
 class CXRoundImageView : AppCompatImageView {
 
     companion object {
-        val TYPE_CIRCLE = 0
-        val TYPE_ROUND = 1
-        val TYPE_OVAL = 2
+        const val TYPE_CIRCLE = 0
+        const val TYPE_ROUND = 1
+        const val TYPE_OVAL = 2
     }
 
     /**
@@ -155,9 +155,10 @@ class CXRoundImageView : AppCompatImageView {
                 canvas.drawArc(mCircleRect, -90f, mBorderProgress.toFloat(), false, mBorderPaint)
             }
             else -> {
-                canvas.drawOval(mRoundRect, mBitmapPaint)
-
-                canvas.drawOval(mRoundRect, mBorderPaint)
+                if (mRoundRect != null) {
+                    canvas.drawOval(mRoundRect!!, mBitmapPaint)
+                    canvas.drawOval(mRoundRect!!, mBorderPaint)
+                }
             }
         }
     }
@@ -170,18 +171,18 @@ class CXRoundImageView : AppCompatImageView {
          * 则将四个圆角大小设置为mCornerRadius的值
          */
         if (mLeftTopCornerRadius == 0f &&
-            mLeftBottomCornerRadius == 0f &&
-            mRightTopCornerRadius == 0f &&
-            mRightBottomCornerRadius == 0f) {
+                mLeftBottomCornerRadius == 0f &&
+                mRightTopCornerRadius == 0f &&
+                mRightBottomCornerRadius == 0f) {
 
             mRoundPath.addRoundRect(mRoundRect,
-                floatArrayOf(mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius),
-                Path.Direction.CW)
+                    floatArrayOf(mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius),
+                    Path.Direction.CW)
 
         } else {
             mRoundPath.addRoundRect(mRoundRect,
-                floatArrayOf(mLeftTopCornerRadius, mLeftTopCornerRadius, mRightTopCornerRadius, mRightTopCornerRadius, mRightBottomCornerRadius, mRightBottomCornerRadius, mLeftBottomCornerRadius, mLeftBottomCornerRadius),
-                Path.Direction.CW)
+                    floatArrayOf(mLeftTopCornerRadius, mLeftTopCornerRadius, mRightTopCornerRadius, mRightTopCornerRadius, mRightBottomCornerRadius, mRightBottomCornerRadius, mLeftBottomCornerRadius, mLeftBottomCornerRadius),
+                    Path.Direction.CW)
         }
 
     }
@@ -211,7 +212,7 @@ class CXRoundImageView : AppCompatImageView {
                     if (!(bmp.width == width && bmp.height == height)) {
                         // 如果图片的宽或者高与view的宽高不匹配，计算出需要缩放的比例；缩放后的图片的宽高，一定要大于我们view的宽高；所以我们这里取大值；
                         scale = Math.max(width * 1.0f / bmp.width,
-                            height * 1.0f / bmp.height)
+                                height * 1.0f / bmp.height)
                         //使缩放后的图片居中
                         val dx = (scale * bmp.width - width) / 2
                         val dy = (scale * bmp.height - height) / 2

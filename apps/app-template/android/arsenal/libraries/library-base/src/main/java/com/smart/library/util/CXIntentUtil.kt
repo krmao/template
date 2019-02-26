@@ -17,7 +17,7 @@ import com.smart.library.base.CXBaseApplication
 import java.io.File
 import java.util.*
 
-@Suppress("MemberVisibilityCanPrivate", "unused")
+@Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object CXIntentUtil {
 
     /**
@@ -30,7 +30,7 @@ object CXIntentUtil {
         intent.type = "vnd.android-dir/mms-sms"// 对双卡双待手机管用
         intent.putExtra("address", phoneNum)
         intent.putExtra("sms_body", content)
-        intent.data = Uri.parse("smsto:" + phoneNum)
+        intent.data = Uri.parse("smsto:$phoneNum")
         return intent
     }
 
@@ -67,7 +67,7 @@ object CXIntentUtil {
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.putExtra("address", phoneNum)
                     intent.putExtra("sms_body", content)
-                    intent.data = Uri.parse("smsto:" + phoneNum)
+                    intent.data = Uri.parse("smsto:$phoneNum")
                     targetedShareIntents.add(intent)
                 }
             }
@@ -240,7 +240,7 @@ object CXIntentUtil {
     fun callOpenApp(context: Context, packageName: String): Boolean = try {
         val pm = context.packageManager
         val intent = pm.getLaunchIntentForPackage(packageName)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
         true
     } catch (e: Exception) {
@@ -274,7 +274,7 @@ object CXIntentUtil {
      */
     @RequiresPermission(value = "android.permission.CALL_PHONE")
     fun openPhoneAutoCall(context: Context, phoneNo: String) {
-        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNo))
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNo"))
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             return
         }

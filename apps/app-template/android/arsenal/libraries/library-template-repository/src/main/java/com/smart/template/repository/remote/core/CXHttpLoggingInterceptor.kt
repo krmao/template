@@ -91,6 +91,7 @@ class CXHttpLoggingInterceptor(private var level: Level = Level.NONE, private va
         }
     }
 
+    @Suppress("DEPRECATION")
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val level = this.level

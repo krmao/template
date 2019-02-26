@@ -96,7 +96,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDebugHttpHost(): String {
-        return preferences.getString("debug_http_host", "")
+        return preferences.getString("debug_http_host", "") ?: ""
     }
 
     /**
@@ -142,7 +142,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDefaultStartComponent(): String {
-        return preferences.getString(KEY_DEFAULT_START_COMPONENT, "cxj")
+        return preferences.getString(KEY_DEFAULT_START_COMPONENT, "cxj") ?: ""
     }
 
     fun setDefaultStartComponentPage(component: String) {
@@ -150,7 +150,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDefaultStartComponentPage(): String {
-        return preferences.getString(KEY_DEFAULT_START_COMPONENT_PAGE, "")
+        return preferences.getString(KEY_DEFAULT_START_COMPONENT_PAGE, "") ?: ""
     }
 
     fun showDevOptionsDialog() {

@@ -29,7 +29,7 @@ import java.io.File
  *
  * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
  */
-@Suppress("MemberVisibilityCanPrivate", "unused")
+@Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object CXUriUtil {
     private val TAG = CXUriUtil::class.java.simpleName
     val AUTHORITY = CXBaseApplication.INSTANCE.packageName + ".provider"
@@ -48,7 +48,7 @@ object CXUriUtil {
     fun fromFileProvider(uri: Uri?): Uri? = fromFileProvider(AUTHORITY, uri)
 
     fun fromFileProvider(authority: String, uri: Uri?): Uri? =
-        if (uri != null && uri.scheme.startsWith("file://")) fromFileProvider(authority, File(uri.toString().replace(uri.scheme, ""))) else uri
+            if (uri != null && uri.scheme?.startsWith("file://") == true) fromFileProvider(authority, File(uri.toString().replace(uri.scheme ?: "", ""))) else uri
 
     fun fromFileProvider(authority: String, file: File): Uri? {
         var result: Uri? = null

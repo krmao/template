@@ -111,7 +111,7 @@ open class CXBaseActivity : AppCompatActivity() {
             if (onBackPress()) return true
 
             window.decorView.clearAnimation()
-            supportFragmentManager.fragments?.firstOrNull()?.let {
+            supportFragmentManager.fragments.firstOrNull()?.let {
                 if (it is CXBaseFragment.OnBackPressedListener) {
                     if (it.onBackPressed()) {
                         supportFragmentManager.popBackStackImmediate()

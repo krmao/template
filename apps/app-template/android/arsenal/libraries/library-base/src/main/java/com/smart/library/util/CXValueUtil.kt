@@ -40,6 +40,7 @@ object CXValueUtil {
     @JvmStatic
     fun isValid(fragment: Fragment?): Boolean = fragment != null && !fragment.isDetached
 
+    @Suppress("DEPRECATION")
     @JvmStatic
     fun isValid(fragment: android.app.Fragment?): Boolean = fragment != null && !fragment.isDetached
 
@@ -153,7 +154,7 @@ object CXValueUtil {
         var format = "0"
         if (decimalLength > 0) {
             format = "0."
-            (0 until decimalLength).forEach { format += "0" }
+            (0 until decimalLength).forEach { _ -> format += "0" }
         }
         try {
             return DecimalFormat(format).format(value)

@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 
-class ViewPagerAdapter(val context: Context) : PagerAdapter() {
+class ViewPagerAdapter(val context: Context, val scrollView: ViewPagerScrollView) : PagerAdapter() {
 
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
         return p0 == p1
@@ -23,7 +23,7 @@ class ViewPagerAdapter(val context: Context) : PagerAdapter() {
 
     @SuppressLint("InflateParams")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val recyclerView = RecyclerView(context)
+        val recyclerView = CXRecyclerView(context)
         recyclerView.tag = position
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = object : CXRecyclerViewAdapter<String, CXRecyclerViewAdapter.ViewHolder>(context, arrayListOf("1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1")) {

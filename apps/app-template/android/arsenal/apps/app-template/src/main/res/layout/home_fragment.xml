@@ -75,5 +75,19 @@
             tools:ignore="HardcodedText" />
 
 
+        <TextView
+            android:id="@+id/text6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cx_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="view pager scroll view"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+
     </LinearLayout>
 </ScrollView>

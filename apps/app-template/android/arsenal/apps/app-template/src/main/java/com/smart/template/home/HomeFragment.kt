@@ -41,5 +41,8 @@ class HomeFragment : CXBaseFragment() {
         text5.setOnClickListener {
             PullToNextPageFragment.goTo(context)
         }
+        text6.setOnClickListener {
+            ViewPagerScrollViewFragment.goTo(context)
+        }
     }
 }

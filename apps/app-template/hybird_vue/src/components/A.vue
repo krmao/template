@@ -1,22 +1,10 @@
 <template>
     <div class="a_container">
-        <div @click="onClick()">【onClick跳转】A->B</div>
-        <router-link id="route-link" to="/B">【 a 标签跳转 】A->B</router-link>
+        <div id="click" @click="onClick()">A跳转到B(onClick)</div>
+        <router-link id="route-link" to="/B">A跳转到B(route-link)</router-link>
 
-        <div id="nativeCall" @click="onNativeCallClick()"> params=Hello </div>
-        <div id="nativeCall2" @click="onNativeCallClick2()"> params=Hello, Native,3000 </div>
-        <div id="nativeCall3" @click="onNativeCallClick3()"> http get </div>
-        <div id="nativeCall4" @click="onNativeCallClick4()"> http post </div>
-        <div id="nativeCall5" @click="onNativeCallClick5()"> getNative value </div>
-        134<br/>
-        098<br/>
-        9809<br/>
-        09809<br/>
-        09809<br/>
-        09809<br/>
-        09809<br/>
-        09809<br/>
-        09809<br/>
+        <div id="nativeCall" @click="showToast()"> STHybird:toast </div>
+        <div id="nativeCall5" @click="getValue()"> STHybird:getValue </div>
     </div>
 </template>
 
@@ -32,60 +20,17 @@
             onClick: function () {
                 window.location.href = "#/B"
             },
-            onNativeCallClick: function () {
-                window.hybird.showToast("show now")
+            showToast: function () {
+                window.hybird.showToast("hello I am html5")
             },
-            onNativeCallClick2: function () {
-                window.hybird.test("a", "b", function () {
-                    console.log("回调被执行")
+            getValue: function () {
+                console.log("getValue start")
+                window.hybird.getFromLocal("haha", function (value) {
+                    console.log("onCallback,value=" + value)
                 })
-            },
-            onNativeCallClick3: function () {
-                console.log("onNativeCallClick3 start")
-                axios.get('/user?ID=12345')
-                    .then(
-                        function (response) {
-                            console.log("success:" + response, response);
-                        },
-                        function (error) {
-                            console.log("failure:" + error, error);
-                        }
-                    )
-                    .catch(
-                        function (error) {
-                            console.log("exception:" + error, error);
-                        }
-                    );
-                console.log("onNativeCallClick3 end")
-            },
-            onNativeCallClick4: function () {
-                console.log("onNativeCallClick4 start")
-                axios.post('/user', {
-                    firstName: 'Fred',
-                    lastName: 'Flintstone'
-                }).then(
-                    function (response) {
-                        console.log("success:" + response, response);
-                    },
-                    function (error) {
-                        console.log("failure:" + error, error);
-                    }
-                ).catch(
-                    function (error) {
-                        console.log("exception:" + error, error);
-                    }
-                );
-                console.log("onNativeCallClick4 end")
-            },
-            onNativeCallClick5: function () {
-                console.log("onNativeCallClick5 start")
-                window.hybird.getFromLocal("haha",function (value) {
-                    console.log("onCallback,value="+value)
-                })
-                console.log("onNativeCallClick5 end")
+                console.log("getValue end")
             },
             onGoBack:
-
                 function () {
                     console.log(page + '(' + fixedWidthString('onGoBack', 15, {padding: '_'}) + ')')
                 }
@@ -117,7 +62,7 @@
         activated: function () {
             var that = this;
             console.log(page + '(' + fixedWidthString('activated', 15, {padding: '_'}) + ')  el:undefined?' + (this.$el === undefined) + '  |  data:undefined?' + (this.$data === undefined) + '  |  msg:' + this.msg)
-            document.querySelector('body').setAttribute('style', 'background:orange')
+            document.querySelector('body').setAttribute('style', 'background:white')
 //            window.location.href = "hybird://hybird:8888/updateTitle?title=组件A"
 
 //            window.hybird.onResume = ()=> {
@@ -155,35 +100,39 @@
     }
 
     a:active {
-        color: orangered;
+        color: #000;
     }
 
     .a_container {
         /*padding: constant(safe-area-inset-top) constant(safe-area-inset-right) constant(safe-area-inset-bottom) constant(safe-area-inset-left);*/
         height: px2rem(2000);
         width: px2rem(750);
-        /*padding-top: px2rem(50);*/
-        font-size: px2rem(40);
+        font-size: px2rem(30);
+        padding-top: px2rem(30);
+        color: black;
+        text-align: start;
 
+        #click {
+            margin-top: px2rem(2);
+            padding: px2rem(30);
+            background-color: #268bd2;
+        }
         #route-link {
-            margin-top: px2rem(60);
+            margin-top: px2rem(2);
+            padding: px2rem(30);
+            background-color: #268bd2;
         }
 
         #nativeCall {
-            margin-top: px2rem(60);
+            margin-top: px2rem(2);
+            padding: px2rem(30);
+            background-color: #268bd2;
         }
 
-        #nativeCall2 {
-            margin-top: px2rem(60);
-        }
-        #nativeCall3 {
-            margin-top: px2rem(60);
-        }
-        #nativeCall4 {
-            margin-top: px2rem(60);
-        }
         #nativeCall5 {
-            margin-top: px2rem(60);
+            margin-top: px2rem(2);
+            padding: px2rem(30);
+            background-color: #268bd2;
         }
     }
 

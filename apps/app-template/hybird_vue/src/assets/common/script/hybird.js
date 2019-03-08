@@ -135,13 +135,13 @@ module.export = (function (bindObj = null) {
     _bind.goTo = function (url) {
         console.log('[Native:goTo] url: ' + url)
 
-        if (_bind.browser.versions.ios) {
-
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native) {
-                window.webkit.messageHandlers.native.postMessage(url)
-            }
-
-        } else if (_bind.browser.versions.android) {
+        // if (_bind.browser.versions.ios) {
+        //
+        //     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native) {
+        //         window.webkit.messageHandlers.native.postMessage(url)
+        //     }
+        //
+        // } else if (_bind.browser.versions.android) {
 
             let div = document.createElement('div')
             div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>'
@@ -151,7 +151,7 @@ module.export = (function (bindObj = null) {
                 document.querySelector('body').removeChild(div)
             }, 1000)
 
-        }
+        // }
     }
 
     console.log("navigator.userAgent=" + navigator.userAgent)

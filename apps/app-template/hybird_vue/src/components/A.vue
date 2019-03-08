@@ -33,7 +33,7 @@
             },
             getValue: function () {
                 console.log("getValue start")
-                window.hybird.getFromLocal("haha", function (value) {
+                window.hybird.getFromLocal("name", function (value) {
                     console.log("onCallback,value=" + value)
                 })
                 console.log("getValue end")

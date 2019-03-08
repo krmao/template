@@ -36,20 +36,20 @@ module.export = (function (bindObj = null) {
      * @param args args[0]==hashcode 后面的为其它不定长参数
      */
     _bind.onCallback = function (...args) {
-        console.log("[html]","onCallback:start:args=" ,args, " , callbackMap.size==" + _bind.callbackMap.size, _bind.callbackMap)
+        console.log("[html]", "onCallback:start:args=", args, " , callbackMap.size==" + _bind.callbackMap.size, _bind.callbackMap)
         let result = null
         try {
             let hashcode = args[0]
             let result = args.slice(1, args.length)
             console.log("[html] onCallback:invoke before: hashcode=" + hashcode + " , result=" + result)
-            if(hashcode){
+            if (hashcode) {
                 console.log("[html] onCallback:hashcode=" + hashcode)
-                _bind.callbackMap.forEach(function(value, key, mapObj) {
-                    console.log("map:value:"+ value + ', key:' + key + ', key==hashcode?' + (key === hashcode));
+                _bind.callbackMap.forEach(function (value, key, mapObj) {
+                    console.log("map:value:" + value + ', key:' + key + ', key==hashcode?' + (key === hashcode));
                 });
                 let method = _bind.callbackMap.get(hashcode)
                 console.log("[html] onCallback:method=" + method)
-                if(method){
+                if (method) {
                     method(result)
                     _bind.callbackMap.delete(hashcode)
                 }
@@ -70,7 +70,11 @@ module.export = (function (bindObj = null) {
     }
 
     _bind.getFromLocal = function (key, callback) {
-        _bind.invoke(callback, "getFromLocal",key)
+        _bind.invoke(callback, "getFromLocal", key)
+    }
+
+    _bind.open = function (url, callback) {
+        _bind.invoke(callback, "open", url)
     }
 
     _bind.showToastWithDuration = function (message, duration) {
@@ -93,7 +97,7 @@ module.export = (function (bindObj = null) {
         )
 
         var hashcode = ""
-        if(callback){
+        if (callback) {
             hashcode = new Date().getTime()
             _bind.callbackMap.set(hashcode, callback)
         }
@@ -143,13 +147,13 @@ module.export = (function (bindObj = null) {
         //
         // } else if (_bind.browser.versions.android) {
 
-            let div = document.createElement('div')
-            div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>'
-            document.querySelector('body').appendChild(div)
+        let div = document.createElement('div')
+        div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>'
+        document.querySelector('body').appendChild(div)
 
-            setTimeout(function () {
-                document.querySelector('body').removeChild(div)
-            }, 1000)
+        setTimeout(function () {
+            document.querySelector('body').removeChild(div)
+        }, 1000)
 
         // }
     }

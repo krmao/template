@@ -2,9 +2,10 @@
     <div class="a_container">
         <div id="click" @click="onClick()">A跳转到B(onClick)</div>
         <router-link id="route-link" to="/B">A跳转到B(route-link)</router-link>
+        <div id="goTo" @click="onGoToClick()">A跳转到B(open new webview)</div>
 
-        <div id="nativeCall" @click="showToast()"> STHybird:toast </div>
-        <div id="nativeCall5" @click="getValue()"> STHybird:getValue </div>
+        <div id="showToast" @click="showToast()"> STHybird:toast </div>
+        <div id="getValue" @click="getValue()"> STHybird:getValue </div>
     </div>
 </template>
 
@@ -22,6 +23,13 @@
             },
             showToast: function () {
                 window.hybird.showToast("hello I am html5")
+            },
+            onGoToClick: function () {
+                console.log("open start")
+                window.hybird.open("http://10.32.33.2:8080/#/B", function (value) {
+                    console.log("onCallback,value=" + value)
+                })
+                console.log("open end")
             },
             getValue: function () {
                 console.log("getValue start")
@@ -113,24 +121,28 @@
         text-align: start;
 
         #click {
-            margin-top: px2rem(2);
             padding: px2rem(30);
             background-color: #268bd2;
         }
         #route-link {
-            margin-top: px2rem(2);
+            margin-top: px2rem(1);
+            padding: px2rem(30);
+            background-color: #268bd2;
+        }
+        #goTo {
+            margin-top: px2rem(1);
             padding: px2rem(30);
             background-color: #268bd2;
         }
 
-        #nativeCall {
-            margin-top: px2rem(2);
+        #showToast {
+            margin-top: px2rem(1);
             padding: px2rem(30);
             background-color: #268bd2;
         }
 
-        #nativeCall5 {
-            margin-top: px2rem(2);
+        #getValue {
+            margin-top: px2rem(1);
             padding: px2rem(30);
             background-color: #268bd2;
         }

@@ -5,7 +5,7 @@
         <div id="goTo" @click="onGoToClick()">A跳转到B(open new webview)</div>
 
         <div id="showToast" @click="showToast()"> STHybird:toast </div>
-        <div id="getValue" @click="getValue()"> STHybird:getValue </div>
+        <div id="getValue" @click="getValue()"> STHybird:getValue, currentValue={{ currentValue }}</div>
     </div>
 </template>
 
@@ -32,9 +32,11 @@
                 console.log("open end")
             },
             getValue: function () {
+                let that=this
                 console.log("getValue start")
                 window.hybird.getFromLocal("name", function (value) {
                     console.log("onCallback,value=" + value)
+                    that.currentValue = value
                 })
                 console.log("getValue end")
             },
@@ -46,6 +48,7 @@
         data() {
             return {
                 msg: "A",
+                currentValue: "null",
             }
         },
         beforeCreate: function () {

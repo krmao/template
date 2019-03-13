@@ -21,16 +21,16 @@ class ReactViewController: UIViewController {
 
     private func initReact() {
         // 非分步加载
-        // self.start()
+         self.start()
 
         // 分步加载
-        self.startWithLoadBusinessBundle()
+//        self.startWithLoadBusinessBundle()
     }
 
     private func start() {
         let _rootView: RCTRootView = RCTRootView(
                 bridge: ReactManager.bridge,
-                moduleName: "cxj",
+                moduleName: "smart-travel",
                 initialProperties: ["native_params": 1] as [NSObject: AnyObject]
         )
 

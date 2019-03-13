@@ -24,7 +24,7 @@ class CXApiManager {
                     print("\n<<<<<<<<<<---------->>>>>>>>>>\n")
                     print("response headers:\n")
                     dataResponse.response?.allHeaderFields.forEach { key, value in
-                        print("\t", key, value)
+                        print("\t", key, value)open .
                     }
 
                     print("\nresponse body:\n\n\t\(dataResponse.result.value ?? "")\n")

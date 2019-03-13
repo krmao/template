@@ -61,7 +61,7 @@ object ReactManager {
         private set
         get() {
             if (field == null) {
-                val bundlePathInAssets = ReactConstant.PATH_ASSETS_BASE_BUNDLE
+                val bundlePathInAssets = ReactConstant.PATH_ASSETS_BUNDLE
                 val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
 
                 // 率先检查 sdCard, 然后再检查 assets, 注意先后顺序

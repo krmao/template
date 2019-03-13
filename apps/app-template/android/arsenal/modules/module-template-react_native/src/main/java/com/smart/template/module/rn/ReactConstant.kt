@@ -7,7 +7,7 @@ object ReactConstant {
     const val PATH_ASSETS_BUNDLE = "assets://index.android.bundle"
     const val PATH_ASSETS_BASE_BUNDLE = "assets://base.android.bundle"
     const val PATH_ASSETS_BUSINESS_BUNDLE = "assets://business.android.bundle"
-    const val COMPONENT_NAME = "cxj"
+    const val COMPONENT_NAME = "smart-travel"
 
     /**
      * 跟随 apk 一起打包的 react native 离线包版本号, 0代表当前无可使用的离线包

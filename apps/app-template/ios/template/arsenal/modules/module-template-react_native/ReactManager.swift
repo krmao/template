@@ -63,10 +63,10 @@ class ReactManager {
             callback?(false)
         }
 
-        // let url = URL(string: "http://10.47.57.114:8081/index.bundle?platform=ios")
-        let fileURL = CXFileUtil.getFileURLFromResource("base.ios.bundle")!
-        CXLogUtil.i(TAG, "fileURL=\(fileURL), isExists=\(CXFileUtil.fileExists(fileURL.path))")
-        return RCTBridge.init(bundleURL: fileURL, moduleProvider: nil, launchOptions: nil)
+         let url = URL(string: "http://10.32.33.2:8081/index.bundle?platform=ios")
+//        let fileURL = CXFileUtil.getFileURLFromResource("base.ios.bundle")!
+//        CXLogUtil.i(TAG, "fileURL=\(fileURL), isExists=\(CXFileUtil.fileExists(fileURL.path))")
+        return RCTBridge.init(bundleURL: url, moduleProvider: nil, launchOptions: nil)
     }
 
     private static func executeLoadTasks() {

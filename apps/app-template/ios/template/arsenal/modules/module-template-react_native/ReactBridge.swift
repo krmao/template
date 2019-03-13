@@ -14,7 +14,7 @@ class ReactBridge: RCTEventEmitter {
      * @see com.facebook.react.bridge.Callback
      */
     @objc
-    func callNative(_ data: String?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func callNative(_ data: String?, _ data2: String?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
         CXLogUtil.e("callNative", "系统检测到 react 正在调用 native 参数为:\(data ?? "null")")
 
         do {

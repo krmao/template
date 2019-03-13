@@ -21,9 +21,7 @@ class ReactNativeFragment : CXBaseFragment() {
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
-            ReactJumper.goTo(context, ReactJumper.SELECT_SERVICE, hashMapOf(
-                    "storeInfo" to null
-            ))
+            ReactJumper.goTo(context, ReactJumper.TEST)
 
         }
         return textView

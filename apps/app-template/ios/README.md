@@ -9,41 +9,41 @@ python autoExportAppIcon.py ~/Desktop/appIcon1024x1024.png
 
 * For iPhone:
 
-| Nam     O     Orientatio    | Size in px (pixels    |
-| :----     :----     :----     :----    
-| iPhone      iOS 11    | Portrai     1125 x 243    |
-| iPhone      iOS 11    | Landscap    | 2436 x 112    |
-| Retina HD 5.5     iOS 8,    | Portrai     1242 x 220    |
-| Retina HD 5.5     iOS 8,    | Landscap    | 2208 x 124    |
-| Retina HD 4.7     iOS 8,    | Portrai     750 x 133     
-| Retina      iOS 5-    | Portrai     640 x 113     
-| 2     iOS 7-    | Portrai     640 x 96    | 
-| 2     iOS 5,    | Portrai     640 x 96    | 
-| 1     iOS 5,    | Portrai     320 x 48    | 
+| Name              | OS        | Orientation   | Size in px (pixels)   |
+| :----:            | :----:    | :----:        | :----:                |
+| iPhone X          | iOS 11+   | Portrait      | 1125 x 2436           |
+| iPhone X          | iOS 11+   | Landscape     | 2436 x 1125           |
+| Retina HD 5.5"    | iOS 8,9   | Portrait      | 1242 x 2208           |
+| Retina HD 5.5"    | iOS 8,9   | Landscape     | 2208 x 1242           |
+| Retina HD 4.7"    | iOS 8,9   | Portrait      | 750 x 1334            | 
+| Retina 4          | iOS 5-9   | Portrait      | 640 x 1136            | 
+| 2x                | iOS 7-8   | Portrait      | 640 x 960             | 
+| 2x                | iOS 5,6   | Portrait      | 640 x 960             | 
+| 1x                | iOS 5,6   | Portrait      | 320 x 480             | 
 
 * For iPad:
 
-| Nam     O     Orientatio    | Size in px (pixels    |
-| :----     :----     :----     :----    
-| 1     iOS 7-    | Portrai     768 x 102    
-| 1     iOS 7-    | Landscap    | 1024 x 76    
-| 2     iOS 7-    | Portrai     1536 x 204    |
-| 2     iOS 7-    | Landscap    | 2048 x 153    |
-| 1     iOS 5,    | Portrait (Without Status Bar) | 768 x 100    
-| 1     iOS 5,    | Landscape(Without Status Bar) | 1024 x 74    
-| 2     iOS 5,    | Portrait (Without Status Bar) | 1536 x 200    |
-| 2     iOS 5,    | Landscape(Without Status Bar) | 2048 x 149    |
+| Name              | OS        | Orientation                   | Size in px (pixels)   |
+| :----:            | :----:    | :----:                        | :----:                |
+| 1x                | iOS 7-9   | Portrait                      | 768 x 1024            |
+| 1x                | iOS 7-9   | Landscape                     | 1024 x 768            |
+| 2x                | iOS 7-9   | Portrait                      | 1536 x 2048           |
+| 2x                | iOS 7-9   | Landscape                     | 2048 x 1536           |
+| 1x                | iOS 5,6   | Portrait (Without Status Bar) | 768 x 1004            |
+| 1x                | iOS 5,6   | Landscape(Without Status Bar) | 1024 x 748            |
+| 2x                | iOS 5,6   | Portrait (Without Status Bar) | 1536 x 2008           |
+| 2x                | iOS 5,6   | Landscape(Without Status Bar) | 2048 x 1496           |
 
 
 ### [ios LaunchScreen.storyboard]
 
 * launch image size
 
-| Nam     Size in px (pixels    |
-| :----     :----    
-| 3     1125x x 200     
-| 2     75    x 133     
-| 1     37    x 66    | 
+| Name              | Size in px (pixels)   |
+| :----:            | :----:                |
+| 3x                | 1125x x 2001          | 
+| 2x                | 750   x 1334          | 
+| 1x                | 375   x 667           | 
 
 * Show the File Inspector
 ```

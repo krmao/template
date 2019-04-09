@@ -3,91 +3,241 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/accent"
-    android:orientation="vertical">
+    android:background="@color/blue_grey"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:gravity="center"
+        android:gravity="start"
         android:orientation="vertical">
 
-        <TextView
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="410dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="AAA"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="5dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="BBB"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="5dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="CCC"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="5dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="DDD"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="5dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="EEE"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="10dp"
+                    android:visibility="gone" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_900"
+                    android:padding="15dp"
+                    android:text="FFFS"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </RadioGroup>
+        </HorizontalScrollView>
+
+        <FrameLayout
             android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="直接从静态资源区获取json文件"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
-        <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="从GET接口获取json String内容"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="从GET接口获取json String内容"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
-        <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="从GET接口获取json String内容"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/text3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="react native"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
-        <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="react native"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/text4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="flutter hot update"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
-        <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="flutter hot update"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
+
             android:id="@+id/text5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="pull to next page"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="pull to next page"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
 
-        <TextView
+        <FrameLayout
             android:id="@+id/text6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/cx_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="view pager scroll view"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="view pager scroll view"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/text7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="drag recyclerView item and transfer"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
 
     </LinearLayout>
 </ScrollView>

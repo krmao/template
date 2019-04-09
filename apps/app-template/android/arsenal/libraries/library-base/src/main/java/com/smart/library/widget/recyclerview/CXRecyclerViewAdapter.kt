@@ -7,7 +7,7 @@ import com.smart.library.widget.recyclerview.helper.CXRecyclerViewItemTouchHelpe
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
-abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context, var dataList: ArrayList<Entity>) : RecyclerView.Adapter<ViewHolder>(), CXRecyclerViewItemTouchHelperAdapter {
+abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context?, var dataList: MutableList<Entity>) : RecyclerView.Adapter<ViewHolder>(), CXRecyclerViewItemTouchHelperAdapter {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -37,7 +37,7 @@ abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
 
     fun add(entity: Entity, position: Int) {
         if (position >= 0 && position <= dataList.size) {
-            dataList.add(entity)
+            dataList.add(position, entity)
             notifyItemInserted(position)
             notifyItemRangeChanged(position, dataList.size - position)
         }

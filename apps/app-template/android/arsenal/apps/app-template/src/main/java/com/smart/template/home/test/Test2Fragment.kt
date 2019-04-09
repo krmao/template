@@ -1,4 +1,4 @@
-package com.smart.template.home
+package com.smart.template.home.test
 
 import android.os.Bundle
 import android.view.LayoutInflater

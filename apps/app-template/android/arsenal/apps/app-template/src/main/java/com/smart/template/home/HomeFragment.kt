@@ -11,6 +11,7 @@ import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheManager
 import com.smart.template.R
+import com.smart.template.home.test.*
 import io.flutter.util.PathUtils
 import kotlinx.android.synthetic.main.home_fragment.*
 import java.io.File
@@ -43,6 +44,9 @@ class HomeFragment : CXBaseFragment() {
         }
         text6.setOnClickListener {
             ViewPagerScrollViewFragment.goTo(context)
+        }
+        text7.setOnClickListener {
+            RecyclerViewDragAndTransferFragment.goTo(context)
         }
     }
 }

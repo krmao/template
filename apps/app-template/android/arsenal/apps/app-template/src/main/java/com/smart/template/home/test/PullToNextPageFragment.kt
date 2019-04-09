@@ -1,4 +1,4 @@
-package com.smart.template.home
+package com.smart.template.home.test
 
 import android.content.Context
 import android.os.Bundle
@@ -10,16 +10,16 @@ import com.smart.library.base.CXBaseFragment
 import com.smart.template.R
 import kotlinx.android.synthetic.main.home_fragment_pull_to_next_page.*
 
-class ViewPagerScrollViewFragment : CXBaseFragment() {
+class PullToNextPageFragment : CXBaseFragment() {
 
     companion object {
         fun goTo(context: Context?) {
-            CXActivity.start(context, ViewPagerScrollViewFragment::class.java)
+            CXActivity.start(context, PullToNextPageFragment::class.java)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.home_fragment_view_pager_scroll_view, container, false)
+        return inflater.inflate(R.layout.home_fragment_pull_to_next_page, container, false)
     }
 
 

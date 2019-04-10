@@ -79,7 +79,6 @@ class RecyclerViewDragAndTransferFragment : CXBaseFragment() {
             dayDetailAdapter.remove(fromPosition)
         }) { toRecyclerView: RecyclerView, fromPosition: Int, toPosition: Int ->
             daysAdapter.add(dayDetailList[fromPosition], toPosition)
-            toRecyclerView.scrollToPosition(toPosition)
         }
     }
 }

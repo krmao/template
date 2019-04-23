@@ -1,0 +1,19 @@
+@import "../base/style/base";
+
+$font-size: 30px;
+.root {
+  background-color: #0076ff;
+  padding: 20px 20px 30px 30px;
+
+  font-size: $font-size;
+  line-height: 50px;
+  /*
+    .content {
+      padding: 30px;
+      display: flex;
+      flex-direction: row;
+      background: white;
+      justify-content: center;
+    }*/
+
+}

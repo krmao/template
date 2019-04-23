@@ -1,19 +1,28 @@
 @import "../base/style/base";
 
-$font-size: 30px;
+$font-size: 20px;
 .root {
-  background-color: #0076ff;
-  padding: 20px 20px 30px 30px;
+    background-color: #0076ff;
+    font-size: $font-size;
+    line-height: 50px;
 
-  font-size: $font-size;
-  line-height: 50px;
-  /*
     .content {
-      padding: 30px;
-      display: flex;
-      flex-direction: row;
-      background: white;
-      justify-content: center;
-    }*/
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+        background: white;
 
+        .contentLeft {
+            float: left;
+            width: 300px;
+            height: 720px;
+        }
+
+        .contentRight {
+            margin-left: 300px;
+            background: blueviolet;
+            min-height: 720px;
+            height: 100%;
+        }
+    }
 }

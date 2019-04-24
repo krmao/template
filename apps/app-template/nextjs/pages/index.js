@@ -29,7 +29,7 @@ export default class extends React.Component {
                         Click{" "}
                         <Link href={{pathname: "/about", query: {name: "krmao"}}} passHref>
                             <a>
-                                <img src="../static/logo.jpg" width={"30px"} height={"30px"} alt="logo"/>
+                                here
                             </a>
                         </Link>{" "}
                         to read more

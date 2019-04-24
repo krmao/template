@@ -12,7 +12,49 @@ export default class extends React.Component {
     render() {
         return (
             <div className={css.root}>
-                LEFT MENU
+                <div className={css.typeNavigation}>
+                    <h4>
+                        TITLE-0
+                    </h4>
+                    <ul>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+                        <li>
+                            xxxxx0
+                        </li>
+
+                    </ul>
+                </div>
+                <div className={css.typeContact}>
+                    <h4>
+                        TITLE-1
+                    </h4>
+                    <p>
+                        DESC-1
+                    </p>
+                </div>
             </div>
         );
     }

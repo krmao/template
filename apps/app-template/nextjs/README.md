@@ -3,6 +3,12 @@
 * [英文官方文档](https://nextjs.org/docs)
 * [中文文档](http://nextjs.frontendx.cn/docs)
 
+#### 配置 eslint
+> http://eslint.cn/docs/user-guide/getting-started#configuration
+```bash
+    npm install --save-dev eslint
+```
+
 #### 导出静态页
 ```bash
     next build

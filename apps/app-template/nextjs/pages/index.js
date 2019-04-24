@@ -1,11 +1,11 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 
-import css from './index.scss'
-import ComponentHead from '../base/modules/head'
-import ComponentFooter from '../base/modules/footer'
-import ComponentNavigationLeft from '../base/modules/navigationLeft'
+import css from "./index.scss";
+import ComponentHead from "../base/modules/head";
+import ComponentFooter from "../base/modules/footer";
+import ComponentNavigationLeft from "../base/modules/navigationLeft";
 
 export default class extends React.Component {
 
@@ -26,18 +26,18 @@ export default class extends React.Component {
                     </div>
 
                     <div className={css.contentRight}>
-                        Click{' '}
-                        <Link href={{pathname: '/about', query: {name: 'krmao'}}} passHref>
+                        Click{" "}
+                        <Link href={{pathname: "/about", query: {name: "krmao"}}} passHref>
                             <a>
-                                <img src="../static/logo.jpg" width={'30px'} height={'30px'} alt="logo"/>
+                                <img src="../static/logo.jpg" width={"30px"} height={"30px"} alt="logo"/>
                             </a>
-                        </Link>{' '}
+                        </Link>{" "}
                         to read more
                     </div>
                 </div>
 
                 <ComponentFooter/>
             </div>
-        )
+        );
     }
 }

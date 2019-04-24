@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import css from './footer.scss'
+import css from "./footer.scss";
 
 export default class extends React.Component {
     constructor(props) {
@@ -14,6 +14,6 @@ export default class extends React.Component {
             <div className={css.root}>
                 FOOTER & FOOTER MESSAGE
             </div>
-        )
+        );
     }
 }

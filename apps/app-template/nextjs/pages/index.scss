@@ -1,13 +1,15 @@
-@import "../base/style/base";
+@import "../base/style/common";
 
 $font-size: 20px;
 .root {
+    margin: 0 auto; // 整个布局居中
     background-color: #0076ff;
     font-size: $font-size;
     line-height: 50px;
 
     .content {
-        width: 100%;
+        margin: 0 auto;
+        width: $pageWidth;
         overflow: hidden;
         height: 100%;
         background: white;
@@ -19,6 +21,7 @@ $font-size: 20px;
         }
 
         .contentRight {
+            width: $pageWidth - 300px;
             margin-left: 300px;
             background: blueviolet;
             min-height: 720px;

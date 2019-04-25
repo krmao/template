@@ -1,4 +1,4 @@
-$pageWidth: 1200px;
+@import "../../base/style/common";
 
 .root {
     background-color: #0076ff;
@@ -44,6 +44,7 @@ $pageWidth: 1200px;
     }
 
     .menu {
+        min-width: $pageWidth;
         background-color: green;
         color: white;
         font-size: 18px;

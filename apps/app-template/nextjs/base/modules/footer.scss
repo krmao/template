@@ -1,6 +1,10 @@
+@import "../style/common";
+
 .root {
-  background-color: darkblue;
-  color: white;
-  font-size: 20px;
-  height: 100px;
+    min-width: $pageWidth;
+    background-color: darkblue;
+    color: white;
+    font-size: 20px;
+    height: 100px;
+    text-align: center;
 }

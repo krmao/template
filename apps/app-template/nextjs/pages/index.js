@@ -3,9 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 
 import css from "./index.scss";
-import ComponentHead from "../base/modules/head";
-import ComponentFooter from "../base/modules/footer";
-import ComponentNavigationLeft from "../base/modules/navigationLeft";
+import ComponentHead from "../base/components/head";
+import ComponentFooter from "../base/components/footer";
+import ComponentNavigationLeft from "../base/components/navigationLeft";
 
 export default class extends React.Component {
 
@@ -13,7 +13,7 @@ export default class extends React.Component {
         return (
             <div className={css.root}>
                 <Head>
-                    <title>大神灭霸</title>
+                    <title>xxxxxx</title>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport"/>
                 </Head>
 

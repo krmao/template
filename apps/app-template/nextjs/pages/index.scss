@@ -1,11 +1,12 @@
-@import "../base/style/common";
+@import "../base/styles/common";
 
 $font-size: 20px;
 .root {
     margin: 0 auto; // 整个布局居中
-    background-color: #0076ff;
+    background-color: ghostwhite;
     font-size: $font-size;
     line-height: 50px;
+    color: #222222;
 
     .content {
         margin: 0 auto;
@@ -23,7 +24,7 @@ $font-size: 20px;
         .contentRight {
             width: $pageWidth - 300px;
             margin-left: 300px;
-            background: blueviolet;
+            background: ghostwhite;
             min-height: 720px;
             height: 100%;
         }

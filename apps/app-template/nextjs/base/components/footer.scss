@@ -1,0 +1,13 @@
+@import "../styles/common";
+
+.root {
+    min-width: $pageWidth;
+    background-color: ghostwhite;
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+}

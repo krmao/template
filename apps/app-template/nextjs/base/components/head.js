@@ -1,10 +1,10 @@
 import React from "react";
-import Link from "next/link";
 import {withRouter} from "next/router";
 
 import BannerAnim from "rc-banner-anim";
 // import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
+import ComponentMenu from "./menu";
 
 import "rc-banner-anim/dist/rc-banner-anim.css";
 import "./head-banner.css";
@@ -86,40 +86,7 @@ export default withRouter(class extends React.Component {
                         热线: 18217758888
                     </div>
                 </div>
-                <div className={css.menu}>
-                    <table className={css.menuTable} width="100%" border="0" align="center" cellPadding={0} cellSpacing={0}>
-                        <tbody>
-                        <tr>
-                            <td className={this.path === "/index" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
-                                <Link href={{pathname: "/index"}} passHref>
-                                    <a>网站首页</a>
-                                </Link>
-                            </td>
-                            <td className={this.path === "/about" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
-                                <Link href={{pathname: "/about"}} passHref>
-                                    <a>关于我们</a>
-                                </Link>
-                            </td>
-                            <td className={this.path === "/example" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
-                                <Link href={{pathname: "/example"}} passHref>
-                                    <a>成品案例</a>
-                                </Link>
-                            </td>
-                            <td className={this.path === "/trend" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
-                                <Link href={{pathname: "/trend"}} passHref>
-                                    <a>行业动态</a>
-                                </Link>
-                            </td>
-                            <td className={this.path === "/contact" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
-                                <Link href={{pathname: "/contact"}} passHref>
-                                    <a>联系我们</a>
-                                </Link>
-                            </td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
+                <ComponentMenu />
                 <div className={css.banner}>
                     <BannerAnim onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
                         {elementChildren}

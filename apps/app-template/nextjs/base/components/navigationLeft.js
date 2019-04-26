@@ -27,41 +27,20 @@ export default class extends React.Component {
                     </h4>
                     <ul>
                         <li>
+                            关于我们
+                        </li>
+                        <li>
                             联系我们
                         </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-                        <li>
-                            xxxxx0
-                        </li>
-
                     </ul>
                 </div>
                 <div className={css.typeContact}>
                     <h4>
-                        TITLE-1
+                        联系方式
                     </h4>
                     <p>
-                        DESC-1
+                        沭阳 TT 婚纱摄影<br/>
+                        联系人: 张经理
                     </p>
                 </div>
             </div>

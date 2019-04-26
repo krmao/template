@@ -1,0 +1,43 @@
+@import "../styles/common";
+
+.menu {
+    min-width: $pageWidth;
+    background-color: $base-bg-color;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    height: 60px;
+
+    .menuTable {
+        margin: 0 auto;
+        width: $pageWidth;
+        height: 60px;
+        color: white;
+
+        a {
+            display: block;
+        }
+
+        .menuSelected {
+            background-color: darkblue;
+
+            a:link, a:visited, a:hover {
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        .menuNormal {
+            background-color: transparent;
+
+            a:link, a:visited, a:hover {
+                color: white;
+                font-weight: bold;
+            }
+        }
+
+        .menuNormal:hover {
+            background-color: #00008b55;
+        }
+    }
+}

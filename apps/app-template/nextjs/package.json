@@ -8,11 +8,11 @@
     },
     "dependencies": {
         "next": "^8.1.0",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
         "rc-banner-anim": "^2.2.5",
         "rc-queue-anim": "^1.6.12",
-        "rc-tween-one": "^2.4.1"
+        "rc-tween-one": "^2.4.1",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
     },
     "devDependencies": {
         "@zeit/next-css": "^1.0.1",

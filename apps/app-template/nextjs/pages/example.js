@@ -20,11 +20,6 @@ export default withRouter(class extends React.Component {
             <div className={css.root}>
                 <Head>
                     <title>TT婚纱摄影</title>
-
-                    <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
-                    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon"/>
-
-                    <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport"/>
                 </Head>
 
                 <ComponentHead/>

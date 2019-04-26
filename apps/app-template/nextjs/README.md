@@ -56,3 +56,45 @@
 ```scss
 .parent{display:inline-block;vertical-align:middle;line-height:20px;}
 ```
+
+#### 自适应
+```
+    
+    /**
+        only(限定某种设备)
+        screen 是媒体类型里的一种
+        and 被称为关键字，其他关键字还包括 not(排除某种设备)
+    
+        <link rel="stylesheet" type="text/css" href="styleB.css"  media="screen and (min-width: 600px) and (max-width: 800px)">
+     */
+    /*大于1200px屏幕尺寸应用以下样式*/
+    @media screen and (min-width: 1200px) {
+        $pageWidth: 1200px;
+        $font-size: 20px;
+    }
+    
+    /*大于960px小于1199px屏幕尺寸应用以下样式*/
+    @media screen and (min-width: 960px) and (max-width: 1199px) {
+        $pageWidth: 960px;
+        $font-size: 20px;
+    }
+    
+    /*大于768px小于959px屏幕尺寸应用以下样式*/
+    @media screen and (min-width: 768px) and (max-width: 959px) {
+        $pageWidth: 768px;
+        $font-size: 20px;
+    }
+    
+    /*大于480px小于767px屏幕尺寸应用以下样式*/
+    @media only screen and (min-width: 480px) and (max-width: 767px) {
+        $pageWidth: 480px;
+        $font-size: 20px;
+    }
+    
+    /*小于479px屏幕尺寸应用以下样式*/
+    @media only screen and (max-width: 479px) {
+        $pageWidth: 300px;
+        $font-size: 20px;
+    }
+
+```

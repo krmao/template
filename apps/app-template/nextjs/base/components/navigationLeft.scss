@@ -1,5 +1,7 @@
+@import "../styles/common";
+
 .root {
-    background-color: dodgerblue;
+    background-color: $base-bg-color;
     color: white;
     font-size: 20px;
     width: 100%;

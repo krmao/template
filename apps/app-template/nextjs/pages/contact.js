@@ -3,7 +3,7 @@ import Head from "next/head";
 // import Link from "next/link";
 import {withRouter} from "next/router";
 
-import css from "./index.scss";
+import css from "./contact.scss";
 import ComponentHead from "../base/components/head";
 import ComponentFooter from "../base/components/footer";
 import ComponentNavigationLeft from "../base/components/navigationLeft";

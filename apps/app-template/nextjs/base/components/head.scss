@@ -1,22 +1,20 @@
 @import "../styles/common";
 
 .root {
-    background-color: ghostwhite;
+    background-color: white;
     color: black;
-    font-size: 20px;
-    height: 730px;
+    font-size: 15px;
+    height: 710px;
     text-align: center;
 
     .header {
         margin: 0 auto;
         width: $pageWidth;
-        background-color: ghostwhite;
-        height: 130px;
-        padding-top: 40px;
+        height: 100px;
 
         .logo {
-            margin-top: 10px;
-            margin-left: 100px;
+            width: 240px;
+            height: 100px;
             float: left;
         }
 
@@ -24,21 +22,24 @@
             margin-top: 20px;
             margin-left: 30px;
             float: left;
-            font-size: 50px;
-            color: dodgerblue;
+            font-size: 35px;
+            color: $base-color;
             font-weight: bold;
         }
 
         .tip {
             text-align: end;
-            margin-left: 270px;
+            margin-top: 15px;
+            margin-left: 340px;
+            line-height: 35px;
             float: left;
         }
 
         .tel {
-            margin-left: 30px;
+            margin-left: 50px;
             float: left;
-            color: red;
+            margin-top: 25px;
+            color: $base-color;
             font-style: italic;
             font-weight: bold;
         }
@@ -46,7 +47,7 @@
 
     .menu {
         min-width: $pageWidth;
-        background-color: dodgerblue;
+        background-color: $base-bg-color;
         color: white;
         font-size: 18px;
         font-weight: bold;
@@ -56,13 +57,38 @@
             margin: 0 auto;
             width: $pageWidth;
             height: 60px;
+            color: white;
+
+            a {
+                display: block;
+            }
+
+            .menuSelected {
+                background-color: darkblue;
+
+                a:link, a:visited, a:hover {
+                    color: white;
+                    font-weight: bold;
+                }
+            }
+
+            .menuNormal {
+                background-color: transparent;
+
+                a:link, a:visited, a:hover {
+                    color: white;
+                    font-weight: bold;
+                }
+            }
+
+            .menuNormal:hover {
+                background-color: #00008b55;
+            }
         }
     }
 
     .banner {
         min-width: $pageWidth;
-        height: 500px;
+        height: 550px;
     }
-
-
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+import {withRouter} from "next/router";
 
 import BannerAnim from "rc-banner-anim";
 // import QueueAnim from "rc-queue-anim";
@@ -12,7 +14,7 @@ import css from "./head.scss";
 const {Element, Thumb} = BannerAnim;
 const BgElement = Element.BgElement;
 
-export default class extends React.Component {
+export default withRouter(class extends React.Component {
     constructor(props) {
         super(props);
         this.imgArray = [
@@ -22,6 +24,7 @@ export default class extends React.Component {
         this.state = {
             enter: false
         };
+        this.path = this.props.router.asPath;
     }
 
     onMouseEnter = () => {
@@ -37,6 +40,8 @@ export default class extends React.Component {
     };
 
     render() {
+        console.log("path=" + this.path);
+
         const elementChildren = this.imgArray.map((item, index) => (
             <Element key={index} prefixCls="banner-user-elem">
                 <BgElement
@@ -68,7 +73,7 @@ export default class extends React.Component {
         return (
             <div className={css.root}>
                 <div className={css.header}>
-                    <img className={css.logo} src="../../static/logo.png" width={"100px"} height={"70px"} alt="logo"/>
+                    <img className={css.logo} src="../../static/logo.png" alt="logo"/>
                     <div className={css.title}>
                         TT 婚纱摄影
                     </div>
@@ -85,29 +90,30 @@ export default class extends React.Component {
                     <table className={css.menuTable} width="100%" border="0" align="center" cellPadding={0} cellSpacing={0}>
                         <tbody>
                         <tr>
-                            <td align="center" valign="middle">
-                                HOME
+                            <td className={this.path === "/index" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
+                                <Link href={{pathname: "/index"}} passHref>
+                                    <a>网站首页</a>
+                                </Link>
                             </td>
-                            <td align="center" valign="middle">
-                                HOME
+                            <td className={this.path === "/about" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
+                                <Link href={{pathname: "/about"}} passHref>
+                                    <a>关于我们</a>
+                                </Link>
                             </td>
-                            <td align="center" valign="middle">
-                                HOME
+                            <td className={this.path === "/example" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
+                                <Link href={{pathname: "/example"}} passHref>
+                                    <a>成品案例</a>
+                                </Link>
                             </td>
-                            <td align="center" valign="middle">
-                                HOME
+                            <td className={this.path === "/trend" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
+                                <Link href={{pathname: "/trend"}} passHref>
+                                    <a>行业动态</a>
+                                </Link>
                             </td>
-                            <td align="center" valign="middle">
-                                HOME
-                            </td>
-                            <td align="center" valign="middle">
-                                HOME
-                            </td>
-                            <td align="center" valign="middle">
-                                HOME
-                            </td>
-                            <td align="center" valign="middle">
-                                HOME
+                            <td className={this.path === "/contact" ? css.menuSelected : css.menuNormal} align="center" valign="middle">
+                                <Link href={{pathname: "/contact"}} passHref>
+                                    <a>联系我们</a>
+                                </Link>
                             </td>
                         </tr>
                         </tbody>
@@ -125,4 +131,4 @@ export default class extends React.Component {
             </div>
         );
     }
-}
+});

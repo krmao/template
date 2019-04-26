@@ -6,7 +6,16 @@ export default class extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.data = [
+            {
+                title: "婚礼花篮",
+                item: [
+                    {
+                        title: "玫瑰"
+                    }
+                ]
+            }
+        ];
     }
 
     render() {
@@ -14,11 +23,11 @@ export default class extends React.Component {
             <div className={css.root}>
                 <div className={css.typeNavigation}>
                     <h4>
-                        TITLE-0
+                        关于我们
                     </h4>
                     <ul>
                         <li>
-                            xxxxx0
+                            联系我们
                         </li>
                         <li>
                             xxxxx0

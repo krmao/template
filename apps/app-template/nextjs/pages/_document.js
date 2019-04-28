@@ -18,7 +18,7 @@ class MyDocument extends Document {
                 <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
                 <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon"/>
 
-                // <meta name="viewport" content="width=device-width"/> // bug 在每个页面的 Head 里面加这一行，否则系统会默认加这一行
+                <meta name="viewport" content="width=device-width"/>
             </Head>
             <body>
             <Main/>

@@ -39,6 +39,28 @@ export default withRouter(class extends React.Component {
                             </a>
                         </Link>{" "}
                         to read more*/}
+
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+
                     </div>
                 </div>
 

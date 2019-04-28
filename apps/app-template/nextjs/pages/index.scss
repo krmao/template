@@ -1,1 +1,11 @@
 @import "../base/styles/common";
+
+
+.imageList {
+    float: left;
+
+    img {
+        width: 250px;
+        margin: 10px;
+    }
+}

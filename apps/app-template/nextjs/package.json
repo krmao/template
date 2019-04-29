@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "scripts": {
         "dev": "next",
-        "build": "rm -rf ./out && next build && next export",
-        "upload": "rm -rf ./out && next build && next export && cp -rf ./out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
+        "build": "rm -rf ./out && rm -rf ./wedding/ && next build && next export",
+        "upload": "rm -rf ./out && rm -rf ./wedding/ && next build && next export && cp -rf ./out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
         "start": "next start"
     },
     "dependencies": {

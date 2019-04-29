@@ -15,7 +15,7 @@ export default withRouter(class extends React.Component {
     }
 
     render() {
-        console.log(this.props.router.asPath);
+        console.log("router->", this.props.router);
         return (
             <div className={css.root}>
                 <Head>

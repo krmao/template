@@ -40,7 +40,7 @@ export default withRouter(class extends React.Component {
     };
 
     render() {
-        console.log("path=" + this.path);
+        // console.log("path=" + this.path);
 
         const elementChildren = this.imgArray.map((item, index) => (
             <Element key={index} prefixCls="banner-user-elem">

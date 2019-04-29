@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 // import Link from "next/link";
 import {withRouter} from "next/router";
+import "isomorphic-unfetch";
 
 import css from "./about.scss";
 import ComponentHead from "../base/components/head";
@@ -10,12 +11,20 @@ import ComponentNavigationLeft from "../base/components/navigationLeft";
 
 export default withRouter(class extends React.Component {
 
+    static async getInitialProps() {
+        // eslint-disable-next-line no-undef
+        const res = await fetch("https://api.github.com/repos/krmao/template");
+        const json = await res.json();
+        return {stars: json.stargazers_count};
+    }
+
+
     constructor(props) {
         super(props);
     }
 
     render() {
-        console.log(this.props.router.asPath);
+        console.log("router->", this.props.router);
         return (
             <div className={css.root}>
                 <Head>
@@ -32,13 +41,29 @@ export default withRouter(class extends React.Component {
                     </div>
 
                     <div className={css.contentRight}>
-                        {/*Click{" "}
-                        <Link href={{pathname: "/about", query: {name: "krmao"}}} passHref>
-                            <a>
-                                here
-                            </a>
-                        </Link>{" "}
-                        to read more*/}
+
+                        <p>template has {this.props.stars} ⭐️</p>
+
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
+                        <div className={css.imageList}>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                            <img src="../static/logo.png" alt="logo"/>
+                        </div>
                     </div>
                 </div>
 

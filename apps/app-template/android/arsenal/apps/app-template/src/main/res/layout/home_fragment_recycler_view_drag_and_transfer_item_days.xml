@@ -14,5 +14,6 @@
         android:paddingBottom="30dp"
         android:textColor="@color/blue_900"
         android:textSize="18sp"
+        android:text="aaa"
         android:textStyle="bold|italic" />
 </FrameLayout>

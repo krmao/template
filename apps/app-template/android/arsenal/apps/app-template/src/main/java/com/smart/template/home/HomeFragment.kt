@@ -48,5 +48,8 @@ class HomeFragment : CXBaseFragment() {
         text7.setOnClickListener {
             RecyclerViewDragAndTransferFragment.goTo(context)
         }
+        text8.setOnClickListener {
+            RecyclerViewSnapTopFragment.goTo(context)
+        }
     }
 }

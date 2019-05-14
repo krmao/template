@@ -238,6 +238,23 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </FrameLayout>
+        <FrameLayout
+            android:id="@+id/text8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="recyclerView top with changeListener"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
 
     </LinearLayout>
 </ScrollView>

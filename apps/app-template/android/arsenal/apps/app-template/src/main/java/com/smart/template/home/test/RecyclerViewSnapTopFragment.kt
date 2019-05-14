@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
+import com.smart.library.widget.recyclerview.CXLoadMoreWrapper
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.CXRecyclerViewItemDecoration
-import com.smart.template.R
+import com.smart.library.widget.recyclerview.CXViewHolder
 import com.smart.library.widget.recyclerview.snap.CXSnapGravityHelper
+import com.smart.template.R
 import kotlinx.android.synthetic.main.home_fragment_recycler_view_drag_and_transfer_item_days.view.*
 import kotlinx.android.synthetic.main.home_recycler_view_snap_top.*
 
@@ -25,23 +27,24 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
     }
 
+    private var flag = true
     private var pageIndex = 0
     private var pageSize = 10
     private fun getDataList(): MutableList<String> {
         val toPageIndex = pageIndex + 1
-        val tmpList = ((pageIndex * pageSize)..(toPageIndex * pageSize)).map { "第 $it 天" }.toMutableList()
+        val tmpList = ((pageIndex * pageSize) until toPageIndex * pageSize).map { "第 $it 天" }.toMutableList()
         pageIndex = toPageIndex
         return tmpList
     }
 
     @Suppress("PrivatePropertyName")
-    private val adapter by lazy {
-        object : CXRecyclerViewAdapter<String, CXRecyclerViewAdapter.ViewHolder>(context, getDataList()) {
-            override fun onCreateViewHolder(container: ViewGroup, position: Int): ViewHolder {
-                return ViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
+    private val adapter: CXRecyclerViewAdapter<String, CXViewHolder> by lazy {
+        object : CXRecyclerViewAdapter<String, CXViewHolder>(context, getDataList()) {
+            override fun onCreateViewHolder(container: ViewGroup, position: Int): CXViewHolder {
+                return CXViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
             }
 
-            override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            override fun onBindViewHolder(viewHolder: CXViewHolder, position: Int) {
                 viewHolder.itemView.textViewDays.text = dataList[position]
             }
         }
@@ -55,7 +58,33 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
-        recyclerView.adapter = adapter
+
+        val adapterWrapper = CXLoadMoreWrapper<String, CXViewHolder>(context, adapter)
+        adapterWrapper.setOnLoadListener(object : CXLoadMoreWrapper.OnLoadListener {
+            override fun onRetry() {
+                onLoadMore()
+            }
+
+            override fun onLoadMore() {
+                recyclerView.postDelayed({
+                    if (flag) {
+                        adapterWrapper.add(getDataList())
+                        if (adapterWrapper.itemCount >= 40) {
+                            adapterWrapper.showNoMoreView()
+                        } else {
+                            adapterWrapper.showLoading()
+                        }
+                        flag = false
+                    } else {
+                        adapterWrapper.showLoadFailure()
+                        flag = true
+                    }
+                }, 2000)
+            }
+        })
+
+        recyclerView.adapter = adapterWrapper
+
         // LinearSnapHelper().attachToRecyclerView(recyclerView)
 
         CXSnapGravityHelper(
@@ -67,5 +96,6 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
                     }
                 }
         ).attachToRecyclerView(recyclerView)
+
     }
 }

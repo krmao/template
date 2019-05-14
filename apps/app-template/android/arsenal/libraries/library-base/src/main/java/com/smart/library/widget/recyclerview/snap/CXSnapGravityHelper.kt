@@ -88,6 +88,13 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
             if (gravity == Gravity.START || gravity == Gravity.END) isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
             if (listener != null) recyclerView.addOnScrollListener(scrollListener)
             this.recyclerView = recyclerView
+
+            // invoke first item
+            if (recyclerView.layoutManager?.itemCount ?: 0 > 0) {
+                lastSnappedPosition = 0
+                listener?.onSnap(lastSnappedPosition)
+                lastSnappedPositionAfterOnSnap = lastSnappedPosition
+            }
         }
 
         fun smoothScrollToPosition(position: Int) = scrollTo(position, true)
@@ -118,6 +125,12 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
             val out = IntArray(2)
 
             if (layoutManager !is LinearLayoutManager) {
+                return out
+            }
+
+            // If we're at the end of the list, we shouldn't snap
+            // to avoid having the last item not completely visible.
+            if (isAtEndOfList(layoutManager) && !snapLastItem) {
                 return out
             }
 
@@ -221,9 +234,9 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
 
             // If we're at the end of the list, we shouldn't snap
             // to avoid having the last item not completely visible.
-            if (isAtEndOfList(linearLayoutManager) && !snapLastItem) {
+            /*if (isAtEndOfList(linearLayoutManager) && !snapLastItem) {
                 return null
-            }
+            }*/
 
             var edgeView: View? = null
             var distanceToEdge = Integer.MAX_VALUE
@@ -245,19 +258,15 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
         }
 
         private fun isAtEndOfList(linearLayoutManager: LinearLayoutManager): Boolean {
-            return if (!linearLayoutManager.reverseLayout && gravity == Gravity.START || linearLayoutManager.reverseLayout && gravity == Gravity.END) {
+            return if (!linearLayoutManager.reverseLayout && (gravity == Gravity.START || gravity == Gravity.TOP) || linearLayoutManager.reverseLayout && (gravity == Gravity.END || gravity == Gravity.BOTTOM)) {
                 linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1
             } else {
                 linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0
             }
         }
 
-        private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
-            return verticalHelper ?: OrientationHelper.createVerticalHelper(layoutManager)
-        }
+        private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = verticalHelper ?: OrientationHelper.createVerticalHelper(layoutManager)
 
-        private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
-            return horizontalHelper ?: OrientationHelper.createHorizontalHelper(layoutManager)
-        }
+        private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = horizontalHelper ?: OrientationHelper.createHorizontalHelper(layoutManager)
     }
 }

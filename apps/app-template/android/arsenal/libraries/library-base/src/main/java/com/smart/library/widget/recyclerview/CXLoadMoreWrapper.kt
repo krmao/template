@@ -12,143 +12,140 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
+import com.smart.library.util.CXSystemUtil
 
 @Suppress("unused", "unused")
 @SuppressLint("SetTextI18n")
-class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CXLoadMoreWrapper<Entity, ViewHolder>(private val mContext: Context?, private val innerAdapter: CXRecyclerViewAdapter<Entity, CXViewHolder>) : RecyclerView.Adapter<CXViewHolder>() {
 
     companion object {
-        const val ITEM_TYPE_LOAD_FAILED_VIEW = Integer.MAX_VALUE - 1
-        const val ITEM_TYPE_NO_MORE_VIEW = Integer.MAX_VALUE - 2
-        const val ITEM_TYPE_LOAD_MORE_VIEW = Integer.MAX_VALUE - 3
-        const val ITEM_TYPE_NO_VIEW = Integer.MAX_VALUE - 4//不展示footer view
+        private const val ITEM_TYPE_LOAD_FAILED = Integer.MAX_VALUE - 1
+        private const val ITEM_TYPE_NO_MORE = Integer.MAX_VALUE - 2
+        private const val ITEM_TYPE_LOADING = Integer.MAX_VALUE - 3
+        private const val ITEM_TYPE_NONE = Integer.MAX_VALUE - 4 //不展示footer view
+
+        private val DP_30 = CXSystemUtil.getPxFromDp(20f).toInt()
     }
 
-    private var mLoadMoreView: View? = null
-    private var mLoadMoreFailedView: View? = null
-    private var mNoMoreView: View? = null
+    private var loadMoreView: View? = null
+    private var loadMoreFailedView: View? = null
+    private var noMoreView: View? = null
 
-    private var mCurrentItemType = ITEM_TYPE_LOAD_MORE_VIEW
-    private val mLoadMoreScrollListener: LoadMoreScrollListener
+    private var currentItemType = ITEM_TYPE_LOADING
+    private val scrollListener: LoadMoreScrollListener
 
-
-    private var isLoadError = false//标记是否加载出错
+    private var isLoadFailure = false//标记是否加载出错
     private var isHaveStatesView = true
 
-    private fun wrapperFullSpan(holder: CXRecyclerViewAdapter.ViewHolder): CXRecyclerViewAdapter.ViewHolder {
-        val lp = holder.itemView.layoutParams
-        if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams) lp.isFullSpan = true
+    private fun wrapperFullSpan(holder: CXViewHolder): CXViewHolder {
+        val layoutParams = holder.itemView.layoutParams
+        if (layoutParams != null && layoutParams is StaggeredGridLayoutManager.LayoutParams) layoutParams.isFullSpan = true
         return holder
     }
 
-    //region Get ViewHolder
-    private val loadMoreViewHolder: CXRecyclerViewAdapter.ViewHolder
+    private val loadMoreViewHolder: CXViewHolder
         get() {
-            if (mLoadMoreView == null) {
-                mLoadMoreView = TextView(mContext)
-                mLoadMoreView!!.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                mLoadMoreView!!.setPadding(20, 20, 20, 20)
-                (mLoadMoreView as TextView).text = "正在加载中"
-                (mLoadMoreView as TextView).gravity = Gravity.CENTER
+            if (loadMoreView == null) {
+                loadMoreView = TextView(mContext)
+                loadMoreView!!.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                loadMoreView!!.setPadding(DP_30, DP_30, DP_30, DP_30)
+                (loadMoreView as TextView).text = "正在加载中"
+                (loadMoreView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreView!!))
+            return wrapperFullSpan(CXViewHolder(loadMoreView!!))
         }
 
-    private val loadFailedViewHolder: CXRecyclerViewAdapter.ViewHolder
+    private val loadFailedViewHolder: CXViewHolder
         get() {
-            if (mLoadMoreFailedView == null) {
-                mLoadMoreFailedView = TextView(mContext)
-                mLoadMoreFailedView!!.setPadding(20, 20, 20, 20)
-                mLoadMoreFailedView!!.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                (mLoadMoreFailedView as TextView).text = "加载失败，请点我重试"
-                (mLoadMoreFailedView as TextView).gravity = Gravity.CENTER
+            if (loadMoreFailedView == null) {
+                loadMoreFailedView = TextView(mContext)
+                loadMoreFailedView!!.setPadding(DP_30, DP_30, DP_30, DP_30)
+                loadMoreFailedView!!.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                (loadMoreFailedView as TextView).text = "加载失败，请点我重试"
+                (loadMoreFailedView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mLoadMoreFailedView!!))
+            return wrapperFullSpan(CXViewHolder(loadMoreFailedView!!))
         }
 
 
-    private val noMoreViewHolder: CXRecyclerViewAdapter.ViewHolder
+    private val noMoreViewHolder: CXViewHolder
         get() {
-            if (mNoMoreView == null) {
-                mNoMoreView = TextView(mContext)
-                mNoMoreView!!.setPadding(20, 20, 20, 20)
-                mNoMoreView!!.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                (mNoMoreView as TextView).text = "--end--"
-                (mNoMoreView as TextView).gravity = Gravity.CENTER
+            if (noMoreView == null) {
+                noMoreView = TextView(mContext)
+                noMoreView?.setPadding(DP_30, DP_30, DP_30, DP_30)
+                noMoreView?.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                (noMoreView as TextView).text = "没有更多了"
+                (noMoreView as TextView).gravity = Gravity.CENTER
             }
-            return wrapperFullSpan(CXRecyclerViewAdapter.ViewHolder(mNoMoreView!!))
+            return wrapperFullSpan(CXViewHolder(noMoreView!!))
         }
 
-    private var mOnLoadListener: OnLoadListener? = null
+    private var loadListener: OnLoadListener? = null
 
     init {
-        mLoadMoreScrollListener = object : LoadMoreScrollListener() {
+        scrollListener = object : LoadMoreScrollListener() {
             override fun loadMore() {
-                if (mOnLoadListener != null && isHaveStatesView) {
-                    if (!isLoadError) {
-                        showLoadMore()
-                        mOnLoadListener!!.onLoadMore()
+                if (loadListener != null && isHaveStatesView) {
+                    if (!isLoadFailure && currentItemType != ITEM_TYPE_NO_MORE) {
+                        showLoading()
+                        loadListener?.onLoadMore()
                     }
                 }
             }
         }
     }
 
-    fun showLoadMore() {
-        mCurrentItemType = ITEM_TYPE_LOAD_MORE_VIEW
-        isLoadError = false
+    fun showLoading() {
+        currentItemType = ITEM_TYPE_LOADING
+        isLoadFailure = false
         isHaveStatesView = true
         notifyItemChanged(itemCount)
     }
 
-    fun showLoadError() {
-        mCurrentItemType = ITEM_TYPE_LOAD_FAILED_VIEW
-        isLoadError = true
+    fun showLoadFailure() {
+        currentItemType = ITEM_TYPE_LOAD_FAILED
+        isLoadFailure = true
         isHaveStatesView = true
         notifyItemChanged(itemCount)
     }
 
-    fun showLoadComplete() {
-        mCurrentItemType = ITEM_TYPE_NO_MORE_VIEW
-        isLoadError = false
+    fun showNoMoreView() {
+        currentItemType = ITEM_TYPE_NO_MORE
+        isLoadFailure = false
         isHaveStatesView = true
         notifyItemChanged(itemCount)
     }
 
-    fun disableLoadMore() {
-        mCurrentItemType = ITEM_TYPE_NO_VIEW
+    fun disable() {
+        currentItemType = ITEM_TYPE_NONE
         isHaveStatesView = false
         notifyDataSetChanged()
     }
-    //endregion
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == itemCount - 1 && isHaveStatesView) {
-            mCurrentItemType
-        } else innerAdapter.getItemViewType(position)
+        return if (position == itemCount - 1 && isHaveStatesView) currentItemType else innerAdapter.getItemViewType(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CXViewHolder {
         return when (viewType) {
-            ITEM_TYPE_NO_MORE_VIEW -> noMoreViewHolder
-            ITEM_TYPE_LOAD_MORE_VIEW -> loadMoreViewHolder
-            ITEM_TYPE_LOAD_FAILED_VIEW -> loadFailedViewHolder
+            ITEM_TYPE_NO_MORE -> noMoreViewHolder
+            ITEM_TYPE_LOADING -> loadMoreViewHolder
+            ITEM_TYPE_LOAD_FAILED -> loadFailedViewHolder
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == ITEM_TYPE_LOAD_FAILED_VIEW) {
-            mLoadMoreFailedView!!.setOnClickListener {
-                if (mOnLoadListener != null) {
-                    mOnLoadListener!!.onRetry()
-                    showLoadMore()
+    override fun onBindViewHolder(holder: CXViewHolder, position: Int) {
+        if (holder.itemViewType == ITEM_TYPE_LOAD_FAILED) {
+            loadMoreFailedView?.setOnClickListener {
+                if (loadListener != null) {
+                    loadListener?.onRetry()
+                    showLoading()
                 }
             }
             return
         }
-        if (!isFooterType(holder.itemViewType))
-            innerAdapter.onBindViewHolder(holder, position)
+        if (!isFooterType(holder.itemViewType)) innerAdapter.onBindViewHolder(holder, position)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -157,15 +154,13 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
                 if (position == itemCount - 1 && isHaveStatesView) {
                     return layoutManager.spanCount
                 }
-                return if (isHaveStatesView) {
-                    oldLookup.getSpanSize(position)
-                } else 1
+                return if (isHaveStatesView) oldLookup.getSpanSize(position) else 1
             }
         })
-        recyclerView.addOnScrollListener(mLoadMoreScrollListener)
+        recyclerView.addOnScrollListener(scrollListener)
     }
 
-    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, recyclerView: RecyclerView, callback: SpanSizeCallback) {
+    private fun onAttachedToRecyclerView(innerAdapter: RecyclerView.Adapter<CXViewHolder>, recyclerView: RecyclerView, callback: SpanSizeCallback) {
         innerAdapter.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {
@@ -178,30 +173,40 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: CXViewHolder) {
         innerAdapter.onViewAttachedToWindow(holder)
 
         if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
-            val lp = holder.itemView.layoutParams
-
-            if (lp != null && lp is StaggeredGridLayoutManager.LayoutParams) {
-
-                lp.isFullSpan = true
+            val layoutParams = holder.itemView.layoutParams
+            if (layoutParams != null && layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                layoutParams.isFullSpan = true
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return innerAdapter.itemCount + if (isHaveStatesView) 1 else 0
+    override fun getItemCount(): Int = innerAdapter.itemCount + if (isHaveStatesView) 1 else 0
+
+    fun remove(position: Int) {
+        innerAdapter.remove(position)
+        notifyItemChanged(itemCount)
     }
 
-    private fun isFooterType(type: Int): Boolean {
-        return type == ITEM_TYPE_NO_VIEW ||
-            type == ITEM_TYPE_LOAD_FAILED_VIEW ||
-            type == ITEM_TYPE_NO_MORE_VIEW ||
-            type == ITEM_TYPE_LOAD_MORE_VIEW
+    fun removeAll() {
+        innerAdapter.removeAll()
+        notifyItemChanged(itemCount)
     }
-    //region 加载监听
+
+    fun add(newList: List<Entity>?) {
+        innerAdapter.add(newList)
+        notifyItemChanged(itemCount)
+    }
+
+    fun add(entity: Entity, position: Int) {
+        innerAdapter.add(entity, position)
+        notifyItemChanged(itemCount)
+    }
+
+    private fun isFooterType(type: Int): Boolean = type == ITEM_TYPE_NONE || type == ITEM_TYPE_LOAD_FAILED || type == ITEM_TYPE_NO_MORE || type == ITEM_TYPE_LOADING
 
     interface OnLoadListener {
         fun onRetry()
@@ -209,24 +214,16 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
         fun onLoadMore()
     }
 
-    fun setOnLoadListener(onLoadListener: OnLoadListener): CXLoadMoreWrapper {
-        mOnLoadListener = onLoadListener
+    fun setOnLoadListener(onLoadListener: OnLoadListener): CXLoadMoreWrapper<Entity, ViewHolder> {
+        loadListener = onLoadListener
         return this
     }
 
-    //endregion
-
-    interface SpanSizeCallback {
+    private interface SpanSizeCallback {
         fun getSpanSize(layoutManager: GridLayoutManager, oldLookup: GridLayoutManager.SpanSizeLookup, position: Int): Int
     }
 
-    /**
-     * Created by _SOLID
-     * Date:2016/10/9
-     * Time:16:12
-     * Desc:用于RecyclerView加载更多的监听，实现滑动到底部自动加载更多
-     */
-    abstract inner class LoadMoreScrollListener : RecyclerView.OnScrollListener() {
+    private abstract inner class LoadMoreScrollListener : RecyclerView.OnScrollListener() {
 
         private var previousTotal: Int = 0
         private var isLoading = true
@@ -272,7 +269,6 @@ class CXLoadMoreWrapper(private val mContext: Context, private val innerAdapter:
             if (!isLoading && visibleItemCount > 0 && totalItemCount - 1 == lastVisibleItemPosition && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
                 loadMore()
             }
-
         }
 
         abstract fun loadMore()

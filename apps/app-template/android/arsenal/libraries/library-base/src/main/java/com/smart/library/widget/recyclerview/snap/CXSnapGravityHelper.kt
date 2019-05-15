@@ -11,6 +11,7 @@ import android.view.View
 import com.smart.library.util.CXLogUtil
 import java.util.*
 
+
 @Suppress("unused")
 class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLastItem: Boolean = false, snapListener: SnapListener? = null) : LinearSnapHelper() {
 
@@ -51,29 +52,8 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
         private var verticalHelper: OrientationHelper? = null
         private var horizontalHelper: OrientationHelper? = null
         private var isRtl: Boolean = false
-        private var lastSnappedPosition: Int = -1
         private var lastSnappedPositionAfterOnSnap: Int = -1 // 去重
         private var recyclerView: RecyclerView? = null
-        private val scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                CXLogUtil.v("Snapped", when (newState) {
-                    RecyclerView.SCROLL_STATE_IDLE -> "onScrollStateChanged-IDLE"
-                    RecyclerView.SCROLL_STATE_DRAGGING -> "onScrollStateChanged-DRAGGING"
-                    RecyclerView.SCROLL_STATE_SETTLING -> "onScrollStateChanged-SETTLING"
-                    else -> "$newState"
-                })
-
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE /*&& snapping*/ && listener != null) {
-                    if (lastSnappedPosition != RecyclerView.NO_POSITION && lastSnappedPosition != lastSnappedPositionAfterOnSnap) {
-                        listener.onSnap(lastSnappedPosition)
-                        lastSnappedPositionAfterOnSnap = lastSnappedPosition
-                    }
-                    /*snapping = false*/
-                }
-            }
-        }
 
         @Throws(IllegalArgumentException::class, IllegalStateException::class)
         fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -86,14 +66,12 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
 
             recyclerView.onFlingListener = null
             if (gravity == Gravity.START || gravity == Gravity.END) isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
-            if (listener != null) recyclerView.addOnScrollListener(scrollListener)
+            // if (listener != null) recyclerView.addOnScrollListener(scrollListener)
             this.recyclerView = recyclerView
 
             // invoke first item
             if (recyclerView.layoutManager?.itemCount ?: 0 > 0) {
-                lastSnappedPosition = 0
-                listener?.onSnap(lastSnappedPosition)
-                lastSnappedPositionAfterOnSnap = lastSnappedPosition
+                notifyOnSnapped(0)
             }
         }
 
@@ -170,12 +148,24 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapLast
                 Gravity.BOTTOM -> snapView = findEdgeView(layoutManager, getVerticalHelper(layoutManager), false)
             }
 
+            val willSnapPosition: Int
             if (snapView != null) {
-                lastSnappedPosition = tmpRecyclerView.getChildAdapterPosition(snapView)
+                willSnapPosition = tmpRecyclerView.getChildAdapterPosition(snapView)
             } else {
-                lastSnappedPosition = if (layoutManager.childCount > 0) 0 else -1
+                willSnapPosition = if (layoutManager.childCount > 0) 0 else -1
             }
+            CXLogUtil.w("snap", "snapView=$snapView, willSnapPosition=$willSnapPosition")
+
+            notifyOnSnapped(willSnapPosition)
             return snapView
+        }
+
+        private fun notifyOnSnapped(willSnapPosition: Int) {
+            // process position changed
+            if (listener != null && willSnapPosition != RecyclerView.NO_POSITION && willSnapPosition != lastSnappedPositionAfterOnSnap) {
+                listener.onSnap(willSnapPosition)
+                lastSnappedPositionAfterOnSnap = willSnapPosition
+            }
         }
 
         fun enableLastItemSnap(snap: Boolean) {

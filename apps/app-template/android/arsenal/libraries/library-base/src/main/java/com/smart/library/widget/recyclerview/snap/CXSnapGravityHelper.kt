@@ -16,9 +16,9 @@ import java.util.*
  * @param enableSnapLastPositionCompletelyVisible 当滚动到列表尾部时 onSnap 返回的是完全可见的(true)或者部分可见的(false)
  */
 @Suppress("unused")
-class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapAtEndOfList: Boolean = false, enableSnapLastPositionCompletelyVisible: Boolean = true, snapListener: SnapListener? = null) : LinearSnapHelper() {
+class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: SnapListener? = null, debug: Boolean = false, enableSnapAtEndOfList: Boolean = false, enableSnapLastPositionCompletelyVisible: Boolean = true) : LinearSnapHelper() {
 
-    private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(gravity, enableSnapAtEndOfList, enableSnapLastPositionCompletelyVisible, snapListener)
+    private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(gravity, debug, enableSnapAtEndOfList, enableSnapLastPositionCompletelyVisible, snapListener)
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -50,8 +50,9 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapAtEn
         fun onSnap(position: Int)
     }
 
-    internal class GSSnapGravityDelegate(private val gravity: Int, private var enableSnapAtEndOfList: Boolean = false, private var enableSnapLastPositionCompletelyVisible: Boolean = true, private val listener: SnapListener?) {
+    internal class GSSnapGravityDelegate(private val gravity: Int, private var debug: Boolean = false, private var enableSnapAtEndOfList: Boolean = false, private var enableSnapLastPositionCompletelyVisible: Boolean = true, private val listener: SnapListener?) {
 
+        private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
         private var horizontalHelper: OrientationHelper? = null
         private var isRtl: Boolean = false
@@ -160,9 +161,18 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapAtEn
             if (snapView != null) {
                 willSnapPosition = tmpRecyclerView.getChildAdapterPosition(snapView)
             } else {
-                willSnapPosition = if (layoutManager.childCount > 0) 0 else -1
+                willSnapPosition =
+                        if (layoutManager.childCount > 0) {
+                            if (enableSnapLastPositionCompletelyVisible) {
+                                if (gravity == Gravity.START || gravity == Gravity.TOP) layoutManager.findFirstCompletelyVisibleItemPosition() else layoutManager.findLastCompletelyVisibleItemPosition()
+                            } else {
+                                if (gravity == Gravity.START || gravity == Gravity.TOP) layoutManager.findFirstVisibleItemPosition() else layoutManager.findLastVisibleItemPosition()
+                            }
+                        } else {
+                            RecyclerView.NO_POSITION
+                        }
             }
-            CXLogUtil.w("snap", "snapView=$snapView, willSnapPosition=$willSnapPosition")
+            debugLog(tag, "snapView=$snapView, willSnapPosition=$willSnapPosition")
 
             notifyOnSnapped(willSnapPosition)
             return snapView
@@ -221,41 +231,35 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapAtEn
         /**
          * Returns the first view that we should snap to.
          *
-         * @param linearLayoutManager     the recyclerview's layout manager
+         * @param linearLayoutManager     the recyclerView's layout manager
          * @param helper orientation helper to calculate view sizes
          * @return the first view in the LayoutManager to snap to
          */
         private fun findEdgeView(linearLayoutManager: LinearLayoutManager, helper: OrientationHelper, start: Boolean): View? {
-            if (linearLayoutManager.childCount <= 0) {
-                return null
-            }
+            if (linearLayoutManager.childCount <= 0) return null
 
             val isAtEndOfList = isAtEndOfList(linearLayoutManager)
-
-
             var minItemViewDecoratedStartView: View? = null
             var minItemViewDecoratedStart = Integer.MAX_VALUE
-            var decoratedStart = 0
-            val findFirstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
-            val findFirstCompletelyVisibleItemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+            var decoratedDistance: Int
 
             for (i in 0 until linearLayoutManager.childCount) {
                 val tmpItemView = linearLayoutManager.getChildAt(i)
                 val tmpItemViewDecoratedStart: Int
                 if (start && !isRtl || !start && isRtl) {
-                    decoratedStart = helper.getDecoratedStart(tmpItemView)
-                    tmpItemViewDecoratedStart = decoratedStart
+                    decoratedDistance = helper.getDecoratedStart(tmpItemView)
+                    tmpItemViewDecoratedStart = decoratedDistance
                 } else {
-                    decoratedStart = helper.getDecoratedEnd(tmpItemView) - helper.end
-                    tmpItemViewDecoratedStart = decoratedStart
+                    decoratedDistance = helper.getDecoratedEnd(tmpItemView) - helper.end
+                    tmpItemViewDecoratedStart = decoratedDistance
                 }
-                if ((!enableSnapLastPositionCompletelyVisible && !isAtEndOfList) || ((enableSnapLastPositionCompletelyVisible && !isAtEndOfList) || (enableSnapLastPositionCompletelyVisible && isAtEndOfList && ((!enableSnapAtEndOfList && start && decoratedStart >= 0 || !start && decoratedStart <= 0) || enableSnapAtEndOfList)))) {
+                if ((!enableSnapLastPositionCompletelyVisible && !isAtEndOfList) || ((enableSnapLastPositionCompletelyVisible && !isAtEndOfList) || (enableSnapLastPositionCompletelyVisible && isAtEndOfList && ((!enableSnapAtEndOfList && start && decoratedDistance >= 0 || !start && decoratedDistance <= 0) || enableSnapAtEndOfList)))) {
                     if (Math.abs(tmpItemViewDecoratedStart) < Math.abs(minItemViewDecoratedStart)) {
                         minItemViewDecoratedStart = tmpItemViewDecoratedStart
                         minItemViewDecoratedStartView = tmpItemView
                     }
                 }
-                CXLogUtil.w("snap", "index=$i,isAtEndOfList=$isAtEndOfList,findFirstVisibleItemPosition=$findFirstVisibleItemPosition,findFirstCompletelyVisibleItemPosition=$findFirstCompletelyVisibleItemPosition,distanceToEdge=$minItemViewDecoratedStart,decoratedStart=$decoratedStart,childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount},edgeView=$minItemViewDecoratedStartView")
+                debugLog(tag, "index=$i,isAtEndOfList=$isAtEndOfList,distanceToEdge=$minItemViewDecoratedStart,decoratedDistance=$decoratedDistance,childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount},edgeView=$minItemViewDecoratedStartView")
             }
             return minItemViewDecoratedStartView
         }
@@ -271,5 +275,7 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, enableSnapAtEn
         private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = verticalHelper ?: OrientationHelper.createVerticalHelper(layoutManager)
 
         private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = horizontalHelper ?: OrientationHelper.createHorizontalHelper(layoutManager)
+
+        private fun debugLog(tag: String, message: String) = if (debug) CXLogUtil.d(tag, message) else Unit
     }
 }

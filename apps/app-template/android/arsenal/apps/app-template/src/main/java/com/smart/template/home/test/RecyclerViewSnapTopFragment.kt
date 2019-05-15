@@ -2,13 +2,13 @@ package com.smart.template.home.test
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
+import com.smart.library.util.CXLogUtil
 import com.smart.library.widget.recyclerview.CXLoadMoreWrapper
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.CXRecyclerViewItemDecoration
@@ -89,13 +89,12 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
 
         CXSnapGravityHelper(
                 Gravity.TOP,
-                false,
-                true,
                 object : CXSnapGravityHelper.SnapListener {
                     override fun onSnap(position: Int) {
-                        Log.d("Snapped", position.toString() + "")
+                        CXLogUtil.e("Snapped", position.toString())
                     }
-                }
+                },
+                debug = true
         ).attachToRecyclerView(recyclerView)
 
     }

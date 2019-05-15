@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 
 @Suppress("unused")
-class CXSnapGravityPagerHelper @JvmOverloads constructor(gravity: Int, enableSnapLastItem: Boolean = false, enableLastSnapCompletelyVisible: Boolean = true, snapListener: CXSnapGravityHelper.SnapListener? = null) : PagerSnapHelper() {
+class CXSnapGravityPagerHelper @JvmOverloads constructor(gravity: Int, snapListener: CXSnapGravityHelper.SnapListener? = null, debug: Boolean = false, enableSnapLastItem: Boolean = false, enableLastSnapCompletelyVisible: Boolean = true) : PagerSnapHelper() {
 
-    private val delegate: CXSnapGravityHelper.GSSnapGravityDelegate = CXSnapGravityHelper.GSSnapGravityDelegate(gravity, enableSnapLastItem, enableLastSnapCompletelyVisible, snapListener)
+    private val delegate: CXSnapGravityHelper.GSSnapGravityDelegate = CXSnapGravityHelper.GSSnapGravityDelegate(gravity, debug, enableSnapLastItem, enableLastSnapCompletelyVisible, snapListener)
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {

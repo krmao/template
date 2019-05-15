@@ -90,6 +90,7 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         CXSnapGravityHelper(
                 Gravity.TOP,
                 false,
+                true,
                 object : CXSnapGravityHelper.SnapListener {
                     override fun onSnap(position: Int) {
                         Log.d("Snapped", position.toString() + "")

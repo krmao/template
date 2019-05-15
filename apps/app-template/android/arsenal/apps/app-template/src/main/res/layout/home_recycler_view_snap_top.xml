@@ -17,5 +17,6 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:reverseLayout="false"
         tools:ignore="UseCompoundDrawables" />
 </LinearLayout>

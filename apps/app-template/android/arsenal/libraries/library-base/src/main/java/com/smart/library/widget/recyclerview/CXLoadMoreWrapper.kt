@@ -14,28 +14,57 @@ import android.widget.TextView
 import com.smart.library.util.CXSystemUtil
 
 /*
+
     // divider between items
     recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
 
-    val adapterWrapper = CXLoadMoreWrapper<String, CXViewHolder>(context, adapter)
+    val adapterWrapper = CXLoadMoreWrapper(adapter)
 
     // custom loading views
-    adapterWrapper.viewNoMore = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 真的没有更多了", CXSystemUtil.getPxFromDp(40f).toInt(), Color.DKGRAY)
-    adapterWrapper.viewLoadFailure = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 加载失败了哟", CXSystemUtil.getPxFromDp(40f).toInt())
-    adapterWrapper.viewLoading = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 火速请求中...", CXSystemUtil.getPxFromDp(40f).toInt())
+    adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
+    adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
+    adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
 
     // onLoadMore listener
     var flag = true
     adapterWrapper.setOnLoadMoreListener {
         recyclerView.postDelayed({
             if (flag) {
-                adapterWrapper.add(getDataList())
-                if (adapterWrapper.itemCount >= 20) {
+                if (adapterWrapper.itemCount >= 30) {
                     adapterWrapper.showNoMore()
+
+                    // test removeAll
+                    recyclerView.postDelayed({
+                        adapterWrapper.removeAll()
+
+                        // test disable
+                        recyclerView.postDelayed({
+                            adapterWrapper.disable()
+
+                            // test add one
+                            recyclerView.postDelayed({
+                                adapterWrapper.add("0 test")
+
+                                // test remove one
+                                recyclerView.postDelayed({
+                                    adapterWrapper.remove(0)
+
+                                    // test addAll
+                                    recyclerView.postDelayed({
+                                        pageIndex = 0
+                                        adapterWrapper.add(getDataList())
+                                        adapterWrapper.showLoading()
+                                    }, 3000)
+                                }, 3000)
+                            }, 3000)
+                        }, 3000)
+                    }, 3000)
+
                 } else {
-                    adapterWrapper.showLoading()
+                    adapterWrapper.add(getDataList())
+                    // adapterWrapper.showLoading()
                 }
-                flag = false
+                if (adapterWrapper.itemCount == 20 + 1) flag = false
             } else {
                 adapterWrapper.showLoadFailure()
                 flag = true

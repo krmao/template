@@ -99,53 +99,27 @@ class CXLoadMoreWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdapter<
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (!isFooterType(holder.itemViewType)) {
-            innerAdapter.onBindViewHolder(holder, position)
-        } else if (holder.itemViewType == ITEM_TYPE_LOADING && position == itemCount - 1) {
-            onLoadMore?.invoke()
-        } else if (holder.itemViewType == ITEM_TYPE_LOAD_FAILED) {
-            holder.itemView.setOnClickListener {
-                if (onLoadMore != null) {
-                    showLoading()
-                }
+        when (holder.itemViewType) {
+            ITEM_TYPE_NO_MORE -> {
             }
-        }
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        innerAdapter.onAttachedToRecyclerView(recyclerView)
-        val layoutManager = recyclerView.layoutManager
-        if (layoutManager is GridLayoutManager) {
-            val oldSpanSizeLookup = layoutManager.spanSizeLookup
-            layoutManager.spanCount = layoutManager.spanCount
-            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (position == itemCount - 1 && isHaveStatesView) {
-                        layoutManager.spanCount
-                    } else if (isHaveStatesView) {
-                        oldSpanSizeLookup.getSpanSize(position)
-                    } else {
-                        1
+            ITEM_TYPE_NONE -> {
+            }
+            ITEM_TYPE_LOAD_FAILED -> {
+                holder.itemView.setOnClickListener {
+                    if (onLoadMore != null) {
+                        showLoading()
                     }
                 }
             }
+            ITEM_TYPE_LOADING -> {
+                if (position == itemCount - 1) {
+                    onLoadMore?.invoke()
+                }
+            }
+            else -> {
+                innerAdapter.onBindViewHolder(holder, position)
+            }
         }
-    }
-
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        innerAdapter.onViewAttachedToWindow(holder)
-        if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
-            val layoutParams = holder.itemView.layoutParams
-            if (layoutParams is StaggeredGridLayoutManager.LayoutParams) layoutParams.isFullSpan = true
-        }
-    }
-
-    private fun isFooterType(type: Int): Boolean = type == ITEM_TYPE_NONE || type == ITEM_TYPE_LOAD_FAILED || type == ITEM_TYPE_NO_MORE || type == ITEM_TYPE_LOADING
-
-    private fun wrapperFullSpan(holder: CXViewHolder): CXViewHolder {
-        val layoutParams = holder.itemView.layoutParams
-        if (layoutParams != null && layoutParams is StaggeredGridLayoutManager.LayoutParams) layoutParams.isFullSpan = true
-        return holder
     }
 
     fun setOnLoadMoreListener(onLoadMore: (() -> Unit)?) {
@@ -229,4 +203,40 @@ class CXLoadMoreWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdapter<
         itemView.typeface = Typeface.DEFAULT_BOLD
         return itemView
     }
+
+    // 适配 GridLayoutManager & StaggeredGridLayoutManager start
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        innerAdapter.onAttachedToRecyclerView(recyclerView)
+        val layoutManager = recyclerView.layoutManager
+        if (layoutManager is GridLayoutManager) {
+            val oldSpanSizeLookup = layoutManager.spanSizeLookup
+            layoutManager.spanCount = layoutManager.spanCount
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == itemCount - 1 && isHaveStatesView) {
+                        layoutManager.spanCount
+                    } else if (isHaveStatesView) {
+                        oldSpanSizeLookup.getSpanSize(position)
+                    } else {
+                        1
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        innerAdapter.onViewAttachedToWindow(holder)
+        if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
+            val layoutParams = holder.itemView.layoutParams
+            if (layoutParams is StaggeredGridLayoutManager.LayoutParams) layoutParams.isFullSpan = true
+        }
+    }
+
+    private fun wrapperFullSpan(holder: CXViewHolder): CXViewHolder {
+        val layoutParams = holder.itemView.layoutParams
+        if (layoutParams != null && layoutParams is StaggeredGridLayoutManager.LayoutParams) layoutParams.isFullSpan = true
+        return holder
+    }
+    // 适配 GridLayoutManager & StaggeredGridLayoutManager end
 }

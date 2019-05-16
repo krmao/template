@@ -1,8 +1,8 @@
 package com.smart.library.widget.recyclerview
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -59,7 +59,7 @@ import com.smart.library.util.CXSystemUtil
  */
 @Suppress("unused", "unused")
 @SuppressLint("SetTextI18n")
-class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, private val innerAdapter: CXRecyclerViewAdapter<Entity, CXViewHolder>) : RecyclerView.Adapter<CXViewHolder>() {
+class CXLoadMoreWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private val TAG: String = CXLoadMoreWrapper::class.java.simpleName
@@ -68,19 +68,6 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
         private const val ITEM_TYPE_NO_MORE = Integer.MAX_VALUE - 2
         private const val ITEM_TYPE_LOADING = Integer.MAX_VALUE - 3
         private const val ITEM_TYPE_NONE = Integer.MAX_VALUE - 4
-
-        @Suppress("MemberVisibilityCanBePrivate")
-        @JvmStatic
-        @JvmOverloads
-        fun createDefaultFooterView(context: Context?, text: String, height: Int = CXSystemUtil.getPxFromDp(60f).toInt(), backgroundColor: Int = Color.YELLOW, textColor: Int = Color.BLACK): TextView {
-            val itemView = TextView(context)
-            itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
-            itemView.text = text
-            itemView.setBackgroundColor(backgroundColor)
-            itemView.setTextColor(textColor)
-            itemView.gravity = Gravity.CENTER
-            return itemView
-        }
     }
 
     private var isLoadFailure = false
@@ -92,9 +79,9 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
     var viewNoMore: View? = null
     var viewLoading: View? = null
     var viewLoadFailure: View? = null
-    private val viewHolderNoMore: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewNoMore ?: createDefaultFooterView(context, "没有更多了"))) }
-    private val viewHolderLoading: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewLoading ?: createDefaultFooterView(context, "正在加载中..."))) }
-    private val viewHolderLoadFailure: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewLoadFailure ?: createDefaultFooterView(context, "加载失败，请点我重试"))) }
+    private val viewHolderNoMore: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewNoMore ?: createDefaultFooterView("没有更多了"))) }
+    private val viewHolderLoading: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewLoading ?: createDefaultFooterView("正在加载中..."))) }
+    private val viewHolderLoadFailure: CXViewHolder by lazy { wrapperFullSpan(CXViewHolder(viewLoadFailure ?: createDefaultFooterView("加载失败，请点我重试"))) }
 
     override fun getItemViewType(position: Int): Int {
         return if (position == itemCount - 1 && isHaveStatesView) currentItemType else innerAdapter.getItemViewType(position)
@@ -102,7 +89,7 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
 
     override fun getItemCount(): Int = innerAdapter.itemCount + if (isHaveStatesView) 1 else 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CXViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_NO_MORE -> viewHolderNoMore
             ITEM_TYPE_LOADING -> viewHolderLoading
@@ -111,7 +98,7 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
         }
     }
 
-    override fun onBindViewHolder(holder: CXViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (!isFooterType(holder.itemViewType)) {
             innerAdapter.onBindViewHolder(holder, position)
         } else if (holder.itemViewType == ITEM_TYPE_LOADING && position == itemCount - 1) {
@@ -145,7 +132,7 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
         }
     }
 
-    override fun onViewAttachedToWindow(holder: CXViewHolder) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         innerAdapter.onViewAttachedToWindow(holder)
         if (holder.layoutPosition == itemCount - 1 && isHaveStatesView) {
             val layoutParams = holder.itemView.layoutParams
@@ -187,28 +174,59 @@ class CXLoadMoreWrapper<Entity, ViewHolder>(private val context: Context?, priva
     }
 
     fun disable() {
-        currentItemType = ITEM_TYPE_NONE
-        isHaveStatesView = false
-        notifyDataSetChanged()
+        if (currentItemType != ITEM_TYPE_NONE && isHaveStatesView) {
+            currentItemType = ITEM_TYPE_NONE
+            isHaveStatesView = false
+            notifyItemRemoved(itemCount)
+        }
     }
 
     fun remove(position: Int) {
-        innerAdapter.remove(position)
-        notifyItemChanged(itemCount)
+        if (position >= 0 && position < innerAdapter.dataList.size) {
+            innerAdapter.dataList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, itemCount - position)
+        }
     }
 
     fun removeAll() {
-        innerAdapter.removeAll()
-        notifyItemChanged(itemCount)
+        val oldInnerDataListSize = innerAdapter.dataList.size
+        innerAdapter.dataList.clear()
+        notifyItemRangeRemoved(0, oldInnerDataListSize)
     }
 
     fun add(newList: List<Entity>?) {
-        innerAdapter.add(newList)
-        notifyItemChanged(itemCount)
+        if (newList != null && newList.isNotEmpty()) {
+            val oldSize = innerAdapter.dataList.size
+            innerAdapter.dataList.addAll(newList)
+            notifyItemRangeChanged(oldSize - 1, newList.size + 1)
+        }
+    }
+
+    fun add(entity: Entity) {
+        val oldInnerDataListSize = innerAdapter.dataList.size
+        innerAdapter.dataList.add(entity)
+        notifyItemInserted(oldInnerDataListSize)
     }
 
     fun add(entity: Entity, position: Int) {
-        innerAdapter.add(entity, position)
-        notifyItemChanged(itemCount)
+        if (position >= 0 && position <= innerAdapter.dataList.size) {
+            innerAdapter.dataList.add(position, entity)
+            notifyItemInserted(position)
+            notifyItemRangeChanged(position, itemCount - position)
+        }
+    }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    @JvmOverloads
+    fun createDefaultFooterView(text: String, height: Int = CXSystemUtil.getPxFromDp(80f).toInt(), backgroundColor: Int = Color.DKGRAY, textColor: Int = Color.LTGRAY): TextView {
+        val itemView = TextView(innerAdapter.context)
+        itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
+        itemView.text = text
+        itemView.setBackgroundColor(backgroundColor)
+        itemView.setTextColor(textColor)
+        itemView.gravity = Gravity.CENTER
+        itemView.typeface = Typeface.DEFAULT_BOLD
+        return itemView
     }
 }

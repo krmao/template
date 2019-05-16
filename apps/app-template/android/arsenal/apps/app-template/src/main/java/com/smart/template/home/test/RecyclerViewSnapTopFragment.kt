@@ -1,6 +1,7 @@
 package com.smart.template.home.test
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXSystemUtil
 import com.smart.library.widget.recyclerview.CXLoadMoreWrapper
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.CXRecyclerViewItemDecoration
@@ -27,9 +29,8 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
     }
 
-    private var flag = true
     private var pageIndex = 0
-    private var pageSize = 10
+    private var pageSize = 6
     private fun getDataList(): MutableList<String> {
         val toPageIndex = pageIndex + 1
         val tmpList = ((pageIndex * pageSize) until toPageIndex * pageSize).map { "第 $it 天" }.toMutableList()
@@ -57,36 +58,38 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // divider between items
         recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
 
         val adapterWrapper = CXLoadMoreWrapper<String, CXViewHolder>(context, adapter)
-        adapterWrapper.setOnLoadListener(object : CXLoadMoreWrapper.OnLoadListener {
-            override fun onRetry() {
-                onLoadMore()
-            }
 
-            override fun onLoadMore() {
-                recyclerView.postDelayed({
-                    if (flag) {
-                        adapterWrapper.add(getDataList())
-                        if (adapterWrapper.itemCount >= 40) {
-                            adapterWrapper.showNoMoreView()
-                        } else {
-                            adapterWrapper.showLoading()
-                        }
-                        flag = false
+        // custom loading views
+        adapterWrapper.viewNoMore = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 真的没有更多了", CXSystemUtil.getPxFromDp(40f).toInt(), Color.DKGRAY)
+        adapterWrapper.viewLoadFailure = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 加载失败了哟", CXSystemUtil.getPxFromDp(40f).toInt())
+        adapterWrapper.viewLoading = CXLoadMoreWrapper.createDefaultFooterView(context, "呵呵, 火速请求中...", CXSystemUtil.getPxFromDp(40f).toInt())
+
+        // onLoadMore listener
+        var flag = true
+        adapterWrapper.setOnLoadMoreListener {
+            recyclerView.postDelayed({
+                if (flag) {
+                    adapterWrapper.add(getDataList())
+                    if (adapterWrapper.itemCount >= 20) {
+                        adapterWrapper.showNoMore()
                     } else {
-                        adapterWrapper.showLoadFailure()
-                        flag = true
+                        adapterWrapper.showLoading()
                     }
-                }, 2000)
-            }
-        })
+                    flag = false
+                } else {
+                    adapterWrapper.showLoadFailure()
+                    flag = true
+                }
+            }, 1000)
+        }
 
         recyclerView.adapter = adapterWrapper
 
-        // LinearSnapHelper().attachToRecyclerView(recyclerView)
-
+        // gravity snap
         CXSnapGravityHelper(
                 Gravity.TOP,
                 object : CXSnapGravityHelper.SnapListener {

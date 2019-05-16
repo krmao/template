@@ -28,7 +28,7 @@ abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     }
 
     fun add(newList: List<Entity>?) {
-        if (newList != null && !newList.isEmpty()) {
+        if (newList != null && newList.isNotEmpty()) {
             val oldSize = dataList.size
             dataList.addAll(newList)
             notifyItemRangeChanged(oldSize - 1, newList.size + 1)

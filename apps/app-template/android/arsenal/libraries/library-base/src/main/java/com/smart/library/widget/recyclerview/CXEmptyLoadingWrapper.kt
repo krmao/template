@@ -139,6 +139,12 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
      */
     private var currentItemType = ITEM_TYPE_LOADING
     var enableEmptyView = true
+        set(value) {
+            if (field != value) {
+                field = value
+                isEmptyViewLoading = false
+            }
+        }
     var isEmptyViewLoading = false
     var enable = true
         set(value) {
@@ -279,7 +285,10 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
             innerAdapter.dataList.addAll(newList)
             if (oldInnerDataListSize == 0) {
                 if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
-                if (enableEmptyView) notifyDataSetChanged()
+                if (enableEmptyView) {
+                    isEmptyViewLoading = false
+                    notifyDataSetChanged()
+                }
             } else {
                 notifyItemRangeChanged(oldInnerDataListSize - 1, newList.size + 1)
             }
@@ -297,7 +306,10 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
             innerAdapter.dataList.add(position, entity)
             if (oldInnerDataListSize == 0) {
                 if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
-                if (enableEmptyView) notifyDataSetChanged()
+                if (enableEmptyView) {
+                    isEmptyViewLoading = false
+                    notifyDataSetChanged()
+                }
             } else {
                 notifyItemInserted(position)
                 notifyItemRangeChanged(position - 1, itemCount - position + 1)

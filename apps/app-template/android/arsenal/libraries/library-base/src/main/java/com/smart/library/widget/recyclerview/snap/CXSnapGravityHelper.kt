@@ -54,7 +54,9 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
+        private var verticalHelperLayoutManager: RecyclerView.LayoutManager? = null
         private var horizontalHelper: OrientationHelper? = null
+        private var horizontalHelperLayoutManager: RecyclerView.LayoutManager? = null
         private var isRightToLeft: Boolean = false
         private var lastSnappedPositionAfterOnSnap: Int = -1 // 去重
         private var recyclerView: RecyclerView? = null
@@ -275,14 +277,24 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
 
         private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
             val oldVerticalHelper = this.verticalHelper
-            val newVerticalHelper: OrientationHelper = if (oldVerticalHelper?.layoutManager != layoutManager) OrientationHelper.createVerticalHelper(layoutManager) else oldVerticalHelper
+            val newVerticalHelper: OrientationHelper = if (oldVerticalHelper == null || verticalHelperLayoutManager != layoutManager) {
+                verticalHelperLayoutManager = layoutManager
+                OrientationHelper.createVerticalHelper(layoutManager)
+            } else {
+                oldVerticalHelper
+            }
             this.verticalHelper = newVerticalHelper
             return newVerticalHelper
         }
 
         private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
             val oldHorizontalHelper = this.horizontalHelper
-            val newHorizontalHelper: OrientationHelper = if (oldHorizontalHelper?.layoutManager != layoutManager) OrientationHelper.createHorizontalHelper(layoutManager) else oldHorizontalHelper
+            val newHorizontalHelper: OrientationHelper = if (oldHorizontalHelper == null || this.horizontalHelperLayoutManager != layoutManager) {
+                horizontalHelperLayoutManager = layoutManager
+                OrientationHelper.createHorizontalHelper(layoutManager)
+            } else {
+                oldHorizontalHelper
+            }
             this.horizontalHelper = newHorizontalHelper
             return newHorizontalHelper
         }

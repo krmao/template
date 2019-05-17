@@ -5,13 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_grey"
-    tools:ignore="UseCompoundDrawables">
+    android:gravity="bottom"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables,HardcodedText">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:fitsSystemWindows="true"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/removeAll"
+                style="@style/CXButton.Default"
+                android:text="removeAll" />
+
+            <Button
+                android:id="@+id/removeOne"
+                style="@style/CXButton.Default"
+                android:text="removeOne" />
+
+            <Button
+                android:id="@+id/disable"
+                style="@style/CXButton.Default"
+                android:text="disable/enable" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/addAll"
+                style="@style/CXButton.Default"
+                android:text="addAll" />
+
+            <Button
+                android:id="@+id/addOne"
+                style="@style/CXButton.Default"
+                android:text="addOne" />
+
+
+            <Button
+                android:id="@+id/showFailure"
+                style="@style/CXButton.Default"
+                android:text="showFailure" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/showNoMore"
+                style="@style/CXButton.Default"
+                android:text="showNoMore" />
+
+            <Button
+                android:id="@+id/showLoading"
+                style="@style/CXButton.Default"
+                android:text="showLoading" />
+
+            <Button
+                android:id="@+id/addAt2"
+                style="@style/CXButton.Default"
+                android:text="add at 2" />
+        </TableRow>
+
+    </TableLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom"
         android:background="@color/yellow"
         android:orientation="vertical"
         android:overScrollMode="never"

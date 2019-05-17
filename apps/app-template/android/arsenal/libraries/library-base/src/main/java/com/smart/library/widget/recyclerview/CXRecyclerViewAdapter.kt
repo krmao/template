@@ -36,15 +36,14 @@ abstract class CXRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     }
 
     fun add(entity: Entity) {
-        dataList.add(entity)
-        notifyItemInserted(dataList.size - 1)
+        add(entity, dataList.size)
     }
 
     fun add(entity: Entity, position: Int) {
         if (position >= 0 && position <= dataList.size) {
             dataList.add(position, entity)
             notifyItemInserted(position)
-            notifyItemRangeChanged(position, dataList.size - position)
+            notifyItemRangeChanged(position - 1, dataList.size - position + 1)
         }
     }
 

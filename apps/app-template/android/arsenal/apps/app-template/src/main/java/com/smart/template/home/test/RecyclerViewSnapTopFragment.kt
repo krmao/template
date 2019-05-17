@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
-import com.smart.library.widget.recyclerview.CXLoadMoreWrapper
+import com.smart.library.widget.recyclerview.CXEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.CXRecyclerViewItemDecoration
 import com.smart.library.widget.recyclerview.CXViewHolder
@@ -50,6 +50,10 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
     }
 
+
+    private val adapterWrapper by lazy { CXEmptyLoadingWrapper(adapter) }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_recycler_view_snap_top, container, false)
     }
@@ -57,11 +61,37 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        removeAll.setOnClickListener {
+            adapterWrapper.removeAll()
+        }
+        removeOne.setOnClickListener {
+            adapterWrapper.remove(0)
+        }
+        addAll.setOnClickListener {
+            if (adapterWrapper.isEmpty()) pageIndex = 0
+            adapterWrapper.add(getDataList())
+        }
+        addOne.setOnClickListener {
+            adapterWrapper.add("add test")
+        }
+        addAt2.setOnClickListener {
+            adapterWrapper.add("insert test", 2)
+        }
+        disable.setOnClickListener {
+            adapterWrapper.enable = !adapterWrapper.enable
+        }
+        showFailure.setOnClickListener {
+            adapterWrapper.showLoadFailure()
+        }
+        showNoMore.setOnClickListener {
+            adapterWrapper.showNoMore()
+        }
+        showLoading.setOnClickListener {
+            adapterWrapper.showLoading()
+        }
+
         // divider between items
         recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
-
-        val adapterWrapper = CXLoadMoreWrapper(adapter)
-
         // custom loading views
         adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
         adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
@@ -74,38 +104,8 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
                 if (flag) {
                     if (adapterWrapper.itemCount >= 30) {
                         adapterWrapper.showNoMore()
-
-                        // test removeAll
-                        recyclerView.postDelayed({
-                            adapterWrapper.removeAll()
-
-                            // test disable
-                            recyclerView.postDelayed({
-                                adapterWrapper.enable = false
-
-                                // test add one
-                                recyclerView.postDelayed({
-                                    adapterWrapper.add("0 test")
-
-                                    // test remove one
-                                    recyclerView.postDelayed({
-                                        adapterWrapper.remove(0)
-
-                                        // test addAll
-                                        recyclerView.postDelayed({
-                                            pageIndex = 0
-                                            adapterWrapper.add(getDataList())
-                                            adapterWrapper.enable = true
-                                            adapterWrapper.showLoading()
-                                        }, 3000)
-                                    }, 3000)
-                                }, 3000)
-                            }, 3000)
-                        }, 3000)
-
                     } else {
                         adapterWrapper.add(getDataList())
-                        // adapterWrapper.showLoading()
                     }
                     if (adapterWrapper.itemCount == 20 + 1) flag = false
                 } else {

@@ -113,8 +113,9 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
 
         // onLoadMore listener
         var flag = true
-        adapterWrapper.onLoadMoreListener = {
+        adapterWrapper.onLoadMoreListener = { refresh ->
             recyclerView.postDelayed({
+                if (refresh) pageIndex = 0
                 if (flag) {
                     if (adapterWrapper.itemCount >= 30) {
                         adapterWrapper.showNoMore()

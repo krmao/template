@@ -131,6 +131,7 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
         private const val ITEM_TYPE_NO_MORE = Integer.MAX_VALUE - 2
         private const val ITEM_TYPE_LOADING = Integer.MAX_VALUE - 3
         private const val ITEM_TYPE_EMPTY = Integer.MAX_VALUE - 4
+        private const val ITEM_TYPE_EMPTY_LOADING = Integer.MAX_VALUE - 5
     }
 
     /**
@@ -138,6 +139,7 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
      */
     private var currentItemType = ITEM_TYPE_LOADING
     var enableEmptyView = true
+    var isEmptyViewLoading = false
     var enable = true
         set(value) {
             if (field != value) {
@@ -153,7 +155,7 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
             }
         }
 
-    var onLoadMoreListener: (() -> Unit)? = null
+    var onLoadMoreListener: ((refresh: Boolean) -> Unit)? = null
     /**
      * 数据变动后，可以在这个回调中强制刷新 onSnap 等
      */
@@ -163,18 +165,21 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
     var viewLoading: View? = null
     var viewNoMore: View? = null
     var viewEmpty: View? = null
+    var viewEmptyLoading: View? = null
     private val viewHolderNoMore: CXViewHolder by lazy { CXViewHolder(viewNoMore ?: createDefaultFooterView("没有更多了")) }
     private val viewHolderLoading: CXViewHolder by lazy { CXViewHolder(viewLoading ?: createDefaultFooterView("正在加载中...")) }
     private val viewHolderLoadFailure: CXViewHolder by lazy { CXViewHolder(viewLoadFailure ?: createDefaultFooterView("加载失败，请点我重试")) }
     private val viewHolderEmpty: CXViewHolder by lazy { CXViewHolder(viewEmpty ?: createDefaultEmptyView("EMPTY DATA NOW ... \nCLICK TO REFRESH ...")) }
+    private val viewHolderEmptyLoading: CXViewHolder by lazy { CXViewHolder(viewEmptyLoading ?: createDefaultEmptyView("REFRESH NOW...", Color.BLUE)) }
 
-    override fun getItemViewType(position: Int): Int = if (isNeedShowEmptyView()) ITEM_TYPE_EMPTY else (if ((position == itemCount - 1) && enable) currentItemType else innerAdapter.getItemViewType(position))
+    override fun getItemViewType(position: Int): Int = if (isNeedShowEmptyView()) (if (isEmptyViewLoading) ITEM_TYPE_EMPTY_LOADING else ITEM_TYPE_EMPTY) else (if ((position == itemCount - 1) && enable) currentItemType else innerAdapter.getItemViewType(position))
     override fun getItemCount(): Int = if (isNeedShowEmptyView()) 1 else (innerAdapter.itemCount + (if (enable) 1 else 0))
 
     private fun isNeedShowEmptyView() = enableEmptyView && innerAdapter.itemCount == 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            ITEM_TYPE_EMPTY_LOADING -> viewHolderEmptyLoading
             ITEM_TYPE_EMPTY -> viewHolderEmpty
             ITEM_TYPE_NO_MORE -> viewHolderNoMore
             ITEM_TYPE_LOADING -> viewHolderLoading
@@ -185,7 +190,14 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
+            ITEM_TYPE_EMPTY_LOADING -> {
+            }
             ITEM_TYPE_EMPTY -> {
+                holder.itemView.setOnClickListener {
+                    isEmptyViewLoading = true
+                    notifyItemChanged(position)
+                    onLoadMoreListener?.invoke(true)
+                }
             }
             ITEM_TYPE_NO_MORE -> {
             }
@@ -198,10 +210,11 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
             }
             ITEM_TYPE_LOADING -> {
                 if (position == itemCount - 1) {
-                    onLoadMoreListener?.invoke()
+                    onLoadMoreListener?.invoke(false)
                 }
             }
             else -> {
+                isEmptyViewLoading = false
                 innerAdapter.onBindViewHolder(holder, position)
             }
         }

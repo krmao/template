@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseFragment
 import com.smart.library.util.CXLogUtil
+import com.smart.library.util.CXTimeUtil
 import com.smart.library.widget.recyclerview.CXEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.CXRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.CXRecyclerViewItemDecoration
@@ -28,6 +29,10 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.home_recycler_view_snap_top, container, false)
+    }
+
     private var pageIndex = 0
     private var pageSize = 10
     private fun getDataList(): MutableList<String> {
@@ -39,7 +44,7 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
 
     @Suppress("PrivatePropertyName")
     private val adapter: CXRecyclerViewAdapter<String, RecyclerView.ViewHolder> by lazy {
-        object : CXRecyclerViewAdapter<String, RecyclerView.ViewHolder>(context, getDataList()) {
+        object : CXRecyclerViewAdapter<String, RecyclerView.ViewHolder>(context, mutableListOf()) {
             override fun onCreateViewHolder(container: ViewGroup, position: Int): CXViewHolder {
                 return CXViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
             }
@@ -50,12 +55,17 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
     }
 
-
     private val adapterWrapper by lazy { CXEmptyLoadingWrapper(adapter) }
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.home_recycler_view_snap_top, container, false)
+    private val snapGravityHelper by lazy {
+        CXSnapGravityHelper(
+                Gravity.TOP,
+                object : CXSnapGravityHelper.SnapListener {
+                    override fun onSnap(position: Int) {
+                        CXLogUtil.e("Snapped", position.toString())
+                    }
+                },
+                debug = true
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,14 +78,14 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
             adapterWrapper.remove(0)
         }
         addAll.setOnClickListener {
-            if (adapterWrapper.isEmpty()) pageIndex = 0
+            if (adapterWrapper.isInnerDataEmpty()) pageIndex = 0
             adapterWrapper.add(getDataList())
         }
-        addOne.setOnClickListener {
-            adapterWrapper.add("add test")
+        addEnd.setOnClickListener {
+            adapterWrapper.add("insert at end of list at ${CXTimeUtil.HmsS(System.currentTimeMillis())}")
         }
-        addAt2.setOnClickListener {
-            adapterWrapper.add("insert test", 2)
+        addAt0.setOnClickListener {
+            adapterWrapper.add("insert at 0 at ${CXTimeUtil.HmsS(System.currentTimeMillis())}", 0)
         }
         disable.setOnClickListener {
             adapterWrapper.enable = !adapterWrapper.enable
@@ -97,6 +107,10 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
         adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
 
+        adapterWrapper.onInnerDataChanged = {
+            snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
+        }
+
         // onLoadMore listener
         var flag = true
         adapterWrapper.onLoadMoreListener = {
@@ -116,17 +130,10 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
         }
 
         recyclerView.adapter = adapterWrapper
-
         // gravity snap
-        CXSnapGravityHelper(
-                Gravity.TOP,
-                object : CXSnapGravityHelper.SnapListener {
-                    override fun onSnap(position: Int) {
-                        CXLogUtil.e("Snapped", position.toString())
-                    }
-                },
-                debug = true
-        ).attachToRecyclerView(recyclerView)
+        snapGravityHelper.attachToRecyclerView(recyclerView)
 
+        // if want force invoke onSnap 0, must call adapterWrapper.add after setAdapter and snapGravityHelper.attachToRecyclerView(recyclerView)
+        adapterWrapper.add(getDataList())
     }
 }

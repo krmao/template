@@ -1,5 +1,6 @@
 package com.smart.library.widget.recyclerview.snap
 
+import android.os.Looper
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -18,6 +19,23 @@ class CXSnapGravityPagerHelper @JvmOverloads constructor(gravity: Int, snapListe
     override fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray? = delegate.calculateDistanceToFinalSnap(layoutManager, targetView)
 
     override fun findSnapView(layoutManager: RecyclerView.LayoutManager): View? = delegate.findSnapView(layoutManager)
+
+    /**
+     * force snap after inner data changed, for example snap immediately after recyclerView init or adapter data changed
+     * called must be after recycler setAdapter
+     *
+     * 注意:
+     *    如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 CXRecyclerViewAdapter.add
+     *    强制触发 onSnap (在 CXRecyclerViewAdapter.onInnerDataChanged 中调用 CXSnapGravityHelper.forceSnap)
+     */
+    fun forceSnap(layoutManager: RecyclerView.LayoutManager?) {
+        if (layoutManager != null) {
+            Looper.myQueue().addIdleHandler {
+                delegate.findSnapView(layoutManager)
+                false
+            }
+        }
+    }
 
     /**
      * Enable snapping of the last item that's snappable.

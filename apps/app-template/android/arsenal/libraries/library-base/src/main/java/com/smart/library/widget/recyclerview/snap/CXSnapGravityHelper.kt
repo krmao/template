@@ -1,5 +1,6 @@
 package com.smart.library.widget.recyclerview.snap
 
+import android.os.Looper
 import android.support.v4.text.TextUtilsCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -12,11 +13,124 @@ import com.smart.library.util.CXLogUtil
 import java.util.*
 
 /**
+ * recyclerView 滚动时, 每次滚动结束 第一个可见项将自适应完全可见并对其 recyclerView 顶部(顶部测试没问题,底部如果有 loadMore/emptyView 等可能有问题)
+ *
+ * 注意:
+ *     如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 CXRecyclerViewAdapter.add
+ *     强制触发 onSnap (在 CXRecyclerViewAdapter.onInnerDataChanged 中调用 CXSnapGravityHelper.forceSnap)
+ *
  * @param enableSnapAtEndOfList 当滚动到列表尾部时, true 将自动滚动保持第一个可见项完全显示(比如可能回滚导致加载更多不完全显示), false 不进行自动滚动
  * @param enableSnapLastPositionCompletelyVisible 当滚动到列表尾部时 onSnap 返回的是完全可见的(true)或者部分可见的(false)
+ *
+ */
+/*
+
+    private var pageIndex = 0
+    private var pageSize = 10
+    private fun getDataList(): MutableList<String> {
+        val toPageIndex = pageIndex + 1
+        val tmpList = ((pageIndex * pageSize) until toPageIndex * pageSize).map { "第 $it 天" }.toMutableList()
+        pageIndex = toPageIndex
+        return tmpList
+    }
+
+    @Suppress("PrivatePropertyName")
+    private val adapter: CXRecyclerViewAdapter<String, RecyclerView.ViewHolder> by lazy {
+        object : CXRecyclerViewAdapter<String, RecyclerView.ViewHolder>(context, mutableListOf()) {
+            override fun onCreateViewHolder(container: ViewGroup, position: Int): CXViewHolder {
+                return CXViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
+            }
+
+            override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                viewHolder.itemView.textViewDays.text = dataList[position]
+            }
+        }
+    }
+
+    private val adapterWrapper by lazy { CXEmptyLoadingWrapper(adapter) }
+    private val snapGravityHelper by lazy {
+        CXSnapGravityHelper(
+                Gravity.TOP,
+                object : CXSnapGravityHelper.SnapListener {
+                    override fun onSnap(position: Int) {
+                        CXLogUtil.e("Snapped", position.toString())
+                    }
+                },
+                debug = true
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        removeAll.setOnClickListener {
+            adapterWrapper.removeAll()
+        }
+        removeOne.setOnClickListener {
+            adapterWrapper.remove(0)
+        }
+        addAll.setOnClickListener {
+            if (adapterWrapper.isInnerDataEmpty()) pageIndex = 0
+            adapterWrapper.add(getDataList())
+        }
+        addEnd.setOnClickListener {
+            adapterWrapper.add("insert at end of list at ${CXTimeUtil.HmsS(System.currentTimeMillis())}")
+        }
+        addAt0.setOnClickListener {
+            adapterWrapper.add("insert at 0 at ${CXTimeUtil.HmsS(System.currentTimeMillis())}", 0)
+        }
+        disable.setOnClickListener {
+            adapterWrapper.enable = !adapterWrapper.enable
+        }
+        showFailure.setOnClickListener {
+            adapterWrapper.showLoadFailure()
+        }
+        showNoMore.setOnClickListener {
+            adapterWrapper.showNoMore()
+        }
+        showLoading.setOnClickListener {
+            adapterWrapper.showLoading()
+        }
+
+        // divider between items
+        recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
+        // custom loading views
+        adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
+        adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
+        adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
+
+        adapterWrapper.onInnerDataChanged = {
+            snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
+        }
+
+        // onLoadMore listener
+        var flag = true
+        adapterWrapper.onLoadMoreListener = {
+            recyclerView.postDelayed({
+                if (flag) {
+                    if (adapterWrapper.itemCount >= 30) {
+                        adapterWrapper.showNoMore()
+                    } else {
+                        adapterWrapper.add(getDataList())
+                    }
+                    if (adapterWrapper.itemCount == 20 + 1) flag = false
+                } else {
+                    adapterWrapper.showLoadFailure()
+                    flag = true
+                }
+            }, 1000)
+        }
+
+        recyclerView.adapter = adapterWrapper
+        // gravity snap
+        snapGravityHelper.attachToRecyclerView(recyclerView)
+
+        // if want force invoke onSnap 0, must call adapterWrapper.add after setAdapter and snapGravityHelper.attachToRecyclerView(recyclerView)
+        adapterWrapper.add(getDataList())
+    }
  */
 @Suppress("unused")
-class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: SnapListener? = null, debug: Boolean = false, enableSnapAtEndOfList: Boolean = false, enableSnapLastPositionCompletelyVisible: Boolean = true) : LinearSnapHelper() {
+class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, private val snapListener: SnapListener? = null, debug: Boolean = false, enableSnapAtEndOfList: Boolean = false, enableSnapLastPositionCompletelyVisible: Boolean = true) : LinearSnapHelper() {
 
     private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(gravity, debug, enableSnapAtEndOfList, enableSnapLastPositionCompletelyVisible, snapListener)
 
@@ -29,6 +143,26 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
     override fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray? = delegate.calculateDistanceToFinalSnap(layoutManager, targetView)
 
     override fun findSnapView(layoutManager: RecyclerView.LayoutManager): View? = delegate.findSnapView(layoutManager)
+
+    /**
+     * force snap after inner data changed, for example snap immediately after recyclerView init or adapter data changed
+     * called must be after recycler setAdapter
+     *
+     * 注意:
+     *    如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 CXRecyclerViewAdapter.add
+     *    强制触发 onSnap (在 CXRecyclerViewAdapter.onInnerDataChanged 中调用 CXSnapGravityHelper.forceSnap)
+     *    这里不去重是为了 防止 adapter.remove(0) 的时候, onSnap 都是 0, 但是真实数据已经改变了, 虽然索引没有变化
+     */
+    fun forceSnap(layoutManager: RecyclerView.LayoutManager?, isInnerDataEmpty: Boolean) {
+        if (isInnerDataEmpty) {
+            snapListener?.onSnap(RecyclerView.NO_POSITION)
+        } else if (layoutManager != null) {
+            Looper.myQueue().addIdleHandler {
+                delegate.findSnapView(layoutManager)
+                false
+            }
+        }
+    }
 
     /**
      * Enable snapping of the last item that's snappable.
@@ -45,7 +179,8 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
 
     interface SnapListener {
         /**
-         * -1 is invalid
+         * may be -1 or RecyclerView.NO_POSITION or other invalid/repeat position
+         * please check the position invalid by self
          */
         fun onSnap(position: Int)
     }
@@ -58,7 +193,6 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
         private var horizontalHelper: OrientationHelper? = null
         private var horizontalHelperLayoutManager: RecyclerView.LayoutManager? = null
         private var isRightToLeft: Boolean = false
-        private var lastSnappedPositionAfterOnSnap: Int = -1 // 去重
         private var recyclerView: RecyclerView? = null
 
         @Throws(IllegalArgumentException::class, IllegalStateException::class)
@@ -74,11 +208,6 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             if (gravity == Gravity.START || gravity == Gravity.END) isRightToLeft = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
             // if (listener != null) recyclerView.addOnScrollListener(scrollListener)
             this.recyclerView = recyclerView
-
-            // invoke first item
-            if (recyclerView.layoutManager?.itemCount ?: 0 > 0) {
-                notifyOnSnapped(0)
-            }
         }
 
         fun smoothScrollToPosition(position: Int) = scrollTo(position, true)
@@ -212,9 +341,8 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
 
         private fun notifyOnSnapped(willSnapPosition: Int) {
             // process position changed
-            if (listener != null && willSnapPosition != RecyclerView.NO_POSITION && willSnapPosition != lastSnappedPositionAfterOnSnap) {
+            if (listener != null) {
                 listener.onSnap(willSnapPosition)
-                lastSnappedPositionAfterOnSnap = willSnapPosition
             }
         }
 
@@ -227,11 +355,9 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
 
             val position = tmpRecyclerView.getChildLayoutPosition(targetView)
             val distance: Int
-            if (
-                    (position == 0
-                            && (!isRightToLeft || linearLayoutManager.reverseLayout)
-                            || position == linearLayoutManager.itemCount - 1
-                            && (isRightToLeft || linearLayoutManager.reverseLayout)
+            if ((
+                            position == 0 && (!isRightToLeft || linearLayoutManager.reverseLayout)
+                                    || position == linearLayoutManager.itemCount - 1 && (isRightToLeft || linearLayoutManager.reverseLayout)
                             )
                     && !tmpRecyclerView.clipToPadding
             ) {

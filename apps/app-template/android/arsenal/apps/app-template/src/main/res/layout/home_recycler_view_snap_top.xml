@@ -46,9 +46,9 @@
                 android:text="addAll" />
 
             <Button
-                android:id="@+id/addOne"
+                android:id="@+id/addEnd"
                 style="@style/CXButton.Default"
-                android:text="addOne" />
+                android:text="addEnd" />
 
 
             <Button
@@ -72,9 +72,9 @@
                 android:text="showLoading" />
 
             <Button
-                android:id="@+id/addAt2"
+                android:id="@+id/addAt0"
                 style="@style/CXButton.Default"
-                android:text="add at 2" />
+                android:text="add at 0" />
         </TableRow>
 
     </TableLayout>

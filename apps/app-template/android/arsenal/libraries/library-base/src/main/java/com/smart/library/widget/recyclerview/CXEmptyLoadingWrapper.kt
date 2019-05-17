@@ -14,77 +14,110 @@ import android.widget.TextView
 import com.smart.library.util.CXSystemUtil
 
 /*
-    add loadMore/emptyView for RecyclerView.Adapter
-    default is loading state and have default loadingViews
 
-    > attention:
-    avoid use onScrollListener to detect scroll to end list
-    because sometimes scroll event doesn't call scroll_event_setting and scroll_event_idle
-    after fast scroll_event_drag to end list
-
-    auth by https://github.com/krmao
-
-    > examples code below:
-
-    // divider between items
-    recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
-
-    val adapterWrapper = CXEmptyLoadingWrapper(adapter)
-
-    // custom loading views
-    adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
-    adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
-    adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
-
-    // onLoadMore listener
-    var flag = true
-    adapterWrapper.onLoadMoreListener = {
-        recyclerView.postDelayed({
-            if (flag) {
-                if (adapterWrapper.itemCount >= 30) {
-                    adapterWrapper.showNoMore()
-
-                    // test removeAll
-                    recyclerView.postDelayed({
-                        adapterWrapper.removeAll()
-
-                        // test disable
-                        recyclerView.postDelayed({
-                            adapterWrapper.enable = false
-
-                            // test add one
-                            recyclerView.postDelayed({
-                                adapterWrapper.add("0 test")
-
-                                // test remove one
-                                recyclerView.postDelayed({
-                                    adapterWrapper.remove(0)
-
-                                    // test addAll
-                                    recyclerView.postDelayed({
-                                        pageIndex = 0
-                                        adapterWrapper.add(getDataList())
-                                        adapterWrapper.enable = true
-                                        adapterWrapper.showLoading()
-                                    }, 3000)
-                                }, 3000)
-                            }, 3000)
-                        }, 3000)
-                    }, 3000)
-
-                } else {
-                    adapterWrapper.add(getDataList())
-                    // adapterWrapper.showLoading()
-                }
-                if (adapterWrapper.itemCount == 20 + 1) flag = false
-            } else {
-                adapterWrapper.showLoadFailure()
-                flag = true
-            }
-        }, 1000)
+    private var pageIndex = 0
+    private var pageSize = 10
+    private fun getDataList(): MutableList<String> {
+        val toPageIndex = pageIndex + 1
+        val tmpList = ((pageIndex * pageSize) until toPageIndex * pageSize).map { "第 $it 天" }.toMutableList()
+        pageIndex = toPageIndex
+        return tmpList
     }
 
-    recyclerView.adapter = adapterWrapper
+    @Suppress("PrivatePropertyName")
+    private val adapter: CXRecyclerViewAdapter<String, RecyclerView.ViewHolder> by lazy {
+        object : CXRecyclerViewAdapter<String, RecyclerView.ViewHolder>(context, mutableListOf()) {
+            override fun onCreateViewHolder(container: ViewGroup, position: Int): CXViewHolder {
+                return CXViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
+            }
+
+            override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                viewHolder.itemView.textViewDays.text = dataList[position]
+            }
+        }
+    }
+
+    private val adapterWrapper by lazy { CXEmptyLoadingWrapper(adapter) }
+    private val snapGravityHelper by lazy {
+        CXSnapGravityHelper(
+                Gravity.TOP,
+                object : CXSnapGravityHelper.SnapListener {
+                    override fun onSnap(position: Int) {
+                        CXLogUtil.e("Snapped", position.toString())
+                    }
+                },
+                debug = true
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        removeAll.setOnClickListener {
+            adapterWrapper.removeAll()
+        }
+        removeOne.setOnClickListener {
+            adapterWrapper.remove(0)
+        }
+        addAll.setOnClickListener {
+            if (adapterWrapper.isInnerDataEmpty()) pageIndex = 0
+            adapterWrapper.add(getDataList())
+        }
+        addEnd.setOnClickListener {
+            adapterWrapper.add("insert at end of list at ${CXTimeUtil.HmsS(System.currentTimeMillis())}")
+        }
+        addAt0.setOnClickListener {
+            adapterWrapper.add("insert at 0 at ${CXTimeUtil.HmsS(System.currentTimeMillis())}", 0)
+        }
+        disable.setOnClickListener {
+            adapterWrapper.enable = !adapterWrapper.enable
+        }
+        showFailure.setOnClickListener {
+            adapterWrapper.showLoadFailure()
+        }
+        showNoMore.setOnClickListener {
+            adapterWrapper.showNoMore()
+        }
+        showLoading.setOnClickListener {
+            adapterWrapper.showLoading()
+        }
+
+        // divider between items
+        recyclerView.addItemDecoration(CXRecyclerViewItemDecoration(5))
+        // custom loading views
+        adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
+        adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
+        adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
+
+        adapterWrapper.onInnerDataChanged = {
+            snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
+        }
+
+        // onLoadMore listener
+        var flag = true
+        adapterWrapper.onLoadMoreListener = {
+            recyclerView.postDelayed({
+                if (flag) {
+                    if (adapterWrapper.itemCount >= 30) {
+                        adapterWrapper.showNoMore()
+                    } else {
+                        adapterWrapper.add(getDataList())
+                    }
+                    if (adapterWrapper.itemCount == 20 + 1) flag = false
+                } else {
+                    adapterWrapper.showLoadFailure()
+                    flag = true
+                }
+            }, 1000)
+        }
+
+        recyclerView.adapter = adapterWrapper
+        // gravity snap
+        snapGravityHelper.attachToRecyclerView(recyclerView)
+
+        // if want force invoke onSnap 0, must call adapterWrapper.add after setAdapter and snapGravityHelper.attachToRecyclerView(recyclerView)
+        adapterWrapper.add(getDataList())
+    }
 
  */
 @Suppress("unused", "unused", "MemberVisibilityCanBePrivate")
@@ -121,6 +154,10 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
         }
 
     var onLoadMoreListener: (() -> Unit)? = null
+    /**
+     * 数据变动后，可以在这个回调中强制刷新 onSnap 等
+     */
+    var onInnerDataChanged: ((MutableList<Entity>) -> Unit)? = null
 
     var viewLoadFailure: View? = null
     var viewLoading: View? = null
@@ -194,24 +231,32 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
     fun remove(position: Int) {
         if (position >= 0 && position < innerAdapter.dataList.size) {
             innerAdapter.dataList.removeAt(position)
-            if (innerAdapter.dataList.isEmpty() && enableEmptyView) {
-                notifyDataSetChanged()
+            if (innerAdapter.dataList.isEmpty()) {
+                if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
+                if (enableEmptyView) notifyDataSetChanged()
             } else {
                 notifyItemRemoved(position)
                 notifyItemRangeChanged(position, itemCount - position)
             }
+            onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
     }
 
-    fun isEmpty() = innerAdapter.dataList.isEmpty()
+    fun isInnerDataNotEmpty() = innerData().isNotEmpty()
+    fun isInnerDataEmpty() = innerData().isEmpty()
+    fun innerData() = innerAdapter.dataList
 
     fun removeAll() {
         val oldInnerDataListSize = innerAdapter.dataList.size
-        innerAdapter.dataList.clear()
-        if (innerAdapter.dataList.isEmpty() && enableEmptyView) {
-            notifyDataSetChanged()
-        } else {
-            notifyItemRangeRemoved(0, oldInnerDataListSize)
+        if (oldInnerDataListSize != 0) {
+            innerAdapter.dataList.clear()
+            if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
+            if (enableEmptyView) {
+                notifyDataSetChanged()
+            } else {
+                notifyItemRangeRemoved(0, oldInnerDataListSize)
+            }
+            onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
     }
 
@@ -219,11 +264,13 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
         if (newList != null && newList.isNotEmpty()) {
             val oldInnerDataListSize = innerAdapter.dataList.size
             innerAdapter.dataList.addAll(newList)
-            if (oldInnerDataListSize == 0 && enableEmptyView) {
-                notifyDataSetChanged()
+            if (oldInnerDataListSize == 0) {
+                if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
+                if (enableEmptyView) notifyDataSetChanged()
             } else {
                 notifyItemRangeChanged(oldInnerDataListSize - 1, newList.size + 1)
             }
+            onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
     }
 
@@ -235,12 +282,14 @@ class CXEmptyLoadingWrapper<Entity>(private val innerAdapter: CXRecyclerViewAdap
         if (position >= 0 && position <= innerAdapter.dataList.size) {
             val oldInnerDataListSize = innerAdapter.dataList.size
             innerAdapter.dataList.add(position, entity)
-            if (oldInnerDataListSize == 0 && enableEmptyView) {
-                notifyDataSetChanged()
+            if (oldInnerDataListSize == 0) {
+                if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
+                if (enableEmptyView) notifyDataSetChanged()
             } else {
                 notifyItemInserted(position)
                 notifyItemRangeChanged(position - 1, itemCount - position + 1)
             }
+            onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
     }
 

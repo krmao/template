@@ -55,7 +55,7 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
         private var horizontalHelper: OrientationHelper? = null
-        private var isRtl: Boolean = false
+        private var isRightToLeft: Boolean = false
         private var lastSnappedPositionAfterOnSnap: Int = -1 // 去重
         private var recyclerView: RecyclerView? = null
 
@@ -69,7 +69,7 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             }
 
             recyclerView.onFlingListener = null
-            if (gravity == Gravity.START || gravity == Gravity.END) isRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
+            if (gravity == Gravity.START || gravity == Gravity.END) isRightToLeft = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
             // if (listener != null) recyclerView.addOnScrollListener(scrollListener)
             this.recyclerView = recyclerView
 
@@ -104,39 +104,37 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
         }
 
         fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray {
-            val out = IntArray(2)
+            val distanceArray = IntArray(2)
 
             if (layoutManager !is LinearLayoutManager) {
-                return out
+                return distanceArray
             }
 
-            // If we're at the end of the list, we shouldn't snap
-            // to avoid having the last item not completely visible.
             if (isAtEndOfList(layoutManager) && !enableSnapAtEndOfList) {
-                return out
+                return distanceArray
             }
 
             if (layoutManager.canScrollHorizontally()) {
-                if (isRtl && gravity == Gravity.END || !isRtl && gravity == Gravity.START) {
-                    out[0] = distanceToStart(targetView, layoutManager, getHorizontalHelper(layoutManager))
+                if (isRightToLeft && gravity == Gravity.END || !isRightToLeft && gravity == Gravity.START) {
+                    distanceArray[0] = distanceToStart(targetView, layoutManager, getHorizontalHelper(layoutManager))
                 } else {
-                    out[0] = distanceToEnd(targetView, layoutManager, getHorizontalHelper(layoutManager))
+                    distanceArray[0] = distanceToEnd(targetView, layoutManager, getHorizontalHelper(layoutManager))
                 }
             } else {
-                out[0] = 0
+                distanceArray[0] = 0
             }
 
             if (layoutManager.canScrollVertically()) {
                 if (gravity == Gravity.TOP) {
-                    out[1] = distanceToStart(targetView, layoutManager, getVerticalHelper(layoutManager))
-                } else { // BOTTOM
-                    out[1] = distanceToEnd(targetView, layoutManager, getVerticalHelper(layoutManager))
+                    distanceArray[1] = distanceToStart(targetView, layoutManager, getVerticalHelper(layoutManager))
+                } else {
+                    distanceArray[1] = distanceToEnd(targetView, layoutManager, getVerticalHelper(layoutManager))
                 }
             } else {
-                out[1] = 0
+                distanceArray[1] = 0
             }
 
-            return out
+            return distanceArray
         }
 
         /**
@@ -151,10 +149,10 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             }
             var snapView: View? = null
             when (gravity) {
-                Gravity.START -> snapView = findEdgeView(layoutManager, getHorizontalHelper(layoutManager), true)
-                Gravity.END -> snapView = findEdgeView(layoutManager, getHorizontalHelper(layoutManager), false)
-                Gravity.TOP -> snapView = findEdgeView(layoutManager, getVerticalHelper(layoutManager), true)
-                Gravity.BOTTOM -> snapView = findEdgeView(layoutManager, getVerticalHelper(layoutManager), false)
+                Gravity.START -> snapView = findStartOrEndView(layoutManager, getHorizontalHelper(layoutManager), true)
+                Gravity.END -> snapView = findStartOrEndView(layoutManager, getHorizontalHelper(layoutManager), false)
+                Gravity.TOP -> snapView = findStartOrEndView(layoutManager, getVerticalHelper(layoutManager), true)
+                Gravity.BOTTOM -> snapView = findStartOrEndView(layoutManager, getVerticalHelper(layoutManager), false)
             }
 
             val willSnapPosition: Int
@@ -178,64 +176,10 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             return snapView
         }
 
-        private fun notifyOnSnapped(willSnapPosition: Int) {
-            // process position changed
-            if (listener != null && willSnapPosition != RecyclerView.NO_POSITION && willSnapPosition != lastSnappedPositionAfterOnSnap) {
-                listener.onSnap(willSnapPosition)
-                lastSnappedPositionAfterOnSnap = willSnapPosition
-            }
-        }
-
-        fun enableLastItemSnap(snap: Boolean) {
-            enableSnapAtEndOfList = snap
-        }
-
-        private fun distanceToStart(targetView: View, lm: LinearLayoutManager, helper: OrientationHelper): Int {
-            val tmpRecyclerView = recyclerView ?: return 0
-
-            val pos = tmpRecyclerView.getChildLayoutPosition(targetView)
-            val distance: Int
-            if ((pos == 0 && (!isRtl || lm.reverseLayout) || pos == lm.itemCount - 1 && (isRtl || lm.reverseLayout)) && !tmpRecyclerView.clipToPadding) {
-                val childStart = helper.getDecoratedStart(targetView)
-                if (childStart >= helper.startAfterPadding / 2) {
-                    distance = childStart - helper.startAfterPadding
-                } else {
-                    distance = childStart
-                }
-            } else {
-                distance = helper.getDecoratedStart(targetView)
-            }
-            return distance
-        }
-
-        private fun distanceToEnd(targetView: View, lm: LinearLayoutManager, helper: OrientationHelper): Int {
-            val tmpRecyclerView = recyclerView ?: return 0
-            val pos = tmpRecyclerView.getChildLayoutPosition(targetView)
-            val distance: Int
-
-            // The last position or the first position
-            // (when there's a reverse layout or we're on RTL mode) must collapse to the padding edge.
-            if ((pos == 0 && (isRtl || lm.reverseLayout) || pos == lm.itemCount - 1 && (!isRtl || lm.reverseLayout)) && !tmpRecyclerView.clipToPadding) {
-                val childEnd = helper.getDecoratedEnd(targetView)
-                if (childEnd >= helper.end - (helper.end - helper.endAfterPadding) / 2) {
-                    distance = helper.getDecoratedEnd(targetView) - helper.end
-                } else {
-                    distance = childEnd - helper.endAfterPadding
-                }
-            } else {
-                distance = helper.getDecoratedEnd(targetView) - helper.end
-            }
-            return distance
-        }
-
         /**
-         * Returns the first view that we should snap to.
-         *
-         * @param linearLayoutManager     the recyclerView's layout manager
-         * @param helper orientation helper to calculate view sizes
-         * @return the first view in the LayoutManager to snap to
+         * 返回recyclerView停止滚动时 将被滚动完全显示到 顶部/底部/中间的 itemView, 返回 null 则不滚动
          */
-        private fun findEdgeView(linearLayoutManager: LinearLayoutManager, helper: OrientationHelper, start: Boolean): View? {
+        private fun findStartOrEndView(linearLayoutManager: LinearLayoutManager, helper: OrientationHelper, start: Boolean): View? {
             if (linearLayoutManager.childCount <= 0) return null
 
             val isAtEndOfList = isAtEndOfList(linearLayoutManager)
@@ -246,7 +190,7 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             for (i in 0 until linearLayoutManager.childCount) {
                 val tmpItemView = linearLayoutManager.getChildAt(i)
                 val tmpItemViewDecoratedStart: Int
-                if (start && !isRtl || !start && isRtl) {
+                if (start && !isRightToLeft || !start && isRightToLeft) {
                     decoratedDistance = helper.getDecoratedStart(tmpItemView)
                     tmpItemViewDecoratedStart = decoratedDistance
                 } else {
@@ -264,6 +208,63 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             return minItemViewDecoratedStartView
         }
 
+        private fun notifyOnSnapped(willSnapPosition: Int) {
+            // process position changed
+            if (listener != null && willSnapPosition != RecyclerView.NO_POSITION && willSnapPosition != lastSnappedPositionAfterOnSnap) {
+                listener.onSnap(willSnapPosition)
+                lastSnappedPositionAfterOnSnap = willSnapPosition
+            }
+        }
+
+        fun enableLastItemSnap(snap: Boolean) {
+            enableSnapAtEndOfList = snap
+        }
+
+        private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
+            val tmpRecyclerView = recyclerView ?: return 0
+
+            val position = tmpRecyclerView.getChildLayoutPosition(targetView)
+            val distance: Int
+            if (
+                    (position == 0
+                            && (!isRightToLeft || linearLayoutManager.reverseLayout)
+                            || position == linearLayoutManager.itemCount - 1
+                            && (isRightToLeft || linearLayoutManager.reverseLayout)
+                            )
+                    && !tmpRecyclerView.clipToPadding
+            ) {
+                val childStart = helper.getDecoratedStart(targetView)
+                if (childStart >= helper.startAfterPadding / 2) {
+                    distance = childStart - helper.startAfterPadding
+                } else {
+                    distance = childStart
+                }
+            } else {
+                distance = helper.getDecoratedStart(targetView)
+            }
+            return distance
+        }
+
+        private fun distanceToEnd(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
+            val tmpRecyclerView = recyclerView ?: return 0
+            val position = tmpRecyclerView.getChildLayoutPosition(targetView)
+            val distance: Int
+
+            // The last position or the first position
+            // (when there's a reverse layout or we're on RTL mode) must collapse to the padding edge.
+            if ((position == 0 && (isRightToLeft || linearLayoutManager.reverseLayout) || position == linearLayoutManager.itemCount - 1 && (!isRightToLeft || linearLayoutManager.reverseLayout)) && !tmpRecyclerView.clipToPadding) {
+                val childEnd = helper.getDecoratedEnd(targetView)
+                if (childEnd >= helper.end - (helper.end - helper.endAfterPadding) / 2) {
+                    distance = helper.getDecoratedEnd(targetView) - helper.end
+                } else {
+                    distance = childEnd - helper.endAfterPadding
+                }
+            } else {
+                distance = helper.getDecoratedEnd(targetView) - helper.end
+            }
+            return distance
+        }
+
         private fun isAtEndOfList(linearLayoutManager: LinearLayoutManager): Boolean {
             return if (!linearLayoutManager.reverseLayout && (gravity == Gravity.START || gravity == Gravity.TOP) || linearLayoutManager.reverseLayout && (gravity == Gravity.END || gravity == Gravity.BOTTOM)) {
                 linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1
@@ -272,9 +273,19 @@ class CXSnapGravityHelper @JvmOverloads constructor(gravity: Int, snapListener: 
             }
         }
 
-        private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = verticalHelper ?: OrientationHelper.createVerticalHelper(layoutManager)
+        private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
+            val oldVerticalHelper = this.verticalHelper
+            val newVerticalHelper: OrientationHelper = if (oldVerticalHelper?.layoutManager != layoutManager) OrientationHelper.createVerticalHelper(layoutManager) else oldVerticalHelper
+            this.verticalHelper = newVerticalHelper
+            return newVerticalHelper
+        }
 
-        private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper = horizontalHelper ?: OrientationHelper.createHorizontalHelper(layoutManager)
+        private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
+            val oldHorizontalHelper = this.horizontalHelper
+            val newHorizontalHelper: OrientationHelper = if (oldHorizontalHelper?.layoutManager != layoutManager) OrientationHelper.createHorizontalHelper(layoutManager) else oldHorizontalHelper
+            this.horizontalHelper = newHorizontalHelper
+            return newHorizontalHelper
+        }
 
         private fun debugLog(tag: String, message: String) = if (debug) CXLogUtil.d(tag, message) else Unit
     }

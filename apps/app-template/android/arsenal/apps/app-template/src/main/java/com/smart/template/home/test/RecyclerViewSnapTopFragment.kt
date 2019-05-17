@@ -69,7 +69,7 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
 
         // onLoadMore listener
         var flag = true
-        adapterWrapper.setOnLoadMoreListener {
+        adapterWrapper.onLoadMoreListener = {
             recyclerView.postDelayed({
                 if (flag) {
                     if (adapterWrapper.itemCount >= 30) {
@@ -81,7 +81,7 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
 
                             // test disable
                             recyclerView.postDelayed({
-                                adapterWrapper.disable()
+                                adapterWrapper.enable = false
 
                                 // test add one
                                 recyclerView.postDelayed({
@@ -95,6 +95,7 @@ class RecyclerViewSnapTopFragment : CXBaseFragment() {
                                         recyclerView.postDelayed({
                                             pageIndex = 0
                                             adapterWrapper.add(getDataList())
+                                            adapterWrapper.enable = true
                                             adapterWrapper.showLoading()
                                         }, 3000)
                                     }, 3000)

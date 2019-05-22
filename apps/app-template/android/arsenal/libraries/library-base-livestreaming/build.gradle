@@ -27,10 +27,10 @@ dependencies {
 
     // Other ABIs: optional
     // api 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.8'
-    // api 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8' // minSdkVersion >= 21
+    // api 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8' // minSdkVersion >= 21 beacause the x86_64 and arm64 only be used after android 5.0
+    // api 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8' // minSdkVersion >= 21 beacause the x86_64 and arm64 only be used after android 5.0
     // api 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
-    // api 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
-
+    
     // ExoPlayer as IMediaPlayer: optional, experimental
     api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
 

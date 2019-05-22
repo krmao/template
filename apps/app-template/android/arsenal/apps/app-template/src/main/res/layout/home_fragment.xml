@@ -270,7 +270,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="ijkplayer rtmp"
+                android:text="ijkplayer pull rtmp"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/text10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="ijkplayer settings"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/text11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/blue_900"
+            android:foreground="@drawable/cx_selector"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="yesea push rtmp"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </FrameLayout>

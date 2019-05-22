@@ -190,6 +190,7 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
     api project(':library-base-livestreaming')
+    api project(':library-base-livestreaming-push')
     api project(':library-template-base')
     api project(':library-template-repository')
 

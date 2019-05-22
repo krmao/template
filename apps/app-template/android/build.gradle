@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.3.31"
+    ext.kotlinVersion = "1.3.21"
     ext.ankoVersion = "0.8.2"
     //ext.walleVersion = "1.1.6"
 
@@ -68,7 +68,8 @@ ext {
     // react-native>=16
     // ijkplayer>=16
     // ijkplayer-arm64>=21
-    minSdkVersion = 16
+    // yasea>=21
+    minSdkVersion = 21
 
     // 设置为 26 如果适配Android 8.0 (targetSdkVersion = 26) 应用图标会出现适配问题, 如果已经做了适配操作,在谷歌 Pixel 2 图标显示正常, 但是在华为 Mate10 显示的却是圆形; 如果不适配则谷歌 Pixel 2 图标显示被一个框框包裹进去,
     //          所以目前设置为 targetSdkVersion = 25, 直接让 UI 给 5套图即可, 不做 android 8.0  Adaptive icons 适配

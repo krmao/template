@@ -5,6 +5,7 @@ include(":app-template"); project(":app-template").projectDir = new File(setting
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "arsenal/libraries/library-base")
 include(":library-base-livestreaming"); project(":library-base-livestreaming").projectDir = new File(settingsDir, "arsenal/libraries/library-base-livestreaming")
+include(":library-base-livestreaming-push"); project(":library-base-livestreaming-push").projectDir = new File(settingsDir, "arsenal/libraries/library-base-livestreaming-push")
 include(":library-template-base"); project(":library-template-base").projectDir = new File(settingsDir, "arsenal/libraries/library-template-base")
 include(":library-template-repository"); project(":library-template-repository").projectDir = new File(settingsDir, "arsenal/libraries/library-template-repository")
 

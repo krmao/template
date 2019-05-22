@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.smart.library.base.CXActivity
 import com.smart.library.base.CXBaseApplication
 import com.smart.library.base.CXBaseFragment
+import com.smart.library.livestreaming.VideoActivity
 import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheManager
@@ -50,6 +51,11 @@ class HomeFragment : CXBaseFragment() {
         }
         text8.setOnClickListener {
             RecyclerViewSnapTopFragment.goTo(context)
+        }
+        text9.setOnClickListener {
+            val name = "rmtp"
+            val url = "rtmp://10.32.33.20:5388/rtmplive/room-pc"
+            VideoActivity.intentTo(activity, url, name)
         }
     }
 }

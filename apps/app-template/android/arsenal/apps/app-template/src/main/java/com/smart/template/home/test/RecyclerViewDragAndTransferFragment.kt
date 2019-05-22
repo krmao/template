@@ -75,9 +75,9 @@ class RecyclerViewDragAndTransferFragment : CXBaseFragment() {
         recyclerViewDayDetail.adapter = dayDetailAdapter
         recyclerViewDays.tag = "recyclerViewDayDetail"
 
-        recyclerViewTransferManager = CXRecyclerViewTransferManager(recyclerViewDayDetail, recyclerViewDays, { fromRecyclerView: RecyclerView, fromPosition: Int ->
+        recyclerViewTransferManager = CXRecyclerViewTransferManager(recyclerViewDayDetail, recyclerViewDays, { _: RecyclerView, fromPosition: Int ->
             dayDetailAdapter.remove(fromPosition)
-        }) { toRecyclerView: RecyclerView, fromPosition: Int, toPosition: Int ->
+        }) { _: RecyclerView, fromPosition: Int, toPosition: Int ->
             daysAdapter.add(dayDetailList[fromPosition], toPosition)
         }
     }

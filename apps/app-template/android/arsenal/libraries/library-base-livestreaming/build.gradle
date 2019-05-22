@@ -1,0 +1,38 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    // resourcePrefix "cx_"
+}
+
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+
+    api project(':library-base')
+
+    api "com.android.support:preference-v7:$rootProject.ext.supportLibraryVersion"
+
+    // required, enough for most devices.
+    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    // api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
+    api(name: "ijkplayer-armv7a-release", ext: "aar") // include rtmp support
+
+    // Other ABIs: optional
+    // api 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.8'
+    // api 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8' // minSdkVersion >= 21
+    // api 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
+    // api 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
+
+    // ExoPlayer as IMediaPlayer: optional, experimental
+    api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
+
+    // api 'com.squareup:otto:1.3.8'
+}

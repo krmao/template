@@ -23,8 +23,10 @@
         <item name="colorAccent">@color/cx_accent</item>
     </style>
 
-    <style name="CXAppTheme.NoActionBar.FullScreen" parent="@style/android:Theme.Holo.NoActionBar.Fullscreen">
+    <style name="CXAppTheme.NoActionBar.FullScreen" parent="@style/CXAppTheme.NoActionBar">
         <item name="android:windowAnimationStyle">@style/CXWidget.Animation.Activity.Left_Right</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="CXAppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">

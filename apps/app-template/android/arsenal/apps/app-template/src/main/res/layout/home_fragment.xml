@@ -185,7 +185,6 @@
         </FrameLayout>
 
         <FrameLayout
-
             android:id="@+id/text5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -257,58 +256,97 @@
                 android:textSize="15sp" />
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/text9"
+        <EditText
+            android:id="@+id/rtmpURLET"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center_vertical"
+            android:hint="rtmp url"
+            android:inputType="textUri"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
+            android:textColor="@color/black"
+            android:textColorHint="@color/blue_grey"
+            android:textSize="15sp" />
+
+
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/cx_selector"
-            android:padding="10dp">
+            android:divider="@color/green"
+            android:dividerPadding="5dp"
+            android:fitsSystemWindows="true"
+            android:stretchColumns="*">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="ijkplayer pull rtmp"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/text10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/cx_selector"
-            android:padding="10dp">
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="ijkplayer settings"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/text9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/blue_900"
+                    android:foreground="@drawable/cx_selector"
+                    android:padding="10dp">
 
-        <FrameLayout
-            android:id="@+id/text11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/cx_selector"
-            android:padding="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="ijkplayer pull rtmp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </FrameLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="yesea push rtmp"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/text10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/blue_900"
+                    android:foreground="@drawable/cx_selector"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="ijkplayer settings"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/text11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/blue_900"
+                    android:foreground="@drawable/cx_selector"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="yesea push rtmp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </FrameLayout>
+            </TableRow>
+        </TableLayout>
+
 
     </LinearLayout>
 </ScrollView>

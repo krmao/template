@@ -15,7 +15,6 @@ import com.smart.library.util.CXFileUtil
 import com.smart.library.util.CXLogUtil
 import com.smart.library.util.CXToastUtil
 import com.smart.library.util.cache.CXCacheManager
-import com.smart.library.util.map.location.CXLocationManager
 import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.template.R
 import com.smart.template.home.test.*
@@ -58,10 +57,11 @@ class HomeFragment : CXBaseFragment() {
         text8.setOnClickListener {
             RecyclerViewSnapTopFragment.goTo(context)
         }
+
+        text9.requestFocus()
         text9.setOnClickListener {
-            val name = "rmtp"
-            val url = "rtmp://10.32.33.20:5388/rtmplive/room-mobile"
-            VideoActivity.intentTo(activity, url, name)
+            val url = rtmpURLET.text.toString()
+            VideoActivity.intentTo(activity, url, url.substringAfterLast("/"))
         }
         text10.setOnClickListener {
             SettingsActivity.intentTo(activity)

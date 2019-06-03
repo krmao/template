@@ -33,7 +33,7 @@ Sizes (px)	        Format and naming	Notes
     * Android icons require five separate sizes for different screen pixel densities. Icons for lower resolution are created automatically from the baseline.
 
 
-![android 8.0 adaptive icons](readme/adaptive_icons.gif)
+![android 8.0 adaptive icons](gradle/readme/adaptive_icons.gif)
 
 |  target  |    layer      |   icon(6:4)      |   padding(6:1)  |    final   |   dpi(px)   |
 |   :-:    |      :-:      |        :-:       |       :-:       |     :-:    |     :-:     |

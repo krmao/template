@@ -29,7 +29,7 @@ allprojects {
     repositories {
         google()
         flatDir {
-            dirs "file://$rootProject.projectDir/arsenal/libraries/thirdparty/thirdparty-aars"
+            dirs "file://$rootProject.projectDir/app/libraries/repo/aars"
         }
         jcenter()
         mavenCentral()
@@ -40,7 +40,7 @@ allprojects {
         }
         maven {
             // All of React Native (JS, Android binaries) is installed from npm
-            url "$rootDir/../react_native/node_modules/react-native/android"
+            url "$rootDir/../../web/react_native/node_modules/react-native/android"
         }
     }
     gradle.projectsEvaluated {
@@ -58,7 +58,7 @@ task clean(type: Delete) {
     delete buildDir
 }
 
-apply from: "readme/scripts/tasktimings.gradle" //控制台输出任务耗时
+apply from: "gradle/readme/scripts/tasktimings.gradle" //控制台输出任务耗时
 
 // Define versions in a single place
 ext {

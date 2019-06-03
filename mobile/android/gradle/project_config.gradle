@@ -1,0 +1,20 @@
+gradle.ext {
+
+    configs = [
+            'bugly' : ['enable': false],
+            'tinker': ['enable': false],
+            'walle' : ['enable': false],
+            'test'  : ['enable': false],
+    ]
+
+    modules = [
+            'liveStreaming': ['enable': true],
+            'flutter'      : ['enable': true],
+            'reactNative'  : ['enable': true],
+    ]
+
+    versions = [
+
+    ]
+
+}

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="cx_line_height">1px</dimen>
-    <dimen name="cx_titlebar_height">48dp</dimen>
-    <dimen name="cx_titlebar_icon_padding">7dp</dimen>
-</resources>

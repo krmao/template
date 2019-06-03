@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="STDialog.App" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="STDialog.App.FromBottom" parent="@style/STDialog.App">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.FromBottom</item>
+    </style>
+
+    <style name="STDialog.App.FromFadeInOut" parent="@style/STDialog.App">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.FromFadeInOut</item>
+    </style>
+
+</resources>

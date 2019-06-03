@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="STWidget.Animation.Activity.None" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <style name="STWidget.Animation.Activity.Left_Right" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/st_slide_out_right</item>
+        <item name="android:taskOpenEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:taskOpenExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:taskCloseEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:taskCloseExitAnimation">@anim/st_slide_out_right</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:taskToFrontExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:taskToBackEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:taskToBackExitAnimation">@anim/st_slide_out_right</item>
+    </style>
+
+    <style name="STWidget.Animation.Activity.FADE_IN_OUT" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/st_fade_out</item>
+        <item name="android:taskOpenEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:taskOpenExitAnimation">@anim/st_fade_out</item>
+        <item name="android:taskCloseEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:taskCloseExitAnimation">@anim/st_fade_out</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:taskToFrontExitAnimation">@anim/st_fade_out</item>
+        <item name="android:taskToBackEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:taskToBackExitAnimation">@anim/st_fade_out</item>
+    </style>
+
+    <style name="STWidget.Animation.FromBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/st_translate_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/st_translate_out_bottom</item>
+    </style>
+
+    <style name="STWidget.Animation.FromFadeInOut" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/st_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/st_fade_out</item>
+    </style>
+
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- @see http://www.gadgetsaint.com/tips/change-statusbar-color-android/#.Wt6yf1OFPVo -->
+
+    <style name="LaunchTheme" parent="@style/STAppTheme.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+        <item name="colorPrimary">@color/st_primary</item>
+        <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
+        <item name="colorAccent">@color/st_accent</item>
+        <!-- Show a splash screen on the activity. Automatically removed when
+            Flutter draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+
+</resources>

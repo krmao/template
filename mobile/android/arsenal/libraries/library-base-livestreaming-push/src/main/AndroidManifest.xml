@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smart.library.livestreaming.push">
+
+    <application>
+        <activity
+            android:name=".STVideoPushActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="user"
+            android:theme="@style/STAppTheme.ActionBar" />
+    </application>
+</manifest>

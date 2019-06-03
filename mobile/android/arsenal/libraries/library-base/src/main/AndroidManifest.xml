@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.smart.library">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+        <activity
+            android:name=".base.STActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/STAppTheme.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+
+        <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->
+        <activity
+            android:name=".widget.debug.STDebugActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:parentActivityName="com.smart.template.home.HomeTabActivity"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:theme="@style/STAppTheme.Translucent.Notification"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="UnusedAttribute" />
+    </application>
+
+</manifest>

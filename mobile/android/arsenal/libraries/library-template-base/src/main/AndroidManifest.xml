@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.smart.template.library">
+    <application>
+        <!--安卓 N 文件访问方式适配-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.smart.template.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/st_provider_paths"/>
+        </provider>
+
+    </application>
+</manifest>

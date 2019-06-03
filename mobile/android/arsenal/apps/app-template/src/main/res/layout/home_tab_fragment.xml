@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <com.smart.library.widget.titlebar.STTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:stLeft0Visible="invisible"
+        app:stTitleText="模板项目" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/home_root_background"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/content_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            tools:ignore="NestedWeights" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#ffffff">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/STAppTheme.NoActionBar"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="#FF33B5E5"
+                app:tabTextColor="#FF000000">
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/home_bar_item_home_selector"
+                    android:layout="@layout/home_tab_item"
+                    android:text="首页"
+                    tools:ignore="HardcodedText" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/home_bar_item_rn_selector"
+                    android:layout="@layout/home_tab_item"
+                    android:text="react-native"
+                    tools:ignore="HardcodedText" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/home_bar_item_find_selector"
+                    android:layout="@layout/home_tab_item"
+                    android:text="hybird"
+                    tools:ignore="HardcodedText" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/home_bar_item_mine_selector"
+                    android:layout="@layout/home_tab_item"
+                    android:text="flutter"
+                    tools:ignore="HardcodedText" />
+
+            </android.support.design.widget.TabLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

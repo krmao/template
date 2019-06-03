@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- @see http://www.gadgetsaint.com/tips/change-statusbar-color-android/#.Wt6yf1OFPVo -->
+
+    <style name="STAppTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+        <item name="colorPrimary">@color/st_primary</item>
+        <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
+        <item name="colorAccent">@color/st_accent</item>
+    </style>
+
+    <style name="STAppTheme.Light.Launch" parent="@style/STAppTheme.Light.NoActionBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+            Flutter draws its first frame -->
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="STAppTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+        <item name="colorPrimary">@color/st_primary</item>
+        <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
+        <item name="colorAccent">@color/st_accent</item>
+    </style>
+
+    <style name="STAppTheme.NoActionBar.FullScreen" parent="@style/STAppTheme.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="STAppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="drawerArrowStyle">@style/STWidget.App.DrawerArrowToggle</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+        <item name="colorPrimary">@color/st_primary</item>
+        <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
+        <item name="colorAccent">@color/st_accent</item>
+    </style>
+
+    <style name="STAppTheme.Translucent" parent="@style/STAppTheme.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+    </style>
+
+    <style name="STAppTheme.Translucent.Launch" parent="@style/STAppTheme.Translucent">
+        <!-- Show a splash screen on the activity. Automatically removed when
+            Flutter draws its first frame -->
+        <item name="android:windowBackground">@color/st_primary_dark</item>
+    </style>
+
+    <style name="STAppTheme.Translucent.Transparent" parent="@style/STAppTheme.Translucent">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="STAppTheme.Translucent.Notification" parent="@style/STAppTheme.Translucent">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+    </style>
+
+    <style name="STAppTheme.Translucent.ActionBar" parent="@style/STAppTheme.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="STAppTheme.Translucent.FullScreen" parent="@style/STAppTheme.NoActionBar.FullScreen">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

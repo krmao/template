@@ -307,7 +307,7 @@ class FlutterActivity : STBaseActivity(), FlutterView.Provider, PluginRegistry, 
                         val arguments = map["arguments"]
                         if (pageName == "K") {
 
-                            KFragment.goTo(this@FlutterActivity)
+                            FlutterTestFragment.goTo(this@FlutterActivity)
                         } else {
                             STToastUtil.show("not found page about pageName:$pageName, arguments:$arguments")
                         }

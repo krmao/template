@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+
+    ext{
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
+
+        flutterRoot = localProperties.getProperty('flutter.sdk')
+        if (flutterRoot == null) throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+
+        flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+        if (flutterVersionCode == null) flutterVersionCode = '1'
+
+        flutterVersionName = localProperties.getProperty('flutter.versionName')
+        if (flutterVersionName == null) flutterVersionName = '1.0'
+
+        println("flutterVersionCode=$flutterVersionCode")
+        println("flutterVersionName=$flutterVersionName")
+
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

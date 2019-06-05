@@ -15,7 +15,6 @@ import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.STRepository
 import com.smart.template.repository.remote.core.STOkHttpManager
 
-
 @Suppress("unused")
 class FinalApplication : STBaseApplication() {
 

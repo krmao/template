@@ -39,6 +39,7 @@ android {
             abiFilters 'armeabi-v7a', 'x86' // ,'x86_64', 'arm64-v8a'
         }
 
+        println "debug=${rootProject.ext.debug}, VERSION_RN=${rootProject.ext.versionRN}"
         manifestPlaceholders = [DEBUG: rootProject.ext.debug, VERSION_RN: rootProject.ext.versionRN]
     }
 
@@ -77,8 +78,8 @@ android {
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
-            proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
-            testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
+            // proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
+            // testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
         }
 
         release {

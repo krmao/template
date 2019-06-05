@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/LaunchTheme"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label">
+        tools:replace="android:label,android:allowBackup">
 
         <activity
             android:name="com.smart.template.home.tab.HomeTabActivity"

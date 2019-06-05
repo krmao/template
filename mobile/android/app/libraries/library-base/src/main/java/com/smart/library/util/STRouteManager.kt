@@ -39,20 +39,26 @@ object STRouteManager {
     @JvmOverloads
     @Synchronized
     fun goToActivity(activity: Activity?, activityName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
-        if (activity == null || activity.isFinishing || TextUtils.isEmpty(activityName)) {
+        if (activity == null || activity.isFinishing || activityName == null || TextUtils.isEmpty(activityName)) {
             STLogUtil.e("goToActivity failed, activity or activityName is invalid !")
             if (callback != null)
                 callback(null)
             return
         }
-        val intent = Intent().setClassName(activity, activityName?:"").putExtras(bundle ?: Bundle())
-        if (callback != null) {
-            val id = activityName + ":" + System.currentTimeMillis()
-            callbackMap[id] = callback
-            intent.putExtra(KEY_ID_CALLBACK, id)
+
+        try {
+            val activityClass = Class.forName(activityName)
+            val intent = Intent(activity, activityClass).putExtras(bundle ?: Bundle())
+            if (callback != null) {
+                val id = activityName + ":" + System.currentTimeMillis()
+                callbackMap[id] = callback
+                intent.putExtra(KEY_ID_CALLBACK, id)
+            }
+            STLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
+            activity.startActivity(intent)
+        } catch (exception: Exception) {
+            STLogUtil.e("STRouteManager", "goToActivity failed, activityName$activityName is invalid !", exception)
         }
-        STLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
-        activity.startActivity(intent)
     }
 
     @JvmOverloads

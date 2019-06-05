@@ -1,6 +1,12 @@
 apply plugin: 'com.android.library'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+// 是否启用 fat aar, 默认 true, 主工程不直接依赖 flutter-bundle, 而是依赖产物 flutter-bundle.aar
+def inbuiltThirdLibraries = true
+if (inbuiltThirdLibraries) {
+    apply plugin: 'com.kezong.fat-aar'
+}
+
 android {
     compileSdkVersion 27
 
@@ -48,7 +54,19 @@ task copyBundle(type: Copy) {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compileOnly 'com.android.support:support-v4:27.1.1'
+    compileOnly 'com.android.support:appcompat-v7:27.1.1'
+
+    if (inbuiltThirdLibraries) {
+        def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+        def plugins = new Properties()
+        def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+        if (pluginsFile.exists()) {
+            pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+        }
+        plugins.each { name, _ ->
+            println name
+            embed project(path: ":$name", configuration: 'default')
+        }
+    }
 }

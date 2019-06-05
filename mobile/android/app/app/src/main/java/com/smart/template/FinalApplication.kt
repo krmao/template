@@ -11,10 +11,10 @@ import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.init.STDeployInitManager
-import com.smart.template.library.R
 import com.smart.template.module.rn.dev.ReactDevSettingsView
 import com.smart.template.repository.STRepository
 import com.smart.template.repository.remote.core.STOkHttpManager
+
 
 @Suppress("unused")
 class FinalApplication : STBaseApplication() {
@@ -43,7 +43,7 @@ class FinalApplication : STBaseApplication() {
         STDebugFragment.childViewList.add(ReactDevSettingsView::class.java)
 
         // image manager with fresco and react native init together
-        val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
+        val frescoConfig = STImageFrescoHandler.getConfigBuilder(DEBUG, STOkHttpManager.client).build()
         STImageManager.initialize(STImageFrescoHandler(frescoConfig))
 
         STDeployInitManager.init(this, frescoConfig)

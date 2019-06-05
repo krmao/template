@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.kezong:fat-aar:1.0.3'
     }
 
     ext{
@@ -28,14 +29,18 @@ buildscript {
     }
 }
 
+rootProject.buildDir = '../build'
+
 allprojects {
     repositories {
         google()
         jcenter()
+        flatDir {
+            dirs "file://${rootProject.buildDir}/flutter-bundle/outputs/aar/"
+        }
     }
 }
 
-rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }

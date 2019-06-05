@@ -19,7 +19,7 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-template-base')
-    api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
+    api(name: "flutter-bundle-1.1.0-debug", ext: "aar")
 //    api(name: "flutter-bundle-1.0.0-release", ext: "aar")
 
 }

@@ -22,6 +22,12 @@ dependencies:
   # http
   dio: ^1.0.3
 
+  # flutter_boost: ^0.0.411
+  flutter_boost:
+    git:
+      url: 'https://github.com/alibaba/flutter_boost.git'
+      ref: '0.0.411'
+
   # banner
   # flutter_swiper: ^1.0.6
 
@@ -53,7 +59,7 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-  #  http: ^0.12.0
+#  http: ^0.12.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -71,7 +77,7 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - images/
+  - images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

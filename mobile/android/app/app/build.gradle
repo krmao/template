@@ -46,6 +46,11 @@ android {
 
     resourcePrefix ""
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     signingConfigs {
         debug {
             keyAlias 'debug'

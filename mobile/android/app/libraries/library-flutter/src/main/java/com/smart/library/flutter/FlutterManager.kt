@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.support.annotation.NonNull
+import com.smart.flutter.bundle.FlutterBundle
 import io.flutter.view.FlutterMain
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
@@ -21,6 +22,9 @@ object FlutterManager {
     @JvmStatic
     fun startInitialization(@NonNull application: Application) {
         FlutterManager.application = application
+
+        FlutterBundle.init(application,null, null)
+
         FlutterMain.startInitialization(application)
     }
     

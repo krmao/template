@@ -1,84 +1,71 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:smart/com/smart/library/base/src/DefaultApp.dart';
-import 'package:smart/com/smart/library/base/src/DefaultPage.dart';
-
-import 'com/smart/business/HomePage.dart';
-import 'com/smart/business/MinePage.dart';
-import 'headers.dart';
-
-const PATH_ROUTE_PREFIX = "flutter://";
-const MIXED_WITH_NATIVE = false;
+import 'package:flutter_boost/flutter_boost.dart';
+import 'simple_page_widgets.dart';
 
 void main() {
-  debugPaintSizeEnabled = false;
-  runApp(DefaultApp(enableSafeArea: false, statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR, child: DefaultPage(enableSafeArea: false, statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR, state: MainTabWidgetState())));
+  runApp(MyApp());
 }
 
-class MainTabWidgetState extends State<StatefulWidget> {
-  PageController controller;
-  var pages = [HomePage(), MinePage()];
-  var currentIndex = 0;
-  var firstTime = true;
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    FlutterBoost.singleton.registerPageBuilders({
+      'first': (pageName, params, _) => FirstRouteWidget(),
+      'second': (pageName, params, _) => SecondRouteWidget(),
+      'tab': (pageName, params, _) => TabRouteWidget(),
+      'flutterFragment': (pageName, params, _) => FragmentRouteWidget(params),
+
+      ///可以在native层通过 getContainerParams 来传递参数
+      'flutterPage': (pageName, params, _) {
+        print("flutterPage params:$params");
+
+        return FlutterRouteWidget();
+      },
+    });
+
+    FlutterBoost.handleOnStartPage();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (firstTime) {
-      Size size = MediaQuery.of(context).size;
-      print("defaultRouteName:${window.defaultRouteName}, screen:$size");
-      firstTime = false;
-    }
-
-    // init at widget which parent state is MaterialApp
-    NativeManager.initialize(context);
-
-    controller = PageController(initialPage: 0);
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: PageView.builder(
-              pageSnapping: true,
-              itemBuilder: (BuildContext context, int index) => pages[index],
-              itemCount: pages.length,
-              onPageChanged: (index) {
-                print("onPageChanged:$index");
-                if (currentIndex != index) setState(() => currentIndex = index);
-              },
-              controller: controller,
-            ),
-          ),
-          bottomNavigationBar()
-        ]));
+    return MaterialApp(
+        title: 'Flutter Boost example',
+        builder: FlutterBoost.init(postPush: _onRoutePushed),
+        home: Container());
   }
 
-  Widget bottomNavigationBar() {
-    return BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("images/home_menu_home.png"),
-                size: 48.0,
-                color: currentIndex == 0 ? Color(0xff0c0435) : Color(0xffb6b6b6),
-              ),
-              title: Container()),
-          BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("images/home_menu_mine.png"),
-                size: 48.0,
-                color: currentIndex == 1 ? Color(0xff0c0435) : Color(0xffb6b6b6),
-              ),
-              title: Container())
-        ],
-        onTap: (index) {
-          print("onTap:$index");
-          controller.jumpToPage(index); // https://github.com/flutter/flutter/issues/11895 fixed in v0.8.2-pre.26
-        },
-        currentIndex: 0,
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Color(0xff0c0435));
+  void _onRoutePushed(
+      String pageName, String uniqueId, Map params, Route route, Future _) {
+//    List<OverlayEntry> newEntries = route.overlayEntries
+//        .map((OverlayEntry entry) => OverlayEntry(
+//            builder: (BuildContext context) {
+//              final pageWidget = entry.builder(context);
+//              return Stack(
+//                children: <Widget>[
+//                  pageWidget,
+//                  Positioned(
+//                    child: Text(
+//                      "pageName:$pageName\npageWidget:${pageWidget.toStringShort()}",
+//                      style: TextStyle(fontSize: 12.0, color: Colors.red),
+//                    ),
+//                    left: 8.0,
+//                    top: 8.0,
+//                  )
+//                ],
+//              );
+//            },
+//            opaque: entry.opaque,
+//            maintainState: entry.maintainState))
+//        .toList(growable: true);
+//
+//    route.overlayEntries.clear();
+//    route.overlayEntries.addAll(newEntries);
   }
 }

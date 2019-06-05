@@ -55,6 +55,21 @@ flutter build apk --release --verbose
 flutter install
 ```
 
+### 构建 android flutter-bundle aar
+> 产出位于 flutter/build/flutter-bundle/outputs/aar/flutter-bundle-1.0.0-debug.aar\n
+> 自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+
+```
+cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
+./gradlew clean flutter-bundle:assembleDebug --info         #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean flutter-bundle:assembleRelease --info       #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean installDebug --info                         #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean assembleDebug --info                        #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean assembleRelease --info                      #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean installDebug --info                         #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+./gradlew clean installRelease --info                       #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
+```
+
 * flutter aar 路径
 > flutter/build/flutter-bundle/outputs/aar/flutter-bundle-1.0.0-release.aar
 * 最终发布包路径

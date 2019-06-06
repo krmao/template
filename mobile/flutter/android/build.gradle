@@ -9,7 +9,9 @@ buildscript {
         classpath 'com.kezong:fat-aar:1.0.3'
     }
 
-    ext{
+    ext {
+        inbuiltThirdLibraries = true
+
         def localProperties = new Properties()
         def localPropertiesFile = rootProject.file('local.properties')
         if (localPropertiesFile.exists()) localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
@@ -23,8 +25,8 @@ buildscript {
         flutterVersionName = localProperties.getProperty('flutter.versionName')
         if (flutterVersionName == null) flutterVersionName = '1.0'
 
-        println("flutterVersionCode=$flutterVersionCode")
-        println("flutterVersionName=$flutterVersionName")
+        println("> flutter versionCode=$flutterVersionCode")
+        println("> flutter versionName=$flutterVersionName")
 
     }
 }

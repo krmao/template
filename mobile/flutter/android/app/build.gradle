@@ -70,9 +70,12 @@ afterEvaluate {
 }
 
 dependencies {
-    // api project(":flutter-bundle")
-    // api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
-    implementation files("${rootProject.buildDir}/flutter-bundle/outputs/aar/flutter-bundle-1.0.0-debug.aar")
+    if (rootProject.ext.inbuiltThirdLibraries) {
+        api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
+        // implementation files("${rootProject.buildDir}/flutter-bundle/outputs/aar/flutter-bundle-1.0.0-debug.aar")
+    } else {
+        api project(":flutter-bundle")
+    }
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

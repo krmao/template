@@ -42,17 +42,26 @@ export PATH
 source ~/.bash_profile
 ```
 
-### 检查依赖
+### 检查环境
 ```
 flutter doctor
 ```
 
+### 直接运行到已连接设备(注意同一时刻必须只有一台设备连接, ios 模拟器/android 真机 二选一)
+```
+flutter run --verbose
+```
+
 ### [构建 android 发布包](https://flutterchina.club/android-release/)
 ```
+# 检查下载工程依赖
+flutter packages get --verbose
+
+# 开始构建发布包
 flutter build apk --release --verbose
  
 # 安装到设备
-flutter install
+flutter install --verbose
 ```
 
 ### 构建 android flutter-bundle aar
@@ -73,6 +82,9 @@ cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
 > flutter/build/flutter-bundle/outputs/aar/flutter-bundle-1.0.0-release.aar
 * 最终发布包路径
 > flutter/build/app/outputs/apk/release/app-release.apk
+
+### [构建 ios 发布包](https://flutterchina.club/ios-release/)
+
 
 ### others
 * [官方不支持热更新](https://github.com/flutter/flutter/issues/14330#issuecomment-485565194)

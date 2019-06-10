@@ -11,7 +11,7 @@ object STBusManager {
     interface IBusHandler {
         fun onInitOnce(application: Application)
         fun onUpgradeOnce(application: Application)
-        fun onCall(context: Context, busName: String, vararg params: Any)
+        fun onCall(context: Context?, busFunctionName: String, vararg params: Any)
     }
 
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
@@ -38,10 +38,10 @@ object STBusManager {
         }
     }
 
-    fun call(context: Context, busName: String, vararg params: Any) {
-        val busHandler = busHandlerMap[busName]
+    fun call(context: Context?, busFunctionName: String, vararg params: Any) {
+        val busHandler = busHandlerMap[busFunctionName.substringBefore('/')]
         if (busHandler != null) {
-            busHandler.onCall(context, busName, params)
+            busHandler.onCall(context, busFunctionName, *params)
         } else {
             STLogUtil.w(TAG, "can not find bus handler for busName")
         }

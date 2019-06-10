@@ -7,10 +7,10 @@ import com.smart.library.util.STFileUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
+import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.repository.STRepository
-import com.smart.library.util.okhttp.STOkHttpManager
 
 @Suppress("unused")
 class FinalApplication : STBaseApplication() {
@@ -38,7 +38,9 @@ class FinalApplication : STBaseApplication() {
 
         STBusManager.initOnce(this, hashMapOf(
                 "reactnative" to "com.smart.library.reactnative.ReactBusHandler",
-                "flutter" to "com.smart.library.flutter.FlutterBusHandler"
+                "flutter" to "com.smart.library.flutter.FlutterBusHandler",
+                "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
+                "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
         ))
 
         val frescoConfig = STImageFrescoHandler.getConfigBuilder(DEBUG, STOkHttpManager.client).build()

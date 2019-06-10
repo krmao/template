@@ -22,7 +22,7 @@ class ReactBusHandler : STBusManager.IBusHandler {
 
     }
 
-    override fun onCall(context: Context, busName: String, vararg params: Any) {
+    override fun onCall(context: Context?, functionName: String, vararg params: Any) {
 
     }
 }

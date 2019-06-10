@@ -9,7 +9,7 @@ gradle.ext {
 
     modules = [
             'liveStreaming': ['enable': true],
-            'flutter'      : ['enable': true],
+            'flutter'      : ['enable': false],
             'reactNative'  : ['enable': false],
             'hybird'  : ['enable': true],
     ]

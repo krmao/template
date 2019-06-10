@@ -39,6 +39,11 @@ object STBusManager {
     }
 
     fun call(context: Context, busName: String, vararg params: Any) {
-        busHandlerMap[busName]?.onCall(context, busName, params)
+        val busHandler = busHandlerMap[busName]
+        if (busHandler != null) {
+            busHandler.onCall(context, busName, params)
+        } else {
+            STLogUtil.w(TAG, "can not find bus handler for busName")
+        }
     }
 }

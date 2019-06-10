@@ -18,7 +18,6 @@ import com.smart.library.util.cache.STCacheManager
 import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.template.R
 import com.smart.template.home.test.*
-import io.flutter.util.PathUtils
 import kotlinx.android.synthetic.main.home_fragment.*
 import java.io.File
 
@@ -42,8 +41,8 @@ class HomeFragment : STBaseFragment() {
         }
         text4.setOnClickListener {
             //adb push assets/ /sdcard/Android/data/com.smart.template/cache/
-            val copySuccess = STFileUtil.copyDirectory(STCacheManager.getCacheChildDir("assets"), File(PathUtils.getDataDirectory(STBaseApplication.INSTANCE)))
-            STToastUtil.show("copySuccess?$copySuccess")
+            //val copySuccess = STFileUtil.copyDirectory(STCacheManager.getCacheChildDir("assets"), File(PathUtils.getDataDirectory(STBaseApplication.INSTANCE)))
+            //STToastUtil.show("copySuccess?$copySuccess")
         }
         text5.setOnClickListener {
             PullToNextPageFragment.goTo(context)

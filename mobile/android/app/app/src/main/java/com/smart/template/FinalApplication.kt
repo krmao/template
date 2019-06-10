@@ -11,7 +11,7 @@ import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.init.STDeployInitManager
-import com.smart.template.module.rn.dev.ReactDevSettingsView
+import com.smart.library.reactnative.dev.ReactDevSettingsView
 import com.smart.template.repository.STRepository
 import com.smart.template.repository.remote.core.STOkHttpManager
 

@@ -9,8 +9,8 @@ import com.smart.library.util.STFileUtil
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import com.smart.template.handlers.OnRNCallNativeHandler
-import com.smart.template.module.rn.ReactConstant
-import com.smart.template.module.rn.ReactManager
+import com.smart.library.reactnative.ReactConstant
+import com.smart.library.reactnative.ReactManager
 import com.smart.template.repository.STRepository
 import io.reactivex.schedulers.Schedulers
 import java.io.File

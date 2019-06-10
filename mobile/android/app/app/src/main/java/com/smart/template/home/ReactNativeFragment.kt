@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.STBaseFragment
 import com.smart.template.R
-import com.smart.template.module.rn.ReactJumper
+import com.smart.library.reactnative.ReactJumper
 
 class ReactNativeFragment : STBaseFragment() {
 

@@ -196,17 +196,26 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    api project(':library-base-livestreaming')
-    api project(':library-base-livestreaming-push')
     api project(':library-template-base')
     api project(':library-template-repository')
+
+    if (gradle.ext.modules.liveStreaming.enable == true) {
+        api project(':library-livestreaming')
+        api project(':library-livestreaming-push')
+    }
 
     if (gradle.ext.modules.flutter.enable == true) {
         api project(':library-flutter')
     }
 
-    api project(':module-template-hybird')
-    api project(':module-template-react_native')
+    if (gradle.ext.modules.hybird.enable == true) {
+        api project(':library-hybird')
+    }
+
+    if (gradle.ext.modules.reactNative.enable == true) {
+        api project(':library-reactnative')
+    }
+
     api project(':module-template-mine')
 
     // LeakCanary

@@ -11,6 +11,7 @@ gradle.ext {
             'liveStreaming': ['enable': true],
             'flutter'      : ['enable': true],
             'reactNative'  : ['enable': true],
+            'hybird'  : ['enable': true],
     ]
 
     versions = [

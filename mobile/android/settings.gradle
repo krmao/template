@@ -7,13 +7,21 @@ include(':app'); project(":app").projectDir = new File(settingsDir, "app/app")
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "app/libraries/library-base")
 
+if (gradle.ext.modules.hybird.enable == true) {
+    include(":library-hybird"); project(":library-hybird").projectDir = new File(settingsDir, "app/libraries/library-hybird")
+}
+
 if (gradle.ext.modules.flutter.enable == true) {
     include(":library-flutter"); project(":library-flutter").projectDir = new File(settingsDir, "app/libraries/library-flutter")
 }
 
 if (gradle.ext.modules.liveStreaming.enable == true) {
-    include(":library-base-livestreaming"); project(":library-base-livestreaming").projectDir = new File(settingsDir, "app/libraries/library-base-livestreaming")
-    include(":library-base-livestreaming-push"); project(":library-base-livestreaming-push").projectDir = new File(settingsDir, "app/libraries/library-base-livestreaming-push")
+    include(":library-livestreaming"); project(":library-livestreaming").projectDir = new File(settingsDir, "app/libraries/library-livestreaming")
+    include(":library-livestreaming-push"); project(":library-livestreaming-push").projectDir = new File(settingsDir, "app/libraries/library-livestreaming-push")
+}
+
+if (gradle.ext.modules.reactNative.enable == true) {
+    include(":library-reactnative"); project(":library-reactnative").projectDir = new File(settingsDir, "app/libraries/library-reactnative")
 }
 
 include(":library-template-base"); project(":library-template-base").projectDir = new File(settingsDir, "app/libraries/library-template-base")
@@ -21,10 +29,5 @@ include(":library-template-repository"); project(":library-template-repository")
 
 //modules
 include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "app/modules/module-template-mine")
-include(":module-template-hybird"); project(":module-template-hybird").projectDir = new File(settingsDir, "app/modules/module-template-hybird")
-
-if (gradle.ext.modules.reactNative.enable == true) {
-    include(":module-template-react_native"); project(":module-template-react_native").projectDir = new File(settingsDir, "app/modules/module-template-react_native")
-}
 
 include(":module-test"); project(":module-test").projectDir = new File(settingsDir, "app/modules/module-test")

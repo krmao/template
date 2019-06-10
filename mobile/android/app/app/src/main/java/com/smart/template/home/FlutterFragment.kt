@@ -24,7 +24,7 @@ class FlutterFragment : STBaseFragment() {
 
 //            FlutterActivity.goTo(activity, "route1", hashMapOf("name" to "krmao", "isBoy" to true, "age" to 28))
 
-            STRouteManager.goToActivity(activity, "com.smart.flutter.bundle.test.MainActivity") {
+            STRouteManager.goToActivity(activity, "com.smart.library.flutter.MainActivity") {
                 STLogUtil.w("krmao", it.toString())
             }
         }

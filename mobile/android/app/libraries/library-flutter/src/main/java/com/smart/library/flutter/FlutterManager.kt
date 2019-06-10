@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.support.annotation.NonNull
-import com.smart.flutter.bundle.FlutterBundle
 import io.flutter.view.FlutterMain
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")

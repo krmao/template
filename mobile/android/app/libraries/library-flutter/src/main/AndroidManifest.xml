@@ -21,7 +21,7 @@
                 android:value="false" />
         </activity>
         <activity
-            android:name="com.smart.flutter.bundle.test.MainActivity"
+            android:name="com.smart.library.flutter.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"

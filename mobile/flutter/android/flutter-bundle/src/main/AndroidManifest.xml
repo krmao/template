@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.smart.flutter.bundle">
+    package="com.smart.library.flutter">
 
     <!-- The INTERNET permission is required for development. Specifically,
         flutter needs it to communicate with the running application
@@ -14,21 +14,21 @@
          FlutterApplication and put your custom class here. -->
     <application>
         <activity
-            android:name=".test.FlutterPageActivity"
+            android:name="com.smart.library.flutter.FlutterPageActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".test.FlutterFragmentPageActivity"
+            android:name="com.smart.library.flutter.FlutterFragmentPageActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".test.NativePageActivity"
+            android:name="com.smart.library.flutter.NativePageActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:windowSoftInputMode="adjustResize"/>

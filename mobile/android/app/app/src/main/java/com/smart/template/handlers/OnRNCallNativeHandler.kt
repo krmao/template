@@ -9,8 +9,8 @@ import com.smart.library.base.startActivityForResult
 import com.smart.library.util.*
 import com.smart.library.util.map.location.STLocationManager
 import com.smart.template.library.user.STUserManager
-import com.smart.template.module.rn.ReactActivity
-import com.smart.template.module.rn.ReactManager
+import com.smart.library.reactnative.ReactActivity
+import com.smart.library.reactnative.ReactManager
 import com.smart.template.home.tab.HomeTabActivity
 
 /**

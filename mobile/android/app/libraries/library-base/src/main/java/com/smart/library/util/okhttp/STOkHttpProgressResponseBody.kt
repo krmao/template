@@ -1,4 +1,4 @@
-package com.smart.template.repository.remote.core
+package com.smart.library.util.okhttp
 
 import okhttp3.MediaType
 import okhttp3.ResponseBody
@@ -24,7 +24,7 @@ class STOkHttpProgressResponseBody(private var requestUrl: String? = null, priva
 
     private fun source(source: Source): Source {
         return object : ForwardingSource(source) {
-            internal var bytesRead: Long = 0
+            var bytesRead: Long = 0
             @Throws(IOException::class)
             override fun read(sink: Buffer, byteCount: Long): Long {
                 val bytesRead = super.read(sink, byteCount)

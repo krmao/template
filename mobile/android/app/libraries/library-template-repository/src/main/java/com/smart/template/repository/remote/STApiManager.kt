@@ -1,12 +1,11 @@
 package com.smart.template.repository.remote
 
-import com.smart.template.repository.remote.core.STOkHttpManager
-import com.smart.template.repository.remote.core.STResponseModel
+import com.smart.library.util.okhttp.STOkHttpManager
+import com.smart.template.repository.remote.model.STResponseModel
 import com.smart.template.repository.remote.exception.STRetrofitException
 import com.smart.template.repository.remote.exception.STRetrofitServerException
 import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.base.STBaseApplication
-import com.smart.library.base.STConfig
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheFileManager

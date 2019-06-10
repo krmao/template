@@ -76,8 +76,8 @@ object STFileUtil {
         var success = false
         if (!fromPathInAssetsDir.isNullOrBlank() && toFile != null) {
             try {
-                STFileUtil.deleteFile(toFile)
-                STFileUtil.copy(STBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
+                deleteFile(toFile)
+                copy(STBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
                 success = true
             } catch (exception: FileNotFoundException) {
                 STLogUtil.e("copyFromAssets, FileNotFoundException", exception)

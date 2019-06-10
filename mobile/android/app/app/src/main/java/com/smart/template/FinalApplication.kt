@@ -3,17 +3,14 @@ package com.smart.template
 import android.graphics.Color
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STConfig
-import com.smart.library.flutter.FlutterManager
 import com.smart.library.util.STFileUtil
+import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
-import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
-import com.smart.template.init.STDeployInitManager
-import com.smart.library.reactnative.dev.ReactDevSettingsView
 import com.smart.template.repository.STRepository
-import com.smart.template.repository.remote.core.STOkHttpManager
+import com.smart.library.util.okhttp.STOkHttpManager
 
 @Suppress("unused")
 class FinalApplication : STBaseApplication() {
@@ -39,14 +36,12 @@ class FinalApplication : STBaseApplication() {
         // init global repository
         STRepository.init()
 
-        STDebugFragment.childViewList.add(ReactDevSettingsView::class.java)
+        STBusManager.initOnce(this, hashMapOf(
+                "reactnative" to "com.smart.library.reactnative.ReactBusHandler",
+                "flutter" to "com.smart.library.flutter.FlutterBusHandler"
+        ))
 
-        // image manager with fresco and react native init together
         val frescoConfig = STImageFrescoHandler.getConfigBuilder(DEBUG, STOkHttpManager.client).build()
         STImageManager.initialize(STImageFrescoHandler(frescoConfig))
-
-        STDeployInitManager.init(this, frescoConfig)
-
-        FlutterManager.startInitialization(this)
     }
 }

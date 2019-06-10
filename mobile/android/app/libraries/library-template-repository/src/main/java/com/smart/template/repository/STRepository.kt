@@ -2,7 +2,7 @@ package com.smart.template.repository
 
 import com.smart.template.repository.remote.STApiManager
 import com.smart.template.repository.remote.api.STApi
-import com.smart.template.repository.remote.core.STOkHttpProgressResponseBody
+import com.smart.library.util.okhttp.STOkHttpProgressResponseBody
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable

@@ -1,4 +1,4 @@
-package com.smart.template.repository.remote.core
+package com.smart.template.repository.remote.model
 
 import com.google.gson.Gson
 

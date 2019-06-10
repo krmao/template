@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.STBaseFragment
 import com.smart.template.R
-import com.smart.library.reactnative.ReactJumper
+
+//import com.smart.library.reactnative.ReactJumper
 
 class ReactNativeFragment : STBaseFragment() {
 
@@ -21,7 +22,7 @@ class ReactNativeFragment : STBaseFragment() {
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
 
-            ReactJumper.goTo(context, ReactJumper.TEST)
+            //            ReactJumper.goTo(context, ReactJumper.TEST)
 
         }
         return textView

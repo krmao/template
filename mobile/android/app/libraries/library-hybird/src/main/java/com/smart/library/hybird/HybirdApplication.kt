@@ -2,7 +2,7 @@ package com.smart.library.hybird
 
 import android.util.Log
 import com.smart.template.repository.STRepository
-import com.smart.template.repository.remote.core.STOkHttpManager
+import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.base.STBaseApplication
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.model.STHybirdModuleConfigModel

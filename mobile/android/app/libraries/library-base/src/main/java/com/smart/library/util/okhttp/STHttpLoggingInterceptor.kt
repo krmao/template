@@ -1,4 +1,4 @@
-package com.smart.template.repository.remote.core
+package com.smart.library.util.okhttp
 
 
 import com.smart.library.util.STTimeUtil

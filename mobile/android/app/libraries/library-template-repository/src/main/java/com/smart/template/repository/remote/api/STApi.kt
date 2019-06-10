@@ -2,7 +2,7 @@ package com.smart.template.repository.remote.api
 
 import android.os.Handler
 import android.os.Looper
-import com.smart.template.repository.remote.core.STResponseModel
+import com.smart.template.repository.remote.model.STResponseModel
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import io.reactivex.Observable
 import okhttp3.MediaType

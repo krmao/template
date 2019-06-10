@@ -1,17 +1,12 @@
-package com.smart.template.handlers
+package com.smart.library.reactnative
 
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
-import com.facebook.react.bridge.BaseActivityEventListener
 import com.facebook.react.bridge.Promise
-import com.smart.library.base.startActivityForResult
 import com.smart.library.util.*
 import com.smart.library.util.map.location.STLocationManager
 import com.smart.template.library.user.STUserManager
-import com.smart.library.reactnative.ReactActivity
-import com.smart.library.reactnative.ReactManager
-import com.smart.template.home.tab.HomeTabActivity
 
 /**
  * react native call native processors
@@ -56,14 +51,14 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                                 }
                             }
                             "pageGoodsDetail" -> {
-                                startActivityForResult(currentActivity, Intent(currentActivity, HomeTabActivity::class.java).apply {
+                                /*startActivityForResult(currentActivity, Intent(currentActivity, HomeTabActivity::class.java).apply {
                                     putExtra(ReactManager.KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP, paramsMap)
                                 }, requestCode, null) { _requestCode: Int, resultCode: Int, data: Intent? ->
                                     promise?.resolve(RNResult.resultJson(resultCode, data?.getSerializableExtra(ReactManager.KEY_RN_CALL_NATIVE_RESULT_HASH_MAP))) // hashMap to json
-                                }
+                                }*/
                             }
                             "pageGoodsList" -> {
-                                ReactManager.instanceManager?.currentReactContext?.addActivityEventListener(object : BaseActivityEventListener() {
+                                /*ReactManager.instanceManager?.currentReactContext?.addActivityEventListener(object : BaseActivityEventListener() {
                                     override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
                                         super.onActivityResult(activity, requestCode, resultCode, data)
                                         // add code here
@@ -72,7 +67,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                                         ReactManager.instanceManager?.currentReactContext?.removeActivityEventListener(this)
                                     }
                                 })
-                                currentActivity.startActivity(Intent(currentActivity, HomeTabActivity::class.java))
+                                currentActivity.startActivity(Intent(currentActivity, HomeTabActivity::class.java))*/
                             }
                             else -> {
                                 promise?.resolve(null)
@@ -122,6 +117,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
      *      "data"      : {}
      *   }
      */
+    @Suppress("unused")
     private object RNResult {
 
         const val STATUS_SUCCESS = 0

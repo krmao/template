@@ -57,8 +57,13 @@ dependencies {
     //api "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
 
     /******* 网络图片库 ****************************************************************************/
-    compileOnly "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
-    compileOnly "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    if (gradle.ext.modules.reactNative.enable == true) {
+        compileOnly "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
+        compileOnly "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    } else {
+        api "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
+        api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    }
     /******* 其它常用库 ****************************************************************************/
     api "com.jude:swipebackhelper:3.1.2"
     api 'com.gyf.immersionbar:immersionbar:2.3.1' // 沉浸式状态栏

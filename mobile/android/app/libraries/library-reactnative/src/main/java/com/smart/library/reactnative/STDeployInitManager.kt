@@ -1,20 +1,14 @@
-package com.smart.template.init
+package com.smart.library.reactnative
 
 import android.app.Application
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.*
-import com.smart.library.util.STFileUtil
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
-import com.smart.template.handlers.OnRNCallNativeHandler
-import com.smart.library.reactnative.ReactConstant
-import com.smart.library.reactnative.ReactManager
-import com.smart.template.repository.STRepository
-import io.reactivex.schedulers.Schedulers
+import com.smart.library.util.okhttp.STOkHttpManager
 import java.io.File
-import java.io.InputStream
 
 @Suppress("LocalVariableName")
 internal object STDeployInitManager {
@@ -29,7 +23,7 @@ internal object STDeployInitManager {
                         baseBundlePathInAssets = "bundle-rn.zip",
                         checkUpdateHandler = {
                             STLogUtil.d(TAG, "checkUpdateHandler invoke")
-                            STRepository.downloadString("http://10.47.62.17:7001/android/update").observeOn(Schedulers.io()).subscribe({ result: String ->
+                            STOkHttpManager.doGet(url = "http://10.47.62.17:7001/android/update", readTimeoutMS = 30 * 1000, callback = { result: String? ->
                                 STLogUtil.d(TAG, "checkUpdateHandler downloadString success $result")
                                 val jsonObject = STJsonUtil.toJSONObjectOrNull(result)
                                 if (jsonObject != null) {
@@ -43,21 +37,16 @@ internal object STDeployInitManager {
                                         if (baseVersion != -1 && toVersion != -1 && !downloadUrl.isNullOrBlank() && !bundleChecksum.isNullOrBlank()) {
                                             STLogUtil.w(TAG, "check result is valid, adjust is need to download")
                                             it.invoke(null, STPatchInfo(baseVersion, toVersion, bundleChecksum = bundleChecksum), downloadUrl, true)
-                                            return@subscribe
+                                            return@doGet
                                         }
                                     }
                                     STLogUtil.e(TAG, "checkUpdateHandler failure with error result ! $result")
                                 } else {
                                     STLogUtil.d(TAG, "checkUpdateHandler parse downloadString to json failure $result")
                                 }
-
                                 it.invoke(null, null, null, false)
 
-                            }, { e: Throwable ->
-                                STLogUtil.e(TAG, "checkUpdateHandler downloadString failure  !", e)
-                                it.invoke(null, null, null, false)
                             })
-                            Unit
                         },
                         downloadHandler = { patchDownloadUrl: String?, file: File, downloadCallback: (file: File?) -> Unit ->
                             STLogUtil.e(TAG, "downloadHandler invoke")
@@ -67,21 +56,15 @@ internal object STDeployInitManager {
                             } else {
                                 STLogUtil.d(TAG, "downloadHandler start")
                                 if (patchDownloadUrl != null && !patchDownloadUrl.isNullOrBlank()) {
-                                    STRepository.downloadFile(patchDownloadUrl)
-                                            .observeOn(Schedulers.io()) //下载成功后也是异步处理，防止回滚等好性能操作阻塞UI
-                                            .subscribe({ content: InputStream ->
-                                                if (file.exists()) {
-                                                    STLogUtil.e(TAG, "downloadHandler file exists, return null")
-                                                    downloadCallback.invoke(null)
-                                                } else {
-                                                    STFileUtil.copy(content, file)
-                                                    STLogUtil.e(TAG, "downloadHandler success and copy dest file exists, return file")
-                                                    downloadCallback.invoke(file)
-                                                }
-                                            }, { e: Throwable ->
-                                                STLogUtil.e(TAG, "downloadHandler error, return null", e)
-                                                downloadCallback.invoke(null)
-                                            })
+                                    STOkHttpManager.doGetFile(patchDownloadUrl, file.absolutePath) { toFile ->
+                                        if (toFile?.exists() == true) {
+                                            STLogUtil.e(TAG, "downloadHandler success and copy dest file exists, return file")
+                                            downloadCallback.invoke(file)
+                                        } else {
+                                            STLogUtil.e(TAG, "downloadHandler file failure, return null")
+                                            downloadCallback.invoke(null)
+                                        }
+                                    }
                                 }
                             }
                         },

@@ -52,8 +52,14 @@ task copyBundle(type: Copy) {
     into targetDir
     include('**/*.aar')
 
-    doFirst { logger.lifecycle("> Task :flutter-bundle:copyBundle copy start from ${file(srcDir).absolutePath} to ${file(targetDir).absolutePath}") }
-    doLast { logger.lifecycle("> Task :flutter-bundle:copyBundle copy ${project.name} aar success !") }
+    doFirst {
+        fileTree(dir: srcDir).matching { include('**/*.aar') }.files.forEach { file ->
+            logger.lifecycle("> Task :flutter-bundle:copyBundle copy file: ${file.absolutePath}")
+        }
+        logger.lifecycle("> Task :flutter-bundle:copyBundle copy to ${file(targetDir).absolutePath}")
+    }
+
+    doLast { logger.lifecycle("> Task :flutter-bundle:copyBundle copy success !") }
 }
 
 dependencies {

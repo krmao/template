@@ -43,11 +43,34 @@ allprojects {
     }
 }
 
+ext {
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
+    supportLibraryVersion = "28.0.0"
+}
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(':app')
+
+    project.evaluationDependsOn(':app') // 这一行可以使得 :app:preBuild 在 :flutter-bundle:copyBundle 之后运行
+
+    project.configurations.all {
+        resolutionStrategy {
+            force "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"
+            force "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
+            force "com.android.support:support-vector-drawable:${rootProject.ext.supportLibraryVersion}"
+            force "com.android.support:animated-vector-drawable:${rootProject.ext.supportLibraryVersion}"
+        }
+    }
+
+    project.afterEvaluate {
+        if ((project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {

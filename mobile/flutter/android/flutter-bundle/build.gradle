@@ -8,7 +8,7 @@ if (rootProject.ext.inbuiltThirdLibraries) {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     lintOptions {
         disable 'InvalidPackage'
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -41,8 +41,8 @@ flutter {
 }
 
 afterEvaluate {
-    assembleDebug.doLast { copyBundle.execute() }
-    assembleRelease.doLast { copyBundle.execute() }
+    assembleDebug.finalizedBy "copyBundle"
+    assembleRelease.finalizedBy "copyBundle"
 }
 
 def srcDir = "../../build/${project.name}/outputs/aar"
@@ -51,11 +51,14 @@ task copyBundle(type: Copy) {
     from srcDir
     into targetDir
     include('**/*.aar')
+
+    doFirst { logger.lifecycle("> Task :flutter-bundle:copyBundle copy start from ${file(srcDir).absolutePath} to ${file(targetDir).absolutePath}") }
+    doLast { logger.lifecycle("> Task :flutter-bundle:copyBundle copy ${project.name} aar success !") }
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-v4:27.1.1'
-    compileOnly 'com.android.support:appcompat-v7:27.1.1'
+    compileOnly 'com.android.support:support-v4:28.0.0'
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
 
     if (rootProject.ext.inbuiltThirdLibraries) {
         def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
@@ -65,8 +68,9 @@ dependencies {
             pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
         }
         plugins.each { name, _ ->
-            println "- embed library: $name"
+            logger.quiet("> Configure project :flutter-bundle embed with $name")
             embed project(path: ":$name", configuration: 'default')
+            compileOnly project(path: ":$name")
         }
     }
 }

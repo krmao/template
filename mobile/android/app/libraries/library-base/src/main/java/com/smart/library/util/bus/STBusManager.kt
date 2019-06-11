@@ -15,9 +15,11 @@ object STBusManager {
     }
 
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
-    private var init = false
+    var isInit = false
+        private set
+
     fun initOnce(application: Application, busHandlerClassMap: MutableMap<String, String>) {
-        if (!init) {
+        if (!isInit) {
             busHandlerClassMap.forEach {
                 try {
                     val busClass = Class.forName(it.value)
@@ -34,7 +36,7 @@ object STBusManager {
                     STLogUtil.w(TAG, "init bus ${it.key}:${it.value} error, class not found exception")
                 }
             }
-            init = true
+            isInit = true
         }
     }
 
@@ -46,4 +48,6 @@ object STBusManager {
             STLogUtil.w(TAG, "can not find bus handler for busName")
         }
     }
+
+    fun isBusHandlerExists(busName: String): Boolean = isInit && busHandlerMap[busName] != null
 }

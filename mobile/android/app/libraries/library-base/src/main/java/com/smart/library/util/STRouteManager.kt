@@ -70,83 +70,7 @@ object STRouteManager {
                 callback(null)
             return
         }
-
-        //该类在atlas组件中
-        /*if (AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.any { fragmentName.startsWith(it) }) {
-            val filterList = AtlasBundleInfoManager.instance().getUninstallBundles().filter { fragmentName.startsWith(it) }
-            if (filterList.isNotEmpty()) {
-                //该组件尚未被安装
-                val location = filterList[0]
-                val isInternalBundle = AtlasBundleInfoManager.instance().isInternalBundle(location)
-
-                STLogUtil.w("$location:isInternalBundle=$isInternalBundle")
-                if (isInternalBundle) {
-                    //该组件是内部组件
-                    //val activity = ActivityTaskMgr.getInstance().peekTopActivity()
-                    val dialog = RuntimeVariables.alertDialogUntilBundleProcessed(activity, location) ?: throw RuntimeException("alertDialogUntilBundleProcessed can not return null")
-
-                    val activityActivitySize = ActivityTaskMgr.getInstance().sizeOfActivityStack()
-                    val successTask = BundleUtil.CancelableTask(Runnable {
-                        STToastUtil.show(filterList.toString() + " 安装成功")
-                        if (activity === ActivityTaskMgr.getInstance().peekTopActivity() || activityActivitySize == ActivityTaskMgr.getInstance().sizeOfActivityStack() + 1) {
-                            goToFragmentInternal(activity, fragmentName, bundle, callback)
-                        }
-                        if (!activity.isFinishing && dialog.isShowing) {
-                            dialog.dismiss()
-                        }
-                    })
-                    val failedTask = BundleUtil.CancelableTask(Runnable {
-                        STToastUtil.show(filterList.toString() + " 安装失败")
-                        if (!activity.isFinishing && dialog.isShowing) {
-                            dialog.dismiss()
-                        }
-                    })
-                    dialog.setOnDismissListener {
-                        successTask.cancel()
-                        failedTask.cancel()
-                    }
-                    if (Atlas.getInstance().getBundle(location) == null || Build.VERSION.SDK_INT < 22) {
-                        if (!activity.isFinishing && dialog.isShowing) {
-                            dialog.show()
-                        }
-                    }
-                    BundleUtil.checkBundleStateAsync(location, successTask, failedTask)
-                } else {
-                    //该组件是远程组件
-                    STLogUtil.w("检测到远程组件:$location")
-                    STToastUtil.show("检测到远程组件:$location")
-
-                    val remoteBundleFile = File(activity.externalCacheDir, "lib" + location.replace(".", "_") + ".so")
-                    if (remoteBundleFile.exists()) {
-                        val path = remoteBundleFile.absolutePath
-                        val info = activity.packageManager.getPackageArchiveInfo(path, 0)
-                        try {
-                            @Suppress("DEPRECATION")
-                            Atlas.getInstance().installBundle(info.packageName, File(path))
-                            STLogUtil.e("远程组件安装成功:$location")
-
-                            val tmpBundle = Atlas.getInstance().getBundle(location) as BundleImpl?
-                            if (tmpBundle == null || !tmpBundle.checkValidate()) {
-                                STLogUtil.e("远程组件校验失败:$location")
-                            } else {
-                                tmpBundle.startBundle()
-                                goToFragmentInternal(activity, fragmentName, bundle, callback)
-                            }
-                        } catch (e: BundleException) {
-                            STLogUtil.e("远程组件安装失败::$location:" + e.message, e)
-                            STToastUtil.show("远程组件安装失败::$location:" + e.message)
-                        }
-                    } else {
-                        STToastUtil.show("远程组件不存在,请确定:" + remoteBundleFile.absolutePath)
-                    }
-                }
-            } else if (Atlas.getInstance().bundles.any { fragmentName.startsWith(it.location) }) {
-                //该组件已经被安装
-                goToFragmentInternal(activity, fragmentName, bundle, callback)
-            }
-        } else {*/
         goToFragmentInternal(activity, fragmentName, bundle, callback)
-//        }
     }
 
     private fun goToFragmentInternal(activity: Activity?, fragmentName: String?, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
@@ -159,18 +83,6 @@ object STRouteManager {
         STLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
         STActivity.start(activity, fragmentName, tmpBundle)
     }
-
-    /*fun AtlasBundleInfoManager.getUninstallBundles(): List<String> {
-        val installedBundles: List<String> = Atlas.getInstance().bundles.flatMap { listOf(it.location) }
-        val allBundles: List<String> = AtlasBundleInfoManager.instance().bundleInfo.bundles.keys.toList()
-        allBundles.forEach { STLogUtil.d("allBundles: $it : isInternalBundle=" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
-        STLogUtil.v("installedBundles:" + installedBundles)
-        val uninstallBundles = allBundles.minus(installedBundles)
-        STLogUtil.v("uninstallBundles:" + uninstallBundles)
-        STLogUtil.v("installedBundles:" + installedBundles)
-        allBundles.forEach { STLogUtil.d("allBundles: $it :" + AtlasBundleInfoManager.instance().isInternalBundle(it)) }
-        return uninstallBundles
-    }*/
 
     @Synchronized
     fun getCallback(fragment: Fragment?): ((bundle: Bundle?) -> Unit?)? = callbackMap[fragment?.arguments?.getString(KEY_ID_CALLBACK)]
@@ -192,22 +104,5 @@ object STRouteManager {
         if (!TextUtils.isEmpty(key))
             callbackMap.remove(key)
         STLogUtil.v("callback size:" + callbackMap.size + " : " + callbackMap.keys)
-    }
-
-    fun testGoToFragment(activity: Activity, fragmentName: String, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
-
-        goToFragment(activity, fragmentName, bundle)
-        goToFragment(activity, fragmentName, bundle, callback)
-        goToFragment(activity, fragmentName, bundle) {
-
-        }
-    }
-
-    fun testGoToActivity(activity: Activity, activityName: String, bundle: Bundle? = null, callback: ((bundle: Bundle?) -> Unit?)? = null) {
-        goToActivity(activity, activityName, bundle)
-        goToActivity(activity, activityName, bundle, callback)
-        goToActivity(activity, activityName, bundle) {
-
-        }
     }
 }

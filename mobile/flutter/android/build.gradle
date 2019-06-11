@@ -10,6 +10,10 @@ buildscript {
     }
 
     ext {
+        compileSdkVersion = 28
+        buildToolsVersion = "28.0.3"
+        supportLibraryVersion = "28.0.0"
+
         inbuiltThirdLibraries = true
 
         def localProperties = new Properties()
@@ -43,12 +47,6 @@ allprojects {
     }
 }
 
-ext {
-    compileSdkVersion = 28
-    buildToolsVersion = "28.0.3"
-    supportLibraryVersion = "28.0.0"
-}
-
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 
@@ -56,6 +54,15 @@ subprojects {
 
     project.configurations.all {
         resolutionStrategy {
+            // fail eagerly on version conflict (includes transitive dependencies)
+            failOnVersionConflict()
+            // prefer modules that are part of this build (multi-project or composite build) over external modules
+            preferProjectModules()
+            // cache dynamic versions for 0 minutes
+            cacheDynamicVersionsFor 0, 'seconds'
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+
             force "com.android.support:support-v4:${rootProject.ext.supportLibraryVersion}"
             force "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
             force "com.android.support:support-vector-drawable:${rootProject.ext.supportLibraryVersion}"

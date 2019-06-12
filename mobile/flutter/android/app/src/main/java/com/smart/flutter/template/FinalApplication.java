@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.smart.library.flutter.FlutterBundle;
-import com.smart.library.flutter.utils.PageRouter;
+import com.smart.library.flutter.utils.FlutterRouter;
 import com.smart.library.flutter.views.NativeMainActivity;
 import com.taobao.idlefish.flutterboost.Debuger;
 import com.taobao.idlefish.flutterboost.interfaces.IPlatform;
@@ -46,7 +46,7 @@ public class FinalApplication extends FlutterApplication {
             @Override
             public boolean startActivity(Context context, String url, int requestCode) {
                 Debuger.log("startActivity url=" + url);
-                return PageRouter.openPageByUrl(context, url, requestCode);
+                return FlutterRouter.openPageByUrl(context, url, requestCode);
             }
 
             @Override

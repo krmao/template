@@ -1,6 +1,4 @@
-import 'package:smart/global_imports.dart';
-
-import 'APage.dart';
+import 'package:smart/settings/imports/flutter_imports_material.dart';
 
 class MinePage extends StatefulWidget {
   @override

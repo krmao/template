@@ -1,4 +1,4 @@
-import 'package:smart/global_imports.dart';
+import 'package:smart/settings/imports/flutter_imports_material.dart';
 
 class HomePage extends StatefulWidget {
   @override

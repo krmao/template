@@ -46,7 +46,7 @@ afterEvaluate {
     assembleRelease.finalizedBy "copyBundle"
 }
 
-def srcDir = "../../build/${project.name}/outputs/aar"
+def srcDir = "$buildDir/outputs/aar"
 def targetDir = "../../../android/app/libraries/repo/aars"
 task copyBundle(type: Copy) {
     from srcDir

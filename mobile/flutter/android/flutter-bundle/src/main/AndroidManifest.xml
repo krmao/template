@@ -14,21 +14,21 @@
          FlutterApplication and put your custom class here. -->
     <application>
         <activity
-            android:name="com.smart.library.flutter.FlutterPageActivity"
+            android:name="com.smart.library.flutter.views.FlutterPageInActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name="com.smart.library.flutter.FlutterFragmentPageActivity"
+            android:name="com.smart.library.flutter.views.FlutterPageInFragmentInActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name="com.smart.library.flutter.NativePageActivity"
+            android:name="com.smart.library.flutter.views.NativeMineActivity"
             android:theme="@style/Theme.AppCompat"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:windowSoftInputMode="adjustResize"/>

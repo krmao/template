@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#689F38"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+
+    <FrameLayout
+        android:id="@+id/fragment_stub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#AED581" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="start"
+        android:padding="15dp"
+        android:text="Native TextView\n[Flutter Page In Fragment] 商品详情页\nFlutterFragmentPageActivity"
+        android:textColor="#333"
+        android:textSize="18sp" />
+</LinearLayout>

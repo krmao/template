@@ -1,29 +1,63 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter/cupertino.dart';
+import 'package:smart/settings/imports/flutter_imports_material.dart';
 
-import 'package:smart/base/Constants.dart';
 
-class DefaultApp extends StatelessWidget {
-  final StatefulWidget child;
+typedef void OnInitStateCallback();
+
+class STBaseApplication extends StatefulWidget {
+  final Widget child;
   final Color statusBarColor;
-  final bool enableSafeArea,
-      enableSafeAreaTop,
-      enableSafeAreaBottom,
-      enableSafeAreaLeft,
-      enableSafeAreaRight;
+  final OnInitStateCallback onInitStateCallback;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
-  DefaultApp(
-      {Key key,
-      @required this.child,
-      this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
-      this.enableSafeArea = true,
-      this.enableSafeAreaTop = true,
-      this.enableSafeAreaBottom = true,
-      this.enableSafeAreaLeft = true,
-      this.enableSafeAreaRight = true})
-      : super(key: key);
+  STBaseApplication({Key key,
+    @required this.child,
+    this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+    this.enableSafeArea = true,
+    this.enableSafeAreaTop = true,
+    this.enableSafeAreaBottom = true,
+    this.enableSafeAreaLeft = true,
+    this.enableSafeAreaRight = true,
+    this.onInitStateCallback}) : super(key: key);
+
+
+  @override
+  State<StatefulWidget> createState() =>
+      STBaseApplicationState(
+          child: this.child,
+          statusBarColor: this.statusBarColor,
+          enableSafeArea: this.enableSafeArea,
+          enableSafeAreaTop: this.enableSafeAreaTop,
+          enableSafeAreaBottom: this.enableSafeAreaBottom,
+          enableSafeAreaLeft: this.enableSafeAreaLeft,
+          enableSafeAreaRight: this.enableSafeAreaRight,
+          onInitStateCallback: this.onInitStateCallback);
+}
+
+class STBaseApplicationState extends State<STBaseApplication> {
+
+  final Widget child;
+  final Color statusBarColor;
+  final OnInitStateCallback onInitStateCallback;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
+
+
+  STBaseApplicationState({
+    @required this.child,
+    this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+    this.enableSafeArea = true,
+    this.enableSafeAreaTop = true,
+    this.enableSafeAreaBottom = true,
+    this.enableSafeAreaLeft = true,
+    this.enableSafeAreaRight = true,
+    this.onInitStateCallback}) : super();
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (this.onInitStateCallback != null) this.onInitStateCallback();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +85,15 @@ class DefaultApp extends StatelessWidget {
                       onWillPop: () => _processExit(context)));
             })),
         theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
             primarySwatch: Colors.red,
             primaryColor: Constants.PRIMARY_COLOR,
             accentColor: Constants.ACCENT_COLOR,
@@ -68,14 +102,14 @@ class DefaultApp extends StatelessWidget {
             highlightColor: Constants.HIGHLIGHT_COLOR,
             inputDecorationTheme: InputDecorationTheme(
                 labelStyle:
-                    TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
+                TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
   }
+
 }
 
-class NoOverScrollBehavior extends ScrollBehavior {
+class _NoOverScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
@@ -83,7 +117,9 @@ class NoOverScrollBehavior extends ScrollBehavior {
 var _lastTime = 0;
 
 Future<bool> _processExit(BuildContext context) {
-  int now = DateTime.now().millisecondsSinceEpoch;
+  int now = DateTime
+      .now()
+      .millisecondsSinceEpoch;
   var duration = now - _lastTime;
   print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
   _lastTime = now;

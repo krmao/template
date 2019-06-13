@@ -1,7 +1,5 @@
 import 'package:smart/settings/imports/flutter_imports_material.dart';
 
-import 'BPage.dart';
-
 class APage extends StatefulWidget {
   @override
   createState() => APageState();
@@ -22,7 +20,7 @@ class APageState extends DefaultPageState<APage> {
   @override
   Widget buildBody() {
     return getOnTapWidget(Container(color: Colors.blueGrey), () {
-      NativeManager.goTo(BPage());
+//      NativeManager.goTo(BPage());
     });
   }
 }

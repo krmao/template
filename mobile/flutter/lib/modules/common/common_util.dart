@@ -19,7 +19,7 @@ class CommonUtils {
                     padding: const EdgeInsets.all(8.0),
                     margin: const EdgeInsets.all(8.0),
                     color: Colors.yellow,
-                    child: Text('内部路由 Navigator.push', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
+                    child: Text('PUSH 玩家模块', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => STBaseStatefulWidget(state: MainTabWidgetState(),)))
             ),
             InkWell(

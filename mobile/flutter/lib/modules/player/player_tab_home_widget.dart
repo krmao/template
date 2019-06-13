@@ -5,7 +5,7 @@ class PlayerTabHomeWidget extends StatefulWidget {
   createState() => PlayerTabHomeWidgetState();
 }
 
-class PlayerTabHomeWidgetState extends DefaultPageState<PlayerTabHomeWidget> {
+class PlayerTabHomeWidgetState extends STBaseStatefulWidgetState<PlayerTabHomeWidget> {
   @override
   bool get wantKeepAlive => true;
 
@@ -16,13 +16,13 @@ class PlayerTabHomeWidgetState extends DefaultPageState<PlayerTabHomeWidget> {
       title: "玩家首页",
     );
     loadingWidget = LoadingWidget(isShow: false);
-    statusBarColor = Colors.blueAccent;
+    statusBarColor = Colors.pink;
     super.initState();
   }
 
   @override
   Widget buildBody() {
-    return getOnTapWidget(Container(color: Colors.blueAccent, child: WidgetUtils.getNetworkImageWidget("http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg", width: double.infinity, height: 100, fit: BoxFit.fitHeight)), () {
+    return getOnTapWidget(Container(color: Colors.pink, child: WidgetUtils.getNetworkImageWidget("http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg", width: double.infinity, height: 100, fit: BoxFit.fitHeight)), () {
       showSnackBar("you clicked");
     });
   }

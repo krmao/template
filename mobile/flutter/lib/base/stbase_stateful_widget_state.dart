@@ -7,7 +7,7 @@ import 'utils/NativeManager.dart';
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
 
-class DefaultPageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver, WidgetsBackPressedEvent {
+class STBaseStatefulWidgetState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver, WidgetsBackPressedEvent {
   String tag;
   WidgetBuildFunction child;
   bool keepAlive = false;
@@ -28,8 +28,7 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  DefaultPageState(
-      {this.statusBarColor, this.loadingWidget, this.enableTitleBar = true, this.titleBarWidget, this.child, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
+  STBaseStatefulWidgetState({this.statusBarColor, this.loadingWidget, this.enableTitleBar = true, this.titleBarWidget, this.child, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
 
   @override
   void initState() {
@@ -113,15 +112,26 @@ class DefaultPageState<T extends StatefulWidget> extends State<T> with Automatic
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   void showSnackBar(String msg) {
-    if (scaffoldContext != null && msg?.trim()?.isNotEmpty == true) {
+    if (scaffoldContext != null && msg
+        ?.trim()
+        ?.isNotEmpty == true) {
       Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text(msg), duration: Duration(milliseconds: 2000)));
     }
   }
 
-  Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) => WidgetUtils.getVerticalLine(lineColor: lineColor, height: height, width: width, margin: margin, padding: padding);
+  Widget getVerticalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = double.infinity, double width = 1.0, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
+      WidgetUtils.getVerticalLine(lineColor: lineColor,
+          height: height,
+          width: width,
+          margin: margin,
+          padding: padding);
 
   Widget getHorizontalLine({Color lineColor = Constants.DEFAULT_LINE_COLOR, double height = 1.0, double width = double.infinity, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding}) =>
-      WidgetUtils.getHorizontalLine(lineColor: lineColor, height: height, width: width, margin: margin, padding: padding);
+      WidgetUtils.getHorizontalLine(lineColor: lineColor,
+          height: height,
+          width: width,
+          margin: margin,
+          padding: padding);
 
   Widget getOnTapWidget(Widget child, GestureTapCallback onTap) => WidgetUtils.getOnTapWidget(child, onTap);
 

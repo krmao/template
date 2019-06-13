@@ -5,7 +5,7 @@ class PlayerTabMineWidget extends StatefulWidget {
   createState() => PlayerTabMineWidgetState();
 }
 
-class PlayerTabMineWidgetState extends DefaultPageState<PlayerTabMineWidget> {
+class PlayerTabMineWidgetState extends STBaseStatefulWidgetState<PlayerTabMineWidget> {
   @override
   bool get wantKeepAlive => true;
 

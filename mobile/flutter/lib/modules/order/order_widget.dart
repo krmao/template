@@ -8,6 +8,7 @@ class OrderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.orange,
         appBar: AppBar(
             title: Text('订单页面')
         ),

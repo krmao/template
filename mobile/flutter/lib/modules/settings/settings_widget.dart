@@ -8,6 +8,7 @@ class SettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.deepOrange,
         appBar: AppBar(
             title: Text('设置页面')
         ),

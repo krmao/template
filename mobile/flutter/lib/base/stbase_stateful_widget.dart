@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart/base/Constants.dart';
-import 'package:smart/base/DefaultPageState.dart';
+import 'package:smart/base/stbase_stateful_widget_state.dart';
 
 import 'widgets/LoadingWidget.dart';
 import 'widgets/TitleBarWidget.dart';
@@ -26,7 +26,7 @@ class STBaseStatefulWidget extends StatefulWidget {
   @override
   State createState() {
     if (this.state == null) {
-      this.state = DefaultPageState(
+      this.state = STBaseStatefulWidgetState(
         child: this.child,
         statusBarColor: this.statusBarColor,
         loadingWidget: this.loadingWidget,

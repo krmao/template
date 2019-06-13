@@ -9,8 +9,8 @@ void main() {
     onInitStateCallback: () {
       //
       FlutterBoost.singleton.registerPageBuilders({
-        FlutterRouter.URL_SETTINGS: (pageName, params, _) => FlutterSettingsWidget(params),
-        FlutterRouter.URL_ORDER: (pageName, params, _) => FlutterOrderWidget()
+        FlutterRouter.URL_SETTINGS: (pageName, params, _) => SettingsWidget(params),
+        FlutterRouter.URL_ORDER: (pageName, params, _) => OrderWidget()
       });
       //
       FlutterBoost.handleOnStartPage();

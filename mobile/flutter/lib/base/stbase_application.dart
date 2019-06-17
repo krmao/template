@@ -12,7 +12,7 @@ class STBaseApplication extends StatefulWidget {
 
   STBaseApplication({Key key,
     @required this.child,
-    this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+    this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
     this.enableSafeArea = true,
     this.enableSafeAreaTop = true,
     this.enableSafeAreaBottom = true,
@@ -44,7 +44,7 @@ class STBaseApplicationState extends State<STBaseApplication> {
 
   STBaseApplicationState({
     @required this.child,
-    this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+    this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
     this.enableSafeArea = true,
     this.enableSafeAreaTop = true,
     this.enableSafeAreaBottom = true,
@@ -95,18 +95,19 @@ class STBaseApplicationState extends State<STBaseApplication> {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
             primarySwatch: Colors.red,
-            primaryColor: Constants.PRIMARY_COLOR,
-            accentColor: Constants.ACCENT_COLOR,
+            primaryColor: STBaseConstants.PRIMARY_COLOR,
+            accentColor: STBaseConstants.ACCENT_COLOR,
             primaryColorBrightness: Brightness.light,
-            hintColor: Constants.HINT_COLOR,
-            highlightColor: Constants.HIGHLIGHT_COLOR,
+            hintColor: STBaseConstants.HINT_COLOR,
+            highlightColor: STBaseConstants.HIGHLIGHT_COLOR,
             inputDecorationTheme: InputDecorationTheme(
                 labelStyle:
-                TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
+                TextStyle(color: STBaseConstants.INPUT_DECORATION_COLOR))));
   }
 
 }
 
+// ignore: unused_element
 class _NoOverScrollBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {

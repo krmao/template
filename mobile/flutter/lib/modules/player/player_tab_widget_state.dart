@@ -17,7 +17,7 @@ class MainTabWidgetState extends State<StatefulWidget> {
     }
 
     // init at widget which parent state is MaterialApp
-    NativeManager.initialize(context);
+    STBaseNativeManager.initialize(context);
 
     controller = PageController(initialPage: 0);
     return Scaffold(

@@ -4,7 +4,7 @@ void main() {
   debugPaintSizeEnabled = false;
   runApp(STBaseApplication(
     enableSafeArea: false,
-    statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR,
+    statusBarColor: STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
     child: Container(),
     onInitStateCallback: () {
       //

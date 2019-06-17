@@ -17,22 +17,22 @@ dependencies:
     sdk: flutter
 
   # rx
-  rxdart: ^0.18.1
+  rxdart: ^0.22.0
 
   # http
-  dio: ^1.0.3
+  dio: ^2.1.7
 
   # flutter_boost: ^0.0.411
   flutter_boost:
     git:
       url: 'https://github.com/alibaba/flutter_boost.git'
-      ref: '0.0.412'
+      ref: '0.0.415'
 
   # banner
   # flutter_swiper: ^1.0.6
 
   # shared_preferences
-  # shared_preferences: ^0.4.2
+  shared_preferences: 0.5.3+1
 
   # pull_to_refresh
   # pull_to_refresh: ^1.1.6
@@ -45,7 +45,7 @@ dependencies:
 
   # image
   # flutter_cache_manager: ^0.2.0
-  cached_network_image: ^0.5.0
+  cached_network_image: ^0.8.0
   # transparent_image: ^0.1.0
 
   # intl: ^0.15.7  
@@ -77,7 +77,7 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-  - images/
+    - images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

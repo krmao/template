@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-//import 'package:smart/com/smart/library/base/utils/HttpManager.dart';
+//import 'package:smart/com/smart/library/base/utils/stbase_http_manager.dart';
 import 'package:smart/repository/response_model.dart';
 
 class Repository {

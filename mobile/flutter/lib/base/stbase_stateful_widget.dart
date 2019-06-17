@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smart/base/Constants.dart';
+import 'package:smart/base/stbase_constants.dart';
 import 'package:smart/base/stbase_stateful_widget_state.dart';
 
-import 'widgets/LoadingWidget.dart';
-import 'widgets/TitleBarWidget.dart';
+import 'widgets/stbase_loading_widget.dart';
+import 'widgets/stbase_titlebar_widget.dart';
 
 // ignore: must_be_immutable
 class STBaseStatefulWidget extends StatefulWidget {
 
-  final LoadingWidget loadingWidget;
-  final TitleBarWidget titleBarWidget;
-  final WidgetBuildFunction child;
+  STBaseLoadingWidget loadingWidget;
+  STBaseTitleBarWidget titleBarWidget;
+  WidgetBuildFunction child;
   bool keepAlive = false;
   bool enableSafeArea = true;
   bool enableSafeAreaTop = true;
@@ -22,6 +22,14 @@ class STBaseStatefulWidget extends StatefulWidget {
   State state;
 
   STBaseStatefulWidget({this.child, this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.state, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight});
+
+  STBaseStatefulWidget.initWithChild(WidgetBuildFunction child, { this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight}){
+    this.child = child;
+  }
+
+  STBaseStatefulWidget.initWithState(State state){
+    this.state = state;
+  }
 
   @override
   State createState() {

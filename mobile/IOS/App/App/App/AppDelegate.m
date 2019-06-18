@@ -6,6 +6,7 @@
 //  Copyright © 2019 smart. All rights reserved.
 //
 
+#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
@@ -15,10 +16,18 @@
 @implementation AppDelegate
 
 
+// This override can be omitted if you do not have any Flutter Plugins.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    return YES;
+    self.flutterEngine = [[FlutterEngine alloc] initWithName:@"io.flutter" project:nil];
+    [self.flutterEngine runWithEntrypoint:nil];
+    [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
+    return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
+    
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//    // Override point for customization after application launch.
+//    return YES;
+//}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

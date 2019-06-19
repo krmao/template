@@ -8,6 +8,7 @@
 
 #import "DemoRouter.h"
 #import <flutter_boost/FlutterBoost.h>
+#import "MineViewController.h"
 
 @implementation DemoRouter
 
@@ -19,21 +20,47 @@
         instance = [[self alloc] init];
     });
     return instance;
+  }
+
++ (UIViewController*) visibleViewController{
+    UIViewController *topViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
+    while (true)
+    {
+        if (topViewController.presentedViewController) {
+            topViewController = topViewController.presentedViewController;
+        } else if ([topViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)topViewController;
+            topViewController = nav.topViewController;
+        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
+            UITabBarController *tab = (UITabBarController *)topViewController;
+            topViewController = tab.selectedViewController;
+        } else {
+            break;
+        }
+    }
+    return topViewController;
 }
 
-- (void)openPage:(NSString *)name
-          params:(NSDictionary *)params
-        animated:(BOOL)animated
-      completion:(void (^)(BOOL))completion
+- (void)openPage:(NSString *)name params:(NSDictionary *)params animated:(BOOL)animated completion:(void (^)(BOOL))completion
 {
-    if([params[@"present"] boolValue]){
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:name params:params];
-        [self.navigationController presentViewController:vc animated:animated completion:^{}];
+    UIViewController *visibleViewController = [DemoRouter visibleViewController];
+    
+    if ([name isEqualToString:@"flutter://native/mine"]) {
+        if(visibleViewController.navigationController){
+            [visibleViewController.navigationController pushViewController:[MineViewController new] animated:YES];
+        }else{
+             [visibleViewController presentViewController:[MineViewController alloc] animated:YES completion:^{}];
+        }
     }else{
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:name params:params];
-        [self.navigationController pushViewController:vc animated:animated];
+        if([params[@"present"] boolValue] || !visibleViewController.navigationController){
+            FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+            [vc setName:name params:params];
+            [visibleViewController presentViewController:vc animated:animated completion:^{}];
+        }else{
+            FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+            [vc setName:name params:params];
+            [visibleViewController.navigationController pushViewController:vc animated:animated];
+        }
     }
 }
 

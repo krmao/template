@@ -15,13 +15,12 @@
 		7497404B213559E7008C567A /* Flutter.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7497404A213559E7008C567A /* Flutter.xcconfig */; };
 		978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */; };
 		97C146F31CF9000F007C117D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 97C146F21CF9000F007C117D /* main.m */; };
-		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		F821F17022BA099700B239EB /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F821F16F22BA099700B239EB /* HomeViewController.m */; };
+		F821F17322BA16B300B239EB /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F821F17222BA16B300B239EB /* MineViewController.m */; };
 		F85E1AF222B9E248006208C0 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F85E1AF122B9E247006208C0 /* libc++.tbd */; };
 		F85E1AF522B9E30F006208C0 /* DemoRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E1AF322B9E30E006208C0 /* DemoRouter.m */; };
-		F85E1B0722B9E5F2006208C0 /* UIViewControllerDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E1B0422B9E5F2006208C0 /* UIViewControllerDemo.m */; };
-		F85E1B0822B9E5F2006208C0 /* UIViewControllerDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = F85E1B0622B9E5F2006208C0 /* UIViewControllerDemo.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,16 +53,16 @@
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = ../.ios/Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146F21CF9000F007C117D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		97C146FB1CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F821F16E22BA099700B239EB /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		F821F16F22BA099700B239EB /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		F821F17122BA16B300B239EB /* MineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
+		F821F17222BA16B300B239EB /* MineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		F85E1AF122B9E247006208C0 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		F85E1AF322B9E30E006208C0 /* DemoRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoRouter.m; sourceTree = "<group>"; };
 		F85E1AF422B9E30E006208C0 /* DemoRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoRouter.h; sourceTree = "<group>"; };
-		F85E1B0422B9E5F2006208C0 /* UIViewControllerDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewControllerDemo.m; sourceTree = "<group>"; };
-		F85E1B0522B9E5F2006208C0 /* UIViewControllerDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewControllerDemo.h; sourceTree = "<group>"; };
-		F85E1B0622B9E5F2006208C0 /* UIViewControllerDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIViewControllerDemo.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,18 +121,18 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				F85E1B0522B9E5F2006208C0 /* UIViewControllerDemo.h */,
-				F85E1B0422B9E5F2006208C0 /* UIViewControllerDemo.m */,
-				F85E1B0622B9E5F2006208C0 /* UIViewControllerDemo.xib */,
 				F85E1AF422B9E30E006208C0 /* DemoRouter.h */,
 				F85E1AF322B9E30E006208C0 /* DemoRouter.m */,
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
-				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				97C147021CF9000F007C117D /* Info.plist */,
 				97C146F11CF9000F007C117D /* Supporting Files */,
+				F821F16E22BA099700B239EB /* HomeViewController.h */,
+				F821F16F22BA099700B239EB /* HomeViewController.m */,
+				F821F17122BA16B300B239EB /* MineViewController.h */,
+				F821F17222BA16B300B239EB /* MineViewController.m */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -228,13 +227,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F85E1B0822B9E5F2006208C0 /* UIViewControllerDemo.xib in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				74974049213559DB008C567A /* Debug.xcconfig in Resources */,
 				74974048213559DB008C567A /* Release.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				7497404B213559E7008C567A /* Flutter.xcconfig in Resources */,
-				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,22 +315,15 @@
 			files = (
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
+				F821F17322BA16B300B239EB /* MineViewController.m in Sources */,
 				F85E1AF522B9E30F006208C0 /* DemoRouter.m in Sources */,
-				F85E1B0722B9E5F2006208C0 /* UIViewControllerDemo.m in Sources */,
+				F821F17022BA099700B239EB /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				97C146FB1CF9000F007C117D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

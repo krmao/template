@@ -2,16 +2,9 @@
 #import "FlutterPluginRegistrant/GeneratedPluginRegistrant.h"
 #import "DemoRouter.h"
 #import <flutter_boost/FlutterBoost.h>
-#import "UIViewControllerDemo.h"
+#import "HomeViewController.h"
 
 @implementation AppDelegate
-
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [GeneratedPluginRegistrant registerWithRegistry:self];
-//
-//    return [super application:application didFinishLaunchingWithOptions:launchOptions];
-//}
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -20,44 +13,18 @@
     self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     
-    UIViewControllerDemo *vc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
-    vc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"hybrid" image:nil tag:0];
-    
-    FLBFlutterViewContainer *fvc = FLBFlutterViewContainer.new;
-    [fvc setName:@"tab" params:@{}];
-    fvc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"flutter_tab" image:nil tag:1];
-    
-    
-    UITabBarController *tabVC = [[UITabBarController alloc] init];
-    UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:tabVC];
+    UINavigationController *rootNavigationController = [[UINavigationController alloc] initWithRootViewController:[HomeViewController new]];
     
     DemoRouter *router = [DemoRouter sharedRouter];
-    router.navigationController = rvc;
+    router.navigationController = rootNavigationController;
     
-    tabVC.viewControllers = @[vc,fvc];
-    
-    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router onStart:^(FlutterViewController *fvc) {
+    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router onStart:^(FlutterViewController *flutterViewController) {
+        
     }];
     
-    self.window.rootViewController = rvc;
-    
-    UIButton *nativeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    nativeButton.frame = CGRectMake(self.window.frame.size.width * 0.5 - 50, 200, 100, 45);
-    nativeButton.backgroundColor = [UIColor redColor];
-    [nativeButton setTitle:@"push native" forState:UIControlStateNormal];
-    [nativeButton addTarget:self action:@selector(pushNative) forControlEvents:UIControlEventTouchUpInside];
-    [self.window addSubview:nativeButton];
-    
+    self.window.rootViewController = rootNavigationController;
     return YES;
 }
-
-- (void)pushNative
-{
-    UINavigationController *nvc = (id)self.window.rootViewController;
-    UIViewControllerDemo *vc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
-    [nvc pushViewController:vc animated:YES];
-}
-
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

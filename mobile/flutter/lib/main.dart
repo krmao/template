@@ -5,7 +5,7 @@ void main() {
   runApp(STBaseApplication(
     enableSafeArea: false,
     statusBarColor: STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
-    child: Container(),
+    child: OrderWidget(),
     onInitStateCallback: () {
       //
       FlutterBoost.singleton.registerPageBuilders({

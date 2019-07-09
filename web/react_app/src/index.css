@@ -10,6 +10,8 @@ code {
 }
 
 /* 移动端适配高清方案, 有时候字体会不受控制的变大 https://segmentfault.com/a/1190000007350680*/
-*, *:before, *:after {
-    max-height: 100000px
+*,
+*:before,
+*:after {
+    max-height: 100000px;
 }

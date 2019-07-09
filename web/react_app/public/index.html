@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="theme-color" content="#000000"/>
-    <!--
+    <head>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
-    <!--
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -19,56 +19,56 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-    <script>
-        'use strict';
+        <title>React App</title>
+        <script>
+            "use strict";
 
-        /**
-         * 手机端页面自适应高清方案(UI 视觉效果图推荐尺寸 640x1136 750x1334)
-         *
-         * @link https://segmentfault.com/a/1190000007350680
-         *
-         * @param {Boolean} [normal = false] - 默认开启页面压缩以使页面高清;
-         * @param {Number} [baseFontSize = 100] - 基础fontSize, 默认100px;
-         * @param {Number} [fontScale = 1] - 有的业务希望能放大一定比例的字体;
-         */
-        const win = window;
-        /*export default */
-        win.flex = (normal, baseFontSize, fontScale) => {
-            const _baseFontSize = baseFontSize || 100;
-            const _fontScale = fontScale || 1;
+            /**
+             * 手机端页面自适应高清方案(UI 视觉效果图推荐尺寸 640x1136 750x1334)
+             *
+             * @link https://segmentfault.com/a/1190000007350680
+             *
+             * @param {Boolean} [normal = false] - 默认开启页面压缩以使页面高清;
+             * @param {Number} [baseFontSize = 100] - 基础fontSize, 默认100px;
+             * @param {Number} [fontScale = 1] - 有的业务希望能放大一定比例的字体;
+             */
+            const win = window;
+            /*export default */
+            win.flex = (normal, baseFontSize, fontScale) => {
+                const _baseFontSize = baseFontSize || 100;
+                const _fontScale = fontScale || 1;
 
-            const doc = win.document;
-            const ua = navigator.userAgent;
-            const matches = ua.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i);
-            const UCVersion = ua.match(/U3\/((\d+|\.){5,})/i);
-            const isUCHd = UCVersion && parseInt(UCVersion[1].split('.').join(''), 10) >= 80;
-            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi);
-            let dpr = win.devicePixelRatio || 1;
-            if (!isIos && !(matches && matches[1] > 534) && !isUCHd) {
-                dpr = 1; // 如果非iOS, 非Android4.3以上, 非UC内核, 就不执行高清, dpr设为1
-            }
-            console.log("dpr:" + dpr);
-            const scale = normal ? 1 : 1 / dpr;
+                const doc = win.document;
+                const ua = navigator.userAgent;
+                const matches = ua.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i);
+                const UCVersion = ua.match(/U3\/((\d+|\.){5,})/i);
+                const isUCHd = UCVersion && parseInt(UCVersion[1].split(".").join(""), 10) >= 80;
+                const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi);
+                let dpr = win.devicePixelRatio || 1;
+                if (!isIos && !(matches && matches[1] > 534) && !isUCHd) {
+                    dpr = 1; // 如果非iOS, 非Android4.3以上, 非UC内核, 就不执行高清, dpr设为1
+                }
+                console.log("dpr:" + dpr);
+                const scale = normal ? 1 : 1 / dpr;
 
-            let metaEl = doc.querySelector('meta[name="viewport"]');
-            if (!metaEl) {
-                metaEl = doc.createElement('meta');
-                metaEl.setAttribute('name', 'viewport');
-                doc.head.appendChild(metaEl);
-            }
-            metaEl.setAttribute('content', `width=device-width,user-scalable=no,initial-scale=${scale},maximum-scale=${scale},minimum-scale=${scale}`);
-            doc.documentElement.style.fontSize = normal ? '50px' : `${_baseFontSize / 2 * dpr * _fontScale}px`;
-        };
-        // 640x1136 750x1334 尺寸的视觉稿 baseFontSize 为 100,      则 1rem = 100px, 因为drp=2(即1rem=100px)
-        // 1242x2208         尺寸的视觉稿 baseFontSize 为 66.66667, 则 1rem = 100px, 因为drp=3(即1rem=150px), 所以设置 66.66667
-        win.flex(false, 100, 1);
-    </script>
-</head>
-<body>
-<noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"></div>
-<!--
+                let metaEl = doc.querySelector('meta[name="viewport"]');
+                if (!metaEl) {
+                    metaEl = doc.createElement("meta");
+                    metaEl.setAttribute("name", "viewport");
+                    doc.head.appendChild(metaEl);
+                }
+                metaEl.setAttribute("content", `width=device-width,user-scalable=no,initial-scale=${scale},maximum-scale=${scale},minimum-scale=${scale}`);
+                doc.documentElement.style.fontSize = normal ? "50px" : `${(_baseFontSize / 2) * dpr * _fontScale}px`;
+            };
+            // 640x1136 750x1334 尺寸的视觉稿 baseFontSize 为 100,      则 1rem = 100px, 因为drp=2(即1rem=100px)
+            // 1242x2208         尺寸的视觉稿 baseFontSize 为 66.66667, 则 1rem = 100px, 因为drp=3(即1rem=150px), 所以设置 66.66667
+            win.flex(false, 100, 1);
+        </script>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <!--
   This HTML file is a template.
   If you open it directly in the browser, you will see an empty page.
 
@@ -78,5 +78,5 @@
   To begin the development, run `npm start` or `yarn start`.
   To create a production bundle, use `npm run build` or `yarn build`.
 -->
-</body>
+    </body>
 </html>

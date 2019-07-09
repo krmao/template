@@ -1,8 +1,18 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Repository from "./repository/Repository";
 
 function App() {
+    Repository.requestLogin(
+        { userName: "krmao", userPwd: "123456" },
+        function(success) {
+            console.warn("success:" + success);
+        },
+        function(error) {
+            console.warn("error:" + error);
+        }
+    );
     return (
         <div className="App">
             <header className="App-header">

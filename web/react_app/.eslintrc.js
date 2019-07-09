@@ -1,19 +1,19 @@
 module.exports = {
     env: {
         browser: true,
-        es6: true,
+        es6: true
     },
     extends: "eslint:recommended",
     globals: {
         Atomics: "readonly",
-        SharedArrayBuffer: "readonly",
+        SharedArrayBuffer: "readonly"
     },
     parserOptions: {
         ecmaFeatures: {
-            jsx: true,
+            jsx: true
         },
         ecmaVersion: 2018,
-        sourceType: "module",
+        sourceType: "module"
     },
     plugins: ["react"],
     rules: {
@@ -38,10 +38,10 @@ module.exports = {
         "no-underscore-dangle": "error", // 标识符不能以_开头或结尾
         "no-use-before-define": "off", // 未定义前不能使用
         "no-mixed-spaces-and-tabs": "error", // 禁止混用tab和空格
-        "no-unused-vars": ["off", { vars: "all", args: "after-used" }], // 检测到未被使用的变量
-        "jsx-quotes": ["error", "prefer-double"], // 强制在JSX属性（jsx-quotes）中一致使用双引号
+        "no-unused-vars": ["off", {vars: "all", args: "after-used"}], // 检测到未被使用的变量
+        "jsx-quotes": ["error", "prefer-double"] // 强制在JSX属性（jsx-quotes）中一致使用双引号
     },
     settings: {
-        "import/ignore": ["node_modules"],
-    },
+        "import/ignore": ["node_modules"]
+    }
 };

@@ -5,7 +5,7 @@ import Repository from "./repository/Repository";
 
 function App() {
     Repository.requestLogin(
-        { userName: "krmao", userPwd: "123456" },
+        {userName: "krmao", userPwd: "123456"},
         function(success) {
             console.warn("success:" + success);
         },

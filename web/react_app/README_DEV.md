@@ -1,16 +1,8 @@
-### 1. 代码风格检查
+### 1. 工程介绍
 
--   prettier [配置](https://prettier.io/docs/en/options.html)
--   eslint [配置](https://cloud.tencent.com/developer/chapter/12618)
+> 本项目采用 **react** 技术栈, 通过 _rem_ 进行页面适配*(阿里巴巴高清页面适配方案)*, 使用 _eslint/prettier_ 优化代码
 
-### 2. 开发步骤
-
-1. 编写代码后准备提交
-2. npm run eslint # 检查代码错误
-3. npm run format # 格式化代码
-4. git commit -m "" && git pull --rebase && git push
-
-### 3. 目录介绍
+### 2. 目录介绍
 
 ```
 .
@@ -28,11 +20,23 @@
     └── serviceWorker.js
 ```
 
-### 4. 开发规范
+### 3. 代码开发规范
 
 1. 强制使用 双引号
 2. 强制使用 行尾分号
 3. 强制使用 驼峰命名法
-4. 强制使用 let/const, 禁用 var
-5. 提交代码前 强制执行 **npm run eslint** 检查错误
-6. 提交代码前 强制执行 **npm run format** 格式化代码
+4. 强制使用 _let_/_const_, 禁用 _var_
+5. 提交代码前 强制执行 _npm run eslint_ 检查错误
+6. 提交代码前 强制执行 _npm run format_ 格式化代码
+
+### 4. 代码提交规范
+
+1. 编写代码后准备提交
+2. npm run eslint # 检查代码错误
+3. npm run format # 格式化代码
+4. git commit -m "" && git pull --rebase && git push
+
+### 5. 参考
+
+-   prettier [配置](https://prettier.io/docs/en/options.html)
+-   eslint [配置](https://cloud.tencent.com/developer/chapter/12618)

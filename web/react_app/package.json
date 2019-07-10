@@ -35,5 +35,6 @@
     "devDependencies": {
         "eslint": "^5.16.0",
         "prettier": "1.18.2"
-    }
+    },
+    "proxy": "http://10.32.33.2:8000"
 }

@@ -4,13 +4,13 @@ import "./App.css";
 import Repository from "./repository/Repository";
 
 function App() {
-    Repository.requestLogin(
+    Repository.getDirList(
         {userName: "krmao", userPwd: "123456"},
-        function(success) {
-            console.warn("success:" + success);
+        function(data) {
+            console.log("oh got success:", data);
         },
         function(error) {
-            console.warn("error:" + error);
+            console.log("oh got error:", error);
         }
     );
     return (

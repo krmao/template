@@ -7,9 +7,6 @@
 ```
 .
 └── src
-    ├── App.css
-    ├── App.js
-    ├── App.test.js
     ├── index.css
     ├── index.js
     ├── library             # react 基础库(任意工程可用公共库)

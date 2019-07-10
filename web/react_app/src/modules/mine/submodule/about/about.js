@@ -13,10 +13,6 @@ class About extends React.Component {
         return (
             <div>
                 <p>about</p>
-
-                <button className="button" onClick={() => this.setState({value: "X"})}>
-                    {this.state.value}
-                </button>
             </div>
         );
     }

@@ -1,6 +1,9 @@
 import React from "react";
 import "./mine.css";
 import Repository from "../../repository/Repository";
+import {Link, Route} from "react-router-dom";
+import About from "./submodule/about/about";
+import Settings from "./submodule/settings/settings";
 
 class Mine extends React.Component {
     constructor(props) {
@@ -24,16 +27,21 @@ class Mine extends React.Component {
 
     componentDidMount() {
         console.log(this.props.match.params);
+        console.log(`${this.props.match.url}/settings`);
+        console.log(`${this.props.match.path}/settings`);
     }
 
     render() {
         return (
             <div className="root">
-                <p>mine</p>
-
-                <button className="button" onClick={() => this.setState({value: "X"})}>
-                    {this.state.value}
-                </button>
+                <div className="menu">
+                    <Link to="/mine/about">关于</Link>
+                    <Link to={`${this.props.match.url}/settings`}>设置</Link>
+                </div>
+                <div className="container">
+                    <Route path="/mine/about" component={About} />
+                    <Route path={`${this.props.match.path}/settings`} component={Settings} />
+                </div>
             </div>
         );
     }

@@ -13,10 +13,6 @@ class Settings extends React.Component {
         return (
             <div>
                 <p>settings</p>
-
-                <button className="button" onClick={() => this.setState({value: "X"})}>
-                    {this.state.value}
-                </button>
             </div>
         );
     }

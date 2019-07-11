@@ -11,7 +11,7 @@ class Settings extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="settings_root">
                 <p>settings</p>
             </div>
         );

@@ -1,7 +1,7 @@
 import React from "react";
-import "./about.css";
+import "./loading.css";
 
-class About extends React.Component {
+class Loading extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,11 +11,11 @@ class About extends React.Component {
 
     render() {
         return (
-            <div>
-                <p>about</p>
+            <div className="loading_root">
+                <p>loading</p>
             </div>
         );
     }
 }
 
-export default About;
+export default Loading;

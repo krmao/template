@@ -1,9 +1,8 @@
 import React from "react";
 import "./mine.css";
-import Repository from "../../repository/Repository";
-import {Link, Route} from "react-router-dom";
-import About from "./submodule/about/about";
-import Settings from "./submodule/settings/settings";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import Settings from "../settings/settings";
+import Loading from "../loading/loading";
 
 class Mine extends React.Component {
     constructor(props) {
@@ -13,36 +12,34 @@ class Mine extends React.Component {
         };
     }
 
-    componentWillMount() {
-        Repository.getDirList(
-            {userName: "krmao", userPwd: "123456"},
-            function(data) {
-                console.log("oh got success:", data);
-            },
-            function(error) {
-                console.log("oh got error:", error);
-            }
-        );
-    }
+    componentWillMount() {}
 
     componentDidMount() {
-        console.log(this.props.match.params);
-        console.log(`${this.props.match.url}/settings`);
-        console.log(`${this.props.match.path}/settings`);
+        console.log("mine props=", this.props);
+        console.log("mine props.match.path=", this.props.match.path);
     }
 
     render() {
         return (
-            <div className="root">
-                <div className="menu">
-                    <Link to="/mine/about">关于</Link>
-                    <Link to={`${this.props.match.url}/settings`}>设置</Link>
+            <Router>
+                <div className="mine_root">
+                    <ul className="menu">
+                        <li className="menu_item">
+                            <Link to="/mine/loading">loading</Link>
+                        </li>
+                        <li className="menu_item">
+                            <Link to="/mine/settings">settings</Link>
+                        </li>
+                    </ul>
+                    <div className="container">
+                        <Switch>
+                            <Route exact path={["/mine", "/mine/loading"]} component={Loading} />
+                            <Route exact path={"/mine/settings"} component={Settings} />
+                            <Route render={() => <div>Not Found</div>} />
+                        </Switch>
+                    </div>
                 </div>
-                <div className="container">
-                    <Route path="/mine/about" component={About} />
-                    <Route path={`${this.props.match.path}/settings`} component={Settings} />
-                </div>
-            </div>
+            </Router>
         );
     }
 }

@@ -33,7 +33,28 @@
 3. npm run format # 格式化代码
 4. git commit -m "" && git pull --rebase && git push
 
-### 5. 参考
+### 5. 开发实时预览
+
+```bash
+npm run start
+```
+
+### 6. 打包发布
+
+```bash
+npm run build
+```
+
+-   对即将部署的 build 文件夹可以进行静态资源访问测试
+
+```bash
+npm install -g serve
+serve -s build -p 5389
+```
+
+### 7. 部署到 nginx/tomcat
+
+### 8. 参考
 
 -   prettier [配置](https://prettier.io/docs/en/options.html)
 -   eslint [配置](https://cloud.tencent.com/developer/chapter/12618)

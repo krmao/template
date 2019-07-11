@@ -1,6 +1,6 @@
 import React from "react";
 import "./main.css";
-import {BrowserRouter as Router, withRouter, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, /*withRouter,*/ Link, Route, Switch} from "react-router-dom";
 import Home from "../home/home";
 import Mine from "../mine/mine";
 import About from "../about/about";
@@ -24,13 +24,7 @@ class Main extends React.Component {
                     <div className="container">
                         <Switch>
                             <Route exact path={["/", "/home"]} component={Home} />
-                            <Route
-                                exact
-                                path={["/mine", "/mine/settings", "/mine/loading"]}
-                                component={withRouter((props) => (
-                                    <Mine {...props} />
-                                ))}
-                            />
+                            <Route exact path={["/mine", "/mine/settings", "/mine/loading"]} component={Mine /*component={withRouter((props) => (  <Mine {...props} /> ))*/} />
                             <Route exact path={"/about"} component={About} />
                         </Switch>
                     </div>

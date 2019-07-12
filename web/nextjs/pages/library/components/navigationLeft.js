@@ -22,24 +22,17 @@ export default class extends React.Component {
         return (
             <div className={css.root}>
                 <div className={css.typeNavigation}>
-                    <h4>
-                        关于我们
-                    </h4>
+                    <h4>关于我们</h4>
                     <ul>
-                        <li>
-                            关于我们
-                        </li>
-                        <li>
-                            联系我们
-                        </li>
+                        <li>关于我们</li>
+                        <li>联系我们</li>
                     </ul>
                 </div>
                 <div className={css.typeContact}>
-                    <h4>
-                        联系方式
-                    </h4>
+                    <h4>联系方式</h4>
                     <p>
-                        沭阳 TT 婚纱摄影<br/>
+                        沭阳 TT 婚纱摄影
+                        <br />
                         联系人: 张经理
                     </p>
                 </div>

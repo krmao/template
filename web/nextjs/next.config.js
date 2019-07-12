@@ -5,14 +5,9 @@ const sass = require("@zeit/next-sass");
 const images = require("next-images");
 
 const next = {
-    distDir: "./.next"
+    distDir: "./build/.next"
 };
 
-const config = withPlugins([
-    [typescript],
-    [css, {cssModules: false}],
-    [sass, {cssModules: true}],
-    [images]
-], next);
+const config = withPlugins([[typescript], [css, {cssModules: false}], [sass, {cssModules: true}], [images]], next);
 
 module.exports = config;

@@ -1,6 +1,5 @@
-.idea/
-.next/
-node_modules/
-out/
+.idea
+/node_modules
 package-lock.json
-wedding/
+/wedding
+/build

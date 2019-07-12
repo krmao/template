@@ -4,35 +4,34 @@ import Head from "next/head";
 import {withRouter} from "next/router";
 
 import css from "./index.scss";
-import ComponentHead from "../base/components/head";
-import ComponentFooter from "../base/components/footer";
-import ComponentNavigationLeft from "../base/components/navigationLeft";
+import ComponentHead from "./library/components/head";
+import ComponentFooter from "./library/components/footer";
+import ComponentNavigationLeft from "./library/components/navigationLeft";
 
-export default withRouter(class extends React.Component {
+export default withRouter(
+    class extends React.Component {
+        constructor(props) {
+            super(props);
+        }
 
-    constructor(props) {
-        super(props);
-    }
+        render() {
+            console.log("router->", this.props.router);
+            return (
+                <div className={css.root}>
+                    <Head>
+                        <title>TT婚纱摄影</title>
+                        <meta name="viewport" content="width=device-width" />
+                    </Head>
 
-    render() {
-        console.log("router->", this.props.router);
-        return (
-            <div className={css.root}>
-                <Head>
-                    <title>TT婚纱摄影</title>
-                    <meta name="viewport" content="width=device-width"/>
-                </Head>
+                    <ComponentHead />
 
-                <ComponentHead/>
+                    <div className={css.content}>
+                        <div className={css.contentLeft}>
+                            <ComponentNavigationLeft />
+                        </div>
 
-                <div className={css.content}>
-
-                    <div className={css.contentLeft}>
-                        <ComponentNavigationLeft/>
-                    </div>
-
-                    <div className={css.contentRight}>
-                        {/*Click{" "}
+                        <div className={css.contentRight}>
+                            {/*Click{" "}
                         <Link href={{pathname: "/about", query: {name: "krmao"}}} passHref>
                             <a>
                                 here
@@ -40,32 +39,32 @@ export default withRouter(class extends React.Component {
                         </Link>{" "}
                         to read more*/}
 
-                        <div className={css.imageList}>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
+                            <div className={css.imageList}>
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                            </div>
+                            <div className={css.imageList}>
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                            </div>
+                            <div className={css.imageList}>
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                            </div>
+                            <div className={css.imageList}>
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                                <img src="../static/logo.png" alt="logo" />
+                            </div>
                         </div>
-                        <div className={css.imageList}>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                        </div>
-                        <div className={css.imageList}>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                        </div>
-                        <div className={css.imageList}>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                            <img src="../static/logo.png" alt="logo"/>
-                        </div>
-
                     </div>
-                </div>
 
-                <ComponentFooter/>
-            </div>
-        );
+                    <ComponentFooter />
+                </div>
+            );
+        }
     }
-});
+);

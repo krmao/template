@@ -14,16 +14,16 @@ class MyDocument extends Document {
     render() {
         return (
             <Html>
-            <Head>
-                <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
-                <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon"/>
+                <Head>
+                    <link rel="icon" href="../static/favicon.ico" type="image/x-icon" />
+                    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon" />
 
-                <meta name="viewport" content="width=device-width"/>
-            </Head>
-            <body>
-            <Main/>
-            <NextScript/>
-            </body>
+                    <meta name="viewport" content="width=device-width" />
+                </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
             </Html>
         );
     }

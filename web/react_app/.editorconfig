@@ -9,5 +9,5 @@ max_line_length = 1000
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{jsx, json, yml, md}]
-indent_size = 4
+# [*.{jsx, json, yml, md}]
+# indent_size = 4

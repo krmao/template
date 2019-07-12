@@ -1,5 +1,5 @@
 import React from "react";
-import "./settings.css";
+import "./settings.scss";
 
 class Settings extends React.Component {
     constructor(props) {

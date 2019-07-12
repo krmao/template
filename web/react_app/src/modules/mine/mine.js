@@ -1,5 +1,5 @@
 import React from "react";
-import "./mine.css";
+import "./mine.scss";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import Settings from "../settings/settings";
 import Loading from "../loading/loading";

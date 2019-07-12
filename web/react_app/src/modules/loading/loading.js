@@ -1,5 +1,5 @@
 import React from "react";
-import "./loading.css";
+import "./loading.scss";
 
 class Loading extends React.Component {
     constructor(props) {

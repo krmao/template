@@ -1,5 +1,5 @@
 import React from "react";
-import "./main.css";
+import "./main.scss";
 import {BrowserRouter as Router, /*withRouter,*/ Link, Route, Switch} from "react-router-dom";
 import Home from "../home/home";
 import Mine from "../mine/mine";

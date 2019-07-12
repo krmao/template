@@ -54,7 +54,11 @@ serve -s build -p 5389
 
 ### 7. 部署到 nginx/tomcat
 
-### 8. 参考
+### 8. [集成 scss](https://facebook.github.io/create-react-app/docs/adding-a-sass-stylesheet)
+
+---
+
+### 参考链接
 
 -   prettier [配置](https://prettier.io/docs/en/options.html)
 -   eslint [配置](https://cloud.tencent.com/developer/chapter/12618)

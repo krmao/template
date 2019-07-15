@@ -6,10 +6,12 @@
         "build": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export -o ./build/out",
         "upload": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export && cp -rf ./build/out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
         "start": "next start",
-        "eslint": "eslint --fix pages/",
+        "eslint": "eslint --fix pages/ --fix src/",
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {
+        "axios": "^0.19.0",
+        "es6-promise": "^4.2.8",
         "isomorphic-unfetch": "^3.0.0",
         "next": "^8.1.0",
         "rc-banner-anim": "^2.2.5",

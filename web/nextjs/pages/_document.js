@@ -15,8 +15,8 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon" />
-                    <link rel="shortcut icon" href="../../static/favicon.ico" type="image/x-icon" />
+                    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+                    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 
                     <meta name="viewport" content="width=device-width" />
                 </Head>

@@ -32,23 +32,25 @@
 ### 5. 开发实时预览
 
 ```bash
-npm run dev
+npm run dev -p 5388
 ```
 
 ### 6. 打包发布
 
 ```bash
 npm run build
+npm run start -p 5389
+
 ```
 
--   对即将部署的 build 文件夹可以进行静态资源访问测试
+### 7. HYBIRD 纯静态页面(不适用 SEO)
 
 ```bash
+npm run build
+npm run export -o build/out
 npm install -g serve
-serve -s build/out -p 5389
+serve -s build/out -p 5387
 ```
-
-### 7. 部署到 nginx/tomcat
 
 ---
 
@@ -56,3 +58,10 @@ serve -s build/out -p 5389
 
 -   prettier [配置](https://prettier.io/docs/en/options.html)
 -   eslint [配置](https://cloud.tencent.com/developer/chapter/12618)
+
+### others
+
+-   idea **unresolved function or method require()**
+    > 点击设置 -> Languages&Frameworks -> Javascript -> libraries -> Add
+    > 然后选择 Node.js Core Modules 点击确定
+    > 重启 idea 即可消除 **require 警告**

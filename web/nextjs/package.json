@@ -2,10 +2,12 @@
     "name": "nextjs",
     "version": "1.0.0",
     "scripts": {
-        "dev": "next",
-        "build": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export -o ./build/out",
+        "dev": "next -p 5388",
         "upload": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export && cp -rf ./build/out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
-        "start": "next start",
+        "clean": "rm -rf ./build && rm -rf ./wedding",
+        "build": "npm run clean && next build",
+        "export": "npm run build && next export -o ./build/out",
+        "start": "npm run build && next start -p 5389",
         "eslint": "eslint --fix pages/ --fix src/",
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },

@@ -1,0 +1,16 @@
+PODS:
+  - LibraryReactNative (0.1.0)
+
+DEPENDENCIES:
+  - LibraryReactNative (from `../`)
+
+EXTERNAL SOURCES:
+  LibraryReactNative:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LibraryReactNative: 6ced525531ea270c4a1b3d0a9a7999a0cc646e15
+
+PODFILE CHECKSUM: 2b329df504620c6595f0f18b2a25df87a79f5caa
+
+COCOAPODS: 1.7.2

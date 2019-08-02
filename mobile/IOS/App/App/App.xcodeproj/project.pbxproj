@@ -16,93 +16,6 @@
 		FC2E6859B24C262C79451A4E /* libPods-App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADC1BF1906CEDEA0371411BE /* libPods-App.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		F845151022B8C157003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845150C22B8C157003D74D0 /* LibraryBase.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F84514D022B8BFBE003D74D0;
-			remoteInfo = LibraryBase;
-		};
-		F845151222B8C164003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845150C22B8C157003D74D0 /* LibraryBase.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F84514CF22B8BFBE003D74D0;
-			remoteInfo = LibraryBase;
-		};
-		F845152D22B8C1BC003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845152922B8C1BC003D74D0 /* LibraryFlutter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F845151D22B8C1A9003D74D0;
-			remoteInfo = LibraryFlutter;
-		};
-		F845152F22B8C1C5003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845152922B8C1BC003D74D0 /* LibraryFlutter.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F845151C22B8C1A9003D74D0;
-			remoteInfo = LibraryFlutter;
-		};
-		F845158922B8C294003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845158522B8C294003D74D0 /* LibraryHybird.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F845154F22B8C227003D74D0;
-			remoteInfo = LibraryHybird;
-		};
-		F845158F22B8C29C003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845158B22B8C29C003D74D0 /* LibraryReactNative.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F845153A22B8C1FF003D74D0;
-			remoteInfo = LibraryReactNative;
-		};
-		F845159522B8C2A7003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845159122B8C2A7003D74D0 /* LibraryTemplateBase.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F845156422B8C25C003D74D0;
-			remoteInfo = LibraryTemplateBase;
-		};
-		F845159D22B8C2BE003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845159922B8C2BE003D74D0 /* LibraryTemplateRepository.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F845157922B8C274003D74D0;
-			remoteInfo = LibraryTemplateRepository;
-		};
-		F845159F22B8C2C3003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845159922B8C2BE003D74D0 /* LibraryTemplateRepository.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F845157822B8C274003D74D0;
-			remoteInfo = LibraryTemplateRepository;
-		};
-		F84515A122B8C2C6003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845159122B8C2A7003D74D0 /* LibraryTemplateBase.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F845156322B8C25C003D74D0;
-			remoteInfo = LibraryTemplateBase;
-		};
-		F84515A322B8C2C9003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845158B22B8C29C003D74D0 /* LibraryReactNative.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F845153922B8C1FF003D74D0;
-			remoteInfo = LibraryReactNative;
-		};
-		F84515A522B8C2CC003D74D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F845158522B8C294003D74D0 /* LibraryHybird.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F845154E22B8C227003D74D0;
-			remoteInfo = LibraryHybird;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		3A85371F542159EEBB3119DE /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		ADC1BF1906CEDEA0371411BE /* libPods-App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,12 +30,6 @@
 		F84514F422B8BFE9003D74D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F84514F622B8BFE9003D74D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84514F722B8BFE9003D74D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F845150C22B8C157003D74D0 /* LibraryBase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryBase.xcodeproj; path = ../../../Libraries/LibraryBase/LibraryBase.xcodeproj; sourceTree = "<group>"; };
-		F845152922B8C1BC003D74D0 /* LibraryFlutter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryFlutter.xcodeproj; path = ../../../Libraries/LibraryFlutter/LibraryFlutter.xcodeproj; sourceTree = "<group>"; };
-		F845158522B8C294003D74D0 /* LibraryHybird.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryHybird.xcodeproj; path = ../../../Libraries/LibraryHybird/LibraryHybird.xcodeproj; sourceTree = "<group>"; };
-		F845158B22B8C29C003D74D0 /* LibraryReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryReactNative.xcodeproj; path = ../../../Libraries/LibraryReactNative/LibraryReactNative.xcodeproj; sourceTree = "<group>"; };
-		F845159122B8C2A7003D74D0 /* LibraryTemplateBase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryTemplateBase.xcodeproj; path = ../../../Libraries/LibraryTemplateBase/LibraryTemplateBase.xcodeproj; sourceTree = "<group>"; };
-		F845159922B8C2BE003D74D0 /* LibraryTemplateRepository.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LibraryTemplateRepository.xcodeproj; path = ../../../Libraries/LibraryTemplateRepository/LibraryTemplateRepository.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,7 +64,6 @@
 		F84514DC22B8BFE9003D74D0 = {
 			isa = PBXGroup;
 			children = (
-				F845150B22B8C0FE003D74D0 /* Libraries */,
 				F84514E722B8BFE9003D74D0 /* App */,
 				F84514E622B8BFE9003D74D0 /* Products */,
 				CEC043894BF72B8C3BAC28A1 /* Pods */,
@@ -189,67 +95,6 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		F845150B22B8C0FE003D74D0 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				F845159922B8C2BE003D74D0 /* LibraryTemplateRepository.xcodeproj */,
-				F845159122B8C2A7003D74D0 /* LibraryTemplateBase.xcodeproj */,
-				F845158B22B8C29C003D74D0 /* LibraryReactNative.xcodeproj */,
-				F845158522B8C294003D74D0 /* LibraryHybird.xcodeproj */,
-				F845152922B8C1BC003D74D0 /* LibraryFlutter.xcodeproj */,
-				F845150C22B8C157003D74D0 /* LibraryBase.xcodeproj */,
-			);
-			path = Libraries;
-			sourceTree = "<group>";
-		};
-		F845150D22B8C157003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845151122B8C157003D74D0 /* libLibraryBase.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F845152A22B8C1BC003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845152E22B8C1BC003D74D0 /* libLibraryFlutter.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F845158622B8C294003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845158A22B8C294003D74D0 /* libLibraryHybird.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F845158C22B8C29C003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845159022B8C29C003D74D0 /* libLibraryReactNative.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F845159222B8C2A7003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845159622B8C2A7003D74D0 /* libLibraryTemplateBase.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F845159A22B8C2BE003D74D0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F845159E22B8C2BE003D74D0 /* libLibraryTemplateRepository.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -268,12 +113,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F84515A622B8C2CC003D74D0 /* PBXTargetDependency */,
-				F84515A422B8C2C9003D74D0 /* PBXTargetDependency */,
-				F84515A222B8C2C6003D74D0 /* PBXTargetDependency */,
-				F84515A022B8C2C3003D74D0 /* PBXTargetDependency */,
-				F845153022B8C1C5003D74D0 /* PBXTargetDependency */,
-				F845151322B8C164003D74D0 /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
@@ -305,83 +144,12 @@
 			mainGroup = F84514DC22B8BFE9003D74D0;
 			productRefGroup = F84514E622B8BFE9003D74D0 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F845150D22B8C157003D74D0 /* Products */;
-					ProjectRef = F845150C22B8C157003D74D0 /* LibraryBase.xcodeproj */;
-				},
-				{
-					ProductGroup = F845152A22B8C1BC003D74D0 /* Products */;
-					ProjectRef = F845152922B8C1BC003D74D0 /* LibraryFlutter.xcodeproj */;
-				},
-				{
-					ProductGroup = F845158622B8C294003D74D0 /* Products */;
-					ProjectRef = F845158522B8C294003D74D0 /* LibraryHybird.xcodeproj */;
-				},
-				{
-					ProductGroup = F845158C22B8C29C003D74D0 /* Products */;
-					ProjectRef = F845158B22B8C29C003D74D0 /* LibraryReactNative.xcodeproj */;
-				},
-				{
-					ProductGroup = F845159222B8C2A7003D74D0 /* Products */;
-					ProjectRef = F845159122B8C2A7003D74D0 /* LibraryTemplateBase.xcodeproj */;
-				},
-				{
-					ProductGroup = F845159A22B8C2BE003D74D0 /* Products */;
-					ProjectRef = F845159922B8C2BE003D74D0 /* LibraryTemplateRepository.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F84514E422B8BFE9003D74D0 /* App */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		F845151122B8C157003D74D0 /* libLibraryBase.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryBase.a;
-			remoteRef = F845151022B8C157003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F845152E22B8C1BC003D74D0 /* libLibraryFlutter.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryFlutter.a;
-			remoteRef = F845152D22B8C1BC003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F845158A22B8C294003D74D0 /* libLibraryHybird.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryHybird.a;
-			remoteRef = F845158922B8C294003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F845159022B8C29C003D74D0 /* libLibraryReactNative.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryReactNative.a;
-			remoteRef = F845158F22B8C29C003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F845159622B8C2A7003D74D0 /* libLibraryTemplateBase.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryTemplateBase.a;
-			remoteRef = F845159522B8C2A7003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F845159E22B8C2BE003D74D0 /* libLibraryTemplateRepository.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLibraryTemplateRepository.a;
-			remoteRef = F845159D22B8C2BE003D74D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F84514E322B8BFE9003D74D0 /* Resources */ = {
@@ -486,39 +254,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F845151322B8C164003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryBase;
-			targetProxy = F845151222B8C164003D74D0 /* PBXContainerItemProxy */;
-		};
-		F845153022B8C1C5003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryFlutter;
-			targetProxy = F845152F22B8C1C5003D74D0 /* PBXContainerItemProxy */;
-		};
-		F84515A022B8C2C3003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryTemplateRepository;
-			targetProxy = F845159F22B8C2C3003D74D0 /* PBXContainerItemProxy */;
-		};
-		F84515A222B8C2C6003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryTemplateBase;
-			targetProxy = F84515A122B8C2C6003D74D0 /* PBXContainerItemProxy */;
-		};
-		F84515A422B8C2C9003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryReactNative;
-			targetProxy = F84515A322B8C2C9003D74D0 /* PBXContainerItemProxy */;
-		};
-		F84515A622B8C2CC003D74D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LibraryHybird;
-			targetProxy = F84515A522B8C2CC003D74D0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F84514EE22B8BFE9003D74D0 /* Main.storyboard */ = {

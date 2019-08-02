@@ -1,0 +1,6 @@
+use_frameworks!
+target 'LibraryHybird_Tests' do
+  pod 'LibraryHybird', :path => '../'
+  
+  
+end

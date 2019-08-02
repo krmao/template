@@ -1,0 +1,6 @@
+use_frameworks!
+target 'LibraryReactNative_Tests' do
+  pod 'LibraryReactNative', :path => '../'
+  
+  
+end

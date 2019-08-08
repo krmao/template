@@ -19,6 +19,9 @@ class LiveStreamingBusHandler : STBusManager.IBusHandler {
             "livestreaming/play" -> {
                 VideoActivity.intentTo(context, params.firstOrNull() as? String, params.getOrNull(1) as? String)
             }
+            "livestreaming/playvideo" -> {
+                VideoActivity.intentTo(context, params.firstOrNull() as? String, params.getOrNull(1) as? String)
+            }
             "livestreaming/opensettings" -> {
                 SettingsActivity.intentTo(context)
             }

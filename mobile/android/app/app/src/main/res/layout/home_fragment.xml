@@ -112,6 +112,32 @@
             </RadioGroup>
         </HorizontalScrollView>
 
+        <TextView
+            android:id="@+id/descTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="50dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="SmallSp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow_500">
+
+            <com.smart.template.widget.STCheckBoxGroupView
+                android:id="@+id/checkBoxGroupView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/pink_500"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
         <FrameLayout
             android:id="@+id/text1"
             android:layout_width="match_parent"
@@ -341,6 +367,47 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="yesea push rtmp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/tv_play_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/blue_900"
+                    android:foreground="@drawable/st_selector"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="play video by ijkplayer"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/tv_play_video_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/blue_900"
+                    android:foreground="@drawable/st_selector"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="play video normal"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </FrameLayout>

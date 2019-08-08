@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pink_600"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.smart.library.widget.titlebar.STTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_title_bar_height"
+        android:background="@color/pink_600"
+        app:stTitleText="video player" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/home_root_background">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

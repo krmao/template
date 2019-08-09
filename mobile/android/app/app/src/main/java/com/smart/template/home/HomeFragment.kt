@@ -73,6 +73,7 @@ class HomeFragment : STBaseFragment() {
             VideoPlayerFragment.goTo(context)
         }
 
+        // 模拟数据
         val allData: MutableList<HashMap<String, MutableList<Int>>> = mutableListOf(
                 hashMapOf("全部" to mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)),
                 hashMapOf("景点" to mutableListOf(10, 20, 30, 40, 50, 60)),
@@ -80,37 +81,34 @@ class HomeFragment : STBaseFragment() {
                 hashMapOf("机场" to mutableListOf(1000, 2000, 3000, 4000, 5000, 6000, 7000))
         )
 
-        val pagerDataList: MutableList<MutableList<Int>> = allData.flatMap { it.values.toMutableList() }.toMutableList()
-
-        val onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
-            STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
-                setTextColor(Color.BLACK)
-                setPadding(50, 50, 50, 50)
-                textSize = 20f
-            })
-        }
-        val onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int ->
-            (viewHolder.itemView as TextView).text = "position:$position-data:${dataList[position]}\ndesc:我是钢铁侠"
-        }
+        // 初始化 pagerRecyclerView
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
         pagerRecyclerView.initialize(
-                pagerDataList = pagerDataList,
-                onRecyclerViewCreateViewHolder = onRecyclerViewCreateViewHolder,
-                onRecyclerViewBindViewHolder = onRecyclerViewBindViewHolder
+                pagerDataList = allData.flatMap { it.values.toMutableList() }.toMutableList(),
+                onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
+                    STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
+                        setTextColor(Color.BLACK)
+                        setPadding(50, 50, 50, 50)
+                        textSize = 20f
+                    })
+                },
+                onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int ->
+                    (viewHolder.itemView as TextView).text = "position:$position-data:${dataList[position]}\ndesc:我是钢铁侠"
+                }
         )
 
         /**
+         * 初始化 checkBoxGroupView
+         *
          * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
          * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
          */
-        val titleList: MutableList<String> = allData.flatMap { it.keys.toMutableList() }.toMutableList()
-
         val dpPadding = STSystemUtil.getPxFromDp(10f).toInt()
         checkBoxGroupView.initialize(
                 enableSingleCheck = true,
                 enableFitCenter = true,
                 fitCenterMinimumSize = STSystemUtil.screenWidth,
-                titleList = titleList,
+                titleList = allData.flatMap { it.keys.toMutableList() }.toMutableList(),
                 createUncheckedItemView = { title: String ->
                     TextView(context).apply {
                         text = title

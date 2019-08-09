@@ -31,7 +31,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     var enableSingleCheck = true
     private var enableFitCenter = true // item 数量 不足时居中, 等分宽度, 需设置 minWidth
 
-    private var updateViewOnCheckChanged: ((checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit)? = null
+    private var updateViewOnCheckChangedList: MutableList<(checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit> = mutableListOf()
     private var createUncheckedItemView: ((title: String) -> View)? = null
 
     private val itemViewList: MutableList<View> = arrayListOf()
@@ -47,7 +47,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * @param enableFitCenter 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
      * @param fitCenterMinimumSize enableFitCenter==true 的时候必须设置, 宽度不足时 等分剩余空间
      */
-    fun initialize(enableSingleCheck: Boolean, enableFitCenter: Boolean, fitCenterMinimumSize: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChanged: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+    fun initialize(enableSingleCheck: Boolean, enableFitCenter: Boolean, fitCenterMinimumSize: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
         this.enableSingleCheck = enableSingleCheck
         this.enableFitCenter = enableFitCenter
 
@@ -58,9 +58,19 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         }
 
         this.createUncheckedItemView = createUncheckedItemView
-        this.updateViewOnCheckChanged = updateViewOnCheckChanged
+
+        addUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener)
 
         add(*titleList.toTypedArray())
+    }
+
+    fun addUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+        removeUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener)
+        this.updateViewOnCheckChangedList.add(updateViewOnCheckChangedListener)
+    }
+
+    fun removeUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+        this.updateViewOnCheckChangedList.remove(updateViewOnCheckChangedListener)
     }
 
     /**
@@ -118,7 +128,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      */
     @Throws(IllegalStateException::class)
     fun setCheckedWithUpdateViewStatus(checkedList: SparseArray<Boolean>) {
-        val changeViewList = setChecked(checkedList)
+        val changeViewList = setCheckedWithoutUpdateViewStatus(checkedList)
         if (changeViewList.isNotEmpty()) {
             updateViewOnCheckChanged(changeViewList)
         }
@@ -134,12 +144,43 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      */
     fun setCheckedWithUpdateViewStatus(itemView: View?, checked: Boolean) {
         if (itemView != null) {
-            val changeViewList = setChecked(itemView, checked)
+            val changeViewList = setCheckedWithoutUpdateViewStatus(itemView, checked)
             if (changeViewList.isNotEmpty()) {
                 updateViewOnCheckChanged(changeViewList)
             }
         }
     }
+
+    /**
+     * @return changeViewList
+     */
+    @Throws(IllegalStateException::class)
+    private fun setCheckedWithoutUpdateViewStatus(checkedList: SparseArray<Boolean>): List<View> {
+        val changeViewList: MutableList<View> = arrayListOf()
+        if (checkedList.size() > 0 && checkedList.size() == itemViewList.size) {
+
+            var checkedCount = 0 // 是否存在多选
+            for (index: Int in 0 until checkedList.size()) {
+                if (checkedList[index]) {
+                    checkedCount++
+                }
+            }
+            if (enableSingleCheck && checkedCount > 1) {
+                throw IllegalStateException("当前未单选状态, 不能多选, enableSingleCheck=$enableSingleCheck")
+            } else {
+                for (index: Int in 0 until checkedList.size()) {
+                    val itemView = getItemView(index)
+                    val changeList = setCheckedWithoutUpdateViewStatus(itemView, checkedList[index])
+                    if (itemView != null && changeList.isNotEmpty()) {
+                        changeViewList.addAll(changeList)
+                    }
+                }
+            }
+        }
+        return changeViewList
+    }
+
+    private fun setCheckedWithoutUpdateViewStatus(position: Int, checked: Boolean): List<View> = setCheckedWithoutUpdateViewStatus(getItemView(position), checked)
 
     /**
      * 状态改变的情况下 必然触发 updateViewOnCheckChanged
@@ -186,38 +227,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         addView(dividerView, indexAtChildren, LayoutParams(0, 0).apply { weight = 1f })
     }
 
-    /**
-     * @return changeViewList
-     */
-    @Throws(IllegalStateException::class)
-    private fun setChecked(checkedList: SparseArray<Boolean>): List<View> {
-        val changeViewList: MutableList<View> = arrayListOf()
-        if (checkedList.size() > 0 && checkedList.size() == itemViewList.size) {
-
-            var checkedCount = 0 // 是否存在多选
-            for (index: Int in 0 until checkedList.size()) {
-                if (checkedList[index]) {
-                    checkedCount++
-                }
-            }
-            if (enableSingleCheck && checkedCount > 1) {
-                throw IllegalStateException("当前未单选状态, 不能多选, enableSingleCheck=$enableSingleCheck")
-            } else {
-                for (index: Int in 0 until checkedList.size()) {
-                    val itemView = getItemView(index)
-                    val changeList = setChecked(itemView, checkedList[index])
-                    if (itemView != null && changeList.isNotEmpty()) {
-                        changeViewList.addAll(changeList)
-                    }
-                }
-            }
-        }
-        return changeViewList
-    }
-
-    private fun setChecked(position: Int, checked: Boolean): List<View> = setChecked(getItemView(position), checked)
-
-    private fun setChecked(itemView: View?, checked: Boolean): List<View> {
+    private fun setCheckedWithoutUpdateViewStatus(itemView: View?, checked: Boolean): List<View> {
         val changeViewList: MutableList<View> = mutableListOf()
         if (itemView != null) {
             if (itemView.tag == null || itemView.tag as? Boolean != checked) {
@@ -232,7 +242,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun updateViewOnCheckChanged(changeViewList: List<View>) {
-        this.updateViewOnCheckChanged?.invoke(this, itemViewList, itemViewList.filter { isChecked(it) }.map { itemViewList.indexOf(it) }, changeViewList.map { itemViewList.indexOf(it) }.toList())
+        this.updateViewOnCheckChangedList.forEach {
+            it.invoke(this, itemViewList, itemViewList.filter { isChecked(it) }.map { itemViewList.indexOf(it) }, changeViewList.map { itemViewList.indexOf(it) }.toList())
+        }
     }
 
     private fun getItemView(position: Int): View? {
@@ -250,7 +262,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         val changeViewList = mutableListOf<View>()
         itemViewList.forEach { itemView ->
 
-            val changeList: List<View> = setChecked(itemView, false)
+            val changeList: List<View> = setCheckedWithoutUpdateViewStatus(itemView, false)
             if (changeList.isNotEmpty()) {
                 changeViewList.addAll(changeList)
             }
@@ -266,7 +278,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         val changeViewList = mutableListOf<View>()
         if (!enableSingleCheck) {
             itemViewList.forEach { itemView ->
-                val changeList: List<View> = setChecked(itemView, true)
+                val changeList: List<View> = setCheckedWithoutUpdateViewStatus(itemView, true)
                 if (changeList.isNotEmpty()) {
                     changeViewList.addAll(changeList)
                 }

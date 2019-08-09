@@ -138,6 +138,12 @@
                 android:orientation="horizontal" />
         </HorizontalScrollView>
 
+        <com.smart.template.widget.STRecyclerPagerView
+            android:id="@+id/pagerRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/green_A100" />
+
         <FrameLayout
             android:id="@+id/text1"
             android:layout_width="match_parent"

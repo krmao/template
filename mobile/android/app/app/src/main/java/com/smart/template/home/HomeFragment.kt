@@ -12,6 +12,7 @@ import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.bus.STBusManager
+import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
 import com.smart.template.home.test.*
 import com.smart.template.widget.STCheckBoxGroupView
@@ -72,6 +73,33 @@ class HomeFragment : STBaseFragment() {
             VideoPlayerFragment.goTo(context)
         }
 
+        val pagerDataList = mutableListOf(
+                mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                mutableListOf(10, 20),
+                mutableListOf(100, 200, 300, 400, 500, 600, 700)
+        )
+
+        val onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
+            STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
+                setTextColor(Color.BLACK)
+                setPadding(50, 50, 50, 50)
+                textSize = 20f
+            })
+        }
+        val onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int ->
+            (viewHolder.itemView as TextView).text = "position:$position-data:${dataList[position]}\ndesc:我是钢铁侠"
+        }
+        pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
+        pagerRecyclerView.initialize(
+                pagerDataList = pagerDataList,
+                onRecyclerViewCreateViewHolder = onRecyclerViewCreateViewHolder,
+                onRecyclerViewBindViewHolder = onRecyclerViewBindViewHolder
+        )
+
+        /**
+         * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
+         * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
+         */
         val titleList: MutableList<String> = arrayListOf("景点", "餐馆", "酒店")
 
         val dpPadding = STSystemUtil.getPxFromDp(10f).toInt()
@@ -83,16 +111,18 @@ class HomeFragment : STBaseFragment() {
                 createUncheckedItemView = { title: String ->
                     TextView(context).apply {
                         text = title
+                        setTextColor(Color.BLACK)
                         setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
                         setBackgroundColor(Color.LTGRAY)
                     }
                 },
-                updateViewOnCheckChanged = { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
+                updateViewOnCheckChangedListener = { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
                     descTv.text = "当前选中的数组索引:$checkedViewPositionList\n本次改变的数组索引:$changedViewPositionList"
                     changedViewPositionList.forEach { position: Int ->
-                        val itemChangedView = originViewList[position]
+                        val itemChangedView: TextView = originViewList[position] as TextView
                         val isChecked = checkBoxGroupView.isChecked(position)
                         itemChangedView.setBackgroundColor(if (isChecked) Color.BLUE else Color.LTGRAY)
+                        itemChangedView.setTextColor(if (isChecked) Color.WHITE else Color.BLACK)
                     }
                 })
 

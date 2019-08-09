@@ -73,11 +73,14 @@ class HomeFragment : STBaseFragment() {
             VideoPlayerFragment.goTo(context)
         }
 
-        val pagerDataList = mutableListOf(
-                mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-                mutableListOf(10, 20),
-                mutableListOf(100, 200, 300, 400, 500, 600, 700)
+        val allData: MutableList<HashMap<String, MutableList<Int>>> = mutableListOf(
+                hashMapOf("全部" to mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)),
+                hashMapOf("景点" to mutableListOf(10, 20, 30, 40, 50, 60)),
+                hashMapOf("酒店" to mutableListOf(100, 200, 300, 400, 500, 600, 700)),
+                hashMapOf("机场" to mutableListOf(1000, 2000, 3000, 4000, 5000, 6000, 7000))
         )
+
+        val pagerDataList: MutableList<MutableList<Int>> = allData.flatMap { it.values.toMutableList() }.toMutableList()
 
         val onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
             STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
@@ -100,7 +103,7 @@ class HomeFragment : STBaseFragment() {
          * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
          * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
          */
-        val titleList: MutableList<String> = arrayListOf("景点", "餐馆", "酒店")
+        val titleList: MutableList<String> = allData.flatMap { it.keys.toMutableList() }.toMutableList()
 
         val dpPadding = STSystemUtil.getPxFromDp(10f).toInt()
         checkBoxGroupView.initialize(
@@ -125,9 +128,6 @@ class HomeFragment : STBaseFragment() {
                         itemChangedView.setTextColor(if (isChecked) Color.WHITE else Color.BLACK)
                     }
                 })
-
-        checkBoxGroupView.add("全部", 0)
-        checkBoxGroupView.add("火车站", "汽车站", "机场", "热门路线", "旅拍景点")
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)
     }
 }

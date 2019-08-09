@@ -32,11 +32,6 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
     }
 
-    init {
-        pageMargin = 0
-        offscreenPageLimit = Integer.MAX_VALUE
-    }
-
     @JvmOverloads
     fun <T> initialize(
             pagerDataList: MutableList<MutableList<T>>,
@@ -53,6 +48,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             },
             createPagerView: ((context: Context, pagerIndex: Int) -> View)? = null
     ) {
+        pageMargin = 0
+        offscreenPageLimit = pagerDataList.size
         adapter = STPagerRecyclerViewAdapter(context, pagerDataList, { currentItem }, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, createRecyclerView, createPagerView)
     }
 

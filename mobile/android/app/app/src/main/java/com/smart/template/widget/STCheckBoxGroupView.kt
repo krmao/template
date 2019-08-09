@@ -1,6 +1,7 @@
 package com.smart.template.widget
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
@@ -14,6 +15,9 @@ import com.smart.library.util.STLogUtil
  * 初始化 或 add 时默认全部不选中且不触发监听
  * 只有调用 xxxWithUpdateViewStatus 且当发生改变时才触发监听
  *
+ * 支持宽度不足时居中显示, 等分剩余宽度, 需要设置 minWidth
+ * checkBoxGroupView.minimumWidth = STSystemUtil.screenWidth
+ *
  * 支持全部不选中
  * 支持单选/多选
  * 支持同时设置选中/非选中 只触发一次监听
@@ -25,7 +29,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * 单选/多选 模式, 单选模式下设置多个选中会抛出异常
      */
     var enableSingleCheck = true
-    private var enableFitCenter = false // item 数量 不足时居中, 等分宽度, 需设置 minWidth
+    private var enableFitCenter = true // item 数量 不足时居中, 等分宽度, 需设置 minWidth
 
     private var updateViewOnCheckChanged: ((checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit)? = null
     private var createUncheckedItemView: ((title: String) -> View)? = null
@@ -40,9 +44,19 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     /**
      * 初始化时全部不选中, 不会触发 updateViewOnCheckChanged
      * 务必手动调用 setCheckedWithUpdateViewStatus
+     * @param enableFitCenter 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
+     * @param fitCenterMinimumSize enableFitCenter==true 的时候必须设置, 宽度不足时 等分剩余空间
      */
-    fun initialize(enableSingleCheck: Boolean, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChanged: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+    fun initialize(enableSingleCheck: Boolean, enableFitCenter: Boolean, fitCenterMinimumSize: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChanged: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
         this.enableSingleCheck = enableSingleCheck
+        this.enableFitCenter = enableFitCenter
+
+        if (orientation == HORIZONTAL) {
+            minimumWidth = fitCenterMinimumSize
+        } else {
+            minimumHeight = fitCenterMinimumSize
+        }
+
         this.createUncheckedItemView = createUncheckedItemView
         this.updateViewOnCheckChanged = updateViewOnCheckChanged
 
@@ -70,10 +84,30 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
                 val uncheckedItemView: View = createUncheckedItemView(title)
                 uncheckedItemView.tag = false // 初始化强制不选中, 不触发 updateViewOnCheckChanged
                 uncheckedItemView.setOnClickListener(onItemClickListener)
-                addView(uncheckedItemView, position)
+
+                if (enableFitCenter) {
+                    val indexAtChildren: Int = getIndexAtChildren(position)
+                    if (itemViewList.isEmpty()) {
+                        addDividerViewForFitCenter(0) // 第一个主动添加 dividerView
+                    }
+                    addView(uncheckedItemView, indexAtChildren)
+                    addDividerViewForFitCenter(indexAtChildren + 1) // 因为每次添加 itemView 都会在后面追加一个 dividerView, 所以第一个需要额外观照
+                } else {
+                    addView(uncheckedItemView, position)
+                }
                 itemViewList.add(position, uncheckedItemView)
             }
         }
+    }
+
+    /**
+     * 标签栏布局, 为了最优雅的平分
+     * position -> 0           1           2           3           4           5           6           7           8
+     * Views    -> DividerView RadioButton DividerView RadioButton DividerView RadioButton DividerView RadioButton DividerView  // 第一个最后一个为 DividerView
+     * 在 itemViewList 中的索引 映射 children 中的索引
+     */
+    private fun getIndexAtChildren(position: Int): Int {
+        return if (enableFitCenter) position * 2 + 1 else position
     }
 
     /**
@@ -145,6 +179,14 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     /**
+     * 当标签 宽度总和 不足父 View 宽度 的时候, 标签平分剩余空间，利用 该view 进行伸缩剩余空间
+     */
+    private fun addDividerViewForFitCenter(indexAtChildren: Int) {
+        val dividerView: View = View(context).apply { setBackgroundColor(Color.TRANSPARENT) }
+        addView(dividerView, indexAtChildren, LayoutParams(0, 0).apply { weight = 1f })
+    }
+
+    /**
      * @return changeViewList
      */
     @Throws(IllegalStateException::class)
@@ -176,7 +218,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     private fun setChecked(position: Int, checked: Boolean): List<View> = setChecked(getItemView(position), checked)
 
     private fun setChecked(itemView: View?, checked: Boolean): List<View> {
-        val changeViewList = mutableListOf<View>()
+        val changeViewList: MutableList<View> = mutableListOf()
         if (itemView != null) {
             if (itemView.tag == null || itemView.tag as? Boolean != checked) {
                 if (enableSingleCheck && checked) { // 单选模式下, 选中之前清除其它标签的选中状态
@@ -195,7 +237,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
 
     private fun getItemView(position: Int): View? {
         if (position >= 0 && position < itemViewList.size) {
-            return getChildAt(position)
+            return getChildAt(getIndexAtChildren(position))
         } else {
             return null
         }

@@ -293,6 +293,14 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
                 notifyItemRangeChanged(oldInnerDataListSize - 1, newList.size + 1)
             }
             onInnerDataChanged?.invoke(innerAdapter.dataList)
+        } else {
+            if (innerAdapter.dataList.isEmpty()) {
+                if (enableEmptyView) {
+                    currentItemType = ITEM_TYPE_EMPTY
+                    isEmptyViewLoading = false
+                    notifyDataSetChanged()
+                }
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,7 @@ class HomeFragment : STBaseFragment() {
                 hashMapOf("全部" to mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)),
                 hashMapOf("景点" to mutableListOf(10, 20, 30, 40, 50, 60)),
                 hashMapOf("酒店" to mutableListOf(100, 200, 300, 400, 500, 600, 700)),
+                hashMapOf("火车站" to mutableListOf()),
                 hashMapOf("机场" to mutableListOf(1000, 2000, 3000, 4000, 5000, 6000, 7000))
         )
 
@@ -92,7 +94,7 @@ class HomeFragment : STBaseFragment() {
                         textSize = 20f
                     })
                 },
-                onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int ->
+                onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
                     (viewHolder.itemView as TextView).text = "position:$position-data:${dataList[position]}\ndesc:我是钢铁侠"
                 }
         )

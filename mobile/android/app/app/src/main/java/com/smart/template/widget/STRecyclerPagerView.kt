@@ -4,9 +4,11 @@ import android.content.Context
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
@@ -18,15 +20,52 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 context: Context,
                 pagerDataList: MutableList<MutableList<M>>,
                 pagerIndex: Int,
-                onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> STRecyclerViewAdapter.ViewHolder,
-                onRecyclerViewBindViewHolder: (dataList: MutableList<M>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int) -> Unit
+                onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
+                onRecyclerViewBindViewHolder: (dataList: MutableList<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit
         ): View {
             val recyclerView = STRecyclerView(context)
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = object : STRecyclerViewAdapter<M, STRecyclerViewAdapter.ViewHolder>(context, pagerDataList[pagerIndex]) {
-                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
-                override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(dataList, viewHolder, position)
+
+            val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerDataList[pagerIndex]) {
+                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
+                override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(dataList, viewHolder, position)
             }
+            val adapterWrapper = STEmptyLoadingWrapper(originAdapter)
+
+            // custom loading views
+            adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
+            adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
+            adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
+
+            var pageIndex = 0
+            var pageSize = 10
+            fun getDataList(): MutableList<M> {
+                val toPageIndex = pageIndex + 1
+                val tmpList = pagerDataList[pagerIndex]
+                pageIndex = toPageIndex
+                return tmpList
+            }
+
+            // onLoadMore listener
+            var flag = true
+            adapterWrapper.onLoadMoreListener = {
+                recyclerView.postDelayed({
+                    if (flag) {
+                        if (adapterWrapper.itemCount >= 30) {
+                            adapterWrapper.showNoMore()
+                        } else {
+                            adapterWrapper.add(getDataList())
+                        }
+                        if (adapterWrapper.itemCount == 20 + 1) flag = false
+                    } else {
+                        adapterWrapper.showLoadFailure()
+                        flag = true
+                    }
+                }, 1000)
+            }
+
+            recyclerView.adapter = adapterWrapper
+
             return recyclerView
         }
 
@@ -35,8 +74,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     @JvmOverloads
     fun <T> initialize(
             pagerDataList: MutableList<MutableList<T>>,
-            onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> STRecyclerViewAdapter.ViewHolder,
-            onRecyclerViewBindViewHolder: (dataList: MutableList<T>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int) -> Unit,
+            onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
+            onRecyclerViewBindViewHolder: (dataList: MutableList<T>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             createRecyclerView: ((context: Context, pagerIndex: Int) -> View)? = { context: Context, pagerIndex: Int ->
                 createDefaultRecyclerView(
                         context,
@@ -78,8 +117,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val context: Context,
             private val pagerDataList: MutableList<MutableList<M>>,
             private val currentPosition: () -> Int,
-            private var onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> STRecyclerViewAdapter.ViewHolder,
-            private var onRecyclerViewBindViewHolder: (dataList: MutableList<M>, viewHolder: STRecyclerViewAdapter.ViewHolder, position: Int) -> Unit,
+            private var onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
+            private var onRecyclerViewBindViewHolder: (dataList: MutableList<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             private var createRecyclerView: ((context: Context, pagerIndex: Int) -> View)? = null,
             private var createPagerView: ((context: Context, pagerIndex: Int) -> View)? = null
     ) : PagerAdapter() {

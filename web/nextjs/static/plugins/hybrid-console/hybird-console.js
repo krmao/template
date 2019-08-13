@@ -4,7 +4,7 @@
 
  *
  * 在 <body> 之后添加
- * <script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" prefix={"/static/plugins/hybrid-console/"}/>
+ * <script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" />
  */
 /* eslint-disable */
 (function() {
@@ -79,8 +79,7 @@
                 + seconds + " "
                 + milliseconds;*/
         // noinspection UnnecessaryLocalletiableJS
-        let dateStr =
-            hours + seperator2 + minutes + seperator2 + seconds + " " + milliseconds;
+        let dateStr = hours + seperator2 + minutes + seperator2 + seconds + " " + milliseconds;
         return dateStr;
     }
 
@@ -99,11 +98,7 @@
         }
 
         if (key) {
-            keyNode = createElement(
-                enumerable ? "enumerable-key" : "not-enumerable-key",
-                key + ":",
-                "span"
-            );
+            keyNode = createElement(enumerable ? "enumerable-key" : "not-enumerable-key", key + ":", "span");
             content_top.appendChild(keyNode);
         }
 
@@ -135,9 +130,7 @@
                     .join("");
             }
         } else {
-            node.innerHTML =
-                obj.constructor.name ||
-                obj.constructor.toString().replace(/\[|\]|object\s/g, "");
+            node.innerHTML = obj.constructor.name || obj.constructor.toString().replace(/\[|\]|object\s/g, "");
             content.classList.add("inspect");
             if (Array.isArray(obj)) {
                 node.innerHTML = "[" + obj.length + "]";
@@ -190,11 +183,7 @@
             container = undefined;
         }
         if (!container_background) {
-            container_background = createElement(
-                "container_background",
-                undefined,
-                "container_background"
-            );
+            container_background = createElement("container_background", undefined, "container_background");
             document.body.appendChild(container_background);
         }
         if (!container) {
@@ -205,11 +194,7 @@
 
     function initMenus(prefix) {
         if (!btn_menu_off) {
-            btn_menu_off = createElement(
-                "menu",
-                prefix + "hybird-console-menu-toggleoff.svg",
-                "img"
-            );
+            btn_menu_off = createElement("menu", prefix + "hybird-console-menu-toggleoff.svg", "img");
             document.body.appendChild(btn_menu_off);
             btn_menu_off.onclick = function() {
                 toggleConsole(true);
@@ -217,11 +202,7 @@
             setVisible(btn_menu_off, !isContentShow);
         }
         if (!btn_menu) {
-            btn_menu = createElement(
-                "menu",
-                prefix + "hybird-console-menu-toggleon.svg",
-                "img"
-            );
+            btn_menu = createElement("menu", prefix + "hybird-console-menu-toggleon.svg", "img");
             document.body.appendChild(btn_menu);
             btn_menu.onclick = function() {
                 toggleConsole(false);
@@ -229,11 +210,7 @@
             setVisible(btn_menu, isContentShow);
         }
         if (!btn_clear) {
-            btn_clear = createElement(
-                "menu_clear",
-                prefix + "hybird-console-menu-clear.svg",
-                "img"
-            );
+            btn_clear = createElement("menu_clear", prefix + "hybird-console-menu-clear.svg", "img");
             btn_clear.hidden = !isContentShow;
             document.body.appendChild(btn_clear);
             btn_clear.onclick = function() {
@@ -268,15 +245,10 @@
             }
             scrollToBottom();
         }
-        if (
-            window.webkit &&
-            window.webkit.messageHandlers &&
-            window.webkit.messageHandlers.native
-        )
-            window.webkit.messageHandlers.native.postMessage(message);
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native) window.webkit.messageHandlers.native.postMessage(message);
     }
 
-    function getPrefix() {
+    function getAttributeFromScript() {
         let prefix = "";
         let scripts = document.getElementsByTagName("script");
         for (let i = 0; i < scripts.length; i++) {
@@ -288,12 +260,20 @@
         return prefix;
     }
 
+    function getPrefix() {
+        let prefix = "";
+        let scripts = document.getElementsByTagName("script");
+        for (let i = 0; i < scripts.length; i++) {
+            let src = scripts[i] ? scripts[i].getAttribute("src") : null;
+            if (src && src.indexOf("hybird-console.js") > -1) {
+                prefix = src.replace("hybird-console.js", "");
+            }
+        }
+        return prefix;
+    }
+
     (function() {
-        if (navigator &&
-            /android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(
-                navigator.userAgent
-            )
-        ) {
+        if (navigator && /android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
             initMenus(getPrefix());
             toggleConsole(false);
             let log = console.log;

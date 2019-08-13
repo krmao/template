@@ -18,12 +18,12 @@ module.exports = {
     plugins: ["react"],
     rules: {
         // off:0, warn:1, error:2
-        camelcase: "warn", // 强制驼峰法命名
+        "camelcase": "warn", // 强制驼峰法命名
         "use-isnan": "error", // 只能使用 isNaN() 进行比较
-        indent: ["off", 4], // 缩进强制使用 4 个空格
-        semi: ["error", "always"], // 强制使用双引号
-        eqeqeq: ["error", "smart"], // 全等于, 使用智能模式 0==1 不报错
-        quotes: ["error", "double"],
+        "indent": ["off", 4], // 缩进强制使用 4 个空格
+        "semi": ["error", "always"], // 强制使用双引号
+        "eqeqeq": ["error", "smart"], // 全等于, 使用智能模式 0==1 不报错
+        "quotes": ["error", "double"],
         "linebreak-style": ["error", "unix"],
         "no-var": "error", // 对var警告
         "no-undef": "off", // 对检测到使用 未定义的变量 报错

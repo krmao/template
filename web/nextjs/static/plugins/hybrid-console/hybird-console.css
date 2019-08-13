@@ -84,18 +84,21 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
     margin-right: -10px;
 }
 
-.hybird_console_container::-webkit-scrollbar { /*滚动条整体样式*/
+.hybird_console_container::-webkit-scrollbar {
+    /*滚动条整体样式*/
     width: 0; /*高宽分别对应横竖滚动条的尺寸*/
     height: 0;
 }
 
-.hybird_console_container::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+.hybird_console_container::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
     border-radius: 0;
     -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
     background: #000;
 }
 
-.hybird_console_container::-webkit-scrollbar-track { /*滚动条里面轨道*/
+.hybird_console_container::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
     -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
     border-radius: 0;
     background: #000;
@@ -144,14 +147,14 @@ green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
 
 /* 箭头: 展开前 */
 .hybird_console_log.inspect:before {
-    content: '';
+    content: "";
     border-width: 4px 0 4px 8px;
     border-left-color: #268bd2;
 }
 
 /* 箭头: 展开后 */
 .hybird_console_log.opened:before {
-    content: '';
+    content: "";
     border-width: 8px 4px 0 4px;
     border-top-color: #268bd2;
 }

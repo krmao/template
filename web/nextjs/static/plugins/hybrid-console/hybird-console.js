@@ -1,15 +1,22 @@
-let hostAddress = "/static/plugins/hybrid-console/";
+/**
+ * 在 <head> 里面添加
+ * <link rel="stylesheet" href="/static/plugins/hybrid-console/hybird-console.css"/>
 
-(function () {
-    var btn_menu;
-    var btn_menu_off;
-    var btn_clear;
-    var container;
-    var container_background;
-    var isContentShow = false;
+ *
+ * 在 <body> 之后添加
+ * <script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" prefix={"/static/plugins/hybrid-console/"}/>
+ */
+/* eslint-disable */
+(function() {
+    let btn_menu;
+    let btn_menu_off;
+    let btn_clear;
+    let container;
+    let container_background;
+    let isContentShow = false;
 
     function createElement(styleClass, content, name) {
-        var elem = document.createElement(name || "div");
+        let elem = document.createElement(name || "div");
         elem.id = name;
         if (name === "img") {
             elem.src = content;
@@ -36,15 +43,15 @@ let hostAddress = "/static/plugins/hybrid-console/";
     }
 
     function getNowFormatDate() {
-        var date = new Date();
-        var seperator1 = "/";
-        var seperator2 = ":";
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
-        var milliseconds = date.getMilliseconds();
+        let date = new Date();
+        let seperator1 = "/";
+        let seperator2 = ":";
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        let milliseconds = date.getMilliseconds();
         if (hours >= 1 && hours <= 9) {
             hours = "0" + hours;
         }
@@ -71,21 +78,21 @@ let hostAddress = "/static/plugins/hybrid-console/";
                 + minutes + seperator2
                 + seconds + " "
                 + milliseconds;*/
-        // noinspection UnnecessaryLocalVariableJS
+        // noinspection UnnecessaryLocalletiableJS
         let dateStr =
             hours + seperator2 + minutes + seperator2 + seconds + " " + milliseconds;
         return dateStr;
     }
 
     function inspect(obj, key, enumerable) {
-        var content = createElement("log");
-        var content_top = createElement("top");
-        var node = createElement("node", "", "span");
+        let content = createElement("log");
+        let content_top = createElement("top");
+        let node = createElement("node", "", "span");
 
-        var elemsCreated = false;
-        var keyNode;
-        var text;
-        var props;
+        let elemsCreated = false;
+        let keyNode;
+        let text;
+        let props;
 
         if (arguments.length === 2) {
             enumerable = true;
@@ -138,8 +145,8 @@ let hostAddress = "/static/plugins/hybrid-console/";
             props = createElement("props");
             content_top.addEventListener(
                 "click",
-                function () {
-                    var keys = [],
+                function() {
+                    let keys = [],
                         elem,
                         key;
                     if (content.classList.contains("inspect")) {
@@ -149,13 +156,13 @@ let hostAddress = "/static/plugins/hybrid-console/";
                             }
                             Object.getOwnPropertyNames(obj)
                                 .concat(keys)
-                                .filter(function (key, index, arr) {
+                                .filter(function(key, index, arr) {
                                     return arr.indexOf(key) === index;
                                 })
                                 .sort()
                                 .concat("__proto__")
-                                .forEach(function (key) {
-                                    var enumerable = Object.getOwnPropertyDescriptor(obj, key);
+                                .forEach(function(key) {
+                                    let enumerable = Object.getOwnPropertyDescriptor(obj, key);
                                     enumerable = enumerable ? enumerable.enumerable : false;
                                     elem = inspect(obj[key], key, enumerable);
                                     props.appendChild(elem);
@@ -196,15 +203,15 @@ let hostAddress = "/static/plugins/hybrid-console/";
         }
     }
 
-    function initMenus() {
+    function initMenus(prefix) {
         if (!btn_menu_off) {
             btn_menu_off = createElement(
                 "menu",
-                hostAddress + "./hybird-console-menu-toggleoff.svg",
+                prefix + "hybird-console-menu-toggleoff.svg",
                 "img"
             );
             document.body.appendChild(btn_menu_off);
-            btn_menu_off.onclick = function () {
+            btn_menu_off.onclick = function() {
                 toggleConsole(true);
             };
             setVisible(btn_menu_off, !isContentShow);
@@ -212,11 +219,11 @@ let hostAddress = "/static/plugins/hybrid-console/";
         if (!btn_menu) {
             btn_menu = createElement(
                 "menu",
-                hostAddress + "./hybird-console-menu-toggleon.svg",
+                prefix + "hybird-console-menu-toggleon.svg",
                 "img"
             );
             document.body.appendChild(btn_menu);
-            btn_menu.onclick = function () {
+            btn_menu.onclick = function() {
                 toggleConsole(false);
             };
             setVisible(btn_menu, isContentShow);
@@ -224,12 +231,12 @@ let hostAddress = "/static/plugins/hybrid-console/";
         if (!btn_clear) {
             btn_clear = createElement(
                 "menu_clear",
-                hostAddress + "./hybird-console-menu-clear.svg",
+                prefix + "hybird-console-menu-clear.svg",
                 "img"
             );
             btn_clear.hidden = !isContentShow;
             document.body.appendChild(btn_clear);
-            btn_clear.onclick = function () {
+            btn_clear.onclick = function() {
                 document.body.removeChild(container);
                 initContainer(true);
             };
@@ -253,9 +260,9 @@ let hostAddress = "/static/plugins/hybrid-console/";
 
     function insepctLog(params) {
         if (container) {
-            var message = "";
+            let message = "";
             message = "[" + getNowFormatDate() + "] " + message;
-            for (var i = 0; i < params.length; i++) {
+            for (let i = 0; i < params.length; i++) {
                 message += params[i];
                 container.appendChild(inspect(params[i]));
             }
@@ -269,16 +276,28 @@ let hostAddress = "/static/plugins/hybrid-console/";
             window.webkit.messageHandlers.native.postMessage(message);
     }
 
-    (function () {
+    function getPrefix() {
+        let prefix = "";
+        let scripts = document.getElementsByTagName("script");
+        for (let i = 0; i < scripts.length; i++) {
+            let script = scripts[i];
+            if (script && script.getAttribute("src") && script.getAttribute("src").indexOf("hybrid-console") > -1 && script.getAttribute("prefix")) {
+                prefix = script.getAttribute("prefix");
+            }
+        }
+        return prefix;
+    }
+
+    (function() {
         if (navigator &&
             /android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(
                 navigator.userAgent
             )
         ) {
-            initMenus();
+            initMenus(getPrefix());
             toggleConsole(false);
-            var log = console.log;
-            console.log = function () {
+            let log = console.log;
+            console.log = function() {
                 log.apply(this, Array.prototype.slice.call(arguments));
                 insepctLog(arguments);
             };

@@ -1,6 +1,7 @@
 package com.smart.library.widget.recyclerview
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v7.widget.GridLayoutManager
@@ -132,6 +133,34 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         private const val ITEM_TYPE_LOADING = Integer.MAX_VALUE - 3
         private const val ITEM_TYPE_EMPTY = Integer.MAX_VALUE - 4
         private const val ITEM_TYPE_EMPTY_LOADING = Integer.MAX_VALUE - 5
+
+        @Suppress("MemberVisibilityCanBePrivate")
+        @JvmStatic
+        @JvmOverloads
+        fun createDefaultFooterView(context: Context?, text: String, height: Int = STSystemUtil.getPxFromDp(80f).toInt(), backgroundColor: Int = Color.DKGRAY, textColor: Int = Color.LTGRAY): TextView {
+            val itemView = TextView(context)
+            itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
+            itemView.text = text
+            itemView.setBackgroundColor(backgroundColor)
+            itemView.setTextColor(textColor)
+            itemView.gravity = Gravity.CENTER
+            itemView.typeface = Typeface.DEFAULT_BOLD
+            return itemView
+        }
+
+        @Suppress("MemberVisibilityCanBePrivate")
+        @JvmStatic
+        @JvmOverloads
+        fun createDefaultEmptyView(context: Context?, text: String, backgroundColor: Int = Color.DKGRAY, textColor: Int = Color.LTGRAY): TextView {
+            val itemView = TextView(context)
+            itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            itemView.text = text
+            itemView.setBackgroundColor(backgroundColor)
+            itemView.setTextColor(textColor)
+            itemView.gravity = Gravity.CENTER
+            itemView.typeface = Typeface.DEFAULT_BOLD
+            return itemView
+        }
     }
 
     /**
@@ -172,11 +201,11 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     var viewNoMore: View? = null
     var viewEmpty: View? = null
     var viewEmptyLoading: View? = null
-    private val viewHolderNoMore: STViewHolder by lazy { STViewHolder(viewNoMore ?: createDefaultFooterView("没有更多了")) }
-    private val viewHolderLoading: STViewHolder by lazy { STViewHolder(viewLoading ?: createDefaultFooterView("正在加载中...")) }
-    private val viewHolderLoadFailure: STViewHolder by lazy { STViewHolder(viewLoadFailure ?: createDefaultFooterView("加载失败，请点我重试")) }
-    private val viewHolderEmpty: STViewHolder by lazy { STViewHolder(viewEmpty ?: createDefaultEmptyView("EMPTY DATA NOW ... \nCLICK TO REFRESH ...")) }
-    private val viewHolderEmptyLoading: STViewHolder by lazy { STViewHolder(viewEmptyLoading ?: createDefaultEmptyView("REFRESH NOW...", Color.BLUE)) }
+    private val viewHolderNoMore: STViewHolder by lazy { STViewHolder(viewNoMore ?: createDefaultFooterView(innerAdapter.context, "没有更多了...")) }
+    private val viewHolderLoading: STViewHolder by lazy { STViewHolder(viewLoading ?: createDefaultFooterView(innerAdapter.context, "数据加载中...")) }
+    private val viewHolderLoadFailure: STViewHolder by lazy { STViewHolder(viewLoadFailure ?: createDefaultFooterView(innerAdapter.context, "加载出错了")) }
+    private val viewHolderEmpty: STViewHolder by lazy { STViewHolder(viewEmpty ?: createDefaultEmptyView(innerAdapter.context, "数据维护中...")) }
+    private val viewHolderEmptyLoading: STViewHolder by lazy { STViewHolder(viewEmptyLoading ?: createDefaultEmptyView(innerAdapter.context, "数据加载中...", Color.BLUE)) }
 
     override fun getItemViewType(position: Int): Int = if (isNeedShowEmptyView()) (if (isEmptyViewLoading) ITEM_TYPE_EMPTY_LOADING else ITEM_TYPE_EMPTY) else (if ((position == itemCount - 1) && enable) currentItemType else innerAdapter.getItemViewType(position))
     override fun getItemCount(): Int = if (isNeedShowEmptyView()) 1 else (innerAdapter.itemCount + (if (enable) 1 else 0))
@@ -328,32 +357,6 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             }
             onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
-    }
-
-    @Suppress("MemberVisibilityCanBePrivate")
-    @JvmOverloads
-    fun createDefaultFooterView(text: String, height: Int = STSystemUtil.getPxFromDp(80f).toInt(), backgroundColor: Int = Color.DKGRAY, textColor: Int = Color.LTGRAY): TextView {
-        val itemView = TextView(innerAdapter.context)
-        itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
-        itemView.text = text
-        itemView.setBackgroundColor(backgroundColor)
-        itemView.setTextColor(textColor)
-        itemView.gravity = Gravity.CENTER
-        itemView.typeface = Typeface.DEFAULT_BOLD
-        return itemView
-    }
-
-    @Suppress("MemberVisibilityCanBePrivate")
-    @JvmOverloads
-    fun createDefaultEmptyView(text: String, backgroundColor: Int = Color.DKGRAY, textColor: Int = Color.LTGRAY): TextView {
-        val itemView = TextView(innerAdapter.context)
-        itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        itemView.text = text
-        itemView.setBackgroundColor(backgroundColor)
-        itemView.setTextColor(textColor)
-        itemView.gravity = Gravity.CENTER
-        itemView.typeface = Typeface.DEFAULT_BOLD
-        return itemView
     }
 
     // 适配 GridLayoutManager

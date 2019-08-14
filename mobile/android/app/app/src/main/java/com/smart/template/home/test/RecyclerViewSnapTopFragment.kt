@@ -102,10 +102,6 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
 
         // divider between items
         recyclerView.addItemDecoration(STRecyclerViewItemDecoration(5))
-        // custom loading views
-        adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
-        adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
-        adapterWrapper.viewLoading = adapterWrapper.createDefaultFooterView("哼哈, 火速请求中...")
 
         adapterWrapper.onInnerDataChanged = {
             snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed

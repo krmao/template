@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
 import com.smart.template.home.test.*
 import com.smart.template.widget.STCheckBoxGroupView
+import com.smart.template.widget.STRecyclerPagerView
 import kotlinx.android.synthetic.main.home_fragment.*
 import org.jetbrains.anko.async
 
@@ -76,21 +78,36 @@ class HomeFragment : STBaseFragment() {
             VideoPlayerFragment.goTo(context)
         }
 
+        fun getScare(pagerIndex: Int): Int {
+            return when (pagerIndex) {
+                0 -> 1
+                1 -> 10
+                2 -> 100
+                3 -> 1000
+                else -> 0
+            }
+        }
+
         // 模拟数据
-        val allData: MutableList<HashMap<String, MutableList<Int>>> = mutableListOf(
-                hashMapOf("全部" to mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9)),
-                hashMapOf("景点" to mutableListOf(10, 20, 30, 40, 50, 60)),
-                hashMapOf("酒店" to mutableListOf(100, 200, 300, 400, 500, 600, 700)),
-                hashMapOf("火车站" to mutableListOf()),
-                hashMapOf("机场" to mutableListOf(1000, 2000, 3000, 4000, 5000, 6000, 7000))
-        )
+        // 服务端 requestIndex 从 0 开始算第一页
+        val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
+                mutableListOf(
+                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
+                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
+                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
+                        STRecyclerPagerView.PagerModel(1, 4, mutableListOf(0, 1 * getScare(3), 2 * getScare(3), 3 * getScare(3)), "1000-4")
+                )
 
         /**
          * @param callback return null 代表请求失败, empty 代表没有更多, 有数据代表请求成功 page+1
          */
         var requestCount = 0
 
-        fun requestData(pagerIndex: Int, recyclerPageIndex: Int, recyclerPageSize: Int, callback: (MutableList<Int>?) -> Unit) {
+        /**
+         * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
+         * requestNextIndex = requestIndex + 1
+         */
+        fun requestData(pagerIndex: Int, requestNextIndex: Int, requestSize: Int, callback: (MutableList<Int>?) -> Unit) {
             async {
                 requestCount++
                 Thread.sleep(1000)
@@ -106,9 +123,12 @@ class HomeFragment : STBaseFragment() {
                     else -> { // 请求成功
                         STLogUtil.d("request", "请求成功")
                         val list = mutableListOf<Int>()
-                        val currentSize = recyclerPageIndex * recyclerPageSize
-                        (0 until recyclerPageSize).forEach {
-                            list.add(currentSize + it)
+
+                        val scare = getScare(pagerIndex)
+                        val nextValue: Int = requestNextIndex * requestSize * scare
+
+                        (0 until requestSize).forEach {
+                            list.add(nextValue + it * scare)
                         }
                         callback.invoke(list)
                     }
@@ -119,19 +139,30 @@ class HomeFragment : STBaseFragment() {
         // 初始化 pagerRecyclerView
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
         pagerRecyclerView.initialize(
-                pagerDataList = allData.flatMap { it.values.toMutableList() }.toMutableList(),
-                onRecyclerViewLoadMore = { pagerIndex: Int, recyclerPageIndex: Int, recyclerPageSize: Int, callback: (MutableList<Int>?) -> Unit ->
-                    requestData(pagerIndex, recyclerPageIndex, recyclerPageSize) { callback.invoke(it) }
+                initPagerDataList = allData,
+                requestLoadMore = { pagerIndex: Int, requestIndex: Int, requestSize: Int, callback: (MutableList<Int>?) -> Unit ->
+                    requestData(pagerIndex, requestIndex, requestSize) { callback.invoke(it) }
                 },
                 onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
-                    STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
-                        setTextColor(Color.BLACK)
-                        setPadding(50, 50, 50, 50)
-                        textSize = 20f
-                    })
+                    STRecyclerViewAdapter.ViewHolder(
+                            TextView(context).apply {
+                                setTextColor(Color.BLACK)
+                                setBackgroundColor(when (pagerIndex) {
+                                    0 -> Color.LTGRAY
+                                    1 -> Color.GREEN
+                                    2 -> Color.YELLOW
+                                    3 -> Color.DKGRAY
+                                    else -> Color.GREEN
+                                })
+                                width = STSystemUtil.screenWidth
+                                gravity = Gravity.CENTER
+                                setPadding(70, 70, 70, 70)
+                                textSize = 20f
+                            }
+                    )
                 },
-                onRecyclerViewBindViewHolder = { dataList: MutableList<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
-                    (viewHolder.itemView as TextView).text = "position:$position-data:${dataList[position]}\ndesc:我是钢铁侠"
+                onRecyclerViewBindViewHolder = { pagerModel: STRecyclerPagerView.PagerModel<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
+                    (viewHolder.itemView as TextView).text = "${pagerModel.dataList[position]}\n ---"
                 }
         )
 
@@ -146,8 +177,10 @@ class HomeFragment : STBaseFragment() {
                 enableSingleCheck = true,
                 enableFitCenter = true,
                 fitCenterMinimumSize = STSystemUtil.screenWidth,
-                titleList = allData.flatMap { it.keys.toMutableList() }.toMutableList(),
-                createUncheckedItemView = { title: String ->
+                titleList = allData.map
+                { it.extrasData as? String ?: "" }.toMutableList(),
+                createUncheckedItemView =
+                { title: String ->
                     TextView(context).apply {
                         text = title
                         setTextColor(Color.BLACK)
@@ -155,7 +188,8 @@ class HomeFragment : STBaseFragment() {
                         setBackgroundColor(Color.LTGRAY)
                     }
                 },
-                updateViewOnCheckChangedListener = { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
+                updateViewOnCheckChangedListener =
+                { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
                     descTv.text = "当前选中的数组索引:$checkedViewPositionList\n本次改变的数组索引:$changedViewPositionList"
                     changedViewPositionList.forEach { position: Int ->
                         val itemChangedView: TextView = originViewList[position] as TextView

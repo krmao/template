@@ -264,15 +264,27 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     fun showLoadFailure() {
         if (enable) {
-            currentItemType = ITEM_TYPE_LOAD_FAILED
-            notifyItemChanged(itemCount)
+            if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
+                currentItemType = ITEM_TYPE_EMPTY
+                isEmptyViewLoading = false
+                notifyDataSetChanged()
+            } else {
+                currentItemType = ITEM_TYPE_LOAD_FAILED
+                notifyItemChanged(itemCount)
+            }
         }
     }
 
     fun showNoMore() {
         if (enable) {
-            currentItemType = ITEM_TYPE_NO_MORE
-            notifyItemChanged(itemCount)
+            if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
+                currentItemType = ITEM_TYPE_EMPTY
+                isEmptyViewLoading = false
+                notifyDataSetChanged()
+            } else {
+                currentItemType = ITEM_TYPE_NO_MORE
+                notifyItemChanged(itemCount)
+            }
         }
     }
 
@@ -306,12 +318,14 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         val oldInnerDataListSize = innerAdapter.dataList.size
         if (oldInnerDataListSize != 0) {
             innerAdapter.dataList.clear()
-            if (enable) currentItemType = ITEM_TYPE_LOADING // 数据从 无 -> 有后确保是 loading 状态
-            if (enableEmptyView) {
-                notifyDataSetChanged()
-            } else {
-                notifyItemRangeRemoved(0, oldInnerDataListSize)
-            }
+            if (enable) // 数据从 无 -> 有后确保是 loading 状态
+                if (enableEmptyView) {
+                    currentItemType = ITEM_TYPE_EMPTY
+                    notifyDataSetChanged()
+                } else {
+                    currentItemType = ITEM_TYPE_EMPTY
+                    notifyItemRangeRemoved(0, oldInnerDataListSize)
+                }
             onInnerDataChanged?.invoke(innerAdapter.dataList)
         }
     }

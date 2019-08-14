@@ -88,6 +88,18 @@ class HomeFragment : STBaseFragment() {
             }
         }
 
+        resetPagerData.setOnClickListener {
+            pagerRecyclerView.reset(mutableListOf(
+                    STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
+                    STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
+                    STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
+                    STRecyclerPagerView.PagerModel(1, 4, mutableListOf(0, 1 * getScare(3), 2 * getScare(3), 3 * getScare(3)), "1000-4")
+            ))
+        }
+        clearPagerData.setOnClickListener {
+            pagerRecyclerView.clearAll()
+        }
+
         // 模拟数据
         // 服务端 requestIndex 从 0 开始算第一页
         val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
@@ -146,6 +158,9 @@ class HomeFragment : STBaseFragment() {
                 onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
                     STRecyclerViewAdapter.ViewHolder(
                             TextView(context).apply {
+
+                                parent.removeView(this)
+
                                 setTextColor(Color.BLACK)
                                 setBackgroundColor(when (pagerIndex) {
                                     0 -> Color.LTGRAY

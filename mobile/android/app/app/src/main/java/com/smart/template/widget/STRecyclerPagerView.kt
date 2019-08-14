@@ -28,8 +28,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 viewLoadFailure: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "加载出错了"),
                 viewLoading: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "数据加载中..."),
                 viewNoMore: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "没有更多了..."),
-                viewEmpty: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "数据维护中..."),
-                viewEmptyLoading: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "数据加载中...")
+                viewEmpty: View = STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据维护中..."),
+                viewEmptyLoading: View = STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据加载中...")
         ): View {
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
@@ -71,6 +71,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 }
             }
             recyclerView.adapter = adapterWrapper
+            recyclerView.tag = pagerIndex
             return recyclerView
         }
     }
@@ -96,6 +97,42 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         pageMargin = 0
         offscreenPageLimit = initPagerDataList.size
         adapter = STPagerRecyclerViewAdapter(context, initPagerDataList, requestLoadMore, { currentItem }, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, createRecyclerView, createPagerView)
+    }
+
+    @JvmOverloads
+    fun clearAll(requestNextIndex: Int = 0) {
+        val innerAdapter = adapter as? STPagerRecyclerViewAdapter<*>
+        if (innerAdapter != null) {
+            (0 until (adapter?.count ?: 0)).forEach { pagerIndex ->
+                (findViewWithTag<STRecyclerView>(pagerIndex)?.adapter as? STEmptyLoadingWrapper<*>)?.removeAll()
+                innerAdapter.getItem(pagerIndex).requestNextIndex = requestNextIndex
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> reset(newPagerDataList: MutableList<PagerModel<T>>) {
+        val innerAdapter = adapter as? STPagerRecyclerViewAdapter<*>
+        if (innerAdapter != null) {
+            if (newPagerDataList.isNotEmpty() && newPagerDataList.size == innerAdapter.count) {
+                (0 until (adapter?.count ?: 0)).forEach { pagerIndex ->
+                    val recyclerView: STRecyclerView? = findViewWithTag(pagerIndex)
+                    val loadingWrapper = recyclerView?.adapter as? STEmptyLoadingWrapper<T>
+                    if (loadingWrapper != null) {
+                        val oldPagerModel = innerAdapter.getItem(pagerIndex)
+                        val newPagerModel = newPagerDataList[pagerIndex]
+
+                        oldPagerModel.requestNextIndex = newPagerModel.requestNextIndex
+                        oldPagerModel.requestSize = newPagerModel.requestSize
+                        oldPagerModel.extrasData = newPagerModel.extrasData
+
+                        loadingWrapper.removeAll()
+                        loadingWrapper.add(newPagerModel.dataList)
+                        recyclerView.scrollToPosition(0)
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -133,6 +170,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
 
         override fun getCount(): Int = initPagerDataList.size
+
+        fun getItem(position: Int): PagerModel<M> = initPagerDataList[position]
 
         override fun instantiateItem(container: ViewGroup, pagerIndex: Int): Any {
             return (createPagerView?.invoke(context, pagerIndex) ?: createRecyclerView?.invoke(context, pagerIndex) ?: createDefaultRecyclerView(context, initPagerDataList, requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder)).apply {

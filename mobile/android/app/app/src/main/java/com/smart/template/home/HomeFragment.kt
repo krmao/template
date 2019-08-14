@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.bus.STBusManager
@@ -18,6 +19,7 @@ import com.smart.template.R
 import com.smart.template.home.test.*
 import com.smart.template.widget.STCheckBoxGroupView
 import kotlinx.android.synthetic.main.home_fragment.*
+import org.jetbrains.anko.async
 
 class HomeFragment : STBaseFragment() {
 
@@ -83,10 +85,44 @@ class HomeFragment : STBaseFragment() {
                 hashMapOf("机场" to mutableListOf(1000, 2000, 3000, 4000, 5000, 6000, 7000))
         )
 
+        /**
+         * @param callback return null 代表请求失败, empty 代表没有更多, 有数据代表请求成功 page+1
+         */
+        var requestCount = 0
+
+        fun requestData(pagerIndex: Int, recyclerPageIndex: Int, recyclerPageSize: Int, callback: (MutableList<Int>?) -> Unit) {
+            async {
+                requestCount++
+                Thread.sleep(1000)
+                when {
+                    requestCount % 3 == 0 -> { // 请求失败
+                        STLogUtil.d("request", "请求失败")
+                        callback.invoke(null)
+                    }
+                    requestCount % 10 == 0 -> { // 没有更多数据
+                        STLogUtil.d("request", "没有更多数据")
+                        callback.invoke(mutableListOf())
+                    }
+                    else -> { // 请求成功
+                        STLogUtil.d("request", "请求成功")
+                        val list = mutableListOf<Int>()
+                        val currentSize = recyclerPageIndex * recyclerPageSize
+                        (0 until recyclerPageSize).forEach {
+                            list.add(currentSize + it)
+                        }
+                        callback.invoke(list)
+                    }
+                }
+            }
+        }
+
         // 初始化 pagerRecyclerView
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
         pagerRecyclerView.initialize(
                 pagerDataList = allData.flatMap { it.values.toMutableList() }.toMutableList(),
+                onRecyclerViewLoadMore = { pagerIndex: Int, recyclerPageIndex: Int, recyclerPageSize: Int, callback: (MutableList<Int>?) -> Unit ->
+                    requestData(pagerIndex, recyclerPageIndex, recyclerPageSize) { callback.invoke(it) }
+                },
                 onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
                     STRecyclerViewAdapter.ViewHolder(TextView(context).apply {
                         setTextColor(Color.BLACK)

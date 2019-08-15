@@ -196,16 +196,11 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
      */
     var onInnerDataChanged: ((MutableList<Entity>) -> Unit)? = null
 
-    var viewLoadFailure: View? = null
-    var viewLoading: View? = null
-    var viewNoMore: View? = null
-    var viewEmpty: View? = null
-    var viewEmptyLoading: View? = null
-    private val viewHolderNoMore: STViewHolder by lazy { STViewHolder(viewNoMore ?: createDefaultFooterView(innerAdapter.context, "没有更多了...")) }
-    private val viewHolderLoading: STViewHolder by lazy { STViewHolder(viewLoading ?: createDefaultFooterView(innerAdapter.context, "数据加载中...")) }
-    private val viewHolderLoadFailure: STViewHolder by lazy { STViewHolder(viewLoadFailure ?: createDefaultFooterView(innerAdapter.context, "加载出错了")) }
-    private val viewHolderEmpty: STViewHolder by lazy { STViewHolder(viewEmpty ?: createDefaultEmptyView(innerAdapter.context, "数据维护中...")) }
-    private val viewHolderEmptyLoading: STViewHolder by lazy { STViewHolder(viewEmptyLoading ?: createDefaultEmptyView(innerAdapter.context, "数据加载中...", Color.BLUE)) }
+    var viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+    var viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+    var viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+    var viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+    var viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
 
     override fun getItemViewType(position: Int): Int = if (isNeedShowEmptyView()) (if (isEmptyViewLoading) ITEM_TYPE_EMPTY_LOADING else ITEM_TYPE_EMPTY) else (if ((position == itemCount - 1) && enable) currentItemType else innerAdapter.getItemViewType(position))
     override fun getItemCount(): Int = if (isNeedShowEmptyView()) 1 else (innerAdapter.itemCount + (if (enable) 1 else 0))
@@ -214,11 +209,11 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_TYPE_EMPTY_LOADING -> viewHolderEmptyLoading
-            ITEM_TYPE_EMPTY -> viewHolderEmpty
-            ITEM_TYPE_NO_MORE -> viewHolderNoMore
-            ITEM_TYPE_LOADING -> viewHolderLoading
-            ITEM_TYPE_LOAD_FAILED -> viewHolderLoadFailure
+            ITEM_TYPE_EMPTY_LOADING -> STViewHolder(viewEmptyLoading?.invoke(parent, viewType) ?: createDefaultEmptyView(innerAdapter.context, "数据加载中...", Color.BLUE))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_EMPTY -> STViewHolder(viewEmpty?.invoke(parent, viewType) ?: createDefaultEmptyView(innerAdapter.context, "数据维护中..."))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了..."))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "数据加载中..."))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了"))//.apply { parent.removeView(itemView) }
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }

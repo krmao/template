@@ -25,11 +25,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 pagerIndex: Int,
                 onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
                 onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
-                viewLoadFailure: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "加载出错了"),
-                viewLoading: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "数据加载中..."),
-                viewNoMore: View = STEmptyLoadingWrapper.createDefaultFooterView(context, "没有更多了..."),
-                viewEmpty: View = STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据维护中..."),
-                viewEmptyLoading: View = STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据加载中...")
+                viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "加载出错了") },
+                viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "数据加载中...") },
+                viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "没有更多了...") },
+                viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据维护中...") },
+                viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据加载中...") }
         ): View {
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 

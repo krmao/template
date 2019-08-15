@@ -158,9 +158,6 @@ class HomeFragment : STBaseFragment() {
                 onRecyclerViewCreateViewHolder = { pagerIndex: Int, parent: ViewGroup, viewType: Int ->
                     STRecyclerViewAdapter.ViewHolder(
                             TextView(context).apply {
-
-                                parent.removeView(this)
-
                                 setTextColor(Color.BLACK)
                                 setBackgroundColor(when (pagerIndex) {
                                     0 -> Color.LTGRAY

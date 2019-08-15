@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_group_item_map"
+    android:layout_width="match_parent"
+    android:layout_height="113dp"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/line_item_map"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/home_poi_vertical_line"
+        android:visibility="visible" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_iv_item_map"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/line_item_map">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_item_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#777" />
+        <!--营销标签-->
+        <ImageView
+            android:id="@+id/iv_businessLabel_item_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="暑期大促"
+            android:textColor="#fdfdfe"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_title_item_map"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="60dp"
+        android:layout_toRightOf="@id/rl_iv_item_map"
+        android:ellipsize="end"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:text="上海东方明珠塔"
+        android:textColor="#2c2c2e"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rl_book_product"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/tv_haveProduct"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toLeftOf="@+id/tv_canBook"
+            android:background="@drawable/home_poi_shape_red_bg"
+            android:gravity="center"
+            android:text="惠"
+            android:textColor="#fdfdfe"
+            android:textSize="11dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_canBook"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/home_poi_shape_red_bg"
+            android:gravity="center"
+            android:text="订"
+            android:textColor="#fdfdfe"
+            android:textSize="11dp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_title_item_map"
+        android:layout_alignBottom="@+id/rl_iv_item_map"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/rl_iv_item_map">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_local_en_item_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="非常漂亮大气, 很多人喜欢，有艺术美，气质美"
+                android:textSize="11dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_item_score_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_redlabel_item_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="美食甄选 "
+                    android:textColor="#dc2626"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:id="@+id/tv_score_item_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.5分 "
+                    android:textColor="#ff6912"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:id="@+id/tv_comments_item_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5.1万条点评"
+                    android:textColor="#666666"
+                    android:textSize="11dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_below="@+id/rl_iv_item_map"
+        android:layout_marginTop="10dp"
+        android:background="#E2E2E2" />
+</RelativeLayout>

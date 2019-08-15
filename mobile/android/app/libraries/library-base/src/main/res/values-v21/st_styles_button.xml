@@ -12,7 +12,7 @@
     -->
 
     <style name="STButton.Default" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/accent</item>
+        <item name="android:colorButtonNormal">@color/accent</item>
         <item name="android:textSize">12sp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>

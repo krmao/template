@@ -1,438 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_grey"
-    android:orientation="vertical"
-    tools:ignore="HardcodedText">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue_grey"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/rtmpURLET"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/editbox_background_normal"
+                android:gravity="center_vertical"
+                android:hint="rtmp url"
+                android:inputType="textUri"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
+                android:textColor="@color/black"
+                android:textColorHint="@color/blue_grey"
+                android:textSize="12sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/green"
+                android:dividerPadding="5dp"
+                android:fitsSystemWindows="true"
+                android:stretchColumns="*">
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/text9"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="ijk pull rtmp"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text10"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="ijk settings"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text11"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="yesea push rtmp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/text2"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="沉浸式1"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text1"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="沉浸式2"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text4"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="flutter热更新" />
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/text5"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="滑动下一页"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text6"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="滚动页面"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text3"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="react native" />
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/text8"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="recycler top"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/text7"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="recycler transfer"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/tv_play_video"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="ijk mp4" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/tv_play_video_normal"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="play video normal"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/resetPagerData"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager reset"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/clearPagerData"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager clear" />
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/pagerScrollTop"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager rv top"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerScrollBottom"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager rv bottom"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerScrollCenter"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager rv center" />
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:gravity="start"
+        android:background="@color/light_blue_50"
         android:orientation="vertical">
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="410dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="AAA"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:minWidth="5dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="BBB"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:minWidth="5dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="CCC"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:minWidth="5dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="DDD"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:minWidth="5dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="EEE"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:minWidth="10dp"
-                    android:visibility="gone" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blue_900"
-                    android:padding="15dp"
-                    android:text="FFFS"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-            </RadioGroup>
-        </HorizontalScrollView>
-
-        <FrameLayout
-            android:id="@+id/text1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="从GET接口获取json String内容"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="从GET接口获取json String内容"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="react native"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="flutter hot update"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="pull to next page"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="view pager scroll view"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="drag recyclerView item and transfer"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/text8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/blue_900"
-            android:foreground="@drawable/st_selector"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="recyclerView top with changeListener"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </FrameLayout>
-
-        <EditText
-            android:id="@+id/rtmpURLET"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:drawable/editbox_background_normal"
-            android:gravity="center_vertical"
-            android:hint="rtmp url"
-            android:inputType="textUri"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
-            android:textColor="@color/black"
-            android:textColorHint="@color/blue_grey"
-            android:textSize="15sp" />
-
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/green"
-            android:dividerPadding="5dp"
-            android:fitsSystemWindows="true"
-            android:stretchColumns="*">
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/text9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="ijkplayer pull rtmp"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/text10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="ijkplayer settings"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/text11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="yesea push rtmp"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/tv_play_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="play video by ijkplayer"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/tv_play_video_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="play video normal"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-            </TableRow>
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/resetPagerData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="resetPagerData"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/clearPagerData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/blue_900"
-                    android:foreground="@drawable/st_selector"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:text="clearPagerData"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </FrameLayout>
-            </TableRow>
-        </TableLayout>
 
         <TextView
             android:id="@+id/descTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/yellow_200"
             android:minHeight="40dp"
             android:text=""
             android:textColor="@color/black"
@@ -442,24 +225,25 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/yellow_500">
+            android:background="@color/white">
 
             <com.smart.template.widget.STCheckBoxGroupView
                 android:id="@+id/checkBoxGroupView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/pink_500"
                 android:minWidth="40dp"
                 android:minHeight="40dp"
                 android:orientation="horizontal" />
         </HorizontalScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grey_400" />
+
         <com.smart.template.widget.STRecyclerPagerView
             android:id="@+id/pagerRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/green_A100" />
-
-
+            android:layout_height="250dp" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

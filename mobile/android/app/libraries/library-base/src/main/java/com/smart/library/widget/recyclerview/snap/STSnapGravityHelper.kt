@@ -14,14 +14,13 @@ import java.util.*
 import kotlin.math.abs
 
 /**
+ * 实验证明: START/END 与 reverseLayout 完全无关
+ * 实验证明: firstVisible/lastCompletelyVisible 与 reverseLayout 强相关
  * recyclerView 滚动时, 每次滚动结束 第一个可见项将自适应完全可见并对其 recyclerView 顶部(顶部测试没问题,底部如果有 loadMore/emptyView 等可能有问题)
  *
  * 注意:
  *     如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 STRecyclerViewAdapter.add
  *     强制触发 onSnap (在 STRecyclerViewAdapter.onInnerDataChanged 中调用 STSnapGravityHelper.forceSnap)
- *
- * @param enableSnapAtEndOfList 当滚动到列表尾部时, true 将自动滚动保持第一个可见项完全显示(比如可能回滚导致加载更多不完全显示), false 不进行自动滚动
- *
  */
 /*
 
@@ -130,9 +129,9 @@ import kotlin.math.abs
     }
  */
 @Suppress("unused")
-class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null, enableSnapAtEndOfList: Boolean = false) : LinearSnapHelper() {
+class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) : LinearSnapHelper() {
     private val tag = "Gravity-Snap"
-    private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(snap, enableSnapAtEndOfList, onSnap)
+    private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(snap, onSnap)
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -170,15 +169,6 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         }
     }
 
-    /**
-     * Enable snapping of the last item that's snappable.
-     * The default value is false, because you can't see the last item completely
-     * if this is enabled.
-     *
-     * @param snap true if you want to enable snapping of the last snappable item
-     */
-    fun enableLastItemSnap(snap: Boolean) = delegate.enableLastItemSnap(snap)
-
     @JvmOverloads
     fun scrollToPosition(position: Int, smooth: Boolean = true) = delegate.scrollToPosition(position, smooth)
 
@@ -195,7 +185,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         END
     }
 
-    internal class GSSnapGravityDelegate(private val snap: Snap, private var enableSnapAtEndOfList: Boolean = false, private val onSnap: ((position: Int) -> Unit)? = null) {
+    internal class GSSnapGravityDelegate(private val snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
@@ -281,29 +271,15 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             val currentVisibleItemsCount: Int = layoutManager.childCount
             if (currentVisibleItemsCount > 0) {
                 // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
-                if ((isAtStartOfList(layoutManager) || isAtEndOfList(layoutManager)) && !enableSnapAtEndOfList) {
-                    willScrollToTargetPosition =
-                            if (snap == Snap.START) {
-                                if (layoutManager.reverseLayout) {
-                                    if (enableLoadingFooterView) {
-                                        layoutManager.findLastCompletelyVisibleItemPosition() - 1
-                                    } else {
-                                        layoutManager.findLastCompletelyVisibleItemPosition()
-                                    }
-                                } else {
-                                    (layoutManager.findFirstCompletelyVisibleItemPosition())
-                                }
-                            } else {
-                                if (layoutManager.reverseLayout) {
-                                    layoutManager.findFirstCompletelyVisibleItemPosition() - 1
-                                } else {
-                                    if (enableLoadingFooterView) {
-                                        layoutManager.findLastCompletelyVisibleItemPosition() - 1
-                                    } else {
-                                        layoutManager.findLastCompletelyVisibleItemPosition()
-                                    }
-                                }
-                            }
+                if (isAtStartOfList(layoutManager) || isAtEndOfList(layoutManager)) {
+                    /**
+                     * START 与 reverseLayout 无关
+                     * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
+                     * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
+                     * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
+                     * todo fixme
+                     */
+                    willScrollToTargetPosition = if (enableLoadingFooterView) layoutManager.findLastCompletelyVisibleItemPosition() - 1 else layoutManager.findLastCompletelyVisibleItemPosition()
                     STLogUtil.e(tag, "开始计算 findSnapView 由于滚动到边界, 根据规则强制指定 willScrollToTargetPosition=$willScrollToTargetPosition")
                 }
 
@@ -400,10 +376,6 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         private fun notifyOnSnapped(willSnapPosition: Int) {
             // process position changed
             onSnap?.invoke(willSnapPosition)
-        }
-
-        fun enableLastItemSnap(snap: Boolean) {
-            enableSnapAtEndOfList = snap
         }
 
         private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {

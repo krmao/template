@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 
 @Suppress("unused")
-class STSnapGravityPagerHelper @JvmOverloads constructor(snap: STSnapGravityHelper.Snap, onSnap: ((position: Int) -> Unit)? = null, enableSnapLastItem: Boolean = false) : PagerSnapHelper() {
+class STSnapGravityPagerHelper @JvmOverloads constructor(snap: STSnapGravityHelper.Snap, onSnap: ((position: Int) -> Unit)? = null) : PagerSnapHelper() {
 
-    private val delegate: STSnapGravityHelper.GSSnapGravityDelegate = STSnapGravityHelper.GSSnapGravityDelegate(snap, enableSnapLastItem, onSnap)
+    private val delegate: STSnapGravityHelper.GSSnapGravityDelegate = STSnapGravityHelper.GSSnapGravityDelegate(snap, onSnap)
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -36,15 +36,6 @@ class STSnapGravityPagerHelper @JvmOverloads constructor(snap: STSnapGravityHelp
             }
         }
     }
-
-    /**
-     * Enable snapping of the last item that's snappable.
-     * The default value is false, because you can't see the last item completely
-     * if this is enabled.
-     *
-     * @param snap true if you want to enable snapping of the last snappable item
-     */
-    fun enableLastItemSnap(snap: Boolean) = delegate.enableLastItemSnap(snap)
 
     @JvmOverloads
     fun scrollToPosition(position: Int, smooth: Boolean = true) = delegate.scrollToPosition(position, smooth)

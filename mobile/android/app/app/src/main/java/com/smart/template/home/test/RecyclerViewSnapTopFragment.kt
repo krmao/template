@@ -3,7 +3,6 @@ package com.smart.template.home.test
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,11 +57,10 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
     private val adapterWrapper by lazy { STEmptyLoadingWrapper(adapter) }
     private val snapGravityHelper by lazy {
         STSnapGravityHelper(
-                STSnapGravityHelper.Snap.START,
-                { position: Int ->
-                    STLogUtil.e("Snapped", position.toString())
-                }
-        )
+                STSnapGravityHelper.Snap.START
+        ) { position: Int ->
+            STLogUtil.e("Snapped", position.toString())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

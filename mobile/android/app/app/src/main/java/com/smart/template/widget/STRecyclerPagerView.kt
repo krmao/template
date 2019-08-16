@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.util.STLogUtil
@@ -14,6 +13,10 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 
+/**
+ * 实验证明: START/END 与 reverseLayout 完全无关
+ * 实验证明: firstVisible/lastCompletelyVisible 与 reverseLayout 强相关
+ */
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
     companion object {
@@ -38,7 +41,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
             val recyclerView = STRecyclerView(context)
-            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
                 override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(pagerModel, viewHolder, position)
@@ -54,12 +57,12 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             val snapGravityHelper: STSnapGravityHelper by lazy {
                 STSnapGravityHelper(
-                        snap,
-                        { position: Int ->
-                            if (position >= 0 && position < adapterWrapper.innerData().size) {
-                                onSnap.invoke(pagerIndex, position, adapterWrapper.innerData()[position])
-                            }
-                        })
+                        snap
+                ) { position: Int ->
+                    if (position >= 0 && position < adapterWrapper.innerData().size) {
+                        onSnap.invoke(pagerIndex, position, adapterWrapper.innerData()[position])
+                    }
+                }
             }
             adapterWrapper.onInnerDataChanged = {
                 snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed

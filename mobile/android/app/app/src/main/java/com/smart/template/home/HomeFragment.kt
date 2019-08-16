@@ -15,7 +15,6 @@ import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
-import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R

@@ -256,7 +256,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         fun findSnapView(layoutManager: RecyclerView.LayoutManager): View? {
             val tmpRecyclerView = recyclerView
             if (tmpRecyclerView == null || layoutManager !is LinearLayoutManager) {
-                STLogUtil.e(tag, "开始查找 findSnapView 返回空, 原因 tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager")
+                STLogUtil.e(tag, "开始查找 返回空, 原因 tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager")
                 willScrollToTargetPosition = RecyclerView.NO_POSITION
                 STLogUtil.v(tag, ".\n\n滚动结束...\n\n.")
                 return null
@@ -264,7 +264,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             val linearLayoutManager: LinearLayoutManager = layoutManager
             val isAtStartOfList = isAtStartOfList(linearLayoutManager)
             val isAtEndOfList = isAtEndOfList(linearLayoutManager)
-            STLogUtil.w(tag, "开始查找 findSnapView isAtStartOfList:$isAtStartOfList, isAtEndOfList:$isAtEndOfList, firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
+            STLogUtil.w(tag, "开始查找 isAtStartOfList:$isAtStartOfList, isAtEndOfList:$isAtEndOfList, firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyV:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyV:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
 
             var targetSnapView: View? = null
 
@@ -329,7 +329,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                     }
                 }
             }
-            STLogUtil.w(tag, "查找结束 findSnapView targetSnapView:${targetSnapView.hashCode()}")
+            STLogUtil.w(tag, "查找结束 findSnapView targetSnapView:${targetSnapView.hashCode()}, targetPosition:${targetSnapView?.let { tmpRecyclerView.getChildAdapterPosition(it) }}")
             return targetSnapView
         }
 
@@ -355,8 +355,10 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                 STLogUtil.e(tag, ".\n\n滚动彻底结束...notifyOnSnapped(targetPosition=$targetPosition)\n\n.")
             }
 
+            STLogUtil.e(tag, "notifyOnSnapped start")
             val linearLayoutManager: LinearLayoutManager = layoutManager
-            STLogUtil.w(tag, "开始查找 findSnapView firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
+            STLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(layoutManager)}, isAtStartOfList=${isAtStartOfList(layoutManager)}")
+            STLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView")
 
             // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
             if ((targetPosition == layoutManager.itemCount - 1) && isAtEndOfList(layoutManager)) {
@@ -368,11 +370,10 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                  * todo fixme
                  */
                 targetPosition = if (enableLoadingFooterView) layoutManager.findLastCompletelyVisibleItemPosition() - 1 else layoutManager.findLastCompletelyVisibleItemPosition()
-                STLogUtil.e(tag, "开始计算 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
+                STLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
             }
-            STLogUtil.e(tag, "开始计算 enableLoadingFooterView=$enableLoadingFooterView, willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, itemCount=${linearLayoutManager.itemCount}, isAtEndOfList=${isAtEndOfList(layoutManager)}")
             notifyOnSnapped(targetPosition)
-
+            STLogUtil.e(tag, "notifyOnSnapped end")
             return distanceArray
         }
 
@@ -406,6 +407,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
 
         private fun notifyOnSnapped(willSnapPosition: Int) {
             willScrollToTargetPosition = RecyclerView.NO_POSITION
+            STLogUtil.d(tag, "notifyOnSnapped(position=$willSnapPosition)")
             onSnap?.invoke(willSnapPosition)
         }
 
@@ -413,14 +415,9 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             val tmpRecyclerView = recyclerView ?: return 0
 //
             val position = tmpRecyclerView.getChildLayoutPosition(targetView)
-            STLogUtil.w(tag, "-------- distanceToStart position=$position")
-            STLogUtil.w(tag, "-------- distanceToStart isRightToLeft=$isRightToLeft")
-            STLogUtil.w(tag, "-------- distanceToStart reverseLayout=${linearLayoutManager.reverseLayout}")
-            STLogUtil.w(tag, "-------- distanceToStart itemCount=${linearLayoutManager.itemCount - 1}")
             val decoratedStart = helper.getDecoratedStart(targetView)
             val startAfterPadding = helper.startAfterPadding
-            STLogUtil.w(tag, "-------- distanceToStart decoratedStart=$decoratedStart")
-            STLogUtil.w(tag, "-------- distanceToStart startAfterPadding=$startAfterPadding")
+
             val distance: Int
             if (
                     (
@@ -433,14 +430,14 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             ) {
                 if (decoratedStart >= startAfterPadding / 2) {
                     distance = decoratedStart - startAfterPadding
-                    STLogUtil.w(tag, "-------- distanceToStart 0 distance=$distance, itemCount=${linearLayoutManager.itemCount - 1}")
+                    STLogUtil.w(tag, "-------- 0 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
                 } else {
                     distance = decoratedStart
-                    STLogUtil.w(tag, "-------- distanceToStart 1 distance=$distance, itemCount=${linearLayoutManager.itemCount - 1}")
+                    STLogUtil.w(tag, "-------- 1 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
                 }
             } else {
                 distance = decoratedStart
-                STLogUtil.w(tag, "-------- distanceToStart 2 distance=$distance")
+                STLogUtil.w(tag, "-------- 2 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
             }
             return distance
         }

@@ -14,8 +14,21 @@ import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 
 /**
- * 实验证明: START/END 与 reverseLayout 完全无关
- * 实验证明: firstVisible/lastCompletelyVisible 与 reverseLayout 强相关
+ * Snap.START/Snap.END 以及 decoratedStart/startAfterPadding 与 reverseLayout 的方向一致
+ *
+ * 滚动到头部, 无论是 START/END 取第一个
+ * 滚动到尾部, 无论是 START/END 取最后一个 // loadingView -1
+ *
+ * reverseLayout==true,   Snap.START, 滚动到头部时, 应该 onSnap(findFirstCompletelyVisibleItemPosition)
+ * reverseLayout==true,   Snap.END,   滚动到头部时, 应该 onSnap(findFirstCompletelyVisibleItemPosition)
+ * reverseLayout==true,   Snap.START, 滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
+ * reverseLayout==true,   Snap.END,   滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
+ *
+ *
+ * reverseLayout==false,  Snap.START, 滚动到头部时, 应该 onSnap(findFirstCompletelyVisibleItemPosition)
+ * reverseLayout==false,  Snap.END,   滚动到头部时, 应该 onSnap(findFirstCompletelyVisibleItemPosition)
+ * reverseLayout==false,  Snap.START, 滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
+ * reverseLayout==false,  Snap.END,   滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  */
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
@@ -41,7 +54,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
             val recyclerView = STRecyclerView(context)
-            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
                 override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(pagerModel, viewHolder, position)

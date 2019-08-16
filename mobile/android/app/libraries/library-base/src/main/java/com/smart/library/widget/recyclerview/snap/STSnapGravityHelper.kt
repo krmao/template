@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.math.abs
 
 /**
- * 实验证明: START/END 与 reverseLayout 完全无关
+ * 实验证明: START/END 与 reverseLayout 强相关
  * 实验证明: firstVisible/lastCompletelyVisible 与 reverseLayout 强相关
  * recyclerView 滚动时, 每次滚动结束 第一个可见项将自适应完全可见并对其 recyclerView 顶部(顶部测试没问题,底部如果有 loadMore/emptyView 等可能有问题)
  *
@@ -189,9 +189,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
-        private var verticalHelperLayoutManager: RecyclerView.LayoutManager? = null
         private var horizontalHelper: OrientationHelper? = null
-        private var horizontalHelperLayoutManager: RecyclerView.LayoutManager? = null
         private val isRightToLeft: Boolean by lazy { TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL }
         private val enableLoadingFooterView: Boolean by lazy { recyclerView?.adapter is STEmptyLoadingWrapper<*> } // 是否开启了 loading footer view
         private var recyclerView: RecyclerView? = null
@@ -264,22 +262,40 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                 return null
             }
             val linearLayoutManager: LinearLayoutManager = layoutManager
-            STLogUtil.w(tag, "开始查找 findSnapView firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
+            val isAtStartOfList = isAtStartOfList(linearLayoutManager)
+            val isAtEndOfList = isAtEndOfList(linearLayoutManager)
+            STLogUtil.w(tag, "开始查找 findSnapView isAtStartOfList:$isAtStartOfList, isAtEndOfList:$isAtEndOfList, firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
 
             var targetSnapView: View? = null
 
             val currentVisibleItemsCount: Int = layoutManager.childCount
             if (currentVisibleItemsCount > 0) {
                 // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
-                if (isAtStartOfList(layoutManager) || isAtEndOfList(layoutManager)) {
+                // isAtStartOfList 与下面的 snap == Snap.START 息息相关
+                if (isAtStartOfList || isAtEndOfList) {
                     /**
                      * START 与 reverseLayout 无关
+                     * reverseLayout 与 isAtEndOfList 方向 强相关
                      * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
-                     * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
-                     * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
-                     * todo fixme
+                     *
+                     * 即 reverseLayout==true, 则 isAtEndOfList 以及 lastVisibleItem 在顶部
+                     * 即 reverseLayout==false, 则 isAtEndOfList 以及 lastVisibleItem 在底部
+                     *
+                     * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1, 最计算那边 -1
                      */
-                    willScrollToTargetPosition = if (enableLoadingFooterView) layoutManager.findLastCompletelyVisibleItemPosition() - 1 else layoutManager.findLastCompletelyVisibleItemPosition()
+                    if (isAtStartOfList) {
+                        if (snap == Snap.START) {
+                            willScrollToTargetPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                        } else {
+                            willScrollToTargetPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                        }
+                    } else if (isAtEndOfList) {
+                        if (snap == Snap.START) {
+                            willScrollToTargetPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                        } else {
+                            willScrollToTargetPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                        }
+                    }
                     STLogUtil.e(tag, "开始计算 findSnapView 由于滚动到边界, 根据规则强制指定 willScrollToTargetPosition=$willScrollToTargetPosition")
                 }
 
@@ -326,27 +342,42 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                 STLogUtil.v(tag, ".\n\n滚动结束...\n\n.")
                 return distanceArray
             }
-            val targetPosition: Int = tmpRecyclerView.getChildAdapterPosition(targetView)
-
+            var targetPosition: Int = tmpRecyclerView.getChildAdapterPosition(targetView)
             STLogUtil.d(tag, "开始计算 targetPosition=$targetPosition")
-
-            notifyOnSnapped(targetPosition)
-
             distanceArray = innerCalculateDistanceToFinalSnap(layoutManager, targetView)
 
-            if ((distanceArray[0] > 0 || distanceArray[1] > 0) && canStartScrollToEnd(layoutManager)) {// start scroll to end 为正
+            // start scroll to end 为正
+            if ((distanceArray[0] > 0 || distanceArray[1] > 0) && canScrollStartToEnd(layoutManager)) {
                 STLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...start scroll to end\n\n.")
-            } else if ((distanceArray[0] < 0 || distanceArray[1] < 0) && canEndScrollToStart(layoutManager)) {
+            } else if ((distanceArray[0] < 0 || distanceArray[1] < 0) && canScrollEndToStart(layoutManager)) {
                 STLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...end scroll to start\n\n.")
             } else {
-                willScrollToTargetPosition = RecyclerView.NO_POSITION
-                STLogUtil.e(tag, ".\n\n滚动彻底结束...\n\n.")
+                STLogUtil.e(tag, ".\n\n滚动彻底结束...notifyOnSnapped(targetPosition=$targetPosition)\n\n.")
             }
+
+            val linearLayoutManager: LinearLayoutManager = layoutManager
+            STLogUtil.w(tag, "开始查找 findSnapView firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}")
+
+            // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
+            if ((targetPosition == layoutManager.itemCount - 1) && isAtEndOfList(layoutManager)) {
+                /**
+                 * START 与 reverseLayout 无关
+                 * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
+                 * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
+                 * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
+                 * todo fixme
+                 */
+                targetPosition = if (enableLoadingFooterView) layoutManager.findLastCompletelyVisibleItemPosition() - 1 else layoutManager.findLastCompletelyVisibleItemPosition()
+                STLogUtil.e(tag, "开始计算 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
+            }
+            STLogUtil.e(tag, "开始计算 enableLoadingFooterView=$enableLoadingFooterView, willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, itemCount=${linearLayoutManager.itemCount}, isAtEndOfList=${isAtEndOfList(layoutManager)}")
+            notifyOnSnapped(targetPosition)
+
             return distanceArray
         }
 
-        private fun canStartScrollToEnd(linearLayoutManager: LinearLayoutManager): Boolean = !isAtEndOfList(linearLayoutManager)
-        private fun canEndScrollToStart(linearLayoutManager: LinearLayoutManager): Boolean = !isAtStartOfList(linearLayoutManager)
+        private fun canScrollStartToEnd(linearLayoutManager: LinearLayoutManager): Boolean = !isAtEndOfList(linearLayoutManager)
+        private fun canScrollEndToStart(linearLayoutManager: LinearLayoutManager): Boolean = !isAtStartOfList(linearLayoutManager)
 
         private fun innerCalculateDistanceToFinalSnap(linearLayoutManager: LinearLayoutManager, itemView: View): IntArray {
             val distanceArray = IntArray(2)
@@ -361,7 +392,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             }
 
             if (linearLayoutManager.canScrollVertically()) {
-                if (snap == Snap.START) {
+                if (snap == Snap.START && !linearLayoutManager.reverseLayout || snap == Snap.END && linearLayoutManager.reverseLayout) {
                     distanceArray[1] = distanceToStart(itemView, linearLayoutManager, getVerticalHelper(linearLayoutManager))
                 } else {
                     distanceArray[1] = distanceToEnd(itemView, linearLayoutManager, getVerticalHelper(linearLayoutManager))
@@ -374,30 +405,42 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         }
 
         private fun notifyOnSnapped(willSnapPosition: Int) {
-            // process position changed
+            willScrollToTargetPosition = RecyclerView.NO_POSITION
             onSnap?.invoke(willSnapPosition)
         }
 
         private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
             val tmpRecyclerView = recyclerView ?: return 0
-
+//
             val position = tmpRecyclerView.getChildLayoutPosition(targetView)
+            STLogUtil.w(tag, "-------- distanceToStart position=$position")
+            STLogUtil.w(tag, "-------- distanceToStart isRightToLeft=$isRightToLeft")
+            STLogUtil.w(tag, "-------- distanceToStart reverseLayout=${linearLayoutManager.reverseLayout}")
+            STLogUtil.w(tag, "-------- distanceToStart itemCount=${linearLayoutManager.itemCount - 1}")
+            val decoratedStart = helper.getDecoratedStart(targetView)
+            val startAfterPadding = helper.startAfterPadding
+            STLogUtil.w(tag, "-------- distanceToStart decoratedStart=$decoratedStart")
+            STLogUtil.w(tag, "-------- distanceToStart startAfterPadding=$startAfterPadding")
             val distance: Int
-            if ((
-                            position == 0
-                                    && (!isRightToLeft || linearLayoutManager.reverseLayout)
-                                    || position == linearLayoutManager.itemCount - 1 && (isRightToLeft || linearLayoutManager.reverseLayout)
+            if (
+                    (
+                            position == 0 && (!isRightToLeft || linearLayoutManager.reverseLayout)
+                                    ||
+                                    (position == linearLayoutManager.itemCount - 1 && (isRightToLeft || linearLayoutManager.reverseLayout))
                             )
-                    && !tmpRecyclerView.clipToPadding
+                    &&
+                    !tmpRecyclerView.clipToPadding
             ) {
-                val childStart = helper.getDecoratedStart(targetView)
-                if (childStart >= helper.startAfterPadding / 2) {
-                    distance = childStart - helper.startAfterPadding
+                if (decoratedStart >= startAfterPadding / 2) {
+                    distance = decoratedStart - startAfterPadding
+                    STLogUtil.w(tag, "-------- distanceToStart 0 distance=$distance, itemCount=${linearLayoutManager.itemCount - 1}")
                 } else {
-                    distance = childStart
+                    distance = decoratedStart
+                    STLogUtil.w(tag, "-------- distanceToStart 1 distance=$distance, itemCount=${linearLayoutManager.itemCount - 1}")
                 }
             } else {
-                distance = helper.getDecoratedStart(targetView)
+                distance = decoratedStart
+                STLogUtil.w(tag, "-------- distanceToStart 2 distance=$distance")
             }
             return distance
         }
@@ -419,48 +462,34 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             } else {
                 distance = helper.getDecoratedEnd(targetView) - helper.end
             }
-            STLogUtil.w(tag, "开始计算 最终需要滚动的距离-> distance:$distance, endAfterPadding=${helper.endAfterPadding}")
+            STLogUtil.w(tag, "开始计算 distanceToEnd=$distance")
             return distance
         }
 
+        /**
+         * reverseLayout 与 findLastCompletelyVisibleItemPosition 是正相关, 所以这里无需特殊处理
+         */
         private fun isAtStartOfList(linearLayoutManager: LinearLayoutManager): Boolean {
-            return if (linearLayoutManager.reverseLayout) {
-                linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1
-            } else {
-                linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0
-            }
+            return linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0
         }
 
+        /**
+         * reverseLayout 与 findLastCompletelyVisibleItemPosition 是正相关, 所以这里无需特殊处理
+         */
         private fun isAtEndOfList(linearLayoutManager: LinearLayoutManager): Boolean {
-            return if (linearLayoutManager.reverseLayout) {
-                linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0
-            } else {
-                linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1
-            }
+            return linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1
         }
 
         private fun getVerticalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
-            val oldVerticalHelper = this.verticalHelper
-            val newVerticalHelper: OrientationHelper = if (oldVerticalHelper == null || verticalHelperLayoutManager != layoutManager) {
-                verticalHelperLayoutManager = layoutManager
-                OrientationHelper.createVerticalHelper(layoutManager)
-            } else {
-                oldVerticalHelper
-            }
-            this.verticalHelper = newVerticalHelper
-            return newVerticalHelper
+            val helper: OrientationHelper = this.verticalHelper ?: OrientationHelper.createVerticalHelper(layoutManager)
+            if (this.verticalHelper == null) this.verticalHelper = helper
+            return helper
         }
 
         private fun getHorizontalHelper(layoutManager: RecyclerView.LayoutManager): OrientationHelper {
-            val oldHorizontalHelper = this.horizontalHelper
-            val newHorizontalHelper: OrientationHelper = if (oldHorizontalHelper == null || this.horizontalHelperLayoutManager != layoutManager) {
-                horizontalHelperLayoutManager = layoutManager
-                OrientationHelper.createHorizontalHelper(layoutManager)
-            } else {
-                oldHorizontalHelper
-            }
-            this.horizontalHelper = newHorizontalHelper
-            return newHorizontalHelper
+            val helper: OrientationHelper = this.horizontalHelper ?: OrientationHelper.createHorizontalHelper(layoutManager)
+            if (this.horizontalHelper == null) this.horizontalHelper = helper
+            return helper
         }
     }
 }

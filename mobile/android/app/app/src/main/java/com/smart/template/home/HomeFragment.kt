@@ -172,11 +172,11 @@ class HomeFragment : STBaseFragment() {
                         requestCount++
                         Thread.sleep(1000)
                         when {
-                            requestCount % 10 == 0 -> { // 请求失败
+                            requestCount % 5 == 0 -> { // 请求失败
                                 STLogUtil.d("request", "请求失败")
                                 callback.invoke(null)
                             }
-                            requestCount % 20 == 0 -> { // 没有更多数据
+                            requestCount % 10 == 0 -> { // 没有更多数据
                                 STLogUtil.d("request", "没有更多数据")
                                 callback.invoke(mutableListOf())
                             }

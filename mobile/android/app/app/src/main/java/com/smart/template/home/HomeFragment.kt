@@ -17,6 +17,7 @@ import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
 import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
+import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
 import com.smart.template.home.test.*
 import com.smart.template.widget.STCheckBoxGroupView
@@ -79,6 +80,29 @@ class HomeFragment : STBaseFragment() {
         tv_play_video_normal.setOnClickListener {
             VideoPlayerFragment.goTo(context)
         }
+        pagerScrollTop.setOnClickListener {
+            val pagerIndex = 3
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, 0)
+        }
+        pagerScrollBottom.setOnClickListener {
+            val pagerIndex = 3
+            val dataList = pagerRecyclerView.getRecyclerViewDataList<Int>(pagerIndex)
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size - 1)
+        }
+        pagerScrollCenter.setOnClickListener {
+            val pagerIndex = 3
+            val dataList = pagerRecyclerView.getRecyclerViewDataList<Int>(pagerIndex)
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size / 2 - 1)
+        }
+        pagerScroll7000.setOnClickListener {
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex = 3, recyclerItemData = 7000)
+        }
+        pagerScroll0.setOnClickListener {
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex = 3, recyclerItemData = 0)
+        }
+        pagerScroll1000.setOnClickListener {
+            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex = 3, recyclerItemData = 1000)
+        }
 
         fun getScare(pagerIndex: Int): Int {
             return when (pagerIndex) {
@@ -95,7 +119,18 @@ class HomeFragment : STBaseFragment() {
                     STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
                     STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
                     STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
-                    STRecyclerPagerView.PagerModel(1, 4, mutableListOf(0, 1 * getScare(3), 2 * getScare(3), 3 * getScare(3)), "1000-4")
+                    STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
+                            0,
+                            1 * getScare(3),
+                            2 * getScare(3),
+                            3 * getScare(3),
+                            4 * getScare(3),
+                            5 * getScare(3),
+                            6 * getScare(3),
+                            7 * getScare(3),
+                            8 * getScare(3),
+                            9 * getScare(3)
+                    ), "1000-10")
             ))
         }
         clearPagerData.setOnClickListener {
@@ -109,7 +144,18 @@ class HomeFragment : STBaseFragment() {
                         STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
                         STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
                         STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
-                        STRecyclerPagerView.PagerModel(1, 4, mutableListOf(0, 1 * getScare(3), 2 * getScare(3), 3 * getScare(3)), "1000-4")
+                        STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
+                                0,
+                                1 * getScare(3),
+                                2 * getScare(3),
+                                3 * getScare(3),
+                                4 * getScare(3),
+                                5 * getScare(3),
+                                6 * getScare(3),
+                                7 * getScare(3),
+                                8 * getScare(3),
+                                9 * getScare(3)
+                        ), "1000-10")
                 )
 
         var requestCount = 0
@@ -127,11 +173,11 @@ class HomeFragment : STBaseFragment() {
                         requestCount++
                         Thread.sleep(1000)
                         when {
-                            requestCount % 3 == 0 -> { // 请求失败
+                            requestCount % 10 == 0 -> { // 请求失败
                                 STLogUtil.d("request", "请求失败")
                                 callback.invoke(null)
                             }
-                            requestCount % 10 == 0 -> { // 没有更多数据
+                            requestCount % 20 == 0 -> { // 没有更多数据
                                 STLogUtil.d("request", "没有更多数据")
                                 callback.invoke(mutableListOf())
                             }
@@ -156,6 +202,10 @@ class HomeFragment : STBaseFragment() {
                 onRecyclerViewBindViewHolder = { pagerModel: STRecyclerPagerView.PagerModel<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
                     viewHolder.itemView.tv_title_item_map.text = "上海东方明珠塔:${pagerModel.dataList[position]}"
                     STImageManager.show(viewHolder.itemView.iv_item_map, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
+                },
+                snap = STSnapGravityHelper.Snap.START,
+                onSnap = { pagerIndex: Int, position: Int, data: Int ->
+                    snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
                 }
         )
 

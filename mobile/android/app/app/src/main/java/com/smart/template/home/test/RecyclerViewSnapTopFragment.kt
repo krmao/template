@@ -58,13 +58,10 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
     private val adapterWrapper by lazy { STEmptyLoadingWrapper(adapter) }
     private val snapGravityHelper by lazy {
         STSnapGravityHelper(
-                Gravity.TOP,
-                object : STSnapGravityHelper.SnapListener {
-                    override fun onSnap(position: Int) {
-                        STLogUtil.e("Snapped", position.toString())
-                    }
-                },
-                debug = true
+                STSnapGravityHelper.Snap.START,
+                { position: Int ->
+                    STLogUtil.e("Snapped", position.toString())
+                }
         )
     }
 

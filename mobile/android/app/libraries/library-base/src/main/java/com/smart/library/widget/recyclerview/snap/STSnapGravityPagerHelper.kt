@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 
 @Suppress("unused")
-class STSnapGravityPagerHelper @JvmOverloads constructor(gravity: Int, snapListener: STSnapGravityHelper.SnapListener? = null, debug: Boolean = false, enableSnapLastItem: Boolean = false, enableLastSnapCompletelyVisible: Boolean = true) : PagerSnapHelper() {
+class STSnapGravityPagerHelper @JvmOverloads constructor(snap: STSnapGravityHelper.Snap, onSnap: ((position: Int) -> Unit)? = null, enableSnapLastItem: Boolean = false) : PagerSnapHelper() {
 
-    private val delegate: STSnapGravityHelper.GSSnapGravityDelegate = STSnapGravityHelper.GSSnapGravityDelegate(gravity, debug, enableSnapLastItem, enableLastSnapCompletelyVisible, snapListener)
+    private val delegate: STSnapGravityHelper.GSSnapGravityDelegate = STSnapGravityHelper.GSSnapGravityDelegate(snap, enableSnapLastItem, onSnap)
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -46,7 +46,6 @@ class STSnapGravityPagerHelper @JvmOverloads constructor(gravity: Int, snapListe
      */
     fun enableLastItemSnap(snap: Boolean) = delegate.enableLastItemSnap(snap)
 
-    fun smoothScrollToPosition(position: Int) = delegate.smoothScrollToPosition(position)
-
-    fun scrollToPosition(position: Int) = delegate.scrollToPosition(position)
+    @JvmOverloads
+    fun scrollToPosition(position: Int, smooth: Boolean = true) = delegate.scrollToPosition(position, smooth)
 }

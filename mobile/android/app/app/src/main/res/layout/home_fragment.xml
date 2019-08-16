@@ -201,6 +201,33 @@
                         android:text="pager rv center" />
 
                 </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/pagerScroll7000"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager scroll 7000"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerScroll0"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager scroll 0"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerScroll1000"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pager scroll 1000" />
+
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>
@@ -216,7 +243,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/yellow_200"
-            android:minHeight="40dp"
+            android:padding="3dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/snapTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow_200"
+            android:padding="3dp"
             android:text=""
             android:textColor="@color/black"
             android:textSize="12sp"

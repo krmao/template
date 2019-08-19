@@ -342,7 +342,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                 STLogUtil.v(tag, ".\n\n滚动结束...\n\n.")
                 return distanceArray
             }
-            var targetPosition: Int = tmpRecyclerView.getChildAdapterPosition(targetView)
+            val targetPosition: Int = tmpRecyclerView.getChildAdapterPosition(targetView)
             STLogUtil.d(tag, "开始计算 targetPosition=$targetPosition")
             distanceArray = innerCalculateDistanceToFinalSnap(layoutManager, targetView)
 
@@ -352,28 +352,13 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             } else if ((distanceArray[0] < 0 || distanceArray[1] < 0) && canScrollEndToStart(layoutManager)) {
                 STLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...end scroll to start\n\n.")
             } else {
-                STLogUtil.e(tag, ".\n\n滚动彻底结束...notifyOnSnapped(targetPosition=$targetPosition)\n\n.")
-            }
+                STLogUtil.e(tag, "滚动即将结束, 此时(dx:${distanceArray[0]}, dy:${distanceArray[1]})")
+                distanceArray[0] = 0
+                distanceArray[1] = 0
+                STLogUtil.e(tag, ".\n\n滚动彻底结束...强制返回(dx:${distanceArray[0]}, dy:${distanceArray[1]})\n\n.")
 
-            STLogUtil.e(tag, "notifyOnSnapped start")
-            val linearLayoutManager: LinearLayoutManager = layoutManager
-            STLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(layoutManager)}, isAtStartOfList=${isAtStartOfList(layoutManager)}")
-            STLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView")
-
-            // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
-            if ((targetPosition == layoutManager.itemCount - 1) && isAtEndOfList(layoutManager)) {
-                /**
-                 * START 与 reverseLayout 无关
-                 * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
-                 * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
-                 * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
-                 * todo fixme
-                 */
-                targetPosition = if (enableLoadingFooterView) layoutManager.findLastCompletelyVisibleItemPosition() - 1 else layoutManager.findLastCompletelyVisibleItemPosition()
-                STLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
+                notifyOnSnapped(targetPosition, layoutManager)
             }
-            notifyOnSnapped(targetPosition)
-            STLogUtil.e(tag, "notifyOnSnapped end")
             return distanceArray
         }
 
@@ -405,10 +390,31 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             return distanceArray
         }
 
-        private fun notifyOnSnapped(willSnapPosition: Int) {
+        private fun notifyOnSnapped(willSnapPosition: Int, linearLayoutManager: LinearLayoutManager) {
+            STLogUtil.e(tag, "notifyOnSnapped start")
+            var targetPosition = willSnapPosition
+            STLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(linearLayoutManager)}, isAtStartOfList=${isAtStartOfList(linearLayoutManager)}")
+            STLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView")
+
+            // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
+            if ((targetPosition == linearLayoutManager.itemCount - 1)/*&& isAtEndOfList(layoutManager)*/) {
+                /**
+                 * START 与 reverseLayout 无关
+                 * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
+                 * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
+                 * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
+                 * todo fixme
+                 */
+                targetPosition = if (enableLoadingFooterView) targetPosition - 1 else targetPosition
+                STLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
+            }
+
             willScrollToTargetPosition = RecyclerView.NO_POSITION
-            STLogUtil.d(tag, "notifyOnSnapped(position=$willSnapPosition)")
-            onSnap?.invoke(willSnapPosition)
+            STLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)")
+
+            onSnap?.invoke(targetPosition)
+
+            STLogUtil.e(tag, "notifyOnSnapped end")
         }
 
         private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {

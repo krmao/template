@@ -1,8 +1,6 @@
 package com.smart.library.widget.recyclerview.snap
 
 import android.os.Looper
-import android.support.v4.text.TextUtilsCompat
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.OrientationHelper
@@ -10,13 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
-import java.util.*
 import kotlin.math.abs
 
 /**
  * 实验证明: START/END 与 reverseLayout 强相关
  * 实验证明: firstVisible/lastCompletelyVisible 与 reverseLayout 强相关
  * recyclerView 滚动时, 每次滚动结束 第一个可见项将自适应完全可见并对其 recyclerView 顶部(顶部测试没问题,底部如果有 loadMore/emptyView 等可能有问题)
+ * 暂不支持 clipToPadding and rtl
  *
  * 注意:
  *     如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 STRecyclerViewAdapter.add
@@ -190,7 +188,6 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
         private var horizontalHelper: OrientationHelper? = null
-        private val isRightToLeft: Boolean by lazy { TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL }
         private val enableLoadingFooterView: Boolean by lazy { recyclerView?.adapter is STEmptyLoadingWrapper<*> } // 是否开启了 loading footer view
         private var recyclerView: RecyclerView? = null
         private var willScrollToTargetPosition: Int = RecyclerView.NO_POSITION
@@ -368,7 +365,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         private fun innerCalculateDistanceToFinalSnap(linearLayoutManager: LinearLayoutManager, itemView: View): IntArray {
             val distanceArray = IntArray(2)
             if (linearLayoutManager.canScrollHorizontally()) {
-                if (isRightToLeft && snap == Snap.END || !isRightToLeft && snap == Snap.START) {
+                if (snap == Snap.START && !linearLayoutManager.reverseLayout || snap == Snap.END && linearLayoutManager.reverseLayout) {
                     distanceArray[0] = distanceToStart(itemView, linearLayoutManager, getHorizontalHelper(linearLayoutManager))
                 } else {
                     distanceArray[0] = distanceToEnd(itemView, linearLayoutManager, getHorizontalHelper(linearLayoutManager))
@@ -414,54 +411,22 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
 
         private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
             val tmpRecyclerView = recyclerView ?: return 0
-//
             val position = tmpRecyclerView.getChildLayoutPosition(targetView)
             val decoratedStart = helper.getDecoratedStart(targetView)
             val startAfterPadding = helper.startAfterPadding
 
-            val distance: Int
-            if (
-                    (
-                            position == 0 && (!isRightToLeft || linearLayoutManager.reverseLayout)
-                                    ||
-                                    (position == linearLayoutManager.itemCount - 1 && (isRightToLeft || linearLayoutManager.reverseLayout))
-                            )
-                    &&
-                    !tmpRecyclerView.clipToPadding
-            ) {
-                if (decoratedStart >= startAfterPadding / 2) {
-                    distance = decoratedStart - startAfterPadding
-                    STLogUtil.w(tag, "-------- 0 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
-                } else {
-                    distance = decoratedStart
-                    STLogUtil.w(tag, "-------- 1 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
-                }
-            } else {
-                distance = decoratedStart
-                STLogUtil.w(tag, "-------- 2 distance=$distance, position=$position, rtl=$isRightToLeft, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
-            }
-            return distance
+            STLogUtil.w(tag, "-------- 0 distance=$decoratedStart, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
+            return decoratedStart
         }
 
         private fun distanceToEnd(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
             val tmpRecyclerView = recyclerView ?: return 0
             val position = tmpRecyclerView.getChildLayoutPosition(targetView)
-            val distance: Int
+            val decoratedEnd: Int = helper.getDecoratedEnd(targetView) - helper.end
+            val startAfterPadding = helper.startAfterPadding
 
-            // The last position or the first position
-            // (when there's a reverse layout or we're on RTL mode) must collapse to the padding edge.
-            if ((position == 0 && (isRightToLeft || linearLayoutManager.reverseLayout) || position == linearLayoutManager.itemCount - 1 && (!isRightToLeft || linearLayoutManager.reverseLayout)) && !tmpRecyclerView.clipToPadding) {
-                val childEnd = helper.getDecoratedEnd(targetView)
-                if (childEnd >= helper.end - (helper.end - helper.endAfterPadding) / 2) {
-                    distance = helper.getDecoratedEnd(targetView) - helper.end
-                } else {
-                    distance = childEnd - helper.endAfterPadding
-                }
-            } else {
-                distance = helper.getDecoratedEnd(targetView) - helper.end
-            }
-            STLogUtil.w(tag, "开始计算 distanceToEnd=$distance")
-            return distance
+            STLogUtil.w(tag, "-------- 0 distance=$decoratedEnd, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedEnd=$decoratedEnd, startAfterPadding=$startAfterPadding")
+            return decoratedEnd
         }
 
         /**

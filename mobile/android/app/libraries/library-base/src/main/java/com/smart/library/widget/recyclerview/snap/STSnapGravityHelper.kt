@@ -396,24 +396,19 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             STLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(linearLayoutManager)}, isAtStartOfList=${isAtStartOfList(linearLayoutManager)}")
             STLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView")
 
-            // 当滚动到边界时, 且不需要强制回滚时, 强制设置目标 position
-            if ((targetPosition == linearLayoutManager.itemCount - 1)/*&& isAtEndOfList(layoutManager)*/) {
-                /**
-                 * START 与 reverseLayout 无关
-                 * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
-                 * 所以这里无需考虑 START 以及 reverseLayout 直接调用 findLastCompletelyVisibleItemPosition 就是最后的
-                 * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1
-                 * todo fixme
-                 */
+            val itemCount: Int = linearLayoutManager.itemCount
+            if (targetPosition != RecyclerView.NO_POSITION && targetPosition == itemCount - 1) {
                 targetPosition = if (enableLoadingFooterView) targetPosition - 1 else targetPosition
                 STLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}")
             }
 
             willScrollToTargetPosition = RecyclerView.NO_POSITION
-            STLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)")
-
-            onSnap?.invoke(targetPosition)
-
+            if (targetPosition != RecyclerView.NO_POSITION && targetPosition >= 0 && targetPosition < (if (enableLoadingFooterView) itemCount - 1 else itemCount)) {
+                STLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)")
+                onSnap?.invoke(targetPosition)
+            } else {
+                STLogUtil.e(tag, "targetPosition:$targetPosition is invalid, do not onSnap!")
+            }
             STLogUtil.e(tag, "notifyOnSnapped end")
         }
 

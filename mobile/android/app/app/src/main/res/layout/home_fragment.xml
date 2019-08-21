@@ -235,7 +235,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue_50"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
@@ -260,6 +260,12 @@
             android:textSize="12sp"
             tools:ignore="SmallSp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="8dp"
+            android:background="#E2E2E2" />
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -268,16 +274,16 @@
             <com.smart.template.widget.STCheckBoxGroupView
                 android:id="@+id/checkBoxGroupView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="40dp"
-                android:minHeight="40dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal" />
         </HorizontalScrollView>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/grey_400" />
+            android:layout_marginTop="8dp"
+            android:background="#E2E2E2" />
 
         <com.smart.template.widget.STRecyclerPagerView
             android:id="@+id/pagerRecyclerView"

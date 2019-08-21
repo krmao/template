@@ -141,9 +141,9 @@ class HomeFragment : STBaseFragment() {
         // 服务端 requestNextIndex 从 0 开始算第一页
         val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
                 mutableListOf(
-                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
-                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
-                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
+                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "景点"),
+                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "美食"),
+                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "酒店"),
                         STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
                                 0,
                                 1 * getScare(3),
@@ -155,7 +155,7 @@ class HomeFragment : STBaseFragment() {
                                 7 * getScare(3),
                                 8 * getScare(3),
                                 9 * getScare(3)
-                        ), "1000-10")
+                        ), "购物")
                 )
 
         var requestCount = 0
@@ -218,7 +218,8 @@ class HomeFragment : STBaseFragment() {
          * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
          * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
          */
-        val dpPadding = STSystemUtil.getPxFromDp(10f).toInt()
+        val dpPadding5 = STSystemUtil.getPxFromDp(5f).toInt()
+        val dpPadding15 = STSystemUtil.getPxFromDp(15f).toInt()
         checkBoxGroupView.initialize(
                 enableSingleCheck = true,
                 enableFitCenter = true,
@@ -229,9 +230,11 @@ class HomeFragment : STBaseFragment() {
                 { title: String ->
                     TextView(context).apply {
                         text = title
-                        setTextColor(Color.BLACK)
-                        setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
-                        setBackgroundColor(Color.LTGRAY)
+                        textSize = 14f
+                        @Suppress("DEPRECATION")
+                        setTextColor(resources.getColorStateList(R.color.home_checkbox_selected_color))
+                        setBackgroundResource(R.drawable.home_checkbox_bg_selector)
+                        setPadding(dpPadding15, dpPadding5, dpPadding15, dpPadding5)
                     }
                 },
                 updateViewOnCheckChangedListener =
@@ -240,8 +243,7 @@ class HomeFragment : STBaseFragment() {
                     changedViewPositionList.forEach { position: Int ->
                         val itemChangedView: TextView = originViewList[position] as TextView
                         val isChecked = checkBoxGroupView.isChecked(position)
-                        itemChangedView.setBackgroundColor(if (isChecked) Color.BLUE else Color.LTGRAY)
-                        itemChangedView.setTextColor(if (isChecked) Color.WHITE else Color.BLACK)
+                        itemChangedView.isSelected = isChecked
                     }
                 })
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)

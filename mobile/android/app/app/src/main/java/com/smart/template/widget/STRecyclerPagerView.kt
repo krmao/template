@@ -1,6 +1,7 @@
 package com.smart.template.widget
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
@@ -45,15 +46,16 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
                 snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
-                viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "加载出错了") },
-                viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "数据加载中...") },
-                viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultFooterView(context, "没有更多了...") },
-                viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据维护中...") },
-                viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = { _, _ -> STEmptyLoadingWrapper.createDefaultEmptyView(context, "数据加载中...") }
+                viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+                viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+                viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+                viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+                viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
         ): View {
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
             val recyclerView = STRecyclerView(context)
+            recyclerView.setBackgroundColor(Color.WHITE)
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
@@ -121,11 +123,16 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             onRecyclerViewBindViewHolder: (pagerModel: PagerModel<T>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
-            onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit
+            onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
+            viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
     ) {
         pageMargin = 0
         offscreenPageLimit = initPagerDataList.size
-        adapter = STPagerRecyclerViewAdapter(context, initPagerDataList, requestLoadMore, { currentItem }, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap)
+        adapter = STPagerRecyclerViewAdapter(context, initPagerDataList, requestLoadMore, { currentItem }, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyLoading)
     }
 
     @JvmOverloads
@@ -247,7 +254,12 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             private val onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             private val snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
-            private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit
+            private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
+            private val viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            private val viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            private val viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            private val viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
+            private val viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
     ) : PagerAdapter() {
 
         override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
@@ -257,7 +269,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         fun getItem(position: Int): PagerModel<M> = initPagerDataList[position]
 
         override fun instantiateItem(container: ViewGroup, pagerIndex: Int): Any {
-            return createDefaultRecyclerView(context, initPagerDataList, requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap).apply {
+            return createDefaultRecyclerView(context, initPagerDataList, requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyLoading).apply {
                 container.addView(this)
             }
         }

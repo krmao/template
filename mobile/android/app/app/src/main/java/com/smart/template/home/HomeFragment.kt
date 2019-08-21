@@ -15,6 +15,7 @@ import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
+import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
@@ -205,6 +206,9 @@ class HomeFragment : STBaseFragment() {
                 snap = STSnapGravityHelper.Snap.START,
                 onSnap = { pagerIndex: Int, position: Int, data: Int ->
                     snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
+                },
+                viewEmpty = { parent: ViewGroup, viewType: Int ->
+                    STEmptyLoadingWrapper.createDefaultEmptyView(context, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 }
         )
 

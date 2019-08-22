@@ -33,11 +33,10 @@
         android:fullBackupContent="@xml/st_backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/st_app_name"
-        android:screenOrientation="portrait"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/LaunchTheme"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label,android:allowBackup">
+        tools:replace="android:label,android:allowBackup,android:supportsRtl">
 
         <activity
             android:name="com.smart.template.home.tab.HomeTabActivity"

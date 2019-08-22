@@ -41,8 +41,8 @@
 
         <activity
             android:name="com.smart.template.home.tab.HomeTabActivity"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>

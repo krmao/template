@@ -39,11 +39,14 @@ object STSystemUtil {
     @JvmStatic
     val appBitmap: Bitmap? by lazy { getAppBitmap() }
     @JvmStatic
-    val displayMetrics: DisplayMetrics by lazy { STBaseApplication.INSTANCE.resources.displayMetrics }
+    val displayMetrics: DisplayMetrics
+        get() = STBaseApplication.INSTANCE.resources.displayMetrics
     @JvmStatic
-    val screenWidth: Int by lazy { STBaseApplication.INSTANCE.resources.displayMetrics.widthPixels }
+    val screenWidth: Int
+        get() = displayMetrics.widthPixels
     @JvmStatic
-    val screenHeight: Int by lazy { STBaseApplication.INSTANCE.resources.displayMetrics.heightPixels }
+    val screenHeight: Int
+        get() = displayMetrics.heightPixels
 
     /**
      * If your application is targeting an API level before 23 (Android M) then both:ContextCompat.CheckSelfPermission and Context.checkSelfPermission doesn't work and always returns 0 (PERMISSION_GRANTED). Even if you run the application on Android 6.0 (API 23).

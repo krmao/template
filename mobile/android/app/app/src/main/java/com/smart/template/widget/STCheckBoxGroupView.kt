@@ -29,7 +29,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * 单选/多选 模式, 单选模式下设置多个选中会抛出异常
      */
     var enableSingleCheck = true
-    private var enableFitCenter = true // item 数量 不足时居中, 等分宽度, 需设置 minWidth
+    private var enableDividerWeight = false // item 数量 不足时居中, 等分宽度, 需设置 minWidth
+    private var enableDividerEdgesWeight = false // 有时需求最左边最右边指定宽度
+    private var dividerWeight: Float = 0f
 
     private var updateViewOnCheckChangedList: MutableList<(checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit> = mutableListOf()
     private var createUncheckedItemView: ((title: String) -> View)? = null
@@ -44,17 +46,20 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     /**
      * 初始化时全部不选中, 不会触发 updateViewOnCheckChanged
      * 务必手动调用 setCheckedWithUpdateViewStatus
-     * @param enableFitCenter 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
-     * @param fitCenterMinimumSize enableFitCenter==true 的时候必须设置, 宽度不足时 等分剩余空间
+     * @param enableDividerWeight 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
+     * @param minimumWidthOrHeight enableDividerWeight==true 的时候必须设置, 宽度不足时 等分剩余空间
      */
-    fun initialize(enableSingleCheck: Boolean, enableFitCenter: Boolean, fitCenterMinimumSize: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+    @JvmOverloads
+    fun initialize(enableSingleCheck: Boolean = true, enableDividerWeight: Boolean = false, enableDividerEdgesWeight: Boolean = false, dividerWeight: Float = 1f, minimumWidthOrHeight: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
         this.enableSingleCheck = enableSingleCheck
-        this.enableFitCenter = enableFitCenter
+        this.enableDividerWeight = enableDividerWeight
+        this.enableDividerEdgesWeight = enableDividerEdgesWeight
+        this.dividerWeight = dividerWeight
 
         if (orientation == HORIZONTAL) {
-            minimumWidth = fitCenterMinimumSize
+            minimumWidth = minimumWidthOrHeight
         } else {
-            minimumHeight = fitCenterMinimumSize
+            minimumHeight = minimumWidthOrHeight
         }
 
         this.createUncheckedItemView = createUncheckedItemView
@@ -95,13 +100,18 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
                 uncheckedItemView.tag = false // 初始化强制不选中, 不触发 updateViewOnCheckChanged
                 uncheckedItemView.setOnClickListener(onItemClickListener)
 
-                if (enableFitCenter) {
+                if (enableDividerWeight) {
                     val indexAtChildren: Int = getIndexAtChildren(position)
-                    if (itemViewList.isEmpty()) {
-                        addDividerViewForFitCenter(0) // 第一个主动添加 dividerView
+                    if (itemViewList.isEmpty()) { // set first divider view weight
+                        addDividerViewForFitCenter(0, if (enableDividerEdgesWeight) this.dividerWeight else 0f) // 第一个主动添加 dividerView
+                    }
+                    if (enableDividerEdgesWeight && itemViewList.isNotEmpty() && position == itemViewList.size) {
+                        if (enableDividerEdgesWeight) { // reset last divider view weight
+                            (getChildAt(getIndexAtChildren(position) - 1).layoutParams as LayoutParams).weight = this.dividerWeight
+                        }
                     }
                     addView(uncheckedItemView, indexAtChildren)
-                    addDividerViewForFitCenter(indexAtChildren + 1) // 因为每次添加 itemView 都会在后面追加一个 dividerView, 所以第一个需要额外观照
+                    addDividerViewForFitCenter(indexAtChildren + 1, if (!enableDividerEdgesWeight && position == itemViewList.size) 0f else this.dividerWeight) // 因为每次添加 itemView 都会在后面追加一个 dividerView, 所以第一个需要额外观照
                 } else {
                     addView(uncheckedItemView, position)
                 }
@@ -112,12 +122,13 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
 
     /**
      * 标签栏布局, 为了最优雅的平分
-     * position -> 0           1           2           3           4           5           6           7           8
+     * position ->             0                       1                       2                       3
+     * index    -> 0           1           2           3           4           5           6           7           8
      * Views    -> DividerView RadioButton DividerView RadioButton DividerView RadioButton DividerView RadioButton DividerView  // 第一个最后一个为 DividerView
      * 在 itemViewList 中的索引 映射 children 中的索引
      */
     private fun getIndexAtChildren(position: Int): Int {
-        return if (enableFitCenter) position * 2 + 1 else position
+        return if (enableDividerWeight) position * 2 + 1 else position
     }
 
     /**
@@ -222,9 +233,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     /**
      * 当标签 宽度总和 不足父 View 宽度 的时候, 标签平分剩余空间，利用 该view 进行伸缩剩余空间
      */
-    private fun addDividerViewForFitCenter(indexAtChildren: Int) {
+    private fun addDividerViewForFitCenter(indexAtChildren: Int, weight: Float) {
         val dividerView: View = View(context).apply { setBackgroundColor(Color.TRANSPARENT) }
-        addView(dividerView, indexAtChildren, LayoutParams(0, 0).apply { weight = 1f })
+        addView(dividerView, indexAtChildren, LayoutParams(0, 0).apply { this.weight = weight })
     }
 
     private fun setCheckedWithoutUpdateViewStatus(itemView: View?, checked: Boolean): List<View> {

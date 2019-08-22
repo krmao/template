@@ -1,12 +1,14 @@
 package com.smart.template.home
 
 import android.annotation.SuppressLint
-import android.graphics.Color
+import android.content.res.Configuration.ORIENTATION_UNDEFINED
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
@@ -15,21 +17,30 @@ import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
+import com.smart.library.util.rx.RxBus
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
+import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.home.test.*
 import com.smart.template.widget.STCheckBoxGroupView
 import com.smart.template.widget.STRecyclerPagerView
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
 import org.jetbrains.anko.async
+import android.util.DisplayMetrics
+
 
 class HomeFragment : STBaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.home_fragment, container, false)
+    private var lastConfigOrientation: Int = ORIENTATION_UNDEFINED
+    private var disposable: Disposable? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.home_fragment, container, false)
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -218,12 +229,10 @@ class HomeFragment : STBaseFragment() {
          * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
          * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
          */
-        val dpPadding5 = STSystemUtil.getPxFromDp(5f).toInt()
-        val dpPadding15 = STSystemUtil.getPxFromDp(15f).toInt()
+        val dpPadding = STSystemUtil.getPxFromDp(5f).toInt()
+        val dpMargin = STSystemUtil.getPxFromDp(15f).toInt()
         checkBoxGroupView.initialize(
-                enableSingleCheck = true,
-                enableFitCenter = true,
-                fitCenterMinimumSize = STSystemUtil.screenWidth,
+                minimumWidthOrHeight = STSystemUtil.screenWidth,
                 titleList = allData.map
                 { it.extrasData as? String ?: "" }.toMutableList(),
                 createUncheckedItemView =
@@ -231,10 +240,16 @@ class HomeFragment : STBaseFragment() {
                     TextView(context).apply {
                         text = title
                         textSize = 14f
+                        gravity = Gravity.CENTER
                         @Suppress("DEPRECATION")
                         setTextColor(resources.getColorStateList(R.color.home_checkbox_selected_color))
                         setBackgroundResource(R.drawable.home_checkbox_bg_selector)
-                        setPadding(dpPadding15, dpPadding5, dpPadding15, dpPadding5)
+                        setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
+                        layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                            weight = 2f
+                            leftMargin = dpMargin
+                            rightMargin = dpMargin
+                        }
                     }
                 },
                 updateViewOnCheckChangedListener =
@@ -247,5 +262,23 @@ class HomeFragment : STBaseFragment() {
                     }
                 })
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)
+
+        lastConfigOrientation = resources.configuration.orientation
+
+        STLogUtil.v("home", "init width:${STSystemUtil.screenWidth}, height:${STSystemUtil.screenHeight}")
+        disposable = RxBus.toObservable(HomeTabActivity.ConfigurationEvent::class.java).subscribe { configurationEvent ->
+            val newConfigOrientation = configurationEvent.newConfig?.orientation ?: ORIENTATION_UNDEFINED
+            if (newConfigOrientation != ORIENTATION_UNDEFINED && ORIENTATION_UNDEFINED != lastConfigOrientation) {
+                STLogUtil.w("home", "onConfigurationChanged width:${STSystemUtil.screenWidth}, height:${STSystemUtil.screenHeight}")
+                checkBoxGroupView.minimumWidth = STSystemUtil.screenWidth
+                lastConfigOrientation = newConfigOrientation
+            }
+        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
+    }
+
 }

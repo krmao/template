@@ -72,12 +72,12 @@ class HomeTabActivity : STBaseActivity() {
      * 华为 p20 手机 android 版本为 9 执行的生命周期顺序为
      * onConfigurationChanged 其它任何生命周期都不会调用
      *
-     * 1+ 5T 手机 android 版本为 9 执行的生命周期顺序为(与华为系统同样的代码)
+     * 1+ 5T/小米4 6.0.1 手机 android 版本为 9 执行的生命周期顺序为(与华为系统同样的代码)
      * onPause -> onSaveInstanceState -> onDestroy -> onCreate -> onStart -> onRestoreInstanceState -> onResume
      *
      * ------------------------------------------------
      * activity 配置 android:configChanges="orientation|screenSize"
-     * 则 华为 p20/1+ 5T 手机 执行的生命周期顺序为
+     * 则 华为 p20/1+ 5T/小米4 6.0.1 手机 执行的生命周期顺序为
      * onConfigurationChanged 其它任何生命周期都不会调用
      *
      * keyboardHidden 是否配置并没有影响实验结果

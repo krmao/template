@@ -45,3 +45,8 @@
 -dontnote com.jude.**
 -dontwarn com.jude.**
 -keep class com.jude.** { *; }
+
+# 百度地图
+-keep class com.baidu.** {*;}
+-keep class mapsdkvi.com.** {*;}
+-dontwarn com.baidu.**

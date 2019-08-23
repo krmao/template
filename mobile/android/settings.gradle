@@ -7,6 +7,10 @@ include(':app'); project(":app").projectDir = new File(settingsDir, "app/app")
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "app/libraries/library-base")
 
+if (gradle.ext.modules.map.enable == true) {
+    include(":library-map"); project(":library-map").projectDir = new File(settingsDir, "app/libraries/library-map")
+}
+
 if (gradle.ext.modules.hybird.enable == true) {
     include(":library-hybird"); project(":library-hybird").projectDir = new File(settingsDir, "app/libraries/library-hybird")
 }

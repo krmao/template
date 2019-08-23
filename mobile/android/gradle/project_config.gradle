@@ -12,6 +12,13 @@ gradle.ext {
             'flutter'      : ['enable': true],
             'reactNative'  : ['enable': false],
             'hybird'       : ['enable': false],
+            'map'          : [
+                    'enable'        : true,
+                    'enableMapNames': 'baidu', // baidu,gaode,google 支持多个, 逗号分隔
+                    'baiduKey'      : 'A2SNanQqBaGEtIrLgqlaMgU8VqiZvuEh',
+                    'gaodeKey'      : '',
+                    'googleKey'     : ''
+            ],
     ]
 
     versions = [

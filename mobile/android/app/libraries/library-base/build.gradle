@@ -72,9 +72,6 @@ dependencies {
 
     api(name: "bspatch-0.0.2", ext: "aar")
     // api 'com.smart.library.util:bspatch:0.0.2'
-
-    /******* 定位相关 ******************************************************************************/
-    compileOnly "com.amap.api:location:4.0.1"  // 定位功能
 }
 
 /*apply plugin: 'maven'

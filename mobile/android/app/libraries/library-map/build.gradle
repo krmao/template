@@ -1,0 +1,33 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    resourcePrefix "st_"
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    api project(':library-template-base')
+
+    if (gradle.ext.modules.map.enableMapNames.contains("baidu")) {
+        compileOnly "com.amap.api:location:4.0.1"
+        api files('libs/BaiduLBS_Android.jar')
+    }
+    if (gradle.ext.modules.map.enableMapNames.contains("gaode")) {
+        compile "com.amap.api:location:4.0.1"
+        compileOnly files('libs/BaiduLBS_Android.jar')
+    }
+    if (gradle.ext.modules.map.enableMapNames.contains("google")) {
+        compileOnly "com.amap.api:location:4.0.1"
+        compileOnly files('libs/BaiduLBS_Android.jar')
+    }
+}

@@ -110,7 +110,7 @@ data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var
         @Suppress("NON_EXHAUSTIVE_WHEN")
         fun convert(fromLatLon: STLatLng?, toLatLngType: STLatLngType?): STLatLng? {
             if (fromLatLon?.isValid() == true && toLatLngType != null) {
-                if ( fromLatLon.type != toLatLngType) {
+                if (fromLatLon.type != toLatLngType) {
 
                     fun convertGCJ02ToBD09(gcj02Lat: Double, gcj02Lon: Double): STLatLng {
                         val z = sqrt(gcj02Lon * gcj02Lon + gcj02Lat * gcj02Lat) + 0.00002 * sin(gcj02Lat * kotlin.math.PI)
@@ -158,24 +158,8 @@ data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var
                             val gcj02Lon: Double = fromLatLon.longitude
 
                             when (toLatLngType) {
-                                STLatLngType.WGS84 -> {
-                                    var dLat = transformLat(gcj02Lon - 105.0, gcj02Lat - 35.0)
-                                    var dLon = transformLon(gcj02Lon - 105.0, gcj02Lat - 35.0)
-                                    val radLat = gcj02Lat / 180.0 * PI
-                                    var magic = sin(radLat)
-                                    magic = 1 - EE * magic * magic
-                                    val sqrtMagic = sqrt(magic)
-                                    dLat = dLat * 180.0 / (EARTH_RADIUS * (1 - EE) / (magic * sqrtMagic) * PI)
-                                    dLon = dLon * 180.0 / (EARTH_RADIUS / sqrtMagic * cos(radLat) * PI)
-                                    val mgLat = gcj02Lat + dLat
-                                    val mgLon = gcj02Lon + dLon
-                                    return STLatLng(mgLat, mgLon, STLatLngType.WGS84)
-                                }
-                                STLatLngType.BD09 -> {
-                                    val z = sqrt(gcj02Lon * gcj02Lon + gcj02Lat * gcj02Lat) + 0.00002 * sin(gcj02Lat * PI)
-                                    val theta = atan2(gcj02Lat, gcj02Lon) + 0.000003 * cos(gcj02Lon * PI)
-                                    return STLatLng(z * sin(theta) + 0.006, z * cos(theta) + 0.0065, STLatLngType.BD09)
-                                }
+                                STLatLngType.WGS84 -> convertGCJ02ToWGS84(gcj02Lat, gcj02Lon)
+                                STLatLngType.BD09 -> convertGCJ02ToBD09(gcj02Lat, gcj02Lon)
                             }
                         }
                         STLatLngType.WGS84 -> {
@@ -194,13 +178,7 @@ data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var
                             val bd09Lat: Double = fromLatLon.latitude
                             val bd09Lon: Double = fromLatLon.longitude
                             when (toLatLngType) {
-                                STLatLngType.GCJ02 -> {
-                                    val x = bd09Lon - 0.0065
-                                    val y = bd09Lat - 0.006
-                                    val z = sqrt(x * x + y * y) - 0.00002 * sin(y * PI)
-                                    val theta = atan2(y, x) - 0.000003 * cos(x * PI)
-                                    return STLatLng(z * sin(theta), z * cos(theta), STLatLngType.GCJ02)
-                                }
+                                STLatLngType.GCJ02 -> convertBD09ToGCJ02(bd09Lat, bd09Lon)
                                 STLatLngType.WGS84 -> {
                                     val gcj02LatLng = convertBD09ToGCJ02(bd09Lat, bd09Lon)
                                     return convertGCJ02ToWGS84(gcj02LatLng.latitude, gcj02LatLng.longitude)

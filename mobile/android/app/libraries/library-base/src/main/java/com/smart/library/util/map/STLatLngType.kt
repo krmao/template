@@ -14,5 +14,5 @@ package com.smart.library.util.map
  */
 @Suppress("unused")
 enum class STLatLngType {
-    UNKNOWN, GCJ02, WGS84, BD09
+    GCJ02, WGS84, BD09
 }

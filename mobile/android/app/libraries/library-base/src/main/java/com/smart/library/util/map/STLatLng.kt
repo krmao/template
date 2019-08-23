@@ -17,7 +17,7 @@ import kotlin.math.*
  *      百度标准，百度 SDK，百度地图，geoCoding 使用 (百度在火星坐标上来个二次加密)
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var type: STLatLngType = STLatLngType.UNKNOWN) {
+data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var type: STLatLngType = STLatLngType.GCJ02) {
 
     companion object {
 
@@ -110,7 +110,7 @@ data class STLatLng(var latitude: Double = 0.0, var longitude: Double = 0.0, var
         @Suppress("NON_EXHAUSTIVE_WHEN")
         fun convert(fromLatLon: STLatLng?, toLatLngType: STLatLngType?): STLatLng? {
             if (fromLatLon?.isValid() == true && toLatLngType != null) {
-                if (fromLatLon.type != STLatLngType.UNKNOWN && toLatLngType != STLatLngType.UNKNOWN && fromLatLon.type != toLatLngType) {
+                if ( fromLatLon.type != toLatLngType) {
 
                     fun convertGCJ02ToBD09(gcj02Lat: Double, gcj02Lon: Double): STLatLng {
                         val z = sqrt(gcj02Lon * gcj02Lon + gcj02Lat * gcj02Lat) + 0.00002 * sin(gcj02Lat * kotlin.math.PI)

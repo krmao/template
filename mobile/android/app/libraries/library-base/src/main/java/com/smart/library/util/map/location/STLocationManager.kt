@@ -5,7 +5,7 @@ import android.app.Activity
 import android.location.Location
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.util.map.STMapUtil
+import com.smart.library.util.map.STLatLng
 import com.smart.library.util.map.location.client.STILocationClient
 import com.smart.library.util.map.location.client.impl.STLocationClientForAMap
 import com.smart.library.util.rx.permission.RxPermissions
@@ -56,7 +56,7 @@ object STLocationManager {
     @JvmStatic
     var cacheLocation: Location? = locationClient?.getLastKnownLocation()
         internal set(value) {
-            if (STMapUtil.isValidLatLng(value?.latitude, value?.longitude)) {
+            if (STLatLng.isValidLatLng(value?.latitude, value?.longitude)) {
                 field = value
                 cacheLocationTime = System.currentTimeMillis()
             }

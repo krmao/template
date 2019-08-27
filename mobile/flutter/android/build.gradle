@@ -5,8 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath 'com.kezong:fat-aar:1.1.7'
+        classpath 'com.android.tools.build:gradle:3.4.1' // fat aar 暂不支持 3.5.0
+        classpath 'com.kezong:fat-aar:1.2.5'
     }
 
     ext {
@@ -21,7 +21,7 @@ buildscript {
         if (localPropertiesFile.exists()) localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
 
         flutterRoot = localProperties.getProperty('flutter.sdk')
-        if (flutterRoot == null) throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+        if (flutterRoot == null) throw new Exception("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 
         flutterVersionCode = localProperties.getProperty('flutter.versionCode')
         if (flutterVersionCode == null) flutterVersionCode = '1'

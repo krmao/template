@@ -30,7 +30,8 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs '../app/src/main/java/io'
+                srcDirs 'src'
+                srcDirs "../app/src/main/java/io"
             }
         }
     }

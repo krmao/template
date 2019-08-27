@@ -2,6 +2,7 @@
 * [https://flutter.io/](https://flutter.io/)
 * [https://flutterchina.club/setup-macos/](https://flutterchina.club/setup-macos/)
 * [https://flutter-io.cn/](https://flutter-io.cn/)
+* [✓] Flutter (Channel stable, v1.7.8+hotfix.4, on Mac OS X 10.14.6 18G87, locale zh-Hans-CN)
 
 ### 克隆 flutter 代码
 ```
@@ -45,6 +46,11 @@ source ~/.bash_profile
 ### 检查环境
 ```
 flutter doctor
+```
+
+### flutter 升级
+```
+flutter upgrade
 ```
 
 ### 直接运行到已连接设备(注意同一时刻必须只有一台设备连接, ios 模拟器/android 真机 二选一)

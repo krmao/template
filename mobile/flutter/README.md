@@ -48,6 +48,21 @@ source ~/.bash_profile
 flutter doctor
 ```
 
+### 查看当前分支
+```
+flutter channel
+```
+
+### 切换当前分支
+```
+flutter channel master
+cd ~/workspace/flutter
+git branch
+git pull
+flutter upgrade
+flutter doctor
+```
+
 ### flutter 升级
 ```
 flutter upgrade
@@ -65,7 +80,7 @@ flutter packages get --verbose
 
 # 开始构建发布包
 flutter build apk --release --verbose
- 
+
 # 安装到设备
 flutter install --verbose
 ```
@@ -94,3 +109,6 @@ cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
 
 ### others
 * [官方不支持热更新](https://github.com/flutter/flutter/issues/14330#issuecomment-485565194)
+* [集成到 ios 现有项目](https://github.com/flutter/flutter/wiki/Upgrading-Flutter-added-to-existing-iOS-Xcode-project) [新版集成方式代码变动](https://github.com/flutter/flutter/pull/36793)
+* [集成到现有项目](https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps)
+* [老板 ios 集成方式 升级到 新版](https://github.com/flutter/flutter/wiki/Upgrading-Flutter-added-to-existing-iOS-Xcode-project)

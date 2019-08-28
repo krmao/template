@@ -9,10 +9,6 @@
 #import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
-
-@end
-
 @implementation AppDelegate
 
 

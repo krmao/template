@@ -13,6 +13,7 @@
 		F84514F222B8BFE9003D74D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84514F122B8BFE9003D74D0 /* Assets.xcassets */; };
 		F84514F522B8BFE9003D74D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */; };
 		F84514F822B8BFE9003D74D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F84514F722B8BFE9003D74D0 /* main.m */; };
+		F89254462316229300B34984 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89254452316229300B34984 /* libc++.tbd */; };
 		FC2E6859B24C262C79451A4E /* libPods-App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADC1BF1906CEDEA0371411BE /* libPods-App.a */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		F84514F422B8BFE9003D74D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F84514F622B8BFE9003D74D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84514F722B8BFE9003D74D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F89254452316229300B34984 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89254462316229300B34984 /* libc++.tbd in Frameworks */,
 				FC2E6859B24C262C79451A4E /* libPods-App.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,6 +50,7 @@
 		1C4EB46FA1A02CBF7407F30D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F89254452316229300B34984 /* libc++.tbd */,
 				ADC1BF1906CEDEA0371411BE /* libPods-App.a */,
 			);
 			name = Frameworks;
@@ -103,11 +107,11 @@
 			buildConfigurationList = F84514FB22B8BFE9003D74D0 /* Build configuration list for PBXNativeTarget "App" */;
 			buildPhases = (
 				42C6717D1705E065382728CD /* [CP] Check Pods Manifest.lock */,
-				F80E323122B8EE7F00E0A1C9 /* Run Script */,
+				F89254482316261800B34984 /* ShellScript */,
 				F84514E122B8BFE9003D74D0 /* Sources */,
 				F84514E222B8BFE9003D74D0 /* Frameworks */,
 				F84514E322B8BFE9003D74D0 /* Resources */,
-				F80E323222B8F01900E0A1C9 /* Thin Binary */,
+				F8925447231622D100B34984 /* Thin Binary */,
 				1A4E5D8AA61BB39459C3BD10 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -204,25 +208,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F80E323122B8EE7F00E0A1C9 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed\n";
-		};
-		F80E323222B8F01900E0A1C9 /* Thin Binary */ = {
+		F8925447231622D100B34984 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,6 +225,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" thin\n";
+		};
+		F89254482316261800B34984 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n\"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

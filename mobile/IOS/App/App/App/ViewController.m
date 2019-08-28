@@ -9,24 +9,33 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 #import <Flutter/Flutter.h>
+#import "FlutterRouter.h"
 
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
-- (IBAction)onClick:(id)sender {
-    
-    FlutterEngine *flutterEngine = [(AppDelegate *)[[UIApplication sharedApplication] delegate] flutterEngine];
-    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:flutterEngine nibName:nil bundle:nil];
-    [self presentViewController:flutterViewController animated:false completion:nil];
-    
-}
     
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UIButton *nativeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    nativeButton.frame = [UIScreen.mainScreen bounds];
+    nativeButton.backgroundColor = [UIColor redColor];
+    [nativeButton setTitle:@"open flutter order page" forState:UIControlStateNormal];
+    [nativeButton addTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nativeButton];
+    
 }
 
+- (void)onClick {
+    NSLog(@"you clicked");
+    NSDictionary *params=@{@"aaa":@"bbb"};
+    [[FlutterRouter sharedInstance] openPage:@"flutter://flutter/settings" params:params animated:true completion:^(BOOL finished) {
+        NSLog(@"completion:finished=%d", finished);
+    }];
+}
 
 @end

@@ -8,23 +8,39 @@
 
 #import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
 #import "AppDelegate.h"
+#import "FlutterRouter.h"
+#import "ViewController.h"
 
 @implementation AppDelegate
 
-
 // This override can be omitted if you do not have any Flutter Plugins.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.flutterEngine = [[FlutterEngine alloc] initWithName:@"io.flutter" project:nil];
-    [self.flutterEngine runWithEntrypoint:nil];
-    [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
-    return [super application:application didFinishLaunchingWithOptions:launchOptions];
-}
+    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
     
+    ViewController *vc = [[ViewController alloc] init];
+    UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    [FlutterRouter sharedInstance].navigationController = rvc;
+    
+    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:[FlutterRouter sharedInstance] onStart:^(FlutterViewController *fvc) {
+        NSLog(@"onStart");
+    }];
+    
+    self.window.rootViewController = rvc;
+    return YES;
+}
+
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    // Override point for customization after application launch.
 //    return YES;
 //}
 
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//        self.flutterEngine = [[FlutterEngine alloc] initWithName:@"io.flutter" project:nil];
+//        [self.flutterEngine runWithEntrypoint:nil];
+//        [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
+//    return [super application:application didFinishLaunchingWithOptions:launchOptions];
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

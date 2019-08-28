@@ -50,7 +50,7 @@ object FlutterManager {
              */
             override fun startActivity(context: Context, url: String, requestCode: Int): Boolean {
                 Debuger.log("startActivity url=$url")
-                return FlutterRouter.openPageByUrl(context, url, requestCode)
+                return FlutterRouter.openPageByUrl(contex t, url, requestCode)
             }
 
             override fun getSettings(): Map<*, *>? {

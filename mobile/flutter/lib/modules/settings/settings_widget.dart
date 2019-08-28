@@ -7,6 +7,7 @@ class SettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("SettingsWidget build");
     return Scaffold(
         backgroundColor: Colors.deepOrange,
         appBar: AppBar(

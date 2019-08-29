@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.smart.library.flutter">
+    package="com.smart.library.flutter.bundle">
 
     <!-- The INTERNET permission is required for development. Specifically,
         flutter needs it to communicate with the running application
@@ -13,24 +13,6 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application>
-        <activity
-            android:name="com.smart.library.flutter.views.FlutterOrderActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"/>
 
-        <activity
-            android:name="com.smart.library.flutter.views.FlutterSettingsActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"/>
-
-        <activity
-            android:name="com.smart.library.flutter.views.NativeMineActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
-            android:windowSoftInputMode="adjustResize"/>
     </application>
 </manifest>

@@ -6,7 +6,7 @@
     <!--android:theme="@style/STAppTheme.Translucent.Launch"-->
     <application>
         <activity
-            android:name=".FlutterActivity"
+            android:name="com.smart.library.flutter.FlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
@@ -20,21 +20,12 @@
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="false" />
         </activity>
+
         <activity
-            android:name="com.smart.library.flutter.views.NativeMainActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
-            android:hardwareAccelerated="true"
-            android:launchMode="standard"
+            android:name="com.smart.library.flutter.test.MineActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/STAppTheme.Translucent.Transparent"
-            android:windowSoftInputMode="adjustResize">
-            <!-- This keeps the window background of the activity showing
-                 until Flutter renders its first frame. It can be removed if
-                 there is no splash screen (such as the default splash screen
-                 defined in @style/LaunchTheme). -->
-            <meta-data
-                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="false" />
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

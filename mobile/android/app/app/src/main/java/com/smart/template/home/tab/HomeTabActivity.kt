@@ -1,20 +1,28 @@
 package com.smart.template.home.tab
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.FrameLayout
 import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.rx.RxBus
+import java.lang.ref.WeakReference
 
 class HomeTabActivity : STBaseActivity() {
+
+    var sRef: WeakReference<Activity>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         STLogUtil.d("home", "activity: onCreate")
         enableSwipeBack = false
         enableExitWithDoubleBackPressed = true
         super.onCreate(savedInstanceState)
+        sRef = WeakReference(this)
+        STBusManager.homeActivity = sRef
+
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
     }
@@ -42,6 +50,9 @@ class HomeTabActivity : STBaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         STLogUtil.d("home", "activity: onDestroy")
+
+        sRef?.clear()
+        sRef = null
     }
 
     override fun onNewIntent(intent: Intent?) {

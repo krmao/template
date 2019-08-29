@@ -1,8 +1,10 @@
 package com.smart.library.util.bus
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.smart.library.util.STLogUtil
+import java.lang.ref.WeakReference
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STBusManager {
@@ -13,6 +15,9 @@ object STBusManager {
         fun onUpgradeOnce(application: Application)
         fun onCall(context: Context?, busFunctionName: String, vararg params: Any)
     }
+
+    @JvmStatic
+    var homeActivity: WeakReference<Activity>? = null
 
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
     var isInit = false

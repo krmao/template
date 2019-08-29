@@ -23,22 +23,22 @@ open class STActivity : STBaseActivity() {
         @JvmOverloads
         @JvmStatic
         fun start(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            start(from, fragmentClass, args, 0)
+                start(from, fragmentClass, args, 0)
 
         @JvmOverloads
         @JvmStatic
         fun startNewTask(fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            STBaseApplication.INSTANCE.startActivity(getNewTaskIntent(STBaseApplication.INSTANCE, fragmentClass, args))
+                STBaseApplication.INSTANCE.startActivity(getNewTaskIntent(STBaseApplication.INSTANCE, fragmentClass, args))
 
         @JvmOverloads
         @JvmStatic
         fun startSingleTask(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            STBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
+                STBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
 
         @JvmOverloads
         @JvmStatic
         fun start(activity: Context?, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int) =
-            activity?.startActivity(getIntent(activity, themResId, fragmentClass, args))
+                activity?.startActivity(getIntent(activity, themResId, fragmentClass, args))
 
         @JvmStatic
         fun start(activity: Context?, intent: Intent?) = activity?.startActivity(intent)
@@ -58,7 +58,7 @@ open class STActivity : STBaseActivity() {
 
         @JvmStatic
         fun startForResultByCustomAnimation(activity: Activity?, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
-            startForResultByCustomAnimation(activity, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
+                startForResultByCustomAnimation(activity, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
 
         @JvmStatic
         fun startForResultByCustomAnimation(activity: Activity?, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
@@ -68,7 +68,7 @@ open class STActivity : STBaseActivity() {
 
         @JvmStatic
         fun startForResultByCustomAnimation(fragment: Fragment, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
-            startForResultByCustomAnimation(fragment, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
+                startForResultByCustomAnimation(fragment, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
 
         @JvmStatic
         fun startForResultByCustomAnimation(fragment: Fragment, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
@@ -81,21 +81,21 @@ open class STActivity : STBaseActivity() {
         /* Activity页面发起的，再由Activity来接收结果 如果由Fragment来接收结果，需要使用 {@link #startForResult(Fragment, int, Class, Bundle)} */
         @JvmStatic
         fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            startForResult(activity, 0, reqCode, fragmentClass, args)
+                startForResult(activity, 0, reqCode, fragmentClass, args)
 
         @JvmStatic
         fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            activity?.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
+                activity?.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            startForResult(fragment, 0, reqCode, fragmentClass, args)
+        fun startForResult(fragment: Fragment?, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
+                startForResult(fragment, 0, reqCode, fragmentClass, args)
 
         /* 由Fragment页面发起的，再由Fragment接收结果 */
         @JvmStatic
-        fun startForResult(fragment: Fragment, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-            fragment.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
+        fun startForResult(fragment: Fragment?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
+                fragment?.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
 
         @JvmStatic
         fun getIntent(context: Context?, fragmentClass: Class<*>, args: Bundle): Intent = getIntent(context, 0, fragmentClass, args)

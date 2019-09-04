@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <FlutterBoost.h>
 
-static const NSString * _Nonnull __strong URL_SETTINGS = @"flutter://flutter/settings";
-static const NSString * _Nonnull __strong URL_ORDER = @"flutter://flutter/order";
-static const NSString * _Nonnull __strong URL_MINE = @"flutter://native/mine";
+static NSString * _Nonnull __strong const URL_SETTINGS = @"flutter://flutter/settings";
+static NSString * _Nonnull __strong const URL_ORDER = @"flutter://flutter/order";
+static NSString * _Nonnull __strong const URL_MINE = @"flutter://native/mine";
 
 NS_ASSUME_NONNULL_BEGIN
 

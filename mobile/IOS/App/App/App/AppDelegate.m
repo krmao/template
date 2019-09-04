@@ -15,18 +15,24 @@
 
 // This override can be omitted if you do not have any Flutter Plugins.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    [self.window makeKeyAndVisible];
-    
-    ViewController *vc = [[ViewController alloc] init];
-    UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    [FlutterRouter sharedInstance].navigationController = rvc;
     
     [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:[FlutterRouter sharedInstance] onStart:^(FlutterViewController *fvc) {
         NSLog(@"onStart");
     }];
     
-    self.window.rootViewController = rvc;
+    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
+    
+    // 首页为 flutter 页面
+    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
+    [homeController setName:URL_ORDER params:@{}];
+    
+    // 首页为 native 页面
+    // ViewController *homeController = [[ViewController alloc] init];
+    UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:homeController];
+    [FlutterRouter sharedInstance].navigationController = rootViewController;
+    
+    self.window.rootViewController = rootViewController;
     return YES;
 }
 

@@ -12,8 +12,8 @@
 		F84514F222B8BFE9003D74D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84514F122B8BFE9003D74D0 /* Assets.xcassets */; };
 		F84514F522B8BFE9003D74D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */; };
 		F84514F822B8BFE9003D74D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F84514F722B8BFE9003D74D0 /* main.m */; };
+		F888F1BC231F953E00A07385 /* FlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F888F1BB231F953E00A07385 /* FlutterRouter.m */; };
 		F89254462316229300B34984 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89254452316229300B34984 /* libc++.tbd */; };
-		F892544B2316744900B34984 /* FlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F892544A2316744900B34984 /* FlutterRouter.m */; };
 		FC2E6859B24C262C79451A4E /* libPods-App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADC1BF1906CEDEA0371411BE /* libPods-App.a */; };
 /* End PBXBuildFile section */
 
@@ -30,9 +30,9 @@
 		F84514F422B8BFE9003D74D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F84514F622B8BFE9003D74D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84514F722B8BFE9003D74D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F888F1BA231F953E00A07385 /* FlutterRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlutterRouter.h; sourceTree = "<group>"; };
+		F888F1BB231F953E00A07385 /* FlutterRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlutterRouter.m; sourceTree = "<group>"; };
 		F89254452316229300B34984 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		F89254492316744900B34984 /* FlutterRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlutterRouter.h; sourceTree = "<group>"; };
-		F892544A2316744900B34984 /* FlutterRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlutterRouter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +87,8 @@
 		F84514E722B8BFE9003D74D0 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				F888F1BA231F953E00A07385 /* FlutterRouter.h */,
+				F888F1BB231F953E00A07385 /* FlutterRouter.m */,
 				F84514E822B8BFE9003D74D0 /* AppDelegate.h */,
 				F84514E922B8BFE9003D74D0 /* AppDelegate.m */,
 				F84514EB22B8BFE9003D74D0 /* ViewController.h */,
@@ -95,8 +97,6 @@
 				F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */,
 				F84514F622B8BFE9003D74D0 /* Info.plist */,
 				F84514F722B8BFE9003D74D0 /* main.m */,
-				F89254492316744900B34984 /* FlutterRouter.h */,
-				F892544A2316744900B34984 /* FlutterRouter.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -252,7 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F84514ED22B8BFE9003D74D0 /* ViewController.m in Sources */,
-				F892544B2316744900B34984 /* FlutterRouter.m in Sources */,
+				F888F1BC231F953E00A07385 /* FlutterRouter.m in Sources */,
 				F84514F822B8BFE9003D74D0 /* main.m in Sources */,
 				F84514EA22B8BFE9003D74D0 /* AppDelegate.m in Sources */,
 			);
@@ -392,6 +392,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -410,6 +411,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

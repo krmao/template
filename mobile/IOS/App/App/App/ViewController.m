@@ -34,7 +34,7 @@
     NSLog(@"you clicked");
     NSDictionary *params=@{@"aaa":@"bbb"};
     
-    [[FlutterRouter sharedInstance] open:@"flutter://flutter/settings" urlParams:params exts:@{} completion:^(BOOL finished) {
+    [[FlutterRouter sharedInstance] open:URL_SETTINGS urlParams:params exts:@{} completion:^(BOOL finished) {
         NSLog(@"completion:finished=%d", finished);
     }];
 }

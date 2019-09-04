@@ -7,6 +7,7 @@
 //
 
 #import "FlutterRouter.h"
+#import "MineViewController.h"
 
 @implementation FlutterRouter
 
@@ -36,6 +37,7 @@
 // --------------------------------------------------
 
 - (void)close:(nonnull NSString *)uid result:(nonnull NSDictionary *)result exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
+    NSLog(@"close -> %@", uid);
     FLBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
     if([vc isKindOfClass:FLBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
         [vc dismissViewControllerAnimated:true completion:^{}];
@@ -45,6 +47,18 @@
 }
 
 - (void)open:(nonnull NSString *)url urlParams:(nonnull NSDictionary *)urlParams exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
+    NSLog(@"open -> %@", url);
+    
+    if([URL_MINE isEqualToString:url]){
+        MineViewController *vc = [[MineViewController alloc] init];
+        if([urlParams[@"present"] boolValue]){
+            [self.navigationController presentViewController:vc animated:true completion:^{}];
+        }else{
+            [self.navigationController pushViewController:vc animated:true];
+        }
+        return;
+    }
+    
     if([urlParams[@"present"] boolValue]){
         FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
         [vc setName:url params:urlParams];

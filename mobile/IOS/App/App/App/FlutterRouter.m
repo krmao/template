@@ -8,6 +8,7 @@
 
 #import "FlutterRouter.h"
 #import "MineViewController.h"
+#import "STFlutterViewController.h"
 
 @implementation FlutterRouter
 
@@ -59,14 +60,14 @@
         return;
     }
     
+    STFlutterViewController *flutterViewController = [STFlutterViewController create:url urlParams:urlParams];
+    // FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+    // [vc setName:url params:urlParams];
+    
     if([urlParams[@"present"] boolValue]){
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:url params:urlParams];
-        [self.navigationController presentViewController:vc animated:true completion:^{}];
+        [self.navigationController presentViewController:flutterViewController animated:true completion:^{}];
     }else{
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:url params:urlParams];
-        [self.navigationController pushViewController:vc animated:true];
+        [self.navigationController pushViewController:flutterViewController animated:true];
     }
 }
 

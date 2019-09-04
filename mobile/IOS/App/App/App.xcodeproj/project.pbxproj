@@ -13,7 +13,9 @@
 		F84514F522B8BFE9003D74D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */; };
 		F84514F822B8BFE9003D74D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F84514F722B8BFE9003D74D0 /* main.m */; };
 		F888F1BC231F953E00A07385 /* FlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F888F1BB231F953E00A07385 /* FlutterRouter.m */; };
+		F888F1C6231F9D2000A07385 /* STFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888F1C5231F9D2000A07385 /* STFlutterViewController.m */; };
 		F89254462316229300B34984 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89254452316229300B34984 /* libc++.tbd */; };
+		F8C2EC34231FA3400053596C /* STNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C2EC33231FA3400053596C /* STNavigationController.m */; };
 		FC2E6859B24C262C79451A4E /* libPods-App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADC1BF1906CEDEA0371411BE /* libPods-App.a */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +34,11 @@
 		F84514F722B8BFE9003D74D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F888F1BA231F953E00A07385 /* FlutterRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlutterRouter.h; sourceTree = "<group>"; };
 		F888F1BB231F953E00A07385 /* FlutterRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlutterRouter.m; sourceTree = "<group>"; };
+		F888F1C4231F9D2000A07385 /* STFlutterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterViewController.h; sourceTree = "<group>"; };
+		F888F1C5231F9D2000A07385 /* STFlutterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterViewController.m; sourceTree = "<group>"; };
 		F89254452316229300B34984 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		F8C2EC32231FA3400053596C /* STNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STNavigationController.h; sourceTree = "<group>"; };
+		F8C2EC33231FA3400053596C /* STNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +103,10 @@
 				F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */,
 				F84514F622B8BFE9003D74D0 /* Info.plist */,
 				F84514F722B8BFE9003D74D0 /* main.m */,
+				F888F1C4231F9D2000A07385 /* STFlutterViewController.h */,
+				F888F1C5231F9D2000A07385 /* STFlutterViewController.m */,
+				F8C2EC32231FA3400053596C /* STNavigationController.h */,
+				F8C2EC33231FA3400053596C /* STNavigationController.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -251,9 +261,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8C2EC34231FA3400053596C /* STNavigationController.m in Sources */,
 				F84514ED22B8BFE9003D74D0 /* ViewController.m in Sources */,
 				F888F1BC231F953E00A07385 /* FlutterRouter.m in Sources */,
 				F84514F822B8BFE9003D74D0 /* main.m in Sources */,
+				F888F1C6231F9D2000A07385 /* STFlutterViewController.m in Sources */,
 				F84514EA22B8BFE9003D74D0 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

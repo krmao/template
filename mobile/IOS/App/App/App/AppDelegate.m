@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "FlutterRouter.h"
 #import "ViewController.h"
+#import "STNavigationController.h"
 
 @implementation AppDelegate
 
@@ -29,10 +30,11 @@
     
     // 首页为 native 页面
     // ViewController *homeController = [[ViewController alloc] init];
-    UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:homeController];
-    [FlutterRouter sharedInstance].navigationController = rootViewController;
+    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:homeController];
+    rootViewNavigationController.navigationBarHidden = YES;
+    [FlutterRouter sharedInstance].navigationController = rootViewNavigationController;
     
-    self.window.rootViewController = rootViewController;
+    self.window.rootViewController = rootViewNavigationController;
     return YES;
 }
 

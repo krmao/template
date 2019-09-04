@@ -33,7 +33,8 @@
 - (void)onClick {
     NSLog(@"you clicked");
     NSDictionary *params=@{@"aaa":@"bbb"};
-    [[FlutterRouter sharedInstance] openPage:@"flutter://flutter/settings" params:params animated:true completion:^(BOOL finished) {
+    
+    [[FlutterRouter sharedInstance] open:@"flutter://flutter/settings" urlParams:params exts:@{} completion:^(BOOL finished) {
         NSLog(@"completion:finished=%d", finished);
     }];
 }

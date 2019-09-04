@@ -99,7 +99,7 @@ end
 
 
 flutter_application_path = '/Users/krmao/workspace/template/mobile/flutter/'
-load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
+#load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
 
 target 'App' do
   inherit! :search_paths
@@ -107,20 +107,19 @@ target 'App' do
   localPod
 #  rnpod
 
-  install_flutter_engine_pod
-  install_flutter_plugin_pods flutter_application_path
-
-  pod 'AFNetworking','3.2.1'
-
+#  install_flutter_engine_pod
+#  install_flutter_plugin_pods flutter_application_path
+  eval(File.read(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')), binding)
+  
 end
 
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-    end
-  end
-end
+#post_install do |installer|
+#  installer.pods_project.targets.each do |target|
+#    target.build_configurations.each do |config|
+#      config.build_settings['ENABLE_BITCODE'] = 'NO'
+#    end
+#  end
+#end
 
 # Prevent Cocoapods from embedding a second Flutter framework and causing an error with the new Xcode build system.
-install! 'cocoapods', :disable_input_output_paths => true
+#install! 'cocoapods', :disable_input_output_paths => true

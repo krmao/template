@@ -15,16 +15,14 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - Flutter (1.0.0)
-  - flutter_boost (0.0.1):
+  - flutter_boost (0.0.2):
     - Flutter
-    - xservice_kit
   - FlutterPluginRegistrant (0.0.1):
     - Flutter
     - flutter_boost
     - path_provider
     - shared_preferences
     - sqflite
-    - xservice_kit
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -43,8 +41,6 @@ PODS:
     - Flutter
     - FMDB (~> 2.7.2)
   - SSZipArchive (2.1.4)
-  - xservice_kit (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/engine`)
@@ -58,7 +54,6 @@ DEPENDENCIES:
   - path_provider (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/path_provider/ios`)
   - shared_preferences (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/shared_preferences/ios`)
   - sqflite (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/sqflite/ios`)
-  - xservice_kit (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/xservice_kit/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -89,14 +84,12 @@ EXTERNAL SOURCES:
     :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/shared_preferences/ios"
   sqflite:
     :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/sqflite/ios"
-  xservice_kit:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/xservice_kit/ios"
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_boost: 0e85ea37c74ed39ee7b91a35612afa1605557484
-  FlutterPluginRegistrant: f5cfcd1712348ca9f8924fd56a41c70fcbe2c266
+  flutter_boost: a7cfa776b75329d5e7d101d0cd33e75042bcde69
+  FlutterPluginRegistrant: 5d02c34e0e5f9efec1fa6b02f132831c1dc4f13f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   LibraryBase: 616944f207e99bece9706d45abe697497ff41cc9
   LibraryFlutter: c6271da95b21ff9cd82447f00a60a5b6719442fb
@@ -107,8 +100,7 @@ SPEC CHECKSUMS:
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
-  xservice_kit: a2f1b35addc126fce8687aeb183ab0c1ada5b7f3
 
-PODFILE CHECKSUM: 039c420bbb997f3371ffa887c2045a71a33e76ca
+PODFILE CHECKSUM: a669005bb8ad01dd96001b2fdc5daee7979832f0
 
 COCOAPODS: 1.7.2

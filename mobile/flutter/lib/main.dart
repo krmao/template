@@ -12,8 +12,6 @@ void main() {
         FlutterRouter.URL_SETTINGS: (pageName, params, _) => SettingsWidget(params),
         FlutterRouter.URL_ORDER: (pageName, params, _) => OrderWidget()
       });
-      //
-      FlutterBoost.handleOnStartPage();
     },
   ));
 }

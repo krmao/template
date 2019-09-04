@@ -28,7 +28,7 @@ class CommonUtils {
                     margin: const EdgeInsets.all(8.0),
                     color: Colors.yellow,
                     child: Text('打开我的页面(native)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterBoost.singleton.openPage(FlutterRouter.URL_MINE, {}, animated: true)
+                onTap: () => FlutterBoost.singleton.open(FlutterRouter.URL_MINE)
             ),
             InkWell(
                 child: Container(
@@ -36,7 +36,7 @@ class CommonUtils {
                     margin: const EdgeInsets.all(8.0),
                     color: Colors.yellow,
                     child: Text('打开订单页面(flutter)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterBoost.singleton.openPage(FlutterRouter.URL_ORDER, {}, animated: true)
+                onTap: () => FlutterBoost.singleton.open(FlutterRouter.URL_ORDER)
             ),
             InkWell(
                 child: Container(
@@ -44,7 +44,7 @@ class CommonUtils {
                     margin: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 80.0),
                     color: Colors.yellow,
                     child: Text('打开设置页面(flutter)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterBoost.singleton.openPage(FlutterRouter.URL_SETTINGS, {}, animated: true)
+                onTap: () => FlutterBoost.singleton.open(FlutterRouter.URL_SETTINGS)
             )
           ]
       );

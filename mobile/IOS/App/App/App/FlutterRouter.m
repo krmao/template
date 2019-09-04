@@ -35,30 +35,24 @@
 }
 // --------------------------------------------------
 
-- (void)openPage:(NSString *)name
-          params:(NSDictionary *)params
-        animated:(BOOL)animated
-      completion:(void (^)(BOOL))completion
-{
-    if([params[@"present"] boolValue]){
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:name params:params];
-        [self.navigationController presentViewController:vc animated:animated completion:^{}];
+- (void)close:(nonnull NSString *)uid result:(nonnull NSDictionary *)result exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
+    FLBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
+    if([vc isKindOfClass:FLBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
+        [vc dismissViewControllerAnimated:true completion:^{}];
     }else{
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-        [vc setName:name params:params];
-        [self.navigationController pushViewController:vc animated:animated];
+        [self.navigationController popViewControllerAnimated:true];
     }
 }
 
-
-- (void)closePage:(NSString *)uid animated:(BOOL)animated params:(NSDictionary *)params completion:(void (^)(BOOL))completion
-{
-    FLBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
-    if([vc isKindOfClass:FLBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
-        [vc dismissViewControllerAnimated:animated completion:^{}];
+- (void)open:(nonnull NSString *)url urlParams:(nonnull NSDictionary *)urlParams exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
+    if([urlParams[@"present"] boolValue]){
+        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+        [vc setName:url params:urlParams];
+        [self.navigationController presentViewController:vc animated:true completion:^{}];
     }else{
-        [self.navigationController popViewControllerAnimated:animated];
+        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+        [vc setName:url params:urlParams];
+        [self.navigationController pushViewController:vc animated:true];
     }
 }
 

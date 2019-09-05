@@ -5,9 +5,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.annotation.NonNull
+import com.idlefish.flutterboost.*
+import com.idlefish.flutterboost.interfaces.IContainerRecord
+import com.idlefish.flutterboost.interfaces.IFlutterEngineProvider
 import com.smart.library.util.bus.STBusManager
-import com.taobao.idlefish.flutterboost.FlutterBoostPlugin
-import com.taobao.idlefish.flutterboost.interfaces.IPlatform
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterMain
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
@@ -31,20 +34,42 @@ object FlutterInitializer {
     fun startInitialization(@NonNull application: Application, mainActivity: Activity? = null, isDebug: Boolean = true, settings: Map<*, *>? = null, startActivity: (context: Context, url: String, requestCode: Int) -> Boolean) {
         FlutterInitializer.application = application
 
-        FlutterBoostPlugin.init(
-                object : IPlatform {
+        FlutterBoost.init(
+                object : Platform() {
+
+                    override fun registerPlugins(registry: PluginRegistry?) {
+                        super.registerPlugins(registry)
+                        BoostChannel.registerWith(registry?.registrarFor("flutter_boost_channel"))
+                    }
+
+                    override fun engineProvider(): IFlutterEngineProvider {
+                        return object : BoostEngineProvider() {
+                            override fun createEngine(context: Context): BoostFlutterEngine {
+                                return BoostFlutterEngine(
+                                        context,
+                                        DartExecutor.DartEntrypoint(
+                                                context.resources.assets,
+                                                FlutterMain.findAppBundlePath(context),
+                                                "main"
+                                        ),
+                                        "/")
+                            }
+                        };
+                    }
+
+                    override fun whenEngineStart(): Int = ANY_ACTIVITY_CREATED
+
+                    override fun openContainer(context: Context?, url: String?, urlParams: MutableMap<String, Any>?, requestCode: Int, exts: MutableMap<String, Any>?) {
+                        FlutterRouter.openContainer(context, url, urlParams, requestCode, exts)
+                    }
+
+                    override fun closeContainer(containerRecord: IContainerRecord?, result: MutableMap<String, Any>?, exts: MutableMap<String, Any>?) {
+                        containerRecord?.container?.finishContainer(result)
+                    }
+
                     override fun getApplication(): Application = application
 
-                    /**
-                     * 获取应用入口的Activity,这个Activity在应用交互期间应该是一直在栈底的
-                     */
-                    override fun getMainActivity(): Activity? = mainActivity ?: homeActivity
-
                     override fun isDebug(): Boolean = isDebug
-
-                    override fun startActivity(context: Context, url: String, requestCode: Int): Boolean = startActivity(context, url, requestCode)
-
-                    override fun getSettings(): Map<*, *>? = settings
                 }
         )
 

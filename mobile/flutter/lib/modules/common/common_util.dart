@@ -4,6 +4,15 @@ class CommonUtils {
 
 
   static Widget getColumn(BuildContext context, Map params) {
+    BoostContainerSettings settings = BoostContainer.of(context).settings;
+    print("settings ------------->");
+    print(settings);
+    print(settings.uniqueId);
+    print(settings.params);
+    print(settings.name);
+    print(settings.toString());
+    print("settings <-------------");
+
     return
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +37,10 @@ class CommonUtils {
                     margin: const EdgeInsets.all(8.0),
                     color: Colors.yellow,
                     child: Text('打开我的页面(native)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterRouter.open(FlutterRouter.URL_MINE)
+                onTap: () => FlutterRouter.open(FlutterRouter.URL_MINE).then((Map<String, dynamic> result){
+                  print("URL_MINE did recieve second route result");
+                  print("URL_MINE did recieve second route result $result");
+                })
             ),
             InkWell(
                 child: Container(
@@ -36,7 +48,10 @@ class CommonUtils {
                     margin: const EdgeInsets.all(8.0),
                     color: Colors.yellow,
                     child: Text('打开订单页面(flutter)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterRouter.open(FlutterRouter.URL_ORDER)
+                onTap: () => FlutterRouter.open(FlutterRouter.URL_ORDER).then((Map<String, dynamic> result){
+                    print("URL_ORDER did recieve second route result");
+                    print("URL_ORDER did recieve second route result $result");
+                })
             ),
             InkWell(
                 child: Container(
@@ -44,7 +59,31 @@ class CommonUtils {
                     margin: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 80.0),
                     color: Colors.yellow,
                     child: Text('打开设置页面(flutter)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
-                onTap: () => FlutterRouter.open(FlutterRouter.URL_SETTINGS)
+                onTap: () {
+                  FlutterRouter.open(FlutterRouter.URL_SETTINGS).then((Map<String, dynamic> result){
+                    print("URL_SETTINGS did recieve second route result");
+                    print("URL_SETTINGS did recieve second route result $result");
+                  });
+                }
+            ),
+            InkWell(
+                child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 80.0),
+                    color: Colors.yellow,
+                    child: Text('close(login yes, token:kkk)', style: TextStyle(fontSize: 22.0, color: Colors.black),)),
+                onTap: () {
+
+                  FlutterRouter.close(settings.uniqueId,
+                      result: {
+                        "result":{
+                          "name":settings.name,
+                          "params":settings.params,
+                          "login":1,
+                          "token":"kkk"
+                        }
+                  });
+                }
             )
           ]
       );

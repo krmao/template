@@ -1,179 +1,73 @@
 package com.smart.library.flutter
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.FrameLayout
+import com.idlefish.flutterboost.containers.BoostFlutterActivity
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
-open class FlutterActivity : AppCompatActivity() {
+open class FlutterActivity : BoostFlutterActivity() {
+
 
     companion object {
 
-        @JvmStatic
-        val KEY_THEME = "KEY_THEME"
-        @JvmStatic
-        val KEY_FRAGMENT_CLASS = "KEY_FRAGMENT_CLASS"
-        @JvmStatic
-        val KEY_FRAGMENT_ARGS = "KEY_FRAGMENT_ARGS"
+        private const val KEY_CONTAINER_NAME = "KEY_CONTAINER_NAME"
+        private const val KEY_CONTAINER_PARAMS = "KEY_CONTAINER_PARAMS"
 
+        /**
+         * @param containerName       当前Activity在Flutter层对应的name，
+         *                            混合栈将会在flutter层根据这个名字，在注册的Route表中查找对应的Widget
+         *                            在flutter层有注册函数：
+         *                            <p>
+         *                            FlutterBoost.singleton.registerPageBuilders({
+         *                            'first': (pageName, params, _) => FirstRouteWidget(),
+         *                            'second': (pageName, params, _) => SecondRouteWidget(),
+         *                            ...
+         *                            });
+         *                            <p>
+         *                            该方法中返回的就是注册的key：first , second
+         * @param containerParams     该方法返回的参数将会传递给上层的flutter对应的Widget
+         *                            <p>
+         *                            在flutter层有注册函数：
+         *                            FlutterBoost.singleton.registerPageBuilders({
+         *                            'first': (pageName, params, _) => FirstRouteWidget(),
+         *                            'second': (pageName, params, _) => SecondRouteWidget(),
+         *                            ...
+         *                            });
+         *                            <p>
+         *                            该方法返回的参数就会封装成上面的params
+         * @return
+         */
+        @JvmStatic
         @JvmOverloads
-        @JvmStatic
-        fun start(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                start(from, fragmentClass, args, 0)
-
-        @JvmOverloads
-        @JvmStatic
-        fun startNewTask(fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                FlutterInitializer.application?.startActivity(getNewTaskIntent(FlutterInitializer.application, fragmentClass, args))
-
-        @JvmOverloads
-        @JvmStatic
-        fun startSingleTask(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                FlutterInitializer.application?.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
-
-        @JvmOverloads
-        @JvmStatic
-        fun start(activity: Context?, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int) =
-                activity?.startActivity(getIntent(activity, themResId, fragmentClass, args))
-
-        @JvmStatic
-        fun start(activity: Context?, intent: Intent?) = activity?.startActivity(intent)
-
-        @JvmOverloads
-        @JvmStatic
-        fun start(activity: Activity?, fragmentClassName: String?, args: Bundle = Bundle()) {
-            activity?.startActivity(getIntent(activity, 0, fragmentClassName, args))
+        fun startForResult(activity: Activity?, containerName: String, containerParams: MutableMap<String, Any>? = hashMapOf(), requestCode: Int = 0) {
+            activity?.startActivityForResult(createIntent(activity, containerName, containerParams), requestCode)
         }
 
         @JvmStatic
-        fun startByCustomAnimation(activity: Activity?, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
-            activity?.startActivity(getIntent(activity, fragmentClass, args))
-            activity?.overridePendingTransition(enterAnim, exitAnim)
-        }
-
-
-        @JvmStatic
-        fun startForResultByCustomAnimation(activity: Activity?, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
-                startForResultByCustomAnimation(activity, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
-
-        @JvmStatic
-        fun startForResultByCustomAnimation(activity: Activity?, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
-            startForResult(activity, themResId, requestCode, fragmentClass, args)
-            activity?.overridePendingTransition(enterAnim, exitAnim)
-        }
-
-        @JvmStatic
-        fun startForResultByCustomAnimation(fragment: Fragment, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) =
-                startForResultByCustomAnimation(fragment, 0, requestCode, fragmentClass, args, enterAnim, exitAnim)
-
-        @JvmStatic
-        fun startForResultByCustomAnimation(fragment: Fragment, themResId: Int, requestCode: Int, fragmentClass: Class<*>, args: Bundle, enterAnim: Int, exitAnim: Int) {
-            startForResult(fragment, themResId, requestCode, fragmentClass, args)
-            fragment.activity?.overridePendingTransition(enterAnim, exitAnim)
-        }
-
-        //================================//================================//================================
-        //base
-        /* Activity页面发起的，再由Activity来接收结果 如果由Fragment来接收结果，需要使用 {@link #startForResult(Fragment, int, Class, Bundle)} */
-        @JvmStatic
-        fun startForResult(activity: Activity?, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                startForResult(activity, 0, reqCode, fragmentClass, args)
-
-        @JvmStatic
-        fun startForResult(activity: Activity?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                activity?.startActivityForResult(getIntent(activity, themResId, fragmentClass, args), reqCode)
-
-        /* 由Fragment页面发起的，再由Fragment接收结果 */
-        @JvmStatic
-        fun startForResult(fragment: Fragment?, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                startForResult(fragment, 0, reqCode, fragmentClass, args)
-
-        /* 由Fragment页面发起的，再由Fragment接收结果 */
-        @JvmStatic
-        fun startForResult(fragment: Fragment?, themResId: Int, reqCode: Int, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                fragment?.startActivityForResult(getIntent(fragment.activity, themResId, fragmentClass, args), reqCode)
-
-        @JvmStatic
-        fun getIntent(context: Context?, fragmentClass: Class<*>, args: Bundle): Intent? = getIntent(context, 0, fragmentClass, args)
-
-        @JvmStatic
-        fun getIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle = Bundle()): Intent? = getIntent(context, themResId, fragmentClass.canonicalName, args)
-
         @JvmOverloads
-        @JvmStatic
-        fun getIntent(context: Context?, themResId: Int, fragmentClassName: String?, args: Bundle = Bundle()): Intent? {
-            context ?: return null
-
-            val intent = Intent(context, FlutterActivity::class.java)
-            intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClassName)
-            intent.putExtra(KEY_FRAGMENT_ARGS, args)
-            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
-            return intent
-        }
-
-        @JvmOverloads
-        @JvmStatic
-        fun getNewTaskIntent(context: Context?, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int = 0): Intent? {
-            context ?: return null
-
-            val intent = Intent(context, FlutterActivity::class.java)
-            intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
-            intent.putExtra(KEY_FRAGMENT_ARGS, args)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
-            return intent
-        }
-
-        @JvmOverloads
-        @JvmStatic
-        fun getSingleTaskIntent(context: Context?, themResId: Int, fragmentClass: Class<*>, args: Bundle = Bundle()): Intent {
-            val intent = Intent(context, FlutterActivity::class.java)
-            intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
-            intent.putExtra(KEY_FRAGMENT_ARGS, args)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            if (themResId > 0) intent.putExtra(KEY_THEME, themResId)
+        fun createIntent(activity: Activity?, containerName: String, containerParams: MutableMap<String, Any>? = hashMapOf()): Intent {
+            val intent = Intent(activity, FlutterActivity::class.java)
+            intent.putExtra(KEY_CONTAINER_NAME, containerName)
+            if (containerParams != null) {
+                intent.putExtra(KEY_CONTAINER_PARAMS, HashMap<String, Any>(containerParams))
+            }
             return intent
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        try {
-            val args = intent.extras
-            val themResId = args?.getInt(KEY_THEME, 0) ?: 0
-            if (themResId > 0) setTheme(themResId)
+    private val name: String? by lazy { intent?.getStringExtra(KEY_CONTAINER_NAME) }
+    @Suppress("UNCHECKED_CAST")
+    private val params: HashMap<String, Any>? by lazy { intent?.getSerializableExtra(KEY_CONTAINER_PARAMS) as? HashMap<String, Any> }
 
-            super.onCreate(savedInstanceState)
+//    override fun getContainerName(): String? = name
+//    override fun getContainerParams(): Map<*, *>? = params
+//    override fun onRegisterPlugins(pluginRegistry: PluginRegistry) = GeneratedPluginRegistrant.registerWith(pluginRegistry)
+//    override fun destroyContainer() {}
 
-            setContentView(FrameLayout(this))
+    override fun getContainerUrl(): String? = name
 
-            var fragment: Fragment? = null
-            val fragmentClassName: String
-            val fragmentObject = args?.get(KEY_FRAGMENT_CLASS)
-
-            if (fragmentObject is Class<*>) {
-                fragmentClassName = fragmentObject.name
-                fragment = fragmentObject.newInstance() as Fragment
-            } else {
-                fragmentClassName = fragmentObject as String
-                try {
-                    fragment = Class.forName(fragmentObject).newInstance() as Fragment
-                } catch (_: Exception) {
-                }
-            }
-            if (fragment != null) {
-                fragment.arguments = args.getBundle(KEY_FRAGMENT_ARGS)
-                supportFragmentManager.beginTransaction().add(android.R.id.content, fragment, fragmentClassName).commitAllowingStateLoss()
-            }
-        } catch (e: Exception) {
-            Log.e(FlutterActivity::javaClass.name, "Has error in new instance of fragment", e)
-        }
-    }
+    override fun getContainerUrlParams(): MutableMap<String, Any>? = params
 
     override fun onStart() {
         Log.w("FlutterActivity", "onStart:$taskId")

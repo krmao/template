@@ -46,6 +46,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
+            android:name="com.smart.library.flutter.FlutterFragmentActivity"
+            android:theme="@style/STAppTheme.Translucent"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
             android:name="com.smart.library.flutter.test.MineActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />

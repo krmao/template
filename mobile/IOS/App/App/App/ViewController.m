@@ -32,9 +32,19 @@
 
 - (void)onClick {
     NSLog(@"you clicked");
-    NSDictionary *params=@{@"aaa":@"bbb"};
+    NSDictionary *params=@{
+                           @"userName":@"kr.mao",
+                           @"tel":@"18217758888",
+                           @"present":@(NO)
+                           };
     
-    [[FlutterRouter sharedInstance] open:URL_SETTINGS urlParams:params exts:@{} completion:^(BOOL finished) {
+    NSDictionary *exts=@{
+                           @"extsToken":@"token123",
+                           @"extsLogin":@(YES),
+                           @"animated":@(YES)
+                           };
+    
+    [[FlutterRouter sharedInstance] open:URL_SETTINGS urlParams:params exts:exts completion:^(BOOL finished) {
         NSLog(@"completion:finished=%d", finished);
     }];
 }

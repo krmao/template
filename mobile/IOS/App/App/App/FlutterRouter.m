@@ -38,24 +38,38 @@
 // --------------------------------------------------
 
 - (void)close:(nonnull NSString *)uid result:(nonnull NSDictionary *)result exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
-    NSLog(@"close -> %@", uid);
+    NSLog(@"close uid-> %@", uid);
+    NSLog(@"close result-> %@", result);
+    NSLog(@"close exts-> %@", exts);
+    
+    BOOL animated = [exts[@"animated"] boolValue];
+    
     FLBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
     if([vc isKindOfClass:FLBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
-        [vc dismissViewControllerAnimated:true completion:^{}];
+        [vc dismissViewControllerAnimated:animated completion:^{}];
+        
+        FlutterBoostPlugin.sharedInstance
     }else{
-        [self.navigationController popViewControllerAnimated:true];
+        [self.navigationController popViewControllerAnimated:animated];
     }
 }
 
 - (void)open:(nonnull NSString *)url urlParams:(nonnull NSDictionary *)urlParams exts:(nonnull NSDictionary *)exts completion:(nonnull void (^)(BOOL))completion { 
-    NSLog(@"open -> %@", url);
+    NSLog(@"open url-> %@", url);
+    NSLog(@"open urlParams-> %@", urlParams);
+    NSLog(@"open exts-> %@", exts);
+    
+    BOOL animated = [exts[@"animated"] boolValue];
     
     if([URL_MINE isEqualToString:url]){
         MineViewController *vc = [[MineViewController alloc] init];
         if([urlParams[@"present"] boolValue]){
-            [self.navigationController presentViewController:vc animated:true completion:^{}];
+            [self.navigationController presentViewController:vc animated:animated completion:^{
+                if(completion) completion(YES);
+            }];
         }else{
-            [self.navigationController pushViewController:vc animated:true];
+            [self.navigationController pushViewController:vc animated:animated];
+            if(completion) completion(YES);
         }
         return;
     }
@@ -65,9 +79,12 @@
     // [vc setName:url params:urlParams];
     
     if([urlParams[@"present"] boolValue]){
-        [self.navigationController presentViewController:flutterViewController animated:true completion:^{}];
+        [self.navigationController presentViewController:flutterViewController animated:animated completion:^{
+            if(completion) completion(YES);
+        }];
     }else{
-        [self.navigationController pushViewController:flutterViewController animated:true];
+        [self.navigationController pushViewController:flutterViewController animated:animated];
+        if(completion) completion(YES);
     }
 }
 

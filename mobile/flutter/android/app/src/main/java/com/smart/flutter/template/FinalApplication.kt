@@ -23,7 +23,7 @@ class FinalApplication : FlutterApplication() {
         INSTANCE = this
 
         FlutterInitializer.startInitialization(this, MainActivity.sRef?.get()) { context: Context, url: String, requestCode: Int ->
-            FlutterRouter.find(url)?.goTo?.invoke(context, hashMapOf(), requestCode) ?: false
+            FlutterRouter.find(url)?.goTo?.invoke(context, hashMapOf(), requestCode,null) ?: false
         }
     }
 }

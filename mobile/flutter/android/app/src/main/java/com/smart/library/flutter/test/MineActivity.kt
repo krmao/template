@@ -19,11 +19,11 @@ class MineActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.openOrder).setOnClickListener {
-            FlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_ORDER.goTo(this, hashMapOf("name" to "krmao", "isLogin" to 1), 1, hashMapOf("present" to "1"))
         }
 
         findViewById<View>(R.id.openSettings).setOnClickListener {
-            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf("name" to "krmao", "isLogin" to 1), 1, hashMapOf("present" to "1"))
         }
     }
 

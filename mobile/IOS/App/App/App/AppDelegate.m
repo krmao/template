@@ -25,11 +25,11 @@
     [self.window makeKeyAndVisible];
     
     // 首页为 flutter 页面
-    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
-    [homeController setName:URL_ORDER params:@{}];
+//    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
+//    [homeController setName:URL_ORDER params:@{}];
     
     // 首页为 native 页面
-    // ViewController *homeController = [[ViewController alloc] init];
+    ViewController *homeController = [[ViewController alloc] init];
     STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:homeController];
     rootViewNavigationController.navigationBarHidden = YES;
     [FlutterRouter sharedInstance].navigationController = rootViewNavigationController;

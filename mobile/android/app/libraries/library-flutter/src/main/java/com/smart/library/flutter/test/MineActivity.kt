@@ -22,11 +22,11 @@ class MineActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.openOrder).setOnClickListener {
-            FlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0,null)
         }
 
         findViewById<View>(R.id.openSettings).setOnClickListener {
-            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0,null)
         }
     }
 

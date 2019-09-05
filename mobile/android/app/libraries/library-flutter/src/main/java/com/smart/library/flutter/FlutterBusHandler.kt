@@ -12,7 +12,7 @@ class FlutterBusHandler : STBusManager.IBusHandler {
     override fun onInitOnce(application: Application) {
 
         FlutterInitializer.startInitialization(application) { context: Context, url: String, requestCode: Int ->
-            FlutterRouter.find(url)?.goTo?.invoke(context, hashMapOf(), requestCode) ?: false
+            FlutterRouter.find(url)?.goTo?.invoke(context, hashMapOf(), requestCode, null) ?: false
         }
     }
 

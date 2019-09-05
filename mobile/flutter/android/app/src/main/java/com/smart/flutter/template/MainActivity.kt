@@ -21,15 +21,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         
         findViewById<View>(R.id.openMine).setOnClickListener {
-            FlutterRouter.URL_MINE.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_MINE.goTo(this, hashMapOf(), 0,null)
         }
 
         findViewById<View>(R.id.openOrder).setOnClickListener {
-            FlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0,null)
         }
 
         findViewById<View>(R.id.openSettings).setOnClickListener {
-            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0)
+            FlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0,null)
         }
     }
 

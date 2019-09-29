@@ -14,7 +14,7 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
         //        const val defaultSingleMarkerZoomLevel = defaultZoomLevel
         val defaultTargetLatLng = LatLng(31.2451050000, 121.5063770000) // 东方明珠塔
 //        var currentLatLng: LatLng = LatLng(LocationManager.instance.cacheLatLng?.latitude ?: 0.0, LocationManager.instance.cacheLatLng?.longitude ?: 0.0)
-//        private val infoWindowOffset: Int = (GSSystemUtil.getPxFromDp(32f) * 1.35f).toInt()
+//        private val infoWindowOffset: Int = (STSystemUtil.getPxFromDp(32f) * 1.35f).toInt()
 
         @JvmStatic
         fun createMapView(context: Context, initLatLon: LatLng, initZoomLevel: Float): MapView {

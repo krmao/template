@@ -1,5 +1,6 @@
 package com.smart.library.map.navigation
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -20,9 +21,9 @@ object STNavigationManager {
         }
 
     enum class MapSupportScope {
-        CHINA,      // 只支持中国(amap,bmap)
-        OVERSEA,    // 只支持国外(google)
-        ALL         // 支持国内和国外
+        CHINA,
+        OVERSEA,
+        ALL
     }
 
     enum class MapType(val displayName: String, val packageName: String, val mapSupportScope: MapSupportScope) {
@@ -36,6 +37,7 @@ object STNavigationManager {
          * AMAP/BMAP 使用火星坐标系 GCJ02
          * GOOGLE 国内使用 火星坐标系 GCJ02, 国外使用全球地理坐标系 WGS84
          */
+        @SuppressLint("DefaultLocale")
         fun open(context: Context?, fromGCJ02Lat: String, fromGCJ02Lon: String, fromWGS84Lat: String? = null, fromWGS84Lon: String? = null, fromAddressName: String?, toGCJ02Lat: String, toGCJ02Lon: String, toWGS84Lat: String? = null, toWGS84Lon: String? = null, toAddressName: String?, navigateMode: String = "driving") {
             when (this) {
                 AMAP -> {
@@ -71,7 +73,7 @@ object STNavigationManager {
                         intentUri.append("intent://map/direction?coord_type=gcj02&&origin=latlng:$fromGCJ02Lat,$fromGCJ02Lon${if (fromAddressName.isNullOrBlank()) "|name:起点" else "|name:$fromAddressName"}")
                         intentUri.append("&destination=latlng:$toGCJ02Lat,$toGCJ02Lon${if (toAddressName.isNullOrEmpty()) "|" + "name:" + "终点" else "|name:$toAddressName"}")
                         intentUri.append(String.format("&mode=%s", if (navigateMode.isBlank()) "driving" else navigateMode))
-                        intentUri.append("&coord_type=bd09ll&src=ctrip|ctripWiress#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end")
+                        intentUri.append("&coord_type=bd09ll&src=smart#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end")
                         val intent = Intent.parseUri(intentUri.toString(), 0)
                         intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         context?.startActivity(intent)

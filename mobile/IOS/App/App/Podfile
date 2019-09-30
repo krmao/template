@@ -41,7 +41,6 @@ def rnpod
   pod 'glog', :podspec => '../../rn-smarttravel/node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../../rn-smarttravel/node_modules/react-native/third-party-podspecs/Folly.podspec'
   
-  
   # When using RN in combination with Cocoapods, a lot of
   # things are broken. These are the fixes we had to append
   # to our Podfile when upgrading to ReactNative@0.55.3.
@@ -50,9 +49,7 @@ def rnpod
   
   def change_lines_in_file(file_path, &change)
     print "Fixing #{file_path}...\n"
-    
     contents = []
-    
     file = File.open(file_path, 'r')
     file.each_line do |line|
       contents << line
@@ -97,8 +94,8 @@ def rnpod
 end
 
 
-flutter_application_path = '/Users/krmao/workspace/template/mobile/flutter/'
-#load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
+# flutter_application_path = '/Users/krmao/workspace/template/mobile/flutter/'
+# load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
 
 target 'App' do
   inherit! :search_paths
@@ -113,13 +110,13 @@ target 'App' do
   
 end
 
-#post_install do |installer|
-#  installer.pods_project.targets.each do |target|
-#    target.build_configurations.each do |config|
-#      config.build_settings['ENABLE_BITCODE'] = 'NO'
-#    end
-#  end
-#end
+# post_install do |installer|
+#   installer.pods_project.targets.each do |target|
+#     target.build_configurations.each do |config|
+#       config.build_settings['ENABLE_BITCODE'] = 'NO'
+#     end
+#   end
+# end
 
 # Prevent Cocoapods from embedding a second Flutter framework and causing an error with the new Xcode build system.
-#install! 'cocoapods', :disable_input_output_paths => true
+# install! 'cocoapods', :disable_input_output_paths => true

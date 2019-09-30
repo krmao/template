@@ -89,18 +89,42 @@
 		F84514E722B8BFE9003D74D0 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				F8F43192234201BD00B05922 /* Base */,
-				F8F431912342018D00B05922 /* Flutter */,
+				F863511D23420DCC000A93E9 /* Modules */,
+				F8F43192234201BD00B05922 /* Libraries */,
 				F84514E822B8BFE9003D74D0 /* AppDelegate.h */,
 				F84514E922B8BFE9003D74D0 /* AppDelegate.m */,
-				F84514EB22B8BFE9003D74D0 /* MainViewController.h */,
-				F84514EC22B8BFE9003D74D0 /* MainViewController.m */,
 				F84514F122B8BFE9003D74D0 /* Assets.xcassets */,
 				F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */,
 				F84514F622B8BFE9003D74D0 /* Info.plist */,
 				F84514F722B8BFE9003D74D0 /* main.m */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		F863511D23420DCC000A93E9 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F863511E23420DD8000A93E9 /* Main */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		F863511E23420DD8000A93E9 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F84514EB22B8BFE9003D74D0 /* MainViewController.h */,
+				F84514EC22B8BFE9003D74D0 /* MainViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		F863511F23420DF6000A93E9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F8C2EC32231FA3400053596C /* STNavigationController.h */,
+				F8C2EC33231FA3400053596C /* STNavigationController.m */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		F8F431912342018D00B05922 /* Flutter */ = {
@@ -114,13 +138,13 @@
 			path = Flutter;
 			sourceTree = "<group>";
 		};
-		F8F43192234201BD00B05922 /* Base */ = {
+		F8F43192234201BD00B05922 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				F8C2EC32231FA3400053596C /* STNavigationController.h */,
-				F8C2EC33231FA3400053596C /* STNavigationController.m */,
+				F8F431912342018D00B05922 /* Flutter */,
+				F863511F23420DF6000A93E9 /* Base */,
 			);
-			path = Base;
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

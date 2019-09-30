@@ -6,13 +6,12 @@ install! 'cocoapods', generate_multiple_pod_projects: true
 
 def localPod
   pod 'LibraryBase',:path => '../../Libraries/LibraryBase'
-  pod 'LibraryHybird',:path => '../../Libraries/LibraryHybird'
-  pod 'LibraryReactNative',:path => '../../Libraries/LibraryReactNative'
-  pod 'LibraryFlutter',:path => '../../Libraries/LibraryFlutter'
+  # pod 'LibraryHybird',:path => '../../Libraries/LibraryHybird'
   pod 'LibraryRepository',:path => '../../Libraries/LibraryRepository'
 end
 
 def rnpod
+  pod 'LibraryReactNative',:path => '../../Libraries/LibraryReactNative'
   
   # ==================== REACT NATIVE =============
   # Your 'node_modules' directory is probably in the root of your project,
@@ -105,11 +104,12 @@ target 'App' do
   inherit! :search_paths
   
   localPod
-#  rnpod
-
-#  install_flutter_engine_pod
-#  install_flutter_plugin_pods flutter_application_path
-  eval(File.read(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')), binding)
+  # rnpod
+  
+  # pod 'LibraryFlutter',:path => '../../Libraries/LibraryFlutter'
+  # install_flutter_engine_pod
+  # install_flutter_plugin_pods flutter_application_path
+  # eval(File.read(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')), binding)
   
 end
 

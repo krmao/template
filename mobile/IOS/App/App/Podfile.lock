@@ -14,93 +14,33 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - Flutter (1.0.0)
-  - flutter_boost (0.0.2):
-    - Flutter
-  - FlutterPluginRegistrant (0.0.1):
-    - Flutter
-    - flutter_boost
-    - path_provider
-    - shared_preferences
-    - sqflite
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - LibraryBase (0.1.0):
     - AFNetworking (~> 3.2.1)
     - SSZipArchive (= 2.1.4)
-  - LibraryFlutter (0.1.0)
-  - LibraryHybird (0.1.0)
-  - LibraryReactNative (0.1.0)
   - LibraryRepository (0.1.0)
-  - path_provider (0.0.1):
-    - Flutter
-  - shared_preferences (0.0.1):
-    - Flutter
-  - sqflite (0.0.1):
-    - Flutter
-    - FMDB (~> 2.7.2)
   - SSZipArchive (2.1.4)
 
 DEPENDENCIES:
-  - Flutter (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/engine`)
-  - flutter_boost (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/flutter_boost/ios`)
-  - FlutterPluginRegistrant (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/FlutterPluginRegistrant`)
   - LibraryBase (from `../../Libraries/LibraryBase`)
-  - LibraryFlutter (from `../../Libraries/LibraryFlutter`)
-  - LibraryHybird (from `../../Libraries/LibraryHybird`)
-  - LibraryReactNative (from `../../Libraries/LibraryReactNative`)
   - LibraryRepository (from `../../Libraries/LibraryRepository`)
-  - path_provider (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/path_provider/ios`)
-  - shared_preferences (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/shared_preferences/ios`)
-  - sqflite (from `/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/sqflite/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
-    - FMDB
     - SSZipArchive
 
 EXTERNAL SOURCES:
-  Flutter:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/engine"
-  flutter_boost:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/flutter_boost/ios"
-  FlutterPluginRegistrant:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/FlutterPluginRegistrant"
   LibraryBase:
     :path: "../../Libraries/LibraryBase"
-  LibraryFlutter:
-    :path: "../../Libraries/LibraryFlutter"
-  LibraryHybird:
-    :path: "../../Libraries/LibraryHybird"
-  LibraryReactNative:
-    :path: "../../Libraries/LibraryReactNative"
   LibraryRepository:
     :path: "../../Libraries/LibraryRepository"
-  path_provider:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/path_provider/ios"
-  shared_preferences:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/shared_preferences/ios"
-  sqflite:
-    :path: "/Users/krmao/workspace/template/mobile/flutter/.ios/Flutter/.symlinks/sqflite/ios"
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_boost: a7cfa776b75329d5e7d101d0cd33e75042bcde69
-  FlutterPluginRegistrant: 5d02c34e0e5f9efec1fa6b02f132831c1dc4f13f
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   LibraryBase: 616944f207e99bece9706d45abe697497ff41cc9
-  LibraryFlutter: c6271da95b21ff9cd82447f00a60a5b6719442fb
-  LibraryHybird: c3dc26bb6e93cd0d9c3036655c7a40a62e182191
-  LibraryReactNative: 6ced525531ea270c4a1b3d0a9a7999a0cc646e15
   LibraryRepository: 253bcf00f9c3ee57585354df08283a0a17db1ee1
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
-  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
 
-PODFILE CHECKSUM: a669005bb8ad01dd96001b2fdc5daee7979832f0
+PODFILE CHECKSUM: e1e9460d30baebce4bf81c84db7e079e5a42eeec
 
 COCOAPODS: 1.7.2

@@ -6,49 +6,51 @@
 //  Copyright © 2019 smart. All rights reserved.
 //
 
-#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
+// #import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
+// #import "FlutterRouter.h"
+
 #import "AppDelegate.h"
-#import "FlutterRouter.h"
-#import "ViewController.h"
+#import "MainViewController.h"
 #import "STNavigationController.h"
 
-@implementation AppDelegate
+@implementation AppDelegate 
 
-// This override can be omitted if you do not have any Flutter Plugins.
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:[FlutterRouter sharedInstance] onStart:^(FlutterViewController *fvc) {
-        NSLog(@"onStart");
-    }];
-    
-    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    [self.window makeKeyAndVisible];
-    
-    // 首页为 flutter 页面
-//    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
-//    [homeController setName:URL_ORDER params:@{}];
-    
-    // 首页为 native 页面
-    ViewController *homeController = [[ViewController alloc] init];
-    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:homeController];
-    rootViewNavigationController.navigationBarHidden = YES;
-    [FlutterRouter sharedInstance].navigationController = rootViewNavigationController;
-    
-    self.window.rootViewController = rootViewNavigationController;
-    return YES;
-}
-
+//// This override can be omitted if you do not have any Flutter Plugins.
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    // Override point for customization after application launch.
+//
+////    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:[FlutterRouter sharedInstance] onStart:^(FlutterViewController *fvc) {
+////        NSLog(@"onStart");
+////    }];
+//
+//    UIWindow *window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+//    [window makeKeyAndVisible];
+//
+//    // 首页为 flutter 页面
+////    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
+////    [homeController setName:URL_ORDER params:@{}];
+//
+//    // 首页为 native 页面
+//    ViewController *homeController = [[ViewController alloc] init];
+//    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:homeController];
+//    rootViewNavigationController.navigationBarHidden = YES;
+////    [FlutterRouter sharedInstance].navigationController = rootViewNavigationController;
+//
+//    self.window.rootViewController = rootViewNavigationController;
 //    return YES;
 //}
 
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//        self.flutterEngine = [[FlutterEngine alloc] initWithName:@"io.flutter" project:nil];
-//        [self.flutterEngine runWithEntrypoint:nil];
-//        [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
-//    return [super application:application didFinishLaunchingWithOptions:launchOptions];
-//}
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
+    UINavigationController * rootViewController = [[UINavigationController  alloc]initWithRootViewController: [[MainViewController alloc] init]];
+    
+    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    [self.window setBackgroundColor:[UIColor whiteColor]];
+    [self.window makeKeyAndVisible];
+    [self.window setRootViewController:rootViewController];
+    
+    [[[UIApplication sharedApplication] delegate] setWindow:self.window];
+    return YES;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

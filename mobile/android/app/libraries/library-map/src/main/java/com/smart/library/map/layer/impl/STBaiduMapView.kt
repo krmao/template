@@ -147,16 +147,22 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
 
     @SuppressLint("InflateParams")
     fun initialize(initLatLon: LatLng = defaultTargetLatLng, initZoomLevel: Float = defaultZoomLevel) {
-        val innerMapView = createMapView(context, initLatLon, initZoomLevel)
-        addView(innerMapView)
-        locationSensorManager = STLocationSensorManager(context, innerMapView.map) {
-            if (STLatLng.isValidLatLng(it.latitude, it.longitude)) {
-                currentLatLon = it
+        if (this.mapView == null) {
+            val innerMapView: MapView = createMapView(context, initLatLon, initZoomLevel)
+            addView(innerMapView)
+            locationSensorManager = STLocationSensorManager(context, innerMapView.map) {
+                if (STLatLng.isValidLatLng(it.latitude, it.longitude)) {
+                    currentLatLon = it
+                }
             }
+
+            LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
+            findViewById<View>(R.id.locationBtn).setOnClickListener(locationSensorManager)
+            findViewById<View>(R.id.settingsBtn).setOnClickListener {
+
+            }
+            this.mapView = innerMapView
         }
-        LayoutInflater.from(context).inflate(R.layout.st_location_btn, this, true)
-        findViewById<View>(R.id.locationBtn).setOnClickListener(locationSensorManager)
-        this.mapView = innerMapView
     }
 
     fun onResume() {

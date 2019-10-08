@@ -159,7 +159,6 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
             LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
             findViewById<View>(R.id.locationBtn).setOnClickListener(locationSensorManager)
             findViewById<View>(R.id.settingsBtn).setOnClickListener {
-
             }
             this.mapView = innerMapView
         }

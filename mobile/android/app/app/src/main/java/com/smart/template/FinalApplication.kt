@@ -3,6 +3,7 @@ package com.smart.template
 import android.graphics.Color
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STConfig
+import com.smart.library.map.layer.impl.STBaiduMapView
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageManager
@@ -45,5 +46,7 @@ class FinalApplication : STBaseApplication() {
 
         val frescoConfig = STImageFrescoHandler.getConfigBuilder(DEBUG, STOkHttpManager.client).build()
         STImageManager.initialize(STImageFrescoHandler(frescoConfig))
+
+        STBaiduMapView.initialize(INSTANCE)
     }
 }

@@ -30,8 +30,6 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
 import org.jetbrains.anko.async
-import android.util.DisplayMetrics
-
 
 class HomeFragment : STBaseFragment() {
 
@@ -46,6 +44,9 @@ class HomeFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        baiduMap.setOnClickListener {
+            STActivity.start(activity, MapFragment::class.java)
+        }
         text1.setOnClickListener {
             STActivity.start(activity, Test1Fragment::class.java)
         }

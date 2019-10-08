@@ -10,6 +10,12 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
+
     resourcePrefix "st_"
 }
 

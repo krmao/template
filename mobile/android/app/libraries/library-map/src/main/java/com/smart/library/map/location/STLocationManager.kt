@@ -3,10 +3,10 @@ package com.smart.library.map.location
 import android.Manifest
 import android.app.Activity
 import android.location.Location
+import com.smart.library.map.location.impl.STLocationClientForAMap
+import com.smart.library.map.model.STLatLng
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.map.model.STLatLng
-import com.smart.library.map.location.impl.STLocationClientForAMap
 import com.smart.library.util.rx.permission.RxPermissions
 
 /**
@@ -35,6 +35,26 @@ object STLocationManager {
                 RxPermissions(activity).requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).subscribe {
                     STLogUtil.e(RxPermissions.TAG, "request permissions callback -> $it")
                     isPermissionHandling = false
+                    callback.invoke(it.granted)
+                }
+            } else {
+                callback.invoke(false)
+            }
+        }
+        Unit
+    }
+
+    /**
+     * 定位前可能需要请求定位权限
+     */
+    @JvmStatic
+    fun ensurePermissionsWithoutHandling(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit?) {
+        if (STSystemUtil.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            callback.invoke(true)
+        } else {
+            if (activity != null && !activity.isFinishing) {
+                RxPermissions(activity).requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).subscribe {
+                    STLogUtil.e(RxPermissions.TAG, "request permissions callback -> $it")
                     callback.invoke(it.granted)
                 }
             } else {

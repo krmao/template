@@ -12,6 +12,7 @@
 		F84514F222B8BFE9003D74D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84514F122B8BFE9003D74D0 /* Assets.xcassets */; };
 		F84514F522B8BFE9003D74D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F84514F322B8BFE9003D74D0 /* LaunchScreen.storyboard */; };
 		F84514F822B8BFE9003D74D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F84514F722B8BFE9003D74D0 /* main.m */; };
+		F863512323420F94000A93E9 /* UIButton+OnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = F863512223420F94000A93E9 /* UIButton+OnClickListener.m */; };
 		F888F1BC231F953E00A07385 /* FlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F888F1BB231F953E00A07385 /* FlutterRouter.m */; };
 		F888F1C6231F9D2000A07385 /* STFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888F1C5231F9D2000A07385 /* STFlutterViewController.m */; };
 		F8C2EC34231FA3400053596C /* STNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C2EC33231FA3400053596C /* STNavigationController.m */; };
@@ -22,6 +23,7 @@
 		3A85371F542159EEBB3119DE /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		8DB3296769923E88E6D976EF /* libPods-App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9DE0BED700A1667F4B1CD86 /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
+		F8165B6C2342177F0092F92D /* UIButton+Click.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+Click.h"; sourceTree = "<group>"; };
 		F84514E522B8BFE9003D74D0 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F84514E822B8BFE9003D74D0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F84514E922B8BFE9003D74D0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -31,6 +33,8 @@
 		F84514F422B8BFE9003D74D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F84514F622B8BFE9003D74D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84514F722B8BFE9003D74D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F863512123420F94000A93E9 /* UIButton+OnClickListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+OnClickListener.h"; sourceTree = "<group>"; };
+		F863512223420F94000A93E9 /* UIButton+OnClickListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+OnClickListener.m"; sourceTree = "<group>"; };
 		F888F1BA231F953E00A07385 /* FlutterRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlutterRouter.h; sourceTree = "<group>"; };
 		F888F1BB231F953E00A07385 /* FlutterRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlutterRouter.m; sourceTree = "<group>"; };
 		F888F1C4231F9D2000A07385 /* STFlutterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterViewController.h; sourceTree = "<group>"; };
@@ -121,10 +125,21 @@
 		F863511F23420DF6000A93E9 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				F863512023420F71000A93E9 /* Categories */,
 				F8C2EC32231FA3400053596C /* STNavigationController.h */,
 				F8C2EC33231FA3400053596C /* STNavigationController.m */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		F863512023420F71000A93E9 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F863512123420F94000A93E9 /* UIButton+OnClickListener.h */,
+				F863512223420F94000A93E9 /* UIButton+OnClickListener.m */,
+				F8165B6C2342177F0092F92D /* UIButton+Click.h */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		F8F431912342018D00B05922 /* Flutter */ = {
@@ -285,6 +300,7 @@
 				F84514F822B8BFE9003D74D0 /* main.m in Sources */,
 				F888F1C6231F9D2000A07385 /* STFlutterViewController.m in Sources */,
 				F84514EA22B8BFE9003D74D0 /* AppDelegate.m in Sources */,
+				F863512323420F94000A93E9 /* UIButton+OnClickListener.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

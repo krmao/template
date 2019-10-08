@@ -11,6 +11,11 @@
             android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <activity
+            android:name=".base.STTransparentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/STAppTheme.Translucent.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->
         <activity

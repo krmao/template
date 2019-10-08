@@ -228,6 +228,29 @@
                         android:text="pager scroll 1000" />
 
                 </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/baiduMap"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="baidu map"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1" />
+
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>

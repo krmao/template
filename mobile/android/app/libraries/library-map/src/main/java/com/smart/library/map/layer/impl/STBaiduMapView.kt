@@ -1,10 +1,20 @@
 package com.smart.library.map.layer.impl
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
+import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
+import com.smart.library.map.R
+import com.smart.library.map.location.STLocationManager
+import com.smart.library.map.location.STLocationSensorManager
+import com.smart.library.map.model.STLatLng
+import com.smart.library.util.STLogUtil
 
 class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -17,7 +27,7 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
 //        private val infoWindowOffset: Int = (STSystemUtil.getPxFromDp(32f) * 1.35f).toInt()
 
         @JvmStatic
-        fun createMapView(context: Context, initLatLon: LatLng, initZoomLevel: Float): MapView {
+        fun createMapView(context: Context?, initLatLon: LatLng, initZoomLevel: Float): MapView {
             val options = BaiduMapOptions()
             options.mapType(BaiduMap.MAP_TYPE_NORMAL)
             options.mapStatus(MapStatus.Builder().target(initLatLon).zoom(initZoomLevel).build())
@@ -44,7 +54,7 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
             map.apply {
                 changeLocationLayerOrder(true)     // 定位图层位于 marker 之下
                 mapType = BaiduMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
-                isTrafficEnabled = false           // 开启交通图
+                isTrafficEnabled = false            // 开启交通图
                 isBaiduHeatMapEnabled = false      // 百度城市热力图
                 setViewPadding(0, 0, 0, 0)         // 设置地图操作区距屏幕的距离
                 setMaxAndMinZoomLevel(21f, 3f)     // 限制缩放等级
@@ -54,13 +64,56 @@ class STBaiduMapView @JvmOverloads constructor(context: Context, attrs: Attribut
                     isZoomGesturesEnabled = true            // 地图缩放
                     isOverlookingGesturesEnabled = false    // 地图俯视（3D）
                     isRotateGesturesEnabled = false         // 地图旋转
-                    // setAllGesturesEnabled(true)            // 禁止所有手势
+                    // setAllGesturesEnabled(true)          // 禁止所有手势
                 }
+            }
+        }
+
+        @JvmStatic
+        fun initialize(context: Context?) {
+            SDKInitializer.initialize(context)
+        }
+    }
+
+    private var mapView: MapView? = null
+    private var locationSensorManager: STLocationSensorManager? = null
+    private var currentLatLon: LatLng? = null
+
+    @SuppressLint("InflateParams")
+    fun initialize(initLatLon: LatLng = defaultTargetLatLng, initZoomLevel: Float = defaultZoomLevel) {
+        val innerMapView = createMapView(context, initLatLon, initZoomLevel)
+        addView(innerMapView)
+        locationSensorManager = STLocationSensorManager(context, innerMapView.map) {
+            if (STLatLng.isValidLatLng(it.latitude, it.longitude)) {
+                currentLatLon = it
+            }
+        }
+        LayoutInflater.from(context).inflate(R.layout.st_location_btn, this, true)
+        findViewById<View>(R.id.locationBtn).setOnClickListener(locationSensorManager)
+        this.mapView = innerMapView
+    }
+
+    fun onResume() {
+        mapView?.onResume()
+
+        STLogUtil.d("location", "ensurePermissions ...")
+        STLocationManager.ensurePermissionsWithoutHandling(context as? Activity) {
+            STLogUtil.d("location", "ensurePermissions:$it")
+            if (it) {
+                locationSensorManager?.startLocation()
             }
         }
     }
 
-    fun initialize(initLatLon: LatLng = defaultTargetLatLng, initZoomLevel: Float = defaultZoomLevel) {
-        addView(createMapView(context, initLatLon, initZoomLevel))
+    fun onPause() {
+        mapView?.onPause()
+        locationSensorManager?.stopLocation()
+    }
+
+    fun onDestroy() {
+        locationSensorManager?.stopLocation()
+        mapView?.map?.isMyLocationEnabled = false
+        mapView?.onDestroy()
+        mapView = null
     }
 }

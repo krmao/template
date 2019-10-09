@@ -1,11 +1,15 @@
 package com.smart.library.map.layer
 
 import android.graphics.Point
+import android.view.View
+import com.baidu.mapapi.model.LatLngBounds
 import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STLatLngBounds
 import com.smart.library.map.model.STMarker
 
 interface STIMap {
+
+    fun mapView(): View
 
     fun onResume()
     fun onPause()
@@ -21,12 +25,12 @@ interface STIMap {
      *
      * @param zoomLevel zoomLevel
      */
-    fun setZoomLevel(zoomLevel: Double)
+    fun setZoomLevel(zoomLevel: Float)
 
     /**
      * 最大/小zoom
      */
-    fun setMaxAndMinZoomLevel(maxZoomLevel: Int, minZoomLevel: Int)
+    fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float)
 
     /**
      * 比例尺
@@ -39,62 +43,45 @@ interface STIMap {
     fun enableRotate(enable: Boolean)
 
     fun setMapCenter(padding: Map<String, Int> = mapOf(), animate: Boolean = true, vararg latLng: STLatLng?)
-    fun setMapCenter(padding: Map<String, Int> = mapOf(), animate: Boolean = true, zoomLevel: Double, vararg latLng: STLatLng?)
-    fun setMapCenter(padding: Map<String, Int> = mapOf(), animate: Boolean = true, swLatLng: STLatLng, neLatLng: STLatLng)
+    fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?)
+    fun setMapCenter(padding: Map<String, Int>, animate: Boolean, swLatLng: STLatLng?, neLatLng: STLatLng?)
 
-    /**
-     * 获取当前图层所有marker
-     */
-    fun getAllMarkers(): List<STMarker>
+    fun getCurrentMapZoomLevel(): Float
 
     /**
      * 清除所有的Marker
      */
-    fun clearAllMarkers()
+    fun clear()
 
     /**
      * 移除marker
      */
-    fun removeMarker(marker: STMarker)
-
-    /**
-     * 清除所有的Router
-     */
-    fun clearAllRouters()
-
-    /**
-     * 自定义画线
-     */
-    fun drawPolyline(latLngList: List<STLatLng>, color: Int, width: Int, isDash: Boolean, clearPreRoute: Boolean)
-
-    /**
-     * 自定义画线
-     */
-    fun drawArcLine(startLatLng: STLatLng, endLatLng: STLatLng, color: Int, width: Int, isDash: Boolean, clearPre: Boolean)
-
-    /**
-     * 清除所有画线
-     */
-    fun clearAllPolyLineView()
+    fun removeMarker(marker: STMarker?)
 
     /**
      * 判断坐标点是否在屏幕地理范围内
      */
-    fun isLatLonInScreen(latLng: STLatLng, callback: (result: Boolean) -> Unit)
+    fun isLatLngInScreen(latLng: STLatLng?, callback: (result: Boolean) -> Unit)
 
     /**
      * 获取当前地图范围
      */
-    fun getCurrentProperties(callback: (centerLatLon: STLatLng, zoomLevel: Float, radius: Float, bounds: STLatLngBounds) -> Unit)
+    fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit)
+
+    fun getCurrentMapCenterLatLng(): STLatLng
+
+    fun getCurrentMapLatLngBounds(): STLatLngBounds
+
+    fun getCurrentMapRadius(): Double
 
     /**
      * 经纬度转换为屏幕坐标
      */
-    fun convertLatLngToScreenCoordinate(latLng: STLatLng, callback: (Point) -> Unit)
+    fun convertLatLngToScreenCoordinate(latLng: STLatLng?, callback: (Point?) -> Unit)
 
     /**
      * 屏幕坐标转换为经纬度
      */
-    fun convertScreenCoordinateToLatLng(point: Point, callback: (STLatLng) -> Unit)
+    fun convertScreenCoordinateToLatLng(point: Point?, callback: (STLatLng?) -> Unit)
 
 }

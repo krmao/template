@@ -1,0 +1,286 @@
+package com.smart.library.map.layer.impl
+
+import android.content.Context
+import android.graphics.Point
+import android.util.AttributeSet
+import android.util.Log
+import android.widget.FrameLayout
+import com.baidu.mapapi.SDKInitializer
+import com.baidu.mapapi.map.*
+import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.model.LatLngBounds
+import com.baidu.mapapi.utils.DistanceUtil
+import com.smart.library.base.STBaseApplication
+import com.smart.library.map.layer.STIMap
+import com.smart.library.map.layer.STMapView
+import com.smart.library.map.model.STLatLng
+import com.smart.library.map.model.STLatLngBounds
+import com.smart.library.map.model.STLatLngType
+import com.smart.library.map.model.STMarker
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import kotlin.math.roundToInt
+
+internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap {
+
+    init {
+        if (!isInEditMode) {
+            initialize(STBaseApplication.INSTANCE)
+        }
+        addView(createMapView(context, initLatLon, initZoomLevel))
+    }
+
+    private val mapView: MapView by lazy { getChildAt(0) as MapView }
+    private val map: BaiduMap by lazy { mapView().map }
+
+    private fun map(): BaiduMap = map
+    override fun mapView(): MapView = mapView
+
+    override fun onResume() = mapView().onResume()
+    override fun onPause() = mapView().onPause()
+    override fun onDestroy() = mapView().onDestroy()
+
+    override fun enableCompass(enable: Boolean) {
+        map().setCompassEnable(enable)
+    }
+
+    override fun setZoomLevel(zoomLevel: Float) {
+        map().animateMapStatus(MapStatusUpdateFactory.zoomTo(zoomLevel))
+    }
+
+    override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) {
+        map().setMaxAndMinZoomLevel(maxZoomLevel, minZoomLevel)
+    }
+
+    override fun enableMapScaleControl(enable: Boolean) {
+        mapView().showZoomControls(enable)
+    }
+
+    override fun enableRotate(enable: Boolean) {
+        map().uiSettings.isRotateGesturesEnabled = enable
+    }
+
+    override fun setMapCenter(padding: Map<String, Int>, animate: Boolean, vararg latLng: STLatLng?) {
+        val latLngBoundsBuilder = LatLngBounds.Builder()
+        latLng.forEach { item ->
+            item?.let {
+                latLngBoundsBuilder.include(LatLng(it.latitude, it.longitude))
+            }
+        }
+
+        val mapStatus = MapStatusUpdateFactory.newLatLngBounds(latLngBoundsBuilder.build(), width, height)
+        if (animate) {
+            map().animateMapStatus(mapStatus)
+        } else {
+            map().setMapStatus(mapStatus)
+        }
+    }
+
+    private fun convertBaiduLatLngToSTLatLng(latLng: LatLng): STLatLng = STLatLng(latLng.latitude, latLng.longitude, STLatLngType.BD09)
+    private fun convertBaiduBoundsToSTLatLngBounds(latLngBounds: LatLngBounds): STLatLngBounds {
+        return STLatLngBounds(convertBaiduLatLngToSTLatLng(latLngBounds.southwest), convertBaiduLatLngToSTLatLng(latLngBounds.northeast))
+    }
+
+    override fun getCurrentMapRadius(): Double = getDistanceByBaiduLatLng(map().mapStatus.bound.northeast, map().mapStatus.target)
+
+    override fun getCurrentMapZoomLevel(): Float = map().mapStatus.zoom
+    override fun getCurrentMapCenterLatLng(): STLatLng = convertBaiduLatLngToSTLatLng(map().mapStatus.target)
+    override fun getCurrentMapLatLngBounds(): STLatLngBounds = convertBaiduBoundsToSTLatLngBounds(map().mapStatus.bound)
+
+    override fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?) {
+        latLng ?: return
+        val mapStatus = MapStatusUpdateFactory.newLatLngZoom(LatLng(latLng.latitude, latLng.longitude), zoomLevel)
+        if (animate) {
+            map().animateMapStatus(mapStatus)
+        } else {
+            map().setMapStatus(mapStatus)
+        }
+    }
+
+    override fun setMapCenter(padding: Map<String, Int>, animate: Boolean, swLatLng: STLatLng?, neLatLng: STLatLng?) {
+        swLatLng ?: return
+        neLatLng ?: return
+
+        val latLngBoundsBuilder = LatLngBounds.Builder()
+        latLngBoundsBuilder.include(LatLng(swLatLng.latitude, swLatLng.longitude))
+        latLngBoundsBuilder.include(LatLng(neLatLng.latitude, neLatLng.longitude))
+
+        val mapStatus = MapStatusUpdateFactory.newLatLngBounds(latLngBoundsBuilder.build(), width, height)
+        if (animate) {
+            map().animateMapStatus(mapStatus)
+        } else {
+            map().setMapStatus(mapStatus)
+        }
+    }
+
+    override fun clear() {
+        map().clear()
+    }
+
+    override fun removeMarker(marker: STMarker?) {
+        marker?.remove()
+    }
+
+    override fun isLatLngInScreen(latLng: STLatLng?, callback: (result: Boolean) -> Unit) {
+        callback(latLng != null && map().mapStatus?.bound?.contains(LatLng(latLng.latitude, latLng.longitude)) == true)
+    }
+
+    override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) {
+        callback(getCurrentMapCenterLatLng(), getCurrentMapZoomLevel(), getCurrentMapRadius(), getCurrentMapLatLngBounds())
+    }
+
+    override fun convertLatLngToScreenCoordinate(latLng: STLatLng?, callback: (Point?) -> Unit) {
+        var point: Point? = null
+        if (latLng != null) {
+            point = map().projection?.toScreenLocation(LatLng(latLng.latitude, latLng.longitude))
+        }
+        callback(point)
+    }
+
+    override fun convertScreenCoordinateToLatLng(point: Point?, callback: (STLatLng?) -> Unit) {
+        var latLng: STLatLng? = null
+        if (point != null) {
+            val baiduLatLng = map().projection?.fromScreenLocation(Point(point.x.toDouble().roundToInt(), point.y.toDouble().roundToInt()))
+            if (baiduLatLng != null) {
+                latLng = STLatLng(baiduLatLng.latitude, baiduLatLng.longitude, STLatLngType.BD09)
+            }
+        }
+        callback(latLng)
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun getDistanceByBaiduLatLng(startLatLng: LatLng?, endLatLng: LatLng?): Double {
+            return DistanceUtil.getDistance(startLatLng, endLatLng)
+        }
+
+        private val configMap: HashMap<String, String> = hashMapOf(
+                "茶田" to "map_config_chatian.json",
+                "朱砂痣" to "map_config_zhushazhi.json",
+                "绿野仙踪" to "map_config_lvyexianzong.json",
+                "青花瓷" to "map_config_qinghuaci.json",
+                "一蓑烟雨" to "map_config_yisuoyanyu.json",
+                "眼眸" to "map_config_yanmou.json",
+                "Candy" to "map_config_candy.json",
+                "OKR" to "map_config_okr.json",
+                "赛博朋克" to "map_config_saibopengke.json",
+                "物流" to "map_config_wuliu.json",
+                "出行" to "map_config_chuxing.json",
+                "中秋" to "map_config_zhongqiu.json"
+        )
+
+        @JvmStatic
+        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): MapView {
+            val options = BaiduMapOptions()
+            options.mapType(BaiduMap.MAP_TYPE_NORMAL)
+            val mapStatusBuilder = MapStatus.Builder();
+
+            val bdLatLng = initLatLon.convertTo(STLatLngType.BD09)
+            if (bdLatLng?.isValid() == true) {
+                mapStatusBuilder.target(LatLng(bdLatLng.latitude, bdLatLng.longitude))
+            }
+            mapStatusBuilder.zoom(initZoomLevel)
+            val mapStatus: MapStatus = mapStatusBuilder.build()
+
+            options.mapStatus(mapStatus)
+            options.compassEnabled(false)
+            options.logoPosition(LogoPosition.logoPostionleftBottom)
+            options.overlookingGesturesEnabled(false) // 地图俯视（3D）
+            options.rotateGesturesEnabled(false) // 地图旋转
+            options.scaleControlEnabled(false) // 比例尺
+            options.scrollGesturesEnabled(true) // 地图平移手势
+            options.zoomGesturesEnabled(true) // 地图缩放控制手势
+            options.zoomControlsEnabled(false) // 地图缩放控制按钮
+
+            val mapView = MapView(context, options)
+            initMapView(mapView)
+            return mapView
+        }
+
+        @JvmStatic
+        private fun initMapView(mapView: MapView): MapView = mapView.apply {
+            logoPosition = LogoPosition.logoPostionleftBottom
+            showZoomControls(false)             // 缩放按钮
+            showScaleControl(false)             // 比例尺
+
+            // 获取json文件路径
+            val customStyleFilePath = getCustomStyleFilePath(mapView.context, configMap["青花瓷"])
+            // 设置个性化地图样式文件的路径和加载方式
+            setMapCustomStylePath(customStyleFilePath)
+            // 动态设置个性化地图样式是否生效
+            setMapCustomStyleEnable(true)
+
+            map.apply {
+                changeLocationLayerOrder(true)     // 定位图层位于 marker 之下
+                mapType = BaiduMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
+                isTrafficEnabled = false            // 开启交通图
+                isBaiduHeatMapEnabled = false      // 百度城市热力图
+                setViewPadding(0, 0, 0, 0)         // 设置地图操作区距屏幕的距离
+                setMaxAndMinZoomLevel(21f, 3f)     // 限制缩放等级
+                showMapPoi(true)                   // 隐藏底图标注（控制地图POI显示）
+
+                setMapCustomStyleEnable(true)
+                setMapCustomStylePath("")
+
+                uiSettings.apply {
+                    isScrollGesturesEnabled = true          // 地图平移
+                    isZoomGesturesEnabled = true            // 地图缩放
+                    isOverlookingGesturesEnabled = false    // 地图俯视（3D）
+                    isRotateGesturesEnabled = false         // 地图旋转
+                    // setAllGesturesEnabled(true)          // 禁止所有手势
+                }
+            }
+        }
+
+        /**
+         * 读取json路径
+         */
+        @Suppress("SameParameterValue")
+        private fun getCustomStyleFilePath(context: Context, customStyleFileName: String?): String? {
+            var outputStream: FileOutputStream? = null
+            var inputStream: InputStream? = null
+            var parentPath: String? = null
+            try {
+                inputStream = context.assets.open("mapConfig/$customStyleFileName")
+                val buffer = ByteArray(inputStream.available())
+                inputStream.read(buffer)
+                parentPath = context.filesDir.absolutePath
+                val customStyleFile = File("$parentPath/$customStyleFileName")
+                if (customStyleFile.exists()) {
+                    customStyleFile.delete()
+                }
+                customStyleFile.createNewFile()
+
+                outputStream = FileOutputStream(customStyleFile)
+                outputStream.write(buffer)
+            } catch (e: IOException) {
+                Log.e("CustomMapDemo", "Copy custom style file failed", e)
+            } finally {
+                try {
+                    inputStream?.close()
+                    outputStream?.close()
+                } catch (e: IOException) {
+                    Log.e("CustomMapDemo", "Close stream failed", e)
+                    return null
+                }
+
+            }
+            return "$parentPath/$customStyleFileName"
+        }
+
+        @Volatile
+        private var isInitialized: Boolean = false
+
+        @JvmStatic
+        @Synchronized
+        private fun initialize(context: Context?) {
+            if (context != null && !isInitialized) {
+                SDKInitializer.initialize(context)
+                isInitialized = true
+            }
+        }
+    }
+}

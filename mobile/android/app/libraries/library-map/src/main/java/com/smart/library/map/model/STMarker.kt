@@ -1,6 +1,14 @@
 package com.smart.library.map.model
 
-class STMarker {
+import com.baidu.mapapi.map.Marker
 
+class STMarker(private val mapType: STMapType, private val marker: Any) {
+
+    fun remove() {
+        when (mapType) {
+            STMapType.BAIDU -> (marker as? Marker)?.remove()
+            else -> Unit
+        }
+    }
 
 }

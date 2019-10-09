@@ -25,15 +25,26 @@ dependencies {
     api project(':library-template-base')
 
     if (gradle.ext.modules.map.enableMapNames.contains("baidu")) {
-        compileOnly "com.amap.api:location:4.0.1"
+        compileOnly 'com.amap.api:map2d:latest.integration' // 2D地图
+        compileOnly 'com.amap.api:search:latest.integration' // 搜索
+        compileOnly 'com.amap.api:location:latest.integration' // 定位
+
         api files('libs/BaiduLBS_Android.jar')
     }
     if (gradle.ext.modules.map.enableMapNames.contains("gaode")) {
-        compile "com.amap.api:location:4.0.1"
+        // compile 'com.amap.api:3dmap:latest.integration' // 3D地图
+        // compile 'com.amap.api:navi-3dmap:latest.integration' // 导航
+        api 'com.amap.api:map2d:latest.integration' // 2D地图
+        api 'com.amap.api:search:latest.integration' // 搜索
+        api 'com.amap.api:location:latest.integration' // 定位
+
         compileOnly files('libs/BaiduLBS_Android.jar')
     }
     if (gradle.ext.modules.map.enableMapNames.contains("google")) {
-        compileOnly "com.amap.api:location:4.0.1"
+        compileOnly 'com.amap.api:map2d:latest.integration' // 2D地图
+        compileOnly 'com.amap.api:search:latest.integration' // 搜索
+        compileOnly 'com.amap.api:location:latest.integration' // 定位
+
         compileOnly files('libs/BaiduLBS_Android.jar')
     }
 }

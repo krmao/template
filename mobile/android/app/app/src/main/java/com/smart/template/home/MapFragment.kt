@@ -1,11 +1,12 @@
 package com.smart.template.home
 
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.STBaseFragment
-import com.smart.library.map.layer.impl.STBaiduMapView
+import com.smart.library.map.layer.STMapView
 import com.smart.library.util.STStatusBarUtil
 import com.smart.template.R
 import kotlinx.android.synthetic.main.map_fragment.*
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.map_fragment.*
 class MapFragment : STBaseFragment() {
 
 
-    private val mapView: STBaiduMapView by lazy { mapBaiduView }
+    private val mapView: STMapView by lazy { mapBaiduView }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.map_fragment, container, false)

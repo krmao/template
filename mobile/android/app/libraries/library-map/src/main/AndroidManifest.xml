@@ -32,6 +32,10 @@
             android:enabled="true"
             android:process=":remote"/>
 
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="${GAODE_MAP_KEY}"/>
+
     </application>
 
 </manifest>

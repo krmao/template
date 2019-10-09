@@ -5,7 +5,7 @@
     android:fitsSystemWindows="false"
     android:orientation="vertical">
 
-    <com.smart.library.map.layer.impl.STBaiduMapView
+    <com.smart.library.map.layer.STMapView
         android:id="@+id/mapBaiduView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

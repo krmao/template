@@ -27,24 +27,59 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         val defaultLatLngTianAnMen = STLatLng(39.920116, 116.403703, STLatLngType.BD09) // 天安门
     }
 
+    var initLatLon: STLatLng = defaultLatLngTianAnMen
+        private set
+    var initZoomLevel: Float = defaultZoomLevel
+        private set
+
     @JvmOverloads
     fun initialize(mapType: STMapType = STMapType.BAIDU, initLatLon: STLatLng = defaultLatLngTianAnMen, initZoomLevel: Float = defaultZoomLevel) {
+        this.initLatLon = initLatLon
+        this.initZoomLevel = initZoomLevel
+
         when (mapType) {
             STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
             STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
             else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
         }
 
-        addView(STMapControlView(context, map = map()))
+        addView(STMapControlView(context, mapView = this))
     }
 
-    private val map: STIMap by lazy { getChildAt(0) as STIMap }
-    private val controlView: STMapControlView by lazy { getChildAt(1) as STMapControlView }
+    private fun controlView(): STMapControlView = getChildAt(1) as STMapControlView
 
-    private fun controlView(): STMapControlView = controlView
-    fun map(): STIMap = map
+    fun map(): STIMap = getChildAt(0) as STIMap
 
     override fun mapView(): View = map().mapView()
+
+    fun switchTo(toMapType: STMapType) {
+        synchronized(this) {
+            if (map().mapType() != toMapType) {
+
+                // remove old
+                map().onPause()
+                map().onDestroy()
+
+                removeViewAt(1) // remove controlView
+                removeViewAt(0) // remove old mapView
+                removeAllViews()
+
+                // add new
+                when (toMapType) {
+                    STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+                    STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+                    else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+                }
+
+                map().onCreate(context, null)
+                map().onResume()
+
+                addView(STMapControlView(context, mapView = this))
+
+                // invalidate()
+            }
+        }
+    }
 
     override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
         map().onCreate(context, savedInstanceState)

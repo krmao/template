@@ -86,7 +86,9 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     private var latestLatLon: STLatLng? = null
     override fun onClick(locationButtonView: View?) {
-        setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+        if (latestLatLon?.isValid() == true) {
+            setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+        }
     }
 
     override fun enableCompass(enable: Boolean) {

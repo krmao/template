@@ -70,6 +70,45 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/toggleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="#bbffffff"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:contentDescription="@null"
+                android:src="@drawable/st_location_btn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ems="2"
+                android:gravity="center"
+                android:text="切换"
+                android:textColor="#000"
+                android:textSize="10dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:id="@+id/settingsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

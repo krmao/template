@@ -87,7 +87,9 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     override fun onLocationButtonClickedListener(): OnClickListener = this
 
     override fun onClick(locationButtonView: View?) {
-        setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+        if (latestLatLon?.isValid() == true) {
+            setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+        }
     }
 
     override fun enableCompass(enable: Boolean) {

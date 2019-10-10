@@ -1,10 +1,12 @@
 package com.smart.library.map.layer.impl
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.FrameLayout
 import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.map.*
@@ -14,10 +16,10 @@ import com.baidu.mapapi.utils.DistanceUtil
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapView
-import com.smart.library.map.model.STLatLng
-import com.smart.library.map.model.STLatLngBounds
-import com.smart.library.map.model.STLatLngType
-import com.smart.library.map.model.STMarker
+import com.smart.library.map.location.STLocationManager
+import com.smart.library.map.location.impl.STLocationBaiduSensor
+import com.smart.library.map.model.*
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
@@ -25,7 +27,7 @@ import java.io.IOException
 import java.io.InputStream
 import kotlin.math.roundToInt
 
-internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap {
+internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
 
     init {
         if (!isInEditMode) {
@@ -39,12 +41,54 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     private fun map(): BaiduMap = map
     override fun mapView(): MapView = mapView
+    override fun latestLatLon(): STLatLng? = latestLatLon
 
-    override fun onCreate(context: Context?, savedInstanceState: Bundle?) = mapView().onCreate(context, savedInstanceState)
+    private var locationBaiduSensor: STLocationBaiduSensor? = null
+
+    private var onLocationChanged: ((STLatLng?) -> Unit)? = null
+    fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
+        this.onLocationChanged = onLocationChanged
+    }
+
+    private var latestLatLon: STLatLng? = null
+    override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
+        mapView().onCreate(context, savedInstanceState)
+
+        locationBaiduSensor = STLocationBaiduSensor(context, map()) {
+            val stLatLng = STLatLng(it.latitude, it.longitude, STLatLngType.BD09)
+            if (stLatLng.isValid()) {
+                latestLatLon = stLatLng
+                onLocationChanged?.invoke(latestLatLon)
+            }
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) = mapView().onSaveInstanceState(outState)
-    override fun onResume() = mapView().onResume()
-    override fun onPause() = mapView().onPause()
+    override fun onResume() {
+        mapView().onResume()
+        STLogUtil.d("location", "ensurePermissions ...")
+        STLocationManager.ensurePermissionsWithoutHandling(context as? Activity) {
+            STLogUtil.d("location", "ensurePermissions:$it")
+            if (it) {
+                locationBaiduSensor?.startLocation()
+            }
+        }
+    }
+
+    override fun onPause() {
+        mapView().onPause()
+        locationBaiduSensor?.stopLocation()
+    }
+
     override fun onDestroy() = mapView().onDestroy()
+
+    override fun mapType(): STMapType = STMapType.BAIDU
+
+    override fun onLocationButtonClickedListener(): OnClickListener = this
+
+    override fun onClick(locationButtonView: View?) {
+        setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+    }
 
     override fun enableCompass(enable: Boolean) {
         map().setCompassEnable(enable)

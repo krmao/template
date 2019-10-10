@@ -31,7 +31,7 @@ class FinalApplication : STBaseApplication() {
         //}
 
         // init global location
-        // STLocationManager.initialize(STLocationClientForAMap())
+        // STLocationManager.initialize(STLocationGaodeClient())
 
         // init global repository
         STRepository.init()

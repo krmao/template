@@ -2,8 +2,6 @@ package com.smart.library.map.location
 
 import android.Manifest
 import android.app.Activity
-import android.location.Location
-import com.smart.library.map.location.impl.STLocationClientForAMap
 import com.smart.library.map.model.STLatLng
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -11,8 +9,6 @@ import com.smart.library.util.rx.permission.RxPermissions
 
 /**
  * 外观模式(门面模式) 结合 静态代理模式
- *
- * @see STLocationClientForAMap
  */
 @Suppress("PrivatePropertyName", "unused", "MemberVisibilityCanBePrivate")
 object STLocationManager {
@@ -73,7 +69,7 @@ object STLocationManager {
      * 缓存定位
      */
     @JvmStatic
-    var cacheLocation: Location? = locationClient?.getLastKnownLocation()
+    var cacheLocation: STLocation? = locationClient?.getLastKnownLocation()
         internal set(value) {
             if (STLatLng.isValidLatLng(value?.latitude, value?.longitude)) {
                 field = value
@@ -110,14 +106,14 @@ object STLocationManager {
      */
     @JvmStatic
     @JvmOverloads
-    fun startLocation(timeout: Long = 5000, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient?.startLocation(timeout, onSuccess, onFailure)
+    fun startLocation(timeout: Long = 5000, onSuccess: ((location: STLocation) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient?.startLocation(timeout, onSuccess, onFailure)
 
     /**
      * 循环定位
      */
     @JvmStatic
     @JvmOverloads
-    fun startLocationLoop(interval: Long = 30000, ensurePermissions: ((callback: (allPermissionsGranted: Boolean) -> Unit?) -> Unit?)? = null, onSuccess: ((location: Location) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient?.startLocationLoop(interval, ensurePermissions, onSuccess, onFailure)
+    fun startLocationLoop(interval: Long = 30000, ensurePermissions: ((callback: (allPermissionsGranted: Boolean) -> Unit?) -> Unit?)? = null, onSuccess: ((location: STLocation) -> Unit?)? = null, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)? = null) = locationClient?.startLocationLoop(interval, ensurePermissions, onSuccess, onFailure)
 
     /**
      * 停止循环定位

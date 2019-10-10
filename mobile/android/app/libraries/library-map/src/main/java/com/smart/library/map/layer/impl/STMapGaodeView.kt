@@ -5,60 +5,96 @@ import android.graphics.Point
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.FrameLayout
 import com.amap.api.maps.*
 import com.amap.api.maps.model.*
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapView
-import com.smart.library.map.model.STLatLng
-import com.smart.library.map.model.STLatLngBounds
-import com.smart.library.map.model.STLatLngType
-import com.smart.library.map.model.STMarker
+import com.smart.library.map.model.*
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
-internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap {
+/**
+ * 注意: zoomLevel
+ *
+ * 百度地图 4-21, 高德地图 3-19
+ * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
+ *
+ * 通过 wrapZoomLevelFromBaidu/wrapZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
+ */
+internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
 
     init {
         if (!isInEditMode) {
             initialize(STBaseApplication.INSTANCE)
         }
         addView(createMapView(context, initLatLon, initZoomLevel))
-
-//        map().setOnMyLocationChangeListener {
-//
-//        }
-    }
-
-    fun setOnLocationChangedListener(onLocationChanged: (STLatLng) -> Unit) {
-
     }
 
     private val mapView: MapView by lazy { getChildAt(0) as MapView }
     private val map: AMap by lazy { mapView().map }
+    override fun latestLatLon(): STLatLng? = latestLatLon
 
     private fun map(): AMap = map
     override fun mapView(): MapView = mapView
 
-    override fun onCreate(context: Context?, savedInstanceState: Bundle?) = mapView().onCreate(savedInstanceState)
+    private var onLocationChanged: ((STLatLng?) -> Unit)? = null
+
+    /**
+     * 5.0.0 版本之后, 地图自己实现了定位, 通过该方法监听
+     */
+    @Suppress("unused")
+    fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
+        this.onLocationChanged = onLocationChanged
+    }
+
+    override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
+        mapView().onCreate(savedInstanceState)
+        map().setOnMyLocationChangeListener {
+            // https://lbs.amap.com/faq/android/android-location/24/
+            // 高德地图 Android 定位 SDK 支持返回高德坐标系（GCJ-02坐标系），可以完美显示在高德地图、高德地图SDK生成的图面上，并支持将GPS/Mapbar/Baidu坐标系转换到高德坐标系。
+
+            val stLatLng = STLatLng(it.latitude, it.longitude, STLatLngType.GCJ02)
+            if (stLatLng.isValid()) {
+                latestLatLon = stLatLng
+                onLocationChanged?.invoke(latestLatLon)
+            }
+        }
+
+        // 5.0.0 版本之前, 自己实现定位 https://lbs.amap.com/api/android-sdk/guide/create-map/mylocation/
+        // map().setLocationSource(STLocationGaodeClient(false))
+    }
+
     override fun onSaveInstanceState(outState: Bundle) = mapView().onSaveInstanceState(outState)
 
     override fun onResume() = mapView().onResume()
     override fun onPause() = mapView().onPause()
     override fun onDestroy() = mapView().onDestroy()
 
+    override fun mapType(): STMapType = STMapType.GAODE
+
+    override fun onLocationButtonClickedListener(): OnClickListener = this
+
+    private var latestLatLon: STLatLng? = null
+    override fun onClick(locationButtonView: View?) {
+        setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+    }
+
     override fun enableCompass(enable: Boolean) {
         map().uiSettings.isCompassEnabled = enable
     }
 
     override fun setZoomLevel(zoomLevel: Float) {
-        map().animateCamera(CameraUpdateFactory.zoomTo(zoomLevel))
+        map().animateCamera(CameraUpdateFactory.zoomTo(wrapZoomLevelFromBaidu(zoomLevel)))
     }
 
     override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) {
@@ -94,13 +130,13 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     override fun getCurrentMapRadius(): Double = getDistanceByGaodeLatLng(map().projection.visibleRegion.latLngBounds.northeast, map().cameraPosition.target)
 
-    override fun getCurrentMapZoomLevel(): Float = map().cameraPosition.zoom
+    override fun getCurrentMapZoomLevel(): Float = wrapZoomLevelToBaidu(map().cameraPosition.zoom)
     override fun getCurrentMapCenterLatLng(): STLatLng = convertGaodeLatLngToSTLatLng(map().cameraPosition.target)
     override fun getCurrentMapLatLngBounds(): STLatLngBounds = convertGaodeBoundsToSTLatLngBounds(map().projection.visibleRegion.latLngBounds)
 
     override fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?) {
         latLng ?: return
-        val mapStatus = CameraUpdateFactory.newLatLngZoom(LatLng(latLng.latitude, latLng.longitude), zoomLevel)
+        val mapStatus = CameraUpdateFactory.newLatLngZoom(LatLng(latLng.latitude, latLng.longitude), wrapZoomLevelFromBaidu(zoomLevel))
         if (animate) {
             map().animateCamera(mapStatus)
         } else {
@@ -161,6 +197,16 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     companion object {
 
+        /**
+         * 百度地图 4-21, 高德地图 3-19
+         * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
+         */
+        @JvmStatic
+        fun wrapZoomLevelFromBaidu(baiduZoomLevel: Float): Float = min(max(baiduZoomLevel - 2f, 3f), 19f)
+
+        @JvmStatic
+        fun wrapZoomLevelToBaidu(gaodeZoomLevel: Float): Float = min(max(gaodeZoomLevel + 2f, 3f), 19f)
+
         @JvmStatic
         fun getDistanceByGaodeLatLng(startLatLng: LatLng?, endLatLng: LatLng?): Double {
             return AMapUtils.calculateLineDistance(startLatLng, endLatLng).toDouble()
@@ -177,19 +223,21 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         @JvmStatic
         private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): MapView {
             val options = AMapOptions()
-            options.mapType(AMap.MAP_TYPE_NORMAL)
 
-            options.compassEnabled(false)
-            options.scaleControlsEnabled(false) // 比例尺
-            options.scrollGesturesEnabled(true) // 地图平移手势
-            options.zoomGesturesEnabled(true) // 地图缩放控制手势
-            options.zoomControlsEnabled(false) // 地图缩放控制按钮
             options.logoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT)
+            options.mapType(AMap.MAP_TYPE_NORMAL)
+            options.rotateGesturesEnabled(false)    // 倾斜
+            options.scrollGesturesEnabled(true)     // 地图平移手势
+            options.scaleControlsEnabled(false)     // 比例尺
+            options.zoomControlsEnabled(false)      // 地图缩放控制按钮
+            options.tiltGesturesEnabled(false)      // 旋转
+            options.zoomGesturesEnabled(true)       // 地图缩放控制手势
+            options.compassEnabled(false)
             options.zOrderOnTop(true)
 
             val gdLatLng: STLatLng? = initLatLon.convertTo(STLatLngType.GCJ02)
             if (gdLatLng?.isValid() == true) {
-                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), initZoomLevel))
+                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapZoomLevelFromBaidu(initZoomLevel)))
             }
 
             val mapView = MapView(context, options)

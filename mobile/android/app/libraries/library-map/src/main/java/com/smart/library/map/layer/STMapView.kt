@@ -10,9 +10,19 @@ import com.smart.library.map.layer.impl.STMapBaiduView
 import com.smart.library.map.layer.impl.STMapGaodeView
 import com.smart.library.map.model.*
 
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
+
     companion object {
-        const val defaultZoomLevel = 14f
+
+        /**
+         * 百度地图 4-21, 高德地图 3-19
+         * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
+         */
+        const val defaultMaxZoomLevel = 21f
+        const val defaultMinZoomLevel = 5f
+        const val defaultZoomLevel = (defaultMaxZoomLevel + defaultMinZoomLevel) / 2f
+
         @JvmStatic
         val defaultLatLngTianAnMen = STLatLng(39.920116, 116.403703, STLatLngType.BD09) // 天安门
     }
@@ -25,7 +35,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
         }
 
-        // addView(STMapControlView(context, map = map()))
+        addView(STMapControlView(context, map = map()))
     }
 
     private val map: STIMap by lazy { getChildAt(0) as STIMap }
@@ -46,15 +56,19 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     override fun onResume() {
         map().onResume()
-        // controlView().onResume()
     }
 
     override fun onPause() {
         map().onPause()
-        // controlView().onPause()
     }
 
     override fun onDestroy() = map().onDestroy()
+
+    override fun latestLatLon(): STLatLng? = map().latestLatLon()
+
+    override fun mapType(): STMapType = map().mapType()
+
+    override fun onLocationButtonClickedListener(): OnClickListener = map().onLocationButtonClickedListener()
 
     override fun enableCompass(enable: Boolean) = map().enableCompass(enable)
 

@@ -7,9 +7,14 @@ import android.view.View
 import com.baidu.mapapi.model.LatLngBounds
 import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STLatLngBounds
+import com.smart.library.map.model.STMapType
 import com.smart.library.map.model.STMarker
 
 interface STIMap {
+
+    fun latestLatLon(): STLatLng?
+
+    fun mapType(): STMapType
 
     fun mapView(): View
 
@@ -18,6 +23,8 @@ interface STIMap {
     fun onResume()
     fun onPause()
     fun onDestroy()
+
+    fun onLocationButtonClickedListener(): View.OnClickListener
 
     /**
      * 指南针是否生效

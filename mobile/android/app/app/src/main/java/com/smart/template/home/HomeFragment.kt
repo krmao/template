@@ -45,7 +45,10 @@ class HomeFragment : STBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         baiduMap.setOnClickListener {
-            STActivity.start(activity, MapFragment::class.java)
+            MapFragment.goTo(activity, useBaidu = true)
+        }
+        gaodeMap.setOnClickListener {
+            MapFragment.goTo(activity, useBaidu = false)
         }
         text1.setOnClickListener {
             STActivity.start(activity, Test1Fragment::class.java)

@@ -22,19 +22,23 @@
     <application>
 
         <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f0117d654e20c9b29aad6431f69103c3" />
+<!--        <meta-data-->
+<!--            android:name="com.amap.api.v2.apikey"-->
+<!--            android:value="${GAODE_MAP_KEY}" />-->
+
+        <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="${BAIDU_MAP_KEY}" />
         <meta-data
             android:name="ENABLE_MAP_NAMES"
             android:value="${ENABLE_MAP_NAMES}" />
 
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
-
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="${GAODE_MAP_KEY}"/>
+            android:process=":remote" />
 
     </application>
 

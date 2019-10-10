@@ -2,13 +2,12 @@ package com.smart.library.map.layer.impl
 
 import android.content.Context
 import android.graphics.Point
+import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
-import com.amap.api.maps2d.*
-import com.amap.api.maps2d.model.CameraPosition
-import com.amap.api.maps2d.model.LatLng
-import com.amap.api.maps2d.model.LatLngBounds
+import com.amap.api.maps.*
+import com.amap.api.maps.model.*
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapView
@@ -16,11 +15,13 @@ import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STLatLngBounds
 import com.smart.library.map.model.STLatLngType
 import com.smart.library.map.model.STMarker
+import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.roundToInt
+
 
 internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap {
 
@@ -29,6 +30,14 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
             initialize(STBaseApplication.INSTANCE)
         }
         addView(createMapView(context, initLatLon, initZoomLevel))
+
+//        map().setOnMyLocationChangeListener {
+//
+//        }
+    }
+
+    fun setOnLocationChangedListener(onLocationChanged: (STLatLng) -> Unit) {
+
     }
 
     private val mapView: MapView by lazy { getChildAt(0) as MapView }
@@ -36,6 +45,9 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     private fun map(): AMap = map
     override fun mapView(): MapView = mapView
+
+    override fun onCreate(context: Context?, savedInstanceState: Bundle?) = mapView().onCreate(savedInstanceState)
+    override fun onSaveInstanceState(outState: Bundle) = mapView().onSaveInstanceState(outState)
 
     override fun onResume() = mapView().onResume()
     override fun onPause() = mapView().onPause()
@@ -155,18 +167,11 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         }
 
         private val configMap: HashMap<String, String> = hashMapOf(
-                "茶田" to "map_config_chatian.json",
-                "朱砂痣" to "map_config_zhushazhi.json",
-                "绿野仙踪" to "map_config_lvyexianzong.json",
-                "青花瓷" to "map_config_qinghuaci.json",
-                "一蓑烟雨" to "map_config_yisuoyanyu.json",
-                "眼眸" to "map_config_yanmou.json",
-                "Candy" to "map_config_candy.json",
-                "OKR" to "map_config_okr.json",
-                "赛博朋克" to "map_config_saibopengke.json",
-                "物流" to "map_config_wuliu.json",
-                "出行" to "map_config_chuxing.json",
-                "中秋" to "map_config_zhongqiu.json"
+                "远山黛" to "yuanshandai",
+                "极夜蓝" to "jiyelan",
+                "草色青" to "caoseqing",
+                "涂鸦" to "tuya",
+                "酱籽" to "jiangzi"
         )
 
         @JvmStatic
@@ -195,23 +200,32 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
         @JvmStatic
         private fun initMapView(mapView: MapView): MapView = mapView.apply {
-            // 获取json文件路径
-            // val customStyleFilePath = getCustomStyleFilePath(mapView.context, configMap["青花瓷"])
-            // 设置个性化地图样式文件的路径和加载方式
-            // setMapCustomStylePath(customStyleFilePath)
-            // 动态设置个性化地图样式是否生效
-            // setMapCustomStyleEnable(true)
-
             map.apply {
+
+                val customMapStyleOptions: CustomMapStyleOptions = CustomMapStyleOptions()
+                        .setEnable(true)
+                        .setStyleDataPath(getCustomStyleFilePath(mapView.context, "${configMap["草色青"]}_style.data"))
+                        .setStyleExtraPath(getCustomStyleFilePath(mapView.context, "${configMap["草色青"]}_style_extra.data"))
+
+
+                setCustomMapStyle(customMapStyleOptions)
 
                 mapType = AMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
                 isTrafficEnabled = false            // 开启交通图
+
+
+                val locationStyle = MyLocationStyle()   //初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+                locationStyle.interval(1000)            //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
+                locationStyle.showMyLocation(true)
+                locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);//连续定位、蓝点不会移动到地图中心点，定位点依照设备方向旋转，并且蓝点会跟随设备移动
+                myLocationStyle = locationStyle         //设置定位蓝点的Style
+                isMyLocationEnabled = true              // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false
 
                 uiSettings.apply {
                     isScaleControlsEnabled = true
                     isZoomControlsEnabled = true
                     isCompassEnabled = true
-                    isMyLocationButtonEnabled = true
+                    isMyLocationButtonEnabled = false // 设置默认定位按钮是否显示，非必需设置。
                     isScrollGesturesEnabled = true
                     isZoomGesturesEnabled = true
                     setAllGesturesEnabled(false)
@@ -231,10 +245,14 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
             var inputStream: InputStream? = null
             var parentPath: String? = null
             try {
-                inputStream = context.assets.open("mapConfig/$customStyleFileName")
+                inputStream = context.assets.open("map_style/gaode/$customStyleFileName")
                 val buffer = ByteArray(inputStream.available())
                 inputStream.read(buffer)
-                parentPath = context.filesDir.absolutePath
+
+                val mapStyleDir = STCacheManager.getChildDir(STCacheManager.getFilesDir(), "map_style")
+                val baiduMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "baidu")
+                parentPath = baiduMapStyleDir.absolutePath
+
                 val customStyleFile = File("$parentPath/$customStyleFileName")
                 if (customStyleFile.exists()) {
                     customStyleFile.delete()

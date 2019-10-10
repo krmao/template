@@ -1,6 +1,8 @@
 package com.smart.library.map.layer
 
+import android.content.Context
 import android.graphics.Point
+import android.os.Bundle
 import android.view.View
 import com.baidu.mapapi.model.LatLngBounds
 import com.smart.library.map.model.STLatLng
@@ -11,6 +13,8 @@ interface STIMap {
 
     fun mapView(): View
 
+    fun onCreate(context: Context?, savedInstanceState: Bundle?)
+    fun onSaveInstanceState(outState: Bundle)
     fun onResume()
     fun onPause()
     fun onDestroy()

@@ -2,10 +2,12 @@ package com.smart.library.map.layer
 
 import android.content.Context
 import android.graphics.Point
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.smart.library.map.layer.impl.STMapBaiduView
+import com.smart.library.map.layer.impl.STMapGaodeView
 import com.smart.library.map.model.*
 
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
@@ -19,10 +21,11 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     fun initialize(mapType: STMapType = STMapType.BAIDU, initLatLon: STLatLng = defaultLatLngTianAnMen, initZoomLevel: Float = defaultZoomLevel) {
         when (mapType) {
             STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+            STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
             else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
         }
 
-        addView(STMapControlView(context, map = map()))
+        // addView(STMapControlView(context, map = map()))
     }
 
     private val map: STIMap by lazy { getChildAt(0) as STIMap }
@@ -33,14 +36,22 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     override fun mapView(): View = map().mapView()
 
+    override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
+        map().onCreate(context, savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        map().onSaveInstanceState(outState)
+    }
+
     override fun onResume() {
         map().onResume()
-        controlView().onResume()
+        // controlView().onResume()
     }
 
     override fun onPause() {
         map().onPause()
-        controlView().onPause()
+        // controlView().onPause()
     }
 
     override fun onDestroy() = map().onDestroy()

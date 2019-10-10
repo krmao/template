@@ -2,6 +2,7 @@ package com.smart.library.map.layer.impl
 
 import android.content.Context
 import android.graphics.Point
+import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
@@ -17,6 +18,7 @@ import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STLatLngBounds
 import com.smart.library.map.model.STLatLngType
 import com.smart.library.map.model.STMarker
+import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -38,6 +40,8 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     private fun map(): BaiduMap = map
     override fun mapView(): MapView = mapView
 
+    override fun onCreate(context: Context?, savedInstanceState: Bundle?) = mapView().onCreate(context, savedInstanceState)
+    override fun onSaveInstanceState(outState: Bundle) = mapView().onSaveInstanceState(outState)
     override fun onResume() = mapView().onResume()
     override fun onPause() = mapView().onPause()
     override fun onDestroy() = mapView().onDestroy()
@@ -222,9 +226,6 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
                 setMaxAndMinZoomLevel(21f, 3f)     // 限制缩放等级
                 showMapPoi(true)                   // 隐藏底图标注（控制地图POI显示）
 
-                setMapCustomStyleEnable(true)
-                setMapCustomStylePath("")
-
                 uiSettings.apply {
                     isScrollGesturesEnabled = true          // 地图平移
                     isZoomGesturesEnabled = true            // 地图缩放
@@ -244,10 +245,14 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
             var inputStream: InputStream? = null
             var parentPath: String? = null
             try {
-                inputStream = context.assets.open("mapConfig/$customStyleFileName")
+                inputStream = context.assets.open("map_style/baidu/$customStyleFileName")
                 val buffer = ByteArray(inputStream.available())
                 inputStream.read(buffer)
-                parentPath = context.filesDir.absolutePath
+
+                val mapStyleDir = STCacheManager.getChildDir(STCacheManager.getFilesDir(), "map_style")
+                val baiduMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "baidu")
+                parentPath = baiduMapStyleDir.absolutePath
+
                 val customStyleFile = File("$parentPath/$customStyleFileName")
                 if (customStyleFile.exists()) {
                     customStyleFile.delete()

@@ -43,7 +43,8 @@ android {
                 "VERSION_RN=${rootProject.ext.versionRN}, \n" +
                 "MAP_ENABLE=${gradle.ext.modules.map.enable}, \n" +
                 "ENABLE_MAP_NAMES=${gradle.ext.modules.map.enableMapNames}, \n" +
-                "BAIDU_MAP_KEY=${gradle.ext.modules.map.baiduKey} \n"
+                "BAIDU_MAP_KEY=${gradle.ext.modules.map.baiduKey}, \n" +
+                "GAODE_MAP_KEY=${gradle.ext.modules.map.gaodeKey} \n"
 
         manifestPlaceholders = [
                 'DEBUG'     : rootProject.ext.debug,
@@ -54,6 +55,13 @@ android {
             manifestPlaceholders.put('ENABLE_MAP_NAMES', gradle.ext.modules.map.enableMapNames)
             if (gradle.ext.modules.map.enableMapNames.contains("baidu")) {
                 manifestPlaceholders.put('BAIDU_MAP_KEY', gradle.ext.modules.map.baiduKey)
+            } else {
+                manifestPlaceholders.put('BAIDU_MAP_KEY', '')
+            }
+            if (gradle.ext.modules.map.enableMapNames.contains("gaode")) {
+                manifestPlaceholders.put('GAODE_MAP_KEY', gradle.ext.modules.map.gaodeKey)
+            } else {
+                manifestPlaceholders.put('GAODE_MAP_KEY', '')
             }
         }
 

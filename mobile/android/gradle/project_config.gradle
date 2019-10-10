@@ -8,15 +8,15 @@ gradle.ext {
     ]
 
     modules = [
-            'liveStreaming': ['enable': true],
-            'flutter'      : ['enable': true],
+            'liveStreaming': ['enable': false],
+            'flutter'      : ['enable': false],
             'reactNative'  : ['enable': false],
             'hybird'       : ['enable': false],
             'map'          : [
                     'enable'        : true,
-                    'enableMapNames': 'baidu', // baidu,gaode,google 支持多个, 逗号分隔
+                    'enableMapNames': 'baidu,gaode', // baidu,gaode,google 支持多个, 逗号分隔
                     'baiduKey'      : 'A2SNanQqBaGEtIrLgqlaMgU8VqiZvuEh',
-                    'gaodeKey'      : '',
+                    'gaodeKey'      : 'f0117d654e20c9b29aad6431f69103c3',
                     'googleKey'     : ''
             ],
     ]

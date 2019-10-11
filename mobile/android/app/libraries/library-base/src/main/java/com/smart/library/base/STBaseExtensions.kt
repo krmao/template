@@ -68,7 +68,8 @@ fun Fragment.uiThread(fn: () -> Unit) {
     activity.runOnUiThread { fn() }
 }
 
-fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300) {
+@JvmOverloads
+fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnimationEnd: (() -> Unit)? = null) {
     animate().alpha(if (visibility == View.VISIBLE) 1.0f else 0.0f).setDuration(duration).setListener(object : Animator.AnimatorListener {
         override fun onAnimationRepeat(animation: Animator?) {
             setVisibility(View.VISIBLE)
@@ -76,10 +77,12 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300) {
 
         override fun onAnimationEnd(animation: Animator?) {
             setVisibility(visibility)
+            onAnimationEnd?.invoke()
         }
 
         override fun onAnimationCancel(animation: Animator?) {
             setVisibility(visibility)
+            onAnimationEnd?.invoke()
         }
 
         override fun onAnimationStart(animation: Animator?) {

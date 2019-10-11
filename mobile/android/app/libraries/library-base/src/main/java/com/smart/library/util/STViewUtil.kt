@@ -31,7 +31,10 @@ object STViewUtil {
     }
 
     @JvmStatic
-    fun animateAlphaToVisibility(visibility: Int, duration: Long = 300, vararg views: View?) = views.forEach { it?.animateAlphaToVisibility(visibility, duration) }
+    @JvmOverloads
+    fun animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnimationEnd: (() -> Unit)? = null, vararg views: View?) = views.forEachIndexed { index, view ->
+        view?.animateAlphaToVisibility(visibility, duration, if (index == views.size - 1) onAnimationEnd else null)
+    }
 
     @JvmStatic
     fun performItemClick(listView: AbsListView?, position: Int) {

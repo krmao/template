@@ -17,20 +17,26 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     init {
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
-        locationBtn.setOnClickListener(mapView.onLocationButtonClickedListener())
+
 
         toggleBtn.setOnClickListener {
             mapView.switchTo(if (mapView.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
         }
 
+        setLocationBtnListener(mapView.onLocationButtonClickedListener())
+
         hideLoading()
     }
 
+    fun setLocationBtnListener(onLocationButtonClickedListener: OnClickListener) {
+        locationBtn.setOnClickListener(onLocationButtonClickedListener)
+    }
+
     fun showLoading() {
-        STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, loadingLayout)
+        STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, {}, loadingLayout)
     }
 
     fun hideLoading() {
-        STViewUtil.animateAlphaToVisibility(View.GONE, 300, loadingLayout)
+        STViewUtil.animateAlphaToVisibility(View.GONE, 300, {}, loadingLayout)
     }
 }

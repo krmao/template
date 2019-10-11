@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import com.smart.library.map.layer.impl.STMapBaiduView
 import com.smart.library.map.layer.impl.STMapGaodeView
 import com.smart.library.map.model.*
+import com.smart.library.util.STViewUtil
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
@@ -59,7 +60,8 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     fun switchTo(toMapType: STMapType) {
 
-        controlView().showLoading()
+        val controlView: STMapControlView = controlView()
+        controlView.showLoading()
         synchronized(this) {
             if (map().mapType() != toMapType) {
 
@@ -72,12 +74,16 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 map().onCreate(context, null)
                 map().onResume()
                 map().setOnMapLoadedCallback {
-                    // remove old
-                    (getChildAt(1) as STIMap).onPause()
-                    (getChildAt(1) as STIMap).onDestroy()
-                    removeViewAt(1)
 
-                    controlView().hideLoading()
+                    // remove old
+                    val oldMapView: View = getChildAt(1)
+                    STViewUtil.animateAlphaToVisibility(View.GONE, 300, {
+                        (oldMapView as STIMap).onPause()
+                        (oldMapView as STIMap).onDestroy()
+                        removeView(oldMapView)
+                        controlView.setLocationBtnListener(map().onLocationButtonClickedListener())
+                        controlView.hideLoading()
+                    }, oldMapView)
                 }
             }
         }

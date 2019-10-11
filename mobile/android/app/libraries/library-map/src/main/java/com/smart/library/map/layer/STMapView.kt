@@ -44,6 +44,11 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         }
 
         addView(STMapControlView(context, mapView = this))
+
+        controlView().showLoading()
+        map().setOnMapLoadedCallback {
+            controlView().hideLoading()
+        }
     }
 
     private fun controlView(): STMapControlView = getChildAt(1) as STMapControlView
@@ -53,30 +58,27 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     override fun mapView(): View = map().mapView()
 
     fun switchTo(toMapType: STMapType) {
+
+        controlView().showLoading()
         synchronized(this) {
             if (map().mapType() != toMapType) {
 
-                // remove old
-                map().onPause()
-                map().onDestroy()
-
-                removeViewAt(1) // remove controlView
-                removeViewAt(0) // remove old mapView
-                removeAllViews()
-
                 // add new
                 when (toMapType) {
-                    STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
-                    STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
-                    else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+                    STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
+                    STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
+                    else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
                 }
-
                 map().onCreate(context, null)
                 map().onResume()
+                map().setOnMapLoadedCallback {
+                    // remove old
+                    (getChildAt(1) as STIMap).onPause()
+                    (getChildAt(1) as STIMap).onDestroy()
+                    removeViewAt(1)
 
-                addView(STMapControlView(context, mapView = this))
-
-                // invalidate()
+                    controlView().hideLoading()
+                }
             }
         }
     }
@@ -98,6 +100,8 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     }
 
     override fun onDestroy() = map().onDestroy()
+
+    override fun setOnMapLoadedCallback(onMapLoaded: () -> Unit) = map().setOnMapLoadedCallback(onMapLoaded)
 
     override fun latestLatLon(): STLatLng? = map().latestLatLon()
 

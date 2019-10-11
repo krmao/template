@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.RelativeLayout
 import com.smart.library.map.R
 import com.smart.library.map.model.STMapType
+import com.smart.library.util.STViewUtil
 import kotlinx.android.synthetic.main.st_map_view_control_layout.view.*
 
 
@@ -20,5 +22,15 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         toggleBtn.setOnClickListener {
             mapView.switchTo(if (mapView.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
         }
+
+        hideLoading()
+    }
+
+    fun showLoading() {
+        STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, loadingLayout)
+    }
+
+    fun hideLoading() {
+        STViewUtil.animateAlphaToVisibility(View.GONE, 300, loadingLayout)
     }
 }

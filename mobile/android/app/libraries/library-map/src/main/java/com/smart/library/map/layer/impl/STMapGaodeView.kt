@@ -40,12 +40,12 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         addView(createMapView(context, initLatLon, initZoomLevel))
     }
 
-    private val mapView: MapView by lazy { getChildAt(0) as MapView }
+    private val mapView: TextureMapView by lazy { getChildAt(0) as TextureMapView }
     private val map: AMap by lazy { mapView().map }
     override fun latestLatLon(): STLatLng? = latestLatLon
 
     private fun map(): AMap = map
-    override fun mapView(): MapView = mapView
+    override fun mapView(): TextureMapView = mapView
 
     private var onLocationChanged: ((STLatLng?) -> Unit)? = null
 
@@ -72,6 +72,12 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
         // 5.0.0 版本之前, 自己实现定位 https://lbs.amap.com/api/android-sdk/guide/create-map/mylocation/
         // map().setLocationSource(STLocationGaodeClient(false))
+    }
+
+    override fun setOnMapLoadedCallback(onMapLoaded: () -> Unit) {
+        map().setOnMapLoadedListener {
+            onMapLoaded()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) = mapView().onSaveInstanceState(outState)
@@ -223,7 +229,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         )
 
         @JvmStatic
-        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): MapView {
+        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
             val options = AMapOptions()
 
             options.logoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT)
@@ -242,14 +248,14 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
                 options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapZoomLevelFromBaidu(initZoomLevel)))
             }
 
-            val mapView = MapView(context, options)
+            val mapView = TextureMapView(context, options)
 
             initMapView(mapView)
             return mapView
         }
 
         @JvmStatic
-        private fun initMapView(mapView: MapView): MapView = mapView.apply {
+        private fun initMapView(mapView: TextureMapView): TextureMapView = mapView.apply {
             map.apply {
 
                 val customMapStyleOptions: CustomMapStyleOptions = CustomMapStyleOptions()

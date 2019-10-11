@@ -36,11 +36,11 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         addView(createMapView(context, initLatLon, initZoomLevel))
     }
 
-    private val mapView: MapView by lazy { getChildAt(0) as MapView }
+    private val mapView: TextureMapView by lazy { getChildAt(0) as TextureMapView }
     private val map: BaiduMap by lazy { mapView().map }
 
     private fun map(): BaiduMap = map
-    override fun mapView(): MapView = mapView
+    override fun mapView(): TextureMapView = mapView
     override fun latestLatLon(): STLatLng? = latestLatLon
 
     private var locationBaiduSensor: STLocationBaiduSensor? = null
@@ -53,13 +53,18 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     private var latestLatLon: STLatLng? = null
     override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
         mapView().onCreate(context, savedInstanceState)
-
         locationBaiduSensor = STLocationBaiduSensor(context, map()) {
             val stLatLng = STLatLng(it.latitude, it.longitude, STLatLngType.BD09)
             if (stLatLng.isValid()) {
                 latestLatLon = stLatLng
                 onLocationChanged?.invoke(latestLatLon)
             }
+        }
+    }
+
+    override fun setOnMapLoadedCallback(onMapLoaded: () -> Unit) {
+        map().setOnMapLoadedCallback {
+            onMapLoaded()
         }
     }
 
@@ -223,7 +228,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         )
 
         @JvmStatic
-        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): MapView {
+        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
             val options = BaiduMapOptions()
             options.mapType(BaiduMap.MAP_TYPE_NORMAL)
             val mapStatusBuilder = MapStatus.Builder();
@@ -245,13 +250,13 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
             options.zoomGesturesEnabled(true) // 地图缩放控制手势
             options.zoomControlsEnabled(false) // 地图缩放控制按钮
 
-            val mapView = MapView(context, options)
+            val mapView = TextureMapView(context, options)
             initMapView(mapView)
             return mapView
         }
 
         @JvmStatic
-        private fun initMapView(mapView: MapView): MapView = mapView.apply {
+        private fun initMapView(mapView: TextureMapView): TextureMapView = mapView.apply {
             logoPosition = LogoPosition.logoPostionleftBottom
             showZoomControls(false)             // 缩放按钮
             showScaleControl(false)             // 比例尺

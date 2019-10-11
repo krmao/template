@@ -24,6 +24,8 @@ interface STIMap {
     fun onPause()
     fun onDestroy()
 
+    fun setOnMapLoadedCallback(onMapLoaded: () -> Unit)
+
     fun onLocationButtonClickedListener(): View.OnClickListener
 
     /**

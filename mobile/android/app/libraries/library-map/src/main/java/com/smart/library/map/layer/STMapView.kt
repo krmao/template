@@ -44,7 +44,8 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
         }
 
-        addView(STMapControlView(context, mapView = this))
+        controlView = STMapControlView(context, mapView = this)
+        addView(controlView)
 
         controlView().showLoading()
         map().setOnMapLoadedCallback {
@@ -52,7 +53,8 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         }
     }
 
-    private fun controlView(): STMapControlView = getChildAt(1) as STMapControlView
+    private lateinit var controlView: STMapControlView
+    private fun controlView(): STMapControlView = controlView
 
     fun map(): STIMap = getChildAt(0) as STIMap
 
@@ -64,26 +66,37 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         controlView.showLoading()
         synchronized(this) {
             if (map().mapType() != toMapType) {
+                
+                val oldMapView: View = getChildAt(0)
 
-                // add new
+                val newMapView: View
                 when (toMapType) {
-                    STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
-                    STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
-                    else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel), 0)
+                    STMapType.BAIDU -> {
+                        newMapView = STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        addView(newMapView, 0)
+                    }
+                    STMapType.GAODE -> {
+                        newMapView = STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        addView(newMapView, 0)
+                    }
+                    else -> {
+                        newMapView = STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        addView(newMapView, 0)
+                    }
                 }
-                map().onCreate(context, null)
-                map().onResume()
-                map().setOnMapLoadedCallback {
+                (newMapView as? STIMap)?.let {
 
-                    // remove old
-                    val oldMapView: View = getChildAt(1)
-                    STViewUtil.animateAlphaToVisibility(View.GONE, 300, {
-                        (oldMapView as STIMap).onPause()
-                        (oldMapView as STIMap).onDestroy()
-                        removeView(oldMapView)
-                        controlView.setLocationBtnListener(map().onLocationButtonClickedListener())
-                        controlView.hideLoading()
-                    }, oldMapView)
+                    it.onCreate(context, null)
+                    it.onResume()
+                    it.setOnMapLoadedCallback {
+                        STViewUtil.animateAlphaToVisibility(View.GONE, 300, {
+                            (oldMapView as STIMap).onPause()
+                            (oldMapView as STIMap).onDestroy()
+                            removeView(oldMapView)
+                            controlView.setLocationBtnListener(it.onLocationButtonClickedListener())
+                            controlView.hideLoading()
+                        }, oldMapView)
+                    }
                 }
             }
         }

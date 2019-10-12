@@ -27,12 +27,12 @@ import kotlin.math.roundToInt
 /**
  * 注意: zoomLevel
  *
- * 百度地图 4-21, 高德地图 3-19
- * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
+ * 百度地图 4-21, 高德地图 3-20
+ * 一切级别以百度为准, 高德对缩放级别 +1, 则高德逻辑范围为 (4-21), 对应百度真实范围 (4-21)
  *
  * 通过 wrapGaodeZoomLevelFromBaidu/wrapGaodeZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
  */
-internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultBaiduZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
@@ -94,7 +94,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
     override fun onLocationButtonLongClickedListener(): OnLongClickListener = this
     override fun onLongClick(view: View?): Boolean {
         if (latestLatLon?.isValid() == true) {
-            setMapCenter(latestLatLon, STMapView.defaultZoomLevel, true)
+            setMapCenter(latestLatLon, wrapGaodeZoomLevelFromBaidu(STMapView.defaultBaiduZoomLevel), true)
         }
         return true
     }

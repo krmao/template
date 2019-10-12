@@ -20,9 +20,9 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
          * 百度地图 4-21, 高德地图 3-20
          * 一切级别以百度为准, 高德对缩放级别 +1, 则高德逻辑范围为 (4-21), 对应百度真实范围 (4-21)
          */
-        const val defaultMaxZoomLevel = 21f
-        const val defaultMinZoomLevel = 5f
-        const val defaultZoomLevel = 14f
+        const val defaultBaiduMaxZoomLevel = 21f    // 搞对对应 -1
+        const val defaultBaiduMinZoomLevel = 4f     // 搞对对应 -1
+        const val defaultBaiduZoomLevel = 14f       // 搞对对应 -1
 
         @JvmStatic
         val defaultLatLngTianAnMen = STLatLng(39.915526, 116.403847, STLatLngType.BD09) // 天安门
@@ -31,11 +31,11 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     var initLatLon: STLatLng = defaultLatLngTianAnMen
         private set
-    var initZoomLevel: Float = defaultZoomLevel
+    var initZoomLevel: Float = defaultBaiduZoomLevel
         private set
 
     @JvmOverloads
-    fun initialize(mapType: STMapType = STMapType.BAIDU, initLatLon: STLatLng = defaultLatLngTianAnMen, initZoomLevel: Float = defaultZoomLevel) {
+    fun initialize(mapType: STMapType = STMapType.BAIDU, initLatLon: STLatLng = defaultLatLngTianAnMen, initZoomLevel: Float = defaultBaiduZoomLevel) {
         this.initLatLon = initLatLon
         this.initZoomLevel = initZoomLevel
 

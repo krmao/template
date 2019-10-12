@@ -30,7 +30,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultBaiduZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
@@ -96,7 +96,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     override fun onLocationButtonLongClickedListener(): OnLongClickListener = this
     override fun onLongClick(view: View?): Boolean {
         if (latestLatLon?.isValid() == true) {
-            setMapCenter(latestLatLon, STMapView.defaultZoomLevel, true)
+            setMapCenter(latestLatLon, STMapView.defaultBaiduZoomLevel, true)
         }
         return true
     }

@@ -20,11 +20,14 @@ import com.smart.library.map.location.STLocationManager
 import com.smart.library.map.location.impl.STLocationBaiduSensor
 import com.smart.library.map.model.*
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
@@ -205,27 +208,61 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         callback(latLng)
     }
 
+    override fun switchTheme() {
+        setMapTheme(mapView(), ++mapThemeIndex)
+    }
+
     companion object {
+
+        @JvmStatic
+        fun wrapBaiduZoomLevel(baiduZoomLevel: Float): Float = min(max(baiduZoomLevel, 4f), 21f)
 
         @JvmStatic
         fun getDistanceByBaiduLatLng(startLatLng: LatLng?, endLatLng: LatLng?): Double {
             return DistanceUtil.getDistance(startLatLng, endLatLng)
         }
 
-        private val configMap: HashMap<String, String> = hashMapOf(
-                "茶田" to "map_config_chatian.json",
-                "朱砂痣" to "map_config_zhushazhi.json",
-                "绿野仙踪" to "map_config_lvyexianzong.json",
-                "青花瓷" to "map_config_qinghuaci.json",
-                "一蓑烟雨" to "map_config_yisuoyanyu.json",
-                "眼眸" to "map_config_yanmou.json",
-                "Candy" to "map_config_candy.json",
-                "OKR" to "map_config_okr.json",
-                "赛博朋克" to "map_config_saibopengke.json",
-                "物流" to "map_config_wuliu.json",
-                "出行" to "map_config_chuxing.json",
-                "中秋" to "map_config_zhongqiu.json"
+        private val mapThemeList: List<Array<String>> = listOf(
+                arrayOf("茶田", "map_config_chatian.json"),
+                arrayOf("朱砂痣", "map_config_zhushazhi.json"),
+                arrayOf("绿野仙踪", "map_config_lvyexianzong.json"),
+                arrayOf("青花瓷", "map_config_qinghuaci.json"),
+                arrayOf("一蓑烟雨", "map_config_yisuoyanyu.json"),
+                arrayOf("眼眸", "map_config_yanmou.json"),
+                arrayOf("Candy", "map_config_candy.json"),
+                arrayOf("OKR", "map_config_okr.json"),
+                arrayOf("赛博朋克", "map_config_saibopengke.json"),
+                arrayOf("物流", "map_config_wuliu.json"),
+                arrayOf("出行", "map_config_chuxing.json"),
+                arrayOf("中秋", "map_config_zhongqiu.json")
         )
+
+        private var mapThemeIndex: Int = STPreferencesUtil.getInt("map_baidu_theme", 0)
+            set(value) {
+                if (field < 0 || value >= mapThemeList.size) {
+                    field = 0
+                } else {
+                    field = value
+                }
+                STPreferencesUtil.putInt("map_baidu_theme", field)
+            }
+            get() {
+                if (field < 0 || field >= mapThemeList.size) {
+                    field = 0
+                    STPreferencesUtil.putInt("map_baidu_theme", field)
+                }
+                return field
+            }
+
+        @JvmStatic
+        private fun setMapTheme(mapView: TextureMapView, themeIndex: Int = mapThemeIndex) {
+            // 获取json文件路径
+            val customStyleFilePath = getCustomStyleFilePath(mapView.context, mapThemeList[themeIndex][1])
+            // 设置个性化地图样式文件的路径和加载方式
+            mapView.setMapCustomStylePath(customStyleFilePath)
+            // 动态设置个性化地图样式是否生效
+            mapView.setMapCustomStyleEnable(true)
+        }
 
         @JvmStatic
         private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
@@ -261,12 +298,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
             showZoomControls(false)             // 缩放按钮
             showScaleControl(false)             // 比例尺
 
-            // 获取json文件路径
-            val customStyleFilePath = getCustomStyleFilePath(mapView.context, configMap["青花瓷"])
-            // 设置个性化地图样式文件的路径和加载方式
-            setMapCustomStylePath(customStyleFilePath)
-            // 动态设置个性化地图样式是否生效
-            setMapCustomStyleEnable(true)
+            setMapTheme(this)
 
             map.apply {
                 changeLocationLayerOrder(true)     // 定位图层位于 marker 之下

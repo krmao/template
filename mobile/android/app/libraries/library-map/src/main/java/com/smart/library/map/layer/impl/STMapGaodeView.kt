@@ -13,6 +13,7 @@ import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.*
+import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
@@ -29,7 +30,7 @@ import kotlin.math.roundToInt
  * 百度地图 4-21, 高德地图 3-19
  * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
  *
- * 通过 wrapZoomLevelFromBaidu/wrapZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
+ * 通过 wrapGaodeZoomLevelFromBaidu/wrapGaodeZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
  */
 internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
 
@@ -102,7 +103,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
     }
 
     override fun setZoomLevel(zoomLevel: Float) {
-        map().animateCamera(CameraUpdateFactory.zoomTo(wrapZoomLevelFromBaidu(zoomLevel)))
+        map().animateCamera(CameraUpdateFactory.zoomTo(wrapGaodeZoomLevelFromBaidu(zoomLevel)))
     }
 
     override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) {
@@ -138,13 +139,13 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     override fun getCurrentMapRadius(): Double = getDistanceByGaodeLatLng(map().projection.visibleRegion.latLngBounds.northeast, map().cameraPosition.target)
 
-    override fun getCurrentMapZoomLevel(): Float = wrapZoomLevelToBaidu(map().cameraPosition.zoom)
+    override fun getCurrentMapZoomLevel(): Float = wrapGaodeZoomLevelToBaidu(map().cameraPosition.zoom)
     override fun getCurrentMapCenterLatLng(): STLatLng = convertGaodeLatLngToSTLatLng(map().cameraPosition.target)
     override fun getCurrentMapLatLngBounds(): STLatLngBounds = convertGaodeBoundsToSTLatLngBounds(map().projection.visibleRegion.latLngBounds)
 
     override fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?) {
         latLng ?: return
-        val mapStatus = CameraUpdateFactory.newLatLngZoom(LatLng(latLng.latitude, latLng.longitude), wrapZoomLevelFromBaidu(zoomLevel))
+        val mapStatus = CameraUpdateFactory.newLatLngZoom(LatLng(latLng.latitude, latLng.longitude), wrapGaodeZoomLevelFromBaidu(zoomLevel))
         if (animate) {
             map().animateCamera(mapStatus)
         } else {
@@ -203,30 +204,58 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         callback(latLng)
     }
 
+    override fun switchTheme() {
+        setMapTheme(mapView(), ++mapThemeIndex)
+    }
+
+
     companion object {
 
-        /**
-         * 百度地图 4-21, 高德地图 3-19
-         * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
-         */
         @JvmStatic
-        fun wrapZoomLevelFromBaidu(baiduZoomLevel: Float): Float = min(max(baiduZoomLevel - 2f, 3f), 19f)
+        fun wrapGaodeZoomLevelFromBaidu(baiduZoomLevel: Float): Float = min(max(baiduZoomLevel - 1f, 3f), 20f)
 
         @JvmStatic
-        fun wrapZoomLevelToBaidu(gaodeZoomLevel: Float): Float = min(max(gaodeZoomLevel + 2f, 3f), 19f)
+        fun wrapGaodeZoomLevelToBaidu(gaodeZoomLevel: Float): Float = min(max(gaodeZoomLevel + 1f, 3f), 20f)
 
         @JvmStatic
         fun getDistanceByGaodeLatLng(startLatLng: LatLng?, endLatLng: LatLng?): Double {
             return AMapUtils.calculateLineDistance(startLatLng, endLatLng).toDouble()
         }
 
-        private val configMap: HashMap<String, String> = hashMapOf(
-                "远山黛" to "yuanshandai",
-                "极夜蓝" to "jiyelan",
-                "草色青" to "caoseqing",
-                "涂鸦" to "tuya",
-                "酱籽" to "jiangzi"
+        private val mapThemeList: List<Array<String>> = listOf(
+                arrayOf("远山黛", "yuanshandai"),
+                arrayOf("极夜蓝", "jiyelan"),
+                arrayOf("草色青", "caoseqing"),
+                arrayOf("涂鸦", "tuya"),
+                arrayOf("酱籽", "jiangzi")
         )
+
+        private var mapThemeIndex: Int = STPreferencesUtil.getInt("map_gaode_theme", 0)
+            set(value) {
+                if (field < 0 || value >= mapThemeList.size) {
+                    field = 0
+                } else {
+                    field = value
+                }
+                STPreferencesUtil.putInt("map_gaode_theme", field)
+            }
+            get() {
+                if (field < 0 || field >= mapThemeList.size) {
+                    field = 0
+                    STPreferencesUtil.putInt("map_gaode_theme", field)
+                }
+                return field
+            }
+
+        @JvmStatic
+        private fun setMapTheme(mapView: TextureMapView, themeIndex: Int = mapThemeIndex) {
+            val customMapStyleOptions: CustomMapStyleOptions = CustomMapStyleOptions()
+                    .setEnable(true)
+                    .setStyleDataPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style.data"))
+                    .setStyleExtraPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style_extra.data"))
+
+            mapView.map.setCustomMapStyle(customMapStyleOptions)
+        }
 
         @JvmStatic
         private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
@@ -245,7 +274,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
             val gdLatLng: STLatLng? = initLatLon.convertTo(STLatLngType.GCJ02)
             if (gdLatLng?.isValid() == true) {
-                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapZoomLevelFromBaidu(initZoomLevel)))
+                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapGaodeZoomLevelFromBaidu(initZoomLevel)))
             }
 
             val mapView = TextureMapView(context, options)
@@ -258,13 +287,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         private fun initMapView(mapView: TextureMapView): TextureMapView = mapView.apply {
             map.apply {
 
-                val customMapStyleOptions: CustomMapStyleOptions = CustomMapStyleOptions()
-                        .setEnable(true)
-                        .setStyleDataPath(getCustomStyleFilePath(mapView.context, "${configMap["草色青"]}_style.data"))
-                        .setStyleExtraPath(getCustomStyleFilePath(mapView.context, "${configMap["草色青"]}_style_extra.data"))
-
-
-                setCustomMapStyle(customMapStyleOptions)
+                setMapTheme(mapView)
 
                 mapType = AMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
                 isTrafficEnabled = false            // 开启交通图
@@ -306,8 +329,8 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
                 inputStream.read(buffer)
 
                 val mapStyleDir = STCacheManager.getChildDir(STCacheManager.getFilesDir(), "map_style")
-                val baiduMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "baidu")
-                parentPath = baiduMapStyleDir.absolutePath
+                val gaodeMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "gaode")
+                parentPath = gaodeMapStyleDir.absolutePath
 
                 val customStyleFile = File("$parentPath/$customStyleFileName")
                 if (customStyleFile.exists()) {

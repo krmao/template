@@ -20,8 +20,11 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
 
 
-        switchButton().setOnClickListener {
+        switchMapButton().setOnClickListener {
             mapView.switchTo(if (mapView.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
+        }
+        switchThemeButton().setOnClickListener {
+            mapView.switchTheme()
         }
 
         setLocationBtnListener(mapView.onLocationButtonClickedListener())
@@ -31,21 +34,22 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     fun settingsBtn(): View = settingsBtn
     fun locationBtn(): View = locationBtn
-    fun switchButton(): View = switchBtn
+    fun switchMapButton(): View = switchMapBtn
+    fun switchThemeButton(): View = switchThemeBtn
 
     fun setLocationBtnListener(onLocationButtonClickedListener: OnClickListener) {
         locationBtn().setOnClickListener(onLocationButtonClickedListener)
     }
 
     fun showLoading() {
-        switchButton().isClickable = false
+        switchMapButton().isClickable = false
         locationBtn().isClickable = false
         settingsBtn().isClickable = false
         STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, {}, loadingLayout)
     }
 
     fun hideLoading() {
-        switchButton().isClickable = true
+        switchMapButton().isClickable = true
         locationBtn().isClickable = true
         settingsBtn().isClickable = true
         STViewUtil.animateAlphaToVisibility(View.GONE, 300, {}, loadingLayout)

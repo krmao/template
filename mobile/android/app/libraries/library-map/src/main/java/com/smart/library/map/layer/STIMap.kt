@@ -16,6 +16,8 @@ interface STIMap {
 
     fun mapType(): STMapType
 
+    fun switchTheme()
+
     fun mapView(): View
 
     fun onCreate(context: Context?, savedInstanceState: Bundle?)

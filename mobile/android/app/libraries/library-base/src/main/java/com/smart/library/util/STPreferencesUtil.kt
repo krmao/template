@@ -40,7 +40,7 @@ object STPreferencesUtil {
         return editor.commit()
     }
 
-    fun putString(key: String, value: String): Boolean {
+    fun putString(key: String, value: String?): Boolean {
         val editor = mSharedPreferences.edit()
         editor.putString(key, value)
         return editor.commit()

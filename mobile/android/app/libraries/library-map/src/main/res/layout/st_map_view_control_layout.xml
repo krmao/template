@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,149 +8,191 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_gravity="top"
-        android:background="#66666666" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#33333333"
+        android:gravity="center"
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:layout_gravity="bottom"
-        android:background="#33333333" />
-
-    <LinearLayout
-        android:layout_width="41dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#33333333" />
-
-    <LinearLayout
-        android:layout_width="41dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
         android:background="#33333333"
-        android:visibility="gone" />
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/locationBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#bbffffff"
-        app:cardCornerRadius="1dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/switchMapBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_gravity="bottom|center"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#ffffffff"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:contentDescription="@null"
-                android:src="@drawable/st_location_btn" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ems="2"
-                android:gravity="center"
-                android:text="定位"
-                android:textColor="#000"
-                android:textSize="10dp"
-                tools:ignore="HardcodedText,SpUsage" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
 
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/st_location_btn" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/switchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#bbffffff"
-        app:cardCornerRadius="1dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="切换高德"
+                    android:textColor="#000"
+                    android:textSize="10dp"
+                    tools:ignore="HardcodedText,SpUsage" />
 
-        <LinearLayout
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/switchThemeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_gravity="bottom|center"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#ffffffff"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:contentDescription="@null"
-                android:src="@drawable/st_location_btn" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ems="2"
-                android:gravity="center"
-                android:text="切换"
-                android:textColor="#000"
-                android:textSize="10dp"
-                tools:ignore="HardcodedText,SpUsage" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
 
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/st_location_btn" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/settingsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#bbffffff"
-        app:cardCornerRadius="1dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="切换主题"
+                    android:textColor="#000"
+                    android:textSize="10dp"
+                    tools:ignore="HardcodedText,SpUsage" />
 
-        <LinearLayout
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="41dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="#33333333"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/settingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_gravity="bottom|end"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#ffffffff"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:contentDescription="@null"
-                android:src="@drawable/st_settings" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ems="2"
-                android:gravity="center"
-                android:text="设置"
-                android:textColor="#000"
-                android:textSize="10dp"
-                tools:ignore="HardcodedText,SpUsage" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/st_settings" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ems="2"
+                    android:gravity="center"
+                    android:text="设置"
+                    android:textColor="#000"
+                    android:textSize="10dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/locationBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#ffffffff"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/st_location_btn" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ems="2"
+                    android:gravity="center"
+                    android:text="定位"
+                    android:textColor="#000"
+                    android:textSize="10dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
     <android.support.v7.widget.CardView
         android:id="@+id/loadingLayout"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#bb000000"
         app:cardCornerRadius="7dp"
@@ -167,4 +209,4 @@
             app:lottie_rawRes="@raw/lottie_loading" />
 
     </android.support.v7.widget.CardView>
-</FrameLayout>
+</RelativeLayout>

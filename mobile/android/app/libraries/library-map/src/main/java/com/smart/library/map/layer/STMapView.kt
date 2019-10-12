@@ -17,15 +17,16 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     companion object {
 
         /**
-         * 百度地图 4-21, 高德地图 3-19
-         * 一切级别以百度为准, 高德对缩放级别 +2, 则高德逻辑范围为 (5-21), 对应百度真实范围 (4-21)
+         * 百度地图 4-21, 高德地图 3-20
+         * 一切级别以百度为准, 高德对缩放级别 +1, 则高德逻辑范围为 (4-21), 对应百度真实范围 (4-21)
          */
         const val defaultMaxZoomLevel = 21f
         const val defaultMinZoomLevel = 5f
-        const val defaultZoomLevel = (defaultMaxZoomLevel + defaultMinZoomLevel) / 2f
+        const val defaultZoomLevel = 14f
 
         @JvmStatic
-        val defaultLatLngTianAnMen = STLatLng(39.920116, 116.403703, STLatLngType.BD09) // 天安门
+        val defaultLatLngTianAnMen = STLatLng(39.915526, 116.403847, STLatLngType.BD09) // 天安门
+        val defaultLatLngDongFangMingZhu = STLatLng(31.245105, 121.506377, STLatLngType.BD09) // 东方明珠塔
     }
 
     var initLatLon: STLatLng = defaultLatLngTianAnMen
@@ -60,13 +61,15 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     override fun mapView(): View = map().mapView()
 
+    override fun switchTheme() = map().switchTheme()
+
     fun switchTo(toMapType: STMapType) {
 
         val controlView: STMapControlView = controlView()
         controlView.showLoading()
         synchronized(this) {
             if (map().mapType() != toMapType) {
-                
+
                 val oldMapView: View = getChildAt(0)
 
                 val newMapView: View

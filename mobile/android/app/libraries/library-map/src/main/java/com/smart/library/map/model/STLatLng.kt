@@ -133,8 +133,8 @@ data class STLatLng(val latitude: Double = 0.0, val longitude: Double = 0.0, val
                             val gcj02Lon: Double = fromLatLon.longitude
 
                             when (toLatLngType) {
-                                STLatLngType.WGS84 -> convertGCJ02ToWGS84(gcj02Lat, gcj02Lon)
-                                STLatLngType.BD09 -> convertGCJ02ToBD09(gcj02Lat, gcj02Lon)
+                                STLatLngType.WGS84 -> return convertGCJ02ToWGS84(gcj02Lat, gcj02Lon)
+                                STLatLngType.BD09 -> return convertGCJ02ToBD09(gcj02Lat, gcj02Lon)
                             }
                         }
                         STLatLngType.WGS84 -> {
@@ -142,7 +142,7 @@ data class STLatLng(val latitude: Double = 0.0, val longitude: Double = 0.0, val
                             val wgs84Lon: Double = fromLatLon.longitude
 
                             when (toLatLngType) {
-                                STLatLngType.GCJ02 -> convertWGS84ToGCJ02(wgs84Lat, wgs84Lon)
+                                STLatLngType.GCJ02 -> return convertWGS84ToGCJ02(wgs84Lat, wgs84Lon)
                                 STLatLngType.BD09 -> {
                                     val gcj02LatLon = convertWGS84ToGCJ02(wgs84Lat, wgs84Lon)
                                     return convertGCJ02ToBD09(gcj02LatLon.latitude, gcj02LatLon.longitude)
@@ -153,7 +153,7 @@ data class STLatLng(val latitude: Double = 0.0, val longitude: Double = 0.0, val
                             val bd09Lat: Double = fromLatLon.latitude
                             val bd09Lon: Double = fromLatLon.longitude
                             when (toLatLngType) {
-                                STLatLngType.GCJ02 -> convertBD09ToGCJ02(bd09Lat, bd09Lon)
+                                STLatLngType.GCJ02 -> return convertBD09ToGCJ02(bd09Lat, bd09Lon)
                                 STLatLngType.WGS84 -> {
                                     val gcj02LatLng = convertBD09ToGCJ02(bd09Lat, bd09Lon)
                                     return convertGCJ02ToWGS84(gcj02LatLng.latitude, gcj02LatLng.longitude)

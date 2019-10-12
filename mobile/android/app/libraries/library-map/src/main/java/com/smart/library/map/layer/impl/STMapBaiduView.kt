@@ -30,6 +30,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
+@Suppress("unused")
 internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultBaiduZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
@@ -299,9 +300,9 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
             val options = BaiduMapOptions()
             options.mapType(BaiduMap.MAP_TYPE_NORMAL)
-            val mapStatusBuilder = MapStatus.Builder();
+            val mapStatusBuilder = MapStatus.Builder()
 
-            val bdLatLng = initLatLon.convertTo(STLatLngType.BD09)
+            val bdLatLng: STLatLng? = initLatLon.convertTo(STLatLngType.BD09)
             if (bdLatLng?.isValid() == true) {
                 mapStatusBuilder.target(LatLng(bdLatLng.latitude, bdLatLng.longitude))
             }
@@ -337,7 +338,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
                 isTrafficEnabled = false            // 开启交通图
                 isBaiduHeatMapEnabled = false      // 百度城市热力图
                 setViewPadding(0, 0, 0, 0)         // 设置地图操作区距屏幕的距离
-                setMaxAndMinZoomLevel(21f, 3f)     // 限制缩放等级
+                setMaxAndMinZoomLevel(STMapView.defaultBaiduMaxZoomLevel, STMapView.defaultBaiduMinZoomLevel)     // 限制缩放等级
                 showMapPoi(true)                   // 隐藏底图标注（控制地图POI显示）
 
                 uiSettings.apply {

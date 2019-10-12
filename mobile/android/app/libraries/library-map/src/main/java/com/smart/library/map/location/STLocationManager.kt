@@ -1,6 +1,7 @@
 package com.smart.library.map.location
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import com.smart.library.map.model.STLatLng
 import com.smart.library.util.STLogUtil
@@ -21,6 +22,7 @@ object STLocationManager {
     /**
      * 定位前可能需要请求定位权限
      */
+    @SuppressLint("CheckResult")
     @JvmStatic
     fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit?) {
         if (STSystemUtil.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -43,6 +45,7 @@ object STLocationManager {
     /**
      * 定位前可能需要请求定位权限
      */
+    @SuppressLint("CheckResult")
     @JvmStatic
     fun ensurePermissionsWithoutHandling(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit?) {
         if (STSystemUtil.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)) {

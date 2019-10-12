@@ -11,7 +11,6 @@ import com.smart.library.map.model.STMapType
 import com.smart.library.util.STViewUtil
 import kotlinx.android.synthetic.main.st_map_view_control_layout.view.*
 
-
 @Suppress("MemberVisibilityCanBePrivate")
 @SuppressLint("ViewConstructor")
 internal class STMapControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -20,7 +19,6 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     init {
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
-
         hideLoading()
     }
 
@@ -28,7 +26,6 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     fun locationBtn(): View = locationBtn
     fun switchMapButton(): View = switchMapBtn
     fun switchThemeButton(): View = switchThemeBtn
-
 
     fun showLoading() {
         switchMapButton().isClickable = false

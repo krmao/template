@@ -11,50 +11,29 @@ import com.smart.library.map.model.STMarker
 
 interface STIMap {
 
-    fun latestLatLon(): STLatLng?
-
-    fun mapType(): STMapType
-
-    fun switchTheme()
-
-    fun mapView(): View
-
     fun onCreate(context: Context?, savedInstanceState: Bundle?)
     fun onSaveInstanceState(outState: Bundle)
     fun onResume()
     fun onPause()
     fun onDestroy()
 
-    fun setOnMapLoadedCallback(onMapLoaded: () -> Unit)
 
+    fun clear()
+    fun switchTheme()
+    fun mapView(): View
+    fun mapType(): STMapType
+    fun latestLatLon(): STLatLng?
+    fun removeMarker(marker: STMarker?)
+    fun isLatLngInScreen(latLng: STLatLng?, callback: (result: Boolean) -> Unit)
+
+    fun setOnMapLoadedCallback(onMapLoaded: () -> Unit)
     fun onLocationButtonClickedListener(): View.OnClickListener
     fun onLocationButtonLongClickedListener(): View.OnLongClickListener
 
-    /**
-     * 指南针是否生效
-     */
     fun enableCompass(enable: Boolean)
-
-    /**
-     * 地图的zoomLevel
-     *
-     * @param zoomLevel zoomLevel
-     */
     fun setZoomLevel(zoomLevel: Float, animate: Boolean)
-
-    /**
-     * 最大/小zoom
-     */
     fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float)
-
-    /**
-     * 比例尺
-     */
     fun enableMapScaleControl(enable: Boolean)
-
-    /**
-     * 地图图层旋转
-     */
     fun enableRotate(enable: Boolean)
 
     fun setMapCenter(latLng: STLatLng?, animate: Boolean)
@@ -63,42 +42,13 @@ interface STIMap {
     fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?)
     fun setMapCenter(padding: Map<String, Int>, animate: Boolean, swLatLng: STLatLng?, neLatLng: STLatLng?)
 
+    fun getCurrentMapRadius(): Double
     fun getCurrentMapZoomLevel(): Float
-
-    /**
-     * 清除所有的Marker
-     */
-    fun clear()
-
-    /**
-     * 移除marker
-     */
-    fun removeMarker(marker: STMarker?)
-
-    /**
-     * 判断坐标点是否在屏幕地理范围内
-     */
-    fun isLatLngInScreen(latLng: STLatLng?, callback: (result: Boolean) -> Unit)
-
-    /**
-     * 获取当前地图范围
-     */
+    fun getCurrentMapCenterLatLng(): STLatLng
+    fun getCurrentMapLatLngBounds(): STLatLngBounds
     fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit)
 
-    fun getCurrentMapCenterLatLng(): STLatLng
-
-    fun getCurrentMapLatLngBounds(): STLatLngBounds
-
-    fun getCurrentMapRadius(): Double
-
-    /**
-     * 经纬度转换为屏幕坐标
-     */
     fun convertLatLngToScreenCoordinate(latLng: STLatLng?, callback: (Point?) -> Unit)
-
-    /**
-     * 屏幕坐标转换为经纬度
-     */
     fun convertScreenCoordinateToLatLng(point: Point?, callback: (STLatLng?) -> Unit)
 
 }

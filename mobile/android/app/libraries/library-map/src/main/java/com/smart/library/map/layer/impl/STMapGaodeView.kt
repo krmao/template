@@ -11,6 +11,7 @@ import com.amap.api.maps.*
 import com.amap.api.maps.model.*
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
+import com.smart.library.map.layer.STMapOptions
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.*
 import com.smart.library.util.STPreferencesUtil
@@ -32,13 +33,14 @@ import kotlin.math.roundToInt
  *
  * 通过 wrapGaodeZoomLevelFromBaidu/wrapGaodeZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
  */
-internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultBaiduZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+@Suppress("CanBeParameter")
+internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
             initialize(STBaseApplication.INSTANCE)
         }
-        addView(createMapView(context, initLatLon, initZoomLevel))
+        addView(createMapView(context, initMapOptions))
     }
 
     private val mapView: TextureMapView by lazy { getChildAt(0) as TextureMapView }
@@ -108,6 +110,12 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
     override fun enableCompass(enable: Boolean) {
         map().uiSettings.isCompassEnabled = enable
     }
+
+    override fun enableTraffic(enable: Boolean) {
+        map().isTrafficEnabled = enable
+    }
+
+    override fun isTrafficEnabled(): Boolean = map().isTrafficEnabled
 
     override fun setZoomLevel(zoomLevel: Float, animate: Boolean) {
         val mapStatus = CameraUpdateFactory.zoomTo(wrapGaodeZoomLevelFromBaidu(zoomLevel))
@@ -219,6 +227,15 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         callback(latLng != null && map().projection?.visibleRegion?.latLngBounds?.contains(LatLng(latLng.latitude, latLng.longitude)) == true)
     }
 
+    override fun getCurrentMapOptions(): STMapOptions {
+        return STMapOptions(
+                map().mapType,
+                map().isTrafficEnabled,
+                getCurrentMapCenterLatLng(),
+                getCurrentMapZoomLevel()
+        )
+    }
+
     override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) {
         callback(getCurrentMapCenterLatLng(), getCurrentMapZoomLevel(), getCurrentMapRadius(), getCurrentMapLatLngBounds())
     }
@@ -296,11 +313,11 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         }
 
         @JvmStatic
-        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
+        private fun createMapView(context: Context?, initMapOptions: STMapOptions): TextureMapView {
             val options = AMapOptions()
 
             options.logoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT)
-            options.mapType(AMap.MAP_TYPE_NORMAL)
+            options.mapType(initMapOptions.mapType)
             options.rotateGesturesEnabled(false)    // 倾斜
             options.scrollGesturesEnabled(true)     // 地图平移手势
             options.scaleControlsEnabled(false)     // 比例尺
@@ -310,25 +327,25 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
             options.compassEnabled(false)
             options.zOrderOnTop(true)
 
-            val gdLatLng: STLatLng? = initLatLon.convertTo(STLatLngType.GCJ02)
+            val gdLatLng: STLatLng? = initMapOptions.initCenterLatLng.convertTo(STLatLngType.GCJ02)
             if (gdLatLng?.isValid() == true) {
-                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapGaodeZoomLevelFromBaidu(initZoomLevel)))
+                options.camera(CameraPosition.fromLatLngZoom(LatLng(gdLatLng.latitude, gdLatLng.longitude), wrapGaodeZoomLevelFromBaidu(initMapOptions.initZoomLevel)))
             }
 
             val mapView = TextureMapView(context, options)
 
-            initMapView(mapView)
+            initMapView(mapView, initMapOptions)
             return mapView
         }
 
         @JvmStatic
-        private fun initMapView(mapView: TextureMapView): TextureMapView = mapView.apply {
+        private fun initMapView(mapView: TextureMapView, initMapOptions: STMapOptions = STMapOptions()): TextureMapView = mapView.apply {
             map.apply {
 
                 setMapTheme(mapView)
 
-                mapType = AMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
-                isTrafficEnabled = false            // 开启交通图
+                mapType = initMapOptions.mapType // 普通地图（包含3D地图）
+                isTrafficEnabled = initMapOptions.isTrafficEnabled            // 开启交通图
 
 
                 val locationStyle = MyLocationStyle()   //初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。

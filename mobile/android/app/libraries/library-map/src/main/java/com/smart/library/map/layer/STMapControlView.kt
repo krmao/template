@@ -22,6 +22,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         hideLoading()
     }
 
+    fun trafficBtn(): View = trafficBtn
     fun settingsBtn(): View = settingsBtn
     fun locationBtn(): View = locationBtn
     fun switchMapButton(): View = switchMapBtn
@@ -29,6 +30,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     fun showLoading() {
         switchMapButton().isClickable = false
+        trafficBtn().isClickable = false
         locationBtn().isClickable = false
         settingsBtn().isClickable = false
         STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, {}, loadingLayout)
@@ -46,6 +48,9 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         switchThemeButton().setOnClickListener {
             mapView?.switchTheme()
         }
+        trafficBtn().setOnClickListener {
+            mapView?.enableTraffic(!(mapView?.isTrafficEnabled() ?: false))
+        }
 
         locationBtn.setOnClickListener(mapView?.onLocationButtonClickedListener())
         locationBtn.setOnLongClickListener(mapView?.onLocationButtonLongClickedListener())
@@ -58,6 +63,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     fun hideLoading() {
         switchMapButton().isClickable = true
+        trafficBtn().isClickable = true
         locationBtn().isClickable = true
         settingsBtn().isClickable = true
         STViewUtil.animateAlphaToVisibility(View.GONE, 300, {}, loadingLayout)

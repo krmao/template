@@ -15,6 +15,7 @@ import com.baidu.mapapi.model.LatLngBounds
 import com.baidu.mapapi.utils.DistanceUtil
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STIMap
+import com.smart.library.map.layer.STMapOptions
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.location.STLocationManager
 import com.smart.library.map.location.impl.STLocationBaiduSensor
@@ -30,14 +31,14 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-@Suppress("unused")
-internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultBaiduZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+@Suppress("unused", "CanBeParameter", "CanBeParameter")
+internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
             initialize(STBaseApplication.INSTANCE)
         }
-        addView(createMapView(context, initLatLon, initZoomLevel))
+        addView(createMapView(context, initMapOptions))
     }
 
     private val mapView: TextureMapView by lazy { getChildAt(0) as TextureMapView }
@@ -111,6 +112,12 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     override fun enableCompass(enable: Boolean) {
         map().setCompassEnable(enable)
     }
+
+    override fun enableTraffic(enable: Boolean) {
+        map().isTrafficEnabled = enable
+    }
+
+    override fun isTrafficEnabled(): Boolean = map().isTrafficEnabled
 
     override fun setZoomLevel(zoomLevel: Float, animate: Boolean) {
         map().animateMapStatus(MapStatusUpdateFactory.zoomTo(zoomLevel))
@@ -217,6 +224,15 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         callback(latLng != null && map().mapStatus?.bound?.contains(LatLng(latLng.latitude, latLng.longitude)) == true)
     }
 
+    override fun getCurrentMapOptions(): STMapOptions {
+        return STMapOptions(
+                map().mapType,
+                map().isTrafficEnabled,
+                getCurrentMapCenterLatLng(),
+                getCurrentMapZoomLevel()
+        )
+    }
+
     override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) {
         callback(getCurrentMapCenterLatLng(), getCurrentMapZoomLevel(), getCurrentMapRadius(), getCurrentMapLatLngBounds())
     }
@@ -297,16 +313,16 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         }
 
         @JvmStatic
-        private fun createMapView(context: Context?, initLatLon: STLatLng, initZoomLevel: Float): TextureMapView {
+        private fun createMapView(context: Context?, initMapOptions: STMapOptions): TextureMapView {
             val options = BaiduMapOptions()
-            options.mapType(BaiduMap.MAP_TYPE_NORMAL)
+            options.mapType(initMapOptions.mapType)
             val mapStatusBuilder = MapStatus.Builder()
 
-            val bdLatLng: STLatLng? = initLatLon.convertTo(STLatLngType.BD09)
+            val bdLatLng: STLatLng? = initMapOptions.initCenterLatLng.convertTo(STLatLngType.BD09)
             if (bdLatLng?.isValid() == true) {
                 mapStatusBuilder.target(LatLng(bdLatLng.latitude, bdLatLng.longitude))
             }
-            mapStatusBuilder.zoom(initZoomLevel)
+            mapStatusBuilder.zoom(initMapOptions.initZoomLevel)
             val mapStatus: MapStatus = mapStatusBuilder.build()
 
             options.mapStatus(mapStatus)
@@ -320,12 +336,12 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
             options.zoomControlsEnabled(false) // 地图缩放控制按钮
 
             val mapView = TextureMapView(context, options)
-            initMapView(mapView)
+            initMapView(mapView, initMapOptions)
             return mapView
         }
 
         @JvmStatic
-        private fun initMapView(mapView: TextureMapView): TextureMapView = mapView.apply {
+        private fun initMapView(mapView: TextureMapView, initMapOptions: STMapOptions = STMapOptions()): TextureMapView = mapView.apply {
             logoPosition = LogoPosition.logoPostionleftBottom
             showZoomControls(false)             // 缩放按钮
             showScaleControl(false)             // 比例尺
@@ -334,8 +350,8 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
             map.apply {
                 changeLocationLayerOrder(true)     // 定位图层位于 marker 之下
-                mapType = BaiduMap.MAP_TYPE_NORMAL // 普通地图（包含3D地图）
-                isTrafficEnabled = false            // 开启交通图
+                mapType = initMapOptions.mapType // 普通地图（包含3D地图）
+                isTrafficEnabled = initMapOptions.isTrafficEnabled            // 开启交通图
                 isBaiduHeatMapEnabled = false      // 百度城市热力图
                 setViewPadding(0, 0, 0, 0)         // 设置地图操作区距屏幕的距离
                 setMaxAndMinZoomLevel(STMapView.defaultBaiduMaxZoomLevel, STMapView.defaultBaiduMinZoomLevel)     // 限制缩放等级

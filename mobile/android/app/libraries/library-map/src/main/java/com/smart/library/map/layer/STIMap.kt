@@ -31,6 +31,8 @@ interface STIMap {
     fun onLocationButtonLongClickedListener(): View.OnLongClickListener
 
     fun enableCompass(enable: Boolean)
+    fun enableTraffic(enable: Boolean)
+    fun isTrafficEnabled(): Boolean
     fun setZoomLevel(zoomLevel: Float, animate: Boolean)
     fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float)
     fun enableMapScaleControl(enable: Boolean)
@@ -42,6 +44,7 @@ interface STIMap {
     fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?)
     fun setMapCenter(padding: Map<String, Int>, animate: Boolean, swLatLng: STLatLng?, neLatLng: STLatLng?)
 
+    fun getCurrentMapOptions(): STMapOptions
     fun getCurrentMapRadius(): Double
     fun getCurrentMapZoomLevel(): Float
     fun getCurrentMapCenterLatLng(): STLatLng

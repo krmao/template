@@ -15,20 +15,18 @@ import com.smart.library.util.STViewUtil
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
 
     private lateinit var controlView: STMapControlView
-    private var initLatLon: STLatLng = defaultLatLngTianAnMen
-    private var initZoomLevel: Float = defaultBaiduZoomLevel
+    private var initMapOptions: STMapOptions = STMapOptions()
     private fun controlView(): STMapControlView = controlView
     private fun map(): STIMap = getChildAt(0) as STIMap
 
     @JvmOverloads
-    fun initialize(mapType: STMapType = STMapType.BAIDU, initLatLon: STLatLng = defaultLatLngTianAnMen, initZoomLevel: Float = defaultBaiduZoomLevel) {
-        this.initLatLon = initLatLon
-        this.initZoomLevel = initZoomLevel
+    fun initialize(mapType: STMapType = STMapType.BAIDU, initMapOptions: STMapOptions = STMapOptions()) {
+        this.initMapOptions = initMapOptions
 
         when (mapType) {
-            STMapType.BAIDU -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
-            STMapType.GAODE -> addView(STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
-            else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
+            STMapType.BAIDU -> addView(STMapBaiduView(context, initMapOptions = initMapOptions))
+            STMapType.GAODE -> addView(STMapGaodeView(context, initMapOptions = initMapOptions))
+            else -> addView(STMapBaiduView(context, initMapOptions = initMapOptions))
         }
 
         controlView = STMapControlView(context)
@@ -51,21 +49,20 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 val oldMap: STIMap = oldMapView as STIMap
 
                 // 切换地图后还原状态
-                val oldMapCenterLatLng: STLatLng = oldMap.getCurrentMapCenterLatLng()
-                val oldMapCenterBaiduZoomLevel: Float = oldMap.getCurrentMapZoomLevel()
+                val oldMapOptions: STMapOptions = oldMap.getCurrentMapOptions()
 
                 val newMapView: View
                 when (toMapType) {
                     STMapType.BAIDU -> {
-                        newMapView = STMapBaiduView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
+                        newMapView = STMapBaiduView(context, initMapOptions = oldMapOptions)
                         addView(newMapView, 0)
                     }
                     STMapType.GAODE -> {
-                        newMapView = STMapGaodeView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
+                        newMapView = STMapGaodeView(context, initMapOptions = oldMapOptions)
                         addView(newMapView, 0)
                     }
                     else -> {
-                        newMapView = STMapBaiduView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
+                        newMapView = STMapBaiduView(context, initMapOptions = oldMapOptions)
                         addView(newMapView, 0)
                     }
                 }
@@ -110,6 +107,8 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     override fun onLocationButtonClickedListener(): OnClickListener = map().onLocationButtonClickedListener()
 
     override fun enableCompass(enable: Boolean) = map().enableCompass(enable)
+    override fun enableTraffic(enable: Boolean) = map().enableTraffic(enable)
+    override fun isTrafficEnabled(): Boolean = map().isTrafficEnabled()
     override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) = map().setMaxAndMinZoomLevel(maxZoomLevel, minZoomLevel)
     override fun enableMapScaleControl(enable: Boolean) = map().enableMapScaleControl(enable)
     override fun enableRotate(enable: Boolean) = map().enableRotate(enable)
@@ -123,6 +122,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     override fun getCurrentMapRadius(): Double = map().getCurrentMapRadius()
     override fun getCurrentMapZoomLevel(): Float = map().getCurrentMapZoomLevel()
+    override fun getCurrentMapOptions(): STMapOptions = map().getCurrentMapOptions()
     override fun getCurrentMapCenterLatLng(): STLatLng = map().getCurrentMapCenterLatLng()
     override fun getCurrentMapLatLngBounds(): STLatLngBounds = map().getCurrentMapLatLngBounds()
     override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) = map().getCurrentMapStatus(callback)

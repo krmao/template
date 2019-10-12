@@ -32,7 +32,7 @@ import kotlin.math.roundToInt
  *
  * 通过 wrapGaodeZoomLevelFromBaidu/wrapGaodeZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
  */
-internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
+internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
@@ -89,12 +89,19 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     override fun mapType(): STMapType = STMapType.GAODE
 
-    override fun onLocationButtonClickedListener(): OnClickListener = this
-
     private var latestLatLon: STLatLng? = null
+    override fun onLocationButtonClickedListener(): OnClickListener = this
+    override fun onLocationButtonLongClickedListener(): OnLongClickListener = this
+    override fun onLongClick(view: View?): Boolean {
+        if (latestLatLon?.isValid() == true) {
+            setMapCenter(latestLatLon, STMapView.defaultZoomLevel, true)
+        }
+        return true
+    }
+
     override fun onClick(locationButtonView: View?) {
         if (latestLatLon?.isValid() == true) {
-            setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+            setMapCenter(latestLatLon, true)
         }
     }
 
@@ -102,8 +109,13 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         map().uiSettings.isCompassEnabled = enable
     }
 
-    override fun setZoomLevel(zoomLevel: Float) {
-        map().animateCamera(CameraUpdateFactory.zoomTo(wrapGaodeZoomLevelFromBaidu(zoomLevel)))
+    override fun setZoomLevel(zoomLevel: Float, animate: Boolean) {
+        val mapStatus = CameraUpdateFactory.zoomTo(wrapGaodeZoomLevelFromBaidu(zoomLevel))
+        if (animate) {
+            map().animateCamera(mapStatus)
+        } else {
+            map().moveCamera(mapStatus)
+        }
     }
 
     override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) {
@@ -114,6 +126,32 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
     }
 
     override fun enableRotate(enable: Boolean) {
+    }
+
+    override fun setMapCenter(latLng: STLatLng?, animate: Boolean) {
+        val gcj02LatLng: STLatLng? = latLng?.convertTo(STLatLngType.GCJ02)
+        if (gcj02LatLng?.isValid() == true) {
+
+            val mapStatus = CameraUpdateFactory.newLatLng(LatLng(gcj02LatLng.latitude, gcj02LatLng.longitude))
+            if (animate) {
+                map().animateCamera(mapStatus)
+            } else {
+                map().moveCamera(mapStatus)
+            }
+        }
+    }
+
+    override fun setMapCenter(latLng: STLatLng?, zoomLevel: Float, animate: Boolean) {
+        val gcj02LatLng: STLatLng? = latLng?.convertTo(STLatLngType.GCJ02)
+        if (gcj02LatLng?.isValid() == true) {
+
+            val mapStatus = CameraUpdateFactory.newLatLngZoom(LatLng(gcj02LatLng.latitude, gcj02LatLng.longitude), zoomLevel)
+            if (animate) {
+                map().animateCamera(mapStatus)
+            } else {
+                map().moveCamera(mapStatus)
+            }
+        }
     }
 
     override fun setMapCenter(padding: Map<String, Int>, animate: Boolean, vararg latLng: STLatLng?) {
@@ -131,17 +169,6 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
             map().moveCamera(mapStatus)
         }
     }
-
-    private fun convertGaodeLatLngToSTLatLng(latLng: LatLng): STLatLng = STLatLng(latLng.latitude, latLng.longitude, STLatLngType.BD09)
-    private fun convertGaodeBoundsToSTLatLngBounds(latLngBounds: LatLngBounds): STLatLngBounds {
-        return STLatLngBounds(convertGaodeLatLngToSTLatLng(latLngBounds.southwest), convertGaodeLatLngToSTLatLng(latLngBounds.northeast))
-    }
-
-    override fun getCurrentMapRadius(): Double = getDistanceByGaodeLatLng(map().projection.visibleRegion.latLngBounds.northeast, map().cameraPosition.target)
-
-    override fun getCurrentMapZoomLevel(): Float = wrapGaodeZoomLevelToBaidu(map().cameraPosition.zoom)
-    override fun getCurrentMapCenterLatLng(): STLatLng = convertGaodeLatLngToSTLatLng(map().cameraPosition.target)
-    override fun getCurrentMapLatLngBounds(): STLatLngBounds = convertGaodeBoundsToSTLatLngBounds(map().projection.visibleRegion.latLngBounds)
 
     override fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?) {
         latLng ?: return
@@ -168,6 +195,17 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
             map().moveCamera(mapStatus)
         }
     }
+
+    private fun convertGaodeLatLngToSTLatLng(latLng: LatLng): STLatLng = STLatLng(latLng.latitude, latLng.longitude, STLatLngType.BD09)
+    private fun convertGaodeBoundsToSTLatLngBounds(latLngBounds: LatLngBounds): STLatLngBounds {
+        return STLatLngBounds(convertGaodeLatLngToSTLatLng(latLngBounds.southwest), convertGaodeLatLngToSTLatLng(latLngBounds.northeast))
+    }
+
+    override fun getCurrentMapRadius(): Double = getDistanceByGaodeLatLng(map().projection.visibleRegion.latLngBounds.northeast, map().cameraPosition.target)
+
+    override fun getCurrentMapZoomLevel(): Float = wrapGaodeZoomLevelToBaidu(map().cameraPosition.zoom)
+    override fun getCurrentMapCenterLatLng(): STLatLng = convertGaodeLatLngToSTLatLng(map().cameraPosition.target)
+    override fun getCurrentMapLatLngBounds(): STLatLngBounds = convertGaodeBoundsToSTLatLngBounds(map().projection.visibleRegion.latLngBounds)
 
     override fun clear() {
         map().clear()
@@ -296,7 +334,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
                 val locationStyle = MyLocationStyle()   //初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
                 locationStyle.interval(1000)            //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
                 locationStyle.showMyLocation(true)
-                locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);//连续定位、蓝点不会移动到地图中心点，定位点依照设备方向旋转，并且蓝点会跟随设备移动
+                locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER) //连续定位、蓝点不会移动到地图中心点，定位点依照设备方向旋转，并且蓝点会跟随设备移动
                 myLocationStyle = locationStyle         //设置定位蓝点的Style
                 isMyLocationEnabled = true              // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false
 

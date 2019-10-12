@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
 import android.view.View
-import com.baidu.mapapi.model.LatLngBounds
 import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STLatLngBounds
 import com.smart.library.map.model.STMapType
@@ -29,6 +28,7 @@ interface STIMap {
     fun setOnMapLoadedCallback(onMapLoaded: () -> Unit)
 
     fun onLocationButtonClickedListener(): View.OnClickListener
+    fun onLocationButtonLongClickedListener(): View.OnLongClickListener
 
     /**
      * 指南针是否生效
@@ -40,7 +40,7 @@ interface STIMap {
      *
      * @param zoomLevel zoomLevel
      */
-    fun setZoomLevel(zoomLevel: Float)
+    fun setZoomLevel(zoomLevel: Float, animate: Boolean)
 
     /**
      * 最大/小zoom
@@ -57,7 +57,9 @@ interface STIMap {
      */
     fun enableRotate(enable: Boolean)
 
-    fun setMapCenter(padding: Map<String, Int> = mapOf(), animate: Boolean = true, vararg latLng: STLatLng?)
+    fun setMapCenter(latLng: STLatLng?, animate: Boolean)
+    fun setMapCenter(latLng: STLatLng?, zoomLevel: Float, animate: Boolean)
+    fun setMapCenter(padding: Map<String, Int> = mapOf(), animate: Boolean, vararg latLng: STLatLng?)
     fun setMapCenter(animate: Boolean, zoomLevel: Float, latLng: STLatLng?)
     fun setMapCenter(padding: Map<String, Int>, animate: Boolean, swLatLng: STLatLng?, neLatLng: STLatLng?)
 

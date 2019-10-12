@@ -30,7 +30,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener {
+internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, initLatLon: STLatLng = STMapView.defaultLatLngTianAnMen, initZoomLevel: Float = STMapView.defaultZoomLevel) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
@@ -53,7 +53,6 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         this.onLocationChanged = onLocationChanged
     }
 
-    private var latestLatLon: STLatLng? = null
     override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
         mapView().onCreate(context, savedInstanceState)
         locationBaiduSensor = STLocationBaiduSensor(context, map()) {
@@ -92,11 +91,19 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     override fun mapType(): STMapType = STMapType.BAIDU
 
+    private var latestLatLon: STLatLng? = null
     override fun onLocationButtonClickedListener(): OnClickListener = this
+    override fun onLocationButtonLongClickedListener(): OnLongClickListener = this
+    override fun onLongClick(view: View?): Boolean {
+        if (latestLatLon?.isValid() == true) {
+            setMapCenter(latestLatLon, STMapView.defaultZoomLevel, true)
+        }
+        return true
+    }
 
     override fun onClick(locationButtonView: View?) {
         if (latestLatLon?.isValid() == true) {
-            setMapCenter(animate = true, latLng = *arrayOf(latestLatLon))
+            setMapCenter(latestLatLon, true)
         }
     }
 
@@ -104,7 +111,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         map().setCompassEnable(enable)
     }
 
-    override fun setZoomLevel(zoomLevel: Float) {
+    override fun setZoomLevel(zoomLevel: Float, animate: Boolean) {
         map().animateMapStatus(MapStatusUpdateFactory.zoomTo(zoomLevel))
     }
 
@@ -118,6 +125,30 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     override fun enableRotate(enable: Boolean) {
         map().uiSettings.isRotateGesturesEnabled = enable
+    }
+
+    override fun setMapCenter(latLng: STLatLng?, animate: Boolean) {
+        val bd09LatLng: STLatLng? = latLng?.convertTo(STLatLngType.BD09)
+        if (bd09LatLng?.isValid() == true) {
+            val mapStatus = MapStatusUpdateFactory.newLatLng(LatLng(bd09LatLng.latitude, bd09LatLng.longitude))
+            if (animate) {
+                map().animateMapStatus(mapStatus)
+            } else {
+                map().setMapStatus(mapStatus)
+            }
+        }
+    }
+
+    override fun setMapCenter(latLng: STLatLng?, zoomLevel: Float, animate: Boolean) {
+        val bd09LatLng: STLatLng? = latLng?.convertTo(STLatLngType.BD09)
+        if (bd09LatLng?.isValid() == true) {
+            val mapStatus = MapStatusUpdateFactory.newLatLngZoom(LatLng(bd09LatLng.latitude, bd09LatLng.longitude), zoomLevel)
+            if (animate) {
+                map().animateMapStatus(mapStatus)
+            } else {
+                map().setMapStatus(mapStatus)
+            }
+        }
     }
 
     override fun setMapCenter(padding: Map<String, Int>, animate: Boolean, vararg latLng: STLatLng?) {

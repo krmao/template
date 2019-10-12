@@ -45,11 +45,12 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             else -> addView(STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel))
         }
 
-        controlView = STMapControlView(context, mapView = this)
-        addView(controlView)
+        controlView = STMapControlView(context)
+        addView(controlView())
 
         controlView().showLoading()
         map().setOnMapLoadedCallback {
+            controlView().setButtonClickedListener(this)
             controlView().hideLoading()
         }
     }
@@ -96,7 +97,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                             (oldMapView as STIMap).onPause()
                             (oldMapView as STIMap).onDestroy()
                             removeView(oldMapView)
-                            controlView.setLocationBtnListener(it.onLocationButtonClickedListener())
+                            controlView.setButtonClickedListener(this)
                             controlView.hideLoading()
                         }, oldMapView)
                     }
@@ -129,17 +130,22 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     override fun mapType(): STMapType = map().mapType()
 
+    override fun onLocationButtonLongClickedListener(): OnLongClickListener = map().onLocationButtonLongClickedListener()
     override fun onLocationButtonClickedListener(): OnClickListener = map().onLocationButtonClickedListener()
 
     override fun enableCompass(enable: Boolean) = map().enableCompass(enable)
-
-    override fun setZoomLevel(zoomLevel: Float) = map().setZoomLevel(zoomLevel)
 
     override fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float) = map().setMaxAndMinZoomLevel(maxZoomLevel, minZoomLevel)
 
     override fun enableMapScaleControl(enable: Boolean) = map().enableMapScaleControl(enable)
 
     override fun enableRotate(enable: Boolean) = map().enableRotate(enable)
+
+    override fun setZoomLevel(zoomLevel: Float, animate: Boolean) = map().setZoomLevel(zoomLevel, animate)
+
+    override fun setMapCenter(latLng: STLatLng?, animate: Boolean) = map().setMapCenter(latLng, animate)
+
+    override fun setMapCenter(latLng: STLatLng?, zoomLevel: Float, animate: Boolean) = map().setMapCenter(latLng, zoomLevel, animate)
 
     override fun setMapCenter(padding: Map<String, Int>, animate: Boolean, vararg latLng: STLatLng?) = map().setMapCenter(padding, animate, *latLng)
 

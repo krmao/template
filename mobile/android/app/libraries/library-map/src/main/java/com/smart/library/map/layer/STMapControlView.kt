@@ -14,20 +14,12 @@ import kotlinx.android.synthetic.main.st_map_view_control_layout.view.*
 
 @Suppress("MemberVisibilityCanBePrivate")
 @SuppressLint("ViewConstructor")
-internal class STMapControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, mapView: STMapView) : RelativeLayout(context, attrs, defStyleAttr) {
+internal class STMapControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
+
+    private var mapView: STMapView? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
-
-
-        switchMapButton().setOnClickListener {
-            mapView.switchTo(if (mapView.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
-        }
-        switchThemeButton().setOnClickListener {
-            mapView.switchTheme()
-        }
-
-        setLocationBtnListener(mapView.onLocationButtonClickedListener())
 
         hideLoading()
     }
@@ -37,15 +29,25 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     fun switchMapButton(): View = switchMapBtn
     fun switchThemeButton(): View = switchThemeBtn
 
-    fun setLocationBtnListener(onLocationButtonClickedListener: OnClickListener) {
-        locationBtn().setOnClickListener(onLocationButtonClickedListener)
-    }
 
     fun showLoading() {
         switchMapButton().isClickable = false
         locationBtn().isClickable = false
         settingsBtn().isClickable = false
         STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, {}, loadingLayout)
+    }
+
+    fun setButtonClickedListener(_mapView: STMapView) {
+        mapView = _mapView
+        switchMapButton().setOnClickListener {
+            mapView?.switchTo(if (mapView?.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
+        }
+        switchThemeButton().setOnClickListener {
+            mapView?.switchTheme()
+        }
+
+        locationBtn.setOnClickListener(mapView?.onLocationButtonClickedListener())
+        locationBtn.setOnLongClickListener(mapView?.onLocationButtonLongClickedListener())
     }
 
     fun hideLoading() {

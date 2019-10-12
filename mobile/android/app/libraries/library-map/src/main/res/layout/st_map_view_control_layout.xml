@@ -9,24 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
         android:background="#33333333"
         android:gravity="center"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="41dp"
+        android:paddingRight="41dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
         android:background="#33333333"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="41dp"
+        android:paddingRight="41dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/switchMapBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#ffffffff"
             app:cardCornerRadius="1dp"
@@ -42,10 +52,11 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/switchMapBtnImage"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/st_location_btn" />
+                    android:src="@drawable/st_baidu" />
 
                 <TextView
                     android:id="@+id/switchMapBtnTV"
@@ -65,7 +76,6 @@
             android:id="@+id/switchThemeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#ffffffff"
             app:cardCornerRadius="1dp"
@@ -84,7 +94,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/st_location_btn" />
+                    android:src="@drawable/st_switch" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,14 +118,13 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:background="#33333333"
-        android:gravity="bottom"
+        android:gravity="bottom|center"
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
             android:id="@+id/settingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#ffffffff"
             app:cardCornerRadius="1dp"
@@ -153,7 +162,6 @@
             android:id="@+id/locationBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#ffffffff"
             app:cardCornerRadius="1dp"

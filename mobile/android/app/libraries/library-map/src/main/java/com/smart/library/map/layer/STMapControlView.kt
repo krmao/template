@@ -36,8 +36,12 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
     fun setButtonClickedListener(_mapView: STMapView) {
         mapView = _mapView
+        setSwitchMapBtnText()
+
         switchMapButton().setOnClickListener {
-            mapView?.switchTo(if (mapView?.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU)
+            mapView?.switchTo(if (mapView?.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU) { _: Boolean, _: STMapType ->
+                setSwitchMapBtnText()
+            }
         }
         switchThemeButton().setOnClickListener {
             mapView?.switchTheme()
@@ -45,6 +49,10 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
         locationBtn.setOnClickListener(mapView?.onLocationButtonClickedListener())
         locationBtn.setOnLongClickListener(mapView?.onLocationButtonLongClickedListener())
+    }
+
+    private fun setSwitchMapBtnText() {
+        switchMapBtnTV.text = if (mapView?.mapType() == STMapType.BAIDU) "切换高德" else "切换百度"
     }
 
     fun hideLoading() {

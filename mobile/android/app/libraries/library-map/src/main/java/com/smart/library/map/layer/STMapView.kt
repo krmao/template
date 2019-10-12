@@ -41,42 +41,52 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         }
     }
 
-    fun switchTo(toMapType: STMapType) {
+    @JvmOverloads
+    fun switchTo(toMapType: STMapType, callback: ((switchSuccess: Boolean, newMapType: STMapType) -> Unit)? = null) {
         val controlView: STMapControlView = controlView()
         controlView.showLoading()
         synchronized(this) {
             if (map().mapType() != toMapType) {
                 val oldMapView: View = getChildAt(0)
+                val oldMap: STIMap = oldMapView as STIMap
+
+                // 切换地图后还原状态
+                val oldMapCenterLatLng: STLatLng = oldMap.getCurrentMapCenterLatLng()
+                val oldMapCenterBaiduZoomLevel: Float = oldMap.getCurrentMapZoomLevel()
 
                 val newMapView: View
                 when (toMapType) {
                     STMapType.BAIDU -> {
-                        newMapView = STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        newMapView = STMapBaiduView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
                         addView(newMapView, 0)
                     }
                     STMapType.GAODE -> {
-                        newMapView = STMapGaodeView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        newMapView = STMapGaodeView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
                         addView(newMapView, 0)
                     }
                     else -> {
-                        newMapView = STMapBaiduView(context, initLatLon = initLatLon, initZoomLevel = initZoomLevel)
+                        newMapView = STMapBaiduView(context, initLatLon = oldMapCenterLatLng, initZoomLevel = oldMapCenterBaiduZoomLevel)
                         addView(newMapView, 0)
                     }
                 }
-                (newMapView as? STIMap)?.let {
 
-                    it.onCreate(context, null)
-                    it.onResume()
-                    it.setOnMapLoadedCallback {
-                        STViewUtil.animateAlphaToVisibility(View.GONE, 300, {
-                            (oldMapView as STIMap).onPause()
-                            (oldMapView as STIMap).onDestroy()
-                            removeView(oldMapView)
-                            controlView.setButtonClickedListener(this)
-                            controlView.hideLoading()
-                        }, oldMapView)
-                    }
+                val newMap: STIMap = newMapView as STIMap
+                newMap.onCreate(context, null)
+                newMap.onResume()
+                newMap.setOnMapLoadedCallback {
+                    STViewUtil.animateAlphaToVisibility(View.GONE, 300, {
+                        oldMap.onPause()
+                        oldMap.onDestroy()
+                        removeView(oldMapView)
+                        controlView.setButtonClickedListener(this)
+
+                        callback?.invoke(true, toMapType)
+
+                        controlView.hideLoading()
+                    }, oldMapView)
                 }
+            } else {
+                callback?.invoke(false, toMapType)
             }
         }
     }

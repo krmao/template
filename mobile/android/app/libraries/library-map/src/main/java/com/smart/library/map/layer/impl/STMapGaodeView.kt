@@ -196,7 +196,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         }
     }
 
-    private fun convertGaodeLatLngToSTLatLng(latLng: LatLng): STLatLng = STLatLng(latLng.latitude, latLng.longitude, STLatLngType.BD09)
+    private fun convertGaodeLatLngToSTLatLng(latLng: LatLng): STLatLng = STLatLng(latLng.latitude, latLng.longitude, STLatLngType.GCJ02)
     private fun convertGaodeBoundsToSTLatLngBounds(latLngBounds: LatLngBounds): STLatLngBounds {
         return STLatLngBounds(convertGaodeLatLngToSTLatLng(latLngBounds.southwest), convertGaodeLatLngToSTLatLng(latLngBounds.northeast))
     }

@@ -48,6 +48,7 @@
                     android:src="@drawable/st_location_btn" />
 
                 <TextView
+                    android:id="@+id/switchMapBtnTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"

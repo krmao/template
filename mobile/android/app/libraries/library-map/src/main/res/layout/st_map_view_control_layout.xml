@@ -165,12 +165,14 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/trafficImage"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/st_traffic" />
 
                 <TextView
+                    android:id="@+id/trafficText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"

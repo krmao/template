@@ -1,15 +1,18 @@
 package com.smart.library.map.layer.impl
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.amap.api.maps.*
 import com.amap.api.maps.model.*
 import com.smart.library.base.STBaseApplication
+import com.smart.library.map.R
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapOptions
 import com.smart.library.map.layer.STMapView
@@ -347,9 +350,12 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
                 mapType = initMapOptions.mapType // 普通地图（包含3D地图）
                 isTrafficEnabled = initMapOptions.isTrafficEnabled            // 开启交通图
 
-
                 val locationStyle = MyLocationStyle()   //初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
                 locationStyle.interval(1000)            //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
+                // locationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.st_map_location_with_sensor))
+                locationStyle.myLocationIcon(BitmapDescriptorFactory.fromView(LayoutInflater.from(context).inflate(R.layout.st_location_sensor_gaode_layout, null, false)))
+                locationStyle.radiusFillColor(Color.parseColor("#1A0099FF"))
+                locationStyle.strokeColor(Color.TRANSPARENT)
                 locationStyle.showMyLocation(true)
                 locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER) //连续定位、蓝点不会移动到地图中心点，定位点依照设备方向旋转，并且蓝点会跟随设备移动
                 myLocationStyle = locationStyle         //设置定位蓝点的Style

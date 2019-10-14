@@ -2,10 +2,12 @@ package com.smart.library.map.layer.impl
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.baidu.mapapi.SDKInitializer
@@ -14,6 +16,7 @@ import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
 import com.baidu.mapapi.utils.DistanceUtil
 import com.smart.library.base.STBaseApplication
+import com.smart.library.map.R
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapOptions
 import com.smart.library.map.layer.STMapView
@@ -347,6 +350,9 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
             showScaleControl(false)             // 比例尺
 
             setMapTheme(this)
+
+            map.setMyLocationConfiguration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, BitmapDescriptorFactory.fromView(LayoutInflater.from(context).inflate(R.layout.st_location_sensor_layout, null, false)), Color.parseColor("#1A0099FF"), Color.TRANSPARENT))
+            // map.setMyLocationConfiguration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, BitmapDescriptorFactory.fromResource(R.drawable.st_map_location_with_sensor), Color.parseColor("#1A0099FF"), Color.TRANSPARENT))
 
             map.apply {
                 changeLocationLayerOrder(true)     // 定位图层位于 marker 之下

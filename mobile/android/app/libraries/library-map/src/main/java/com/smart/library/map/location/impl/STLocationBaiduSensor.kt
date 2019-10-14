@@ -3,14 +3,17 @@ package com.smart.library.map.location.impl
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.SENSOR_SERVICE
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.view.LayoutInflater
 import android.view.View
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.smart.library.base.STBaseApplication
+import com.smart.library.map.R
 import com.smart.library.map.location.STLocation
 import kotlin.math.abs
 
@@ -27,7 +30,8 @@ class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callba
 
     init {
         this.map.isMyLocationEnabled = true
-        this.map.setMyLocationConfiguration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
+        this.map.setMyLocationConfiguration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, BitmapDescriptorFactory.fromView(LayoutInflater.from(context).inflate(R.layout.st_location_sensor_layout, null, false)), Color.parseColor("#1A0099FF"), Color.TRANSPARENT))
+        // this.map.setMyLocationConfiguration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, BitmapDescriptorFactory.fromResource(R.drawable.st_map_location_with_sensor), Color.parseColor("#1A0099FF"), Color.TRANSPARENT))
     }
 
     fun startLocation() {

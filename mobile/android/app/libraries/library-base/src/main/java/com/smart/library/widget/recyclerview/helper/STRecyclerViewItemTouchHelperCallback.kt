@@ -4,8 +4,10 @@ import android.graphics.Canvas
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import org.jetbrains.anko.AlertDialogBuilder
+import kotlin.math.abs
 
-class STRecyclerViewItemTouchHelperCallback(private val mAdapter: STRecyclerViewItemTouchHelperAdapter, private var onDragListener: OnDragListener? = null) : ItemTouchHelper.Callback() {
+class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private val mAdapter: STRecyclerViewItemTouchHelperAdapter, private var enableConfirmDialogBeforeSwiped: Boolean = true, private var onDragListener: OnDragListener? = null) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean = true
 
@@ -31,12 +33,30 @@ class STRecyclerViewItemTouchHelperCallback(private val mAdapter: STRecyclerView
         return true
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) =// Notify the adapter of the dismissal
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+        if (enableConfirmDialogBeforeSwiped) {
+            val alertDialogBuilder = AlertDialogBuilder(viewHolder.itemView.context)
+            alertDialogBuilder.title("提示")
+            alertDialogBuilder.message("确定删除该数据吗？")
+            alertDialogBuilder.positiveButton("确定") {
+                // remove this item
+                mAdapter.onItemDismiss(viewHolder.adapterPosition)
+            }
+            alertDialogBuilder.negativeButton("取消") {
+                // User cancelled the dialog, so we will refresh the adapter to prevent hiding the item from UI
+                mAdapter.notifyItemChanged(viewHolder.adapterPosition)
+            }
+            alertDialogBuilder.show()
+        } else {
+            // remove this item
             mAdapter.onItemDismiss(viewHolder.adapterPosition)
+        }
+    }
+
 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) =
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                val alpha = ALPHA_FULL - Math.abs(dX) / viewHolder.itemView.width.toFloat()
+                val alpha = 1.0f - abs(dX) / viewHolder.itemView.width.toFloat()
                 viewHolder.itemView.alpha = alpha
                 viewHolder.itemView.translationX = dX
             } else {
@@ -54,7 +74,7 @@ class STRecyclerViewItemTouchHelperCallback(private val mAdapter: STRecyclerView
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         onDragListener?.onDragEnd(recyclerView, viewHolder)
-        viewHolder.itemView.alpha = ALPHA_FULL
+        viewHolder.itemView.alpha = 1.0f
     }
 
     interface OnDragListener {
@@ -62,10 +82,6 @@ class STRecyclerViewItemTouchHelperCallback(private val mAdapter: STRecyclerView
         fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int)
         fun onDragEnd(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder)
 
-    }
-
-    companion object {
-        const val ALPHA_FULL = 1.0f
     }
 
 }

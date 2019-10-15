@@ -8,12 +8,16 @@ import com.smart.library.map.model.STLatLng
 data class STMapOptions @JvmOverloads constructor(
         var mapType: Int = MAP_TYPE_NORMAL,
         var isTrafficEnabled: Boolean = false,
+        var isBuildingsEnabled: Boolean = false,
+        var showMapPoi: Boolean = true,
         var initCenterLatLng: STLatLng = STMapView.defaultLatLngTianAnMen,
         var initZoomLevel: Float = STMapView.defaultBaiduZoomLevel
 
 ) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
+            1 == source.readInt(),
+            1 == source.readInt(),
             1 == source.readInt(),
             source.readSerializable() as STLatLng,
             source.readFloat()
@@ -24,6 +28,8 @@ data class STMapOptions @JvmOverloads constructor(
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(mapType)
         writeInt((if (isTrafficEnabled) 1 else 0))
+        writeInt((if (isBuildingsEnabled) 1 else 0))
+        writeInt((if (showMapPoi) 1 else 0))
         writeSerializable(initCenterLatLng)
         writeFloat(initZoomLevel)
     }

@@ -7,6 +7,19 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import org.jetbrains.anko.AlertDialogBuilder
 import kotlin.math.abs
 
+/*
+
+// 增加滑动删除与拖动排序功能
+ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, onDragListener = object : STRecyclerViewItemTouchHelperCallback.OnDragListener {
+    override fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int) {
+    }
+
+    override fun onDragEnd(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+    }
+
+})).attachToRecyclerView(usersRecyclerView)
+
+*/
 class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private val mAdapter: STRecyclerViewItemTouchHelperAdapter, private var enableConfirmDialogBeforeSwiped: Boolean = true, private var onDragListener: OnDragListener? = null) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean = true

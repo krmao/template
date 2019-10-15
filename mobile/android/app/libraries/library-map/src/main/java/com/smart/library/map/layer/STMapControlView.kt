@@ -56,8 +56,8 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
         usersRecyclerView.adapter = usersAdapter
 
-        // 增加滑动删除与拖动排序功能x
-        ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, object : STRecyclerViewItemTouchHelperCallback.OnDragListener {
+        // 增加滑动删除与拖动排序功能
+        ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, onDragListener = object : STRecyclerViewItemTouchHelperCallback.OnDragListener {
             override fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int) {
             }
 
@@ -81,6 +81,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     fun switchThemeButton(): View = switchThemeBtn
 
     fun showLoading() {
+        poiBtn.isClickable = false
         switchMapButton().isClickable = false
         trafficBtn().isClickable = false
         locationBtn().isClickable = false
@@ -133,6 +134,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         mapView = _mapView
         setSwitchMapBtnStyle()
         setTrafficBtnStyle()
+        setPoiBtnStyle()
 
         switchMapButton().setOnClickListener {
             mapView?.switchTo(if (mapView?.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU) { _: Boolean, _: STMapType ->
@@ -148,9 +150,20 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
 
         locationBtn.setOnClickListener(mapView?.onLocationButtonClickedListener())
         locationBtn.setOnLongClickListener(mapView?.onLocationButtonLongClickedListener())
+
+        poiBtn.setOnClickListener {
+            setPoiBtnStyle(!isShowMapPoi())
+        }
     }
 
     fun isTrafficEnabled(): Boolean = mapView?.isTrafficEnabled() ?: false
+    fun isShowMapPoi(): Boolean = mapView?.isShowMapPoi() ?: true
+
+    private fun setPoiBtnStyle(showMapPoi: Boolean = isShowMapPoi()) {
+        mapView?.showMapPoi(showMapPoi)
+        poiImage.setImageResource(if (showMapPoi) R.drawable.st_poi_on else R.drawable.st_poi)
+        poiText.setTextColor(Color.parseColor(if (showMapPoi) "#1296db" else "#000000"))
+    }
 
     private fun setTrafficBtnStyle(isTrafficEnabled: Boolean = isTrafficEnabled()) {
         mapView?.enableTraffic(isTrafficEnabled)
@@ -165,6 +178,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     }
 
     fun hideLoading() {
+        poiBtn.isClickable = true
         switchMapButton().isClickable = true
         trafficBtn().isClickable = true
         locationBtn().isClickable = true

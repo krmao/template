@@ -15,12 +15,12 @@ import com.smart.library.util.STViewUtil
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
 
     private lateinit var controlView: STMapControlView
-    private var initMapOptions: STMapOptions = STMapOptions()
+    private var initMapOptions: STMapOptions = STMapOptions(showMapPoi = false)
     private fun controlView(): STMapControlView = controlView
     private fun map(): STIMap = getChildAt(0) as STIMap
 
     @JvmOverloads
-    fun initialize(mapType: STMapType = STMapType.BAIDU, initMapOptions: STMapOptions = STMapOptions()) {
+    fun initialize(mapType: STMapType = STMapType.BAIDU, initMapOptions: STMapOptions = this.initMapOptions) {
         this.initMapOptions = initMapOptions
 
         when (mapType) {
@@ -94,6 +94,10 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     override fun onPause() = map().onPause()
     override fun onDestroy() = map().onDestroy()
 
+    override fun showMapPoi(showMapPoi: Boolean) = map().showMapPoi(showMapPoi)
+    override fun isShowMapPoi(): Boolean = map().isShowMapPoi()
+    override fun showBuildings(isBuildingsEnabled: Boolean) = map().showBuildings(isBuildingsEnabled)
+    override fun isBuildingsEnabled(): Boolean = map().isBuildingsEnabled()
     override fun clear() = map().clear()
     override fun switchTheme() = map().switchTheme()
     override fun mapView(): View = map().mapView()

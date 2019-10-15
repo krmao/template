@@ -234,10 +234,26 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         return STMapOptions(
                 map().mapType,
                 map().isTrafficEnabled,
+                initMapOptions.isBuildingsEnabled,
+                initMapOptions.showMapPoi,
                 getCurrentMapCenterLatLng(),
                 getCurrentMapZoomLevel()
         )
     }
+
+    override fun showMapPoi(showMapPoi: Boolean) {
+        initMapOptions.showMapPoi = showMapPoi
+        map().showMapText(initMapOptions.showMapPoi)
+    }
+
+    override fun isShowMapPoi(): Boolean = initMapOptions.showMapPoi
+
+    override fun showBuildings(isBuildingsEnabled: Boolean) {
+        initMapOptions.isBuildingsEnabled = isBuildingsEnabled
+        map().showBuildings(initMapOptions.isBuildingsEnabled)
+    }
+
+    override fun isBuildingsEnabled(): Boolean = initMapOptions.isBuildingsEnabled
 
     override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) {
         callback(getCurrentMapCenterLatLng(), getCurrentMapZoomLevel(), getCurrentMapRadius(), getCurrentMapLatLngBounds())
@@ -369,6 +385,8 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
                     isScrollGesturesEnabled = true
                     isZoomGesturesEnabled = true
                     setAllGesturesEnabled(false)
+                    showBuildings(initMapOptions.isBuildingsEnabled)
+                    showMapText(initMapOptions.showMapPoi)
                     logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_LEFT
                     zoomPosition = AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM
                     setZoomInByScreenCenter(false) // 设置双击地图放大在地图中心位置放大，false则是在点击位置放大

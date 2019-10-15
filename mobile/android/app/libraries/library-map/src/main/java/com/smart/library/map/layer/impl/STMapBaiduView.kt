@@ -231,11 +231,25 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         return STMapOptions(
                 map().mapType,
                 map().isTrafficEnabled,
+                map().isBuildingsEnabled,
+                initMapOptions.showMapPoi,
                 getCurrentMapCenterLatLng(),
                 getCurrentMapZoomLevel()
         )
     }
 
+    override fun showMapPoi(showMapPoi: Boolean) {
+        initMapOptions.showMapPoi = showMapPoi
+        map().showMapPoi(initMapOptions.showMapPoi)
+    }
+
+    override fun isShowMapPoi(): Boolean = initMapOptions.showMapPoi
+    override fun showBuildings(isBuildingsEnabled: Boolean) {
+        initMapOptions.isBuildingsEnabled = isBuildingsEnabled
+        map().isBuildingsEnabled = initMapOptions.isBuildingsEnabled
+    }
+
+    override fun isBuildingsEnabled(): Boolean = initMapOptions.isBuildingsEnabled
     override fun getCurrentMapStatus(callback: (centerLatLng: STLatLng, zoomLevel: Float, radius: Double, bounds: STLatLngBounds) -> Unit) {
         callback(getCurrentMapCenterLatLng(), getCurrentMapZoomLevel(), getCurrentMapRadius(), getCurrentMapLatLngBounds())
     }
@@ -361,7 +375,8 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
                 isBaiduHeatMapEnabled = false      // 百度城市热力图
                 setViewPadding(0, 0, 0, 0)         // 设置地图操作区距屏幕的距离
                 setMaxAndMinZoomLevel(STMapView.defaultBaiduMaxZoomLevel, STMapView.defaultBaiduMinZoomLevel)     // 限制缩放等级
-                showMapPoi(true)                   // 隐藏底图标注（控制地图POI显示）
+                showMapPoi(initMapOptions.showMapPoi)                   // 隐藏底图标注（控制地图POI显示）
+                isBuildingsEnabled = initMapOptions.isBuildingsEnabled
 
                 uiSettings.apply {
                     isScrollGesturesEnabled = true          // 地图平移

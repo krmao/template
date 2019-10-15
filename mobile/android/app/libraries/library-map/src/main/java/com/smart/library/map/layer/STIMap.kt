@@ -30,6 +30,10 @@ interface STIMap {
     fun onLocationButtonClickedListener(): View.OnClickListener
     fun onLocationButtonLongClickedListener(): View.OnLongClickListener
 
+    fun showMapPoi(showMapPoi: Boolean)
+    fun isShowMapPoi(): Boolean
+    fun showBuildings(isBuildingsEnabled: Boolean)
+    fun isBuildingsEnabled(): Boolean
     fun enableCompass(enable: Boolean)
     fun enableTraffic(enable: Boolean)
     fun isTrafficEnabled(): Boolean

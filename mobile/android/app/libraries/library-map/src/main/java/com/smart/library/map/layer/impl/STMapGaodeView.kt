@@ -59,7 +59,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
      * 5.0.0 版本之后, 地图自己实现了定位, 通过该方法监听
      */
     @Suppress("unused")
-    fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
+    override fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
         this.onLocationChanged = onLocationChanged
     }
 

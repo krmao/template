@@ -109,6 +109,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     override fun setOnMapLoadedCallback(onMapLoaded: () -> Unit) = map().setOnMapLoadedCallback(onMapLoaded)
     override fun onLocationButtonLongClickedListener(): OnLongClickListener = map().onLocationButtonLongClickedListener()
     override fun onLocationButtonClickedListener(): OnClickListener = map().onLocationButtonClickedListener()
+    override fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) = map().setOnLocationChangedListener(onLocationChanged)
 
     override fun enableCompass(enable: Boolean) = map().enableCompass(enable)
     override fun enableTraffic(enable: Boolean) = map().enableTraffic(enable)

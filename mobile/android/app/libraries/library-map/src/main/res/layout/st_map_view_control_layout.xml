@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,SpUsage">
 
     <View
         android:id="@+id/statusBarView"
@@ -36,23 +37,119 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/myLocationTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="当前坐标: GCJ02\n121.123456,21.123456"
+                android:textColor="@color/blue_grey_100"
+                android:textSize="10dp"
+                android:textStyle="italic|bold" />
 
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:layout_alignParentBottom="true"
         android:background="#44000000"
-        android:gravity="center|bottom"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/switchMapBtn"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/switchMapBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="#bbffffff"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/switchMapBtnImage"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/st_baidu" />
+
+                    <TextView
+                        android:id="@+id/switchMapBtnTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="切换高德"
+                        android:textColor="#000"
+                        android:textSize="10dp"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/switchThemeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="#bbffffff"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/st_switch" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="切换主题"
+                        android:textColor="#000"
+                        android:textSize="10dp"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/settingsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#bbffffff"
             app:cardCornerRadius="1dp"
@@ -68,64 +165,24 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/switchMapBtnImage"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/st_baidu" />
-
-                <TextView
-                    android:id="@+id/switchMapBtnTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center"
-                    android:text="切换高德"
-                    android:textColor="#000"
-                    android:textSize="10dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/switchThemeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#bbffffff"
-            app:cardCornerRadius="1dp"
-            app:cardElevation="0dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="5dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/st_switch" />
+                    android:src="@drawable/st_settings" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:ems="2"
                     android:gravity="center"
-                    android:text="切换主题"
+                    android:text="设置"
                     android:textColor="#000"
                     android:textSize="10dp"
                     tools:ignore="HardcodedText,SpUsage" />
-
             </LinearLayout>
         </android.support.v7.widget.CardView>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="45dp"
@@ -171,45 +228,6 @@
                     android:textSize="10dp"
                     tools:ignore="HardcodedText,SpUsage" />
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/settingsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/poiBtn"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#bbffffff"
-            app:cardCornerRadius="1dp"
-            app:cardElevation="0dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="5dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/st_settings" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:ems="2"
-                    android:gravity="center"
-                    android:text="设置"
-                    android:textColor="#000"
-                    android:textSize="10dp"
-                    tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

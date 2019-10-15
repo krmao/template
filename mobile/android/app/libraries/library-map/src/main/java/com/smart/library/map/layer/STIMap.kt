@@ -29,6 +29,7 @@ interface STIMap {
     fun setOnMapLoadedCallback(onMapLoaded: () -> Unit)
     fun onLocationButtonClickedListener(): View.OnClickListener
     fun onLocationButtonLongClickedListener(): View.OnLongClickListener
+    fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit)
 
     fun showMapPoi(showMapPoi: Boolean)
     fun isShowMapPoi(): Boolean

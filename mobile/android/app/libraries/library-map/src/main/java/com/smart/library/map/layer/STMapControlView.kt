@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.smart.library.map.R
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STSystemUtil
+import com.smart.library.util.STValueUtil
 import com.smart.library.util.STViewUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperCallback
@@ -53,6 +54,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     init {
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
 
+        clearLocationText()
 
         usersRecyclerView.adapter = usersAdapter
 
@@ -93,7 +95,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         usersAdapter.add(
                 arrayListOf(
                         hashMapOf(
-                                "name" to "我的位置",
+                                "name" to "当前位置",
                                 "address" to "沭阳县青少年广场北门"
                         ),
                         hashMapOf(
@@ -130,11 +132,26 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     }
 
 
+    @SuppressLint("SetTextI18n")
+    fun clearLocationText() {
+        myLocationTV.visibility = View.GONE
+        myLocationTV.text = "当前坐标:\n"
+    }
+
+    @SuppressLint("SetTextI18n")
     fun setButtonClickedListener(_mapView: STMapView) {
         mapView = _mapView
         setSwitchMapBtnStyle()
         setTrafficBtnStyle()
         setPoiBtnStyle()
+        clearLocationText()
+
+        mapView?.setOnLocationChangedListener {
+            if (it?.isValid() == true) {
+                myLocationTV.visibility = View.VISIBLE
+                myLocationTV.text = "当前坐标: ${it.type}\n${STValueUtil.formatDecimal(it.latitude, 6)}, ${STValueUtil.formatDecimal(it.longitude, 6)}"
+            }
+        }
 
         switchMapButton().setOnClickListener {
             mapView?.switchTo(if (mapView?.mapType() == STMapType.BAIDU) STMapType.GAODE else STMapType.BAIDU) { _: Boolean, _: STMapType ->

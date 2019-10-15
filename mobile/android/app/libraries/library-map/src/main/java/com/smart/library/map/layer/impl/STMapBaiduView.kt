@@ -54,7 +54,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     private var locationBaiduSensor: STLocationBaiduSensor? = null
 
     private var onLocationChanged: ((STLatLng?) -> Unit)? = null
-    fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
+    override fun setOnLocationChangedListener(onLocationChanged: (STLatLng?) -> Unit) {
         this.onLocationChanged = onLocationChanged
     }
 

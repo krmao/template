@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.smart.library.map.R
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STSystemUtil
+import com.smart.library.util.STToastUtil
 import com.smart.library.util.STValueUtil
 import com.smart.library.util.STViewUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
@@ -136,6 +137,7 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
     fun clearLocationText() {
         myLocationTV.visibility = View.GONE
         myLocationTV.text = "当前坐标:\n"
+        myLocationTV.setOnLongClickListener(null)
     }
 
     @SuppressLint("SetTextI18n")
@@ -149,7 +151,17 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         mapView?.setOnLocationChangedListener {
             if (it?.isValid() == true) {
                 myLocationTV.visibility = View.VISIBLE
-                myLocationTV.text = "当前坐标: ${it.type}\n${STValueUtil.formatDecimal(it.latitude, 6)}, ${STValueUtil.formatDecimal(it.longitude, 6)}"
+
+                val label = "当前坐标"
+                val contentString = "${it.type}\n${STValueUtil.formatDecimal(it.latitude, 6)}, ${STValueUtil.formatDecimal(it.longitude, 6)}"
+                myLocationTV.text = "$label: $contentString"
+
+                myLocationTV.setOnLongClickListener {
+                    if (STSystemUtil.copyToClipboard(label, contentString)) {
+                        STToastUtil.show("$label 已复制到剪贴板")
+                    }
+                    true
+                }
             }
         }
 

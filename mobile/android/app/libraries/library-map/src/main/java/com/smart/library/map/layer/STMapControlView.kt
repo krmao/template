@@ -3,26 +3,73 @@ package com.smart.library.map.layer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.smart.library.map.R
 import com.smart.library.map.model.STMapType
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STViewUtil
+import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
+import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperCallback
 import kotlinx.android.synthetic.main.st_map_view_control_layout.view.*
+import kotlinx.android.synthetic.main.st_map_view_control_layout_users_item.view.*
 
 @Suppress("MemberVisibilityCanBePrivate")
 @SuppressLint("ViewConstructor")
 internal class STMapControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
 
+    private var dp1 = STSystemUtil.getPxFromDp(1f).toInt()
+    private var dp2 = STSystemUtil.getPxFromDp(2f).toInt()
     private var mapView: STMapView? = null
+    private val usersList: MutableList<HashMap<String, String>> = mutableListOf()
+    private val usersAdapter: STRecyclerViewAdapter<HashMap<String, String>, STRecyclerViewAdapter.ViewHolder> by lazy {
+        object : STRecyclerViewAdapter<HashMap<String, String>, STRecyclerViewAdapter.ViewHolder>(context, usersList) {
+            override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
+                return ViewHolder(LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout_users_item, parent, false))
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+                val map: HashMap<String, String> = dataList[position]
+                viewHolder.itemView.numberTv.text = "$position"
+                viewHolder.itemView.nameTv.text = map["name"]
+                viewHolder.itemView.addressTv.text = map["address"]
+                viewHolder.itemView.addressTv.isSelected = true // 启动跑马灯
+                viewHolder.itemView.firstItemTopLine.visibility = if (position == 0) View.VISIBLE else View.GONE
+                viewHolder.itemView.itemBottomLine.layoutParams = viewHolder.itemView.itemBottomLine.layoutParams.apply {
+                    height = if (position == dataList.size - 1) dp2 else dp1
+                }
+            }
+        }
+    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.st_map_view_control_layout, this, true)
+
+
+        usersRecyclerView.adapter = usersAdapter
+
+        // 增加滑动删除与拖动排序功能x
+        ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, object : STRecyclerViewItemTouchHelperCallback.OnDragListener {
+            override fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int) {
+            }
+
+            override fun onDragEnd(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            }
+
+        })).attachToRecyclerView(usersRecyclerView)
+
+        resetUsersData()
+
         hideLoading()
+
     }
 
     fun trafficText(): TextView = trafficText
@@ -40,6 +87,47 @@ internal class STMapControlView @JvmOverloads constructor(context: Context, attr
         settingsBtn().isClickable = false
         STViewUtil.animateAlphaToVisibility(View.VISIBLE, 300, {}, loadingLayout)
     }
+
+    fun resetUsersData() {
+        usersAdapter.add(
+                arrayListOf(
+                        hashMapOf(
+                                "name" to "我的位置",
+                                "address" to "沭阳县青少年广场北门"
+                        ),
+                        hashMapOf(
+                                "name" to "小强哥",
+                                "address" to "苏州市吴中区太湖东路280号"
+                        ),
+                        hashMapOf(
+                                "name" to "二毛哥",
+                                "address" to "苏州市相城区富元路2888号"
+                        ),
+                        hashMapOf(
+                                "name" to "大毛哥",
+                                "address" to "上海市长宁区金钟路968号"
+                        ),
+                        hashMapOf(
+                                "name" to "二姨哥",
+                                "address" to "苏州市吴江区开平路789号"
+                        ),
+                        hashMapOf(
+                                "name" to "大毛哥",
+                                "address" to "上海市长宁区金钟路968号"
+                        ),
+                        hashMapOf(
+                                "name" to "小雨哥",
+                                "address" to "上海市松江区仓桥镇三新北路900弄230号"
+                        ),
+                        hashMapOf(
+                                "name" to "回家睡觉",
+                                "address" to "上海市闵行区东川路800号"
+                        )
+                )
+        )
+
+    }
+
 
     fun setButtonClickedListener(_mapView: STMapView) {
         mapView = _mapView

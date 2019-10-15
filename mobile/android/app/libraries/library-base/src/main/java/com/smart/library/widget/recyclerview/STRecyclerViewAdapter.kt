@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperAdapter
 import java.util.*
+import kotlin.math.abs
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context?, var dataList: MutableList<Entity>) : RecyclerView.Adapter<ViewHolder>(), STRecyclerViewItemTouchHelperAdapter {
@@ -54,6 +55,7 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         Collections.swap(dataList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
+        notifyItemRangeChanged(fromPosition.coerceAtMost(toPosition), abs(fromPosition - toPosition) + 1)
         return true
     }
 }

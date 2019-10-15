@@ -5,13 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <View
+        android:id="@+id/statusBarView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="22dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#BB000000" />
+
+    <LinearLayout
+        android:id="@+id/topContainerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/statusBarView"
         android:background="#99000000"
-        android:gravity="center"
-        android:orientation="horizontal" />
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/usersRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,20 +127,59 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="45dp"
         android:layout_height="match_parent"
+        android:layout_below="@+id/topContainerLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:background="#44000000"
-        android:gravity="bottom|start"
         android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/addUserBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#bbffffff"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/st_switch" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="添加"
+                    android:textColor="#000"
+                    android:textSize="10dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/settingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/trafficBtn"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#bbffffff"
             app:cardCornerRadius="1dp"
@@ -150,6 +217,7 @@
             android:id="@+id/trafficBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/locationBtn"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#bbffffff"
             app:cardCornerRadius="1dp"
@@ -189,6 +257,7 @@
             android:id="@+id/locationBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#ccffffff"
             app:cardCornerRadius="1dp"
@@ -222,7 +291,7 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v7.widget.CardView
         android:id="@+id/loadingLayout"

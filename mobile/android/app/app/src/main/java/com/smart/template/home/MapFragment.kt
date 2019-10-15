@@ -35,7 +35,7 @@ class MapFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemWindows = false // 顶到状态栏后面
-        activity?.let { STStatusBarUtil.setStatusBarTextColor(it, true) } // 设置状态栏字体深色
+        activity?.let { STStatusBarUtil.setStatusBarTextColor(it, false) } // 设置状态栏字体深色
 
         mapView.initialize(mapType = if (useBaidu) STMapType.BAIDU else STMapType.GAODE)
         mapView.onCreate(context, savedInstanceState)

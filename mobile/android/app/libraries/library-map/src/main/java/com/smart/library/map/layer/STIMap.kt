@@ -42,6 +42,7 @@ interface STIMap {
     fun setMaxAndMinZoomLevel(maxZoomLevel: Float, minZoomLevel: Float)
     fun enableMapScaleControl(enable: Boolean)
     fun enableRotate(enable: Boolean)
+    fun calculateZoomLevel(radius: Double): Float
 
     fun setMapCenter(latLng: STLatLng?, animate: Boolean)
     fun setMapCenter(latLng: STLatLng?, zoomLevel: Float, animate: Boolean)

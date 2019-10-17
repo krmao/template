@@ -25,11 +25,13 @@ import com.smart.library.map.location.impl.STLocationBaiduSensor
 import com.smart.library.map.model.*
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.ln
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -136,6 +138,25 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     override fun enableRotate(enable: Boolean) {
         map().uiSettings.isRotateGesturesEnabled = enable
+    }
+
+    /**
+     * 使用官方的比较好, 虽然误差差不多, 但毕竟是官方的
+     * 根据圆心经纬度和半径计算地图 zoom level
+     * @see https://stackoverflow.com/questions/18383236/determine-a-reasonable-zoom-level-for-google-maps-given-location-accuracy
+     */
+    override fun calculateZoomLevel(radius: Double): Float {
+        // 赤道长度
+        val equatorLength = 40075004.0
+
+        val distance: Double = radius * 2.0
+
+        val screenSize = Math.min(STSystemUtil.screenWidth, STSystemUtil.screenHeight)
+        // The meters per pixel required to show the whole area the user might be located in
+        val requiredMpp = distance / screenSize
+
+        // Calculate the zoom level
+        return (ln(equatorLength / (256.0 * requiredMpp)) / ln(2.0) + 1 - 2.7617).toFloat() // 2.7617 为高德地图偏移量
     }
 
     override fun setMapCenter(latLng: STLatLng?, animate: Boolean) {

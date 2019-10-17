@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/loadingLayout"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="#DD000000"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+
+        <FrameLayout
+            android:id="@+id/container_view_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:translationY="-6dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/lottie_loading" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:minWidth="60dp"
+                android:paddingBottom="6dp"
+                android:text="加载中..."
+                android:textColor="#fff"
+                android:textSize="10dp"
+                android:visibility="visible"
+                tools:ignore="HardcodedText,SmallSp,SpUsage" />
+        </FrameLayout>
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

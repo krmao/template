@@ -23,6 +23,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -137,6 +138,19 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
     }
 
     override fun enableRotate(enable: Boolean) {
+    }
+
+    /**
+     * 高德官方给出的方法
+     */
+    override fun calculateZoomLevel(radius: Double): Float {
+        val mapWidth = mapView().width
+        val mapHeight = mapView().height
+        val len = if (mapWidth < mapHeight) mapWidth else mapHeight
+        val curScale = map().scalePerPixel * len
+        val targetScale = 2 * radius
+        val zoomOffset = log10(targetScale / curScale) / log10(2.0)
+        return (map().cameraPosition.zoom - zoomOffset).toFloat()
     }
 
     override fun setMapCenter(latLng: STLatLng?, animate: Boolean) {

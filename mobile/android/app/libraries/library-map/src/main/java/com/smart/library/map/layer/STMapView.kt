@@ -105,6 +105,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     override fun latestLatLon(): STLatLng? = map().latestLatLon()
     override fun removeMarker(marker: STMarker?) = map().removeMarker(marker)
     override fun isLatLngInScreen(latLng: STLatLng?, callback: (result: Boolean) -> Unit) = map().isLatLngInScreen(latLng, callback)
+    override fun calculateZoomLevel(radius: Double): Float = map().calculateZoomLevel(radius)
 
     override fun setOnMapLoadedCallback(onMapLoaded: () -> Unit) = map().setOnMapLoadedCallback(onMapLoaded)
     override fun onLocationButtonLongClickedListener(): OnLongClickListener = map().onLocationButtonLongClickedListener()

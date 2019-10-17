@@ -1,6 +1,7 @@
 package com.smart.template.home
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.res.Configuration.ORIENTATION_UNDEFINED
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STBaseFragment
+import com.smart.library.map.layer.STDialogManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
@@ -52,7 +54,12 @@ class HomeFragment : STBaseFragment() {
             MapFragment.goTo(activity, useBaidu = false)
         }
         text1.setOnClickListener {
-            STActivity.start(activity, Test1Fragment::class.java)
+            val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context, "规划中...", canceledOnTouchOutside = true)
+            loadingDialog?.show()
+        }
+        dialogLoading.setOnClickListener {
+            val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context)
+            loadingDialog?.show()
         }
         text2.setOnClickListener {
             STToastUtil.show("${STBaseApplication.INSTANCE.resources.displayMetrics.density}:${STSystemUtil.getDpFromPx(STSystemUtil.statusBarHeight)}")

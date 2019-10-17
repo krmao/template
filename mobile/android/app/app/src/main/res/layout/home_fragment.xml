@@ -85,7 +85,7 @@
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="沉浸式2"
+                        android:text="dialog text"
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
@@ -248,9 +248,11 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
+                        android:id="@+id/dialogLoading"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:text="dialog loading" />
 
                 </TableRow>
             </TableLayout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.smart.library.base.STActivity
+import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -54,11 +55,11 @@ class HomeFragment : STBaseFragment() {
             STActivity.start(activity, Test1Fragment::class.java)
         }
         text2.setOnClickListener {
-            STActivity.start(activity, Test2Fragment::class.java)
+            STToastUtil.show("${STBaseApplication.INSTANCE.resources.displayMetrics.density}:${STSystemUtil.getDpFromPx(STSystemUtil.statusBarHeight)}")
         }
         text3.setOnClickListener {
-            STToastUtil.show("Hello World")
-            STToastUtil.show("system toast")
+            STToastUtil.show("${STSystemUtil.statusBarHeight}")
+            STLogUtil.w("statusBarHeight", "statusBarHeight=${STSystemUtil.statusBarHeight}")
         }
         text4.setOnClickListener {
             //adb push assets/ /sdcard/Android/data/com.smart.template/cache/

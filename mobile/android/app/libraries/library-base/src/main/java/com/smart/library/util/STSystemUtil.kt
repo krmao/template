@@ -73,6 +73,9 @@ object STSystemUtil {
     fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
 
     @JvmStatic
+    fun getDpFromPx(px: Int): Float = px / displayMetrics.density
+
+    @JvmStatic
     fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
 
     @JvmStatic

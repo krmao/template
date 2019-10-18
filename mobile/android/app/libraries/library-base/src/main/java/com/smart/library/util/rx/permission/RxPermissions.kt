@@ -1,9 +1,13 @@
 package com.smart.library.util.rx.permission
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
+import android.support.v4.content.PermissionChecker
 import android.text.TextUtils
+import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STLogUtil
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -18,6 +22,30 @@ class RxPermissions(activity: Activity) {
     companion object {
         const val TAG = "RxPermissions"
         internal val TRIGGER = Any()
+
+        /**
+         * If your application is targeting an API level before 23 (Android M) then both:ContextCompat.CheckSelfPermission and Context.checkSelfPermission doesn't work and always returns 0 (PERMISSION_GRANTED). Even if you run the application on Android 6.0 (API 23).
+         */
+        @JvmStatic
+        fun checkSelfPermission(vararg permission: String): Boolean = permission.all { PermissionChecker.checkSelfPermission(STBaseApplication.INSTANCE, it) == PermissionChecker.PERMISSION_GRANTED }
+
+        @SuppressLint("CheckResult")
+        @JvmStatic
+        fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit?, vararg permission: String) {
+            if (checkSelfPermission(*permission)) {
+                callback.invoke(true)
+            } else {
+                if (activity != null && !activity.isFinishing) {
+                    RxPermissions(activity).requestEachCombined(*permission).subscribe {
+                        STLogUtil.e(TAG, "request permissions callback -> $it")
+                        callback.invoke(it.granted)
+                    }
+                } else {
+                    callback.invoke(false)
+                }
+            }
+            Unit
+        }
     }
 
     private val rxPermissionsFragment: RxPermissionsFragment by lazy { getRxPermissionsFragment(activity) }

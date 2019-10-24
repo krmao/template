@@ -2,6 +2,7 @@ package com.smart.template.home
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_UNDEFINED
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -11,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STBaseFragment
 import com.smart.library.map.layer.STDialogManager
@@ -47,6 +47,12 @@ class HomeFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        behavior.setOnClickListener {
+            startActivity(Intent(context, STBehaviorActivity::class.java))
+        }
+        bottomSheet.setOnClickListener {
+            startActivity(Intent(context, STBottomSheetActivity::class.java))
+        }
         baiduMap.setOnClickListener {
             MapFragment.goTo(activity, useBaidu = true)
         }

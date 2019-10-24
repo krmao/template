@@ -255,6 +255,32 @@
                         android:text="dialog loading" />
 
                 </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/behavior"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="behavior"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/bottomSheet"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="bottomSheet"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="" />
+
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>

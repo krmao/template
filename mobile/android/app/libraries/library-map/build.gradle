@@ -34,7 +34,7 @@ android {
         ignoreAssetsPattern _ignoreAssetsPattern
     }
 
-    resourcePrefix "st_"
+    // resourcePrefix "st_"
 }
 
 dependencies {

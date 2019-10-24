@@ -14,9 +14,11 @@ import com.smart.library.util.STViewUtil
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr), STIMap {
 
+    private lateinit var panelView: STPanelView
     private lateinit var controlView: STMapControlView
     private var initMapOptions: STMapOptions = STMapOptions(showMapPoi = false)
     private fun controlView(): STMapControlView = controlView
+    private fun panelView(): STPanelView = panelView
     private fun map(): STIMap = getChildAt(0) as STIMap
 
     @JvmOverloads
@@ -30,7 +32,9 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         }
 
         controlView = STMapControlView(context)
+        panelView = STPanelView(context)
         addView(controlView())
+        addView(panelView())
 
         controlView().showLoading()
         map().setOnMapLoadedCallback {

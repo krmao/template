@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlinVersion = "1.3.31"
+    ext.kotlinVersion = "1.3.50"
     ext.ankoVersion = "0.8.2"
     //ext.walleVersion = "1.1.6"
 
@@ -64,7 +64,7 @@ apply from: "gradle/readme/scripts/tasktimings.gradle" //控制台输出任务�
 ext {
 
     // Sdk and tools
-    
+
     // react-native>=16
     // ijkplayer>=16
     // ijkplayer-arm64>=21
@@ -77,13 +77,13 @@ ext {
     // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
     // https://dl.google.com/dl/android/maven2/index.html
     // https://developer.android.google.cn/studio/releases/gradle-plugin#updating-plugin
-    targetSdkVersion = 25
+    targetSdkVersion = 28
     compileSdkVersion = 28
     buildToolsVersion = "28.0.3"
 
     // App dependencies
     supportLibraryVersion = "28.0.0"
-    constraintLayoutVersion = "1.1.3"
+    constraintLayoutVersion = "2.0.0-beta3"
     multidex = "1.0.3"
 
     // React Native Version

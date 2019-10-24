@@ -24,7 +24,7 @@ dependencies {
     api "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:multidex:$rootProject.ext.multidex"
-    api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+    //api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     //api "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
     //api "com.android.support:leanback-v17:$rootProject.ext.supportLibraryVersion"
 

@@ -1,6 +1,7 @@
 package com.smart.template.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.st_bottom_sheet_activity.*
 
 class STBottomSheetActivity : STBaseActivity() {
 
+    private val handler: Handler = Handler()
     private val adapter: STRecyclerViewAdapter<String, STRecyclerViewAdapter.ViewHolder> by lazy {
         object : STRecyclerViewAdapter<String, STRecyclerViewAdapter.ViewHolder>(this, (1..100).map { "I Love You for time $it" }.toMutableList()) {
             override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -36,7 +38,7 @@ class STBottomSheetActivity : STBaseActivity() {
         recyclerView.adapter = adapter
 
         val bottomSheetBehavior: BottomSheetBehavior<RelativeLayout> = BottomSheetBehavior.from(bottomSheetLayout)
-        bottomSheetBehavior.setBottomSheetCallback(STBottomSheetBehaviorCallback(bottomSheetBehavior, bottomSheetAppbarHeight, 30f))
+        bottomSheetBehavior.setBottomSheetCallback(STBottomSheetBehaviorCallback(handler, bottomSheetBehavior, bottomSheetAppbarHeight, 30f))
 
         bottomSheetTv.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED

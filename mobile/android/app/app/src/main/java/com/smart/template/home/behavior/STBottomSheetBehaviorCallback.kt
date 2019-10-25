@@ -1,5 +1,6 @@
 package com.smart.template.home.behavior
 
+import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
 import android.view.View
 import com.smart.library.base.toDpFromPx
@@ -99,7 +100,7 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
  *
  * @param dragOffsetPercent 拖拽滑动超过 整体可滑动范围的百分之多少, 就可以滚动到 顺着滑动方向的 下一个状态, 有效范围 [1,99]
  */
-class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheetBehavior<out View>, bottomSheetAppbarHeight: Int, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
+class STBottomSheetBehaviorCallback @JvmOverloads constructor(private val handler: Handler = Handler(), private val bottomSheetBehavior: BottomSheetBehavior<out View>, bottomSheetAppbarHeight: Int, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
 
     private val tag: String = "sheet"
     private val screenFullHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
@@ -118,12 +119,29 @@ class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheet
     private var pullTopToBottom: Boolean? = null
     private val offsetTenPercent = (bottomSheetCollapsedTop - bottomSheetExpandTop) / min(99f, max(dragOffsetPercent, 1f))
 
+    private var filterOnStateChangedRunnable: Runnable? = null
+    private fun filterOnStateChanged(bottomSheet: View, newState: Int, description: String) {
+        if (filterOnStateChangedRunnable != null) {
+            handler.removeCallbacks(filterOnStateChangedRunnable)
+        }
+        filterOnStateChangedRunnable = null
+        filterOnStateChangedRunnable = object : Runnable {
+            override fun run() {
+                STLogUtil.e(tag, "STATE_FILTER : $description")
+                onStateChanged?.invoke(bottomSheet, newState)
+            }
+        }
+        handler.postDelayed(filterOnStateChangedRunnable, 50)
+    }
+
     override fun onStateChanged(bottomSheet: View, newState: Int) {
         val bottomSheetCurrentTop: Int = bottomSheet.top
         when (newState) {
             BottomSheetBehavior.STATE_HIDDEN -> {
                 lastBottomSheetDragTop = -1
                 STLogUtil.e(tag, "STATE_HIDDEN")
+
+                filterOnStateChanged(bottomSheet, newState, "STATE_HIDDEN")
             }
             BottomSheetBehavior.STATE_COLLAPSED -> {
                 lastBottomSheetDragTop = -1
@@ -133,6 +151,8 @@ class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheet
                 STLogUtil.d(tag, "bottomSheetHalfExpandTop=${bottomSheetHalfExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetExpandTop=${bottomSheetExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetCurrentTop=${bottomSheetCurrentTop.toDpFromPx()}")
+
+                filterOnStateChanged(bottomSheet, newState, "STATE_COLLAPSED")
             }
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
                 lastBottomSheetDragTop = -1
@@ -142,6 +162,8 @@ class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheet
                 STLogUtil.d(tag, "bottomSheetHalfExpandTop=${bottomSheetHalfExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetExpandTop=${bottomSheetExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetCurrentTop=${bottomSheetCurrentTop.toDpFromPx()}")
+
+                filterOnStateChanged(bottomSheet, newState, "STATE_HALF_EXPANDED")
             }
             BottomSheetBehavior.STATE_EXPANDED -> {
                 lastBottomSheetDragTop = -1
@@ -151,10 +173,13 @@ class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheet
                 STLogUtil.d(tag, "bottomSheetHalfExpandTop=${bottomSheetHalfExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetExpandTop=${bottomSheetExpandTop.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetCurrentTop=${bottomSheetCurrentTop.toDpFromPx()}")
+                filterOnStateChanged(bottomSheet, newState, "STATE_EXPANDED")
             }
             BottomSheetBehavior.STATE_DRAGGING -> {
                 lastBottomSheetDragTop = bottomSheetCurrentTop
                 STLogUtil.d(tag, "STATE_DRAGGING")
+
+                onStateChanged?.invoke(bottomSheet, newState)
             }
             BottomSheetBehavior.STATE_SETTLING -> {
                 STLogUtil.e(tag, "STATE_SETTLING")
@@ -182,9 +207,13 @@ class STBottomSheetBehaviorCallback(private val bottomSheetBehavior: BottomSheet
                     }
                 }
                 lastBottomSheetDragTop = -1
+
+                onStateChanged?.invoke(bottomSheet, newState)
+            }
+            else -> {
+                onStateChanged?.invoke(bottomSheet, newState)
             }
         }
-        onStateChanged?.invoke(bottomSheet, newState)
     }
 
     override fun onSlide(bottomSheet: View, slideOffset: Float) {

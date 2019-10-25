@@ -36,7 +36,7 @@ class STBottomSheetActivity : STBaseActivity() {
         recyclerView.adapter = adapter
 
         val bottomSheetBehavior: BottomSheetBehavior<RelativeLayout> = BottomSheetBehavior.from(bottomSheetLayout)
-        bottomSheetBehavior.setBottomSheetCallback(STBottomSheetBehaviorCallback(bottomSheetBehavior, bottomSheetAppbarHeight, 1f))
+        bottomSheetBehavior.setBottomSheetCallback(STBottomSheetBehaviorCallback(bottomSheetBehavior, bottomSheetAppbarHeight, 30f))
 
         bottomSheetTv.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED

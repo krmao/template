@@ -9,7 +9,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/titleBar"
-        android:layout_width="match_parent"
+        android:layout_width="3dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:visibility="visible"
@@ -18,31 +18,41 @@
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="@dimen/bottom_sheet_appbar_height"
             app:title="巅峰榜 流行指数 第64天" />
     </android.support.design.widget.AppBarLayout>
-    
+
     <RelativeLayout
         android:id="@+id/bottomSheetLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#ffffff"
-        app:behavior_peekHeight="?attr/actionBarSize"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="80dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
         tools:ignore="MissingPrefix">
 
         <TextView
             android:id="@+id/bottomSheetTv"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="40dp"
             android:gravity="center"
             android:text="这是一个BottomSheet" />
+
+        <View
+            android:id="@+id/redLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/bottomSheetTv"
+            android:background="@color/red" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/bottomSheetTv"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/redLine"
+            android:layout_alignParentTop="@id/redLine"
+            android:layout_alignParentBottom="true"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </RelativeLayout>
 

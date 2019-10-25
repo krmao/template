@@ -15,10 +15,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.widget.AbsListView
-import com.smart.library.util.STChecksumUtil
-import com.smart.library.util.STLogUtil
-import com.smart.library.util.STValueUtil
-import com.smart.library.util.STViewUtil
+import com.smart.library.util.*
 import org.jetbrains.anko.AnkoAsyncContext
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -36,6 +33,18 @@ fun Drawable.toBitmap(): Bitmap {
     this.setBounds(0, 0, canvas.width, canvas.height)
     this.draw(canvas)
     return bmp
+}
+
+fun Float.toPxFromDp(): Float {
+    return STSystemUtil.getPxFromDp(this)
+}
+
+fun Int.toPxFromDp(): Float {
+    return STSystemUtil.getPxFromDp(this.toFloat())
+}
+
+fun Int.toDpFromPx(): Float {
+    return STSystemUtil.getDpFromPx(this)
 }
 
 fun <T : android.support.v4.app.Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit) {

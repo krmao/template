@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STMapView
+import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STMapType
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
@@ -32,12 +33,16 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
 
+    private var locationLatLng: STLatLng? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
 
         mapView.initialize(mapType = STMapType.BAIDU)
         mapView.onCreate(this, savedInstanceState)
+        mapView.setOnLocationChangedListener {
+            locationLatLng = it
+        }
 
         recyclerView.adapter = adapter
 
@@ -48,6 +53,10 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
         bottomSheetTv.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+
+        locationBtn2.setOnClickListener {
+            mapView.setMapCenter(locationLatLng, true)
         }
     }
 
@@ -60,7 +69,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         super.onPause()
         mapView.onPause()
     }
-    
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)

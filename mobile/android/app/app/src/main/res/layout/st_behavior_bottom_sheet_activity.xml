@@ -15,12 +15,12 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/titleBar"
-        android:layout_width="30dp"
+        android:layout_width="3dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:visibility="visible"
         app:layout_anchor="@id/bottomSheetLayout"
-        app:layout_anchorGravity="top">
+        app:layout_anchorGravity="top|start">
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
@@ -61,5 +61,26 @@
             android:layout_alignParentBottom="true"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/locationBtn2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_launcher"
+        android:translationY="-20dp"
+        app:backgroundTint="@color/blue_300"
+        app:backgroundTintMode="src_over"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:fabCustomSize="40dp"
+        app:fabSize="normal"
+        app:hoveredFocusedTranslationZ="3dp"
+        app:layout_anchor="@id/titleBar"
+        app:layout_anchorGravity="bottom|start"
+        app:maxImageSize="40dp"
+        app:pressedTranslationZ="3dp"
+        app:rippleColor="@color/orange"
+        app:useCompatPadding="false" />
 
 </android.support.design.widget.CoordinatorLayout>

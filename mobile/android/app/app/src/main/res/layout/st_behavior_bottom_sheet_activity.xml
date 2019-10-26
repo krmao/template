@@ -7,9 +7,15 @@
     android:background="@drawable/st_beauty"
     tools:ignore="HardcodedText">
 
+    <com.smart.library.map.layer.STMapView
+        android:id="@+id/mapBaiduView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/titleBar"
-        android:layout_width="3dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:visibility="visible"
@@ -19,7 +25,7 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_sheet_appbar_height"
-            app:title="巅峰榜 流行指数 第64天" />
+            app:title="Toolbar Title" />
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout

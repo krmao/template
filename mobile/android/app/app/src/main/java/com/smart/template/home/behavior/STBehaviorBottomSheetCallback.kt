@@ -2,7 +2,9 @@ package com.smart.template.home.behavior
 
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.CoordinatorLayout
 import android.view.View
+import android.view.ViewTreeObserver
 import com.smart.library.base.toDpFromPx
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -12,13 +14,13 @@ import kotlin.math.min
 /*
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.st_bottom_sheet_activity)
+    setContentView(R.layout.st_behavior_bottom_sheet_activity)
 
-    val bottomSheetBehavior: BottomSheetBehavior<RelativeLayout> = BottomSheetBehavior.from(bottomSheetLayout)
+    val bottomSheetBehavior: BottomSheetBehavior<RelativeLayout> = BottomSheetBehavior.from(behaviorView)
     bottomSheetBehavior.isFitToContents = true  // 设置对齐方式, true表示底部对齐, false表示顶部对齐
     bottomSheetBehavior.isHideable = false
     bottomSheetBehavior.skipCollapsed = false   // 设置此底页在展开一次后隐藏时是否应跳过折叠状态.
-    bottomSheetBehavior.setBottomSheetCallback(STBottomSheetBehaviorCallback(bottomSheetBehavior, bottomSheetAppbarHeight))
+    bottomSheetBehavior.setBottomSheetCallback(STBehaviorBottomSheetCallback(bottomSheetBehavior, bottomSheetAppbarHeight))
 }
 
 private val bottomSheetAppbarHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height) }
@@ -26,9 +28,9 @@ private var bottomSheetHeightUpdated: Boolean = false
 override fun onWindowFocusChanged(hasFocus: Boolean) {
     super.onWindowFocusChanged(hasFocus)
     if (!bottomSheetHeightUpdated) {
-        val params: CoordinatorLayout.LayoutParams = bottomSheetLayout.layoutParams as CoordinatorLayout.LayoutParams
+        val params: CoordinatorLayout.LayoutParams = behaviorView.layoutParams as CoordinatorLayout.LayoutParams
         params.height = STSystemUtil.screenHeight - bottomSheetAppbarHeight + STSystemUtil.statusBarHeight
-        bottomSheetLayout.layoutParams = params
+        behaviorView.layoutParams = params
         bottomSheetHeightUpdated = true
     }
 }
@@ -48,7 +50,7 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:visibility="visible"
-        app:layout_anchor="@id/bottomSheetLayout"
+        app:layout_anchor="@id/behaviorView"
         app:layout_anchorGravity="top">
 
         <android.support.v7.widget.Toolbar
@@ -58,7 +60,7 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/bottomSheetLayout"
+        android:id="@+id/behaviorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
@@ -99,14 +101,29 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
  * http://s0developer0android0com.icopy.site/reference/com/google/android/material/bottomsheet/BottomSheetBehavior
  *
  * @param dragOffsetPercent 拖拽滑动超过 整体可滑动范围的百分之多少, 就可以滚动到 顺着滑动方向的 下一个状态, 有效范围 [1,99]
+ * @param bottomSheetExpandTop expand 完全展开状态 bottom sheet layout top 值, 影响拖动触发状态改变的 位移 距离
+ * @param behaviorView 设置了 app:layout_behavior="@string/bottom_sheet_behavior" 的那个 view
  */
-class STBottomSheetBehaviorCallback @JvmOverloads constructor(private val handler: Handler = Handler(), private val bottomSheetBehavior: BottomSheetBehavior<out View>, bottomSheetAppbarHeight: Int, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
+class STBehaviorBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: BottomSheetBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
+
+    init {
+        behaviorView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val viewTreeObserver: ViewTreeObserver = behaviorView.viewTreeObserver
+                if (viewTreeObserver.isAlive) {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+                val params: CoordinatorLayout.LayoutParams = behaviorView.layoutParams as CoordinatorLayout.LayoutParams
+                params.height = STSystemUtil.screenHeight - bottomSheetExpandTop + STSystemUtil.statusBarHeight
+                behaviorView.layoutParams = params
+            }
+        })
+    }
 
     private val tag: String = "sheet"
     private val screenFullHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
     private val bottomSheetCollapsedTop: Int = screenFullHeight - bottomSheetBehavior.peekHeight
     private val bottomSheetHalfExpandTop: Int = (screenFullHeight / 2f).toInt()
-    private val bottomSheetExpandTop: Int = bottomSheetAppbarHeight
     private var lastBottomSheetDragTop: Int = bottomSheetCollapsedTop
         private set(value) {
             if (lastBottomSheetDragTop != -1) {

@@ -50,8 +50,11 @@ class HomeFragment : STBaseFragment() {
         behavior.setOnClickListener {
             startActivity(Intent(context, STBehaviorActivity::class.java))
         }
+        behaviorScrolling.setOnClickListener {
+            startActivity(Intent(context, STBehaviorScrollingActivity::class.java))
+        }
         bottomSheet.setOnClickListener {
-            startActivity(Intent(context, STBottomSheetActivity::class.java))
+            startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))
         }
         baiduMap.setOnClickListener {
             MapFragment.goTo(activity, useBaidu = true)

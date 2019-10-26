@@ -275,10 +275,11 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
+                        android:id="@+id/behaviorScrolling"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="" />
+                        android:text="behaviorScrolling" />
 
                 </TableRow>
             </TableLayout>

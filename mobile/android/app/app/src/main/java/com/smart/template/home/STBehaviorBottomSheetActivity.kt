@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetBehaviorForViewPager
+import android.support.design.widget.BottomSheetViewPagerBehavior
 import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
@@ -54,7 +54,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
         // init bottomSheet behavior -- level 2
         val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
-        val bottomSheetBehavior: BottomSheetBehaviorForViewPager<LinearLayout> = BottomSheetBehaviorForViewPager.from(bottomSheetLayout)
+        val bottomSheetBehavior: BottomSheetViewPagerBehavior<LinearLayout> = BottomSheetViewPagerBehavior.from(bottomSheetLayout)
         val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
         bottomSheetBehavior.bindViewPager(viewPager)

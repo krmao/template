@@ -74,5 +74,5 @@
 -keep class com.autonavi.**{*;}
 
 # support
--keep class android.support.design.widget.BottomSheetBehaviorForViewPager{*;}
+-keep class android.support.design.widget.BottomSheetViewPagerBehavior{*;}
 -keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}

@@ -1,7 +1,6 @@
 package com.smart.library.widget.behavior
 
 import android.os.Handler
-import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.view.View
 import android.view.ViewTreeObserver
@@ -18,7 +17,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
     // init bottomSheet behavior
     val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
-    val bottomSheetBehavior: BottomSheetViewPagerBehavior<LinearLayout> = BottomSheetViewPagerBehavior.from(bottomSheetLayout)
+    val bottomSheetBehavior: STBottomSheetViewPagerBehaviorForViewPager<LinearLayout> = STBottomSheetViewPagerBehaviorForViewPager.from(bottomSheetLayout)
     val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
     bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
 }
@@ -86,14 +85,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 /**
  * 从底部拖动滑出的面板, 具有三段状态高度
- * http://s0developer0android0com.icopy.site/reference/com/google/android/material/bottomsheet/BottomSheetBehavior
+ * http://s0developer0android0com.icopy.site/reference/com/google/android/material/bottomsheet/STBottomSheetViewPagerBehavior
  *
  * @param dragOffsetPercent 拖拽滑动超过 整体可滑动范围的百分之多少, 就可以滚动到 顺着滑动方向的 下一个状态, 有效范围 [1,99]
  * @param bottomSheetExpandTop expand 完全展开状态 bottom sheet layout top 值, 影响拖动触发状态改变的 位移 距离
  * @param behaviorView 设置了 app:layout_behavior="@string/bottom_sheet_behavior" 的那个 view
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: BottomSheetBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
+class STBottomSheetViewDragHelperCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : STBottomSheetViewDragHelperBehavior.BottomSheetCallback() {
 
     init {
         behaviorView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -143,13 +142,13 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
     override fun onStateChanged(bottomSheet: View, newState: Int) {
         val bottomSheetCurrentTop: Int = bottomSheet.top
         when (newState) {
-            BottomSheetBehavior.STATE_HIDDEN -> {
+            STBottomSheetViewDragHelperBehavior.STATE_HIDDEN -> {
                 lastBottomSheetDragTop = -1
                 STLogUtil.e(tag, "STATE_HIDDEN")
 
                 filterOnStateChanged(bottomSheet, newState, "STATE_HIDDEN")
             }
-            BottomSheetBehavior.STATE_COLLAPSED -> {
+            STBottomSheetViewDragHelperBehavior.STATE_COLLAPSED -> {
                 lastBottomSheetDragTop = -1
                 STLogUtil.e(tag, "STATE_COLLAPSED")
                 STLogUtil.d(tag, "screenFullHeight=${screenFullHeight.toDpFromPx()}")
@@ -160,7 +159,7 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
 
                 filterOnStateChanged(bottomSheet, newState, "STATE_COLLAPSED")
             }
-            BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+            STBottomSheetViewDragHelperBehavior.STATE_HALF_EXPANDED -> {
                 lastBottomSheetDragTop = -1
                 STLogUtil.e(tag, "STATE_HALF_EXPANDED")
                 STLogUtil.d(tag, "screenFullHeight=${screenFullHeight.toDpFromPx()}")
@@ -171,7 +170,7 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
 
                 filterOnStateChanged(bottomSheet, newState, "STATE_HALF_EXPANDED")
             }
-            BottomSheetBehavior.STATE_EXPANDED -> {
+            STBottomSheetViewDragHelperBehavior.STATE_EXPANDED -> {
                 lastBottomSheetDragTop = -1
                 STLogUtil.e(tag, "STATE_EXPANDED")
                 STLogUtil.d(tag, "screenFullHeight=${screenFullHeight.toDpFromPx()}")
@@ -181,13 +180,13 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
                 STLogUtil.d(tag, "bottomSheetCurrentTop=${bottomSheetCurrentTop.toDpFromPx()}")
                 filterOnStateChanged(bottomSheet, newState, "STATE_EXPANDED")
             }
-            BottomSheetBehavior.STATE_DRAGGING -> {
+            STBottomSheetViewDragHelperBehavior.STATE_DRAGGING -> {
                 lastBottomSheetDragTop = bottomSheetCurrentTop
                 STLogUtil.d(tag, "STATE_DRAGGING")
 
                 onStateChanged?.invoke(bottomSheet, newState)
             }
-            BottomSheetBehavior.STATE_SETTLING -> {
+            STBottomSheetViewDragHelperBehavior.STATE_SETTLING -> {
                 STLogUtil.e(tag, "STATE_SETTLING")
                 STLogUtil.d(tag, "screenFullHeight=${screenFullHeight.toDpFromPx()}")
                 STLogUtil.d(tag, "bottomSheetCollapsedTop=${bottomSheetCollapsedTop.toDpFromPx()}")
@@ -201,13 +200,13 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
                     bottomSheet.post {
                         when {
                             bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetExpandTop + offsetTenPercent) else (bottomSheetHalfExpandTop - offsetTenPercent)) -> {
-                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                                bottomSheetBehavior.state = STBottomSheetViewDragHelperBehavior.STATE_EXPANDED
                             }
                             bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetHalfExpandTop + offsetTenPercent) else (bottomSheetCollapsedTop - offsetTenPercent)) -> {
-                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                                bottomSheetBehavior.state = STBottomSheetViewDragHelperBehavior.STATE_HALF_EXPANDED
                             }
                             else -> {
-                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                                bottomSheetBehavior.state = STBottomSheetViewDragHelperBehavior.STATE_COLLAPSED
                             }
                         }
                     }

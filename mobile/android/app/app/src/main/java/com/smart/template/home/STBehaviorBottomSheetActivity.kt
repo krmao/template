@@ -27,8 +27,8 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
-import com.smart.template.home.behavior.STBottomSheetCallback
-import com.smart.template.home.behavior.STBottomSheetBackdropBehavior
+import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
+import com.smart.library.widget.behavior.STBottomSheetCallback
 import com.smart.template.widget.STCheckBoxGroupView
 import com.smart.template.widget.STRecyclerPagerView
 import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
@@ -50,34 +50,30 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         // init map -- level 1
         mapView.initialize(mapType = STMapType.BAIDU)
         mapView.onCreate(this, savedInstanceState)
-        mapView.setOnLocationChangedListener {
-            locationLatLng = it
-        }
+        mapView.setOnLocationChangedListener { locationLatLng = it }
 
-        // init backdrop -- level 2
-        viewPager.adapter = BackdropImagesPagerAdapter(this, backdropImages)
-
-        // init bottomSheet behavior -- level 3
+        // init bottomSheet behavior -- level 2
         val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
         val bottomSheetBehavior: BottomSheetBehaviorForViewPager<LinearLayout> = BottomSheetBehaviorForViewPager.from(bottomSheetLayout)
         val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
+        bottomSheetBehavior.bindViewPager(viewPager)
+
+        // init backdrop behavior and reset viewpager height -- level 3
+        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
+        backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
+        backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
+        viewPager.adapter = BackdropImagesPagerAdapter(this, backdropImages)
+        viewPager.layoutParams = viewPager.layoutParams.apply {
+            height = behaviorBottomSheetCallback.bottomSheetHalfExpandTop
+        }
+
+        // init bottom sheet child views -- level 4
+        initBottomSheetChildViews()
 
         // init floating action button -- level 5
         floatingActionButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        initBottomSheetChildViews()
-
-        // init backdrop behavior
-        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
-        backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
-        backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
-
-        // reset viewpager height
-        viewPager.layoutParams = viewPager.layoutParams.apply {
-            height = behaviorBottomSheetCallback.bottomSheetHalfExpandTop
         }
     }
 

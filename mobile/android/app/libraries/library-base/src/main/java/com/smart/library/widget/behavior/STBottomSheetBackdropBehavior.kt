@@ -1,4 +1,4 @@
-package com.smart.template.home.behavior
+package com.smart.library.widget.behavior
 
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
@@ -8,7 +8,7 @@ import android.view.View
 
 /*
 
--keep class com.smart.template.home.behavior.STBottomSheetBackdropBehavior{*;}
+-keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
 
 xml->
 
@@ -18,7 +18,7 @@ xml->
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
         android:fitsSystemWindows="false"
-        app:layout_behavior="com.smart.template.home.behavior.STBottomSheetBackdropBehavior" />
+        app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetBackdropBehavior" />
 
 java/kotlin->
 

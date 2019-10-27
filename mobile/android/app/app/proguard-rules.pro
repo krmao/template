@@ -75,4 +75,4 @@
 
 # support
 -keep class android.support.design.widget.BottomSheetBehaviorForViewPager{*;}
--keep class com.smart.template.home.behavior.STBottomSheetBackdropBehavior{*;}
+-keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}

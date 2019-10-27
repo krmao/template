@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-
 import java.lang.ref.WeakReference
 
 /**
@@ -49,6 +48,26 @@ class BottomSheetBehaviorForViewPager<V : View> @JvmOverloads constructor(contex
             val scrollingChild = findScrollingChild(it)
             nestedScrollingChildRef = WeakReference<View>(scrollingChild)
         }
+    }
+
+    private val onPageChangeListener by lazy {
+        object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(p0: Int) {}
+
+            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
+
+            override fun onPageSelected(p0: Int) {
+                updateScrollingChild()
+            }
+        }
+    }
+
+    /**
+     * 当 viewPager 页面切换时, 更新 nestedScrollingChildRef
+     */
+    fun bindViewPager(viewPager: ViewPager) {
+        viewPager.removeOnPageChangeListener(onPageChangeListener)
+        viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
     companion object {

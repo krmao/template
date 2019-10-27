@@ -1,4 +1,4 @@
-package com.smart.template.home.behavior
+package com.smart.library.widget.behavior
 
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior

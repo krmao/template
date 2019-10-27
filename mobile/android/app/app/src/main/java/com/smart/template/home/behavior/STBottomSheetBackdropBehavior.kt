@@ -6,9 +6,27 @@ import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
 
-/**
- * com.smart.template.home.behavior.STBottomSheetBackdropBehavior
- */
+/*
+
+-keep class com.smart.template.home.behavior.STBottomSheetBackdropBehavior{*;}
+
+xml->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:fitsSystemWindows="false"
+        app:layout_behavior="com.smart.template.home.behavior.STBottomSheetBackdropBehavior" />
+
+java/kotlin->
+
+    val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
+    backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
+    backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
+
+*/
 class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 
     private var lastChildY: Float = 0f

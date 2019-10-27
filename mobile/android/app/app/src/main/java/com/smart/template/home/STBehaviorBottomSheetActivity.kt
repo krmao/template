@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetBehaviorForViewPager
 import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
@@ -26,7 +27,7 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
-import com.smart.template.home.behavior.STBehaviorBottomSheetCallback
+import com.smart.template.home.behavior.STBottomSheetCallback
 import com.smart.template.home.behavior.STBottomSheetBackdropBehavior
 import com.smart.template.widget.STCheckBoxGroupView
 import com.smart.template.widget.STRecyclerPagerView
@@ -58,8 +59,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
         // init bottomSheet behavior -- level 3
         val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
-        val bottomSheetBehavior: BottomSheetBehavior<LinearLayout> = BottomSheetBehavior.from(bottomSheetLayout)
-        val behaviorBottomSheetCallback = STBehaviorBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
+        val bottomSheetBehavior: BottomSheetBehaviorForViewPager<LinearLayout> = BottomSheetBehaviorForViewPager.from(bottomSheetLayout)
+        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
 
         // init floating action button -- level 5

@@ -246,6 +246,10 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
+    override fun canScrollVertically(direction: Int): Boolean {
+        return super.canScrollVertically(direction)
+    }
+
     private class STPagerRecyclerViewAdapter<M>(
             private val context: Context,
             private val initPagerDataList: MutableList<PagerModel<M>>,

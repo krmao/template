@@ -16,23 +16,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.st_behavior_bottom_sheet_activity)
 
-    val bottomSheetBehavior: BottomSheetBehavior<RelativeLayout> = BottomSheetBehavior.from(behaviorView)
-    bottomSheetBehavior.isFitToContents = true  // 设置对齐方式, true表示底部对齐, false表示顶部对齐
-    bottomSheetBehavior.isHideable = false
-    bottomSheetBehavior.skipCollapsed = false   // 设置此底页在展开一次后隐藏时是否应跳过折叠状态.
-    bottomSheetBehavior.setBottomSheetCallback(STBehaviorBottomSheetCallback(bottomSheetBehavior, bottomSheetAppbarHeight))
-}
-
-private val bottomSheetAppbarHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height) }
-private var bottomSheetHeightUpdated: Boolean = false
-override fun onWindowFocusChanged(hasFocus: Boolean) {
-    super.onWindowFocusChanged(hasFocus)
-    if (!bottomSheetHeightUpdated) {
-        val params: CoordinatorLayout.LayoutParams = behaviorView.layoutParams as CoordinatorLayout.LayoutParams
-        params.height = STSystemUtil.screenHeight - bottomSheetAppbarHeight + STSystemUtil.statusBarHeight
-        behaviorView.layoutParams = params
-        bottomSheetHeightUpdated = true
-    }
+    // init bottomSheet behavior
+    val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
+    val bottomSheetBehavior: BottomSheetBehaviorForViewPager<LinearLayout> = BottomSheetBehaviorForViewPager.from(bottomSheetLayout)
+    val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
+    bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
 }
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -105,7 +93,7 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
  * @param behaviorView 设置了 app:layout_behavior="@string/bottom_sheet_behavior" 的那个 view
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class STBehaviorBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: BottomSheetBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
+class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: BottomSheetBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
 
     init {
         behaviorView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {

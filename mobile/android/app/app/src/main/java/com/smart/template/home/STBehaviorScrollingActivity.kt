@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.smart.library.base.STBaseActivity
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
-import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
+import kotlinx.android.synthetic.main.st_behavior_scrolling_activity.*
 
 class STBehaviorScrollingActivity : STBaseActivity() {
 

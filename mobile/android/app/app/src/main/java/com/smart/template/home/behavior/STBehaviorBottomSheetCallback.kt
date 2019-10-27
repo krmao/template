@@ -104,6 +104,7 @@ override fun onWindowFocusChanged(hasFocus: Boolean) {
  * @param bottomSheetExpandTop expand 完全展开状态 bottom sheet layout top 值, 影响拖动触发状态改变的 位移 距离
  * @param behaviorView 设置了 app:layout_behavior="@string/bottom_sheet_behavior" 的那个 view
  */
+@Suppress("MemberVisibilityCanBePrivate")
 class STBehaviorBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: BottomSheetBehavior<out View>, private val bottomSheetExpandTop: Int = 0, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : BottomSheetBehavior.BottomSheetCallback() {
 
     init {
@@ -122,8 +123,8 @@ class STBehaviorBottomSheetCallback @JvmOverloads constructor(private val handle
 
     private val tag: String = "sheet"
     private val screenFullHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
-    private val bottomSheetCollapsedTop: Int = screenFullHeight - bottomSheetBehavior.peekHeight
-    private val bottomSheetHalfExpandTop: Int = (screenFullHeight / 2f).toInt()
+    val bottomSheetCollapsedTop: Int = screenFullHeight - bottomSheetBehavior.peekHeight
+    val bottomSheetHalfExpandTop: Int = (screenFullHeight / 2f).toInt()
     private var lastBottomSheetDragTop: Int = bottomSheetCollapsedTop
         private set(value) {
             if (lastBottomSheetDragTop != -1) {
@@ -148,7 +149,7 @@ class STBehaviorBottomSheetCallback @JvmOverloads constructor(private val handle
                 onStateChanged?.invoke(bottomSheet, newState)
             }
         }
-        handler.postDelayed(filterOnStateChangedRunnable, 50)
+        handler.postDelayed(filterOnStateChangedRunnable, 100)
     }
 
     override fun onStateChanged(bottomSheet: View, newState: Int) {

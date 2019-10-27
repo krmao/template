@@ -10,30 +10,15 @@ import android.view.View;
 import java.lang.ref.WeakReference;
 
 /**
- * ~ Licensed under the Apache License, Version 2.0 (the "License");
- * ~ you may not use this file except in compliance with the License.
- * ~ You may obtain a copy of the License at
- * ~
- * ~      http://www.apache.org/licenses/LICENSE-2.0
- * ~
- * ~ Unless required by applicable law or agreed to in writing, software
- * ~ distributed under the License is distributed on an "AS IS" BASIS,
- * ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * ~ See the License for the specific language governing permissions and
- * ~ limitations under the License.
- * ~
- * ~ https://github.com/miguelhincapie/CustomBottomSheetBehavior
- */
-
-/**
  * This class will link the Backdrop element (that can be anything extending View) with a
  * NestedScrollView (the dependency). Whenever dependecy is moved, the backdrop will be moved too
  * behaving like parallax effect.
- *
+ * <p>
  * The backdrop need to be <b>into</b> a CoordinatorLayout and <b>before</b>
  * {@link BottomSheetBehaviorGoogleMapsLike} in the XML file to get same behavior like Google Maps.
  * It doesn't matter where the backdrop element start in XML, it will be moved following
  * Google Maps's parallax behavior.
+ *
  * @param <V> instace of Behavior
  */
 public class BackdropBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
@@ -103,6 +88,7 @@ public class BackdropBottomSheetBehavior<V extends View> extends CoordinatorLayo
 
     /**
      * Look into the CoordiantorLayout for the {@link BottomSheetBehaviorGoogleMapsLike}
+     *
      * @param coordinatorLayout with app:layout_behavior= {@link BottomSheetBehaviorGoogleMapsLike}
      */
     private void getBottomSheetBehavior(@NonNull CoordinatorLayout coordinatorLayout) {

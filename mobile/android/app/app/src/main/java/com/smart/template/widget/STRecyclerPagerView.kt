@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.util.STLogUtil
@@ -246,8 +247,9 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
-    override fun canScrollVertically(direction: Int): Boolean {
-        return super.canScrollVertically(direction)
+    var enableDrag: Boolean = true
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return if (enableDrag) super.onInterceptTouchEvent(ev) else enableDrag
     }
 
     private class STPagerRecyclerViewAdapter<M>(

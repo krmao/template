@@ -183,6 +183,7 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
                     STLogUtil.d(tag, "bottomSheetExpandTop=${bottomSheetExpandTop.toDpFromPx()}")
                     STLogUtil.d(tag, "bottomSheetCurrentTop=${bottomSheetCurrentTop.toDpFromPx()}")
                 }
+
                 filterOnStateChanged(bottomSheet, newState, "STATE_EXPANDED")
             }
             STBottomSheetViewPagerBehavior.STATE_DRAGGING -> {

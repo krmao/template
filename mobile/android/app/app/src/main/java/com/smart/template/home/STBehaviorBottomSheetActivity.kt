@@ -11,9 +11,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.layer.STMapView
@@ -38,7 +38,6 @@ import org.jetbrains.anko.async
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class STBehaviorBottomSheetActivity : STBaseActivity() {
 
-    private val backdropImages = intArrayOf(R.drawable.st_beauty, R.drawable.st_beauty, R.drawable.st_beauty, R.drawable.st_beauty, R.drawable.st_beauty, R.drawable.st_beauty)
     private val handler: Handler = Handler()
     private val mapView: STMapView by lazy { mapBaiduView }
     private var locationLatLng: STLatLng? = null
@@ -80,7 +79,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
-        viewPager.adapter = BackdropImagesPagerAdapter(this, backdropImages)
+        viewPager.adapter = BackdropImagesPagerAdapter(this)
         viewPager.layoutParams = viewPager.layoutParams.apply {
             height = behaviorBottomSheetCallback.bottomSheetHalfExpandTop
         }
@@ -242,11 +241,11 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)
     }
 
-    private class BackdropImagesPagerAdapter(mContext: Context, private val mItems: IntArray) : PagerAdapter() {
+    private class BackdropImagesPagerAdapter(mContext: Context) : PagerAdapter() {
         private var mLayoutInflater: LayoutInflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         override fun getCount(): Int {
-            return mItems.size
+            return 3
         }
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -255,8 +254,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             val itemView = mLayoutInflater.inflate(R.layout.st_behavior_pager_item, container, false)
-            val imageView = itemView.findViewById<View>(R.id.imageView) as ImageView
-            imageView.setImageResource(mItems[position])
+            val imageView = itemView.findViewById<View>(R.id.imageView) as SimpleDraweeView
+            STImageManager.show(imageView, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
             container.addView(itemView)
             return itemView
         }

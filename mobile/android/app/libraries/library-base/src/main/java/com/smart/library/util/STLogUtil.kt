@@ -5,6 +5,9 @@ import android.util.Log
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STConfig
 import com.smart.library.util.cache.STCacheManager
+import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -55,6 +58,23 @@ object STLogUtil {
     @JvmStatic
     var debug = STBaseApplication.DEBUG
 
+    @JvmStatic
+    @JvmOverloads
+    fun async(debugLog: Boolean = debug, doLog: () -> Unit): Disposable? {
+        return if (debugLog) {
+            Flowable.fromCallable { doLog() }.subscribeOn(Schedulers.io()).subscribe()
+        } else {
+            null
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun sync(debugLog: Boolean = debug, doLog: () -> Unit) {
+        if (debugLog) {
+            doLog()
+        }
+    }
 
     @JvmStatic
     fun open() {
@@ -230,7 +250,7 @@ object STLogUtil {
     fun getLocation(stackTraceElement: StackTraceElement?): String = "[" + getLocationClassName(stackTraceElement) + ":" + getLocationMethodName(stackTraceElement) + ":" + getLocationLineNumber(stackTraceElement) + "]"
 
     @JvmStatic
-    fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className?:"").`package`?.name ?: ""
+    fun getLocationPackageName(stackTraceElement: StackTraceElement?): String = Class.forName(stackTraceElement?.className ?: "").`package`?.name ?: ""
 
     @JvmStatic
     fun getLocationMethodName(stackTraceElement: StackTraceElement?): String = stackTraceElement?.methodName ?: ""
@@ -285,11 +305,11 @@ object STLogUtil {
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null): String =
-        p(level, tag, message, throwable, null)
+            p(level, tag, message, throwable, null)
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String =
-        p(level, tag, message, false, throwable, stackTraceElement)
+            p(level, tag, message, false, throwable, stackTraceElement)
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, appendLocation: Boolean = true, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {

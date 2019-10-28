@@ -55,8 +55,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     private int lastNestedScrollDy;
     private boolean nestedScrolled;
     int parentHeight;
-    WeakReference<V> viewRef;
-    WeakReference<View> nestedScrollingChildRef;
+    public WeakReference<V> viewRef;
+    public WeakReference<View> nestedScrollingChildRef;
     private BottomSheetCallback callback;
     private VelocityTracker velocityTracker;
     int activePointerId;
@@ -317,7 +317,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             this.lastPeekHeight = this.peekHeight;
         }
         this.fitToContentsOffset = Math.max(0, this.parentHeight - child.getHeight());
-        this.halfExpandedOffset = this.parentHeight / 2;
+        this.halfExpandedOffset = setHalfExpandedOffset(this.parentHeight / 2);
         this.calculateCollapsedOffset();
         if (this.state == 3) {
             ViewCompat.offsetTopAndBottom((View) child, this.getExpandedOffset());
@@ -336,6 +336,11 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.viewRef = new WeakReference<V>(child);
         this.nestedScrollingChildRef = new WeakReference<View>(this.findScrollingChild(child));
         return true;
+    }
+
+    protected int setHalfExpandedOffset(int halfExpandedOffset) {
+        this.halfExpandedOffset = halfExpandedOffset;
+        return this.halfExpandedOffset;
     }
 
     public boolean onInterceptTouchEvent(final CoordinatorLayout parent, final V child, final MotionEvent event) {
@@ -517,7 +522,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.setStateInternal((this.fitToContents && this.state == 6) ? 3 : this.state);
     }
 
-    public final void setPeekHeight(final int peekHeight) {
+    public void setPeekHeight(final int peekHeight) {
         boolean layout = false;
         if (peekHeight == -1) {
             if (!this.peekHeightAuto) {
@@ -609,7 +614,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
     }
 
-    private void calculateCollapsedOffset() {
+    protected void calculateCollapsedOffset() {
         if (this.fitToContents) {
             this.collapsedOffset = Math.max(this.parentHeight - this.lastPeekHeight, this.fitToContentsOffset);
         } else {
@@ -636,8 +641,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return Math.abs(newTop - this.collapsedOffset) / this.peekHeight > 0.5f;
     }
 
-    @VisibleForTesting
-    View findScrollingChild(final View view) {
+    public View findScrollingChild(final View view) {
         if (ViewCompat.isNestedScrollingEnabled(view)) {
             return view;
         }

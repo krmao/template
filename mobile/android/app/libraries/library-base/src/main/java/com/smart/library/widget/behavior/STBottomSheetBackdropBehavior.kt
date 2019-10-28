@@ -1,10 +1,10 @@
 package com.smart.library.widget.behavior
 
 import android.content.Context
-import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
+import com.smart.library.source.STBottomSheetBehavior
 
 /*
 
@@ -31,7 +31,7 @@ class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: Attribute
 
     private var lastChildY: Float = 0f
 
-    var bottomSheetBehavior: BottomSheetBehavior<*>? = null
+    var bottomSheetBehavior: STBottomSheetBehavior<*>? = null
     var bottomSheetBehaviorClass: Class<*>? = null
 
     /**
@@ -40,7 +40,7 @@ class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: Attribute
     override fun layoutDependsOn(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
         if (bottomSheetBehaviorClass?.isInstance(dependency) == true) {
             try {
-                BottomSheetBehavior.from<View>(dependency)
+                STBottomSheetBehavior.from<View>(dependency)
                 return true
             } catch (e: IllegalArgumentException) {
             }

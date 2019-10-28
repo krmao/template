@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import com.smart.library.source.STBottomSheetBehavior
 import java.lang.ref.WeakReference
 
 /**
@@ -15,9 +16,9 @@ import java.lang.ref.WeakReference
  * Override [.findScrollingChild] to support [ViewPager]'s nested scrolling.
  *
  * By the way, In order to override package level method and field.
- * This class put in the same package path where [BottomSheetBehavior] located.
+ * This class put in the same package path where [STBottomSheetBehavior] located.
  */
-class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetViewDragHelperBehavior<V>(context, attrs) {
+class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 
     override fun findScrollingChild(view: View): View? {
         if (ViewCompat.isNestedScrollingEnabled(view)) {
@@ -63,6 +64,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
     }
 
+    var bottomSheetHalfExpandTop: Int = 0
+    override fun setHalfExpandedOffset(halfExpandedOffset: Int): Int {
+        return if (bottomSheetHalfExpandTop > 0) bottomSheetHalfExpandTop else super.setHalfExpandedOffset(halfExpandedOffset)
+    }
+
     /**
      * 当 viewPager 页面切换时, 更新 nestedScrollingChildRef
      */
@@ -71,12 +77,15 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
-    override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
-        this.viewDragHelper = STBottomSheetViewDragHelper.create(parent, this.dragCallback)
-        return super.onLayoutChild(parent, child, layoutDirection)
-    }
-
     companion object {
+
+        const val STATE_DRAGGING = STBottomSheetBehavior.STATE_DRAGGING
+        const val STATE_SETTLING = STBottomSheetBehavior.STATE_SETTLING
+        const val STATE_EXPANDED = STBottomSheetBehavior.STATE_EXPANDED
+        const val STATE_COLLAPSED = STBottomSheetBehavior.STATE_COLLAPSED
+        const val STATE_HIDDEN = STBottomSheetBehavior.STATE_HIDDEN
+        const val STATE_HALF_EXPANDED = STBottomSheetBehavior.STATE_HALF_EXPANDED
+        const val PEEK_HEIGHT_AUTO = STBottomSheetBehavior.PEEK_HEIGHT_AUTO
 
         /**
          * A utility function to get the [STBottomSheetViewPagerBehavior] associated with the `view`.
@@ -89,7 +98,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             val params = view.layoutParams
             require(params is CoordinatorLayout.LayoutParams) { "The view is not a child of CoordinatorLayout" }
             val behavior = params.behavior
-            require(behavior is STBottomSheetViewPagerBehavior<*>) { "The view is not associated with BottomSheetViewPagerBehavior" }
+            require(behavior is STBottomSheetViewPagerBehavior<*>) { "The view is not associated with STBottomSheetViewPagerBehavior" }
             return behavior as STBottomSheetViewPagerBehavior<V>
         }
     }

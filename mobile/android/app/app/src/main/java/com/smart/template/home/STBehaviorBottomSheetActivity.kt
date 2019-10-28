@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetViewPagerBehavior
 import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
@@ -23,12 +22,13 @@ import com.smart.library.map.model.STMapType
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.image.STImageManager
+import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
+import com.smart.library.widget.behavior.STBottomSheetCallback
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
-import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
-import com.smart.library.widget.behavior.STBottomSheetCallback
 import com.smart.template.widget.STCheckBoxGroupView
 import com.smart.template.widget.STRecyclerPagerView
 import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
@@ -53,11 +53,18 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         mapView.setOnLocationChangedListener { locationLatLng = it }
 
         // init bottomSheet behavior -- level 2
-        val bottomSheetAppbarHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottom_sheet_appbar_height)
-        val bottomSheetBehavior: BottomSheetViewPagerBehavior<LinearLayout> = BottomSheetViewPagerBehavior.from(bottomSheetLayout)
-        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetAppbarHeight, 30f)
+        val bottomSheetParentHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
+        val bottomSheetPeekHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight)
+        val bottomSheetHalfExpandTop: Int = (STSystemUtil.screenHeight * 0.6f).toInt()
+        val bottomSheetExpandTop: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetExpandTop)
+        val bottomSheetCollapsedTop: Int = bottomSheetParentHeight - bottomSheetPeekHeight
+
+        val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> = STBottomSheetViewPagerBehavior.from(bottomSheetLayout)
+        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetExpandTop, bottomSheetHalfExpandTop, bottomSheetCollapsedTop, 30f)
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
+        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
         bottomSheetBehavior.bindViewPager(viewPager)
+        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTop
 
         // init backdrop behavior and reset viewpager height -- level 3
         val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)

@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.source.STBottomSheetBehavior
@@ -18,6 +19,7 @@ import java.lang.ref.WeakReference
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehavior] located.
  */
+@Suppress("MemberVisibilityCanBePrivate")
 class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 
     override fun findScrollingChild(view: View): View? {
@@ -77,8 +79,33 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
-    companion object {
+    /**********************************************************************************************
+     * drag control start
+     **********************************************************************************************/
+    /**
+     * 控制 bottom sheet 能否被拖拽滑动
+     */
+    var dragEnabled = true
 
+    override fun onTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent): Boolean = if (dragEnabled) super.onTouchEvent(parent, child, event) else false
+    override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent): Boolean = if (dragEnabled) super.onInterceptTouchEvent(parent, child, event) else false
+    override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: V, target: View, velocityX: Float, velocityY: Float): Boolean = if (dragEnabled) super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY) else false
+    override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, directTargetChild: View, target: View, axes: Int, type: Int): Boolean = if (dragEnabled) super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type) else false
+
+    override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
+        if (dragEnabled) super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
+    }
+
+    override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View, type: Int) {
+        if (dragEnabled) super.onStopNestedScroll(coordinatorLayout, child, target, type)
+    }
+
+    /**********************************************************************************************
+     * drag control end
+     **********************************************************************************************/
+
+    @Suppress("unused")
+    companion object {
         const val STATE_DRAGGING = STBottomSheetBehavior.STATE_DRAGGING
         const val STATE_SETTLING = STBottomSheetBehavior.STATE_SETTLING
         const val STATE_EXPANDED = STBottomSheetBehavior.STATE_EXPANDED

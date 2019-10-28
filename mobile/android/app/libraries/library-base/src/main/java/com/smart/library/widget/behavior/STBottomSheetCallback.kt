@@ -93,7 +93,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
  * @param behaviorView 设置了 app:layout_behavior="@string/bottom_sheet_behavior" 的那个 view
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<out View>, private val bottomSheetExpandTop: Int = 0, val bottomSheetHalfExpandTop: Int, val bottomSheetCollapsedTop: Int, dragOffsetPercent: Float = 30f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : STBottomSheetBehavior.BottomSheetCallback() {
+class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handler = Handler(), val behaviorView: View, private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<out View>, private val enableHalfExpandedState: Boolean = false, private val bottomSheetExpandTop: Int = 0, val bottomSheetHalfExpandTop: Int, val bottomSheetCollapsedTop: Int, dragOffsetPercent: Float = 50f, private val onStateChanged: ((bottomSheet: View, newState: Int) -> Unit)? = null, private val onSlide: ((bottomSheet: View, slideOffset: Float) -> Unit)? = null) : STBottomSheetBehavior.BottomSheetCallback() {
 
     init {
         behaviorView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -120,7 +120,7 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
             field = value
         }
     private var pullTopToBottom: Boolean? = null
-    private val offsetTenPercent = (bottomSheetCollapsedTop - bottomSheetExpandTop) / min(99f, max(dragOffsetPercent, 1f))
+    private val dragThresholdOffset = (bottomSheetCollapsedTop - bottomSheetExpandTop) / min(99f, max(dragOffsetPercent, 1f))
 
     private var filterOnStateChangedRunnable: Runnable? = null
     private fun filterOnStateChanged(bottomSheet: View, newState: Int, description: String) {
@@ -206,15 +206,26 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
                 if (currentPullTopToBottom != null) {
                     bottomSheet.clearAnimation()
                     bottomSheet.post {
-                        when {
-                            bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetExpandTop + offsetTenPercent) else (bottomSheetHalfExpandTop - offsetTenPercent)) -> {
-                                bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                        if (enableHalfExpandedState) {
+                            when {
+                                bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetExpandTop + dragThresholdOffset) else (bottomSheetHalfExpandTop - dragThresholdOffset)) -> {
+                                    bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                                }
+                                bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetHalfExpandTop + dragThresholdOffset) else (bottomSheetCollapsedTop - dragThresholdOffset)) -> {
+                                    bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED
+                                }
+                                else -> {
+                                    bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_COLLAPSED
+                                }
                             }
-                            bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetHalfExpandTop + offsetTenPercent) else (bottomSheetCollapsedTop - offsetTenPercent)) -> {
-                                bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED
-                            }
-                            else -> {
-                                bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_COLLAPSED
+                        } else {
+                            when {
+                                bottomSheetCurrentTop < (if (currentPullTopToBottom) (bottomSheetExpandTop + dragThresholdOffset) else (bottomSheetCollapsedTop - dragThresholdOffset)) -> {
+                                    bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                                }
+                                else -> {
+                                    bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_COLLAPSED
+                                }
                             }
                         }
                     }

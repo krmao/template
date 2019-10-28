@@ -54,13 +54,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         // init bottomSheet behavior -- level 2
         val bottomSheetParentHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
         val bottomSheetPeekHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight)
-        val bottomSheetHalfExpandTop: Int = (STSystemUtil.screenHeight * 0.6f).toInt()
+        val bottomSheetHalfExpandTop: Int = (STSystemUtil.screenHeight * 0.35f).toInt()
         val bottomSheetExpandTop: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetExpandTop)
         val bottomSheetCollapsedTop: Int = bottomSheetParentHeight - bottomSheetPeekHeight
 
         pagerRecyclerView.enableDrag = true // must not set in onStateChanged
         val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> = STBottomSheetViewPagerBehavior.from(bottomSheetLayout)
-        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, bottomSheetExpandTop, bottomSheetHalfExpandTop, bottomSheetCollapsedTop, 30f,
+        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, true, bottomSheetExpandTop, bottomSheetHalfExpandTop, bottomSheetCollapsedTop, 30f,
                 onStateChanged = { bottomSheet: View, newState: Int ->
                     when (newState) {
                         STBottomSheetViewPagerBehavior.STATE_DRAGGING -> {

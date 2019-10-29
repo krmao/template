@@ -121,12 +121,9 @@
         app:backgroundTintMode="src_over"
         app:borderWidth="0dp"
         app:elevation="3dp"
-        app:fabCustomSize="40dp"
         app:fabSize="normal"
-        app:hoveredFocusedTranslationZ="3dp"
         app:layout_anchor="@id/titleBar"
         app:layout_anchorGravity="bottom|start"
-        app:maxImageSize="40dp"
         app:pressedTranslationZ="3dp"
         app:rippleColor="@color/orange"
         app:useCompatPadding="false" />

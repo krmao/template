@@ -280,7 +280,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             this.setPeekHeight(a.getDimensionPixelSize(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
         }
         this.setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
-        this.setFitToContents(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
+//        this.setFitToContents(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));// todo
+        this.setFitToContents(true);
         this.setSkipCollapsed(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
         a.recycle();
         final ViewConfiguration configuration = ViewConfiguration.get(context);

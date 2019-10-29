@@ -72,7 +72,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         )
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
         bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
-        bottomSheetBehavior.bindViewPager(viewPager)
+        bottomSheetBehavior.bindViewPager(pagerRecyclerView)
         bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTop
 
         // init backdrop behavior and reset viewpager height -- level 3

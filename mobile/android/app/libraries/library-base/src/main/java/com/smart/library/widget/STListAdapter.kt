@@ -29,7 +29,7 @@ abstract class STListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> :
 
     abstract fun onBindViewHolder(holder: ViewHolder, position: Int)
 
-    override fun getView(position: Int, _convertView: View?, parent: ViewGroup): View {
+    override fun getView(position: Int, _convertView: View?, parent: ViewGroup): View? {
         var convertView = _convertView
         val viewHolder: ViewHolder
         if (convertView == null) {

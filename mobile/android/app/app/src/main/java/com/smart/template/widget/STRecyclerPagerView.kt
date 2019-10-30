@@ -325,7 +325,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     viewEmpty,
                     viewEmptyLoading
             )
-            val recyclerViewLayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val recyclerViewLayoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             val rootLayout = FrameLayout(context)
             rootLayout.addView(recyclerView, recyclerViewLayoutParams)
             container.addView(rootLayout)

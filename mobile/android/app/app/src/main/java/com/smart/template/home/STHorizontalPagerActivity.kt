@@ -157,6 +157,15 @@ class STHorizontalPagerActivity : STBaseActivity() {
                 },
                 viewEmpty = { parent: ViewGroup, viewType: Int ->
                     STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
+                },
+                viewLoadFailure = { parent: ViewGroup, viewType: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, "加载出错了", orientation = LinearLayout.HORIZONTAL)
+                },
+                viewLoading = { parent: ViewGroup, viewType: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, "加载中...", orientation = LinearLayout.HORIZONTAL)
+                },
+                viewNoMore = { parent: ViewGroup, viewType: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, "没有更多了", orientation = LinearLayout.HORIZONTAL)
                 }
         )
 

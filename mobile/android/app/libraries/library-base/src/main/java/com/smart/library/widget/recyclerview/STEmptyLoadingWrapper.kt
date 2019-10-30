@@ -140,26 +140,36 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, height: Int = STSystemUtil.getPxFromDp(45f).toInt(), backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
+        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, size: Int = STSystemUtil.getPxFromDp(45f).toInt(), orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
             val itemView = TextView(context)
-            itemView.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
+            itemView.layoutParams = ViewGroup.LayoutParams(
+                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
+                    MATCH_PARENT
+            )
             itemView.text = text
             itemView.textSize = textSize
             itemView.setBackgroundColor(backgroundColor)
             itemView.setTextColor(textColor)
             itemView.gravity = Gravity.CENTER
+
+            if (orientation == LinearLayout.HORIZONTAL) {
+                itemView.setEms(1)
+            }
             return itemView
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, height: Int = STSystemUtil.getPxFromDp(45f).toInt(), backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (height / 2.0f).toInt()): View {
+        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, size: Int = STSystemUtil.getPxFromDp(45f).toInt(), orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (size / 2.0f).toInt()): View {
             val linearLayout = LinearLayout(context)
-            linearLayout.orientation = LinearLayout.HORIZONTAL
+            linearLayout.orientation = orientation
             linearLayout.gravity = Gravity.CENTER
             linearLayout.setBackgroundColor(backgroundColor)
-            linearLayout.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, height)
+            linearLayout.layoutParams = ViewGroup.LayoutParams(
+                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
+                    MATCH_PARENT
+            )
 
             val textView = TextView(context)
             textView.text = text
@@ -167,9 +177,19 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             textView.setTextColor(textColor)
             textView.gravity = Gravity.CENTER
 
+            if (orientation == LinearLayout.HORIZONTAL) {
+                textView.setEms(1)
+            }
+
             val progressBar = ProgressBar(context)
             progressBar.indeterminateDrawable = indeterminateDrawable
-            progressBar.layoutParams = LinearLayout.LayoutParams(indeterminateDrawableSize, indeterminateDrawableSize).apply { leftMargin = STSystemUtil.getPxFromDp(2f).toInt() }
+            progressBar.layoutParams = LinearLayout.LayoutParams(indeterminateDrawableSize, indeterminateDrawableSize).apply {
+                if (orientation == LinearLayout.VERTICAL) {
+                    leftMargin = STSystemUtil.getPxFromDp(2f).toInt()
+                } else {
+                    topMargin = STSystemUtil.getPxFromDp(2f).toInt()
+                }
+            }
 
             linearLayout.addView(textView)
             linearLayout.addView(progressBar)
@@ -193,12 +213,12 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultEmptyLoadingView(context: Context?, text: String, textSize: Float = 14.0f, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
+        fun createDefaultEmptyLoadingView(context: Context?, text: String, textSize: Float = 14.0f, orientation: Int = LinearLayout.HORIZONTAL, width: Int = MATCH_PARENT, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
             val linearLayout = LinearLayout(context)
-            linearLayout.orientation = LinearLayout.HORIZONTAL
+            linearLayout.orientation = orientation
             linearLayout.gravity = Gravity.CENTER
             linearLayout.setBackgroundColor(backgroundColor)
-            linearLayout.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            linearLayout.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, width)
 
             val textView = TextView(context)
             textView.text = text

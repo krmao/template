@@ -50,6 +50,9 @@ class HomeFragment : STBaseFragment() {
         behavior.setOnClickListener {
             startActivity(Intent(context, STBehaviorActivity::class.java))
         }
+        horizontalPager.setOnClickListener {
+            startActivity(Intent(context, STHorizontalPagerActivity::class.java))
+        }
         behaviorScrolling.setOnClickListener {
             startActivity(Intent(context, STBehaviorScrollingActivity::class.java))
         }

@@ -10,9 +10,11 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
+import com.smart.library.widget.recyclerview.STRecyclerViewItemDecoration
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 
 /**
@@ -45,7 +47,10 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 pagerIndex: Int,
                 onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
                 onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
-                snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
+                snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
+                orientation: Int = LinearLayoutManager.VERTICAL,
+                leftPadding: Int = 0,
+                dividerPadding: Int = 0,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
                 viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
                 viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -56,8 +61,9 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
             val recyclerView = STRecyclerView(context)
-            recyclerView.setBackgroundColor(Color.WHITE)
-            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView.setBackgroundColor(Color.TRANSPARENT)
+            recyclerView.addItemDecoration(STRecyclerViewItemDecoration(dividerPadding, leftPadding))
+            recyclerView.layoutManager = LinearLayoutManager(context, orientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
                 override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(pagerModel, viewHolder, position)
@@ -123,7 +129,10 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             requestLoadMore: (pagerIndex: Int, requestIndex: Int, requestSize: Int, callback: (MutableList<T>?) -> Unit) -> Unit,
             onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             onRecyclerViewBindViewHolder: (pagerModel: PagerModel<T>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
-            snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
+            snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
+            orientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
+            leftPadding: Int = 0,
+            dividerPadding: Int = 0,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
             viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -133,7 +142,27 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     ) {
         pageMargin = 0
         offscreenPageLimit = initPagerDataList.size
-        adapter = STPagerRecyclerViewAdapter(context, initPagerDataList, requestLoadMore, { currentItem }, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyLoading)
+        if (orientation == LinearLayoutManager.HORIZONTAL) { // recyclerView 横向滚动 默认禁止 viewPager 横向华东
+            enableDrag = false
+        }
+        adapter = STPagerRecyclerViewAdapter(
+                context,
+                initPagerDataList,
+                requestLoadMore,
+                { currentItem },
+                onRecyclerViewCreateViewHolder,
+                onRecyclerViewBindViewHolder,
+                snap,
+                orientation,
+                leftPadding,
+                dividerPadding,
+                onSnap,
+                viewLoadFailure,
+                viewLoading,
+                viewNoMore,
+                viewEmpty,
+                viewEmptyLoading
+        )
     }
 
     @JvmOverloads
@@ -247,7 +276,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
-    var enableDrag: Boolean = true
+    var enableDrag: Boolean = false
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         return if (enableDrag) super.onInterceptTouchEvent(ev) else enableDrag
     }
@@ -259,7 +288,10 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val currentPosition: () -> Int,
             private val onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             private val onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
-            private val snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.START,
+            private val snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
+            private val orientation: Int = LinearLayoutManager.VERTICAL,
+            private val leftPadding: Int = 0,
+            private val dividerPadding: Int = 0,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
             private val viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             private val viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -275,9 +307,29 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         fun getItem(position: Int): PagerModel<M> = initPagerDataList[position]
 
         override fun instantiateItem(container: ViewGroup, pagerIndex: Int): Any {
-            return createDefaultRecyclerView(context, initPagerDataList, requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, onSnap, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyLoading).apply {
-                container.addView(this)
-            }
+            val recyclerView = createDefaultRecyclerView(
+                    context,
+                    initPagerDataList,
+                    requestLoadMore,
+                    pagerIndex,
+                    onRecyclerViewCreateViewHolder,
+                    onRecyclerViewBindViewHolder,
+                    snap,
+                    orientation,
+                    leftPadding,
+                    dividerPadding,
+                    onSnap,
+                    viewLoadFailure,
+                    viewLoading,
+                    viewNoMore,
+                    viewEmpty,
+                    viewEmptyLoading
+            )
+            val recyclerViewLayoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val rootLayout = FrameLayout(context)
+            rootLayout.addView(recyclerView, recyclerViewLayoutParams)
+            container.addView(rootLayout)
+            return rootLayout
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, view: Any) = container.removeView(view as View)

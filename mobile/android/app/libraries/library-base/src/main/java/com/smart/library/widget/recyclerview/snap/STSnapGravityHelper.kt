@@ -180,6 +180,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
 
     enum class Snap {
         START,
+        CENTER,
         END
     }
 
@@ -258,6 +259,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                 STLogUtil.v(tag, ".\n\n滚动结束...\n\n.")
                 return null
             }
+
             val linearLayoutManager: LinearLayoutManager = layoutManager
             val isAtStartOfList = isAtStartOfList(linearLayoutManager)
             val isAtEndOfList = isAtEndOfList(linearLayoutManager)
@@ -280,17 +282,23 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
                      *
                      * enableLoadingFooterView 如果由上至下的布局设置了 snap==bottom, 则最后一个 loadingView 将会无法完全显示(回滚到最后一个非 loading view), 所以需要做特殊处理, 这里不再 -1, 最计算那边 -1
                      */
+                    val firstCompletelyVisibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    val lastCompletelyVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
                     if (isAtStartOfList) {
                         if (snap == Snap.START) {
-                            willScrollToTargetPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                            willScrollToTargetPosition = firstCompletelyVisibleItemPosition
+                        } else if (snap == Snap.CENTER) {
+                            willScrollToTargetPosition = firstCompletelyVisibleItemPosition + ((lastCompletelyVisibleItemPosition - firstCompletelyVisibleItemPosition) / 2)
                         } else {
-                            willScrollToTargetPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                            willScrollToTargetPosition = firstCompletelyVisibleItemPosition
                         }
                     } else if (isAtEndOfList) {
                         if (snap == Snap.START) {
-                            willScrollToTargetPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                            willScrollToTargetPosition = lastCompletelyVisibleItemPosition
+                        } else if (snap == Snap.CENTER) {
+                            willScrollToTargetPosition = lastCompletelyVisibleItemPosition - ((lastCompletelyVisibleItemPosition - firstCompletelyVisibleItemPosition) / 2)
                         } else {
-                            willScrollToTargetPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                            willScrollToTargetPosition = lastCompletelyVisibleItemPosition
                         }
                     }
                     STLogUtil.e(tag, "开始计算 findSnapView 由于滚动到边界, 根据规则强制指定 willScrollToTargetPosition=$willScrollToTargetPosition")
@@ -330,6 +338,44 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             return targetSnapView
         }
 
+        /**
+         * Return the child view that is currently closest to the center of this parent.
+         *
+         * @param layoutManager The [RecyclerView.LayoutManager] associated with the attached
+         * [RecyclerView].
+         * @param helper The relevant [OrientationHelper] for the attached [RecyclerView].
+         *
+         * @return the child view that is currently closest to the center of this parent.
+         */
+        private fun findCenterView(layoutManager: RecyclerView.LayoutManager, helper: OrientationHelper): View? {
+            val childCount = layoutManager.childCount
+            if (childCount == 0) {
+                return null
+            }
+
+            var closestChild: View? = null
+            val center: Int
+            if (layoutManager.clipToPadding) {
+                center = helper.startAfterPadding + helper.totalSpace / 2
+            } else {
+                center = helper.end / 2
+            }
+            var absClosest = Integer.MAX_VALUE
+
+            for (i in 0 until childCount) {
+                val child = layoutManager.getChildAt(i)
+                val childCenter = helper.getDecoratedStart(child) + helper.getDecoratedMeasurement(child) / 2
+                val absDistance = Math.abs(childCenter - center)
+
+                /** if child center is closer than previous closest, set it as closest   */
+                if (absDistance < absClosest) {
+                    absClosest = absDistance
+                    closestChild = child
+                }
+            }
+            return closestChild
+        }
+
         fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray {
             var distanceArray = IntArray(2)
             val tmpRecyclerView = recyclerView
@@ -367,6 +413,8 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             if (linearLayoutManager.canScrollHorizontally()) {
                 if (snap == Snap.START && !linearLayoutManager.reverseLayout || snap == Snap.END && linearLayoutManager.reverseLayout) {
                     distanceArray[0] = distanceToStart(itemView, linearLayoutManager, getHorizontalHelper(linearLayoutManager))
+                } else if (snap == Snap.CENTER) {
+                    distanceArray[0] = distanceToCenter(linearLayoutManager, itemView, getHorizontalHelper(linearLayoutManager))
                 } else {
                     distanceArray[0] = distanceToEnd(itemView, linearLayoutManager, getHorizontalHelper(linearLayoutManager))
                 }
@@ -377,6 +425,8 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             if (linearLayoutManager.canScrollVertically()) {
                 if (snap == Snap.START && !linearLayoutManager.reverseLayout || snap == Snap.END && linearLayoutManager.reverseLayout) {
                     distanceArray[1] = distanceToStart(itemView, linearLayoutManager, getVerticalHelper(linearLayoutManager))
+                } else if (snap == Snap.CENTER) {
+                    distanceArray[1] = distanceToCenter(linearLayoutManager, itemView, getVerticalHelper(linearLayoutManager))
                 } else {
                     distanceArray[1] = distanceToEnd(itemView, linearLayoutManager, getVerticalHelper(linearLayoutManager))
                 }
@@ -417,6 +467,17 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
 
             STLogUtil.w(tag, "-------- 0 distance=$decoratedStart, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding")
             return decoratedStart
+        }
+
+        private fun distanceToCenter(layoutManager: RecyclerView.LayoutManager, targetView: View, helper: OrientationHelper): Int {
+            val childCenter = helper.getDecoratedStart(targetView) + helper.getDecoratedMeasurement(targetView) / 2
+            val containerCenter: Int
+            if (layoutManager.clipToPadding) {
+                containerCenter = helper.startAfterPadding + helper.totalSpace / 2
+            } else {
+                containerCenter = helper.end / 2
+            }
+            return childCenter - containerCenter
         }
 
         private fun distanceToEnd(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {

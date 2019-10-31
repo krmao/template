@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.*
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +12,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.smart.library.R
 import com.smart.library.util.STSystemUtil
-
 
 /*
 
@@ -142,7 +137,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(),  crossAxisSize: Int = MATCH_PARENT, orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
+        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(), crossAxisSize: Int = MATCH_PARENT, orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
             val itemView = TextView(context)
             itemView.layoutParams = ViewGroup.LayoutParams(
                     if (orientation == LinearLayout.VERTICAL) crossAxisSize else mainAxisSize,
@@ -163,7 +158,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(),  crossAxisSize: Int = MATCH_PARENT,orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (mainAxisSize / 2.0f).toInt()): View {
+        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(), crossAxisSize: Int = MATCH_PARENT, orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(com.smart.library.R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (mainAxisSize / 2.0f).toInt()): View {
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
             linearLayout.gravity = Gravity.CENTER
@@ -216,7 +211,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultEmptyLoadingView(context: Context?, text: String, textSize: Float = 14.0f, orientation: Int = LinearLayout.HORIZONTAL, width: Int = MATCH_PARENT, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
+        fun createDefaultEmptyLoadingView(context: Context?, text: String, textSize: Float = 14.0f, orientation: Int = LinearLayout.HORIZONTAL, width: Int = MATCH_PARENT, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(com.smart.library.R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = orientation
             linearLayout.gravity = Gravity.CENTER
@@ -288,11 +283,9 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     private fun isNeedShowEmptyView() = enableEmptyView && innerAdapter.itemCount == 0
 
-
     private var recyclerView: RecyclerView? = null
     private val orientation: Int
         get() = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -342,19 +335,31 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     fun showLoading() {
         if (enable) {
             currentItemType = ITEM_TYPE_LOADING
+            val oldSupportsChangeAnimations = getSupportsChangeAnimations()
+            getSimpleItemAnimator()?.supportsChangeAnimations = false
             notifyItemChanged(itemCount)
+            getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
         }
     }
+
+    fun getSimpleItemAnimator(): SimpleItemAnimator? = recyclerView?.itemAnimator as? SimpleItemAnimator
+    fun getSupportsChangeAnimations(): Boolean = getSimpleItemAnimator()?.supportsChangeAnimations ?: true
 
     fun showLoadFailure() {
         if (enable) {
             if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
                 currentItemType = ITEM_TYPE_EMPTY
                 isEmptyViewLoading = false
+                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
+                getSimpleItemAnimator()?.supportsChangeAnimations = false
                 notifyDataSetChanged()
+                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
             } else {
                 currentItemType = ITEM_TYPE_LOAD_FAILED
+                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
+                getSimpleItemAnimator()?.supportsChangeAnimations = false
                 notifyItemChanged(itemCount)
+                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
             }
         }
     }
@@ -364,10 +369,16 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
                 currentItemType = ITEM_TYPE_EMPTY
                 isEmptyViewLoading = false
+                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
+                getSimpleItemAnimator()?.supportsChangeAnimations = false
                 notifyDataSetChanged()
+                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
             } else {
                 currentItemType = ITEM_TYPE_NO_MORE
+                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
+                getSimpleItemAnimator()?.supportsChangeAnimations = false
                 notifyItemChanged(itemCount)
+                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
             }
         }
     }

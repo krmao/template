@@ -42,6 +42,12 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
         @JvmStatic
         @JvmOverloads
+        fun createDefaultRecyclerViewItemDecoration(dividerPadding: Int = 0, startPadding: Int = 0, enableWrapperLoading: Boolean = true): RecyclerView.ItemDecoration {
+            return STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading)
+        }
+
+        @JvmStatic
+        @JvmOverloads
         fun <M> createDefaultRecyclerView(
                 context: Context,
                 initPagerDataList: MutableList<PagerModel<M>>,
@@ -53,6 +59,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
                 startPadding: Int = 0,
                 dividerPadding: Int = 0,
+                enableWrapperLoading: Boolean = true,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
                 viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
                 viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -64,7 +71,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             val recyclerView = STRecyclerView(context)
             recyclerView.setBackgroundColor(Color.TRANSPARENT)
-            recyclerView.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, true))
+            recyclerView.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
             recyclerView.layoutManager = LinearLayoutManager(context, recyclerViewOrientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
@@ -125,7 +132,15 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
-    private var recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL
+    var recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL
+        internal set
+
+    var dividerPadding: Int = 0
+        internal set
+    var startPadding: Int = 0
+        internal set
+    var enableWrapperLoading: Boolean = true
+        internal set
 
     @JvmOverloads
     fun <T> initialize(
@@ -137,6 +152,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
             startPadding: Int = 0,
             dividerPadding: Int = 0,
+            enableWrapperLoading: Boolean = true,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
             viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -144,6 +160,9 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
     ) {
+        this.dividerPadding = dividerPadding
+        this.startPadding = startPadding
+        this.enableWrapperLoading = enableWrapperLoading
         this.recyclerViewOrientation = recyclerViewOrientation
         pageMargin = 0
         offscreenPageLimit = initPagerDataList.size
@@ -161,6 +180,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 recyclerViewOrientation,
                 startPadding,
                 dividerPadding,
+                enableWrapperLoading,
                 onSnap,
                 viewLoadFailure,
                 viewLoading,
@@ -171,15 +191,36 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     @JvmOverloads
-    fun switchRecyclerViewOrientation(recyclerViewOrientation: Int = if (this.recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) LinearLayoutManager.VERTICAL else LinearLayoutManager.VERTICAL) {
+    fun switchRecyclerViewOrientation(recyclerViewOrientation: Int = (if (this.recyclerViewOrientation == LinearLayoutManager.VERTICAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL), keepPosition: Boolean = true, callback: ((orientation: Int) -> Unit)? = null) {
+        STLogUtil.w("recyclerViewOrientation", "current ${this.recyclerViewOrientation} will switch to $recyclerViewOrientation  0=horizontal 1=vertical")
         if (recyclerViewOrientation != this.recyclerViewOrientation) {
-            getRecyclerViews()?.forEach {
-                (it.layoutManager as? LinearLayoutManager)?.orientation = recyclerViewOrientation
-                val adapter = getRecyclerViewLoadingAdapter(it)
-                it.adapter = adapter
-            }
             this.recyclerViewOrientation = recyclerViewOrientation
+            getRecyclerViews()?.forEach {
+                // reset item decoration
+                if (recyclerViewOrientation == LinearLayoutManager.VERTICAL) {
+                    it.getItemDecorationAt(0)?.apply {
+                        it.removeItemDecoration(this)
+                    }
+                } else {
+                    it.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
+                }
+
+                // reset snap
+                val snapGravityHelper: STSnapGravityHelper? = (it.tag as? TagModel)?.snapGravityHelper
+                (it.tag as? TagModel)?.snapGravityHelper?.switchSnap(if (recyclerViewOrientation == LinearLayoutManager.VERTICAL) STSnapGravityHelper.Snap.START else STSnapGravityHelper.Snap.CENTER)
+
+                // reset layout manager
+                (it.layoutManager as? LinearLayoutManager)?.orientation = recyclerViewOrientation
+                it.adapter = getRecyclerViewLoadingAdapter(it)
+
+                // reset position
+                if (keepPosition) {
+                    it.scrollToPosition(snapGravityHelper?.lastSnappedPosition ?: RecyclerView.NO_POSITION)
+                }
+            }
+            STLogUtil.e("recyclerViewOrientation", "current ${this.recyclerViewOrientation}")
         }
+        callback?.invoke(this.recyclerViewOrientation)
     }
 
     @JvmOverloads
@@ -326,6 +367,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
             private val startPadding: Int = 0,
             private val dividerPadding: Int = 0,
+            private val enableWrapperLoading: Boolean = true,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
             private val viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             private val viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -352,6 +394,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     recyclerViewOrientation,
                     startPadding,
                     dividerPadding,
+                    enableWrapperLoading,
                     onSnap,
                     viewLoadFailure,
                     viewLoading,

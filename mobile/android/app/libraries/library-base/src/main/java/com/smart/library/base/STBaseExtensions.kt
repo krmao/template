@@ -39,8 +39,8 @@ fun Float.toPxFromDp(): Float {
     return STSystemUtil.getPxFromDp(this)
 }
 
-fun Int.toPxFromDp(): Float {
-    return STSystemUtil.getPxFromDp(this.toFloat())
+fun Int.toPxFromDp(): Int {
+    return STSystemUtil.getPxFromDp(this.toFloat()).toInt()
 }
 
 fun Int.toDpFromPx(): Float {

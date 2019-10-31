@@ -3,6 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.smart.library.base.STBaseActivity
+import com.smart.library.base.toPxFromDp
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.STLatLng
 import com.smart.library.map.model.STMapType
@@ -46,7 +48,11 @@ class STHorizontalPagerActivity : STBaseActivity() {
         initBottomSheetChildViews()
 
         changeOrientationButton.setOnClickListener {
-            pagerRecyclerView.switchRecyclerViewOrientation()
+            pagerRecyclerView.switchRecyclerViewOrientation { orientation: Int ->
+                pagerRecyclerView.layoutParams = pagerRecyclerView.layoutParams.apply {
+                    height = if (orientation == LinearLayoutManager.VERTICAL) 300.toPxFromDp() else 113.toPxFromDp()
+                }
+            }
         }
 
     }
@@ -105,6 +111,8 @@ class STHorizontalPagerActivity : STBaseActivity() {
                 )
 
         var requestCount = 0
+        fun getPagerRecyclerItemMainAxisSize() = if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) STSystemUtil.screenWidth - 70.toPxFromDp() else ViewGroup.LayoutParams.MATCH_PARENT
+        fun getPagerRecyclerItemCrossAxisSize() = if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.MATCH_PARENT
 
         // 初始化 pagerRecyclerView
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
@@ -145,7 +153,7 @@ class STHorizontalPagerActivity : STBaseActivity() {
                 onRecyclerViewCreateViewHolder = { _: Int, parent: ViewGroup, _: Int ->
                     STRecyclerViewAdapter.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_recycler_item_horizontal_poi, parent, false).apply {
                         layoutParams = layoutParams.apply {
-                            width = STSystemUtil.screenWidth - STSystemUtil.getPxFromDp(70f).toInt()
+                            width = getPagerRecyclerItemMainAxisSize()
                         }
                     })
                 },
@@ -164,13 +172,13 @@ class STHorizontalPagerActivity : STBaseActivity() {
                     STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 },
                 viewLoadFailure = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, "加\n载\n出\n错\n了", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY, textSize = 14f)
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "加载出错了" else "加\n载\n出\n错\n了", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
                 },
                 viewLoading = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, "加\n载\n中\n...", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY)
+                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "加载中..." else "加\n载\n中\n...", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY)
                 },
                 viewNoMore = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, "没\n有\n更\n多\n了", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY, textSize = 14f)
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "没有更多了" else "没\n有\n更\n多\n了", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
                 }
         )
 

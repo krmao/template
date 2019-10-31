@@ -142,11 +142,11 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, size: Int = STSystemUtil.getPxFromDp(45f).toInt(), orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
+        fun createDefaultFooterView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(),  crossAxisSize: Int = MATCH_PARENT, orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
             val itemView = TextView(context)
             itemView.layoutParams = ViewGroup.LayoutParams(
-                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
-                    if (orientation == LinearLayout.VERTICAL) size else MATCH_PARENT
+                    if (orientation == LinearLayout.VERTICAL) crossAxisSize else mainAxisSize,
+                    if (orientation == LinearLayout.VERTICAL) mainAxisSize else crossAxisSize
             )
             itemView.text = text
             itemView.textSize = textSize
@@ -155,7 +155,6 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             itemView.gravity = Gravity.CENTER
 
             if (orientation == LinearLayout.HORIZONTAL) {
-                itemView.setEms(1)
                 itemView.gravity = Gravity.CENTER_VERTICAL
             }
             return itemView
@@ -164,14 +163,14 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, size: Int = STSystemUtil.getPxFromDp(45f).toInt(), orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (size / 2.0f).toInt()): View {
+        fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, mainAxisSize: Int = STSystemUtil.getPxFromDp(45f).toInt(),  crossAxisSize: Int = MATCH_PARENT,orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (mainAxisSize / 2.0f).toInt()): View {
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
             linearLayout.gravity = Gravity.CENTER
             linearLayout.setBackgroundColor(backgroundColor)
             linearLayout.layoutParams = ViewGroup.LayoutParams(
-                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
-                    if (orientation == LinearLayout.VERTICAL) size else MATCH_PARENT
+                    if (orientation == LinearLayout.VERTICAL) crossAxisSize else mainAxisSize,
+                    if (orientation == LinearLayout.VERTICAL) mainAxisSize else crossAxisSize
             )
 
             val textView = TextView(context)
@@ -181,7 +180,6 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             textView.gravity = Gravity.CENTER
 
             if (orientation == LinearLayout.HORIZONTAL) {
-                textView.setEms(1)
                 textView.gravity = Gravity.CENTER_VERTICAL
                 linearLayout.gravity = Gravity.CENTER_VERTICAL
             }
@@ -292,14 +290,17 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
 
     private var recyclerView: RecyclerView? = null
+    private val orientation: Int
+        get() = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_EMPTY_LOADING -> STViewHolder(viewEmptyLoading?.invoke(parent, viewType) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中..."))//.apply { parent.removeView(itemView) }
             ITEM_TYPE_EMPTY -> STViewHolder(viewEmpty?.invoke(parent, viewType) ?: createDefaultEmptyView(innerAdapter.context, "数据维护中..."))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = orientation))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = orientation))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = orientation))//.apply { parent.removeView(itemView) }
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }

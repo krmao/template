@@ -127,9 +127,14 @@ import kotlin.math.abs
     }
  */
 @Suppress("unused")
-class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) : LinearSnapHelper() {
+class STSnapGravityHelper @JvmOverloads constructor(private var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) : LinearSnapHelper() {
     private val tag = "Gravity-Snap"
     private val delegate: GSSnapGravityDelegate = GSSnapGravityDelegate(snap, onSnap)
+
+    fun switchSnap(snap: Snap) {
+        this.snap = snap
+        delegate.snap = snap
+    }
 
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -159,6 +164,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
     fun forceSnap(layoutManager: RecyclerView.LayoutManager?, isInnerDataEmpty: Boolean) {
         if (isInnerDataEmpty) {
             onSnap?.invoke(RecyclerView.NO_POSITION)
+            delegate.lastSnappedPosition = RecyclerView.NO_POSITION
         } else if (layoutManager != null) {
             Looper.myQueue().addIdleHandler {
                 delegate.findSnapView(layoutManager)
@@ -166,6 +172,9 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             }
         }
     }
+
+    val lastSnappedPosition: Int
+        get() = delegate.lastSnappedPosition
 
     @JvmOverloads
     fun scrollToPosition(position: Int, smooth: Boolean = true) = delegate.scrollToPosition(position, smooth)
@@ -184,7 +193,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
         END
     }
 
-    internal class GSSnapGravityDelegate(private val snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
+    internal class GSSnapGravityDelegate(var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
@@ -437,6 +446,8 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             return distanceArray
         }
 
+        var lastSnappedPosition: Int = RecyclerView.NO_POSITION
+
         private fun notifyOnSnapped(willSnapPosition: Int, linearLayoutManager: LinearLayoutManager) {
             STLogUtil.e(tag, "notifyOnSnapped start")
             var targetPosition = willSnapPosition
@@ -453,6 +464,7 @@ class STSnapGravityHelper @JvmOverloads constructor(snap: Snap, private val onSn
             if (targetPosition != RecyclerView.NO_POSITION && targetPosition >= 0 && targetPosition < (if (enableLoadingFooterView) itemCount - 1 else itemCount)) {
                 STLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)")
                 onSnap?.invoke(targetPosition)
+                lastSnappedPosition = targetPosition
             } else {
                 STLogUtil.e(tag, "targetPosition:$targetPosition is invalid, do not onSnap!")
             }

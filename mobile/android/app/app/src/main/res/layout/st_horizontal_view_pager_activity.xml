@@ -80,6 +80,7 @@
         android:id="@+id/changeOrientationButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_gravity="end|center"
         android:layout_margin="30dp" />
 
 </FrameLayout>

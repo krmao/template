@@ -124,6 +124,9 @@ import com.smart.library.util.STSystemUtil
     }
 
  */
+/**
+ * STSnapGravityHelper center 适合 STRecyclerViewLinearStartItemDecoration
+ */
 @Suppress("unused", "unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("SetTextI18n")
 class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Gravity
@@ -16,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.smart.library.R
 import com.smart.library.util.STSystemUtil
+
 
 /*
 
@@ -288,13 +290,16 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     private fun isNeedShowEmptyView() = enableEmptyView && innerAdapter.itemCount == 0
 
+
+    private var recyclerView: RecyclerView? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_EMPTY_LOADING -> STViewHolder(viewEmptyLoading?.invoke(parent, viewType) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中..."))//.apply { parent.removeView(itemView) }
             ITEM_TYPE_EMPTY -> STViewHolder(viewEmpty?.invoke(parent, viewType) ?: createDefaultEmptyView(innerAdapter.context, "数据维护中..."))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了"))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中..."))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了"))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL))//.apply { parent.removeView(itemView) }
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }
@@ -453,6 +458,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     // 适配 GridLayoutManager
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
         innerAdapter.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {

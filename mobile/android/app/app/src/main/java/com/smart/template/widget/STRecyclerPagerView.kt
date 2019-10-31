@@ -35,6 +35,7 @@ import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
  * reverseLayout==false,  Snap.START, 滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  * reverseLayout==false,  Snap.END,   滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  */
+@Suppress("MemberVisibilityCanBePrivate")
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
     companion object {
@@ -49,7 +50,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
                 onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
                 snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
-                orientation: Int = LinearLayoutManager.VERTICAL,
+                recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
                 startPadding: Int = 0,
                 dividerPadding: Int = 0,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
@@ -64,7 +65,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             val recyclerView = STRecyclerView(context)
             recyclerView.setBackgroundColor(Color.TRANSPARENT)
             recyclerView.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, true))
-            recyclerView.layoutManager = LinearLayoutManager(context, orientation, false)
+            recyclerView.layoutManager = LinearLayoutManager(context, recyclerViewOrientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
                 override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(pagerModel, viewHolder, position)
@@ -124,6 +125,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
+    private var recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL
+
     @JvmOverloads
     fun <T> initialize(
             initPagerDataList: MutableList<PagerModel<T>>,
@@ -131,7 +134,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             onRecyclerViewBindViewHolder: (pagerModel: PagerModel<T>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
-            orientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
+            recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
             startPadding: Int = 0,
             dividerPadding: Int = 0,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
@@ -141,9 +144,10 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
             viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
     ) {
+        this.recyclerViewOrientation = recyclerViewOrientation
         pageMargin = 0
         offscreenPageLimit = initPagerDataList.size
-        if (orientation == LinearLayoutManager.HORIZONTAL) { // recyclerView 横向滚动 默认禁止 viewPager 横向华东
+        if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) { // recyclerView 横向滚动 默认禁止 viewPager 横向华东
             enableDrag = false
         }
         adapter = STPagerRecyclerViewAdapter(
@@ -154,7 +158,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 onRecyclerViewCreateViewHolder,
                 onRecyclerViewBindViewHolder,
                 snap,
-                orientation,
+                recyclerViewOrientation,
                 startPadding,
                 dividerPadding,
                 onSnap,
@@ -164,6 +168,18 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 viewEmpty,
                 viewEmptyLoading
         )
+    }
+
+    @JvmOverloads
+    fun switchRecyclerViewOrientation(recyclerViewOrientation: Int = if (this.recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) LinearLayoutManager.VERTICAL else LinearLayoutManager.VERTICAL) {
+        if (recyclerViewOrientation != this.recyclerViewOrientation) {
+            getRecyclerViews()?.forEach {
+                (it.layoutManager as? LinearLayoutManager)?.orientation = recyclerViewOrientation
+                val adapter = getRecyclerViewLoadingAdapter(it)
+                it.adapter = adapter
+            }
+            this.recyclerViewOrientation = recyclerViewOrientation
+        }
     }
 
     @JvmOverloads
@@ -177,11 +193,28 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         }
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun getRecyclerViews(): List<STRecyclerView>? {
+        return (0 until adapter.count).mapNotNull { getRecyclerView(it) }
+    }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun getRecyclerView(pagerIndex: Int): STRecyclerView? {
+        return findViewWithTag(TagModel(pagerIndex))
+    }
+
     @Suppress("UNCHECKED_CAST")
-    fun <T> getRecyclerViewDataList(pagerIndex: Int): List<T> {
-        val recyclerView: STRecyclerView? = findViewWithTag(TagModel(pagerIndex))
-        val loadingWrapper: STEmptyLoadingWrapper<T>? = recyclerView?.adapter as? STEmptyLoadingWrapper<T>
-        return loadingWrapper?.innerData() ?: arrayListOf()
+    fun <T> getRecyclerViewLoadingAdapter(pagerIndex: Int): STEmptyLoadingWrapper<T>? {
+        return (getRecyclerView(pagerIndex)?.adapter as? STEmptyLoadingWrapper<T>)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getRecyclerViewLoadingAdapter(recyclerView: STRecyclerView?): STEmptyLoadingWrapper<*>? {
+        return recyclerView?.adapter as? STEmptyLoadingWrapper<*>
+    }
+
+    fun <T> getRecyclerViewInnerDataList(pagerIndex: Int): List<T> {
+        return getRecyclerViewLoadingAdapter<T>(pagerIndex)?.innerData() ?: arrayListOf()
     }
 
     /**
@@ -203,7 +236,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
     @JvmOverloads
     fun <T> scrollToRecyclerViewPosition(pagerIndex: Int, recyclerItemData: T, smoothScrollToRecyclerViewPosition: Boolean = true, autoSwitchViewPager: Boolean = true): Boolean {
-        val position: Int = getRecyclerViewDataList<T>(pagerIndex).indexOf(recyclerItemData)
+        val position: Int = getRecyclerViewInnerDataList<T>(pagerIndex).indexOf(recyclerItemData)
         STLogUtil.w("scrollToRecyclerViewPosition", "position:$position, data:$recyclerItemData")
         return scrollToRecyclerViewPosition(pagerIndex, position, smoothScrollToRecyclerViewPosition, autoSwitchViewPager)
     }
@@ -290,7 +323,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
             private val onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             private val snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
-            private val orientation: Int = LinearLayoutManager.VERTICAL,
+            private val recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
             private val startPadding: Int = 0,
             private val dividerPadding: Int = 0,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
@@ -316,7 +349,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     onRecyclerViewCreateViewHolder,
                     onRecyclerViewBindViewHolder,
                     snap,
-                    orientation,
+                    recyclerViewOrientation,
                     startPadding,
                     dividerPadding,
                     onSnap,

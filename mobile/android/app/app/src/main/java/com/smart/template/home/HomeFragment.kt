@@ -121,12 +121,12 @@ class HomeFragment : STBaseFragment() {
         }
         pagerScrollBottom.setOnClickListener {
             val pagerIndex = 3
-            val dataList = pagerRecyclerView.getRecyclerViewDataList<Int>(pagerIndex)
+            val dataList = pagerRecyclerView.getRecyclerViewInnerDataList<Int>(pagerIndex)
             pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size - 1)
         }
         pagerScrollCenter.setOnClickListener {
             val pagerIndex = 3
-            val dataList = pagerRecyclerView.getRecyclerViewDataList<Int>(pagerIndex)
+            val dataList = pagerRecyclerView.getRecyclerViewInnerDataList<Int>(pagerIndex)
             pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size / 2 - 1)
         }
         pagerScroll7000.setOnClickListener {

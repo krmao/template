@@ -76,4 +76,10 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/changeOrientationButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="30dp" />
+
 </FrameLayout>

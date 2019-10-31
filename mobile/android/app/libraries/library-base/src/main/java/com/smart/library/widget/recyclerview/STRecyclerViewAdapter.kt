@@ -69,13 +69,17 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     private var oldRemoveDuration: Long = 120
     private var oldMoveDuration: Long = 250
     private var oldChangeDuration: Long = 250
+    private var oldItemAnimator: RecyclerView.ItemAnimator? = null
     fun enableChangeAnimations(enableChangeAnimations: Boolean) {
         if (enableChangeAnimations) {
-            recyclerView?.itemAnimator?.addDuration = oldAddDuration
-            recyclerView?.itemAnimator?.removeDuration = oldRemoveDuration
-            recyclerView?.itemAnimator?.moveDuration = oldMoveDuration
-            recyclerView?.itemAnimator?.changeDuration = oldChangeDuration
-            (recyclerView?.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = true
+            recyclerView?.post {
+                recyclerView?.itemAnimator?.addDuration = oldAddDuration
+                recyclerView?.itemAnimator?.removeDuration = oldRemoveDuration
+                recyclerView?.itemAnimator?.moveDuration = oldMoveDuration
+                recyclerView?.itemAnimator?.changeDuration = oldChangeDuration
+                (recyclerView?.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = true
+                oldItemAnimator?.let { recyclerView?.itemAnimator = it }
+            }
         } else {
             oldAddDuration = recyclerView?.itemAnimator?.addDuration ?: oldAddDuration
             oldRemoveDuration = recyclerView?.itemAnimator?.removeDuration ?: oldRemoveDuration
@@ -87,6 +91,8 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
             recyclerView?.itemAnimator?.moveDuration = 0
             recyclerView?.itemAnimator?.changeDuration = 0
             (recyclerView?.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+            recyclerView?.itemAnimator?.let { oldItemAnimator = it }
+            recyclerView?.itemAnimator = null
         }
     }
 

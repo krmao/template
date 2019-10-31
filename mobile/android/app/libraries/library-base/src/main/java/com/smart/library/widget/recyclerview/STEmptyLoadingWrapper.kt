@@ -158,6 +158,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             if (orientation == LinearLayout.HORIZONTAL) {
                 itemView.gravity = Gravity.CENTER_VERTICAL
             }
+            itemView.tag = itemView
             return itemView
         }
 
@@ -197,6 +198,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
             linearLayout.addView(textView)
             linearLayout.addView(progressBar)
+            linearLayout.tag = textView
             return linearLayout
         }
 
@@ -211,6 +213,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             itemView.setBackgroundColor(backgroundColor)
             itemView.setTextColor(textColor)
             itemView.gravity = Gravity.CENTER
+            itemView.tag = itemView
             return itemView
         }
 
@@ -236,6 +239,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
             linearLayout.addView(textView)
             linearLayout.addView(progressBar)
+            linearLayout.tag = textView
             return linearLayout
         }
     }
@@ -301,9 +305,9 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         return when (viewType) {
             ITEM_TYPE_EMPTY_LOADING -> STViewHolder(viewEmptyLoading?.invoke(parent, viewType) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中..."))//.apply { parent.removeView(itemView) }
             ITEM_TYPE_EMPTY -> STViewHolder(viewEmpty?.invoke(parent, viewType) ?: createDefaultEmptyView(innerAdapter.context, "数据维护中..."))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_NO_MORE -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = orientation))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = orientation))//.apply { parent.removeView(itemView) }
-            ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = orientation))//.apply { parent.removeView(itemView) }
+            ITEM_TYPE_NO_MORE, ITEM_TYPE_LOADING, ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewNoMore?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = orientation))//.apply { parent.removeView(itemView) }
+            // ITEM_TYPE_LOADING -> STViewHolder(viewLoading?.invoke(parent, viewType) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = orientation))//.apply { parent.removeView(itemView) }
+            // ITEM_TYPE_LOAD_FAILED -> STViewHolder(viewLoadFailure?.invoke(parent, viewType) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = orientation))//.apply { parent.removeView(itemView) }
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }
@@ -321,9 +325,24 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
                     }
                 }
             }
-            ITEM_TYPE_NO_MORE -> {
+            ITEM_TYPE_NO_MORE, ITEM_TYPE_LOAD_FAILED, ITEM_TYPE_LOADING -> {
+                if (currentItemType == ITEM_TYPE_LOADING) {
+                    (holder.itemView.tag as? TextView)?.text = "加载中"
+                    if (position == itemCount - 1) {
+                        onLoadMoreListener?.invoke(false)
+                    }
+                } else if (currentItemType == ITEM_TYPE_LOAD_FAILED) {
+                    (holder.itemView.tag as? TextView)?.text = "失败"
+                    holder.itemView.setOnClickListener {
+                        if (onLoadMoreListener != null) {
+                            showLoading()
+                        }
+                    }
+                } else if (currentItemType == ITEM_TYPE_NO_MORE) {
+                    (holder.itemView.tag as? TextView)?.text = "没有更多"
+                }
             }
-            ITEM_TYPE_LOAD_FAILED -> {
+            /*ITEM_TYPE_LOAD_FAILED -> {
                 holder.itemView.setOnClickListener {
                     if (onLoadMoreListener != null) {
                         showLoading()
@@ -334,7 +353,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
                 if (position == itemCount - 1) {
                     onLoadMoreListener?.invoke(false)
                 }
-            }
+            }*/
             else -> {
                 isEmptyViewLoading = false
                 innerAdapter.onBindViewHolder(holder, position)

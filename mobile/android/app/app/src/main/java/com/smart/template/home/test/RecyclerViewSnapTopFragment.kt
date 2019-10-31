@@ -12,7 +12,6 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STTimeUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.STRecyclerViewItemDecoration
 import com.smart.library.widget.recyclerview.STViewHolder
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 import com.smart.template.R
@@ -96,8 +95,6 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
         }
 
         // divider between items
-        recyclerView.addItemDecoration(STRecyclerViewItemDecoration(5))
-
         adapterWrapper.onInnerDataChanged = {
             snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
         }

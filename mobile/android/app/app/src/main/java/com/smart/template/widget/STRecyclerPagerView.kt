@@ -10,11 +10,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.STRecyclerViewItemDecoration
+import com.smart.library.widget.recyclerview.STRecyclerViewLinearItemDecoration
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 
 /**
@@ -49,7 +50,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
                 snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
                 orientation: Int = LinearLayoutManager.VERTICAL,
-                leftPadding: Int = 0,
+                startPadding: Int = 0,
                 dividerPadding: Int = 0,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
                 viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -62,7 +63,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             val recyclerView = STRecyclerView(context)
             recyclerView.setBackgroundColor(Color.TRANSPARENT)
-            recyclerView.addItemDecoration(STRecyclerViewItemDecoration(dividerPadding, leftPadding))
+            recyclerView.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, true))
             recyclerView.layoutManager = LinearLayoutManager(context, orientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
@@ -131,7 +132,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             onRecyclerViewBindViewHolder: (pagerModel: PagerModel<T>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
             orientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
-            leftPadding: Int = 0,
+            startPadding: Int = 0,
             dividerPadding: Int = 0,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
             viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -154,7 +155,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 onRecyclerViewBindViewHolder,
                 snap,
                 orientation,
-                leftPadding,
+                startPadding,
                 dividerPadding,
                 onSnap,
                 viewLoadFailure,
@@ -290,7 +291,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val onRecyclerViewBindViewHolder: (pagerModel: PagerModel<M>, viewHolder: RecyclerView.ViewHolder, position: Int) -> Unit,
             private val snap: STSnapGravityHelper.Snap = STSnapGravityHelper.Snap.CENTER,
             private val orientation: Int = LinearLayoutManager.VERTICAL,
-            private val leftPadding: Int = 0,
+            private val startPadding: Int = 0,
             private val dividerPadding: Int = 0,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
             private val viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
@@ -316,7 +317,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     onRecyclerViewBindViewHolder,
                     snap,
                     orientation,
-                    leftPadding,
+                    startPadding,
                     dividerPadding,
                     onSnap,
                     viewLoadFailure,

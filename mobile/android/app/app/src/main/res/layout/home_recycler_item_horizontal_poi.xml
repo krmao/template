@@ -151,11 +151,4 @@
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.6dp"
-        android:layout_below="@+id/rl_iv_item_map"
-        android:layout_marginTop="10dp"
-        android:background="#E2E2E2" />
 </RelativeLayout>

@@ -10,7 +10,6 @@ import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.STRecyclerViewItemDecoration
 import com.smart.template.R
 import kotlinx.android.synthetic.main.home_fragment_recycler_view_drag_and_transfer.*
 import kotlinx.android.synthetic.main.home_fragment_recycler_view_drag_and_transfer_item_day_detail.view.*
@@ -67,11 +66,9 @@ class RecyclerViewDragAndTransferFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewDays.addItemDecoration(STRecyclerViewItemDecoration(10))
         recyclerViewDays.adapter = daysAdapter
         recyclerViewDays.tag = "recyclerViewDays"
 
-        recyclerViewDayDetail.addItemDecoration(STRecyclerViewItemDecoration(10))
         recyclerViewDayDetail.adapter = dayDetailAdapter
         recyclerViewDays.tag = "recyclerViewDayDetail"
 

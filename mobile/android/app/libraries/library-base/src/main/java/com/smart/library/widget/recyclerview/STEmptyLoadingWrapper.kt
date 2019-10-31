@@ -144,7 +144,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             val itemView = TextView(context)
             itemView.layoutParams = ViewGroup.LayoutParams(
                     if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
-                    MATCH_PARENT
+                    if (orientation == LinearLayout.VERTICAL) size else MATCH_PARENT
             )
             itemView.text = text
             itemView.textSize = textSize
@@ -154,6 +154,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
             if (orientation == LinearLayout.HORIZONTAL) {
                 itemView.setEms(1)
+                itemView.gravity = Gravity.CENTER_VERTICAL
             }
             return itemView
         }
@@ -163,12 +164,12 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         @JvmOverloads
         fun createDefaultFooterLoadingView(context: Context?, text: String, textSize: Float = 15.0f, size: Int = STSystemUtil.getPxFromDp(45f).toInt(), orientation: Int = LinearLayout.VERTICAL, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = (size / 2.0f).toInt()): View {
             val linearLayout = LinearLayout(context)
-            linearLayout.orientation = orientation
+            linearLayout.orientation = LinearLayout.HORIZONTAL
             linearLayout.gravity = Gravity.CENTER
             linearLayout.setBackgroundColor(backgroundColor)
             linearLayout.layoutParams = ViewGroup.LayoutParams(
                     if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else size,
-                    MATCH_PARENT
+                    if (orientation == LinearLayout.VERTICAL) size else MATCH_PARENT
             )
 
             val textView = TextView(context)
@@ -179,6 +180,8 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
             if (orientation == LinearLayout.HORIZONTAL) {
                 textView.setEms(1)
+                textView.gravity = Gravity.CENTER_VERTICAL
+                linearLayout.gravity = Gravity.CENTER_VERTICAL
             }
 
             val progressBar = ProgressBar(context)

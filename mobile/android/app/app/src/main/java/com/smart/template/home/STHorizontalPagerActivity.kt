@@ -1,6 +1,7 @@
 package com.smart.template.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
@@ -150,7 +151,7 @@ class STHorizontalPagerActivity : STBaseActivity() {
                 },
                 snap = STSnapGravityHelper.Snap.CENTER, // 锚点到中间
                 orientation = LinearLayout.HORIZONTAL,
-                leftPadding = STSystemUtil.getPxFromDp(25f).toInt(),
+                startPadding = STSystemUtil.getPxFromDp(25f).toInt(),
                 dividerPadding = STSystemUtil.getPxFromDp(25f).toInt(), // 减小 viewHolder 宽度可以与 viewPager setPageMargin 一样的效果, 两边都漏出一点
                 onSnap = { pagerIndex: Int, position: Int, data: Int ->
                     snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
@@ -159,13 +160,13 @@ class STHorizontalPagerActivity : STBaseActivity() {
                     STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 },
                 viewLoadFailure = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, "加载出错了", orientation = LinearLayout.HORIZONTAL)
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, "加\n载\n出\n错\n了", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY, textSize = 14f)
                 },
                 viewLoading = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, "加载中...", orientation = LinearLayout.HORIZONTAL)
+                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, "加\n载\n中\n...", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY)
                 },
                 viewNoMore = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, "没有更多了", orientation = LinearLayout.HORIZONTAL)
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, "没\n有\n更\n多\n了", orientation = LinearLayout.HORIZONTAL, backgroundColor = Color.LTGRAY, textSize = 14f)
                 }
         )
 

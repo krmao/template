@@ -217,6 +217,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 // reset position
                 if (keepPosition) {
                     it.scrollToPosition(snapGravityHelper?.lastSnappedPosition ?: RecyclerView.NO_POSITION)
+                    // for snap
+                    it.smoothScrollBy(if(recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) 1 else 0,if(recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) 0 else 1)
                 }
             }
             STLogUtil.e("recyclerViewOrientation", "current ${this.recyclerViewOrientation}")

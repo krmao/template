@@ -90,7 +90,6 @@ import kotlin.math.abs
         }
 
         // divider between items
-        recyclerView.addItemDecoration(STRecyclerViewItemDecoration(5))
         // custom loading views
         adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
         adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")

@@ -15,7 +15,7 @@ import android.widget.FrameLayout
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.STRecyclerViewLinearItemDecoration
+import com.smart.library.widget.recyclerview.STRecyclerViewLinearStartItemDecoration
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
 
 /**
@@ -43,7 +43,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         @JvmStatic
         @JvmOverloads
         fun createDefaultRecyclerViewItemDecoration(dividerPadding: Int = 0, startPadding: Int = 0, enableWrapperLoading: Boolean = true): RecyclerView.ItemDecoration {
-            return STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading)
+            return STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, enableWrapperLoading)
         }
 
         @JvmStatic
@@ -71,7 +71,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             val recyclerView = STRecyclerView(context)
             recyclerView.setBackgroundColor(Color.TRANSPARENT)
-            recyclerView.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
+            recyclerView.addItemDecoration(STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
             recyclerView.layoutManager = LinearLayoutManager(context, recyclerViewOrientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, pagerModel.dataList) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
@@ -85,6 +85,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             adapterWrapper.viewLoading = viewLoading
             adapterWrapper.viewEmpty = viewEmpty
             adapterWrapper.viewEmptyLoading = viewEmptyLoading
+            adapterWrapper.enableChangeAnimations(false)
 
             val snapGravityHelper: STSnapGravityHelper by lazy {
                 STSnapGravityHelper(
@@ -202,7 +203,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                         it.removeItemDecoration(this)
                     }
                 } else {
-                    it.addItemDecoration(STRecyclerViewLinearItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
+                    it.addItemDecoration(STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, enableWrapperLoading))
                 }
 
                 // reset snap

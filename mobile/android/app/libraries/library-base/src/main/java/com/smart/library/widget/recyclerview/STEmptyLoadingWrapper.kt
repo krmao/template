@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.*
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.smart.library.util.STSystemUtil
+
 
 /*
 
@@ -84,7 +88,6 @@ import com.smart.library.util.STSystemUtil
         }
 
         // divider between items
-        recyclerView.addItemDecoration(STRecyclerViewItemDecoration(5))
         // custom loading views
         adapterWrapper.viewNoMore = adapterWrapper.createDefaultFooterView("-- 呵呵, 真的没有更多了 --")
         adapterWrapper.viewLoadFailure = adapterWrapper.createDefaultFooterView("啊哟, 加载失败了哟")
@@ -287,6 +290,10 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     private val orientation: Int
         get() = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL
 
+    fun enableChangeAnimations(enableChangeAnimations: Boolean) {
+        innerAdapter.enableChangeAnimations(enableChangeAnimations)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_EMPTY_LOADING -> STViewHolder(viewEmptyLoading?.invoke(parent, viewType) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中..."))//.apply { parent.removeView(itemView) }
@@ -335,31 +342,25 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     fun showLoading() {
         if (enable) {
             currentItemType = ITEM_TYPE_LOADING
-            val oldSupportsChangeAnimations = getSupportsChangeAnimations()
-            getSimpleItemAnimator()?.supportsChangeAnimations = false
+            enableChangeAnimations(false)
             notifyItemChanged(itemCount)
-            getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
+            enableChangeAnimations(true)
         }
     }
-
-    fun getSimpleItemAnimator(): SimpleItemAnimator? = recyclerView?.itemAnimator as? SimpleItemAnimator
-    fun getSupportsChangeAnimations(): Boolean = getSimpleItemAnimator()?.supportsChangeAnimations ?: true
 
     fun showLoadFailure() {
         if (enable) {
             if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
                 currentItemType = ITEM_TYPE_EMPTY
                 isEmptyViewLoading = false
-                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
-                getSimpleItemAnimator()?.supportsChangeAnimations = false
+                enableChangeAnimations(false)
                 notifyDataSetChanged()
-                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
+                enableChangeAnimations(true)
             } else {
                 currentItemType = ITEM_TYPE_LOAD_FAILED
-                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
-                getSimpleItemAnimator()?.supportsChangeAnimations = false
+                enableChangeAnimations(false)
                 notifyItemChanged(itemCount)
-                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
+                enableChangeAnimations(true)
             }
         }
     }
@@ -369,16 +370,14 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             if (enableEmptyView && (currentItemType == ITEM_TYPE_EMPTY_LOADING || isEmptyViewLoading || innerAdapter.dataList.isEmpty())) {
                 currentItemType = ITEM_TYPE_EMPTY
                 isEmptyViewLoading = false
-                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
-                getSimpleItemAnimator()?.supportsChangeAnimations = false
+                enableChangeAnimations(false)
                 notifyDataSetChanged()
-                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
+                enableChangeAnimations(true)
             } else {
                 currentItemType = ITEM_TYPE_NO_MORE
-                val oldSupportsChangeAnimations = getSupportsChangeAnimations()
-                getSimpleItemAnimator()?.supportsChangeAnimations = false
+                enableChangeAnimations(false)
                 notifyItemChanged(itemCount)
-                getSimpleItemAnimator()?.supportsChangeAnimations = oldSupportsChangeAnimations
+                enableChangeAnimations(true)
             }
         }
     }
@@ -436,7 +435,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
                     notifyDataSetChanged()
                 }
             } else {
-                notifyItemRangeChanged(oldInnerDataListSize - 1, newList.size + 1)
+                notifyItemRangeChanged(oldInnerDataListSize, newList.size)
             }
             onInnerDataChanged?.invoke(innerAdapter.dataList)
         } else {
@@ -462,7 +461,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
                 }
             } else {
                 notifyItemInserted(position)
-                notifyItemRangeChanged(position - 1, itemCount - position + 1)
+                notifyItemRangeChanged(position, itemCount - position)
             }
             onInnerDataChanged?.invoke(innerAdapter.dataList)
         }

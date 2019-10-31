@@ -1,5 +1,6 @@
 package com.smart.library.widget.recyclerview.snap
 
+import android.graphics.Rect
 import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -480,8 +481,11 @@ class STSnapGravityHelper @JvmOverloads constructor(private var snap: Snap, priv
             return decoratedStart
         }
 
-        private fun distanceToCenter(layoutManager: RecyclerView.LayoutManager, targetView: View, helper: OrientationHelper): Int {
-            val childCenter = helper.getDecoratedStart(targetView) + helper.getDecoratedMeasurement(targetView) / 2
+        private fun distanceToCenter(layoutManager: LinearLayoutManager, targetView: View, helper: OrientationHelper): Int {
+            val insets = Rect()
+            layoutManager.calculateItemDecorationsForChild(targetView, insets)
+            val isHorizontal = layoutManager.orientation == LinearLayoutManager.HORIZONTAL
+            val childCenter = helper.getDecoratedStart(targetView) + ((if(isHorizontal)insets.left else insets.top) / 2) + helper.getDecoratedMeasurement(targetView) / 2 - ((if(isHorizontal)insets.right else insets.bottom) / 2)
             val containerCenter: Int
             if (layoutManager.clipToPadding) {
                 containerCenter = helper.startAfterPadding + helper.totalSpace / 2

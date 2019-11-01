@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
-import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewLinearStartItemDecoration
@@ -40,6 +39,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
     companion object {
 
+        @Suppress("unused")
         @JvmStatic
         @JvmOverloads
         fun createDefaultRecyclerViewItemDecoration(dividerPadding: Int = 0, startPadding: Int = 0, enableWrapperLoading: Boolean = true): RecyclerView.ItemDecoration {
@@ -102,22 +102,18 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             // onLoadMore listener
             adapterWrapper.onLoadMoreListener = {
-                STLogUtil.d("request", "start request -> pagerIndex:$pagerIndex, requestNextIndex:${pagerModel.requestNextIndex}")
                 requestLoadMore.invoke(pagerIndex, pagerModel.requestNextIndex, pagerModel.requestSize) {
                     recyclerView.post {
                         when {
                             it == null -> { // load failure
                                 adapterWrapper.showLoadFailure()
-                                STLogUtil.e("request", "request response  -> pagerIndex:$pagerIndex, requestNextIndex:${pagerModel.requestNextIndex}")
                             }
                             it.isNotEmpty() -> { // load success
                                 adapterWrapper.add(it)
                                 pagerModel.requestNextIndex++
-                                STLogUtil.v("request", "response success  -> pagerIndex:$pagerIndex, requestNextIndex:${pagerModel.requestNextIndex}")
                             }
                             else -> { // load no more
                                 adapterWrapper.showNoMore()
-                                STLogUtil.i("request", "response empty  -> pagerIndex:$pagerIndex, requestNextIndex:${pagerModel.requestNextIndex}")
                             }
                         }
                     }
@@ -193,7 +189,6 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
     @JvmOverloads
     fun switchRecyclerViewOrientation(recyclerViewOrientation: Int = (if (this.recyclerViewOrientation == LinearLayoutManager.VERTICAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL), keepPosition: Boolean = true, callback: ((orientation: Int) -> Unit)? = null) {
-        STLogUtil.w("recyclerViewOrientation", "current ${this.recyclerViewOrientation} will switch to $recyclerViewOrientation  0=horizontal 1=vertical")
         if (recyclerViewOrientation != this.recyclerViewOrientation) {
             this.recyclerViewOrientation = recyclerViewOrientation
             getRecyclerViews()?.forEach {
@@ -216,11 +211,9 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
                 // reset position
                 if (keepPosition) {
-                    STLogUtil.w("forceSnap", "will targetPosition:${snapGravityHelper?.lastSnappedPosition ?: RecyclerView.NO_POSITION}")
                     snapGravityHelper?.forceSnap()
                 }
             }
-            STLogUtil.e("recyclerViewOrientation", "current ${this.recyclerViewOrientation}")
         }
         callback?.invoke(this.recyclerViewOrientation)
     }
@@ -300,13 +293,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     @JvmOverloads
     fun <T> scrollToRecyclerViewPosition(pagerIndex: Int, recyclerItemData: T, smoothScrollToRecyclerViewPosition: Boolean = true, autoSwitchViewPager: Boolean = true): Boolean {
         val position: Int = getRecyclerViewInnerDataList<T>(pagerIndex).indexOf(recyclerItemData)
-        STLogUtil.w("scrollToRecyclerViewPosition", "position:$position, data:$recyclerItemData")
         return scrollToRecyclerViewPosition(pagerIndex, position, smoothScrollToRecyclerViewPosition, autoSwitchViewPager)
     }
 
     @JvmOverloads
     fun scrollToRecyclerViewPosition(pagerIndex: Int, position: Int, smoothScrollToRecyclerViewPosition: Boolean = true, autoSwitchViewPager: Boolean = true): Boolean {
-        STLogUtil.e("scrollToRecyclerViewPosition", "position:$position")
         val recyclerView: STRecyclerView? = findViewWithTag(TagModel(pagerIndex))
         if (recyclerView != null && position >= 0 && position < recyclerView.adapter?.itemCount ?: 0) {
             if (autoSwitchViewPager && currentItem != pagerIndex) {

@@ -222,7 +222,9 @@ class STHorizontalPagerActivity : STBaseActivity() {
                         val isChecked = checkBoxGroupView.isChecked(position)
                         itemChangedView.isSelected = isChecked
                         if (isChecked) {
-                            pagerRecyclerView.getRecyclerViewSnapGravityHelper()?.forceSnap()
+                            pagerRecyclerView.getRecyclerViewSnapGravityHelper()?.forceSnap {
+                                STLogUtil.e("forceSnap", "forceSnap success:$it")
+                            }
                         }
                     }
                 })

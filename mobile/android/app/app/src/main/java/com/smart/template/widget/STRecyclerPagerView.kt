@@ -61,11 +61,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 dividerPadding: Int = 0,
                 enableWrapperLoading: Boolean = true,
                 onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
-                viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-                viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-                viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-                viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-                viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+                viewLoadFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+                viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+                viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+                viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+                viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
         ): View {
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
@@ -97,7 +97,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 }
             }
             adapterWrapper.onInnerDataChanged = {
-                snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
+                // snapGravityHelper.forceSnap() // force snap after inner data changed
             }
 
             // onLoadMore listener
@@ -155,11 +155,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             dividerPadding: Int = 0,
             enableWrapperLoading: Boolean = true,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
-            viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+            viewLoadFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
     ) {
         this.dividerPadding = dividerPadding
         this.startPadding = startPadding
@@ -216,9 +216,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
                 // reset position
                 if (keepPosition) {
-                    it.scrollToPosition(snapGravityHelper?.lastSnappedPosition ?: RecyclerView.NO_POSITION)
-                    // for snap
-                    it.smoothScrollBy(if(recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) 1 else 0,if(recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) 0 else 1)
+                    STLogUtil.w("forceSnap", "will targetPosition:${snapGravityHelper?.lastSnappedPosition ?: RecyclerView.NO_POSITION}")
+                    snapGravityHelper?.forceSnap()
                 }
             }
             STLogUtil.e("recyclerViewOrientation", "current ${this.recyclerViewOrientation}")
@@ -242,13 +241,32 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         return (0 until adapter.count).mapNotNull { getRecyclerView(it) }
     }
 
+
+    @JvmOverloads
     @Suppress("MemberVisibilityCanBePrivate")
-    fun getRecyclerView(pagerIndex: Int): STRecyclerView? {
+    fun getRecyclerView(pagerIndex: Int = currentItem): STRecyclerView? {
         return findViewWithTag(TagModel(pagerIndex))
     }
 
+    @JvmOverloads
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun getRecyclerViewSnapGravityHelper(pagerIndex: Int = currentItem): STSnapGravityHelper? {
+        return (getRecyclerView(pagerIndex)?.tag as? TagModel)?.snapGravityHelper
+    }
+
+    @JvmOverloads
+    fun forceSnap(pagerIndex: Int = currentItem, targetPosition: Int) {
+        getRecyclerViewSnapGravityHelper(pagerIndex)?.forceSnap(targetPosition)
+    }
+
+    @JvmOverloads
+    fun getSnappedPosition(pagerIndex: Int = currentItem): Int {
+        return getRecyclerViewSnapGravityHelper(pagerIndex)?.lastSnappedPosition ?: RecyclerView.NO_POSITION
+    }
+
+    @JvmOverloads
     @Suppress("UNCHECKED_CAST")
-    fun <T> getRecyclerViewLoadingAdapter(pagerIndex: Int): STEmptyLoadingWrapper<T>? {
+    fun <T> getRecyclerViewLoadingAdapter(pagerIndex: Int = currentItem): STEmptyLoadingWrapper<T>? {
         return (getRecyclerView(pagerIndex)?.adapter as? STEmptyLoadingWrapper<T>)
     }
 
@@ -257,7 +275,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         return recyclerView?.adapter as? STEmptyLoadingWrapper<*>
     }
 
-    fun <T> getRecyclerViewInnerDataList(pagerIndex: Int): List<T> {
+    @JvmOverloads
+    fun <T> getRecyclerViewInnerDataList(pagerIndex: Int = currentItem): List<T> {
         return getRecyclerViewLoadingAdapter<T>(pagerIndex)?.innerData() ?: arrayListOf()
     }
 
@@ -372,11 +391,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val dividerPadding: Int = 0,
             private val enableWrapperLoading: Boolean = true,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
-            private val viewLoadFailure: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            private val viewLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            private val viewNoMore: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            private val viewEmpty: ((parent: ViewGroup, viewType: Int) -> View?)? = null,
-            private val viewEmptyLoading: ((parent: ViewGroup, viewType: Int) -> View?)? = null
+            private val viewLoadFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            private val viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            private val viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            private val viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            private val viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
     ) : PagerAdapter() {
 
         override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj

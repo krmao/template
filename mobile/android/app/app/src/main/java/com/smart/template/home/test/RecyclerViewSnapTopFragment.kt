@@ -96,7 +96,7 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
 
         // divider between items
         adapterWrapper.onInnerDataChanged = {
-            snapGravityHelper.forceSnap(recyclerView.layoutManager, it.isEmpty()) // force snap after inner data changed
+            snapGravityHelper.forceSnap() // force snap after inner data changed
         }
 
         // onLoadMore listener

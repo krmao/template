@@ -1,9 +1,7 @@
 package com.smart.library.widget.recyclerview
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
+import android.support.v7.widget.*
 import android.view.View
 import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperAdapter
 import java.util.*
@@ -62,8 +60,14 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     }
 
     var recyclerView: RecyclerView? = null
+        private set
     val orientation: Int
-        get() = (this.recyclerView?.layoutManager as? LinearLayoutManager)?.orientation ?: LinearLayoutManager.VERTICAL
+        get() = when (val layoutManager: RecyclerView.LayoutManager? = this.recyclerView?.layoutManager) {
+            is LinearLayoutManager -> layoutManager.orientation
+            is GridLayoutManager -> layoutManager.orientation
+            is StaggeredGridLayoutManager -> layoutManager.orientation
+            else -> LinearLayoutManager.VERTICAL
+        }
 
     private var oldAddDuration: Long = 120
     private var oldRemoveDuration: Long = 120

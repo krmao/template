@@ -1,11 +1,7 @@
 package com.smart.library.widget.recyclerview.snap
 
 import android.graphics.Rect
-import android.os.Looper
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSnapHelper
-import android.support.v7.widget.OrientationHelper
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.*
 import android.view.View
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
@@ -136,8 +132,19 @@ class STSnapGravityHelper @JvmOverloads constructor(private var snap: Snap, priv
         delegate.snap = snap
     }
 
+    var recyclerView: RecyclerView? = null
+        private set
+    val orientation: Int
+        get() = when (val layoutManager: RecyclerView.LayoutManager? = this.recyclerView?.layoutManager) {
+            is LinearLayoutManager -> layoutManager.orientation
+            is GridLayoutManager -> layoutManager.orientation
+            is StaggeredGridLayoutManager -> layoutManager.orientation
+            else -> LinearLayoutManager.VERTICAL
+        }
+
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
+        this.recyclerView = recyclerView
         delegate.attachToRecyclerView(recyclerView)
         super.attachToRecyclerView(recyclerView)
     }
@@ -161,15 +168,22 @@ class STSnapGravityHelper @JvmOverloads constructor(private var snap: Snap, priv
      *    强制触发 onSnap (在 STRecyclerViewAdapter.onInnerDataChanged 中调用 STSnapGravityHelper.forceSnap)
      *    这里不去重是为了 防止 adapter.remove(0) 的时候, onSnap 都是 0, 但是真实数据已经改变了, 虽然索引没有变化
      */
-    fun forceSnap(layoutManager: RecyclerView.LayoutManager?, isInnerDataEmpty: Boolean) {
+    fun forceSnap(targetPosition: Int = lastSnappedPosition) {
+        val isInnerDataEmpty: Boolean
+        val adapter = recyclerView?.adapter
+        if (adapter is STEmptyLoadingWrapper<*>) {
+            isInnerDataEmpty = adapter.isInnerDataEmpty()
+        } else {
+            isInnerDataEmpty = adapter?.itemCount == 0
+        }
+
+        STLogUtil.e("forceSnap", "targetPosition:$targetPosition, isInnerDataEmpty:$isInnerDataEmpty , recyclerView==null?${recyclerView == null}")
         if (isInnerDataEmpty) {
-            onSnap?.invoke(RecyclerView.NO_POSITION)
             delegate.lastSnappedPosition = RecyclerView.NO_POSITION
-        } else if (layoutManager != null) {
-            Looper.myQueue().addIdleHandler {
-                delegate.findSnapView(layoutManager)
-                false
-            }
+            onSnap?.invoke(RecyclerView.NO_POSITION)
+        } else {
+            recyclerView?.scrollToPosition(targetPosition)
+            recyclerView?.smoothScrollBy(if (orientation == LinearLayoutManager.HORIZONTAL) 1 else 0, if (orientation == LinearLayoutManager.HORIZONTAL) 0 else 1)
         }
     }
 
@@ -485,7 +499,7 @@ class STSnapGravityHelper @JvmOverloads constructor(private var snap: Snap, priv
             val insets = Rect()
             layoutManager.calculateItemDecorationsForChild(targetView, insets)
             val isHorizontal = layoutManager.orientation == LinearLayoutManager.HORIZONTAL
-            val childCenter = helper.getDecoratedStart(targetView) + ((if(isHorizontal)insets.left else insets.top) / 2) + helper.getDecoratedMeasurement(targetView) / 2 - ((if(isHorizontal)insets.right else insets.bottom) / 2)
+            val childCenter = helper.getDecoratedStart(targetView) + ((if (isHorizontal) insets.left else insets.top) / 2) + helper.getDecoratedMeasurement(targetView) / 2 - ((if (isHorizontal) insets.right else insets.bottom) / 2)
             val containerCenter: Int
             if (layoutManager.clipToPadding) {
                 containerCenter = helper.startAfterPadding + helper.totalSpace / 2

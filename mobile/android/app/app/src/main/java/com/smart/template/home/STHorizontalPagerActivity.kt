@@ -166,19 +166,22 @@ class STHorizontalPagerActivity : STBaseActivity() {
                 startPadding = STSystemUtil.getPxFromDp(25f).toInt(),
                 dividerPadding = STSystemUtil.getPxFromDp(25f).toInt(), // 减小 viewHolder 宽度可以与 viewPager setPageMargin 一样的效果, 两边都漏出一点
                 onSnap = { pagerIndex: Int, position: Int, data: Int ->
-                    snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
+                    if (pagerIndex == pagerRecyclerView.currentItem) { // filter all pager on snapped after switch orientation
+                        STLogUtil.e("pager onSnap", "pagerIndex=$pagerIndex, position=$position")
+                        snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
+                    }
                 },
-                viewEmpty = { parent: ViewGroup, viewType: Int ->
+                viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
                     STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 },
-                viewLoadFailure = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "加载出错了" else "加\n载\n出\n错\n了", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
+                viewLoadFailure = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (orientation == LinearLayoutManager.VERTICAL) "加载出错了" else "加\n载\n出\n错\n了", orientation = orientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
                 },
-                viewLoading = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "加载中..." else "加\n载\n中\n...", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY)
+                viewLoading = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterLoadingView(this, if (orientation == LinearLayoutManager.VERTICAL) "加载中..." else "加\n载\n中\n...", orientation = orientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY)
                 },
-                viewNoMore = { parent: ViewGroup, viewType: Int ->
-                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (pagerRecyclerView.recyclerViewOrientation == LinearLayoutManager.VERTICAL) "没有更多了" else "没\n有\n更\n多\n了", orientation = pagerRecyclerView.recyclerViewOrientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
+                viewNoMore = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                    STEmptyLoadingWrapper.createDefaultFooterView(this, if (orientation == LinearLayoutManager.VERTICAL) "没有更多了" else "没\n有\n更\n多\n了", orientation = orientation, crossAxisSize = getPagerRecyclerItemCrossAxisSize(), backgroundColor = Color.LTGRAY, textSize = 14f)
                 }
         )
 
@@ -218,6 +221,9 @@ class STHorizontalPagerActivity : STBaseActivity() {
                         val itemChangedView: TextView = originViewList[position] as TextView
                         val isChecked = checkBoxGroupView.isChecked(position)
                         itemChangedView.isSelected = isChecked
+                        if (isChecked) {
+                            pagerRecyclerView.getRecyclerViewSnapGravityHelper()?.forceSnap()
+                        }
                     }
                 })
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)

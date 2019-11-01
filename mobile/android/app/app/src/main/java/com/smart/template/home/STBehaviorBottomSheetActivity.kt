@@ -195,7 +195,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
                 onSnap = { pagerIndex: Int, position: Int, data: Int ->
                     snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
                 },
-                viewEmpty = { parent: ViewGroup, viewType: Int ->
+                viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
                     STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 }
         )

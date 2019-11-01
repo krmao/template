@@ -51,7 +51,7 @@
         android:layout_toRightOf="@id/rl_iv_item_map"
         android:ellipsize="end"
         android:gravity="bottom"
-        android:maxLines="1"
+        android:singleLine="true"
         android:text="上海东方明珠塔"
         android:textColor="#2c2c2e"
         android:textSize="14dp"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:text="非常漂亮大气, 很多人喜欢，有艺术美，气质美"
                 android:textSize="11dp" />
 

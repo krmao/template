@@ -41,7 +41,7 @@
                 android:layout_gravity="bottom"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:minWidth="60dp"
                 android:paddingBottom="6dp"
                 android:text="加载中..."

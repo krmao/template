@@ -29,7 +29,7 @@
                 android:gravity="center_vertical"
                 android:hint="rtmp url"
                 android:inputType="textUri"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:padding="5dp"
                 android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
                 android:textColor="@color/black"

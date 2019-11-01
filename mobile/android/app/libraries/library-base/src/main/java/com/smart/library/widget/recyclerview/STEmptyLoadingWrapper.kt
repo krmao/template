@@ -16,7 +16,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
 /*
@@ -412,7 +411,6 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     // 适配 GridLayoutManager
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        STLogUtil.w(TAG, "onAttachedToRecyclerView")
         this.recyclerView = recyclerView
         innerAdapter.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager
@@ -435,7 +433,6 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
      * 适配 StaggeredGridLayoutManager
      */
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        STLogUtil.v(TAG, "onViewAttachedToWindow")
         innerAdapter.onViewAttachedToWindow(holder)
         if (holder.layoutPosition == itemCount - 1 && enable) {
             (holder.itemView.layoutParams as? StaggeredGridLayoutManager.LayoutParams)?.isFullSpan = true

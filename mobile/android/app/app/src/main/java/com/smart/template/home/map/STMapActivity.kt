@@ -2,7 +2,8 @@ package com.smart.template.home.map
 
 import com.smart.template.home.map.model.STMapMode
 import com.smart.template.home.map.presenter.STMapCityPresenter
-import com.smart.template.home.map.util.STMapModeStackManager
+import com.smart.template.home.map.presenter.STMapMultiHorizontalPresenter
+import com.smart.template.home.map.layer.STMapLayerManager
 
 class STMapActivity {
 
@@ -11,7 +12,8 @@ class STMapActivity {
     init {
 
         if (targetMode == STMapMode.CITY) {
-            STMapModeStackManager.pushMapMode(STMapCityPresenter())
+            STMapLayerManager.push(STMapCityPresenter())
+            STMapLayerManager.push(STMapMultiHorizontalPresenter())
         }
 
 

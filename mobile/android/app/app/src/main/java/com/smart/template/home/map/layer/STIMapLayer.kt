@@ -1,13 +1,13 @@
 package com.smart.template.home.map.layer
 
 interface STIMapLayer {
-    fun enter()
+    fun onCreate()
 
-    fun layer(): STMapLayerType
+    fun layerType(): STMapLayerType
 
     fun onResume()
 
     fun onPause()
 
-    fun exit()
+    fun onDestory()
 }

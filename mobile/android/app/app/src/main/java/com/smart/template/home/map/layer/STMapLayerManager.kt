@@ -23,19 +23,19 @@ object STMapLayerManager {
      */
     fun push(mapLayer: STIMapLayer) {
         // 先处理当前层是退出还是隐藏
-        when (peek()?.layer() ?: STMapLayerType.MAIN) {
+        when (peek()?.layerType() ?: STMapLayerType.MAIN) {
             STMapLayerType.MAIN -> {
             }
             STMapLayerType.NEARBY_MULTI, STMapLayerType.NEARBY_SINGLE -> {
-                pop() //退出上一个层
+                layerStack.pop()?.onDestory() //退出上一个层
             }
             else -> {
-                peek()?.onPause() // 隐藏上一个层
+                layerStack.peek()?.onPause() // 隐藏上一个层
             }
         }
         // 再添加并初始化新的层
-        mapLayer.enter()
         layerStack.push(mapLayer)
+        mapLayer.onCreate()
     }
 
     /**
@@ -43,8 +43,8 @@ object STMapLayerManager {
      * 2: 恢复上一个层
      */
     fun pop() {
-        layerStack.pop()?.exit()
-        peek()?.onResume()
+        layerStack.pop()?.onDestory()
+        layerStack.peek()?.onResume()
     }
 
     fun peek(): STIMapLayer? {

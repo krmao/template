@@ -4,11 +4,11 @@ import com.smart.template.home.map.layer.STIMapLayer
 import com.smart.template.home.map.layer.STMapLayerType
 
 class STMapLayerNearbyMulti: STIMapLayer {
-    override fun enter() {
+    override fun onCreate() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun layer(): STMapLayerType {
+    override fun layerType(): STMapLayerType {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -20,7 +20,7 @@ class STMapLayerNearbyMulti: STIMapLayer {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun exit() {
+    override fun onDestory() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

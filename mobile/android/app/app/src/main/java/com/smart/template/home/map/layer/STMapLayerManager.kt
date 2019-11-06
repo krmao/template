@@ -27,7 +27,7 @@ object STMapLayerManager {
             STMapLayerType.MAIN -> {
             }
             STMapLayerType.NEARBY_MULTI, STMapLayerType.NEARBY_SINGLE -> {
-                layerStack.pop()?.onDestory() //退出上一个层
+                layerStack.pop()?.onDestroy() //退出上一个层
             }
             else -> {
                 layerStack.peek()?.onPause() // 隐藏上一个层
@@ -43,7 +43,7 @@ object STMapLayerManager {
      * 2: 恢复上一个层
      */
     fun pop() {
-        layerStack.pop()?.onDestory()
+        layerStack.pop()?.onDestroy()
         layerStack.peek()?.onResume()
     }
 

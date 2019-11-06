@@ -9,5 +9,5 @@ interface STIMapLayer {
 
     fun onPause()
 
-    fun onDestory()
+    fun onDestroy()
 }

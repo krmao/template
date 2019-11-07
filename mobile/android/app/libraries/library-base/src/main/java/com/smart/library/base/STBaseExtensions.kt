@@ -14,6 +14,7 @@ import android.support.annotation.RequiresPermission
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.AbsListView
 import com.smart.library.util.*
 import org.jetbrains.anko.AnkoAsyncContext
@@ -98,6 +99,18 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
             setVisibility(View.VISIBLE)
         }
     }).start()
+}
+
+fun View.setOnLayoutListener(onLayout: (view: View) -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            val viewTreeObserver: ViewTreeObserver = viewTreeObserver
+            if (viewTreeObserver.isAlive) {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                onLayout(this@setOnLayoutListener)
+            }
+        }
+    })
 }
 
 

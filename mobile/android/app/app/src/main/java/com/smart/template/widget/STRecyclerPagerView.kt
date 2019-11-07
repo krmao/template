@@ -191,6 +191,9 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     fun switchRecyclerViewOrientation(recyclerViewOrientation: Int = (if (this.recyclerViewOrientation == LinearLayoutManager.VERTICAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL), keepPosition: Boolean = true, callback: ((orientation: Int) -> Unit)? = null) {
         if (recyclerViewOrientation != this.recyclerViewOrientation) {
             this.recyclerViewOrientation = recyclerViewOrientation
+
+            setBackgroundColor(if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) Color.TRANSPARENT else Color.WHITE)
+
             getRecyclerViews()?.forEach {
                 // reset item decoration
                 if (recyclerViewOrientation == LinearLayoutManager.VERTICAL) {
@@ -231,7 +234,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun getRecyclerViews(): List<STRecyclerView>? {
-        return (0 until adapter.count).mapNotNull { getRecyclerView(it) }
+        return (0 until (adapter?.count ?: 0)).mapNotNull { getRecyclerView(it) }
     }
 
 

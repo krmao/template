@@ -164,6 +164,9 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
     fun enableChangeAnimations(enableChangeAnimations: Boolean) = innerAdapter.enableChangeAnimations(enableChangeAnimations)
 
+    init {
+        currentItemType = if ((enableLoadMore || enableEmptyView) && isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_NONE
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {

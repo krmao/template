@@ -29,8 +29,8 @@
                 android:gravity="center_vertical"
                 android:hint="rtmp url"
                 android:inputType="textUri"
-                android:singleLine="true"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
                 android:textColor="@color/black"
                 android:textColorHint="@color/blue_grey"
@@ -205,6 +205,35 @@
                 <TableRow>
 
                     <Button
+                        android:id="@+id/pagerRemoveLast"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pagerRemoveLast"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerAdd"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pagerAdd"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/pagerRemoveAll"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="pagerRemoveAll"
+                        app:backgroundTint="@color/blue_600" />
+
+
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
                         android:id="@+id/pagerScroll7000"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
@@ -282,6 +311,7 @@
                         android:text="behaviorScrolling" />
 
                 </TableRow>
+
                 <TableRow>
 
                     <Button
@@ -301,7 +331,7 @@
                     <Button
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                 </TableRow>
             </TableLayout>

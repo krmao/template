@@ -127,6 +127,18 @@ class HomeFragment : STBaseFragment() {
             val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
             loadingWrapper?.showEmpty()
         }
+        pagerRemoveLast.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.remove(loadingWrapper.itemCount - 2)
+        }
+        pagerAdd.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.add(10010)
+        }
+        pagerRemoveAll.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.removeAll()
+        }
         pagerScroll7000.setOnClickListener {
             pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex = 3, recyclerItemData = 7000)
         }

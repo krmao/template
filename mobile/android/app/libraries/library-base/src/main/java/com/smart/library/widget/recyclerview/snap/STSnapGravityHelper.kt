@@ -74,7 +74,7 @@ import kotlin.math.abs
             adapterWrapper.add("insert at 0 at ${STTimeUtil.HmsS(System.currentTimeMillis())}", 0)
         }
         disable.setOnClickListener {
-            adapterWrapper.enable = !adapterWrapper.enable
+            adapterWrapper.enableLoadMore = !adapterWrapper.enableLoadMore
         }
         showFailure.setOnClickListener {
             adapterWrapper.showLoadFailure()

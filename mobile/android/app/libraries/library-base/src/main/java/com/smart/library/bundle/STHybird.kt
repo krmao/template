@@ -116,7 +116,7 @@ object STHybird {
         if (allConfiger != null) STHybird.allConfiger = allConfiger
         if (allConfigUrl.isNotBlank()) STHybird.allConfigUrl = allConfigUrl
 
-        STLogUtil.w(TAG, ">>>>----enable=${STHybird.enable}")
+        STLogUtil.w(TAG, ">>>>----enableLoadMore=${STHybird.enable}")
         STLogUtil.w(TAG, ">>>>----debug=${STHybird.debug}")
         STLogUtil.w(TAG, ">>>>----initStrategy=${STHybird.initStrategy}")
         STLogUtil.w(TAG, ">>>>----allConfigUrl=$allConfigUrl")

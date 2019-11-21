@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
+import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewLinearStartItemDecoration
@@ -65,7 +66,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
                 viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
                 viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
-                viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
+                viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+                viewEmptyLoadingFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
         ): View {
             val pagerModel: PagerModel<M> = initPagerDataList[pagerIndex]
 
@@ -85,6 +87,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             adapterWrapper.viewLoading = viewLoading
             adapterWrapper.viewEmpty = viewEmpty
             adapterWrapper.viewEmptyLoading = viewEmptyLoading
+            adapterWrapper.viewEmptyLoadingFailure = viewEmptyLoadingFailure
             adapterWrapper.enableChangeAnimations(false)
 
             val snapGravityHelper: STSnapGravityHelper by lazy {
@@ -106,14 +109,27 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     recyclerView.post {
                         when {
                             it == null -> { // load failure
-                                adapterWrapper.showLoadFailure()
+                                if (adapterWrapper.isInnerDataNotEmpty()) {
+                                    STLogUtil.w("EmptyLoading", "requestLoadMore callback ->  showLoadFailure")
+                                    adapterWrapper.showLoadFailure()
+                                } else {
+                                    STLogUtil.w("EmptyLoading", "requestLoadMore callback ->  showEmptyLoadFailure")
+                                    adapterWrapper.showEmptyLoadFailure()
+                                }
                             }
                             it.isNotEmpty() -> { // load success
+                                STLogUtil.w("EmptyLoading", "requestLoadMore callback ->  add")
                                 adapterWrapper.add(it)
                                 pagerModel.requestNextIndex++
                             }
                             else -> { // load no more
-                                adapterWrapper.showNoMore()
+                                if (adapterWrapper.isInnerDataNotEmpty()) {
+                                    STLogUtil.w("EmptyLoading", "requestLoadMore callback ->  showNoMore")
+                                    adapterWrapper.showNoMore()
+                                } else {
+                                    STLogUtil.w("EmptyLoading", "requestLoadMore callback ->  showEmpty")
+                                    adapterWrapper.showEmpty()
+                                }
                             }
                         }
                     }
@@ -155,7 +171,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
             viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
             viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
-            viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
+            viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            viewEmptyLoadingFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
     ) {
         this.dividerPadding = dividerPadding
         this.startPadding = startPadding
@@ -183,7 +200,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 viewLoading,
                 viewNoMore,
                 viewEmpty,
-                viewEmptyLoading
+                viewEmptyLoading,
+                viewEmptyLoadingFailure
         )
     }
 
@@ -389,7 +407,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val viewLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
             private val viewNoMore: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
             private val viewEmpty: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
-            private val viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
+            private val viewEmptyLoading: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null,
+            private val viewEmptyLoadingFailure: ((parent: ViewGroup, viewType: Int, orientation: Int) -> View?)? = null
     ) : PagerAdapter() {
 
         override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
@@ -416,7 +435,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     viewLoading,
                     viewNoMore,
                     viewEmpty,
-                    viewEmptyLoading
+                    viewEmptyLoading,
+                    viewEmptyLoadingFailure
             )
             val recyclerViewLayoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             val rootLayout = FrameLayout(context)

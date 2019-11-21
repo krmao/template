@@ -178,27 +178,27 @@
                 <TableRow>
 
                     <Button
-                        android:id="@+id/pagerScrollTop"
+                        android:id="@+id/pagerEmptyNetworkError"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pager rv top"
+                        android:text="pagerEmptyError"
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/pagerScrollBottom"
+                        android:id="@+id/pagerEmptyLoading"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pager rv bottom"
+                        android:text="pagerEmptyLoading"
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/pagerScrollCenter"
+                        android:id="@+id/pagerEmpty"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pager rv center" />
+                        android:text="pagerEmpty" />
 
                 </TableRow>
 
@@ -375,6 +375,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@color/light_blue"
             tools:ignore="NestedWeights" />
     </LinearLayout>
 </LinearLayout>

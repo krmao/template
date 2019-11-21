@@ -115,19 +115,17 @@ class HomeFragment : STBaseFragment() {
         tv_play_video_normal.setOnClickListener {
             VideoPlayerFragment.goTo(context)
         }
-        pagerScrollTop.setOnClickListener {
-            val pagerIndex = 3
-            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, 0)
+        pagerEmptyNetworkError.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.showEmptyLoadFailure()
         }
-        pagerScrollBottom.setOnClickListener {
-            val pagerIndex = 3
-            val dataList = pagerRecyclerView.getRecyclerViewInnerDataList<Int>(pagerIndex)
-            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size - 1)
+        pagerEmptyLoading.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.showEmptyLoading()
         }
-        pagerScrollCenter.setOnClickListener {
-            val pagerIndex = 3
-            val dataList = pagerRecyclerView.getRecyclerViewInnerDataList<Int>(pagerIndex)
-            pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex, dataList.size / 2 - 1)
+        pagerEmpty.setOnClickListener {
+            val loadingWrapper = pagerRecyclerView.getRecyclerViewLoadingAdapter<Int>(0)
+            loadingWrapper?.showEmpty()
         }
         pagerScroll7000.setOnClickListener {
             pagerRecyclerView.scrollToRecyclerViewPosition(pagerIndex = 3, recyclerItemData = 7000)
@@ -150,22 +148,11 @@ class HomeFragment : STBaseFragment() {
         }
 
         resetPagerData.setOnClickListener {
-            pagerRecyclerView.reset(mutableListOf(
-                    STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "1-1"),
-                    STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "10-2"),
-                    STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "100-3"),
-                    STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
-                            0,
-                            1 * getScare(3),
-                            2 * getScare(3),
-                            3 * getScare(3),
-                            4 * getScare(3),
-                            5 * getScare(3),
-                            6 * getScare(3),
-                            7 * getScare(3),
-                            8 * getScare(3),
-                            9 * getScare(3)
-                    ), "1000-10")
+            pagerRecyclerView.reset<Int>(mutableListOf(
+                    STRecyclerPagerView.PagerModel(1, 1, mutableListOf(), "1-1"),
+                    STRecyclerPagerView.PagerModel(1, 2, mutableListOf(), "10-2"),
+                    STRecyclerPagerView.PagerModel(1, 3, mutableListOf(), "100-3"),
+                    STRecyclerPagerView.PagerModel(1, 10, mutableListOf(), "1000-10")
             ))
         }
         clearPagerData.setOnClickListener {
@@ -176,21 +163,10 @@ class HomeFragment : STBaseFragment() {
         // 服务端 requestNextIndex 从 0 开始算第一页
         val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
                 mutableListOf(
-                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "景点"),
-                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "美食"),
-                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "酒店"),
-                        STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
-                                0,
-                                1 * getScare(3),
-                                2 * getScare(3),
-                                3 * getScare(3),
-                                4 * getScare(3),
-                                5 * getScare(3),
-                                6 * getScare(3),
-                                7 * getScare(3),
-                                8 * getScare(3),
-                                9 * getScare(3)
-                        ), "购物")
+                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(), "景点"),
+                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(), "美食"),
+                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(), "酒店"),
+                        STRecyclerPagerView.PagerModel(1, 10, mutableListOf(), "购物")
                 )
 
         var requestCount = 0
@@ -243,7 +219,13 @@ class HomeFragment : STBaseFragment() {
                     snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
                 },
                 viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
-                    STEmptyLoadingWrapper.createDefaultEmptyView(context, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
+                    STEmptyLoadingWrapper.createDefaultEmptyView(context, "没有更多数据了")
+                },
+                viewEmptyLoading = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                    STEmptyLoadingWrapper.createDefaultEmptyLoadingView(context, "数据加载中...")
+                },
+                viewEmptyLoadingFailure = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                    STEmptyLoadingWrapper.createDefaultEmptyLoadingFailure(context, "网络错误,请点击重试")
                 }
         )
 

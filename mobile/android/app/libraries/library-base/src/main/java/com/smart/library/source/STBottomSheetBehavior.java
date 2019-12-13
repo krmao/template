@@ -702,9 +702,19 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         final View bottomSheet = this.viewRef.get();
         if (bottomSheet != null && this.callback != null) {
             if (top > this.collapsedOffset) {
-                this.callback.onSlide(bottomSheet, (this.collapsedOffset - top) / (this.parentHeight - this.collapsedOffset));
+                // java.lang.ArithmeticException: divide by zero
+                float offset = 0;
+                float tmpOffset = this.parentHeight - this.collapsedOffset;
+                if (tmpOffset != 0) offset = (this.collapsedOffset - top) / tmpOffset;
+
+                this.callback.onSlide(bottomSheet, offset);
             } else {
-                this.callback.onSlide(bottomSheet, (this.collapsedOffset - top) / (this.collapsedOffset - this.getExpandedOffset()));
+                // java.lang.ArithmeticException: divide by zero
+                float offset = 0;
+                float tmpOffset = this.collapsedOffset - this.getExpandedOffset();
+                if (tmpOffset != 0) offset = (this.collapsedOffset - top) / tmpOffset;
+
+                this.callback.onSlide(bottomSheet, offset);
             }
         }
     }

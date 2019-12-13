@@ -168,6 +168,12 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         currentItemType = if ((enableLoadMore || enableEmptyView) && isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_NONE
     }
 
+    fun resetDataList(dataList: MutableList<Entity>) {
+        innerAdapter.resetDataList(dataList)
+        currentItemType = if (isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_NONE
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_EMPTY_NONE -> STViewHolder(viewEmptyNone?.invoke(parent, viewType, orientation) ?: createDefaultEmptyNone(innerAdapter.context, orientation))

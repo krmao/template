@@ -12,6 +12,11 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    fun resetDataList(dataList: MutableList<Entity>) {
+        this.dataList = dataList
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = dataList.size
 
     fun remove(position: Int) {

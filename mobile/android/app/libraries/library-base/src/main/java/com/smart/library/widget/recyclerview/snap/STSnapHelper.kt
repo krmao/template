@@ -3,6 +3,9 @@ package com.smart.library.widget.recyclerview.snap
 import android.graphics.Rect
 import android.support.v7.widget.*
 import android.view.View
+import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
+import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -30,7 +33,7 @@ interface STSnapHelper {
         END
     }
 
-    class GSSnapGravityDelegate(private val enableLoadingFooterView: Boolean, var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
+    class STSnapGravityDelegate(private val enableLoadingFooterView: Boolean, var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
 
         private val tag = "Gravity-Snap"
         private var verticalHelper: OrientationHelper? = null
@@ -40,7 +43,7 @@ interface STSnapHelper {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING && willScrollToTargetPosition != RecyclerView.NO_POSITION) {
                     willScrollToTargetPosition = RecyclerView.NO_POSITION // 拖拽情况下 强制清空之前的指定目标
-                    debugLog { GSLogUtil.e(tag, "拖拽情况下 强制清空之前的指定目标 willScrollToTargetPosition=$willScrollToTargetPosition") }
+                    debugLog { STLogUtil.e(tag, "拖拽情况下 强制清空之前的指定目标 willScrollToTargetPosition=$willScrollToTargetPosition") }
                 }
                 super.onScrollStateChanged(recyclerView, newState)
             }
@@ -77,8 +80,8 @@ interface STSnapHelper {
          * called must be after recycler setAdapter
          *
          * 注意:
-         *    如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 GSRecyclerViewAdapter.add
-         *    强制触发 onSnap (在 GSRecyclerViewAdapter.onInnerDataChanged 中调用 GSSnapGravityHelper.forceSnap)
+         *    如果想首次加载触发 onSnap 0 回调, 则初始化 adapter 时传入空的数组, 然后调用 STRecyclerViewAdapter.add
+         *    强制触发 onSnap (在 STRecyclerViewAdapter.onInnerDataChanged 中调用 STSnapGravityHelper.forceSnap)
          *    这里不去重是为了 防止 adapter.remove(0) 的时候, onSnap 都是 0, 但是真实数据已经改变了, 虽然索引没有变化
          */
         fun forceSnap(targetPosition: Int, onSnappedCallback: ((success: Boolean) -> Unit)?) {
@@ -86,7 +89,7 @@ interface STSnapHelper {
             val isValidPosition: Boolean
             val adapter = recyclerView?.adapter
 
-            if (adapter is GSEmptyLoadingWrapper<*>) {
+            if (adapter is STEmptyLoadingWrapper<*>) {
                 isInnerDataEmpty = adapter.isInnerDataEmpty()
                 isValidPosition = !isInnerDataEmpty && (targetPosition in (0 until adapter.innerData().size))
             } else {
@@ -94,7 +97,7 @@ interface STSnapHelper {
                 isValidPosition = !isInnerDataEmpty && (targetPosition in (0 until (adapter?.itemCount ?: 0)))
             }
 
-            debugLog { GSLogUtil.e("forceSnap", "targetPosition:$targetPosition, isInnerDataEmpty:$isInnerDataEmpty , recyclerView==null?${recyclerView == null}") }
+            debugLog { STLogUtil.e("forceSnap", "targetPosition:$targetPosition, isInnerDataEmpty:$isInnerDataEmpty , recyclerView==null?${recyclerView == null}") }
             if (isInnerDataEmpty || !isValidPosition) {
                 lastSnappedPosition = RecyclerView.NO_POSITION
                 onSnap?.invoke(RecyclerView.NO_POSITION)
@@ -117,12 +120,12 @@ interface STSnapHelper {
                     if (viewHolder != null) {
                         val distanceArray = calculateDistanceToFinalSnap(recyclerView?.layoutManager!!, viewHolder.itemView)
                         needScroll = distanceArray[0] != 0 || distanceArray[1] != 0
-                        debugLog { GSLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 在缓存内 直接计算滚动距离 smoothScrollBy:(x:${distanceArray[0]}, y:${distanceArray[1]})  ${if (needScroll) "需要滚动" else "无需滚动"} ") }
+                        debugLog { STLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 在缓存内 直接计算滚动距离 smoothScrollBy:(x:${distanceArray[0]}, y:${distanceArray[1]})  ${if (needScroll) "需要滚动" else "无需滚动"} ") }
                         if (needScroll) {
                             if (smooth) {
                                 recyclerView?.smoothScrollBy(distanceArray[0], distanceArray[1])
                             } else {
-                                val offset = GSSystemUtil.screenWidth / 3
+                                val offset = STSystemUtil.screenWidth / 3
                                 val dx: Int = if (distanceArray[0] < 0) min(abs(distanceArray[0]) - 1, offset) else if (distanceArray[0] > 0) -min(abs(distanceArray[0]) - 1, offset) else 0
                                 val dy: Int = if (distanceArray[1] < 0) min(abs(distanceArray[1]) - 1, offset) else if (distanceArray[1] > 0) -min(abs(distanceArray[1]) - 1, offset) else 0
                                 recyclerView?.scrollBy(distanceArray[0] + dx, distanceArray[1] + dy)
@@ -131,7 +134,7 @@ interface STSnapHelper {
                         }
                         onScrolledCallback?.invoke(true)
                     } else {
-                        debugLog { GSLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 不在缓存内 直接滚动 position -> smoothScrollToPosition:$position") }
+                        debugLog { STLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 不在缓存内 直接滚动 position -> smoothScrollToPosition:$position") }
                         willScrollToTargetPosition = position
                         if (smooth) {
                             recyclerView?.smoothScrollToPosition(position)
@@ -155,7 +158,7 @@ interface STSnapHelper {
                     onScrolledCallback?.invoke(false)
                 }
                 if (!needScroll) {
-                    debugLog { GSLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标可见且无法继续滚动, 强制回调 onSnap($position)") }
+                    debugLog { STLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标可见且无法继续滚动, 强制回调 onSnap($position)") }
                 } else {
                     onScrolledCallback?.invoke(false)
                 }
@@ -174,13 +177,14 @@ interface STSnapHelper {
                     if (viewHolder != null) {
                         val distanceArray = calculateDistanceToFinalSnap(recyclerView?.layoutManager, viewHolder.itemView)
                         val needScroll = distanceArray[0] != 0 || distanceArray[1] != 0
-                        debugLog { GSLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 在缓存内 直接计算滚动距离 smoothScrollBy:(x:${distanceArray[0]}, y:${distanceArray[1]})  ${if (needScroll) "需要滚动" else "无需滚动"} ") }
+                        debugLog { STLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 在缓存内 直接计算滚动距离 smoothScrollBy:(x:${distanceArray[0]}, y:${distanceArray[1]})  ${if (needScroll) "需要滚动" else "无需滚动"} ") }
                         if (needScroll) {
                             recyclerView?.scrollBy(distanceArray[0], distanceArray[1])
                         }
+                        lastSnappedPosition = position
                         onScrolledCallback?.invoke(true)
                     } else {
-                        debugLog { GSLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 不在缓存内 直接滚动 position -> $position") }
+                        debugLog { STLogUtil.e(tag, "--> 执行滚动到指定位置 由于目标 itemView 不在缓存内 直接滚动 position -> $position") }
                         willScrollToTargetPosition = position
                         recyclerView?.scrollToPosition(position)
                         if (needCalculateDistanceToFinalSnap) {
@@ -193,6 +197,7 @@ interface STSnapHelper {
                                     16
                             )
                         } else {
+                            lastSnappedPosition = position
                             onScrolledCallback?.invoke(true)
                         }
                     }
@@ -210,19 +215,19 @@ interface STSnapHelper {
          * 如果返回null,就表示没有需要对齐的View,也就不会做滚动对齐调整
          */
         fun findSnapView(layoutManager: RecyclerView.LayoutManager): View? {
-            debugLog { GSLogUtil.e(tag, "检测到滚动即将结束, 开始查找目标, 即将执行 findSnapView") }
+            debugLog { STLogUtil.e(tag, "检测到滚动即将结束, 开始查找目标, 即将执行 findSnapView") }
             val tmpRecyclerView = recyclerView
             if (tmpRecyclerView == null || layoutManager !is LinearLayoutManager) {
-                debugLog { GSLogUtil.e(tag, "开始查找 返回空, 原因 tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager") }
+                debugLog { STLogUtil.e(tag, "开始查找 返回空, 原因 tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager") }
                 willScrollToTargetPosition = RecyclerView.NO_POSITION
-                debugLog { GSLogUtil.v(tag, ".\n\n滚动结束...\n\n.") }
+                debugLog { STLogUtil.v(tag, ".\n\n滚动结束...\n\n.") }
                 return null
             }
 
             val linearLayoutManager: LinearLayoutManager = layoutManager
             val isAtStartOfList = isAtStartOfList(linearLayoutManager)
             val isAtEndOfList = isAtEndOfList(linearLayoutManager)
-            debugLog { GSLogUtil.w(tag, "开始查找 isAtStartOfList:$isAtStartOfList, isAtEndOfList:$isAtEndOfList, firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyV:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyV:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}") }
+            debugLog { STLogUtil.w(tag, "开始查找 isAtStartOfList:$isAtStartOfList, isAtEndOfList:$isAtEndOfList, firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyV:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyV:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}") }
 
             var targetSnapView: View? = null
 
@@ -232,7 +237,7 @@ interface STSnapHelper {
                 // isAtStartOfList 与下面的 snap == Snap.START 息息相关
                 if (isAtStartOfList || isAtEndOfList) {
                     /**
-                     * GSART 与 reverseLayout 无关
+                     * START 与 reverseLayout 无关
                      * reverseLayout 与 isAtEndOfList 方向 强相关
                      * reverseLayout 与 findLastCompletelyVisibleItemPosition 方向 强相关
                      *
@@ -260,7 +265,7 @@ interface STSnapHelper {
                             willScrollToTargetPosition = lastCompletelyVisibleItemPosition
                         }
                     }
-                    debugLog { GSLogUtil.e(tag, "开始计算 findSnapView 由于滚动到边界, 根据规则强制指定 willScrollToTargetPosition=$willScrollToTargetPosition") }
+                    debugLog { STLogUtil.e(tag, "开始计算 findSnapView 由于滚动到边界, 根据规则强制指定 willScrollToTargetPosition=$willScrollToTargetPosition") }
                 }
 
                 if (willScrollToTargetPosition != RecyclerView.NO_POSITION) {
@@ -269,7 +274,7 @@ interface STSnapHelper {
                         if (tmpItemView != null) {
                             if (linearLayoutManager.getPosition(tmpItemView) == willScrollToTargetPosition) {
                                 targetSnapView = tmpItemView
-                                debugLog { GSLogUtil.d(tag, "开始查找 findSnapView 找到 willScrollToTargetPosition 相对应的 targetSnapView:${targetSnapView.hashCode()}, 位于可见索引为:$childIndex") }
+                                debugLog { STLogUtil.d(tag, "开始查找 findSnapView 找到 willScrollToTargetPosition 相对应的 targetSnapView:${targetSnapView.hashCode()}, 位于可见索引为:$childIndex") }
                                 break
                             }
                         }
@@ -288,12 +293,12 @@ interface STSnapHelper {
                                 targetSnapView = tmpItemView
                                 minIndex = childIndex
                             }
-                            debugLog { GSLogUtil.d(tag, "-- 获取 距离目标位置最近的当前屏幕内可见childView索引:$childIndex, minIndex=$minIndex minDistanceToTargetLocation=$minDistanceToTargetLocation") }
+                            debugLog { STLogUtil.d(tag, "-- 获取 距离目标位置最近的当前屏幕内可见childView索引:$childIndex, minIndex=$minIndex minDistanceToTargetLocation=$minDistanceToTargetLocation") }
                         }
                     }
                 }
             }
-            debugLog { GSLogUtil.w(tag, "查找结束 findSnapView targetSnapView:${targetSnapView.hashCode()}, targetPosition:${targetSnapView?.let { tmpRecyclerView.getChildAdapterPosition(it) }}") }
+            debugLog { STLogUtil.w(tag, "查找结束 findSnapView targetSnapView:${targetSnapView.hashCode()}, targetPosition:${targetSnapView?.let { tmpRecyclerView.getChildAdapterPosition(it) }}") }
             return targetSnapView
         }
 
@@ -336,29 +341,29 @@ interface STSnapHelper {
         }
 
         fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager?, targetView: View): IntArray {
-            debugLog { GSLogUtil.e(tag, "计算继续滚动的距离, 即将执行 calculateDistanceToFinalSnap(targetView=${targetView.hashCode()})") }
+            debugLog { STLogUtil.e(tag, "计算继续滚动的距离, 即将执行 calculateDistanceToFinalSnap(targetView=${targetView.hashCode()})") }
             var distanceArray = IntArray(2)
             val tmpRecyclerView = recyclerView
             if (tmpRecyclerView == null || layoutManager !is LinearLayoutManager) {
-                debugLog { GSLogUtil.e(tag, "开始计算 calculateDistanceToFinalSnap return, tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager") }
+                debugLog { STLogUtil.e(tag, "开始计算 calculateDistanceToFinalSnap return, tmpRecyclerView == null 或者 layoutManager !is LinearLayoutManager") }
                 willScrollToTargetPosition = RecyclerView.NO_POSITION
-                debugLog { GSLogUtil.v(tag, ".\n\n滚动结束...\n\n.") }
+                debugLog { STLogUtil.v(tag, ".\n\n滚动结束...\n\n.") }
                 return distanceArray
             }
             val targetPosition: Int = tmpRecyclerView.getChildAdapterPosition(targetView)
-            debugLog { GSLogUtil.d(tag, "开始计算 targetPosition=$targetPosition") }
+            debugLog { STLogUtil.d(tag, "开始计算 targetPosition=$targetPosition") }
             distanceArray = innerCalculateDistanceToFinalSnap(layoutManager, targetView)
 
             // start scroll to end 为正
             if ((distanceArray[0] > 0 || distanceArray[1] > 0) && canScrollStartToEnd(layoutManager)) {
-                debugLog { GSLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...start scroll to end\n\n.") }
+                debugLog { STLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...start scroll to end\n\n.") }
             } else if ((distanceArray[0] < 0 || distanceArray[1] < 0) && canScrollEndToStart(layoutManager)) {
-                debugLog { GSLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...end scroll to start\n\n.") }
+                debugLog { STLogUtil.e(tag, ".\n\n继续滚动指定距离到目标位置...end scroll to start\n\n.") }
             } else {
-                debugLog { GSLogUtil.e(tag, "滚动即将结束, 此时(dx:${distanceArray[0]}, dy:${distanceArray[1]})") }
+                debugLog { STLogUtil.e(tag, "滚动即将结束, 此时(dx:${distanceArray[0]}, dy:${distanceArray[1]})") }
                 distanceArray[0] = 0
                 distanceArray[1] = 0
-                debugLog { GSLogUtil.e(tag, ".\n\n滚动彻底结束...强制返回(dx:${distanceArray[0]}, dy:${distanceArray[1]})\n\n.") }
+                debugLog { STLogUtil.e(tag, ".\n\n滚动彻底结束...强制返回(dx:${distanceArray[0]}, dy:${distanceArray[1]})\n\n.") }
 
                 notifyOnSnapped(targetPosition, layoutManager)
             }
@@ -393,31 +398,31 @@ interface STSnapHelper {
             } else {
                 distanceArray[1] = 0
             }
-            debugLog { GSLogUtil.d(tag, "-- 计算 距离目标位置 待滚动距离:(dx:${distanceArray[0]}, dy:${distanceArray[1]})") }
+            debugLog { STLogUtil.d(tag, "-- 计算 距离目标位置 待滚动距离:(dx:${distanceArray[0]}, dy:${distanceArray[1]})") }
             return distanceArray
         }
 
         private fun notifyOnSnapped(willSnapPosition: Int, linearLayoutManager: LinearLayoutManager) {
-            debugLog { GSLogUtil.e(tag, "notifyOnSnapped start") }
+            debugLog { STLogUtil.e(tag, "notifyOnSnapped start") }
             var targetPosition = willSnapPosition
-            debugLog { GSLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(linearLayoutManager)}, isAtStartOfList=${isAtStartOfList(linearLayoutManager)}") }
-            debugLog { GSLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView") }
+            debugLog { STLogUtil.v(tag, "notifyOnSnapped firstVisible:${linearLayoutManager.findFirstVisibleItemPosition()},firstCompletelyVisible:${linearLayoutManager.findFirstCompletelyVisibleItemPosition()},lastVisible:${linearLayoutManager.findLastVisibleItemPosition()},lastCompletelyVisible:${linearLayoutManager.findLastCompletelyVisibleItemPosition()}, isAtEndOfList=${isAtEndOfList(linearLayoutManager)}, isAtStartOfList=${isAtStartOfList(linearLayoutManager)}") }
+            debugLog { STLogUtil.v(tag, "notifyOnSnapped willScrollToTargetPosition=$willScrollToTargetPosition, targetPosition=$targetPosition, childCount=${linearLayoutManager.childCount}, itemCount=${linearLayoutManager.itemCount}, enableLoadingFooterView=$enableLoadingFooterView") }
 
             val itemCount: Int = linearLayoutManager.itemCount
             if (targetPosition != RecyclerView.NO_POSITION && targetPosition == itemCount - 1) {
                 targetPosition = if (enableLoadingFooterView) targetPosition - 1 else targetPosition
-                debugLog { GSLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}") }
+                debugLog { STLogUtil.w(tag, "notifyOnSnapped 检测到滚动到边界, ${if (enableLoadingFooterView) "由于 loading view, targetPosition 需要 -1" else "由于不包含 loading view, targetPosition 无需 -1"}") }
             }
 
             willScrollToTargetPosition = RecyclerView.NO_POSITION
             if (targetPosition != RecyclerView.NO_POSITION && targetPosition >= 0 && targetPosition < (if (enableLoadingFooterView) itemCount - 1 else itemCount)) {
-                debugLog { GSLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)") }
+                debugLog { STLogUtil.d(tag, "notifyOnSnapped(position=$targetPosition)") }
                 onSnap?.invoke(targetPosition)
                 lastSnappedPosition = targetPosition
             } else {
-                debugLog { GSLogUtil.e(tag, "targetPosition:$targetPosition is invalid, do not onSnap!") }
+                debugLog { STLogUtil.e(tag, "targetPosition:$targetPosition is invalid, do not onSnap!") }
             }
-            debugLog { GSLogUtil.e(tag, "notifyOnSnapped end") }
+            debugLog { STLogUtil.e(tag, "notifyOnSnapped end") }
         }
 
         private fun distanceToStart(targetView: View, linearLayoutManager: LinearLayoutManager, helper: OrientationHelper): Int {
@@ -426,7 +431,7 @@ interface STSnapHelper {
             val decoratedStart = helper.getDecoratedStart(targetView)
             val startAfterPadding = helper.startAfterPadding
 
-            debugLog { GSLogUtil.w(tag, "-------- 0 distance=$decoratedStart, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding") }
+            debugLog { STLogUtil.w(tag, "-------- 0 distance=$decoratedStart, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedStart=$decoratedStart, startAfterPadding=$startAfterPadding") }
             return decoratedStart
         }
 
@@ -450,7 +455,7 @@ interface STSnapHelper {
             val decoratedEnd: Int = helper.getDecoratedEnd(targetView) - helper.end
             val startAfterPadding = helper.startAfterPadding
 
-            debugLog { GSLogUtil.w(tag, "-------- 0 distance=$decoratedEnd, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedEnd=$decoratedEnd, startAfterPadding=$startAfterPadding") }
+            debugLog { STLogUtil.w(tag, "-------- 0 distance=$decoratedEnd, position=$position, reverse=${linearLayoutManager.reverseLayout}, itemCount=${linearLayoutManager.itemCount}, decoratedEnd=$decoratedEnd, startAfterPadding=$startAfterPadding") }
             return decoratedEnd
         }
 

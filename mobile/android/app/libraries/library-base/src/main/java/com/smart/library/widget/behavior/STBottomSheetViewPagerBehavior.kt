@@ -12,7 +12,7 @@ import com.smart.library.source.STBottomSheetBehavior
 import java.lang.ref.WeakReference
 
 /**
- * -keep class com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior{*;}
+ * -keep class STBottomSheetViewPagerBehavior{*;}
  *
  * Override [.findScrollingChild] to support [ViewPager]'s nested scrolling.
  *
@@ -28,10 +28,18 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
 
         if (view is ViewPager) {
-            val currentViewPagerChild = view.getChildAt(view.currentItem)
-            val scrollingChild = findScrollingChild(currentViewPagerChild)
-            if (scrollingChild != null) {
-                return scrollingChild
+            val currentViewPagerChild: View? = try {
+                view.getChildAt(view.currentItem)
+            } catch (e: Exception) {
+                null
+            }
+            if (currentViewPagerChild == null) {
+                return null
+            } else {
+                val scrollingChild = findScrollingChild(currentViewPagerChild)
+                if (scrollingChild != null) {
+                    return scrollingChild
+                }
             }
         } else if (view is ViewGroup) {
             var i = 0

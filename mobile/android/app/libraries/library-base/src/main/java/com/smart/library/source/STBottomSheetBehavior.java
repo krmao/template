@@ -1,5 +1,6 @@
 package com.smart.library.source;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -8,7 +9,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.R;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -28,6 +28,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressLint({"PrivateResource", "ObsoleteSdkInt"})
+@SuppressWarnings({"WeakerAccess", "unused", "unchecked", "SpellCheckingInspection"})
 public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     public static final int STATE_DRAGGING = 1;
     public static final int STATE_SETTLING = 2;
@@ -36,47 +38,47 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     public static final int STATE_HIDDEN = 5;
     public static final int STATE_HALF_EXPANDED = 6;
     public static final int PEEK_HEIGHT_AUTO = -1;
-    private static final float HIDE_THRESHOLD = 0.5f;
-    private static final float HIDE_FRICTION = 0.1f;
-    private boolean fitToContents;
-    private float maximumVelocity;
-    private int peekHeight;
-    private boolean peekHeightAuto;
-    private int peekHeightMin;
-    private int lastPeekHeight;
-    int fitToContentsOffset;
-    int halfExpandedOffset;
-    int collapsedOffset;
-    boolean hideable;
-    private boolean skipCollapsed;
-    int state;
-    ViewDragHelper viewDragHelper;
-    private boolean ignoreEvents;
-    private int lastNestedScrollDy;
-    private boolean nestedScrolled;
-    int parentHeight;
+    protected static final float HIDE_THRESHOLD = 0.5f;
+    protected static final float HIDE_FRICTION = 0.1f;
+    protected boolean fitToContents;
+    protected float maximumVelocity;
+    protected int peekHeight;
+    protected boolean peekHeightAuto;
+    protected int peekHeightMin;
+    protected int lastPeekHeight;
+    protected int fitToContentsOffset;
+    protected int halfExpandedOffset;
+    protected int collapsedOffset;
+    protected boolean hideable;
+    protected boolean skipCollapsed;
+    protected int state;
+    public ViewDragHelper viewDragHelper;
+    protected boolean ignoreEvents;
+    protected int lastNestedScrollDy;
+    protected boolean nestedScrolled;
+    protected int parentHeight;
     public WeakReference<V> viewRef;
     public WeakReference<View> nestedScrollingChildRef;
-    private BottomSheetCallback callback;
-    private VelocityTracker velocityTracker;
-    int activePointerId;
-    private int initialY;
-    boolean touchingScrollingChild;
-    private Map<View, Integer> importantForAccessibilityMap;
-    private final ViewDragHelper.Callback dragCallback;
+    protected BottomSheetCallback callback;
+    protected VelocityTracker velocityTracker;
+    protected int activePointerId;
+    protected int initialY;
+    protected boolean touchingScrollingChild;
+    protected Map<View, Integer> importantForAccessibilityMap;
+    protected final ViewDragHelper.Callback dragCallback;
 
     public STBottomSheetBehavior() {
         this.fitToContents = true;
-        this.state = 4;
+        this.state = STATE_COLLAPSED;
         this.dragCallback = new ViewDragHelper.Callback() {
             public boolean tryCaptureView(@NonNull final View child, final int pointerId) {
-                if (state == 1) {
+                if (state == STATE_DRAGGING) {
                     return false;
                 }
                 if (touchingScrollingChild) {
                     return false;
                 }
-                if (state == 3 && activePointerId == pointerId) {
+                if (state == STATE_EXPANDED && activePointerId == pointerId) {
                     final View scroll = nestedScrollingChildRef.get();
                     if (scroll != null && scroll.canScrollVertically(-1)) {
                         return false;
@@ -90,8 +92,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             }
 
             public void onViewDragStateChanged(final int state) {
-                if (state == 1) {
-                    setStateInternal(1);
+                if (state == STATE_DRAGGING) {
+                    setStateInternal(STATE_DRAGGING);
                 }
             }
 
@@ -101,52 +103,52 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 if (yvel < 0.0f) {
                     if (fitToContents) {
                         top = fitToContentsOffset;
-                        targetState = 3;
+                        targetState = STATE_EXPANDED;
                     } else {
                         final int currentTop = releasedChild.getTop();
                         if (currentTop > halfExpandedOffset) {
                             top = halfExpandedOffset;
-                            targetState = 6;
+                            targetState = STATE_HALF_EXPANDED;
                         } else {
                             top = 0;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         }
                     }
                 } else if (hideable && shouldHide(releasedChild, yvel) && (releasedChild.getTop() > collapsedOffset || Math.abs(xvel) < Math.abs(yvel))) {
                     top = parentHeight;
-                    targetState = 5;
+                    targetState = STATE_HIDDEN;
                 } else if (yvel == 0.0f || Math.abs(xvel) > Math.abs(yvel)) {
                     final int currentTop = releasedChild.getTop();
                     if (fitToContents) {
                         if (Math.abs(currentTop - fitToContentsOffset) < Math.abs(currentTop - collapsedOffset)) {
                             top = fitToContentsOffset;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         } else {
                             top = collapsedOffset;
-                            targetState = 4;
+                            targetState = STATE_COLLAPSED;
                         }
                     } else if (currentTop < halfExpandedOffset) {
                         if (currentTop < Math.abs(currentTop - collapsedOffset)) {
                             top = 0;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         } else {
                             top = halfExpandedOffset;
-                            targetState = 6;
+                            targetState = STATE_HALF_EXPANDED;
                         }
                     } else if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
                         top = halfExpandedOffset;
-                        targetState = 6;
+                        targetState = STATE_HALF_EXPANDED;
                     } else {
                         top = collapsedOffset;
-                        targetState = 4;
+                        targetState = STATE_COLLAPSED;
                     }
                 } else {
                     top = collapsedOffset;
-                    targetState = 4;
+                    targetState = STATE_COLLAPSED;
                 }
                 if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
-                    setStateInternal(2);
-                    ViewCompat.postOnAnimation(releasedChild, (Runnable) new SettleRunnable(releasedChild, targetState));
+                    setStateInternal(STATE_SETTLING);
+                    ViewCompat.postOnAnimation(releasedChild, new SettleRunnable(releasedChild, targetState));
                 } else {
                     setStateInternal(targetState);
                 }
@@ -172,16 +174,16 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     public STBottomSheetBehavior(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         this.fitToContents = true;
-        this.state = 4;
+        this.state = STATE_COLLAPSED;
         this.dragCallback = new ViewDragHelper.Callback() {
             public boolean tryCaptureView(@NonNull final View child, final int pointerId) {
-                if (state == 1) {
+                if (state == STATE_DRAGGING) {
                     return false;
                 }
                 if (touchingScrollingChild) {
                     return false;
                 }
-                if (state == 3 && activePointerId == pointerId) {
+                if (state == STATE_EXPANDED && activePointerId == pointerId) {
                     final View scroll = nestedScrollingChildRef.get();
                     if (scroll != null && scroll.canScrollVertically(-1)) {
                         return false;
@@ -195,8 +197,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             }
 
             public void onViewDragStateChanged(final int state) {
-                if (state == 1) {
-                    setStateInternal(1);
+                if (state == STATE_DRAGGING) {
+                    setStateInternal(STATE_DRAGGING);
                 }
             }
 
@@ -206,52 +208,52 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 if (yvel < 0.0f) {
                     if (fitToContents) {
                         top = fitToContentsOffset;
-                        targetState = 3;
+                        targetState = STATE_EXPANDED;
                     } else {
                         final int currentTop = releasedChild.getTop();
                         if (currentTop > halfExpandedOffset) {
                             top = halfExpandedOffset;
-                            targetState = 6;
+                            targetState = STATE_HALF_EXPANDED;
                         } else {
                             top = 0;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         }
                     }
                 } else if (hideable && shouldHide(releasedChild, yvel) && (releasedChild.getTop() > collapsedOffset || Math.abs(xvel) < Math.abs(yvel))) {
                     top = parentHeight;
-                    targetState = 5;
+                    targetState = STATE_HIDDEN;
                 } else if (yvel == 0.0f || Math.abs(xvel) > Math.abs(yvel)) {
                     final int currentTop = releasedChild.getTop();
                     if (fitToContents) {
                         if (Math.abs(currentTop - fitToContentsOffset) < Math.abs(currentTop - collapsedOffset)) {
                             top = fitToContentsOffset;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         } else {
                             top = collapsedOffset;
-                            targetState = 4;
+                            targetState = STATE_COLLAPSED;
                         }
                     } else if (currentTop < halfExpandedOffset) {
                         if (currentTop < Math.abs(currentTop - collapsedOffset)) {
                             top = 0;
-                            targetState = 3;
+                            targetState = STATE_EXPANDED;
                         } else {
                             top = halfExpandedOffset;
-                            targetState = 6;
+                            targetState = STATE_HALF_EXPANDED;
                         }
                     } else if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
                         top = halfExpandedOffset;
-                        targetState = 6;
+                        targetState = STATE_HALF_EXPANDED;
                     } else {
                         top = collapsedOffset;
-                        targetState = 4;
+                        targetState = STATE_COLLAPSED;
                     }
                 } else {
                     top = collapsedOffset;
-                    targetState = 4;
+                    targetState = STATE_COLLAPSED;
                 }
                 if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
-                    setStateInternal(2);
-                    ViewCompat.postOnAnimation(releasedChild, (Runnable) new SettleRunnable(releasedChild, targetState));
+                    setStateInternal(STATE_SETTLING);
+                    ViewCompat.postOnAnimation(releasedChild, new SettleRunnable(releasedChild, targetState));
                 } else {
                     setStateInternal(targetState);
                 }
@@ -272,46 +274,46 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 return collapsedOffset;
             }
         };
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
-        final TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
+        final TypedArray a = context.obtainStyledAttributes(attrs, android.support.design.R.styleable.BottomSheetBehavior_Layout);
+        final TypedValue value = a.peekValue(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
         if (value != null && value.data == -1) {
             this.setPeekHeight(value.data);
         } else {
-            this.setPeekHeight(a.getDimensionPixelSize(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
+            this.setPeekHeight(a.getDimensionPixelSize(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
         }
-        this.setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
-//        this.setFitToContents(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));// todo
+        this.setHideable(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+        // this.setFitToContents(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
         this.setFitToContents(true);
-        this.setSkipCollapsed(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
+        this.setSkipCollapsed(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
         a.recycle();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         this.maximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
     public Parcelable onSaveInstanceState(final CoordinatorLayout parent, final V child) {
-        return (Parcelable) new SavedState(super.onSaveInstanceState(parent, (V) child), this.state);
+        return new SavedState(super.onSaveInstanceState(parent, child), this.state);
     }
 
     public void onRestoreInstanceState(final CoordinatorLayout parent, final V child, final Parcelable state) {
         final SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(parent, (V) child, ss.getSuperState());
-        if (ss.state == 1 || ss.state == 2) {
-            this.state = 4;
+        super.onRestoreInstanceState(parent, child, ss.getSuperState());
+        if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
+            this.state = STATE_COLLAPSED;
         } else {
             this.state = ss.state;
         }
     }
 
     public boolean onLayoutChild(final CoordinatorLayout parent, final V child, final int layoutDirection) {
-        if (ViewCompat.getFitsSystemWindows((View) parent) && !ViewCompat.getFitsSystemWindows((View) child)) {
+        if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.setFitsSystemWindows(true);
         }
         final int savedTop = child.getTop();
-        parent.onLayoutChild((View) child, layoutDirection);
+        parent.onLayoutChild(child, layoutDirection);
         this.parentHeight = parent.getHeight();
         if (this.peekHeightAuto) {
             if (this.peekHeightMin == 0) {
-                this.peekHeightMin = parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
+                this.peekHeightMin = parent.getResources().getDimensionPixelSize(android.support.design.R.dimen.design_bottom_sheet_peek_height_min);
             }
             this.lastPeekHeight = Math.max(this.peekHeightMin, this.parentHeight - parent.getWidth() * 9 / 16);
         } else {
@@ -320,22 +322,22 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.fitToContentsOffset = Math.max(0, this.parentHeight - child.getHeight());
         this.halfExpandedOffset = setHalfExpandedOffset(this.parentHeight / 2);
         this.calculateCollapsedOffset();
-        if (this.state == 3) {
-            ViewCompat.offsetTopAndBottom((View) child, this.getExpandedOffset());
-        } else if (this.state == 6) {
-            ViewCompat.offsetTopAndBottom((View) child, this.halfExpandedOffset);
-        } else if (this.hideable && this.state == 5) {
-            ViewCompat.offsetTopAndBottom((View) child, this.parentHeight);
-        } else if (this.state == 4) {
-            ViewCompat.offsetTopAndBottom((View) child, this.collapsedOffset);
-        } else if (this.state == 1 || this.state == 2) {
-            ViewCompat.offsetTopAndBottom((View) child, savedTop - child.getTop());
+        if (this.state == STATE_EXPANDED) {
+            ViewCompat.offsetTopAndBottom(child, this.getExpandedOffset());
+        } else if (this.state == STATE_HALF_EXPANDED) {
+            ViewCompat.offsetTopAndBottom(child, this.halfExpandedOffset);
+        } else if (this.hideable && this.state == STATE_HIDDEN) {
+            ViewCompat.offsetTopAndBottom(child, this.parentHeight);
+        } else if (this.state == STATE_COLLAPSED) {
+            ViewCompat.offsetTopAndBottom(child, this.collapsedOffset);
+        } else if (this.state == STATE_DRAGGING || this.state == STATE_SETTLING) {
+            ViewCompat.offsetTopAndBottom(child, savedTop - child.getTop());
         }
         if (this.viewDragHelper == null) {
-            this.viewDragHelper = ViewDragHelper.create((ViewGroup) parent, this.dragCallback);
+            this.viewDragHelper = ViewDragHelper.create(parent, this.dragCallback);
         }
-        this.viewRef = new WeakReference<V>(child);
-        this.nestedScrollingChildRef = new WeakReference<View>(this.findScrollingChild(child));
+        this.viewRef = new WeakReference<>(child);
+        this.nestedScrollingChildRef = new WeakReference<>(this.findScrollingChild(child));
         return true;
     }
 
@@ -375,7 +377,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                     this.activePointerId = event.getPointerId(event.getActionIndex());
                     this.touchingScrollingChild = true;
                 }
-                this.ignoreEvents = (this.activePointerId == -1 && !parent.isPointInChildBounds((View) child, initialX, this.initialY));
+                this.ignoreEvents = (this.activePointerId == -1 && !parent.isPointInChildBounds(child, initialX, this.initialY));
                 break;
             }
         }
@@ -391,7 +393,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             return false;
         }
         final int action = event.getActionMasked();
-        if (this.state == 1 && action == 0) {
+        if (this.state == STATE_DRAGGING && action == 0) {
             return true;
         }
         if (this.viewDragHelper != null) {
@@ -405,7 +407,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
         this.velocityTracker.addMovement(event);
         if (action == 2 && !this.ignoreEvents && Math.abs(this.initialY - event.getY()) > this.viewDragHelper.getTouchSlop()) {
-            this.viewDragHelper.captureChildView((View) child, event.getPointerId(event.getActionIndex()));
+            this.viewDragHelper.captureChildView(child, event.getPointerId(event.getActionIndex()));
         }
         return !this.ignoreEvents;
     }
@@ -429,20 +431,20 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         if (dy > 0) {
             if (newTop < this.getExpandedOffset()) {
                 consumed[1] = currentTop - this.getExpandedOffset();
-                ViewCompat.offsetTopAndBottom((View) child, -consumed[1]);
-                this.setStateInternal(3);
+                ViewCompat.offsetTopAndBottom(child, -consumed[1]);
+                this.setStateInternal(STATE_EXPANDED);
             } else {
-                ViewCompat.offsetTopAndBottom((View) child, -(consumed[1] = dy));
-                this.setStateInternal(1);
+                ViewCompat.offsetTopAndBottom(child, -(consumed[1] = dy));
+                this.setStateInternal(STATE_DRAGGING);
             }
         } else if (dy < 0 && !target.canScrollVertically(-1)) {
             if (newTop <= this.collapsedOffset || this.hideable) {
-                ViewCompat.offsetTopAndBottom((View) child, -(consumed[1] = dy));
-                this.setStateInternal(1);
+                ViewCompat.offsetTopAndBottom(child, -(consumed[1] = dy));
+                this.setStateInternal(STATE_DRAGGING);
             } else {
                 consumed[1] = currentTop - this.collapsedOffset;
-                ViewCompat.offsetTopAndBottom((View) child, -consumed[1]);
-                this.setStateInternal(4);
+                ViewCompat.offsetTopAndBottom(child, -consumed[1]);
+                this.setStateInternal(STATE_COLLAPSED);
             }
         }
         this.dispatchOnSlide(child.getTop());
@@ -452,7 +454,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
 
     public void onStopNestedScroll(@NonNull final CoordinatorLayout coordinatorLayout, @NonNull final V child, @NonNull final View target, final int type) {
         if (child.getTop() == this.getExpandedOffset()) {
-            this.setStateInternal(3);
+            this.setStateInternal(STATE_EXPANDED);
             return;
         }
         if (target != this.nestedScrollingChildRef.get() || !this.nestedScrolled) {
@@ -462,42 +464,42 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         int targetState;
         if (this.lastNestedScrollDy > 0) {
             top = this.getExpandedOffset();
-            targetState = 3;
+            targetState = STATE_EXPANDED;
         } else if (this.hideable && this.shouldHide(child, this.getYVelocity())) {
             top = this.parentHeight;
-            targetState = 5;
+            targetState = STATE_HIDDEN;
         } else if (this.lastNestedScrollDy == 0) {
             final int currentTop = child.getTop();
             if (this.fitToContents) {
                 if (Math.abs(currentTop - this.fitToContentsOffset) < Math.abs(currentTop - this.collapsedOffset)) {
                     top = this.fitToContentsOffset;
-                    targetState = 3;
+                    targetState = STATE_EXPANDED;
                 } else {
                     top = this.collapsedOffset;
-                    targetState = 4;
+                    targetState = STATE_COLLAPSED;
                 }
             } else if (currentTop < this.halfExpandedOffset) {
                 if (currentTop < Math.abs(currentTop - this.collapsedOffset)) {
                     top = 0;
-                    targetState = 3;
+                    targetState = STATE_EXPANDED;
                 } else {
                     top = this.halfExpandedOffset;
-                    targetState = 6;
+                    targetState = STATE_HALF_EXPANDED;
                 }
             } else if (Math.abs(currentTop - this.halfExpandedOffset) < Math.abs(currentTop - this.collapsedOffset)) {
                 top = this.halfExpandedOffset;
-                targetState = 6;
+                targetState = STATE_HALF_EXPANDED;
             } else {
                 top = this.collapsedOffset;
-                targetState = 4;
+                targetState = STATE_COLLAPSED;
             }
         } else {
             top = this.collapsedOffset;
-            targetState = 4;
+            targetState = STATE_COLLAPSED;
         }
-        if (this.viewDragHelper.smoothSlideViewTo((View) child, child.getLeft(), top)) {
-            this.setStateInternal(2);
-            ViewCompat.postOnAnimation((View) child, (Runnable) new SettleRunnable(child, targetState));
+        if (this.viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
+            this.setStateInternal(STATE_SETTLING);
+            ViewCompat.postOnAnimation(child, new SettleRunnable(child, targetState));
         } else {
             this.setStateInternal(targetState);
         }
@@ -505,7 +507,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     }
 
     public boolean onNestedPreFling(@NonNull final CoordinatorLayout coordinatorLayout, @NonNull final V child, @NonNull final View target, final float velocityX, final float velocityY) {
-        return target == this.nestedScrollingChildRef.get() && (this.state != 3 || super.onNestedPreFling(coordinatorLayout, (V) child, target, velocityX, velocityY));
+        return target == this.nestedScrollingChildRef.get() && (this.state != 3 || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
     }
 
     public boolean isFitToContents() {
@@ -520,7 +522,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         if (this.viewRef != null) {
             this.calculateCollapsedOffset();
         }
-        this.setStateInternal((this.fitToContents && this.state == 6) ? 3 : this.state);
+        this.setStateInternal((this.fitToContents && this.state == STATE_HALF_EXPANDED) ? 3 : this.state);
     }
 
     public void setPeekHeight(final int peekHeight) {
@@ -536,7 +538,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             this.collapsedOffset = this.parentHeight - peekHeight;
             layout = true;
         }
-        if (layout && this.state == 4 && this.viewRef != null) {
+        if (layout && this.state == STATE_COLLAPSED && this.viewRef != null) {
             final V view = this.viewRef.get();
             if (view != null) {
                 view.requestLayout();
@@ -568,12 +570,12 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.callback = callback;
     }
 
-    public final void setState(final int state) {
+    public void setState(final int state) {
         if (state == this.state) {
             return;
         }
         if (this.viewRef == null) {
-            if (state == 4 || state == 3 || state == 6 || (this.hideable && state == 5)) {
+            if (state == STATE_COLLAPSED || state == STATE_EXPANDED || state == STATE_HALF_EXPANDED || (this.hideable && state == STATE_HIDDEN)) {
                 this.state = state;
             }
             return;
@@ -583,8 +585,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             return;
         }
         final ViewParent parent = child.getParent();
-        if (parent != null && parent.isLayoutRequested() && ViewCompat.isAttachedToWindow((View) child)) {
-            child.post((Runnable) new Runnable() {
+        if (parent != null && parent.isLayoutRequested() && ViewCompat.isAttachedToWindow(child)) {
+            child.post(new Runnable() {
                 @Override
                 public void run() {
                     startSettlingAnimation(child, state);
@@ -599,14 +601,14 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return this.state;
     }
 
-    void setStateInternal(final int state) {
+    public void setStateInternal(final int state) {
         if (this.state == state) {
             return;
         }
         this.state = state;
-        if (state == 6 || state == 3) {
+        if (state == STATE_HALF_EXPANDED || state == STATE_EXPANDED) {
             this.updateImportantForAccessibility(true);
-        } else if (state == 5 || state == 4) {
+        } else if (state == STATE_HIDDEN || state == STATE_COLLAPSED) {
             this.updateImportantForAccessibility(false);
         }
         final View bottomSheet = this.viewRef.get();
@@ -623,7 +625,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
     }
 
-    private void reset() {
+    protected void reset() {
         this.activePointerId = -1;
         if (this.velocityTracker != null) {
             this.velocityTracker.recycle();
@@ -631,7 +633,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
     }
 
-    boolean shouldHide(final View child, final float yvel) {
+    protected boolean shouldHide(final View child, final float yvel) {
         if (this.skipCollapsed) {
             return true;
         }
@@ -658,7 +660,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return null;
     }
 
-    private float getYVelocity() {
+    protected float getYVelocity() {
         if (this.velocityTracker == null) {
             return 0.0f;
         }
@@ -666,21 +668,21 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return this.velocityTracker.getYVelocity(this.activePointerId);
     }
 
-    private int getExpandedOffset() {
+    protected int getExpandedOffset() {
         return this.fitToContents ? this.fitToContentsOffset : 0;
     }
 
-    void startSettlingAnimation(final View child, int state) {
+    public void startSettlingAnimation(final View child, int state) {
         int top;
-        if (state == 4) {
+        if (state == STATE_COLLAPSED) {
             top = this.collapsedOffset;
-        } else if (state == 6) {
+        } else if (state == STATE_HALF_EXPANDED) {
             top = this.halfExpandedOffset;
             if (this.fitToContents && top <= this.fitToContentsOffset) {
-                state = 3;
+                state = STATE_EXPANDED;
                 top = this.fitToContentsOffset;
             }
-        } else if (state == 3) {
+        } else if (state == STATE_EXPANDED) {
             top = this.getExpandedOffset();
         } else {
             if (!this.hideable || state != 5) {
@@ -689,14 +691,14 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             top = this.parentHeight;
         }
         if (this.viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
-            this.setStateInternal(2);
-            ViewCompat.postOnAnimation(child, (Runnable) new SettleRunnable(child, state));
+            this.setStateInternal(STATE_SETTLING);
+            ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
         } else {
             this.setStateInternal(state);
         }
     }
 
-    void dispatchOnSlide(final int top) {
+    protected void dispatchOnSlide(final int top) {
         final View bottomSheet = this.viewRef.get();
         if (bottomSheet != null && this.callback != null) {
             if (top > this.collapsedOffset) {
@@ -708,7 +710,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     }
 
     @VisibleForTesting
-    int getPeekHeightMin() {
+    protected int getPeekHeightMin() {
         return this.peekHeightMin;
     }
 
@@ -724,7 +726,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return (STBottomSheetBehavior<V>) behavior;
     }
 
-    private void updateImportantForAccessibility(final boolean expanded) {
+    protected void updateImportantForAccessibility(final boolean expanded) {
         if (this.viewRef == null) {
             return;
         }
@@ -738,14 +740,14 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             if (this.importantForAccessibilityMap != null) {
                 return;
             }
-            this.importantForAccessibilityMap = new HashMap<View, Integer>(childCount);
+            this.importantForAccessibilityMap = new HashMap<>(childCount);
         }
         for (int i = 0; i < childCount; ++i) {
             final View child = parent.getChildAt(i);
             if (child != this.viewRef.get()) {
                 if (!expanded) {
                     if (this.importantForAccessibilityMap != null && this.importantForAccessibilityMap.containsKey(child)) {
-                        ViewCompat.setImportantForAccessibility(child, (int) this.importantForAccessibilityMap.get(child));
+                        ViewCompat.setImportantForAccessibility(child, this.importantForAccessibilityMap.get(child));
                     }
                 } else {
                     if (Build.VERSION.SDK_INT >= 16) {
@@ -766,9 +768,9 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         public abstract void onSlide(@NonNull final View p0, final float p1);
     }
 
-    private class SettleRunnable implements Runnable {
-        private final View view;
-        private final int targetState;
+    protected class SettleRunnable implements Runnable {
+        protected final View view;
+        protected final int targetState;
 
         SettleRunnable(final View view, final int targetState) {
             this.view = view;
@@ -778,7 +780,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         @Override
         public void run() {
             if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
-                ViewCompat.postOnAnimation(this.view, (Runnable) this);
+                ViewCompat.postOnAnimation(this.view, this);
             } else {
                 setStateInternal(this.targetState);
             }
@@ -809,7 +811,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
 
         static {
-            CREATOR = (Parcelable.Creator) new Parcelable.ClassLoaderCreator<SavedState>() {
+            CREATOR = new ClassLoaderCreator<SavedState>() {
                 public SavedState createFromParcel(final Parcel in, final ClassLoader loader) {
                     return new SavedState(in, loader);
                 }

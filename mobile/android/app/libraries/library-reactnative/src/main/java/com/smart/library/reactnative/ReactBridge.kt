@@ -6,7 +6,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
 @Suppress("unused")
-class ReactBridge(reactContext: ReactApplicationContext?) : ReactContextBaseJavaModule(reactContext) {
+class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
 
     override fun getName(): String {

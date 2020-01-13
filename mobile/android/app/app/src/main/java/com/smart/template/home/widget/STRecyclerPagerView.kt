@@ -507,7 +507,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                             ?: if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) {
                                 STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, false)
                             } else {
-                                STDividerItemDecoration(context, recyclerViewOrientation).apply { setDrawable(ContextCompat.getDrawable(context, R.drawable.st_drawable_horizontal_line_e5e5e5_margin_16dp)) }
+                                STDividerItemDecoration(context, recyclerViewOrientation).apply {
+                                    ContextCompat.getDrawable(context, R.drawable.st_drawable_horizontal_line_e5e5e5_margin_16dp)?.let {
+                                        setDrawable(it)
+                                    }
+                                }
                             }
             recyclerView.addItemDecoration(itemDecoration)
 

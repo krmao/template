@@ -44,9 +44,9 @@ class BottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: 
     }
 
     fun updateScrollingChild() {
-        (mViewRef.get() as? View)?.let {
+        (viewRef.get() as? View)?.let {
             val scrollingChild = findScrollingChild(it)
-            mNestedScrollingChildRef = WeakReference<View>(scrollingChild)
+            nestedScrollingChildRef = WeakReference<View>(scrollingChild)
         }
     }
 

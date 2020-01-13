@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.smart.library.util.STToastUtil
 
-class ReactToastComponent(reactContext: ReactApplicationContext?) : ReactContextBaseJavaModule(reactContext) {
+class ReactToastComponent(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     override fun getName(): String {
         return "ToastUtil"

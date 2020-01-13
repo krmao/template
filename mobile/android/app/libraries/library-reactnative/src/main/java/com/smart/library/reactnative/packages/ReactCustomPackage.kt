@@ -11,14 +11,14 @@ import com.smart.library.reactnative.components.ReactToastComponent
 
 class ReactCustomPackage : ReactPackage {
 
-    override fun createNativeModules(reactContext: ReactApplicationContext?): MutableList<NativeModule> {
+    override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
         return arrayListOf(
                 ReactToastComponent(reactContext),
                 ReactBridge(reactContext)
         )
     }
 
-    override fun createViewManagers(reactContext: ReactApplicationContext?): MutableList<ViewManager<View, ReactShadowNode<*>>> {
+    override fun createViewManagers(reactContext: ReactApplicationContext): MutableList<ViewManager<View, ReactShadowNode<*>>> {
         return arrayListOf()
     }
 }

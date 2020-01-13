@@ -1,3 +1,7 @@
+# upgrade
+
+https://react-native-community.github.io/upgrade-helper/?from=0.55.4&to=0.59.10
+
 ### 使用 npm install 时报错
 
 [root@localhost helloworld]# npm install forever -g

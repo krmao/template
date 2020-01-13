@@ -5,7 +5,7 @@ import android.content.Intent
 import android.text.TextUtils
 import com.facebook.react.bridge.Promise
 import com.smart.library.util.*
-import com.smart.library.util.map.location.STLocationManager
+// import com.smart.library.util.map.location.STLocationManager
 import com.smart.template.library.user.STUserManager
 
 /**
@@ -88,7 +88,7 @@ class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, U
                         return@Runnable
                     }
                     "getCacheLocation" -> {
-                        promise?.resolve(RNResult.successJson(STLocationManager.cacheLocation))
+                        // promise?.resolve(RNResult.successJson(STLocationManager.cacheLocation))
                         return@Runnable
                     }
                     "getUserInfo" -> {

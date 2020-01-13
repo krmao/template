@@ -16,9 +16,6 @@ import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
-import com.smart.library.map.layer.STMapView
-import com.smart.library.map.model.STLatLng
-import com.smart.library.map.model.STMapType
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.image.STImageManager
@@ -29,8 +26,8 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapHelper
 import com.smart.template.R
-import com.smart.template.widget.STCheckBoxGroupView
-import com.smart.template.widget.STRecyclerPagerView
+import com.smart.template.home.widget.STCheckBoxGroupView
+import com.smart.template.home.widget.STRecyclerPagerView
 import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
 import org.jetbrains.anko.async
@@ -39,17 +36,9 @@ import org.jetbrains.anko.async
 class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private val handler: Handler = Handler()
-    private val mapView: STMapView by lazy { mapBaiduView }
-    private var locationLatLng: STLatLng? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
-
-        // init map -- level 1
-        mapView.initialize(mapType = STMapType.BAIDU)
-        mapView.onCreate(this, savedInstanceState)
-        mapView.setOnLocationChangedListener { locationLatLng = it }
 
         // init bottomSheet behavior -- level 2
         val bottomSheetParentHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
@@ -95,22 +84,18 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
     }
 
     @SuppressLint("SetTextI18n")

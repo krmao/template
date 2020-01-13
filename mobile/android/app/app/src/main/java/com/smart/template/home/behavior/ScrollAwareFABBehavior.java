@@ -51,6 +51,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
         mBottomSheetBehaviorRef = null;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child,
                                        final View directTargetChild, final View target, final int nestedScrollAxes) {

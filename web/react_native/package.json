@@ -1,17 +1,28 @@
 {
-  "name": "template-react",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
-  },
-  "dependencies": {
-    "eslint": "6.8.0",
-    "react": "16.3.1",
-    "react-native": "0.55.4",
-    "react-navigation": "^2.0.2"
-  },
-  "localDependencies": {
-    "metro": "../../../../smart-metro/packages-release/metro"
-  }
+    "name": "template-react",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node node_modules/react-native/local-cli/cli.js start --port=5387",
+        "bundle-ios": "rm -rf ./build/bundle/ios && mkdir ./build/bundle/ios             && react-native   bundle  --platform ios      --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/ios/index.ios.bundle --assets-dest ./build/bundle/ios",
+        "bundle-android": "rm -rf ./build/bundle/android && mkdir ./build/bundle/android && react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/android/index.android.bundle --assets-dest ./build/bundle/android",
+        "eslint": "eslint --fix src/",
+        "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
+    },
+    "dependencies": {
+        "eslint": "6.8.0",
+        "react": "16.12.0",
+        "react-native": "0.61.5",
+        "react-native-gesture-handler": "^1.5.3",
+        "react-navigation": "^4.0.10"
+    },
+    "localDependencies": {
+        "metro": "../../../../smart-metro/packages-release/metro"
+    },
+    "devDependencies": {
+        "babel-eslint": "^10.0.3",
+        "eslint-plugin-react": "^7.17.0",
+        "eslint-plugin-react-native": "^3.8.1",
+        "prettier": "^1.19.1"
+    }
 }

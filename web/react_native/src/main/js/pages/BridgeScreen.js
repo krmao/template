@@ -2,19 +2,20 @@ import React from "react";
 import {DeviceEventEmitter, NativeModules, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 export default class BridgeScreen extends React.Component {
-
-    static navigationOptions = ({navigation}) => ( {
-        title: "双向交互测试",
-        headerRight: <View/>
-    });
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: "双向交互测试",
+            headerRight: <View />
+        };
+    };
 
     constructor() {
         super();
 
         this.state = {
-            "dataToNative": 0,
-            "resultFromNative": "null"
-        }
+            dataToNative: 0,
+            resultFromNative: "null"
+        };
     }
 
     componentWillMount() {
@@ -27,9 +28,9 @@ export default class BridgeScreen extends React.Component {
 
         this.NativeManager = NativeModules.NativeManager;
 
-
-        var CXToastUtil = NativeModules.CXToastUtil;
-        this.native_listener = DeviceEventEmitter.addListener('native_event', (event) => {
+        let CXToastUtil = NativeModules.CXToastUtil;
+        // eslint-disable-next-line camelcase
+        this.native_listener = DeviceEventEmitter.addListener("native_event", (event) => {
             console.warn("监听到有数据从native传递过来(这里不会重新渲染界面) -> " + event);
             //CXToastUtil.showWithDurationAndGravity(event, CXToastUtil.BOTTOM, CXToastUtil.LENGTH_SHORT);
         });
@@ -48,7 +49,7 @@ export default class BridgeScreen extends React.Component {
     shouldComponentUpdate() {
         let shouldComponentUpdate = this.props.native_params % 2 !== 0;
         console.debug("shouldComponentUpdate(" + shouldComponentUpdate + ") -> " + this.props.native_params);
-        return shouldComponentUpdate
+        return shouldComponentUpdate;
     }
 
     componentDidUpdate() {
@@ -65,18 +66,17 @@ export default class BridgeScreen extends React.Component {
 
         return (
             <View style={styles.container}>
+                <StatusBar translucent={false} />
 
-                <StatusBar translucent={false}/>
-
-                <TouchableOpacity onPress={() => {
-                    this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1).toString())
-                        .then(
+                <TouchableOpacity
+                    onPress={() => {
+                        this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? 1 : -1) + 1).toString()).then(
                             (successResult) => {
                                 console.debug("successResult -> " + successResult);
                                 this.setState({
-                                    "dataToNative": Number(successResult),
-                                    "resultFromNative": successResult
-                                })
+                                    dataToNative: Number(successResult),
+                                    resultFromNative: successResult
+                                });
                             },
                             (errorCode, errorMsg, error) => {
                                 console.debug("errorCode -> " + errorCode);
@@ -84,20 +84,20 @@ export default class BridgeScreen extends React.Component {
                                 console.debug("error -> ");
                                 console.warn(error);
                             }
-                        )
-                }}>
-                    <Text style={styles.button}>{"点击调用 native 方法并回调(每次肯定是正数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? (1) : -1 ) + 1)}</Text>
+                        );
+                    }}>
+                    <Text style={styles.button}>{"点击调用 native 方法并回调(每次肯定是正数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? 1 : -1) + 1)}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => {
-                    this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100).toString())
-                        .then(
+                <TouchableOpacity
+                    onPress={() => {
+                        this.NativeManager.callNative((this.state.dataToNative * (this.state.dataToNative > 0 ? -1 : 1) - 100).toString()).then(
                             (successResult) => {
                                 console.debug("successResult -> " + successResult);
                                 this.setState({
-                                    "dataToNative": Number(successResult),
-                                    "resultFromNative": successResult
-                                })
+                                    dataToNative: Number(successResult),
+                                    resultFromNative: successResult
+                                });
                             },
                             (errorCode, errorMsg, error) => {
                                 console.debug("errorCode -> " + errorCode);
@@ -105,11 +105,10 @@ export default class BridgeScreen extends React.Component {
                                 console.debug("error -> ");
                                 console.warn(error);
                             }
-                        )
-                }}>
-                    <Text style={styles.button}>{"点击调用 native 方法 , 然后通过 native 调用 RN 方法(每次肯定是负数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? (-1) : 1 ) - 100)}</Text>
+                        );
+                    }}>
+                    <Text style={styles.button}>{"点击调用 native 方法 , 然后通过 native 调用 RN 方法(每次肯定是负数):" + (this.state.dataToNative * (this.state.dataToNative > 0 ? -1 : 1) - 100)}</Text>
                 </TouchableOpacity>
-
 
                 <Text style={styles.content}>调用 native 后的返回结果: {this.state.resultFromNative}</Text>
                 <Text style={styles.content}>当前 REACT-NATIVE 启动参数: {this.props.native_params}</Text>
@@ -119,31 +118,30 @@ export default class BridgeScreen extends React.Component {
             </View>
         );
     }
-
 }
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: "blue",
+        color: "white",
+        fontSize: 20,
+        fontWeight: "bold",
+        padding: 10,
+        textAlign: "center"
+    },
     container: {
+        backgroundColor: "#D3D3D3",
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#D3D3D3'
+        justifyContent: "center"
     },
     content: {
+        color: "red",
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'red',
-        textAlign: 'center',
+        fontWeight: "bold",
         margin: 10,
+        textAlign: "center"
     },
     desc: {
         fontSize: 12,
-        textAlign: 'center'
-    },
-    button: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center',
-        padding: 10,
-        backgroundColor: 'blue',
-    },
+        textAlign: "center"
+    }
 });

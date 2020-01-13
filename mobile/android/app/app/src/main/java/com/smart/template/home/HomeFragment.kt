@@ -8,10 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.STBaseFragment
-import com.smart.library.map.layer.STDialogManager
+import com.smart.library.util.STDialogManager
+import com.smart.library.util.STLogUtil
+import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
-import com.smart.template.home.test.*
+import com.smart.template.home.test.PullToNextPageFragment
+import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
+import com.smart.template.home.test.RecyclerViewSnapTopFragment
+import com.smart.template.home.test.VideoPlayerFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : STBaseFragment() {
@@ -27,10 +32,14 @@ class HomeFragment : STBaseFragment() {
             startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))
         }
         baiduMap.setOnClickListener {
-            MapFragment.goTo(activity, useBaidu = true)
+            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment") {
+                STLogUtil.w("home", it.toString())
+            }
         }
         gaodeMap.setOnClickListener {
-            MapFragment.goTo(activity, useBaidu = false)
+            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment") {
+                STLogUtil.w("home", it.toString())
+            }
         }
         dialogText.setOnClickListener {
             val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context, "规划中...", canceledOnTouchOutside = true)

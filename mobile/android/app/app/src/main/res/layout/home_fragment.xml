@@ -13,7 +13,7 @@
         android:layout_weight="3"
         android:background="@color/blue_grey"
         android:orientation="vertical"
-        tools:ignore="HardcodedText">
+        tools:ignore="HardcodedText,UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +28,7 @@
                 android:background="@android:drawable/editbox_background_normal"
                 android:gravity="center_vertical"
                 android:hint="rtmp url"
+                android:importantForAutofill="no"
                 android:inputType="textUri"
                 android:padding="5dp"
                 android:singleLine="true"
@@ -47,7 +48,14 @@
                 <TableRow>
 
                     <Button
-                        android:id="@+id/text9"
+                        android:id="@+id/playVideo"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="ijk mp4" />
+
+                    <Button
+                        android:id="@+id/ijkPullRtmp"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -55,33 +63,18 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/text10"
+                        android:id="@+id/ijkSettings"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="ijk settings"
                         app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/text11"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="yesea push rtmp" />
                 </TableRow>
 
                 <TableRow>
 
                     <Button
-                        android:id="@+id/text2"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="状态栏高度 dp"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/text1"
+                        android:id="@+id/dialogText"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -89,17 +82,32 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/text4"
+                        android:id="@+id/dialogLoading"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="dialog loading" />
+
+                    <Button
+                        android:id="@+id/flutterHotUpdate"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="flutter热更新" />
+
                 </TableRow>
 
                 <TableRow>
 
                     <Button
-                        android:id="@+id/text5"
+                        android:id="@+id/yeseaPushRtmp"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="yesea push rtmp" />
+
+                    <Button
+                        android:id="@+id/slideToNextPage"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -107,158 +115,43 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/text6"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="滚动页面"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/text3"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="状态栏高度 px" />
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
-                        android:id="@+id/text8"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="recycler top"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/text7"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="recycler transfer"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/tv_play_video"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="ijk mp4" />
-
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
-                        android:id="@+id/tv_play_video_normal"
+                        android:id="@+id/playVideoNormal"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="play video normal"
                         app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/resetPagerData"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pager reset"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/clearPagerData"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pager clear" />
                 </TableRow>
 
                 <TableRow>
 
                     <Button
-                        android:id="@+id/pagerEmptyNetworkError"
+                        android:id="@+id/recyclerItemSnapTop"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pagerEmptyError"
+                        android:text="recycler item snap top"
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/pagerEmptyLoading"
+                        android:id="@+id/recyclersTransferItem"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pagerEmptyLoading"
+                        android:text="recyclers transfer item"
                         app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/pagerEmpty"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pagerEmpty" />
-
                 </TableRow>
 
                 <TableRow>
 
                     <Button
-                        android:id="@+id/pagerRemoveLast"
+                        android:id="@+id/bottomSheet"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="pagerRemoveLast"
+                        android:text="bottomSheet"
                         app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/pagerAdd"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pagerAdd"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/pagerRemoveAll"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pagerRemoveAll"
-                        app:backgroundTint="@color/blue_600" />
-
-
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
-                        android:id="@+id/pagerScroll7000"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pager scroll 7000"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/pagerScroll0"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pager scroll 0"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/pagerScroll1000"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="pager scroll 1000" />
-
-                </TableRow>
-
-                <TableRow>
 
                     <Button
                         android:id="@+id/baiduMap"
@@ -276,136 +169,8 @@
                         android:text="gaode map"
                         app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/dialogLoading"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="dialog loading" />
-
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
-                        android:id="@+id/behavior"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="behavior"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/bottomSheet"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="bottomSheet"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/behaviorScrolling"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="behaviorScrolling" />
-
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
-                        android:id="@+id/horizontalPager"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="horizontalPager"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" />
-
                 </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/descTv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/yellow_200"
-                android:padding="3dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/snapTv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/yellow_700"
-                android:padding="3dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="8dp"
-            android:background="#E2E2E2" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-
-            <com.smart.template.widget.STCheckBoxGroupView
-                android:id="@+id/checkBoxGroupView"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginTop="8dp"
-            android:background="#E2E2E2" />
-
-        <com.smart.template.widget.STRecyclerPagerView
-            android:id="@+id/pagerRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/light_blue"
-            tools:ignore="NestedWeights" />
-    </LinearLayout>
 </LinearLayout>

@@ -49,7 +49,7 @@ import com.smart.library.util.STSystemUtil
     private val snapGravityHelper by lazy {
         STSnapGravityHelper(
                 Gravity.TOP,
-                object : STSnapGravityHelper.SnapListener {
+                object : STSnapHelper.SnapListener {
                     override fun onSnap(position: Int) {
                         STLogUtil.e("Snapped", position.toString())
                     }
@@ -78,7 +78,7 @@ import com.smart.library.util.STSystemUtil
             adapterWrapper.add("insert at 0 at ${STTimeUtil.HmsS(System.currentTimeMillis())}", 0)
         }
         disable.setOnClickListener {
-            adapterWrapper.enableLoadMore = !adapterWrapper.enableLoadMore
+            adapterWrapper.enable = !adapterWrapper.enable
         }
         showFailure.setOnClickListener {
             adapterWrapper.showLoadFailure()
@@ -134,7 +134,7 @@ import com.smart.library.util.STSystemUtil
 @SuppressLint("SetTextI18n")
 class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val tag = "EmptyLoading"
+    private val tag = "STEmptyLoadingWrapper:${hashCode()}"
     private var currentItemType = ITEM_TYPE_EMPTY_NONE // recyclerView 初始化后, 如果没有数据, 显示的一个透明的占位空状态
     var enableEmptyView = true
     var enableLoadMore = true
@@ -168,6 +168,9 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         currentItemType = if ((enableLoadMore || enableEmptyView) && isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_NONE
     }
 
+    fun isCurrentItemTypeEmpty(): Boolean = currentItemType == ITEM_TYPE_EMPTY
+    fun isCurrentItemTypeEmptyLoadingFailure(): Boolean = currentItemType == ITEM_TYPE_EMPTY_LOADING_FAILURE
+
     fun resetDataList(dataList: MutableList<Entity>) {
         innerAdapter.resetDataList(dataList)
         currentItemType = if (isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_NONE
@@ -180,75 +183,86 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             ITEM_TYPE_EMPTY, ITEM_TYPE_EMPTY_LOADING, ITEM_TYPE_EMPTY_LOADING_FAILURE -> STViewHolder(
                     FrameLayout(parent.context).apply {
                         val viewEmptyLoadingFailure: View = viewEmptyLoadingFailure?.invoke(parent, viewType, orientation) ?: createDefaultEmptyLoadingFailure(innerAdapter.context, "加载出错...")
-                        viewEmptyLoadingFailure.tag = "viewEmptyLoadingFailure"
-                        val viewEmptyLoading: View = viewEmptyLoading?.invoke(parent, viewType, orientation) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中...")
-                        viewEmptyLoading.tag = "viewEmptyLoading"
+                        val viewEmptyLoading: View = (viewEmptyLoading?.invoke(parent, viewType, orientation) ?: createDefaultEmptyLoadingView(innerAdapter.context, "加载中..."))
                         val viewEmpty: View = viewEmpty?.invoke(parent, viewType, orientation) ?: createDefaultEmptyView(innerAdapter.context, "数据维护中...")
-                        viewEmpty.tag = "viewEmpty"
 
                         this.removeAllViews()
-                        this.addView(viewEmptyLoadingFailure)
-                        this.addView(viewEmptyLoading)
-                        this.addView(viewEmpty)
-                        this.layoutParams = viewEmptyLoading.layoutParams
+
+                        // must set before addView, because could reset view layout params by addView with layout params
+                        this.layoutParams = RecyclerView.LayoutParams(
+                                if (orientation == LinearLayoutManager.VERTICAL) RecyclerView.LayoutParams.MATCH_PARENT else viewEmptyLoading.layoutParams.width,
+                                if (orientation == LinearLayoutManager.VERTICAL) RecyclerView.LayoutParams.MATCH_PARENT else viewEmptyLoading.layoutParams.height
+                        )
+
+                        this.addView(viewEmptyLoadingFailure, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                        this.addView(viewEmptyLoading, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                        this.addView(viewEmpty, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
                     }
             )
             ITEM_TYPE_NO_MORE, ITEM_TYPE_LOADING, ITEM_TYPE_LOAD_FAILED -> STViewHolder(
                     FrameLayout(parent.context).apply {
                         val viewNoMore: View = viewNoMore?.invoke(parent, viewType, orientation) ?: createDefaultFooterView(innerAdapter.context, "没有更多了", orientation = orientation)
-                        viewNoMore.tag = "viewNoMore"
                         val viewLoading: View = viewLoading?.invoke(parent, viewType, orientation) ?: createDefaultFooterLoadingView(innerAdapter.context, "加载中...", orientation = orientation)
-                        viewLoading.tag = "viewLoading"
                         val viewLoadFailure: View = viewLoadFailure?.invoke(parent, viewType, orientation) ?: createDefaultFooterView(innerAdapter.context, "加载出错了", orientation = orientation)
-                        viewLoadFailure.tag = "viewLoadFailure"
 
                         this.removeAllViews()
+
+                        this.layoutParams = RecyclerView.LayoutParams(viewLoading.layoutParams.width, viewLoading.layoutParams.height)
+
                         this.addView(viewNoMore)
                         this.addView(viewLoading)
                         this.addView(viewLoadFailure)
-                        this.layoutParams = viewLoading.layoutParams
                     }
             )
             else -> innerAdapter.onCreateViewHolder(parent, viewType)
         }
     }
 
+    var onBindEmptyLoadingViewHolder: ((holder: RecyclerView.ViewHolder, position: Int, rootView: FrameLayout, viewEmptyLoadingFailure: View, viewEmptyLoading: View, viewEmpty: View) -> Unit)? = null
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        STLogUtil.e(tag, "onBindViewHolder:${getItemTypeName(holder.itemViewType)}, position=$position == itemCount=$itemCount -1")
         when (holder.itemViewType) {
             ITEM_TYPE_EMPTY_NONE -> {
 
             }
             ITEM_TYPE_EMPTY_LOADING_FAILURE, ITEM_TYPE_EMPTY_LOADING, ITEM_TYPE_EMPTY -> {
-                val viewEmptyLoadingFailure: View = holder.itemView.findViewWithTag("viewEmptyLoadingFailure")
-                val viewEmptyLoading: View = holder.itemView.findViewWithTag("viewEmptyLoading")
-                val viewEmpty: View = holder.itemView.findViewWithTag("viewEmpty")
+                val itemView = holder.itemView as FrameLayout
+                val viewEmptyLoadingFailure: View = itemView.getChildAt(0)
+                val viewEmptyLoading: View = itemView.getChildAt(1)
+                val viewEmpty: View = itemView.getChildAt(2)
 
-                when {
-                    holder.itemViewType == ITEM_TYPE_EMPTY_LOADING_FAILURE -> {
+                when (holder.itemViewType) {
+                    ITEM_TYPE_EMPTY_LOADING_FAILURE -> {
                         viewEmptyLoadingFailure.visibility = View.VISIBLE
                         viewEmptyLoading.visibility = View.GONE
                         viewEmpty.visibility = View.GONE
-                        holder.itemView.setOnClickListener {
+
+                        val refreshBtn: View = (viewEmptyLoadingFailure.tag as? View) ?: holder.itemView
+                        refreshBtn.setOnClickListener {
                             showEmptyLoading()
                         }
                     }
-                    holder.itemViewType == ITEM_TYPE_EMPTY_LOADING -> {
+                    ITEM_TYPE_EMPTY_LOADING -> {
                         viewEmptyLoadingFailure.visibility = View.GONE
                         viewEmptyLoading.visibility = View.VISIBLE
                         viewEmpty.visibility = View.GONE
                         callLoadMore(true) // 一进来就触发 刷新一次
                     }
-                    holder.itemViewType == ITEM_TYPE_EMPTY -> {
+                    ITEM_TYPE_EMPTY -> {
                         viewEmptyLoadingFailure.visibility = View.GONE
                         viewEmptyLoading.visibility = View.GONE
                         viewEmpty.visibility = View.VISIBLE
                     }
                 }
+                onBindEmptyLoadingViewHolder?.invoke(holder, position, itemView, viewEmptyLoadingFailure, viewEmptyLoading, viewEmpty)
             }
             ITEM_TYPE_NO_MORE, ITEM_TYPE_LOAD_FAILED, ITEM_TYPE_LOADING -> {
-                val viewNoMore: View = holder.itemView.findViewWithTag("viewNoMore")
-                val viewLoading: View = holder.itemView.findViewWithTag("viewLoading")
-                val viewLoadFailure: View = holder.itemView.findViewWithTag("viewLoadFailure")
+                val itemView = holder.itemView as FrameLayout
+
+                val viewNoMore: View = itemView.getChildAt(0)
+                val viewLoading: View = itemView.getChildAt(1)
+                val viewLoadFailure: View = itemView.getChildAt(2)
                 if (holder.itemViewType == ITEM_TYPE_LOADING) {
                     viewLoading.visibility = View.VISIBLE
                     viewNoMore.visibility = View.GONE
@@ -300,6 +314,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     }
 
     fun add(newList: List<Entity>?) {
+        STLogUtil.e(tag, "add newList=${newList?.size}")
         if (newList != null && newList.isNotEmpty()) {
             val oldInnerDataListSize = innerAdapter.dataList.size
             innerAdapter.dataList.addAll(newList)
@@ -355,9 +370,17 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         add(entity, innerAdapter.dataList.size)
     }
 
+    @Volatile
+    private var isLoadMoreRequestingNow: Boolean = false // 避免重复请求
+
     fun callLoadMore(refresh: Boolean) {
-        STLogUtil.v(tag, "callLoadMore refresh=$refresh")
-        onLoadMoreListener?.invoke(refresh)
+        if (!isLoadMoreRequestingNow) {
+            isLoadMoreRequestingNow = true
+            STLogUtil.v(tag, "callLoadMore >>>>>>>> isLoadMoreRequestingNow=$isLoadMoreRequestingNow, refresh=$refresh")
+            onLoadMoreListener?.invoke(refresh)
+        } else {
+            STLogUtil.e(tag, "callLoadMore -------[ignore]------- isLoadMoreRequestingNow=$isLoadMoreRequestingNow, refresh=$refresh")
+        }
     }
 
     fun isInnerDataNotEmpty() = innerData().isNotEmpty()
@@ -365,20 +388,31 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
     fun innerData() = innerAdapter.dataList
 
     fun showEmpty() {
-        if (enableEmptyView && isInnerDataEmpty()) {
+        completelyLoadMoreRequesting()
+        if (isInnerDataEmpty()) {
             STLogUtil.v(tag, "showEmpty success, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
             currentItemType = ITEM_TYPE_EMPTY
-            notifyDataSetChanged()
+
+            val innerRecyclerView = recyclerView
+            innerRecyclerView?.post {
+                if (!innerRecyclerView.isComputingLayout) notifyDataSetChanged()
+
+            }
         } else {
             STLogUtil.v(tag, "showEmpty failure, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
         }
     }
 
     fun showEmptyNone() {
-        if (enableEmptyView && isInnerDataEmpty()) {
+        completelyLoadMoreRequesting()
+        if (isInnerDataEmpty()) {
             STLogUtil.v(tag, "showEmptyNone success, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
             currentItemType = ITEM_TYPE_EMPTY_NONE
-            notifyDataSetChanged()
+
+            val innerRecyclerView = recyclerView
+            innerRecyclerView?.post {
+                if (!innerRecyclerView.isComputingLayout) notifyDataSetChanged()
+            }
         } else {
             STLogUtil.v(tag, "showEmptyNone failure, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
         }
@@ -388,20 +422,29 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
      * 触发 loadMore(refresh=true)
      */
     fun showEmptyLoading() {
-        if (enableEmptyView && isInnerDataEmpty()) {
+        if (isInnerDataEmpty()) {
             STLogUtil.v(tag, "showEmptyLoading success, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
             currentItemType = ITEM_TYPE_EMPTY_LOADING
-            notifyDataSetChanged()
+
+            val innerRecyclerView = recyclerView
+            innerRecyclerView?.post {
+                if (!innerRecyclerView.isComputingLayout) notifyDataSetChanged()
+            }
         } else {
             STLogUtil.v(tag, "showEmptyLoading failure, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
         }
     }
 
     fun showEmptyLoadFailure() {
-        if (enableEmptyView && isInnerDataEmpty()) {
+        completelyLoadMoreRequesting()
+        if (isInnerDataEmpty()) {
             STLogUtil.v(tag, "showEmptyLoadFailure success, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
             currentItemType = ITEM_TYPE_EMPTY_LOADING_FAILURE
-            notifyDataSetChanged()
+
+            val innerRecyclerView = recyclerView
+            innerRecyclerView?.post {
+                if (!innerRecyclerView.isComputingLayout) notifyDataSetChanged()
+            }
         } else {
             STLogUtil.v(tag, "showEmptyLoadFailure failure, enableEmptyView=$enableEmptyView, innerDataSize=${innerData().size}")
         }
@@ -411,40 +454,49 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
      * 触发 loadMore(refresh=false)
      */
     fun showLoading() {
-        if (enableLoadMore && isInnerDataNotEmpty()) {
-            STLogUtil.v(tag, "showLoading success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
-            currentItemType = ITEM_TYPE_LOADING
-            enableChangeAnimations(false)
-            notifyItemChanged(itemCount)
+        STLogUtil.v(tag, "showLoading success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
+        currentItemType = if (isInnerDataNotEmpty()) ITEM_TYPE_LOADING else ITEM_TYPE_EMPTY_LOADING
+        enableChangeAnimations(false)
+
+        val innerRecyclerView = recyclerView
+        innerRecyclerView?.post {
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
             enableChangeAnimations(true)
-        } else {
-            STLogUtil.v(tag, "showLoading failure, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
         }
     }
 
     fun showLoadFailure() {
-        if (enableLoadMore && isInnerDataNotEmpty()) {
-            STLogUtil.v(tag, "showLoadFailure success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
-            currentItemType = ITEM_TYPE_LOAD_FAILED
-            enableChangeAnimations(false)
-            notifyItemChanged(itemCount)
+        completelyLoadMoreRequesting()
+        STLogUtil.v(tag, "showLoadFailure success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
+        currentItemType = if (isInnerDataNotEmpty()) ITEM_TYPE_LOAD_FAILED else ITEM_TYPE_EMPTY_LOADING_FAILURE
+        enableChangeAnimations(false)
+
+        // https://stackoverflow.com/questions/27070220/android-recyclerview-notifydatasetchanged-illegalstateexception
+
+        val innerRecyclerView = recyclerView
+        innerRecyclerView?.post {
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
             enableChangeAnimations(true)
-        } else {
-            STLogUtil.v(tag, "showLoadFailure failure, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
         }
     }
 
     fun showNoMore() {
-        if (enableLoadMore && isInnerDataNotEmpty()) {
-            STLogUtil.v(tag, "showNoMore success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
-            currentItemType = ITEM_TYPE_NO_MORE
-            enableChangeAnimations(false)
-            notifyItemChanged(itemCount)
+        completelyLoadMoreRequesting()
+        STLogUtil.v(tag, "showNoMore success, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
+        currentItemType = if (isInnerDataNotEmpty()) ITEM_TYPE_NO_MORE else ITEM_TYPE_EMPTY
+        enableChangeAnimations(false)
+        val innerRecyclerView = recyclerView
+        innerRecyclerView?.post {
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
             enableChangeAnimations(true)
-        } else {
-            STLogUtil.v(tag, "showNoMore failure, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}")
         }
     }
+
+    fun completelyLoadMoreRequesting() {
+        isLoadMoreRequestingNow = false
+        STLogUtil.v(tag, "completelyLoadMoreRequesting, enableLoadMore=$enableLoadMore, innerDataSize=${innerData().size}, isLoadMoreRequestingNow=$isLoadMoreRequestingNow")
+    }
+
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
@@ -483,6 +535,17 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         private const val ITEM_TYPE_EMPTY = -8888884
         private const val ITEM_TYPE_EMPTY_LOADING = -8888885
         private const val ITEM_TYPE_EMPTY_LOADING_FAILURE = -8888886
+
+        fun getItemTypeName(itemType: Int): String = when (itemType) {
+            ITEM_TYPE_EMPTY_NONE -> "ITEM_TYPE_EMPTY_NONE"
+            ITEM_TYPE_LOAD_FAILED -> "ITEM_TYPE_LOAD_FAILED"
+            ITEM_TYPE_NO_MORE -> "ITEM_TYPE_NO_MORE"
+            ITEM_TYPE_LOADING -> "ITEM_TYPE_LOADING"
+            ITEM_TYPE_EMPTY -> "ITEM_TYPE_EMPTY"
+            ITEM_TYPE_EMPTY_LOADING -> "ITEM_TYPE_EMPTY_LOADING"
+            ITEM_TYPE_EMPTY_LOADING_FAILURE -> "ITEM_TYPE_EMPTY_LOADING_FAILURE"
+            else -> "INNER_NORMAL_BIND_VIEW_HOLDER"
+        }
 
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
@@ -551,74 +614,84 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
             return linearLayout
         }
 
+        @SuppressLint("InflateParams")
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultEmptyView(context: Context?, text: String, textSize: Float = 12.0f, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT): View {
-            val itemView = TextView(context)
-            itemView.layoutParams = ViewGroup.LayoutParams(
-                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else mainAxisSize,
-                    if (orientation == LinearLayout.VERTICAL) mainAxisSize else MATCH_PARENT
-            )
-            itemView.text = text
-            itemView.textSize = textSize
-            itemView.setBackgroundColor(backgroundColor)
-            itemView.setTextColor(textColor)
-            itemView.gravity = Gravity.CENTER
-            itemView.tag = itemView
+        fun createDefaultEmptyView(context: Context?, text: String = "没有更多内容...", textSize: Float = 12.0f, textColor: Int = Color.parseColor("#666666"), orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT, crossAxisSize: Int = STSystemUtil.getPxFromDp(52f).toInt()): View {
+            var itemView: View? = null
+            if (itemView == null) {
+                itemView = TextView(context)
+                itemView.layoutParams = ViewGroup.LayoutParams(
+                        if (orientation == LinearLayout.VERTICAL) crossAxisSize else mainAxisSize,
+                        if (orientation == LinearLayout.VERTICAL) mainAxisSize else crossAxisSize
+                )
+                itemView.text = text
+                itemView.textSize = textSize
+                itemView.setTextColor(textColor)
+                itemView.gravity = Gravity.CENTER
+                itemView.tag = itemView
+            }
+
+            itemView.layoutParams = if (orientation == LinearLayout.VERTICAL) ViewGroup.LayoutParams(crossAxisSize, mainAxisSize) else ViewGroup.LayoutParams(mainAxisSize, crossAxisSize)
             return itemView
         }
 
+        @SuppressLint("InflateParams")
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultEmptyLoadingView(context: Context?, text: String, textSize: Float = 12.0f, orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
-            val linearLayout = LinearLayout(context)
-            linearLayout.orientation = orientation
-            linearLayout.gravity = Gravity.CENTER
-            linearLayout.setBackgroundColor(backgroundColor)
-            linearLayout.layoutParams = ViewGroup.LayoutParams(
-                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else mainAxisSize,
-                    if (orientation == LinearLayout.VERTICAL) mainAxisSize else MATCH_PARENT
-            )
+        fun createDefaultEmptyLoadingView(context: Context?, text: String = "加载中...", textSize: Float = 12.0f, orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT, crossAxisSize: Int = STSystemUtil.getPxFromDp(52f).toInt(), textColor: Int = Color.parseColor("#666666"), @Suppress("DEPRECATION") indeterminateDrawable: Drawable? = context?.resources?.getDrawable(R.drawable.st_footer_loading_rotate), indeterminateDrawableSize: Int = STSystemUtil.getPxFromDp(22.5f).toInt()): View {
+            var contentView: View? = null
+            if (contentView == null) {
+                contentView = LinearLayout(context)
+                contentView.layoutParams = ViewGroup.LayoutParams(
+                        if (orientation == LinearLayout.VERTICAL) crossAxisSize else mainAxisSize,
+                        if (orientation == LinearLayout.VERTICAL) mainAxisSize else crossAxisSize
+                )
+                contentView.orientation = orientation
+                contentView.gravity = Gravity.CENTER
 
-            val textView = TextView(context)
-            textView.text = text
-            textView.textSize = textSize
-            textView.setTextColor(textColor)
-            textView.gravity = Gravity.CENTER
+                val textView = TextView(context)
+                textView.text = text
+                textView.textSize = textSize
+                textView.setTextColor(textColor)
+                textView.gravity = Gravity.CENTER
 
-            val progressBar = ProgressBar(context)
-            progressBar.indeterminateDrawable = indeterminateDrawable
-            progressBar.layoutParams = LinearLayout.LayoutParams(indeterminateDrawableSize, indeterminateDrawableSize).apply { leftMargin = STSystemUtil.getPxFromDp(2f).toInt() }
+                val progressBar = ProgressBar(context)
+                progressBar.indeterminateDrawable = indeterminateDrawable
+                progressBar.layoutParams = LinearLayout.LayoutParams(indeterminateDrawableSize, indeterminateDrawableSize).apply { leftMargin = STSystemUtil.getPxFromDp(2f).toInt() }
 
-            linearLayout.addView(textView)
-            linearLayout.addView(progressBar)
-            linearLayout.tag = textView
-            return linearLayout
+                contentView.addView(textView)
+                contentView.addView(progressBar)
+                contentView.tag = textView
+            }
+            contentView.layoutParams = if (orientation == LinearLayout.VERTICAL) ViewGroup.LayoutParams(crossAxisSize, mainAxisSize) else ViewGroup.LayoutParams(mainAxisSize, crossAxisSize)
+            return contentView
         }
 
+        @SuppressLint("InflateParams")
         @Suppress("MemberVisibilityCanBePrivate")
         @JvmStatic
         @JvmOverloads
-        fun createDefaultEmptyLoadingFailure(context: Context?, text: String, textSize: Float = 12.0f, orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT, backgroundColor: Int = Color.WHITE, textColor: Int = Color.parseColor("#666666")): View {
-            val linearLayout = LinearLayout(context)
-            linearLayout.orientation = orientation
-            linearLayout.gravity = Gravity.CENTER
-            linearLayout.setBackgroundColor(backgroundColor)
-            linearLayout.layoutParams = ViewGroup.LayoutParams(
-                    if (orientation == LinearLayout.VERTICAL) MATCH_PARENT else mainAxisSize,
-                    if (orientation == LinearLayout.VERTICAL) mainAxisSize else MATCH_PARENT
-            )
+        fun createDefaultEmptyLoadingFailure(context: Context?, text: String = "加载出错了, 点击重试...", textSize: Float = 12.0f, orientation: Int = LinearLayout.HORIZONTAL, mainAxisSize: Int = MATCH_PARENT, crossAxisSize: Int = STSystemUtil.getPxFromDp(52f).toInt(), textColor: Int = Color.parseColor("#666666")): View {
+            var linearLayout: View? = null
+            if (linearLayout == null) {
+                linearLayout = LinearLayout(context)
+                linearLayout.layoutParams = if (orientation == LinearLayout.VERTICAL) ViewGroup.LayoutParams(crossAxisSize, mainAxisSize) else ViewGroup.LayoutParams(mainAxisSize, crossAxisSize)
+                linearLayout.orientation = orientation
+                linearLayout.gravity = Gravity.CENTER
 
-            val textView = TextView(context)
-            textView.text = text
-            textView.textSize = textSize
-            textView.setTextColor(textColor)
-            textView.gravity = Gravity.CENTER
+                val textView = TextView(context)
+                textView.text = text
+                textView.textSize = textSize
+                textView.setTextColor(textColor)
+                textView.gravity = Gravity.CENTER
 
-            linearLayout.addView(textView)
-            linearLayout.tag = textView
+                linearLayout.addView(textView)
+                linearLayout.tag = textView
+            }
+            linearLayout.layoutParams = if (orientation == LinearLayout.VERTICAL) ViewGroup.LayoutParams(crossAxisSize, mainAxisSize) else ViewGroup.LayoutParams(mainAxisSize, crossAxisSize)
             return linearLayout
         }
 

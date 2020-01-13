@@ -14,6 +14,7 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.STViewHolder
 import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
+import com.smart.library.widget.recyclerview.snap.STSnapHelper
 import com.smart.template.R
 import kotlinx.android.synthetic.main.home_fragment_recycler_view_drag_and_transfer_item_days.view.*
 import kotlinx.android.synthetic.main.home_recycler_view_snap_top.*
@@ -55,8 +56,8 @@ class RecyclerViewSnapTopFragment : STBaseFragment() {
 
     private val adapterWrapper by lazy { STEmptyLoadingWrapper(adapter) }
     private val snapGravityHelper by lazy {
-        STSnapGravityHelper(
-                STSnapGravityHelper.Snap.START
+        STSnapGravityHelper(false,
+                STSnapHelper.Snap.START
         ) { position: Int ->
             STLogUtil.e("Snapped", position.toString())
         }

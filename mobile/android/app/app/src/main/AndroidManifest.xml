@@ -52,28 +52,7 @@
         </activity>
 
         <activity
-            android:name="com.smart.template.home.STBehaviorScrollingActivity"
-            android:configChanges="orientation"
-            android:launchMode="standard"
-            android:theme="@style/STAppTheme.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <activity
             android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
-            android:configChanges="orientation"
-            android:launchMode="standard"
-            android:theme="@style/STAppTheme.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <activity
-            android:name="com.smart.template.home.STHorizontalPagerActivity"
-            android:configChanges="orientation"
-            android:launchMode="standard"
-            android:theme="@style/STAppTheme.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <activity
-            android:name="com.smart.template.home.STBehaviorActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Light.NoActionBar"

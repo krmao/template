@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -15,6 +14,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
 import com.smart.library.util.STLogUtil
+import com.smart.library.widget.recyclerview.STDividerItemDecoration
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewLinearStartItemDecoration
@@ -40,7 +40,7 @@ import com.smart.template.R
  * reverseLayout==false,  Snap.START, 滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  * reverseLayout==false,  Snap.END,   滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  */
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "UNUSED_ANONYMOUS_PARAMETER")
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
     var recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL
@@ -63,6 +63,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL, // recyclerView 横向滚动 默认禁止 viewPager 横向华东
             startPadding: Int = 0,
             dividerPadding: Int = 0,
+            recyclerViewItemDecorationHandler: ((pagerIndex: Int, recyclerViewOrientation: Int, startPadding: Int, dividerPadding: Int) -> RecyclerView.ItemDecoration?)? = null,
             enableHorizontalSnapOnlySmoothScrollOneItem: Boolean = true,
             onSnap: (pagerIndex: Int, position: Int, data: T) -> Unit,
             viewLoadingEnabled: Boolean = false,
@@ -91,6 +92,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                 recyclerViewOrientation,
                 startPadding,
                 dividerPadding,
+                recyclerViewItemDecorationHandler,
                 enableHorizontalSnapOnlySmoothScrollOneItem,
                 onSnap,
                 viewLoadingEnabled,
@@ -113,7 +115,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             setBackgroundColor(if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) Color.TRANSPARENT else Color.WHITE)
 
-            getRecyclerViews()?.forEach {
+            getRecyclerViews().forEach {
                 // reset item decoration
                 if (recyclerViewOrientation == LinearLayoutManager.VERTICAL) {
                     it.getItemDecorationAt(0)?.apply {
@@ -152,10 +154,14 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    fun getRecyclerViews(): List<RecyclerView>? {
+    fun getRecyclerViews(): List<RecyclerView> {
         return (0 until (adapter?.count ?: 0)).mapNotNull { getRecyclerView(it) }
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun <M> getPagerViews(): List<PagerView<M>> {
+        return (0 until (adapter?.count ?: 0)).mapNotNull { getPagerView<M>(it) }
+    }
 
     @JvmOverloads
     @Suppress("MemberVisibilityCanBePrivate")
@@ -280,14 +286,48 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     class InnerOnPageChangeListener(var checkBoxGroupView: STCheckBoxGroupView? = null) : OnPageChangeListener {
+        private var isPageChanged = false
+        private var currentPosition: Int = -1
+        var enableOnPageSelectedAfterAnimationEnd: Boolean = false
+
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-        override fun onPageScrollStateChanged(state: Int) {}
+        override fun onPageScrollStateChanged(state: Int) {
+            when (state) {
+                SCROLL_STATE_IDLE -> {
+                    if (isPageChanged && currentPosition != -1) {
+                        isPageChanged = false
+                        if (enableOnPageSelectedAfterAnimationEnd) {
+                            callChangePage()
+                        }
+                    }
+                }
+                SCROLL_STATE_DRAGGING -> {
+                }
+                SCROLL_STATE_SETTLING -> {
+                }
+            }
+        }
+
         override fun onPageSelected(position: Int) {
-            checkBoxGroupView?.setCheckedWithUpdateViewStatus(position, true)
+            currentPosition = position
+            isPageChanged = true
+            if (!enableOnPageSelectedAfterAnimationEnd) {
+                callChangePage()
+            }
+        }
+
+        fun callChangePage() {
+            checkBoxGroupView?.setCheckedWithUpdateViewStatus(currentPosition, true) //this will be called when animation ends
         }
     }
 
     private val onPageChangeListener = InnerOnPageChangeListener()
+    var enableOnPageSelectedAfterAnimationEnd: Boolean = false
+        set(value) {
+            field = value
+            onPageChangeListener.enableOnPageSelectedAfterAnimationEnd = value
+        }
+
     private val onUpdateViewOnCheckChangedListener = { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
         if (checkedViewPositionList.size == 1) {
             val toPagerIndex: Int = checkedViewPositionList[0]
@@ -330,6 +370,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
         var adapterWrapper: STEmptyLoadingWrapper<M>? = null
             private set
 
+        val recyclerView by lazy { RecyclerView(context) }
+
         fun callLoadMore(refresh: Boolean) {
             adapterWrapper?.callLoadMore(refresh)
         }
@@ -348,8 +390,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             }
         }
 
-        fun init(context: Context,
-                 pagerModel: PagerModel<M>,
+        fun init(pagerModel: PagerModel<M>,
                  requestLoadMore: (refresh: Boolean, pagerIndex: Int, requestIndex: Int, requestSize: Int, lastRequest: Any?, lastResponse: Any?, callback: (lastRequest: Any?, lastResponse: Any?, MutableList<M>?) -> Unit) -> Unit,
                  pagerIndex: Int,
                  onRecyclerViewCreateViewHolder: (pagerIndex: Int, parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder,
@@ -358,6 +399,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                  recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
                  startPadding: Int = 0,
                  dividerPadding: Int = 0,
+                 recyclerViewItemDecorationHandler: ((pagerIndex: Int, recyclerViewOrientation: Int, startPadding: Int, dividerPadding: Int) -> RecyclerView.ItemDecoration?)? = null,
                  enableHorizontalSnapOnlySmoothScrollOneItem: Boolean = true,
                  onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
                  viewLoadingEnabled: Boolean = false,
@@ -373,14 +415,27 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
             this.pagerModel = pagerModel
 
-            val recyclerView = RecyclerView(context)
-            recyclerView.setBackgroundColor(Color.TRANSPARENT)
-            if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) {
-                recyclerView.addItemDecoration(STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, false))
-            } else {
-                recyclerView.addItemDecoration(DividerItemDecoration(context, recyclerViewOrientation).apply { setDrawable(ContextCompat.getDrawable(context, R.drawable.st_line_horizontal_c4)) })
+            val itemViewCacheSize = 30
+            val extraLayoutSpace = 512
+
+            recyclerView.layoutManager = object : LinearLayoutManager(context, recyclerViewOrientation, false) {
+                override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {
+                    return extraLayoutSpace
+                }
+
+                /**
+                 * bug 原因以及较为省事的 解决方案
+                 * https://bugly.qq.com/v2/crash-reporting/crashes/900006740/215833?pid=1
+                 * https://www.jianshu.com/p/2eca433869e9
+                 */
+                override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                    try {
+                        super.onLayoutChildren(recycler, state)
+                    } catch (e: IndexOutOfBoundsException) {
+                        STLogUtil.e("STEmptyLoadingWrapper", "onLayoutChildren exception", e)
+                    }
+                }
             }
-            recyclerView.layoutManager = LinearLayoutManager(context, recyclerViewOrientation, false)
             val originAdapter = object : STRecyclerViewAdapter<M, RecyclerView.ViewHolder>(context, arrayListOf() /*pagerModel.dataList*/) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onRecyclerViewCreateViewHolder.invoke(pagerIndex, parent, viewType)
                 override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) = onRecyclerViewBindViewHolder.invoke(pagerModel, viewHolder, position)
@@ -425,6 +480,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                         }
                         newList.isNotEmpty() -> { // load success
                             adapterWrapper.add(newList)
+                            adapterWrapper.completelyLoadMoreRequesting()
+
                             pagerModel.requestNextIndex++
                             if (lastRequest != null) {
                                 pagerModel.lastRequest = lastRequest
@@ -439,8 +496,23 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
                     }
                 }
             }
-            recyclerView.adapter = adapterWrapper
+
+            recyclerView.setItemViewCacheSize(itemViewCacheSize)
+            recyclerView.setHasFixedSize(false)
+            recyclerView.isDrawingCacheEnabled = true
+            recyclerView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+
+            val itemDecoration: RecyclerView.ItemDecoration =
+                    recyclerViewItemDecorationHandler?.invoke(pagerIndex, recyclerViewOrientation, startPadding, dividerPadding)
+                            ?: if (recyclerViewOrientation == LinearLayoutManager.HORIZONTAL) {
+                                STRecyclerViewLinearStartItemDecoration(dividerPadding, startPadding, false)
+                            } else {
+                                STDividerItemDecoration(context, recyclerViewOrientation).apply { setDrawable(ContextCompat.getDrawable(context, R.drawable.st_drawable_horizontal_line_e5e5e5_margin_16dp)) }
+                            }
+            recyclerView.addItemDecoration(itemDecoration)
+
             recyclerView.tag = TagModel(pagerIndex, snapGravityHelper)
+            recyclerView.adapter = adapterWrapper
 
             // gravity snap
             snapGravityHelper.attachToRecyclerView(recyclerView)
@@ -464,6 +536,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             private val recyclerViewOrientation: Int = LinearLayoutManager.VERTICAL,
             private val startPadding: Int = 0,
             private val dividerPadding: Int = 0,
+            private val recyclerViewItemDecorationHandler: ((pagerIndex: Int, recyclerViewOrientation: Int, startPadding: Int, dividerPadding: Int) -> RecyclerView.ItemDecoration?)? = null,
             private val enableHorizontalSnapOnlySmoothScrollOneItem: Boolean = true,
             private val onSnap: (pagerIndex: Int, position: Int, data: M) -> Unit,
             private val viewLoadingEnabled: Boolean = false,
@@ -484,8 +557,8 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
 
         override fun instantiateItem(container: ViewGroup, pagerIndex: Int): Any {
             val pagerView = PagerView<M>(context)
-            pagerView.init(context, initPagerDataList[pagerIndex], requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, recyclerViewOrientation, startPadding, dividerPadding, enableHorizontalSnapOnlySmoothScrollOneItem, onSnap, viewLoadingEnabled, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyNone, viewEmptyLoading, viewEmptyLoadingFailure)
-            container.addView(pagerView)
+            pagerView.init(initPagerDataList[pagerIndex], requestLoadMore, pagerIndex, onRecyclerViewCreateViewHolder, onRecyclerViewBindViewHolder, snap, recyclerViewOrientation, startPadding, dividerPadding, recyclerViewItemDecorationHandler, enableHorizontalSnapOnlySmoothScrollOneItem, onSnap, viewLoadingEnabled, viewLoadFailure, viewLoading, viewNoMore, viewEmpty, viewEmptyNone, viewEmptyLoading, viewEmptyLoadingFailure)
+            container.addView(pagerView, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             return pagerView
         }
 
@@ -505,7 +578,11 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
      * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
      * requestNextIndex = requestIndex + 1
      */
-    data class PagerModel<T>(var requestNextIndex: Int = 0, var requestSize: Int = 0, var dataList: MutableList<T>, var extrasData: Any? = null, var lastRequest: Any?, var lastResponse: Any? = null)
+    data class PagerModel<T>(var requestNextIndex: Int = 0, var requestSize: Int = 0, var dataList: MutableList<T>, var extrasData: Any? = null, var lastRequest: Any? = null, var lastResponse: Any? = null, var lastPosition: Int? = 0) {
+        override fun toString(): String {
+            return "(title=$extrasData,size=${dataList.size},lastPosition=$lastPosition)"
+        }
+    }
 
     class TagModel @JvmOverloads constructor(val pagerIndex: Int, val snapGravityHelper: STSnapHelper? = null) {
 

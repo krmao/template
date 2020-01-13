@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
-import com.smart.library.map.layer.STPanelFragment
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STStatusBarUtil
@@ -40,11 +39,6 @@ class MapFragment : STBaseFragment() {
 
         mapView.initialize(mapType = if (useBaidu) STMapType.BAIDU else STMapType.GAODE)
         mapView.onCreate(context, savedInstanceState)
-
-        val mContainerFragment = STPanelFragment()
-        childFragmentManager.beginTransaction()
-                .add(R.id.main_frame_layout, mContainerFragment)
-                .commit()
     }
 
     override fun onResume() {

@@ -27,7 +27,7 @@ import com.smart.library.widget.behavior.STBottomSheetCallback
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.snap.STSnapGravityHelper
+import com.smart.library.widget.recyclerview.snap.STSnapHelper
 import com.smart.template.R
 import com.smart.template.widget.STCheckBoxGroupView
 import com.smart.template.widget.STRecyclerPagerView
@@ -152,7 +152,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
         pagerRecyclerView.initialize(
                 initPagerDataList = allData,
-                requestLoadMore = { pagerIndex: Int, requestNextIndex: Int, requestSize: Int, callback: (MutableList<Int>?) -> Unit ->
+                requestLoadMore = { refresh: Boolean, pagerIndex: Int, requestIndex: Int, requestSize: Int, lastRequest: Any?, lastResponse: Any?, callback: (lastRequest: Any?, lastResponse: Any?, MutableList<Int>?) -> Unit ->
                     /**
                      * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
                      * requestNextIndex = requestIndex + 1
@@ -163,26 +163,28 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
                         when {
                             requestCount % 5 == 0 -> { // 请求失败
                                 STLogUtil.d("request", "请求失败")
-                                callback.invoke(null)
+                                callback.invoke(null, null, null)
                             }
                             requestCount % 10 == 0 -> { // 没有更多数据
                                 STLogUtil.d("request", "没有更多数据")
-                                callback.invoke(mutableListOf())
+                                callback.invoke(null, null, mutableListOf())
                             }
                             else -> { // 请求成功
                                 STLogUtil.d("request", "请求成功")
                                 val list = mutableListOf<Int>()
 
                                 val scare = getScare(pagerIndex)
-                                val nextValue: Int = requestNextIndex * requestSize * scare
+                                val nextValue: Int = 1 * requestSize * scare
 
                                 (0 until requestSize).forEach {
                                     list.add(nextValue + it * scare)
                                 }
-                                callback.invoke(list)
+                                callback.invoke(null, null, list)
                             }
                         }
                     }
+
+                    Unit
                 },
                 onRecyclerViewCreateViewHolder = { _: Int, parent: ViewGroup, _: Int ->
                     STRecyclerViewAdapter.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_recycler_item_poi, parent, false))
@@ -191,7 +193,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
                     viewHolder.itemView.tv_title_item_map.text = "上海东方明珠塔:${pagerModel.dataList[position]}"
                     STImageManager.show(viewHolder.itemView.iv_item_map, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
                 },
-                snap = STSnapGravityHelper.Snap.START,
+                snap = STSnapHelper.Snap.START,
                 onSnap = { pagerIndex: Int, position: Int, data: Int ->
                     snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
                 },

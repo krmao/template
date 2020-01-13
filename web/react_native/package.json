@@ -3,7 +3,11 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "start": "node node_modules/react-native/local-cli/cli.js start --port=5387",
+        "android": "react-native run-android",
+        "ios": "react-native run-ios",
+        "start": "react-native start --port=5387",
+        "test": "jest",
+        "lint": "eslint .",
         "bundle-ios": "rm -rf ./build/bundle/ios && mkdir ./build/bundle/ios             && react-native   bundle  --platform ios      --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/ios/index.ios.bundle --assets-dest ./build/bundle/ios",
         "bundle-android": "rm -rf ./build/bundle/android && mkdir ./build/bundle/android && react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/android/index.android.bundle --assets-dest ./build/bundle/android",
         "eslint": "eslint --fix src/",
@@ -11,7 +15,7 @@
     },
     "dependencies": {
         "eslint": "6.8.0",
-        "react": "16.12.0",
+        "react": "16.9.0",
         "react-native": "0.61.5",
         "react-native-gesture-handler": "^1.5.3",
         "react-navigation": "^4.0.10"

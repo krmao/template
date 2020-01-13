@@ -68,7 +68,7 @@ object STToastUtil {
             } else {
                 val customToast = STToast().setText(msg, textGravity).setDuration(duration).setGravity(toastGravity, xOffset, yOffset)
                 if (cancelLastImmediately) {
-                    STToast.cancelAll { customToast.show() }
+                    // STToast.cancelAll { customToast.show() }
                 } else {
                     customToast.show()
                 }

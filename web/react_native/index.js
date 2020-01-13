@@ -1,31 +1,15 @@
-import React, {Component} from "react";
-import {Animated, AppRegistry, BackHandler, Easing, Platform, Dimensions, YellowBox, TouchableOpacity, Image, View} from "react-native";
+import React from "react";
+import {Animated, AppRegistry, BackHandler, Easing, Platform, Dimensions, YellowBox} from "react-native";
 import {createStackNavigator} from "react-navigation";
 
-import cx_navigation_util from "./src/main/js/base/cx_navigation_util";
-import "./src/main/js/base/bridge";
-import HomeScreen from "./src/main/js/pages/HomeScreen";
-import BridgeScreen from "./src/main/js/pages/BridgeScreen";
-import OrderCommitScreen from "./src/main/js/pages/OrderCommitScreen";
-import TestScreen from "./src/main/js/pages/TestScreen";
+import NavigationUtil from "./src/main/js/base/NavigationUtil";
+import "./src/main/js/base/Bridge";
+import TestScreen from "./src/main/js/pages/TestPage";
 
 console.log("OS:" + Platform.OS);
-console.log("STATUS_BAR_HEIGHT:" + cx_navigation_util.STATUS_BAR_HEIGHT);
+console.log("STATUS_BAR_HEIGHT:" + NavigationUtil.STATUS_BAR_HEIGHT);
 
 YellowBox.ignoreWarnings(["Warning: isMounted(...) is deprecated", "Module RCTImageLoader"]);
-
-// gets the current screen from navigation state
-function getActiveRouteName(navigationState) {
-    if (!navigationState) {
-        return null;
-    }
-    const route = navigationState.routes[navigationState.index];
-    // dive into nested navigators
-    if (route.routes) {
-        return getActiveRouteName(route);
-    }
-    return route.routeName;
-}
 
 let global = {};
 let RootStack = {};
@@ -67,19 +51,8 @@ export default class App extends React.Component {
         RootStack = createStackNavigator(
             {
                 home: {
-                    screen: HomeScreen
-                },
-                bridge: {
-                    screen: BridgeScreen,
-                    navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)
-                },
-                order_commit: {
-                    screen: OrderCommitScreen,
-                    navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)
-                },
-                test: {
                     screen: TestScreen,
-                    navigationOptions: (navigation) => cx_navigation_util.defaultNavigationOptions(navigation)
+                    navigationOptions: (navigation) => NavigationUtil.defaultNavigationOptions(navigation)
                 }
             },
             {
@@ -144,4 +117,4 @@ export default class App extends React.Component {
     };
 }
 
-AppRegistry.registerComponent("smart-travel", () => App);
+AppRegistry.registerComponent("cc-rn", () => App);

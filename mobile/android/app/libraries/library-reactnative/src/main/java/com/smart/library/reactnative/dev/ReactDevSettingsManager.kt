@@ -96,7 +96,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDebugHttpHost(): String {
-        return preferences.getString("debug_http_host", "10.0.2.2:8081") ?: "10.0.2.2:8081"
+        return preferences.getString("debug_http_host", "10.32.33.16:5389") ?: "10.32.33.16:5389"
     }
 
     /**
@@ -142,7 +142,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDefaultStartComponent(): String {
-        return preferences.getString(KEY_DEFAULT_START_COMPONENT, "smart-travel") ?: "smart-travel"
+        return preferences.getString(KEY_DEFAULT_START_COMPONENT, "cc-rn") ?: "cc-rn"
     }
 
     fun setDefaultStartComponentPage(component: String) {
@@ -150,7 +150,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDefaultStartComponentPage(): String {
-        return preferences.getString(KEY_DEFAULT_START_COMPONENT_PAGE, "test") ?: "test"
+        return preferences.getString(KEY_DEFAULT_START_COMPONENT_PAGE, "home") ?: "home"
     }
 
     fun showDevOptionsDialog() {

@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "eslint": "4.0.0",
+    "eslint": "6.8.0",
     "react": "16.3.1",
     "react-native": "0.55.4",
     "react-navigation": "^2.0.2"

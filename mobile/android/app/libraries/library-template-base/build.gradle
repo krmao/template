@@ -17,7 +17,7 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-base')
-    api project(':library-support')
+    // api project(':library-support')
 
     //api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
     //api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"

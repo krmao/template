@@ -3,7 +3,7 @@ package com.smart.library.widget.titlebar
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
-import android.support.v4.widget.ContentLoadingProgressBar
+import androidx.core.widget.ContentLoadingProgressBar
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater

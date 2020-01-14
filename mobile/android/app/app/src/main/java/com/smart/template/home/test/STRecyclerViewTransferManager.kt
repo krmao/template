@@ -1,7 +1,7 @@
 package com.smart.template.home.test
 
 import android.content.ClipData
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.DragEvent
 import android.view.View
 import android.widget.TextView

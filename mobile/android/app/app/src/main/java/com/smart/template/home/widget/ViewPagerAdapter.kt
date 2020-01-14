@@ -3,8 +3,8 @@ package com.smart.template.home.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.view.PagerAdapter
-import android.support.v7.widget.LinearLayoutManager
+import androidx.viewpager.widget.PagerAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView

@@ -1,7 +1,7 @@
 package com.smart.library.widget.recyclerview.snap
 
 import android.graphics.Rect
-import android.support.v7.widget.*
+import androidx.recyclerview.widget.*
 import android.view.View
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil

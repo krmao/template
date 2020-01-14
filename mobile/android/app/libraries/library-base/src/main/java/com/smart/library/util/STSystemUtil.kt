@@ -12,7 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
-import android.support.v4.content.PermissionChecker
+import androidx.core.content.PermissionChecker
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.KeyEvent

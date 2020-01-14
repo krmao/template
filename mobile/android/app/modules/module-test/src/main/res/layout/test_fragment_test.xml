@@ -58,7 +58,7 @@
         </com.smart.library.widget.loading.STFrameLoadingLayout>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_test"
         android:layout_width="60dp"
         android:layout_height="60dp"

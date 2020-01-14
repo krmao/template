@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
-import android.support.v4.content.PermissionChecker
+import androidx.core.content.PermissionChecker
 import android.text.TextUtils
 import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STLogUtil

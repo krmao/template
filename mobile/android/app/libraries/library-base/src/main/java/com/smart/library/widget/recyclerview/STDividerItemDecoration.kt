@@ -2,8 +2,8 @@ package com.smart.library.widget.recyclerview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 
 class STDividerItemDecoration(context: Context?, orientation: Int) : DividerItemDecoration(context, orientation) {
 

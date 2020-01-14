@@ -132,7 +132,7 @@
             android:textColor="@color/black" />
     </RelativeLayout>
 
-    <android.support.v4.widget.ContentLoadingProgressBar
+    <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
         style="@style/STWidget.App.ProgressBar.Horizontal"
         android:layout_width="match_parent"

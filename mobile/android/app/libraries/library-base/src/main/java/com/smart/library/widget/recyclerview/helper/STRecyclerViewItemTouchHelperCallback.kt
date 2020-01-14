@@ -1,9 +1,9 @@
 package com.smart.library.widget.recyclerview.helper
 
 import android.graphics.Canvas
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import org.jetbrains.anko.AlertDialogBuilder
 import kotlin.math.abs
 

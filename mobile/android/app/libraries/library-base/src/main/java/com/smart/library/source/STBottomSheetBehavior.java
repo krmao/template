@@ -6,13 +6,14 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ViewDragHelper;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.customview.widget.ViewDragHelper;
+
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -21,6 +22,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import com.smart.library.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -155,7 +158,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             }
 
             public int clampViewPositionVertical(@NonNull final View child, final int top, final int dy) {
-                return android.support.v4.math.MathUtils.clamp(top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
+                return androidx.core.math.MathUtils.clamp(top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
             }
 
             public int clampViewPositionHorizontal(@NonNull final View child, final int left, final int dx) {
@@ -260,7 +263,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
             }
 
             public int clampViewPositionVertical(@NonNull final View child, final int top, final int dy) {
-                return android.support.v4.math.MathUtils.clamp(top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
+                return androidx.core.math.MathUtils.clamp(top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
             }
 
             public int clampViewPositionHorizontal(@NonNull final View child, final int left, final int dx) {
@@ -274,17 +277,17 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 return collapsedOffset;
             }
         };
-        final TypedArray a = context.obtainStyledAttributes(attrs, android.support.design.R.styleable.BottomSheetBehavior_Layout);
-        final TypedValue value = a.peekValue(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
+        final TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
         if (value != null && value.data == -1) {
             this.setPeekHeight(value.data);
         } else {
-            this.setPeekHeight(a.getDimensionPixelSize(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
+            this.setPeekHeight(a.getDimensionPixelSize(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
         }
-        this.setHideable(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
-        // this.setFitToContents(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
+        this.setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+        // this.setFitToContents(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
         this.setFitToContents(true);
-        this.setSkipCollapsed(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
+        this.setSkipCollapsed(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
         a.recycle();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         this.maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -313,7 +316,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.parentHeight = parent.getHeight();
         if (this.peekHeightAuto) {
             if (this.peekHeightMin == 0) {
-                this.peekHeightMin = parent.getResources().getDimensionPixelSize(android.support.design.R.dimen.design_bottom_sheet_peek_height_min);
+                this.peekHeightMin = parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
             }
             this.lastPeekHeight = Math.max(this.peekHeightMin, this.parentHeight - parent.getWidth() * 9 / 16);
         } else {
@@ -763,7 +766,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                     if (Build.VERSION.SDK_INT >= 16) {
                         this.importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
                     }
-                    ViewCompat.setImportantForAccessibility(child, 4);
+                    ViewCompat.setImportantForAccessibility(child, View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
                 }
             }
         }

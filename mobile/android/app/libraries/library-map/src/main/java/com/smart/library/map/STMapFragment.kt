@@ -1,4 +1,4 @@
-package com.smart.template.home
+package com.smart.library.map
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,10 +10,9 @@ import com.smart.library.base.STBaseFragment
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STStatusBarUtil
-import com.smart.template.R
-import kotlinx.android.synthetic.main.map_fragment.*
+import kotlinx.android.synthetic.main.st_map_fragment.*
 
-
+@Suppress("unused")
 class STMapFragment : STBaseFragment() {
 
     companion object {
@@ -29,7 +28,7 @@ class STMapFragment : STBaseFragment() {
     private val useBaidu: Boolean by lazy { arguments?.getBoolean("useBaidu") ?: true }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.map_fragment, container, false)
+        return inflater.inflate(R.layout.st_map_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

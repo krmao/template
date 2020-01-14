@@ -60,9 +60,9 @@ class HomeTabActivity : STBaseActivity() {
         STLogUtil.d("home", "activity: onNewIntent")
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putString("name", "da mao ge ge")
+        outState.putString("name", "da mao ge ge")
         STLogUtil.d("home", "activity: onSaveInstanceState")
     }
 
@@ -93,7 +93,7 @@ class HomeTabActivity : STBaseActivity() {
      *
      * keyboardHidden 是否配置并没有影响实验结果
      */
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         STLogUtil.d("home", "activity: onConfigurationChanged")
         RxBus.post(ConfigurationEvent(newConfig))

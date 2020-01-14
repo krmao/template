@@ -1,8 +1,8 @@
 package com.smart.library.util
 
 import android.graphics.drawable.Drawable
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat
-import android.support.v7.widget.AppCompatDrawableManager
+import androidx.appcompat.widget.AppCompatDrawableManager
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.smart.library.base.STBaseApplication
 
 @Suppress("unused")

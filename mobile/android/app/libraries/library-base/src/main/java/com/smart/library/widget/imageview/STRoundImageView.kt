@@ -4,11 +4,11 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorRes
-import android.support.v7.widget.AppCompatImageView
+import androidx.annotation.ColorRes
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import com.smart.library.R
 
 /**

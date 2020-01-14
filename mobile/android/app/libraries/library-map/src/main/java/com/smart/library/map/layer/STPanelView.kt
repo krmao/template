@@ -3,8 +3,8 @@ package com.smart.library.map.layer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View

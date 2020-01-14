@@ -3,7 +3,6 @@
 package com.smart.library.util
 
 import android.app.Activity
-import android.support.annotation.UiThread
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewConfiguration
@@ -12,6 +11,7 @@ import android.view.ViewTreeObserver
 import android.webkit.WebView
 import android.widget.AbsListView
 import android.widget.TextView
+import androidx.annotation.UiThread
 import com.smart.library.base.animateAlphaToVisibility
 import org.jetbrains.anko.forEachChild
 

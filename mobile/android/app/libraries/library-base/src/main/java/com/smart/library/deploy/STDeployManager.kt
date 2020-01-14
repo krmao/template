@@ -1,7 +1,6 @@
 package com.smart.library.deploy
 
 import android.app.Activity
-import android.support.annotation.UiThread
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.client.STIDeployClient
 import com.smart.library.deploy.client.impl.STDeployClientForReactNative

@@ -6,7 +6,7 @@ include(':app'); project(":app").projectDir = new File(settingsDir, "app/app")
 
 //libraries
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "app/libraries/library-base")
-include(":library-support"); project(":library-support").projectDir = new File(settingsDir, "app/libraries/library-support")
+// include(":library-support"); project(":library-support").projectDir = new File(settingsDir, "app/libraries/library-support")
 
 if (gradle.ext.modules.map.enable == true) {
     include(":library-map"); project(":library-map").projectDir = new File(settingsDir, "app/libraries/library-map")

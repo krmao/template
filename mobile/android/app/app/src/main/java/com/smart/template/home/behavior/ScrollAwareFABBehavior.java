@@ -1,30 +1,32 @@
 package com.smart.template.home.behavior;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
 
 /**
- ~ Licensed under the Apache License, Version 2.0 (the "License");
- ~ you may not use this file except in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~      http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing, software
- ~ distributed under the License is distributed on an "AS IS" BASIS,
- ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ~ See the License for the specific language governing permissions and
- ~ limitations under the License.
- ~
- ~ https://github.com/miguelhincapie/CustomBottomSheetBehavior
+ * ~ Licensed under the Apache License, Version 2.0 (the "License");
+ * ~ you may not use this file except in compliance with the License.
+ * ~ You may obtain a copy of the License at
+ * ~
+ * ~      http://www.apache.org/licenses/LICENSE-2.0
+ * ~
+ * ~ Unless required by applicable law or agreed to in writing, software
+ * ~ distributed under the License is distributed on an "AS IS" BASIS,
+ * ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * ~ See the License for the specific language governing permissions and
+ * ~ limitations under the License.
+ * ~
+ * ~ https://github.com/miguelhincapie/CustomBottomSheetBehavior
  */
 
 /**
@@ -65,8 +67,8 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
             try {
                 BottomSheetBehaviorGoogleMapsLike.from(dependency);
                 return true;
+            } catch (IllegalArgumentException e) {
             }
-            catch (IllegalArgumentException e){}
         }
         return false;
     }
@@ -119,8 +121,8 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
         if (dependency.getY() == 0 || dependency.getY() < offset)
             return 0;
 
-        if ( (dependency.getY() - child.getY()) > child.getHeight() )
-            return Math.max(0, (int) ((dependency.getY() - (child.getHeight()/2)) - child.getY()) );
+        if ((dependency.getY() - child.getY()) > child.getHeight())
+            return Math.max(0, (int) ((dependency.getY() - (child.getHeight() / 2)) - child.getY()));
         else
             return 0;
     }
@@ -135,7 +137,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
             View child = coordinatorLayout.getChildAt(i);
 
             if (child instanceof MergedAppBarLayout) {
-                offset = child.getY()+child.getHeight();
+                offset = child.getY() + child.getHeight();
                 break;
             }
 
@@ -165,8 +167,8 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
                     BottomSheetBehaviorGoogleMapsLike temp = BottomSheetBehaviorGoogleMapsLike.from(child);
                     mBottomSheetBehaviorRef = new WeakReference<>(temp);
                     break;
+                } catch (IllegalArgumentException e) {
                 }
-                catch (IllegalArgumentException e){}
             }
         }
     }

@@ -22,7 +22,7 @@
         android:layout_weight="1"
         android:background="@color/home_root_background">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewDays"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -31,9 +31,9 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:scrollbars="none"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewDayDetail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -42,7 +42,7 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:scrollbars="none"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
 </LinearLayout>

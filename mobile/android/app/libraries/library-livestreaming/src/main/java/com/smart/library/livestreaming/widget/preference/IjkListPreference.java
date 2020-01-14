@@ -19,9 +19,10 @@ package com.smart.library.livestreaming.widget.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.preference.ListPreference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+
+import androidx.preference.ListPreference;
 
 import com.smart.library.livestreaming.R;
 

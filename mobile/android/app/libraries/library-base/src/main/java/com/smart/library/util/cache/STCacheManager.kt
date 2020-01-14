@@ -1,7 +1,7 @@
 package com.smart.library.util.cache
 
-import android.support.annotation.NonNull
 import android.text.TextUtils
+import androidx.annotation.NonNull
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.md5
 import com.smart.library.util.STSystemUtil

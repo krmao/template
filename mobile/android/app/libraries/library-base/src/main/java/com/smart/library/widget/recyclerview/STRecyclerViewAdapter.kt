@@ -1,8 +1,8 @@
 package com.smart.library.widget.recyclerview
 
 import android.content.Context
-import android.support.v7.widget.*
 import android.view.View
+import androidx.recyclerview.widget.*
 import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperAdapter
 import java.util.*
 import kotlin.math.abs

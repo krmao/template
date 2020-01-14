@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.support.annotation.RequiresPermission
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import androidx.annotation.RequiresPermission
 import com.smart.library.base.STBaseApplication
 import java.net.Inet4Address
 import java.net.NetworkInterface

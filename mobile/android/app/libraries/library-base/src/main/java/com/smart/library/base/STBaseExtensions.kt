@@ -10,12 +10,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.annotation.RequiresPermission
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
+import androidx.annotation.RequiresPermission
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.smart.library.util.*
 import org.jetbrains.anko.AnkoAsyncContext
 import java.util.*
@@ -48,14 +48,14 @@ fun Int.toDpFromPx(): Float {
     return STSystemUtil.getDpFromPx(this)
 }
 
-fun <T : android.support.v4.app.Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit) {
+fun <T : Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit) {
     val fragment = weakRef.get() ?: return
     if (fragment.isDetached) return
     val activity = fragment.activity ?: return
     activity.runOnUiThread { f(fragment) }
 }
 
-fun <T : android.support.v4.app.Fragment> AnkoAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T) -> Unit) {
+fun <T :  androidx.fragment.app.Fragment> AnkoAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T) -> Unit) {
     val fragment = weakRef.get() ?: return
     if (fragment.isDetached) return
     val activity = fragment.activity ?: return
@@ -188,7 +188,7 @@ private val FragmentActivity.callbackFragmentV4: ActivityCallbackFragmentV4?
 
 internal data class StartForResultModel(val intent: Intent, val requestCode: Int, val options: Bundle?)
 
-internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
+internal class ActivityCallbackFragmentV4 :  androidx.fragment.app.Fragment() {
     companion object {
         const val TAG: String = "ActivityCallbackFragmentV4"
     }
@@ -203,7 +203,7 @@ internal class ActivityCallbackFragmentV4 : android.support.v4.app.Fragment() {
     @Volatile
     private var isAttachedToActivity: Boolean = false
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         STLogUtil.w("onAttach to Activity")
 
@@ -277,7 +277,7 @@ internal class ActivityCallbackFragment : android.app.Fragment() {
         callOnAttach()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callOnAttach()
     }

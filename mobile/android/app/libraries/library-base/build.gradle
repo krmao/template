@@ -17,16 +17,19 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     /******* 官方支持库 ****************************************************************************/
-    api "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:design:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
-    api "com.android.support:multidex:$rootProject.ext.multidex"
-    //api "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
-    //api "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    //api "com.android.support:leanback-v17:$rootProject.ext.supportLibraryVersion"
+    api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
+    api "androidx.fragment:fragment:$rootProject.ext.androidXFragmentVersion"
+    api "androidx.viewpager:viewpager:$rootProject.ext.androidXVersion"
+    api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
+    api "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
+    api "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
+    api "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintlayoutVersion"
+    api "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
+    api "androidx.recyclerview:recyclerview-selection:$rootProject.ext.androidXVersion"
+    api "com.google.android.material:material:$rootProject.ext.androidXVersion"
+    api "androidx.cardview:cardview:$rootProject.ext.androidXVersion"
+    api "androidx.vectordrawable:vectordrawable-animated:$rootProject.ext.androidXVectorDrawableVersion"
+    api "androidx.multidex:multidex:$rootProject.ext.androidXMultidexVersion"
 
     /******* kotlin支持 ***************************************************************************/
     api "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"

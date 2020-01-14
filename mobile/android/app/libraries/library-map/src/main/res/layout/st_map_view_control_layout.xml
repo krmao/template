@@ -23,7 +23,7 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usersRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:scrollbars="none"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -66,7 +66,7 @@
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/switchMapBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,9 +103,9 @@
                         tools:ignore="HardcodedText,SpUsage" />
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/switchThemeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,10 +140,10 @@
                         tools:ignore="HardcodedText,SpUsage" />
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/settingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                     android:textSize="10dp"
                     tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
     <RelativeLayout
@@ -193,7 +193,7 @@
         android:background="#44000000"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/addUserBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,9 +229,9 @@
                     tools:ignore="HardcodedText,SpUsage" />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/poiBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -269,9 +269,9 @@
                     android:textSize="10dp"
                     tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/trafficBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -309,9 +309,9 @@
                     android:textSize="10dp"
                     tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/locationBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -348,10 +348,10 @@
                     tools:ignore="HardcodedText,SpUsage" />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/loadingLayout"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -371,5 +371,5 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/st_lottie_loading" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

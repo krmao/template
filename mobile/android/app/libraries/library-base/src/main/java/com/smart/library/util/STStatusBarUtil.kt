@@ -6,12 +6,12 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.support.annotation.ColorInt
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.annotation.ColorInt
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

@@ -5,12 +5,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
-import android.support.annotation.DrawableRes
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.smart.library.R
 import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STPreferencesUtil

@@ -2,8 +2,8 @@ package com.smart.library.base
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
+import androidx.appcompat.app.AppCompatActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.util.STRouteManager

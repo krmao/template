@@ -18,7 +18,7 @@ dependencies {
 
     api project(':library-base')
 
-    api "com.android.support:preference-v7:$rootProject.ext.supportLibraryVersion"
+    api "androidx.preference:preference:1.0.0"
 
     // required, enough for most devices.
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'

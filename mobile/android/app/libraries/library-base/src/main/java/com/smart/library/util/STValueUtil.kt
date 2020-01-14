@@ -2,7 +2,7 @@ package com.smart.library.util
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.app.Fragment
+import  androidx.fragment.app.Fragment
 import org.jetbrains.anko.AnkoAsyncContext
 import java.math.BigDecimal
 import java.text.DecimalFormat

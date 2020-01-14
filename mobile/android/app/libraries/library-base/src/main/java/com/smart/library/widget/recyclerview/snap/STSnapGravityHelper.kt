@@ -1,7 +1,7 @@
 package com.smart.library.widget.recyclerview.snap
 
-import android.support.v7.widget.LinearSnapHelper
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 /**

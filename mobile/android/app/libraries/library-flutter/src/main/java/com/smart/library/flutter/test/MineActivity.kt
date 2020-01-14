@@ -2,7 +2,7 @@ package com.smart.library.flutter.test
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import com.smart.library.flutter.FlutterInitializer
 import com.smart.library.flutter.FlutterRouter

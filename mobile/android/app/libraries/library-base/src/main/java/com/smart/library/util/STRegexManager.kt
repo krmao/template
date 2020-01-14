@@ -1,6 +1,6 @@
 package com.smart.library.util
 
-import android.support.v4.util.PatternsCompat
+import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
 object STRegexManager {

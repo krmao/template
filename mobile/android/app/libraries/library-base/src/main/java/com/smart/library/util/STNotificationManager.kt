@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import android.support.v4.app.TaskStackBuilder
+import androidx.core.app.TaskStackBuilder
 import com.smart.library.base.STBaseApplication
 
 

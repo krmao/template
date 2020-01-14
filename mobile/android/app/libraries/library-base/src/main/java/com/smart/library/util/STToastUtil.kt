@@ -2,12 +2,12 @@ package com.smart.library.util
 
 
 import android.annotation.SuppressLint
-import android.support.annotation.StringRes
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import com.smart.library.R
 import com.smart.library.base.STBaseApplication
 

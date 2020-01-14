@@ -151,7 +151,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="#8DDDEE"
@@ -185,5 +185,5 @@
             android:text="程序详细信息"
             android:textColor="@color/black"
             android:textSize="14sp" />
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

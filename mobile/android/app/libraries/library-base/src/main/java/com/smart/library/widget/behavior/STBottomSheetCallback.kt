@@ -1,7 +1,7 @@
 package com.smart.library.widget.behavior
 
 import android.os.Handler
-import android.support.design.widget.CoordinatorLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.view.View
 import android.view.ViewTreeObserver
 import com.smart.library.base.toDpFromPx
@@ -24,7 +24,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,7 +32,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     android:background="@drawable/st_beauty"
     tools:ignore="HardcodedText">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/titleBar"
         android:layout_width="3dp"
         android:layout_height="wrap_content"
@@ -41,11 +41,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
         app:layout_anchor="@id/behaviorView"
         app:layout_anchorGravity="top">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_sheet_appbar_height"
             app:title="巅峰榜 流行指数 第64天" />
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/behaviorView"
@@ -71,17 +71,17 @@ override fun onCreate(savedInstanceState: Bundle?) {
             android:layout_below="@id/bottomSheetTv"
             android:background="@color/red" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/redLine"
             android:layout_alignParentTop="@id/redLine"
             android:layout_alignParentBottom="true"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 */
 
 /**

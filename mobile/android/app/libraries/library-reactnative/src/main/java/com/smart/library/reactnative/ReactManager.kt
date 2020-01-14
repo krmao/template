@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactInstanceManagerBuilder

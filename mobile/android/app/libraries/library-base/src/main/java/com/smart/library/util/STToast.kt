@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * @see STToastUtil.enableCustomToast
  * @link https://www.jianshu.com/p/a5397a11a684
  */
+@Deprecated("not safe")
 @Suppress("MemberVisibilityCanBeprotected", "unused", "MemberVisibilityCanBePrivate")
 open class STToast {
 
@@ -85,7 +86,7 @@ open class STToast {
     protected val showTask = Runnable { log("showTask, ${atomicInteger.get()}, queue:${queue.size}"); view?.let { removeView();addView() }; }
     protected val hideTask = Runnable { log("hideTask, ${atomicInteger.get()}, queue:${queue.size}"); view?.let { removeView();queue.poll() };view = null; }
 
-    protected val layoutParams: WindowManager.LayoutParams  by lazy {
+    protected val layoutParams: WindowManager.LayoutParams by lazy {
         WindowManager.LayoutParams().apply {
             height = WindowManager.LayoutParams.WRAP_CONTENT
             width = WindowManager.LayoutParams.WRAP_CONTENT

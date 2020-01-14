@@ -20,7 +20,7 @@ class ReactNativeFragment : STBaseFragment() {
         @Suppress("DEPRECATION")
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
-            ReactJumper.goTo(context, ReactJumper.TEST)
+            ReactJumper.goTo(context)
         }
         return textView
     }

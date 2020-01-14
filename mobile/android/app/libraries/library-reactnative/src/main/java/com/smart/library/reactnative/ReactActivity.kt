@@ -3,7 +3,6 @@ package com.smart.library.reactnative
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -19,6 +18,7 @@ import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
+//import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -66,7 +66,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
-        reactRootView = ReactRootView(this)
+        reactRootView =  ReactRootView(this) //RNGestureHandlerEnabledRootView(this) //
         setContentView(
                 FrameLayout(this).apply {
                     this.fitsSystemWindows = true
@@ -96,11 +96,11 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                      * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
                      * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
                      */
-                    if (ReactManager.debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this@ReactActivity)) {
+                    /*if (ReactManager.debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this@ReactActivity)) {
                         startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), OVERLAY_PERMISSION_REQ_CODE)
-                    } else {
-                        startReactApplication()
-                    }
+                    } else {*/
+                    startReactApplication()
+                    /*}*/
                 } else {
                     STLogUtil.e(TAG, "请提供可以被 RN 初始化的离线包或者远程调试主机")
                     STToastUtil.show("请提供可以被 RN 初始化的离线包或者远程调试主机")

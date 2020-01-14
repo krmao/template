@@ -160,7 +160,7 @@
             android:layout_weight="1"
             android:background="#FAFAFA"
             android:digits="0123456789.:"
-            android:hint="10.47.62.17:8081"
+            android:hint="10.32.33.16:5387"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"

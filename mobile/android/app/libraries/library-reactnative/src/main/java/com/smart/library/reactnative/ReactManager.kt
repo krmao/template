@@ -21,12 +21,13 @@ import com.facebook.react.shell.MainReactPackage
 import com.facebook.react.uimanager.UIImplementationProvider
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
+import com.smart.library.reactnative.dev.ReactDevSettingsManager
+import com.smart.library.reactnative.packages.ReactCustomPackage
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
-import com.smart.library.reactnative.dev.ReactDevSettingsManager
-import com.smart.library.reactnative.packages.ReactCustomPackage
+//import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
@@ -268,7 +269,8 @@ object ReactManager {
                                 MainReactPackage(MainPackageConfig.Builder().apply {
                                     frescoConfig?.let { setFrescoConfig(it) }
                                 }.build()),
-                                ReactCustomPackage()
+                                ReactCustomPackage()//,
+                                // RNGestureHandlerPackage()
                         )
                 )
                 .setUseDeveloperSupport(debug)

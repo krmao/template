@@ -75,34 +75,25 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
             save_tv.callOnClick()
         }
         host_tv.setOnLongClickListener {
-            host_et.setText("10.47.62.17:8081")
+            host_et.setText("10.32.33.16:5387")
             save_tv.callOnClick()
             true
         }
 
         save_tv.setOnClickListener {
-            if (ReactManager.debug) {
-                ReactManager.devSettingsManager.setDefaultStartComponent(component_et.text.toString().trim())
-                ReactManager.devSettingsManager.setDefaultStartComponentPage(page_et.text.toString().trim())
+            ReactManager.devSettingsManager.setDefaultStartComponent(component_et.text.toString().trim())
+            ReactManager.devSettingsManager.setDefaultStartComponentPage(page_et.text.toString().trim())
 
-                val host = host_et.text.toString().trim().replace(" ", "").replace("．", ".").replace("：", ":")
-                if (!ReactManager.devSettingsManager.setDebugHttpHost(host)) {
-                    STToastUtil.show("保存配置成功, IP 保存失败, 请填写有效格式")
-                } else {
-                    STToastUtil.show("保存配置成功")
-                }
+            val host = host_et.text.toString().trim().replace(" ", "").replace("．", ".").replace("：", ":")
+            if (!ReactManager.devSettingsManager.setDebugHttpHost(host)) {
+                STToastUtil.show("保存配置成功, IP 保存失败, 请填写有效格式")
             } else {
-                STToastUtil.show("保存配置失败, 当前非 debug 环境")
+                STToastUtil.show("保存配置成功")
             }
         }
 
         start_tv.setOnClickListener {
-            STSystemUtil.sendKeyDownEventBack(context)
-
-            Looper.myQueue().addIdleHandler {
-                ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
-                false
-            }
+            ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
         back_to_offline_tv.setOnClickListener {

@@ -16,9 +16,6 @@ import com.smart.library.base.STBaseApplication
 object STToastUtil {
     private var toast: Toast? = null
 
-    // 是否使用 自定义 Toast, 不受通知权限约束
-    var enableCustomToast = true
-
     @JvmOverloads
     @JvmStatic
     fun show(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
@@ -54,25 +51,16 @@ object STToastUtil {
     @JvmStatic
     fun show(msg: String?, toastGravity: Int = Gravity.BOTTOM, duration: Int = Toast.LENGTH_SHORT, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
         if (msg?.isNotBlank() == true) {
-            if (!enableCustomToast) {
-                if (cancelLastImmediately)
-                    toast?.cancel()
-                toast = Toast(STBaseApplication.INSTANCE)
-                val viewHolder = STToastUtil.ViewHolder(LayoutInflater.from(STBaseApplication.INSTANCE).inflate(R.layout.st_widget_transient_notification, null))
-                viewHolder.textView.text = msg
-                viewHolder.textView.gravity = textGravity
-                toast?.setView(viewHolder.rootView)
-                toast?.setDuration(duration)
-                toast?.setGravity(toastGravity, xOffset, yOffset)
-                toast?.show()
-            } else {
-                val customToast = STToast().setText(msg, textGravity).setDuration(duration).setGravity(toastGravity, xOffset, yOffset)
-                if (cancelLastImmediately) {
-                    // STToast.cancelAll { customToast.show() }
-                } else {
-                    customToast.show()
-                }
-            }
+            if (cancelLastImmediately)
+                toast?.cancel()
+            toast = Toast(STBaseApplication.INSTANCE)
+            val viewHolder = ViewHolder(LayoutInflater.from(STBaseApplication.INSTANCE).inflate(R.layout.st_widget_transient_notification, null))
+            viewHolder.textView.text = msg
+            viewHolder.textView.gravity = textGravity
+            toast?.setView(viewHolder.rootView)
+            toast?.setDuration(duration)
+            toast?.setGravity(toastGravity, xOffset, yOffset)
+            toast?.show()
         }
     }
 

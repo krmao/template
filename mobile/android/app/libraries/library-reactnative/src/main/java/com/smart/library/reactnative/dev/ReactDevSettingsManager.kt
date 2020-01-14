@@ -96,7 +96,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDebugHttpHost(): String {
-        return preferences.getString("debug_http_host", "10.32.33.16:5389") ?: "10.32.33.16:5389"
+        return preferences.getString("debug_http_host", "10.32.33.16:5387") ?: "10.32.33.16:5387"
     }
 
     /**

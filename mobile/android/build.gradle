@@ -87,7 +87,7 @@ ext {
     multidex = "1.0.3"
 
     // React Native Version
-    reactNativeVersion = "0.59.10"
+    reactNativeVersion = "0.55.4"
 
     guavaVersion = "22.0-android"
     junitVersion = "4.12"

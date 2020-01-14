@@ -27,7 +27,5 @@ object ReactJumper {
         }, intentFlag, requestCode, callback)
     }
 
-    const val GOODS_DETAIL = "GOODS_DETAIL"
-    const val SELECT_SERVICE = "SelectService"
-    const val TEST = "test"
+    const val HOME = "home"
 }

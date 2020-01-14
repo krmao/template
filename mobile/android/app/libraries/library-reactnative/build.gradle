@@ -19,6 +19,7 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-template-base')
+    // api project(':react-native-gesture-handler')
 
     api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
 }

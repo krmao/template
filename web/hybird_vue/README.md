@@ -4,7 +4,7 @@
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -22,17 +22,17 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 # IOS / Android 区别
 
-* IOS    /WKWebView 对SPA框架(VUE) 内部路由跳转/返回 可以拦截到 Url, onPageFinish 拦截不到
-* Android/WebView   对SPA框架(VUE) 内部路由跳转/返回 不能拦截到 Url, onPageFinish 可以拦截
+-   IOS /WKWebView 对 SPA 框架(VUE) 内部路由跳转/返回 可以拦截到 Url, onPageFinish 拦截不到
+-   Android/WebView 对 SPA 框架(VUE) 内部路由跳转/返回 不能拦截到 Url, onPageFinish 可以拦截
 
 # BUGS
 
-1) Uncaught SyntaxError: Unexpected strict mode reserved word
-    
-    在 android sdk <=15 (4.0.3/4.0.4)  上有此问题, 使用[replace-bundle-webpack-plugin](https://github.com/kimhou/replace-bundle-webpack-plugin)解决了此问题
-    
+1. Uncaught SyntaxError: Unexpected strict mode reserved word
+
+    在 android sdk <=15 (4.0.3/4.0.4) 上有此问题, 使用[replace-bundle-webpack-plugin](https://github.com/kimhou/replace-bundle-webpack-plugin)解决了此问题
+
     ```
-    
+
     var ReplaceBundleStringPlugin = require('replace-bundle-webpack-plugin')
     new ReplaceBundleStringPlugin([{
         partten: /"use strict";/g,
@@ -41,25 +41,22 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
         }
     }])
     ```
-    
+
     注: 在 android sdk >= 16 此问题不再出现
 
-2) [Uncaught ReferenceError: Promise is not defined](https://github.com/axios/axios/issues/188)
-    
-    [promise 各系统版本的支持](http://caniuse.com/#search=promise)
-    
-    此问题在 android sdk 4.4.2 出现
-    
-    解决方案:
+2. [Uncaught ReferenceError: Promise is not defined](https://github.com/axios/axios/issues/188)
+   [promise 各系统版本的支持](http://caniuse.com/#search=promise)
+   此问题在 android sdk 4.4.2 出现
+   解决方案:
     ```
     import 'es6-promise/auto'
     ```
-    
     注: 在 android sdk >= 21 ( >= 5.0 ) 此问题不再出现
 
 ### [前端布局方式](https://blog.csdn.net/baiccnymyh/article/details/77986049?utm_source=blogxgwz3)
+
 ```
-<!-- 
+<!--
 标签：
 块属性标签：div(常用来布局划分区域）p（段落） h1~h6（标题）
 特点：支持宽高 独占一行 支持所有css样式
@@ -96,7 +93,7 @@ class选择器：语法：“.”+class名{样式}
 优先级为 选择器权重相加（class权重为10 标签选择器权重为1）
 //id选择器：
 #box{
- 
+
 }
 //组合选择器：
 div,p{

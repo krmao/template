@@ -15,11 +15,18 @@ import org.json.JSONObject
 object STBridgeCommunication {
 
     @JvmStatic
-    fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String?, callback: (callbackId: String?, resultJsonString: String?) -> Unit) {
+    fun handleBridgeOpenShema(activity: Activity?, url: String?) {
+        val bridgeParamsJsonObject = JSONObject()
+        bridgeParamsJsonObject.put("url", url)
+        handleBridge(activity, "open", bridgeParamsJsonObject.toString())
+    }
+
+    @JvmStatic
+    fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String? = null, callback: ((callbackId: String?, resultJsonString: String?) -> Unit)? = null) {
         if (activity == null || activity.isFinishing) {
             val result = JSONObject()
             result.put("result", "context is invalid")
-            callback.invoke(callbackId, result.toString())
+            callback?.invoke(callbackId, result.toString())
             return
         }
         val bridgeParamsJsonObject = STJsonUtil.toJSONObjectOrNull(params)
@@ -41,7 +48,8 @@ object STBridgeCommunication {
                             result.put("result", false)
                         }
                     } else if (url?.startsWith("smart://template/h5") == true) {
-                        val h5Url = bridgeParamsJsonObject.optString("url")
+                        val uri = Uri.parse(url)
+                        val h5Url: String? = uri.getQueryParameter("url")
                         if (h5Url?.isNotBlank() == true) {
                             STActivity.start(activity, STWebFragment::class.java, Bundle().apply { putString("url", h5Url) })
                             result.put("result", true)
@@ -102,7 +110,7 @@ object STBridgeCommunication {
                     result.put("result", "native 暂不支持 $functionName")
                 }
             }
-            callback.invoke(callbackId, result.toString())
+            callback?.invoke(callbackId, result.toString())
         }
     }
 }

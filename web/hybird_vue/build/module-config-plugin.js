@@ -47,70 +47,68 @@
 // let ncp = require('ncp').ncp
 // ncp.limit = 16
 // let fs = require('fs')
-let fs = require('fs-extra');
-let EasyZip = require('easy-zip2').EasyZip;
-let md5File = require('md5-file');
-let TAG = '[module-config]';
-let path = require('path');
+let fs = require("fs-extra");
+let EasyZip = require("easy-zip2").EasyZip;
+let md5File = require("md5-file");
+let TAG = "[module-config]";
+let path = require("path");
 let zip = new EasyZip();
 
 function getFileList(filePath) {
     let fileList = [];
-    fs.readdirSync(filePath).forEach(function (filename) {
+    fs.readdirSync(filePath).forEach(function(filename) {
         let tmpPath = path.join(filePath, filename);
         let stats = fs.statSync(tmpPath);
         if (stats.isFile()) {
-            fileList.push(tmpPath)
+            fileList.push(tmpPath);
         } else if (stats.isDirectory()) {
-            fileList = fileList.concat(getFileList(tmpPath))
+            fileList = fileList.concat(getFileList(tmpPath));
         }
     });
-    return fileList
+    return fileList;
 }
 
 function writeJsonToFile(filePath, json) {
-    fs.writeFileSync(filePath, JSON.stringify(json, null, 4))
+    fs.writeFileSync(filePath, JSON.stringify(json, null, 4));
 }
 
 function outputConfig(intput, output, data) {
     let obj = Object.create(null);
-    getFileList(intput).forEach(function (filePath) {
-
+    getFileList(intput).forEach(function(filePath) {
         let tmpPathList = filePath.split("dist");
         if (tmpPathList.length >= 2) {
             obj[tmpPathList[1]] = md5File.sync(filePath);
         } else {
-            console.error(TAG, filePath, "can not split by dist !")
+            console.error(TAG, filePath, "can not split by dist !");
         }
     });
-    data['moduleFilesMd5'] = obj;
+    data["moduleFilesMd5"] = obj;
 
     writeJsonToFile(output, data);
-    console.warn(TAG, 'json -> ' + output)
+    console.warn(TAG, "json -> " + output);
 }
 
 class CopyToNativePlugin {
     constructor(options = {}) {
-        this.options = options
+        this.options = options;
     }
 
     apply(compiler) {
-        compiler.plugin('done', () => {
-            console.warn(TAG, '========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-            if (compiler.outputFileSystem.constructor.name !== 'NodeOutputFileSystem') return;
-            console.warn(TAG, 'check input:', this.options.input, ' output:', this.options.output);
+        compiler.plugin("done", () => {
+            console.warn(TAG, "========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            if (compiler.outputFileSystem.constructor.name !== "NodeOutputFileSystem") return;
+            console.warn(TAG, "check input:", this.options.input, " output:", this.options.output);
 
             if (this.options.baseInfo === null) this.options.baseInfo = Object.create(null);
-            if (this.options.baseInfo.moduleName === null) this.options.baseInfo.moduleName = 'bundle';
-            if (this.options.rootFolder === null) this.options.rootFolder = '';
+            if (this.options.baseInfo.moduleName === null) this.options.baseInfo.moduleName = "bundle";
+            if (this.options.rootFolder === null) this.options.rootFolder = "";
 
             if (this.options.input && this.options.baseInfo) {
+                let jsonFileName = this.options.baseInfo.moduleName + ".json";
+                let zipFileName = this.options.baseInfo.moduleName + "-" + this.options.baseInfo.moduleVersion + ".zip";
 
-                let jsonFileName = this.options.baseInfo.moduleName + '.json';
-                let zipFileName = this.options.baseInfo.moduleName + '-' + this.options.baseInfo.moduleVersion + '.zip';
-
-                let outputDirPath = this.options.input + '/../build-output';
-                let outputFilePath = this.options.input + '/../build-output/' + zipFileName;
+                let outputDirPath = this.options.input + "/../build-output";
+                let outputFilePath = this.options.input + "/../build-output/" + zipFileName;
 
                 zip.zipFolder(this.options.input, {rootFolder: this.options.rootFolder}, () => {
                     if (fs.existsSync(outputFilePath)) fs.unlinkSync(outputFilePath);
@@ -119,10 +117,10 @@ class CopyToNativePlugin {
                     zip.writeToFileSync(outputFilePath);
 
                     let zipMd5 = md5File.sync(outputFilePath);
-                    console.warn(TAG, 'zip  to ' + outputFilePath, 'success -> md5:', zipMd5);
-                    this.options.baseInfo['moduleZipMd5'] = zipMd5;
+                    console.warn(TAG, "zip  to " + outputFilePath, "success -> md5:", zipMd5);
+                    this.options.baseInfo["moduleZipMd5"] = zipMd5;
 
-                    let jsonFilePath = outputDirPath + '/' + jsonFileName;
+                    let jsonFilePath = outputDirPath + "/" + jsonFileName;
                     outputConfig(this.options.input, jsonFilePath, this.options.baseInfo);
 
                     for (let index in this.options.output) {
@@ -130,22 +128,22 @@ class CopyToNativePlugin {
                             let tmpOutPut = this.options.output[index];
 
                             try {
-                                let tmpOutPutJsonFile = tmpOutPut + '/' + jsonFileName;
+                                let tmpOutPutJsonFile = tmpOutPut + "/" + jsonFileName;
                                 if (fs.existsSync(tmpOutPutJsonFile)) fs.unlinkSync(tmpOutPutJsonFile);
                                 fs.copySync(jsonFilePath, tmpOutPutJsonFile);
-                                console.warn(TAG, 'copy to ' + tmpOutPut, 'success -> md5:', md5File.sync(tmpOutPutJsonFile))
+                                console.warn(TAG, "copy to " + tmpOutPut, "success -> md5:", md5File.sync(tmpOutPutJsonFile));
                             } catch (err) {
-                                console.error(tag, 'copy to ' + tmpOutPut + ' error', err);
-                                return
+                                console.error(tag, "copy to " + tmpOutPut + " error", err);
+                                return;
                             }
                             try {
-                                let tmpOutPutZipFile = tmpOutPut + '/' + zipFileName;
+                                let tmpOutPutZipFile = tmpOutPut + "/" + zipFileName;
                                 if (fs.existsSync(tmpOutPutZipFile)) fs.unlinkSync(tmpOutPutZipFile);
                                 fs.copySync(outputFilePath, tmpOutPutZipFile);
-                                console.warn(TAG, 'copy to ' + tmpOutPut, 'success -> md5:', md5File.sync(tmpOutPutZipFile))
+                                console.warn(TAG, "copy to " + tmpOutPut, "success -> md5:", md5File.sync(tmpOutPutZipFile));
                             } catch (err) {
-                                console.error(tag, 'copy to ' + tmpOutPut + ' error', err);
-                                return
+                                console.error(tag, "copy to " + tmpOutPut + " error", err);
+                                return;
                             }
                             /*ncp(outputFilePath, tmpOutPut, {stopOnErr: true}, (err) => {
                              if (err) return console.error(tag, 'copy to ' + tmpOutPut + ' error', err)
@@ -153,12 +151,12 @@ class CopyToNativePlugin {
                              })*/
                         }
                     }
-                    console.warn(TAG, '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<========================================')
-                })
+                    console.warn(TAG, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<========================================");
+                });
             } else {
-                console.warn(TAG, 'cope nothing !')
+                console.warn(TAG, "cope nothing !");
             }
-        })
+        });
     }
 }
 

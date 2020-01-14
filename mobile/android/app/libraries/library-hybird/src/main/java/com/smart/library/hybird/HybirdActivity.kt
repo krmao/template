@@ -21,7 +21,8 @@ class HybirdActivity : STBaseActivity() {
                 runOnUiThread {
                     val fragment = STWebFragment()
                     val arguments = Bundle()
-                    arguments.putString("url", "http://10.32.33.16:5388/#/")
+//                    arguments.putString("url", "http://10.32.33.16:5388/#/")
+                    arguments.putString("url", "http://192.168.1.5:5388/#/")
                     arguments.putBoolean("hideTitleBar", true)
                     arguments.putBoolean("fullScreenAndBehindStatusBar", true)
 

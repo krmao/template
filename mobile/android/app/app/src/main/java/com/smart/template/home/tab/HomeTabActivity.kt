@@ -9,7 +9,9 @@ import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.rx.RxBus
+import com.smart.template.library.STBridgeCommunication
 import java.lang.ref.WeakReference
+
 
 class HomeTabActivity : STBaseActivity() {
 
@@ -22,9 +24,16 @@ class HomeTabActivity : STBaseActivity() {
         super.onCreate(savedInstanceState)
         sRef = WeakReference(this)
         STBusManager.homeActivity = sRef
-
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
+
+        //region schema
+        val url: String? = intent.data?.toString()
+        STLogUtil.w("schema", "url=$url")
+        if (url?.startsWith("smart://template") == true) {
+            STBridgeCommunication.handleBridgeOpenShema(this, url)
+        }
+        //endregion
     }
 
     override fun onRestart() {

@@ -1,5 +1,8 @@
 <template>
     <div class="root">
+        <div class="item" @click="onItemClick('schemaH5')">
+            0. open app by schemaH5
+        </div>
         <div class="item" @click="onItemClick('schema')">
             0. open app by schema
         </div>
@@ -12,13 +15,7 @@
             <div class="item" @click="onItemClick('put')">
                 4. put value
             </div>
-            <input
-                class="item_edit"
-                placeholder="请输入"
-                type="text"
-                maxlength="10"
-                v-model="valueName"
-            />
+            <input class="item_edit" placeholder="请输入" type="text" maxlength="10" v-model="valueName" />
         </div>
         <div class="item" @click="onItemClick('get')">5. get value</div>
         <div class="item" @click="onItemClick('getUserInfo')">
@@ -48,8 +45,11 @@ export default {
         onItemClick: function(type) {
             switch (type) {
                 case "schema": {
-                    window.location.href =
-                        "smart://template/rn?component=cc-rn&page=home&params=";
+                    window.location.href = "smart://template/rn?component=cc-rn&page=home&params=";
+                    break;
+                }
+                case "schemaH5": {
+                    window.location.href = "smart://template/h5?url=https://www.baidu.com";
                     break;
                 }
                 case "open": {
@@ -97,142 +97,38 @@ export default {
         }
     },
     beforeCreate: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("beforeCreate", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("beforeCreate", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     created: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("created", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("created", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     beforeMount: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("beforeMount", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("beforeMount", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     mounted: function() {
         this.msg = "new message";
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("mounted", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("mounted", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     beforeUpdate: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("beforeUpdate", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("beforeUpdate", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     updated: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("updated", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("updated", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     activated: function() {
         let that = this;
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("activated", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
-        document
-            .querySelector("body")
-            .setAttribute("style", "background:white");
+        console.log(this.page + "(" + fixedWidthString("activated", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
+        document.querySelector("body").setAttribute("style", "background:white");
     },
     deactivated: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("deactivated", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
-        document
-            .querySelector("body")
-            .setAttribute("style", "background:green");
+        console.log(this.page + "(" + fixedWidthString("deactivated", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
+        document.querySelector("body").setAttribute("style", "background:green");
     },
     beforeDestroy: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("beforeDestroy", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("beforeDestroy", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     },
     destroyed: function() {
-        console.log(
-            this.page +
-                "(" +
-                fixedWidthString("destroyed", 15, { padding: "_" }) +
-                ")  el:undefined?" +
-                (this.$el === undefined) +
-                "  |  data:undefined?" +
-                (this.$data === undefined) +
-                "  |  msg:" +
-                this.msg
-        );
+        console.log(this.page + "(" + fixedWidthString("destroyed", 15, {padding: "_"}) + ")  el:undefined?" + (this.$el === undefined) + "  |  data:undefined?" + (this.$data === undefined) + "  |  msg:" + this.msg);
     }
 };
 </script>

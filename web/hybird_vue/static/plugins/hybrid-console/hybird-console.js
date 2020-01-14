@@ -1,6 +1,6 @@
 window.hybirdConsole = {};
-module.export = (function (bindObj = null) {
-    let _bind = (bindObj && bindObj instanceof Object) ? bindObj : {};
+module.export = (function(bindObj = null) {
+    let _bind = bindObj && bindObj instanceof Object ? bindObj : {};
 
     var btn_menu;
     var btn_menu_off;
@@ -73,8 +73,7 @@ module.export = (function (bindObj = null) {
                 + seconds + " "
                 + milliseconds;*/
         // noinspection UnnecessaryLocalVariableJS
-        let dateStr =
-            hours + seperator2 + minutes + seperator2 + seconds + " " + milliseconds;
+        let dateStr = hours + seperator2 + minutes + seperator2 + seconds + " " + milliseconds;
         return dateStr;
     }
 
@@ -93,11 +92,7 @@ module.export = (function (bindObj = null) {
         }
 
         if (key) {
-            keyNode = createElement(
-                enumerable ? "enumerable-key" : "not-enumerable-key",
-                key + ":",
-                "span"
-            );
+            keyNode = createElement(enumerable ? "enumerable-key" : "not-enumerable-key", key + ":", "span");
             content_top.appendChild(keyNode);
         }
 
@@ -129,9 +124,7 @@ module.export = (function (bindObj = null) {
                     .join("");
             }
         } else {
-            node.innerHTML =
-                obj.constructor.name ||
-                obj.constructor.toString().replace(/\[|\]|object\s/g, "");
+            node.innerHTML = obj.constructor.name || obj.constructor.toString().replace(/\[|\]|object\s/g, "");
             content.classList.add("inspect");
             if (Array.isArray(obj)) {
                 node.innerHTML = "[" + obj.length + "]";
@@ -139,7 +132,7 @@ module.export = (function (bindObj = null) {
             props = createElement("props");
             content_top.addEventListener(
                 "click",
-                function () {
+                function() {
                     var keys = [],
                         elem,
                         key;
@@ -150,12 +143,12 @@ module.export = (function (bindObj = null) {
                             }
                             Object.getOwnPropertyNames(obj)
                                 .concat(keys)
-                                .filter(function (key, index, arr) {
+                                .filter(function(key, index, arr) {
                                     return arr.indexOf(key) === index;
                                 })
                                 .sort()
                                 .concat("__proto__")
-                                .forEach(function (key) {
+                                .forEach(function(key) {
                                     var enumerable = Object.getOwnPropertyDescriptor(obj, key);
                                     enumerable = enumerable ? enumerable.enumerable : false;
                                     elem = inspect(obj[key], key, enumerable);
@@ -184,11 +177,7 @@ module.export = (function (bindObj = null) {
             container = undefined;
         }
         if (!container_background) {
-            container_background = createElement(
-                "container_background",
-                undefined,
-                "container_background"
-            );
+            container_background = createElement("container_background", undefined, "container_background");
             document.body.appendChild(container_background);
         }
         if (!container) {
@@ -199,38 +188,26 @@ module.export = (function (bindObj = null) {
 
     function initMenus(hostAddress) {
         if (!btn_menu_off) {
-            btn_menu_off = createElement(
-                "menu",
-                hostAddress + "./hybird-console-menu-toggleoff.svg",
-                "img"
-            );
+            btn_menu_off = createElement("menu", hostAddress + "./hybird-console-menu-toggleoff.svg", "img");
             document.body.appendChild(btn_menu_off);
-            btn_menu_off.onclick = function () {
+            btn_menu_off.onclick = function() {
                 toggleConsole(true);
             };
             setVisible(btn_menu_off, !isContentShow);
         }
         if (!btn_menu) {
-            btn_menu = createElement(
-                "menu",
-                hostAddress + "./hybird-console-menu-toggleon.svg",
-                "img"
-            );
+            btn_menu = createElement("menu", hostAddress + "./hybird-console-menu-toggleon.svg", "img");
             document.body.appendChild(btn_menu);
-            btn_menu.onclick = function () {
+            btn_menu.onclick = function() {
                 toggleConsole(false);
             };
             setVisible(btn_menu, isContentShow);
         }
         if (!btn_clear) {
-            btn_clear = createElement(
-                "menu_clear",
-                hostAddress + "./hybird-console-menu-clear.svg",
-                "img"
-            );
+            btn_clear = createElement("menu_clear", hostAddress + "./hybird-console-menu-clear.svg", "img");
             btn_clear.hidden = !isContentShow;
             document.body.appendChild(btn_clear);
-            btn_clear.onclick = function () {
+            btn_clear.onclick = function() {
                 document.body.removeChild(container);
                 initContainer(true);
             };
@@ -262,24 +239,15 @@ module.export = (function (bindObj = null) {
             }
             scrollToBottom();
         }
-        if (
-            window.webkit &&
-            window.webkit.messageHandlers &&
-            window.webkit.messageHandlers.native
-        )
-            window.webkit.messageHandlers.native.postMessage(message);
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native) window.webkit.messageHandlers.native.postMessage(message);
     }
 
-    bindObj.init = function (hostAddress) {
-        if (navigator &&
-            /android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(
-                navigator.userAgent
-            )
-        ) {
+    bindObj.init = function(hostAddress) {
+        if (navigator && /android|webos|iphone|ipad|ipod|blackberry|window\sphone/i.test(navigator.userAgent)) {
             initMenus(hostAddress);
             toggleConsole(false);
             var log = console.log;
-            console.log = function () {
+            console.log = function() {
                 log.apply(this, Array.prototype.slice.call(arguments));
                 insepctLog(arguments);
             };

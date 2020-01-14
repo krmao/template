@@ -42,13 +42,26 @@
         <activity
             android:name="com.smart.template.home.tab.HomeTabActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <!-- 隐式Intent启动的activity，需要都要加上DEFAULT才可以匹配，如果category加了LAUNCHER则可选 -->
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <!-- 浏览器在特定情况下可以打开这个页面 -->
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="template"
+                    android:scheme="smart" />
             </intent-filter>
         </activity>
 

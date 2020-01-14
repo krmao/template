@@ -18,7 +18,7 @@ class HybirdFragment : STBaseFragment() {
         textView.text = "hybird"
         textView.setBackgroundColor(Color.parseColor("#FF33B5E5"))
         textView.setOnClickListener {
-            STRouteManager.goToFragment(activity, "com.smart.library.hybird.HybirdFragment") {
+            STRouteManager.goToActivity(activity, "com.smart.library.hybird.HybirdActivity") {
                 STLogUtil.w("krmao", it.toString())
             }
         }

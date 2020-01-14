@@ -42,7 +42,8 @@
         <activity
             android:name="com.smart.template.home.tab.HomeTabActivity"
             android:configChanges="orientation"
-            android:launchMode="standard"
+            android:launchMode="singleTask"
+            android:taskAffinity="smart-template"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
@@ -69,6 +70,7 @@
             android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
+            android:taskAffinity="smart-template"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 

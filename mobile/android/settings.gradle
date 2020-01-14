@@ -27,7 +27,8 @@ if (gradle.ext.modules.liveStreaming.enable == true) {
 
 if (gradle.ext.modules.reactNative.enable == true) {
     include(":library-reactnative"); project(":library-reactnative").projectDir = new File(settingsDir, "app/libraries/library-reactnative")
-//    include(":react-native-gesture-handler"); project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../../web/react_native/node_modules/react-native-gesture-handler/android')
+    include(":react-native-gesture-handler"); project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../../web/react_native/node_modules/react-native-gesture-handler/android')
+    include(":react-native-safe-area-context"); project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../../web/react_native/node_modules/react-native-safe-area-context/android')
 }
 
 include(":library-template-base"); project(":library-template-base").projectDir = new File(settingsDir, "app/libraries/library-template-base")

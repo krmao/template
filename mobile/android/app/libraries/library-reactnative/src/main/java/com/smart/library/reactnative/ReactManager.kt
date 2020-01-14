@@ -8,7 +8,6 @@ import androidx.annotation.UiThread
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.ReactInstanceManagerBuilder
-import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.CatalystInstanceImpl
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.bridge.Promise
@@ -27,13 +26,14 @@ import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
-//import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 @SuppressLint("StaticFieldLeak")
 object ReactManager {
     const val TAG: String = "[REACT_NATIVE]"
@@ -265,12 +265,13 @@ object ReactManager {
                 .setJSMainModulePath(jsMainModulePath)
                 .setJSBundleLoader(bundleLoader)
                 .addPackages(
-                        mutableListOf<ReactPackage>(
+                        mutableListOf(
                                 MainReactPackage(MainPackageConfig.Builder().apply {
                                     frescoConfig?.let { setFrescoConfig(it) }
                                 }.build()),
-                                ReactCustomPackage()//,
-                                // RNGestureHandlerPackage()
+                                ReactCustomPackage(),
+                                RNGestureHandlerPackage(),
+                                SafeAreaContextPackage()
                         )
                 )
                 .setUseDeveloperSupport(debug)

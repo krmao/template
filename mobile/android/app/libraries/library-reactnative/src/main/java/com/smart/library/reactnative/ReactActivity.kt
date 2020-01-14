@@ -18,7 +18,7 @@ import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
-//import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -66,7 +66,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack = false
         super.onCreate(savedInstanceState)
-        reactRootView =  ReactRootView(this) //RNGestureHandlerEnabledRootView(this) //
+        reactRootView = RNGestureHandlerEnabledRootView(this) //ReactRootView(this)
         setContentView(
                 FrameLayout(this).apply {
                     this.fitsSystemWindows = true

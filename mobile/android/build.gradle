@@ -12,6 +12,9 @@ buildscript {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven {
+            url("https://jitpack.io")
+        }
     }
 
     dependencies {
@@ -27,20 +30,29 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
         flatDir {
             dirs "file://$rootProject.projectDir/app/libraries/repo/aars"
         }
+        mavenLocal()
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/../../web/react_native/node_modules/react-native/android"
+        }
+
+        // react-native couldn't find DSO to load: libhermes.so
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../../web/react_native/node_modules/jsc-android/dist")
+        }
+        google()
         jcenter()
         mavenCentral()
-        maven { url "https://jitpack.io" }
         maven {
             url 'https://maven.google.com/'
             name 'Google'
         }
         maven {
-            // All of React Native (JS, Android binaries) is installed from npm
-            url "$rootDir/../../web/react_native/node_modules/react-native/android"
+            url("https://jitpack.io")
         }
     }
     gradle.projectsEvaluated {
@@ -62,6 +74,14 @@ apply from: "gradle/readme/scripts/tasktimings.gradle" //控制台输出任务�
 
 // Define versions in a single place
 ext {
+
+    react = [
+            entryFile    : "index.js",
+            // jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/out",
+            enableHermes : false,  // clean and rebuild if changing
+            hermesCommand: "$rootDir/../../web/react_native/node_modules/hermes-engine/%OS-BIN%/hermes",
+    ]
+    hermesPath = "$rootDir/../../web/react_native/node_modules/hermes-engine/android/"
 
     // Sdk and tools
 
@@ -96,7 +116,7 @@ ext {
     androidXConstraintlayoutVersion = "1.1.3"
 
     // React Native Version
-    reactNativeVersion = "0.55.4"
+    reactNativeVersion = "0.61.5"
 
     guavaVersion = "22.0-android"
     junitVersion = "4.12"

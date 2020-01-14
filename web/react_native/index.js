@@ -1,6 +1,7 @@
 import React from "react";
 import {Animated, AppRegistry, BackHandler, Easing, Platform, Dimensions, YellowBox} from "react-native";
-import {createStackNavigator} from "react-navigation";
+import {createAppContainer} from "react-navigation";
+import {createStackNavigator} from "react-navigation-stack";
 
 import NavigationUtil from "./src/main/js/base/NavigationUtil";
 import "./src/main/js/base/Bridge";
@@ -48,40 +49,41 @@ export default class App extends React.Component {
             _initialRouteParams = JSON.parse(this.props.param);
         }
 
-        RootStack = createStackNavigator(
-            {
-                home: {
-                    screen: TestScreen,
-                    navigationOptions: (navigation) => NavigationUtil.defaultNavigationOptions(navigation)
-                }
-            },
-            {
-                initialRouteName: this.props.page,
-                initialRouteParams: _initialRouteParams,
-
-                navigationOptions: {
-                    gesturesEnabled: true
+        RootStack = createAppContainer(
+            createStackNavigator(
+                {
+                    home: {
+                        screen: TestScreen,
+                        navigationOptions: (navigation) => NavigationUtil.defaultNavigationOptions(navigation)
+                    }
                 },
-                mode: "card",
-                headerMode: "screen",
-                headerTransitionPreset: "uikit",
-                transitionConfig: () => ({
-                    transitionSpec: {
-                        duration: 300,
-                        easing: Easing.out(Easing.poly(4)),
-                        timing: Animated.timing
+                {
+                    initialRouteName: this.props.page,
+                    initialRouteParams: _initialRouteParams,
+
+                    navigationOptions: {
+                        gesturesEnabled: true
                     },
-                    screenInterpolator: (sceneProps) => {
-                        const {layout, position, scene} = sceneProps;
-                        const {index} = scene;
+                    mode: "card",
+                    headerMode: "screen",
+                    headerTransitionPreset: "uikit",
+                    transitionConfig: () => ({
+                        transitionSpec: {
+                            duration: 300,
+                            easing: Easing.out(Easing.poly(4)),
+                            timing: Animated.timing
+                        },
+                        screenInterpolator: (sceneProps) => {
+                            const {layout, position, scene} = sceneProps;
+                            const {index} = scene;
 
-                        const width = layout.initWidth;
-                        const translateX = position.interpolate({
-                            inputRange: [index - 1, index, index + 1],
-                            outputRange: [width, 0, 0]
-                        });
+                            const width = layout.initWidth;
+                            const translateX = position.interpolate({
+                                inputRange: [index - 1, index, index + 1],
+                                outputRange: [width, 0, 0]
+                            });
 
-                        /*
+                            /*
                          const height = layout.initHeight;
                          const translateY = position.interpolate({
                          inputRange: [index - 1, index, index + 1],
@@ -89,14 +91,15 @@ export default class App extends React.Component {
                          });
                          */
 
-                        const opacity = position.interpolate({
-                            inputRange: [index - 1, index - 0.99, index],
-                            outputRange: [0, 1, 1]
-                        });
-                        return {opacity, transform: [{translateX: translateX}]};
-                    }
-                })
-            }
+                            const opacity = position.interpolate({
+                                inputRange: [index - 1, index - 0.99, index],
+                                outputRange: [0, 1, 1]
+                            });
+                            return {opacity, transform: [{translateX: translateX}]};
+                        }
+                    })
+                }
+            )
         );
     }
 

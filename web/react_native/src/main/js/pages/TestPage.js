@@ -1,5 +1,6 @@
 import React from "react";
-import {ScrollView, StatusBar, StyleSheet, Text, Alert, SafeAreaView, TextInput, View, TouchableHighlight} from "react-native";
+import {ScrollView, StatusBar, StyleSheet, Text, Alert, TextInput, View, TouchableHighlight} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default class BridgeScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -107,7 +108,7 @@ export default class BridgeScreen extends React.Component {
     onItemClick = (type) => {
         switch (type) {
             case "open": {
-                window.bridge.open("ctripgs://smarttravel/rn?component=smart-travel&page=home&params=");
+                window.bridge.open("smart://template/rn?component=cc-rn&page=home&params=");
                 break;
             }
             case "close": {

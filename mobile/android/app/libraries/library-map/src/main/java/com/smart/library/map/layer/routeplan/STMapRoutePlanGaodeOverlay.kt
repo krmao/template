@@ -113,7 +113,7 @@ class STMapRoutePlanGaodeOverlay @JvmOverloads constructor(val map: AMap, val pa
             }
             val customTextureList = arrayListOf<BitmapDescriptor>()
             tmcSection.forEach { section ->
-                section.polyline.forEachWithIndex { index, polyline ->
+                section.polyline.forEachWithIndex { _, polyline ->
                     polylineOptionsTexture.add(polyline.latLng())
                     customTextureList.add(getTexture(section.status))
                 }

@@ -6,8 +6,8 @@ import com.smart.library.base.STBaseApplication
 import com.smart.library.reactnative.dev.ReactDevSettingsView
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
-import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.util.okhttp.STOkHttpManager
+import com.smart.library.widget.debug.STDebugFragment
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactBusHandler : STBusManager.IBusHandler {
@@ -22,7 +22,15 @@ class ReactBusHandler : STBusManager.IBusHandler {
 
     }
 
-    override fun onCall(context: Context?, functionName: String, vararg params: Any) {
-
+    @Suppress("UNCHECKED_CAST")
+    override fun onCall(context: Context?, busFunctionName: String, vararg params: Any) {
+        when (busFunctionName) {
+            "reactnative/open" -> {
+                val page: String = (params.getOrNull(0) as? String) ?: ""
+                val param: HashMap<String, Any?> = params.getOrNull(1) as? HashMap<String, Any?> ?: hashMapOf()
+                val component: String = (params.getOrNull(2) as? String) ?: ""
+                ReactJumper.goTo(context, page, hashMapOf("params" to param), component)
+            }
+        }
     }
 }

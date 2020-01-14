@@ -240,6 +240,14 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
+    if (rootProject.ext.react.get("enableHermes", false)) {
+        debugImplementation files(rootProject.ext.hermesPath + "hermes-debug.aar")
+        releaseImplementation files(rootProject.ext.hermesPath + "hermes-release.aar")
+    } else {
+        implementation 'org.webkit:android-jsc:+'
+    }
+
+
     api project(':library-template-base')
     api project(':library-template-repository')
 

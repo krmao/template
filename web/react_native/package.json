@@ -14,11 +14,14 @@
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {
-        "eslint": "6.8.0",
-        "react": "16.3.1",
-        "react-native": "0.55.4",
-        "react-navigation": "3.1.0",
-        "react-navigation-stack": "1.0.0"
+        "@react-native-community/masked-view": "^0.1.6",
+        "react": "16.9.0",
+        "react-native": "0.61.5",
+        "react-native-gesture-handler": "1.5.3",
+        "react-native-safe-area-context": "^0.6.2",
+        "react-native-safe-area-view": "^1.0.0",
+        "react-navigation": "4.0.10",
+        "react-navigation-stack": "^2.0.14"
     },
     "localDependencies": {
         "metro": "../../../../smart-metro/packages-release/metro"
@@ -29,6 +32,12 @@
         "babel-eslint": "^10.0.3",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-native": "^3.8.1",
-        "prettier": "^1.19.1"
+        "prettier": "^1.19.1",
+        "@react-native-community/eslint-config": "^0.0.5",
+        "babel-jest": "^24.9.0",
+        "eslint": "^5.0.0",
+        "jest": "^24.9.0",
+        "metro-react-native-babel-preset": "^0.56.0",
+        "react-test-renderer": "16.9.0"
     }
 }

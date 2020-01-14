@@ -70,7 +70,7 @@ class STMapRoutePlanGaodeManager(_context: Context, val map: AMap, val onLocatio
 
         routePlanningProgressDialog?.show()
         async {
-            var driveRouteResult: DriveRouteResult? = null
+            var driveRouteResult: DriveRouteResult?
             try {
                 driveRouteResult = calculateDriveRoute(1, RouteSearch.DriveRouteQuery(RouteSearch.FromAndTo(startPoint, endPoint), RouteSearch.DRIVING_SINGLE_SHORTEST, null, null, ""))
             } catch (mapException: AMapException) {
@@ -97,7 +97,7 @@ class STMapRoutePlanGaodeManager(_context: Context, val map: AMap, val onLocatio
     }
 
     private fun calculateDriveRoute(retryCount: Int, query: RouteSearch.DriveRouteQuery): DriveRouteResult? {
-        var driveRouteResult: DriveRouteResult? = null
+        var driveRouteResult: DriveRouteResult?
         try {
             driveRouteResult = routeSearch.calculateDriveRoute(query)
         } catch (mapException: AMapException) {

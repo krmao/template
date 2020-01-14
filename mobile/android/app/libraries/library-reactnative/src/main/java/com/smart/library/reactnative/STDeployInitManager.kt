@@ -82,7 +82,8 @@ internal object STDeployInitManager {
                         },
                         initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? -> ReactManager.init(application, STBaseApplication.DEBUG, indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler()) }
                 ),
-                checkUpdateTypes = mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE),
+                // checkUpdateTypes = mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE),
+                checkUpdateTypes = mutableSetOf(),
                 applyTypes = mutableSetOf(STDeployApplyType.APP_START, STDeployApplyType.APP_CLOSE_ALL_PAGES, STDeployApplyType.APP_OPEN_FIRST_PAGE)
         )
     }

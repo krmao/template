@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, Platform, TouchableOpacity, View} from "react-native";
+import {Platform, View} from "react-native";
 
 const STATUS_BAR_HEIGHT = Platform.OS === "android" ? 22 : 0;
 
@@ -33,11 +33,11 @@ const defaultHeaderTitleStyle = {
 const defaultNavigationOptions = ({navigation}) => ({
     headerTitleStyle: global.defaultHeaderTitleStyle,
     headerStyle: global.defaultHeaderStyle,
-    headerLeft: (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image style={{width: 38, height: 38}} source={require("../../res/img/back.png")} />
-        </TouchableOpacity>
-    ),
+    // headerLeft: (
+    //     <TouchableOpacity onPress={() => navigation.goBack()}>
+    //         <Image style={{width: 38, height: 38}} source={require("../../res/img/back.png")} />
+    //     </TouchableOpacity>
+    // ),
     headerRight: <View />
 });
 

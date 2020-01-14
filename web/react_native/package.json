@@ -15,15 +15,17 @@
     },
     "dependencies": {
         "eslint": "6.8.0",
-        "react": "16.8.3",
-        "react-native": "0.59.10",
-        "react-native-gesture-handler": "^1.5.3",
-        "react-navigation": "^4.0.10"
+        "react": "16.3.1",
+        "react-native": "0.55.4",
+        "react-navigation": "3.1.0",
+        "react-navigation-stack": "1.0.0"
     },
     "localDependencies": {
         "metro": "../../../../smart-metro/packages-release/metro"
     },
     "devDependencies": {
+        "@babel/core": "^7.8.3",
+        "@babel/runtime": "^7.8.3",
         "babel-eslint": "^10.0.3",
         "eslint-plugin-react": "^7.17.0",
         "eslint-plugin-react-native": "^3.8.1",

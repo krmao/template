@@ -226,9 +226,8 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
         reactRootView?.unmountReactApplication()
         reactRootView = null
         reactInstanceManager?.onHostDestroy(this)
+        if (isOnCreateAppliedSuccess) STDeployManager.REACT_NATIVE.onDestroy(this)
         super.onDestroy()
-
-        if (isOnCreateAppliedSuccess) STDeployManager.REACT_NATIVE.onDestroy()
     }
 
 }

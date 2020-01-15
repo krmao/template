@@ -12,6 +12,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STValueUtil
 import com.smart.library.util.cache.STCacheManager
 import java.io.File
+import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
 enum class STDeployManager(private var debug: Boolean, private var rootDir: File, private val checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, private val applyTypes: MutableSet<STDeployApplyType>) : STIDeployClient {
@@ -28,6 +29,7 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
 
     fun isDebug(): Boolean = debug
 
+    private val reactActivityList: Vector<Activity> = Vector()
     @Volatile
     private var startedCount: Int = 0
         set(value) {
@@ -55,6 +57,7 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
 
             override fun onApplyCallback(applySuccess: Boolean) {
                 if (STValueUtil.isValid(activity)) {
+                    reactActivityList.add(activity)
                     startedCount++
                     checkUpdateCallback.onApplyCallback(applySuccess)
                 } else {
@@ -64,11 +67,18 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
         })
     }
 
+    fun finishAllReactActivities() {
+        reactActivityList.forEach {
+            it.finish()
+        }
+    }
+
     /**
      * call on Activity or Fragment destroy lifecycle
      * should call at main thread
      */
-    fun onDestroy() {
+    fun onDestroy(activity: Activity) {
+        reactActivityList.remove(activity)
         startedCount--
 
         afterPageClosedListener(isAllPagesClosed())

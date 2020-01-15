@@ -157,10 +157,10 @@ object ReactManager {
     @Synchronized
     fun reloadBundle(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard, callback: ((success: Boolean) -> Unit)? = null) {
         if (!STDeployManager.REACT_NATIVE.isAllPagesClosed()) {
-            STToastUtil.show("请先关闭所有的 RN 相关页面")
-            callback?.invoke(false)
-            return
+            STToastUtil.show("即将关闭所有的 RN 相关页面")
+            STDeployManager.REACT_NATIVE.finishAllReactActivities()
         }
+
         Flowable.fromCallable {
             STLogUtil.w(TAG, "reloadBundleFromSdcard start instanceManager=$instanceManager, thread name = ${Thread.currentThread().name}")
             ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard

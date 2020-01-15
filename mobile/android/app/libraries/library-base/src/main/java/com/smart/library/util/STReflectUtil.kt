@@ -2,6 +2,7 @@ package com.smart.library.util
 
 import android.text.TextUtils
 import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
@@ -12,9 +13,48 @@ object STReflectUtil {
     private const val TAG = "[reflect]"
 
     /**
+     * 调用私有方法
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun invokeDeclaredMethod(instance: Any?, functionName: String, parameterTypes: Array<Class<out Any>> = arrayOf(), params: Array<Any?> = arrayOf()): Any? {
+        var result: Any? = null
+        try {
+            val clazz: Class<Any>? = instance?.javaClass
+            val method: Method? = clazz?.getDeclaredMethod(functionName, *parameterTypes)
+            method?.isAccessible = true
+            STLogUtil.w(TAG, "invoke start ${method?.toGenericString()}")
+            result = method?.invoke(instance, *params)
+            STLogUtil.w(TAG, "invoke end $result")
+        } catch (e: InstantiationException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: IllegalAccessException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: IllegalArgumentException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: InvocationTargetException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: NoSuchMethodException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: SecurityException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: ClassNotFoundException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        }
+        return result
+    }
+
+    /**
      * 根据方法的名字调用方法，适合 object 定义的单例静态方法
      */
-    @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
+    @Throws(RuntimeException::
+    class, IllegalAccessException::
+    class, IllegalArgumentException::
+    class, InvocationTargetException::
+    class, NullPointerException::
+    class, ExceptionInInitializerError::
+    class)
+
     fun invoke(clazz: KClass<*>?, methodName: String?, vararg params: Any?): Any? {
         if (clazz == null || TextUtils.isEmpty(methodName)) throw RuntimeException("$TAG clazz:$clazz or methodName:$methodName is null")
         val methods = clazz.java.kotlin.companionObject?.declaredFunctions?.filter { it.name == methodName && it.parameters.size - 1 == params.size }

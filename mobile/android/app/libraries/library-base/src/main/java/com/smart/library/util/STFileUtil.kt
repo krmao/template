@@ -80,9 +80,9 @@ object STFileUtil {
                 copy(STBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
                 success = true
             } catch (exception: FileNotFoundException) {
-                STLogUtil.e("copyFromAssets, FileNotFoundException", exception)
+                STLogUtil.e("copyFromAssets, FileNotFoundException")
             } catch (exception: IOException) {
-                STLogUtil.e("copyFromAssets, IOException", exception)
+                STLogUtil.e("copyFromAssets, IOException")
             }
         } else {
             STLogUtil.e("copyFromAssets, arguments invalid")

@@ -11,6 +11,7 @@ import com.facebook.react.ReactInstanceManagerBuilder
 import com.facebook.react.bridge.CatalystInstanceImpl
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.common.LifecycleState
 import com.facebook.react.devsupport.DevLoadingViewController
 import com.facebook.react.devsupport.RedBoxHandler
@@ -24,6 +25,7 @@ import com.smart.library.reactnative.dev.ReactDevSettingsManager
 import com.smart.library.reactnative.packages.ReactCustomPackage
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
@@ -93,19 +95,11 @@ object ReactManager {
     @UiThread
     @JvmStatic
     @Synchronized
-    fun reloadBundleFromOnlineToOffline() {
-        if (!STDeployManager.REACT_NATIVE.isAllPagesClosed()) {
-            STToastUtil.show("请先关闭所有的 RN 相关页面")
-            return
-        }
+    fun reloadBundleAndClearDebugHttpPost() {
         Flowable.fromCallable {
             if (devSettingsManager.setDebugHttpHost("")) {
                 STToastUtil.show("保存配置成功(IP清空成功)")
-                val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
-                STLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
-                STFileUtil.deleteFile(downloadedJSBundleFilePath)
-                STToastUtil.show("reloadBundleFromSdcard now\ncurrentHost:${devSettingsManager.getDebugHttpHost()}")
-                reloadBundleFromSdcard()
+                reloadBundle()
             } else {
                 STToastUtil.show("保存配置失败(IP清空失败)")
             }
@@ -116,14 +110,35 @@ object ReactManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun reloadBundleFromSdcard(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard) {
+    fun reloadBundle(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard, callback: (() -> Unit)? = null) {
+        if (!STDeployManager.REACT_NATIVE.isAllPagesClosed()) {
+            STToastUtil.show("请先关闭所有的 RN 相关页面")
+            callback?.invoke()
+            return
+        }
         Flowable.fromCallable {
             STLogUtil.w(TAG, "reloadBundleFromSdcard start, thread name = ${Thread.currentThread().name}")
             ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard
             ReactManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
             STLogUtil.w(TAG, "reloadBundleFromSdcard destroy old instanceManager")
+
+            val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
+            STLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
+            STFileUtil.deleteFile(downloadedJSBundleFilePath)
+
+            val currentReactContext: ReactContext? = instanceManager?.currentReactContext
+            if (currentReactContext != null) {
+                STReflectUtil.invokeDeclaredMethod(instanceManager, "tearDownReactContext",
+                        arrayOf(ReactContext::class.javaObjectType),
+                        arrayOf(currentReactContext)
+                )
+            }
+
+            getCatalystInstance()?.destroy()
+            instanceManager?.packages?.clear()
+
             instanceManager?.destroy()
-            STLogUtil.w(TAG, "reloadBundleFromSdcard set old instanceManager null")
+            STLogUtil.w(TAG, "reloadBundleFromSdcard set old instanceManager null, currentHost:${devSettingsManager.getDebugHttpHost()}")
             instanceManager = null
 
             // sure to call instanceManager one time
@@ -132,6 +147,7 @@ object ReactManager {
             } else {
                 STLogUtil.i(TAG, "instanceManager reCreate success")
             }
+            callback?.invoke()
         }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 

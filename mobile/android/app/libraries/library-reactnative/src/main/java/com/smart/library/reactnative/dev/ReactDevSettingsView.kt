@@ -93,13 +93,15 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         start_tv.setOnClickListener {
-            ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+            ReactManager.reloadBundle {
+                ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
         }
 
         back_to_offline_tv.setOnClickListener {
-            STSystemUtil.sendKeyDownEventBack(context)
+            // STSystemUtil.sendKeyDownEventBack(context)
 
-            ReactManager.reloadBundleFromOnlineToOffline()
+            ReactManager.reloadBundleAndClearDebugHttpPost()
         }
 
         show_rn_dev_dialog_tv.setOnClickListener {

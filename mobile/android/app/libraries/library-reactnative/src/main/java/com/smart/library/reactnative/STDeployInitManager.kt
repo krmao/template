@@ -71,7 +71,7 @@ internal object STDeployInitManager {
                         reloadHandler = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
                             if (ReactManager.instanceManager != null) {
                                 STLogUtil.e(TAG, "reloadHandler start")
-                                ReactManager.reloadBundleFromSdcard(indexBundleFile, versionOfIndexBundleFileInSdcard)
+                                ReactManager.reloadBundle(indexBundleFile, versionOfIndexBundleFileInSdcard)
                                 true
                             } else {
                                 ReactManager.indexBundleFileInSdcard = indexBundleFile

@@ -58,13 +58,13 @@ module.export = (function(bindObj = null) {
     _bind.invoke = function(functionName, params, callback) {
         NativeModules.NativeManager.callNative(functionName, params).then(
             (successResult) => {
-                console.debug(`successResult=${successResult}`);
+                console.log(`successResult=${successResult}`);
                 if (callback) {
                     callback(JSON.parse(successResult));
                 }
             },
             (errorCode, errorMsg, error) => {
-                console.debug(`errorCode=${errorCode}, errorMsg=${errorMsg}, error=${error}`);
+                console.log(`errorCode=${errorCode}, errorMsg=${errorMsg}, error=${error}`);
                 if (callback) {
                     callback(undefined);
                 }

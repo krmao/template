@@ -38,7 +38,7 @@ const defaultNavigationOptions = ({navigation}) => ({
     //         <Image style={{width: 38, height: 38}} source={require("../../res/img/back.png")} />
     //     </TouchableOpacity>
     // ),
-    headerRight: <View />
+    headerRight: () => <View />
 });
 
 // eslint-disable-next-line camelcase

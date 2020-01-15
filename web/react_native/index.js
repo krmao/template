@@ -7,18 +7,24 @@ import NavigationUtil from "./src/main/js/base/NavigationUtil";
 import "./src/main/js/base/Bridge";
 import TestScreen from "./src/main/js/pages/TestPage";
 
-console.log("OS:" + Platform.OS);
-console.log("STATUS_BAR_HEIGHT:" + NavigationUtil.STATUS_BAR_HEIGHT);
-
 YellowBox.ignoreWarnings(["Warning: isMounted(...) is deprecated", "Module RCTImageLoader"]);
 
 let global = {};
 let RootStack = {};
 
 export default class App extends React.Component {
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+        this.tag = "[App]";
+        console.log(this.tag, "constructor props:", props);
+        console.log(this.tag, "constructor system:", {
+            OS: Platform.OS,
+            STATUS_BAR_HEIGHT: NavigationUtil.STATUS_BAR_HEIGHT
+        });
+
         BackHandler.addEventListener("hardwareBackPress", this.onBackPressed);
         global.isIPhoneX = false;
+        global.pageName = this.props.page;
         if (Platform.OS === "ios") {
             const {height: D_HEIGHT, width: D_WIDTH} = Dimensions.get("window");
             if (D_WIDTH === 375 && D_HEIGHT === 812) {
@@ -65,8 +71,8 @@ export default class App extends React.Component {
                         gesturesEnabled: true
                     },
                     mode: "card",
-                    headerMode: "screen",
-                    headerTransitionPreset: "uikit",
+                    headerMode: "screen"
+                    /* headerTransitionPreset: "uikit",
                     transitionConfig: () => ({
                         transitionSpec: {
                             duration: 300,
@@ -81,9 +87,9 @@ export default class App extends React.Component {
                             const translateX = position.interpolate({
                                 inputRange: [index - 1, index, index + 1],
                                 outputRange: [width, 0, 0]
-                            });
+                            }); */
 
-                            /*
+                    /*
                          const height = layout.initHeight;
                          const translateY = position.interpolate({
                          inputRange: [index - 1, index, index + 1],
@@ -91,31 +97,30 @@ export default class App extends React.Component {
                          });
                          */
 
-                            const opacity = position.interpolate({
+                    /* const opacity = position.interpolate({
                                 inputRange: [index - 1, index - 0.99, index],
                                 outputRange: [0, 1, 1]
                             });
                             return {opacity, transform: [{translateX: translateX}]};
                         }
-                    })
+                    }) */
                 }
             )
         );
     }
 
     componentWillUnmount() {
+        console.log(this.tag, "componentWillUnmount");
         BackHandler.removeEventListener("hardwareBackPress", this.onBackPressed);
     }
 
-    componentDidMount() {
-        global.pageName = this.props.page;
-    }
-
     render() {
+        console.log(this.tag, "render");
         return <RootStack />;
     }
 
     onBackPressed = () => {
+        console.log(this.tag, "onBackPressed");
         return false;
     };
 }

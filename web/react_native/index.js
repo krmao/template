@@ -17,7 +17,7 @@ export default class App extends React.Component {
         super(props);
         this.tag = "[App]";
         console.log(this.tag, "constructor props:", props);
-        console.log(this.tag, "constructor system:", {
+        console.log(this.tag, "constructor react bridge constants:", {
             OS: Platform.OS,
             SDK_INT: NativeModules.ReactBridge.SDK_INT,
             versionCode: NativeModules.ReactBridge.versionCode,
@@ -26,7 +26,9 @@ export default class App extends React.Component {
             screenWidth: NativeModules.ReactBridge.screenWidth,
             screenHeight: NativeModules.ReactBridge.screenHeight,
             isSdCardExist: NativeModules.ReactBridge.isSdCardExist,
-            statusBarHeight: NativeModules.ReactBridge.statusBarHeight
+            statusBarHeight: NativeModules.ReactBridge.statusBarHeight,
+            statusBarHeightByDensity: NativeModules.ReactBridge.statusBarHeightByDensity,
+            density: NativeModules.ReactBridge.density
         });
 
         BackHandler.addEventListener("hardwareBackPress", this.onBackPressed);

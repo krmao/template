@@ -23,7 +23,9 @@ class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
                 "screenWidth" to STSystemUtil.screenWidth,
                 "screenHeight" to STSystemUtil.screenHeight,
                 "isSdCardExist" to STSystemUtil.isSdCardExist,
-                "statusBarHeight" to STSystemUtil.statusBarHeight.toDpFromPx()
+                "statusBarHeight" to STSystemUtil.statusBarHeight,
+                "statusBarHeightByDensity" to STSystemUtil.statusBarHeight.toDpFromPx(),
+                "density" to STSystemUtil.displayMetrics.density
         )
     }
 

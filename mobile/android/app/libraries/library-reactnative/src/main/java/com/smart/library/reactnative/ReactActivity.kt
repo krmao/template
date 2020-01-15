@@ -19,6 +19,7 @@ import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
+import org.json.JSONObject
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
@@ -63,11 +64,41 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private val initialProperties: Bundle? by lazy { intent.extras }
 
+    private val pageName: String? by lazy { initialProperties?.getString("page") }
+    private val params: JSONObject by lazy {
+        try {
+            val paramJsonString: String = initialProperties?.getString("param") ?: "{}"
+            if (paramJsonString.isNotBlank()) {
+                JSONObject(paramJsonString)
+            } else {
+                JSONObject()
+            }
+        } catch (e: Exception) {
+            JSONObject()
+        }
+    }
+    private val paramDarkFont: Int by lazy { params.optInt("darkFont", 0) }
+    private val paramSwipeBack: Int by lazy { params.optInt("swipeBack", 1) }
+    private val paramDoubleBack: Int by lazy { params.optInt("doubleBack", 0) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = true
         enableImmersionStatusBar = true
-        enableImmersionStatusBarWithDarkFont = true
+        enableImmersionStatusBarWithDarkFont = paramDarkFont == 1
+        enableExitWithDoubleBackPressed = paramDoubleBack == 1
+        enableSwipeBack = !enableExitWithDoubleBackPressed && (paramSwipeBack == 1)
+
+        STLogUtil.v(TAG, "initialProperties:$initialProperties")
+        STLogUtil.v(TAG, "pageName:$pageName")
+        STLogUtil.v(TAG, "params:$params")
+        STLogUtil.v(TAG, "paramSwipeBack:$paramSwipeBack")
+        STLogUtil.v(TAG, "paramDarkFont:$paramDarkFont")
+        STLogUtil.v(TAG, "enableImmersionStatusBar:$enableImmersionStatusBar")
+        STLogUtil.v(TAG, "enableImmersionStatusBarWithDarkFont:$enableImmersionStatusBarWithDarkFont")
+        STLogUtil.v(TAG, "enableExitWithDoubleBackPressed:$enableExitWithDoubleBackPressed")
+        STLogUtil.v(TAG, "enableSwipeBack:$enableSwipeBack")
+
         super.onCreate(savedInstanceState)
+
         reactRootView = RNGestureHandlerEnabledRootView(this) //ReactRootView(this)
         setContentView(
                 FrameLayout(this).apply {

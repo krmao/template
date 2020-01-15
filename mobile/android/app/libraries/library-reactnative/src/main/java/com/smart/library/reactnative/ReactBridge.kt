@@ -2,6 +2,7 @@ package com.smart.library.reactnative
 
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.smart.library.base.toDpFromPx
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
@@ -10,19 +11,19 @@ class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
 
 
     override fun getName(): String {
-        return "NativeManager"
+        return "ReactBridge"
     }
 
     override fun getConstants(): MutableMap<String, Any?> {
         return mutableMapOf(
-            "SDK_INT" to STSystemUtil.SDK_INT,
-            "versionCode" to STSystemUtil.versionCode,
-            "versionName" to STSystemUtil.versionName,
-            "appName" to STSystemUtil.appName,
-            "screenWidth" to STSystemUtil.screenWidth,
-            "screenHeight" to STSystemUtil.screenHeight,
-            "isSdCardExist" to STSystemUtil.isSdCardExist,
-            "statusBarHeight" to STSystemUtil.statusBarHeight
+                "SDK_INT" to STSystemUtil.SDK_INT,
+                "versionCode" to STSystemUtil.versionCode,
+                "versionName" to STSystemUtil.versionName,
+                "appName" to STSystemUtil.appName,
+                "screenWidth" to STSystemUtil.screenWidth,
+                "screenHeight" to STSystemUtil.screenHeight,
+                "isSdCardExist" to STSystemUtil.isSdCardExist,
+                "statusBarHeight" to STSystemUtil.statusBarHeight.toDpFromPx()
         )
     }
 

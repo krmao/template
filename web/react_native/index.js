@@ -1,5 +1,5 @@
 import React from "react";
-import {Animated, AppRegistry, BackHandler, Easing, Platform, Dimensions, YellowBox} from "react-native";
+import {Animated, AppRegistry, BackHandler, NativeModules, Platform, Dimensions, YellowBox} from "react-native";
 import {createAppContainer} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
 
@@ -19,7 +19,14 @@ export default class App extends React.Component {
         console.log(this.tag, "constructor props:", props);
         console.log(this.tag, "constructor system:", {
             OS: Platform.OS,
-            STATUS_BAR_HEIGHT: NavigationUtil.STATUS_BAR_HEIGHT
+            SDK_INT: NativeModules.ReactBridge.SDK_INT,
+            versionCode: NativeModules.ReactBridge.versionCode,
+            versionName: NativeModules.ReactBridge.versionName,
+            appName: NativeModules.ReactBridge.appName,
+            screenWidth: NativeModules.ReactBridge.screenWidth,
+            screenHeight: NativeModules.ReactBridge.screenHeight,
+            isSdCardExist: NativeModules.ReactBridge.isSdCardExist,
+            statusBarHeight: NativeModules.ReactBridge.statusBarHeight
         });
 
         BackHandler.addEventListener("hardwareBackPress", this.onBackPressed);

@@ -2,20 +2,27 @@ package com.smart.library.reactnative
 
 import android.app.Application
 import android.content.Context
+import com.facebook.soloader.SoLoader
 import com.smart.library.base.STBaseApplication
 import com.smart.library.reactnative.dev.ReactDevSettingsView
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
 import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.widget.debug.STDebugFragment
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactBusHandler : STBusManager.IBusHandler {
 
     override fun onInitOnce(application: Application) {
+        SoLoader.init(application, false)
         STDebugFragment.childViewList.add(ReactDevSettingsView::class.java)
-        val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
-        STDeployInitManager.init(application, frescoConfig)
+
+        Flowable.fromCallable {
+            val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
+            STDeployInitManager.init(application, frescoConfig)
+        }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     override fun onUpgradeOnce(application: Application) {

@@ -20,25 +20,25 @@ object STBusManager {
     var homeActivity: WeakReference<Activity>? = null
 
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
-    var isInit = false
-        private set
+    private var isInit = false
 
     fun initOnce(application: Application, busHandlerClassMap: MutableMap<String, String>) {
         if (!isInit) {
             busHandlerClassMap.forEach {
                 try {
+                    STLogUtil.v(TAG, "\nkey:${it.key}, value:${it.value}")
                     val busClass = Class.forName(it.value)
-                    if (IBusHandler::class.java.isAssignableFrom(busClass)) { // isAssignableFrom 检查 busClass 是否是 IBusHandler 的子类
+                    if (IBusHandler::class.javaObjectType.isAssignableFrom(busClass)) { // isAssignableFrom 检查 busClass 是否是 IBusHandler 的子类
                         val busHandler = busClass.newInstance() as IBusHandler
                         busHandlerMap[it.key] = busHandler
                         // init once here
                         busHandler.onInitOnce(application)
-                        STLogUtil.i(TAG, "init bus ${it.key}:${it.value} success")
+                        STLogUtil.i(TAG, "init bus ${it.key}:${it.value} success\n")
                     } else {
-                        STLogUtil.w(TAG, "init bus ${it.key}:${it.value} failure, class is not IBusHandler")
+                        STLogUtil.e(TAG, "init bus ${it.key}:${it.value} failure, class is not IBusHandler\n")
                     }
                 } catch (e: Exception) {
-                    STLogUtil.w(TAG, "init bus ${it.key}:${it.value} error, class not found exception")
+                    STLogUtil.e(TAG, "init bus ${it.key}:${it.value} error, class not found exception\n", e)
                 }
             }
             isInit = true

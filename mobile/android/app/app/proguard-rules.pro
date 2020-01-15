@@ -75,3 +75,4 @@
 
 # support
 -keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
+-keep class com.smart.library.reactnative.ReactBusHandler{*;}

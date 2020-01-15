@@ -47,15 +47,8 @@ object STReflectUtil {
     /**
      * 根据方法的名字调用方法，适合 object 定义的单例静态方法
      */
-    @Throws(RuntimeException::
-    class, IllegalAccessException::
-    class, IllegalArgumentException::
-    class, InvocationTargetException::
-    class, NullPointerException::
-    class, ExceptionInInitializerError::
-    class)
-
-    fun invoke(clazz: KClass<*>?, methodName: String?, vararg params: Any?): Any? {
+    @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
+    fun invokeKotlinCompanionObjectDeclaredFunctions(clazz: KClass<*>?, methodName: String?, vararg params: Any?): Any? {
         if (clazz == null || TextUtils.isEmpty(methodName)) throw RuntimeException("$TAG clazz:$clazz or methodName:$methodName is null")
         val methods = clazz.java.kotlin.companionObject?.declaredFunctions?.filter { it.name == methodName && it.parameters.size - 1 == params.size }
         if (methods?.size ?: 0 <= 0) throw RuntimeException("[callNativeMethod] the invoked method dose not exist :$methodName")
@@ -63,7 +56,7 @@ object STReflectUtil {
     }
 
     @JvmStatic
-    fun set(obj: Any?, fieldName: String?, value: Any?) {
+    fun setFieldValue(obj: Any?, fieldName: String?, value: Any?) {
         STLogUtil.e(TAG, "do set ${obj?.javaClass?.simpleName}.$fieldName = $value start ...")
         try {
             val filed = obj?.javaClass?.getDeclaredField(fieldName ?: "")
@@ -88,7 +81,7 @@ object STReflectUtil {
     }
 
     @JvmStatic
-    fun get(obj: Any?, fieldName: String?): Any? {
+    fun getFieldValue(obj: Any?, fieldName: String?): Any? {
         STLogUtil.e(TAG, "do get ${obj?.javaClass?.simpleName}.$fieldName start ...")
         try {
             val filed = obj?.javaClass?.getDeclaredField(fieldName ?: "")

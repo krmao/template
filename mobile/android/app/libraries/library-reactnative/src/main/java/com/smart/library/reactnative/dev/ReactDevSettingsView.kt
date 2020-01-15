@@ -71,37 +71,47 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
         })
 
         clear_host_iv.setOnClickListener {
-            host_et.setText("")
-            save_tv.callOnClick()
+            clearHostAndSave()
         }
         host_tv.setOnLongClickListener {
             host_et.setText("10.32.33.16:5387")
-            save_tv.callOnClick()
+            save()
             true
         }
 
-        save_tv.setOnClickListener {
-            ReactManager.devSettingsManager.setDefaultStartComponent(component_et.text.toString().trim())
-            ReactManager.devSettingsManager.setDefaultStartComponentPage(page_et.text.toString().trim())
-
-            val host = host_et.text.toString().trim().replace(" ", "").replace("．", ".").replace("：", ":")
-            if (!ReactManager.devSettingsManager.setDebugHttpHost(host)) {
-                STToastUtil.show("保存配置成功, IP 保存失败, 请填写有效格式")
-            } else {
-                STToastUtil.show("保存配置成功")
+        enableRemoteDebugAndJump.setOnClickListener {
+            if (host_et.text.toString().trim().isBlank()) {
+                host_et.setText("10.32.33.16:5387")
+            }
+            save()
+            ReactManager.reloadBundle { success: Boolean ->
+                if (success) {
+                    STToastUtil.show("reload bundle success")
+                    val page: String = page_et.text.toString().trim()
+                    if (page.isNotBlank()) {
+                        STToastUtil.show("检测到 page:$page, 执行跳转")
+                        ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                } else {
+                    STToastUtil.show("reload bundle failure")
+                }
             }
         }
 
-        start_tv.setOnClickListener {
-            ReactManager.reloadBundle {
-                ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+        disableRemoteDebug.setOnClickListener {
+            clearHostAndSave()
+            ReactManager.reloadBundleAndDisableRemoteDebug { success: Boolean ->
+                if (success) {
+                    STToastUtil.show("reload bundle success")
+                    val page: String = page_et.text.toString().trim()
+                    if (page.isNotBlank()) {
+                        STToastUtil.show("检测到 page:$page, 执行跳转")
+                        ReactJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                } else {
+                    STToastUtil.show("reload bundle failure")
+                }
             }
-        }
-
-        back_to_offline_tv.setOnClickListener {
-            // STSystemUtil.sendKeyDownEventBack(context)
-
-            ReactManager.reloadBundleAndClearDebugHttpPost()
         }
 
         show_rn_dev_dialog_tv.setOnClickListener {
@@ -115,6 +125,23 @@ class ReactDevSettingsView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         rn_info_tv.text = "VERSION_RN_BASE: ${ReactConstant.VERSION_RN_BASE}\nVERSION_RN_CURRENT: ${ReactConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
+    }
+
+    private fun save() {
+        ReactManager.devSettingsManager.setDefaultStartComponent(component_et.text.toString().trim())
+        ReactManager.devSettingsManager.setDefaultStartComponentPage(page_et.text.toString().trim())
+
+        val host = host_et.text.toString().trim().replace(" ", "").replace("．", ".").replace("：", ":")
+        if (!ReactManager.devSettingsManager.setDebugHttpHost(host)) {
+            STToastUtil.show("保存配置成功, IP 保存失败, 请填写有效格式")
+        } else {
+            STToastUtil.show("保存配置成功")
+        }
+    }
+
+    private fun clearHostAndSave() {
+        host_et.setText("")
+        save()
     }
 
 }

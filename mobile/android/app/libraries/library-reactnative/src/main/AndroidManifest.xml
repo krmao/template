@@ -10,12 +10,14 @@
             android:name=".ReactActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait"
+            android:taskAffinity="template.smart.com"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="template.smart.com"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
     </application>

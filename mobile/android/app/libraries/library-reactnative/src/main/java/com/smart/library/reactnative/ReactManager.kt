@@ -55,52 +55,97 @@ object ReactManager {
     var versionOfIndexBundleFileInSdcard: Int? = null
     var indexBundleFileInSdcard: File? = null
         set(value) {
-            STLogUtil.w(TAG, "indexBundleFileInSdcard has changed from ${field?.absolutePath} to ${value?.absolutePath}")
-            field = value
+            if (field != value) {
+                STLogUtil.w(TAG, "indexBundleFileInSdcard has changed from ${field?.absolutePath} to ${value?.absolutePath}")
+                field = value
+            }
         }
 
     @JvmStatic
     var instanceManager: ReactInstanceManager? = null
-        private set
-        get() {
-            if (field == null) {
-                val bundlePathInAssets = ReactConstant.PATH_ASSETS_BUNDLE
-                val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
 
-                // 率先检查 sdCard, 然后再检查 assets, 注意先后顺序
-                if (checkValidBundleInSdcard(indexBundleFileInSdcard) && bundlePathInSdcard != null && !bundlePathInSdcard.isNullOrBlank()) {
-                    ReactConstant.VERSION_RN_CURRENT = versionOfIndexBundleFileInSdcard ?: 0
-                    STLogUtil.e(TAG, "checkValidBundleInSdcard=true")
-                    val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInSdcard, bundlePathInSdcard, false)
-                    field = initInstanceManager(bundleLoader)
-                } else if (checkValidBundleInAssets(bundlePathInAssets)) {
-                    ReactConstant.VERSION_RN_CURRENT = ReactConstant.VERSION_RN_BASE
-                    STLogUtil.e(TAG, "checkValidBundleInAssets=true")
-                    val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
-                    field = initInstanceManager(bundleLoader)
-                } else if (checkValidRemoteDebugServer()) {
-                    ReactConstant.VERSION_RN_CURRENT = -1
-                    STLogUtil.e(TAG, "checkValidRemoteDebugServer=true")
-                    val bundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(devSettingsManager.getDebugHttpHost(), null)
-                    field = initInstanceManager(bundleLoader)
-                } else {
-                    ReactConstant.VERSION_RN_CURRENT = 0
-                    STLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
+    fun destroyInstanceManager() {
+        if (instanceManager != null) {
+            STLogUtil.w(TAG, "destroyInstanceManager start instanceManager=$instanceManager")
+            val innerInstanceManager: ReactInstanceManager? = instanceManager
+            if (innerInstanceManager != null) {
+                (STReflectUtil.getFieldValue(innerInstanceManager, "mReactInstanceEventListeners") as? ArrayList<*>)?.clear()
+
+                val currentReactContext: ReactContext? = innerInstanceManager.currentReactContext
+                if (currentReactContext != null) {
+                    STReflectUtil.invokeDeclaredMethod(innerInstanceManager, "tearDownReactContext",
+                            arrayOf(ReactContext::class.javaObjectType),
+                            arrayOf(currentReactContext)
+                    )
                 }
-                STLogUtil.e(TAG, "init instanceManager ${if (field == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
+
+                val downloadedJSBundleFilePath: String? = innerInstanceManager.devSupportManager?.downloadedJSBundleFile
+                STLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
+                STFileUtil.deleteFile(downloadedJSBundleFilePath)
+
+                getCatalystInstance()?.destroy()
+                innerInstanceManager.destroy()
             }
-            return field
+
+            instanceManager = null
+            STLogUtil.w(TAG, "destroyInstanceManager instanceManager=$instanceManager")
+        } else {
+            STLogUtil.w(TAG, "destroyInstanceManager instanceManager is null, no need to destroy")
         }
+    }
+
+    fun initInstanceManager(callback: ((success: Boolean) -> Unit)? = null) {
+        STLogUtil.e(TAG, "init instanceManager start instanceManager=$instanceManager")
+        if (instanceManager == null) {
+            val bundlePathInAssets = ReactConstant.PATH_ASSETS_BUNDLE
+            val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
+
+            /**
+             * 优先使用远程调试
+             * 如果 devSettingsManager.getDebugHttpHost().isNotEmpty()
+             */
+            if (checkValidRemoteDebugServer()) {
+                ReactConstant.VERSION_RN_CURRENT = -1
+                val bundleLoader: JSBundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(devSettingsManager.getDebugHttpHost(), null)
+                instanceManager = initInstanceManager(bundleLoader, callback)
+            } else if (checkValidBundleInSdcard(indexBundleFileInSdcard) && bundlePathInSdcard != null && !bundlePathInSdcard.isNullOrBlank()) {
+                /**
+                 * 其次使用 sdcard bundle
+                 */
+                ReactConstant.VERSION_RN_CURRENT = versionOfIndexBundleFileInSdcard ?: 0
+                STLogUtil.e(TAG, "checkValidBundleInSdcard=true")
+                val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInSdcard, bundlePathInSdcard, false)
+                instanceManager = initInstanceManager(bundleLoader, callback)
+            } else if (checkValidBundleInAssets(bundlePathInAssets)) {
+                /**
+                 * 再其次使用 assets bundle
+                 */
+                ReactConstant.VERSION_RN_CURRENT = ReactConstant.VERSION_RN_BASE
+                STLogUtil.e(TAG, "checkValidBundleInAssets=true")
+                val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
+                instanceManager = initInstanceManager(bundleLoader, callback)
+            } else {
+                ReactConstant.VERSION_RN_CURRENT = 0
+                STLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
+                callback?.invoke(false)
+            }
+            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
+        } else {
+            callback?.invoke(false)
+        }
+        STLogUtil.e(TAG, "init instanceManager end instanceManager=$instanceManager")
+    }
 
     @UiThread
     @JvmStatic
     @Synchronized
-    fun reloadBundleAndClearDebugHttpPost() {
+    fun reloadBundleAndDisableRemoteDebug(callback: ((success: Boolean) -> Unit)? = null) {
         Flowable.fromCallable {
             if (devSettingsManager.setDebugHttpHost("")) {
                 STToastUtil.show("保存配置成功(IP清空成功)")
-                reloadBundle()
+                reloadBundle(callback = callback)
             } else {
+                callback?.invoke(false)
                 STToastUtil.show("保存配置失败(IP清空失败)")
             }
         }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
@@ -110,54 +155,34 @@ object ReactManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun reloadBundle(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard, callback: (() -> Unit)? = null) {
+    fun reloadBundle(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard, callback: ((success: Boolean) -> Unit)? = null) {
         if (!STDeployManager.REACT_NATIVE.isAllPagesClosed()) {
             STToastUtil.show("请先关闭所有的 RN 相关页面")
-            callback?.invoke()
+            callback?.invoke(false)
             return
         }
         Flowable.fromCallable {
-            STLogUtil.w(TAG, "reloadBundleFromSdcard start, thread name = ${Thread.currentThread().name}")
+            STLogUtil.w(TAG, "reloadBundleFromSdcard start instanceManager=$instanceManager, thread name = ${Thread.currentThread().name}")
             ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard
             ReactManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
-            STLogUtil.w(TAG, "reloadBundleFromSdcard destroy old instanceManager")
 
-            val downloadedJSBundleFilePath = instanceManager?.devSupportManager?.downloadedJSBundleFile
-            STLogUtil.e(TAG, "will delete downloadedJSBundleFilePath=$downloadedJSBundleFilePath")
-            STFileUtil.deleteFile(downloadedJSBundleFilePath)
+            destroyInstanceManager()
 
-            val currentReactContext: ReactContext? = instanceManager?.currentReactContext
-            if (currentReactContext != null) {
-                STReflectUtil.invokeDeclaredMethod(instanceManager, "tearDownReactContext",
-                        arrayOf(ReactContext::class.javaObjectType),
-                        arrayOf(currentReactContext)
-                )
-            }
+            initInstanceManager(callback)
 
-            getCatalystInstance()?.destroy()
-            instanceManager?.packages?.clear()
-
-            instanceManager?.destroy()
-            STLogUtil.w(TAG, "reloadBundleFromSdcard set old instanceManager null, currentHost:${devSettingsManager.getDebugHttpHost()}")
-            instanceManager = null
-
-            // sure to call instanceManager one time
-            if (instanceManager == null) {
-                STLogUtil.e(TAG, "instanceManager is null, please check the bundle path or debug server is set")
-            } else {
-                STLogUtil.i(TAG, "instanceManager reCreate success")
-            }
-            callback?.invoke()
+            STLogUtil.w(TAG, "reloadBundleFromSdcard end instanceManager=$instanceManager")
         }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
-    private fun initInstanceManager(bundleLoader: JSBundleLoader): ReactInstanceManager? {
+    private fun initInstanceManager(bundleLoader: JSBundleLoader, callback: ((success: Boolean) -> Unit)? = null): ReactInstanceManager? {
         return getInstanceBuilder(bundleLoader, frescoConfig = frescoConfig).build()?.apply {
             addReactInstanceEventListener {
                 isInitialized = true
                 STLogUtil.w(TAG, "initialized react instance success")
 
                 getCatalystInstance()?.let { loadBundleTasks.forEach { bundle -> bundle.loadScript(it) } }
+
+                callback?.invoke(true)
             }
             STLogUtil.w(TAG, "createReactContextInBackground start...")
             createReactContextInBackground()
@@ -214,6 +239,7 @@ object ReactManager {
     @JvmOverloads
     @Synchronized
     fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
+        STLogUtil.e(TAG, "instanceManager init start")
         ReactManager.application = application
         ReactManager.debug = debug
         ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard
@@ -227,11 +253,13 @@ object ReactManager {
         DevLoadingViewController.setDevLoadingEnabled(false)
 
         // sure to call instanceManager one time
+        initInstanceManager()
         if (instanceManager == null) {
             STLogUtil.e(TAG, "instanceManager is null, please check the bundle path or debug server is set")
         } else {
             STLogUtil.i(TAG, "instanceManager init success")
         }
+        STLogUtil.e(TAG, "instanceManager init end")
     }
 
     @JvmStatic

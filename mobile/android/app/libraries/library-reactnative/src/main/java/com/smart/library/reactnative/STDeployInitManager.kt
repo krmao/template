@@ -4,7 +4,10 @@ import android.app.Application
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
-import com.smart.library.deploy.model.*
+import com.smart.library.deploy.model.STBundleInfo
+import com.smart.library.deploy.model.STDeployApplyType
+import com.smart.library.deploy.model.STDeployConfigModel
+import com.smart.library.deploy.model.STPatchInfo
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.okhttp.STOkHttpManager
@@ -80,7 +83,11 @@ internal object STDeployInitManager {
                                 false
                             }
                         },
-                        initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? -> ReactManager.init(application, STBaseApplication.DEBUG, indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler()) }
+                        initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
+                            STLogUtil.e(ReactManager.TAG, "initCallback start")
+                            ReactManager.init(application, STBaseApplication.DEBUG, indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler())
+                            STLogUtil.e(ReactManager.TAG, "initCallback end")
+                        }
                 ),
                 // checkUpdateTypes = mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE),
                 checkUpdateTypes = mutableSetOf(),

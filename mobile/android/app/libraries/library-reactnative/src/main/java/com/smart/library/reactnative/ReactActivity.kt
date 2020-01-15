@@ -102,9 +102,14 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                     startReactApplication()
                     /*}*/
                 } else {
-                    STLogUtil.e(TAG, "请提供可以被 RN 初始化的离线包或者远程调试主机")
-                    STToastUtil.show("请提供可以被 RN 初始化的离线包或者远程调试主机")
-                    finish()
+                    ReactManager.initInstanceManager { success: Boolean ->
+                        STLogUtil.v(TAG, "initInstanceManager $success")
+                        if (success) {
+                            STLogUtil.v(TAG, "initInstanceManager will startReactApplication start")
+                            startReactApplication()
+                            STLogUtil.v(TAG, "initInstanceManager will startReactApplication end")
+                        }
+                    }
                     return
                 }
             }
@@ -114,6 +119,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private var isOnCreateAppliedSuccess = false
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
@@ -131,12 +137,13 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     private fun startReactApplication() {
-        STLogUtil.w(TAG, "startReactApplication")
+        STLogUtil.w(TAG, "startReactApplication start")
         // loadBusinessCode()
         reactRootView?.post {
             reactInstanceManager = ReactManager.instanceManager
             reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
             if (isResumed) reactInstanceManager?.onHostResume(this, this)
+            STLogUtil.w(TAG, "startReactApplication end")
         }
     }
 

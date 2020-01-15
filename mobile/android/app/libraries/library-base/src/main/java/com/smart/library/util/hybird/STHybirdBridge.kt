@@ -27,7 +27,7 @@ object STHybirdBridge {
     @Throws(RuntimeException::class, IllegalAccessException::class, IllegalArgumentException::class, InvocationTargetException::class, NullPointerException::class, ExceptionInInitializerError::class)
     fun callNativeMethod(className: String?, methodName: String?, vararg params: Any?): Any? {
         if (!classMap.containsKey(className)) throw RuntimeException("[callNativeMethod] class not register :$className")
-        return STReflectUtil.invoke(classMap[className], methodName, params)
+        return STReflectUtil.invokeKotlinCompanionObjectDeclaredFunctions(classMap[className], methodName, params)
     }
 
     /**

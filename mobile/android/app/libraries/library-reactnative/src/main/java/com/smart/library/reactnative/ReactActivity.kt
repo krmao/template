@@ -64,12 +64,14 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private val initialProperties: Bundle? by lazy { intent.extras }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = false
+        enableSwipeBack = true
+        enableImmersionStatusBar = true
+        enableImmersionStatusBarWithDarkFont = true
         super.onCreate(savedInstanceState)
         reactRootView = RNGestureHandlerEnabledRootView(this) //ReactRootView(this)
         setContentView(
                 FrameLayout(this).apply {
-                    this.fitsSystemWindows = true
+                    this.fitsSystemWindows = false
                     this.addView(reactRootView)
                 }
         )

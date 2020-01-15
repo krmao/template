@@ -5,7 +5,7 @@ import {createStackNavigator} from "react-navigation-stack";
 
 import NavigationUtil from "./src/main/js/base/NavigationUtil";
 import "./src/main/js/base/Bridge";
-import TestScreen from "./src/main/js/pages/TestPage";
+import TestScreen from "./src/main/js/pages/BridgePage";
 
 YellowBox.ignoreWarnings(["Warning: isMounted(...) is deprecated", "Module RCTImageLoader"]);
 

@@ -11,7 +11,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
  * https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
  */
 
-export default class BridgeScreen extends React.Component {
+export default class BridgePage extends React.Component {
     static navigationOptions = ({navigation}) => ({
         tabBarVisible: false,
         headerShown: false
@@ -26,7 +26,7 @@ export default class BridgeScreen extends React.Component {
      * @param {*} state
      */
     static getDerivedStateFromProps(nextProps, prevState) {
-        this.tag, "getDerivedStateFromProps -> nextProps", nextProps, " , prevState=", prevState;
+        console.log(this.tag, "getDerivedStateFromProps -> nextProps", nextProps, " , prevState=", prevState);
         // Store prevId in state so we can compare when props change.
         // Clear out previously-loaded data (so we don't render stale stuff).
         /* if (nextProps.id !== prevState.prevId) {
@@ -44,7 +44,7 @@ export default class BridgeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.tag = "[BridgeScreen]";
+        this.tag = "[BridgePage]";
         console.log(this.tag, "constructor");
     }
 
@@ -138,7 +138,7 @@ export default class BridgeScreen extends React.Component {
 
         return (
             <SafeAreaView style={styles.container}>
-                <StatusBar translucent={true} />
+                {/* <StatusBar translucent={true} /> */}
 
                 <ScrollView style={styles.root} showsVerticalScrollIndicator={true}>
                     <TouchableHighlight style={styles.item} underlayColor="midnightblue" onPress={() => this.onItemClick("open")}>
@@ -240,7 +240,7 @@ export default class BridgeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "lightgray",
+        backgroundColor: "darkblue",
         flex: 1
     },
     item: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     },
     root: {
         flex: 1,
-        paddingTop: 15
+        paddingTop: 0
     },
     text: {
         color: "white",

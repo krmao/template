@@ -56,7 +56,7 @@ module.export = (function(bindObj = null) {
     };
     //======================================================================
     _bind.invoke = function(functionName, params, callback) {
-        NativeModules.NativeManager.callNative(functionName, params).then(
+        NativeModules.ReactBridge.callNative(functionName, params).then(
             (successResult) => {
                 console.log(`successResult=${successResult}`);
                 if (callback) {

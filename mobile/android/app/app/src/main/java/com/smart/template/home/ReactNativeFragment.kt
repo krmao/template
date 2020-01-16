@@ -6,23 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.smart.library.base.STBaseFragment
 import com.smart.library.reactnative.ReactJumper
 import com.smart.template.R
+import kotlinx.android.synthetic.main.home_react_native_fragment.*
 
 class ReactNativeFragment : STBaseFragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val textView: TextView = TextView(activity)
-        textView.text = "react native"
-        @Suppress("DEPRECATION")
-        textView.setBackgroundColor(resources.getColor(R.color.pink))
-        textView.setOnClickListener {
-            ReactJumper.goTo(context)
+        return inflater.inflate(R.layout.home_react_native_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        home.setOnClickListener {
+            ReactJumper.goTo(context, pageName = "home", component = "cc-rn")
         }
-        return textView
+        bridge.setOnClickListener {
+            ReactJumper.goTo(context, pageName = "bridge", component = "cc-rn")
+        }
     }
 
     override fun onStart() {

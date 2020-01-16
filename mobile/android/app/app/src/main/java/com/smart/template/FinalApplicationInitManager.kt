@@ -18,8 +18,6 @@ import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.library.STBridgeCommunication
 import com.smart.template.repository.STRepository
-import io.reactivex.Flowable
-import io.reactivex.schedulers.Schedulers
 
 @Suppress("unused")
 object FinalApplicationInitManager {
@@ -44,8 +42,11 @@ object FinalApplicationInitManager {
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
 
-        Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.newThread()).subscribe()
-
+        Thread(object : Runnable {
+            override fun run() {
+                asyncInitialize(callback)
+            }
+        }).start()
         isInitialized = true
         STLogUtil.e("application", "initialize end isInitialized =$ { isInitialized() }")
     }

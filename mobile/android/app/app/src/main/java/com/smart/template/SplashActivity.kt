@@ -39,39 +39,34 @@ class SplashActivity : AppCompatActivity() {
 
         // setContentView(R.layout.home_splash)
 
-        Looper.myQueue().addIdleHandler {
-            Thread(object : Runnable {
-                override fun run() {
-                    FinalApplicationInitManager.initialize { key: String, success: Boolean ->
-                        STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
-                        if (!isFinishing && key == "reactnative" && success) {
+        // 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
 
-                            //region schema
-                            val url: String? = intent.data?.toString()
-                            STLogUtil.w("schema", "url=$url")
-                            if (url?.startsWith("smart://template") == true) {
-                                STBridgeCommunication.handleBridgeOpenShema(this@SplashActivity, url)
-                                finish()
-                                return@initialize
-                            }
-                            //endregion
+        FinalApplicationInitManager.initialize { key: String, success: Boolean ->
+            STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
+            if (!isFinishing && key == "reactnative" && success) {
 
-                            // open rn
-                            STBusManager.call(this@SplashActivity, "reactnative/open",
-                                    "home",
-                                    JSONObject().apply {
-                                        put("darkFont", 0)
-                                        put("swipeBack", 0)
-                                        put("doubleBack", 1)
-                                    }.toString(),
-                                    "cc-rn")
-
-                            Handler(Looper.getMainLooper()).postDelayed({ finish() }, 2000)
-                        }
-                    }
+                //region schema
+                val url: String? = intent.data?.toString()
+                STLogUtil.w("schema", "url=$url")
+                if (url?.startsWith("smart://template") == true) {
+                    STBridgeCommunication.handleBridgeOpenShema(this@SplashActivity, url)
+                    finish()
+                    return@initialize
                 }
-            }).start()
-            false
+                //endregion
+
+                // open rn
+                STBusManager.call(this@SplashActivity, "reactnative/open",
+                        "home",
+                        JSONObject().apply {
+                            put("darkFont", 0)
+                            put("swipeBack", 0)
+                            put("doubleBack", 1)
+                        }.toString(),
+                        "cc-rn")
+
+                Handler(Looper.getMainLooper()).postDelayed({ finish() }, 1000)
+            }
         }
     }
 }

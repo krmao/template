@@ -37,35 +37,41 @@ class SplashActivity : FragmentActivity() {
             }
         }
 
-        setContentView(R.layout.home_splash)
+        // setContentView(R.layout.home_splash)
 
-        FinalApplicationInitManager.initialize { key: String, success: Boolean ->
-            STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
-            if (!isFinishing && key == "reactnative" && success) {
+        Looper.myQueue().addIdleHandler {
+            Thread(object : Runnable {
+                override fun run() {
+                    FinalApplicationInitManager.initialize { key: String, success: Boolean ->
+                        STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
+                        if (!isFinishing && key == "reactnative" && success) {
 
-                //region schema
-                val url: String? = intent.data?.toString()
-                STLogUtil.w("schema", "url=$url")
-                if (url?.startsWith("smart://template") == true) {
-                    STBridgeCommunication.handleBridgeOpenShema(this, url)
-                    finish()
-                    return@initialize
+                            //region schema
+                            val url: String? = intent.data?.toString()
+                            STLogUtil.w("schema", "url=$url")
+                            if (url?.startsWith("smart://template") == true) {
+                                STBridgeCommunication.handleBridgeOpenShema(this@SplashActivity, url)
+                                finish()
+                                return@initialize
+                            }
+                            //endregion
+
+                            // open rn
+                            STBusManager.call(this@SplashActivity, "reactnative/open",
+                                    "home",
+                                    JSONObject().apply {
+                                        put("darkFont", 0)
+                                        put("swipeBack", 0)
+                                        put("doubleBack", 1)
+                                    }.toString(),
+                                    "cc-rn")
+
+                            Handler(Looper.getMainLooper()).postDelayed({ finish() }, 2000)
+                        }
+                    }
                 }
-                //endregion
-
-                // open rn
-                STBusManager.call(this, "reactnative/open",
-                        "home",
-                        JSONObject().apply {
-                            put("darkFont", 0)
-                            put("swipeBack", 0)
-                            put("doubleBack", 1)
-                        }.toString(),
-                        "cc-rn")
-
-                Handler(Looper.getMainLooper()).postDelayed({ finish() }, 2000)
-            }
+            }).start()
+            false
         }
-
     }
 }

@@ -44,7 +44,7 @@ object FinalApplicationInitManager {
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
 
-        Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.io()).subscribe()
+        Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.newThread()).subscribe()
 
         isInitialized = true
         STLogUtil.e("application", "initialize end isInitialized =$ { isInitialized() }")
@@ -52,10 +52,10 @@ object FinalApplicationInitManager {
 
     private fun asyncInitialize(callback: ((key: String, success: Boolean) -> Unit)? = null) {
         STBusManager.initOnce(STBaseApplication.INSTANCE, hashMapOf(
-                "reactnative" to "com.smart.library.reactnative.ReactBusHandler",
-                "flutter" to "com.smart.library.flutter.FlutterBusHandler",
-                "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
-                "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
+                "reactnative" to "com.smart.library.reactnative.ReactBusHandler"//,
+//                "flutter" to "com.smart.library.flutter.FlutterBusHandler",
+//                "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
+//                "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
         ), callback)
 
         // init global location
@@ -68,7 +68,7 @@ object FinalApplicationInitManager {
         STImageManager.initialize(STImageFrescoHandler(frescoConfig))
 
         // h5 初始化
-        STHybirdBridge.addScheme("") { webView: WebView?, _: WebViewClient?, url: String?, callback: (() -> Unit?)? ->
+        STHybirdBridge.addScheme("") { webView: WebView?, _: WebViewClient?, url: String?, _: (() -> Unit?)? ->
             val uri = Uri.parse(url)
             if (uri != null && url?.startsWith("smart://hybird/bridge/") == true) {
 

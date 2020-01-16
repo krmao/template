@@ -10,7 +10,7 @@ import com.smart.library.util.image.impl.STImageFrescoHandler
 import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.widget.debug.STDebugFragment
 import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 @Suppress("unused", "PrivatePropertyName")
 class ReactBusHandler : STBusManager.IBusHandler {
@@ -22,7 +22,7 @@ class ReactBusHandler : STBusManager.IBusHandler {
         Flowable.fromCallable {
             val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
             STDeployInitManager.init(application, frescoConfig, callback)
-        }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
+        }.subscribeOn(Schedulers.io()).subscribe()
     }
 
     override fun onUpgradeOnce(application: Application) {

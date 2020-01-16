@@ -8,7 +8,7 @@
         <item name="colorPrimary">@color/st_primary</item>
         <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
         <item name="colorAccent">@color/st_accent</item>
-        <item name="android:windowBackground">@color/st_primary_dark</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
 

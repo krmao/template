@@ -124,11 +124,11 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
         this.applyTypes.addAll(applyTypes)
 
         when (this) {
-            STDeployManager.ANDROID -> {
+            ANDROID -> {
             }
-            STDeployManager.HYBIRD -> {
+            HYBIRD -> {
             }
-            STDeployManager.REACT_NATIVE -> {
+            REACT_NATIVE -> {
                 deployConfig?.let { this.deployClient = STDeployClientForReactNative(this.debug, this.rootDir, it, this.TAG) }
             }
         }

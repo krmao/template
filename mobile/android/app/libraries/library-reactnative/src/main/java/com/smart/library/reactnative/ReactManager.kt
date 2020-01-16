@@ -186,8 +186,10 @@ object ReactManager {
 
                 callback?.invoke(true)
             }
-            STLogUtil.w(TAG, "createReactContextInBackground start...")
-            createReactContextInBackground()
+            Flowable.fromCallable {
+                STLogUtil.w(TAG, "createReactContextInBackground start...")
+                createReactContextInBackground()
+            }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
         }
     }
 

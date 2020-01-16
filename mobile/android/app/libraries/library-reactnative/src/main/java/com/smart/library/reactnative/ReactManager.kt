@@ -240,7 +240,7 @@ object ReactManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null) {
+    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null, callback: ((success: Boolean) -> Unit)? = null) {
         STLogUtil.e(TAG, "instanceManager init start")
         ReactManager.application = application
         ReactManager.debug = debug
@@ -255,7 +255,7 @@ object ReactManager {
         DevLoadingViewController.setDevLoadingEnabled(false)
 
         // sure to call instanceManager one time
-        initInstanceManager()
+        initInstanceManager(callback)
         if (instanceManager == null) {
             STLogUtil.e(TAG, "instanceManager is null, please check the bundle path or debug server is set")
         } else {

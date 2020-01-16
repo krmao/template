@@ -15,13 +15,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 @Suppress("unused", "PrivatePropertyName")
 class ReactBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application) {
+    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
         SoLoader.init(application, false)
         STDebugFragment.childViewList.add(ReactDevSettingsView::class.java)
 
         Flowable.fromCallable {
             val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
-            STDeployInitManager.init(application, frescoConfig)
+            STDeployInitManager.init(application, frescoConfig, callback)
         }.subscribeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
@@ -34,9 +34,9 @@ class ReactBusHandler : STBusManager.IBusHandler {
         when (busFunctionName) {
             "reactnative/open" -> {
                 val page: String = (params.getOrNull(0) as? String) ?: ""
-                val param: HashMap<String, Any?> = params.getOrNull(1) as? HashMap<String, Any?> ?: hashMapOf()
+                val paramJsonObjectString: String = (params.getOrNull(1) as? String) ?: "{}"
                 val component: String = (params.getOrNull(2) as? String) ?: ""
-                ReactJumper.goTo(context, page, hashMapOf("params" to param), component)
+                ReactJumper.goTo(context, page, paramJsonObjectString, component)
             }
         }
     }

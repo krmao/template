@@ -11,6 +11,7 @@ import com.smart.library.util.STToastUtil
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
+import kotlin.system.exitProcess
 
 
 /**
@@ -135,13 +136,13 @@ open class STBaseActivity : AppCompatActivity() {
     protected var enableImmersionStatusBarWithDarkFont = false
     protected var enableExitWithDoubleBackPressed = false
 
-    private fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
+    protected fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
         STToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
         if (STBaseApplication.DEBUG) STDebugFragment.cancelDebugNotification()
 
         finish()
-        System.exit(0)
+        exitProcess(0)
     }
 }

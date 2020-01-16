@@ -7,7 +7,7 @@ import com.smart.library.util.bus.STBusManager
 @Suppress("unused", "PrivatePropertyName")
 class LiveStreamingBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application) {
+    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
     }
 
     override fun onUpgradeOnce(application: Application) {

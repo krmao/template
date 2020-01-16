@@ -8,12 +8,14 @@
         <item name="colorPrimary">@color/st_primary</item>
         <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
         <item name="colorAccent">@color/st_accent</item>
+        <item name="android:windowBackground">@color/st_primary_dark</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="STAppTheme.Light.Launch" parent="@style/STAppTheme.Light.NoActionBar">
         <!-- Show a splash screen on the activity. Automatically removed when
             Flutter draws its first frame -->
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="STAppTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
@@ -45,7 +47,9 @@
     <style name="STAppTheme.Translucent.Launch" parent="@style/STAppTheme.Translucent">
         <!-- Show a splash screen on the activity. Automatically removed when
             Flutter draws its first frame -->
-        <item name="android:windowBackground">@color/st_primary_dark</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="STAppTheme.Translucent.Transparent" parent="@style/STAppTheme.Translucent">

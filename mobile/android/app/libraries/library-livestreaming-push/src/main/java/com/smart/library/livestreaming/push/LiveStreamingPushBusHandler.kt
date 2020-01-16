@@ -12,7 +12,7 @@ import com.smart.library.util.rx.permission.RxPermissions
 @Suppress("unused", "PrivatePropertyName")
 class LiveStreamingPushBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application) {
+    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
     }
 
     override fun onUpgradeOnce(application: Application) {

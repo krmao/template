@@ -17,7 +17,7 @@ import java.io.File
 internal object STDeployInitManager {
 
     @JvmStatic
-    fun init(application: Application, frescoConfig: ImagePipelineConfig) {
+    fun init(application: Application, frescoConfig: ImagePipelineConfig, callback: ((success: Boolean) -> Unit)? = null) {
 
         val TAG = STDeployManager.REACT_NATIVE.TAG
         STDeployManager.REACT_NATIVE.initialize(
@@ -85,7 +85,7 @@ internal object STDeployInitManager {
                         },
                         initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
                             STLogUtil.e(ReactManager.TAG, "initCallback start")
-                            ReactManager.init(application, STBaseApplication.DEBUG, indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler())
+                            ReactManager.init(application, STBaseApplication.DEBUG, indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler(), callback)
                             STLogUtil.e(ReactManager.TAG, "initCallback end")
                         }
                 ),

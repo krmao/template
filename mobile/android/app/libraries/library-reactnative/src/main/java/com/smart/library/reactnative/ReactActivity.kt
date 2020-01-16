@@ -216,7 +216,11 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     override fun onBackPressed() {
         STLogUtil.d(TAG, "onBackPress")
-        reactInstanceManager?.onBackPressed() ?: super.onBackPressed()
+        if (reactInstanceManager != null) {
+            reactInstanceManager?.onBackPressed()
+        } else {
+            invokeDefaultOnBackPressed()
+        }
     }
 
     /**
@@ -228,7 +232,11 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
      */
     override fun invokeDefaultOnBackPressed() {
         STLogUtil.d(TAG, "invokeDefaultOnBackPressed")
-        super.onBackPressed()
+        if (enableExitWithDoubleBackPressed) {
+            exitApp()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

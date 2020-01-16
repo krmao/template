@@ -33,6 +33,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="500dp"
                 android:divider="@color/green"
                 android:dividerPadding="5dp"
                 android:fitsSystemWindows="true"

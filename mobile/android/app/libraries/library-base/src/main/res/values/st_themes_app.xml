@@ -8,7 +8,8 @@
         <item name="colorPrimary">@color/st_primary</item>
         <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
         <item name="colorAccent">@color/st_accent</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/st_primary_dark</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
 
@@ -23,12 +24,17 @@
         <item name="colorPrimary">@color/st_primary</item>
         <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
         <item name="colorAccent">@color/st_accent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="STAppTheme.NoActionBar.FullScreen" parent="@style/STAppTheme.NoActionBar">
         <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="STAppTheme.ActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -50,6 +56,9 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowBackground">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="STAppTheme.Translucent.Transparent" parent="@style/STAppTheme.Translucent">

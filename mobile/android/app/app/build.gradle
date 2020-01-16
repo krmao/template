@@ -115,8 +115,8 @@ android {
         release {
             debuggable false
             jniDebuggable false
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"

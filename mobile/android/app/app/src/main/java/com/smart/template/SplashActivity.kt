@@ -8,13 +8,13 @@ import android.os.Looper
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.library.STBridgeCommunication
 import org.json.JSONObject
 
-class SplashActivity : FragmentActivity() {
+class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)

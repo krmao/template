@@ -19,6 +19,7 @@ import com.facebook.react.devsupport.interfaces.StackFrame
 import com.facebook.react.shell.MainPackageConfig
 import com.facebook.react.shell.MainReactPackage
 import com.facebook.react.uimanager.UIImplementationProvider
+import com.oblador.vectoricons.VectorIconsPackage
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.reactnative.dev.ReactDevSettingsManager
@@ -29,6 +30,7 @@ import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
+import com.swmansion.reanimated.ReanimatedPackage
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -315,6 +317,8 @@ object ReactManager {
                                 }.build()),
                                 ReactCustomPackage(),
                                 RNGestureHandlerPackage(),
+                                ReanimatedPackage(),
+                                VectorIconsPackage(),
                                 SafeAreaContextPackage()
                         )
                 )

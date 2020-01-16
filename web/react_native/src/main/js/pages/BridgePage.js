@@ -12,10 +12,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
  */
 
 export default class BridgePage extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        tabBarVisible: false,
-        headerShown: false
-    });
+    static tag = "[BridgePage]";
 
     /**
      * 新的静态getDerivedStateFromProps生命周期在组件实例化以及接收新props后调用。
@@ -26,7 +23,7 @@ export default class BridgePage extends React.Component {
      * @param {*} state
      */
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log(this.tag, "getDerivedStateFromProps -> nextProps", nextProps, " , prevState=", prevState);
+        console.log(BridgePage.tag, "getDerivedStateFromProps -> nextProps", nextProps, " , prevState=", prevState);
         // Store prevId in state so we can compare when props change.
         // Clear out previously-loaded data (so we don't render stale stuff).
         /* if (nextProps.id !== prevState.prevId) {
@@ -44,7 +41,7 @@ export default class BridgePage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.tag = "[BridgePage]";
+        this.tag = BridgePage.tag;
         console.log(this.tag, "constructor");
     }
 

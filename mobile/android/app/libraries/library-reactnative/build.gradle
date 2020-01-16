@@ -21,6 +21,8 @@ dependencies {
     api project(':library-template-base')
     api project(':react-native-gesture-handler')
     api project(':react-native-safe-area-context')
+    api project(':react-native-reanimated')
+    api project(':react-native-vector-icons')
 
     api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
 }

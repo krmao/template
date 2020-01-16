@@ -5,7 +5,8 @@ import {createStackNavigator} from "react-navigation-stack";
 
 import NavigationUtil from "./src/main/js/base/NavigationUtil";
 import "./src/main/js/base/Bridge";
-import TestScreen from "./src/main/js/pages/BridgePage";
+import BridgePage from "./src/main/js/pages/BridgePage";
+import TabPage from "./src/main/js/pages/TabPage";
 
 YellowBox.ignoreWarnings(["Warning: isMounted(...) is deprecated", "Module RCTImageLoader"]);
 
@@ -68,51 +69,22 @@ export default class App extends React.Component {
             createStackNavigator(
                 {
                     home: {
-                        screen: TestScreen,
-                        navigationOptions: (navigation) => NavigationUtil.defaultNavigationOptions(navigation)
+                        screen: TabPage
+                    },
+                    bridge: {
+                        screen: BridgePage
                     }
                 },
                 {
                     initialRouteName: this.props.page,
                     initialRouteParams: _initialRouteParams,
 
-                    navigationOptions: {
-                        gesturesEnabled: true
+                    defaultNavigationOptions: {
+                        gestureEnabled: true,
+                        headerShown: false
                     },
                     mode: "card",
                     headerMode: "screen"
-                    /* headerTransitionPreset: "uikit",
-                    transitionConfig: () => ({
-                        transitionSpec: {
-                            duration: 300,
-                            easing: Easing.out(Easing.poly(4)),
-                            timing: Animated.timing
-                        },
-                        screenInterpolator: (sceneProps) => {
-                            const {layout, position, scene} = sceneProps;
-                            const {index} = scene;
-
-                            const width = layout.initWidth;
-                            const translateX = position.interpolate({
-                                inputRange: [index - 1, index, index + 1],
-                                outputRange: [width, 0, 0]
-                            }); */
-
-                    /*
-                         const height = layout.initHeight;
-                         const translateY = position.interpolate({
-                         inputRange: [index - 1, index, index + 1],
-                         outputRange: [height, 0, 0],
-                         });
-                         */
-
-                    /* const opacity = position.interpolate({
-                                inputRange: [index - 1, index - 0.99, index],
-                                outputRange: [0, 1, 1]
-                            });
-                            return {opacity, transform: [{translateX: translateX}]};
-                        }
-                    }) */
                 }
             )
         );

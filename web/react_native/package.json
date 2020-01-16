@@ -18,10 +18,13 @@
         "react": "16.9.0",
         "react-native": "0.61.5",
         "react-native-gesture-handler": "1.5.3",
+        "react-native-reanimated": "^1.6.0",
         "react-native-safe-area-context": "^0.6.2",
         "react-native-safe-area-view": "^1.0.0",
+        "react-native-vector-icons": "^6.6.0",
         "react-navigation": "4.0.10",
-        "react-navigation-stack": "^2.0.14"
+        "react-navigation-stack": "^2.0.14",
+        "react-navigation-tabs": "^2.7.0"
     },
     "localDependencies": {
         "metro": "../../../../smart-metro/packages-release/metro"

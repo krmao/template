@@ -1,0 +1,32 @@
+[
+    {
+        "moduleName": "template",
+        "moduleVersion": "1.0",
+        "moduleDebug": false,
+        "moduleUpdateStrategy": "OFFLINE",
+        "moduleMainUrl": "http://wx.hfgjia.cn/wx/",
+        "moduleConfigUrl": "http://wx.hfgjia.cn/background/files/template.json",
+        "moduleDownloadUrl": "http://wx.hfgjia.cn/background/files/template-1.0.zip",
+        "moduleZipMd5": "81741a10e2203e4a29dfb38b5675f6dd",
+        "moduleFilesMd5": {
+            "/favicon.ico": "6c2f5d4c5da961d1a53ba3da03d7c653",
+            "/index.html": "92e3ddd24578af2a305e5b460bdc2df7",
+            "/static/css/app.74bde9191785fb64c2508f55020f36b6.css": "b6528d8a66bcda9920556c487b18c5c4",
+            "/static/css/app.74bde9191785fb64c2508f55020f36b6.css.map": "baf045f97ebbf6993613f5a434a59d1e",
+            "/static/img/bg.670a26a.png": "670a26a1ba622af2259810b26e311a0b",
+            "/static/img/img2.da075ae.png": "da075aed47feb9a12e91a9251fda817a",
+            "/static/img/login_bg.2e7008c.jpg": "2e7008c2b3af0f139f7d89cb2fb9b31d",
+            "/static/img/qmjz.dc5daf9.png": "dc5daf90d6aaea7eb39ee55a4d05968e",
+            "/static/img/qr.61ea9ea.gif": "61ea9ea819694deb762086bcfb6060e1",
+            "/static/img/service_img.becb387.png": "becb387df6a52a0e3de6065bec3b7dc4",
+            "/static/img/servicer_img.6c6f40f.png": "6c6f40f4cfb75483ceaa414e5a6b5ee0",
+            "/static/js/app.3b1f55c06ff39e852582.js": "e5b9b01ccede78fdba02442dce4042b2",
+            "/static/js/app.3b1f55c06ff39e852582.js.map": "5ecc85adf2ee11a337783cb806ead395",
+            "/static/js/manifest.dd4c72040b277a6ffbb9.js": "5a89dd82adc46da814cd640b821765fe",
+            "/static/js/manifest.dd4c72040b277a6ffbb9.js.map": "b8da02c55572fd0d7308c20454e2b6c9",
+            "/static/js/vendor.ea52f70ae3459e8c58fa.js": "200035faa30b0b15b32c20cece71cb0e",
+            "/static/js/vendor.ea52f70ae3459e8c58fa.js.map": "4ab6664cc2eed63a325dc10d9b1e7cec",
+            "/static/site.json": "67e396bb7d3dd17f07f6851d8cad4be4"
+        }
+    }
+]

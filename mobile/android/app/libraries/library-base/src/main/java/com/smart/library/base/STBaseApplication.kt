@@ -41,16 +41,24 @@ open class STBaseApplication : Application() {
             }
     }
 
+    /**
+     * https://www.cnblogs.com/muouren/p/11741309.html
+     * https://juejin.im/post/5d95f4a4f265da5b8f10714b#heading-10
+     * http://androidxref.com/4.4.4_r1/xref/libcore/dalvik/src/main/java/dalvik/system/DexPathList.java
+     * http://androidxref.com/4.4.4_r1/xref/dalvik/libdex/DexFile.cpp
+     */
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+        val startTime = System.currentTimeMillis()
         MultiDex.install(base)
+        println("template MultiDex.install 耗时:${System.currentTimeMillis() - startTime}ms")
     }
 
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
 
-        STLogUtil.w("config", "config: debug:" + DEBUG)
+        STLogUtil.w("config", "config: debug:$DEBUG")
         STLogUtil.w("config", "config: versionCode:" + STSystemUtil.versionCode)
         STLogUtil.w("config", "config: versionName:" + STSystemUtil.versionName)
 

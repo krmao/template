@@ -53,7 +53,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private val TAG: String = ReactManager.TAG
 
-    private var reactRootView: ReactRootView? = null
+    private val reactRootView: ReactRootView by lazy { RNGestureHandlerEnabledRootView(this) }//ReactRootView(this)
 
     private var reactInstanceManager: ReactInstanceManager? = null
 
@@ -81,6 +81,8 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private val paramSwipeBack: Int by lazy { params.optInt("swipeBack", 1) }
     private val paramDoubleBack: Int by lazy { params.optInt("doubleBack", 0) }
 
+    private val startTime = System.currentTimeMillis()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableImmersionStatusBar = true
         enableImmersionStatusBarWithDarkFont = paramDarkFont == 1
@@ -99,7 +101,6 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
         super.onCreate(savedInstanceState)
 
-        reactRootView = RNGestureHandlerEnabledRootView(this) //ReactRootView(this)
         setContentView(
                 FrameLayout(this).apply {
                     this.fitsSystemWindows = false
@@ -172,9 +173,16 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private fun startReactApplication() {
         STLogUtil.w(TAG, "startReactApplication start")
         // loadBusinessCode()
-        reactRootView?.post {
+        reactRootView.setEventListener(object : ReactRootView.ReactRootViewEventListener {
+            override fun onAttachedToReactInstance(rootView: ReactRootView?) {
+                val time = System.currentTimeMillis() - startTime
+                STLogUtil.w(TAG, "渲染成功, 耗时:$time ms")
+                STToastUtil.show("渲染成功, 耗时:$time ms")
+            }
+        })
+        reactRootView.post {
             reactInstanceManager = ReactManager.instanceManager
-            reactRootView?.startReactApplication(reactInstanceManager, moduleName, initialProperties)
+            reactRootView.startReactApplication(reactInstanceManager, moduleName, initialProperties)
             if (isResumed) reactInstanceManager?.onHostResume(this, this)
             STLogUtil.w(TAG, "startReactApplication end")
         }
@@ -190,7 +198,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
      * 重新设置 react 属性, 并重新渲染 react 界面
      */
     fun updateReactProperties(appProperties: Bundle?) {
-        reactRootView?.appProperties = appProperties
+        reactRootView.appProperties = appProperties
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -264,8 +272,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun onDestroy() {
-        reactRootView?.unmountReactApplication()
-        reactRootView = null
+        reactRootView.unmountReactApplication()
         reactInstanceManager?.onHostDestroy(this)
         if (isOnCreateAppliedSuccess) STDeployManager.REACT_NATIVE.onDestroy(this)
         super.onDestroy()

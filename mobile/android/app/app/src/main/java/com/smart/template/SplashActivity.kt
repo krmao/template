@@ -65,7 +65,7 @@ class SplashActivity : AppCompatActivity() {
                         }.toString(),
                         "cc-rn")
 
-                Handler(Looper.getMainLooper()).postDelayed({ finish() }, 1000)
+                Handler(Looper.getMainLooper()).postDelayed({ finish() }, 2000)
             }
         }
     }

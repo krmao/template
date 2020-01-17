@@ -98,7 +98,7 @@ object ReactManager {
 
     fun initInstanceManager(callback: ((success: Boolean) -> Unit)? = null) {
         STLogUtil.e(TAG, "init instanceManager start instanceManager=$instanceManager")
-        if (instanceManager == null) {
+        if (instanceManager == null || instanceManager?.hasStartedCreatingInitialContext() != true) {
             val bundlePathInAssets = ReactConstant.PATH_ASSETS_BUNDLE
             val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
 

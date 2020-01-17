@@ -18,6 +18,8 @@ import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.library.STBridgeCommunication
 import com.smart.template.repository.STRepository
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 
 @Suppress("unused")
 object FinalApplicationInitManager {
@@ -42,21 +44,18 @@ object FinalApplicationInitManager {
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
 
-        Thread(object : Runnable {
-            override fun run() {
-                asyncInitialize(callback)
-            }
-        }).start()
+        Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.newThread()).subscribe()
+
         isInitialized = true
         STLogUtil.e("application", "initialize end isInitialized =$ { isInitialized() }")
     }
 
     private fun asyncInitialize(callback: ((key: String, success: Boolean) -> Unit)? = null) {
         STBusManager.initOnce(STBaseApplication.INSTANCE, hashMapOf(
-                "reactnative" to "com.smart.library.reactnative.ReactBusHandler"//,
-//                "flutter" to "com.smart.library.flutter.FlutterBusHandler",
-//                "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
-//                "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
+                "reactnative" to "com.smart.library.reactnative.ReactBusHandler",
+                "flutter" to "com.smart.library.flutter.FlutterBusHandler",
+                "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
+                "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
         ), callback)
 
         // init global location

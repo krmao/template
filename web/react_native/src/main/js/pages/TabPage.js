@@ -40,7 +40,7 @@ export default createAppContainer(
             }
         },
         {
-            initialRouteName: "User",
+            initialRouteName: "Order",
             defaultNavigationOptions: ({navigation}) => ({
                 tabBarIcon: ({focused, horizontal, tintColor}) => {
                     const {routeName} = navigation.state;
@@ -48,7 +48,7 @@ export default createAppContainer(
                     let iconName;
                     if (routeName === "Order") {
                         iconName = focused ? "md-today" : "md-today";
-                        IconComponent = (props) => <IconWithBadgeComponent {...props} badgeCount={3} />;
+                        // IconComponent = (props) => <IconWithBadgeComponent {...props} badgeCount={3} />;
                     } else if (routeName === "User") {
                         iconName = focused ? "md-person" : "md-person";
                     } else if (routeName === "Goods") {
@@ -60,10 +60,10 @@ export default createAppContainer(
                 }
             }),
             tabBarOptions: {
-                activeTintColor: "darkblue", // 文字和图片选中颜色
-                inactiveTintColor: "lightgray", // 文字和图片默认颜色
+                activeTintColor: "#f9a825", // 文字和图片选中颜色
+                inactiveTintColor: "#bdbdbd", // 文字和图片默认颜色
                 style: {
-                    backgroundColor: "gray" // TabBar 背景色
+                    backgroundColor: "whitesmoke" // TabBar 背景色
                 },
                 labelStyle: {
                     fontSize: 10 // 文字大小

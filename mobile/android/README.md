@@ -1,3 +1,5 @@
+### [配色工具](https://material.io/resources/color/#!/?view.left=0&view.right=0&secondary.color=F4511E&primary.color=FF9800)
+
 ### query granted permissions
 ```
 adb shell dumpsys package packagename

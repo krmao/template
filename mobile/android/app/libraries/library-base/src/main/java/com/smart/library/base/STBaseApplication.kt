@@ -46,6 +46,7 @@ open class STBaseApplication : Application() {
      * https://juejin.im/post/5d95f4a4f265da5b8f10714b#heading-10
      * http://androidxref.com/4.4.4_r1/xref/libcore/dalvik/src/main/java/dalvik/system/DexPathList.java
      * http://androidxref.com/4.4.4_r1/xref/dalvik/libdex/DexFile.cpp
+     * https://github.com/lanshifu/MultiDexTest
      */
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

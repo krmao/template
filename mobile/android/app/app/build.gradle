@@ -35,7 +35,7 @@ android {
          * https://juejin.im/post/5d95f4a4f265da5b8f10714b
          */
         multiDexEnabled true
-        // multiDexKeepFile file('maindexlist.txt') // 指定哪些类要放到main dex
+        multiDexKeepFile file('maindexlist.txt') // 指定哪些类要放到main dex
         multiDexKeepProguard file('multiDexKeep.pro') // 打包到main dex的这些类的混淆规制，没特殊需求就给个空文件
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

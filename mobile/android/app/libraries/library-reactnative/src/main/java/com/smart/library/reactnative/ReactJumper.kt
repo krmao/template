@@ -23,7 +23,7 @@ object ReactJumper {
         ReactActivity.startForResult(context, component, Bundle().apply {
             putString("page", pageName)
             putString("param", paramJsonObjectString)
-        }, intentFlag, requestCode, callback)
+        }, intentFlag)
     }
 
     const val HOME = "home"

@@ -1,6 +1,5 @@
 package com.smart.library.reactnative
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -13,10 +12,11 @@ import com.facebook.react.ReactRootView
 import com.facebook.react.bridge.JSBundleLoader
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
 import com.smart.library.base.STBaseActivity
-import com.smart.library.base.startActivityForResult
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
+import com.smart.library.util.STEventManager
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.STToastUtil
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import org.json.JSONObject
@@ -31,21 +31,12 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
         @JvmStatic
         @JvmOverloads
-        internal fun startForResult(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null, requestCode: Int, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {
-
+        internal fun startForResult(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null) {
             val intent = Intent(context, ReactActivity::class.java)
             intentFlag?.let { intent.addFlags(it) }
-            intent.putExtra(KEY_REQUEST_CODE, requestCode)
             intent.putExtra(KEY_START_COMPONENT, component)
             intent.putExtras(extras)
-
-            if (context is Activity) {
-                startActivityForResult(context, intent, 0, null, callback)
-            } else {
-                context?.startActivity(intent)
-                STLogUtil.e(ReactManager.TAG, "context is not Activity, can't startActivityForResult!")
-                callback?.invoke(requestCode, Activity.RESULT_CANCELED, null)
-            }
+            context?.startActivity(intent)
         }
     }
 
@@ -56,8 +47,6 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private val reactRootView: ReactRootView by lazy { RNGestureHandlerEnabledRootView(this) }//ReactRootView(this)
 
     private var reactInstanceManager: ReactInstanceManager? = null
-
-    private val requestCode: Int by lazy { intent?.getIntExtra(KEY_REQUEST_CODE, 0) ?: 0 }
 
     private val moduleName: String?
         get() = intent.getStringExtra(KEY_START_COMPONENT)
@@ -178,6 +167,11 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                 val time = System.currentTimeMillis() - startTime
                 STLogUtil.w(TAG, "渲染成功, 耗时:$time ms")
                 STToastUtil.show("渲染成功, 耗时:$time ms")
+
+                // 首屏发送通知
+                if (!STPreferencesUtil.getBoolean("react-native-inited", false)) {
+                    STEventManager.sendEvent("react-native-inited", "renderSuccess")
+                }
             }
         })
         reactRootView.post {

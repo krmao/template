@@ -14,6 +14,7 @@ object STBusManager {
         fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?)
         fun onUpgradeOnce(application: Application)
         fun onCall(context: Context?, busFunctionName: String, vararg params: Any)
+        fun onAsyncCall(callback: ((key: Any?, value: Any?) -> Unit)?, context: Context?, busFunctionName: String, vararg params: Any)
     }
 
     @JvmStatic
@@ -51,9 +52,18 @@ object STBusManager {
     }
 
     fun call(context: Context?, busFunctionName: String, vararg params: Any) {
-        val busHandler = busHandlerMap[busFunctionName.substringBefore('/')]
+        val busHandler: IBusHandler? = busHandlerMap[busFunctionName.substringBefore('/')]
         if (busHandler != null) {
             busHandler.onCall(context, busFunctionName, *params)
+        } else {
+            STLogUtil.w(TAG, "can not find bus handler for busName")
+        }
+    }
+
+    fun callAsync(callback: ((key: Any?, value: Any?) -> Unit)?, context: Context?, busFunctionName: String, vararg params: Any) {
+        val busHandler: IBusHandler? = busHandlerMap[busFunctionName.substringBefore('/')]
+        if (busHandler != null) {
+            busHandler.onAsyncCall(callback, context, busFunctionName, *params)
         } else {
             STLogUtil.w(TAG, "can not find bus handler for busName")
         }

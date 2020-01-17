@@ -28,4 +28,8 @@ class FlutterBusHandler : STBusManager.IBusHandler {
         }
     }
 
+    override fun onAsyncCall(callback: ((key: Any?, value: Any?) -> Unit)?, context: Context?, busFunctionName: String, vararg params: Any) {
+
+    }
+
 }

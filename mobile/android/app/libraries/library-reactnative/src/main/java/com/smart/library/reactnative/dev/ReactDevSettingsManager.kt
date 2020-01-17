@@ -5,8 +5,8 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.facebook.react.modules.debug.interfaces.DeveloperSettings
-import com.smart.library.util.STRegexManager
 import com.smart.library.reactnative.ReactManager
+import com.smart.library.util.STRegexManager
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
@@ -96,7 +96,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun getDebugHttpHost(): String {
-        return preferences.getString("debug_http_host", "10.32.33.16:5387") ?: "10.32.33.16:5387"
+        return preferences.getString("debug_http_host", "") ?: ""
     }
 
     /**

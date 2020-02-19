@@ -460,7 +460,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
         val innerRecyclerView = recyclerView
         innerRecyclerView?.post {
-            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(innerData().size)
             enableChangeAnimations(true)
         }
     }
@@ -475,7 +475,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
 
         val innerRecyclerView = recyclerView
         innerRecyclerView?.post {
-            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(innerData().size)
             enableChangeAnimations(true)
         }
     }
@@ -487,7 +487,7 @@ class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdap
         enableChangeAnimations(false)
         val innerRecyclerView = recyclerView
         innerRecyclerView?.post {
-            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(itemCount)
+            if (!innerRecyclerView.isComputingLayout) notifyItemChanged(innerData().size)
             enableChangeAnimations(true)
         }
     }

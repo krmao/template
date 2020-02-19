@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.facebook.drawee.view.SimpleDraweeView
@@ -23,17 +24,17 @@ import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
 import com.smart.library.util.image.STImageManager
+import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
+@Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
+class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyclerView>() {
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
-class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
+    private val tag: String get() = name
 
-    override fun createViewInstance(reactContext: ThemedReactContext): RecyclerView {
-        return RecyclerView(reactContext).apply {
-            fitsSystemWindows = true
-            clipToPadding = false
-        }
+    override fun createViewInstance(reactContext: ThemedReactContext): RCTRecyclerView {
+        STLogUtil.d(tag, "createViewInstance thread=${Thread.currentThread().name}")
+        return RCTRecyclerView(reactContext)
     }
 
     override fun getName(): String = "RCTRecyclerView"
@@ -42,7 +43,7 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
      * @param orientation VERTICAL==1 or HORIZONTAL==0
      */
     @ReactProp(name = "orientation", defaultInt = 1)
-    fun setOrientation(recyclerView: RecyclerView, orientation: Int) {
+    fun setOrientation(recyclerView: RCTRecyclerView, orientation: Int) {
         val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerView.layoutManager as? StaggeredGridLayoutManager
         if (staggeredGridLayoutManager != null) {
             staggeredGridLayoutManager.orientation = orientation
@@ -53,7 +54,7 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
 
         updateRecyclerView(recyclerView)
 
-        STLogUtil.d("RCTRecyclerView", "setOrientation orientation=$orientation")
+        STLogUtil.d(tag, "setOrientation thread=${Thread.currentThread().name} orientation=$orientation")
     }
 
     /**
@@ -61,7 +62,7 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
      *                    orientation is horizontal, spanCount is number of rows.
      */
     @ReactProp(name = "spanCount", defaultInt = 1)
-    fun setSpanCount(recyclerView: RecyclerView, spanCount: Int) {
+    fun setSpanCount(recyclerView: RCTRecyclerView, spanCount: Int) {
         val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerView.layoutManager as? StaggeredGridLayoutManager
         if (staggeredGridLayoutManager != null) {
             staggeredGridLayoutManager.spanCount = spanCount
@@ -72,20 +73,21 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
 
         updateRecyclerView(recyclerView)
 
-        STLogUtil.d("RCTRecyclerView", "setSpanCount spanCount=$spanCount")
+        STLogUtil.d(tag, "setSpanCount thread=${Thread.currentThread().name} spanCount=$spanCount")
     }
 
 
-    @ReactProp(name = "data")
-    fun setData(recyclerView: RecyclerView, data: ReadableArray) {
-        STLogUtil.d("RCTRecyclerView", "setData data=$data")
+    @ReactProp(name = "initData")
+    fun setInitData(recyclerView: RCTRecyclerView, initData: ReadableArray?) {
+        STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} initData=$initData")
         @Suppress("UNCHECKED_CAST")
-        val dataList: MutableList<Int> = (data.toArrayList() as? ArrayList<Int>)?.toMutableList() ?: arrayListOf()
-        STLogUtil.d("RCTRecyclerView", "setData dataList=$dataList")
+        val dataList: MutableList<Int> = (initData?.toArrayList() as? ArrayList<Int>)?.toMutableList() ?: arrayListOf()
+        STLogUtil.d(tag, "setData dataList=$dataList")
 
         val cachedHeightMap: SparseArray<Int> = SparseArray()
-        recyclerView.adapter = object : STRecyclerViewAdapter<Int, STRecyclerViewAdapter.ViewHolder>(recyclerView.context, dataList) {
+        val originAdapter = object : STRecyclerViewAdapter<Int, RecyclerView.ViewHolder>(recyclerView.context, dataList) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+                STLogUtil.d(tag, "onCreateViewHolder thread=${Thread.currentThread().name}")
                 return ViewHolder(FrameLayout(recyclerView.context).apply {
                     val imageView: SimpleDraweeView = SimpleDraweeView(recyclerView.context).apply {
                         scaleType = ImageView.ScaleType.CENTER_CROP
@@ -103,7 +105,8 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
             }
 
             @SuppressLint("SetTextI18n")
-            override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                STLogUtil.d(tag, "onBindViewHolder thread=${Thread.currentThread().name}, position=$position")
                 val itemView: View = holder.itemView
                 val tagViewArray: Array<*>? = itemView.tag as? Array<*>
                 val imageView: SimpleDraweeView? = tagViewArray?.get(0) as? SimpleDraweeView
@@ -119,13 +122,9 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
                 itemView.layoutParams = params
 
                 itemView.setOnClickListener {
-                    val context: Context = recyclerView.context
-                    if (context is ReactContext) {
-                        val event: WritableMap = Arguments.createMap()
-                        event.putInt("position", position)
-
-                        context.getJSModule(RCTEventEmitter::class.java).receiveEvent(recyclerView.id, "onItemClickedEvent", event)
-                    }
+                    val event: WritableMap = Arguments.createMap()
+                    event.putInt("position", position)
+                    sendRNMessage(recyclerView, "onItemClickedEvent", event)
                 }
 
 
@@ -134,13 +133,53 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
                     STImageManager.show(imageView, STRandomUtil.getImageUrl(position))
                 }
                 if (textView != null) {
-                    textView.text = "value:${dataList[position]}"
+                    textView.text = "value:${(dataList[position] as? Number)?.toString()}"
+                }
+            }
+        }
+
+        val adapterWrapper: STEmptyLoadingWrapper<Int> = STEmptyLoadingWrapper(originAdapter)
+        // onLoadMore listener
+        adapterWrapper.onLoadMoreListener = { refresh: Boolean ->
+            requestLoadMore(recyclerView)
+        }
+        recyclerView.adapter = adapterWrapper
+
+        val animator: DefaultItemAnimator = object : DefaultItemAnimator() {
+            override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+        }
+        recyclerView.itemAnimator = animator
+    }
+
+    fun requestLoadMore(recyclerView: RCTRecyclerView) {
+        STLogUtil.d(tag, "requestLoadMore thread=${Thread.currentThread().name}")
+        sendRNMessage(recyclerView, "onRequestLoadMoreEvent")
+    }
+
+    @ReactProp(name = "loadMoreData")
+    fun setLoadMoreData(recyclerView: RCTRecyclerView, data: ReadableArray?) {
+        STLogUtil.d(tag, "setLoadMoreData thread=${Thread.currentThread().name} data=$data")
+        val adapterWrapper: STEmptyLoadingWrapper<Int>? = recyclerView.adapter as? STEmptyLoadingWrapper<Int>
+        if (adapterWrapper != null) {
+            val newList: MutableList<Int>? = (data?.toArrayList() as? ArrayList<Int>)?.toMutableList()
+            when {
+                newList == null -> { // load failure
+                    adapterWrapper.showLoadFailure()
+                }
+                newList.isNotEmpty() -> { // load success
+                    adapterWrapper.add(newList)
+                    adapterWrapper.completelyLoadMoreRequesting()
+                }
+                else -> { // load no more
+                    adapterWrapper.showNoMore()
                 }
             }
         }
     }
 
-    fun updateRecyclerView(recyclerView: RecyclerView) {
+    fun updateRecyclerView(recyclerView: RCTRecyclerView) {
         recyclerView.adapter = recyclerView.adapter
     }
 
@@ -158,7 +197,54 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
         return MapBuilder.builder<String, Any>()
                 .put("onItemClickedEvent", MapBuilder.of("registrationName", "onItemClicked"))
+                .put("onRequestLoadMoreEvent", MapBuilder.of("registrationName", "onRequestLoadMore"))
                 .build()
     }
 
+    override fun getCommandsMap(): Map<String, Int> {
+        return mapOf("showMoreData" to 1)
+    }
+
+    override fun receiveCommand(root: RCTRecyclerView, commandId: String?, args: ReadableArray?) {
+        STLogUtil.w(tag, "receiveCommand thread=${Thread.currentThread().name} commandId=$commandId, args=$args")
+        when (commandId) {
+            "showMoreData" -> {
+
+            }
+        }
+    }
+
+    fun sendRNMessage(recyclerView: RCTRecyclerView, eventName: String, event: WritableMap? = null) {
+        var eventEmitter: RCTEventEmitter? = null
+        try {
+            eventEmitter = (recyclerView.context as? ReactContext)?.getJSModule(RCTEventEmitter::class.java)
+        } catch (ignore: Exception) {
+        }
+        if (eventEmitter != null) {
+            eventEmitter.receiveEvent(recyclerView.id, eventName, event)
+            STLogUtil.w(tag, "sendRNMessage thread=${Thread.currentThread().name} success eventName=$eventName")
+        } else {
+            STLogUtil.e(tag, "sendRNMessage thread=${Thread.currentThread().name} failure eventName=$eventName")
+        }
+    }
+
+    class RCTRecyclerView(context: Context) : RecyclerView(context) {
+        private var requestedLayout = false
+
+        @SuppressLint("WrongCall")
+        override fun requestLayout() {
+            super.requestLayout()
+            // We need to intercept this method because if we don't our children will never update, for example that notifyItemChanged will not work
+            // https://stackoverflow.com/questions/49371866/recyclerview-wont-update-child-until-i-scroll
+            // https://stackoverflow.com/questions/44868899/recyclerview-in-react-native-notifyiteminserted-and-notifydatasetchanged-ha?noredirect=1&lq=1
+            if (!requestedLayout) {
+                requestedLayout = true
+                post {
+                    requestedLayout = false
+                    layout(left, top, right, bottom)
+                    onLayout(false, left, top, right, bottom) // must be need this
+                }
+            }
+        }
+    }
 }

@@ -8,15 +8,29 @@ class RecyclerComponent extends React.Component {
     constructor(props) {
         super(props);
         this.onItemClicked = this.onItemClicked.bind(this);
+        this.onRequestLoadMore = this.onRequestLoadMore.bind(this);
     }
 
     onItemClicked(event) {
-        console.log("onItemClicked", "nativeEvent:", event.nativeEvent)
+        console.log("onItemClicked", "nativeEvent:", event.nativeEvent);
         this.props.onItemClicked(event)
     }
 
+    onRequestLoadMore(event) {
+        console.log("onRequestLoadMore", "nativeEvent:", event.nativeEvent);
+        this.props.onRequestLoadMore(event)
+    }
+
+    callNative() {
+        /*UIManager.dispatchViewManagerCommand(
+            ReactNative.findNodeHandle(this.ref),
+            UIManager.RCTRecyclerView.Commands.refresh,
+            null
+        )*/
+    }
+
     render() {
-        return <RCTRecyclerView {...this.props} onItemClicked={this.onItemClicked}/>;
+        return <RCTRecyclerView {...this.props} onItemClicked={this.onItemClicked} onRequestLoadMore={this.onRequestLoadMore}/>;
     }
 }
 
@@ -33,8 +47,9 @@ RecyclerComponent.propTypes = {
      * @param orientation VERTICAL==1 or HORIZONTAL==0
      */
     orientation: PropTypes.number.isRequired,
-    data: PropTypes.array.isRequired,
+    initData: PropTypes.array.isRequired,
     onItemClicked: PropTypes.func.isRequired,
+    onRequestLoadMore: PropTypes.func.isRequired,
 };
 
 /**

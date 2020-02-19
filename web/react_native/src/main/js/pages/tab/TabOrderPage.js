@@ -26,9 +26,10 @@ export default class TabOrderPage extends React.Component {
                     <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
                 </View>
                 <RecyclerComponent
-                    zIndex={-1}
                     style={{flex: 1, width: "100%", overflow: "hidden"}}
+                    zIndex={-1}
                     orientation={1}
+                    spanCount={4}
                     data={data}
                     onItemClicked={(event) => {
                         Toast.show('onItemClicked:' + event.nativeEvent.position, {

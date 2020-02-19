@@ -28,7 +28,7 @@ RecyclerComponent.propTypes = {
      * @param spanCount   If orientation is vertical, spanCount is number of columns. If
      *                    orientation is horizontal, spanCount is number of rows.
      */
-    spanCount: PropTypes.number,
+    spanCount: PropTypes.number.isRequired,
     /**
      * @param orientation VERTICAL==1 or HORIZONTAL==0
      */
@@ -42,7 +42,7 @@ RecyclerComponent.propTypes = {
  * 可以使用 defaultProps 来设置默认值解决由于没传递参数抛出的警告
  */
 RecyclerComponent.defaultProps = {
-    spanCount: 2
+    orientation: 1
 };
 
 // noinspection JSUnusedGlobalSymbols

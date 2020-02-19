@@ -1,19 +1,25 @@
 package com.smart.library.reactnative.components
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.SparseArray
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.WritableMap
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
+
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
@@ -98,6 +104,16 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
                     params.height = cachedHeight
 
                     textView.layoutParams = params
+
+                    textView.setOnClickListener {
+                        val context: Context = recyclerView.context
+                        if (context is ReactContext) {
+                            val event: WritableMap = Arguments.createMap()
+                            event.putInt("position", position)
+
+                            context.getJSModule(RCTEventEmitter::class.java).receiveEvent(recyclerView.id, "onItemClickedEvent", event)
+                        }
+                    }
                 }
             }
         }
@@ -108,12 +124,20 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
     }
 
     /**
-     * 映射事件
+     * 映射连续的比如滑动Event事件
      */
     override fun getExportedCustomBubblingEventTypeConstants(): MutableMap<String, Any> {
         return MapBuilder.builder<String, Any>()
                 .build()
     }
 
+    /**
+     * 映射指向的比如点击事件
+     */
+    override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
+        return MapBuilder.builder<String, Any>()
+                .put("onItemClickedEvent", MapBuilder.of("registrationName", "onItemClicked"))
+                .build()
+    }
 
 }

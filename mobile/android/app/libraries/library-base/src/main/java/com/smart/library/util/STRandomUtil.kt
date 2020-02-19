@@ -2,6 +2,7 @@ package com.smart.library.util
 
 import android.graphics.Color
 import java.util.*
+import kotlin.math.max
 
 /**
  * <pre>
@@ -21,17 +22,10 @@ object STRandomUtil {
         return (Math.random() * Math.abs(absBegin - absEnd) + if (absBegin > absEnd) absEnd else absBegin).toInt()
     }
 
+    fun getImageUrl(position: Int): String = "https://cdn.mom1.cn/img/mom2018%20(${max(1, position)}).jpg"
+
     val randomImage: String
-        get() = String.format(Locale.getDefault(), "http://ozo5c6x9f.bkt.clouddn.com/image_%d.jpg-600x400", getRandom(0, 52))
-
-    val randomBannerImage: String
-        get() = String.format(Locale.getDefault(), "http://oznsh6z3y.bkt.clouddn.com/banner_%d.jpg-500x200", getRandom(0, 14))
-
-    val randomTransparentAvatar: String
-        get() = String.format(Locale.getDefault(), "http://odw6aoxik.bkt.clouddn.com/avatar_tranparent_%d.png-200x200", getRandom(1, 15))
-
-    val randomCartoonAvatar: String
-        get() = String.format(Locale.getDefault(), "http://odw6aoxik.bkt.clouddn.com/avatar_cartoon_%d.jpg-200x200", getRandom(1, 50))
+        get() = String.format(Locale.getDefault(), "https://cdn.mom1.cn/img/mom2018%20(%d).jpg", getRandom(1, 1000))
 
     val randomColor: Int
         get() {

@@ -3,10 +3,14 @@ package com.smart.library.reactnative.components
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.SparseArray
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
@@ -18,6 +22,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
+import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 
@@ -81,39 +86,55 @@ class RCTRecyclerViewManager : SimpleViewManager<RecyclerView>() {
         val cachedHeightMap: SparseArray<Int> = SparseArray()
         recyclerView.adapter = object : STRecyclerViewAdapter<Int, STRecyclerViewAdapter.ViewHolder>(recyclerView.context, dataList) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                return ViewHolder(TextView(recyclerView.context).apply {
-                    this.setPadding(10, 10, 10, 10)
+                return ViewHolder(FrameLayout(recyclerView.context).apply {
+                    val imageView: SimpleDraweeView = SimpleDraweeView(recyclerView.context).apply {
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                    }
+
+                    val textView: TextView = TextView(recyclerView.context).apply {
+                        this.setPadding(10, 10, 10, 10)
+                    }
+
+                    addView(imageView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                    addView(textView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+
+                    tag = arrayOf(imageView, textView)
                 })
             }
 
             @SuppressLint("SetTextI18n")
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                val textView: TextView? = holder.itemView as? TextView
+                val itemView: View = holder.itemView
+                val tagViewArray: Array<*>? = itemView.tag as? Array<*>
+                val imageView: SimpleDraweeView? = tagViewArray?.get(0) as? SimpleDraweeView
+                val textView: TextView? = tagViewArray?.get(1) as? TextView
+
+                val params: ViewGroup.LayoutParams = itemView.layoutParams ?: RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT)
+                var cachedHeight: Int = cachedHeightMap.get(position, -1)
+                if (cachedHeight == -1) {
+                    cachedHeight = STRandomUtil.getRandom(100, 1000)
+                }
+                cachedHeightMap.put(position, cachedHeight)
+                params.height = cachedHeight
+                itemView.layoutParams = params
+
+                itemView.setOnClickListener {
+                    val context: Context = recyclerView.context
+                    if (context is ReactContext) {
+                        val event: WritableMap = Arguments.createMap()
+                        event.putInt("position", position)
+
+                        context.getJSModule(RCTEventEmitter::class.java).receiveEvent(recyclerView.id, "onItemClickedEvent", event)
+                    }
+                }
+
+
+                if (imageView != null) {
+                    imageView.setBackgroundColor(STRandomUtil.randomColor)
+                    STImageManager.show(imageView, STRandomUtil.getImageUrl(position))
+                }
                 if (textView != null) {
                     textView.text = "value:${dataList[position]}"
-                    textView.setBackgroundColor(STRandomUtil.randomColor)
-
-                    val params: ViewGroup.LayoutParams = textView.layoutParams ?: RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT)
-
-                    var cachedHeight: Int = cachedHeightMap.get(position, -1)
-                    if (cachedHeight == -1) {
-                        cachedHeight = STRandomUtil.getRandom(100, 1000)
-                    }
-                    cachedHeightMap.put(position, cachedHeight)
-
-                    params.height = cachedHeight
-
-                    textView.layoutParams = params
-
-                    textView.setOnClickListener {
-                        val context: Context = recyclerView.context
-                        if (context is ReactContext) {
-                            val event: WritableMap = Arguments.createMap()
-                            event.putInt("position", position)
-
-                            context.getJSModule(RCTEventEmitter::class.java).receiveEvent(recyclerView.id, "onItemClickedEvent", event)
-                        }
-                    }
                 }
             }
         }

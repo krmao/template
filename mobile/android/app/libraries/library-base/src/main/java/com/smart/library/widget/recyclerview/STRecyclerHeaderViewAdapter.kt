@@ -224,8 +224,16 @@ class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerV
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) = if (holder is InnerHeaderViewHolder) super.onViewDetachedFromWindow(holder) else innerAdapter.onViewDetachedFromWindow(holder)
     override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean = if (holder is InnerHeaderViewHolder) super.onFailedToRecycleView(holder) else innerAdapter.onFailedToRecycleView(holder)
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) = innerAdapter.onAttachedToRecyclerView(recyclerView)
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) = innerAdapter.onDetachedFromRecyclerView(recyclerView)
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        innerAdapter.onAttachedToRecyclerView(recyclerView)
+        innerAdapter.registerAdapterDataObserver(observer)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        innerAdapter.unregisterAdapterDataObserver(observer)
+        innerAdapter.onDetachedFromRecyclerView(recyclerView)
+    }
+
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) = if (holder is InnerHeaderViewHolder) super.onViewRecycled(holder) else innerAdapter.onViewRecycled(holder)
 
     /**
@@ -237,8 +245,4 @@ class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerV
     }
 
     private class InnerHeaderViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    init {
-        innerAdapter.registerAdapterDataObserver(observer)
-    }
 }

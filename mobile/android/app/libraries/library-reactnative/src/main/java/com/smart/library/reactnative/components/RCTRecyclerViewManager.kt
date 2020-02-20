@@ -2,8 +2,6 @@ package com.smart.library.reactnative.components
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
@@ -19,20 +17,19 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.common.MapBuilder
-import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
-import com.smart.library.util.STSystemUtil
 import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerHeaderViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyclerView>() {
+class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecyclerView>() {
 
     private val tag: String get() = name
 
@@ -84,7 +81,7 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
     @SuppressLint("SetTextI18n")
     @ReactProp(name = "initData")
     fun setInitData(recyclerView: RCTRecyclerView, initData: ReadableArray?) {
-        STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} initData=$initData")
+        STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} headerView=$headerView, initData=$initData")
         @Suppress("UNCHECKED_CAST")
         val dataList: MutableList<Int> = (initData?.toArrayList() as? ArrayList<Int>)?.toMutableList() ?: arrayListOf()
         STLogUtil.d(tag, "setData dataList=$dataList")
@@ -144,31 +141,17 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
         }
 
         val headerAdapter: STRecyclerHeaderViewAdapter<Int> = STRecyclerHeaderViewAdapter(originAdapter)
-        headerAdapter.addHeaderView(TextView(recyclerView.context).apply {
-            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, STSystemUtil.screenHeight)
-            setBackgroundColor(Color.BLUE)
-            text = "header view 0"
-            textSize = 20f
-            setTextColor(Color.WHITE)
-            typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-        })
-
-        headerAdapter.addHeaderView(TextView(recyclerView.context).apply {
-            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, STSystemUtil.screenHeight)
-            setBackgroundColor(Color.RED)
-            text = "header view 1"
-            textSize = 20f
-            setTextColor(Color.WHITE)
-            typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-        })
-
+        headerView?.let {
+            headerAdapter.addHeaderView(it)
+        }
         val loadingAdapter: STEmptyLoadingWrapper<Int> = STEmptyLoadingWrapper(headerAdapter)
 
         // onLoadMore listener
         loadingAdapter.onLoadMoreListener = {
             requestLoadMore(recyclerView)
         }
-        recyclerView.adapter = loadingAdapter
+
+        recyclerView.swapAdapter(loadingAdapter, false)
 
         val animator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
@@ -176,6 +159,26 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
             }
         }
         recyclerView.itemAnimator = animator
+    }
+
+    private var headerView: View? = null
+    override fun addView(parent: RCTRecyclerView?, child: View?, index: Int) {
+        super.addView(parent, child, index)
+        STLogUtil.w(tag, "addView index=$index, name=${child?.javaClass?.simpleName}")
+        if (headerView == null && index == 0 && child != null) {
+            removeViewParent(child)
+            headerView = child
+        }
+    }
+
+    private fun removeViewParent(child: View?): View? {
+        (child?.parent as? ViewGroup)?.removeView(child)
+        return child
+    }
+
+    override fun onAfterUpdateTransaction(view: RCTRecyclerView) {
+        super.onAfterUpdateTransaction(view)
+        STLogUtil.w(tag, "onAfterUpdateTransaction")
     }
 
     fun requestLoadMore(recyclerView: RCTRecyclerView) {

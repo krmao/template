@@ -46,15 +46,6 @@ export default class TabOrderPage extends React.Component {
         return (
             <View style={{flex: 1, flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
                 <View zIndex={0} style={{width: "100%", height: statusBarHeightByDensity, backgroundColor: "#fac446"}}/>
-                <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
-
-                    <Text>TabOrderPage</Text>
-                    <Button title="跳转到订单" color="#ff9800" onPress={() => this.props.navigation.navigate("Order")}/>
-                    <Button title="跳转到用户" color="#ff9800" onPress={() => this.props.navigation.navigate("User")}/>
-                    <Button title="跳转到商品" color="#ff9800" onPress={() => this.props.navigation.navigate("Goods")}/>
-                    <Button title="跳转到佣金" color="#ff9800" onPress={() => this.props.navigation.navigate("Money")}/>
-                    <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
-                </ViewGroupComponent>
                 <RecyclerComponent
                     ref={"recycler"}
                     style={{flex: 1, width: "100%", overflow: "hidden", backgroundColor: "white"}}
@@ -115,7 +106,16 @@ export default class TabOrderPage extends React.Component {
                         }, 2000);
                     }
                     }
-                />
+                >
+                    <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
+                        <Text>TabOrderPage</Text>
+                        <Button title="跳转到订单" color="#ff9800" onPress={() => this.props.navigation.navigate("Order")}/>
+                        <Button title="跳转到用户" color="#ff9800" onPress={() => this.props.navigation.navigate("User")}/>
+                        <Button title="跳转到商品" color="#ff9800" onPress={() => this.props.navigation.navigate("Goods")}/>
+                        <Button title="跳转到佣金" color="#ff9800" onPress={() => this.props.navigation.navigate("Money")}/>
+                        <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
+                    </ViewGroupComponent>
+                </RecyclerComponent>
             </View>
         );
     }

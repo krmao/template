@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 import com.smart.library.reactnative.ReactBridge
 import com.smart.library.reactnative.components.RCTRecyclerViewManager
+import com.smart.library.reactnative.components.RCTViewGroupManager
 import com.smart.library.reactnative.components.ReactToastComponent
 
 class ReactCustomPackage : ReactPackage {
@@ -19,7 +20,8 @@ class ReactCustomPackage : ReactPackage {
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
         return arrayListOf(
-                RCTRecyclerViewManager()
+                RCTRecyclerViewManager(),
+                RCTViewGroupManager()
         )
     }
 }

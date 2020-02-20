@@ -53,6 +53,7 @@ export default class TabOrderPage extends React.Component {
                     <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
                 </View>
                 <RecyclerComponent
+                    ref={"recycler"}
                     style={{flex: 1, width: "100%", overflow: "hidden", backgroundColor: "white"}}
                     zIndex={-1}
                     orientation={1}
@@ -75,22 +76,37 @@ export default class TabOrderPage extends React.Component {
 
                             if (this.state.currentPageIndex === 5 && this.state.showErrorAt5 === true) {
                                 console.log("order page", "加载出错了");
+
+                                // 第一种方式 通过 setState 修改 loadMoreData 添加数据
                                 that.setState({
-                                    loadMoreData: null,
+                                    // loadMoreData: null,
                                     showErrorAt5: false
-                                })
+                                });
+
+                                // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
+                                this.refs.recycler.callNativeShowMoreData(null)
                             } else if (this.state.currentPageIndex === 10 && this.state.showNoMoreAt10 === true) {
                                 console.log("order page", "没有更多数据了");
+
+                                // 第一种方式 通过 setState 修改 loadMoreData 添加数据
                                 that.setState({
-                                    loadMoreData: [],
+                                    // loadMoreData: [],
                                     showNoMoreAt10: false
-                                })
+                                });
+
+                                // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
+                                this.refs.recycler.callNativeShowMoreData([])
                             } else {
                                 let loadMoreData = that.getDataList();
                                 console.log("order page", "成功获取下一页数据", loadMoreData);
+
+                                // 第一种方式 通过 setState 修改 loadMoreData 添加数据
                                 that.setState({
-                                    loadMoreData: loadMoreData
-                                })
+                                    // loadMoreData: loadMoreData
+                                });
+
+                                // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
+                                this.refs.recycler.callNativeShowMoreData(loadMoreData)
                             }
 
                         }, 2000);

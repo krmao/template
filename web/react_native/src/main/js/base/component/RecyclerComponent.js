@@ -1,5 +1,5 @@
 import React from 'react';
-import {requireNativeComponent} from 'react-native';
+import {findNodeHandle, requireNativeComponent, UIManager} from 'react-native';
 import PropTypes from 'prop-types'; // https://reactjs.org/docs/typechecking-with-proptypes.html
 
 const RCTRecyclerView = requireNativeComponent('RCTRecyclerView');
@@ -21,12 +21,13 @@ class RecyclerComponent extends React.Component {
         this.props.onRequestLoadMore(event)
     }
 
-    callNative() {
-        /*UIManager.dispatchViewManagerCommand(
-            ReactNative.findNodeHandle(this.ref),
-            UIManager.RCTRecyclerView.Commands.refresh,
-            null
-        )*/
+    callNativeShowMoreData(loadMoreData) {
+        // noinspection JSUnresolvedFunction,JSUnresolvedVariable
+        UIManager.dispatchViewManagerCommand(
+            findNodeHandle(this),
+            UIManager.getViewManagerConfig('RCTRecyclerView').Commands.showMoreData,
+            loadMoreData,
+        )
     }
 
     render() {

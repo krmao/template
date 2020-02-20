@@ -226,15 +226,16 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
                 .build()
     }
 
+    private val commandShowMoreData: Int = 1
     override fun getCommandsMap(): Map<String, Int> {
-        return mapOf("showMoreData" to 1)
+        return mapOf("showMoreData" to commandShowMoreData)
     }
 
-    override fun receiveCommand(root: RCTRecyclerView, commandId: String?, args: ReadableArray?) {
-        STLogUtil.w(tag, "receiveCommand thread=${Thread.currentThread().name} commandId=$commandId, args=$args")
+    override fun receiveCommand(root: RCTRecyclerView, commandId: Int, args: ReadableArray?) {
+        STLogUtil.w(tag, "receiveCommand Int thread=${Thread.currentThread().name}, commandId=$commandId, args=$args")
         when (commandId) {
-            "showMoreData" -> {
-
+            commandShowMoreData -> {
+                setLoadMoreData(root, args)
             }
         }
     }

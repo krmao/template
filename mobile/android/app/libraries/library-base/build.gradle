@@ -1,6 +1,6 @@
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-android-extensions"
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion
@@ -26,7 +26,7 @@ dependencies {
     api "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintlayoutVersion"
     api "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
     api "androidx.recyclerview:recyclerview-selection:$rootProject.ext.androidXVersion"
-    api "com.google.android.material:material:$rootProject.ext.androidXVersion"
+    api "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"
     api "androidx.cardview:cardview:$rootProject.ext.androidXVersion"
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.ext.androidXVectorDrawableVersion"
     api "androidx.multidex:multidex:$rootProject.ext.androidXMultidexVersion"
@@ -69,17 +69,28 @@ dependencies {
     }
     /******* 其它常用库 ****************************************************************************/
     api "com.jude:swipebackhelper:3.1.2"
-    api 'com.gyf.immersionbar:immersionbar:2.3.1' // 沉浸式状态栏
+    api "com.gyf.immersionbar:immersionbar:2.3.1" // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
-    api 'com.liaoinstan.springview:library:1.3.2'
 
-    api 'com.airbnb.android:lottie:2.7.0'
+    // api "com.liaoinstan.springview:library:1.3.2"
+
+    // https://github.com/scwang90/SmartRefreshLayout
+    api "com.scwang.smart:refresh-layout-kernel:$rootProject.ext.smartRefreshLayoutVersion"      //核心必须依赖
+    api "com.scwang.smart:refresh-header-classics:$rootProject.ext.smartRefreshLayoutVersion"    //经典刷新头
+    api "com.scwang.smart:refresh-header-radar:$rootProject.ext.smartRefreshLayoutVersion"       //雷达刷新头
+    api "com.scwang.smart:refresh-header-falsify:$rootProject.ext.smartRefreshLayoutVersion"     //虚拟刷新头
+    api "com.scwang.smart:refresh-header-material:$rootProject.ext.smartRefreshLayoutVersion"    //谷歌刷新头
+    api "com.scwang.smart:refresh-header-two-level:$rootProject.ext.smartRefreshLayoutVersion"   //二级刷新头
+    api "com.scwang.smart:refresh-footer-ball:$rootProject.ext.smartRefreshLayoutVersion"        //球脉冲加载
+    api "com.scwang.smart:refresh-footer-classics:$rootProject.ext.smartRefreshLayoutVersion"    //经典加载
+
+    api "com.airbnb.android:lottie:2.7.0"
 
     api(name: "bspatch-0.0.2", ext: "aar")
-    // api 'com.smart.library.util:bspatch:0.0.2'
+    // api "com.smart.library.util:bspatch:0.0.2"
 }
 
-/*apply plugin: 'maven'
+/*apply plugin: "maven"
 
 group = "com.smart.android"
 def artifactID = "library-base"
@@ -94,7 +105,7 @@ uploadArchives {
             repository(url: rootProject.ext.prepository_url) {
                 authentication(userName: "", password: "")
             }
-            pom.packaging = 'aar'
+            pom.packaging = "aar"
             pom.groupId = project.group
             pom.artifactId = artifactID
             pom.version = project.version

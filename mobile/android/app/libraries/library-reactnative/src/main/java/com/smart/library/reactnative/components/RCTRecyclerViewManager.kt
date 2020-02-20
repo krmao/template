@@ -2,6 +2,8 @@ package com.smart.library.reactnative.components
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +25,10 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
+import com.smart.library.widget.recyclerview.STRecyclerHeaderViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
@@ -77,6 +81,7 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
     }
 
 
+    @SuppressLint("SetTextI18n")
     @ReactProp(name = "initData")
     fun setInitData(recyclerView: RCTRecyclerView, initData: ReadableArray?) {
         STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} initData=$initData")
@@ -138,12 +143,32 @@ class RCTRecyclerViewManager : SimpleViewManager<RCTRecyclerViewManager.RCTRecyc
             }
         }
 
-        val adapterWrapper: STEmptyLoadingWrapper<Int> = STEmptyLoadingWrapper(originAdapter)
+        val headerAdapter: STRecyclerHeaderViewAdapter<Int> = STRecyclerHeaderViewAdapter(originAdapter)
+        headerAdapter.addHeaderView(TextView(recyclerView.context).apply {
+            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, STSystemUtil.screenHeight)
+            setBackgroundColor(Color.BLUE)
+            text = "header view 0"
+            textSize = 20f
+            setTextColor(Color.WHITE)
+            typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+        })
+
+        headerAdapter.addHeaderView(TextView(recyclerView.context).apply {
+            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, STSystemUtil.screenHeight)
+            setBackgroundColor(Color.RED)
+            text = "header view 1"
+            textSize = 20f
+            setTextColor(Color.WHITE)
+            typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+        })
+
+        val loadingAdapter: STEmptyLoadingWrapper<Int> = STEmptyLoadingWrapper(headerAdapter)
+
         // onLoadMore listener
-        adapterWrapper.onLoadMoreListener = { refresh: Boolean ->
+        loadingAdapter.onLoadMoreListener = {
             requestLoadMore(recyclerView)
         }
-        recyclerView.adapter = adapterWrapper
+        recyclerView.adapter = loadingAdapter
 
         val animator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {

@@ -91,16 +91,30 @@ class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerV
      *
      * @param view
      */
-    fun addHeaderView(view: View) {
-        addHeaderView(view, generateUniqueViewType())
+    fun addHeaderView(view: View, notifyDataSetChanged: Boolean = true) {
+        addHeaderView(view, generateUniqueViewType(), notifyDataSetChanged)
     }
 
-    private fun addHeaderView(view: View, viewType: Int) { //包装HeaderView数据并添加到列表
-        val data = HeaderFooterViewData()
-        data.view = view
-        data.itemViewType = viewType
-        headerViewDataList.add(data)
-        notifyDataSetChanged()
+    private fun addHeaderView(view: View?, viewType: Int, notifyDataSetChanged: Boolean) { //包装HeaderView数据并添加到列表
+        if (view != null) {
+            val data = HeaderFooterViewData()
+            data.view = view
+            data.itemViewType = viewType
+            headerViewDataList.add(data)
+            if (notifyDataSetChanged) notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * 添加HeaderView
+     *
+     * @param view
+     */
+    fun addHeaderViews(notifyDataSetChanged: Boolean = true, vararg views: View?) {
+        views.forEach { view: View? ->
+            addHeaderView(view, generateUniqueViewType(), false)
+        }
+        if (notifyDataSetChanged) notifyItemRangeChanged()
     }
 
     /**
@@ -125,16 +139,16 @@ class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerV
      *
      * @param view
      */
-    fun addFooterView(view: View) {
-        addFooterView(view, generateUniqueViewType())
+    fun addFooterView(view: View, notifyDataSetChanged: Boolean = true) {
+        addFooterView(view, generateUniqueViewType(), notifyDataSetChanged)
     }
 
-    private fun addFooterView(view: View, viewType: Int) { // 包装FooterView数据并添加到列表
+    private fun addFooterView(view: View, viewType: Int, notifyDataSetChanged: Boolean) { // 包装FooterView数据并添加到列表
         val data = HeaderFooterViewData()
         data.view = view
         data.itemViewType = viewType
         footerViewDataList.add(data)
-        notifyDataSetChanged()
+        if (notifyDataSetChanged) notifyDataSetChanged()
     }
 
     /**

@@ -47,6 +47,7 @@ RecyclerComponent.propTypes = {
     /**
      * @param orientation VERTICAL==1 or HORIZONTAL==0
      */
+    stickyHeaderViewHeight: PropTypes.number.isRequired,
     orientation: PropTypes.number.isRequired,
     initData: PropTypes.array.isRequired,
     onItemClicked: PropTypes.func.isRequired,

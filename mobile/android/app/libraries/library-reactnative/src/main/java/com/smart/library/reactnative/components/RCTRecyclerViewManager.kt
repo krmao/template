@@ -21,21 +21,23 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
+import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRandomUtil
+import com.smart.library.util.STRecyclerViewStickyHeaderUtil
 import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerHeaderViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecyclerView>() {
+class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecyclerViewInFrameLayout>() {
 
     private val tag: String get() = name
 
-    override fun createViewInstance(reactContext: ThemedReactContext): RCTRecyclerView {
+    override fun createViewInstance(reactContext: ThemedReactContext): RCTRecyclerViewInFrameLayout {
         STLogUtil.d(tag, "createViewInstance thread=${Thread.currentThread().name}")
-        return RCTRecyclerView(reactContext)
+        return RCTRecyclerViewInFrameLayout(reactContext)
     }
 
     override fun getName(): String = "RCTRecyclerView"
@@ -44,16 +46,16 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
      * @param orientation VERTICAL==1 or HORIZONTAL==0
      */
     @ReactProp(name = "orientation", defaultInt = 1)
-    fun setOrientation(recyclerView: RCTRecyclerView, orientation: Int) {
-        val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerView.layoutManager as? StaggeredGridLayoutManager
+    fun setOrientation(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, orientation: Int) {
+        val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerViewInFrameLayout.innerRecyclerView.layoutManager as? StaggeredGridLayoutManager
         if (staggeredGridLayoutManager != null) {
             staggeredGridLayoutManager.orientation = orientation
-            recyclerView.layoutManager = staggeredGridLayoutManager
+            setLayoutManager(recyclerViewInFrameLayout, staggeredGridLayoutManager)
         } else {
-            recyclerView.layoutManager = StaggeredGridLayoutManager(1, orientation)
+            setLayoutManager(recyclerViewInFrameLayout, StaggeredGridLayoutManager(1, orientation))
         }
 
-        updateRecyclerView(recyclerView)
+        updateRecyclerView(recyclerViewInFrameLayout)
 
         STLogUtil.d(tag, "setOrientation thread=${Thread.currentThread().name} orientation=$orientation")
     }
@@ -63,39 +65,77 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
      *                    orientation is horizontal, spanCount is number of rows.
      */
     @ReactProp(name = "spanCount", defaultInt = 1)
-    fun setSpanCount(recyclerView: RCTRecyclerView, spanCount: Int) {
-        val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerView.layoutManager as? StaggeredGridLayoutManager
+    fun setSpanCount(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, spanCount: Int) {
+        val staggeredGridLayoutManager: StaggeredGridLayoutManager? = recyclerViewInFrameLayout.innerRecyclerView.layoutManager as? StaggeredGridLayoutManager
         if (staggeredGridLayoutManager != null) {
             staggeredGridLayoutManager.spanCount = spanCount
-            recyclerView.layoutManager = staggeredGridLayoutManager
+            setLayoutManager(recyclerViewInFrameLayout, staggeredGridLayoutManager)
         } else {
-            recyclerView.layoutManager = StaggeredGridLayoutManager(spanCount, 1)
+            setLayoutManager(recyclerViewInFrameLayout, StaggeredGridLayoutManager(spanCount, 1))
         }
 
-        updateRecyclerView(recyclerView)
+        updateRecyclerView(recyclerViewInFrameLayout)
 
         STLogUtil.d(tag, "setSpanCount thread=${Thread.currentThread().name} spanCount=$spanCount")
+    }
+
+    private var stickyHeaderViewHeight: Int = 80
+    @ReactProp(name = "stickyHeaderViewHeight", defaultInt = 80)
+    fun setStickyHeaderViewHeight(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, stickyHeaderViewHeight: Int) {
+        this.stickyHeaderViewHeight = stickyHeaderViewHeight
+        STLogUtil.d(tag, "setStickyHeaderViewHeight thread=${Thread.currentThread().name} stickyHeaderViewHeight=$stickyHeaderViewHeight stickyHeaderView==null?${stickyHeaderView == null}")
+    }
+
+    private fun setLayoutManager(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, layoutManager: RecyclerView.LayoutManager? = null): RecyclerView.LayoutManager {
+        val layoutManager: RecyclerView.LayoutManager = layoutManager ?: recyclerViewInFrameLayout.innerRecyclerView.layoutManager ?: StaggeredGridLayoutManager(1, 1)
+        recyclerViewInFrameLayout.innerRecyclerView.layoutManager = layoutManager
+
+        // config stickyHeaderView
+        val innerStickyHeaderView: View? = stickyHeaderView
+        if (innerStickyHeaderView != null) {
+            STLogUtil.w(tag, "setLayoutManager recyclerViewInFrameLayout.childViewCount=${recyclerViewInFrameLayout.childCount},innerStickyHeaderView.top=${innerStickyHeaderView.top}, innerStickyHeaderView.y=${innerStickyHeaderView.y}, stickyHeaderViewHeight.toPxFromDp()=${stickyHeaderViewHeight.toPxFromDp()}")
+            removeViewParent(innerStickyHeaderView)
+            recyclerViewInFrameLayout.addView(innerStickyHeaderView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, stickyHeaderViewHeight.toPxFromDp()))
+
+            val stickyHeaderUtil = STRecyclerViewStickyHeaderUtil(
+                    layoutManager,
+                    innerStickyHeaderView,
+                    onUpdateStickyHeaderView = { stickyHeaderView: View, currentMinVisiblePosition: Int ->
+
+                    },
+                    findHeaderPositionBeforeCurrentMinVisiblePosition = { minVisiblePosition: Int ->
+                        if (minVisiblePosition <= 1) Int.MIN_VALUE else 1
+                    },
+                    findHeaderPositionAfterCurrentMinVisiblePosition = { minVisiblePosition: Int ->
+                        if (minVisiblePosition >= 1) Int.MIN_VALUE else 1
+                    }
+            )
+            recyclerViewInFrameLayout.innerRecyclerView.clearOnScrollListeners()
+            recyclerViewInFrameLayout.innerRecyclerView.addOnScrollListener(stickyHeaderUtil.onStickyHeaderScrollListener)
+        }
+
+        return layoutManager
     }
 
 
     @SuppressLint("SetTextI18n")
     @ReactProp(name = "initData")
-    fun setInitData(recyclerView: RCTRecyclerView, initData: ReadableArray?) {
-        STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} headerView=$headerView, initData=$initData")
+    fun setInitData(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, initData: ReadableArray?) {
+        STLogUtil.d(tag, "setInitData thread=${Thread.currentThread().name} headerView=$headerView0, initData=$initData")
         @Suppress("UNCHECKED_CAST")
         val dataList: MutableList<Int> = (initData?.toArrayList() as? ArrayList<Int>)?.toMutableList() ?: arrayListOf()
         STLogUtil.d(tag, "setData dataList=$dataList")
 
         val cachedHeightMap: SparseArray<Int> = SparseArray()
-        val originAdapter = object : STRecyclerViewAdapter<Int, RecyclerView.ViewHolder>(recyclerView.context, dataList) {
+        val originAdapter = object : STRecyclerViewAdapter<Int, RecyclerView.ViewHolder>(recyclerViewInFrameLayout.innerRecyclerView.context, dataList) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
                 STLogUtil.d(tag, "onCreateViewHolder thread=${Thread.currentThread().name}")
-                return ViewHolder(FrameLayout(recyclerView.context).apply {
-                    val imageView: SimpleDraweeView = SimpleDraweeView(recyclerView.context).apply {
+                return ViewHolder(FrameLayout(recyclerViewInFrameLayout.innerRecyclerView.context).apply {
+                    val imageView: SimpleDraweeView = SimpleDraweeView(recyclerViewInFrameLayout.innerRecyclerView.context).apply {
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
 
-                    val textView: TextView = TextView(recyclerView.context).apply {
+                    val textView: TextView = TextView(recyclerViewInFrameLayout.innerRecyclerView.context).apply {
                         this.setPadding(10, 10, 10, 10)
                     }
 
@@ -126,7 +166,7 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
                 itemView.setOnClickListener {
                     val event: WritableMap = Arguments.createMap()
                     event.putInt("position", position)
-                    sendRNMessage(recyclerView, "onItemClickedEvent", event)
+                    sendRNMessage(recyclerViewInFrameLayout, "onItemClickedEvent", event)
                 }
 
 
@@ -141,33 +181,44 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
         }
 
         val headerAdapter: STRecyclerHeaderViewAdapter<Int> = STRecyclerHeaderViewAdapter(originAdapter)
-        headerView?.let {
-            headerAdapter.addHeaderView(it)
-        }
+        headerAdapter.addHeaderViews(true, headerView0, headerView1)
+
+
         val loadingAdapter: STEmptyLoadingWrapper<Int> = STEmptyLoadingWrapper(headerAdapter)
 
         // onLoadMore listener
         loadingAdapter.onLoadMoreListener = {
-            requestLoadMore(recyclerView)
+            requestLoadMore(recyclerViewInFrameLayout)
         }
 
-        recyclerView.swapAdapter(loadingAdapter, false)
+        setLayoutManager(recyclerViewInFrameLayout, recyclerViewInFrameLayout.innerRecyclerView.layoutManager)
+
+        recyclerViewInFrameLayout.innerRecyclerView.swapAdapter(loadingAdapter, false)
 
         val animator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
                 return true
             }
         }
-        recyclerView.itemAnimator = animator
+        recyclerViewInFrameLayout.innerRecyclerView.itemAnimator = animator
     }
 
-    private var headerView: View? = null
-    override fun addView(parent: RCTRecyclerView?, child: View?, index: Int) {
+    private var headerView0: View? = null
+    private var headerView1: View? = null
+    private var stickyHeaderView: View? = null
+    override fun addView(parent: RCTRecyclerViewInFrameLayout?, child: View?, index: Int) {
         super.addView(parent, child, index)
         STLogUtil.w(tag, "addView index=$index, name=${child?.javaClass?.simpleName}")
-        if (headerView == null && index == 0 && child != null) {
+        if (index == 0 && child != null) {
+            val childViewGroup: ViewGroup? = child as? ViewGroup
+            headerView0 = childViewGroup?.getChildAt(0)
+            headerView1 = childViewGroup?.getChildAt(1)
+            stickyHeaderView = childViewGroup?.getChildAt(2)
+
             removeViewParent(child)
-            headerView = child
+            removeViewParent(headerView0)
+            removeViewParent(headerView1)
+            removeViewParent(stickyHeaderView)
         }
     }
 
@@ -176,20 +227,20 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
         return child
     }
 
-    override fun onAfterUpdateTransaction(view: RCTRecyclerView) {
-        super.onAfterUpdateTransaction(view)
+    override fun onAfterUpdateTransaction(viewInFrameLayout: RCTRecyclerViewInFrameLayout) {
+        super.onAfterUpdateTransaction(viewInFrameLayout)
         STLogUtil.w(tag, "onAfterUpdateTransaction")
     }
 
-    fun requestLoadMore(recyclerView: RCTRecyclerView) {
+    fun requestLoadMore(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout) {
         STLogUtil.d(tag, "requestLoadMore thread=${Thread.currentThread().name}")
-        sendRNMessage(recyclerView, "onRequestLoadMoreEvent")
+        sendRNMessage(recyclerViewInFrameLayout, "onRequestLoadMoreEvent")
     }
 
     @ReactProp(name = "loadMoreData")
-    fun setLoadMoreData(recyclerView: RCTRecyclerView, data: ReadableArray?) {
+    fun setLoadMoreData(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, data: ReadableArray?) {
         STLogUtil.d(tag, "setLoadMoreData thread=${Thread.currentThread().name} data=$data")
-        val adapterWrapper: STEmptyLoadingWrapper<Int>? = recyclerView.adapter as? STEmptyLoadingWrapper<Int>
+        val adapterWrapper: STEmptyLoadingWrapper<Int>? = recyclerViewInFrameLayout.innerRecyclerView.adapter as? STEmptyLoadingWrapper<Int>
         if (adapterWrapper != null) {
             val newList: MutableList<Int>? = (data?.toArrayList() as? ArrayList<Int>)?.toMutableList()
             when {
@@ -207,8 +258,8 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
         }
     }
 
-    fun updateRecyclerView(recyclerView: RCTRecyclerView) {
-        recyclerView.adapter = recyclerView.adapter
+    fun updateRecyclerView(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout) {
+        recyclerViewInFrameLayout.innerRecyclerView.adapter = recyclerViewInFrameLayout.innerRecyclerView.adapter
     }
 
     /**
@@ -234,7 +285,7 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
         return mapOf("showMoreData" to commandShowMoreData)
     }
 
-    override fun receiveCommand(root: RCTRecyclerView, commandId: Int, args: ReadableArray?) {
+    override fun receiveCommand(root: RCTRecyclerViewInFrameLayout, commandId: Int, args: ReadableArray?) {
         STLogUtil.w(tag, "receiveCommand Int thread=${Thread.currentThread().name}, commandId=$commandId, args=$args")
         when (commandId) {
             commandShowMoreData -> {
@@ -243,21 +294,24 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
         }
     }
 
-    fun sendRNMessage(recyclerView: RCTRecyclerView, eventName: String, event: WritableMap? = null) {
+    fun sendRNMessage(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, eventName: String, event: WritableMap? = null) {
         var eventEmitter: RCTEventEmitter? = null
         try {
-            eventEmitter = (recyclerView.context as? ReactContext)?.getJSModule(RCTEventEmitter::class.java)
+            eventEmitter = (recyclerViewInFrameLayout.innerRecyclerView.context as? ReactContext)?.getJSModule(RCTEventEmitter::class.java)
         } catch (ignore: Exception) {
         }
         if (eventEmitter != null) {
-            eventEmitter.receiveEvent(recyclerView.id, eventName, event)
+            eventEmitter.receiveEvent(recyclerViewInFrameLayout.innerRecyclerView.id, eventName, event)
             STLogUtil.w(tag, "sendRNMessage thread=${Thread.currentThread().name} success eventName=$eventName")
         } else {
             STLogUtil.e(tag, "sendRNMessage thread=${Thread.currentThread().name} failure eventName=$eventName")
         }
     }
 
-    class RCTRecyclerView(context: Context) : RecyclerView(context) {
+    class RCTRecyclerViewInFrameLayout(context: Context) : FrameLayout(context) {
+
+        val innerRecyclerView: RecyclerView = RecyclerView(context)
+
         private var requestedLayout = false
 
         @SuppressLint("WrongCall")
@@ -275,5 +329,10 @@ class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecycl
                 }
             }
         }
+
+        init {
+            addView(innerRecyclerView)
+        }
+
     }
 }

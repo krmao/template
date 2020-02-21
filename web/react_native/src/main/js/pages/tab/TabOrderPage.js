@@ -52,6 +52,7 @@ export default class TabOrderPage extends React.Component {
                     zIndex={-1}
                     orientation={1}
                     spanCount={2}
+                    stickyHeaderViewHeight={40}
                     initData={this.state.initData}
                     loadMoreData={this.state.loadMoreData}
                     onItemClicked={(event) => {
@@ -108,12 +109,28 @@ export default class TabOrderPage extends React.Component {
                     }
                 >
                     <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
-                        <Text>TabOrderPage</Text>
-                        <Button title="跳转到订单" color="#ff9800" onPress={() => this.props.navigation.navigate("Order")}/>
-                        <Button title="跳转到用户" color="#ff9800" onPress={() => this.props.navigation.navigate("User")}/>
-                        <Button title="跳转到商品" color="#ff9800" onPress={() => this.props.navigation.navigate("Goods")}/>
-                        <Button title="跳转到佣金" color="#ff9800" onPress={() => this.props.navigation.navigate("Money")}/>
-                        <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
+                        {/* header view 0 */}
+                        <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
+                            <Text>TabOrderPage</Text>
+                            <Button title="跳转到订单" color="#ff9800" onPress={() => this.props.navigation.navigate("Order")}/>
+                            <Button title="跳转到用户" color="#ff9800" onPress={() => this.props.navigation.navigate("User")}/>
+                            <Button title="跳转到商品" color="#ff9800" onPress={() => this.props.navigation.navigate("Goods")}/>
+                            <Button title="跳转到佣金" color="#ff9800" onPress={() => this.props.navigation.navigate("Money")}/>
+                            <Text style={{marginTop: 5, marginBottom: 5, fontSize: 15, fontWeight: "bold", borderWidth: 2, borderColor: "black", borderRadius: 5, padding: 5}}>invoke native recyclerView</Text>
+                        </ViewGroupComponent>
+
+                        {/* header view 1 */}
+                        <View zIndex={1} style={{flexDirection: "row", backgroundColor: "blue", width: screenWidth, height: 40}}>
+                            <Text style={{backgroundColor: "#bf360c", flex: 1, padding: 10, height: 40}}>StickHeaderView</Text>
+                            <Text style={{backgroundColor: "#e65100", flex: 1, padding: 10, height: 40}}>StickHeaderView</Text>
+                        </View>
+
+                        {/* sticky header view */}
+                        {/*<Text style={{backgroundColor: "#bf360c", padding: 10, height: 40, width: screenWidth}}>StickHeaderView</Text>*/}
+                        <View zIndex={1} style={{flexDirection: "row", backgroundColor: "blue", width: screenWidth, height: 40}}>
+                            <Text style={{backgroundColor: "#bf360c", flex: 1, padding: 10, height: 40}}>StickHeaderView</Text>
+                            <Text style={{backgroundColor: "#e65100", flex: 1, padding: 10, height: 40}}>StickHeaderView</Text>
+                        </View>
                     </ViewGroupComponent>
                 </RecyclerComponent>
             </View>

@@ -87,5 +87,181 @@ object STTimeUtil {
     fun parseHttp(httpValue: String): Date = HttpDate.parse(httpValue)
 
     @JvmStatic
-    fun parse(pattern: String, value: String): Date = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)
+    fun getTimeSlotDescription(pattern: String, value: String): Date = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)
+
+    //-----------------------------------------------------------------------------------------------------------
+    // Calendar start
+    //-----------------------------------------------------------------------------------------------------------
+    /**
+     * 哪一年
+     */
+    fun getYear(timeInMillis: Long): Int {
+        val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+        calendar.timeInMillis = timeInMillis
+        return calendar[Calendar.YEAR]
+    }
+
+    /**
+     * 哪个月
+     */
+    fun getMonth(timeInMillis: Long): Int {
+        val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+        calendar.timeInMillis = timeInMillis
+        return calendar[Calendar.MONTH]
+    }
+
+    /**
+     * 星期几
+     */
+    fun getDayOfWeek(timeInMillis: Long): Int {
+        val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+        calendar.timeInMillis = timeInMillis
+        return calendar[Calendar.DAY_OF_WEEK]
+    }
+
+    /**
+     * 获取星期的中文描述
+     */
+    fun getDayOfWeekStr(dayOfWeek: Int): String? = when (dayOfWeek) {
+        1 -> "星期天"
+        2 -> "星期一"
+        3 -> "星期二"
+        4 -> "星期三"
+        5 -> "星期四"
+        6 -> "星期五"
+        7 -> "星期六"
+        else -> null
+    }
+
+    /**
+     * 今天的最小时间
+     * ----
+     * 假如现在是        2020/02/21 11:48:22 456
+     * 则今天的最小时间   2020/02/21 00:00:00 000
+     */
+    val minTodayInMillis: Long
+        get() {
+            val calendar: Calendar = Calendar.getInstance(Locale.getDefault())
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+            return calendar.timeInMillis
+        }
+
+    /**
+     * 今天的最大时间
+     * ----
+     * 假如现在是        2020/02/21 11:48:22 456
+     * 则今天的最小时间   2020/02/21 23:59:59 999
+     */
+    val maxTodayInMillis: Long
+        get() {
+            val calendar: Calendar = Calendar.getInstance(Locale.getDefault())
+            calendar[Calendar.HOUR_OF_DAY] = 23
+            calendar[Calendar.MINUTE] = 59
+            calendar[Calendar.SECOND] = 59
+            calendar[Calendar.MILLISECOND] = 999
+            return calendar.timeInMillis
+        }
+
+
+    /**
+     * 昨天的最小时间
+     * ----
+     * 比如当前时间是     2020/02/21 11:48:22 456
+     * 则昨天的最小时间   2020/02/20 00:00:00 000
+     */
+    val minYesterdayInMillis: Long
+        get() {
+            val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+            calendar[Calendar.DAY_OF_YEAR] = calendar[Calendar.DAY_OF_YEAR] - 1
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+            return calendar.timeInMillis
+        }
+
+    /**
+     * 当前周的第一天的最小时间
+     * ----
+     * 比如当前时间是          2020/02/21 11:48:22 456
+     * 则当前周的第一天的时间   2020/02/16 00:00:00 000  02/16是星期天 这星期的最小值
+     */
+    val minDayOfCurrentWeekInMillis: Long
+        get() {
+            val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+            calendar[Calendar.DAY_OF_WEEK] = calendar.getMinimum(Calendar.DAY_OF_WEEK)
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+            return calendar.timeInMillis
+        }
+
+    /**
+     * 当前月的第一天的最小时间
+     * 比如当前时间是             2020/02/21 11:48:22 456
+     * 则当前月的第一天的最小时间   2020/02/01 00:00:00 000
+     */
+    val minDayOfCurrentMonthInMillis: Long
+        get() {
+            val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+            calendar[Calendar.DAY_OF_MONTH] = calendar.getMinimum(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+            return calendar.timeInMillis
+        }
+
+    /**
+     * 今年的第一天的最小时间
+     * ----
+     * 比如当前时间是             2020/02/21 11:48:22 456
+     * 则当前年的第一天的最小时间   2020/01/01 00:00:00 000
+     */
+    val minDayOfCurrentYearInMillis: Long
+        get() {
+            val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+            calendar[Calendar.DAY_OF_YEAR] = calendar.getMinimum(Calendar.DAY_OF_YEAR)
+            calendar[Calendar.HOUR_OF_DAY] = 0
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+            return calendar.timeInMillis
+        }
+
+    /**
+     * 获取指定时间的描述
+     * ----
+     * 今天/昨天/星期几/这个月/几月/几年
+     * 可用于本地图片的时间归类
+     */
+    fun getTimeSlotDescription(timeInMillis: Long): String? = when {
+        timeInMillis in minTodayInMillis..maxTodayInMillis -> { //[2020/02/21 00:00:00 - 2020/02/21 11:59:59]
+            "今天"
+        }
+        timeInMillis in minYesterdayInMillis until minTodayInMillis -> { //[2020/02/20 00:00:00 - 2020/02/21 00:00:00)
+            "昨天"
+        }
+        timeInMillis in minDayOfCurrentWeekInMillis until minYesterdayInMillis -> { //[2020/02/16 00:00:00 - 2020/02/20 00:00:00) 02/16是星期天 这星期的最小值
+            getDayOfWeekStr(getDayOfWeek(timeInMillis))
+        }
+        timeInMillis in minDayOfCurrentMonthInMillis until minDayOfCurrentWeekInMillis -> { //[2020/02/01 00:00:00 - 2020/02/16 00:00:00)
+            "这个月"
+        }
+        timeInMillis in minDayOfCurrentYearInMillis until minDayOfCurrentMonthInMillis -> { //[2020/01/01 00:00:00 - 2020/02/16 00:00:00)
+            "${getMonth(timeInMillis) + 1} 月"
+        }
+        timeInMillis < minDayOfCurrentYearInMillis -> {//[timeInMillis - 2020/01/01 00:00:00)
+            "${getYear(timeInMillis)} 年"
+        }
+        else -> null
+    }
+
+    //-----------------------------------------------------------------------------------------------------------
+    // Calendar end
+    //-----------------------------------------------------------------------------------------------------------
 }

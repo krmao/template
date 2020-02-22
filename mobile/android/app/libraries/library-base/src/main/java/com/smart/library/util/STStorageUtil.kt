@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.smart.library.util.STStorageUtil.LocalPictureTimeSlotInfo.Companion.DATA_TYPE_TITLE
 import java.util.*
 
@@ -17,6 +18,7 @@ object STStorageUtil {
      * query only jpeg and png image type files
      * default search path is MediaStore.Images.Media.EXTERNAL_CONTENT_URI
      */
+    @RequiresPermission(value = android.Manifest.permission.READ_EXTERNAL_STORAGE)
     fun loadAllLocalPictures(mContext: Context, contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI): LocalPictureTimeSlotResult? {
         val result = LocalPictureTimeSlotResult(mContext)
         try {
@@ -47,8 +49,8 @@ object STStorageUtil {
 
     @Suppress("MemberVisibilityCanBePrivate")
     class LocalPictureTimeSlotResult(private val context: Context) {
-        private var titlePositionList: ArrayList<Any?> = ArrayList()
-        private val titleSet: HashSet<String?> = HashSet()
+        val titlePositionList: ArrayList<Int> = ArrayList()
+        val titleSet: HashSet<String?> = HashSet()
         val localPictureInfoList: ArrayList<LocalPictureTimeSlotInfo> = ArrayList()
 
         fun add(pictureInfo: LocalPictureInfo) {

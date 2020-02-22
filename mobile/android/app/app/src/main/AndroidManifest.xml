@@ -75,6 +75,14 @@
         </activity>
 
         <activity
+            android:name="com.smart.template.home.localPictures.STLocalPicturesActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"

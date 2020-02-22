@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.util.STEventManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
-import com.smart.library.util.bus.STBusManager
-import com.smart.template.library.STBridgeCommunication
-import org.json.JSONObject
+import com.smart.template.home.localPictures.STLocalPicturesActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -57,7 +55,8 @@ class SplashActivity : AppCompatActivity() {
 
         FinalApplicationInitManager.initialize { key: String, success: Boolean ->
             STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
-            if (!isFinishing && key == "reactnative" && success) {
+
+            /*if (!isFinishing && key == "reactnative" && success) {
 
                 //region schema
                 val url: String? = intent.data?.toString()
@@ -78,7 +77,10 @@ class SplashActivity : AppCompatActivity() {
                             put("doubleBack", 1)
                         }.toString(),
                         "cc-rn")
-            }
+            }*/
         }
+
+        // test
+        startActivity(Intent(this, STLocalPicturesActivity::class.java))
     }
 }

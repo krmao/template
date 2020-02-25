@@ -1,13 +1,12 @@
 import React from "react";
 import {Button, Dimensions, NativeModules, requireNativeComponent, Text, View} from "react-native";
 import RecyclerComponent from "../../base/component/RecyclerComponent";
-import Toast from 'react-native-root-toast';
+import Toast from "react-native-root-toast";
 // Store width in variable
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-const statusBarHeightByDensity = NativeModules.ReactBridge.statusBarHeightByDensity
-const ViewGroupComponent = requireNativeComponent('RCTViewGroup');
-
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+const statusBarHeightByDensity = NativeModules.ReactBridge.statusBarHeightByDensity;
+const ViewGroupComponent = requireNativeComponent("RCTViewGroup");
 
 export default class TabOrderPage extends React.Component {
     constructor(props) {
@@ -19,14 +18,14 @@ export default class TabOrderPage extends React.Component {
             loadMoreData: [],
             showErrorAt5: true,
             showNoMoreAt10: true
-        }
+        };
     }
 
     getDataList() {
         let dataList = [];
         let toPageIndex = this.state.currentPageIndex + 1;
         let index = 0;
-        for (let i = (this.state.currentPageIndex * this.state.pageSize); i < (toPageIndex * this.state.pageSize); i++) {
+        for (let i = this.state.currentPageIndex * this.state.pageSize; i < toPageIndex * this.state.pageSize; i++) {
             dataList[index++] = i;
         }
         this.setState({
@@ -38,7 +37,7 @@ export default class TabOrderPage extends React.Component {
     componentDidMount() {
         this.setState({
             initData: this.getDataList()
-        })
+        });
     }
 
     render() {
@@ -56,7 +55,7 @@ export default class TabOrderPage extends React.Component {
                     initData={this.state.initData}
                     loadMoreData={this.state.loadMoreData}
                     onItemClicked={(event) => {
-                        Toast.show('onItemClicked:' + event.nativeEvent.position, {
+                        Toast.show("onItemClicked:" + event.nativeEvent.position, {
                             duration: Toast.durations.SHORT,
                             position: Toast.positions.BOTTOM,
                             shadow: true,
@@ -68,7 +67,6 @@ export default class TabOrderPage extends React.Component {
                         console.log("order page", "nativeEvent:", event.nativeEvent);
 
                         setTimeout(() => {
-
                             if (this.state.currentPageIndex === 5 && this.state.showErrorAt5 === true) {
                                 console.log("order page", "加载出错了");
 
@@ -79,7 +77,7 @@ export default class TabOrderPage extends React.Component {
                                 });
 
                                 // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
-                                this.refs.recycler.callNativeShowMoreData(null)
+                                this.refs.recycler.callNativeShowMoreData(null);
                             } else if (this.state.currentPageIndex === 10 && this.state.showNoMoreAt10 === true) {
                                 console.log("order page", "没有更多数据了");
 
@@ -90,7 +88,7 @@ export default class TabOrderPage extends React.Component {
                                 });
 
                                 // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
-                                this.refs.recycler.callNativeShowMoreData([])
+                                this.refs.recycler.callNativeShowMoreData([]);
                             } else {
                                 let loadMoreData = that.getDataList();
                                 console.log("order page", "成功获取下一页数据", loadMoreData);
@@ -101,13 +99,10 @@ export default class TabOrderPage extends React.Component {
                                 });
 
                                 // 第二种方式 直接调用 component 方法 中转 native 方法 添加数据
-                                this.refs.recycler.callNativeShowMoreData(loadMoreData)
+                                this.refs.recycler.callNativeShowMoreData(loadMoreData);
                             }
-
                         }, 2000);
-                    }
-                    }
-                >
+                    }}>
                     <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>
                         {/* header view 0 */}
                         <ViewGroupComponent zIndex={0} style={{width: "100%", flexDirection: "column", flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "flex-start", backgroundColor: "#fac446"}}>

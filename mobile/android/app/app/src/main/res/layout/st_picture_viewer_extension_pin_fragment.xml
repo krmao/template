@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/fill">
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        style="@style/footer">
+
+        <ImageView
+            android:id="@+id/previous"
+            style="@style/previousButton"
+            android:contentDescription="@string/button.previous"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/next"
+            style="@style/nextButton"
+            android:contentDescription="@string/button.next" />
+
+        <TextView
+            android:id="@+id/note"
+            style="@style/footerNote"
+            android:layout_toStartOf="@id/next"
+            android:layout_toLeftOf="@id/next"
+            android:layout_toEndOf="@id/previous"
+            android:layout_toRightOf="@id/previous"
+            android:text="@string/extension.p1.text" />
+
+    </RelativeLayout>
+
+    <com.smart.template.home.pictureViewer.extension.views.STPictureViewerPinView
+        android:id="@+id/imageView"
+        style="@style/mainPanel" />
+
+</RelativeLayout>

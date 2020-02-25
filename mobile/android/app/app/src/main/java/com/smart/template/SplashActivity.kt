@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.util.STEventManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
-import com.smart.template.home.localPictures.STLocalPicturesActivity
+import com.smart.template.home.pictureViewer.STPictureViewerExamplesActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -81,6 +81,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
         // test
-        startActivity(Intent(this, STLocalPicturesActivity::class.java))
+        // startActivity(Intent(this, STLocalPicturesActivity::class.java))
+        startActivity(Intent(this, STPictureViewerExamplesActivity::class.java))
     }
 }

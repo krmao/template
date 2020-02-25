@@ -71,6 +71,7 @@ dependencies {
     api "com.jude:swipebackhelper:3.1.2"
     api "com.gyf.immersionbar:immersionbar:2.3.1" // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
+    api "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0" // https://github.com/davemorrissey/subsampling-scale-image-view
 
     // api "com.liaoinstan.springview:library:1.3.2"
 

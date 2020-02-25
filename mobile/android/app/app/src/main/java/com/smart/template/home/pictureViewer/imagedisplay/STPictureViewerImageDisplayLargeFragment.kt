@@ -17,7 +17,7 @@ class STPictureViewerImageDisplayLargeFragment : Fragment() {
             rootView.findViewById<View>(R.id.next).setOnClickListener { activity.next() }
         }
         val imageView: SubsamplingScaleImageView = rootView.findViewById(R.id.imageView)
-        imageView.setImage(ImageSource.asset("card.png"))
+        imageView.setImage(ImageSource.asset("st_picture_viewer_physical_political_world_map.jpg"))
         return rootView
     }
 }

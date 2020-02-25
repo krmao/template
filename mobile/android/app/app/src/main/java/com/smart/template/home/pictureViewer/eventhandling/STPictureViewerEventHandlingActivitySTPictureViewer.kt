@@ -17,7 +17,7 @@ class STPictureViewerEventHandlingActivitySTPictureViewer : STPictureViewerAbstr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val imageView = findViewById<SubsamplingScaleImageView>(R.id.imageView)
-        imageView.setImage(ImageSource.asset("sanmartino.jpg"))
+        imageView.setImage(ImageSource.asset("st_picture_viewer_sanmartino.jpg"))
         imageView.setOnClickListener { v -> Toast.makeText(v.context, "Clicked", Toast.LENGTH_SHORT).show() }
         imageView.setOnLongClickListener { v ->
             Toast.makeText(v.context, "Long clicked", Toast.LENGTH_SHORT).show()

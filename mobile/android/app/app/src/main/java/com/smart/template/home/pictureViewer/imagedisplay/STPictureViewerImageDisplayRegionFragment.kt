@@ -19,7 +19,7 @@ class STPictureViewerImageDisplayRegionFragment : Fragment() {
         imageView.setBitmapDecoderFactory(CompatDecoderFactory<ImageDecoder>(SkiaImageDecoder::class.java, Bitmap.Config.ARGB_8888))
         imageView.setRegionDecoderFactory(CompatDecoderFactory<ImageRegionDecoder>(SkiaImageRegionDecoder::class.java, Bitmap.Config.ARGB_8888))
         imageView.orientation = SubsamplingScaleImageView.ORIENTATION_90
-        imageView.setImage(ImageSource.asset("card.png").region(Rect(5200, 651, 8200, 3250)))
+        imageView.setImage(ImageSource.asset("st_picture_viewer_card.png").region(Rect(5200, 651, 8200, 3250)))
         val activity = activity as STPictureViewerImageDisplayActivitySTPictureViewer?
         if (activity != null) {
             rootView.findViewById<View>(R.id.previous).setOnClickListener { activity.previous() }

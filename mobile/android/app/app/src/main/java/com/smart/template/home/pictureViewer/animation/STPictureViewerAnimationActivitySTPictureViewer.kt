@@ -22,7 +22,7 @@ class STPictureViewerAnimationActivitySTPictureViewer : STPictureViewerAbstractP
         super.onCreate(savedInstanceState)
         findViewById<View>(R.id.play).setOnClickListener { play() }
         viewSTPictureViewer = findViewById(R.id.imageView)
-        viewSTPictureViewer!!.setImage(ImageSource.asset("sanmartino.jpg"))
+        viewSTPictureViewer!!.setImage(ImageSource.asset("st_picture_viewer_physical_political_world_map.jpg"))
     }
 
     override fun onPageChanged(page: Int) {

@@ -18,7 +18,7 @@ class STPictureViewerExtensionCircleFragment : Fragment() {
             rootView.findViewById<View>(R.id.previous).setOnClickListener { activity.previous() }
         }
         val imageView: SubsamplingScaleImageView = rootView.findViewById(R.id.imageView)
-        imageView.setImage(ImageSource.asset("sanmartino.jpg"))
+        imageView.setImage(ImageSource.asset("st_picture_viewer_sanmartino.jpg"))
         return rootView
     }
 }

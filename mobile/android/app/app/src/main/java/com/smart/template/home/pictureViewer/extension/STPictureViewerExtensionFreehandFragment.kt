@@ -17,7 +17,7 @@ class STPictureViewerExtensionFreehandFragment : Fragment() {
             rootView.findViewById<View>(R.id.previous).setOnClickListener { activity.previous() }
         }
         val imageView: STPictureViewerFreehandView = rootView.findViewById(R.id.imageView)
-        imageView.setImage(ImageSource.asset("sanmartino.jpg"))
+        imageView.setImage(ImageSource.asset("st_picture_viewer_swissroad.jpg"))
         rootView.findViewById<View>(R.id.reset).setOnClickListener { imageView.reset() }
         return rootView
     }

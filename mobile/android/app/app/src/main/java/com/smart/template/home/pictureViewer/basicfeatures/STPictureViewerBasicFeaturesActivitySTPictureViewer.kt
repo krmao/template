@@ -18,6 +18,6 @@ class STPictureViewerBasicFeaturesActivitySTPictureViewer : STPictureViewerAbstr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val view = findViewById<SubsamplingScaleImageView>(R.id.imageView)
-        view.setImage(ImageSource.asset("Physical_Political_World_Map.jpg"))
+        view.setImage(ImageSource.asset("st_picture_viewer_physical_political_world_map.jpg"))
     }
 }

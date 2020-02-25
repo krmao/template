@@ -55,6 +55,6 @@ class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(R.stri
     }
 
     companion object {
-        private val IMAGES = arrayOf("sanmartino.jpg", "swissroad.jpg")
+        private val IMAGES = arrayOf("st_picture_viewer_card.png", "st_picture_viewer_physical_political_world_map.jpg", "st_picture_viewer_sanmartino.jpg", "st_picture_viewer_swissroad.jpg")
     }
 }

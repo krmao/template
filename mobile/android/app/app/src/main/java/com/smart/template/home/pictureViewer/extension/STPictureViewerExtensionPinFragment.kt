@@ -18,7 +18,7 @@ class STPictureViewerExtensionPinFragment : Fragment() {
             rootView.findViewById<View>(R.id.next).setOnClickListener { activity.next() }
         }
         val imageViewSTPictureViewer: STPictureViewerPinView = rootView.findViewById(R.id.imageView)
-        imageViewSTPictureViewer.setImage(ImageSource.asset("sanmartino.jpg"))
+        imageViewSTPictureViewer.setImage(ImageSource.asset("st_picture_viewer_physical_political_world_map.jpg"))
         imageViewSTPictureViewer.setPin(PointF(1602f, 405f))
         return rootView
     }

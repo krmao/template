@@ -25,7 +25,7 @@ class STPictureViewerConfigurationActivitySTPictureViewer : STPictureViewerAbstr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         view = findViewById(R.id.imageView)
-        view?.setImage(ImageSource.asset("card.png"))
+        view?.setImage(ImageSource.asset("st_picture_viewer_card.png"))
     }
 
     override fun onPageChanged(page: Int) {

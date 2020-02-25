@@ -4,17 +4,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 
 import com.smart.template.R;
 
@@ -392,8 +393,7 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
                 setStateInternal(STATE_DRAGGING);
             }
         } else if (dy < 0) { // Downward
-            //noinspection deprecation
-            if (!ViewCompat.canScrollVertically(target, -1)) {
+            if (!target.canScrollVertically(-1)) {
                 if (newTop <= mMaxOffset || mHideable) {
                     // Restrict STATE_COLLAPSED if restrictedState is set
                     //noinspection PointlessBooleanExpression,ConstantConditions

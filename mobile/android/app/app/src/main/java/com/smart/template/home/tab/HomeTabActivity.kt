@@ -66,7 +66,7 @@ class HomeTabActivity : STBaseActivity() {
         STLogUtil.d("home", "activity: onSaveInstanceState")
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         STLogUtil.d("home", "activity: onRestoreInstanceState ${savedInstanceState?.getString("name")}")
     }
@@ -99,5 +99,6 @@ class HomeTabActivity : STBaseActivity() {
         RxBus.post(ConfigurationEvent(newConfig))
     }
 
+    @Suppress("unused")
     class ConfigurationEvent(val newConfig: Configuration?)
 }

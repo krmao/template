@@ -6,7 +6,10 @@ import android.util.AttributeSet
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.smart.template.R
 
-class STPictureViewerPinView @JvmOverloads constructor(context: Context?, attr: AttributeSet? = null) : SubsamplingScaleImageView(context, attr) {
+class STPictureViewerPinView @JvmOverloads constructor(
+    context: Context?,
+    attr: AttributeSet? = null
+) : SubsamplingScaleImageView(context, attr) {
     private val paint = Paint()
     private val vPin = PointF()
     private var sPin: PointF? = null
@@ -19,10 +22,13 @@ class STPictureViewerPinView @JvmOverloads constructor(context: Context?, attr: 
 
     private fun initialise() {
         val density = resources.displayMetrics.densityDpi.toFloat()
-        pin = BitmapFactory.decodeResource(this.resources, R.drawable.st_picture_viewer_pushpin_blue)
+        pin =
+            BitmapFactory.decodeResource(this.resources, R.drawable.st_picture_viewer_pushpin_blue)
         val w = density / 420f * (pin?.width ?: 1)
         val h = density / 420f * (pin?.height ?: 1)
-        pin = Bitmap.createScaledBitmap(pin, w.toInt(), h.toInt(), true)
+        pin?.let {
+            pin = Bitmap.createScaledBitmap(it, w.toInt(), h.toInt(), true)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -36,7 +42,9 @@ class STPictureViewerPinView @JvmOverloads constructor(context: Context?, attr: 
             sourceToViewCoord(sPin, vPin)
             val vX = vPin.x - pin!!.width / 2
             val vY = vPin.y - pin!!.height
-            canvas.drawBitmap(pin, vX, vY, paint)
+            pin?.let {
+                canvas.drawBitmap(it, vX, vY, paint)
+            }
         }
     }
 

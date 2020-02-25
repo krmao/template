@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.smart.library.base.STBaseActivity
+import com.smart.library.util.STCppTestUtil
+import com.smart.library.util.STToastUtil
 import com.smart.template.R
 import com.smart.template.home.pictureViewer.animation.STPictureViewerAnimationActivitySTPictureViewer
 import com.smart.template.home.pictureViewer.basicfeatures.STPictureViewerBasicFeaturesActivitySTPictureViewer
@@ -14,6 +16,7 @@ import com.smart.template.home.pictureViewer.eventhandlingadvanced.STPictureView
 import com.smart.template.home.pictureViewer.extension.STPictureViewerExtensionActivity
 import com.smart.template.home.pictureViewer.imagedisplay.STPictureViewerImageDisplayActivitySTPictureViewer
 import com.smart.template.home.pictureViewer.viewpager.STPictureViewerPagerActivity
+import kotlinx.android.synthetic.main.st_picture_viewer_examples_activity.*
 
 class STPictureViewerExamplesActivity : STBaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +30,10 @@ class STPictureViewerExamplesActivity : STBaseActivity(), View.OnClickListener {
         findViewById<View>(R.id.animation).setOnClickListener(this)
         findViewById<View>(R.id.extension).setOnClickListener(this)
         findViewById<View>(R.id.configuration).setOnClickListener(this)
+
+        cppTest.setOnClickListener {
+            STToastUtil.show("cpp:${STCppTestUtil.stringFromJNI()}")
+        }
     }
 
     override fun onClick(view: View) {
@@ -34,7 +41,9 @@ class STPictureViewerExamplesActivity : STBaseActivity(), View.OnClickListener {
             R.id.basicFeatures -> startActivity(STPictureViewerBasicFeaturesActivitySTPictureViewer::class.java)
             R.id.imageDisplay -> startActivity(STPictureViewerImageDisplayActivitySTPictureViewer::class.java)
             R.id.eventHandling -> startActivity(STPictureViewerEventHandlingActivitySTPictureViewer::class.java)
-            R.id.advancedEventHandling -> startActivity(STPictureViewerAdvancedEventHandlingActivitySTPictureViewer::class.java)
+            R.id.advancedEventHandling -> startActivity(
+                STPictureViewerAdvancedEventHandlingActivitySTPictureViewer::class.java
+            )
             R.id.viewPagerGalleries -> startActivity(STPictureViewerPagerActivity::class.java)
             R.id.animation -> startActivity(STPictureViewerAnimationActivitySTPictureViewer::class.java)
             R.id.extension -> startActivity(STPictureViewerExtensionActivity::class.java)

@@ -242,4 +242,5 @@
     <string name="configuration.p10.text">
         Debug has been enabled. This shows the tile boundaries and sizes.
     </string>
+    <string name="st_picture_viewer_cpp">click to load cpp so string</string>
 </resources>

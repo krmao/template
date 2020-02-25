@@ -19,7 +19,7 @@ buildscript {
 
     dependencies {
         //classpath "com.meituan.android.walle:plugin:$walleVersion"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
+        //classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         classpath 'com.android.tools.build:gradle:3.6.0'
@@ -97,9 +97,9 @@ ext {
     // 设置为 27 会有Bug https://stackoverflow.com/questions/46980697/lock-screen-orientation-when-targeting-android-api-27-with-a-non-opaque-activity
     // https://dl.google.com/dl/android/maven2/index.html
     // https://developer.android.google.cn/studio/releases/gradle-plugin#updating-plugin
-    targetSdkVersion = 28
-    compileSdkVersion = 28
-    buildToolsVersion = "28.0.3" //"28.0.3"
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.3" //"28.0.3"
 
     // App dependencies
     supportLibraryVersion = "28.0.0" // "28.0.0"
@@ -107,6 +107,7 @@ ext {
 
     // AndroidX
     androidXVersion = "1.0.0"
+    androidXCoreVersion = "1.2.0"
     androidXMultidexVersion = "2.0.1"
     androidXAnnotationVersion = "1.1.0"
     androidXAppCompatVersion = "1.1.0"

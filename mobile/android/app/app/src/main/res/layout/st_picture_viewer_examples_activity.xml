@@ -70,6 +70,12 @@
                 android:text="@string/configuration.link" />
 
             <View style="@style/indexDivider" />
+            <TextView
+                android:id="@+id/cppTest"
+                style="@style/indexLink"
+                android:text="@string/st_picture_viewer_cpp" />
+
+            <View style="@style/indexDivider" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

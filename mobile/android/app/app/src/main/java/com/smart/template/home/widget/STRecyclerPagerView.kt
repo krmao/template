@@ -118,7 +118,7 @@ class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: Att
             getRecyclerViews().forEach {
                 // reset item decoration
                 if (recyclerViewOrientation == LinearLayoutManager.VERTICAL) {
-                    it.getItemDecorationAt(0)?.apply {
+                    it.getItemDecorationAt(0).apply {
                         it.removeItemDecoration(this)
                     }
                 } else {

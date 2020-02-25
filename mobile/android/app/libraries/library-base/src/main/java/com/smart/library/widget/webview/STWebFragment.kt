@@ -25,7 +25,13 @@ open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListene
         fun goTo(activity: Activity?, url: String?) = goTo(activity, url, false, false, false)
 
         @JvmStatic
-        fun goTo(activity: Activity?, url: String?, hideTitleBar: Boolean, hideBackAtFirstPage: Boolean, fullScreenAndBehindStatusBar: Boolean) {
+        fun goTo(
+            activity: Activity?,
+            url: String?,
+            hideTitleBar: Boolean,
+            hideBackAtFirstPage: Boolean,
+            fullScreenAndBehindStatusBar: Boolean
+        ) {
             val bundle = Bundle()
             bundle.putString("url", url)
             bundle.putBoolean("hideTitleBar", hideTitleBar)
@@ -53,7 +59,11 @@ open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListene
     }
     private val webView: STWebView by lazy { web_view }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.st_fragment_webview, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.st_fragment_webview, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //在状态栏的下面还是后面
@@ -101,7 +111,7 @@ open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListene
             }
         }
 
-        webView.webChromeClient = object : STWebChromeClient() {
+        webView.setWebChromeClient(object : STWebChromeClient() {
             override fun onProgressChanged(_view: WebView, newProgress: Int) {
                 if (hideTitleBar) {
                     title_bar?.progressBar?.progress = newProgress
@@ -122,7 +132,7 @@ open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListene
                     title_bar?.titleText?.text = title
                 }
             }
-        }
+        })
 
         webView.loadURL(url)
     }

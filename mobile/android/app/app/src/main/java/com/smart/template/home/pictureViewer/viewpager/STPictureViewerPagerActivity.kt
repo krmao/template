@@ -1,5 +1,6 @@
 package com.smart.template.home.pictureViewer.viewpager
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,10 +12,12 @@ import com.smart.template.home.pictureViewer.STPictureViewerAbstractPagesActivit
 import com.smart.template.home.pictureViewer.STPictureViewerPageModel
 import java.util.*
 
-class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(R.string.pager_title, R.layout.st_picture_viewer_view_pager, Arrays.asList(
+class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(
+    R.string.pager_title, R.layout.st_picture_viewer_view_pager, Arrays.asList(
         STPictureViewerPageModel(R.string.pager_p1_subtitle, R.string.pager_p1_text),
         STPictureViewerPageModel(R.string.pager_p2_subtitle, R.string.pager_p2_text)
-)) {
+    )
+) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val horizontalPager = findViewById<ViewPager>(R.id.horizontal_pager)
@@ -24,7 +27,8 @@ class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(R.stri
     }
 
     override fun onBackPressed() {
-        val viewPager = findViewById<ViewPager>(if (page == 0) R.id.horizontal_pager else R.id.vertical_pager)
+        val viewPager =
+            findViewById<ViewPager>(if (page == 0) R.id.horizontal_pager else R.id.vertical_pager)
         if (viewPager.currentItem == 0) {
             super.onBackPressed()
         } else {
@@ -42,7 +46,9 @@ class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(R.stri
         }
     }
 
-    private inner class ScreenSlidePagerAdapter internal constructor(fm: FragmentManager?) : FragmentStatePagerAdapter(fm!!) {
+    @SuppressLint("WrongConstant")
+    private inner class ScreenSlidePagerAdapter internal constructor(fm: FragmentManager) :
+        FragmentStatePagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             val fragment = STPictureViewerPagerFragment()
             fragment.setAsset(IMAGES[position])
@@ -55,6 +61,11 @@ class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(R.stri
     }
 
     companion object {
-        private val IMAGES = arrayOf("st_picture_viewer_card.png", "st_picture_viewer_physical_political_world_map.jpg", "st_picture_viewer_sanmartino.jpg", "st_picture_viewer_swissroad.jpg")
+        private val IMAGES = arrayOf(
+            "st_picture_viewer_card.png",
+            "st_picture_viewer_physical_political_world_map.jpg",
+            "st_picture_viewer_sanmartino.jpg",
+            "st_picture_viewer_swissroad.jpg"
+        )
     }
 }

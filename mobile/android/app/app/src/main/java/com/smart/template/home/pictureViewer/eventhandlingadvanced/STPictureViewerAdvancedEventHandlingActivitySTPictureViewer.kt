@@ -53,6 +53,6 @@ class STPictureViewerAdvancedEventHandlingActivitySTPictureViewer : STPictureVie
             }
         })
         imageView.setImage(ImageSource.asset("st_picture_viewer_sanmartino.jpg"))
-        imageView.setOnTouchListener { view, motionEvent -> gestureDetector.onTouchEvent(motionEvent) }
+        imageView.setOnTouchListener { _, motionEvent -> gestureDetector.onTouchEvent(motionEvent) }
     }
 }

@@ -74,6 +74,10 @@
                 android:id="@+id/cppTest"
                 style="@style/indexLink"
                 android:text="@string/st_picture_viewer_cpp" />
+            <TextView
+                android:id="@+id/cppTest2"
+                style="@style/indexLink"
+                android:text="@string/st_picture_viewer_cpp_2" />
 
             <View style="@style/indexDivider" />
         </LinearLayout>

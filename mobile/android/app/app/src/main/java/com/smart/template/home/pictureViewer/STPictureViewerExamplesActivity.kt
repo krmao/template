@@ -32,7 +32,10 @@ class STPictureViewerExamplesActivity : STBaseActivity(), View.OnClickListener {
         findViewById<View>(R.id.configuration).setOnClickListener(this)
 
         cppTest.setOnClickListener {
-            STToastUtil.show("cpp:${STCppTestUtil.stringFromJNI()}")
+            STToastUtil.show("cpp:${STCppTestUtil.stringFromJNI1()}")
+        }
+        cppTest2.setOnClickListener {
+            STToastUtil.show("cpp:${STCppTestUtil.stringFromJNI2()}")
         }
     }
 

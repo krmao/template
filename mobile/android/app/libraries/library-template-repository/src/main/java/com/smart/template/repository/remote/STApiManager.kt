@@ -1,16 +1,17 @@
 package com.smart.template.repository.remote
 
-import com.smart.library.util.okhttp.STOkHttpManager
-import com.smart.template.repository.remote.model.STResponseModel
-import com.smart.template.repository.remote.exception.STRetrofitException
-import com.smart.template.repository.remote.exception.STRetrofitServerException
+import android.annotation.SuppressLint
 import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheFileManager
+import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.util.rx.RxBus
 import com.smart.library.widget.debug.STDebugFragment
+import com.smart.template.repository.remote.exception.STRetrofitException
+import com.smart.template.repository.remote.exception.STRetrofitServerException
+import com.smart.template.repository.remote.model.STResponseModel
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,25 +29,31 @@ import java.io.Serializable
 @Suppress("UNCHECKED_CAST", "unused")
 internal object STApiManager {
 
+    @SuppressLint("CheckResult")
     @JvmStatic
     fun init() {
         if (STBaseApplication.DEBUG) {
             STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
-                STDebugFragment.addHost(environment.name, environment.map[STURLManager.KEY_HOST]
-                    ?: "", STURLManager.curEnvironment == environment)
+                STDebugFragment.addHost(
+                    environment.name, environment.map[STURLManager.KEY_HOST]
+                        ?: "", STURLManager.curEnvironment == environment
+                )
             }
-            RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java).subscribe { changeEvent ->
-                STURLManager.curEnvironment = STURLManager.Environments.valueOf(changeEvent.hostModel.label)
-                STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
-            }
+            RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java)
+                .subscribe { changeEvent ->
+                    STURLManager.curEnvironment =
+                        STURLManager.Environments.valueOf(changeEvent.hostModel.label)
+                    STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
+                }
 
             STDebugFragment.showDebugNotification()
-            RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
-                if (changeEvent.isApplicationVisible)
-                    STDebugFragment.showDebugNotification()
-                else
-                    STDebugFragment.cancelDebugNotification()
-            }
+            RxBus.toObservable(STApplicationVisibleChangedEvent::class.java)
+                .subscribe { changeEvent ->
+                    if (changeEvent.isApplicationVisible)
+                        STDebugFragment.showDebugNotification()
+                    else
+                        STDebugFragment.cancelDebugNotification()
+                }
         }
     }
 
@@ -57,8 +64,10 @@ internal object STApiManager {
                     if (responseModel != null && responseModel.errorCode == 0 && responseModel.result != null) {
                         responseModel.result!!
                     } else {
-                        throw STRetrofitServerException(responseModel?.errorCode
-                            ?: -1, responseModel?.errorMessage ?: "网络不给力")
+                        throw STRetrofitServerException(
+                            responseModel?.errorCode
+                                ?: -1, responseModel?.errorMessage ?: "网络不给力"
+                        )
                     }
                 }
                 .onErrorResumeNext { throwable: Throwable ->
@@ -120,7 +129,13 @@ internal object STApiManager {
                 .map { response: Response<ResponseBody> ->
                     printHeaders(response.headers())
                     if (response.body() == null)
-                        Observable.error<InputStream>(STRetrofitException.handleException(Exception("文件下载失败")))
+                        Observable.error<InputStream>(
+                            STRetrofitException.handleException(
+                                Exception(
+                                    "文件下载失败"
+                                )
+                            )
+                        )
                     response.body()!!.byteStream()
                 }
                 .onErrorResumeNext { throwable: Throwable ->
@@ -132,8 +147,9 @@ internal object STApiManager {
         }
     }
 
-    fun printHeaders(headers: Headers) {
-        STLogUtil.w("""
+    private fun printHeaders(headers: Headers) {
+        STLogUtil.w(
+            """
                             -----------
                             Content-Type        :   ${headers.get("Content-Type")}
                             ETag                :   ${headers.get("ETag")?.toLongOrNull()}
@@ -141,12 +157,17 @@ internal object STApiManager {
                             Date                :   ${headers.getDate("Date")}
                             Expires             :   ${headers.getDate("Expires")}
                             Cache-Control       :   ${headers.get("Cache-Control")}
-                            max-age             :   ${headers.get("Cache-Control")?.split("=")?.getOrNull(1)}
+                            max-age             :   ${headers.get("Cache-Control")?.split("=")?.getOrNull(
+                1
+            )}
                             Content-Disposition :   ${headers.get("Content-Disposition")}
-                            filename            :   ${headers.get("Content-Disposition")?.split("=")?.getOrNull(1)
-            ?: "temp_file"})
+                            filename            :   ${headers.get("Content-Disposition")?.split("=")?.getOrNull(
+                1
+            )
+                ?: "temp_file"})
                             -----------
-                        """)
+                        """
+        )
     }
 
     /**
@@ -170,7 +191,8 @@ internal object STApiManager {
                     emitter.onNext(data)
 
                     // 3.拉取数据成功, 缓存数据到本体
-                    STCacheFileManager.get(STBaseApplication.INSTANCE).put(key, data as Serializable)
+                    STCacheFileManager.get(STBaseApplication.INSTANCE)
+                        .put(key, data as Serializable)
 
                 }, { error ->
                     emitter.onError(error)
@@ -185,7 +207,7 @@ internal object STApiManager {
         }
     }
 
-    private val builder: Retrofit.Builder  by lazy {
+    private val builder: Retrofit.Builder by lazy {
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

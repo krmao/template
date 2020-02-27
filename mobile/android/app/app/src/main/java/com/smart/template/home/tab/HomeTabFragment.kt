@@ -19,7 +19,7 @@ class HomeTabFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content_vp.offscreenPageLimit = 5
-        content_vp.adapter = STFragmentPagerAdapter(context, childFragmentManager,
+        content_vp.adapter = STFragmentPagerAdapter(childFragmentManager,
             listOf(
                     HomeFragment(),
                     ReactNativeFragment(),

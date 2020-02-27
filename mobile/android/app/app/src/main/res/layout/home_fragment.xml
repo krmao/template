@@ -52,7 +52,18 @@
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="ijk mp4" />
+                        android:text="ANDROID IJK PLAY MP4" />
+
+                    <Button
+                        android:id="@+id/playVideoNormal"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="AndroidVideoView Play MP4"
+                        app:backgroundTint="@color/blue_600" />
+                </TableRow>
+
+                <TableRow>
 
                     <Button
                         android:id="@+id/ijkPullRtmp"
@@ -68,6 +79,17 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="ijk settings"
+                        app:backgroundTint="@color/blue_600" />
+                </TableRow>
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/videoPager"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="video pager list"
                         app:backgroundTint="@color/blue_600" />
                 </TableRow>
 
@@ -112,14 +134,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="滑动下一页"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/playVideoNormal"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="play video normal"
                         app:backgroundTint="@color/blue_600" />
 
                 </TableRow>

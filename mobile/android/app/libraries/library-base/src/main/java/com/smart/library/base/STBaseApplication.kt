@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.util.compat.STIMMLeaksUtil
 import com.smart.library.util.network.STNetworkChangedReceiver
 import com.smart.library.util.rx.RxBus
 
@@ -72,7 +71,7 @@ open class STBaseApplication : Application() {
             override fun onActivityStarted(activity: Activity) {
                 super.onActivityStarted(activity)
                 // https://gist.github.com/pyricau/4df64341cc978a7de414 # Use onActivityStarted(Activity) instead of onActivityCreated(Activity, Bundle)
-                STIMMLeaksUtil.fixFocusedViewLeak(activity)
+                // STIMMLeaksUtil.fixFocusedViewLeak(activity)
             }
         })
 

@@ -81,6 +81,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
+            android:name="com.smart.template.home.videoplayer.STVideoPagerActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name="com.smart.template.home.pictureViewer.STPictureViewerExamplesActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"

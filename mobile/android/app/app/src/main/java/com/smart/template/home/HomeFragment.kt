@@ -17,6 +17,7 @@ import com.smart.template.home.test.PullToNextPageFragment
 import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
 import com.smart.template.home.test.RecyclerViewSnapTopFragment
 import com.smart.template.home.test.VideoPlayerFragment
+import com.smart.template.home.videoplayer.STVideoPagerActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : STBaseFragment() {
@@ -28,6 +29,9 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        videoPager.setOnClickListener {
+            startActivity(Intent(context, STVideoPagerActivity::class.java))
+        }
         bottomSheet.setOnClickListener {
             startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))
         }

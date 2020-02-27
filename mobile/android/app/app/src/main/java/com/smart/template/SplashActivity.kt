@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.util.STEventManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
-import com.smart.template.home.pictureViewer.STPictureViewerExamplesActivity
+import com.smart.template.home.tab.HomeTabActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -20,9 +20,11 @@ class SplashActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         if (Build.VERSION.SDK_INT >= 28) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             val layoutParams: WindowManager.LayoutParams = window.attributes
-            layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            layoutParams.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.attributes = layoutParams
         }
 
@@ -54,7 +56,10 @@ class SplashActivity : AppCompatActivity() {
         }
 
         FinalApplicationInitManager.initialize { key: String, success: Boolean ->
-            STLogUtil.w("FinalApplicationInitManager", "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}")
+            STLogUtil.w(
+                "FinalApplicationInitManager",
+                "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}"
+            )
 
             /*if (!isFinishing && key == "reactnative" && success) {
 
@@ -82,6 +87,8 @@ class SplashActivity : AppCompatActivity() {
 
         // test
         // startActivity(Intent(this, STLocalPicturesActivity::class.java))
-        startActivity(Intent(this, STPictureViewerExamplesActivity::class.java))
+        // startActivity(Intent(this, STPictureViewerExamplesActivity::class.java))
+        startActivity(Intent(this, HomeTabActivity::class.java))
+        finish()
     }
 }

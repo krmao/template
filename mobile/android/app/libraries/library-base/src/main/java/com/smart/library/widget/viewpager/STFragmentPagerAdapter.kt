@@ -1,9 +1,8 @@
 package com.smart.library.widget.viewpager
 
-import android.content.Context
-import  androidx.fragment.app.Fragment
-import  androidx.fragment.app.FragmentManager
-import  androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
 /**
  * 适用于少量fragment的场景(例如 tab),fragment不会被销毁
@@ -17,7 +16,7 @@ import  androidx.fragment.app.FragmentPagerAdapter
  * {@link FragmentStatePagerAdapter}.
  */
 @Suppress("unused")
-class STFragmentPagerAdapter(var context: Context?, fragmentManager: FragmentManager, var dataList: List<Fragment>) : FragmentPagerAdapter(fragmentManager) {
+class STFragmentPagerAdapter(fragmentManager: FragmentManager, var dataList: List<Fragment>) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]
 

@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+        }
+    }
+}
+
+dependencies {
+    api("org.permissionsdispatcher:permissionsdispatcher:4.3.0") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
+    kapt "com.jakewharton:butterknife-compiler:10.1.0"
+    kapt "com.github.bumptech.glide:compiler:4.9.0"
+
+    api project(':library-videoplayer')
+
+    //noinspection AnnotationProcessorOnCompilePath
+    api "com.jakewharton:butterknife:10.1.0"
+
+    api "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
+
+    api "com.github.ctiao:DanmakuFlameMaster:0.9.25"
+    api "com.github.ctiao:ndkbitmap-armv7a:0.9.21"
+    api "com.github.ctiao:ndkbitmap-armv5:0.9.21"
+    api "com.github.ctiao:ndkbitmap-x86:0.9.21"
+
+    api "com.github.bumptech.glide:glide:4.9.0"
+
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.ext.androidXLifecycleVersion"
+    api "androidx.lifecycle:lifecycle-runtime:$rootProject.ext.androidXLifecycleVersion"
+
+    api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
+    api "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"
+
+    //noinspection GradleDependency
+    api "com.squareup.okhttp3:okhttp:3.2.0"
+    api "com.zhy:okhttputils:2.6.2"
+}

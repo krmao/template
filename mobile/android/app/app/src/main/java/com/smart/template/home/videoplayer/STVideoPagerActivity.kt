@@ -11,6 +11,7 @@ import com.shuyu.gsyvideoplayer.cache.CacheFactory
 import com.shuyu.gsyvideoplayer.cache.ProxyCacheManager
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.smart.library.base.STBaseActivity
+import com.smart.library.util.STLogUtil
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.library.widget.recyclerview.snap.STSnapGravityPagerHelper
 import com.smart.library.widget.recyclerview.snap.STSnapHelper
@@ -30,8 +31,6 @@ open class STVideoPagerActivity : STBaseActivity() {
 
         CacheFactory.setCacheManager(ProxyCacheManager::class.java) //代理缓存模式，支持所有模式，不支持m3u8等
 
-        verticalViewPager.isVerticalFadingEdgeEnabled = true
-        verticalViewPager.offscreenPageLimit = 5
         /*verticalViewPager.adapter = STFragmentPagerAdapter(
             supportFragmentManager, arrayListOf(
                 STVideoPlayerFragment(),
@@ -48,28 +47,33 @@ open class STVideoPagerActivity : STBaseActivity() {
         )*/
 
         verticalRecyclerView.layoutManager = LinearLayoutManager(this)
-
-        STSnapGravityPagerHelper(false, STSnapHelper.Snap.CENTER) { position: Int ->
-            val viewHolder = verticalRecyclerView.findViewHolderForAdapterPosition(position)
-            val view: View? = viewHolder?.itemView
-
-            var videoPlayer: StandardGSYVideoPlayer? = view?.tag as? StandardGSYVideoPlayer
-
-
-        }.attachToRecyclerView(verticalRecyclerView)
-
         verticalRecyclerView.addOnChildAttachStateChangeListener(object :
             RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewDetachedFromWindow(view: View) {
-//                val position = verticalRecyclerView.getChildAdapterPosition(view)
-//                val videoPlayer: StandardGSYVideoPlayer? = view.tag as? StandardGSYVideoPlayer
-//                videoPlayer?.release()
+                // 在 detached 里面销毁
+                val position = verticalRecyclerView.getChildAdapterPosition(view)
+                val videoPlayer: StandardGSYVideoPlayer? = view.tag as? StandardGSYVideoPlayer
+                videoPlayer?.gsyVideoManager?.releaseMediaPlayer()
                 view.tag = null
+                STLogUtil.w("smartvideo", "onChildViewDetachedFromWindow position=$position")
             }
 
             override fun onChildViewAttachedToWindow(view: View) {
-                if (view.tag == null) {
-                    val videoPlayer: StandardGSYVideoPlayer = view.findViewById(R.id.videoPlayer)
+                // 在 attached 里面不做操作
+                val position = verticalRecyclerView.getChildAdapterPosition(view)
+                STLogUtil.w("smartvideo", "onChildViewAttachedToWindow position=$position")
+            }
+        })
+
+        val snapHelper: STSnapGravityPagerHelper = STSnapGravityPagerHelper(false, STSnapHelper.Snap.CENTER) { position: Int ->
+            val viewHolder = verticalRecyclerView.findViewHolderForAdapterPosition(position)
+            if (viewHolder != null) {
+                val view: View = viewHolder.itemView
+
+                var videoPlayer: StandardGSYVideoPlayer? = view.tag as? StandardGSYVideoPlayer
+
+                if (videoPlayer == null) {
+                    videoPlayer = view.findViewById(R.id.videoPlayer)
 
                     videoPlayer.setUpLazy(videoUrl, true, null, null, "这是title");
                     videoPlayer.titleTextView?.visibility = View.GONE;
@@ -79,19 +83,29 @@ open class STVideoPagerActivity : STBaseActivity() {
                             view.context,
                             false,
                             true
-                        );
-                    };
-                    videoPlayer.isAutoFullWithSize = true;
-                    videoPlayer.isReleaseWhenLossAudio = false;
-                    videoPlayer.isShowFullAnimation = true;
-                    videoPlayer.setIsTouchWiget(false);
+                        )
+                    }
+                    videoPlayer.isAutoFullWithSize = false
+                    videoPlayer.isReleaseWhenLossAudio = false
+                    videoPlayer.isShowFullAnimation = false
+                    videoPlayer.setIsTouchWiget(false)
                     videoPlayer.startButton?.performClick()
+
                     view.tag = videoPlayer
+
+                    STLogUtil.d("smartvideo", "onSnapped init and start videoplayer position:$position")
                 } else {
-                    (view.tag as? StandardGSYVideoPlayer)?.onVideoResume()
+                    videoPlayer.onVideoResume()
+                    STLogUtil.w("smartvideo", "onSnapped onVideoResume position:$position")
                 }
+            } else {
+                STLogUtil.e("smartvideo", "onSnapped viewHolder==null position:$position")
             }
-        })
+
+
+        }
+
+        snapHelper.attachToRecyclerView(verticalRecyclerView)
 
         verticalRecyclerView.adapter = object :
             STRecyclerViewAdapter<Any, STRecyclerViewAdapter.ViewHolder>(
@@ -111,8 +125,16 @@ open class STVideoPagerActivity : STBaseActivity() {
             override fun onBindViewHolder(viewHolder: ViewHolder, p1: Int) {
                 val view: View = viewHolder.itemView
                 val videoPlayer: StandardGSYVideoPlayer = view.findViewById(R.id.videoPlayer)
+                videoPlayer.hideSmallVideo()
+                videoPlayer.dismissControlTime = Int.MAX_VALUE
+                videoPlayer.fullscreenButton.visibility = View.GONE
+                videoPlayer.setThumbPlay(true)
+                videoPlayer.backButton.visibility = View.GONE
+                videoPlayer.startButton.visibility = View.GONE
             }
         }
+
+        snapHelper.scrollToPositionWithOnSnap(0)
     }
 
     override fun onBackPressed() {

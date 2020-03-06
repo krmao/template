@@ -252,8 +252,6 @@ dependencies {
         implementation 'org.webkit:android-jsc:+'
     }
 
-    implementation 'com.shuyu:GSYVideoPlayer:7.1.2'
-
     api project(':library-template-base')
     api project(':library-template-repository')
 
@@ -276,6 +274,12 @@ dependencies {
 
     if (gradle.ext.modules.reactNative.enable == true) {
         api project(':library-reactnative')
+    }
+
+    if (gradle.ext.modules.videoplayer.enable == true) {
+        api project(':library-videoplayer-samples')
+    } else {
+        api project(':library-videoplayer')
     }
 
     api project(':module-template-mine')

@@ -35,6 +35,27 @@ if (gradle.ext.modules.reactNative.enable == true) {
     include(":react-native-reanimated"); project(':react-native-reanimated').projectDir = new File(nodeModulesDir, 'react-native-reanimated/android')
     include(":react-native-vector-icons"); project(':react-native-vector-icons').projectDir = new File(nodeModulesDir, 'react-native-vector-icons/android')
 }
+if (gradle.ext.modules.videoplayer.enable == true) {
+    def videoPlayerDir = new File(settingsDir, "app/libraries/library-videoplayer")
+    def videoPlayerLibsJavaDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-java")
+    def videoPlayerLibsJniDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni")
+    def videoPlayerLibsJniAllDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni-all")
+
+    include(":library-videoplayer-samples"); project(':library-videoplayer-samples').projectDir = new File(videoPlayerDir, 'library-videoplayer-samples')
+    include(":library-videoplayer"); project(':library-videoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer')
+    include(":library-videoplayer-exoplayer"); project(':library-videoplayer-exoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer-exoplayer')
+
+    include(":library-videoplayer-libs-armv5"); project(':library-videoplayer-libs-armv5').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv5')
+    include(":library-videoplayer-libs-armv7a"); project(':library-videoplayer-libs-armv7a').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv7a')
+    include(":library-videoplayer-libs-armv64"); project(':library-videoplayer-libs-armv64').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv64')
+    include(":library-videoplayer-libs-x86"); project(':library-videoplayer-libs-x86').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-x86')
+    include(":library-videoplayer-libs-x86_64"); project(':library-videoplayer-libs-x86_64').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-x86_64')
+    include(":library-videoplayer-libs-all-extra"); project(':library-videoplayer-libs-all-extra').projectDir = new File(videoPlayerLibsJniAllDir, 'library-videoplayer-libs-all-extra')
+
+    include(":library-videoplayer-libs-java"); project(':library-videoplayer-libs-java').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-java')
+    include(":library-videoplayer-libs-java-base"); project(':library-videoplayer-libs-java-base').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-java-base')
+    include(":library-videoplayer-libs-cache"); project(':library-videoplayer-libs-cache').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-cache')
+}
 
 include(":library-template-base"); project(":library-template-base").projectDir = new File(settingsDir, "app/libraries/library-template-base")
 include(":library-template-repository"); project(":library-template-repository").projectDir = new File(settingsDir, "app/libraries/library-template-repository")

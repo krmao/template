@@ -19,6 +19,9 @@ gradle.ext {
                     'gaodeKey'      : 'f0117d654e20c9b29aad6431f69103c3',
                     'googleKey'     : ''
             ],
+            'videoplayer'          : [
+                    'enable'        : true
+            ],
     ]
 
     versions = [

@@ -40,6 +40,11 @@ class HomeFragment : STBaseFragment() {
                 STLogUtil.w("home", it.toString())
             }
         }
+        videoPlayerExamples.setOnClickListener {
+            STRouteManager.goToActivity(activity, "com.example.gsyvideoplayer.VideoPlayerExamplesActivity") {
+                STLogUtil.w("videoplayer", it.toString())
+            }
+        }
         gaodeMap.setOnClickListener {
             STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment") {
                 STLogUtil.w("home", it.toString())

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smart.library.pictureviewer">
+
+    <application>
+        <activity
+            android:name="com.smart.library.pictureviewer.localpictures.STLocalPicturesActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.smart.library.pictureviewer.STPictureViewerExamplesActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.smart.library.pictureviewer.basicfeatures.STPictureViewerBasicFeaturesActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.imagedisplay.STPictureViewerImageDisplayActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.eventhandling.STPictureViewerEventHandlingActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.eventhandlingadvanced.STPictureViewerAdvancedEventHandlingActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.viewpager.STPictureViewerPagerActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.animation.STPictureViewerAnimationActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.extension.STPictureViewerExtensionActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.library.pictureviewer.configuration.STPictureViewerConfigurationActivitySTPictureViewer"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+    </application>
+</manifest>

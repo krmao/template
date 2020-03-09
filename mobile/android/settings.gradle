@@ -20,6 +20,10 @@ if (gradle.ext.modules.flutter.enable == true) {
     include(":library-flutter"); project(":library-flutter").projectDir = new File(settingsDir, "app/libraries/library-flutter")
 }
 
+if (gradle.ext.modules.pictureviewer.enable == true) {
+    include(":library-pictureviewer"); project(":library-pictureviewer").projectDir = new File(settingsDir, "app/libraries/library-pictureviewer")
+}
+
 if (gradle.ext.modules.liveStreaming.enable == true) {
     include(":library-livestreaming"); project(":library-livestreaming").projectDir = new File(settingsDir, "app/libraries/library-livestreaming")
     include(":library-livestreaming-push"); project(":library-livestreaming-push").projectDir = new File(settingsDir, "app/libraries/library-livestreaming-push")

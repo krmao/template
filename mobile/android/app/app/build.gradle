@@ -41,7 +41,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a' //, 'armeabi', 'x86', 'x86_64'
+            abiFilters 'armeabi-v7a' //, 'arm64-v8a', 'armeabi', 'x86', 'x86_64'
         }
 
         println "\ndebug=${rootProject.ext.debug}, \n" +
@@ -262,6 +262,9 @@ dependencies {
 
     if (gradle.ext.modules.flutter.enable == true) {
         api project(':library-flutter')
+    }
+    if (gradle.ext.modules.pictureviewer.enable == true) {
+        api project(':library-pictureviewer')
     }
 
     if (gradle.ext.modules.hybird.enable == true) {

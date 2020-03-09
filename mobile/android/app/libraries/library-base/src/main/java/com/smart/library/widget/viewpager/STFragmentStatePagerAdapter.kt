@@ -17,7 +17,7 @@ import java.util.*
  * {@link FragmentPagerAdapter} at the cost of potentially more overhead when
  * switching between pages.
  */
-@Suppress("unused")
+@Suppress("unused", "DEPRECATION")
 class STFragmentStatePagerAdapter(var context: Context, fragmentManager: FragmentManager, var dataList: ArrayList<Fragment>) : FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

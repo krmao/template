@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.smart.library.util.network
 
 import android.annotation.SuppressLint
@@ -24,10 +26,10 @@ object STNetworkUtil {
             get() = this == G2 || this == G3 || this == G4
 
         override fun toString(): String {
-            if (isMobile) {
-                return if (TextUtils.isEmpty(provider)) "" else provider + ":" + super.toString()
+            return if (isMobile) {
+                if (TextUtils.isEmpty(provider)) "" else provider + ":" + super.toString()
             } else
-                return super.toString()
+                super.toString()
         }
     }
 
@@ -44,7 +46,7 @@ object STNetworkUtil {
             for (networkInterface in Collections.list(NetworkInterface.getNetworkInterfaces())) {
                 for (address in Collections.list(networkInterface.inetAddresses)) {
                     if (!address.isLoopbackAddress) {
-                        val hostAddress = address.hostAddress?.toUpperCase()
+                        val hostAddress = address.hostAddress?.toUpperCase(Locale.getDefault())
                         val isIPv4 = address is Inet4Address
                         if (useIPv4) {
                             if (isIPv4) return hostAddress
@@ -104,10 +106,10 @@ object STNetworkUtil {
 
     private fun getSwitchedType(type: Int): Int {
         @Suppress("DEPRECATION")
-        when (type) {
-            ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI, ConnectivityManager.TYPE_MOBILE_MMS, ConnectivityManager.TYPE_MOBILE_SUPL -> return ConnectivityManager.TYPE_MOBILE
-            else -> return type
-        }
+        (return when (type) {
+            ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI, ConnectivityManager.TYPE_MOBILE_MMS, ConnectivityManager.TYPE_MOBILE_SUPL -> ConnectivityManager.TYPE_MOBILE
+            else -> type
+        })
     }
 
     private fun getNetworkProvider(subscriberId: String?): String {

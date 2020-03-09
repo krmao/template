@@ -35,9 +35,9 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
-@SuppressWarnings({"ALL", "StringConcatenationInLoop"})
+@SuppressWarnings("unused")
 public class STCacheFileManager {
-    public static final int TIME_HOUR = 60 * 60;
+    private static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
@@ -47,7 +47,7 @@ public class STCacheFileManager {
     private STCacheFileManager(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in "
-                + cacheDir.getAbsolutePath());
+                    + cacheDir.getAbsolutePath());
         }
         mCache = new ACacheManager(cacheDir, max_size, max_count);
     }
@@ -134,9 +134,9 @@ public class STCacheFileManager {
     /**
      * 读取 String数据
      *
-     * @param key
      * @return String 数据
      */
+    @SuppressWarnings("WeakerAccess")
     public String getAsString(String key) {
         File file = mCache.get(key);
         if (!file.exists())
@@ -145,13 +145,13 @@ public class STCacheFileManager {
         BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(file));
-            String readString = "";
+            StringBuilder readString = new StringBuilder();
             String currentLine;
             while ((currentLine = in.readLine()) != null) {
-                readString += currentLine;
+                readString.append(currentLine);
             }
-            if (!Utils.isDue(readString)) {
-                return Utils.clearDateInfo(readString);
+            if (!Utils.isDue(readString.toString())) {
+                return Utils.clearDateInfo(readString.toString());
             } else {
                 removeFile = true;
                 return null;
@@ -200,14 +200,12 @@ public class STCacheFileManager {
     /**
      * 读取JSONObject数据
      *
-     * @param key
      * @return JSONObject数据
      */
     public JSONObject getAsJSONObject(String key) {
         String JSONString = getAsString(key);
         try {
-            JSONObject obj = new JSONObject(JSONString);
-            return obj;
+            return new JSONObject(JSONString);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -242,14 +240,12 @@ public class STCacheFileManager {
     /**
      * 读取JSONArray数据
      *
-     * @param key
      * @return JSONArray数据
      */
     public JSONArray getAsJSONArray(String key) {
         String JSONString = getAsString(key);
         try {
-            JSONArray obj = new JSONArray(JSONString);
-            return obj;
+            return new JSONArray(JSONString);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -301,9 +297,9 @@ public class STCacheFileManager {
     /**
      * 获取 byte 数据
      *
-     * @param key
      * @return byte 数据
      */
+    @SuppressWarnings("WeakerAccess")
     public byte[] getAsBinary(String key) {
         RandomAccessFile RAFile = null;
         boolean removeFile = false;
@@ -376,7 +372,7 @@ public class STCacheFileManager {
             try {
                 if (oos != null)
                     oos.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
     }
@@ -384,7 +380,6 @@ public class STCacheFileManager {
     /**
      * 读取 Serializable数据
      *
-     * @param key
      * @return Serializable 数据
      */
     public Object getAsObject(String key) {
@@ -395,8 +390,7 @@ public class STCacheFileManager {
             try {
                 bais = new ByteArrayInputStream(data);
                 ois = new ObjectInputStream(bais);
-                Object reObject = ois.readObject();
-                return reObject;
+                return ois.readObject();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -447,7 +441,6 @@ public class STCacheFileManager {
     /**
      * 读取 bitmap 数据
      *
-     * @param key
      * @return bitmap 数据
      */
     public Bitmap getAsBitmap(String key) {
@@ -485,7 +478,6 @@ public class STCacheFileManager {
     /**
      * 读取 Drawable 数据
      *
-     * @param key
      * @return Drawable 数据
      */
     public Drawable getAsDrawable(String key) {
@@ -498,7 +490,6 @@ public class STCacheFileManager {
     /**
      * 获取缓存文件
      *
-     * @param key
      * @return value 缓存的文件
      */
     public File file(String key) {
@@ -511,7 +502,6 @@ public class STCacheFileManager {
     /**
      * 移除某个key
      *
-     * @param key
      * @return 是否移除成功
      */
     public boolean remove(String key) {
@@ -528,8 +518,8 @@ public class STCacheFileManager {
     /**
      * @author 杨福海（michael） www.yangfuhai.com
      * @version 1.0
-     *          <p>
-     *          时间计算工具类
+     * <p>
+     * 时间计算工具类
      */
     @SuppressWarnings({"JavaDoc", "StringConcatenationInLoop"})
     private static class Utils {
@@ -558,13 +548,11 @@ public class STCacheFileManager {
                 String saveTimeStr = strs[0];
                 while (saveTimeStr.startsWith("0")) {
                     saveTimeStr = saveTimeStr
-                        .substring(1, saveTimeStr.length());
+                            .substring(1);
                 }
-                long saveTime = Long.valueOf(saveTimeStr);
-                long deleteAfter = Long.valueOf(strs[1]);
-                if (System.currentTimeMillis() > saveTime + deleteAfter * 1000) {
-                    return true;
-                }
+                long saveTime = Long.parseLong(saveTimeStr);
+                long deleteAfter = Long.parseLong(strs[1]);
+                return System.currentTimeMillis() > saveTime + deleteAfter * 1000;
             }
             return false;
         }
@@ -583,38 +571,38 @@ public class STCacheFileManager {
 
         private static String clearDateInfo(String strInfo) {
             if (strInfo != null && hasDateInfo(strInfo.getBytes())) {
-                strInfo = strInfo.substring(strInfo.indexOf(mSeparator) + 1,
-                    strInfo.length());
+                strInfo = strInfo.substring(strInfo.indexOf(mSeparator) + 1
+                );
             }
             return strInfo;
         }
 
         private static byte[] clearDateInfo(byte[] data) {
             if (hasDateInfo(data)) {
-                return copyOfRange(data, indexOf(data, mSeparator) + 1,
-                    data.length);
+                return copyOfRange(data, indexOf(data) + 1,
+                        data.length);
             }
             return data;
         }
 
         private static boolean hasDateInfo(byte[] data) {
             return data != null && data.length > 15 && data[13] == '-'
-                && indexOf(data, mSeparator) > 14;
+                    && indexOf(data) > 14;
         }
 
         private static String[] getDateInfoFromDate(byte[] data) {
             if (hasDateInfo(data)) {
                 String saveDate = new String(copyOfRange(data, 0, 13));
                 String deleteAfter = new String(copyOfRange(data, 14,
-                    indexOf(data, mSeparator)));
+                        indexOf(data)));
                 return new String[]{saveDate, deleteAfter};
             }
             return null;
         }
 
-        private static int indexOf(byte[] data, char c) {
+        private static int indexOf(byte[] data) {
             for (int i = 0; i < data.length; i++) {
-                if (data[i] == c) {
+                if (data[i] == Utils.mSeparator) {
                     return i;
                 }
             }
@@ -627,7 +615,7 @@ public class STCacheFileManager {
                 throw new IllegalArgumentException(from + " > " + to);
             byte[] copy = new byte[newLength];
             System.arraycopy(original, from, copy, 0,
-                Math.min(original.length - from, newLength));
+                    Math.min(original.length - from, newLength));
             return copy;
         }
 
@@ -664,6 +652,7 @@ public class STCacheFileManager {
         /*
          * Drawable → Bitmap
          */
+        @SuppressWarnings("deprecation")
         private static Bitmap drawable2Bitmap(Drawable drawable) {
             if (drawable == null) {
                 return null;
@@ -673,7 +662,7 @@ public class STCacheFileManager {
             int h = drawable.getIntrinsicHeight();
             // 取 drawable 的颜色格式
             Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
+                    : Bitmap.Config.RGB_565;
             // 建立对应 bitmap
             Bitmap bitmap = Bitmap.createBitmap(w, h, config);
             // 建立对应 bitmap 的画布
@@ -702,14 +691,14 @@ public class STCacheFileManager {
      * @title 缓存管理器
      */
     @SuppressWarnings({"JavaDoc", "ResultOfMethodCallIgnored"})
-    public class ACacheManager {
+    public static class ACacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
         private final long sizeLimit;
         private final int countLimit;
         private final Map<File, Long> lastUsageDates = Collections
-            .synchronizedMap(new HashMap<File, Long>());
-        protected File cacheDir;
+                .synchronizedMap(new HashMap<File, Long>());
+        File cacheDir;
 
         private ACacheManager(File cacheDir, long sizeLimit, int countLimit) {
             this.cacheDir = cacheDir;
@@ -735,7 +724,7 @@ public class STCacheFileManager {
                             size += calculateSize(cachedFile);
                             count += 1;
                             lastUsageDates.put(cachedFile,
-                                cachedFile.lastModified());
+                                    cachedFile.lastModified());
                         }
                         cacheSize.set(size);
                         cacheCount.set(count);
@@ -762,14 +751,14 @@ public class STCacheFileManager {
             }
             cacheSize.addAndGet(valueSize);
 
-            Long currentTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
             file.setLastModified(currentTime);
             lastUsageDates.put(file, currentTime);
         }
 
         private File get(String key) {
             File file = newFile(key);
-            Long currentTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
             file.setLastModified(currentTime);
             lastUsageDates.put(file, currentTime);
 
@@ -822,7 +811,10 @@ public class STCacheFileManager {
                 }
             }
 
-            long fileSize = calculateSize(mostLongUsedFile);
+            long fileSize = 0;
+            if (mostLongUsedFile != null) {
+                fileSize = calculateSize(mostLongUsedFile);
+            }
             if (mostLongUsedFile != null && mostLongUsedFile.delete()) {
                 lastUsageDates.remove(mostLongUsedFile);
             }

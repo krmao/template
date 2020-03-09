@@ -25,7 +25,11 @@ object STFileUtil {
             fileOutputStream = FileOutputStream(destFile)
             fileChannelIn = fileInputStream.channel// 得到对应的文件通道
             fileChannelOut = fileOutputStream.channel// 得到对应的文件通道
-            fileChannelIn?.transferTo(0, fileChannelIn.size(), fileChannelOut)// 连接两个通道，并且从in通道读取，然后写入out通道
+            fileChannelIn?.transferTo(
+                0,
+                fileChannelIn.size(),
+                fileChannelOut
+            )// 连接两个通道，并且从in通道读取，然后写入out通道
             return true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -46,14 +50,19 @@ object STFileUtil {
 
     @Throws(FileNotFoundException::class, IOException::class)
     @JvmStatic
-    fun copy(inputStream: InputStream?, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
+    fun copy(
+        inputStream: InputStream?,
+        destFile: File?,
+        onProgress: ((current: Long, total: Long) -> Unit?)? = null
+    ) {
         var outputStream: OutputStream? = null
         try {
             if (destFile != null && !destFile.exists()) {
-                destFile.parentFile.mkdirs()
+                destFile.parentFile?.mkdirs()
                 destFile.createNewFile()
             }
-            outputStream = FileOutputStream(destFile)
+            destFile?.let { outputStream = FileOutputStream(it) }
+
             copy(inputStream, outputStream, onProgress)
         } finally {
             inputStream?.close()
@@ -92,7 +101,11 @@ object STFileUtil {
 
     @Throws(FileNotFoundException::class, IOException::class)
     @JvmStatic
-    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)
+    fun copy(
+        inputStream: InputStream?,
+        toFilePath: String,
+        onProgress: ((current: Long, total: Long) -> Unit?)? = null
+    ) = copy(inputStream, File(toFilePath), onProgress)
 
     /**
      * Copies all bytes from the input stream to the output stream. Does not close or flush either
@@ -105,7 +118,11 @@ object STFileUtil {
      */
     @Throws(IOException::class)
     @JvmStatic
-    fun copy(from: InputStream?, to: OutputStream?, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
+    fun copy(
+        from: InputStream?,
+        to: OutputStream?,
+        onProgress: ((current: Long, total: Long) -> Unit?)? = null
+    ): Long {
         checkNotNull(from)
         checkNotNull(to)
         val total = from.available().toLong()
@@ -134,7 +151,7 @@ object STFileUtil {
                 STLogUtil.e("copyDirectory", "Cannot create dir ${fromLocation.absolutePath}")
                 copySuccess = false
             } else {
-                fromLocation.list().filter { it?.isNotBlank() == true }.forEach {
+                fromLocation.list()?.filter { it?.isNotBlank() == true }?.forEach {
                     if (!copyDirectory(File(fromLocation, it), File(toLocation, it))) {
                         copySuccess = false
                     }
@@ -154,7 +171,7 @@ object STFileUtil {
 
     @JvmStatic
     fun deleteDirectory(filePath: String?) {
-        if (!TextUtils.isEmpty(filePath))
+        if (filePath != null && !TextUtils.isEmpty(filePath))
             deleteDirectory(File(filePath))
     }
 
@@ -176,7 +193,7 @@ object STFileUtil {
 
     @JvmStatic
     fun deleteFile(filePath: String?) {
-        if (!TextUtils.isEmpty(filePath))
+        if (filePath != null && !TextUtils.isEmpty(filePath))
             deleteFile(File(filePath))
     }
 
@@ -190,7 +207,7 @@ object STFileUtil {
     fun getDirSize(dir: File): Long {
         var result: Long = 0
         if (dir.exists()) {
-            for (tmpFile in dir.listFiles()) {
+            for (tmpFile in dir.listFiles() ?: arrayOf()) {
                 result += if (tmpFile.isDirectory) getDirSize(tmpFile) else tmpFile.length()
             }
         }
@@ -213,9 +230,7 @@ object STFileUtil {
             var inputStream: InputStream? = null
             try {
                 inputStream = assetManager.open(pathInAssetsDir.replace("assets://", ""))
-                if (null != inputStream) {
-                    return true
-                }
+                return true
             } catch (_: IOException) {
             } finally {
                 try {
@@ -249,7 +264,8 @@ object STFileUtil {
     fun readTextFromFile(file: File): String {
         var content = ""
         try {
-            val bufferedReader = BufferedReader(InputStreamReader(FileInputStream(file), ENCODING_UTF8))
+            val bufferedReader =
+                BufferedReader(InputStreamReader(FileInputStream(file), ENCODING_UTF8))
             var oneLine: String? = bufferedReader.readLine()
             while (oneLine != null) {
                 content += oneLine + "\r\n"
@@ -267,7 +283,8 @@ object STFileUtil {
     fun readLinesFromFile(file: File): List<String> {
         val contentList = ArrayList<String>()
         try {
-            val bufferedReader = BufferedReader(InputStreamReader(FileInputStream(file), ENCODING_UTF8))
+            val bufferedReader =
+                BufferedReader(InputStreamReader(FileInputStream(file), ENCODING_UTF8))
             var oneLine: String? = bufferedReader.readLine()
             while (oneLine != null) {
                 contentList.add(oneLine)
@@ -309,14 +326,19 @@ object STFileUtil {
     @JvmStatic
     fun saveUncaughtException(thread: Thread?, throwable: Throwable?) {
         STLogUtil.e("crash", "app crash, thread=${thread?.name}\n", throwable)
-        STFileUtil.writeTextToFile("app crash, thread=${thread?.name}\n", throwable, File(STCacheManager.getCacheCrashDir(), STTimeUtil.yMdHmsSWithoutSeparator() + ".txt"))
+        writeTextToFile(
+            "app crash, thread=${thread?.name}\n",
+            throwable,
+            File(STCacheManager.getCacheCrashDir(), STTimeUtil.yMdHmsSWithoutSeparator() + ".txt")
+        )
     }
 
     @JvmStatic
     fun writeTextToFile(content: String, throwable: Throwable?, file: File): Boolean {
         var isAppendSuccess = false
         try {
-            val outputStreamWriter = OutputStreamWriter(FileOutputStream(file, false), ENCODING_UTF8)
+            val outputStreamWriter =
+                OutputStreamWriter(FileOutputStream(file, false), ENCODING_UTF8)
             val printWriter = PrintWriter(outputStreamWriter, true)
             printWriter.print(content)
             throwable?.printStackTrace(printWriter)

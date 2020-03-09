@@ -10,8 +10,8 @@ gradle.ext {
     modules = [
             'liveStreaming': ['enable': false],
             'flutter'      : ['enable': false],
-            'reactNative'  : ['enable': true],
-            'hybird'       : ['enable': true],
+            'reactNative'  : ['enable': false],
+            'hybird'       : ['enable': false],
             'map'          : [
                     'enable'        : false,
                     'enableMapNames': 'baidu,gaode', // baidu,gaode,google 支持多个, 逗号分隔

@@ -41,7 +41,7 @@ object STUriUtil {
         return intent
     }
 
-    fun fromFileProvider(filePath: String?): Uri? = fromFileProvider(File(filePath))
+    fun fromFileProvider(filePath: String): Uri? = fromFileProvider(File(filePath))
 
     fun fromFileProvider(file: File): Uri? = fromFileProvider(AUTHORITY, file)
 

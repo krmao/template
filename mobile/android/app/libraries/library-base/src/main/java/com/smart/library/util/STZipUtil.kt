@@ -9,7 +9,7 @@ import java.util.zip.ZipOutputStream
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object STZipUtil {
-    private val BUFFER = 2048
+    private const val BUFFER = 2048
 
     /**
      * Zips a file at a location and places the resulting zip file at the toLocation
@@ -47,7 +47,7 @@ object STZipUtil {
      */
     @Throws(IOException::class)
     private fun zipSubFolder(zipOutputStream: ZipOutputStream, fileFolder: File, basePathLength: Int) {
-        for (file in fileFolder.listFiles()) {
+        for (file in fileFolder.listFiles() ?: arrayOf()) {
             if (file.isDirectory) {
                 zipSubFolder(zipOutputStream, file, basePathLength)
             } else {
@@ -132,7 +132,7 @@ object STZipUtil {
 
                     STLogUtil.v("unzip", "name=$entryName, isDirectory=${entry.isDirectory}")
                     val destFile = File(unZipDir, entryName)
-                    destFile.parentFile.mkdirs()
+                    destFile.parentFile?.mkdirs()
                     if (!entry.isDirectory) {
                         val bufferedInputStream = BufferedInputStream(zipFile.getInputStream(entry))
                         val dataBytes = ByteArray(BUFFER)
@@ -163,10 +163,10 @@ object STZipUtil {
         try {
             if (unzipInNotTo) {
                 STFileUtil.deleteDirectory(File(unZipDir, STFileUtil.getFileName(zipSrcFile.absolutePath, true)))
-                STZipUtil.unzipInDir(zipSrcFile, unZipDir)
+                unzipInDir(zipSrcFile, unZipDir)
             } else {
                 STFileUtil.deleteDirectory(unZipDir)
-                STZipUtil.unzipToDir(zipSrcFile, unZipDir)
+                unzipToDir(zipSrcFile, unZipDir)
             }
             success = true
         } catch (exception: FileNotFoundException) {

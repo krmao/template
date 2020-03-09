@@ -1,9 +1,9 @@
 package com.smart.library.widget.behavior
 
 import android.os.Handler
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.smart.library.base.toDpFromPx
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
@@ -124,9 +124,7 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
 
     private var filterOnStateChangedRunnable: Runnable? = null
     private fun filterOnStateChanged(bottomSheet: View, newState: Int, description: String) {
-        if (filterOnStateChangedRunnable != null) {
-            handler.removeCallbacks(filterOnStateChangedRunnable)
-        }
+        filterOnStateChangedRunnable?.let { handler.removeCallbacks(it) }
         filterOnStateChangedRunnable = null
         filterOnStateChangedRunnable = object : Runnable {
             override fun run() {
@@ -136,7 +134,8 @@ class STBottomSheetCallback @JvmOverloads constructor(private val handler: Handl
                 onStateChanged?.invoke(bottomSheet, newState)
             }
         }
-        handler.postDelayed(filterOnStateChangedRunnable, 100)
+        filterOnStateChangedRunnable?.let { handler.postDelayed(it, 100) }
+
     }
 
     override fun onStateChanged(bottomSheet: View, newState: Int) {

@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentPagerAdapter
  * arbitrary amount of state.  For larger sets of pages, consider
  * {@link FragmentStatePagerAdapter}.
  */
-@Suppress("unused")
+@Suppress("unused", "DEPRECATION")
 class STFragmentPagerAdapter(fragmentManager: FragmentManager, var dataList: List<Fragment>) : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

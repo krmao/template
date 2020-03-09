@@ -19,11 +19,10 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * 即使通知权限被禁用, 也可以显示 Toast
  *
- * @see STToastUtil.enableCustomToast
  * @link https://www.jianshu.com/p/a5397a11a684
  */
 @Deprecated("not safe")
-@Suppress("MemberVisibilityCanBeprotected", "unused", "MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBeprotected", "unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
 open class STToast {
 
     companion object {
@@ -116,10 +115,10 @@ open class STToast {
     }
 
     fun setDuration(durationMillis: Int): STToast {
-        when (durationMillis) {
-            Toast.LENGTH_SHORT -> duration = SHORT_DURATION_TIMEOUT
-            Toast.LENGTH_LONG -> duration = LONG_DURATION_TIMEOUT
-            else -> duration = if (durationMillis < 0) 0 else durationMillis
+        duration = when (durationMillis) {
+            Toast.LENGTH_SHORT -> SHORT_DURATION_TIMEOUT
+            Toast.LENGTH_LONG -> LONG_DURATION_TIMEOUT
+            else -> if (durationMillis < 0) 0 else durationMillis
         }
         return this
     }

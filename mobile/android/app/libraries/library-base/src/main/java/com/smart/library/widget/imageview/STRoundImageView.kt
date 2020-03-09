@@ -4,12 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorRes
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.View
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import com.smart.library.R
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * 自定义的圆角矩形ImageView
@@ -114,7 +115,7 @@ class STRoundImageView : AppCompatImageView {
          * 如果类型是圆形，则强制改变view的宽高一致，以小值为准
          */
         if (type == TYPE_CIRCLE) {
-            mWidth = Math.min(View.MeasureSpec.getSize(widthMeasureSpec), View.MeasureSpec.getSize(heightMeasureSpec))
+            mWidth = min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
             mRadius = mWidth / 2 - mBorderWidth / 2
             setMeasuredDimension(mWidth, mWidth)
         }
@@ -171,18 +172,28 @@ class STRoundImageView : AppCompatImageView {
          * 则将四个圆角大小设置为mCornerRadius的值
          */
         if (mLeftTopCornerRadius == 0f &&
-                mLeftBottomCornerRadius == 0f &&
-                mRightTopCornerRadius == 0f &&
-                mRightBottomCornerRadius == 0f) {
+            mLeftBottomCornerRadius == 0f &&
+            mRightTopCornerRadius == 0f &&
+            mRightBottomCornerRadius == 0f
+        ) {
 
-            mRoundPath.addRoundRect(mRoundRect,
+            mRoundRect?.let {
+                mRoundPath.addRoundRect(
+                    it,
                     floatArrayOf(mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius, mCornerRadius),
-                    Path.Direction.CW)
+                    Path.Direction.CW
+                )
+            }
+
 
         } else {
-            mRoundPath.addRoundRect(mRoundRect,
+            mRoundRect?.let {
+                mRoundPath.addRoundRect(
+                    it,
                     floatArrayOf(mLeftTopCornerRadius, mLeftTopCornerRadius, mRightTopCornerRadius, mRightTopCornerRadius, mRightBottomCornerRadius, mRightBottomCornerRadius, mLeftBottomCornerRadius, mLeftBottomCornerRadius),
-                    Path.Direction.CW)
+                    Path.Direction.CW
+                )
+            }
         }
 
     }
@@ -200,7 +211,7 @@ class STRoundImageView : AppCompatImageView {
                 var scale = 1.0f
                 if (type == TYPE_CIRCLE) {
                     // 拿到bitmap宽或高的小值
-                    val bSize = Math.min(bmp.width, bmp.height)
+                    val bSize = min(bmp.width, bmp.height)
                     scale = mWidth * 1.0f / bSize
                     //使缩放后的图片居中
                     val dx = (bmp.width * scale - mWidth) / 2
@@ -211,8 +222,10 @@ class STRoundImageView : AppCompatImageView {
 
                     if (!(bmp.width == width && bmp.height == height)) {
                         // 如果图片的宽或者高与view的宽高不匹配，计算出需要缩放的比例；缩放后的图片的宽高，一定要大于我们view的宽高；所以我们这里取大值；
-                        scale = Math.max(width * 1.0f / bmp.width,
-                                height * 1.0f / bmp.height)
+                        scale = max(
+                            width * 1.0f / bmp.width,
+                            height * 1.0f / bmp.height
+                        )
                         //使缩放后的图片居中
                         val dx = (scale * bmp.width - width) / 2
                         val dy = (scale * bmp.height - height) / 2
@@ -234,6 +247,7 @@ class STRoundImageView : AppCompatImageView {
     /**
      * drawable转bitmap
      */
+    @Suppress("DEPRECATION")
     private fun drawableToBitmap(drawable: Drawable): Bitmap? {
         try {
             val bitmap: Bitmap
@@ -242,10 +256,12 @@ class STRoundImageView : AppCompatImageView {
             }
             val w = drawable.intrinsicWidth
             val h = drawable.intrinsicHeight
-            bitmap = Bitmap.createBitmap(w, h, if (drawable.opacity != PixelFormat.OPAQUE)
-                Bitmap.Config.ARGB_4444
-            else
-                Bitmap.Config.RGB_565)
+            bitmap = Bitmap.createBitmap(
+                w, h, if (drawable.opacity != PixelFormat.OPAQUE)
+                    Bitmap.Config.ARGB_4444
+                else
+                    Bitmap.Config.RGB_565
+            )
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)

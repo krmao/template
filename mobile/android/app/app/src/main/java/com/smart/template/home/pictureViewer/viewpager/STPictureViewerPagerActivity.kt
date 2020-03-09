@@ -48,7 +48,7 @@ class STPictureViewerPagerActivity : STPictureViewerAbstractPagesActivity(
 
     @SuppressLint("WrongConstant")
     private inner class ScreenSlidePagerAdapter internal constructor(fm: FragmentManager) :
-        FragmentStatePagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             val fragment = STPictureViewerPagerFragment()
             fragment.setAsset(IMAGES[position])

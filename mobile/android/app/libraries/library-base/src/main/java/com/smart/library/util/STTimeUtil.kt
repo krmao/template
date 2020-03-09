@@ -87,7 +87,7 @@ object STTimeUtil {
     fun parseHttp(httpValue: String): Date = HttpDate.parse(httpValue)
 
     @JvmStatic
-    fun getTimeSlotDescription(pattern: String, value: String): Date = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)
+    fun getTimeSlotDescription(pattern: String, value: String): Date? = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)
 
     //-----------------------------------------------------------------------------------------------------------
     // Calendar start

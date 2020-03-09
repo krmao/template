@@ -1,12 +1,13 @@
+@file:Suppress("unused")
+
 package com.smart.library.util.compat
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.ContextWrapper
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Looper
 import android.os.MessageQueue
 import android.util.Log
@@ -17,6 +18,7 @@ import com.smart.library.base.STBaseApplication
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+@SuppressLint("DiscouragedPrivateApi")
 object STIMMLeaksUtil {
 
     private val inputMethodManager = STBaseApplication.INSTANCE.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -42,11 +44,12 @@ object STIMMLeaksUtil {
         }
     }
 
-    internal class ReferenceCleaner(private val inputMethodManager: InputMethodManager,
-                                    private val mHField: Field,
-                                    private val mServedViewField: Field,
-                                    private val finishInputLockedMethod: Method)
-        : MessageQueue.IdleHandler, View.OnAttachStateChangeListener, ViewTreeObserver.OnGlobalFocusChangeListener {
+    internal class ReferenceCleaner(
+        private val inputMethodManager: InputMethodManager,
+        private val mHField: Field,
+        private val mServedViewField: Field,
+        private val finishInputLockedMethod: Method
+    ) : MessageQueue.IdleHandler, View.OnAttachStateChangeListener, ViewTreeObserver.OnGlobalFocusChangeListener {
 
         override fun onGlobalFocusChanged(oldFocus: View?, newFocus: View?) {
             if (newFocus == null) {
@@ -70,9 +73,10 @@ object STIMMLeaksUtil {
             return false
         }
 
+        @Suppress("unused")
         private fun clearInputMethodManagerLeak() {
             try {
-                val lock = mHField.get(inputMethodManager)
+                val lock = mHField.get(inputMethodManager) ?: Any()
                 // This is highly dependent on the InputMethodManager implementation.
                 synchronized(lock) {
                     val servedView = mServedViewField.get(inputMethodManager) as View
@@ -110,19 +114,24 @@ object STIMMLeaksUtil {
         private fun extractActivity(context: Context): Activity? {
             var tmpContext = context
             while (true) {
-                if (tmpContext is Application) {
-                    return null
-                } else if (tmpContext is Activity) {
-                    return tmpContext
-                } else if (tmpContext is ContextWrapper) {
-                    val baseContext = tmpContext.baseContext
-                    // Prevent Stack Overflow.
-                    if (baseContext === tmpContext) {
+                when (tmpContext) {
+                    is Application -> {
                         return null
                     }
-                    tmpContext = baseContext
-                } else {
-                    return null
+                    is Activity -> {
+                        return tmpContext
+                    }
+                    is ContextWrapper -> {
+                        val baseContext = tmpContext.baseContext
+                        // Prevent Stack Overflow.
+                        if (baseContext === tmpContext) {
+                            return null
+                        }
+                        tmpContext = baseContext
+                    }
+                    else -> {
+                        return null
+                    }
                 }
             }
         }
@@ -140,11 +149,9 @@ object STIMMLeaksUtil {
      *
      * Should be called from [Activity.onCreate] )}.
      */
+    @Suppress("unused")
     fun fixFocusedViewLeak(activity: Activity) {
         // Don't know about other versions yet.
-        if (SDK_INT < KITKAT || SDK_INT > 22) {
-            return
-        }
         if (mHField == null || mServedViewField == null || finishInputLockedMethod == null) {
             return
         }

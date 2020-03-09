@@ -68,7 +68,7 @@ class HomeTabActivity : STBaseActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        STLogUtil.d("home", "activity: onRestoreInstanceState ${savedInstanceState?.getString("name")}")
+        STLogUtil.d("home", "activity: onRestoreInstanceState ${savedInstanceState.getString("name")}")
     }
 
     /**

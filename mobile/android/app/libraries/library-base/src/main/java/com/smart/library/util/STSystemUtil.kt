@@ -28,22 +28,30 @@ object STSystemUtil {
 
     @JvmStatic
     val SDK_INT: Int = Build.VERSION.SDK_INT
+
     @JvmStatic
     val versionCode: Int by lazy { getAppVersionCode() }
+
     @JvmStatic
     val versionName: String by lazy { getAppVersionName() }
+
     @JvmStatic
     val appName: String by lazy { getAppName() }
+
     @JvmStatic
     val appIcon: Int? by lazy { getAppIcon() }
+
     @JvmStatic
     val appBitmap: Bitmap? by lazy { getAppBitmap() }
+
     @JvmStatic
     val displayMetrics: DisplayMetrics
         get() = STBaseApplication.INSTANCE.resources.displayMetrics
+
     @JvmStatic
     val screenWidth: Int
         get() = displayMetrics.widthPixels
+
     @JvmStatic
     val screenHeight: Int
         get() = displayMetrics.heightPixels
@@ -198,12 +206,15 @@ object STSystemUtil {
             }
             return sdCardInfo
         }
+
     @JvmStatic
     val isSdCardExist: Boolean
         get() = Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
+
     @JvmStatic
     val sdCardPath: String?
         get() = if (isSdCardExist) Environment.getExternalStorageDirectory().absolutePath else null
+
     @JvmStatic
     val statusBarHeight: Int by lazy {
         var statusBarHeight = 0
@@ -327,5 +338,15 @@ object STSystemUtil {
             STLogUtil.e("getApplicationInfo failure, packageName=$packageName", e)
         }
         return null
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun isAppOnTestEnvironment(doSomethingOnYes: (() -> Unit)? = null): Boolean {
+        if (STBaseApplication.DEBUG) {
+            doSomethingOnYes?.invoke()
+            return true
+        }
+        return false
     }
 }

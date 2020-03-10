@@ -258,6 +258,30 @@ object STStatusBarUtil {
     }
 
     /**
+     * 设置状态栏文字颜色模式
+     * @param activity
+     * @param dark 文字是否是黑色，true为黑色，false为白色
+     */
+    fun setStatusBarLightMode(activity: Activity, dark: Boolean) {
+        if (isMiui) {
+            miuiSetStatusBarLightMode(activity.window, dark)
+        }
+        if (isFlyme) {
+            flymeSetStatusBarLightMode(activity.window, dark)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val decor = activity.window.decorView
+            var ui = decor.systemUiVisibility
+            ui = if (dark) {
+                ui or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            } else {
+                ui and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            }
+            decor.systemUiVisibility = ui
+        }
+    }
+
+    /**
      * miui系统状态栏 深色字体
      *
      * @param window

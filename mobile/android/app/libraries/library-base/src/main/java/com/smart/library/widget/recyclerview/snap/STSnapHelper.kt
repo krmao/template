@@ -1,8 +1,8 @@
 package com.smart.library.widget.recyclerview.snap
 
 import android.graphics.Rect
-import androidx.recyclerview.widget.*
 import android.view.View
+import androidx.recyclerview.widget.*
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
@@ -113,7 +113,34 @@ interface STSnapHelper {
         }
 
         private fun innerScrollToPositionWithOnSnap(position: Int, smooth: Boolean = true, isAutoRetry: Boolean = false, onScrolledCallback: ((success: Boolean) -> Unit)? = null) {
-            if (position >= 0 && position < recyclerView?.adapter?.itemCount ?: 0) {
+            debugLog {
+                STLogUtil.w(tag, "innerScrollToPositionWithOnSnap position:$position, canScrollVertically=${recyclerView?.canScrollVertically(-1)}, layoutManager.canScrollVertically=${recyclerView?.layoutManager?.canScrollVertically()}")
+                STLogUtil.w(tag, "innerScrollToPositionWithOnSnap position:$position, layoutManager.childCount=${recyclerView?.layoutManager?.childCount}, recyclerView.childCount=${recyclerView?.childCount}")
+                STLogUtil.w(tag, "innerScrollToPositionWithOnSnap position:$position, recyclerView.scrollY=${recyclerView?.scrollY}, isAutoRetry=$isAutoRetry")
+            }
+
+            val itemCount: Int = recyclerView?.adapter?.itemCount ?: 0
+            if (position in 0 until itemCount) {
+                val childCount = recyclerView?.childCount ?: 0
+                /**
+                 * 当且仅当 以下条件满足的时候, 执行此 if 代码片段
+                 * 即 recyclerView.setAdapter 且 adapter 有数据,
+                 * 且想自动触发 onSnap(0),
+                 * 且不想由于 scrollBy 导致的 下一页/个 item 初始化(执行 onBindViewHolder)的问题
+                 */
+                if (!isAutoRetry // 与重试无关
+                    && (childCount == 0) // recyclerView 还没有渲染
+                    && (recyclerView?.canScrollVertically(-1) != true) // recyclerView 在顶部
+                    && (position == 0) // 希望触发第一个 item 的 onSnap 方法, 而不执行以下代码scrollBy(0,0)/smoothScrollBy(0,0) 导致的 下一个/页 item 被初始化(执行 onBindViewHolder)
+                    && (itemCount > 0) // recyclerView 是确实有数据的
+                ) {
+                    STLogUtil.sync { STLogUtil.w(tag, "直接触发 onSnap($position), 不执行任何滚动查找等其他代码") }
+                    lastSnappedPosition = position
+                    onSnap?.invoke(position)
+                    onScrolledCallback?.invoke(true)
+                    return
+                }
+
                 var needScroll = true
                 if (recyclerView?.layoutManager != null) {
                     val viewHolder = recyclerView?.findViewHolderForAdapterPosition(position)
@@ -143,12 +170,12 @@ interface STSnapHelper {
                         }
                         if (!isAutoRetry) {
                             recyclerView?.postDelayed(
-                                    {
-                                        innerScrollToPositionWithOnSnap(position, smooth, true, onScrolledCallback)
-                                    },
-                                    // https://developer.android.com/reference/android/support/v7/widget/RecyclerView.ViewHolder.html#getAdapterPosition()
-                                    // This inconsistency is not important since it will be less than 16ms but it might be a problem if you want to use ViewHolder position to access the adapter.
-                                    16
+                                {
+                                    innerScrollToPositionWithOnSnap(position, smooth, true, onScrolledCallback)
+                                },
+                                // https://developer.android.com/reference/android/support/v7/widget/RecyclerView.ViewHolder.html#getAdapterPosition()
+                                // This inconsistency is not important since it will be less than 16ms but it might be a problem if you want to use ViewHolder position to access the adapter.
+                                16
                             )
                         } else {
                             onScrolledCallback?.invoke(true)
@@ -189,12 +216,12 @@ interface STSnapHelper {
                         recyclerView?.scrollToPosition(position)
                         if (needCalculateDistanceToFinalSnap) {
                             recyclerView?.postDelayed(
-                                    {
-                                        innerScrollToPositionWithoutOnSnap(position, false, onScrolledCallback)
-                                    },
-                                    // https://developer.android.com/reference/android/support/v7/widget/RecyclerView.ViewHolder.html#getAdapterPosition()
-                                    // This inconsistency is not important since it will be less than 16ms but it might be a problem if you want to use ViewHolder position to access the adapter.
-                                    16
+                                {
+                                    innerScrollToPositionWithoutOnSnap(position, false, onScrolledCallback)
+                                },
+                                // https://developer.android.com/reference/android/support/v7/widget/RecyclerView.ViewHolder.html#getAdapterPosition()
+                                // This inconsistency is not important since it will be less than 16ms but it might be a problem if you want to use ViewHolder position to access the adapter.
+                                16
                             )
                         } else {
                             lastSnappedPosition = position

@@ -48,9 +48,12 @@ if (gradle.ext.modules.videoplayer.enable == true) {
     if (gradle.ext.modules.videoplayer.enableSamples == true) {
         include(":library-videoplayer-samples"); project(':library-videoplayer-samples').projectDir = new File(videoPlayerDir, 'library-videoplayer-samples')
     }
-    
+
+    if (gradle.ext.modules.videoplayer.enableExoPlayer == true) {
+        include(":library-videoplayer-exoplayer"); project(':library-videoplayer-exoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer-exoplayer')
+    }
+
     include(":library-videoplayer"); project(':library-videoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer')
-    include(":library-videoplayer-exoplayer"); project(':library-videoplayer-exoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer-exoplayer')
 
     include(":library-videoplayer-libs-armv5"); project(':library-videoplayer-libs-armv5').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv5')
     include(":library-videoplayer-libs-armv7a"); project(':library-videoplayer-libs-armv7a').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv7a')

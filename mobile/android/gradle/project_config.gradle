@@ -21,8 +21,9 @@ gradle.ext {
                     'googleKey'     : ''
             ],
             'videoplayer'  : [
-                    'enable'       : true,
-                    'enableSamples': false
+                    'enable'         : true,
+                    'enableSamples'  : false,
+                    'enableExoPlayer': false,
             ],
     ]
 

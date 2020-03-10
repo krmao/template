@@ -1,26 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.smart.library.widget.viewpager.STVerticalViewPager
-        android:id="@+id/verticalViewPager"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="@color/orange"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:ignore="HardcodedText,SpUsage">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/verticalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_blue"
+        android:background="@color/grey"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1" />
+
+    <LinearLayout
+        android:id="@+id/testLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="#66ff0000"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        tools:visibility="visible">
 
+        <TextView
+            android:id="@+id/btnNextVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="next video"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/btnPauseVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="pause video"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/btnPlayVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="play video"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/btnReplayVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="replay video"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/btnReleaseVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="release video"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

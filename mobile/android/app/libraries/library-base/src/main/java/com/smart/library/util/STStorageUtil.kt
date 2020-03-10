@@ -18,12 +18,13 @@ object STStorageUtil {
      * query only jpeg and png image type files
      * default search path is MediaStore.Images.Media.EXTERNAL_CONTENT_URI
      */
+    @Suppress("DEPRECATION")
     @RequiresPermission(value = android.Manifest.permission.READ_EXTERNAL_STORAGE)
     fun loadAllLocalPictures(mContext: Context, contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI): LocalPictureTimeSlotResult? {
         val result = LocalPictureTimeSlotResult(mContext)
         try {
             val mContentResolver: ContentResolver = mContext.contentResolver
-            Log.i(TAG, contentUri.path)
+            Log.i(TAG, contentUri.path ?: "")
             val cursor: Cursor? = mContentResolver.query(contentUri, null, MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?", arrayOf("image/jpeg", "image/png"), MediaStore.Images.Media.DATE_MODIFIED + " DESC")
             if (cursor != null) {
                 while (cursor.moveToNext()) {

@@ -280,7 +280,11 @@ dependencies {
     }
 
     if (gradle.ext.modules.videoplayer.enable == true) {
-        api project(':library-videoplayer-samples')
+        if (gradle.ext.modules.videoplayer.enableSamples == true) {
+            api project(':library-videoplayer-samples')
+        } else {
+            api project(':library-videoplayer')
+        }
     } else {
         api project(':library-videoplayer')
     }

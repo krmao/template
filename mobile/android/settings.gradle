@@ -45,7 +45,10 @@ if (gradle.ext.modules.videoplayer.enable == true) {
     def videoPlayerLibsJniDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni")
     def videoPlayerLibsJniAllDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni-all")
 
-    include(":library-videoplayer-samples"); project(':library-videoplayer-samples').projectDir = new File(videoPlayerDir, 'library-videoplayer-samples')
+    if (gradle.ext.modules.videoplayer.enableSamples == true) {
+        include(":library-videoplayer-samples"); project(':library-videoplayer-samples').projectDir = new File(videoPlayerDir, 'library-videoplayer-samples')
+    }
+    
     include(":library-videoplayer"); project(':library-videoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer')
     include(":library-videoplayer-exoplayer"); project(':library-videoplayer-exoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer-exoplayer')
 

@@ -17,6 +17,38 @@ object STReflectUtil {
      */
     @JvmStatic
     @JvmOverloads
+    fun invokeJavaStaticMethod(className: String, functionName: String, parameterTypes: Array<Class<out Any>> = arrayOf(), params: Array<Any?> = arrayOf()): Any? {
+        var result: Any? = null
+        try {
+            val clazz: Class<*> = Class.forName(className)
+            val method: Method? = clazz.getMethod(functionName, *parameterTypes)
+            method?.isAccessible = true
+            STLogUtil.w(TAG, "invoke start ${method?.toGenericString()}")
+            result = method?.invoke(null, *params)
+            STLogUtil.w(TAG, "invoke end $result")
+        } catch (e: InstantiationException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: IllegalAccessException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: IllegalArgumentException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: InvocationTargetException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: NoSuchMethodException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: SecurityException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        } catch (e: ClassNotFoundException) {
+            STLogUtil.e(TAG, "invoke failure", e)
+        }
+        return result
+    }
+
+    /**
+     * 调用私有方法
+     */
+    @JvmStatic
+    @JvmOverloads
     fun invokeDeclaredMethod(instance: Any?, functionName: String, parameterTypes: Array<Class<out Any>> = arrayOf(), params: Array<Any?> = arrayOf()): Any? {
         var result: Any? = null
         try {

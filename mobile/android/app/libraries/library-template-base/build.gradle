@@ -19,15 +19,13 @@ dependencies {
     api project(':library-base')
     // api project(':library-support')
 
-    //api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
-    //api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
-    //api 'com.github.evgenyneu:js-evaluator-for-android:v3.0.0'
+    if (gradle.ext.configs.walle.enable == true) {
+        api "com.meituan.android.walle:library:$rootProject.ext.walleVersion"
+    }
 
-    /*
-        -keep interface me.dm7.barcodescanner.** {*;}
-        -keep class me.dm7.barcodescanner.** {*;}
-        -keep class net.sourceforge.** { *;}
-        -keep class com.google.zxing.** { *;}
-     */
-    // api 'me.dm7.barcodescanner:zxing:1.9.8'
+    if (gradle.ext.configs.bugly.enable == true) {
+        api "com.tencent.bugly:crashreport_upgrade:$rootProject.ext.crashreportUpgradeVersion"
+    }
+
+    // https://github.com/journeyapps/zxing-android-embedded
 }

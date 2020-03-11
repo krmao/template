@@ -1,10 +1,18 @@
 gradle.ext {
 
     configs = [
-            'bugly' : ['enable': false],
-            'tinker': ['enable': false],
-            'walle' : ['enable': false],
-            'test'  : ['enable': false],
+            'bugly'     : ['enable': false],
+            'tinker'    : ['enable': false],
+            'walle'     : ['enable': false],
+            'test'      : ['enable': false],
+            'leakcanary': ['enable': true],
+            "monitoring": [
+                    "godeye": [
+                            'enable'            : true,
+                            'enableMethodCanary': true,
+                            'enableLeakcanary'  : true,
+                    ],
+            ]
     ]
 
     modules = [

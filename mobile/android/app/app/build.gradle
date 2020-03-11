@@ -1,21 +1,53 @@
 apply plugin: 'com.android.application'
 apply plugin: "kotlin-android"
 apply plugin: 'kotlin-android-extensions'
-// apply from: "$settingsDir/gradle/project_config.gradle"
-//apply plugin: 'walle'
-//
-//walle {
-//    apkOutputFolder = new File("${buildDir}/outputs/channels")// 指定渠道包的输出路径
-//    apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
-//    channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
-//}
 
-//上传bugly符号表配置
-/*apply plugin: 'bugly'
-bugly {
-    appId = ''
-    appKey = ''
-}*/
+/**
+ * god eye
+ * https://github.com/Kyson/MethodCanary 监控方法耗时 第二处配置
+ */
+if (gradle.ext.configs.monitoring.godeye.enable == true && gradle.ext.configs.monitoring.godeye.enableMethodCanary == true) {
+    apply plugin: 'cn.hikyson.methodcanary.plugin'
+    AndroidGodEye {
+        enableLifecycleTracer = true // need lifecycle methods instrumentation, default true
+        enableMethodTracer = true // need common methods instrumentation, default true
+        instrumentationRuleFilePath = "gradle/readme/scripts/config_godeye_methodcanary.js" // default AndroidGodEye-MethodCanary.js
+        instrumentationRuleIncludeClassNamePrefix = ["com/smart/template"] // default null
+    }
+}
+
+/**
+ * walle
+ */
+if (gradle.ext.configs.walle.enable == true) {
+    apply plugin: 'walle'
+
+    walle {
+        apkOutputFolder = new File("${buildDir}/outputs/channels")// 指定渠道包的输出路径
+        apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
+        channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
+    }
+}
+
+/**
+ * bugly
+ */
+if (gradle.ext.configs.bugly.enable == true) {
+    apply plugin: 'bugly'
+    bugly {
+        appId = ''
+        appKey = ''
+    }
+}
+
+/**
+ * tinker
+ */
+if (gradle.ext.configs.tinker.enable == true) {
+    apply from: 'tinker-support.gradle'
+}
+
+println("gradle.ext.configs=${gradle.ext.configs}")
 
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion
@@ -238,12 +270,12 @@ android {
 }
 
 /**
- * api          :   常规的打包配置，会将依赖代码打入到dex中去
+ * implementation          :   常规的打包配置，会将依赖代码打入到dex中去
  * bundleCompile    :   bundle中的代码不会打入dex中去，bundle将以libxxx.so文件的形式，放在apk的lib目录下，随包发布
  * outOfApkBundles  :   指定远程bundle，不会打入apk中
  */
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     if (rootProject.ext.react.get("enableHermes", false)) {
         debugImplementation files(rootProject.ext.hermesPath + "hermes-debug.aar")
@@ -252,49 +284,75 @@ dependencies {
         implementation 'org.webkit:android-jsc:+'
     }
 
-    api project(':library-template-base')
-    api project(':library-template-repository')
+    implementation project(':library-template-base')
+    implementation project(':library-template-repository')
 
     if (gradle.ext.modules.liveStreaming.enable == true) {
-        api project(':library-livestreaming')
-        api project(':library-livestreaming-push')
+        implementation project(':library-livestreaming')
+        implementation project(':library-livestreaming-push')
     }
 
     if (gradle.ext.modules.flutter.enable == true) {
-        api project(':library-flutter')
+        implementation project(':library-flutter')
     }
     if (gradle.ext.modules.pictureviewer.enable == true) {
-        api project(':library-pictureviewer')
+        implementation project(':library-pictureviewer')
     }
 
     if (gradle.ext.modules.hybird.enable == true) {
-        api project(':library-hybird')
+        implementation project(':library-hybird')
     }
 
     if (gradle.ext.modules.map.enable == true) {
-        api project(':library-map')
+        implementation project(':library-map')
     }
 
     if (gradle.ext.modules.reactNative.enable == true) {
-        api project(':library-reactnative')
+        implementation project(':library-reactnative')
     }
 
     if (gradle.ext.modules.videoplayer.enable == true) {
         if (gradle.ext.modules.videoplayer.enableSamples == true) {
-            api project(':library-videoplayer-samples')
+            implementation project(':library-videoplayer-samples')
         } else {
-            api project(':library-videoplayer')
+            implementation project(':library-videoplayer')
         }
     } else {
-        api project(':library-videoplayer')
+        implementation project(':library-videoplayer')
     }
 
-    api project(':module-template-mine')
+    implementation project(':module-template-mine')
 
-    // LeakCanary
-    debugApi "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
-    releaseApi "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanaryVersion"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.ext.leakcanaryVersion"
+    // 如果 godeye 未依赖低版本 leak canary, 则使用高版本 leak canary
+    if (gradle.ext.configs.monitoring.godeye.enable != true || gradle.ext.configs.monitoring.godeye.enableLeakcanary != true) {
+        // LeakCanary https://square.github.io/leakcanary/upgrading-to-leakcanary-2.0/
+        if (gradle.ext.configs.leakcanary.enable == true) {
+            debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
+        }
+    }
+
+    // 监控手机及App信息 https://github.com/Kyson/AndroidGodEye/wiki/0x00-QuickStart_zh
+    if (gradle.ext.configs.monitoring.godeye.enable == true) {
+        implementation "cn.hikyson.godeye:godeye-core:$rootProject.ext.godeyeVersion" // 核心模块，必须依赖
+        debugImplementation "cn.hikyson.godeye:godeye-monitor:$rootProject.ext.godeyeVersion" // Debug包配置Debug看板
+        releaseImplementation "cn.hikyson.godeye:godeye-monitor-no-op:$rootProject.ext.godeyeVersion" // Release包不需要监控看板
+        implementation "cn.hikyson.godeye:godeye-okhttp:$rootProject.ext.godeyeVersion" // 额外依赖，如果项目使用OkHttp作为网络请求可以用这个库完成网络监控
+        implementation "cn.hikyson.godeye:godeye-xcrash:$rootProject.ext.godeyeVersion" // 额外依赖，添加此依赖可以完成Crash监控，如果不依赖则无法监控Crash（安装了也不会生效）
+
+        implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+        implementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+
+        if (gradle.ext.configs.monitoring.godeye.enableLeakcanary == true) {
+            debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+            releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+            debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3' // Optional, if you use support library fragments:
+        }
+
+        // https://github.com/Kyson/MethodCanary 监控方法耗时 第三处配置
+        if (gradle.ext.configs.monitoring.godeye.enableMethodCanary == true) {
+            implementation 'cn.hikyson.methodcanary:lib:0.15.2'
+        }
+    }
 
     if (gradle.ext.configs.test.enable == true) {
         // Dependencies for local unit tests
@@ -325,5 +383,3 @@ dependencies {
         }*/)
     }
 }
-
-//apply from: 'tinker-support.gradle'

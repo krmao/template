@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
-import com.smart.library.util.STSystemUtil
+import com.smart.library.base.setOnLayoutListener
 import com.smart.library.util.STToastUtil
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_magic_fragment.*
@@ -26,7 +26,7 @@ class STMagicFragment : STBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        magicView?.setOnAnimationListener { STToastUtil.show(it) }
+
         seekBar?.max = 1000
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -36,7 +36,11 @@ class STMagicFragment : STBaseFragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
-        magicView?.setBitmap(bitmap, (STSystemUtil.screenWidth / 0.5).toInt(), (STSystemUtil.screenHeight / 0.2).toInt())
+
+        magicView?.setOnAnimationListener { STToastUtil.show(it) }
+        magicView?.setOnLayoutListener {
+            magicView?.setBitmap(bitmap)
+        }
         btnStart.setOnClickListener {
             magicView?.visibility = View.VISIBLE
             magicView?.beginAnim()

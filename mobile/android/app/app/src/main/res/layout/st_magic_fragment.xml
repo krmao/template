@@ -3,18 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/grey_500">
 
     <com.smart.template.home.animation.magic.captureanim.STMagicView
         android:id="@+id/magicView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnStart" />
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/btnStart"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/btnStart"
@@ -30,5 +28,16 @@
         android:textSize="20sp"
         android:textStyle="bold"
         tools:ignore="HardcodedText" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@+id/btnStart"
+        android:background="@color/blue_grey_700" />
 
 </RelativeLayout>

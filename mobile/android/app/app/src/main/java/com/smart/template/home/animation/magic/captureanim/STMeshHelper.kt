@@ -1,29 +1,42 @@
 package com.smart.template.home.animation.magic.captureanim
 
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Interpolator
+import com.smart.library.util.STLogUtil
 
 /**
- * Created by linzx on 17-7-27.
  * 供给CaptureAnimView的支持类,核心数据计算均在此处
+ * https://github.com/xinlyun/CaptureView
+ * https://www.jianshu.com/p/51d8dd99d27d
  */
 class STMeshHelper {
-    private var width = 0f
-    private var height = 0f
-    private var bitmapWidth = 0f
-    private var bitmapHeight = 0f
-    val vetWidth = 40
-    val vetHeight = 40
 
-    //核心移动曲线
-    private val interpolator = AccelerateDecelerateInterpolator()
-    fun init(width: Int, height: Int) {
-        this.width = width.toFloat()
-        this.height = height.toFloat()
+    private var viewMeasureWidth: Float = 0f
+    private var viewMeasureHeight: Float = 0f
+    private var bitmapFitWidth: Float = 0f
+    private var bitmapFitHeight: Float = 0f
+
+    /**
+     * 网格坐标
+     * https://www.jianshu.com/p/11e6be1f18e6
+     * https://www.jianshu.com/p/51d8dd99d27d
+     */
+    var meshWidth: Int = 40
+        private set
+    var meshHeight: Int = 40
+        private set
+
+    fun init(viewMeasureWidth: Float, viewMeasureHeight: Float, meshWidth: Int = 80, meshHeight: Int = 80) {
+        this.viewMeasureWidth = viewMeasureWidth
+        this.viewMeasureHeight = viewMeasureHeight
+        this.meshWidth = meshWidth
+        this.meshHeight = meshHeight
     }
 
     fun setBitmapSize(bitmapWidth: Int, bitmapHeight: Int) {
-        this.bitmapWidth = width
-        this.bitmapHeight = width / bitmapWidth * bitmapHeight
+        this.bitmapFitWidth = viewMeasureWidth
+        this.bitmapFitHeight = viewMeasureWidth / bitmapWidth * bitmapHeight
+        STLogUtil.d(STMagicView.TAG, "setBitmapSize bitmapWidth:$bitmapWidth  bitmapHeight:$bitmapHeight, viewMeasureWidth=$viewMeasureWidth, viewMeasureHeight=$viewMeasureHeight, bitmapFitWidth=$bitmapFitWidth, bitmapFitHeight=$bitmapFitHeight")
     }
 
     /**
@@ -47,7 +60,7 @@ class STMeshHelper {
      * @param progress
      * @return
      */
-    fun setProgress(progress: Float, leftToX: Float = 0.7f, rightToX: Float = 0.8f): FloatArray {
+    fun setProgress(progress: Float, leftToX: Float = 0.85f, rightToX: Float = 0.9f): FloatArray {
         //左右边线运动轨迹
         val leftLine: LineProgress
         val rightLine: LineProgress
@@ -57,48 +70,51 @@ class STMeshHelper {
             // leftLine = LinePosi(0f, width * 0.1f * (progress / 0.3f), 0f, height)
             // rightLine = LinePosi(width, width * 0.2f + width * 0.8f * (0.3f - progress) / 0.3f, 0f, height)
 
-            leftLine = LineProgress(0f, width * leftToX * (progress / 0.3f), 0f, height)
-            rightLine = LineProgress(width, width * (1 - (1 - rightToX) * (progress / 0.3f)), 0f, height)
+            leftLine = LineProgress(0f, viewMeasureWidth * leftToX * (progress / 0.3f), 0f, viewMeasureHeight)
+            rightLine = LineProgress(viewMeasureWidth, viewMeasureWidth * (1 - (1 - rightToX) * (progress / 0.3f)), 0f, viewMeasureHeight)
         } else {
             //在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
             // leftLine = LinePosi(0f, width * 0.1f, 0f, height)
             // rightLine = LinePosi(width, width * 0.2f, 0f, height)
-            leftLine = LineProgress(0f, width * leftToX, 0f, height)
-            rightLine = LineProgress(width, width * rightToX, 0f, height)
+            leftLine = LineProgress(0f, viewMeasureWidth * leftToX, 0f, viewMeasureHeight)
+            rightLine = LineProgress(viewMeasureWidth, viewMeasureWidth * rightToX, 0f, viewMeasureHeight)
         }
-        val destY = height * progress
-        val newFloat = FloatArray((vetWidth + 1) * (vetHeight + 1) * 2)
+        val progressDestY = viewMeasureHeight * progress
+        val verts = FloatArray((meshWidth + 1) * (meshHeight + 1) * 2)
         var num = 0
-        for (i in 0..vetHeight) {
-            for (j in 0..vetWidth) {
+        for (i in 0..meshHeight) {
+            for (j in 0..meshWidth) {
 
                 //Y轴点位根据实际bitmap高度进行平均
-                val posiY = destY + bitmapHeight * i / vetHeight
-                val leftPosiX = leftLine.inputY(posiY)
-                val rightPosiX = rightLine.inputY(posiY)
-                val disPosiX = rightPosiX - leftPosiX
+                val progressY = progressDestY + bitmapFitHeight * i / meshHeight
+                val progressLeftX = leftLine.inputY(progressY)
+                val progressRightX = rightLine.inputY(progressY)
+                val progressDistanceX = progressRightX - progressLeftX
 
                 //X点位根据两个line在Y值时的差值进行平均分布
-                val posiX = disPosiX * j / vetWidth + leftPosiX
+                val progressX = progressDistanceX * j / meshWidth + progressLeftX
 
                 //先X后Y输出
-                newFloat[num] = posiX
+                verts[num] = progressX
                 num++
-                newFloat[num] = posiY
+                verts[num] = progressY
                 num++
             }
         }
-        return newFloat
+        return verts
     }
+
+
+    private val interpolator: Interpolator by lazy { AccelerateDecelerateInterpolator() }
 
     /**
      * 描述运动轨迹(起点XY和终点XY以及变函数Interpolator),根据输入量,可输出相对应的值
      */
     private inner class LineProgress internal constructor(private val fromX: Float, private val toX: Float, private val fromY: Float, private val toY: Float) {
-        fun inputY(yP: Float): Float {
+        fun inputY(progressY: Float): Float {
             val disLength = toY - fromY
             val disXLength = toX - fromX
-            val disFloat = yP / disLength
+            val disFloat = progressY / disLength
             val disXFloat = interpolator.getInterpolation(disFloat)
             return fromX + disXLength * disXFloat
         }

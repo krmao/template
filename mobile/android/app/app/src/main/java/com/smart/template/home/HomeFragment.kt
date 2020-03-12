@@ -13,6 +13,8 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
+import com.smart.template.home.animation.magic.captureanim.STMagicFragment
+import com.smart.template.home.animation.wave.STRippleFragment
 import com.smart.template.home.test.PullToNextPageFragment
 import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
 import com.smart.template.home.test.RecyclerViewSnapTopFragment
@@ -29,6 +31,12 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btnMagic.setOnClickListener {
+            STMagicFragment.goTo(context)
+        }
+        btnRipple.setOnClickListener {
+            STRippleFragment.goTo(context)
+        }
         videoPager.setOnClickListener {
             startActivity(Intent(context, STVideoPagerActivity::class.java))
         }

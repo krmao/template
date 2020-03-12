@@ -191,6 +191,27 @@
                         app:backgroundTint="@color/blue_600" />
 
                 </TableRow>
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/btnRipple"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="ripple"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/btnMagic"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="magic"
+                        app:backgroundTint="@color/blue_600" />
+
+
+
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>

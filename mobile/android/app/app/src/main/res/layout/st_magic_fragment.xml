@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_500">
+    android:background="@color/black">
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,11 +21,10 @@
     <com.smart.template.home.animation.magic.captureanim.STMagicView
         android:id="@+id/magicView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:layout_above="@+id/btnCenter"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -58,20 +58,25 @@
         android:textStyle="bold"
         tools:ignore="HardcodedText" />
 
-    <TextView
+
+    <com.smart.template.home.animation.wave.STRippleLineView
+        android:id="@+id/rippleLineView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginBottom="10dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/seekBar"
         android:layout_alignParentEnd="true"
-        android:background="@color/blue"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="right start"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText" />
+        android:layout_marginEnd="30dp"
+        app:backgroundTint="@color/blue"
+        app:elevation="0dp" />
 
     <SeekBar
         android:id="@+id/seekBar"

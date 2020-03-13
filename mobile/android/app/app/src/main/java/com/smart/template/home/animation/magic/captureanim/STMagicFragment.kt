@@ -3,6 +3,8 @@ package com.smart.template.home.animation.magic.captureanim
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +12,9 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.animation.STInterpolatorFactory
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_magic_fragment.*
 
@@ -26,6 +30,17 @@ class STMagicFragment : STBaseFragment() {
     private var cachedBitmap: Bitmap? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val innerWaterCenterWaveView = rippleLineView
+        if (innerWaterCenterWaveView != null) {
+            innerWaterCenterWaveView.duration = 600 // 0 - 300 - 600 三个圈
+            innerWaterCenterWaveView.setStyle(Paint.Style.FILL) // STROKE
+            innerWaterCenterWaveView.speed = 300
+            innerWaterCenterWaveView.setColor(Color.parseColor("#22666666"))
+            innerWaterCenterWaveView.interpolator = STInterpolatorFactory.createDecelerateInterpolator()
+            innerWaterCenterWaveView.initialRadius = 25.toPxFromDp().toFloat()
+            innerWaterCenterWaveView.maxRadiusRate = 1f
+        }
 
         seekBar?.max = 1000
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -51,6 +66,8 @@ class STMagicFragment : STBaseFragment() {
         }
 
         btnRight.setOnClickListener {
+            innerWaterCenterWaveView.start()
+
             // 销毁旧的缓存 bitmap
             if (cachedBitmap != null) {
                 imageView.destroyDrawingCache()
@@ -79,7 +96,7 @@ class STMagicFragment : STBaseFragment() {
                     bitmapContainerWidth = imageView.width.toFloat(),
                     bitmapContainerHeight = imageView.height.toFloat()
                 )
-                magicView.setLineRatio(leftLintToXRatio = 0.8f, rightLineToXRatio = 0.85f)
+                magicView.setLineRatio(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f, leftLineToYRatio = 1f, rightLineToYRatio = 1.05f)
                 magicView.visibility = View.VISIBLE
                 imageView.visibility = View.GONE
                 magicView.start()

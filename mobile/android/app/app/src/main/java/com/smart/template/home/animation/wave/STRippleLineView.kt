@@ -22,6 +22,7 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
     var maxRadiusRate: Float = 0.85f
     var interpolator: Interpolator = LinearInterpolator()
 
+    private var runningTime: Long = 0
     private var isRunning = false
     private var maxRadiusSet = false
     private var maxRadius: Float = 0f // 最大波纹半径 = 0f
@@ -31,9 +32,12 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
     private val circleList: MutableList<Circle> = ArrayList()
     private val createCircle: Runnable = object : Runnable {
         override fun run() {
-            if (isRunning) {
+            if (isRunning && runningTime <= duration) {
                 newCircle()
+                runningTime += speed
                 postDelayed(this, speed.toLong())
+            } else {
+                stop()
             }
         }
     }
@@ -56,10 +60,10 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
      * 开始
      */
     fun start() {
-        if (!isRunning) {
-            isRunning = true
-            createCircle.run()
-        }
+        stopImmediately()
+        isRunning = true
+        runningTime = 0
+        createCircle.run()
     }
 
     /**
@@ -67,6 +71,7 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     fun stop() {
         isRunning = false
+        runningTime = 0
     }
 
     /**
@@ -74,6 +79,7 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     fun stopImmediately() {
         isRunning = false
+        runningTime = 0
         circleList.clear()
         invalidate()
     }

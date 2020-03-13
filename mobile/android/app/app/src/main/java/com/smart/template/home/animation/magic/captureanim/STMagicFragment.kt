@@ -36,10 +36,10 @@ class STMagicFragment : STBaseFragment() {
             innerWaterCenterWaveView.duration = 600 // 0 - 300 - 600 三个圈
             innerWaterCenterWaveView.setStyle(Paint.Style.FILL) // STROKE
             innerWaterCenterWaveView.speed = 300
-            innerWaterCenterWaveView.setColor(Color.parseColor("#22666666"))
+            innerWaterCenterWaveView.setColor(Color.parseColor("#22555555"))
             innerWaterCenterWaveView.interpolator = STInterpolatorFactory.createDecelerateInterpolator()
-            innerWaterCenterWaveView.initialRadius = 25.toPxFromDp().toFloat()
-            innerWaterCenterWaveView.maxRadiusRate = 1f
+            innerWaterCenterWaveView.initialRadius = 20.toPxFromDp().toFloat()
+            innerWaterCenterWaveView.maxRadiusRate = 0.8f
         }
 
         seekBar?.max = 1000
@@ -94,9 +94,9 @@ class STMagicFragment : STBaseFragment() {
                     meshWidth = 50,
                     meshHeight = 50,
                     bitmapContainerWidth = imageView.width.toFloat(),
-                    bitmapContainerHeight = imageView.height.toFloat()
+                    bitmapContainerHeight = 230f.toPxFromDp()
                 )
-                magicView.setLineRatio(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f, leftLineToYRatio = 1f, rightLineToYRatio = 1.05f)
+                magicView.setLineRatio(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f, leftLineToYRatio = 1.2f, rightLineToYRatio = 1.2f)
                 magicView.visibility = View.VISIBLE
                 imageView.visibility = View.GONE
                 magicView.start()

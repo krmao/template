@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
+    <com.smart.template.home.animation.magic.captureanim.STMagicView
+        android:id="@+id/magicView"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_above="@+id/btnCenter"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="-10dp"
+        android:background="#22DDDDDD"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -17,16 +29,6 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/st_sea" />
-
-    <com.smart.template.home.animation.magic.captureanim.STMagicView
-        android:id="@+id/magicView"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_above="@+id/btnCenter"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="gone"
-        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/btnLeft"

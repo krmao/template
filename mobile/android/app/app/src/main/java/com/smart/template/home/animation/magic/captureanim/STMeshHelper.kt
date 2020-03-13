@@ -82,24 +82,23 @@ class STMeshHelper {
      * @param progress
      * @return verts 图片被分割成网格的坐标数组 x,y,x,y ...
      */
-    fun setProgress(progress: Float, leftLintToXRatio: Float = 0.85f, rightLineToXRatio: Float = 0.9f): FloatArray {
-        //左右边线运动轨迹
-        val leftLine: LineProgress
-        val rightLine: LineProgress
+    fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f): FloatArray {
+        // 左右边线运动轨迹
+        val leftLineProgress: LineProgress
+        val rightLineProgress: LineProgress
 
-        //在0~0.3f的部分,左右轨迹要逐渐向中心靠拢
+        // 在0~0.3f的部分,左右轨迹要逐渐向中心靠拢
         if (progress <= 0.3f) {
-            // leftLine = LinePosi(0f, width * 0.1f * (progress / 0.3f), 0f, height)
-            // rightLine = LinePosi(width, width * 0.2f + width * 0.8f * (0.3f - progress) / 0.3f, 0f, height)
-
-            leftLine = LineProgress(0f, viewMeasureWidth * leftLintToXRatio * (progress / 0.3f), 0f, viewMeasureHeight)
-            rightLine = LineProgress(viewMeasureWidth, viewMeasureWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, viewMeasureHeight)
+            leftLineProgress = LineProgress(0f, viewMeasureWidth * leftLintToXRatio * (progress / 0.3f), 0f, viewMeasureHeight)
+            rightLineProgress = if (rightLineToXRatio < 0.5f) {
+                LineProgress(viewMeasureWidth, viewMeasureWidth * 0.2f + viewMeasureWidth * 0.8f * (0.3f - progress) / 0.3f, 0f, viewMeasureHeight)
+            } else {
+                LineProgress(viewMeasureWidth, viewMeasureWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, viewMeasureHeight)
+            }
         } else {
-            //在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
-            // leftLine = LinePosi(0f, width * 0.1f, 0f, height)
-            // rightLine = LinePosi(width, width * 0.2f, 0f, height)
-            leftLine = LineProgress(0f, viewMeasureWidth * leftLintToXRatio, 0f, viewMeasureHeight)
-            rightLine = LineProgress(viewMeasureWidth, viewMeasureWidth * rightLineToXRatio, 0f, viewMeasureHeight)
+            // 在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
+            leftLineProgress = LineProgress(0f, viewMeasureWidth * leftLintToXRatio, 0f, viewMeasureHeight)
+            rightLineProgress = LineProgress(viewMeasureWidth, viewMeasureWidth * rightLineToXRatio, 0f, viewMeasureHeight)
         }
 
         // 首先计算出 这条线 在 view 中 Y 轴应该出现的位置
@@ -113,8 +112,8 @@ class STMeshHelper {
                 // 计算出扭曲后的 bitmap 网格 Y 坐标
                 val progressYInBitmap: Float = progressYInView + bitmapFitHeight * meshHeightIndex / meshHeight
 
-                val progressLeftLineXInBitmap: Float = leftLine.calculateProgressXByProgressY(progressYInBitmap)
-                val progressRightLineXInBitmap: Float = rightLine.calculateProgressXByProgressY(progressYInBitmap)
+                val progressLeftLineXInBitmap: Float = leftLineProgress.calculateProgressXByProgressY(progressYInBitmap)
+                val progressRightLineXInBitmap: Float = rightLineProgress.calculateProgressXByProgressY(progressYInBitmap)
                 val progressDistanceXInBitmap: Float = progressRightLineXInBitmap - progressLeftLineXInBitmap
 
                 // 当前 bitmap 网格宽度比例

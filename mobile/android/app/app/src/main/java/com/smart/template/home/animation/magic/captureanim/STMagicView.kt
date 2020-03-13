@@ -22,6 +22,8 @@ import kotlin.math.min
 class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var progress = 0f
+    private var leftLintToXRatio: Float = 0.8f
+    private var rightLineToXRatio: Float = 0.85f
     private var bitmap: Bitmap? = null
     private var meshHelper: STMeshHelper = STMeshHelper()
 
@@ -66,7 +68,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             innerBitmap,
             meshHelper.meshWidth,
             meshHelper.meshHeight,
-            meshHelper.setProgress(progress),
+            meshHelper.setProgress(progress, leftLintToXRatio, rightLineToXRatio),
             0,
             null,
             0,
@@ -132,7 +134,9 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     fun isRunning(): Boolean = animator.isRunning
     fun isStarted(): Boolean = animator.isStarted
 
-    fun start() {
+    fun start(leftLintToXRatio: Float = this.leftLintToXRatio, rightLineToXRatio: Float = this.rightLineToXRatio) {
+        this.leftLintToXRatio = leftLintToXRatio
+        this.rightLineToXRatio = rightLineToXRatio
         if (isRunning() || isStarted()) {
             animator.cancel()
         }

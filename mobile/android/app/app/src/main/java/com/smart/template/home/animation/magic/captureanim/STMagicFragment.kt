@@ -41,9 +41,14 @@ class STMagicFragment : STBaseFragment() {
         magicView?.setOnLayoutListener {
             magicView?.setBitmap(bitmap)
         }
-        btnStart.setOnClickListener {
-            magicView?.visibility = View.VISIBLE
-            magicView?.start()
+        btnLeft.setOnClickListener {
+            magicView?.start(leftLintToXRatio = 0.1f, rightLineToXRatio = 0.15f)
+        }
+        btnCenter.setOnClickListener {
+            magicView?.start(leftLintToXRatio = 0.475f, rightLineToXRatio = 0.525f)
+        }
+        btnRight.setOnClickListener {
+            magicView?.start(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f)
         }
     }
 

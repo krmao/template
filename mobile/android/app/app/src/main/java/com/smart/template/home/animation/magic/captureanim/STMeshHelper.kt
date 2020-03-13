@@ -11,8 +11,9 @@ import com.smart.library.util.animation.STInterpolatorFactory
  */
 class STMeshHelper {
 
-    private var viewMeasureWidth: Float = 0f
-    private var viewMeasureHeight: Float = 0f
+    private var bitmapContainerWidth: Float = 0f
+    private var bitmapContainerHeight: Float = 0f
+
     private var bitmapFitWidth: Float = 0f
     private var bitmapFitHeight: Float = 0f
 
@@ -26,39 +27,40 @@ class STMeshHelper {
     var meshHeight: Int = 50
         private set
 
-    fun init(viewMeasureWidth: Float, viewMeasureHeight: Float, meshWidth: Int = this.meshWidth, meshHeight: Int = this.meshHeight) {
-        this.viewMeasureWidth = viewMeasureWidth
-        this.viewMeasureHeight = viewMeasureHeight
+    fun init(meshWidth: Int = this.meshWidth, meshHeight: Int = this.meshHeight) {
         this.meshWidth = meshWidth
         this.meshHeight = meshHeight
     }
 
     /**
-     * 输入图像宽高, 使得图像自适应 view 的宽高, 相当于 fitTop
+     * 计算出 bitmap 在容器中经过缩放自适应后的真实宽高
      */
-    fun setBitmapSize(bitmapWidth: Float, bitmapHeight: Float) {
-        val innerViewMeasureWidth: Float = viewMeasureWidth
-        val innerViewMeasureHeight: Float = viewMeasureHeight
-        if (innerViewMeasureWidth == 0f || innerViewMeasureHeight == 0f || bitmapWidth == 0f || bitmapHeight == 0f) return
+    fun setBitmapParams(bitmapWidth: Float, bitmapHeight: Float, bitmapContainerWidth: Float, bitmapContainerHeight: Float) {
+        this.bitmapContainerWidth = bitmapContainerWidth
+        this.bitmapContainerHeight = bitmapContainerHeight
+        if (bitmapWidth <= 0f || bitmapHeight <= 0f || bitmapContainerWidth <= 0f || bitmapContainerHeight <= 0f) return
 
-        val viewAspectRatio: Float = innerViewMeasureWidth / innerViewMeasureHeight
         val bitmapAspectRatio: Float = bitmapWidth / bitmapHeight
+        val bitmapContainerAspectRatio: Float = bitmapContainerWidth / bitmapContainerHeight
 
         when {
-            bitmapAspectRatio > viewAspectRatio -> {
-                this.bitmapFitWidth = innerViewMeasureWidth
-                this.bitmapFitHeight = innerViewMeasureWidth / bitmapAspectRatio
+            bitmapAspectRatio > bitmapContainerAspectRatio -> {
+                this.bitmapFitWidth = bitmapContainerWidth
+                this.bitmapFitHeight = bitmapContainerWidth / bitmapAspectRatio
             }
-            bitmapAspectRatio < viewAspectRatio -> {
-                this.bitmapFitWidth = innerViewMeasureHeight * bitmapAspectRatio
-                this.bitmapFitHeight = innerViewMeasureHeight
+            bitmapAspectRatio < bitmapContainerAspectRatio -> {
+                this.bitmapFitWidth = bitmapContainerHeight * bitmapAspectRatio
+                this.bitmapFitHeight = bitmapContainerHeight
             }
             else -> {
-                this.bitmapFitWidth = innerViewMeasureWidth
-                this.bitmapFitHeight = innerViewMeasureHeight
+                this.bitmapFitWidth = bitmapContainerWidth
+                this.bitmapFitHeight = bitmapContainerHeight
             }
         }
-        STLogUtil.d(STMagicView.TAG, "setBitmapSize bitmapWidth:$bitmapWidth  bitmapHeight:$bitmapHeight, viewMeasureWidth=$viewMeasureWidth, viewMeasureHeight=$viewMeasureHeight, bitmapFitWidth=$bitmapFitWidth, bitmapFitHeight=$bitmapFitHeight, viewAspectRatio=$viewAspectRatio, bitmapAspectRatio=$bitmapAspectRatio")
+
+        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapAspectRatio=$bitmapAspectRatio, bitmapWidth:$bitmapWidth, bitmapHeight=$bitmapHeight")
+        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapContainerAspectRatio=$bitmapContainerAspectRatio, bitmapContainerWidth:$bitmapContainerWidth, bitmapContainerHeight=$bitmapContainerHeight")
+        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapFitAspectRatio=${bitmapFitWidth / bitmapFitHeight}")
     }
 
     /**
@@ -82,27 +84,27 @@ class STMeshHelper {
      * @param progress
      * @return verts 图片被分割成网格的坐标数组 x,y,x,y ...
      */
-    fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f): FloatArray {
+    fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f, leftLineToYRatio: Float = 1.5f, rightLineToYRatio: Float = 1.5f): FloatArray {
         // 左右边线运动轨迹
         val leftLineProgress: LineProgress
         val rightLineProgress: LineProgress
 
         // 在0~0.3f的部分,左右轨迹要逐渐向中心靠拢
         if (progress <= 0.3f) {
-            leftLineProgress = LineProgress(0f, viewMeasureWidth * leftLintToXRatio * (progress / 0.3f), 0f, viewMeasureHeight)
+            leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio * (progress / 0.3f), 0f, bitmapContainerHeight * leftLineToYRatio)
             rightLineProgress = if (rightLineToXRatio < 0.5f) {
-                LineProgress(viewMeasureWidth, viewMeasureWidth * 0.2f + viewMeasureWidth * 0.8f * (0.3f - progress) / 0.3f, 0f, viewMeasureHeight)
+                LineProgress(bitmapContainerWidth, bitmapContainerWidth * 0.2f + bitmapContainerWidth * 0.8f * (0.3f - progress) / 0.3f, 0f, bitmapContainerHeight * rightLineToYRatio)
             } else {
-                LineProgress(viewMeasureWidth, viewMeasureWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, viewMeasureHeight)
+                LineProgress(bitmapContainerWidth, bitmapContainerWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, bitmapContainerHeight * rightLineToYRatio)
             }
         } else {
             // 在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
-            leftLineProgress = LineProgress(0f, viewMeasureWidth * leftLintToXRatio, 0f, viewMeasureHeight)
-            rightLineProgress = LineProgress(viewMeasureWidth, viewMeasureWidth * rightLineToXRatio, 0f, viewMeasureHeight)
+            leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio, 0f, bitmapContainerHeight * leftLineToYRatio)
+            rightLineProgress = LineProgress(bitmapContainerWidth, bitmapContainerWidth * rightLineToXRatio, 0f, bitmapContainerHeight * rightLineToYRatio)
         }
 
         // 首先计算出 这条线 在 view 中 Y 轴应该出现的位置
-        val progressYInView: Float = viewMeasureHeight * progress
+        val progressYInView: Float = bitmapContainerHeight * progress
 
         // 初始化图片被分割为网格后的 verts 数组
         val verts = FloatArray((meshWidth + 1) * (meshHeight + 1) * 2)

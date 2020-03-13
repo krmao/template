@@ -8,10 +8,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
-import com.smart.library.base.toPxFromDp
-import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
-import kotlin.math.min
 
 /**
  * 神奇效果
@@ -24,12 +21,12 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var progress = 0f
     private var leftLintToXRatio: Float = 0.8f
     private var rightLineToXRatio: Float = 0.85f
+    private var leftLineToYRatio: Float = 1.0f
+    private var rightLineToYRatio: Float = 1.0f
     private var bitmap: Bitmap? = null
     private var meshHelper: STMeshHelper = STMeshHelper()
 
-    private val defaultDuration: Long = 800
-    private val defaultWidth: Int by lazy { 300.toPxFromDp() }  // 当 xml 中配置宽高为 wrap_content 时, 使用以下宽高
-    private val defaultHeight: Int by lazy { 100.toPxFromDp() }
+    private val defaultDuration: Long = 350
     private val defaultPaint = Paint().apply { isAntiAlias = true }
     private val defaultInterpolator: Interpolator = STInterpolatorFactory.createAccelerateDecelerateInterpolator()
 
@@ -68,38 +65,12 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             innerBitmap,
             meshHelper.meshWidth,
             meshHelper.meshHeight,
-            meshHelper.setProgress(progress, leftLintToXRatio, rightLineToXRatio),
+            meshHelper.setProgress(progress, leftLintToXRatio, rightLineToXRatio, leftLineToYRatio, rightLineToYRatio),
             0,
             null,
             0,
             defaultPaint
         )
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (!isInEditMode) {
-            val measureWidth: Int = measureHandler(defaultWidth, widthMeasureSpec)
-            val measureHeight: Int = measureHandler(defaultHeight, heightMeasureSpec)
-            STLogUtil.d(TAG, "onMeasure measureWidth:$measureWidth  measureHeight:$measureHeight")
-            meshHelper.init(measureWidth.toFloat(), measureHeight.toFloat())
-            bitmap?.let { meshHelper.setBitmapSize(it.width.toFloat(), it.height.toFloat()) }
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-    }
-
-    /**
-     * 不管父View是何模式，若子View有确切数值，则子View大小就是其本身大小，且mode是EXACTLY
-     * 若子View是match_parent，则模式与父View相同，且大小同父View（若父View是UNSPECIFIED，则子View大小为0）
-     * 若子View是wrap_content，则模式是AT_MOST，大小同父View，表示不可超过父View大小（若父View是UNSPECIFIED，则子View大小为0）
-     * @see {@link https://www.jianshu.com/p/cecd0de7ec27}
-     */
-    private fun measureHandler(defaultSize: Int, measureSpec: Int): Int {
-        val specSize = MeasureSpec.getSize(measureSpec)
-        return when (MeasureSpec.getMode(measureSpec)) {
-            MeasureSpec.EXACTLY -> specSize
-            MeasureSpec.AT_MOST -> min(defaultSize, specSize)
-            else -> defaultSize
-        }
     }
 
     fun setDuration(duration: Long = defaultDuration): STMagicView {
@@ -125,18 +96,28 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return this
     }
 
-    fun setBitmap(bitmap: Bitmap): STMagicView {
+    /**
+     * 无论 bitmap 有多大, 都将缩放绘制到 指定大小的空间里
+     */
+    fun setBitmap(bitmap: Bitmap, meshWidth: Int = meshHelper.meshWidth, meshHeight: Int = meshHelper.meshHeight, bitmapContainerWidth: Float = bitmap.width.toFloat(), bitmapContainerHeight: Float = bitmap.height.toFloat()): STMagicView {
         this.bitmap = bitmap
-        meshHelper.setBitmapSize(bitmap.width.toFloat(), bitmap.height.toFloat())
+        meshHelper.init(meshWidth, meshHeight)
+        meshHelper.setBitmapParams(bitmap.width.toFloat(), bitmap.height.toFloat(), bitmapContainerWidth, bitmapContainerHeight)
+        return this
+    }
+
+    fun setLineRatio(leftLintToXRatio: Float = this.leftLintToXRatio, rightLineToXRatio: Float = this.rightLineToXRatio, leftLineToYRatio: Float = this.leftLineToYRatio, rightLineToYRatio: Float = this.rightLineToYRatio): STMagicView {
+        this.leftLintToXRatio = leftLintToXRatio
+        this.rightLineToXRatio = rightLineToXRatio
+        this.leftLineToYRatio = leftLineToYRatio
+        this.rightLineToYRatio = rightLineToYRatio
         return this
     }
 
     fun isRunning(): Boolean = animator.isRunning
     fun isStarted(): Boolean = animator.isStarted
 
-    fun start(leftLintToXRatio: Float = this.leftLintToXRatio, rightLineToXRatio: Float = this.rightLineToXRatio) {
-        this.leftLintToXRatio = leftLintToXRatio
-        this.rightLineToXRatio = rightLineToXRatio
+    fun start() {
         if (isRunning() || isStarted()) {
             animator.cancel()
         }

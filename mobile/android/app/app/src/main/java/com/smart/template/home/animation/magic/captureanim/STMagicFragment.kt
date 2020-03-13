@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
-import com.smart.library.base.setOnLayoutListener
-import com.smart.library.util.STToastUtil
+import com.smart.library.base.toPxFromDp
+import com.smart.library.util.STLogUtil
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_magic_fragment.*
 
@@ -37,18 +37,31 @@ class STMagicFragment : STBaseFragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        magicView?.setOnProgressListener { if (it == 1f) STToastUtil.show("监听到动画停止") }
-        magicView?.setOnLayoutListener {
-            magicView?.setBitmap(bitmap)
+        magicView?.setOnProgressListener {
+            STLogUtil.w(STMagicView.TAG, "animation finished")
         }
+        /**
+         * 控制 bitmap 容器大小, 可以控制缩放与留白等
+         */
+        magicView?.setBitmap(
+            bitmap,
+            meshWidth = 50,
+            meshHeight = 50,
+            bitmapContainerWidth = 120f.toPxFromDp() * (bitmap.width / bitmap.height.toFloat()),
+            bitmapContainerHeight = 120f.toPxFromDp()
+        )
+
         btnLeft.setOnClickListener {
-            magicView?.start(leftLintToXRatio = 0.1f, rightLineToXRatio = 0.15f)
+            magicView?.setLineRatio(leftLintToXRatio = 0.1f, rightLineToXRatio = 0.15f)
+            magicView?.start()
         }
         btnCenter.setOnClickListener {
-            magicView?.start(leftLintToXRatio = 0.475f, rightLineToXRatio = 0.525f)
+            magicView?.setLineRatio(leftLintToXRatio = 2.3f, rightLineToXRatio = 2.25f)
+            magicView?.start()
         }
         btnRight.setOnClickListener {
-            magicView?.start(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f)
+            magicView?.setLineRatio(leftLintToXRatio = 3.8f, rightLineToXRatio = 3.85f)
+            magicView?.start()
         }
     }
 

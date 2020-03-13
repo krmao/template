@@ -8,10 +8,9 @@
     <com.smart.template.home.animation.magic.captureanim.STMagicView
         android:id="@+id/magicView"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_above="@+id/btnCenter"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/btnLeft"

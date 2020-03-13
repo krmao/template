@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import com.smart.library.util.STChecksumUtil
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STViewUtil
 import org.jetbrains.anko.AnkoAsyncContext
@@ -97,11 +98,14 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
 }
 
 fun View.setOnLayoutListener(onLayout: (view: View) -> Unit) {
+    STLogUtil.w("setOnLayoutListener start")
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val viewTreeObserver: ViewTreeObserver = viewTreeObserver
+            STLogUtil.w("setOnLayoutListener isAlive=${viewTreeObserver.isAlive}")
             if (viewTreeObserver.isAlive) {
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
+                STLogUtil.w("setOnLayoutListener end")
                 onLayout(this@setOnLayoutListener)
             }
         }

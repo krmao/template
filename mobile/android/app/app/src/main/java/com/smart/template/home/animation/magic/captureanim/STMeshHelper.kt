@@ -92,11 +92,7 @@ class STMeshHelper {
         // 在0~0.3f的部分,左右轨迹要逐渐向中心靠拢
         if (progress <= 0.3f) {
             leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio * (progress / 0.3f), 0f, bitmapContainerHeight * leftLineToYRatio)
-            rightLineProgress = if (rightLineToXRatio < 0.5f) {
-                LineProgress(bitmapContainerWidth, bitmapContainerWidth * 0.2f + bitmapContainerWidth * 0.8f * (0.3f - progress) / 0.3f, 0f, bitmapContainerHeight * rightLineToYRatio)
-            } else {
-                LineProgress(bitmapContainerWidth, bitmapContainerWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, bitmapContainerHeight * rightLineToYRatio)
-            }
+            rightLineProgress = LineProgress(bitmapContainerWidth, bitmapContainerWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, bitmapContainerHeight * rightLineToYRatio)
         } else {
             // 在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
             leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio, 0f, bitmapContainerHeight * leftLineToYRatio)

@@ -1,8 +1,9 @@
 package com.smart.template.home.animation.magic.captureanim
 
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.animation.STInterpolatorFactory
 
 /**
  * 供给CaptureAnimView的支持类,核心数据计算均在此处
@@ -105,7 +106,10 @@ class STMeshHelper {
     }
 
 
-    private val interpolator: Interpolator by lazy { AccelerateDecelerateInterpolator() }
+    private val fastOutSlowInInterpolator: Interpolator by lazy { STInterpolatorFactory.createFastOutSlowInInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
+    // private val fastOutLinearInInterpolator: Interpolator by lazy { FastOutLinearInInterpolator() } // 从 0f -> 1f 的过程是 先加速然后匀速
+    // private val linearOutSlowInInterpolator: Interpolator by lazy { LinearOutSlowInInterpolator() } // 从 0f -> 1f 的过程是 先匀速再减速
+    // private val accelerateDecelerateInterpolator: Interpolator by lazy { AccelerateDecelerateInterpolator() }
 
     /**
      * 描述运动轨迹(起点XY和终点XY以及变函数Interpolator),根据输入量,可输出相对应的值
@@ -115,7 +119,7 @@ class STMeshHelper {
             val disLength = toY - fromY
             val disXLength = toX - fromX
             val disFloat = progressY / disLength
-            val disXFloat = interpolator.getInterpolation(disFloat)
+            val disXFloat = fastOutSlowInInterpolator.getInterpolation(disFloat)
             return fromX + disXLength * disXFloat
         }
 

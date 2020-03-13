@@ -100,7 +100,7 @@ class STMeshHelper {
         }
 
         // 首先计算出 这条线 在 view 中 Y 轴应该出现的位置
-        val progressYInView: Float = bitmapContainerHeight * progress
+        val progressYInContainer: Float = bitmapContainerHeight * progress
 
         // 初始化图片被分割为网格后的 verts 数组
         val verts = FloatArray((meshWidth + 1) * (meshHeight + 1) * 2)
@@ -108,7 +108,7 @@ class STMeshHelper {
         for (meshHeightIndex in 0..meshHeight) {
             for (meshWidthIndex in 0..meshWidth) {
                 // 计算出扭曲后的 bitmap 网格 Y 坐标
-                val progressYInBitmap: Float = progressYInView + bitmapFitHeight * meshHeightIndex / meshHeight
+                val progressYInBitmap: Float = progressYInContainer + bitmapFitHeight * meshHeightIndex / meshHeight * (1-progress)
 
                 val progressLeftLineXInBitmap: Float = leftLineProgress.calculateProgressXByProgressY(progressYInBitmap)
                 val progressRightLineXInBitmap: Float = rightLineProgress.calculateProgressXByProgressY(progressYInBitmap)
@@ -126,6 +126,7 @@ class STMeshHelper {
         return verts
     }
 
+    private val accelerateInterpolator: Interpolator by lazy { STInterpolatorFactory.createAccelerateInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
     private val fastOutSlowInInterpolator: Interpolator by lazy { STInterpolatorFactory.createFastOutSlowInInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
 
     /**

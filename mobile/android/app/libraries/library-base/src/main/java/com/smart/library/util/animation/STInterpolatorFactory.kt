@@ -5,6 +5,10 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 
+/**
+ * https://blog.csdn.net/pzm1993/article/details/77926373
+ * https://www.jianshu.com/p/639efa7762a1
+ */
 @Suppress("unused")
 object STInterpolatorFactory {
 
@@ -69,7 +73,7 @@ object STInterpolatorFactory {
     fun createBounceInterpolator(): BounceInterpolator = BounceInterpolator()
 
     /**
-     * 从 0f -> 1f 的过程是 正弦函数, 放大至终点, 然后缩小直至负终点, 如此往复直至恢复初始形状, 放大->缩小->放大->缩小 ... ->原来
+     * 从 0f -> 1f 的过程是 正弦函数, 放大至终点, 然后缩小直至负终点, 如此往复直至恢复初始形状, 放大->缩小->放大->缩小-> ... ->放大->原来
      * @param cycles 循环次数
      */
     fun createCycleInterpolator(cycles: Float = 1f): CycleInterpolator = CycleInterpolator(cycles)

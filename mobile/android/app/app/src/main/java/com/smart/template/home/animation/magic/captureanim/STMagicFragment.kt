@@ -37,13 +37,13 @@ class STMagicFragment : STBaseFragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        magicView?.setOnAnimationListener { STToastUtil.show(it) }
+        magicView?.setOnProgressListener { if (it == 1f) STToastUtil.show("监听到动画停止") }
         magicView?.setOnLayoutListener {
             magicView?.setBitmap(bitmap)
         }
         btnStart.setOnClickListener {
             magicView?.visibility = View.VISIBLE
-            magicView?.beginAnim()
+            magicView?.start()
         }
     }
 

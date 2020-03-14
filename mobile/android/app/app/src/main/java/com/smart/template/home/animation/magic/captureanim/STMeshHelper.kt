@@ -3,6 +3,7 @@ package com.smart.template.home.animation.magic.captureanim
 import android.view.animation.Interpolator
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
+import kotlin.math.cos
 
 /**
  * 扭曲图像, 网格绘制帮助类
@@ -86,17 +87,17 @@ class STMeshHelper {
      */
     fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f, leftLineToYRatio: Float = 1.5f, rightLineToYRatio: Float = 1.5f): FloatArray {
         // 左右边线运动轨迹
-        val leftLineProgress: LineProgress
-        val rightLineProgress: LineProgress
+        val leftLine: Line
+        val rightLine: Line
 
         // 在0~0.3f的部分,左右轨迹要逐渐向中心靠拢
         if (progress <= 0.3f) {
-            leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio * (progress / 0.3f), 0f, bitmapContainerHeight * leftLineToYRatio)
-            rightLineProgress = LineProgress(bitmapContainerWidth, bitmapContainerWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, bitmapContainerHeight * rightLineToYRatio)
+            leftLine = Line(0f, bitmapContainerWidth * leftLintToXRatio * (progress / 0.3f), 0f, bitmapContainerHeight * leftLineToYRatio)
+            rightLine = Line(bitmapContainerWidth, bitmapContainerWidth * (1 - (1 - rightLineToXRatio) * (progress / 0.3f)), 0f, bitmapContainerHeight * rightLineToYRatio)
         } else {
             // 在0.3f~1f,左右轨迹保持不变,图像按照此轨迹作为边界进行运动
-            leftLineProgress = LineProgress(0f, bitmapContainerWidth * leftLintToXRatio, 0f, bitmapContainerHeight * leftLineToYRatio)
-            rightLineProgress = LineProgress(bitmapContainerWidth, bitmapContainerWidth * rightLineToXRatio, 0f, bitmapContainerHeight * rightLineToYRatio)
+            leftLine = Line(0f, bitmapContainerWidth * leftLintToXRatio, 0f, bitmapContainerHeight * leftLineToYRatio)
+            rightLine = Line(bitmapContainerWidth, bitmapContainerWidth * rightLineToXRatio, 0f, bitmapContainerHeight * rightLineToYRatio)
         }
 
         //==========================================================================================================================================================================================
@@ -114,6 +115,8 @@ class STMeshHelper {
         // 图片顶部边线在 bitmapContainer 中所处的 Y 轴位置, 图片最上面的位置, 下面每一个网格基于这个位置进行计算位置
         // 此处使用 bitmapContainerHeight 而不是 bitmapFitHeight 是为了图片可以超出自身最底部区域绘制, 当bitmapFitHeight < bitmapContainerHeight 时起作用
         val meshedBitmapTopYInContainer: Float = bitmapContainerHeight * progress
+        val cosValue = -1 * cos(Math.toRadians(180.0 * progress)) / 2f // [-1/2->0->1/2]
+        val meshedBitmapBottomYInContainer: Float = bitmapFitHeight * (1 + cosValue * progress).toFloat() //底部先回弹再下降
 
         // 遍历网格数组, 给每一个网格所在顶点赋值根据左右两侧边线在当前进度时扭曲后的数值
         for (meshHeightIndex in 0..meshHeight) {
@@ -123,13 +126,19 @@ class STMeshHelper {
                 // 当前网格顶点高度比例
                 val meshHeightRatio: Float = meshHeightIndex / meshHeight.toFloat() // 一定要 float, 否则整除计算出错
 
+                // 图片最顶侧边线在当前进度与最底侧边线的距离
+                val distanceFromTopLineToBottomLineInContainer: Float = meshedBitmapBottomYInContainer - meshedBitmapTopYInContainer
+                // 计算出每个网格平均分摊(均匀分布)扭曲后的高度
+                val meshedItemHeight: Float = distanceFromTopLineToBottomLineInContainer * meshHeightRatio
+                // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置
+                val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + meshedItemHeight
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
-                val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) // * (1 - progress) 是为了让图片下边线下降的更慢一些
+                // val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) // * (1 - progress) 是为了让图片下边线下降的更慢一些
 
                 // 图片最左侧边线在当前进度所处的 X 轴位置
-                val leftLineXInContainer: Float = leftLineProgress.calculateProgressXByProgressY(meshedBitmapYInContainer)
+                val leftLineXInContainer: Float = leftLine.getOutputValue(meshedBitmapYInContainer)
                 // 图片最右侧边线在当前进度所处的 X 轴位置
-                val rightLineXInContainer: Float = rightLineProgress.calculateProgressXByProgressY(meshedBitmapYInContainer)
+                val rightLineXInContainer: Float = rightLine.getOutputValue(meshedBitmapYInContainer)
                 // 图片最左侧边线在当前进度与最右侧边线的距离
                 val distanceFromLeftLineToRightLineInContainer: Float = rightLineXInContainer - leftLineXInContainer
                 // 计算出每个网格平均分摊(均匀分布)扭曲后的宽度
@@ -156,7 +165,7 @@ class STMeshHelper {
      * @param toX   曲线终点 X 轴坐标
      * @param toY   曲线终点 Y 轴坐标
      */
-    private inner class LineProgress(private val fromX: Float, private val toX: Float, private val fromY: Float, private val toY: Float) {
+    private inner class Line(val fromX: Float, val toX: Float, val fromY: Float, val toY: Float) {
 
         // 这条线 Y 轴起点到终点总跨越长度
         private val distanceY = toY - fromY
@@ -167,9 +176,9 @@ class STMeshHelper {
         /**
          * 根据这条线 当前 Y 轴已经移动的距离 计算出与 X 轴应该出现的位置
          */
-        fun calculateProgressXByProgressY(progressY: Float): Float {
+        fun getOutputValue(inputValue: Float): Float {
             // 根据这条线 当前 Y 轴已经移动的距离 计算出与 Y 轴总长度对应的比例
-            val ratioY = progressY / distanceY
+            val ratioY = inputValue / distanceY
             // 通过插值器获取这条线 X 轴对应应该移动的比例
             val ratioX = fastOutSlowInInterpolator.getInterpolation(ratioY)
             // 计算这条线 X 轴应该出现的位置

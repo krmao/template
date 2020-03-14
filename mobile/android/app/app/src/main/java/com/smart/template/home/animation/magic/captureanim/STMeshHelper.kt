@@ -112,6 +112,7 @@ class STMeshHelper {
         var vertIndex = 0
 
         // 图片顶部边线在 bitmapContainer 中所处的 Y 轴位置, 图片最上面的位置, 下面每一个网格基于这个位置进行计算位置
+        // 此处使用 bitmapContainerHeight 而不是 bitmapFitHeight 是为了图片可以超出自身最底部区域绘制, 当bitmapFitHeight < bitmapContainerHeight 时起作用
         val meshedBitmapTopYInContainer: Float = bitmapContainerHeight * progress
 
         // 遍历网格数组, 给每一个网格所在顶点赋值根据左右两侧边线在当前进度时扭曲后的数值
@@ -123,7 +124,7 @@ class STMeshHelper {
                 val meshHeightRatio: Float = meshHeightIndex / meshHeight.toFloat() // 一定要 float, 否则整除计算出错
 
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
-                val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio  //* (1 - progress)
+                val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) // * (1 - progress) 是为了让图片下边线下降的更慢一些
 
                 // 图片最左侧边线在当前进度所处的 X 轴位置
                 val leftLineXInContainer: Float = leftLineProgress.calculateProgressXByProgressY(meshedBitmapYInContainer)
@@ -135,10 +136,10 @@ class STMeshHelper {
                 val meshedItemWidth: Float = distanceFromLeftLineToRightLineInContainer * meshWidthRatio
 
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 X 轴位置
-                val progressXInBitmap: Float = leftLineXInContainer + meshedItemWidth
+                val meshedBitmapXInContainer: Float = leftLineXInContainer + meshedItemWidth
 
                 // 为扭曲后的网格顶点赋值
-                verts[vertIndex++] = progressXInBitmap
+                verts[vertIndex++] = meshedBitmapXInContainer
                 verts[vertIndex++] = meshedBitmapYInContainer
             }
         }

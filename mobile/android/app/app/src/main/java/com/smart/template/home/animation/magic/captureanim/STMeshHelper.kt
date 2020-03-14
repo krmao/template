@@ -99,34 +99,52 @@ class STMeshHelper {
             rightLineProgress = LineProgress(bitmapContainerWidth, bitmapContainerWidth * rightLineToXRatio, 0f, bitmapContainerHeight * rightLineToYRatio)
         }
 
-        // 首先计算出 这条线 在 view 中 Y 轴应该出现的位置
-        val progressYInContainer: Float = bitmapContainerHeight * progress
+        //==========================================================================================================================================================================================
+        // 上面是精确构建出左右两条线在当前进度时所处状态
+        //
+        // 下面是构建出当前进度图片根据左右两条线扭曲的网格向量数组
+        // 由于可以确定图片下移的高度, 所以图片上边线下移后所在 bitmapContainer 中的位置 Y 轴可以确定
+        //==========================================================================================================================================================================================
 
-        // 初始化图片被分割为网格后的 verts 数组
+        // verts 图片扭曲后的网格向量数组, [x0,y0,x1,y1 ... xn,yn]
         val verts = FloatArray((meshWidth + 1) * (meshHeight + 1) * 2)
-        var num = 0
+        // 网格数组的下标
+        var vertIndex = 0
+
+        // 图片顶部边线在 bitmapContainer 中所处的 Y 轴位置, 图片最上面的位置, 下面每一个网格基于这个位置进行计算位置
+        val meshedBitmapTopYInContainer: Float = bitmapContainerHeight * progress
+
+        // 遍历网格数组, 给每一个网格所在顶点赋值根据左右两侧边线在当前进度时扭曲后的数值
         for (meshHeightIndex in 0..meshHeight) {
             for (meshWidthIndex in 0..meshWidth) {
-                // 计算出扭曲后的 bitmap 网格 Y 坐标
-                val progressYInBitmap: Float = progressYInContainer + bitmapFitHeight * meshHeightIndex / meshHeight * (1-progress)
-
-                val progressLeftLineXInBitmap: Float = leftLineProgress.calculateProgressXByProgressY(progressYInBitmap)
-                val progressRightLineXInBitmap: Float = rightLineProgress.calculateProgressXByProgressY(progressYInBitmap)
-                val progressDistanceXInBitmap: Float = progressRightLineXInBitmap - progressLeftLineXInBitmap
-
-                // 当前 bitmap 网格宽度比例
+                // 当前网格顶点宽度比例
                 val meshWidthRatio: Float = meshWidthIndex / meshWidth.toFloat() // 一定要 float, 否则整除计算出错
-                // 计算出扭曲后的 bitmap 网格 X 坐标
-                val progressXInBitmap: Float = progressLeftLineXInBitmap + progressDistanceXInBitmap * meshWidthRatio
+                // 当前网格顶点高度比例
+                val meshHeightRatio: Float = meshHeightIndex / meshHeight.toFloat() // 一定要 float, 否则整除计算出错
 
-                verts[num++] = progressXInBitmap
-                verts[num++] = progressYInBitmap
+                // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
+                val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio  //* (1 - progress)
+
+                // 图片最左侧边线在当前进度所处的 X 轴位置
+                val leftLineXInContainer: Float = leftLineProgress.calculateProgressXByProgressY(meshedBitmapYInContainer)
+                // 图片最右侧边线在当前进度所处的 X 轴位置
+                val rightLineXInContainer: Float = rightLineProgress.calculateProgressXByProgressY(meshedBitmapYInContainer)
+                // 图片最左侧边线在当前进度与最右侧边线的距离
+                val distanceFromLeftLineToRightLineInContainer: Float = rightLineXInContainer - leftLineXInContainer
+                // 计算出每个网格平均分摊(均匀分布)扭曲后的宽度
+                val meshedItemWidth: Float = distanceFromLeftLineToRightLineInContainer * meshWidthRatio
+
+                // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 X 轴位置
+                val progressXInBitmap: Float = leftLineXInContainer + meshedItemWidth
+
+                // 为扭曲后的网格顶点赋值
+                verts[vertIndex++] = progressXInBitmap
+                verts[vertIndex++] = meshedBitmapYInContainer
             }
         }
         return verts
     }
 
-    private val accelerateInterpolator: Interpolator by lazy { STInterpolatorFactory.createAccelerateInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
     private val fastOutSlowInInterpolator: Interpolator by lazy { STInterpolatorFactory.createFastOutSlowInInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
 
     /**

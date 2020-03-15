@@ -61,24 +61,28 @@
         tools:ignore="HardcodedText" />
 
 
-    <com.smart.template.home.animation.wave.STRippleLineView
-        android:id="@+id/rippleLineView"
+    <FrameLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="-20dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="5dp"
+        android:background="#44ff3333">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnRight"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/seekBar"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
-        app:backgroundTint="@color/blue"
-        app:elevation="0dp" />
+        <com.smart.template.home.animation.wave.STRippleLineView
+            android:id="@+id/rippleLineView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnRight"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:backgroundTint="@color/pink"
+            app:elevation="0dp" />
+    </FrameLayout>
 
     <SeekBar
         android:id="@+id/seekBar"

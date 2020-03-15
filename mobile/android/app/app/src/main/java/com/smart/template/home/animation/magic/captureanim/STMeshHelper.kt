@@ -3,7 +3,6 @@ package com.smart.template.home.animation.magic.captureanim
 import android.view.animation.Interpolator
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
-import kotlin.math.cos
 
 /**
  * 扭曲图像, 网格绘制帮助类
@@ -86,6 +85,8 @@ class STMeshHelper {
      * @return verts 图片被分割成网格的坐标数组 x,y,x,y ...
      */
     fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f, leftLineToYRatio: Float = 1.5f, rightLineToYRatio: Float = 1.5f): FloatArray {
+//        enableBottomLineMesh = leftLintToXRatio > 0.5f
+
         // 左右边线运动轨迹
         val leftLine: Line
         val rightLine: Line
@@ -115,25 +116,32 @@ class STMeshHelper {
         // 图片顶部边线在 bitmapContainer 中所处的 Y 轴位置, 图片最上面的位置, 下面每一个网格基于这个位置进行计算位置
         // 此处使用 bitmapContainerHeight 而不是 bitmapFitHeight 是为了图片可以超出自身最底部区域绘制, 当bitmapFitHeight < bitmapContainerHeight 时起作用
         val meshedBitmapTopYInContainer: Float = bitmapContainerHeight * progress
-        val cosValue = -1 * cos(Math.toRadians(180.0 * progress)) / 2f // [-1/2->0->1/2]
-        val meshedBitmapBottomYInContainer: Float = bitmapFitHeight * (1 + cosValue * progress).toFloat() //底部先回弹再下降
 
         // 遍历网格数组, 给每一个网格所在顶点赋值根据左右两侧边线在当前进度时扭曲后的数值
         for (meshHeightIndex in 0..meshHeight) {
+            // 当前网格顶点高度比例
+            val meshHeightRatio: Float = meshHeightIndex / meshHeight.toFloat() // 一定要 float, 否则整除计算出错 [0,1]
             for (meshWidthIndex in 0..meshWidth) {
                 // 当前网格顶点宽度比例
-                val meshWidthRatio: Float = meshWidthIndex / meshWidth.toFloat() // 一定要 float, 否则整除计算出错
-                // 当前网格顶点高度比例
-                val meshHeightRatio: Float = meshHeightIndex / meshHeight.toFloat() // 一定要 float, 否则整除计算出错
-
+                val meshWidthRatio: Float = meshWidthIndex / meshWidth.toFloat() // 一定要 float, 否则整除计算出错 [0,1]
+                // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
+                val meshedBitmapBottomYInContainer: Float = if (this.enableBottomLineMesh) {
+                    if (leftLintToXRatio > 0.5f) {
+                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 + bottomYInterpolator.getInterpolation(meshWidthRatio) * progress)
+                    } else if (rightLineToXRatio < 0.5f) {
+                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 - bottomYInterpolator.getInterpolation(meshWidthRatio) * progress)
+                    } else {
+                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress)
+                    }
+                } else {
+                    meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress)
+                }
                 // 图片最顶侧边线在当前进度与最底侧边线的距离
                 val distanceFromTopLineToBottomLineInContainer: Float = meshedBitmapBottomYInContainer - meshedBitmapTopYInContainer
                 // 计算出每个网格平均分摊(均匀分布)扭曲后的高度
                 val meshedItemHeight: Float = distanceFromTopLineToBottomLineInContainer * meshHeightRatio
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置
                 val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + meshedItemHeight
-                // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
-                // val meshedBitmapYInContainer: Float = meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) // * (1 - progress) 是为了让图片下边线下降的更慢一些
 
                 // 图片最左侧边线在当前进度所处的 X 轴位置
                 val leftLineXInContainer: Float = leftLine.getOutputValue(meshedBitmapYInContainer)
@@ -143,7 +151,6 @@ class STMeshHelper {
                 val distanceFromLeftLineToRightLineInContainer: Float = rightLineXInContainer - leftLineXInContainer
                 // 计算出每个网格平均分摊(均匀分布)扭曲后的宽度
                 val meshedItemWidth: Float = distanceFromLeftLineToRightLineInContainer * meshWidthRatio
-
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 X 轴位置
                 val meshedBitmapXInContainer: Float = leftLineXInContainer + meshedItemWidth
 
@@ -155,6 +162,8 @@ class STMeshHelper {
         return verts
     }
 
+    var enableBottomLineMesh: Boolean = true
+    private val bottomYInterpolator: Interpolator by lazy { STInterpolatorFactory.createAnticipateOvershootInterpolator(1f, 1.5f) } // 从 0f -> 1f 的过程是 先加速再减速
     private val fastOutSlowInInterpolator: Interpolator by lazy { STInterpolatorFactory.createFastOutSlowInInterpolator() } // 从 0f -> 1f 的过程是 先加速再减速
 
     /**

@@ -2,10 +2,12 @@ package com.smart.library.util
 
 import android.app.Activity
 import android.content.Context
-import  androidx.fragment.app.Fragment
+import androidx.fragment.app.Fragment
 import org.jetbrains.anko.AnkoAsyncContext
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceCallWithBinaryOperator")
 object STValueUtil {
@@ -83,7 +85,7 @@ object STValueUtil {
     @JvmOverloads
     @JvmStatic
     fun toDouble(value: String?, defaultValue: Double = 0.0): Double = value?.toDoubleOrNull()
-            ?: defaultValue
+        ?: defaultValue
 
     @JvmStatic
     fun toIntOrNull(value: String?): Int? = value?.toIntOrNull()
@@ -98,17 +100,17 @@ object STValueUtil {
     @JvmOverloads
     @JvmStatic
     fun toInt(value: String?, defaultValue: Float = 0f): Float = value?.toFloatOrNull()
-            ?: defaultValue
+        ?: defaultValue
 
     @JvmOverloads
     @JvmStatic
     fun formatDecimal(value: Double?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength)
-            ?: defaultValue
+        ?: defaultValue
 
     @JvmOverloads
     @JvmStatic
     fun formatDecimal(value: String?, decimalLength: Int, defaultValue: String = "0.00"): String = formatDecimalOrNull(value, decimalLength)
-            ?: defaultValue
+        ?: defaultValue
 
     /**
      * 四舍五入 decimalLength：小数位数
@@ -164,4 +166,17 @@ object STValueUtil {
         }
     }
 
+    /**
+     * @param progress 进度 [0, 0.5, 1]
+     * @return [0, 1, 0]
+     */
+    @JvmStatic
+    fun getSinValue(progress: Float): Double = sin(Math.toRadians(180.0 * progress))
+
+    /**
+     * @param progress 进度 [0, 0.5, 1]
+     * @return [1, 0, -1]
+     */
+    @JvmStatic
+    fun getCosValue(progress: Float): Double = cos(Math.toRadians(180.0 * progress))
 }

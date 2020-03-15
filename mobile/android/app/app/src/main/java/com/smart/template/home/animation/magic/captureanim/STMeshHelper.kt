@@ -85,8 +85,6 @@ class STMeshHelper {
      * @return verts 图片被分割成网格的坐标数组 x,y,x,y ...
      */
     fun setProgress(progress: Float, leftLintToXRatio: Float = 0.8f, rightLineToXRatio: Float = 0.85f, leftLineToYRatio: Float = 1.5f, rightLineToYRatio: Float = 1.5f): FloatArray {
-//        enableBottomLineMesh = leftLintToXRatio > 0.5f
-
         // 左右边线运动轨迹
         val leftLine: Line
         val rightLine: Line
@@ -126,12 +124,10 @@ class STMeshHelper {
                 val meshWidthRatio: Float = meshWidthIndex / meshWidth.toFloat() // 一定要 float, 否则整除计算出错 [0,1]
                 // 当前网格顶点在当前进度时在 bitmapContainer 中所处的 Y 轴位置, 计算图片扭曲后的位置这里使用图片 自适应 FIT 后的真实绘制宽高计算
                 val meshedBitmapBottomYInContainer: Float = if (this.enableBottomLineMesh) {
-                    if (leftLintToXRatio > 0.5f) {
-                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 + bottomYInterpolator.getInterpolation(meshWidthRatio) * progress)
-                    } else if (rightLineToXRatio < 0.5f) {
-                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 - bottomYInterpolator.getInterpolation(meshWidthRatio) * progress)
-                    } else {
-                        meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress)
+                    when {
+                        leftLintToXRatio > 0.5f -> meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 + bottomYInterpolator.getInterpolation(meshWidthRatio) * progress)
+                        rightLineToXRatio < 0.5f -> meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress) * (1 + bottomYInterpolator.getInterpolation(1 - meshWidthRatio) * progress)
+                        else -> meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress)
                     }
                 } else {
                     meshedBitmapTopYInContainer + bitmapFitHeight * meshHeightRatio * (1 - progress)

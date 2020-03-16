@@ -64,6 +64,13 @@ class STMagicFragment : STBaseFragment() {
             magicView?.setLineRatio(leftLintToXRatio = 0.475f, rightLineToXRatio = 0.525f)
             magicView?.start()
         }
+        btnReset.setOnClickListener {
+            seekBar.progress = 0
+            magicView?.reset()
+        }
+        btnMeshBottom.setOnClickListener {
+            magicView.enableBottomLineMesh(!magicView.enableBottomLineMesh())
+        }
 
         btnRight.setOnClickListener {
             innerWaterCenterWaveView.start()

@@ -22,9 +22,9 @@ class STMeshHelper {
      * @see {@link https://www.jianshu.com/p/11e6be1f18e6}
      * @see {@link https://www.jianshu.com/p/51d8dd99d27d}
      */
-    var meshWidth: Int = 50
+    var meshWidth: Int = 40
         private set
-    var meshHeight: Int = 50
+    var meshHeight: Int = 40
         private set
 
     fun init(meshWidth: Int = this.meshWidth, meshHeight: Int = this.meshHeight) {

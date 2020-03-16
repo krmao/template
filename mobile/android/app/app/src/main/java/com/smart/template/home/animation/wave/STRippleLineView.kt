@@ -14,7 +14,7 @@ import kotlin.math.min
  * 水波纹特效
  * https://github.com/hackware1993/WaveView
  */
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 class STRippleLineView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
     var speed: Int = 500 // 波纹的创建速度，每500ms创建一个
     var duration: Long = 2000 // 一个波纹从创建到消失的持续时间

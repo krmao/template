@@ -19,7 +19,7 @@ import com.smart.library.util.animation.STInterpolatorFactory
 class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var progress = 0f
-    private var leftLintToXRatio: Float = 0.8f
+    private var leftLineToXRatio: Float = 0.8f
     private var rightLineToXRatio: Float = 0.85f
     private var leftLineToYRatio: Float = 1.0f
     private var rightLineToYRatio: Float = 1.0f
@@ -65,7 +65,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             innerBitmap,
             meshHelper.meshWidth,
             meshHelper.meshHeight,
-            meshHelper.setProgress(progress, leftLintToXRatio, rightLineToXRatio, leftLineToYRatio, rightLineToYRatio),
+            meshHelper.setProgress(progress, leftLineToXRatio, rightLineToXRatio, leftLineToYRatio, rightLineToYRatio),
             0,
             null,
             0,
@@ -75,6 +75,22 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     fun setDuration(duration: Long = defaultDuration): STMagicView {
         animator.duration = duration
+        return this
+    }
+
+    /**
+     * 图片底部是否扭曲处理, 默认 true
+     */
+    @JvmOverloads
+    fun enableBottomLineMesh(enableBottomLineMesh: Boolean = meshHelper.enableBottomLineMesh): Boolean {
+        if (enableBottomLineMesh != meshHelper.enableBottomLineMesh) {
+            meshHelper.enableBottomLineMesh = enableBottomLineMesh
+        }
+        return meshHelper.enableBottomLineMesh
+    }
+
+    fun isEnableBottomLineMesh(enableBottomLineMesh: Boolean): STMagicView {
+        meshHelper.enableBottomLineMesh = enableBottomLineMesh
         return this
     }
 
@@ -106,8 +122,8 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         return this
     }
 
-    fun setLineRatio(leftLintToXRatio: Float = this.leftLintToXRatio, rightLineToXRatio: Float = this.rightLineToXRatio, leftLineToYRatio: Float = this.leftLineToYRatio, rightLineToYRatio: Float = this.rightLineToYRatio): STMagicView {
-        this.leftLintToXRatio = leftLintToXRatio
+    fun setLineRatio(leftLintToXRatio: Float = this.leftLineToXRatio, rightLineToXRatio: Float = this.rightLineToXRatio, leftLineToYRatio: Float = this.leftLineToYRatio, rightLineToYRatio: Float = this.rightLineToYRatio): STMagicView {
+        this.leftLineToXRatio = leftLintToXRatio
         this.rightLineToXRatio = rightLineToXRatio
         this.leftLineToYRatio = leftLineToYRatio
         this.rightLineToYRatio = rightLineToYRatio
@@ -128,14 +144,23 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
      * 动画立即停止
      */
     fun cancel() {
-        animator.cancel()
+        if (isRunning() || isStarted()) {
+            animator.cancel()
+        }
     }
 
     /**
      * 动画立即停止在结束位置
      */
     fun end() {
-        animator.end()
+        if (isRunning() || isStarted()) {
+            animator.end()
+        }
+    }
+
+    fun reset() {
+        cancel()
+        setProgress(0f)
     }
 
     fun resume() {

@@ -38,9 +38,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
             addUpdateListener { animation ->
                 val progress = animation.animatedValue as Float
                 setProgress(progress)
-                if (progress == 1f) {
-                    onProgressListener?.invoke(progress)
-                }
+                onProgressListener?.invoke(progress)
             }
         }
     }

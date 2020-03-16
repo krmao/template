@@ -23,11 +23,13 @@ class STMagicFragment : STBaseFragment() {
 
     private val bitmap: Bitmap by lazy { BitmapFactory.decodeResource(resources, R.drawable.st_beauty) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.st_magic_fragment, container, false)
     }
 
+    private var trackingTouch: Boolean = false
     private var cachedBitmap: Bitmap? = null
+    private val progressMax: Float = 1000f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,31 +44,40 @@ class STMagicFragment : STBaseFragment() {
             innerWaterCenterWaveView.maxRadiusRate = 0.8f
         }
 
-        seekBar?.max = 1000
-        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBar.max = progressMax.toInt()
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                magicView?.setProgress(progress.toFloat() / 1000f)
+                if (trackingTouch) {
+                    magicView.setProgress(progress.toFloat() / progressMax)
+                }
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                trackingTouch = true
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                trackingTouch = false
+            }
         })
 
-        magicView?.setOnProgressListener {
-            STLogUtil.w(STMagicView.TAG, "animation finished")
+        magicView.setOnProgressListener {
+            seekBar.progress = (progressMax * it).toInt()
+            STLogUtil.w(STMagicView.TAG, "setOnProgressListener $it")
         }
 
         btnLeft.setOnClickListener {
-            magicView?.setLineRatio(leftLintToXRatio = 0.1f, rightLineToXRatio = 0.15f)
-            magicView?.start()
+            magicView.setLineRatio(leftLintToXRatio = 0.1f, rightLineToXRatio = 0.15f)
+            magicView.start()
         }
         btnCenter.setOnClickListener {
-            magicView?.setLineRatio(leftLintToXRatio = 0.475f, rightLineToXRatio = 0.525f)
-            magicView?.start()
+            magicView.setLineRatio(leftLintToXRatio = 0.475f, rightLineToXRatio = 0.525f)
+            magicView.start()
         }
         btnReset.setOnClickListener {
             seekBar.progress = 0
-            magicView?.reset()
+            magicView.reset()
+            innerWaterCenterWaveView.stop()
         }
         btnMeshBottom.setOnClickListener {
             magicView.enableBottomLineMesh(!magicView.enableBottomLineMesh())
@@ -88,7 +99,7 @@ class STMagicFragment : STBaseFragment() {
 
             val innerCachedBitmap = cachedBitmap
 
-            STLogUtil.w(STMagicView.TAG, "innerCachedBitmap==null?${innerCachedBitmap == null}")
+            STLogUtil.w(STMagicView.TAG, "innerCachedBitmap==null${innerCachedBitmap == null}")
             STLogUtil.w(STMagicView.TAG, "magicView.width=${magicView.width}, magicView.height=${magicView.height}")
             STLogUtil.w(STMagicView.TAG, "imageView.width=${imageView.width}, btnRight.height=${imageView.height}")
 
@@ -115,7 +126,7 @@ class STMagicFragment : STBaseFragment() {
         super.onDestroy()
         cachedBitmap?.recycle()
         cachedBitmap = null
-        imageView?.destroyDrawingCache()
+        imageView.destroyDrawingCache()
     }
 
     companion object {

@@ -26,7 +26,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var rightLineToYRatio: Float = 1.0f
     var bitmap: Bitmap? = null
         private set
-    private var meshHelper: STMeshHelper = STMeshHelper()
+    private var meshHelper: MeshHelper = MeshHelper()
 
     private val defaultDuration: Long = 350
     private val defaultPaint = Paint().apply { isAntiAlias = true }
@@ -176,7 +176,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
      * @see {@link https://github.com/xinlyun/CaptureView}
      * @see {@link https://www.jianshu.com/p/51d8dd99d27d}
      */
-    class STMeshHelper {
+    private class MeshHelper {
 
         private var bitmapContainerWidth: Float = 0f
         private var bitmapContainerHeight: Float = 0f

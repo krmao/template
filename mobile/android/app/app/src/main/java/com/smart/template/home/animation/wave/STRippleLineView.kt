@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
-import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
 import java.util.*
 import kotlin.math.min
@@ -95,7 +94,6 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     override fun onDraw(canvas: Canvas) {
-        STLogUtil.d("rippleLine", "onDraw start circleList=${circleList.size}")
         val iterator = circleList.iterator()
         while (iterator.hasNext()) {
             val circle = iterator.next()
@@ -106,7 +104,6 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
                 postInvalidateDelayed(10)
             } else {
                 iterator.remove()
-                STLogUtil.d("rippleLine", "onDraw removed circleList=${circleList.size}")
                 postInvalidateDelayed(10)
             }
         }

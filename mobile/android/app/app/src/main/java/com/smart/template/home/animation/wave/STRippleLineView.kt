@@ -2,11 +2,13 @@ package com.smart.template.home.animation.wave
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
-import android.view.animation.LinearInterpolator
+import com.smart.library.util.STLogUtil
+import com.smart.library.util.animation.STInterpolatorFactory
 import java.util.*
 import kotlin.math.min
 
@@ -16,39 +18,23 @@ import kotlin.math.min
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class STRippleLineView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
-    var speed: Int = 500 // 波纹的创建速度，每500ms创建一个
-    var duration: Long = 2000 // 一个波纹从创建到消失的持续时间
-    var initialRadius: Float = 0f // 初始波纹半径 = 0f
-    var maxRadiusRate: Float = 0.85f
-    var interpolator: Interpolator = LinearInterpolator()
+
+    var durationMs: Long = 600                  // 一个波纹从创建到消失的持续时间
+    var initialRadiusPx: Float = 0f             // 初始波纹半径 = 0f
+    var createCircleSpeedMs: Long = 300         // 波纹的创建速度，每500ms创建一个
+    var maxRadiusRateOnMinEdge: Float = 0.85f   // 与最小边的比率
 
     private var runningTime: Long = 0
-    private var isRunning = false
-    private var maxRadiusSet = false
-    private var maxRadius: Float = 0f // 最大波纹半径 = 0f
-    private var lastCreateTime: Long = 0
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var maxRadiusChanged = false
+    private var maxRadius: Float = 0f           // 最大波纹半径 = 0f
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#33666666")
+        style = Paint.Style.FILL
+    }
 
     private val circleList: MutableList<Circle> = ArrayList()
-    private val createCircle: Runnable = object : Runnable {
-        override fun run() {
-            if (isRunning && runningTime <= duration) {
-                newCircle()
-                runningTime += speed
-                postDelayed(this, speed.toLong())
-            } else {
-                stop()
-            }
-        }
-    }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        if (!maxRadiusSet) {
-            maxRadius = min(w, h) * maxRadiusRate / 2.0f
-        }
-    }
-
-    fun setStyle(style: Paint.Style?) {
+    fun setStyle(style: Paint.Style) {
         paint.style = style
     }
 
@@ -56,80 +42,91 @@ class STRippleLineView @JvmOverloads constructor(context: Context, attrs: Attrib
         paint.color = color
     }
 
+    fun setMaxRadius(maxRadius: Float) {
+        this.maxRadius = maxRadius
+        maxRadiusChanged = true
+    }
+
+    private var circleRunnable: Runnable? = null
+
     /**
      * 开始
      */
     fun start() {
-        stopImmediately()
-        isRunning = true
+        stopImmediately(false)
         runningTime = 0
-        createCircle.run()
+        circleRunnable = createCircleRunnable()
+        post(circleRunnable)
     }
 
     /**
      * 缓慢停止
      */
     fun stop() {
-        isRunning = false
-        runningTime = 0
+        runningTime = -1
     }
 
     /**
      * 立即停止
      */
-    fun stopImmediately() {
-        isRunning = false
-        runningTime = 0
+    fun stopImmediately(needInvalidate: Boolean = true) {
+        removeCallbacks(circleRunnable)
+        stop()
         circleList.clear()
-        invalidate()
+        circleRunnable = null
+        if (needInvalidate) postInvalidate()
+    }
+
+    private fun createCircleRunnable(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                if (runningTime != -1L && runningTime <= durationMs) {
+                    val circle = Circle()
+                    circleList.add(circle)
+                    postInvalidate()
+
+                    runningTime += createCircleSpeedMs
+                    postDelayed(this, createCircleSpeedMs)
+                } else {
+                    stop()
+                }
+            }
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
+        STLogUtil.d("rippleLine", "onDraw start circleList=${circleList.size}")
         val iterator = circleList.iterator()
         while (iterator.hasNext()) {
             val circle = iterator.next()
-            val radius = circle.currentRadius
-            if (System.currentTimeMillis() - circle.createTime < duration) {
-                paint.alpha = circle.alpha
+            val radius = circle.getCurrentRadius()
+            if (System.currentTimeMillis() - circle.createTime < durationMs) {
+                paint.alpha = circle.getCurrentAlpha(radius)
                 canvas.drawCircle(width / 2.toFloat(), height / 2.toFloat(), radius, paint)
+                postInvalidateDelayed(10)
             } else {
                 iterator.remove()
+                STLogUtil.d("rippleLine", "onDraw removed circleList=${circleList.size}")
+                postInvalidateDelayed(10)
             }
         }
-        if (circleList.size > 0) {
-            postInvalidateDelayed(10)
-        }
     }
 
-    fun setMaxRadius(maxRadius: Float) {
-        this.maxRadius = maxRadius
-        maxRadiusSet = true
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        if (!maxRadiusChanged) maxRadius = min(w, h) * maxRadiusRateOnMinEdge / 2.0f
     }
 
-    private fun newCircle() {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastCreateTime < speed) {
-            return
-        }
-        val circle = Circle()
-        circleList.add(circle)
-        invalidate()
-        lastCreateTime = currentTime
-    }
+    var interpolator: Interpolator = STInterpolatorFactory.createDecelerateInterpolator()
 
     private inner class Circle(val createTime: Long = System.currentTimeMillis()) {
+        fun getCurrentAlpha(currentRadius: Float): Int {
+            val radiusRatio = (currentRadius - initialRadiusPx) / (maxRadius - initialRadiusPx)
+            return (255 - interpolator.getInterpolation(radiusRatio) * 255).toInt()
+        }
 
-        val alpha: Int
-            get() {
-                val percent = (currentRadius - initialRadius) / (maxRadius - initialRadius)
-                return (255 - interpolator.getInterpolation(percent) * 255).toInt()
-            }
-
-        val currentRadius: Float
-            get() {
-                val percent = (System.currentTimeMillis() - createTime) * 1.0f / duration
-                return initialRadius + interpolator.getInterpolation(percent) * (maxRadius - initialRadius)
-            }
-
+        fun getCurrentRadius(): Float {
+            val timeRatio = (System.currentTimeMillis() - createTime) / durationMs.toFloat()
+            return initialRadiusPx + interpolator.getInterpolation(timeRatio) * (maxRadius - initialRadiusPx)
+        }
     }
 }

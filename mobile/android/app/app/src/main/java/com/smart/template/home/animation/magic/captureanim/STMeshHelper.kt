@@ -22,9 +22,9 @@ class STMeshHelper {
      * @see {@link https://www.jianshu.com/p/11e6be1f18e6}
      * @see {@link https://www.jianshu.com/p/51d8dd99d27d}
      */
-    var meshWidth: Int = 40
+    var meshWidth: Int = 30
         private set
-    var meshHeight: Int = 40
+    var meshHeight: Int = 30
         private set
 
     fun init(meshWidth: Int = this.meshWidth, meshHeight: Int = this.meshHeight) {
@@ -57,10 +57,11 @@ class STMeshHelper {
                 this.bitmapFitHeight = bitmapContainerHeight
             }
         }
-
-        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapAspectRatio=$bitmapAspectRatio, bitmapWidth:$bitmapWidth, bitmapHeight=$bitmapHeight")
-        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapContainerAspectRatio=$bitmapContainerAspectRatio, bitmapContainerWidth:$bitmapContainerWidth, bitmapContainerHeight=$bitmapContainerHeight")
-        STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapFitAspectRatio=${bitmapFitWidth / bitmapFitHeight}")
+        STLogUtil.sync {
+            STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapAspectRatio=$bitmapAspectRatio, bitmapWidth:$bitmapWidth, bitmapHeight=$bitmapHeight")
+            STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapContainerAspectRatio=$bitmapContainerAspectRatio, bitmapContainerWidth:$bitmapContainerWidth, bitmapContainerHeight=$bitmapContainerHeight")
+            STLogUtil.d(STMagicView.TAG, "setBitmapParams bitmapFitAspectRatio=${bitmapFitWidth / bitmapFitHeight}")
+        }
     }
 
     /**

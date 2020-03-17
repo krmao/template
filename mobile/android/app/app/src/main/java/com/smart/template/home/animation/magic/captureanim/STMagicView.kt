@@ -23,7 +23,8 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private var rightLineToXRatio: Float = 0.85f
     private var leftLineToYRatio: Float = 1.0f
     private var rightLineToYRatio: Float = 1.0f
-    private var bitmap: Bitmap? = null
+    var bitmap: Bitmap? = null
+        private set
     private var meshHelper: STMeshHelper = STMeshHelper()
 
     private val defaultDuration: Long = 350
@@ -106,7 +107,7 @@ class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSe
      */
     fun setProgress(progress: Float): STMagicView {
         this.progress = progress
-        invalidate()
+        postInvalidate()
         return this
     }
 

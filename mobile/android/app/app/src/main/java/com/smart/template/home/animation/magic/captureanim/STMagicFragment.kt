@@ -3,8 +3,6 @@ package com.smart.template.home.animation.magic.captureanim
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,6 @@ import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STLogUtil
-import com.smart.library.util.animation.STInterpolatorFactory
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_magic_fragment.*
 
@@ -35,13 +32,8 @@ class STMagicFragment : STBaseFragment() {
 
         val innerWaterCenterWaveView = rippleLineView
         if (innerWaterCenterWaveView != null) {
-            innerWaterCenterWaveView.duration = 600 // 0 - 300 - 600 三个圈
-            innerWaterCenterWaveView.setStyle(Paint.Style.FILL) // STROKE
-            innerWaterCenterWaveView.speed = 300
-            innerWaterCenterWaveView.setColor(Color.parseColor("#22555555"))
-            innerWaterCenterWaveView.interpolator = STInterpolatorFactory.createDecelerateInterpolator()
-            innerWaterCenterWaveView.initialRadius = 20.toPxFromDp().toFloat()
-            innerWaterCenterWaveView.maxRadiusRate = 0.8f
+            innerWaterCenterWaveView.initialRadiusPx = 20.toPxFromDp().toFloat()
+            innerWaterCenterWaveView.maxRadiusRateOnMinEdge = 0.8f
         }
 
         seekBar.max = progressMax.toInt()
@@ -84,25 +76,19 @@ class STMagicFragment : STBaseFragment() {
         }
 
         btnRight.setOnClickListener {
+            val startTime = System.currentTimeMillis()
+            STLogUtil.w(STMagicView.TAG, "startTime=$startTime")
             innerWaterCenterWaveView.start()
-
+            STLogUtil.w(STMagicView.TAG, "startTime1=${System.currentTimeMillis()}")
             // 销毁旧的缓存 bitmap
-            if (cachedBitmap != null) {
-                imageView.destroyDrawingCache()
-                imageView.isDrawingCacheEnabled = false
+            if (cachedBitmap == null) {
+                // 创建新的缓存 bitmap
+                imageView.isDrawingCacheEnabled = true
+                imageView.buildDrawingCache()
+                cachedBitmap = Bitmap.createBitmap(imageView.getDrawingCache(true))
             }
-
-            // 创建新的缓存 bitmap
-            imageView.isDrawingCacheEnabled = true
-            imageView.buildDrawingCache()
-            cachedBitmap = Bitmap.createBitmap(imageView.getDrawingCache(true))
-
+            STLogUtil.w(STMagicView.TAG, "startTime2=${System.currentTimeMillis()}")
             val innerCachedBitmap = cachedBitmap
-
-            STLogUtil.w(STMagicView.TAG, "innerCachedBitmap==null${innerCachedBitmap == null}")
-            STLogUtil.w(STMagicView.TAG, "magicView.width=${magicView.width}, magicView.height=${magicView.height}")
-            STLogUtil.w(STMagicView.TAG, "imageView.width=${imageView.width}, btnRight.height=${imageView.height}")
-
             if (innerCachedBitmap != null) {
                 /**
                  * 控制 bitmap 容器大小, 可以控制缩放与留白等
@@ -114,19 +100,21 @@ class STMagicFragment : STBaseFragment() {
                     bitmapContainerWidth = imageView.width.toFloat(),
                     bitmapContainerHeight = 230f.toPxFromDp()
                 )
+                STLogUtil.w(STMagicView.TAG, "startTime3=${System.currentTimeMillis()}")
                 magicView.setLineRatio(leftLintToXRatio = 0.85f, rightLineToXRatio = 0.9f, leftLineToYRatio = 1.2f, rightLineToYRatio = 1.2f)
                 magicView.visibility = View.VISIBLE
                 imageView.visibility = View.GONE
                 magicView.start()
+                STLogUtil.w(STMagicView.TAG, "startTime4=${System.currentTimeMillis()}")
             }
         }
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        imageView?.destroyDrawingCache()
         cachedBitmap?.recycle()
         cachedBitmap = null
-        imageView.destroyDrawingCache()
+        super.onDestroy()
     }
 
     companion object {

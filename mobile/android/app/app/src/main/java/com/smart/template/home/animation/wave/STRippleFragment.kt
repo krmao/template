@@ -27,9 +27,9 @@ class STRippleFragment : STBaseFragment() {
 
         val innerWaterCenterWaveView = rippleLineView
         if (innerWaterCenterWaveView != null) {
-            innerWaterCenterWaveView.duration = 2000
+            innerWaterCenterWaveView.durationMs = 2000
             innerWaterCenterWaveView.setStyle(Paint.Style.FILL) // STROKE
-            innerWaterCenterWaveView.speed = 400
+            innerWaterCenterWaveView.createCircleSpeedMs = 400
             innerWaterCenterWaveView.setColor(Color.BLUE)
             innerWaterCenterWaveView.interpolator = LinearOutSlowInInterpolator() // AccelerateInterpolator(1.2f) //
             innerWaterCenterWaveView.start()

@@ -14,7 +14,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="-10dp"
-        android:background="#22DDDDDD"
+        android:background="#22FF3333"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -100,8 +100,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="-20dp"
-        android:layout_marginBottom="5dp"
-        android:background="#44ff3333">
+        android:layout_marginBottom="5dp">
 
         <com.smart.template.home.animation.wave.STRippleLineView
             android:id="@+id/rippleLineView"

@@ -14,6 +14,7 @@ import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
 import com.smart.template.home.animation.magic.captureanim.STMagicFragment
+import com.smart.template.home.animation.swipe.SwipeMenuFragment
 import com.smart.template.home.animation.wave.STRippleFragment
 import com.smart.template.home.test.PullToNextPageFragment
 import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
@@ -31,6 +32,9 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btnSwipe.setOnClickListener {
+            SwipeMenuFragment.goTo(context)
+        }
         btnMagic.setOnClickListener {
             STMagicFragment.goTo(context)
         }

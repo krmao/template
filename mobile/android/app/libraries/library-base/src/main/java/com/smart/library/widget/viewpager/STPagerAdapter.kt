@@ -2,9 +2,9 @@ package com.smart.library.widget.viewpager
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager.widget.PagerAdapter
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
@@ -12,12 +12,12 @@ abstract class STPagerAdapter<ItemEntity> : PagerAdapter {
 
     protected var TAG: String? = STPagerAdapter::class.java.simpleName
 
-    protected lateinit var mDataList: ArrayList<ItemEntity>
-    protected lateinit var mContext: Context
+    protected var mDataList: ArrayList<ItemEntity> = arrayListOf()
+    protected var mContext: Context? = null
 
     private constructor()
 
-    constructor(context: Context, dataList: ArrayList<ItemEntity>) {
+    constructor(context: Context?, dataList: ArrayList<ItemEntity>) {
         mContext = context
         mDataList = dataList
     }

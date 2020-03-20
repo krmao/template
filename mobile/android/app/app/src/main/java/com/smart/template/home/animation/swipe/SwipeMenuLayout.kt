@@ -7,9 +7,9 @@ import android.content.Context
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.*
-import androidx.core.view.NestedScrollingChild
 import com.smart.library.util.animation.STInterpolatorFactory
 import com.smart.template.R
+import java.lang.ref.WeakReference
 import kotlin.math.abs
 
 /**
@@ -17,7 +17,7 @@ import kotlin.math.abs
  * https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr),NestedScrollingChild {
+class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     private val scaleTouchSlop by lazy { ViewConfiguration.get(context).scaledTouchSlop }           // 为了处理单击事件的冲突 = 0
     private val maxVelocity by lazy { ViewConfiguration.get(context).scaledMaximumFlingVelocity }   // 计算滑动速度用 = 0
@@ -170,9 +170,9 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     firstPoint[ev.rawX] = ev.rawY // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
 
                     // 如果down，view 和 cacheView 不一样，则立马让它还原。且把它置为null
-                    if (viewCache != null) {
-                        if (viewCache !== this) {
-                            viewCache?.smoothClose()
+                    if (lastExpandSwipeMenuLayout != null) {
+                        if (lastExpandSwipeMenuLayout?.get() !== this) {
+                            lastExpandSwipeMenuLayout?.get()?.smoothClose()
                             iosInterceptFlag = isIos // IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。
                         }
                         // 只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
@@ -316,7 +316,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     private var isExpand = false // 代表当前是否是展开状态 2016 11 03 add = false
 
     fun smoothExpand() {
-        viewCache = this // 展开就加入ViewCache
+        lastExpandSwipeMenuLayout = WeakReference(this) // 展开就加入ViewCache
         contentView?.isLongClickable = false // 侧滑菜单展开，屏蔽content长按
         cancelAnim()
         expandAnim = ValueAnimator.ofInt(scrollX, if (isRightToLeftSwipe) rightMenuWidth else -rightMenuWidth)
@@ -346,7 +346,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      * 平滑关闭
      */
     fun smoothClose() {
-        viewCache = null
+        lastExpandSwipeMenuLayout = null
 
         //2016 11 13 add 侧滑菜单展开，屏蔽content长按
         contentView?.isLongClickable = true
@@ -385,9 +385,9 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     // 理由：1 防止内存泄漏(ViewCache是一个静态变量)
     // 2 侧滑删除后自己后，这个View被Recycler回收，复用，下一个进入屏幕的View的状态应该是普通状态，而不是展开状态。
     override fun onDetachedFromWindow() {
-        if (this === viewCache) {
-            viewCache?.smoothClose()
-            viewCache = null
+        if (this === lastExpandSwipeMenuLayout?.get()) {
+            lastExpandSwipeMenuLayout?.get()?.smoothClose()
+            lastExpandSwipeMenuLayout = null
         }
         super.onDetachedFromWindow()
     }
@@ -406,16 +406,16 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      * 在RecyclerView里，视情况而定，如果是mAdapter.notifyItemRemoved(pos)方法不用调用。
      */
     fun quickClose() {
-        if (this === viewCache) {
+        if (this === lastExpandSwipeMenuLayout?.get()) {
             cancelAnim()
-            viewCache!!.scrollTo(0, 0) //关闭
-            viewCache = null
+            lastExpandSwipeMenuLayout?.get()?.scrollTo(0, 0)
+            lastExpandSwipeMenuLayout = null
         }
     }
 
     companion object {
         private const val TAG = "[SwipeMenuLayout]"
-        var viewCache: SwipeMenuLayout? = null
+        var lastExpandSwipeMenuLayout: WeakReference<SwipeMenuLayout>? = null
             private set
         private var isTouching = false
     }

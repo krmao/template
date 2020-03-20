@@ -40,6 +40,11 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     var isIos = true                            // IOS、QQ式交互，默认开
     var isRightToLeftSwipe = true               // 左滑右滑的开关,默认左滑打开菜单
     private var iosInterceptFlag = false        //IOS类型下，是否拦截事件的flag = false
+    private var isTouching = false
+
+    private var expandAnimation: ValueAnimator? = null
+    private var closeAnimation: ValueAnimator? = null
+    private var isExpand = false // 代表当前是否是展开状态 = false
 
     init {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout, defStyleAttr, 0)
@@ -102,7 +107,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     override fun generateLayoutParams(attrs: AttributeSet): LayoutParams = MarginLayoutParams(context, attrs)
 
     /**
-     * 给MatchParent的子View设置高度
+     * 给 match_parent 的子 View 设置高度
      */
     private fun forceUniformHeight(count: Int, widthMeasureSpec: Int) {
         // Pretend that the linear layout has an exact size. This is the measured height of
@@ -311,55 +316,50 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         return super.onInterceptTouchEvent(ev)
     }
 
-    private var expandAnim: ValueAnimator? = null
-    private var closeAnim: ValueAnimator? = null
-    private var isExpand = false // 代表当前是否是展开状态 2016 11 03 add = false
-
     fun smoothExpand() {
         lastExpandSwipeMenuLayout = WeakReference(this) // 展开就加入ViewCache
-        contentView?.isLongClickable = false // 侧滑菜单展开，屏蔽content长按
-        cancelAnim()
-        expandAnim = ValueAnimator.ofInt(scrollX, if (isRightToLeftSwipe) rightMenuWidth else -rightMenuWidth)
-        expandAnim?.addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
-        expandAnim?.interpolator = STInterpolatorFactory.createDecelerateInterpolator()
-        expandAnim?.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                isExpand = true
+        val toX = if (isRightToLeftSwipe) rightMenuWidth else -rightMenuWidth
+        if (scrollX != toX) {
+
+            contentView?.isLongClickable = false // 侧滑菜单展开，屏蔽content长按
+            cancelAnimation()
+            expandAnimation = ValueAnimator.ofInt(scrollX, toX).apply {
+                duration = 300
+                interpolator = STInterpolatorFactory.createDecelerateInterpolator()
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        isExpand = true
+                    }
+                })
+                addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
             }
-        })
-        expandAnim?.setDuration(300)?.start()
-    }
-
-    /**
-     * 每次执行动画之前都应该先取消之前的动画
-     */
-    private fun cancelAnim() {
-        if (closeAnim?.isRunning == true) {
-            closeAnim?.cancel()
-        }
-        if (expandAnim?.isRunning == true) {
-            expandAnim?.cancel()
+            expandAnimation?.start()
         }
     }
 
-    /**
-     * 平滑关闭
-     */
+    private fun cancelAnimation() {
+        if (closeAnimation?.isRunning == true) closeAnimation?.cancel()
+        if (expandAnimation?.isRunning == true) expandAnimation?.cancel()
+    }
+
     fun smoothClose() {
-        lastExpandSwipeMenuLayout = null
+        if (lastExpandSwipeMenuLayout?.get() === this) lastExpandSwipeMenuLayout = null
 
-        //2016 11 13 add 侧滑菜单展开，屏蔽content长按
-        contentView?.isLongClickable = true
-        cancelAnim()
-        closeAnim = ValueAnimator.ofInt(scrollX, 0)
-        closeAnim?.addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
-        closeAnim?.interpolator = STInterpolatorFactory.createDecelerateInterpolator()
-        closeAnim?.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                isExpand = false
+        if (scrollX != 0) {
+            contentView?.isLongClickable = true // 侧滑菜单展开，屏蔽content长按
+            cancelAnimation()
+            closeAnimation = ValueAnimator.ofInt(scrollX, 0).apply {
+                interpolator = STInterpolatorFactory.createDecelerateInterpolator()
+                duration = 300
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        isExpand = false
+                    }
+                })
+                addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
             }
-        })
-        closeAnim?.setDuration(300)?.start()
+            closeAnimation?.start()
+        }
     }
 
     /**
@@ -372,32 +372,20 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         velocityTracker?.addMovement(event)
     }
 
-    /**
-     * 释放VelocityTracker
-     */
     private fun releaseVelocityTracker() {
         velocityTracker?.clear()
         velocityTracker?.recycle()
         velocityTracker = null
     }
 
-    // 每次ViewDetach的时候，判断一下 ViewCache是不是自己，如果是自己，关闭侧滑菜单，且ViewCache设置为null，
-    // 理由：1 防止内存泄漏(ViewCache是一个静态变量)
-    // 2 侧滑删除后自己后，这个View被Recycler回收，复用，下一个进入屏幕的View的状态应该是普通状态，而不是展开状态。
     override fun onDetachedFromWindow() {
-        if (this === lastExpandSwipeMenuLayout?.get()) {
-            lastExpandSwipeMenuLayout?.get()?.smoothClose()
-            lastExpandSwipeMenuLayout = null
-        }
+        smoothClose()
+        if (this === lastExpandSwipeMenuLayout?.get()) lastExpandSwipeMenuLayout = null
         super.onDetachedFromWindow()
     }
 
     // 展开时，禁止长按
-    override fun performLongClick(): Boolean {
-        return if (abs(scrollX) > scaleTouchSlop) {
-            false
-        } else super.performLongClick()
-    }
+    override fun performLongClick(): Boolean = if (abs(scrollX) > scaleTouchSlop) false else super.performLongClick()
 
     /**
      * 快速关闭。
@@ -407,7 +395,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     fun quickClose() {
         if (this === lastExpandSwipeMenuLayout?.get()) {
-            cancelAnim()
+            cancelAnimation()
             lastExpandSwipeMenuLayout?.get()?.scrollTo(0, 0)
             lastExpandSwipeMenuLayout = null
         }
@@ -417,6 +405,5 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         private const val TAG = "[SwipeMenuLayout]"
         var lastExpandSwipeMenuLayout: WeakReference<SwipeMenuLayout>? = null
             private set
-        private var isTouching = false
     }
 }

@@ -2,13 +2,13 @@
 <resources>
     <declare-styleable name="SwipeMenuLayout">
         <attr
-            name="swipeEnable"
+            name="enableSwipe"
             format="boolean" />
         <attr
-            name="ios"
+            name="enableBlockingMode"
             format="boolean" />
         <attr
-            name="leftSwipe"
+            name="isRightToLeft"
             format="boolean" />
     </declare-styleable>
 </resources>

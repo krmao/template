@@ -82,7 +82,7 @@ class SwipeMenuFragment : STBaseFragment() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
-            (holder.itemView as SwipeMenuLayout).isRightToLeftSwipe = true
+            (holder.itemView as SwipeMenuLayout).isRightToLeft = true
             holder.content.text = "${dataList[position].name} 从右向左滑动 "
             holder.btnUnRead.visibility = if (position % 2 == 0) View.GONE else View.VISIBLE
             holder.btnDelete.setOnClickListener {

@@ -21,87 +21,83 @@ import kotlin.math.abs
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
-    private val scaleTouchSlop by lazy { ViewConfiguration.get(context).scaledTouchSlop }           // 为了处理单击事件的冲突 = 0
-    private val maxVelocity by lazy { ViewConfiguration.get(context).scaledMaximumFlingVelocity }   // 计算滑动速度用 = 0
-    private var pointerId = 0                   // 多点触摸只算第一根手指的速度 = 0
-    private var mHeight = 0                     // 自己的高度 = 0
-    private var rightMenuWidth = 0              // 右侧菜单宽度总和(最大滑动距离)
-    private var limit = 0                       // 滑动判定临界值（右侧菜单宽度的40%） 手指抬起时，超过了展开，没超过收起menu
-    private var contentView: View? = null       // 存储contentView(第一个View)
-    private val lastPoint = PointF()            // 上一次的xy
+    var enableSwipe = true                      // 是否开启滑动删除功能
+    var enableBlockingMode = true               // 是否开启阻塞模式
+    var isRightToLeft = true                    // true 从右向左滑出菜单, false 从左向右滑出菜单
+    var isExpanded = false                      // 当前是否是展开
+        private set
 
-    //2016 10 22 add , 仿QQ，侧滑菜单展开时，点击除侧滑菜单之外的区域，关闭侧滑菜单。
-    //增加一个布尔值变量，dispatch函数里，每次down时，为true，move时判断，如果是滑动动作，设为false。
-    //在Intercept函数的up时，判断这个变量，如果仍为true 说明是点击事件，则关闭菜单。
-    private var isUnMoved = true
-
-    private val firstPoint = PointF()           // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件
-    private var isUserSwiped = false
-    private var velocityTracker: VelocityTracker? = null    //滑动速度变量
-    var isSwipeEnable = true                    // 滑动删除功能的开关,默认开
-    var isIos = true                            // IOS、QQ式交互，默认开
-    var isRightToLeftSwipe = true               // 左滑右滑的开关,默认左滑打开菜单
-    private var iosInterceptFlag = false        //IOS类型下，是否拦截事件的flag = false
-    private var isTouching = false
+    private val scaleTouchSlop by lazy { ViewConfiguration.get(context).scaledTouchSlop }
+    private val maxVelocity by lazy { ViewConfiguration.get(context).scaledMaximumFlingVelocity }
 
     private var expandAnimation: ValueAnimator? = null
-    private var closeAnimation: ValueAnimator? = null
-    private var isExpand = false // 代表当前是否是展开状态 = false
+    private var collapsedAnimation: ValueAnimator? = null
+
+    private var pointerId = 0                   // 第一个触摸的手指的 pointerId 值
+    private var menuWidth = 0                   // 菜单宽度(最大滑动距离)
+    private var maxHeight = 0                   // 根据 childView 的最大高度计算出自己的高度
+    private var isClickEvent = true             // 如果是点击事件，关闭菜单
+    private var blockingFlag = false            // 是否拦截事件
+    private val lastPoint = PointF()            // 上一个 MotionEvent
+    private val firstPoint = PointF()           // 第一个 MotionEvent
+    private var slideThresholdValue = 0         // 滑动阀值(右侧菜单宽度的40%) 手指抬起时, 超过了展开，否则收起菜单
+    private var isFingerTouching = false        // 是否有手指正在触摸
+    private var contentView: View? = null       // 存储contentView(第一个View)
+    private var forceInterceptTouchEvent = false            // 强制拦截事件, 自己消费
+    private var velocityTracker: VelocityTracker? = null    // 计算滑动速率
 
     init {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout, defStyleAttr, 0)
-        val count = typedArray.indexCount
-        for (i in 0 until count) {
-            when (val attr = typedArray.getIndex(i)) {
-                R.styleable.SwipeMenuLayout_swipeEnable -> {
-                    isSwipeEnable = typedArray.getBoolean(attr, true)
+        for (index in 0 until typedArray.indexCount) {
+            when (val attr = typedArray.getIndex(index)) {
+                R.styleable.SwipeMenuLayout_enableSwipe -> {
+                    enableSwipe = typedArray.getBoolean(attr, true)
                 }
-                R.styleable.SwipeMenuLayout_ios -> {
-                    isIos = typedArray.getBoolean(attr, true)
+                R.styleable.SwipeMenuLayout_enableBlockingMode -> {
+                    enableBlockingMode = typedArray.getBoolean(attr, true)
                 }
-                R.styleable.SwipeMenuLayout_leftSwipe -> {
-                    isRightToLeftSwipe = typedArray.getBoolean(attr, true)
+                R.styleable.SwipeMenuLayout_isRightToLeft -> {
+                    isRightToLeft = typedArray.getBoolean(attr, true)
                 }
             }
         }
         typedArray.recycle()
+
+        isClickable = true // 设置可点击, 获取触摸事件
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        isClickable = true // 令自己可点击，从而获取触摸事件
-        rightMenuWidth = 0 // 由于ViewHolder的复用机制，每次这里要手动恢复初始值
-        mHeight = 0
+        menuWidth = 0 // 由于ViewHolder的复用机制，每次这里要手动恢复初始值
+        maxHeight = 0
         var contentWidth = 0 // 适配GridLayoutManager，将以第一个子Item(即ContentItem)的宽度为控件宽度
-        val childCount = childCount
-
         // 为了子View的高，可以matchParent(参考的FrameLayout 和LinearLayout的Horizontal)
         val measureMatchParentChildren = MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY
-        var isNeedMeasureChildHeight = false
-        for (i in 0 until childCount) {
-            val childView = getChildAt(i)
-            //令每一个子View可点击，从而获取触摸事件
+        var needMeasureChildHeight = false
+        for (index in 0 until childCount) {
+            val childView = getChildAt(index)
+            // 令每一个子View可点击，从而获取触摸事件
             childView.isClickable = true
             if (childView.visibility != View.GONE) {
-                //后续计划加入上滑、下滑，则将不再支持Item的margin
+                // 后续计划加入上滑、下滑，则将不再支持Item的margin
                 measureChild(childView, widthMeasureSpec, heightMeasureSpec)
-                val lp = childView.layoutParams as MarginLayoutParams
-                mHeight = mHeight.coerceAtLeast(childView.measuredHeight)
-                if (measureMatchParentChildren && lp.height == LayoutParams.MATCH_PARENT) {
-                    isNeedMeasureChildHeight = true
+                val childLayoutParams = childView.layoutParams as MarginLayoutParams
+                maxHeight = maxHeight.coerceAtLeast(childView.measuredHeight)
+                if (measureMatchParentChildren && childLayoutParams.height == LayoutParams.MATCH_PARENT) {
+                    needMeasureChildHeight = true
                 }
-                if (i > 0) { //第一个布局是Left item，从第二个开始才是RightMenu
-                    rightMenuWidth += childView.measuredWidth
+                if (index > 0) { // 第一个布局是Left item，从第二个开始才是RightMenu
+                    menuWidth += childView.measuredWidth
                 } else {
                     contentView = childView
                     contentWidth = childView.measuredWidth
                 }
             }
         }
-        setMeasuredDimension(paddingLeft + paddingRight + contentWidth, mHeight + paddingTop + paddingBottom) //宽度取第一个Item(Content)的宽度
-        limit = rightMenuWidth * 4 / 10 //滑动判断的临界值
+        setMeasuredDimension(paddingLeft + paddingRight + contentWidth, maxHeight + paddingTop + paddingBottom) //宽度取第一个Item(Content)的宽度
+        slideThresholdValue = menuWidth * 4 / 10 //滑动判断的临界值
         // 如果子View的height有MatchParent属性的，设置子View高度
-        if (isNeedMeasureChildHeight) {
+        if (needMeasureChildHeight) {
             forceUniformHeight(childCount, widthMeasureSpec)
         }
     }
@@ -147,7 +143,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     childView.layout(left, paddingTop, left + childView.measuredWidth, paddingTop + childView.measuredHeight)
                     left += childView.measuredWidth
                 } else {
-                    if (isRightToLeftSwipe) {
+                    if (isRightToLeft) {
                         childView.layout(left, paddingTop, left + childView.measuredWidth, paddingTop + childView.measuredHeight)
                         left += childView.measuredWidth
                     } else {
@@ -179,19 +175,19 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      * https://www.jianshu.com/p/35a8309b9597
      */
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (isSwipeEnable) {
+        if (enableSwipe) {
             acquireVelocityTracker(event)
             val verTracker = velocityTracker
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    isUserSwiped = false // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件
-                    isUnMoved = true // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单
-                    iosInterceptFlag = false // 每次DOWN时，默认是不拦截的
-                    if (isTouching) { // 如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
+                    forceInterceptTouchEvent = false // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件
+                    isClickEvent = true // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单
+                    blockingFlag = false // 每次DOWN时，默认是不拦截的
+                    if (isFingerTouching) { // 如果有别的指头摸过了，那么就return false。这样后续的move..等事件也不会再来找这个View了。
                         STLogUtil.e(TAG, "dispatchTouchEvent ${getActionName(event)} return false 忽略多指滑动")
                         return false
                     } else {
-                        isTouching = true // 第一个摸的指头，赶紧改变标志，宣誓主权。
+                        isFingerTouching = true // 第一个摸的指头，赶紧改变标志，宣誓主权。
                     }
 
                     lastPoint[event.rawX] = event.rawY
@@ -201,7 +197,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     if (lastExpandSwipeMenuLayout != null) {
                         if (lastExpandSwipeMenuLayout?.get() !== this) {
                             lastExpandSwipeMenuLayout?.get()?.smoothClose()
-                            iosInterceptFlag = isIos // IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。
+                            blockingFlag = enableBlockingMode // IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。
                         }
                         // 只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
                         parent.requestDisallowInterceptTouchEvent(true)
@@ -211,7 +207,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (!iosInterceptFlag) {
+                    if (!blockingFlag) {
                         val offsetX = lastPoint.x - event.rawX
                         // 为了在水平滑动中禁止父类ListView等再竖直滑动
                         if (abs(offsetX) > scaleTouchSlop || abs(scrollX) > scaleTouchSlop) { // 修改此处，使屏蔽父布局滑动更加灵敏，
@@ -219,19 +215,19 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                         }
                         // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。begin
                         if (abs(offsetX) > scaleTouchSlop) {
-                            isUnMoved = false
+                            isClickEvent = false
                         }
                         // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。end
                         scrollBy(offsetX.toInt(), 0) //滑动使用scrollBy
                         // 越界修正
-                        if (isRightToLeftSwipe) { // scrollX 范围为 [0, rightMenuWidth]
+                        if (isRightToLeft) { // scrollX 范围为 [0, rightMenuWidth]
                             // 修正位置
                             if (scrollX < 0) scrollTo(0, 0)
                             // 修正位置
-                            if (scrollX > rightMenuWidth) scrollTo(rightMenuWidth, 0)
+                            if (scrollX > menuWidth) scrollTo(menuWidth, 0)
                         } else { // scrollX 范围为 [-rightMenuWidth, 0]
                             // 修正位置
-                            if (scrollX < -rightMenuWidth) scrollTo(-rightMenuWidth, 0)
+                            if (scrollX < -menuWidth) scrollTo(-menuWidth, 0)
                             // 修正位置
                             if (scrollX > 0) scrollTo(0, 0)
                         }
@@ -241,18 +237,18 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
                     if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) {
-                        isUserSwiped = true
+                        forceInterceptTouchEvent = true
                     }
 
                     // IOS模式开启的话，且当前有侧滑菜单的View，且不是自己的，就该拦截事件咯。滑动也不该出现
-                    if (!iosInterceptFlag) { // 且滑动了 才判断是否要收起、展开menu
+                    if (!blockingFlag) { // 且滑动了 才判断是否要收起、展开menu
                         if (verTracker != null) {
                             // 求伪瞬时速度
                             verTracker.computeCurrentVelocity(1000, maxVelocity.toFloat())
                             val velocityX = verTracker.getXVelocity(pointerId)
                             if (abs(velocityX) > 1000) { // 滑动速度超过阈值
                                 if (velocityX < -1000) {
-                                    if (isRightToLeftSwipe) { // 左滑
+                                    if (isRightToLeft) { // 左滑
                                         //平滑展开Menu
                                         smoothExpand()
                                     } else {
@@ -260,7 +256,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                                         smoothClose()
                                     }
                                 } else {
-                                    if (isRightToLeftSwipe) { //左滑
+                                    if (isRightToLeft) { //左滑
                                         // 平滑关闭Menu
                                         smoothClose()
                                     } else {
@@ -269,7 +265,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                                     }
                                 }
                             } else {
-                                if (abs(scrollX) > limit) { //否则就判断滑动距离
+                                if (abs(scrollX) > slideThresholdValue) { //否则就判断滑动距离
                                     //平滑展开Menu
                                     smoothExpand()
                                 } else {
@@ -280,7 +276,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                         }
                     }
                     releaseVelocityTracker()
-                    isTouching = false // 没有手指在摸我了
+                    isFingerTouching = false // 没有手指在摸我了
                 }
             }
         }
@@ -297,7 +293,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         // 禁止侧滑时，点击事件不受干扰。
-        if (isSwipeEnable) {
+        if (enableSwipe) {
             when (event.action) {
                 MotionEvent.ACTION_MOVE ->                     // 屏蔽滑动时的事件
                     if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) {
@@ -306,13 +302,13 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     }
                 MotionEvent.ACTION_UP -> {
                     // 为了在侧滑时，屏蔽子View的点击事件
-                    if (isRightToLeftSwipe) {
+                    if (isRightToLeft) {
                         if (scrollX > scaleTouchSlop) {
                             // 解决一个智障问题~ 居然不给点击侧滑菜单 我跪着谢罪
                             // 这里判断落点在内容区域屏蔽点击，内容区域外，允许传递事件继续向下的的。。。
                             if (event.x < width - scrollX) {
                                 // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
-                                if (isUnMoved) {
+                                if (isClickEvent) {
                                     smoothClose()
                                 }
                                 STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
@@ -323,7 +319,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                         if (-scrollX > scaleTouchSlop) {
                             if (event.x > -scrollX) { // 点击范围在菜单外 屏蔽
                                 // 仿QQ，侧滑菜单展开时，点击内容区域，关闭侧滑菜单。
-                                if (isUnMoved) {
+                                if (isClickEvent) {
                                     smoothClose()
                                 }
                                 STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
@@ -332,14 +328,14 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                         }
                     }
                     // 判断手指起始落点，如果距离属于滑动了，就屏蔽一切点击事件。
-                    if (isUserSwiped) {
+                    if (forceInterceptTouchEvent) {
                         STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true isUserSwiped=true 距离属于滑动, 屏蔽一切点击事件 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
                         return true
                     }
                 }
             }
             //模仿IOS 点击其他区域关闭：
-            if (iosInterceptFlag) {
+            if (blockingFlag) {
                 // IOS模式开启，且当前有菜单的View，且不是自己的 拦截点击事件给子View
                 STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true iosInterceptFlag=true, IOS模式开启 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
                 return true
@@ -368,7 +364,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun smoothExpand() {
         lastExpandSwipeMenuLayout = WeakReference(this) // 展开就加入ViewCache
-        val toX = if (isRightToLeftSwipe) rightMenuWidth else -rightMenuWidth
+        val toX = if (isRightToLeft) menuWidth else -menuWidth
         if (scrollX != toX) {
 
             contentView?.isLongClickable = false // 侧滑菜单展开，屏蔽content长按
@@ -378,7 +374,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                 interpolator = STInterpolatorFactory.createDecelerateInterpolator()
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        isExpand = true
+                        isExpanded = true
                     }
                 })
                 addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
@@ -388,14 +384,14 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun cancelAnimation() {
-        if (closeAnimation?.isRunning == true) closeAnimation?.cancel()
+        if (collapsedAnimation?.isRunning == true) collapsedAnimation?.cancel()
         if (expandAnimation?.isRunning == true) expandAnimation?.cancel()
     }
 
     fun canScrollRightToLeft(): Boolean {
-        if (isSwipeEnable) {
-            if (isRightToLeftSwipe) {
-                if (scrollX < rightMenuWidth) {
+        if (enableSwipe) {
+            if (isRightToLeft) {
+                if (scrollX < menuWidth) {
                     return true
                 }
             } else {
@@ -408,13 +404,13 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun canScrollLeftToRight(): Boolean {
-        if (isSwipeEnable) {
-            if (isRightToLeftSwipe) {
+        if (enableSwipe) {
+            if (isRightToLeft) {
                 if (scrollX > 0) {
                     return true
                 }
             } else {
-                if (scrollX > -rightMenuWidth) {
+                if (scrollX > -menuWidth) {
                     return true
                 }
             }
@@ -428,17 +424,17 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         if (scrollX != 0) {
             contentView?.isLongClickable = true // 侧滑菜单展开，屏蔽content长按
             cancelAnimation()
-            closeAnimation = ValueAnimator.ofInt(scrollX, 0).apply {
+            collapsedAnimation = ValueAnimator.ofInt(scrollX, 0).apply {
                 interpolator = STInterpolatorFactory.createDecelerateInterpolator()
                 duration = 300
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        isExpand = false
+                        isExpanded = false
                     }
                 })
                 addUpdateListener { animation -> scrollTo((animation.animatedValue as Int), 0) }
             }
-            closeAnimation?.start()
+            collapsedAnimation?.start()
         }
     }
 

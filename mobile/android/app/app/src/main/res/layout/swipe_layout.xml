@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.smart.template.home.animation.swipe.SwipeHorizontalView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/contentView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/blue_grey_900"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="XXX"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/menuView"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:text="删除"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</com.smart.template.home.animation.swipe.SwipeHorizontalView>

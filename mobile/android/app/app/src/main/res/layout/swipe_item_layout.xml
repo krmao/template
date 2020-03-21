@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:paddingBottom="1dp"
-    app:ios="false"
-    app:leftSwipe="true"
-    app:swipeEnable="true"
+    app:enableBlockingMode="true"
+    app:enableSwipe="true"
+    app:isRightToLeft="true"
     tools:ignore="HardcodedText">
 
     <TextView

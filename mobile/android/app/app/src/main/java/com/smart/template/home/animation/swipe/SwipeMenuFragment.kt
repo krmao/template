@@ -86,7 +86,7 @@ class SwipeMenuFragment : STBaseFragment() {
             holder.content.text = "${dataList[position].name} 从右向左滑动 "
             holder.btnUnRead.visibility = if (position % 2 == 0) View.GONE else View.VISIBLE
             holder.btnDelete.setOnClickListener {
-                holder.itemView.quickClose()
+                holder.itemView.quickCollapsed()
                 onSwipeMenuClickedListener?.onSwipeMenuClicked(holder.adapterPosition)
             }
             holder.content.setOnClickListener {

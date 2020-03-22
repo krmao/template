@@ -398,35 +398,8 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         if (expandAnimation?.isRunning == true) expandAnimation?.cancel()
     }
 
-    private fun canScrollRightToLeft(): Boolean {
-        if (enableSwipe) {
-            if (isRightToLeft) {
-                if (scrollX < menuWidth) {
-                    return true
-                }
-            } else {
-                if (scrollX < 0) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-    private fun canScrollLeftToRight(): Boolean {
-        if (enableSwipe) {
-            if (isRightToLeft) {
-                if (scrollX > 0) {
-                    return true
-                }
-            } else {
-                if (scrollX > -menuWidth) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
+    private fun canScrollRightToLeft(): Boolean = enableSwipe && ((isRightToLeft && scrollX < menuWidth) || (scrollX < 0))
+    private fun canScrollLeftToRight(): Boolean = enableSwipe && ((isRightToLeft && scrollX > 0) || (scrollX > -menuWidth))
 
     private fun acquireVelocityTracker(event: MotionEvent) {
         if (velocityTracker == null) velocityTracker = VelocityTracker.obtain()

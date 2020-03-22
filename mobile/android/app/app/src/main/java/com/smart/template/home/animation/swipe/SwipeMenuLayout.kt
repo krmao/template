@@ -28,7 +28,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         private set
 
     private val scaleTouchSlop by lazy { ViewConfiguration.get(context).scaledTouchSlop }
-    private val maxVelocity by lazy { ViewConfiguration.get(context).scaledMaximumFlingVelocity }
+    private val maxVelocity by lazy { ViewConfiguration.get(context).scaledMaximumFlingVelocity } // 经过缩放的最大滑动速度, 8000
 
     private var expandAnimation: ValueAnimator? = null
     private var collapsedAnimation: ValueAnimator? = null
@@ -195,7 +195,6 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     pointerId = event.getPointerId(0)
                     //endregion
 
-
                     //region 关闭其它已经展开的菜单
                     if (lastExpandSwipeMenuLayout != null) {
                         val lastExpandSwipeMenu = lastExpandSwipeMenuLayout?.get()
@@ -214,16 +213,16 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
                     if (!blockingFlag) {
                         if (verTracker != null) {
-                            verTracker.computeCurrentVelocity(1000, maxVelocity.toFloat()) // 求伪瞬时速度
+                            verTracker.computeCurrentVelocity(1000, maxVelocity.toFloat()) // 计算滑动速度, 第一个参数表示单位, 传 1000 表示每秒多少像素（pix/second), 1 代表每微秒多少像素（pix/millisecond)
                             val velocityX = verTracker.getXVelocity(pointerId)
                             STLogUtil.e(TAG, "dispatchTouchEvent ${getActionName(event)} blockingFlag=$blockingFlag, velocityX=$velocityX, isRightToLeft=$isRightToLeft, scrollX=$scrollX, slideThresholdValue=$slideThresholdValue")
-                            if (abs(velocityX) > 1000) { // 滑动速度超过阈值
+                            if (abs(velocityX) > 1000) { // 如果滑动的速度超过 1000
                                 if (velocityX < -1000) {
                                     if (isRightToLeft) smoothToExpand() else smoothToCollapsed()
                                 } else {
                                     if (isRightToLeft) smoothToCollapsed() else smoothToExpand()
                                 }
-                            } else {
+                            } else { // 如果滑动速度 < 1000, 则根据当前已经滚动的位置判断是展开还是收缩
                                 if (abs(scrollX) > slideThresholdValue) smoothToExpand() else smoothToCollapsed()
                             }
                         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:paddingBottom="1dp"
-    app:enableBlockingMode="true"
+    app:enableBlockingMode="false"
     app:enableSwipe="true"
     app:isRightToLeft="true"
     tools:ignore="HardcodedText">

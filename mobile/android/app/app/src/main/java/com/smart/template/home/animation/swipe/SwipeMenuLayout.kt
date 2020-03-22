@@ -37,7 +37,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     private var menuWidth = 0                   // 菜单宽度(最大滑动距离)
     private var maxHeight = 0                   // 根据 childView 的最大高度计算出自己的高度
     private var isClickEvent = true             // 如果是点击事件，关闭菜单
-    private var blockingFlag = false            // 是否拦截事件
+    private var blockingFlag = false            // 是否拦截事件, true 不响应 ACTION_MOVE 事件
     private val lastPoint = PointF()            // 上一个 MotionEvent
     private val firstPoint = PointF()           // 第一个 MotionEvent
     private var slideThresholdValue = 0         // 滑动阀值(右侧菜单宽度的40%) 手指抬起时, 超过了展开，否则收起菜单
@@ -97,8 +97,8 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
             }
         }
         setMeasuredDimension(paddingLeft + paddingRight + contentWidth, maxHeight + paddingTop + paddingBottom) //宽度取第一个Item(Content)的宽度
-        slideThresholdValue = menuWidth * 4 / 10 //滑动判断的临界值
-        // 如果子View的height有MatchParent属性的，设置子View高度
+        slideThresholdValue = menuWidth * 4 / 10
+        // 如果 child View 的height是 match_parent 属性，设置 child View 高度
         if (needMeasureChildHeight) {
             forceUniformHeight(childCount, widthMeasureSpec)
         }
@@ -117,11 +117,11 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
             if (child.visibility != View.GONE) {
                 val childLayoutParams = child.layoutParams as MarginLayoutParams
                 if (childLayoutParams.height == LayoutParams.MATCH_PARENT) {
-                    // Temporarily force children to reuse their old measured width
+                    // temporarily force children to reuse their old measured width
                     // FIXME: this may not be right for something like wrapping text?
                     val oldWidth = childLayoutParams.width //measureChildWithMargins 这个函数会用到宽，所以要保存一下
                     childLayoutParams.width = child.measuredWidth
-                    // Remeasure with new dimensions
+                    // remeasure with new dimensions
                     measureChildWithMargins(child, widthMeasureSpec, 0, uniformMeasureSpec, 0)
                     childLayoutParams.width = oldWidth
                 }
@@ -136,7 +136,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         for (index in 0 until childCount) {
             val childView = getChildAt(index)
             if (childView.visibility != View.GONE) {
-                if (index == 0) { //第一个子View是内容 宽度设置为全屏
+                if (index == 0) { // 第一个子View是内容 宽度设置为全屏
                     childView.layout(left, paddingTop, left + childView.measuredWidth, paddingTop + childView.measuredHeight)
                     left += childView.measuredWidth
                 } else {
@@ -155,8 +155,13 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     /**
      * 分发操作
      *
-     * viewGroup 级别的 dispatchTouchEvent 才会执行 分发操作
-     * view 级别的 dispatchTouchEvent 并不执行 分发操作, 只会调用自己的 onTouchEvent
+     * 事件传递的流程
+     * 1: 没有任何人拦截的传递过程, 即 dispatchTouchEvent/onInterceptTouchEvent 会接收到 触摸/按下/滑动/抬起 的所有事件
+     * dispatchTouchEvent(A0:true) -> onInterceptTouchEvent(A1:false) -> dispatchTouchEvent(B0:true) -> onInterceptTouchEvent(B1:false)
+     * 2: 当A1 设置拦截后 dispatchTouchEvent(A0:true) 直接传递给 onTouchEvent((A2:true)), 跳过 onInterceptTouchEvent((A1:true))
+     * dispatchTouchEvent(A0:true) -> onInterceptTouchEvent(A1:true) -> onTouchEvent(A2:true)
+     * ---->
+     *      dispatchTouchEvent(A0:true) -> onTouchEvent(A2:true)
      *
      * @return false 后续的 ACTION_MOVE/ACTION_UP 不会再触发
      * @return true 后续的 ACTION_MOVE/ACTION_UP 都会逐层(可被拦截)传递到这里
@@ -171,28 +176,116 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    forceInterceptTouchEvent = false
-                    isClickEvent = true
-                    blockingFlag = false
 
+                    //region 不支持多指操作
                     if (isFingerTouching) {
                         STLogUtil.e(TAG, "dispatchTouchEvent ${getActionName(event)} return false 忽略多指滑动")
                         return false
                     } else {
                         isFingerTouching = true
                     }
+                    //endregion
 
+                    // dispatchTouchEvent 的任何触摸事件都会经过, 在这里进行初始化
+                    isClickEvent = true
+                    blockingFlag = false
+                    forceInterceptTouchEvent = false
                     lastPoint[event.rawX] = event.rawY
                     firstPoint[event.rawX] = event.rawY
+                    pointerId = event.getPointerId(0)
+                    //endregion
 
+
+                    //region 关闭其它已经展开的菜单
                     if (lastExpandSwipeMenuLayout != null) {
-                        if (lastExpandSwipeMenuLayout?.get() !== this) {
-                            lastExpandSwipeMenuLayout?.get()?.smoothToCollapsed()
+                        val lastExpandSwipeMenu = lastExpandSwipeMenuLayout?.get()
+                        if (lastExpandSwipeMenu != this) {
+                            lastExpandSwipeMenu?.smoothToCollapsed()
                             blockingFlag = enableBlockingMode
                         }
                         parent.requestDisallowInterceptTouchEvent(true) // 只要有一个侧滑菜单处于打开状态， 就不给外层布局上下滑动了
                     }
-                    pointerId = event.getPointerId(0)
+                    //endregion
+                }
+                MotionEvent.ACTION_MOVE -> {
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) forceInterceptTouchEvent = true
+
+                    if (!blockingFlag) {
+                        if (verTracker != null) {
+                            verTracker.computeCurrentVelocity(1000, maxVelocity.toFloat()) // 求伪瞬时速度
+                            val velocityX = verTracker.getXVelocity(pointerId)
+                            STLogUtil.e(TAG, "dispatchTouchEvent ${getActionName(event)} blockingFlag=$blockingFlag, velocityX=$velocityX, isRightToLeft=$isRightToLeft, scrollX=$scrollX, slideThresholdValue=$slideThresholdValue")
+                            if (abs(velocityX) > 1000) { // 滑动速度超过阈值
+                                if (velocityX < -1000) {
+                                    if (isRightToLeft) smoothToExpand() else smoothToCollapsed()
+                                } else {
+                                    if (isRightToLeft) smoothToCollapsed() else smoothToExpand()
+                                }
+                            } else {
+                                if (abs(scrollX) > slideThresholdValue) smoothToExpand() else smoothToCollapsed()
+                            }
+                        }
+                    }
+
+                    releaseVelocityTracker()
+
+                    isFingerTouching = false
+                }
+            }
+        }
+        val result: Boolean = super.dispatchTouchEvent(event)
+        STLogUtil.w(TAG, "dispatchTouchEvent ${getActionName(event)} return $result, blockingFlag=$blockingFlag, forceInterceptTouchEvent=$forceInterceptTouchEvent")
+        return result
+    }
+
+    /**
+     * 拦截操作
+     *
+     * @return true 拦截, 不再向 子 view/viewGroup 的 dispatchTouchEvent 传递, 执行当前 onTouchEvent
+     * @return false 不拦截, 向 子 view/viewGroup 的 dispatchTouchEvent 传递
+     */
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        if (enableSwipe) {
+            when (event.action) {
+                MotionEvent.ACTION_MOVE ->
+                    if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) {
+                        STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 检测到移动 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+                        return true
+                    }
+                MotionEvent.ACTION_UP -> {
+                    if (forceInterceptTouchEvent) {
+                        STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true forceInterceptTouchEvent=true 距离属于滑动, 屏蔽一切点击事件 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+                        return true
+                    }
+                }
+            }
+            if (blockingFlag) {
+                STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true blockingFlag=true canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+                return true
+            }
+        }
+        val result: Boolean = super.onInterceptTouchEvent(event)
+        STLogUtil.w(TAG, "onInterceptTouchEvent ${getActionName(event)} return $result canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+        return result
+    }
+
+    /**
+     * 消费触摸事件
+     *
+     * 如果 ACTION_MOVE 传递到了这里, 而返回值是 false, 则后续的 ACTION_UP 不会传递到这里了
+     *
+     * @return true 消费, 后续的 ACTION_MOVE/ACTION_UP 都会逐层(可被拦截)传递到这里
+     * @return false 未消费, 则会将 ACTION_DOWN 传递给父 ViewGroup 的 onTouchEvent 进行处理, 直到由哪一层 ViewGroup 消费了 ACTION_DOWN 事件为止,
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    @Suppress("RedundantOverride")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (enableSwipe) {
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     if (!blockingFlag) {
@@ -216,56 +309,11 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) forceInterceptTouchEvent = true
-
-                    if (!blockingFlag) {
-                        if (verTracker != null) {
-                            verTracker.computeCurrentVelocity(1000, maxVelocity.toFloat()) // 求伪瞬时速度
-                            val velocityX = verTracker.getXVelocity(pointerId)
-                            if (abs(velocityX) > 1000) { // 滑动速度超过阈值
-                                if (velocityX < -1000) {
-                                    if (isRightToLeft) smoothToExpand() else smoothToCollapsed()
-                                } else {
-                                    if (isRightToLeft) smoothToCollapsed() else smoothToExpand()
-                                }
-                            } else {
-                                if (abs(scrollX) > slideThresholdValue) smoothToExpand() else smoothToCollapsed()
-                            }
-                        }
-                    }
-
-                    releaseVelocityTracker()
-
-                    isFingerTouching = false
-                }
-            }
-        }
-        val result: Boolean = super.dispatchTouchEvent(event)
-        STLogUtil.w(TAG, "dispatchTouchEvent ${getActionName(event)} return $result canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-        return result
-    }
-
-    /**
-     * 拦截操作
-     *
-     * @return true 拦截, 不再向 子 view/viewGroup 的 dispatchTouchEvent 传递, 执行当前 onTouchEvent
-     * @return false 不拦截, 向 子 view/viewGroup 的 dispatchTouchEvent 传递
-     */
-    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        if (enableSwipe) {
-            when (event.action) {
-                MotionEvent.ACTION_MOVE ->
-                    if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) {
-                        STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 检测到移动 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                        return true
-                    }
-                MotionEvent.ACTION_UP -> {
                     if (isRightToLeft) {
                         if (scrollX > scaleTouchSlop) {
                             if (event.x < width - scrollX) {
                                 if (isClickEvent) smoothToCollapsed()
                                 STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                                return true // true表示拦截
                             }
                         }
                     } else {
@@ -273,37 +321,13 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                             if (event.x > -scrollX) {
                                 if (isClickEvent) smoothToCollapsed()
                                 STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                                return true
                             }
                         }
                     }
-                    if (forceInterceptTouchEvent) {
-                        STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true isUserSwiped=true 距离属于滑动, 屏蔽一切点击事件 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                        return true
-                    }
                 }
             }
-            if (blockingFlag) {
-                STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true iosInterceptFlag=true, IOS模式开启 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                return true
-            }
         }
-        val result: Boolean = super.onInterceptTouchEvent(event)
-        STLogUtil.w(TAG, "onInterceptTouchEvent ${getActionName(event)} return $result canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-        return result
-    }
 
-    /**
-     * 消费触摸事件
-     *
-     * 如果 ACTION_MOVE 传递到了这里, 而返回值是 false, 则后续的 ACTION_UP 不会传递到这里了
-     *
-     * @return true 消费, 后续的 ACTION_MOVE/ACTION_UP 都会逐层(可被拦截)传递到这里
-     * @return false 未消费, 则会将 ACTION_DOWN 传递给父 ViewGroup 的 onTouchEvent 进行处理, 直到由哪一层 ViewGroup 消费了 ACTION_DOWN 事件为止,
-     */
-    @SuppressLint("ClickableViewAccessibility")
-    @Suppress("RedundantOverride")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
         val result: Boolean = super.onTouchEvent(event)
         STLogUtil.d(TAG, "onTouchEvent ${getActionName(event)} return $result canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
         return result
@@ -318,6 +342,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun smoothToExpand() {
+        STLogUtil.d(TAG, "smoothToExpand")
         lastExpandSwipeMenuLayout = WeakReference(this)
         val toX = if (isRightToLeft) menuWidth else -menuWidth
         if (scrollX != toX) {
@@ -339,6 +364,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun smoothToCollapsed() {
+        STLogUtil.d(TAG, "smoothToCollapsed lastExpandSwipeMenuLayout = null")
         if (lastExpandSwipeMenuLayout?.get() == this) lastExpandSwipeMenuLayout = null
 
         if (scrollX != 0) {

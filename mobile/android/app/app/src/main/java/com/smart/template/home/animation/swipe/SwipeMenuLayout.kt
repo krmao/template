@@ -16,7 +16,9 @@ import kotlin.math.abs
 
 /**
  * 侧滑菜单
- * https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md
+ *
+ * @see {@link https://github.com/mcxtzhang/SwipeDelMenuLayout}
+ * @see {@link https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md}
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {

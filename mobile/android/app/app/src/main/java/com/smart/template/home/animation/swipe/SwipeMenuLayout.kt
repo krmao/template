@@ -268,6 +268,20 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                         return true
                     }
                 MotionEvent.ACTION_UP -> {
+                    if (isRightToLeft) {
+                        if (isClickEvent && scrollX > scaleTouchSlop && event.x < width - scrollX) {
+                            smoothToCollapsed()
+                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+                            return true
+                        }
+                    } else {
+                        if (isClickEvent && -scrollX > scaleTouchSlop && event.x > -scrollX) {
+                            smoothToCollapsed()
+                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
+                            return true
+                        }
+                    }
+
                     if (forceInterceptTouchEvent) {
                         STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true forceInterceptTouchEvent=true 距离属于滑动, 屏蔽一切点击事件 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
                         return true
@@ -302,17 +316,6 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                 MotionEvent.ACTION_MOVE -> {
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (isRightToLeft) {
-                        if (isClickEvent && scrollX > scaleTouchSlop && event.x < width - scrollX) {
-                            smoothToCollapsed()
-                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                        }
-                    } else {
-                        if (isClickEvent && -scrollX > scaleTouchSlop && event.x > -scrollX) {
-                            smoothToCollapsed()
-                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                        }
-                    }
                 }
             }
         }

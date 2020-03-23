@@ -166,10 +166,8 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (enableSwipe) {
-
             acquireVelocityTracker(event)
             val verTracker = velocityTracker
-
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
 
@@ -203,6 +201,25 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                     //endregion
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    if (!blockingFlag) {
+                        val offsetX = lastPoint.x - event.rawX
+
+                        if (abs(offsetX) > scaleTouchSlop || abs(scrollX) > scaleTouchSlop) parent.requestDisallowInterceptTouchEvent(true)
+                        if (abs(offsetX) > scaleTouchSlop) isClickEvent = false
+
+                        scrollBy(offsetX.toInt(), 0)
+
+                        // 越界修正 scrollX 范围为 [0, rightMenuWidth], [-rightMenuWidth, 0]
+                        if (isRightToLeft) {
+                            if (scrollX < 0) scrollTo(0, 0)
+                            if (scrollX > menuWidth) scrollTo(menuWidth, 0)
+                        } else {
+                            if (scrollX < -menuWidth) scrollTo(-menuWidth, 0)
+                            if (scrollX > 0) scrollTo(0, 0)
+                        }
+
+                        lastPoint[event.rawX] = event.rawY
+                    }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     if (abs(event.rawX - firstPoint.x) > scaleTouchSlop) forceInterceptTouchEvent = true
@@ -236,7 +253,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     /**
-     * 拦截操作
+     * 拦截操作, 尽量只负责拦截
      * 即使 onInterceptTouchEvent return false, dispatchTouchEvent 也会有全部的触摸事件, 即有没有 onTouchEvent 已经不是很重要了
      *
      * @return true 拦截, 不再向 子 view/viewGroup 的 dispatchTouchEvent 传递, 执行当前 onTouchEvent
@@ -283,40 +300,17 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
                 MotionEvent.ACTION_DOWN -> {
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (!blockingFlag) {
-                        val offsetX = lastPoint.x - event.rawX
-
-                        if (abs(offsetX) > scaleTouchSlop || abs(scrollX) > scaleTouchSlop) parent.requestDisallowInterceptTouchEvent(true)
-                        if (abs(offsetX) > scaleTouchSlop) isClickEvent = false
-
-                        scrollBy(offsetX.toInt(), 0)
-
-                        // 越界修正 scrollX 范围为 [0, rightMenuWidth], [-rightMenuWidth, 0]
-                        if (isRightToLeft) {
-                            if (scrollX < 0) scrollTo(0, 0)
-                            if (scrollX > menuWidth) scrollTo(menuWidth, 0)
-                        } else {
-                            if (scrollX < -menuWidth) scrollTo(-menuWidth, 0)
-                            if (scrollX > 0) scrollTo(0, 0)
-                        }
-
-                        lastPoint[event.rawX] = event.rawY
-                    }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     if (isRightToLeft) {
-                        if (scrollX > scaleTouchSlop) {
-                            if (event.x < width - scrollX) {
-                                if (isClickEvent) smoothToCollapsed()
-                                STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                            }
+                        if (isClickEvent && scrollX > scaleTouchSlop && event.x < width - scrollX) {
+                            smoothToCollapsed()
+                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
                         }
                     } else {
-                        if (-scrollX > scaleTouchSlop) {
-                            if (event.x > -scrollX) {
-                                if (isClickEvent) smoothToCollapsed()
-                                STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
-                            }
+                        if (isClickEvent && -scrollX > scaleTouchSlop && event.x > -scrollX) {
+                            smoothToCollapsed()
+                            STLogUtil.e(TAG, "onInterceptTouchEvent ${getActionName(event)} return true 点击范围在菜单外 屏蔽 canScrollRightToLeft()=${canScrollRightToLeft()}, canScrollLeftToRight()=${canScrollLeftToRight()}")
                         }
                     }
                 }

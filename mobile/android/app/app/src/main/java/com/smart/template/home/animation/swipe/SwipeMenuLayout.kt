@@ -50,15 +50,9 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout, defStyleAttr, 0)
         for (index in 0 until typedArray.indexCount) {
             when (val attr = typedArray.getIndex(index)) {
-                R.styleable.SwipeMenuLayout_enableSwipe -> {
-                    enableSwipe = typedArray.getBoolean(attr, true)
-                }
-                R.styleable.SwipeMenuLayout_enableBlockingMode -> {
-                    enableBlockingMode = typedArray.getBoolean(attr, true)
-                }
-                R.styleable.SwipeMenuLayout_isRightToLeft -> {
-                    isRightToLeft = typedArray.getBoolean(attr, true)
-                }
+                R.styleable.SwipeMenuLayout_enableSwipe -> enableSwipe = typedArray.getBoolean(attr, true)
+                R.styleable.SwipeMenuLayout_enableBlockingMode -> enableBlockingMode = typedArray.getBoolean(attr, true)
+                R.styleable.SwipeMenuLayout_isRightToLeft -> isRightToLeft = typedArray.getBoolean(attr, true)
             }
         }
         typedArray.recycle()
@@ -154,6 +148,8 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     /**
      * 分发操作
+     * onTouchEvent 有的 dispatchTouchEvent 都有
+     * 即使 onInterceptTouchEvent return false, dispatchTouchEvent 也会有全部的触摸事件, 即有没有 onTouchEvent 已经不是很重要了
      *
      * 事件传递的流程
      * 1: 没有任何人拦截的传递过程, 即 dispatchTouchEvent/onInterceptTouchEvent 会接收到 触摸/按下/滑动/抬起 的所有事件
@@ -241,6 +237,7 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     /**
      * 拦截操作
+     * 即使 onInterceptTouchEvent return false, dispatchTouchEvent 也会有全部的触摸事件, 即有没有 onTouchEvent 已经不是很重要了
      *
      * @return true 拦截, 不再向 子 view/viewGroup 的 dispatchTouchEvent 传递, 执行当前 onTouchEvent
      * @return false 不拦截, 向 子 view/viewGroup 的 dispatchTouchEvent 传递
@@ -282,7 +279,6 @@ class SwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     @Suppress("RedundantOverride")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (enableSwipe) {
-
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                 }

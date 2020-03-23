@@ -25,8 +25,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp"
-        android:text="recyclerView"
+        android:text="以下是 单个 recyclerView"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#efefef"
+        android:background="@color/pink"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

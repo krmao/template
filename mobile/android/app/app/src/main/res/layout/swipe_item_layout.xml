@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:paddingBottom="1dp"
+    android:layout_height="54dp"
+    android:background="@drawable/st_behavior_border_bottom"
     app:enableBlockingMode="true"
     app:enableSwipe="true"
     app:isRightToLeft="true"
@@ -14,11 +14,10 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_grey_900"
         android:gravity="center"
-        android:text="项目中我是任意复杂的原Item布局"
+        android:text="从右向左滑动"
         android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:textStyle="bold|italic" />
 
     <!-- 以下都是侧滑菜单的内容依序排列 -->
 
@@ -26,7 +25,7 @@
         android:id="@+id/btnUnRead"
         android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:background="#ecd50a"
+        android:background="#99ecd50a"
         android:text="标记未读"
         android:textColor="@android:color/white" />
 
@@ -34,7 +33,7 @@
         android:id="@+id/btnDelete"
         android:layout_width="60dp"
         android:layout_height="match_parent"
-        android:background="@color/red"
+        android:background="#cc330033"
         android:text="删除"
         android:textColor="@android:color/white" />
 </com.smart.template.home.animation.swipe.SwipeMenuLayout>

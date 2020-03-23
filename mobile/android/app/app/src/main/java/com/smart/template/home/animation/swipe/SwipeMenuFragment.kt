@@ -18,7 +18,7 @@ import com.smart.library.widget.recyclerview.snap.STSnapGravityPagerHelper
 import com.smart.library.widget.recyclerview.snap.STSnapHelper
 import com.smart.library.widget.viewpager.STPagerAdapter
 import com.smart.template.R
-import kotlinx.android.synthetic.main.swipe_item_fragment.*
+import kotlinx.android.synthetic.main.swipe_menu_fragment.*
 
 class SwipeMenuFragment : STBaseFragment() {
 
@@ -28,7 +28,7 @@ class SwipeMenuFragment : STBaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.swipe_item_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.swipe_menu_fragment, container, false)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView(recyclerView)
@@ -39,7 +39,7 @@ class SwipeMenuFragment : STBaseFragment() {
     private fun initViewPager() {
         viewpager.adapter = object : STPagerAdapter<Int>(context, arrayListOf(0, 1)) {
             override fun getView(itemEntity: Int, position: Int, container: ViewGroup): View {
-                val contentView = LayoutInflater.from(context).inflate(R.layout.swipe_item, container, false)
+                val contentView = LayoutInflater.from(context).inflate(R.layout.swipe_menu_item, container, false)
                 initRecyclerView(contentView.findViewById<RecyclerView>(R.id.recyclerView))
                 return contentView
             }
@@ -50,30 +50,35 @@ class SwipeMenuFragment : STBaseFragment() {
     private fun initRecyclerViewPager() {
         STSnapGravityPagerHelper(false, STSnapHelper.Snap.CENTER).attachToRecyclerView(recyclerPagerView)
         recyclerPagerView.adapter = object : STRecyclerViewAdapter<Int, STRecyclerViewAdapter.ViewHolder>(context, arrayListOf(0, 1)) {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.swipe_item, parent, false))
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.swipe_menu_item, parent, false))
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
                 initRecyclerView(holder.itemView.findViewById<RecyclerView>(R.id.recyclerView))
             }
         }
     }
 
-    private val dataList = (0..19).map { SwipeModel("$it") }.toMutableList()
+    private val dataList = (0..39).map { SwipeModel("$it") }.toMutableList()
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initRecyclerView(innerRecyclerView: RecyclerView) {
-        val layoutManager = LinearLayoutManager(context)
-        val adapter = InnerAdapter(context, dataList)
-        adapter.onSwipeMenuClickedListener = object : OnSwipeMenuClickedListener {
-            override fun onSwipeMenuClicked(pos: Int) {
-                if (pos >= 0 && pos < dataList.size) {
-                    STToastUtil.show("删除:$pos")
-                    dataList.removeAt(pos)
-                    adapter.notifyItemRemoved(pos)
+        innerRecyclerView.layoutManager = object : LinearLayoutManager(context) {
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                try {
+                    super.onLayoutChildren(recycler, state)
+                } catch (ignore: Exception) {
                 }
             }
         }
-        innerRecyclerView.adapter = adapter
-        innerRecyclerView.layoutManager = layoutManager
+        innerRecyclerView.adapter = InnerAdapter(context, dataList).apply {
+            onSwipeMenuClickedListener = object : OnSwipeMenuClickedListener {
+                override fun onSwipeMenuClicked(pos: Int) {
+                    if (pos >= 0 && pos < dataList.size) {
+                        STToastUtil.show("删除:$pos")
+                        dataList.removeAt(pos)
+                        notifyItemRemoved(pos)
+                    }
+                }
+            }
+        }
     }
 
     class InnerAdapter(private val context: Context?, private val dataList: List<SwipeModel>) : RecyclerView.Adapter<InnerViewHolder>() {

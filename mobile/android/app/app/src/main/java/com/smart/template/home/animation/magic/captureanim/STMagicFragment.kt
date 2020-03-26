@@ -32,7 +32,7 @@ class STMagicFragment : STBaseFragment() {
 
         val innerWaterCenterWaveView = rippleLineView
         if (innerWaterCenterWaveView != null) {
-            innerWaterCenterWaveView.initialRadiusPx = 20.toPxFromDp().toFloat()
+            innerWaterCenterWaveView.fromRadiusPx = 20.toPxFromDp().toFloat()
             innerWaterCenterWaveView.maxRadiusRateOnMinEdge = 0.8f
         }
 

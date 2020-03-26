@@ -2,14 +2,13 @@ package com.smart.template.home.animation.wave
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.base.toPxFromDp
 import com.smart.template.R
 
 @Suppress("unused")
@@ -27,27 +26,23 @@ class STRippleFragment : STBaseFragment() {
 
         val innerWaterCenterWaveView = rippleLineView
         if (innerWaterCenterWaveView != null) {
-            innerWaterCenterWaveView.durationMs = 2000
-            innerWaterCenterWaveView.setStyle(Paint.Style.FILL) // STROKE
-            innerWaterCenterWaveView.createCircleSpeedMs = 400
-            innerWaterCenterWaveView.setColor(Color.BLUE)
-            innerWaterCenterWaveView.interpolator = LinearOutSlowInInterpolator() // AccelerateInterpolator(1.2f) //
-            innerWaterCenterWaveView.start()
-            innerWaterCenterWaveView.postDelayed(
-                {
-                    innerWaterCenterWaveView.stop()
-                },
-                2000
-            )
+            innerWaterCenterWaveView.setOnClickListener {
+                innerWaterCenterWaveView.setColor(Color.parseColor("#FFFFFF"))
+                innerWaterCenterWaveView.fromRadiusPx = 10f.toPxFromDp()
+                innerWaterCenterWaveView.maxRadiusRateOnMinEdge = 1f
+                innerWaterCenterWaveView.fromAlpha = 0.50f
+                innerWaterCenterWaveView.toAlpha = 0f
+                innerWaterCenterWaveView.durationMs = 2000
+                innerWaterCenterWaveView.createCircleSpeedMs = 800
+                innerWaterCenterWaveView.start()
+            }
+            innerWaterCenterWaveView.performClick()
         }
     }
 
     companion object {
-
         fun goTo(activity: Context?) {
             STActivity.start(activity, STRippleFragment::class.java)
         }
-
     }
-
 }

@@ -19,7 +19,7 @@ import android.view.WindowManager
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@drawable/launch_jiduo</item>
+        <item name="android:windowBackground">@drawable/launch_caicang</item>
     </style>
 
     <activity
@@ -38,6 +38,17 @@ import android.view.WindowManager
         </intent-filter>
     </activity>
 
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/launch_caicang"
+        android:orientation="vertical"
+        tools:context=".JDMainActivity" />
+
+// 重点是设置引导页根布局的 background, 而不是在根布局容器里面加个 ImageView, 缩放方式不一样, 可能是 FIT_XY
 */
 object STFullScreenUtil {
 

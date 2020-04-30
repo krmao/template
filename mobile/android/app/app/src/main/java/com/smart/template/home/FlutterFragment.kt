@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.smart.library.base.STBaseFragment
-import com.smart.library.util.STLogUtil
-import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
 

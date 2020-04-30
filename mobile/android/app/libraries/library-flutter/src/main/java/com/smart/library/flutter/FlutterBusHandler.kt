@@ -9,9 +9,10 @@ import com.smart.library.util.bus.STBusManager
 @Suppress("unused", "PrivatePropertyName")
 class FlutterBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application) {
+    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
 
         FlutterInitializer.startInitialization(application) { context: Context, url: String, requestCode: Int ->
+            callback?.invoke(true)
             FlutterRouter.find(url)?.goTo?.invoke(context, hashMapOf(), requestCode, null) ?: false
         }
     }

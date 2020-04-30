@@ -52,7 +52,11 @@ object STBusManager {
     }
 
     fun call(context: Context?, busFunctionName: String, vararg params: Any) {
-        val busHandler: IBusHandler? = busHandlerMap[busFunctionName.substringBefore('/')]
+        val busKeyName = busFunctionName.substringBefore('/')
+        val busHandler: IBusHandler? = busHandlerMap[busKeyName]
+
+        STLogUtil.w(TAG, "call busKeyName=$busKeyName, busHandlerMap=$busHandlerMap")
+
         if (busHandler != null) {
             busHandler.onCall(context, busFunctionName, *params)
         } else {

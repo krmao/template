@@ -44,7 +44,8 @@ object FinalApplicationInitManager {
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
 
-        Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.newThread()).subscribe()
+        // todo FlutterBusHandler exception, startInitialization must be called on the main thread Flowable.fromCallable { asyncInitialize(callback) }.subscribeOn(Schedulers.newThread()).subscribe()
+        asyncInitialize(callback)
 
         isInitialized = true
         STLogUtil.e("application", "initialize end isInitialized =$ { isInitialized() }")

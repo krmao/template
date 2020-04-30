@@ -39,22 +39,6 @@ class SplashActivity : AppCompatActivity() {
 
         // setContentView(R.layout.home_splash)
 
-        // 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
-
-        // 监听 react native 首屏渲染事件, 此处可以关闭引导页
-        val eventId: Any = this
-        STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
-            STEventManager.unregisterAll(eventId)
-            if ("react-native-inited" == eventKey) {
-                if ("renderSuccess" == value) {
-                    STPreferencesUtil.putBoolean("react-native-inited", true)
-                    if (!isFinishing) {
-                        finish()
-                    }
-                }
-            }
-        }
-
         FinalApplicationInitManager.initialize { key: String, success: Boolean ->
             STLogUtil.w(
                 "FinalApplicationInitManager",
@@ -83,6 +67,23 @@ class SplashActivity : AppCompatActivity() {
                         }.toString(),
                         "cc-rn")
             }*/
+        }
+
+        // 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
+
+        // 监听 react native 首屏渲染事件, 此处可以关闭引导页
+        val eventId: Any = this
+        STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
+            STEventManager.unregisterAll(eventId)
+            if ("react-native-inited" == eventKey) {
+                if ("renderSuccess" == value) {
+                    STPreferencesUtil.putBoolean("react-native-inited", true)
+                    if (!isFinishing) {
+                        STLogUtil.w("splash", "finish")
+                        finish()
+                    }
+                }
+            }
         }
 
         // test

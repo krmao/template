@@ -109,4 +109,5 @@ flutter build ios --pub --release
 
 flutter build aar --help
 flutter build aar --pub --debug --output-dir android/gradle/repo
+flutter build aar --pub --release --output-dir android/gradle/repo
 ```

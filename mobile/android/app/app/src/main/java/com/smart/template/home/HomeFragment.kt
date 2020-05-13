@@ -3,15 +3,18 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STDialogManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
+import com.smart.library.widget.colorpicker.ColorPickerUtil
 import com.smart.template.R
 import com.smart.template.home.animation.magic.captureanim.STMagicFragment
 import com.smart.template.home.animation.swipe.SwipeMenuFragment
@@ -34,6 +37,12 @@ class HomeFragment : STBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
+        }
+        var lastSelectedColor: Int = Color.WHITE
+        btnColorPicker.setOnClickListener {
+            ColorPickerUtil.showColorPickerDialog(activity = activity as FragmentActivity, selectedColor = lastSelectedColor, colorArrayResId = R.array.colorArray) {
+                lastSelectedColor = it
+            }
         }
         btnMagic.setOnClickListener {
             STMagicFragment.goTo(context)

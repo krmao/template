@@ -3,6 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -38,15 +39,24 @@ class HomeFragment : STBaseFragment() {
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
         }
+        var lastSelectedAlpha = 1.0
         var lastSelectedColor: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             resources.getColor(R.color.red_500, null)
         } else {
             @Suppress("DEPRECATION")
             resources.getColor(R.color.red_500)
         }
+        btnColorAlpha.setOnClickListener {
+            STColorPickerUtil.showColorAlphaDialog(activity = activity as FragmentActivity, initAlpha = lastSelectedAlpha, initColor = lastSelectedColor) { alpha: Double, colorWithAlpha: Int ->
+                lastSelectedAlpha = alpha
+                lastSelectedColor = colorWithAlpha
+                STLogUtil.w("alpha=$alpha, colorWithAlpha=$colorWithAlpha")
+            }
+        }
         btnColorPicker.setOnClickListener {
             STColorPickerUtil.showColorPickerDialogByColorIntArray(activity = activity as FragmentActivity, selectedColor = lastSelectedColor, colorIntArrayResId = R.array.colorIntArray) {
                 lastSelectedColor = it
+                STLogUtil.w("lastSelectedColor=$lastSelectedColor")
             }
         }
         btnMagic.setOnClickListener {

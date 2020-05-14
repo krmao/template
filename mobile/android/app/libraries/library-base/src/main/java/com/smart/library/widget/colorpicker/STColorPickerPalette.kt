@@ -156,7 +156,7 @@ class STColorPickerPalette @JvmOverloads constructor(context: Context?, attrs: A
      * Creates a color swatch.
      */
     private fun createColorSwatch(color: Int, selectedColor: Int): STColorPickerSwatch {
-        val view = STColorPickerSwatch(context, color, color == selectedColor, mOnColorSelectedListener)
+        val view = STColorPickerSwatch(context, mColor = color, mChecked = color == selectedColor, mOnColorSelectedListener = mOnColorSelectedListener)
         val params = TableRow.LayoutParams(mSwatchLength, mSwatchLength)
         params.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize)
         view.layoutParams = params

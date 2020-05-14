@@ -15,8 +15,9 @@
  */
 package com.smart.library.widget.colorpicker
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -26,8 +27,8 @@ import com.smart.library.R
 /**
  * Creates a circular swatch of a specified color.  Adds a checkmark if marked as checked.
  */
-@SuppressLint("ViewConstructor")
-class STColorPickerSwatch(context: Context, private val mColor: Int, checked: Boolean, private val mOnColorSelectedListener: OnColorSelectedListener?) : FrameLayout(context), View.OnClickListener {
+@Suppress("MemberVisibilityCanBePrivate")
+class STColorPickerSwatch @JvmOverloads constructor(context: Context, attribute: AttributeSet? = null, var mColor: Int = Color.WHITE, var mChecked: Boolean = false, var mOnColorSelectedListener: OnColorSelectedListener? = null) : FrameLayout(context, attribute), View.OnClickListener {
     private val mSwatchImage: ImageView by lazy { findViewById<View>(R.id.color_picker_swatch) as ImageView }
     private val mCheckmarkImage: ImageView by lazy { findViewById<View>(R.id.color_picker_checkmark) as ImageView }
 
@@ -43,6 +44,7 @@ class STColorPickerSwatch(context: Context, private val mColor: Int, checked: Bo
 
     @Suppress("DEPRECATION")
     fun setColor(color: Int) {
+        mColor = color
         mSwatchImage.setImageDrawable(
             STColorStateDrawable(
                 arrayOf(
@@ -53,7 +55,8 @@ class STColorPickerSwatch(context: Context, private val mColor: Int, checked: Bo
         )
     }
 
-    private fun setChecked(checked: Boolean) {
+    fun setChecked(checked: Boolean) {
+        mChecked = checked
         mCheckmarkImage.visibility = if (checked) View.VISIBLE else View.GONE
     }
 
@@ -64,7 +67,7 @@ class STColorPickerSwatch(context: Context, private val mColor: Int, checked: Bo
     init {
         LayoutInflater.from(context).inflate(R.layout.st_color_picker_swatch, this)
         setColor(mColor)
-        setChecked(checked)
+        setChecked(mChecked)
         setOnClickListener(this)
     }
 }

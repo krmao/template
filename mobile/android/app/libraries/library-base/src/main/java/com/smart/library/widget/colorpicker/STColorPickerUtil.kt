@@ -67,7 +67,15 @@ object STColorPickerUtil {
                 onColorSelected(color)
             }
         })
-        colorPickerDialog.show(activity.supportFragmentManager, "picker")
+        colorPickerDialog.show(activity.supportFragmentManager, "color-picker")
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun showColorAlphaDialog(activity: FragmentActivity, initAlpha: Double = 1.0, @ColorInt initColor: Int = Color.BLUE, onColorAlphaListener: (alpha: Double, colorWithAlpha: Int) -> Unit) {
+        val colorPickerDialog = STColorAlphaDialog.newInstance(initAlpha = initAlpha, initColor = initColor)
+        colorPickerDialog.setOnColorAlphaListener(onColorAlphaListener)
+        colorPickerDialog.show(activity.supportFragmentManager, "color-alpha")
     }
 
 }

@@ -14,7 +14,7 @@ import com.smart.library.util.STDialogManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
-import com.smart.library.widget.colorpicker.ColorPickerUtil
+import com.smart.library.widget.colorpicker.STColorPickerUtil
 import com.smart.template.R
 import com.smart.template.home.animation.magic.captureanim.STMagicFragment
 import com.smart.template.home.animation.swipe.SwipeMenuFragment
@@ -40,7 +40,7 @@ class HomeFragment : STBaseFragment() {
         }
         var lastSelectedColor: Int = Color.WHITE
         btnColorPicker.setOnClickListener {
-            ColorPickerUtil.showColorPickerDialog(activity = activity as FragmentActivity, selectedColor = lastSelectedColor, colorArrayResId = R.array.colorArray) {
+            STColorPickerUtil.showColorPickerDialogByColorIntArray(activity = activity as FragmentActivity, selectedColor = lastSelectedColor, colorIntArrayResId = R.array.colorIntArray) {
                 lastSelectedColor = it
             }
         }

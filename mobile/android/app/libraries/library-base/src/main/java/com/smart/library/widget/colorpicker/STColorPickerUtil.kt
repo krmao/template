@@ -17,7 +17,6 @@ package com.smart.library.widget.colorpicker
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
-import androidx.annotation.IntRange
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentActivity
 import com.smart.library.util.STLogUtil
@@ -29,19 +28,37 @@ import com.smart.library.util.STLogUtil
         lastSelectedColor = it
     }
  */
-@Suppress("unused")
+@Suppress("unused", "LiftReturnOrAssignment")
 object STColorPickerUtil {
 
     /**
      * Set the alpha component of `color` to be `alpha`.
+     *
+     * @param alpha 不透明度
+     *              使用百分比形式传参 (float/double) 有效范围为 [0.0, 1.0]
+     *              or
+     *              使用16进制整型进制传参 (int/long) 有效范围为 [0, 255]
      */
     @ColorInt
-    fun setAlphaComponent(@ColorInt color: Int, @IntRange(from = 0x0, to = 0xFF) alpha: Int): Int {
-        if (alpha < 0 || alpha > 255) {
-            STLogUtil.e("alpha must be between 0 and 255.")
+    fun setAlphaComponent(@ColorInt color: Int, alpha: Number): Int {
+        if (alpha is Int || alpha is Long) {
+            if (alpha.toInt() < 0 || alpha.toInt() > 255) {
+                STLogUtil.e("alpha must be between 0 and 255.")
+                return color
+            } else {
+                return ColorUtils.setAlphaComponent(color, alpha.toInt())
+            }
+        } else if (alpha is Float || alpha is Double) {
+            if (alpha.toDouble() < 0 || alpha.toDouble() > 1) {
+                STLogUtil.e("alpha must be between 0.0 and 1.0.")
+                return color
+            } else {
+                return ColorUtils.setAlphaComponent(color, (255 * alpha.toDouble()).toInt())
+            }
+        } else {
+            STLogUtil.e("alpha(int/long) must be between 0 and 255. or alpha(double/float) must be between 0.0 and 1.0.")
             return color
         }
-        return ColorUtils.setAlphaComponent(color, alpha)
     }
 
     @JvmStatic

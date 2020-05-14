@@ -3,7 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +38,12 @@ class HomeFragment : STBaseFragment() {
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
         }
-        var lastSelectedColor: Int = Color.WHITE
+        var lastSelectedColor: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            resources.getColor(R.color.red_500, null)
+        } else {
+            @Suppress("DEPRECATION")
+            resources.getColor(R.color.red_500)
+        }
         btnColorPicker.setOnClickListener {
             STColorPickerUtil.showColorPickerDialogByColorIntArray(activity = activity as FragmentActivity, selectedColor = lastSelectedColor, colorIntArrayResId = R.array.colorIntArray) {
                 lastSelectedColor = it

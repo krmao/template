@@ -62,9 +62,6 @@ tree -L 3
 ├── pubspec.yaml
 └── test
     └── widget_test.dart
-
-16 directories, 27 files
-flutter_app krmao$
 ```
 ### 运行
 - 检测设备连接

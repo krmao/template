@@ -1,6 +1,119 @@
-## 纯 FLUTTER 项目
+## FLUTTER 模块
 
-### 创建一个 FLUTTER 模块
+### 创建一个 FLUTTER 应用程序
+- 创建纯 Flutter 应用程序
 ```shell script
-flutter create -t module --org com.smart.flutter flutter_smart_module
+flutter create --help
+
+flutter create -t module \
+--pub \
+--org com.smart.flutter \
+--overwrite \
+--ios-language objc \
+--android-language kotlin \
+--androidx \
+--project-name flutter_module \
+flutter_module
+```
+- 产出物
+```shell script
+tree -L 3
+.
+├── README.md
+├── flutter_module.iml
+├── .android
+│   ├── Flutter
+│   │   ├── build
+│   │   ├── build.gradle
+│   │   ├── flutter.iml
+│   │   └── src
+│   ├── app
+│   │   ├── build.gradle
+│   │   └── src
+│   ├── build.gradle
+│   ├── gradle
+│   │   └── wrapper
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── include_flutter.groovy
+│   ├── local.properties
+│   └── settings.gradle
+├── .ios      
+│   ├── Config
+│   │   ├── Debug.xcconfig
+│   │   ├── Flutter.xcconfig
+│   │   └── Release.xcconfig
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── FlutterPluginRegistrant
+│   │   ├── Generated.xcconfig
+│   │   ├── README.md
+│   │   ├── flutter_export_environment.sh
+│   │   ├── flutter_module.podspec
+│   │   └── podhelper.rb
+│   ├── Runner
+│   │   ├── AppDelegate.h
+│   │   ├── AppDelegate.m
+│   │   ├── Assets.xcassets
+│   │   ├── Base.lproj
+│   │   ├── Info.plist
+│   │   └── main.m
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   └── xcshareddata
+│   └── Runner.xcworkspace
+│       └── contents.xcworkspacedata 
+├── lib
+│   └── main.dart
+├── pubspec.lock
+├── pubspec.yaml
+└── test
+    └── widget_test.dart
+```
+### 运行
+- 检测设备连接
+```shell script
+flutter devices                         # 查看当前连接设备, 真机使用USB连接
+flutter emulators                       # 查看模拟器
+flutter emulators --create [--name xyz] # 创建模拟器 
+flutter emulators --launch [partial ID] # 打开模拟器
+
+# android 模拟器详细指令
+emulator -list-avds
+emulator -avd avd_name
+# ios 模拟器详细指令
+open -a simulator
+```
+- 编译并运行到已连接设备
+```shell script
+flutter run --help
+flutter run --build --debug --pub
+```
+
+- JIT 热更新
+```shell script
+# 因为上一步骤是 控制台执行的 flutter run
+# 随便修改代码 控制台输入
+r \ enter
+
+# 推出热更新 控制台输入
+q \ enter
+```
+
+- build
+```shell script
+flutter build --help
+flutter build apk --help
+flutter build apk --pub --debug
+flutter build apk --pub --release
+
+flutter build ios --help
+flutter build ios --pub --debug
+flutter build ios --pub --release
+
+flutter build aar --help
+flutter build aar --pub --debug --output-dir android/gradle/repo
+flutter build aar --pub --release --output-dir android/gradle/repo
 ```

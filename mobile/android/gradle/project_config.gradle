@@ -18,7 +18,10 @@ gradle.ext {
     modules = [
             'pictureviewer': ['enable': false],
             'liveStreaming': ['enable': false],
-            'flutter'      : ['enable': true],
+            'flutter'      : [
+                    'enable': true,
+                    'enableBoost': false,
+            ],
             'reactNative'  : ['enable': false],
             'hybird'       : ['enable': false],
             'map'          : [

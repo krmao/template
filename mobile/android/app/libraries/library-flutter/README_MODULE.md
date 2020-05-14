@@ -1,4 +1,11 @@
 ## FLUTTER 模块
+> android studio 打开 .android 的时候在选择框使用快捷键 option + command + . 切换 隐藏文件夹显示
+
+### 集成到现有项目
+- https://flutter.dev/docs/development/add-to-app
+- https://flutter.dev/docs/development/add-to-app/android/project-setup
+- https://flutter.dev/docs/development/add-to-app/android/add-flutter-screen?tab=custom-activity-launch-kotlin-tab
+
 
 ### 创建一个 FLUTTER 应用程序
 - 创建纯 Flutter 应用程序
@@ -114,6 +121,6 @@ flutter build ios --pub --debug
 flutter build ios --pub --release
 
 flutter build aar --help
-flutter build aar --pub --debug --output-dir android/gradle/repo
-flutter build aar --pub --release --output-dir android/gradle/repo
+flutter build aar --pub --debug --output-dir ~/workspace/template/mobile/android/app/libraries/repo
+flutter build aar --pub --release --output-dir ~/workspace/template/mobile/android/app/libraries/repo
 ```

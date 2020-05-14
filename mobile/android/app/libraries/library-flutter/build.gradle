@@ -13,12 +13,32 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
     resourcePrefix "flutter_"
+
+    if (gradle.ext.modules.flutter.enableBoost != true) {
+        sourceSets {
+            main {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                res.srcDir 'src/main/res'
+                java { srcDirs = ['src/main/java'] }
+            }
+        }
+    } else {
+        sourceSets {
+            main {
+                manifest.srcFile 'src/main_boost/AndroidManifest.xml'
+                res.srcDir 'src/main/res'
+                java { srcDirs = ['src/main_boost/java'] }
+            }
+        }
+    }
 }
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-template-base')
-    api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
+    // api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
 
+    debugApi "com.smart.flutter.flutter_module:flutter_debug:1.0"
+    releaseApi "com.smart.flutter.flutter_module:flutter_release:1.0"
 }

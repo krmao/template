@@ -20,7 +20,8 @@ class FlutterFragment : STBaseFragment() {
         @Suppress("DEPRECATION")
         textView.setBackgroundColor(resources.getColor(R.color.pink))
         textView.setOnClickListener {
-            STBusManager.call(context, "flutter/main")
+            // STBusManager.call(context, "flutter/main")
+            STBusManager.call(context, "flutter/module")
         }
         return textView
     }

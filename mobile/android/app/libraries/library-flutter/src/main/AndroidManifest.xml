@@ -6,8 +6,8 @@
     <!--android:theme="@style/STAppTheme.Translucent.Launch"-->
     <application>
         <activity
-            android:name="com.smart.library.flutter.FlutterActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Translucent.Transparent"
@@ -20,12 +20,6 @@
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="false" />
         </activity>
-
-        <activity
-            android:name="com.smart.library.flutter.test.MineActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/STAppTheme.Translucent.Transparent"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

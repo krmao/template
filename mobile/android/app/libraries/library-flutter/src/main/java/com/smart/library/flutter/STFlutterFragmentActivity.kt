@@ -3,7 +3,6 @@ package com.smart.library.flutter
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import com.smart.library.util.STLogUtil
 import io.flutter.Log
 import io.flutter.embedding.android.*
@@ -22,15 +21,22 @@ open class STFlutterFragmentActivity : FlutterFragmentActivity() {
         const val TAG = "[FLUTTER FRAGMENT ACTIVITY]"
 
         @JvmStatic
-        fun goToFlutterFragment(@NonNull from: Context, @Nullable initialRoute: String? = null, @Nullable cachedEngineId: String? = null) {
+        fun goToFlutterFragmentWithNewEngine(@NonNull from: Context, @NonNull initialRoute: String) {
             val intent = Intent(from, STFlutterFragmentActivity::class.java)
-            if (!initialRoute.isNullOrBlank()) {
-                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE, initialRoute)
-            }
-            if (!cachedEngineId.isNullOrBlank()) {
-                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_CACHED_ENGINE_ID, cachedEngineId)
-            }
+            intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE, initialRoute)
             from.startActivity(intent)
+        }
+
+        @JvmStatic
+        fun goToFlutterFragmentWithCachedEngine(@NonNull from: Context, cachedEngineId: String?) {
+            if (!cachedEngineId.isNullOrBlank() && FlutterEngineCache.getInstance().contains(cachedEngineId)) {
+                STLogUtil.d(STFlutterManager.TAG, "cachedEngineId is valid!")
+                val intent = Intent(from, STFlutterFragmentActivity::class.java)
+                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_CACHED_ENGINE_ID, cachedEngineId)
+                from.startActivity(intent)
+            } else {
+                STLogUtil.e(STFlutterManager.TAG, "cachedEngineId is invalid!")
+            }
         }
     }
 

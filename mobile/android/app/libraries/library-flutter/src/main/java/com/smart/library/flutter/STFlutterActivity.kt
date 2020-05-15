@@ -3,15 +3,12 @@ package com.smart.library.flutter
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import com.smart.library.util.STLogUtil
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.android.STFlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
 
 @Suppress("MemberVisibilityCanBePrivate", "KDocUnresolvedReference", "unused", "RemoveRedundantQualifierName")
 class STFlutterActivity : FlutterActivity() {
@@ -19,22 +16,21 @@ class STFlutterActivity : FlutterActivity() {
     companion object {
 
         @JvmStatic
-        @JvmOverloads
-        fun goToFlutterActivity(@NonNull context: Context, @Nullable initialRoute: String? = null, @Nullable cachedEngineId: String? = null) {
-            val intent: Intent = if (cachedEngineId.isNullOrBlank() || !FlutterEngineCache.getInstance().contains(cachedEngineId)) {
-                STFlutterActivity.withNewEngine().backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.opaque).build(context)
-            } else {
-                STLogUtil.w(FlutterBusHandler.TAG, "cacheEngine with $cachedEngineId exists? == ${FlutterEngineCache.getInstance().contains(cachedEngineId)}")
-                STFlutterActivity.withCachedEngine(cachedEngineId).backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.opaque).build(context).apply {
-                    if (!cachedEngineId.isNullOrBlank()) {
-                        putExtra(STFlutterActivityLaunchConfigs.EXTRA_CACHED_ENGINE_ID, cachedEngineId)
-                    }
-                }
-            }
-            if (!initialRoute.isNullOrBlank()) {
-                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE, initialRoute)
-            }
+        fun goToFlutterActivityWithNewEngine(@NonNull context: Context, @NonNull initialRoute: String) {
+            val intent: Intent = STFlutterActivity.withNewEngine().backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.opaque).build(context)
+            intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE, initialRoute)
             context.startActivity(intent)
+        }
+
+        @JvmStatic
+        fun goToFlutterActivityWithCachedEngine(@NonNull context: Context, @NonNull cachedEngineId: String) {
+            if (FlutterEngineCache.getInstance().contains(cachedEngineId)) {
+                STLogUtil.d(STFlutterManager.TAG, "cachedEngineId is valid!")
+                val intent: Intent = STFlutterActivity.withCachedEngine(cachedEngineId).backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.opaque).build(context)
+                context.startActivity(intent)
+            } else {
+                STLogUtil.e(STFlutterManager.TAG, "cachedEngineId is invalid!")
+            }
         }
 
         /**

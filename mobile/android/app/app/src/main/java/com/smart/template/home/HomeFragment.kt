@@ -3,7 +3,6 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import com.smart.template.home.test.PullToNextPageFragment
 import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
 import com.smart.template.home.test.RecyclerViewSnapTopFragment
 import com.smart.template.home.test.VideoPlayerFragment
-import com.smart.template.home.videoplayer.STVideoPagerActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : STBaseFragment() {
@@ -66,7 +64,7 @@ class HomeFragment : STBaseFragment() {
             STRippleFragment.goTo(context)
         }
         videoPager.setOnClickListener {
-            startActivity(Intent(context, STVideoPagerActivity::class.java))
+            // startActivity(Intent(context, STVideoPagerActivity::class.java))
         }
         bottomSheet.setOnClickListener {
             startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))

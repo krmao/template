@@ -19,7 +19,6 @@ class FlutterBusHandler : STBusManager.IBusHandler {
         if (!FlutterEngineCache.getInstance().contains("my_engine_id")) {
             STLogUtil.w(TAG, "onInitOnce init cache flutter engine start")
             flutterEngine = FlutterEngine(application)
-            flutterEngine?.navigationChannel?.setInitialRoute(SCHEMA_FLUTTER_PAGE_DEMO)
             flutterEngine?.dartExecutor?.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
             FlutterEngineCache.getInstance().put("my_engine_id", flutterEngine)
             STLogUtil.w(TAG, "onInitOnce init cache flutter engine end")
@@ -34,13 +33,19 @@ class FlutterBusHandler : STBusManager.IBusHandler {
     override fun onCall(context: Context?, busFunctionName: String, vararg params: Any) {
         when (busFunctionName) {
             "flutter/demo" -> {
-                STFlutterFragmentContainerActivity.goToOriginFlutterActivityWithCachedEngine(context, "my_engine_id")
+                if (context != null) {
+                    STFlutterFragmentActivity.goToFlutterFragment(context, SCHEMA_FLUTTER_PAGE_DEMO, "my_engine_id")
+                }
             }
             "flutter/order" -> {
-                STFlutterFragmentContainerActivity.goToWithFlutterFragment(context, SCHEMA_FLUTTER_PAGE_ORDER)
+                if (context != null) {
+                    STFlutterFragmentActivity.goToFlutterFragment(context, SCHEMA_FLUTTER_PAGE_ORDER)
+                }
             }
             "flutter/not_found" -> {
-                STFlutterFragmentContainerActivity.goToOriginFlutterActivity(context, SCHEMA_FLUTTER_PAGE_NOT_FOUNT)
+                if (context != null) {
+                    STFlutterActivity.goToFlutterActivity(context, SCHEMA_FLUTTER_PAGE_NOT_FOUNT)
+                }
             }
         }
     }
@@ -51,7 +56,7 @@ class FlutterBusHandler : STBusManager.IBusHandler {
 
     companion object {
         var flutterEngine: FlutterEngine? = null
-        const val TAG = "[FLUTTER]"
+        const val TAG = STFlutterFragmentActivity.TAG
         const val SCHEMA_FLUTTER_PAGE_DEMO = "smart://template/flutter?page=demo&params=jsonString"
         const val SCHEMA_FLUTTER_PAGE_ORDER = "smart://template/flutter?page=order&params=jsonString"
         const val SCHEMA_FLUTTER_PAGE_NOT_FOUNT = "smart://template/flutter?page=not_found&params=jsonString"

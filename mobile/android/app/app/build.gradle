@@ -295,14 +295,6 @@ android {
  */
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    if (rootProject.ext.react.get("enableHermes", false)) {
-        debugImplementation files(rootProject.ext.hermesPath + "hermes-debug.aar")
-        releaseImplementation files(rootProject.ext.hermesPath + "hermes-release.aar")
-    } else {
-        implementation 'org.webkit:android-jsc:+'
-    }
-
     implementation project(':library-template-base')
     implementation project(':library-template-repository')
 
@@ -328,6 +320,28 @@ dependencies {
 
     if (gradle.ext.modules.reactNative.enable == true) {
         implementation project(':library-reactnative')
+
+        if (gradle.ext.modules.reactNative.enableHermes == true) {
+            /**
+             * Hermes集成
+             * Hermes的启用对ReactNative应用提升明显,减小了启动时间和安装包大小还有运行内存的占用。
+             *
+             * hermes官网：https://hermesengine.dev/
+             * github地址：https://github.com/facebook/hermes
+             */
+            react = [
+                    entryFile    : "index.js",
+                    // jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/out",
+                    enableHermes : false,  // clean and rebuild if changing
+                    hermesCommand: "$rootDir/../../web/react_native/node_modules/hermes-engine/%OS-BIN%/hermes",
+            ]
+            hermesPath = "$rootDir/../../web/react_native/node_modules/hermes-engine/android/"
+
+            debugImplementation files(rootProject.ext.hermesPath + "hermes-debug.aar")
+            releaseImplementation files(rootProject.ext.hermesPath + "hermes-release.aar")
+        } else {
+            implementation 'org.webkit:android-jsc:+'
+        }
     }
 
     if (gradle.ext.modules.videoplayer.enable == true) {

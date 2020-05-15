@@ -4,14 +4,11 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
 
 
 /**
@@ -19,8 +16,6 @@ import io.flutter.plugin.common.MethodChannel
  */
 @Suppress("unused", "PrivatePropertyName")
 class STFlutterFragment : FlutterFragment() {
-    private val CHANNEL_METHOD = "smart.template.flutter/method"
-    private var methodChannel: MethodChannel? = null
 
     /**
      * https://flutter.dev/docs/development/platform-integration/platform-channels
@@ -52,21 +47,7 @@ class STFlutterFragment : FlutterFragment() {
      *------------------------------------------------------------------------------------------------------------------------
      */
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        val channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_METHOD)
-        channel.setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
-            // Note: this method is invoked on the main thread.
-            when (call.method) {
-                "getArguments" -> {
-                    result.success(arguments)
-                }
-                else -> result.notImplemented()
-            }
-        }
-        methodChannel = channel
-    }
-
-    fun invokeFlutterMethod(@NonNull method: String, @Nullable arguments: Any, callback: MethodChannel.Result) {
-        methodChannel?.invokeMethod(method, arguments, callback)
+        STFlutterManager.configureFlutterEngine(activity, flutterEngine)
     }
 
     override fun provideSplashScreen(): SplashScreen? {

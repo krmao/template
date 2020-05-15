@@ -89,14 +89,6 @@ apply from: "gradle/readme/scripts/tasktimings.gradle" //控制台输出任务�
 // Define versions in a single place
 ext {
 
-    react = [
-            entryFile    : "index.js",
-            // jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/out",
-            enableHermes : false,  // clean and rebuild if changing
-            hermesCommand: "$rootDir/../../web/react_native/node_modules/hermes-engine/%OS-BIN%/hermes",
-    ]
-    hermesPath = "$rootDir/../../web/react_native/node_modules/hermes-engine/android/"
-
     // Sdk and tools
 
     // react-native>=16

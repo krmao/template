@@ -22,7 +22,10 @@ gradle.ext {
                     'enable': true,
                     'enableBoost': false,
             ],
-            'reactNative'  : ['enable': false],
+            'reactNative'  : [
+                    'enable': false,
+                    'enableHermes': false
+            ],
             'hybird'       : ['enable': false],
             'map'          : [
                     'enable'        : false,
@@ -32,7 +35,7 @@ gradle.ext {
                     'googleKey'     : ''
             ],
             'videoplayer'  : [
-                    'enable'         : true,
+                    'enable'         : false,
                     'enableSamples'  : false,
                     'enableExoPlayer': false,
             ],

@@ -10,7 +10,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent.Transparent"
+            android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
@@ -18,7 +18,50 @@
                  defined in @style/LaunchTheme). -->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="false" />
+                android:value="true" />
+
+            <!-- Flutter 闪屏页 -->
+            <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/st_launch_background" />
+        </activity>
+        <activity
+            android:name=".STFlutterFragmentContainerActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Translucent"
+            android:windowSoftInputMode="adjustResize">
+            <!-- This keeps the window background of the activity showing
+              until Flutter renders its first frame. It can be removed if
+              there is no splash screen (such as the default splash screen
+              defined in @style/LaunchTheme). -->
+            <meta-data
+                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                android:value="true" />
+
+            <!-- Flutter 闪屏页 -->
+            <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/st_launch_background" />
+        </activity>
+        <activity
+            android:name=".STFlutterFragmentContainerLaunchActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Translucent.Launch"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Flutter 启动页 -->
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/STAppTheme.Translucent" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -8,27 +8,63 @@
   <packaging>aar</packaging>
   <dependencies>
     <dependency>
+      <groupId>com.example.path_provider</groupId>
+      <artifactId>path_provider_macos_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.flutter.plugins.sharedpreferences</groupId>
+      <artifactId>shared_preferences_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.flutter.plugins.shared_preferences_web</groupId>
+      <artifactId>shared_preferences_web_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.flutter.plugins.shared_preferences_macos</groupId>
+      <artifactId>shared_preferences_macos_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.tekartik.sqflite</groupId>
+      <artifactId>sqflite_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.flutter.plugins.pathprovider</groupId>
+      <artifactId>path_provider_profile</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>io.flutter</groupId>
       <artifactId>flutter_embedding_profile</artifactId>
-      <version>1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408</version>
+      <version>1.0.0-6bc433c6b6b5b98dcf4cc11aff31cdee90849f32</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.flutter</groupId>
       <artifactId>armeabi_v7a_profile</artifactId>
-      <version>1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408</version>
+      <version>1.0.0-6bc433c6b6b5b98dcf4cc11aff31cdee90849f32</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.flutter</groupId>
       <artifactId>arm64_v8a_profile</artifactId>
-      <version>1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408</version>
+      <version>1.0.0-6bc433c6b6b5b98dcf4cc11aff31cdee90849f32</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.flutter</groupId>
       <artifactId>x86_64_profile</artifactId>
-      <version>1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408</version>
+      <version>1.0.0-6bc433c6b6b5b98dcf4cc11aff31cdee90849f32</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

@@ -4,6 +4,15 @@ cd ~/workspace/template/mobile/flutter
 cat README.md
 ```
 
+## 查看并升级到最新的 Flutter 稳定版本
+- https://github.com/flutter/flutter/tags
+```
+git checkout master
+git pull
+git checkout 1.17.1
+flutter doctor
+```
+
 ### 直接更新 flutter aar 指令
 ```
 cd ~/workspace/template/mobile/flutter/android

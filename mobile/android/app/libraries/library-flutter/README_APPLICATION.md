@@ -1,5 +1,14 @@
 ## 纯 FLUTTER 项目
 
+## 查看并升级到最新的 Flutter 稳定版本
+- https://github.com/flutter/flutter/tags
+```
+git checkout master
+git pull
+git checkout 1.17.1
+flutter doctor
+```
+
 ### 创建一个 FLUTTER 应用程序
 - 创建纯 Flutter 应用程序
 ```shell script

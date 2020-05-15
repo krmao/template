@@ -29,6 +29,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   dio: ^3.0.9
   flutter_html: ^0.11.1
+  shared_preferences: ^0.5.7+2
+  rxdart: ^0.24.0
+  cached_network_image: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:

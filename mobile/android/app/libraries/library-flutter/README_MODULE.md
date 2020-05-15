@@ -1,6 +1,15 @@
 ## FLUTTER 模块
 > android studio 打开 .android 的时候在选择框使用快捷键 option + command + . 切换 隐藏文件夹显示
 
+## 查看并升级到最新的 Flutter 稳定版本
+- https://github.com/flutter/flutter/tags
+```
+git checkout master
+git pull
+git checkout 1.17.1
+flutter doctor
+```
+
 ### 集成到现有项目
 - https://flutter.dev/docs/development/add-to-app
 - https://flutter.dev/docs/development/add-to-app/android/project-setup

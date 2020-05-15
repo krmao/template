@@ -150,6 +150,12 @@ android {
             // testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
         }
 
+        /*if (gradle.ext.modules.flutter.enable == true) {
+            profile {
+                initWith debug
+            }
+        }*/
+
         release {
             debuggable false
             jniDebuggable false
@@ -330,8 +336,6 @@ dependencies {
         } else {
             implementation project(':library-videoplayer')
         }
-    } else {
-        implementation project(':library-videoplayer')
     }
 
     implementation project(':module-template-mine')

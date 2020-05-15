@@ -1,28 +1,43 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
-import 'common/common_widget_manager.dart';
-import 'pages/list.dart';
-void main() => runApp(MyApp());
+import 'package:flutter/material.dart';
+import 'package:flutter_module/modules/order/order_widget.dart';
+import 'package:flutter_module/settings/imports/flutter_imports_material.dart';
+
+import 'modules/list/list.dart';
+import 'modules/notfound/not_found_widget.dart';
+
+void main() => runApp(_widgetForRoute(window.defaultRouteName));
+
+/// "smart://template/flutter?page=order&params=jsonString"
+Widget _widgetForRoute(String route) {
+  debugPaintSizeEnabled = false;
+
+  Uri uri = Uri.parse(route);
+  String page = uri.queryParameters['page'];
+  String params = uri.queryParameters['params'];
+
+  debugPrint("flutter main route=$route");
+  debugPrint("flutter main page=$page, params=$params");
+
+  switch (page) {
+    case 'demo':
+      return MyApp(homeWidget: MyHomePage(title: "Flutter PAGE DEMO"));
+    case 'order':
+      return MyApp(homeWidget: OrderWidget());
+    default:
+      return MyApp(homeWidget: NotFoundWidget(route: route));
+  }
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  MyApp({Key key, this.homeWidget, this.primarySwatch = Colors.blue}) : super(key: key);
+  final Widget homeWidget;
+  final MaterialColor primarySwatch;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MaterialApp(theme: ThemeData(primarySwatch: primarySwatch), home: homeWidget);
   }
 }
 
@@ -68,38 +83,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-            CommonWidgetManager.getOnTapWidget(
+            Text('You have pushed the button this many times:'),
+            Text('$_counter', style: Theme.of(context).textTheme.display1),
+            STBaseWidgetManager.getOnTapWidget(
               new Image.asset(
                 "images/icon_apple.png",
                 width: 60.0,
@@ -107,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               () {
                 //toast();
-                CommonWidgetManager.goTo(context, ListPage(name: "苹果列表"));
+                STBaseWidgetManager.goTo(context, ListPage(name: "苹果列表"));
               },
             ),
           ],

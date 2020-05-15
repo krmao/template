@@ -6,24 +6,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
+import kotlinx.android.synthetic.main.flutter_fragment.*
 
 class FlutterFragment : STBaseFragment() {
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val textView: TextView = TextView(activity)
-        textView.text = "flutter"
-        @Suppress("DEPRECATION")
-        textView.setBackgroundColor(resources.getColor(R.color.pink))
-        textView.setOnClickListener {
-            // STBusManager.call(context, "flutter/main")
-            STBusManager.call(context, "flutter/module")
+        return inflater.inflate(R.layout.flutter_fragment, container, false)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        flutterPageDemo.setOnClickListener {
+            STBusManager.call(context, "flutter/demo")
         }
-        return textView
+        flutterPageOrder.setOnClickListener {
+            STBusManager.call(context, "flutter/order")
+        }
+        flutterPageNotFound.setOnClickListener {
+            STBusManager.call(context, "flutter/not_found")
+        }
     }
 
     override fun onStart() {

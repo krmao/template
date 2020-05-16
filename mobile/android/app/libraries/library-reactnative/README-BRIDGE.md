@@ -6,7 +6,8 @@
 
 * smart://template/schemaId?param0=0&param1=1
     * 外部浏览器可以呼起 app
-    
+* smart://template/flutter?page=demo&params=jsonString
+    * 外部直接呼起 flutter
 * smart://template/rn?component=smart-travel&page=home&params=jsonString
     * 外部直接呼起 rn
     

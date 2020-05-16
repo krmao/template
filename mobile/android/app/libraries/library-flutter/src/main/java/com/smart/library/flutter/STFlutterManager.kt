@@ -6,6 +6,7 @@ import android.os.SystemClock
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.UiThread
+import com.smart.template.library.STBridgeCommunication
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
@@ -28,11 +29,8 @@ object STFlutterManager {
     @UiThread
     @JvmStatic
     fun onFlutterCallNativeMethod(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
-        when (call.method) {
-            "getArguments" -> {
-                result.success(activity?.intent)
-            }
-            else -> result.notImplemented()
+        STBridgeCommunication.handleBridge(activity, functionName = call.method, params = call.arguments()) { _: String?, resultJsonString: String? ->
+            result.success(resultJsonString)
         }
     }
 

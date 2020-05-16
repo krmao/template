@@ -1,28 +1,31 @@
 package com.smart.template.home
 
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
+import com.smart.template.R
+import kotlinx.android.synthetic.main.home_hybird_fragment.*
 
 class HybirdFragment : STBaseFragment() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val textView: TextView = TextView(activity)
-        textView.text = "hybird"
-        textView.setBackgroundColor(Color.parseColor("#FF33B5E5"))
-        textView.setOnClickListener {
+        return inflater.inflate(R.layout.home_hybird_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        hybirdPage.setOnClickListener {
             STRouteManager.goToActivity(activity, "com.smart.library.hybird.HybirdActivity") {
                 STLogUtil.w("krmao", it.toString())
             }
         }
-        return textView
     }
 
     override fun onStart() {

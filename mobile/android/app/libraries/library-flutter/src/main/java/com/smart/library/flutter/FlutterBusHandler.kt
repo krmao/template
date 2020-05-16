@@ -19,8 +19,17 @@ class FlutterBusHandler : STBusManager.IBusHandler {
     }
 
 
+    /**
+     * smart://template/flutter?page=demo&params=jsonString
+     */
     override fun onCall(context: Context?, busFunctionName: String, vararg params: Any) {
         when (busFunctionName) {
+            "flutter/open" -> {
+                if (context != null) {
+                    val flutterRoute = (params.getOrNull(0) as? String) ?: "" // page=demo&params=jsonString
+                    STFlutterFragmentActivity.goToFlutterFragmentWithNewEngine(context, flutterRoute)
+                }
+            }
             "flutter/demo" -> {
                 if (context != null) {
                     STFlutterFragmentActivity.goToFlutterFragmentWithCachedEngine(context, cachedPageDemoFlutterEngineId)

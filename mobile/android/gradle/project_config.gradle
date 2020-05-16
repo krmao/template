@@ -23,7 +23,7 @@ gradle.ext {
                     'enableBoost': false,
             ],
             'reactNative'  : [
-                    'enable': false,
+                    'enable': true,
                     'enableHermes': false
             ],
             'hybird'       : ['enable': false],

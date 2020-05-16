@@ -15,7 +15,7 @@ import org.json.JSONObject
 object STBridgeCommunication {
 
     @JvmStatic
-    fun handleBridgeOpenShema(activity: Activity?, url: String?) {
+    fun handleBridgeOpenSchema(activity: Activity?, url: String?) {
         val bridgeParamsJsonObject = JSONObject()
         bridgeParamsJsonObject.put("url", url)
         handleBridge(activity, "open", bridgeParamsJsonObject.toString())
@@ -36,7 +36,16 @@ object STBridgeCommunication {
             when (functionName) {
                 "open" -> {
                     val url = bridgeParamsJsonObject?.optString("url")
-                    if (url?.startsWith("smart://template/rn") == true) {
+                    if (url?.startsWith("smart://template/flutter") == true) {
+                        val uri = Uri.parse(url)
+                        val flutterRoute: String? = uri.query
+                        if (flutterRoute?.isNotBlank() == true) {
+                            STBusManager.call(activity, "flutter/open", flutterRoute)
+                            result.put("result", true)
+                        } else {
+                            result.put("result", false)
+                        }
+                    } else if (url?.startsWith("smart://template/rn") == true) {
                         val uri = Uri.parse(url)
                         val component: String? = uri.getQueryParameter("component")
                         val page: String? = uri.getQueryParameter("page")

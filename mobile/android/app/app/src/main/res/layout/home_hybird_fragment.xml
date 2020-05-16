@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_700"
+        android:background="@color/orange"
         android:orientation="vertical"
         tools:ignore="HardcodedText,UselessParent">
 
@@ -35,31 +35,13 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/rnBridge"
+                    android:id="@+id/hybirdPage"
                     style="@style/STButton.Default"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="REACT NATIVE PAGE BRIDGE"
-                    app:backgroundTint="@color/blue_600" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:background="@color/deep_orange_50"
-                android:minHeight="48dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/rnHome"
-                    style="@style/STButton.Default"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="REACT NATIVE PAGE HOME"
-                    app:backgroundTint="@color/pink" />
+                    android:text="HYBIRD PAGE"
+                    app:backgroundTint="@color/orange_900" />
 
             </TableRow>
         </TableLayout>

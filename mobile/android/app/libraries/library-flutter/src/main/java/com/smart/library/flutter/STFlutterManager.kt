@@ -16,27 +16,18 @@ import io.flutter.plugin.common.MethodChannel
 object STFlutterManager {
 
     const val TAG = STFlutterFragmentActivity.TAG
-    private const val CHANNEL_METHOD = "smart.template.flutter/method"
-    private var methodChannel: MethodChannel? = null
+    const val CHANNEL_METHOD = "smart.template.flutter/method"
 
-    /**
-     * 为 Flutter 绑定 channel
-     */
-    internal fun configureFlutterEngine(activity: Activity?, @NonNull flutterEngine: FlutterEngine) {
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_METHOD).apply {
-            setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
-                onFlutterCallNativeMethod(activity, this, call, result)
-            }
-        }
-    }
+    @JvmStatic
+    var currentMethodChannel: MethodChannel? = null
+        internal set
 
     /**
      *  Note: this method is invoked on the main thread.
      */
     @UiThread
     @JvmStatic
-    fun onFlutterCallNativeMethod(activity: Activity?, methodChannel: MethodChannel, call: MethodCall, result: MethodChannel.Result) {
-        this.methodChannel = methodChannel
+    fun onFlutterCallNativeMethod(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "getArguments" -> {
                 result.success(activity?.intent)
@@ -50,7 +41,7 @@ object STFlutterManager {
      */
     @JvmStatic
     fun invokeFlutterMethod(@NonNull method: String, @Nullable arguments: Any, callback: MethodChannel.Result) {
-        methodChannel?.invokeMethod(method, arguments, callback)
+        currentMethodChannel?.invokeMethod(method, arguments, callback)
     }
 
     @JvmStatic

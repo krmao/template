@@ -9,6 +9,8 @@ import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 
 
 /**
@@ -16,6 +18,8 @@ import io.flutter.embedding.engine.FlutterEngine
  */
 @Suppress("unused", "PrivatePropertyName")
 class STFlutterFragment : FlutterFragment() {
+
+    private var methodChannel: MethodChannel? = null
 
     /**
      * https://flutter.dev/docs/development/platform-integration/platform-channels
@@ -47,7 +51,16 @@ class STFlutterFragment : FlutterFragment() {
      *------------------------------------------------------------------------------------------------------------------------
      */
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        STFlutterManager.configureFlutterEngine(activity, flutterEngine)
+        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, STFlutterManager.CHANNEL_METHOD).apply {
+            setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
+                STFlutterManager.onFlutterCallNativeMethod(activity, call, result)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        STFlutterManager.currentMethodChannel = methodChannel
     }
 
     override fun provideSplashScreen(): SplashScreen? {

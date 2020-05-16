@@ -9,6 +9,8 @@ import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.android.STFlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 
 @Suppress("MemberVisibilityCanBePrivate", "KDocUnresolvedReference", "unused", "RemoveRedundantQualifierName")
 class STFlutterActivity : FlutterActivity() {
@@ -64,6 +66,8 @@ class STFlutterActivity : FlutterActivity() {
         }
     }
 
+    private var methodChannel: MethodChannel? = null
+
     /**
      * https://flutter.dev/docs/development/platform-integration/platform-channels
      * https://flutter.dev/docs/development/add-to-app/android/project-setup
@@ -94,7 +98,16 @@ class STFlutterActivity : FlutterActivity() {
      *------------------------------------------------------------------------------------------------------------------------
      */
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        STFlutterManager.configureFlutterEngine(this, flutterEngine)
+        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, STFlutterManager.CHANNEL_METHOD).apply {
+            setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
+                STFlutterManager.onFlutterCallNativeMethod(activity, call, result)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        STFlutterManager.currentMethodChannel = methodChannel
     }
 
     class STNewEngineIntentBuilder(activityClass: Class<out FlutterActivity?>) : NewEngineIntentBuilder(activityClass)

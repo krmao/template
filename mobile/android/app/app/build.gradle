@@ -157,11 +157,11 @@ android {
         }*/
 
         release {
-            debuggable false
-            jniDebuggable false
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
             signingConfig signingConfigs.release
             proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
             testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
@@ -354,14 +354,6 @@ dependencies {
 
     implementation project(':module-template-mine')
 
-    // 如果 godeye 未依赖低版本 leak canary, 则使用高版本 leak canary
-    if (gradle.ext.configs.monitoring.godeye.enable != true || gradle.ext.configs.monitoring.godeye.enableLeakcanary != true) {
-        // LeakCanary https://square.github.io/leakcanary/upgrading-to-leakcanary-2.0/
-        if (gradle.ext.configs.leakcanary.enable == true) {
-            debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
-        }
-    }
-
     // 监控手机及App信息 https://github.com/Kyson/AndroidGodEye/wiki/0x00-QuickStart_zh
     if (gradle.ext.configs.monitoring.godeye.enable == true) {
         implementation "cn.hikyson.godeye:godeye-core:$rootProject.ext.godeyeVersion" // 核心模块，必须依赖
@@ -369,9 +361,6 @@ dependencies {
         releaseImplementation "cn.hikyson.godeye:godeye-monitor-no-op:$rootProject.ext.godeyeVersion" // Release包不需要监控看板
         implementation "cn.hikyson.godeye:godeye-okhttp:$rootProject.ext.godeyeVersion" // 额外依赖，如果项目使用OkHttp作为网络请求可以用这个库完成网络监控
         implementation "cn.hikyson.godeye:godeye-xcrash:$rootProject.ext.godeyeVersion" // 额外依赖，添加此依赖可以完成Crash监控，如果不依赖则无法监控Crash（安装了也不会生效）
-
-        implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-        implementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 
         if (gradle.ext.configs.monitoring.godeye.enableLeakcanary == true) {
             debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
@@ -383,6 +372,8 @@ dependencies {
         if (gradle.ext.configs.monitoring.godeye.enableMethodCanary == true) {
             implementation 'cn.hikyson.methodcanary:lib:0.15.2'
         }
+    } else if (gradle.ext.configs.leakcanary.enable == true) {
+        debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
     }
 
     if (gradle.ext.configs.test.enable == true) {

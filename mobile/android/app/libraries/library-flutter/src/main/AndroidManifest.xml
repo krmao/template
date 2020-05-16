@@ -24,7 +24,7 @@
             <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/st_launch_background" />
+                android:resource="@drawable/flutter_splash_screen_drawable" />
         </activity>
         <activity
             android:name=".STFlutterActivity"
@@ -45,7 +45,7 @@
             <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/st_launch_background" />
+                android:resource="@drawable/flutter_splash_screen_drawable" />
         </activity>
         <activity
             android:name=".STFlutterFragmentActivity"
@@ -66,7 +66,7 @@
             <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/st_launch_background" />
+                android:resource="@drawable/flutter_splash_screen_drawable" />
         </activity>
         <activity
             android:name=".STFlutterFragmentLaunchActivity"

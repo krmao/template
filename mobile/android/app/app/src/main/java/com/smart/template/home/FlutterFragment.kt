@@ -20,6 +20,9 @@ class FlutterFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        flutterPageBridge.setOnClickListener {
+            STBusManager.call(context, "flutter/open", "page=bridge&params=")
+        }
         flutterPageDemo.setOnClickListener {
             STBusManager.call(context, "flutter/demo")
         }

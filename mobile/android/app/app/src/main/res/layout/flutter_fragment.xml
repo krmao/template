@@ -62,6 +62,14 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/flutterPageBridge"
+                    style="@style/STButton.Default"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="FLUTTER PAGE BRIDGE"
+                    app:backgroundTint="@color/blue_600" />
+                <Button
                     android:id="@+id/flutterPageNotFound"
                     style="@style/STButton.Default"
                     android:layout_width="0dp"

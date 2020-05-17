@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_module/modules/bridge/bridge.dart';
 import 'package:flutter_module/modules/order/order_widget.dart';
 import 'package:flutter_module/settings/imports/flutter_imports_material.dart';
 
@@ -9,7 +10,7 @@ import 'modules/notfound/not_found_widget.dart';
 
 void main() => runApp(_widgetForRoute(window.defaultRouteName));
 
-/// "smart://template/flutter?page=order&params=jsonString"
+/// page=order&params=jsonString"
 Widget _widgetForRoute(String route) {
   debugPaintSizeEnabled = false;
 
@@ -23,6 +24,8 @@ Widget _widgetForRoute(String route) {
   switch (page) {
     case 'demo':
       return MyApp(homeWidget: MyHomePage(title: "Flutter PAGE DEMO"));
+    case 'bridge':
+      return MyApp(homeWidget: BridgeWidget());
     case 'order':
       return MyApp(homeWidget: OrderWidget());
     default:

@@ -2,6 +2,7 @@
 
 package com.smart.library.bundle.util
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
@@ -188,6 +189,7 @@ object STHybirdUtil {
     /**
      * @return 返回拷贝zip成功 并且解压zip到文件夹也成功的 configList
      */
+    @SuppressLint("CheckResult")
     @JvmStatic
     @Synchronized
     fun getConfigListFromAssetsWithCopyAndUnzip(callback: (configList: MutableList<STHybirdModuleConfigModel>) -> Unit) {
@@ -244,6 +246,7 @@ object STHybirdUtil {
         }
     }
 
+    @SuppressLint("CheckResult")
     @JvmStatic
     @Synchronized
     fun downloadAllModules(configList: MutableList<STHybirdModuleConfigModel>?, callback: ((validConfigList: MutableList<STHybirdModuleConfigModel>?) -> Unit)? = null) {

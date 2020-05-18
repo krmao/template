@@ -11,7 +11,7 @@ var OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 var ReplaceBundleStringPlugin = require("replace-bundle-webpack-plugin");
 
 var ModuleConfigPlugin = require("./module-config-plugin");
-let moduleName = path.basename(path.resolve("."));
+let moduleName = "template"; // path.basename(path.resolve("."));
 let moduleVersion = "1.0";
 
 var env = config.build.env;

@@ -9,7 +9,7 @@ import com.smart.library.bundle.STHybird
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.webview.STWebViewUtil
 
-@Suppress("MemberVisibilityCanPrivate", "unused")
+@Suppress("MemberVisibilityCanPrivate", "unused", "PropertyName")
 open class STWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : WebView(context, attrs, defStyleAttr) {
 
     val TAG: String = STWebView::class.java.name

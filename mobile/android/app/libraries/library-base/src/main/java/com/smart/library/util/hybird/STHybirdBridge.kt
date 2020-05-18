@@ -16,7 +16,7 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.declaredFunctions
 
-@Suppress("MemberVisibilityCanPrivate", "unused")
+@Suppress("MemberVisibilityCanPrivate", "unused", "MoveLambdaOutsideParentheses", "ReplacePutWithAssignment")
 object STHybirdBridge {
     val TAG = "[hybird]"
 

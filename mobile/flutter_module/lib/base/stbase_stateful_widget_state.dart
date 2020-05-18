@@ -118,7 +118,7 @@ class STBaseStatefulWidgetState<T extends StatefulWidget> extends State<T> with 
   var _lastTime = 0;
 
   Future<bool> _processExit(BuildContext context) {
-    if (this.enableExitWithDouble) {
+    if (!this.enableExitWithDouble) {
       return Future.value(true);
     }
     int now = DateTime.now().millisecondsSinceEpoch;

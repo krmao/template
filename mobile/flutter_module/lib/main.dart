@@ -25,7 +25,10 @@ Widget _widgetForRoute(String route) {
     case 'demo':
       return MyApp(homeWidget: MyHomePage(title: "Flutter PAGE DEMO"));
     case 'bridge':
-      return MyApp(homeWidget: BridgeWidget());
+      return STBaseApplication(
+        child: BridgeWidget(),
+        statusBarColor: Color(0xFFD3D3D3),
+      );
     case 'order':
       return MyApp(homeWidget: OrderWidget());
     default:

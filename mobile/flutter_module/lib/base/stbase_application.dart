@@ -6,21 +6,21 @@ class STBaseApplication extends StatefulWidget {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight, enableExitWithDouble;
 
-  STBaseApplication({Key key, @required this.child, this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.onInitStateCallback}) : super(key: key);
+  STBaseApplication({Key key, @required this.child, this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false, this.onInitStateCallback}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => STBaseApplicationState(child: this.child, statusBarColor: this.statusBarColor, enableSafeArea: this.enableSafeArea, enableSafeAreaTop: this.enableSafeAreaTop, enableSafeAreaBottom: this.enableSafeAreaBottom, enableSafeAreaLeft: this.enableSafeAreaLeft, enableSafeAreaRight: this.enableSafeAreaRight, onInitStateCallback: this.onInitStateCallback);
+  State<StatefulWidget> createState() => STBaseApplicationState(child: this.child, statusBarColor: this.statusBarColor, enableSafeArea: this.enableSafeArea, enableSafeAreaTop: this.enableSafeAreaTop, enableSafeAreaBottom: this.enableSafeAreaBottom, enableSafeAreaLeft: this.enableSafeAreaLeft, enableSafeAreaRight: this.enableSafeAreaRight, enableExitWithDouble: this.enableExitWithDouble, onInitStateCallback: this.onInitStateCallback);
 }
 
 class STBaseApplicationState extends State<STBaseApplication> {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight, enableExitWithDouble;
 
-  STBaseApplicationState({@required this.child, this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.onInitStateCallback}) : super();
+  STBaseApplicationState({@required this.child, this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false, this.onInitStateCallback}) : super();
 
   @override
   void initState() {
@@ -60,6 +60,25 @@ class STBaseApplicationState extends State<STBaseApplication> {
             highlightColor: STBaseConstants.HIGHLIGHT_COLOR,
             inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: STBaseConstants.INPUT_DECORATION_COLOR))));
   }
+
+  var _lastTime = 0;
+
+  Future<bool> _processExit(BuildContext context) {
+    if (this.enableExitWithDouble) {
+      return Future.value(true);
+    }
+    int now = DateTime.now().millisecondsSinceEpoch;
+    var duration = now - _lastTime;
+    print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
+    _lastTime = now;
+    if (duration > 1500) {
+      print("_processExit -> context==null?${context == null}");
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
+  }
 }
 
 // ignore: unused_element
@@ -67,21 +86,5 @@ class _NoOverScrollBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
-  }
-}
-
-var _lastTime = 0;
-
-Future<bool> _processExit(BuildContext context) {
-  int now = DateTime.now().millisecondsSinceEpoch;
-  var duration = now - _lastTime;
-  print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
-  _lastTime = now;
-  if (duration > 1500) {
-    print("_processExit -> context==null?${context == null}");
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
-    return Future.value(false);
-  } else {
-    return Future.value(true);
   }
 }

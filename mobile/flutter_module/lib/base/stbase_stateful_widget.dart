@@ -8,26 +8,25 @@ import 'widgets/stbase_titlebar_widget.dart';
 
 // ignore: must_be_immutable
 class STBaseStatefulWidget extends StatefulWidget {
-
   STBaseLoadingWidget loadingWidget;
   STBaseTitleBarWidget titleBarWidget;
   WidgetBuildFunction child;
   bool keepAlive = false;
-  bool enableSafeArea = true;
-  bool enableSafeAreaTop = true;
-  bool enableSafeAreaBottom = true;
-  bool enableSafeAreaLeft = true;
-  bool enableSafeAreaRight = true;
+  bool enableSafeArea = false;
+  bool enableSafeAreaTop = false;
+  bool enableSafeAreaBottom = false;
+  bool enableSafeAreaLeft = false;
+  bool enableSafeAreaRight = false;
   Color statusBarColor;
   State state;
 
   STBaseStatefulWidget({this.child, this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.state, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight});
 
-  STBaseStatefulWidget.initWithChild(WidgetBuildFunction child, { this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight}){
+  STBaseStatefulWidget.initWithChild(WidgetBuildFunction child, {this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight}) {
     this.child = child;
   }
 
-  STBaseStatefulWidget.initWithState(State state){
+  STBaseStatefulWidget.initWithState(State state) {
     this.state = state;
   }
 
@@ -49,5 +48,4 @@ class STBaseStatefulWidget extends StatefulWidget {
     }
     return this.state;
   }
-
 }

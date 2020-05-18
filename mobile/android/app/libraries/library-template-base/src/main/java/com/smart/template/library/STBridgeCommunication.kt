@@ -37,10 +37,8 @@ object STBridgeCommunication {
                 "open" -> {
                     val url = bridgeParamsJsonObject?.optString("url")
                     if (url?.startsWith("smart://template/flutter") == true) {
-                        val uri = Uri.parse(url)
-                        val flutterRoute: String? = uri.query
-                        if (flutterRoute?.isNotBlank() == true) {
-                            STBusManager.call(activity, "flutter/open", flutterRoute)
+                        if (url.isNotBlank()) {
+                            STBusManager.call(activity, "flutter/open", url)
                             result.put("result", true)
                         } else {
                             result.put("result", false)
@@ -101,7 +99,7 @@ object STBridgeCommunication {
                 }
                 "getUserInfo" -> {
                     val userJsonObject = JSONObject()
-                    userJsonObject.put("name", "dmpei")
+                    userJsonObject.put("name", "smart")
                     result.put("result", userJsonObject)
                 }
                 "getLocationInfo" -> {

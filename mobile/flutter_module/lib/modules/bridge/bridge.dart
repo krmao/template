@@ -2,27 +2,18 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_module/settings/imports/flutter_imports_material.dart';
 
 /// https://api.flutter.dev/flutter/material/InkWell-class.html
-class BridgeWidget extends StatefulWidget {
-  static const CHANNEL_METHOD = const MethodChannel("smart.template.flutter/method");
-
-  Future<dynamic> onMethodCallHandler(MethodCall call) async {
-    switch (call.method) {
-      case "":
-        break;
-    }
-  }
-
+class BridgeState extends STBaseStatefulWidgetState<STBaseStatefulWidget> {
   @override
-  State<StatefulWidget> createState() {
-    CHANNEL_METHOD.setMethodCallHandler(onMethodCallHandler);
-    return BridgeState();
-  }
-}
+  bool get wantKeepAlive => false;
 
-class BridgeState extends STBaseStatefulWidgetState<BridgeWidget> {
   @override
   void initState() {
-    statusBarColor = null;
+    /*titleBarWidget = STBaseTitleBarWidget(
+            disableBack: true,
+            title: "玩家首页",
+        );
+        loadingWidget = STBaseLoadingWidget(isShow: false);*/
+    statusBarColor = Color(0xFFD3D3D3);
     super.initState();
   }
 
@@ -73,6 +64,7 @@ class BridgeState extends STBaseStatefulWidgetState<BridgeWidget> {
                 decoration: InputDecoration(filled: true, fillColor: Colors.white, hintText: '请输入', hintStyle: TextStyle(color: Color(0xff333333), fontSize: 15.0), contentPadding: const EdgeInsets.only(left: 5.0, right: 5.0), border: InputBorder.none, enabledBorder: null, disabledBorder: null),
                 onChanged: (text) {
                   inputValue = text;
+                  print("inputValue=$inputValue");
                 },
                 onEditingComplete: () {},
                 onSubmitted: (text) {},
@@ -97,38 +89,42 @@ class BridgeState extends STBaseStatefulWidgetState<BridgeWidget> {
           getItemWidget(
               '1. open new page',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("open", {"url": "smart://template/flutter?page=demo&params=jsonString"}).then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.open("smart://template/flutter?page=demo&params=jsonString").then((value) => {showSnackBar("return $value")})
                   }),
           getItemWidget(
               '2. close current page with result',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("close").then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.close("smart").then((value) => {showSnackBar("return $value")})
                   }),
           getItemWidget(
               '3. show toast',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("showToast", {"message": "I AM FROM FLUTTER"}).then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.showToast("I AM FROM FLUTTER").then((value) => {showSnackBar("return $value")})
                   }),
           getItemWithEditWidget(
               '4. put value',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("put", {"key": "inputValue", "value": inputValue}).then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.put("inputValue", inputValue).then((value) => {showSnackBar("return $value")})
                   }),
           getItemWidget(
               '5. get value',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("get", {"key": "inputValue"}).then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.get("inputValue").then((value) => {showSnackBar("return $value")})
                   }),
-          getItemWidget('6. get user info', () => {BridgeWidget.CHANNEL_METHOD.invokeMethod("getUserInfo")}),
+          getItemWidget(
+              '6. get user info',
+              () => {
+                    STBaseBridgeManager.getUserInfo().then((value) => {showSnackBar("return $value")})
+                  }),
           getItemWidget(
               '7. get location info',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("getLocationInfo").then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.getLocationInfo().then((value) => {showSnackBar("return $value")})
                   }),
           getItemWidget(
               '8. get device info',
               () => {
-                    BridgeWidget.CHANNEL_METHOD.invokeMethod("getDeviceInfo").then((value) => {showSnackBar(value)})
+                    STBaseBridgeManager.getDeviceInfo().then((value) => {showSnackBar("return $value")})
                   }),
         ]));
   }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_module/base/stbase_constants.dart';
-import 'package:flutter_module/base/utils/stbase_native_manager.dart';
 
 import 'widgets/stbase_loading_widget.dart';
 import 'widgets/stbase_titlebar_widget.dart';
@@ -27,11 +26,11 @@ class STBaseStatelessWidget extends StatelessWidget with WidgetsBindingObserver 
 
   STBaseStatelessWidget({this.child, this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.state, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight});
 
-  STBaseStatelessWidget.initWithChild(WidgetBuildFunction child, { this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight}){
+  STBaseStatelessWidget.initWithChild(WidgetBuildFunction child, {this.statusBarColor, this.loadingWidget, this.titleBarWidget, this.keepAlive, this.enableSafeArea, this.enableSafeAreaTop, this.enableSafeAreaBottom, this.enableSafeAreaLeft, this.enableSafeAreaRight}) {
     this.child = child;
   }
 
-  STBaseStatelessWidget.initWithState(State state){
+  STBaseStatelessWidget.initWithState(State state) {
     this.state = state;
   }
 
@@ -41,7 +40,7 @@ class STBaseStatelessWidget extends StatelessWidget with WidgetsBindingObserver 
     print("[$tag] build");
 
     if (loadingWidget == null) loadingWidget = STBaseLoadingWidget();
-    if (titleBarWidget == null) titleBarWidget = STBaseTitleBarWidget(onBackPressed: () => STBaseNativeManager.enableNative ? STBaseNativeManager.finish() : Navigator.pop(context));
+    if (titleBarWidget == null) titleBarWidget = STBaseTitleBarWidget(onBackPressed: () => Navigator.pop(context));
     if (statusBarColor == null) statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR;
     if (child == null) child = () => Container();
 
@@ -78,11 +77,9 @@ class STBaseStatelessWidget extends StatelessWidget with WidgetsBindingObserver 
     print("[$tag] didChangeAppLifecycleState state=${state.toString()}");
   }
 
-
   @override
   Future<bool> didPopRoute() {
     debugPrint("$tag didPopRoute");
     return Future.value(false);
   }
-
 }

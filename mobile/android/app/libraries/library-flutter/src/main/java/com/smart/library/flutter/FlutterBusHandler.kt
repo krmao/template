@@ -26,7 +26,7 @@ class FlutterBusHandler : STBusManager.IBusHandler {
         when (busFunctionName) {
             "flutter/open" -> {
                 if (context != null) {
-                    val flutterRoute = (params.getOrNull(0) as? String) ?: "" // page=demo&params=jsonString
+                    val flutterRoute = (params.getOrNull(0) as? String) ?: "" // smart://template/flutter?page=demo&params=jsonString
                     STFlutterFragmentActivity.goToFlutterFragmentWithNewEngine(context, flutterRoute)
                 }
             }

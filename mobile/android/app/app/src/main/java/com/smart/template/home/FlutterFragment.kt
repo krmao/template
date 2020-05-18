@@ -21,7 +21,7 @@ class FlutterFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         flutterPageBridge.setOnClickListener {
-            STBusManager.call(context, "flutter/open", "page=bridge&params=")
+            STBusManager.call(context, "flutter/open", "smart://template/flutter?page=bridge&params=")
         }
         flutterPageDemo.setOnClickListener {
             STBusManager.call(context, "flutter/demo")

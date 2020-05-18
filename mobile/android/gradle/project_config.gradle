@@ -26,7 +26,7 @@ gradle.ext {
                     'enable': true,
                     'enableHermes': false
             ],
-            'hybird'       : ['enable': false],
+            'hybird'       : ['enable': true],
             'map'          : [
                     'enable'        : false,
                     'enableMapNames': 'baidu,gaode', // baidu,gaode,google 支持多个, 逗号分隔

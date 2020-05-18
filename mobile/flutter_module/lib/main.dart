@@ -10,7 +10,7 @@ import 'modules/notfound/not_found_widget.dart';
 
 void main() => runApp(_widgetForRoute(window.defaultRouteName));
 
-/// page=order&params=jsonString"
+/// smart://template/flutter?page=order&params=jsonString"
 Widget _widgetForRoute(String route) {
   debugPaintSizeEnabled = false;
 

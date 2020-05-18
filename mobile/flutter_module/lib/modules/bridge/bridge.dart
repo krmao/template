@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/painting.dart';
 import 'package:flutter_module/settings/imports/flutter_imports_material.dart';
 
 /// https://api.flutter.dev/flutter/material/InkWell-class.html
 class BridgeState extends STBaseStatefulWidgetState<STBaseStatefulWidget> {
+  String inputValue = "";
+
   @override
   bool get wantKeepAlive => false;
 
@@ -15,6 +19,64 @@ class BridgeState extends STBaseStatefulWidgetState<STBaseStatefulWidget> {
         loadingWidget = STBaseLoadingWidget(isShow: false);*/
     statusBarColor = Color(0xFFD3D3D3);
     super.initState();
+
+    STBaseBridgeManager.get("inputValue").then((value) => {
+          this.setState(() {
+            this.inputValue = STBaseJsonUtil.stringToJson(value)['result'];
+          })
+        });
+  }
+
+  @override
+  Widget buildBody() {
+    print("BridgeWidget build");
+    return new SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+        physics: BouncingScrollPhysics(),
+        reverse: false,
+        child: new Column(children: <Widget>[
+          getItemWidget(
+              '1. open new page',
+              () => {
+                    STBaseBridgeManager.open("smart://template/flutter?page=demo&params=jsonString").then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '2. close current page with result',
+              () => {
+                    STBaseBridgeManager.close("smart").then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '3. show toast',
+              () => {
+                    STBaseBridgeManager.showToast("I AM FROM FLUTTER").then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWithEditWidget(
+              '4. put value',
+              () => {
+                    STBaseBridgeManager.put("inputValue", inputValue).then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '5. get value',
+              () => {
+                    STBaseBridgeManager.get("inputValue").then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '6. get user info',
+              () => {
+                    STBaseBridgeManager.getUserInfo().then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '7. get location info',
+              () => {
+                    STBaseBridgeManager.getLocationInfo().then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+          getItemWidget(
+              '8. get device info',
+              () => {
+                    STBaseBridgeManager.getDeviceInfo().then((value) => {showSnackBar("return ${jsonDecode(value)['result']}")})
+                  }),
+        ]));
   }
 
   Widget getItemWidget(String title, GestureTapCallback onTap) {
@@ -68,64 +130,15 @@ class BridgeState extends STBaseStatefulWidgetState<STBaseStatefulWidget> {
                 },
                 onEditingComplete: () {},
                 onSubmitted: (text) {},
+                controller: TextEditingController.fromValue(TextEditingValue(
+                    // 设置默认值
+                    text: '${this.inputValue == null ? "" : this.inputValue}',
+                    // 保持光标在最后
+                    selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '${this.inputValue}'.length)))),
               ),
               flex: 1,
             ),
           ],
         ));
-  }
-
-  String inputValue = "";
-
-  @override
-  Widget buildBody() {
-    print("BridgeWidget build");
-    return new SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-        physics: BouncingScrollPhysics(),
-        reverse: false,
-        child: new Column(children: <Widget>[
-          getItemWidget(
-              '1. open new page',
-              () => {
-                    STBaseBridgeManager.open("smart://template/flutter?page=demo&params=jsonString").then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '2. close current page with result',
-              () => {
-                    STBaseBridgeManager.close("smart").then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '3. show toast',
-              () => {
-                    STBaseBridgeManager.showToast("I AM FROM FLUTTER").then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWithEditWidget(
-              '4. put value',
-              () => {
-                    STBaseBridgeManager.put("inputValue", inputValue).then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '5. get value',
-              () => {
-                    STBaseBridgeManager.get("inputValue").then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '6. get user info',
-              () => {
-                    STBaseBridgeManager.getUserInfo().then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '7. get location info',
-              () => {
-                    STBaseBridgeManager.getLocationInfo().then((value) => {showSnackBar("return $value")})
-                  }),
-          getItemWidget(
-              '8. get device info',
-              () => {
-                    STBaseBridgeManager.getDeviceInfo().then((value) => {showSnackBar("return $value")})
-                  }),
-        ]));
   }
 }

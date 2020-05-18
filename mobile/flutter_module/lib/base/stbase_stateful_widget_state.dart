@@ -27,13 +27,14 @@ class STBaseStatefulWidgetState<T extends StatefulWidget> extends State<T> with 
   bool enableSafeAreaRight = true;
   bool enableTitleBar = false;
   bool enableExitWithDouble = false;
+  bool enableStatusBarTransparent = false;
 
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  STBaseStatefulWidgetState({this.child, this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false});
+  STBaseStatefulWidgetState({this.child, this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false, this.enableStatusBarTransparent = false});
 
-  STBaseStatefulWidgetState.initWithChild(WidgetBuildFunction child, {this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false}) {
+  STBaseStatefulWidgetState.initWithChild(WidgetBuildFunction child, {this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true, this.enableExitWithDouble = false, this.enableStatusBarTransparent = false}) {
     this.child = child;
   }
 
@@ -58,11 +59,15 @@ class STBaseStatefulWidgetState<T extends StatefulWidget> extends State<T> with 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // android >= M
-      statusBarBrightness: Brightness.dark, // ios
-      statusBarIconBrightness: Brightness.light, // android >= M
-    ));
+
+    if (this.enableStatusBarTransparent) {
+      print("[$tag] 设置状态栏完全透明");
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // android >= M
+        statusBarBrightness: Brightness.dark, // ios
+        statusBarIconBrightness: Brightness.light, // android >= M
+      ));
+    }
 
     print("[$tag] build context=$context");
     return MaterialApp(

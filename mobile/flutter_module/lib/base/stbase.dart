@@ -5,6 +5,7 @@ export 'stbase_stateful_widget.dart';
 export 'stbase_stateful_widget_state.dart';
 export 'user/stbase_loginout_event.dart';
 export 'user/stbase_user_manager.dart';
+export 'utils/stbase_json_util.dart';
 export 'utils/stbase_http_manager.dart';
 export 'utils/stbase_rxbus_util.dart';
 export 'utils/stbase_bridge_manager.dart';

@@ -6,7 +6,6 @@ import android.os.SystemClock
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.UiThread
-import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import com.smart.template.library.STBridgeCommunication
 import io.flutter.embedding.engine.FlutterEngine
@@ -31,7 +30,7 @@ object STFlutterManager {
     @UiThread
     @JvmStatic
     fun onFlutterCallNativeMethod(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
-        val argumentsJsonString: String = STJsonUtil.toJson(call.arguments())
+        val argumentsJsonString: String = call.arguments()// STJsonUtil.toJson(call.arguments()) // flutter call jsonEncode
         STLogUtil.w(TAG, "onFlutterCallNativeMethod functionName=${call.method}, arguments=$argumentsJsonString")
         STBridgeCommunication.handleBridge(activity, functionName = call.method, params = argumentsJsonString) { _: String?, resultJsonString: String? ->
             STLogUtil.w(TAG, "onFlutterCallNativeMethod return $resultJsonString")

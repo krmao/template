@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_module/base/utils/stbase_json_util.dart';
 
 class STBaseBridgeManager {
   static const TAG = "[FLUTTER BRIDGE]";
@@ -14,8 +15,9 @@ class STBaseBridgeManager {
 
   static Future<dynamic> invokeNativeMethod(String method, [dynamic arguments]) async {
     try {
-      debugPrint("$TAG invokeNativeMethod start method=$method, arguments=$arguments");
-      var result = await CHANNEL_METHOD.invokeMethod(method, arguments);
+      String argumentsJsonString = STBaseJsonUtil.jsonToString(arguments);
+      debugPrint("$TAG invokeNativeMethod start method=$method, arguments=$argumentsJsonString");
+      var result = await CHANNEL_METHOD.invokeMethod(method, argumentsJsonString);
       debugPrint("$TAG invokeNativeMethod end result:$result");
       return result;
     } on PlatformException catch (error) {

@@ -6,11 +6,12 @@
 //  Copyright © 2019 smart. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-//#import <Flutter/Flutter.h>
-//#import <FlutterBoost.h>
+@import UIKit;
+@import Flutter;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate> //FLBFlutterAppDelegate<UIApplicationDelegate>
-@property (nullable, nonatomic, strong) UIWindow *window;
+@interface AppDelegate : FlutterAppDelegate // More on the FlutterAppDelegate below.
+
+@property (nullable, nonatomic, strong) UIWindow *uiWindow;
+@property (nonatomic,strong) FlutterEngine * _Nonnull flutterEngine;
 @end
 

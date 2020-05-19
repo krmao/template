@@ -1,6 +1,0 @@
-use_frameworks!
-target 'LibraryFlutter_Tests' do
-  pod 'LibraryFlutter', :path => '../'
-  
-  
-end

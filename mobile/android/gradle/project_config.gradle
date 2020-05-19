@@ -19,12 +19,13 @@ gradle.ext {
             'pictureviewer': ['enable': false],
             'liveStreaming': ['enable': false],
             'flutter'      : [
-                    'enable': true,
+                    'enable'     : true,
                     'enableBoost': false,
             ],
             'reactNative'  : [
-                    'enable': true,
-                    'enableHermes': false
+                    'enable'         : true,
+                    'enableHermes'   : false,
+                    'nodeModulesPath': "$rootDir/../react_native/node_modules"
             ],
             'hybird'       : ['enable': true],
             'map'          : [

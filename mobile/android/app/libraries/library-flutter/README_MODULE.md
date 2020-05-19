@@ -131,12 +131,12 @@ q \ enter
 ```shell script
 flutter build --help
 flutter build apk --help
-flutter build apk --pub --debug
-flutter build apk --pub --release
+flutter build apk --pub --debug --no-profile 
+flutter build apk --pub --release --no-profile 
 
 flutter build ios --help
-flutter build ios --pub --debug
-flutter build ios --pub --release
+flutter build ios --pub --debug --no-profile 
+flutter build ios --pub --release --no-profile 
 
 flutter build aar --help
 flutter build aar --build-number 1.0 --pub --debug --no-profile --no-release --output-dir ~/workspace/template/mobile/android/app/libraries/repo

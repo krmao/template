@@ -6,52 +6,40 @@
 //  Copyright © 2019 smart. All rights reserved.
 //
 
-// #import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h> // Only if you have Flutter Plugins
-// #import "FlutterRouter.h"
+// Used to connect plugins (only if you have plugins with iOS platform code).
+#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "STNavigationController.h"
 
-@implementation AppDelegate 
+@implementation AppDelegate
 
-//// This override can be omitted if you do not have any Flutter Plugins.
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//
-////    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:[FlutterRouter sharedInstance] onStart:^(FlutterViewController *fvc) {
-////        NSLog(@"onStart");
-////    }];
-//
-//    UIWindow *window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-//    [window makeKeyAndVisible];
-//
-//    // 首页为 flutter 页面
-////    FLBFlutterViewContainer *homeController = FLBFlutterViewContainer.new;
-////    [homeController setName:URL_ORDER params:@{}];
-//
-//    // 首页为 native 页面
-//    ViewController *homeController = [[ViewController alloc] init];
-//    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:homeController];
-//    rootViewNavigationController.navigationBarHidden = YES;
-////    [FlutterRouter sharedInstance].navigationController = rootViewNavigationController;
-//    self.window.rootViewController = rootViewNavigationController;
-//    return YES;
-//}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    NSLog(@"didFinishLaunchingWithOptions");
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> *)launchOptions {
+  
+    self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
+    // Runs the default Dart entrypoint with a default Flutter route.
+    [self.flutterEngine run];
+    // Used to connect plugins (only if you have plugins with iOS platform code).
+    [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
+  
+    // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
+    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+     [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
+    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
+    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:flutterViewController];
+    // STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController: [[MainViewController alloc] init]];
     
-    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController: [[MainViewController alloc] init]];
     rootViewNavigationController.navigationBarHidden = YES;
     
-    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    [self.window setBackgroundColor:[UIColor whiteColor]];
-    [self.window makeKeyAndVisible];
-    [self.window setRootViewController:rootViewNavigationController];
+    self.uiWindow = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    [self.uiWindow setBackgroundColor:[UIColor whiteColor]];
+    [self.uiWindow makeKeyAndVisible];
+    [self.uiWindow setRootViewController:rootViewNavigationController];
     
-    [[[UIApplication sharedApplication] delegate] setWindow:self.window];
+    [[[UIApplication sharedApplication] delegate] setWindow:self.uiWindow];
     return YES;
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

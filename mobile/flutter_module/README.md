@@ -3,11 +3,16 @@
 - 直接测试 flutter module
     - 连接设备
     - flutter run
-- 集成测试 flutter module 到 native app 测试
+- ANDROID 集成测试 flutter module 到 native app 测试
     - 编译 flutter build aar --build-number 1.0 --pub --debug --no-profile --no-release --output-dir ~/workspace/template/mobile/android/app/libraries/repo
     - 编译 flutter build aar --build-number 1.0 --pub --debug --no-profile --output-dir ~/workspace/template/mobile/android/app/libraries/repo
     - 集成 在 template/mobile/android 确保 project_config.gradle 中 flutter enable = true
     - 安装 installDebug template/mobile/android
+- IOS 集成测试 
+    - flutter build ios-framework --cocoapods --pub --debug --no-profile --output=./build-repo/ios -v
+    - flutter build ios-framework --cocoapods --pub --debug --no-profile --output=/Users/krmao/workspace/template/mobile/flutter_module/build-repo/ios -v
+    - ios 项目中执行 pod install
+    - 运行 ios 项目
 
 
 ## Getting Started

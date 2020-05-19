@@ -52,7 +52,7 @@ allprojects {
         }
 
         if (gradle.ext.modules.reactNative.enable == true) {
-            maven { url "$rootDir/../../web/react_native/node_modules/react-native/android" } // All of React Native (JS, Android binaries) is installed from npm
+            maven { url "$rootDir/../react_native/node_modules/react-native/android" } // All of React Native (JS, Android binaries) is installed from npm
             // react-native couldn't find DSO to load: libhermes.so
             maven { url("$rootDir/../../web/react_native/node_modules/jsc-android/dist") } // Android JSC is installed from npm
         }

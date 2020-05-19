@@ -8,6 +8,16 @@ class SettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("SettingsWidget build");
-    return Scaffold(backgroundColor: Colors.deepOrange, appBar: AppBar(title: Text('设置页面')), body: CommonUtils.getColumn(context, params));
+    return Scaffold(
+        backgroundColor: Colors.deepOrange,
+        appBar: AppBar(title: Text('SETTINGS')),
+        body: Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            color: Colors.yellow,
+            child: Text(
+              'SETTINGS',
+              style: TextStyle(fontSize: 22.0, color: Colors.black),
+            )));
   }
 }

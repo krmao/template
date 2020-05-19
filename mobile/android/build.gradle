@@ -125,7 +125,7 @@ ext {
     androidXLifecycleVersion = "2.2.0"
 
     // React Native Version
-    reactNativeVersion = "0.61.5"
+    reactNativeVersion = "0.62.2"
 
     smartRefreshLayoutVersion = "2.0.0-alpha-1"
     guavaVersion = "22.0-android"

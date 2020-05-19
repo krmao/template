@@ -7,6 +7,16 @@ class OrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.orange, appBar: AppBar(title: Text('订单页面')), body: CommonUtils.getColumn(context, null));
+    return Scaffold(
+        backgroundColor: Colors.orange,
+        appBar: AppBar(title: Text('ORDER')),
+        body: Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            color: Colors.yellow,
+            child: Text(
+              'ORDER',
+              style: TextStyle(fontSize: 22.0, color: Colors.black),
+            )));
   }
 }

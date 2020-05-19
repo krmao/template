@@ -1,5 +1,6 @@
 package com.smart.library.reactnative
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -21,7 +22,7 @@ import com.smart.library.util.STToastUtil
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import org.json.JSONObject
 
-@Suppress("unused", "PrivatePropertyName")
+@Suppress("unused", "PrivatePropertyName", "ObjectLiteralToLambda")
 class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     companion object {
@@ -48,8 +49,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var reactInstanceManager: ReactInstanceManager? = null
 
-    private val moduleName: String?
-        get() = intent.getStringExtra(KEY_START_COMPONENT)
+    private val moduleName: String? by lazy {  intent.getStringExtra(KEY_START_COMPONENT) }
 
     private val initialProperties: Bundle? by lazy { intent.extras }
 
@@ -176,6 +176,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
         })
         reactRootView.post {
             reactInstanceManager = ReactManager.instanceManager
+            STLogUtil.w(TAG, "startReactApplication moduleName=$moduleName, initialProperties=$initialProperties")
             reactRootView.startReactApplication(reactInstanceManager, moduleName, initialProperties)
             if (isResumed) reactInstanceManager?.onHostResume(this, this)
             STLogUtil.w(TAG, "startReactApplication end")

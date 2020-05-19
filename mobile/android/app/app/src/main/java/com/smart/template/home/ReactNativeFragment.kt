@@ -22,10 +22,10 @@ class ReactNativeFragment : STBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rnHome.setOnClickListener {
-            STBusManager.call(activity, "reactnative/open", "home", "cc-rn")
+            STBusManager.call(activity, "reactnative/open", "cc-rn", "home", "{}")
         }
         rnBridge.setOnClickListener {
-            STBusManager.call(activity, "reactnative/open", "bridge", "cc-rn")
+            STBusManager.call(activity, "reactnative/open", "cc-rn", "bridge", "{}")
         }
     }
 

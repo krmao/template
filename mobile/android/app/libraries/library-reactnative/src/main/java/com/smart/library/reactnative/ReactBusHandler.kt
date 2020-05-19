@@ -5,6 +5,7 @@ import android.content.Context
 import com.facebook.soloader.SoLoader
 import com.smart.library.base.STBaseApplication
 import com.smart.library.reactnative.dev.ReactDevSettingsView
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
 import com.smart.library.util.okhttp.STOkHttpManager
@@ -33,10 +34,12 @@ class ReactBusHandler : STBusManager.IBusHandler {
     override fun onCall(context: Context?, busFunctionName: String, vararg params: Any) {
         when (busFunctionName) {
             "reactnative/open" -> {
-                val page: String = (params.getOrNull(0) as? String) ?: ""
-                val paramJsonObjectString: String = (params.getOrNull(1) as? String) ?: "{}"
-                val component: String = (params.getOrNull(2) as? String) ?: ""
-                ReactJumper.goTo(context, page, paramJsonObjectString, component)
+                STLogUtil.w(ReactManager.TAG, "reactnative/open busFunctionName:$busFunctionName, params:$params")
+
+                val component: String = (params.getOrNull(0) as? String) ?: ""
+                val page: String = (params.getOrNull(1) as? String) ?: ""
+                val paramJsonObjectString: String = (params.getOrNull(2) as? String) ?: "{}"
+                ReactJumper.goTo(context, pageName = page, paramJsonObjectString = paramJsonObjectString, component = component)
             }
         }
     }

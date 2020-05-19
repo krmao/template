@@ -112,8 +112,8 @@ var webpackConfig = merge(baseWebpackConfig, {
             baseInfo: {
                 moduleName: moduleName,
                 moduleVersion: moduleVersion,
-                moduleDebug: true,
-                moduleUpdateStrategy: "ONLINE", // ONLINE=在线  , OFFLINE=离线
+                moduleDebug: false,
+                moduleUpdateStrategy: "OFFLINE", // ONLINE=在线  , OFFLINE=离线
 
                 //https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList
                 moduleMainUrl: "/cx/cxj/cxjappweb/" + moduleName + "/",
@@ -123,13 +123,13 @@ var webpackConfig = merge(baseWebpackConfig, {
                 moduleDownloadUrl: "http://10.47.58.14:8080/background/files/" + moduleName + "-" + moduleVersion + ".zip"
             },
             input: config.build.assetsRoot,
-            output: [path.resolve(config.build.assetsRoot, "../../../../template/apps/app-house-keeper/android/arsenal/modules/module-housekeeper-hybird/src/main/assets/")]
+            output: [path.resolve(config.build.assetsRoot, "../../../../template/mobile/android/app/libraries/library-hybird/src/main/assets/hybird/")]
         })
     ]
 });
 
 if (config.build.productionGzip) {
-    var CompressionWebpackPlugin = require("compression-webpack-plugin");
+    const CompressionWebpackPlugin = require("compression-webpack-plugin");
 
     webpackConfig.plugins.push(
         new CompressionWebpackPlugin({
@@ -143,7 +143,7 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.bundleAnalyzerReport) {
-    var BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+    const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
     webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 

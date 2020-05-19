@@ -3,9 +3,14 @@ package com.smart.library.widget.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
+import android.webkit.WebSettings
+import android.webkit.WebView
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.STConfig
+import com.smart.library.bundle.STHybird.TAG
+import com.smart.library.util.STLogUtil
 import com.smart.library.widget.webview.client.STWebChromeClient
 import com.smart.library.widget.webview.client.STWebViewClient
 
@@ -13,7 +18,7 @@ import com.smart.library.widget.webview.client.STWebViewClient
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STWebViewUtil {
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "ObsoleteSdkInt")
     fun initWebView(webView: WebView?, userAgent: String? = null) {
         if (webView != null) {
 
@@ -28,7 +33,7 @@ object STWebViewUtil {
             webView.settings.javaScriptEnabled = true
             webView.settings.javaScriptCanOpenWindowsAutomatically = true
             webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
-            webView.settings.userAgentString = userAgent
+            webView.settings.userAgentString = webView.settings.userAgentString + userAgent
 
             //当手机字体很小的时候，部分H5页面显示不正常
             webView.settings.defaultFontSize = 16
@@ -39,7 +44,6 @@ object STWebViewUtil {
             webView.settings.setGeolocationEnabled(true)
             webView.settings.setAppCacheEnabled(true)
             webView.settings.setAppCachePath(webView.context.getDir(STConfig.NAME_CACHE_WEB_DIR, Context.MODE_PRIVATE).path)
-
 
             /**
              * Android中默认mWebView.setAllowFileAccess(true)，
@@ -87,14 +91,16 @@ object STWebViewUtil {
             webView.isVerticalScrollBarEnabled = false
             webView.isHorizontalScrollBarEnabled = false
 
-            webView.setWebViewClient(STWebViewClient())
-            webView.setWebChromeClient(STWebChromeClient())
+            webView.webViewClient = STWebViewClient()
+            webView.webChromeClient = STWebChromeClient()
             //webView.setDownloadListener()
 
             // 移除 webView 导出接口，防止被恶意利用
             webView.removeJavascriptInterface("searchBoxJavaBridge_")
             webView.removeJavascriptInterface("accessibilityTraversal")
             webView.removeJavascriptInterface("accessibility")
+
+            STLogUtil.w(TAG, "userAgentString=${webView.settings.userAgentString}")
         }
     }
 

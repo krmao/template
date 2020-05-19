@@ -1,5 +1,6 @@
 package com.smart.library.bundle
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.webkit.WebViewClient
 import com.smart.library.base.STApplicationVisibleChangedEvent
@@ -89,6 +90,7 @@ object STHybird {
      * debug true  的话代表是测试机,可以拉取动态更新的测试版本
      *       false 代表是已发布的正式的去打包，不能拉取动态更新的测试版本
      */
+    @SuppressLint("CheckResult")
     @JvmStatic
     @JvmOverloads
     @Synchronized
@@ -205,6 +207,7 @@ object STHybird {
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun initModule(config: STHybirdModuleConfigModel?, callback: ((config: STHybirdModuleConfigModel?) -> Unit)? = null) {
         if (!enable) {
             callback?.invoke(null)
@@ -235,8 +238,8 @@ object STHybird {
             return
         }
 
-        val _start = System.currentTimeMillis()
-        STLogUtil.w(TAG, "--[initModule:${config?.moduleName}](开始), 当前线程:${Thread.currentThread().name}, 当前时间:${STTimeUtil.yMdHmsS(Date(_start))}")
+        val start = System.currentTimeMillis()
+        STLogUtil.w(TAG, "--[initModule:${config?.moduleName}](开始), 当前线程:${Thread.currentThread().name}, 当前时间:${STTimeUtil.yMdHmsS(Date(start))}")
 
         if (config != null) {
             val moduleManager = STHybirdModuleManager.create(config)
@@ -245,12 +248,13 @@ object STHybird {
                 STHybirdBundleInfoManager.saveConfigToBundleByName(config.moduleName, config)
             }
         }
-        STLogUtil.w(TAG, "--[initModule:${config?.moduleName}](结束), 当前线程:${Thread.currentThread().name}, 当前时间:${STTimeUtil.yMdHmsS(Date())} , 一共耗时:${System.currentTimeMillis() - _start}ms")
+        STLogUtil.w(TAG, "--[initModule:${config?.moduleName}](结束), 当前线程:${Thread.currentThread().name}, 当前时间:${STTimeUtil.yMdHmsS(Date())} , 一共耗时:${System.currentTimeMillis() - start}ms")
     }
 
     /**
      * @param callback 在全部模块成功初始化结束以后,检查全部更新之前回调, configList 返回空,代表没有模块被成功初始化, 属于初始化失败的标志
      */
+    @SuppressLint("CheckResult")
     private fun initAllModules(configList: MutableList<STHybirdModuleConfigModel>?, isNeedCheckAllUpdateAfterAllModulesSuccessInit: Boolean = true, callback: ((configList: MutableList<STHybirdModuleConfigModel>?) -> Unit)? = null) {
         if (!enable) {
             callback?.invoke(null)
@@ -274,8 +278,6 @@ object STHybird {
                 ({
                 })
             ).subscribe {
-
-
                 STLogUtil.e(TAG, "--[initAllModules:全部初始化结束], 当前线程:${Thread.currentThread().name}, 当前时间:${STTimeUtil.yMdHmsS(Date())} ,最终成功初始化的模块:${modules.map { it.key }} , 一共耗时:${System.currentTimeMillis() - start}ms")
                 STLogUtil.e(TAG, "--[initAllModules:全部初始化结束]-----------------------------------------------------------------------------------")
 
@@ -351,8 +353,7 @@ object STHybird {
                             } else {
                                 STLogUtil.e(TAG, ">>>>>>>======${remoteConfig.moduleName} 无需切换为在线模式")
                             }
-                            STHybirdDownloadManager.download(remoteConfig) { _ ->
-
+                            STHybirdDownloadManager.download(remoteConfig) {
                             }
                         } else {
                             STLogUtil.v(TAG, ">>>>>>>======${remoteConfig.moduleName} 系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 相等, 无需更新")
@@ -393,41 +394,41 @@ object STHybird {
         if (moduleManager != null) {
             val moduleName = moduleManager.currentConfig.moduleName
             val start = System.currentTimeMillis()
-            STLogUtil.v(TAG + ":" + moduleName, "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig.moduleVersion},当前线程:${Thread.currentThread().name}")
-            STLogUtil.v(TAG + ":" + moduleName, "当前配置=${moduleManager.currentConfig}")
+            STLogUtil.v("$TAG:$moduleName", "系统检测更新(同步) 开始 当前版本=${moduleManager.currentConfig.moduleVersion},当前线程:${Thread.currentThread().name}")
+            STLogUtil.v("$TAG:$moduleName", "当前配置=${moduleManager.currentConfig}")
 
             if (configer == null) {
-                STLogUtil.e(TAG + ":" + moduleName, "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
+                STLogUtil.e("$TAG:$moduleName", "系统检测到尚未配置 config 下载器，请先设置 config 下载器, return")
                 callback?.invoke()
                 return
             }
 
             if (STHybirdDownloadManager.isDownloading(moduleManager.currentConfig)) {
-                STLogUtil.e(TAG + ":" + moduleName, "系统检测到当前正在下载更新中, return")
+                STLogUtil.e("$TAG:$moduleName", "系统检测到当前正在下载更新中, return")
                 callback?.invoke()
                 return
             }
 
             if (moduleManager.onlineModel) {
-                STLogUtil.e(TAG + ":" + moduleName, "系统检测到当前已经是在线状态了,无需重复检测 return")
+                STLogUtil.e("$TAG:$moduleName", "系统检测到当前已经是在线状态了,无需重复检测 return")
                 callback?.invoke()
                 return
             }
 
             val moduleConfigUrl = moduleManager.currentConfig.moduleConfigUrl
-            STLogUtil.v(TAG + ":" + moduleName, "下载配置文件 开始 当前版本=${moduleManager.currentConfig.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
+            STLogUtil.v("$TAG:$moduleName", "下载配置文件 开始 当前版本=${moduleManager.currentConfig.moduleVersion}: $moduleConfigUrl , 当前线程:${Thread.currentThread().name}")
             configer?.invoke(moduleConfigUrl) { remoteConfig: STHybirdModuleConfigModel? ->
-                STLogUtil.v(TAG + ":" + moduleName, "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name}")
-                STLogUtil.v(TAG + ":" + moduleName, "remoteConfig->")
-                STLogUtil.j(TAG + ":" + moduleName, STJsonUtil.toJson(remoteConfig))
+                STLogUtil.v("$TAG:$moduleName", "下载配置文件 ${if (remoteConfig == null) "失败" else "成功"} , 当前线程:${Thread.currentThread().name}")
+                STLogUtil.v("$TAG:$moduleName", "remoteConfig->")
+                STLogUtil.j("$TAG:$moduleName", STJsonUtil.toJson(remoteConfig))
                 if (remoteConfig != null) {
                     //1:正式包，所有机器可以拉取
                     //2:测试包，只要测试机器可以拉取
                     if (!remoteConfig.moduleDebug || (remoteConfig.moduleDebug && debug)) {
-                        STLogUtil.e(TAG + ":" + moduleName, "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
+                        STLogUtil.e("$TAG:$moduleName", "检测到该版本为正式版 或者当前为测试版本并且本机是测试机,可以执行更新操作")
                         val remoteVersion = remoteConfig.moduleVersion.toFloatOrNull()
                         val localVersion = moduleManager.currentConfig.moduleVersion.toFloatOrNull()
-                        STLogUtil.v("${TAG + ":" + moduleName} 当前版本:$localVersion   远程版本:$remoteVersion")
+                        STLogUtil.v("${"$TAG:$moduleName"} 当前版本:$localVersion   远程版本:$remoteVersion")
                         if (remoteVersion != null && localVersion != null) {
                             //版本号相等时不做任何处理，避免不必要的麻烦
                             if (remoteVersion != localVersion) {
@@ -445,12 +446,12 @@ object STHybird {
                             STLogUtil.e("系统检测到 remoteVersion:$remoteVersion 或者 localVersion:$localVersion 为空, 无法判断需要更新,默认不需要更新")
                         }
                     } else {
-                        STLogUtil.e(TAG + ":" + moduleName, "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
+                        STLogUtil.e("$TAG:$moduleName", "检测到该版本为调试版本且本机不是测试机,不执行更新操作 return false")
                     }
                 }
                 callback?.invoke()
             }
-            STLogUtil.v(TAG + ":" + moduleName, "检查更新 结束, 当前线程:${Thread.currentThread().name}, 耗时: ${System.currentTimeMillis() - start}ms")
+            STLogUtil.v("$TAG:$moduleName", "检查更新 结束, 当前线程:${Thread.currentThread().name}, 耗时: ${System.currentTimeMillis() - start}ms")
         }
     }
 

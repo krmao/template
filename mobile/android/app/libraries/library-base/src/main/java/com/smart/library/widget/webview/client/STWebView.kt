@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.bundle.STHybird
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
 import com.smart.library.widget.webview.STWebViewUtil
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "PropertyName")
@@ -20,7 +21,7 @@ open class STWebView @JvmOverloads constructor(context: Context, attrs: Attribut
         private set
 
     init {
-        STWebViewUtil.initWebView(this)
+        STWebViewUtil.initWebView(this, " statusBarHeight/${(STSystemUtil.statusBarHeight / STSystemUtil.displayMetrics.density).toInt()} ")
     }
 
     open fun loadURL(url: String?) {

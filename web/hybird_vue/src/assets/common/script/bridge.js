@@ -15,51 +15,51 @@
  * @returns {{}}
  */
 window.bridge = {};
-module.export = (function(bindObj = null) {
+module.export = (function (bindObj = null) {
     let _bind = bindObj && bindObj instanceof Object ? bindObj : {};
 
     _bind.callbackMap = new Map();
 
     //======================================================================
 
-    _bind.open = function(url, callback) {
+    _bind.open = function (url, callback) {
         let params = JSON.stringify({url: url});
         _bind.invoke(callback, "open", params);
     };
-    _bind.close = function(result, callback) {
+    _bind.close = function (result, callback) {
         let params = JSON.stringify({result: result});
         _bind.invoke(callback, "close", params);
     };
-    _bind.showToast = function(message, callback) {
+    _bind.showToast = function (message, callback) {
         let params = JSON.stringify({message: message});
         _bind.invoke(callback, "showToast", params);
     };
-    _bind.put = function(key, value, callback) {
+    _bind.put = function (key, value, callback) {
         let params = JSON.stringify({key: key, value: !value ? "" : value});
         _bind.invoke(callback, "put", params);
     };
-    _bind.get = function(key, callback) {
+    _bind.get = function (key, callback) {
         let params = JSON.stringify({key: key});
         _bind.invoke(callback, "get", params);
     };
-    _bind.getUserInfo = function(callback) {
+    _bind.getUserInfo = function (callback) {
         let params = JSON.stringify({});
         _bind.invoke(callback, "getUserInfo", params);
     };
-    _bind.getLocationInfo = function(callback) {
+    _bind.getLocationInfo = function (callback) {
         let params = JSON.stringify({});
         _bind.invoke(callback, "getLocationInfo", params);
     };
-    _bind.getDeviceInfo = function(callback) {
+    _bind.getDeviceInfo = function (callback) {
         let params = JSON.stringify({});
         _bind.invoke(callback, "getDeviceInfo", params);
     };
     //======================================================================
-    _bind.invoke = function(callback, ...args) {
+    _bind.invoke = function (callback, ...args) {
         let methodName = args[0];
         let paramsString = "";
 
-        args.slice(1, args.length).forEach(function(value, index, array) {
+        args.slice(1, args.length).forEach(function (value, index, array) {
             paramsString += encodeURIComponent(array[index]) + (index < array.length - 1 ? "," : "");
         });
 
@@ -72,22 +72,22 @@ module.export = (function(bindObj = null) {
     };
     //======================================================================
 
-    _bind.onResume = function() {
+    _bind.onResume = function () {
         console.log("[html] onResume()");
     };
 
-    _bind.onPause = function() {
+    _bind.onPause = function () {
         console.log("[html] onPause()");
     };
 
-    _bind.onNetworkStateChanged = function(available) {
+    _bind.onNetworkStateChanged = function (available) {
         console.log("[html] onNetworkStateChanged():available=" + available);
     };
 
     /**
      * @param args args[0]==hashcode 后面的为其它不定长参数
      */
-    _bind.onCallback = function(...args) {
+    _bind.onCallback = function (...args) {
         console.log("[html]", "onCallback:start:args=", args, " , callbackMap.size==" + _bind.callbackMap.size, _bind.callbackMap);
         let result = null;
         try {
@@ -97,7 +97,7 @@ module.export = (function(bindObj = null) {
             console.log("[html] onCallback:invoke before: callbackId=" + callbackId + " , result=" + args[1]);
             if (callbackId) {
                 console.log("[html] onCallback:hashcode=" + callbackId);
-                _bind.callbackMap.forEach(function(value, key, mapObj) {
+                _bind.callbackMap.forEach(function (value, key, mapObj) {
                     console.log("map:value:" + value + ", key:" + key + ", key==hashcode?" + (key === callbackId));
                 });
                 let method = _bind.callbackMap.get(callbackId);
@@ -117,12 +117,24 @@ module.export = (function(bindObj = null) {
     };
 
     _bind.browser = {
-        versions: (function() {
+        versions: (function () {
             const u = navigator.userAgent;
+            // const u = 'Mozilla/5.0 (Linux; Android 10; CLT-AL01 Build/HUAWEICLT-AL01; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/79.0.3945.116 Mobile Safari/537.36 statusBarHeight/27 ';
             const app = navigator.appVersion;
             const ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+            // parse statusbarHeight start
+            const statusbarKeyString = "statusBarHeight"; // " statusbarHeight/22 "
+            const statusbarIndex = u.indexOf(statusbarKeyString);
+            let statusbarHeight = parseInt(u.substr(statusbarIndex + statusbarKeyString.length + 1, 3).trim());
+            statusbarHeight = isNaN(statusbarHeight) ? 0 : statusbarHeight;
+            // parse statusbarHeight end
+
+            console.log("statusbarHeight=" + statusbarHeight);
+
             return {
                 webKit: u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+                statusBarHeight: statusbarHeight, //statusbarHeight
                 mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
                 ios: ios, //ios终端
                 android: u.indexOf("Android") > -1 || u.indexOf("Adr") > -1 || u.indexOf("Linux") > -1, //android终端
@@ -134,12 +146,12 @@ module.export = (function(bindObj = null) {
             };
         })(),
         language: (navigator.browserLanguage || navigator.language).toLowerCase(),
-        toString: function() {
-            return "\nwebKit:" + this.versions.webKit + "\nmobile:" + this.versions.mobile + "\nios:" + this.versions.ios + "\nandroid:" + this.versions.android + "\niPhone:" + this.versions.iPhone + "\niPad:" + this.versions.iPad + "\nweixin:" + this.versions.weixin + "\nqq:" + this.versions.qq + "\nisIphoneX:" + this.versions.isIphoneX + "\niosVersion:" + this.versions.iosVersion + "\nandroidVersion:" + this.versions.androidVersion;
+        toString: function () {
+            return "\nwebKit:" + this.versions.webKit + "\nstatusBarHeight:" + this.versions.statusBarHeight + "\nmobile:" + this.versions.mobile + "\nios:" + this.versions.ios + "\nandroid:" + this.versions.android + "\niPhone:" + this.versions.iPhone + "\niPad:" + this.versions.iPad + "\nweixin:" + this.versions.weixin + "\nqq:" + this.versions.qq + "\nisIphoneX:" + this.versions.isIphoneX + "\niosVersion:" + this.versions.iosVersion + "\nandroidVersion:" + this.versions.androidVersion;
         }
     };
 
-    _bind.goTo = function(url) {
+    _bind.goTo = function (url) {
         console.log("[Native:goTo] url: " + url);
 
         // 同时支持 ios UIWebview and WKWebview
@@ -155,7 +167,7 @@ module.export = (function(bindObj = null) {
         div.innerHTML = '<iframe style="display: none;" src="' + url + '"/>';
         document.querySelector("body").appendChild(div);
 
-        setTimeout(function() {
+        setTimeout(function () {
             document.querySelector("body").removeChild(div);
         }, 1000);
         /*}*/

@@ -1,5 +1,6 @@
 package com.smart.library.hybird
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.FrameLayout
 import com.smart.library.base.STBaseActivity
@@ -8,12 +9,11 @@ import com.smart.library.widget.webview.STWebFragment
 @Suppress("unused")
 class HybirdActivity : STBaseActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = false
-        enableExitWithDoubleBackPressed = true
+        enableSwipeBack = true
+        enableExitWithDoubleBackPressed = false
         super.onCreate(savedInstanceState)
-        setContentView(FrameLayout(this))
+        setContentView(FrameLayout(this).apply { setBackgroundColor(Color.WHITE) })
 
         Thread(Runnable {
             HybirdApplication.init {

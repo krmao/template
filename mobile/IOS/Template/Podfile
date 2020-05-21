@@ -1,6 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
+
 platform :ios, '9.0'
 install! 'cocoapods', generate_multiple_pod_projects: true
 
@@ -123,5 +124,7 @@ target 'Template' do
   # rnpod
   flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
+  
+  pod 'Masonry' # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
 
 end

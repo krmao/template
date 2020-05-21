@@ -1,0 +1,22 @@
+//
+//  PrefixHeader.pch
+//  Template
+//
+//  Created by krmao on 2020/5/21.
+//  Copyright © 2020 smart. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+// If you want to use masonry without all those pesky 'mas_' prefixes. Add #define MAS_SHORTHAND to your prefix.pch before importing Masonry
+#define MAS_SHORTHAND
+// By default, macros which support autoboxing are prefixed with mas_. Unprefixed versions are available by defining MAS_SHORTHAND_GLOBALS before importing Masonry.
+#define MAS_SHORTHAND_GLOBALS
+// https://github.com/SnapKit/Masonry
+#import "Masonry.h"
+
+#endif /* PrefixHeader_pch */

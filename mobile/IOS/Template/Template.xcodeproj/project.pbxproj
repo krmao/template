@@ -14,8 +14,6 @@
 		F81FAFFF247677E800CF4FC8 /* UIButton+OnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */; };
 		F86803DD247670A400D29159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DC247670A400D29159 /* AppDelegate.m */; };
 		F86803E0247670A400D29159 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DF247670A400D29159 /* SceneDelegate.m */; };
-		F86803E3247670A400D29159 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803E2247670A400D29159 /* ViewController.m */; };
-		F86803E6247670A400D29159 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86803E4247670A400D29159 /* Main.storyboard */; };
 		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
 		F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86803E9247670A500D29159 /* LaunchScreen.storyboard */; };
 		F86803EE247670A500D29159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803ED247670A500D29159 /* main.m */; };
@@ -39,9 +37,6 @@
 		F86803DC247670A400D29159 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F86803DE247670A400D29159 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		F86803DF247670A400D29159 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		F86803E1247670A400D29159 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F86803E2247670A400D29159 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		F86803E5247670A400D29159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F86803E7247670A500D29159 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F86803EA247670A500D29159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F86803EC247670A500D29159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,9 +138,6 @@
 				F86803DC247670A400D29159 /* AppDelegate.m */,
 				F86803DE247670A400D29159 /* SceneDelegate.h */,
 				F86803DF247670A400D29159 /* SceneDelegate.m */,
-				F86803E1247670A400D29159 /* ViewController.h */,
-				F86803E2247670A400D29159 /* ViewController.m */,
-				F86803E4247670A400D29159 /* Main.storyboard */,
 				F86803E7247670A500D29159 /* Assets.xcassets */,
 				F86803E9247670A500D29159 /* LaunchScreen.storyboard */,
 				F86803EC247670A500D29159 /* Info.plist */,
@@ -216,7 +208,6 @@
 			files = (
 				F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */,
 				F86803E8247670A500D29159 /* Assets.xcassets in Resources */,
-				F86803E6247670A400D29159 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +276,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F86803E3247670A400D29159 /* ViewController.m in Sources */,
 				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
 				F81FAFFC247677E800CF4FC8 /* STFlutterViewController.m in Sources */,
 				F81FAFFF247677E800CF4FC8 /* UIButton+OnClickListener.m in Sources */,
@@ -299,14 +289,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F86803E4247670A400D29159 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F86803E5247670A400D29159 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F86803E9247670A500D29159 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

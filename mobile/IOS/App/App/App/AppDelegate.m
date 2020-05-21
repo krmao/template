@@ -18,18 +18,24 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> *)launchOptions {
   
     self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
-    // Runs the default Dart entrypoint with a default Flutter route.
+    [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
     [self.flutterEngine run];
-    // Used to connect plugins (only if you have plugins with iOS platform code).
     [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
   
-    // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
-    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-     [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
-    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
-    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:flutterViewController];
-    // STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController: [[MainViewController alloc] init]];
+    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
     
+    // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+    // [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
+    // [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
+    
+    FlutterMethodChannel* methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method"
+                                            binaryMessenger:flutterViewController.binaryMessenger];
+
+    [methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
+        NSLog(@"method=%@, arguments=%@",call.method, call.arguments);
+    }];
+    
+    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:flutterViewController];
     rootViewNavigationController.navigationBarHidden = YES;
     
     self.uiWindow = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
@@ -39,7 +45,6 @@
     
     [[[UIApplication sharedApplication] delegate] setWindow:self.uiWindow];
     return YES;
-    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

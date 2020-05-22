@@ -154,6 +154,9 @@ target 'Template' do
   # 数据为空时显示的页面 https://github.com/dzenbot/DZNEmptyDataSet
   pod 'DZNEmptyDataSet'
   
+  # 动画 https://github.com/airbnb/lottie-ios
+  pod 'lottie-ios','2.5.3'
+  
   # 集成 react native
   # rnpod
   

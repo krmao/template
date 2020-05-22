@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIButton+Click.h"
+
+typedef void(^OnClickListener) (void);
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIButton (OnClickListener)
 
+@property(nonatomic, strong) OnClickListener clickListener;
+
 - (void) setOnClickListener:(OnClickListener)onClickListener;
-- (void) setOnClickListener:(OnClickListener)onClickListener forControlEvents:(UIControlEvents)controlEvents;
 
 @end
 

@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
 #import "STNavigationController.h"
+#import "STMainTabBarViewController.h"
 
 @interface AppDelegate ()
 
@@ -32,27 +32,10 @@
 }
 
 + (UIViewController *) initRootViewController {
-    /*
-    self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
-     [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
-     [self.flutterEngine run];
-     [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
-     FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
-      */
-
-      FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-      [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
-      [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
-
-     FlutterMethodChannel* methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method"
-                                             binaryMessenger:flutterViewController.binaryMessenger];
-
-     [methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-         NSLog(@"method=%@, arguments=%@",call.method, call.arguments);
-     }];
-
-     STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:flutterViewController];
-     rootViewNavigationController.navigationBarHidden = YES;
+    STMainTabBarViewController *rootViewController = [STMainTabBarViewController new];
+    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:rootViewController];
+    
+    rootViewNavigationController.navigationBarHidden = YES;
     return rootViewNavigationController;
 }
 

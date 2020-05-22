@@ -10,30 +10,29 @@
 #import <objc/runtime.h>
 
 @interface UIButton ()
-@property(nonatomic, weak) OnClickListener clickListener;
-- (void) setClickListener:(OnClickListener)onClickListener;
 @end
 
 @implementation UIButton (OnClickListener)
 
+static void *clickKey = &clickKey;
+
 - (void) setOnClickListener:(OnClickListener)onClickListener{
     self.clickListener = onClickListener;
-    [self addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addTarget:self action:@selector(onButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void) setOnClickListener:(OnClickListener)onClickListener forControlEvents:(UIControlEvents)controlEvents{
-    self.clickListener = onClickListener;
-    [self addTarget:self action:@selector(onClick:) forControlEvents:controlEvents];
-}
-
-- (void)onClick:(id)sender{
+- (void)onButtonClicked{
     if (self.clickListener){
-        self.clickListener(self);
+        self.clickListener();
     }
 }
 
-- (void) setClickListener:(OnClickListener)onClickListener{
-    self.clickListener =onClickListener;
+- (void)setClickListener:(OnClickListener) clickListener{
+     objc_setAssociatedObject(self, &clickKey, clickListener, OBJC_ASSOCIATION_COPY);
+}
+
+- (OnClickListener)clickListener{
+   return objc_getAssociatedObject(self, &clickKey);
 }
 
 @end

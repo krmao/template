@@ -15,6 +15,11 @@
 		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
 		F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86803E9247670A500D29159 /* LaunchScreen.storyboard */; };
 		F86803EE247670A500D29159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803ED247670A500D29159 /* main.m */; };
+		F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */; };
+		F8DB3E232477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */; };
+		F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */; };
+		F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */; };
+		F8DB3E2C2477CD7C00B3B5A0 /* STMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +29,6 @@
 		F81FAFF6247677E800CF4FC8 /* STNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNavigationController.m; sourceTree = "<group>"; };
 		F81FAFF7247677E800CF4FC8 /* STNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNavigationController.h; sourceTree = "<group>"; };
 		F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+OnClickListener.m"; sourceTree = "<group>"; };
-		F81FAFFA247677E800CF4FC8 /* UIButton+Click.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Click.h"; sourceTree = "<group>"; };
 		F81FAFFB247677E800CF4FC8 /* UIButton+OnClickListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+OnClickListener.h"; sourceTree = "<group>"; };
 		F86803D8247670A400D29159 /* Template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Template.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86803DB247670A400D29159 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -36,6 +40,16 @@
 		F86803EC247670A500D29159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86803ED247670A500D29159 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F8DB3C9024768DED00B3B5A0 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		F8DB3E1E2477CC3000B3B5A0 /* STMainItemHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemHomeViewController.h; sourceTree = "<group>"; };
+		F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemHomeViewController.m; sourceTree = "<group>"; };
+		F8DB3E212477CC7A00B3B5A0 /* STMainItemReactNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemReactNativeViewController.h; sourceTree = "<group>"; };
+		F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemReactNativeViewController.m; sourceTree = "<group>"; };
+		F8DB3E242477CC9700B3B5A0 /* STMainItemHybirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemHybirdViewController.h; sourceTree = "<group>"; };
+		F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemHybirdViewController.m; sourceTree = "<group>"; };
+		F8DB3E272477CCDC00B3B5A0 /* STMainItemFlutterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemFlutterViewController.h; sourceTree = "<group>"; };
+		F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemFlutterViewController.m; sourceTree = "<group>"; };
+		F8DB3E2A2477CD7C00B3B5A0 /* STMainTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainTabBarViewController.h; sourceTree = "<group>"; };
+		F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainTabBarViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +111,6 @@
 			isa = PBXGroup;
 			children = (
 				F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */,
-				F81FAFFA247677E800CF4FC8 /* UIButton+Click.h */,
 				F81FAFFB247677E800CF4FC8 /* UIButton+OnClickListener.h */,
 			);
 			path = Categories;
@@ -106,6 +119,7 @@
 		F86803CF247670A400D29159 = {
 			isa = PBXGroup;
 			children = (
+				F8DB3E152477CB0F00B3B5A0 /* Modules */,
 				F81FAFEF247677E800CF4FC8 /* Libraries */,
 				F86803DA247670A400D29159 /* Template */,
 				F86803D9247670A400D29159 /* Products */,
@@ -136,6 +150,63 @@
 				F8DB3C9024768DED00B3B5A0 /* PrefixHeader.pch */,
 			);
 			path = Template;
+			sourceTree = "<group>";
+		};
+		F8DB3E152477CB0F00B3B5A0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E162477CB2100B3B5A0 /* Main */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		F8DB3E162477CB2100B3B5A0 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E1D2477CC0E00B3B5A0 /* Flutter */,
+				F8DB3E1C2477CC0800B3B5A0 /* Hybird */,
+				F8DB3E1B2477CBFF00B3B5A0 /* ReactNative */,
+				F8DB3E1A2477CBF500B3B5A0 /* Home */,
+				F8DB3E2A2477CD7C00B3B5A0 /* STMainTabBarViewController.h */,
+				F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		F8DB3E1A2477CBF500B3B5A0 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E1E2477CC3000B3B5A0 /* STMainItemHomeViewController.h */,
+				F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F8DB3E1B2477CBFF00B3B5A0 /* ReactNative */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E212477CC7A00B3B5A0 /* STMainItemReactNativeViewController.h */,
+				F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */,
+			);
+			path = ReactNative;
+			sourceTree = "<group>";
+		};
+		F8DB3E1C2477CC0800B3B5A0 /* Hybird */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E242477CC9700B3B5A0 /* STMainItemHybirdViewController.h */,
+				F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */,
+			);
+			path = Hybird;
+			sourceTree = "<group>";
+		};
+		F8DB3E1D2477CC0E00B3B5A0 /* Flutter */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E272477CCDC00B3B5A0 /* STMainItemFlutterViewController.h */,
+				F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */,
+			);
+			path = Flutter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,7 +360,12 @@
 				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
 				F81FAFFF247677E800CF4FC8 /* UIButton+OnClickListener.m in Sources */,
 				F86803EE247670A500D29159 /* main.m in Sources */,
+				F8DB3E232477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m in Sources */,
 				F86803E0247670A400D29159 /* SceneDelegate.m in Sources */,
+				F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */,
+				F8DB3E2C2477CD7C00B3B5A0 /* STMainTabBarViewController.m in Sources */,
+				F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */,
+				F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */,
 				F81FAFFE247677E800CF4FC8 /* STNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

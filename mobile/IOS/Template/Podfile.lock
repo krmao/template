@@ -26,6 +26,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - lottie-ios (2.5.3)
   - Masonry (1.1.0)
   - MBProgressHUD (1.2.0)
   - MJRefresh (3.4.3)
@@ -58,6 +59,7 @@ DEPENDENCIES:
   - Flutter (from `../../flutter_module/.ios/Flutter/engine`)
   - flutter_module (from `../../flutter_module/.ios/Flutter`)
   - FlutterPluginRegistrant (from `../../flutter_module/.ios/Flutter/FlutterPluginRegistrant`)
+  - lottie-ios (= 2.5.3)
   - Masonry (from `https://github.com/warpling/Masonry.git`)
   - MBProgressHUD (~> 1.2.0)
   - MJRefresh
@@ -77,6 +79,7 @@ SPEC REPOS:
     - AFNetworking
     - DZNEmptyDataSet
     - FMDB
+    - lottie-ios
     - MBProgressHUD
     - MJRefresh
     - QTEventBus
@@ -118,6 +121,7 @@ SPEC CHECKSUMS:
   flutter_module: 37f078337caf8acad3074374a49bf81442fd3e07
   FlutterPluginRegistrant: ba1992b4b656bee60fe89d2f79747c495dae2fb3
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
@@ -132,6 +136,6 @@ SPEC CHECKSUMS:
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 81707d148e0bfc507b8ed73fdac59c82f774e394
+PODFILE CHECKSUM: 8ecef850bc0d834298fdd98e6fa5740ffff17464
 
 COCOAPODS: 1.9.1

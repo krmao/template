@@ -121,31 +121,44 @@ end
 target 'Template' do
   inherit! :search_paths
 
-  # rnpod
-  flutterPodWithSourceCode
-  # flutterPodWithCocoaPodSpec
-  
-  # constraint layout
+  # 约束布局
   # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
   # pod 'Masonry'
   # https://github.com/SnapKit/Masonry/issues/566#issuecomment-544136418 消除警告的第三方分支, pod 引用不要加 tag
   pod 'Masonry' , :git => 'https://github.com/warpling/Masonry.git' # , :tag => 'v1.1.0'
 
-  # http manager
+  # 网络请求库
   pod 'AFNetworking', '~> 4.0'
   
-  # asyn load web image
+  # 异步加载图片
   pod 'SDWebImage', '~> 5.0'
   
-  # json to model
+  # 解析数据 json to model
   pod 'YYModel'
   
-  # pull to refresh
+  # 下拉刷新 pull to refresh
   pod 'MJRefresh'
   
-  # https://github.com/hackiftekhar/IQKeyboardManager
+  # 键盘遮挡问题 https://github.com/hackiftekhar/IQKeyboardManager
   # pod 'IQKeyboardManager'
   
+  # 加载框
   pod 'MBProgressHUD', '~> 1.2.0'
+  
+  # 轮播图 https://github.com/gsdios/SDCycleScrollView
+  pod 'SDCycleScrollView','>= 1.80'
+  
+  # 事件订阅 https://github.com/LeoMobileDeveloper/QTEventBus
+  pod 'QTEventBus'
+  
+  # 数据为空时显示的页面 https://github.com/dzenbot/DZNEmptyDataSet
+  pod 'DZNEmptyDataSet'
+  
+  # 集成 react native
+  # rnpod
+  
+  # 集成 flutter
+  flutterPodWithSourceCode
+  # flutterPodWithCocoaPodSpec
   
 end

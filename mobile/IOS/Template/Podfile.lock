@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - DZNEmptyDataSet (1.8.1)
   - Flutter (1.0.0)
   - flutter_module (0.0.1):
     - Flutter
@@ -32,6 +33,11 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
+  - QTEventBus (0.4.1):
+    - QTEventBus/Core (= 0.4.1)
+  - QTEventBus/Core (0.4.1)
+  - SDCycleScrollView (1.80):
+    - SDWebImage (>= 5.0.0)
   - SDWebImage (5.8.0):
     - SDWebImage/Core (= 5.8.0)
   - SDWebImage/Core (5.8.0)
@@ -48,6 +54,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0)
+  - DZNEmptyDataSet
   - Flutter (from `../../flutter_module/.ios/Flutter/engine`)
   - flutter_module (from `../../flutter_module/.ios/Flutter`)
   - FlutterPluginRegistrant (from `../../flutter_module/.ios/Flutter/FlutterPluginRegistrant`)
@@ -56,6 +63,8 @@ DEPENDENCIES:
   - MJRefresh
   - path_provider (from `../../flutter_module/.ios/Flutter/.symlinks/path_provider/ios`)
   - path_provider_macos (from `../../flutter_module/.ios/Flutter/.symlinks/path_provider_macos/ios`)
+  - QTEventBus
+  - SDCycleScrollView (>= 1.80)
   - SDWebImage (~> 5.0)
   - shared_preferences (from `../../flutter_module/.ios/Flutter/.symlinks/shared_preferences/ios`)
   - shared_preferences_macos (from `../../flutter_module/.ios/Flutter/.symlinks/shared_preferences_macos/ios`)
@@ -66,9 +75,12 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+    - DZNEmptyDataSet
     - FMDB
     - MBProgressHUD
     - MJRefresh
+    - QTEventBus
+    - SDCycleScrollView
     - SDWebImage
     - YYModel
 
@@ -101,6 +113,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_module: 37f078337caf8acad3074374a49bf81442fd3e07
   FlutterPluginRegistrant: ba1992b4b656bee60fe89d2f79747c495dae2fb3
@@ -110,6 +123,8 @@ SPEC CHECKSUMS:
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  QTEventBus: ea42577d40303f11fb2392e1383fb5d4a7335609
+  SDCycleScrollView: b3c9a5ed840c771c4938978174c7c9d9feefeb96
   SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
@@ -117,6 +132,6 @@ SPEC CHECKSUMS:
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 9087d0a551fbc0cc54f1d36697122628fd45fc82
+PODFILE CHECKSUM: 81707d148e0bfc507b8ed73fdac59c82f774e394
 
 COCOAPODS: 1.9.1

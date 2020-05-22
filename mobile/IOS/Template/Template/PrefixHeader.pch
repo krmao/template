@@ -19,4 +19,7 @@
 // https://github.com/SnapKit/Masonry
 #import "Masonry.h"
 
+#import <SDWebImage/SDWebImage.h>
+#import "MBProgressHUD.h"
+
 #endif /* PrefixHeader_pch */

@@ -125,6 +125,27 @@ target 'Template' do
   flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
   
-  pod 'Masonry' # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
+  # constraint layout
+  # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
+  # pod 'Masonry'
+  # https://github.com/SnapKit/Masonry/issues/566#issuecomment-544136418 消除警告的第三方分支, pod 引用不要加 tag
+  pod 'Masonry' , :git => 'https://github.com/warpling/Masonry.git' # , :tag => 'v1.1.0'
 
+  # http manager
+  pod 'AFNetworking', '~> 4.0'
+  
+  # asyn load web image
+  pod 'SDWebImage', '~> 5.0'
+  
+  # json to model
+  pod 'YYModel'
+  
+  # pull to refresh
+  pod 'MJRefresh'
+  
+  # https://github.com/hackiftekhar/IQKeyboardManager
+  # pod 'IQKeyboardManager'
+  
+  pod 'MBProgressHUD', '~> 1.2.0'
+  
 end

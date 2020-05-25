@@ -20,7 +20,13 @@
     self.clickListener = onClickListener;
     self.userInteractionEnabled = YES;
     
-    [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onViewClicked)]];
+    if([self isKindOfClass: [UIControl class]]){
+        NSLog(@"view is UIControl, addTarget");
+        [((UIControl *)self) addTarget:self action:@selector(onViewClicked) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        NSLog(@"view is not UIControl, addGestureRecognizer");
+        [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onViewClicked)]];
+    }
 }
 
 - (void)onViewClicked{

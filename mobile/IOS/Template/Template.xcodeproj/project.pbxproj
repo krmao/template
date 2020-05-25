@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F29E3F09DAEC521EB271C /* libPods-Template.a */; };
 		F81FAFFE247677E800CF4FC8 /* STNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STNavigationController.m */; };
-		F81FAFFF247677E800CF4FC8 /* UIButton+OnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */; };
 		F86803DD247670A400D29159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DC247670A400D29159 /* AppDelegate.m */; };
 		F86803E0247670A400D29159 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DF247670A400D29159 /* SceneDelegate.m */; };
 		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
@@ -20,6 +19,7 @@
 		F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */; };
 		F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */; };
 		F8DB3E2C2477CD7C00B3B5A0 /* STMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */; };
+		F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +28,6 @@
 		C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
 		F81FAFF6247677E800CF4FC8 /* STNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNavigationController.m; sourceTree = "<group>"; };
 		F81FAFF7247677E800CF4FC8 /* STNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNavigationController.h; sourceTree = "<group>"; };
-		F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+OnClickListener.m"; sourceTree = "<group>"; };
-		F81FAFFB247677E800CF4FC8 /* UIButton+OnClickListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+OnClickListener.h"; sourceTree = "<group>"; };
 		F86803D8247670A400D29159 /* Template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Template.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86803DB247670A400D29159 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F86803DC247670A400D29159 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -50,6 +48,8 @@
 		F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemFlutterViewController.m; sourceTree = "<group>"; };
 		F8DB3E2A2477CD7C00B3B5A0 /* STMainTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainTabBarViewController.h; sourceTree = "<group>"; };
 		F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainTabBarViewController.m; sourceTree = "<group>"; };
+		F8F85E36247B6C0C00C6BFFA /* UIView+OnClickListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+OnClickListener.h"; sourceTree = "<group>"; };
+		F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+OnClickListener.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +110,8 @@
 		F81FAFF8247677E800CF4FC8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				F81FAFF9247677E800CF4FC8 /* UIButton+OnClickListener.m */,
-				F81FAFFB247677E800CF4FC8 /* UIButton+OnClickListener.h */,
+				F8F85E36247B6C0C00C6BFFA /* UIView+OnClickListener.h */,
+				F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -358,8 +358,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
-				F81FAFFF247677E800CF4FC8 /* UIButton+OnClickListener.m in Sources */,
 				F86803EE247670A500D29159 /* main.m in Sources */,
+				F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */,
 				F8DB3E232477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m in Sources */,
 				F86803E0247670A400D29159 /* SceneDelegate.m in Sources */,
 				F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */,

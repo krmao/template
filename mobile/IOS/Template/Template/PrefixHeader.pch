@@ -22,6 +22,6 @@
 #import <SDWebImage/SDWebImage.h>
 #import "MBProgressHUD.h"
 
-#import "UIButton+OnClickListener.h"
+#import "UIView+OnClickListener.h"
 
 #endif /* PrefixHeader_pch */

@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIButton (OnClickListener)
 
-@property(nonatomic, strong) OnClickListener clickListener;
-
-- (void) setOnClickListener:(OnClickListener)onClickListener;
+//@property(nonatomic, strong) OnClickListener clickListener;
+//
+//- (void) setOnClickListener:(OnClickListener)onClickListener;
 
 @end
 

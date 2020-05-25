@@ -13,26 +13,26 @@
 @end
 
 @implementation UIButton (OnClickListener)
-
-static void *clickKey = &clickKey;
-
-- (void) setOnClickListener:(OnClickListener)onClickListener{
-    self.clickListener = onClickListener;
-    [self addTarget:self action:@selector(onButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)onButtonClicked{
-    if (self.clickListener){
-        self.clickListener();
-    }
-}
-
-- (void)setClickListener:(OnClickListener) clickListener{
-     objc_setAssociatedObject(self, &clickKey, clickListener, OBJC_ASSOCIATION_COPY);
-}
-
-- (OnClickListener)clickListener{
-   return objc_getAssociatedObject(self, &clickKey);
-}
+//
+//static void *clickKey = &clickKey;
+//
+//- (void) setOnClickListener:(OnClickListener)onClickListener{
+//    self.clickListener = onClickListener;
+//    [self addTarget:self action:@selector(onButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//}
+//
+//- (void)onButtonClicked{
+//    if (self.clickListener){
+//        self.clickListener();
+//    }
+//}
+//
+//- (void)setClickListener:(OnClickListener) clickListener{
+//     objc_setAssociatedObject(self, &clickKey, clickListener, OBJC_ASSOCIATION_COPY);
+//}
+//
+//- (OnClickListener)clickListener{
+//   return objc_getAssociatedObject(self, &clickKey);
+//}
 
 @end

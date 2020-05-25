@@ -20,6 +20,23 @@
     self.view.backgroundColor = UIColor.orangeColor;
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item hybird viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item hybird viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item hybird tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item hybird tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+
 /*
 #pragma mark - Navigation
 

@@ -23,7 +23,7 @@
 
 // 当设置隐藏 导航栏时, 侧滑退出功能失效, 重写该方法解决失效问题
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-        self.interactivePopGestureRecognizer.enabled = navigationController.viewControllers.count > 1;
+    self.interactivePopGestureRecognizer.enabled = navigationController.viewControllers.count > 1;
 }
 
 /*

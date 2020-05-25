@@ -25,7 +25,9 @@
         [((UIControl *)self) addTarget:self action:@selector(onViewClicked) forControlEvents:UIControlEventTouchUpInside];
     }else{
         NSLog(@"view is not UIControl, addGestureRecognizer");
-        [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onViewClicked)]];
+        UITapGestureRecognizer* tapGestureRecognizer =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onViewClicked)];
+        tapGestureRecognizer.delegate = self;
+        [self addGestureRecognizer:tapGestureRecognizer];
     }
 }
 
@@ -47,6 +49,20 @@
 
 - (OnClickListener)clickListener{
     return objc_getAssociatedObject(self, @"clickListener");
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    BOOL shouldBeRequiredToFailByGestureRecognizer = [gestureRecognizer isKindOfClass:UIScreenEdgePanGestureRecognizer.class];
+    NSLog(@"UIView+OnClickListener.h shouldBeRequiredToFailByGestureRecognizer %d", shouldBeRequiredToFailByGestureRecognizer);
+    return shouldBeRequiredToFailByGestureRecognizer;
+}
+
+/**
+ * 多个手势可以同时触发
+ */
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    NSLog(@"UIView+OnClickListener.h shouldRecognizeSimultaneouslyWithGestureRecognizer YES");
+    return YES;
 }
 
 @end

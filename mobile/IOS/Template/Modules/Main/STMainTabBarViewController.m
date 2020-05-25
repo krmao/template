@@ -22,6 +22,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
+    self.tabBar.tintColor = UIColor.systemBlueColor; // tabBar 选中时高亮的颜色
+    self.delegate = self;
     
     STMainItemHomeViewController *itemHomeViewController = [STMainItemHomeViewController new];
     itemHomeViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[UIImage imageNamed:@"icon_home"] tag:0];
@@ -35,9 +37,62 @@
     STMainItemFlutterViewController *itemFlutterViewController = [STMainItemFlutterViewController new];
     itemFlutterViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"flutter" image:[UIImage imageNamed:@"icon_flutter"] tag:3];
     
-    self.viewControllers = @[itemHomeViewController, itemReactNativeViewController, itemHybirdViewController, itemFlutterViewController];
+    [self setViewControllers:@[itemHomeViewController, itemReactNativeViewController, itemHybirdViewController, itemFlutterViewController] animated:YES];
     
-    self.tabBar.tintColor = UIColor.systemBlueColor; // tabBar 选中时高亮的颜色
+    self.selectedIndex = 0; // 默认显示第几个
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
+    NSLog(@"lifecycle main tab didSelectItem");
+}
+
+- (void)tabBar:(UITabBar *)tabBar willBeginCustomizingItems:(NSArray<UITabBarItem *> *)items{
+    NSLog(@"lifecycle main tab willBeginCustomizingItems");
+}
+
+- (void)tabBar:(UITabBar *)tabBar didBeginCustomizingItems:(NSArray<UITabBarItem *> *)items{
+    NSLog(@"lifecycle main tab didBeginCustomizingItems");
+}
+
+- (void)tabBar:(UITabBar *)tabBar willEndCustomizingItems:(NSArray<UITabBarItem *> *)items changed:(BOOL)changed {
+    NSLog(@"lifecycle main tab willEndCustomizingItems");
+}
+
+- (void)tabBar:(UITabBar *)tabBar didEndCustomizingItems:(NSArray<UITabBarItem *> *)items changed:(BOOL)changed{
+    NSLog(@"lifecycle main tab didEndCustomizingItems");
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    NSLog(@"lifecycle main tab shouldSelectViewController");
+    return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    NSLog(@"lifecycle main tab didSelectViewController");
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController willBeginCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers{
+    NSLog(@"lifecycle main tab willBeginCustomizingViewControllers");
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController willEndCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers changed:(BOOL)changed{
+    NSLog(@"lifecycle main tab willEndCustomizingViewControllers");
 }
 
 /*

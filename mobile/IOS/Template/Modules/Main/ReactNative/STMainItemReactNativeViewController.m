@@ -20,6 +20,22 @@
     self.view.backgroundColor = UIColor.blueColor;
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item rn viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item rn viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item rn tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item rn tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
 /*
 #pragma mark - Navigation
 

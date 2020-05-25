@@ -49,8 +49,6 @@
  *
  */
 @property(nonatomic, strong) UIButton *bridgeButton;
-@property(nonatomic, strong) UIImageView *imageView;
-@property(nonatomic, strong) UILabel *labelView;
 
 @end
 
@@ -62,8 +60,6 @@
     self.view.backgroundColor = UIColor.systemPinkColor;
     
     [self.view addSubview:self.bridgeButton];
-    [self.view addSubview:self.imageView];
-    [self.view addSubview:self.labelView];
    
     [self.bridgeButton makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11,*)) {
@@ -78,66 +74,6 @@
             make.height.equalTo(50);
         }
     }];
-    
-    [self.imageView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bridgeButton);
-            make.bottom.equalTo(self.bridgeButton.top).offset(10);
-            make.width.equalTo(self.view).multipliedBy(0.5);
-            make.height.equalTo(50);
-    }];
-    [self.labelView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.imageView);
-            make.bottom.equalTo(self.imageView.top).offset(10);
-            make.width.equalTo(self.view).multipliedBy(0.5);
-            make.height.equalTo(50);
-    }];
-}
-
-- (UILabel *)labelView{
-    if(!_labelView){
-        NSLog(@"_labelView is nil");
-
-        _labelView = [[UILabel alloc] init];
-        [_labelView setText:@"UILabel"];
-
-        NSLog(@"_labelView is nil? %@", _labelView);
-
-        _labelView.backgroundColor = [UIColor blueColor];
-           
-        __weak typeof(self) weakSelf = self;
-        
-        [_labelView setOnClickListener:^ {
-            NSLog(@"on labelView clicked, %@", weakSelf);
-        }];
-
-    }else{
-        NSLog(@"_labelView is not nil");
-    }
-    NSLog(@"_labelView get %@", _labelView);
-    return _labelView;
-}
-
-- (UIImageView *)imageView{
-    if(!_imageView){
-        NSLog(@"_imageView is nil");
-
-        _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_flutter"]];
-
-        NSLog(@"_imageView is nil? %@", _imageView);
-
-        _imageView.backgroundColor = [UIColor yellowColor];
-           
-        __weak typeof(self) weakSelf = self;
-        
-        [_imageView setOnClickListener:^ {
-            NSLog(@"on imageView clicked, %@", weakSelf);
-        }];
-
-    }else{
-        NSLog(@"_imageView is not nil");
-    }
-    NSLog(@"_imageView get %@", _imageView);
-    return _imageView;
 }
 
 - (UIButton *)bridgeButton{
@@ -157,27 +93,11 @@
         [_bridgeButton setTitle:@"FLUTTER PAGE BRIDGE" forState:UIControlStateNormal];
         [_bridgeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
            
-        __weak typeof(self) weakSelf = self;
+        // [_bridgeButton addTarget:self action:@selector(goToFlutter) forControlEvents:UIControlEventTouchUpInside];
         
+        __weak typeof(self) weakSelf = self;
         [_bridgeButton setOnClickListener:^ {
-            // self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
-             // [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
-             // [self.flutterEngine run];
-             // [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
-             // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
-
-
-              FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-              [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
-              [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
-
-             FlutterMethodChannel* methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method"
-                                                     binaryMessenger:flutterViewController.binaryMessenger];
-
-             [methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-                 NSLog(@"method=%@, arguments=%@",call.method, call.arguments);
-             }];
-            [weakSelf.navigationController pushViewController:flutterViewController animated:YES];
+            [weakSelf goToFlutter];
         }];
 
     }else{
@@ -185,6 +105,44 @@
     }
     NSLog(@"_bridgeButton get %@", _bridgeButton);
     return _bridgeButton;
+}
+
+- (void) goToFlutter{
+    
+    // self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
+    // [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
+    // [self.flutterEngine run];
+    // [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
+    // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
+
+
+    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+    [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
+    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
+
+    FlutterMethodChannel* methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method"
+                                            binaryMessenger:flutterViewController.binaryMessenger];
+
+    [methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
+        NSLog(@"method=%@, arguments=%@",call.method, call.arguments);
+    }];
+    [self.navigationController pushViewController:flutterViewController animated:YES];
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item flutter viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item flutter viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item flutter tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"lifecycle main tab item flutter tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
 }
 
 /*

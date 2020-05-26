@@ -37,7 +37,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
-    
+
+    [STSystemUtil printSystemInfo];
+
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
     self.tabBar.tintColor = UIColor.systemBlueColor; // tabBar 选中时高亮的颜色

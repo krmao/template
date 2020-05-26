@@ -18,5 +18,8 @@
 #import "STBaseNavigationController.h"
 #import "STBaseTabBarController.h"
 #import "STBaseViewController.h"
+#import "AppDelegate.h"
+#import "SceneDelegate.h"
+#import "STSystemUtil.h"
 
 #endif /* PrefixHeader_pch */

@@ -63,15 +63,15 @@ DEPENDENCIES:
   - Masonry (from `https://github.com/warpling/Masonry.git`)
   - MBProgressHUD (~> 1.2.0)
   - MJRefresh
-  - path_provider (from `../../flutter_module/.ios/Flutter/.symlinks/path_provider/ios`)
-  - path_provider_macos (from `../../flutter_module/.ios/Flutter/.symlinks/path_provider_macos/ios`)
+  - path_provider (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.8/ios/path_provider.podspec`)
+  - "path_provider_macos (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+2/ios/path_provider_macos.podspec`)"
   - QTEventBus
   - SDCycleScrollView (>= 1.80)
   - SDWebImage (~> 5.0)
-  - shared_preferences (from `../../flutter_module/.ios/Flutter/.symlinks/shared_preferences/ios`)
-  - shared_preferences_macos (from `../../flutter_module/.ios/Flutter/.symlinks/shared_preferences_macos/ios`)
-  - shared_preferences_web (from `../../flutter_module/.ios/Flutter/.symlinks/shared_preferences_web/ios`)
-  - sqflite (from `../../flutter_module/.ios/Flutter/.symlinks/sqflite/ios`)
+  - "shared_preferences (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.7+2/ios/shared_preferences.podspec`)"
+  - "shared_preferences_macos (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+8/ios/shared_preferences_macos.podspec`)"
+  - "shared_preferences_web (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+5/ios/shared_preferences_web.podspec`)"
+  - "sqflite (from `/Users/krmao/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.0+1/ios/sqflite.podspec`)"
   - YYModel
 
 SPEC REPOS:
@@ -97,17 +97,17 @@ EXTERNAL SOURCES:
   Masonry:
     :git: https://github.com/warpling/Masonry.git
   path_provider:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/path_provider/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.8/ios/path_provider.podspec"
   path_provider_macos:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/path_provider_macos/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+2/ios/path_provider_macos.podspec"
   shared_preferences:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/shared_preferences/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.7+2/ios/shared_preferences.podspec"
   shared_preferences_macos:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/shared_preferences_macos/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+8/ios/shared_preferences_macos.podspec"
   shared_preferences_web:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/shared_preferences_web/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+5/ios/shared_preferences_web.podspec"
   sqflite:
-    :path: "../../flutter_module/.ios/Flutter/.symlinks/sqflite/ios"
+    :path: "/Users/krmao/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.0+1/ios/sqflite.podspec"
 
 CHECKOUT OPTIONS:
   Masonry:
@@ -136,6 +136,6 @@ SPEC CHECKSUMS:
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 8ecef850bc0d834298fdd98e6fa5740ffff17464
+PODFILE CHECKSUM: 02630717163eb392819bc04d9e33a3d37aa8b624
 
 COCOAPODS: 1.9.1

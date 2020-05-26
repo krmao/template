@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */; };
+		6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0994C02CAD7478308B2 /* STBaseViewController.m */; };
 		6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F29E3F09DAEC521EB271C /* libPods-Template.a */; };
-		F81FAFFE247677E800CF4FC8 /* STNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STNavigationController.m */; };
+		F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */; };
 		F86803DD247670A400D29159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DC247670A400D29159 /* AppDelegate.m */; };
 		F86803E0247670A400D29159 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DF247670A400D29159 /* SceneDelegate.m */; };
 		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
@@ -26,10 +28,14 @@
 
 /* Begin PBXFileReference section */
 		238F29E3F09DAEC521EB271C /* libPods-Template.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Template.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6194A0994C02CAD7478308B2 /* STBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseViewController.m; sourceTree = "<group>"; };
+		6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseTabBarController.m; sourceTree = "<group>"; };
+		6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseTabBarController.h; sourceTree = "<group>"; };
+		6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseViewController.h; sourceTree = "<group>"; };
 		9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.release.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.release.xcconfig"; sourceTree = "<group>"; };
 		C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
-		F81FAFF6247677E800CF4FC8 /* STNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNavigationController.m; sourceTree = "<group>"; };
-		F81FAFF7247677E800CF4FC8 /* STNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNavigationController.h; sourceTree = "<group>"; };
+		F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseNavigationController.m; sourceTree = "<group>"; };
+		F81FAFF7247677E800CF4FC8 /* STBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseNavigationController.h; sourceTree = "<group>"; };
 		F86803D8247670A400D29159 /* Template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Template.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86803DB247670A400D29159 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F86803DC247670A400D29159 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -107,9 +113,13 @@
 			isa = PBXGroup;
 			children = (
 				F8F85E39247BBA9A00C6BFFA /* Util */,
-				F81FAFF6247677E800CF4FC8 /* STNavigationController.m */,
-				F81FAFF7247677E800CF4FC8 /* STNavigationController.h */,
+				F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */,
+				F81FAFF7247677E800CF4FC8 /* STBaseNavigationController.h */,
 				F81FAFF8247677E800CF4FC8 /* Categories */,
+				6194A0994C02CAD7478308B2 /* STBaseViewController.m */,
+				6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */,
+				6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */,
+				6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */,
 			);
 			path = LibraryBase;
 			sourceTree = "<group>";
@@ -243,12 +253,12 @@
 			buildConfigurationList = F86803F1247670A500D29159 /* Build configuration list for PBXNativeTarget "Template" */;
 			buildPhases = (
 				D2369938B217BB9796D00D5A /* [CP] Check Pods Manifest.lock */,
-				E0A86C0FB0B914461E057631 /* [CP-User] Run Flutter Build Script */,
+				0F60943B397CC4BD17D8436D /* [CP-User] Run Flutter Build Script */,
 				F86803D4247670A400D29159 /* Sources */,
 				F86803D5247670A400D29159 /* Frameworks */,
 				F86803D6247670A400D29159 /* Resources */,
-				E7CFD4C3902D59248BCB3913 /* [CP] Embed Pods Frameworks */,
 				9D497019375F63F449DE99CB /* [CP] Copy Pods Resources */,
+				2FB18E4D96572315AA67DC7D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -304,6 +314,39 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0F60943B397CC4BD17D8436D /* [CP-User] Run Flutter Build Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/../../flutter_module/.metadata",
+				"${SRCROOT}/../../flutter_module/.ios/Flutter/App.framework/App",
+				"${SRCROOT}/../../flutter_module/.ios/Flutter/engine/Flutter.framework/Flutter",
+				"${SRCROOT}/../../flutter_module/.ios/Flutter/flutter_export_environment.sh",
+			);
+			name = "[CP-User] Run Flutter Build Script";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset -u\nsource \"${SRCROOT}/../../flutter_module/.ios/Flutter/flutter_export_environment.sh\"\n\"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh build";
+		};
+		2FB18E4D96572315AA67DC7D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9D497019375F63F449DE99CB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,39 +386,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E0A86C0FB0B914461E057631 /* [CP-User] Run Flutter Build Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../../flutter_module/.metadata",
-				"${SRCROOT}/../../flutter_module/.ios/Flutter/App.framework/App",
-				"${SRCROOT}/../../flutter_module/.ios/Flutter/engine/Flutter.framework/Flutter",
-				"${SRCROOT}/../../flutter_module/.ios/Flutter/flutter_export_environment.sh",
-			);
-			name = "[CP-User] Run Flutter Build Script";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nset -u\nsource \"${SRCROOT}/../../flutter_module/.ios/Flutter/flutter_export_environment.sh\"\n\"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh build";
-		};
-		E7CFD4C3902D59248BCB3913 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -393,8 +403,10 @@
 				F8F85E3C247BBAB500C6BFFA /* STSystemUtil.m in Sources */,
 				F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */,
 				F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */,
-				F81FAFFE247677E800CF4FC8 /* STNavigationController.m in Sources */,
+				F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */,
 				F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */,
+				6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */,
+				6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

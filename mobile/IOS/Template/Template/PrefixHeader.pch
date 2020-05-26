@@ -23,6 +23,6 @@
 #import "MBProgressHUD.h"
 
 #import "UIView+OnClickListener.h"
-#import "STNavigationController.h"
+#import "STBaseNavigationController.h"
 
 #endif /* PrefixHeader_pch */

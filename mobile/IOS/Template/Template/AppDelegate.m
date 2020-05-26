@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "STNavigationController.h"
+#import "STBaseNavigationController.h"
 #import "STMainTabBarViewController.h"
 
 @interface AppDelegate ()
@@ -33,7 +33,7 @@
 
 + (UIViewController *) initRootViewController {
     STMainTabBarViewController *rootViewController = [STMainTabBarViewController new];
-    STNavigationController *rootViewNavigationController = [[STNavigationController alloc] initWithRootViewController:rootViewController];
+    STBaseNavigationController *rootViewNavigationController = [[STBaseNavigationController alloc] initWithRootViewController:rootViewController];
     
     rootViewNavigationController.navigationBarHidden = YES;
     return rootViewNavigationController;

@@ -1,7 +1,7 @@
 #import "SceneDelegate.h"
 #import "AppDelegate.h"
 #import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
-#import "STNavigationController.h"
+#import "STBaseNavigationController.h"
 
 @interface SceneDelegate ()
 

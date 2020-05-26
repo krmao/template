@@ -12,7 +12,7 @@ typedef void(^OnClickListener) (void);
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIView (OnClickListener)<UIGestureRecognizerDelegate>
+@interface UIView (OnClickListener) // <UIGestureRecognizerDelegate>
 
 @property(nonatomic, copy) OnClickListener clickListener;
 

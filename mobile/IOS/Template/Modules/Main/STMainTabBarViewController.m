@@ -18,8 +18,34 @@
 
 @implementation STMainTabBarViewController
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if(self == [super initWithCoder:aDecoder]){
+        NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)loadView {
+    [super loadView];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
     self.tabBar.tintColor = UIColor.systemBlueColor; // tabBar 选中时高亮的颜色
@@ -43,56 +69,79 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated{
-    NSLog(@"lifecycle main tab viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewWillAppear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    NSLog(@"lifecycle main tab viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewDidAppear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"lifecycle main tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewWillDisappear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
-    NSLog(@"lifecycle main tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewDidDisappear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)dealloc {
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
-    NSLog(@"lifecycle main tab didSelectItem");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBar:(UITabBar *)tabBar willBeginCustomizingItems:(NSArray<UITabBarItem *> *)items{
-    NSLog(@"lifecycle main tab willBeginCustomizingItems");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBar:(UITabBar *)tabBar didBeginCustomizingItems:(NSArray<UITabBarItem *> *)items{
-    NSLog(@"lifecycle main tab didBeginCustomizingItems");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBar:(UITabBar *)tabBar willEndCustomizingItems:(NSArray<UITabBarItem *> *)items changed:(BOOL)changed {
-    NSLog(@"lifecycle main tab willEndCustomizingItems");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBar:(UITabBar *)tabBar didEndCustomizingItems:(NSArray<UITabBarItem *> *)items changed:(BOOL)changed{
-    NSLog(@"lifecycle main tab didEndCustomizingItems");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    NSLog(@"lifecycle main tab shouldSelectViewController");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
     return YES;
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
-    NSLog(@"lifecycle main tab didSelectViewController");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController willBeginCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers{
-    NSLog(@"lifecycle main tab willBeginCustomizingViewControllers");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController willEndCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers changed:(BOOL)changed{
-    NSLog(@"lifecycle main tab willEndCustomizingViewControllers");
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 /*
@@ -100,6 +149,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }

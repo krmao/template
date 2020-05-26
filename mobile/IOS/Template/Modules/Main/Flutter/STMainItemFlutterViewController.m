@@ -54,8 +54,34 @@
 
 @implementation STMainItemFlutterViewController
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if(self == [super initWithCoder:aDecoder]){
+        NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)loadView {
+    [super loadView];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.systemPinkColor;
     
@@ -78,14 +104,10 @@
 
 - (UIButton *)bridgeButton{
     if(!_bridgeButton){
-        NSLog(@"_bridgeButton is nil");
-
         _bridgeButton = [UIButton buttonWithType:UIButtonTypeSystem];
 
-        NSLog(@"_bridgeButton is nil? %@", _bridgeButton);
-
         _bridgeButton.backgroundColor = [UIColor systemOrangeColor];
-        _bridgeButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, -10, -10);
+        _bridgeButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
         _bridgeButton.titleEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         _bridgeButton.imageEdgeInsets= UIEdgeInsetsMake(0, -10, 0,10);
         _bridgeButton.titleLabel.font = [UIFont systemFontOfSize:16];
@@ -100,15 +122,12 @@
             [weakSelf goToFlutter];
         }];
 
-    }else{
-        NSLog(@"_bridgeButton is not nil");
     }
-    NSLog(@"_bridgeButton get %@", _bridgeButton);
     return _bridgeButton;
 }
 
 - (void) goToFlutter{
-    
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
     // self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
     // [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
     // [self.flutterEngine run];
@@ -124,25 +143,48 @@
                                             binaryMessenger:flutterViewController.binaryMessenger];
 
     [methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-        NSLog(@"method=%@, arguments=%@",call.method, call.arguments);
+        NSLog(@"%s, method=%@, arguments=%@", __FUNCTION__, call.method, call.arguments);
     }];
     [self.navigationController pushViewController:flutterViewController animated:YES];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
-    NSLog(@"lifecycle main tab item flutter viewWillAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewWillAppear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    NSLog(@"lifecycle main tab item flutter viewDidAppear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewDidAppear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"lifecycle main tab item flutter tab viewWillDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewWillDisappear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
-    NSLog(@"lifecycle main tab item flutter tab viewDidDisappear, %lu", (unsigned long)self.navigationController.viewControllers.count);
+    [super viewDidDisappear:animated];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+}
+
+- (void)dealloc {
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 }
 
 /*
@@ -150,6 +192,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }

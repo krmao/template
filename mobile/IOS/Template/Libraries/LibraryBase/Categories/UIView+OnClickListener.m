@@ -13,7 +13,7 @@
 
 - (void) setOnClickListener:(OnClickListener)onClickListener{
     if(self.clickListener){
-        NSLog(@"only can be set once!");
+        NSLog(@"%s only can be set once!", __FUNCTION__);
         return;
     }
     
@@ -21,12 +21,12 @@
     self.userInteractionEnabled = YES;
     
     if([self isKindOfClass: [UIControl class]]){
-        NSLog(@"view is UIControl, addTarget");
+        NSLog(@"%s view is UIControl, addTarget", __FUNCTION__);
         [((UIControl *)self) addTarget:self action:@selector(onViewClicked) forControlEvents:UIControlEventTouchUpInside];
     }else{
-        NSLog(@"view is not UIControl, addGestureRecognizer");
+        NSLog(@"%s view is not UIControl, addGestureRecognizer", __FUNCTION__);
         UITapGestureRecognizer* tapGestureRecognizer =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onViewClicked)];
-        tapGestureRecognizer.delegate = self;
+        // tapGestureRecognizer.delegate = self;
         [self addGestureRecognizer:tapGestureRecognizer];
     }
 }
@@ -51,18 +51,18 @@
     return objc_getAssociatedObject(self, @"clickListener");
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    BOOL shouldBeRequiredToFailByGestureRecognizer = [gestureRecognizer isKindOfClass:UIScreenEdgePanGestureRecognizer.class];
-    NSLog(@"UIView+OnClickListener.h shouldBeRequiredToFailByGestureRecognizer %d", shouldBeRequiredToFailByGestureRecognizer);
-    return shouldBeRequiredToFailByGestureRecognizer;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+//    BOOL shouldBeRequiredToFailByGestureRecognizer = [gestureRecognizer isKindOfClass:UIScreenEdgePanGestureRecognizer.class];
+//    NSLog(@"UIView+OnClickListener.h shouldBeRequiredToFailByGestureRecognizer %d", shouldBeRequiredToFailByGestureRecognizer);
+//    return shouldBeRequiredToFailByGestureRecognizer;
+//}
 
 /**
  * 多个手势可以同时触发
  */
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    NSLog(@"UIView+OnClickListener.h shouldRecognizeSimultaneouslyWithGestureRecognizer YES");
-    return YES;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+//    NSLog(@"UIView+OnClickListener.h shouldRecognizeSimultaneouslyWithGestureRecognizer YES");
+//    return YES;
+//}
 
 @end

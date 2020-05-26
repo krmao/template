@@ -86,3 +86,5 @@
 - (void)dealloc {
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long) self.navigationController.viewControllers.count);
 }
+
+@end

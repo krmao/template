@@ -1,11 +1,3 @@
-//
-//  UIImageView+OnClickListener.m
-//  Template
-//
-//  Created by krmao on 2020/5/25.
-//  Copyright © 2020 smart. All rights reserved.
-//
-
 #import "UIView+OnClickListener.h"
 #import <objc/runtime.h>
 

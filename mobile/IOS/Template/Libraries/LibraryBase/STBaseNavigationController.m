@@ -1,5 +1,3 @@
-#import "STBaseNavigationController.h"
-
 /**
  * 在 .m 文件里面允许添加一个匿名 category 定义私有属性
  */

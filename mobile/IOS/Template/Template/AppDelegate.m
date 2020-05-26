@@ -1,11 +1,3 @@
-//
-//  AppDelegate.m
-//  Template
-//
-//  Created by krmao on 2020/5/21.
-//  Copyright © 2020 smart. All rights reserved.
-//
-
 #import "AppDelegate.h"
 #import "STBaseNavigationController.h"
 #import "STMainTabBarViewController.h"

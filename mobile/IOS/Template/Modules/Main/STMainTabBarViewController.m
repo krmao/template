@@ -1,11 +1,3 @@
-//
-//  STMainTabBarViewController.m
-//  Template
-//
-//  Created by krmao on 2020/5/22.
-//  Copyright © 2020 smart. All rights reserved.
-//
-
 #import "STMainTabBarViewController.h"
 #import "STMainItemHomeViewController.h"
 #import "STMainItemReactNativeViewController.h"

@@ -12,6 +12,9 @@
  * // 发送事件
  * [STEventPoster postEventName:@"login_eventName" object:nil forceMain:YES];
  *
+ * // 取消订阅
+ * [STEventSubscriber removeTarget:self];
+ *
  */
 
 #ifndef STEventBusKit_h

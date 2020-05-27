@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6194A21EB1CFFA96A7D40F4C /* STEventUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */; };
+		6194A3D8D65391E05300C9BA /* STEventSubscribeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */; };
 		6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */; };
+		6194A41418491260F8812C45 /* STEventDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A7E091970BA5D58DDB3C /* STEventDebug.m */; };
 		6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0994C02CAD7478308B2 /* STBaseViewController.m */; };
+		6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3716B82955316783691 /* STEventPoster.m */; };
+		6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */; };
+		6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */; };
+		6194AE78F16107D158F47C7D /* STEventBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0CCAE7B7447858B63C7 /* STEventBus.m */; };
 		6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F29E3F09DAEC521EB271C /* libPods-Template.a */; };
 		F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */; };
 		F86803DD247670A400D29159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DC247670A400D29159 /* AppDelegate.m */; };
@@ -29,8 +36,24 @@
 /* Begin PBXFileReference section */
 		238F29E3F09DAEC521EB271C /* libPods-Template.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Template.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6194A0994C02CAD7478308B2 /* STBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseViewController.m; sourceTree = "<group>"; };
+		6194A0CCAE7B7447858B63C7 /* STEventBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventBus.m; sourceTree = "<group>"; };
+		6194A185E8E4521FDD4A5022 /* STEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventBus.h; sourceTree = "<group>"; };
+		6194A219CE9E0FEE52DFA586 /* STEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEvent.h; sourceTree = "<group>"; };
+		6194A3716B82955316783691 /* STEventPoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventPoster.m; sourceTree = "<group>"; };
+		6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventSubscribeModel.m; sourceTree = "<group>"; };
+		6194A46B349939BC7E06FDE3 /* STEventUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventUserInfo.h; sourceTree = "<group>"; };
+		6194A5657ACBEF5628A9E6AB /* STEventDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventDefinition.h; sourceTree = "<group>"; };
+		6194A686AD61A6519B9946DB /* STEventPoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventPoster.h; sourceTree = "<group>"; };
+		6194A7E091970BA5D58DDB3C /* STEventDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventDebug.m; sourceTree = "<group>"; };
+		6194A8A4AA2C8D2640BB8978 /* STEventDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventDebug.h; sourceTree = "<group>"; };
+		6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventSubscriber.m; sourceTree = "<group>"; };
 		6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseTabBarController.m; sourceTree = "<group>"; };
+		6194AA32EDB57E003BBC93D4 /* STEventSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventSubscriber.h; sourceTree = "<group>"; };
 		6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseTabBarController.h; sourceTree = "<group>"; };
+		6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventUserInfo.m; sourceTree = "<group>"; };
+		6194AD38B6F8F440456768C1 /* STEventSubscribeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventSubscribeModel.h; sourceTree = "<group>"; };
+		6194ADD05B88259BCC706CD4 /* STEventBusKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventBusKit.h; sourceTree = "<group>"; };
+		6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEvent.m; sourceTree = "<group>"; };
 		6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseViewController.h; sourceTree = "<group>"; };
 		9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.release.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.release.xcconfig"; sourceTree = "<group>"; };
 		C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +106,61 @@
 				9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		6194A259F4BCC1F37FA8D86A /* Action */ = {
+			isa = PBXGroup;
+			children = (
+				6194A686AD61A6519B9946DB /* STEventPoster.h */,
+				6194A3716B82955316783691 /* STEventPoster.m */,
+				6194AA32EDB57E003BBC93D4 /* STEventSubscriber.h */,
+				6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */,
+			);
+			path = Action;
+			sourceTree = "<group>";
+		};
+		6194A673FD2E88C7CA75D245 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				6194A219CE9E0FEE52DFA586 /* STEvent.h */,
+				6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */,
+				6194A185E8E4521FDD4A5022 /* STEventBus.h */,
+				6194A0CCAE7B7447858B63C7 /* STEventBus.m */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		6194A7B777E02C7EB5AC4F1B /* EventBus */ = {
+			isa = PBXGroup;
+			children = (
+				6194A9218BDD77671891A6C3 /* Objs */,
+				6194AA35F570ADC23B1872D4 /* Debug */,
+				6194A673FD2E88C7CA75D245 /* Event */,
+				6194A259F4BCC1F37FA8D86A /* Action */,
+				6194ADD05B88259BCC706CD4 /* STEventBusKit.h */,
+				6194A5657ACBEF5628A9E6AB /* STEventDefinition.h */,
+			);
+			path = EventBus;
+			sourceTree = "<group>";
+		};
+		6194A9218BDD77671891A6C3 /* Objs */ = {
+			isa = PBXGroup;
+			children = (
+				6194A46B349939BC7E06FDE3 /* STEventUserInfo.h */,
+				6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */,
+				6194AD38B6F8F440456768C1 /* STEventSubscribeModel.h */,
+				6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */,
+			);
+			path = Objs;
+			sourceTree = "<group>";
+		};
+		6194AA35F570ADC23B1872D4 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				6194A8A4AA2C8D2640BB8978 /* STEventDebug.h */,
+				6194A7E091970BA5D58DDB3C /* STEventDebug.m */,
+			);
+			path = Debug;
 			sourceTree = "<group>";
 		};
 		A6735F12AD2E183378EB61DD /* Frameworks */ = {
@@ -232,6 +310,7 @@
 			children = (
 				F8F85E3A247BBAB500C6BFFA /* STSystemUtil.h */,
 				F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */,
+				6194A7B777E02C7EB5AC4F1B /* EventBus */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -407,6 +486,13 @@
 				F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */,
 				6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */,
 				6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */,
+				6194A21EB1CFFA96A7D40F4C /* STEventUserInfo.m in Sources */,
+				6194A3D8D65391E05300C9BA /* STEventSubscribeModel.m in Sources */,
+				6194A41418491260F8812C45 /* STEventDebug.m in Sources */,
+				6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */,
+				6194AE78F16107D158F47C7D /* STEventBus.m in Sources */,
+				6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */,
+				6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

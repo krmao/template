@@ -62,7 +62,7 @@
 }
 
 + (CGFloat)deviceTabBarHeight {
-    return [self deviceStatusBarHeight] > 20 ? 83 : ([self isIphone6POr7POr8P] ? 64 : 49); // 适配iPhone x 底部高度
+    return [self isHaveSafeArea] ? 83 : ([self isIphone6POr7POr8P] ? 64 : 49); // 适配iPhone x 底部高度
 }
 
 + (CGFloat)deviceBatteryLevel {
@@ -143,6 +143,10 @@
     return [UIDevice currentDevice].systemName;
 }
 
++ (NSString *)appName; {
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+}
+
 + (NSString *)appVersion; {
     return [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
 }
@@ -151,8 +155,55 @@
     return [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 }
 
-+ (NSString *)appName; {
-    return [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+/**
+ * 应用程序目录
+ * 每个app下都有一个沙盒目录,就是本app的文件目录,隔离于其他app,系统不允许其他app访问别的app的沙盒路径
+ * 在该目录下有几个文件夹: Documents/Library/temp/.app
+ *
+ * .app
+ * 这是应用程序的程序包目录，包含应用程序的本身。
+ * 由于应用程序必须经过签名，所以您在运行时不能对这个目录中的内容进行修改，
+ * 否则可能会使应用程序无法启动
+ */
++ (NSString *)appHomeDirectory; {
+    return NSHomeDirectory();
+}
+
+/**
+ * 可创建可以被用户看到的需要持久化的数据, 将程序中建立的或在程序中重要的文件数据保存在此处, 会被iTunes自动备份, 可配置实现iTunes共享文件
+ */
++ (NSString *)appDocumentDirectory; {
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+}
+
+/**
+ *  可创建子文件夹放置希望被备份但不希望被用户看到的数据, 该路径下的文件夹, 除Caches以外, 都会被iTunes备份
+ *
+ * 这个目录下有两个子目录：
+ *      Preferences 保存app的偏好设置和其他设置, iTunes会自动备份该目录。NSUserDefaults就是默认存放在此文件夹下面
+ *      Caches 主要存储缓存数据, 缓存数据在设备低存储空间时可能会被删除, iTunes或iCloud不会对其进行备份。
+ */
++ (NSString *)appLibraryDirectory; {
+    return [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+/**
+ * 可能会被系统删除
+ *
+ * Caches 主要存储缓存数据, 是 Library 的子目录, 缓存数据在设备低存储空间时可能会被删除, iTunes或iCloud不会对其进行备份。
+ */
++ (NSString *)appCachesDirectory; {
+    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+}
+
+/**
+ * 重启自动删除
+ *
+ * 临时文件夹,iTunes不会同步该目录,保存app运行中的临时文件.
+ * 建议用完即删,iphone重启会自动删除本目录下文件
+ */
++ (NSString *)appTemporaryDirectory; {
+    return NSTemporaryDirectory();
 }
 
 + (UIWindow *)firstWindow {
@@ -238,6 +289,11 @@
     NSLog(@"%s, appName=%@", __FUNCTION__, [STSystemUtil appName]);
     NSLog(@"%s, appVersion=%@", __FUNCTION__, [STSystemUtil appVersion]);
     NSLog(@"%s, appBuildVersion=%@", __FUNCTION__, [STSystemUtil appBuildVersion]);
+    NSLog(@"%s, appHomeDirectory=%@", __FUNCTION__, [STSystemUtil appHomeDirectory]);
+    NSLog(@"%s, appDocumentDirectory=%@", __FUNCTION__, [STSystemUtil appDocumentDirectory]);
+    NSLog(@"%s, appLibraryDirectory=%@", __FUNCTION__, [STSystemUtil appLibraryDirectory]);
+    NSLog(@"%s, appCachesDirectory=%@", __FUNCTION__, [STSystemUtil appCachesDirectory]);
+    NSLog(@"%s, appTemporaryDirectory=%@", __FUNCTION__, [STSystemUtil appTemporaryDirectory]);
 
     NSLog(@"%s, --------------------", __FUNCTION__);
     NSLog(@"%s, deviceName=%@", __FUNCTION__, [STSystemUtil deviceName]);

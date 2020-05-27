@@ -15,6 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)appBuildVersion;
 
++ (NSString *)appHomeDirectory;
+
++ (NSString *)appDocumentDirectory;
+
++ (NSString *)appLibraryDirectory;
+
++ (NSString *)appCachesDirectory;
+
++ (NSString *)appTemporaryDirectory;
+
 + (NSString *)deviceName;
 
 + (NSString *)deviceModel;

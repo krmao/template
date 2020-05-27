@@ -1,41 +1,74 @@
 #import <Foundation/Foundation.h>
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnusedMethodInspection"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface STSystemUtil : NSObject
-+ (UIWindow *)firstWindow;
++ (NSString *)systemName;
 
-+ (void)printSystemInfo;
++ (double)systemVersion;
+
++ (NSString *)appName;
+
++ (NSString *)appVersion;
+
++ (NSString *)appBuildVersion;
+
++ (NSString *)deviceName;
+
++ (NSString *)deviceModel;
+
++ (NSString *)deviceUUID;
+
++ (NSString *)deviceMachineType;
+
++ (NSString *)deviceMachineTypeName;
+
++ (CGFloat)deviceBatteryLevel;
+
++ (CGFloat)deviceNavigationBarHeight;
+
++ (CGFloat)deviceStatusBarHeight;
+
++ (CGFloat)deviceNavigationBarAndStatusBarHeight;
+
++ (CGFloat)deviceTabBarHeight;
+
++ (CGFloat)deviceSafeAreaBottom;
+
++ (CGFloat)deviceSafeAreaTop;
+
++ (CGFloat)deviceSafeAreaLeft;
+
++ (CGFloat)deviceSafeAreaRight;
+
++ (UIEdgeInsets)deviceSafeAreaInsets;
+
++ (CGFloat)deviceScreenHeight;
+
++ (CGFloat)deviceScreenWidth;
+
++ (CGFloat)deviceScreenMaxLength;
+
++ (CGFloat)deviceScreenMinLength;
+
 
 + (BOOL)isIphone;
 
 + (BOOL)isIphone4OrLess;
 
-+ (BOOL)isIphone5;
++ (BOOL)isIphone5Or5S;
 
-+ (BOOL)isIphone6;
++ (BOOL)isIphone6Or7Or8;
 
-+ (BOOL)isIphone6Plus;
++ (BOOL)isIphone6POr7POr8P;
 
-+ (BOOL)isNeedSafeArea;
++ (BOOL)isIphoneXOrMore;
 
-+ (CGFloat)navigationBarHeight;
++ (BOOL)isHaveSafeArea;
 
-+ (CGFloat)statusBarHeight;
-
-+ (CGFloat)navigationBarAndStatusBarHeight;
-
-+ (CGFloat)tabBarHeight;
-
-+ (CGFloat)safeAreaBottom;
-
-+ (CGFloat)screenHeight;
-
-+ (CGFloat)screenWidth;
-
-+ (double)systemVersion;
-
-+ (NSString *)systemName;
++ (UIWindow *)firstWindow;
 
 + (UIViewController *)rootViewController;
 
@@ -50,6 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)hideKeyboard:(UITextField *)textField;
 
 + (void)addHideButtonForKeyboard:(UITextField *)textField target:(nullable id)target action:(nullable SEL)action;
+
++ (void)printSystemInfo;
 @end
 
 NS_ASSUME_NONNULL_END
+
+#pragma clang diagnostic pop

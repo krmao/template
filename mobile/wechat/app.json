@@ -1,8 +1,11 @@
 {
     "pages": [
+        "pages/login/login",
         "pages/index/index",
-        "pages/mine/mine",
-        "pages/logs/logs"
+        "pages/user/user",
+        "pages/order/order",
+        "pages/money/money"
+        
     ],
     "window": {
         "backgroundTextStyle": "light",
@@ -18,15 +21,27 @@
         "list": [
             {
                 "pagePath": "pages/index/index",
+                "iconPath": "image/icon_shop.png",
+                "selectedIconPath": "image/icon_shop_selected.png",
+                "text": "商品"
+            },
+            {
+                "pagePath": "pages/user/user",
+                "iconPath": "image/icon_mine.png",
+                "selectedIconPath": "image/icon_mine_selected.png",
+                "text": "用户"
+            },
+            {
+                "pagePath": "pages/order/order",
                 "iconPath": "image/icon_order.png",
                 "selectedIconPath": "image/icon_order_selected.png",
                 "text": "订单"
             },
             {
-                "pagePath": "pages/mine/mine",
-                "iconPath": "image/icon_mine.png",
-                "selectedIconPath": "image/icon_mine_selected.png",
-                "text": "我的"
+                "pagePath": "pages/money/money",
+                "iconPath": "image/icon_money.png",
+                "selectedIconPath": "image/icon_money_selected.png",
+                "text": "收入"
             }
         ]
     },

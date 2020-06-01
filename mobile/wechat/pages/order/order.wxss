@@ -1,0 +1,39 @@
+/**index.wxss**/
+
+.container{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: green;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.list{
+  width: 100%;
+  align-content: center;
+}
+
+.list-item{
+  padding: 10px;
+  width: 100%;
+  align-content: center;
+  border-bottom: 1rpx solid #F5F5F5;
+  background-color: #FFFFFF
+}

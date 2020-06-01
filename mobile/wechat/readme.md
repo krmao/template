@@ -10,3 +10,6 @@
 git clone https://github.com/wechat-miniprogram/miniprogram-demo.git
 cd miniprogram-demo
 ```
+
+### 图标
+> https://www.iconfont.cn/search/index?q=shop

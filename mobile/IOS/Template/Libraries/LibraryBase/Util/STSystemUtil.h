@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)isHaveSafeArea;
 
-+ (UIWindow *)firstWindow;
++ (UIWindow *)keyWindow;
 
 + (UIViewController *)rootViewController;
 

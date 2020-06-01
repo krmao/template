@@ -55,7 +55,7 @@
 
 + (CGFloat)deviceStatusBarHeight {
     if (@available(iOS 13.0, *)) {
-        return [[[self firstWindow] windowScene] statusBarManager].statusBarFrame.size.height;
+        return [[[self keyWindow] windowScene] statusBarManager].statusBarFrame.size.height;
     } else {
         return [UIApplication sharedApplication].statusBarFrame.size.height;
     }
@@ -71,7 +71,7 @@
 
 + (BOOL)isHaveSafeArea {
     if (@available(iOS 11.0, *)) {
-        return [self isIphone] && ([self firstWindow].safeAreaInsets.bottom > 0.0);
+        return [self isIphone] && ([self keyWindow].safeAreaInsets.bottom > 0.0);
     } else {
         return NO;
     }
@@ -79,7 +79,7 @@
 
 + (CGFloat)deviceSafeAreaBottom {
     if (@available(iOS 11.0, *)) {
-        return [self firstWindow].safeAreaInsets.bottom;
+        return [self keyWindow].safeAreaInsets.bottom;
     } else {
         return 0.0;
     }
@@ -87,7 +87,7 @@
 
 + (CGFloat)deviceSafeAreaTop {
     if (@available(iOS 11.0, *)) {
-        return [self firstWindow].safeAreaInsets.top;
+        return [self keyWindow].safeAreaInsets.top;
     } else {
         return 0.0;
     }
@@ -95,7 +95,7 @@
 
 + (CGFloat)deviceSafeAreaLeft {
     if (@available(iOS 11.0, *)) {
-        return [self firstWindow].safeAreaInsets.left;
+        return [self keyWindow].safeAreaInsets.left;
     } else {
         return 0.0;
     }
@@ -103,7 +103,7 @@
 
 + (CGFloat)deviceSafeAreaRight {
     if (@available(iOS 11.0, *)) {
-        return [self firstWindow].safeAreaInsets.right;
+        return [self keyWindow].safeAreaInsets.right;
     } else {
         return 0.0;
     }
@@ -111,7 +111,7 @@
 
 + (UIEdgeInsets)deviceSafeAreaInsets {
     if (@available(iOS 11.0, *)) {
-        return [self firstWindow].safeAreaInsets;
+        return [self keyWindow].safeAreaInsets;
     } else {
         return UIEdgeInsetsMake(0, 0, 0, 0);
     }
@@ -206,36 +206,48 @@
     return NSTemporaryDirectory();
 }
 
-+ (UIWindow *)firstWindow {
-    return [UIApplication sharedApplication].windows.firstObject;
++ (UIWindow *)keyWindow {
+    UIWindow *keyWindow = nil;
+    if (@available(iOS 13.0, *)) {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for (UIWindow *window in windows) {
+            if (window.isKeyWindow) {
+                keyWindow = window;
+                break;
+            }
+        }
+        if (!keyWindow) {
+            //keyWindow = [windows firstObject];
+            NSLog(@"must call after viewDidAppear of first visible UIViewController !!!");
+        }
+    } else {
+        keyWindow = [[UIApplication sharedApplication] keyWindow];
+    }
+    return keyWindow;
 }
 
 + (UIViewController *)rootViewController {
-    if (@available(iOS 13.0, *)) {
-        return [(SceneDelegate *) [[self firstWindow] windowScene].delegate window].rootViewController;
-    } else {
-        return [(AppDelegate *) [UIApplication sharedApplication].delegate window].rootViewController;
-    }
+    return [self keyWindow].rootViewController;
 }
 
 + (UIViewController *)topMostController {
     UIViewController *topMostController = [self rootViewController];
     while ([topMostController presentedViewController]) {
         topMostController = [topMostController presentedViewController];
-        NSLog(@"topMostController=%@", topMostController);
+        NSLog(@"%s, UIViewController presentedViewController=%@", __FUNCTION__, topMostController);
     }
     return topMostController;
 }
 
 + (UIViewController *)topViewController {
     UIViewController *topController = [self topMostController];
-    while ([topController isKindOfClass:[UITabBarController class]] && [(UITabBarController *) topController selectedViewController]) {
-        topController = [(UITabBarController *) topController selectedViewController];
-        NSLog(@"topController tab 选中=%@", topController);
-    }
     while ([topController isKindOfClass:[UINavigationController class]] && [(UINavigationController *) topController topViewController]) {
         topController = [(UINavigationController *) topController topViewController];
-        NSLog(@"topController tab 选中最上面=%@", topController);
+        NSLog(@"%s, UINavigationController topViewController=%@", __FUNCTION__, topController);
+    }
+    while ([topController isKindOfClass:[UITabBarController class]] && [(UITabBarController *) topController selectedViewController]) {
+        topController = [(UITabBarController *) topController selectedViewController];
+        NSLog(@"%s, UITabBarController selectedViewController=%@", __FUNCTION__, topController);
     }
     return topController;
 }
@@ -325,7 +337,7 @@
     NSLog(@"%s, isHaveSafeArea=%d", __FUNCTION__, [STSystemUtil isHaveSafeArea]);
 
     NSLog(@"%s, --------------------", __FUNCTION__);
-    NSLog(@"%s, firstWindow=%@", __FUNCTION__, [STSystemUtil firstWindow]);
+    NSLog(@"%s, keyWindow=%@", __FUNCTION__, [STSystemUtil keyWindow]);
     NSLog(@"%s, rootViewController=%@", __FUNCTION__, [STSystemUtil rootViewController]);
     NSLog(@"%s, topViewController=%@\n", __FUNCTION__, [STSystemUtil topViewController]);
     NSLog(@"%s, ----------------------------------------", __FUNCTION__);

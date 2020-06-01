@@ -38,8 +38,6 @@
     [super viewDidLoad];
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
 
-    [STSystemUtil printSystemInfo];
-
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
     self.tabBar.tintColor = UIColor.systemBlueColor; // tabBar 选中时高亮的颜色
@@ -59,7 +57,7 @@
     
     [self setViewControllers:@[itemHomeViewController, itemReactNativeViewController, itemHybirdViewController, itemFlutterViewController] animated:YES];
     
-    self.selectedIndex = 0; // 默认显示第几个
+    self.selectedIndex = 1; // 默认显示第几个
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -80,6 +78,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long)self.navigationController.viewControllers.count);
+    [STSystemUtil printSystemInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

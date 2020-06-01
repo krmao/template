@@ -24,3 +24,10 @@
 .userinfo-nickname {
   color: #aaa;
 }
+
+.code{
+  color: #aaa;
+  height: 60rpx;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+}

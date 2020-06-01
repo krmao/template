@@ -7,9 +7,5 @@
             <text class="userinfo-nickname">{{userInfo.nickName}}</text>
         </block>
     </view>
-    <view class='list'>
-        <block wx:for="{{language}}" wx:key="index">
-            <view class='list-item'>{{item}}</view>
-        </block>
-    </view>
+    <text class="code">{{code}}</text>
 </view>

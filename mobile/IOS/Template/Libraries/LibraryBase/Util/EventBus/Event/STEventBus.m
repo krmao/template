@@ -1,8 +1,7 @@
 #import "STEventBus.h"
 #import "STEvent.h"
 #import "STEventSubscribeModel.h"
-#import "STEventUserInfo.h"
-#import "STEventDebug.h"
+
 @interface STEventBus()
 @property (nonatomic,strong)NSMutableDictionary *events;
 @end

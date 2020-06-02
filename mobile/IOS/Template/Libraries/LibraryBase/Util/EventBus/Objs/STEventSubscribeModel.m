@@ -1,5 +1,4 @@
 #import "STEventSubscribeModel.h"
-#import "STEventUserInfo.h"
 
 @interface STEventSubscribeModel()
 @end

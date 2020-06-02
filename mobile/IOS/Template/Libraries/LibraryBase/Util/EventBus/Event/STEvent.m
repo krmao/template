@@ -1,6 +1,6 @@
 #import "STEvent.h"
 #import "STEventSubscribeModel.h"
-#import "STEventUserInfo.h"
+
 @interface STEvent(){
 
 }

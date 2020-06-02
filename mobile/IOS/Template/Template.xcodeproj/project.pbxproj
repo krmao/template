@@ -15,6 +15,7 @@
 		6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3716B82955316783691 /* STEventPoster.m */; };
 		6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */; };
 		6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */; };
+		6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */; };
 		6194AE78F16107D158F47C7D /* STEventBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0CCAE7B7447858B63C7 /* STEventBus.m */; };
 		6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F29E3F09DAEC521EB271C /* libPods-Template.a */; };
 		F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */; };
@@ -42,6 +43,7 @@
 		6194A3716B82955316783691 /* STEventPoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventPoster.m; sourceTree = "<group>"; };
 		6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventSubscribeModel.m; sourceTree = "<group>"; };
 		6194A46B349939BC7E06FDE3 /* STEventUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventUserInfo.h; sourceTree = "<group>"; };
+		6194A53174A31319E5887269 /* UIColor+ARGB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ARGB.h"; sourceTree = "<group>"; };
 		6194A5657ACBEF5628A9E6AB /* STEventDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventDefinition.h; sourceTree = "<group>"; };
 		6194A686AD61A6519B9946DB /* STEventPoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventPoster.h; sourceTree = "<group>"; };
 		6194A7E091970BA5D58DDB3C /* STEventDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventDebug.m; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 		6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseTabBarController.h; sourceTree = "<group>"; };
 		6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventUserInfo.m; sourceTree = "<group>"; };
 		6194AD38B6F8F440456768C1 /* STEventSubscribeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventSubscribeModel.h; sourceTree = "<group>"; };
+		6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ARGB.m"; sourceTree = "<group>"; };
 		6194ADD05B88259BCC706CD4 /* STEventBusKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventBusKit.h; sourceTree = "<group>"; };
 		6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEvent.m; sourceTree = "<group>"; };
 		6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseViewController.h; sourceTree = "<group>"; };
@@ -207,6 +210,8 @@
 			children = (
 				F8F85E36247B6C0C00C6BFFA /* UIView+OnClickListener.h */,
 				F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */,
+				6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */,
+				6194A53174A31319E5887269 /* UIColor+ARGB.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -493,6 +498,7 @@
 				6194AE78F16107D158F47C7D /* STEventBus.m in Sources */,
 				6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */,
 				6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */,
+				6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +646,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.Template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 			};
 			name = Debug;
 		};
@@ -659,6 +666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.smart.Template;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 			};
 			name = Release;
 		};

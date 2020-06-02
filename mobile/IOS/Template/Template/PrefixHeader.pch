@@ -22,5 +22,6 @@
 #import "SceneDelegate.h"
 #import "STSystemUtil.h"
 #import "STEventBusKit.h"
+#import "UIColor+ARGB.h"
 
 #endif /* PrefixHeader_pch */

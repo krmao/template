@@ -1,33 +1,104 @@
 /**index.wxss**/
-
-.container{
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    background-color: green;
+page {
+  background-color: #45b97c;
 }
 
-.userinfo {
+.container {
+
+  width: 100%;
+  height: 100vh;
+
+  /* ---- flex start ----*/
+  display: flex;
+
+  /* 方向 */
+  flex-direction: column;
+
+  /* 换行 */
+  flex-wrap: nowrap;
+
+  /* 主轴上的对齐方式 */
+  justify-content: center;
+
+  /* 交叉轴上的对齐方式 */
+  align-items: center;
+
+  /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+  align-content: center;
+
+  /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+  align-self: center;
+
+  /* ---- flex end ----*/
+}
+
+.login_form {
+  width: 60%;
+  height: 400rpx;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
   align-items: center;
+  align-content: center;
+  align-self: center;
+  padding: 0;
+  margin: 0;
+
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.code{
-  color: #aaa;
-  height: 60rpx;
-  margin-top: 20rpx;
+.login_username {
+  width: 100%;
+  height: 80rpx;
   font-size: 24rpx;
+}
+
+.login_pwd {
+  width: 100%;
+  height: 80rpx;
+  font-size: 24rpx;
+  margin-top: 40rpx;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 80rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  font-size: 26rpx;
+  color: #333;
+  border-radius: 12rpx;
+  background-color: white;
+}
+
+.input_place_holder {
+  width: 100%;
+  height: 80rpx;
+  font-size: 26rpx;
+  color: #999;
+  border-radius: 12rpx;
+  background-color: white;
+}
+
+
+.login_submit {
+  display: flex;
+  margin-top: 80rpx;
+  width: 100%;
+  background-color: transparent;
+  height: 80rpx;
+}
+
+.loginBtn {
+  width: 100%;
+  border: 2rpx;
+  height: 100%;
+  padding: 0;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #fff;
+  border-color: #009ad6;
+  border-radius: 12rpx;
+  background-color: #33a3dc;
 }

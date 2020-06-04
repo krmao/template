@@ -15,3 +15,6 @@ cd miniprogram-demo
 > https://www.iconfont.cn/search/index?q=shop
 
 ### 开发指南
+
+### 微信小程序控制台
+> https://mp.weixin.qq.com/

@@ -1,39 +1,91 @@
 /**index.wxss**/
-
-.container{
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    background-color: green;
+page {
+  background-color: #45b97c;
 }
 
-.userinfo {
+.container {
+  margin:0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+
+  /* ---- flex start ----*/
   display: flex;
+
+  /* 方向 */
   flex-direction: column;
+
+  /* 换行 */
+  flex-wrap: nowrap;
+
+  /* 主轴上的对齐方式 */
+  justify-content: flex-start;
+
+  /* 交叉轴上的对齐方式 */
   align-items: center;
-}
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
+  /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+  /* align-content: center; */
 
-.userinfo-nickname {
-  color: #aaa;
+  /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+  /* align-self: center; */
+
+  /* ---- flex end ----*/
 }
 
 .list{
+  margin:0;
+  padding: 0;
   width: 100%;
-  align-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .list-item{
-  padding: 10px;
+  /* ---- flex start ----*/
+  display: flex;
+
+  /* 方向 */
+  flex-direction: row;
+
+  /* 换行 */
+  flex-wrap: nowrap;
+
+  /* 主轴上的对齐方式 */
+  justify-content: flex-start;
+
+  /* 交叉轴上的对齐方式 */
+  align-items: center;
+
+  /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+  /* align-content: center; */
+
+  /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+  /* align-self: center; */
+
+  /* ---- flex end ----*/
+  margin:0;
+  padding: 10;
   width: 100%;
-  align-content: center;
   border-bottom: 1rpx solid #F5F5F5;
   background-color: #FFFFFF
+}
+.list-item-image{
+  display: flex;
+  flex: 1;
+  background-color: gray;
+  height: 200rpx;
+
+}
+.list-item-content{
+  display: flex;
+  height: 200rpx;
+  flex: 3;
+}
+.list-item-share{
+  display: flex;
+  height: 200rpx;
+  flex: 1;
+
 }

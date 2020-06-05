@@ -6,15 +6,8 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.VisibleForTesting;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
-import androidx.customview.view.AbsSavedState;
-import androidx.customview.widget.ViewDragHelper;
-
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -23,7 +16,15 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.smart.library.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.customview.widget.ViewDragHelper;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,8 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt"})
-@SuppressWarnings({"WeakerAccess", "unused", "unchecked", "SpellCheckingInspection"})
+@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection", "ConstantConditions", "unchecked"})
 public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+    public static final String TAG = STBottomSheetBehavior.class.getSimpleName();
+
     public static final int STATE_DRAGGING = 1;
     public static final int STATE_SETTLING = 2;
     public static final int STATE_EXPANDED = 3;
@@ -68,7 +71,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     protected int initialY;
     protected boolean touchingScrollingChild;
     protected Map<View, Integer> importantForAccessibilityMap;
-    protected final ViewDragHelper.Callback dragCallback;
+    protected ViewDragHelper.Callback dragCallback;
 
     public STBottomSheetBehavior() {
         this.fitToContents = true;
@@ -277,27 +280,27 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 return collapsedOffset;
             }
         };
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
-        final TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
+        final TypedArray a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.BottomSheetBehavior_Layout);
+        final TypedValue value = a.peekValue(com.google.android.material.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
         if (value != null && value.data == -1) {
             this.setPeekHeight(value.data);
         } else {
-            this.setPeekHeight(a.getDimensionPixelSize(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
+            this.setPeekHeight(a.getDimensionPixelSize(com.google.android.material.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, -1));
         }
-        this.setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
-        // this.setFitToContents(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
+        this.setHideable(a.getBoolean(com.google.android.material.R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+        // this.setFitToContents(a.getBoolean(com.google.android.material.R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
         this.setFitToContents(true);
-        this.setSkipCollapsed(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
+        this.setSkipCollapsed(a.getBoolean(com.google.android.material.R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
         a.recycle();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         this.maximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
-    public Parcelable onSaveInstanceState(final CoordinatorLayout parent, final V child) {
+    public Parcelable onSaveInstanceState(@NotNull final CoordinatorLayout parent, @NotNull final V child) {
         return new SavedState(super.onSaveInstanceState(parent, child), this.state);
     }
 
-    public void onRestoreInstanceState(final CoordinatorLayout parent, final V child, final Parcelable state) {
+    public void onRestoreInstanceState(@NotNull final CoordinatorLayout parent, @NotNull final V child, @NotNull final Parcelable state) {
         final SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, child, ss.getSuperState());
         if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
@@ -307,7 +310,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         }
     }
 
-    public boolean onLayoutChild(final CoordinatorLayout parent, final V child, final int layoutDirection) {
+    public boolean onLayoutChild(@NotNull final CoordinatorLayout parent, @NotNull final V child, final int layoutDirection) {
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.setFitsSystemWindows(true);
         }
@@ -316,7 +319,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         this.parentHeight = parent.getHeight();
         if (this.peekHeightAuto) {
             if (this.peekHeightMin == 0) {
-                this.peekHeightMin = parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
+                this.peekHeightMin = parent.getResources().getDimensionPixelSize(com.google.android.material.R.dimen.design_bottom_sheet_peek_height_min);
             }
             this.lastPeekHeight = Math.max(this.peekHeightMin, this.parentHeight - parent.getWidth() * 9 / 16);
         } else {
@@ -349,7 +352,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return this.halfExpandedOffset;
     }
 
-    public boolean onInterceptTouchEvent(final CoordinatorLayout parent, final V child, final MotionEvent event) {
+    public boolean onInterceptTouchEvent(@NotNull final CoordinatorLayout parent, final V child, @NotNull final MotionEvent event) {
         if (!child.isShown()) {
             this.ignoreEvents = true;
             return false;
@@ -391,7 +394,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         return action == 2 && scroll2 != null && !this.ignoreEvents && this.state != 1 && !parent.isPointInChildBounds(scroll2, (int) event.getX(), (int) event.getY()) && this.viewDragHelper != null && Math.abs(this.initialY - event.getY()) > this.viewDragHelper.getTouchSlop();
     }
 
-    public boolean onTouchEvent(final CoordinatorLayout parent, final V child, final MotionEvent event) {
+    public boolean onTouchEvent(@NotNull final CoordinatorLayout parent, final V child, @NotNull final MotionEvent event) {
         if (!child.isShown()) {
             return false;
         }
@@ -494,10 +497,12 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                 targetState = STATE_HALF_EXPANDED;
             } else {
                 top = this.collapsedOffset;
+                Log.w(TAG, "onStopNestedScroll lastNestedScrollDy(" + lastNestedScrollDy + ")==0, force set targetState=STATE_COLLAPSED. won't call onViewReleased!");
                 targetState = STATE_COLLAPSED;
             }
         } else {
             top = this.collapsedOffset;
+            Log.w(TAG, "onStopNestedScroll lastNestedScrollDy(" + lastNestedScrollDy + ")<=0, force set targetState=STATE_COLLAPSED. won't call onViewReleased!");
             targetState = STATE_COLLAPSED;
         }
         if (this.viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
@@ -766,7 +771,7 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
                     if (Build.VERSION.SDK_INT >= 16) {
                         this.importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
                     }
-                    ViewCompat.setImportantForAccessibility(child, View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+                    ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
                 }
             }
         }
@@ -781,11 +786,11 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         public abstract void onSlide(@NonNull final View p0, final float p1);
     }
 
-    protected class SettleRunnable implements Runnable {
+    public class SettleRunnable implements Runnable {
         protected final View view;
         protected final int targetState;
 
-        SettleRunnable(final View view, final int targetState) {
+        public SettleRunnable(final View view, final int targetState) {
             this.view = view;
             this.targetState = targetState;
         }

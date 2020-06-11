@@ -74,14 +74,28 @@ page {
 .list-item-image{
   display: flex;
   flex: 1;
-  background-color: gray;
+  min-width: 200rpx;
+  background-color: #dddddd;
   height: 200rpx;
 
 }
 .list-item-content{
   display: flex;
+  flex-direction: column;
   height: 200rpx;
+  padding: 20rpx;
   flex: 3;
+}
+.list-item-title{
+  display: flex;
+  color: #333;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+.list-item-time{
+  display: flex;
+  color: #999;
+  font-size: 24rpx;
 }
 .list-item-share{
   display: flex;

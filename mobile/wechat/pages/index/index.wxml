@@ -4,8 +4,24 @@
         <block wx:for="{{language}}" wx:key="index">
             <view class='list-item'>
             <view class='list-item-image'></view>
-            <view class='list-item-content'>{{item}}</view>
-            <view class='list-item-share'>share</view>
+            <view class='list-item-content'>
+                <view class='list-item-title'>
+                    {{item}}
+                </view>
+                <view class='list-item-time'>
+                    截单日期: 2020-06-18 20:00
+                </view>
+                <view class='list-item-time'>
+                    提货日期: 2020-06-18
+                </view>
+                <view class='list-item-time'>
+                    商品价格: 16.16元
+                </view>
+                <view class='list-item-time'>
+                    提成金额: 2.1元
+                </view>
+            </view>
+            <view class='list-item-share'>分享</view>
             </view>
         </block>
     </view>

@@ -1,15 +1,41 @@
 <!--index.wxml-->
 <view class="container">
-    <view class="userinfo">
-        <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-        <block wx:else>
-            <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-            <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-        </block>
-    </view>
-    <view class='list'>
-        <block wx:for="{{language}}" wx:key="index">
-            <view class='list-item'>{{item}}</view>
-        </block>
-    </view>
+	<view class='list'>
+		<block wx:for="{{language}}" wx:key="index">
+			<view class='list-item'>
+				<view class='list-item-image'></view>
+				<view class='list-item-content'>
+					<view class='list-item-title'>
+						{{item}}
+					</view>
+					<view class='list-item-time'>
+						订单编号: 2020-06-18 20:00
+					</view>
+					<view class='list-item-time'>
+						下单时间: 2020-06-18
+					</view>
+					<view class='list-item-time'>
+						数量 1 总价 16.16元
+					</view>
+					<view class='list-item-time'>
+						提成金额: 2.1元
+					</view>
+					<view class='list-item-time'>
+						收货人: 用户甲 手机: 12345678911
+					</view>
+					<view class='list-item-time'>
+						收货人地址: (自提不显示地址)
+					</view>
+				</view>
+				<view class='list-item-tip'>
+					<view class='list-item-time'>
+						待成单
+					</view>
+					<view class='list-item-time'>
+						到货提醒
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
 </view>

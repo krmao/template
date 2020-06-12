@@ -1,5 +1,36 @@
-<view class='list'>
-    <block wx:for="{{language}}" wx:key="index">
-        <view class='list-item'>{{item}}</view>
-    </block>
+<!--index.wxml-->
+<view class="container">
+    <view class='list-header'>
+        <view class='list-item-index' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+            序号
+        </view>
+        <view class='list-item-name' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+            姓名
+        </view>
+        <view class='list-item-phone' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+            电话
+        </view>
+        <view class='list-item-address' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+            地址
+        </view>
+    </view>
+    <view class='list'>
+        <block wx:for="{{language}}" wx:key="index">
+            <view class='list-item'>
+
+                <view class='list-item-index'>
+                    {{index}}
+                </view>
+                <view class='list-item-name'>
+                    姓名
+                </view>
+                <view class='list-item-phone'>
+                    18217777777
+                </view>
+                <view class='list-item-address'>
+                    上海市千阳南路66弄66号楼66室
+                </view>
+            </view>
+        </block>
+    </view>
 </view>

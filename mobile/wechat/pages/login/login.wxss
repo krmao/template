@@ -32,6 +32,13 @@ page {
   /* ---- flex end ----*/
 }
 
+.login-image{
+  display: flex;
+  width: 300rpx;
+  height: 300rpx;
+  margin-bottom: 100rpx;
+}
+
 .login_form {
   width: 60%;
   height: 400rpx;
@@ -44,6 +51,7 @@ page {
   align-self: center;
   padding: 0;
   margin: 0;
+  margin-bottom: 120rpx;
 
 }
 

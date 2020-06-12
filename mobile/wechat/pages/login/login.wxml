@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class="container">
+	<image class='login-image' mode='aspectFill' src='../../image/shengxian2.jpg'></image>
 	<view class="login_form">
 		<view class="login_username">
 			<input class="input" name="userName" placeholder="用户名" placeholder-class="input_place_holder"  bindinput="userNameInput" />

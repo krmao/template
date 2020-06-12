@@ -3,7 +3,9 @@
     <view class='list'>
         <block wx:for="{{language}}" wx:key="index">
             <view class='list-item'>
-            <view class='list-item-image'></view>
+
+            <image class='list-item-image' mode='aspectFill' src='../../image/shengxian.jpg'></image>
+
             <view class='list-item-content'>
                 <view class='list-item-title'>
                     {{item}}

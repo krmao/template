@@ -3,7 +3,7 @@
 	<view class='list'>
 		<block wx:for="{{language}}" wx:key="index">
 			<view class='list-item'>
-				<view class='list-item-image'></view>
+				   <image class='list-item-image' mode='aspectFill' src='../../image/shengxian3.jpg'></image>
 				<view class='list-item-content'>
 					<view class='list-item-title'>
 						{{item}}
@@ -21,7 +21,10 @@
 						提成金额: 2.1元
 					</view>
 					<view class='list-item-time'>
-						收货人: 用户甲 手机: 12345678911
+						收货人: 用户甲
+					</view>
+						<view class='list-item-time'>
+						手机: 12345678911
 					</view>
 					<view class='list-item-time'>
 						收货人地址: (自提不显示地址)

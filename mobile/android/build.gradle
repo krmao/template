@@ -120,7 +120,7 @@ ext {
     androidXRecyclerViewVersion = "1.1.0"
     androidXVectorDrawableVersion = "1.1.0"
     androidXFragmentVersion = "1.2.2"
-    androidXConstraintlayoutVersion = "1.1.3"
+    androidXConstraintlayoutVersion = "2.0.0-beta3"
     androidXMaterialVersion = "1.1.0"
     androidXLifecycleVersion = "2.2.0"
 

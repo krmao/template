@@ -5,88 +5,45 @@ inhibit_all_warnings!
 platform :ios, '9.0'
 install! 'cocoapods', generate_multiple_pod_projects: true
 
+# react-native 0.62.2
+# # https://reactnative.dev/docs/integration-with-existing-apps
+# # ===============================
 def rnpod
-  pod 'LibraryReactNative', :path => '../Libraries/LibraryReactNative'
-
-  # ==================== REACT NATIVE =============
   # Your 'node_modules' directory is probably in the root of your project,
   # but if not, adjust the `:path` accordingly
-  pod 'React', :path => '../../../react_native/node_modules/react-native', :subspecs => [
-      'Core',
-      'CxxBridge', # Include this for RN >= 0.47
-      'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
-      'RCTText',
-      'RCTNetwork',
-      'RCTWebSocket', # needed for debugging
-      # Add any other subspecs you want to use in your project
-      'RCTActionSheet',
-      'RCTGeolocation',
-      'RCTImage',
-      'RCTPushNotification',
-      'RCTSettings',
-      'RCTVibration',
-      'RCTLinkingIOS',
-  ]
+  
+  pod 'FBLazyVector', :path => "../../react_native/node_modules/react-native/Libraries/FBLazyVector"
+  pod 'FBReactNativeSpec', :path => "../../react_native/node_modules/react-native/Libraries/FBReactNativeSpec"
+  pod 'RCTRequired', :path => "../../react_native/node_modules/react-native/Libraries/RCTRequired"
+  pod 'RCTTypeSafety', :path => "../../react_native/node_modules/react-native/Libraries/TypeSafety"
+  pod 'React', :path => '../../react_native/node_modules/react-native/'
+  pod 'React-Core', :path => '../../react_native/node_modules/react-native/'
+  pod 'React-CoreModules', :path => '../../react_native/node_modules/react-native/React/CoreModules'
+  pod 'React-Core/DevSupport', :path => '../../react_native/node_modules/react-native/'
+  pod 'React-RCTActionSheet', :path => '../../react_native/node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../../react_native/node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../../react_native/node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../../react_native/node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../../react_native/node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../../react_native/node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../../react_native/node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../../react_native/node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../../react_native/node_modules/react-native/Libraries/Vibration'
+  pod 'React-Core/RCTWebSocket', :path => '../../react_native/node_modules/react-native/'
 
-  # Explicitly include Yoga if you are using RN >= 0.42.0
-  pod "yoga", :path => "../../rn-smarttravel/node_modules/react-native/ReactCommon/yoga"
+  pod 'React-cxxreact', :path => '../../react_native/node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../../react_native/node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../../react_native/node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../../react_native/node_modules/react-native/ReactCommon/jsinspector'
+  pod 'ReactCommon/callinvoker', :path => "../../react_native/node_modules/react-native/ReactCommon"
+  pod 'ReactCommon/turbomodule/core', :path => "../../react_native/node_modules/react-native/ReactCommon"
+  pod 'Yoga', :path => '../../react_native/node_modules/react-native/ReactCommon/yoga'
 
-  # Third party deps podspec link
-  pod 'DoubleConversion', :podspec => '../../rn-smarttravel/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../../rn-smarttravel/node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../../rn-smarttravel/node_modules/react-native/third-party-podspecs/Folly.podspec'
-
-  # When using RN in combination with Cocoapods, a lot of
-  # things are broken. These are the fixes we had to append
-  # to our Podfile when upgrading to ReactNative@0.55.3.
-  #
-  # WARNING: Check those line numbers when you're on a different version!
-
-  def change_lines_in_file(file_path, &change)
-    print "Fixing #{file_path}...\n"
-    contents = []
-    file = File.open(file_path, 'r')
-    file.each_line do |line|
-      contents << line
-    end
-    file.close
-
-    File.open(file_path, 'w') do |f|
-      f.puts(change.call(contents))
-    end
-  end
-
-  post_install do |installer|
-
-    # https://github.com/facebook/yoga/issues/711#issuecomment-374605785
-    change_lines_in_file('../../rn-smarttravel/node_modules/react-native/React/Base/Surface/SurfaceHostingView/RCTSurfaceSizeMeasureMode.h') do |lines|
-      unless lines[27].include?("#ifdef __cplusplus")
-        lines.insert(27, "#ifdef __cplusplus")
-        lines.insert(34, "#endif")
-      end
-      lines
-    end
-
-    # https://github.com/facebook/react-native/issues/13198
-    change_lines_in_file('../../rn-smarttravel/node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h') do |lines|
-      lines.map { |line| line.include?("#import <RCTAnimation/RCTValueAnimatedNode.h>") ? '#import "RCTValueAnimatedNode.h"' : line }
-    end
-
-    # https://github.com/facebook/react-native/issues/16039
-    change_lines_in_file('../../rn-smarttravel/node_modules/react-native/Libraries/WebSocket/RCTReconnectingWebSocket.m') do |lines|
-      lines.map { |line| line.include?("#import <fishhook/fishhook.h>") ? '#import "fishhook.h"' : line }
-    end
-
-    # 消除警告 The iOS deployment target is set to 7.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'AFNetworking') 等
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 8.0
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '8.0'
-        end
-      end
-    end
-  end
+  pod 'DoubleConversion', :podspec => '../../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../../react_native/node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec'
 end
+# # ===============================
 
 # # 以下修改使用非 '..' 路径, 使得 AppCode 不会卡死在索引文件
 # # ===============================
@@ -192,8 +149,8 @@ target 'Template' do
   pod 'lottie-ios', '2.5.3'
 
   # 集成 react native
-  # rnpod
-
+  rnpod
+  
   # 集成 flutter
   flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec

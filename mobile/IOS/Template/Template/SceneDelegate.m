@@ -1,5 +1,6 @@
-#import "SceneDelegate.h"
-#import "AppDelegate.h"
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
+#pragma ide diagnostic ignored "UnusedClassInspection"
 
 @interface SceneDelegate ()
 @end
@@ -17,6 +18,8 @@
     self.window.backgroundColor = UIColor.whiteColor;
     self.window.rootViewController = [AppDelegate initRootViewController];
     [self.window makeKeyAndVisible];
+
+    [AppDelegate initApplication];
 }
 
 - (void)sceneDidDisconnect:(UIScene *)scene  API_AVAILABLE(ios(13.0)) {
@@ -48,3 +51,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop

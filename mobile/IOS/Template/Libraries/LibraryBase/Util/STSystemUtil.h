@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)deviceMachineTypeName;
 
++ (CGFloat)deviceDensity;
+
 + (CGFloat)deviceBatteryLevel;
 
 + (CGFloat)deviceNavigationBarHeight;

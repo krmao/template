@@ -1,6 +1,8 @@
 #import <sys/utsname.h>
 
 #pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #pragma ide diagnostic ignored "UnusedMethodInspection"
 
 @implementation STSystemUtil
@@ -59,6 +61,10 @@
     } else {
         return [UIApplication sharedApplication].statusBarFrame.size.height;
     }
+}
+
++ (CGFloat)deviceDensity {
+    return [UIScreen mainScreen].scale;
 }
 
 + (CGFloat)deviceTabBarHeight {

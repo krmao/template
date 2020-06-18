@@ -1,6 +1,5 @@
 package com.smart.library.reactnative
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build

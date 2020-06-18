@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnusedMacroInspection"
+
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
@@ -25,3 +28,5 @@
 #import "UIColor+ARGB.h"
 
 #endif /* PrefixHeader_pch */
+
+#pragma clang diagnostic pop

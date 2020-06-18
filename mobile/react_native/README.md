@@ -1,3 +1,9 @@
+## 版本
+> android/ios 中引用的库都与此有关
+```
+"react-native" : "0.62.2"
+```
+
 ## 开发步骤
 1. 在 template/web/react_native 项目中开发, 使用 npm run start 进行在线调试
 2. 执行 npm run bundle-android 打包并将产物 /build/bundle/android 重命名为 bundle-rn 并压缩为 bundle-rn.zip  copy并替换 到 template/app/libraries/library-reactnative/src/main/assets/bundle-rn.zip
@@ -48,14 +54,6 @@ npm install -g install-local
 
 ### 2: 发布离线包
 
-```
-// bundle
-react-native bundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
-
-// unbundle
-react-native unbundle  --platform android  --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/assets/index.android.bundle  --assets-dest ./build/bundle/res/
-```
-
 -   base & business for android
 
 ```
@@ -70,11 +68,18 @@ react-native   bundle  --platform ios --verbose --minify false --dev true  --ent
 react-native   bundle  --platform ios --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ~/Desktop/business/business.ios.bundle --assets-dest ~/Desktop/business --exclude  ~/Desktop/base/base.ios.bundle.json
 ```
 
--   normal for android bundle and unbundle
+-   normal bundle and unbundle
 
 ```
-react-native unbundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/index.android.bundle --assets-dest ./build/bundle/normal/unbundle
-react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/index.android.bundle --assets-dest ./build/bundle/normal/bundle
+# android
+react-native unbundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/android/index.android.bundle --assets-dest ./build/bundle/normal/unbundle/android
+react-native   bundle  --platform android  --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/android/index.android.bundle --assets-dest ./build/bundle/normal/bundle/android
+
+
+# ios
+react-native unbundle  --platform ios --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/unbundle/ios/index.ios.bundle --assets-dest ./build/bundle/normal/unbundle/ios
+react-native   bundle  --platform ios --verbose --minify false --dev true  --entry-file ./index.js  --bundle-output ./build/bundle/normal/bundle/ios/index.ios.bundle --assets-dest ./build/bundle/normal/bundle/ios
+
 ```
 
 # Custom Metro To Split Modules For React Native

@@ -2,9 +2,10 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow * _Nonnull window;
+@property(strong, nonatomic) UIWindow *_Nonnull window;
 
-+ (UIViewController *_Nonnull) initRootViewController;
++ (UIViewController *_Nonnull)initRootViewController;
 
++ (void)initApplication;
 @end
 

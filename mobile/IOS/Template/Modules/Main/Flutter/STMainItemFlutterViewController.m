@@ -110,7 +110,7 @@
         _bridgeButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
         _bridgeButton.titleLabel.font = [UIFont systemFontOfSize:16];
 
-        [_bridgeButton setTitle:@"FLUTTER PAGE BRIDGE" forState:UIControlStateNormal];
+        [_bridgeButton setTitle:@"GOTO FLUTTER" forState:UIControlStateNormal];
         [_bridgeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
         // [_bridgeButton addTarget:self action:@selector(goToFlutter) forControlEvents:UIControlEventTouchUpInside];

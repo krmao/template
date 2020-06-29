@@ -62,19 +62,24 @@ export default class ApiManager{
     };
 
     static request(url, data, onSuccess, onFailure) {
-      console.log("---- request", url, data);
+      let timeout = 20000
+      wx.showLoading({title: '加载中...', icon: 'loading', mask:true, duration: timeout + 1000});
+
+      let requestData =  {
+        version:1,
+        category:1,
+        platform:1,
+        token:"",
+        data:data
+      }
+
+      console.log("---- request", url, requestData);
         return wx.request({
           url: url,
           method: "POST",
-          data: {
-            version:1,
-            category:1,
-            platform:1,
-            token:"",
-            data:data
-          },
+          data: requestData,
           header: {'content-type': 'application/json'},
-          timeout:20000,
+          timeout:timeout,
           dataType:"json",
           responseType:"text",
           success:(res)=>{
@@ -96,7 +101,9 @@ export default class ApiManager{
               onFailure(-1, res.errMsg)
             }
           },
-          complete:(res)=>{}
+          complete:(res)=>{
+            wx.hideLoading()
+          }
         })
     };
 

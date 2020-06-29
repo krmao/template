@@ -26,10 +26,12 @@ Page({
             this.data.password,
             function onSuccess(data){
                 console.log("request onSuccess",data)
+                wx.showToast({title: '登录成功'});
                 wx.switchTab({url: '../index/index'})
             },
             function onFailure(errorCode,errorMessage){
                 console.log("request onFailure",errorCode, errorMessage)
+                wx.showToast({title: '登录失败', icon: 'none'});
             }
         );
     },

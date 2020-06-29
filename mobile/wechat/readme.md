@@ -18,3 +18,5 @@ cd miniprogram-demo
 
 ### 微信小程序控制台
 > https://mp.weixin.qq.com/
+
+1. 服务请求需要设置合法域名

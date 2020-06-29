@@ -7,7 +7,7 @@
 		</view>
 		<view class="login_pwd">
 			<input class="input" password  placeholder-class="input_place_holder" 
-            placeholder="密码" bindinput="passWdInput" />
+            placeholder="密码" bindinput="passwordInput" />
 		</view>
 		<view class="login_submit">
 			<button class="loginBtn" bindtap="bindViewTap">欢迎加入</button>

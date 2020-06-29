@@ -2,6 +2,53 @@ const requestURL = "http://api.smart.com/jdhome-server/appservice";
 
 export default class ApiManager{
 
+    static requestQueryMyOrderIncome(currentPage, pageSize, onSuccess, onFailure) {
+      return ApiManager.request(
+        requestURL + "/getMyOrderIncome",
+        {
+          currentPage:currentPage,
+          pageSize:pageSize
+        },
+        onSuccess,
+        onFailure
+      )
+    };
+
+    static requestQueryMyOrders(currentPage, pageSize, onSuccess, onFailure) {
+      return ApiManager.request(
+        requestURL + "/getMyUserOrder",
+        {
+          currentPage:currentPage,
+          pageSize:pageSize
+        },
+        onSuccess,
+        onFailure
+      )
+    };
+
+    static requestQueryMyGoods(currentPage, pageSize, onSuccess, onFailure) {
+      return ApiManager.request(
+        requestURL + "/getMyCommunityGoodsGroupon",
+        {
+          currentPage:currentPage,
+          pageSize:pageSize
+        },
+        onSuccess,
+        onFailure
+      )
+    };
+    
+    static requestQueryUsers(currentPage, pageSize, onSuccess, onFailure) {
+      return ApiManager.request(
+        requestURL + "/getMyCommunityUserAddress",
+        {
+          currentPage:currentPage,
+          pageSize:pageSize
+        },
+        onSuccess,
+        onFailure
+      )
+    };
     static requestLogin(userName, password, onSuccess, onFailure) {
         return ApiManager.request(
           requestURL + "/userWechatLogin",

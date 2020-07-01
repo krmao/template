@@ -1,4 +1,5 @@
-const requestURL = "http://api.smart.com/jdhome-server/appservice";
+// const requestURL = "http://api.smart.com/jdhome-server/appservice";
+const requestURL = "http://hejinguo1987.oicp.net/jdhome-server/appservice";
 
 export default class ApiManager{
 

@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<view class=".common-container">
     <view class='list'>
         <block wx:for="{{language}}" wx:key="index">
             <view class='list-item'>

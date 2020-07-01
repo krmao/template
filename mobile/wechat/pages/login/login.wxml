@@ -1,16 +1,16 @@
 <!--index.wxml-->
-<view class="container">
-	<image class='login-image' mode='aspectFill' src='../../image/shengxian2.jpg'></image>
+<view class=".common-container">
+	<image class='.common-image' mode='aspectFill' src='../../image/logo_caicang_white.png'></image>
 	<view class="login_form">
 		<view class="login_username">
-			<input class="input" value="{{userName}}" name="userName" placeholder="用户名" placeholder-class="input_place_holder"  bindinput="userNameInput" />
+			<input class=".common-input" value="{{userName}}" name="userName" placeholder="用户名" placeholder-class=".common-input-placeholder"  bindinput="userNameInput" />
 		</view>
 		<view class="login_pwd">
-			<input class="input" value="{{password}}"  name="password"  placeholder-class="input_place_holder" 
+			<input class=".common-input" value="{{password}}"  name="password"  placeholder-class=".common-input-placeholder" 
             placeholder="密码" bindinput="passwordInput" />
 		</view>
 		<view class="login_submit">
-			<button class="loginBtn" bindtap="bindViewTap">欢迎加入</button>
+			<button class=".common-button" bindtap="bindViewTap">欢迎加入</button>
 		</view>
 	</view>
 </view>

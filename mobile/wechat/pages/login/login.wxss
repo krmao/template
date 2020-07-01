@@ -1,47 +1,13 @@
 /**index.wxss**/
-page {
-  background-color: #45b97c;
-}
+@import "../../common.wxss";
 
-.container {
-
-  width: 100%;
-  height: 100vh;
-
-  /* ---- flex start ----*/
-  display: flex;
-
-  /* 方向 */
-  flex-direction: column;
-
-  /* 换行 */
-  flex-wrap: nowrap;
-
-  /* 主轴上的对齐方式 */
-  justify-content: center;
-
-  /* 交叉轴上的对齐方式 */
-  align-items: center;
-
-  /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
-  align-content: center;
-
-  /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
-  align-self: center;
-
-  /* ---- flex end ----*/
-}
-
-.login-image{
-  display: flex;
-  width: 300rpx;
-  height: 300rpx;
-  margin-bottom: 100rpx;
+.common-image{
+  margin-bottom: 140rpx;
 }
 
 .login_form {
   width: 60%;
-  height: 400rpx;
+  height: 500rpx;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -51,8 +17,7 @@ page {
   align-self: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 120rpx;
-
+  margin-bottom: 80rpx;
 }
 
 .login_username {
@@ -65,48 +30,13 @@ page {
   width: 100%;
   height: 80rpx;
   font-size: 24rpx;
-  margin-top: 40rpx;
+  margin-top: 60rpx;
 }
-
-.input {
-  box-sizing: border-box;
-  width: 100%;
-  height: 80rpx;
-  padding-left: 20rpx;
-  padding-right: 20rpx;
-  font-size: 26rpx;
-  color: #333;
-  border-radius: 12rpx;
-  background-color: white;
-}
-
-.input_place_holder {
-  width: 100%;
-  height: 80rpx;
-  font-size: 26rpx;
-  color: #999;
-  border-radius: 12rpx;
-  background-color: white;
-}
-
 
 .login_submit {
   display: flex;
-  margin-top: 80rpx;
+  margin-top: 150rpx;
   width: 100%;
   background-color: transparent;
   height: 80rpx;
-}
-
-.loginBtn {
-  width: 100%;
-  border: 2rpx;
-  height: 100%;
-  padding: 0;
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #fff;
-  border-color: #009ad6;
-  border-radius: 12rpx;
-  background-color: #33a3dc;
 }

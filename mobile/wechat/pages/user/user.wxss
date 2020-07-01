@@ -1,3 +1,5 @@
+@import "../../common.wxss";
+
 /**index.wxss**/
 page {
     background-color: #45b97c;

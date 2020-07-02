@@ -1,5 +1,6 @@
-// const requestURL = "http://api.smart.com/jdhome-server/appservice";
-const requestURL = "http://hejinguo1987.oicp.net/jdhome-server/appservice";
+import UserManager from '../utils/UserManager';
+
+const requestURL = "https://api.smart.com/jdhome-server/appservice";
 
 export default class ApiManager{
 
@@ -70,7 +71,7 @@ export default class ApiManager{
         version:1,
         category:1,
         platform:1,
-        token:"",
+        token: UserManager.getUserToken(),
         data:data
       }
 
@@ -90,7 +91,13 @@ export default class ApiManager{
               if(onSuccess && ('function'== (typeof onSuccess))){
                 onSuccess(data.data)
               }
-            }else{
+            } else if(data && data.status == 2){
+              // 重新登录
+              UserManager.saveUserToken("")
+              wx.reLaunch({
+                url: '/pages/login/login'
+            });
+            } else{
               if(onFailure && ('function'== (typeof onFailure))){
                 onFailure((data && data.status ?data.status: -1), (data && data.message ?data.message:"request success but parse data failure"))
               }

@@ -1,80 +1,83 @@
-//index.js
-//获取应用实例
-const app = getApp()
+import ApiManager from '../../repository/ApiManager';
 
 Page({
   data: {
-      language: [
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-      ],
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    currentPage: 1, // 1开始 currentPage=totalPage  就是最后一页
+    pageSize: 20,
+    /*
+     {
+        id:int  订单ID
+        “orderCode”:string 订单编号
+        “createdDate”: date下单时间       
+        “goodsNumber”: int数量
+        “totalAmount”:double 订单金额    
+        “consignee” :string 收货人
+        “consignPhone” :string 收货人电话
+        “consignAddress”:string 收货地址
+        “deliveryType”:int 配送方式(1:门店自提 2:送货上门)
+        “orderStatus”:int 订单状态 (0:待支付 1:待成团 2:待发货 3：已发货 4:已完成 5：已取消 6：已退货 7：待退款 8：已退款)
+        “separateAmount”:double 提成金额    
+        }
+     */
+    orderList: []
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../index/index'
     })
   },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
+    console.log("order onLoad")
+    this.requestData()
+  },
+  onReady: function () {
+    console.log("order onReady")
+  },
+  onShow: function () {
+    console.log("order onShow")
+  },
+  onHide: function () {
+    console.log("order onHide")
+  },
+  onPullDownRefresh: function () {
+    console.log("order onPullDownRefresh")
+  },
+  onPageScroll: function () {
+    console.log("order onPageScroll")
+  },
+  onShareAppMessage: function () {
+    console.log("order onShareAppMessage")
+  },
+  onReachBottom: function () {
+    console.log("order onReachBottom")
+    this.requestData()
+  },
+  requestData: function () {
+    let that = this
+    ApiManager.requestQueryMyOrders(
+      that.data.currentPage,
+      that.data.pageSize,
+      function onSuccess(response) {
+        console.log("request onSuccess", response)
+        let newCurrentPage = response.currentPage
+        let totalPage = response.totalPage
+        let newDataList = response.orderList
+
+        if (newCurrentPage > totalPage) {
+          wx.showToast({
+            title: '没有更多了',
+          })
+        } else {
+          that.setData({
+            currentPage: newCurrentPage + 1,
+            orderList: that.data.orderList.concat(newDataList)
           })
         }
-      })
-    }
-  },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+      },
+      function onFailure(errorCode, errorMessage) {
+        console.log("request onFailure", errorCode, errorMessage)
+      }
+    );
   }
 })

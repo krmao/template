@@ -16,20 +16,19 @@
         </view>
     </view>
     <view class='list'>
-        <block wx:for="{{language}}" wx:key="index">
+        <block wx:for="{{orderIncomeList}}" wx:key="index">
             <view class='list-item'>
-
                 <view class='list-item-index'>
-                    3
+                    {{item.orderNumber}}
                 </view>
                 <view class='list-item-name'>
-                    100 元
+                    {{item.totalAmount}}元
                 </view>
                 <view class='list-item-phone'>
-                    10元
+                    {{item.separateAmount}}元
                 </view>
                 <view class='list-item-address'>
-                    2020/01/01 10:10
+                    {{item.createdDate}}
                 </view>
             </view>
         </block>

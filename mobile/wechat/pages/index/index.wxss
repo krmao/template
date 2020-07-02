@@ -68,40 +68,32 @@ page {
 
   /* ---- flex end ----*/
   margin:0;
-  padding: 10;
   width: 100%;
-  border-bottom: 1rpx solid #F5F5F5;
+  border-bottom: 2rpx solid #F5F5F5;
   background-color: #FFFFFF
 }
 .list-item-image{
   display: flex;
   flex: 1;
-  min-width: 200rpx;
-  background-color: #dddddd;
-  height: 200rpx;
-
+  min-width: 190rpx;
+  background-color: #EFEFEF;
+  height: 190rpx;
+  margin-left: 15rpx;
 }
 .list-item-content{
+  margin: 1rpx;
   display: flex;
+  margin-left: 20rpx;
   flex-direction: column;
-  height: 200rpx;
-  padding: 20rpx;
   flex: 3;
 }
 .list-item-title{
   display: flex;
   color: #333;
-  font-size: 32rpx;
-  margin-bottom: 10rpx;
+  font-size: 30rpx;
 }
 .list-item-time{
   display: flex;
   color: #999;
   font-size: 24rpx;
-}
-.list-item-share{
-  display: flex;
-  height: 200rpx;
-  flex: 1;
-
 }

@@ -2,7 +2,7 @@
 
 /**index.wxss**/
 page {
-  background-color: #45b97c;
+  background-color: white;
 }
 
 .container {
@@ -79,7 +79,7 @@ page {
   min-width: 240rpx;
   background-color: #dddddd;
   height: 300rpx;
-
+  padding: 20rpx;
 }
 .list-item-content{
   display: flex;

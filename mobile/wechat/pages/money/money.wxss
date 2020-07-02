@@ -2,7 +2,7 @@
 
 /**index.wxss**/
 page {
-    background-color: #45b97c;
+    background-color: white;
 }
 
 .container {
@@ -38,10 +38,15 @@ page {
 }
 
 .list-header {
+    /* 吸顶 */
+    position: fixed;
+    top: 0;
+    z-index: 1;
+
     /* ---- flex start ----*/
     display: flex;
 
-    min-height: 96rpx;
+    height: 96rpx;
 
     /* 方向 */
     flex-direction: row;
@@ -72,7 +77,7 @@ page {
 .list {
     display: flex;
     flex: 1;
-    margin: 0;
+    margin-top: 96rpx;
     padding: 0;
     width: 100%;
     display: flex;

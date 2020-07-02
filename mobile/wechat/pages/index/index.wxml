@@ -1,29 +1,31 @@
 <!--index.wxml-->
 <view class=".common-container">
     <view class='list'>
-        <block wx:for="{{language}}" wx:key="index">
+        <block wx:for="{{goodsGrouponList}}" wx:key="index">
             <view class='list-item'>
 
-            <image class='list-item-image' mode='aspectFill' src='../../image/shengxian.jpg'></image>
+            <image class='list-item-image' mode='aspectFill' src="{{item.picPath}}"></image>
 
             <view class='list-item-content'>
                 <view class='list-item-title'>
-                    {{item}}
+                    {{item.goodsName}}
                 </view>
                 <view class='list-item-time'>
-                    截单日期: 2020-06-18 20:00
+                    团购期数ID: {{item.id}}
                 </view>
                 <view class='list-item-time'>
-                    提货日期: 2020-06-18
+                    截单日期: {{item.endTime}}
                 </view>
                 <view class='list-item-time'>
-                    商品价格: 16.16元
+                    提货日期: {{item.deliveryDate}}
                 </view>
                 <view class='list-item-time'>
-                    提成金额: 2.1元
+                    商品价格: {{item.price}}元
+                </view>
+                <view class='list-item-time'>
+                    提成金额: {{item.separateAmount}}元
                 </view>
             </view>
-            <view class='list-item-share'>分享</view>
             </view>
         </block>
     </view>

@@ -1,80 +1,76 @@
-//index.js
-//获取应用实例
-const app = getApp()
+import ApiManager from '../../repository/ApiManager';
 
 Page({
   data: {
-      language: [
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-          "好得睐酸菜毛豆",
-      ],
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    currentPage: 1, // 1开始 currentPage=totalPage  就是最后一页
+    pageSize: 20,
+    /*
+    {  //我的收入
+        “orderNumber”:int 订单数量
+        “createdDate”: date订单时间       
+        “totalAmount”:double 订单金额
+        “separateAmount”:double 提成金额     
+        }
+    */
+    orderIncomeList: []
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../index/index'
     })
   },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
+    console.log("order onLoad")
+    this.requestData()
+  },
+  onReady: function () {
+    console.log("income onReady")
+  },
+  onShow: function () {
+    console.log("income onShow")
+  },
+  onHide: function () {
+    console.log("income onHide")
+  },
+  onPullDownRefresh: function () {
+    console.log("income onPullDownRefresh")
+  },
+  onPageScroll: function () {
+    console.log("income onPageScroll")
+  },
+  onShareAppMessage: function () {
+    console.log("income onShareAppMessage")
+  },
+  onReachBottom: function () {
+    console.log("income onReachBottom")
+    this.requestData()
+  },
+  requestData: function () {
+    let that = this
+    ApiManager.requestQueryMyOrderIncome(
+      that.data.currentPage,
+      that.data.pageSize,
+      function onSuccess(response) {
+        console.log("request onSuccess", response)
+        let newCurrentPage = response.currentPage
+        let totalPage = response.totalPage
+        let newDataList = response.orderIncomeList
+
+        if (newCurrentPage > totalPage) {
+          wx.showToast({
+            title: '没有更多了',
+          })
+        } else {
+          that.setData({
+            currentPage: newCurrentPage + 1,
+            orderIncomeList: that.data.orderIncomeList.concat(newDataList)
           })
         }
-      })
-    }
-  },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+      },
+      function onFailure(errorCode, errorMessage) {
+        console.log("request onFailure", errorCode, errorMessage)
+      }
+    );
   }
 })

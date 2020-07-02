@@ -1,33 +1,36 @@
 <!--index.wxml-->
 <view class="container">
 	<view class='list'>
-		<block wx:for="{{language}}" wx:key="index">
+		<block wx:for="{{orderList}}" wx:key="index">
 			<view class='list-item'>
-				   <image class='list-item-image' mode='aspectFill' src='../../image/shengxian3.jpg'></image>
+				   <image class='list-item-image' mode='aspectFill' src='../../image/image_default.png'></image>
 				<view class='list-item-content'>
 					<view class='list-item-title'>
-						{{item}}
+						{{item.id}}
 					</view>
 					<view class='list-item-time'>
-						订单编号: 2020-06-18 20:00
+						订单编号: {{item.orderCode}}
 					</view>
 					<view class='list-item-time'>
-						下单时间: 2020-06-18
+						下单时间: {{item.createdDate}}
 					</view>
 					<view class='list-item-time'>
-						数量 1 总价 16.16元
+						数量 {{item.goodsNumber}} 总价 {{item.totalAmount}}元
 					</view>
 					<view class='list-item-time'>
-						提成金额: 2.1元
+						提成金额: {{item.separateAmount}}元
 					</view>
 					<view class='list-item-time'>
-						收货人: 用户甲
-					</view>
-						<view class='list-item-time'>
-						手机: 12345678911
+						收货人: {{item.consignee}}
 					</view>
 					<view class='list-item-time'>
-						收货人地址: (自提不显示地址)
+						手机: {{item.consignPhone}}
+					</view>
+					<view wx:if="{{item.deliveryType==1}}" class='list-item-time'>
+						收货人地址: 自提不显示地址
+					</view>
+					<view wx:else class='list-item-time'>
+						收货人地址: {{item.consignAddress}}
 					</view>
 				</view>
 				<view class='list-item-tip'>

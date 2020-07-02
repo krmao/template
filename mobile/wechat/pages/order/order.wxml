@@ -3,10 +3,10 @@
 	<view class='list'>
 		<block wx:for="{{orderList}}" wx:key="index">
 			<view class='list-item'>
-				   <image class='list-item-image' mode='aspectFill' src='../../image/image_default.png'></image>
+				   <image class='list-item-image' mode='aspectFill' src="{{item.imageUrl}}"></image>
 				<view class='list-item-content'>
 					<view class='list-item-title'>
-						{{item.id}}
+						订单ID: {{item.id}}
 					</view>
 					<view class='list-item-time'>
 						订单编号: {{item.orderCode}}

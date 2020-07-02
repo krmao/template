@@ -68,31 +68,28 @@ page {
 
   /* ---- flex end ----*/
   margin:0;
-  padding: 10;
   width: 100%;
   border-bottom: 1rpx solid #F5F5F5;
   background-color: #FFFFFF
 }
 .list-item-image{
   display: flex;
-  flex: 1;
-  min-width: 240rpx;
+  width: 200rpx;
   background-color: #dddddd;
-  height: 300rpx;
-  padding: 20rpx;
+  height: 200rpx;
 }
 .list-item-content{
   display: flex;
   flex-direction: column;
-  height: 300rpx;
-  padding: 20rpx;
-  flex: 3;
+  padding: 10rpx;
+  flex: 1;
+  margin-left: 10rpx;
 }
 .list-item-title{
   display: flex;
   color: #333;
   font-size: 32rpx;
-  margin-bottom: 10rpx;
+  margin-bottom: 5rpx;
 }
 .list-item-time{
   display: flex;
@@ -102,8 +99,7 @@ page {
 .list-item-tip{
   display: flex;
   flex-direction: column;
-  flex: 1;
+  width: 140rpx;
   color: #999;
   font-size: 24rpx;
-
 }

@@ -105,7 +105,7 @@ page {
 
     /* ---- flex end ----*/
     margin: 0;
-    padding: 10;
+    padding: 10rpx;
     width: 100%;
     border-bottom: 1rpx solid #F5F5F5;
     background-color: #FFFFFF

@@ -74,18 +74,17 @@ page {
 }
 .list-item-image{
   display: flex;
-  flex: 1;
-  min-width: 190rpx;
+  width: 200rpx;
   background-color: #EFEFEF;
-  height: 190rpx;
-  margin-left: 15rpx;
+  height: 200rpx;
 }
 .list-item-content{
   margin: 1rpx;
   display: flex;
-  margin-left: 20rpx;
+  margin-left: 10rpx;
+  padding: 10rpx;
   flex-direction: column;
-  flex: 3;
+  flex: 1;
 }
 .list-item-title{
   display: flex;

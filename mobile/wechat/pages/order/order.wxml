@@ -5,9 +5,9 @@
 			<view class='list-item'>
 				<image class='list-item-image' mode='aspectFill' src="{{item.imageUrl}}"></image>
 				<view class='list-item-content'>
-					<view class='list-item-title'>
+					<!-- <view class='list-item-title'>
 						订单ID: {{item.id}}
-					</view>
+					</view> -->
 					<view class='list-item-time'>
 						订单编号: {{item.orderCode}}
 					</view>
@@ -65,7 +65,7 @@
 					</view>
 
 					<view wx:if="{{item.orderStatus==2 || item.orderStatus==3 || item.orderStatus==4}}" class='list-item-time'>
-						<image class='list-item-image' mode='aspectFill' src="../../image/icon_phone.png" bindtap="callPhone" data-phoneNumber="{{item.consignPhone}}"></image>
+						<image class='list-item-image-phone' mode='aspectFill' src="../../image/icon_phone.png" bindtap="callPhone" data-phoneNumber="{{item.consignPhone}}"></image>
 					</view>
 					<view wx:else class='list-item-time'>
 					</view>

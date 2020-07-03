@@ -74,9 +74,15 @@ page {
 }
 .list-item-image{
   display: flex;
-  width: 200rpx;
-  background-color: #dddddd;
-  height: 200rpx;
+  width: 120rpx;
+  height: 120rpx;
+  margin-top: 40rpx;
+}
+.list-item-image-phone{
+  display: flex;
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 40rpx;
 }
 .list-item-content{
   display: flex;

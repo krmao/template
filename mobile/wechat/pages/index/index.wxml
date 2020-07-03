@@ -10,9 +10,9 @@
                 <view class='list-item-title'>
                     {{item.goodsName}}
                 </view>
-                <view class='list-item-time'>
+                <!-- <view class='list-item-time'>
                     团购期数ID: {{item.id}}
-                </view>
+                </view> -->
                 <view class='list-item-time'>
                     截单日期: {{item.endTime}}
                 </view>

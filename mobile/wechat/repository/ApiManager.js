@@ -1,6 +1,6 @@
 import UserManager from '../utils/UserManager';
 
-const requestURL = "https://api.jiduojia.com/jdhome-server/appservice";
+const requestURL = "https://api.smart.com/jdhome-server/appservice";
 
 export default class ApiManager{
 

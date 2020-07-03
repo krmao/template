@@ -53,6 +53,13 @@ Page({
     console.log("order onReachBottom")
     this.requestData()
   },
+  callPhone: function(e){
+    let phoneNumber = e.currentTarget.dataset['phoneNumber'];
+    console.log("phoneNumber:"+phoneNumber)
+    wx.makePhoneCall({
+      phoneNumber: 'phoneNumber',
+    })
+  },
   requestData: function () {
     let that = this
     ApiManager.requestQueryMyOrders(

@@ -6,7 +6,7 @@
 			<input class=".common-input" value="{{userName}}" name="userName" placeholder="用户名" placeholder-class=".common-input-placeholder"  bindinput="userNameInput" />
 		</view>
 		<view class="login_pwd">
-			<input class=".common-input" value="{{password}}"  name="password"  placeholder-class=".common-input-placeholder" 
+			<input class=".common-input" password='true' value="{{password}}"  name="password"  placeholder-class=".common-input-placeholder" 
             placeholder="密码" bindinput="passwordInput" />
 		</view>
 		<view class="login_submit">

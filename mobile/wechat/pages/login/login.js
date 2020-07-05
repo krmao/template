@@ -42,7 +42,8 @@ Page({
                 UserManager.saveUserPwd(that.data.password)
                 UserManager.saveUserToken(data.token)
                 wx.showToast({
-                    title: '登录成功'
+                    title: '登录成功',
+                    duration: 2000
                 });
                 wx.switchTab({
                     url: '../index/index'
@@ -52,12 +53,25 @@ Page({
                 console.log("request onFailure", errorCode, errorMessage)
                 wx.showToast({
                     title: '登录失败',
-                    icon: 'none'
+                    icon: 'none',
+                    duration: 2000
                 });
             }
         );
     },
+    onShow: function () {
+        console.log("login onShow");
+    },
     onLoad: function () {
+        console.log("login onLoad");
+
+        this.setData({
+            userName: UserManager.getUserName()
+        })
+        this.setData({
+            password: UserManager.getUserPwd()
+        })
+
         // wx.login({
         //     success (res) {
         //       if (res.code) {

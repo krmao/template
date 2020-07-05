@@ -4,7 +4,8 @@
         "pages/user/user",
         "pages/index/index",
         "pages/order/order",
-        "pages/money/money"
+        "pages/money/money",
+        "pages/setting/setting"
     ],
     "window": {
         "backgroundTextStyle": "light",
@@ -41,6 +42,12 @@
                 "iconPath": "image/icon_money.png",
                 "selectedIconPath": "image/icon_money_selected.png",
                 "text": "收入"
+            },
+            {
+                "pagePath": "pages/setting/setting",
+                "iconPath": "image/icon_setting.png",
+                "selectedIconPath": "image/icon_setting_selected.png",
+                "text": " 设置"
             }
         ]
     },

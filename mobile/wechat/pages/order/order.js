@@ -74,6 +74,7 @@ Page({
         if (newCurrentPage > totalPage) {
           wx.showToast({
             title: '没有更多了',
+            duration: 2000
           })
         } else {
           that.setData({

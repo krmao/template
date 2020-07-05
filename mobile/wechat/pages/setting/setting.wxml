@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class="container">
+	<view class="btn_logout">
+		<button class=".common-button" bindtap="bindViewTap">退出登录</button>
+	</view>
+</view>

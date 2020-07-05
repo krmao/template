@@ -21,7 +21,7 @@ Page({
     })
   },
   onLoad: function () {
-    console.log("index onLoad")
+    console.log("user onLoad")
     this.requestData()
   },
   onReady: function () {
@@ -60,6 +60,7 @@ Page({
         if (newCurrentPage > totalPage) {
           wx.showToast({
             title: '没有更多了',
+            duration: 2000
           })
         } else {
           that.setData({

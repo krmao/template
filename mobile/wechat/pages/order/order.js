@@ -54,10 +54,10 @@ Page({
     this.requestData()
   },
   callPhone: function(e){
-    let phoneNumber = e.currentTarget.dataset['phoneNumber'];
-    console.log("phoneNumber:"+phoneNumber)
+    let phone = e.currentTarget.dataset['phone'];
+    console.log("phone:"+phone)
     wx.makePhoneCall({
-      phoneNumber: 'phoneNumber',
+      phoneNumber: phone,
     })
   },
   requestData: function () {

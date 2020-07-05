@@ -64,7 +64,6 @@ export default class ApiManager {
     wx.showLoading({
       title: '加载中...',
       icon: 'loading',
-      mask: true,
       duration: timeout + 1000
     });
 
@@ -88,6 +87,7 @@ export default class ApiManager {
       dataType: "json",
       responseType: "text",
       success: (res) => {
+        wx.hideLoading()
         console.log("---- request success", res);
         let data = res.data
         if (data && data.status == 0) {
@@ -107,13 +107,13 @@ export default class ApiManager {
         }
       },
       fail: (res) => {
+        wx.hideLoading()
         console.log("---- request fail", res);
         if (onFailure && ('function' == (typeof onFailure))) {
           onFailure(-1, res.errMsg)
         }
       },
       complete: (res) => {
-        wx.hideLoading()
       }
     })
   };

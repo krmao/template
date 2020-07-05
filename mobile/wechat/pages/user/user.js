@@ -67,10 +67,19 @@ Page({
             currentPage: newCurrentPage + 1,
             userAddressList: that.data.userAddressList.concat(newDataList)
           })
+          wx.showToast({
+            title: '请求成功',
+            duration: 2000
+          });
         }
       },
       function onFailure(errorCode, errorMessage) {
         console.log("request onFailure", errorCode, errorMessage)
+        wx.showToast({
+          title: '请求失败:' + errorCode + '\n' + errorMessage,
+          icon: 'none',
+          duration: 2000
+        });
       }
     );
   }

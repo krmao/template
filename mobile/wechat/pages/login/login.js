@@ -52,10 +52,10 @@ Page({
             function onFailure(errorCode, errorMessage) {
                 console.log("request onFailure", errorCode, errorMessage)
                 wx.showToast({
-                    title: '登录失败',
+                    title: '请求失败:' + errorCode + '\n' + errorMessage,
                     icon: 'none',
                     duration: 2000
-                });
+                  });
             }
         );
     },

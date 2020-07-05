@@ -1,35 +1,37 @@
 <!--index.wxml-->
 <view class="container">
-    <view class='list-header'>
-        <view class='list-item-index' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
-            序号
-        </view>
-        <view class='list-item-name' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
-            姓    名
-        </view>
-        <view class='list-item-phone' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
-            电    话
-        </view>
-        <view class='list-item-address' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
-            地    址
-        </view>
-    </view>
-    <view class='list'>
-        <block wx:for="{{userAddressList}}" wx:key="index">
-            <view class='list-item'>
-                <view class='list-item-index'>
-                    {{index}}
-                </view>
-                <view class='list-item-name'>
-                    {{item.userName}}
-                </view>
-                <view class='list-item-phone'>
-                    {{item.userPhone}}
-                </view>
-                <view class='list-item-address'>
-                    {{item.userAddress}}
-                </view>
-            </view>
-        </block>
-    </view>
+	<view class='list-header'>
+		<view class='list-item-index' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+			序号
+		</view>
+		<view class='list-item-name' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+			姓 名
+		</view>
+		<view class='list-item-phone' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+			电 话
+		</view>
+		<view class='list-item-address' style="font-weight:bold;color:#333;align-items:center;justify-content:center;">
+			地 址
+		</view>
+	</view>
+	<view class='list'>
+		<block wx:for="{{userAddressList}}" wx:key="index">
+			<view class='.common-list-item'>
+				<view class='list-item'>
+					<view class='list-item-index'>
+						{{index}}
+					</view>
+					<view class='list-item-name'>
+						{{item.userName}}
+					</view>
+					<view class='list-item-phone'>
+						{{item.userPhone}}
+					</view>
+					<view class='list-item-address'>
+						{{item.userAddress}}
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
 </view>

@@ -1,32 +1,34 @@
 <!--index.wxml-->
 <view class=".common-container">
-    <view class='list'>
-        <block wx:for="{{goodsGrouponList}}" wx:key="index">
-            <view class='list-item'>
+	<view class='list'>
+		<block wx:for="{{goodsGrouponList}}" wx:key="index">
+			<view class='.common-list-item'>
+				<view class='list-item'>
 
-            <image class='list-item-image' mode='aspectFill' src="{{item.picPath}}"></image>
+					<image class='list-item-image' mode='aspectFill' src="{{item.picPath}}"></image>
 
-            <view class='list-item-content'>
-                <view class='list-item-title'>
-                    {{item.goodsName}}
-                </view>
-                <!-- <view class='list-item-time'>
+					<view class='list-item-content'>
+						<view class='list-item-title'>
+							{{item.goodsName}}
+						</view>
+						<!-- <view class='list-item-time'>
                     团购期数ID: {{item.id}}
                 </view> -->
-                <view class='list-item-time'>
-                    截单日期: {{item.endTime}}
-                </view>
-                <view class='list-item-time'>
-                    提货日期: {{item.deliveryDate}}
-                </view>
-                <view class='list-item-time'>
-                    商品价格: {{item.price}}元
-                </view>
-                <view class='list-item-time'>
-                    提成金额: {{item.separateAmount}}元
-                </view>
-            </view>
-            </view>
-        </block>
-    </view>
+						<view class='list-item-time'>
+							截单日期: {{item.endTime}}
+						</view>
+						<view class='list-item-time'>
+							提货日期: {{item.deliveryDate}}
+						</view>
+						<view class='list-item-time'>
+							商品价格: {{item.price}}元
+						</view>
+						<view class='list-item-time'>
+							提成金额: {{item.separateAmount}}元
+						</view>
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
 </view>

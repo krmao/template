@@ -1,16 +1,14 @@
-import ApiManager from '../../repository/ApiManager';
 import UserManager from '../../utils/UserManager';
 
 Page({
-  data: {
-  },
+  data: {},
   //事件处理函数
   bindViewTap: function () {
     // 重新登录
     UserManager.logout()
     wx.reLaunch({
       url: '/pages/login/login'
-  });
+    });
   },
   onLoad: function () {
     console.log("setting onLoad")

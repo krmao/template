@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class=".common-container">
+	<view class=".desc">
+		本小程序为菜仓生鲜团长端，用于菜仓生鲜团长查看社区商品数据、管理用户订单等。
+	</view>	
+</view>

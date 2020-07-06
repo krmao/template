@@ -34,9 +34,31 @@
 }
 
 .login_submit {
-  display: flex;
+  display: block;
   margin-top: 150rpx;
   width: 100%;
   background-color: transparent;
   height: 80rpx;
+}
+
+.login_desc {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+.login_desc_button {
+  display: flex;
+  color: #666;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  margin-right: 0;
+  background-color: #d3d7d4;
+  border: none;
+  padding: 12rpx;
+  margin-right: 0;
+  line-height: 1;
+}
+button::after {
+  border: none;
 }

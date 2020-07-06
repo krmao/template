@@ -30,6 +30,11 @@ Page({
             password: e.detail.value
         })
     },
+    bindViewTapForDesc:function(){
+        wx.navigateTo({
+            url: '../description/description'
+        })
+    },
     //事件处理函数
     bindViewTap: function () {
         let that = this

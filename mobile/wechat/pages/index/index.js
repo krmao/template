@@ -48,7 +48,7 @@ Page({
       that.data.pageSize,
       function onSuccess(response) {
         console.log("request onSuccess", response)
-        let newCurrentPage = response.currentPage + 1
+        let newCurrentPage = response.currentPage
         let totalPage = response.totalPage
         let newDataList = response.goodsGrouponList
 
@@ -59,7 +59,7 @@ Page({
           })
         } else {
           that.setData({
-            currentPage: newCurrentPage,
+            currentPage: newCurrentPage + 1,
             goodsGrouponList: that.data.goodsGrouponList.concat(newDataList)
           })
           wx.showToast({

@@ -130,4 +130,8 @@
             <enum name="gone" value="2" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="STEllipsizeEndTextView">
+        <attr name="stLastScale" format="float" />
+    </declare-styleable>
 </resources>

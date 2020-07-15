@@ -1,9 +1,6 @@
-# ================================================================================
-# user
-# ================================================================================
-DROP TABLE IF EXISTS spring-boot.user;
+DROP TABLE IF EXISTS springboot.user;
 
-CREATE TABLE IF NOT EXISTS spring-boot.user
+CREATE TABLE IF NOT EXISTS springboot.user
 (
     userId                BIGINT(50) AUTO_INCREMENT PRIMARY KEY,
     userName              VARCHAR(20) DEFAULT ''                                             NOT NULL

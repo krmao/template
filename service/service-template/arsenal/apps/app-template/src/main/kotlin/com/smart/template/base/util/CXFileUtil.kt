@@ -4,7 +4,7 @@ import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
 
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate", "ControlFlowWithEmptyBody")
 object CXFileUtil {
 
     private val ENCODING_UTF8 = "UTF-8"
@@ -39,6 +39,7 @@ object CXFileUtil {
         }
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     @Throws(FileNotFoundException::class, IOException::class)
     fun copy(inputStream: InputStream?, destFile: File?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) {
         var outputStream: OutputStream? = null
@@ -56,7 +57,7 @@ object CXFileUtil {
     }
 
     @Throws(FileNotFoundException::class, IOException::class)
-    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, File(toFilePath), onProgress)
+    fun copy(inputStream: InputStream?, toFilePath: String?, onProgress: ((current: Long, total: Long) -> Unit?)? = null) = copy(inputStream, if (toFilePath == null) null else File(toFilePath), onProgress)
 
     /**
      * copy from
@@ -74,7 +75,7 @@ object CXFileUtil {
     fun copy(from: InputStream?, to: OutputStream?, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Long {
         checkNotNull(from)
         checkNotNull(to)
-        val total = from!!.available().toLong()
+        val total = from.available().toLong()
         val buf = ByteArray(8192)
         var current: Long = 0
         while (true) {
@@ -82,7 +83,7 @@ object CXFileUtil {
             if (r == -1) {
                 break
             }
-            to!!.write(buf, 0, r)
+            to.write(buf, 0, r)
             current += r.toLong()
             onProgress?.invoke(current, total)
         }
@@ -126,7 +127,7 @@ object CXFileUtil {
     fun getDirSize(dir: File): Long {
         var result: Long = 0
         if (dir.exists()) {
-            for (tmpFile in dir.listFiles()) {
+            for (tmpFile in dir.listFiles() ?: arrayOf()) {
                 result += if (tmpFile.isDirectory) getDirSize(tmpFile) else tmpFile.length()
             }
         }

@@ -2,8 +2,6 @@ package com.smart.template.base.config.security.auth.token.jwt
 
 import com.smart.template.base.config.security.user.CXUserDetailService
 import com.smart.template.base.config.security.user.CXUserDetails
-import com.smart.template.database.mapper.UserMapper
-import com.smart.template.database.model.UserModel
 import com.smart.template.database.model.UserModelWithToken
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
@@ -17,11 +15,11 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 
 //http://www.jianshu.com/p/6307c89fe3fa
+@Suppress("unused")
 @Service
 class JWTAuthService {
     private val logger: Logger = LogManager.getLogger(JWTAuthService::class.java.name)
@@ -32,7 +30,7 @@ class JWTAuthService {
     @Suppress("PrivatePropertyName", "SpringKotlinAutowiring")
     @Autowired
     @Value("\${jwt.tokenPrefix}")
-    private val token_prefix: String? = null
+    private var token_prefix: String? = null
 
     @Suppress("SpringKotlinAutowiring")
     @Autowired
@@ -76,7 +74,7 @@ class JWTAuthService {
     @Throws(ExpiredJwtException::class, IllegalArgumentException::class, MalformedJwtException::class, SignatureException::class, UnsupportedJwtException::class)
     fun refresh(oldToken: String?): String? {
         if (token_prefix != null && !StringUtils.isEmpty(oldToken)) {
-            val token = oldToken?.substring(token_prefix!!.length)
+            val token = oldToken?.substring(token_prefix?.length ?: 0)
             val username = JWTUtil.getUsernameFromToken(token)
             val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
             if (JWTUtil.canTokenBeRefreshed(token, userDetails?.userModel?.lastPasswordResetTime) == true) {

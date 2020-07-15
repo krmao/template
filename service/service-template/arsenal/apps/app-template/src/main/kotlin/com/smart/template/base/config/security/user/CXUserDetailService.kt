@@ -45,7 +45,6 @@ class CXUserDetailService : UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails {
         logger.warn("username:$username")
         throw UsernameNotFoundException("please connect database")
-        return CXUserDetails(UserModel(), authorities = mutableListOf())
     }
 }
 

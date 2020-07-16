@@ -32,7 +32,14 @@
     * 请求类型 POST
     * 请求路径 http://127.0.0.1:5388/template/test/message
     * 请求实体数据类型 JSON(application/json)
-    * 请求实体数据 {}
+    * 请求实体数据
+        ```json
+        {
+            "version":1,
+            "platform":1,
+            "data":"krmao"
+        }
+        ```
     * 发送请求
     * 返回数据
         ```json

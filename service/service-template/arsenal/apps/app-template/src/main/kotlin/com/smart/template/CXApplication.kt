@@ -2,6 +2,9 @@ package com.smart.template
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smart.template.base.util.CXJsonUtil
+import com.smart.template.http.controller.TestController
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
@@ -29,5 +32,8 @@ class CXApplication : SpringBootServletInitializer() {
 }
 
 fun main(args: Array<String>) {
+    val logger: Logger = LogManager.getLogger(TestController::class.java.name)
+    logger.debug("🔵▶️ 入口第一步️")
     SpringApplication.run(CXApplication::class.java, *args)
+    logger.debug("🔴◀️ 入口第一步")
 }

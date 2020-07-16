@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 @RequestMapping("/test")
 class TestController {
@@ -21,7 +20,7 @@ class TestController {
     fun message(@RequestBody request: HKRequest<String>): HKResponse<Any> {
 
         logger.debug("----")
-        logger.debug("request -->" + request)
+        logger.debug("request -->$request")
         logger.debug("----")
 
         return HKResponse.ok("hello hybird")

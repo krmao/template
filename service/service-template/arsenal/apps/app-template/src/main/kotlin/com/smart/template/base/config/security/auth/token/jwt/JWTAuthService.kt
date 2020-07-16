@@ -2,6 +2,8 @@ package com.smart.template.base.config.security.auth.token.jwt
 
 import com.smart.template.base.config.security.user.CXUserDetailService
 import com.smart.template.base.config.security.user.CXUserDetails
+import com.smart.template.database.mapper.UserMapper
+import com.smart.template.database.model.UserModel
 import com.smart.template.database.model.UserModelWithToken
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 
@@ -37,22 +40,22 @@ class JWTAuthService {
     private var userDetailsService: CXUserDetailService? = null
 
     @Suppress("SpringKotlinAutowiring")
-//    @Autowired
-//    private var userMapper: UserMapper? = null
-//
-//    fun register(userToAdd: UserModel?): Int? {
-//        if (userToAdd == null)
-//            return 0
-//        val username = userToAdd.userName
-//        val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
-//        if (userDetails != null) {
-//            return null
-//        }
-//        val encoder = BCryptPasswordEncoder()
-//        val rawPassword = userToAdd.password
-//        userToAdd.password = encoder.encode(rawPassword)
-//        return userMapper?.createUser(userToAdd)
-//    }
+    @Autowired
+    private var userMapper: UserMapper? = null
+
+    fun register(userToAdd: UserModel?): Int? {
+        if (userToAdd == null)
+            return 0
+        val username = userToAdd.userName
+        val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
+        if (userDetails != null) {
+            return null
+        }
+        val encoder = BCryptPasswordEncoder()
+        val rawPassword = userToAdd.password
+        userToAdd.password = encoder.encode(rawPassword)
+        return userMapper?.createUser(userToAdd)
+    }
 
     @Throws(AuthenticationException::class)
     fun login(username: String?, password: String?): UserModelWithToken? {

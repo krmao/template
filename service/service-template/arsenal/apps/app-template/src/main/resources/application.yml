@@ -16,7 +16,7 @@ spring:
         show-sql: false
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://${server_sql_ip}:3306/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false
+        url: jdbc:mysql://${server_sql_ip}:3306/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: ${server_sql_user}
         password: ${server_sql_password}

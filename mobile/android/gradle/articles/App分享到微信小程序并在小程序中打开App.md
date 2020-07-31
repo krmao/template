@@ -40,19 +40,19 @@ public class STShareManager {
         }
     }
 
-    public static void shareToMiniProgram(Activity activity, UMShareListener callback) {
+    public static void shareToMiniProgram(Activity activity, String title, String subTitle, String imageUrl, int goodsId, int grouponId, UMShareListener callback) {
         STShareManager.init(activity);
 
-        UMMin umMin = new UMMin("http://www.smart.com"); //兼容低版本的网页链接
-        umMin.setThumb(new UMImage(activity, R.drawable.icon_smart_wechat)); // 小程序消息封面图片
-        umMin.setTitle("smart"); // 小程序消息title
-        umMin.setDescription("smart description"); // 小程序消息描述
-        umMin.setPath("pages/index/index"); //小程序页面路径
+        UMMin umMin = new UMMin("http://www.jiduojia.com"); //兼容低版本的网页链接
+        umMin.setThumb(new UMImage(activity, imageUrl)); // 小程序消息封面图片
+        umMin.setTitle(title); // 小程序消息title
+        umMin.setDescription(subTitle); // 小程序消息描述
+        umMin.setPath("pages/index/index?goodsId=" + goodsId + "&grouponId=" + grouponId); //小程序页面路径, 并携带参数传给小程序, 在小程序的 onLoad: function (options) 获取
         umMin.setUserName(getWXMiNiOriginID(activity)); // 小程序原始id,在微信平台查询, 小程序->设置->基本设置->最下面账号信息里面的的原始ID
 
         // 预览版
         // com.umeng.socialize.Config.setMiniPreView();
-        com.umeng.socialize.Config.setMiniTest(); // 测试版, 发布时注释
+        com.umeng.socialize.Config.setMiniTest();
 
         new ShareAction(activity)
                 .withMedia(umMin)
@@ -62,24 +62,29 @@ public class STShareManager {
 }
 ```
 
-```kotlin
-STShareManager.shareToMiniProgram(activity, object : UMShareListener {
-    override fun onResult(p0: SHARE_MEDIA?) {
-        MLogUtil.d("share", "onResult :$ { p0?.getName() }")
+```java
+STShareManager.shareToMiniProgram(getActivity(), responseModel.data.goodsName, responseModel.data.goodsSubName, finalImageUrl, goodsId, grouponId, new UMShareListener() {
+
+    @Override
+    public void onStart(SHARE_MEDIA share_media) {
+        MLogUtil.d("share", "onStart");
     }
 
-    override fun onCancel(p0: SHARE_MEDIA?) {
-        MLogUtil.d("share", "onCancel:${p0?.getName()}")
+    @Override
+    public void onResult(SHARE_MEDIA share_media) {
+        MLogUtil.d("share", "onResult");
     }
 
-    override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
-        MLogUtil.d("share", "onError:${p0?.getName()}", p1)
+    @Override
+    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+        MLogUtil.d("share", "onError");
     }
 
-    override fun onStart(p0: SHARE_MEDIA?) {
-        MLogUtil.d("share", "onStart:${p0?.getName()}")
+    @Override
+    public void onCancel(SHARE_MEDIA share_media) {
+        MLogUtil.d("share", "onCancel");
     }
-})
+});
 ```
 
 * android 接收微信小程序的唤醒
@@ -159,19 +164,6 @@ public class WXEntryActivity extends WXCallbackActivity {
 
 * android 配置 schema 的方式唤醒, 统一入口
 ```kotlin
-package com.app
-
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
-import android.util.Log
-import com.groupbuy.CCGoodsDetailFragment
-import com.jdhome.base.BaseApplication
-
-@Suppress("unused")
 class STBootActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -186,18 +178,18 @@ class STBootActivity : AppCompatActivity() {
         Log.w("[boot]", "isHomeCreated=$isHomeCreated, isAppInit=$isAppInit, schemaUrl=$schemaUrl, moduleName=$moduleName")
 
 
-        if (schemaUrl?.startsWith("smart://template") == true) {
+        if (schemaUrl?.startsWith("smart://caicang") == true) {
             if (isAppInit && isHomeCreated) {
                 // App 已经初始化过, 说明首页存在
 
 
                 when (moduleName) {
                     "goodsdetail" -> {
-                        // smart://template/goodsdetail?goodsId=228&grouponId=5465416
+                        // smart://caicang/goodsdetail?goodsId=228&grouponId=5465416
 
                         val goodsId: String? = uri?.getQueryParameter("goodsId")
                         val grouponId: String? = uri?.getQueryParameter("grouponId")
-                        CCGoodsDetailFragment.goToNewTask(goodsId?.toInt() ?: 0, grouponId?.toInt() ?: 0)
+                        CCGoodsDetailFragment.goToNewTask(goodsId?.toIntOrNull() ?: -1, grouponId?.toIntOrNull() ?: -1)
                     }
                 }
             } else {
@@ -216,14 +208,11 @@ class STBootActivity : AppCompatActivity() {
         var isHomeCreated: Boolean = false
 
         @JvmStatic
-        @JvmOverloads
-        fun goToBootActivity(context: Context, schemaUri: Uri?, flagNewTask: Boolean = false) {
+        fun goToBootActivity(context: Context, schemaUri: Uri?) {
+            Log.d("goToBootActivity", "schemaUri=$schemaUri")
             val intent = Intent(context, STBootActivity::class.java)
             if (schemaUri != null) {
                 intent.data = schemaUri
-            }
-            if (flagNewTask) {
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
             }
             context.startActivity(intent)
         }
@@ -241,11 +230,6 @@ class STBootActivity : AppCompatActivity() {
     android:theme="@style/AppStartTheme"
     android:windowSoftInputMode="stateHidden|adjustResize">
     <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-    <intent-filter>
         <action android:name="android.intent.action.VIEW" />
 
         <!-- 隐式Intent启动的activity，需要都要加上DEFAULT才可以匹配，如果category加了LAUNCHER则可选 -->
@@ -262,8 +246,38 @@ class STBootActivity : AppCompatActivity() {
 ```
 
 ### 2: 在小程序中打开 app
+```js
+import ApiManager from '../../repository/ApiManager';
+
+Page({
+  data: {
+    options: {},
+    schemaUrl: undefined
+  },
+  launchAppError(e) {
+    // invalid scene	调用场景不正确，即此时的小程序不具备打开 APP 的能力
+    console.log(e.detail.errMsg)
+  },
+  onLoad: function (options) {
+    // 在 options 中接收 app 分享到小程序 url 中的参数
+    if (options && options.goodsId && options.grouponId) {
+      this.setData({
+        options: options,
+        schemaUrl: "smart://template/goodsdetail?goodsId=" + options.goodsId + "&grouponId=" + options.grouponId
+      })
+      console.log("index onLoad", options, this.data.schemaUrl)
+    } else {
+      wx.showToast({
+        title: '参数错误:' + options.goodsId + "," + options.grouponId,
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  }
+})
+```
 ```xml
-<button open-type="launchApp" app-parameter="smart://template/goodsdetail?goodsId=228&grouponId=5465416" binderror="launchAppError">打开APP</button>
+<button class='.bottom_button' open-type="launchApp" app-parameter="{{schemaUrl}}" binderror="launchAppError">OPEN APP</button>
 ```
 
 ## Ios

@@ -43,9 +43,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
-    logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
-    logger.warn("config properties")
+    logger.warn("\n>>>>>>>>>>==============================>>>>>>>>>>")
     logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
     server_debug = false
     server_port = 8080
@@ -84,16 +82,15 @@ ext {
     server_sql_password = properties.get("server_sql_password")
     server_jwt_secret = properties.get("server_jwt_secret")
 
-    logger.warn(">>>>>>>>>>==============================<<<<<<<<<<")
-    logger.warn("server_debug:$server_debug")
-    logger.warn("server_port:$server_port")
-    logger.warn("server_ip:$server_ip")
-    logger.warn("server_user:$server_user")
-    logger.warn("server_password:$server_password")
-    logger.warn("server_sql_ip:$server_sql_ip")
-    logger.warn("server_sql_user:$server_sql_user")
-    logger.warn("server_sql_password:$server_sql_password")
-    logger.warn("server_jwt_secret:$server_jwt_secret")
+    logger.warn("    server_debug:$server_debug")
+    logger.warn("    server_port:$server_port")
+    logger.warn("    server_ip:$server_ip")
+    logger.warn("    server_user:$server_user")
+    logger.warn("    server_password:$server_password")
+    logger.warn("    server_sql_ip:$server_sql_ip")
+    logger.warn("    server_sql_user:$server_sql_user")
+    logger.warn("    server_sql_password:$server_sql_password")
+    logger.warn("    server_jwt_secret:$server_jwt_secret")
     logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
     logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
 

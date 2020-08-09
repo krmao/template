@@ -282,169 +282,191 @@ Page({
 
 ## Ios
 ### 1: app 中集成最新的[友盟分享库](// https://developer.umeng.com/docs/128606/detail/129620)
+#### 首先设置 app universal links
+* xcode -> target -> signing & capabilities -> associated domains -> applinks:www.smart.com
+* 新建 apple-app-site-association 文件, 没有后缀, 上传到 https://www.smart.com 的根目录或者 https://www.smart.com/.well-known/apple-app-site-association , 确保链接可以下载该文件
+```json
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [ "teamId.com.xx.xx" ],
+                "components": [
+                    {
+                        "/": "/app/*",
+                        "comment": "Matches any URL whose path starts with /app/"
+                    }
+                ]
+            }
+        ]
+    },
+    "webcredentials": {
+      "apps": [ "teamId.com.xx.xx" ]
+    }
+}
+```
+* 在浏览器 输入 https://www.smart.com/app 即可打开 app
+```objectivec
+#pragma mark Universal Link
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id <UIUserActivityRestoring>> *__nullable restorableObjects))restorationHandler {
+    NSLog(@"Universal Link continueUserActivity url=%@", userActivity.webpageURL);
+    /*if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSURL *url = userActivity.webpageURL;
+        return YES;
+    }*/
+    return [WXApi handleOpenUniversalLink:userActivity delegate:self];
+}
+```
+
 * ios 依赖
 ```ruby
-def pods_umeng
-      pod 'UMCCommon'
-      pod 'UMCCommonLog'
-          
-      # U-Share SDK UI模块（分享面板，建议添加）
-      pod 'UMCShare/UI'
-      
-      # https://developers.weixin.qq.com/community/develop/doc/000a0af68c40d049b2f71aad756000
-      # 一. 如果只有微信支付和分享一种功能，首先检查微信需要的的库和WechatSDK.a是否没问题，然后检查库的路径;
-      # 二.微信支付和分享功能都有，去检查两个功能在项目目录下是否重复，我这次遇到的问题就是自己导入集成的微信支付和pod导入友盟的微信分享库冲突，最简单的解决办法是：
-      # 1.  CMD+C项目中pod下Wechat文件夹下的libSocialOfficialWeChat.a；
-      # 2.  然后把pod下微信的文件夹move to trash;
-      # 3.最后一步，show in finder 你手动导入的wechat文件夹将刚copy的libSocialOfficialWeChat.a放在该文件夹下，然后引入项目下WeChat 目录下。
-      # 编译，解决。
-      # 集成微信(精简版0.2M)
-      pod 'UMCShare/Social/ReducedWeChat'
-      # 集成微信(完整版14.4M)
-      # pod 'UMCShare/Social/WeChat'
-      # pod 'WechatOpenSDK' # 微信官方 https://developers.weixin.qq.com/doc/oplatform/Downloads/iOS_Resource.html
-      
-      # 集成QQ/QZone/TIM(精简版0.5M)
-      # pod 'UMCShare/Social/ReducedQQ'
-      # 集成QQ/QZone/TIM(完整版7.6M)
-      # pod 'UMCShare/Social/QQ'
-      # 集成新浪微博(精简版1M)
-      # pod 'UMCShare/Social/ReducedSina'
-      # 集成新浪微博(完整版25.3M)
-      # pod 'UMCShare/Social/Sina'
-      # 集成Facebook/Messenger
-      # pod 'UMCShare/Social/Facebook'
-      # 集成Twitter
-      # pod 'UMCShare/Social/Twitter'
-      # 集成支付宝
-      # pod 'UMCShare/Social/AlipayShare'
-      # 集成钉钉
-      # pod 'UMCShare/Social/DingDing'
-      # 集成豆瓣
-      # pod 'UMCShare/Social/Douban'
-      # 集成人人
-      # pod 'UMCShare/Social/Renren'
-      # 集成腾讯微博
-      # pod 'UMCShare/Social/TencentWeibo'
-      # 集成易信
-      # pod 'UMCShare/Social/YiXin'
-      # 集成Flickr
-      # pod 'UMCShare/Social/Flickr'
-      # 集成Kakao
-      # pod 'UMCShare/Social/Kakao'
-      # 集成Tumblr
-      # pod 'UMCShare/Social/Tumblr'
-      # 集成Pinterest
-      # pod 'UMCShare/Social/Pinterest'
-      # 集成Instagram
-      # pod 'UMCShare/Social/Instagram'
-      # 集成Line
-      # pod 'UMCShare/Social/Line'
-      # 集成WhatsApp
-      # pod 'UMCShare/Social/WhatsApp'
-      # 集成有道云笔记
-      # pod 'UMCShare/Social/YouDao'
-      # 集成印象笔记
-      # pod 'UMCShare/Social/EverNote'
-      # 集成Google+
-      # pod 'UMCShare/Social/GooglePlus'
-      # 集成Pocket
-      # pod 'UMCShare/Social/Pocket'
-      # 集成DropBox
-      # pod 'UMCShare/Social/DropBox'
-      # 集成VKontakte
-      # pod 'UMCShare/Social/VKontakte'
-      # 集成邮件
-      # pod 'UMCShare/Social/Email'
-      # 集成短信
-      # pod 'UMCShare/Social/SMS'
-end
+  # https://developers.weixin.qq.com/doc/oplatform/Downloads/iOS_Resource.html
+  # https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html
+  pod 'WechatOpenSDK', '~> 1.8.7.1'
 ```
 
 * ios 初始化并分享到微信小程序
 ```objectivec
-#import <UMCommon/UMCommon.h>
-#import <UMShare/UMShare.h>
+#import "WXApi.h"
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    [UMConfigure setLogEnabled:YES];//设置打开日志
-    [UMConfigure initWithAppkey:@"5f1ea7c1d62dd10bc71c656e" channel:@"normal"];
-    //配置微信平台的Universal Links
-    //微信和QQ完整版会校验合法的universalLink，不设置会在初始化平台失败
-    [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_WechatSession):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/",
-                                                        @(UMSocialPlatformType_QQ):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/qq_conn/101830139"
-                                                        };
-    /* 设置微信的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
-                                          appKey:@"wxac68ef14f0c751f5"
-                                       appSecret:@"2946681cfdd3a3ebfce980225a791627"
-                                     redirectURL:@"http://mobile.umeng.com/social"];
-    /*设置小程序回调app的回调*/
-    [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(id userInfoResponse, NSError *error) {
-        NSLog(@"setLauchFromPlatform:userInfoResponse:%@",userInfoResponse);
-    }];
-
+    // 在register之前打开log, 后续可以根据log排查问题，正式环境注释
+    // [WXApi startLogByLevel:WXLogLevelDetail logBlock:^(NSString *log) {
+    //     NSLog(@"[wechat]:startLogByLevel %@", log);
+    // }];
+    // 向微信注册 https://developers.weixin.qq.com/community/develop/doc/000200d2d106301d11a94189451400?jumpto=reply&commentid=000806ba8ac2d83811b9891e8594&parent_commentid=000442fa884538ed16a9529e35b4
+    [WXApi registerApp:@"wxaxxxxxx1f5" universalLink:@"https://www.smart.com/app/"]; // appKey:@"wxaxxxxxx1f5"
+    // 调用自检函数，正式环境注释
+    // [WXApi checkUniversalLinkReady:^(WXULCheckStep step, WXCheckULStepResult *result) {
+    //     NSLog(@"[wechat]:checkUniversalLinkReady %@, %u, %@, %@", @(step), result.success, result.errorInfo, result.suggestion);
+    // }];
     return YES;
 }
 ```
 
 ```objectivec
-- (void)shareMiniProgramToPlatformType:(UMSocialPlatformType)platformType
-{
-    //创建分享消息对象
-    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
-
-    UMShareMiniProgramObject *shareObject = [UMShareMiniProgramObject shareObjectWithTitle:@"菜仓生鲜" descr:@"菜仓生鲜小程序详情" thumImage:[UIImage imageNamed:@"logo_caicang"]];
-    shareObject.webpageUrl = @"http://www.jiduojia.com";
-    shareObject.userName = @"gh_07cca6d0b50f";
-    shareObject.path = @"pages/index/index";
-    messageObject.shareObject = shareObject;
-    shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
-    shareObject.miniProgramType = UShareWXMiniProgramTypeRelease; // 可选体验版和开发板
-    shareObject.miniProgramType = UShareWXMiniProgramTypeTest; // 可选体验版和开发板
-
-    //调用分享接口
-    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
-        if (error) {
-            UMSocialLogInfo(@"************Share fail with error %@*********",error);
-        }else{
-            if ([data isKindOfClass:[UMSocialShareResponse class]]) {
-                UMSocialShareResponse *resp = data;
-                //分享结果消息
-                UMSocialLogInfo(@"response message is %@",resp.message);
-                //第三方原始返回的数据
-                UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
-
-            }else{
-                UMSocialLogInfo(@"response data is %@",data);
-            }
-        }
-        NSLog(@"share error:%@", error);
-    }];
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id <UIUserActivityRestoring>> *__nullable restorableObjects))restorationHandler {
+    NSLog(@"Universal Link continueUserActivity url=%@", userActivity.webpageURL);
+    return [WXApi handleOpenUniversalLink:userActivity delegate:self];
 }
-```
 
-* ios 接收微信小程序的唤醒
-```objectivec
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    if ([[UMSocialManager defaultManager] handleOpenURL:url]) {
-        return [[UMSocialManager defaultManager] handleOpenURL:url];
+- (void)onReq:(BaseReq *)req {
+    NSLog(@"onReq");
+
+    if ([req isKindOfClass:[LaunchFromWXReq class]]) {
+        LaunchFromWXReq *wxReq = (LaunchFromWXReq *)req;
+        NSString *schemaUrlString = wxReq.message.messageExt;
+        NSLog(@"[wechat]:onReq LaunchFromWXReq schemaUrlString=%@", schemaUrlString);
+        [self handlerSchema:schemaUrlString];
+    } else if ([req isKindOfClass:[WXLaunchMiniProgramReq class]]) {
+        WXLaunchMiniProgramReq *wxReq = (WXLaunchMiniProgramReq *)req;
+        NSString *message = wxReq.extMsg;
+        NSLog(@"[wechat]:onReq WXLaunchMiniProgramReq message=%@", message);
     }
-    return YES;
 }
 
-```
+- (void)onResp:(BaseResp *)resp {
+    NSLog(@"onResp");
+}
 
-* ios 配置 schema 的方式唤醒, 统一入口
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    NSLog(@"handleOpenURL");
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NSLog(@"openURL before WXApi handleOpenURL, sourceApplication=%@, url=%@", sourceApplication, url);
+    BOOL result = [WXApi handleOpenURL:url delegate:self];
+    NSLog(@"openURL after WXApi handleOpenURL, result=%@", result ? @"YES" : @"NO");
+
+    if (!result) {
+        [self handlerSchema:[url absoluteString]];
+    }
+    return result;
+}
+
+- (void)handlerSchema:(NSString *)schemaUrlString {
+    if ([schemaUrlString hasPrefix:@"smart://template"]) {
+        NSURL *schemaUrl = [NSURL URLWithString:schemaUrlString];
+
+        NSUInteger lastPathIndex = [schemaUrlString rangeOfString:@"/" options:NSBackwardsSearch].location;
+        NSUInteger questionMarkIndex = [schemaUrlString rangeOfString:@"?"].location;
+        NSString *moduleName = [schemaUrlString substringWithRange:NSMakeRange(lastPathIndex + 1, questionMarkIndex - lastPathIndex)];
+        NSDictionary *params = [self parameterWithURL:schemaUrl];
+        NSString *goodsId = params[@"goodsId"];
+        NSString *grouponId = params[@"grouponId"];
+
+        NSLog(@"schemaUrl=%@, moduleName=%@, goodsId=%@, grouponId=%@", schemaUrl, moduleName, goodsId, grouponId);
+
+        STViewController *vc = [STViewController new];
+        __WeakObject(self);
+        vc.block = ^{
+            __WeakStrongObject();
+        };
+        [[AppUtil topViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+- (NSDictionary *)parameterWithURL:(NSURL *)url {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
+    //传入url创建url组件类
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:url.absoluteString];
+    //回调遍历所有参数，添加入字典
+    [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+        params[obj.name] = obj.value;
+    }];
+    return params;
+}
+```
+* 分享微信小程序到微信
 ```objectivec
+- (void)shareMiniProgram {
+    NSString * title = self.mJDGetGoodsDetailHttp.mBase.goodsName;
+    NSString * subTitle = self.mJDGetGoodsDetailHttp.mBase.goodsSubName;
+    NSString * imageUrl = self.mJDGetGoodsDetailHttp.mBase.goodsPicture;
 
+    int goodsId = self.mJDCategoryGoodsData.id;
+    int grouponId = self.mJDCategoryGoodsData.grouponId;
+
+    NSData *imageData = [NSData dataWithContentsOfURL: [NSURL URLWithString:imageUrl]];
+
+    WXMiniProgramObject *object = [WXMiniProgramObject object];
+    object.webpageUrl = @"http://www.smart.com";
+    object.userName =  @"gh_xxxxxxx2e";
+    object.path = [NSString stringWithFormat:@"pages/index/index?goodsId=%d&grouponId=%d",goodsId ,grouponId];
+    object.hdImageData = imageData; // 限制大小不超过128KB，自定义图片建议长宽比是 5:4。
+    object.withShareTicket = true; // /** 是否使用带 shareTicket 的转发 */
+    object.miniProgramType = WXMiniProgramTypeRelease;
+    WXMediaMessage *message = [WXMediaMessage message];
+    message.title = title;
+    message.description = subTitle;
+    message.thumbData = nil;  //兼容旧版本节点的图片，小于32KB，新版本优先
+    //使用WXMiniProgramObject的hdImageData属性
+    message.mediaObject = object;
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.bText = NO;
+    req.message = message;
+    req.scene = WXSceneSession;  //目前只支持会话
+    [WXApi sendReq:req completion:^(BOOL success) {
+        if(success){
+            NSLog(@"分享到微信小程序成功");
+        } else {
+            NSLog(@"分享到微信小程序失败");
+        }
+    }];
+}
 ```
 
-* android 配置 schema 的方式唤醒
-```xml
+* 代码注册微信 id 的时候, universal link 包含 path *[WXApi registerApp:@"wxaxxxxxxx1f5" universalLink:@"https://www.smart.com/app/"]*; 
+* 微信后台绑定的 universal link 也包含 path *https://www.smart.com/app/* , 同时记得设置正确的 bundle ID 例如 com.smart.template
+> https://open.weixin.qq.com/cgi-bin/appdetail?t=manage/detail&type=app&lang=zh_CN&token=f6e3eb55c1fee2d2f499d6cd03dbfbd475c42afc&appid=wxac68ef14f0c751f5
 
-```
 
 ### 2: 在小程序中打开 app
 ```xml

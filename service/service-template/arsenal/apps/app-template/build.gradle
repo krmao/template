@@ -96,6 +96,9 @@ copyConfigFile.dependsOn("clean", "war")
 //======================================================================================================================
 
 dependencies {
+
+    // https://github.com/spring-projects/spring-boot/releases/tag/v1.5.8.RELEASE
+
     //  :: Spring Boot ::        (v1.5.8.RELEASE)
     compile('org.springframework.boot:spring-boot-starter-web')
 
@@ -118,9 +121,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.security.oauth:spring-security-oauth2')
 
-    //实现代码和项目的热部署
-    runtime('org.springframework.boot:spring-boot-devtools')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
+    // runtime('org.springframework.boot:spring-boot-devtools')
+
+    // testCompile('org.springframework.boot:spring-boot-starter-test')
 
     compile 'io.jsonwebtoken:jjwt:0.9.0'
 

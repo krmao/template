@@ -137,7 +137,7 @@ object STSystemUtil {
     /**
      * 获取 当前虚拟导航栏高度
      * 经过测试 activity onCreate/onStart/onResume/onAttachedToWindow 均失效
-     * 唯有 activity onWindowFocusChanged 测试成功
+     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式再回到 app, 会额外多一次触发
      *
      * 1: 在 onWindowFocusChanged 之后执行
      * 2: 受到 虚拟键盘显示/隐藏 影响
@@ -166,7 +166,7 @@ object STSystemUtil {
     /**
      * 获取 状态栏高度+内容高度, 不包含虚拟导航栏高度
      * 经过测试 activity onCreate/onStart/onResume/onAttachedToWindow 均失效
-     * 唯有 activity onWindowFocusChanged 测试成功
+     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式再回到 app, 会额外多一次触发
      *
      * 1: 在 onWindowFocusChanged 之后执行
      * 2: 受到 虚拟键盘显示/隐藏 影响

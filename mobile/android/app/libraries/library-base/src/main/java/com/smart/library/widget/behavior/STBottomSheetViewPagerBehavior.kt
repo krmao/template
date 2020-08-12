@@ -268,8 +268,12 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     var bottomSheetHalfExpandTop: Int = 0
-    override fun setHalfExpandedOffset(halfExpandedOffset: Int): Int {
-        return if (bottomSheetHalfExpandTop > 0) bottomSheetHalfExpandTop else super.setHalfExpandedOffset(halfExpandedOffset)
+    public override fun setHalfExpandedOffset(halfExpandedOffset: Int): Int {
+        return super.setHalfExpandedOffset(if (bottomSheetHalfExpandTop > 0) bottomSheetHalfExpandTop else halfExpandedOffset)
+    }
+
+    public override fun calculateCollapsedOffset() {
+        super.calculateCollapsedOffset()
     }
 
     /**

@@ -4,16 +4,19 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import androidx.viewpager.widget.PagerAdapter
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.facebook.drawee.view.SimpleDraweeView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STLogUtil
@@ -35,35 +38,77 @@ import org.jetbrains.anko.async
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class STBehaviorBottomSheetActivity : STBaseActivity() {
 
+    private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
+    private val bottomSheetExpandTop: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetExpandTop) }
+    private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetLayout) }
     private val handler: Handler = Handler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
-
-        // init bottomSheet behavior -- level 2
-        val bottomSheetParentHeight: Int = STSystemUtil.screenHeight + STSystemUtil.statusBarHeight
-        val bottomSheetPeekHeight: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight)
-        val bottomSheetHalfExpandTop: Int = (STSystemUtil.screenHeight * 0.35f).toInt()
-        val bottomSheetExpandTop: Int = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetExpandTop)
-        val bottomSheetCollapsedTop: Int = bottomSheetParentHeight - bottomSheetPeekHeight
-
         pagerRecyclerView.enableDrag = true // must not set in onStateChanged
-        val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> = STBottomSheetViewPagerBehavior.from(bottomSheetLayout)
+        bottomSheetBehavior.bindViewPager(pagerRecyclerView)
+        // init floating action button -- level 5
+        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED }
+        // init bottom sheet child views -- level 4
+        initBottomSheetChildViews()
+    }
+
+    private var didFirstRunOnWindowFocusChanged: Boolean = false
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (!didFirstRunOnWindowFocusChanged) {
+            didFirstRunOnWindowFocusChanged = true
+            onWindowFocusChangedFirstRun(hasFocus)
+        }
+    }
+
+    private fun onWindowFocusChangedFirstRun(hasFocus: Boolean) {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
+            val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
+            STLogUtil.e("STBehaviorBottomSheetActivity", "activity: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, ${STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0}")
+            STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
+
+            val oldState = bottomSheetBehavior.state
+            resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0) // ?: STSystemUtil.screenContentHeightExcludeStatusAndNavigationBar + STSystemUtil.statusBarHeight
+
+            Looper.myQueue().addIdleHandler {
+                bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
+                bottomSheetBehavior.state = oldState
+                false
+            }
+
+            insets
+        }
+
+        resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0)
+    }
+
+    private fun resetBottomSheetViews(bottomSheetParentHeight: Int) {
+        STLogUtil.e("mm bottomSheetParentHeight=$bottomSheetParentHeight")
+        if (bottomSheetParentHeight <= 0) {
+            STLogUtil.e("mm bottomSheetParentHeight=$bottomSheetParentHeight error return")
+            return
+        }
+        // init bottomSheet behavior -- level 2
+        val bottomSheetHalfExpandTop: Int = (bottomSheetParentHeight * 0.35f).toInt()
+        val bottomSheetCollapsedTop: Int = bottomSheetParentHeight - bottomSheetPeekHeight
+        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTop
+        bottomSheetBehavior.setHalfExpandedOffset(bottomSheetHalfExpandTop)
+        bottomSheetBehavior.calculateCollapsedOffset()
+        bottomSheetBehavior.peekHeight = 0
+        bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_COLLAPSED
+
         val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, true, bottomSheetExpandTop, bottomSheetHalfExpandTop, bottomSheetCollapsedTop, 30f,
-                onStateChanged = { bottomSheet: View, newState: Int ->
-                    when (newState) {
-                        STBottomSheetViewPagerBehavior.STATE_DRAGGING -> {
-                        }
-                        else -> {
-                        }
+            onStateChanged = { bottomSheet: View, newState: Int ->
+                when (newState) {
+                    STBottomSheetViewPagerBehavior.STATE_DRAGGING -> {
+                    }
+                    else -> {
                     }
                 }
+            }
         )
         bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
-        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
-        bottomSheetBehavior.bindViewPager(pagerRecyclerView)
-        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTop
-
         // init backdrop behavior and reset viewpager height -- level 3
         val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
@@ -71,14 +116,6 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         viewPager.adapter = BackdropImagesPagerAdapter(this)
         viewPager.layoutParams = viewPager.layoutParams.apply {
             height = behaviorBottomSheetCallback.bottomSheetHalfExpandTop
-        }
-
-        // init bottom sheet child views -- level 4
-        initBottomSheetChildViews()
-
-        // init floating action button -- level 5
-        floatingActionButton.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
 
@@ -113,78 +150,80 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         // 模拟数据
         // 服务端 requestNextIndex 从 0 开始算第一页
         val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
-                mutableListOf(
-                        STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "景点"),
-                        STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "美食"),
-                        STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "酒店"),
-                        STRecyclerPagerView.PagerModel(1, 10, mutableListOf(
-                                0,
-                                1 * getScare(3),
-                                2 * getScare(3),
-                                3 * getScare(3),
-                                4 * getScare(3),
-                                5 * getScare(3),
-                                6 * getScare(3),
-                                7 * getScare(3),
-                                8 * getScare(3),
-                                9 * getScare(3)
-                        ), "购物")
+            mutableListOf(
+                STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "景点"),
+                STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "美食"),
+                STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "酒店"),
+                STRecyclerPagerView.PagerModel(
+                    1, 10, mutableListOf(
+                        0,
+                        1 * getScare(3),
+                        2 * getScare(3),
+                        3 * getScare(3),
+                        4 * getScare(3),
+                        5 * getScare(3),
+                        6 * getScare(3),
+                        7 * getScare(3),
+                        8 * getScare(3),
+                        9 * getScare(3)
+                    ), "购物"
                 )
+            )
 
         var requestCount = 0
 
         // 初始化 pagerRecyclerView
         pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
         pagerRecyclerView.initialize(
-                initPagerDataList = allData,
-                requestLoadMore = { refresh: Boolean, pagerIndex: Int, requestIndex: Int, requestSize: Int, lastRequest: Any?, lastResponse: Any?, callback: (lastRequest: Any?, lastResponse: Any?, MutableList<Int>?) -> Unit ->
-                    /**
-                     * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
-                     * requestNextIndex = requestIndex + 1
-                     */
-                    async {
-                        requestCount++
-                        Thread.sleep(1000)
-                        when {
-                            requestCount % 5 == 0 -> { // 请求失败
-                                STLogUtil.d("request", "请求失败")
-                                callback.invoke(null, null, null)
-                            }
-                            requestCount % 10 == 0 -> { // 没有更多数据
-                                STLogUtil.d("request", "没有更多数据")
-                                callback.invoke(null, null, mutableListOf())
-                            }
-                            else -> { // 请求成功
-                                STLogUtil.d("request", "请求成功")
-                                val list = mutableListOf<Int>()
+            initPagerDataList = allData,
+            requestLoadMore = { refresh: Boolean, pagerIndex: Int, requestIndex: Int, requestSize: Int, lastRequest: Any?, lastResponse: Any?, callback: (lastRequest: Any?, lastResponse: Any?, MutableList<Int>?) -> Unit ->
+                /**
+                 * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
+                 * requestNextIndex = requestIndex + 1
+                 */
+                async {
+                    requestCount++
+                    Thread.sleep(1000)
+                    when {
+                        requestCount % 5 == 0 -> { // 请求失败
+                            STLogUtil.d("request", "请求失败")
+                            callback.invoke(null, null, null)
+                        }
+                        requestCount % 10 == 0 -> { // 没有更多数据
+                            STLogUtil.d("request", "没有更多数据")
+                            callback.invoke(null, null, mutableListOf())
+                        }
+                        else -> { // 请求成功
+                            STLogUtil.d("request", "请求成功")
+                            val list = mutableListOf<Int>()
 
-                                val scare = getScare(pagerIndex)
-                                val nextValue: Int = 1 * requestSize * scare
+                            val scare = getScare(pagerIndex)
+                            val nextValue: Int = 1 * requestSize * scare
 
-                                (0 until requestSize).forEach {
-                                    list.add(nextValue + it * scare)
-                                }
-                                callback.invoke(null, null, list)
+                            (0 until requestSize).forEach {
+                                list.add(nextValue + it * scare)
                             }
+                            callback.invoke(null, null, list)
                         }
                     }
-
-                    Unit
-                },
-                onRecyclerViewCreateViewHolder = { _: Int, parent: ViewGroup, _: Int ->
-                    STRecyclerViewAdapter.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_recycler_item_poi, parent, false))
-                },
-                onRecyclerViewBindViewHolder = { pagerModel: STRecyclerPagerView.PagerModel<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
-                    viewHolder.itemView.tv_title_item_map.text = "上海东方明珠塔:${pagerModel.dataList[position]}"
-                    STImageManager.show(viewHolder.itemView.iv_item_map, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
-                },
-                snap = STSnapHelper.Snap.START,
-                onSnap = { pagerIndex: Int, position: Int, data: Int ->
-                    snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
-                },
-                viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
-                    STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
                 }
+
+                Unit
+            },
+            onRecyclerViewCreateViewHolder = { _: Int, parent: ViewGroup, _: Int ->
+                STRecyclerViewAdapter.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_recycler_item_poi, parent, false))
+            },
+            onRecyclerViewBindViewHolder = { pagerModel: STRecyclerPagerView.PagerModel<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
+                viewHolder.itemView.tv_title_item_map.text = "上海东方明珠塔:${pagerModel.dataList[position]}"
+                STImageManager.show(viewHolder.itemView.iv_item_map, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
+            },
+            snap = STSnapHelper.Snap.START,
+            onSnap = { pagerIndex: Int, position: Int, data: Int ->
+                snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
+            },
+            viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
+                STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
+            }
         )
 
         /**
@@ -196,35 +235,35 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         val dpPadding = STSystemUtil.getPxFromDp(5f).toInt()
         val dpMargin = STSystemUtil.getPxFromDp(15f).toInt()
         checkBoxGroupView.initialize(
-                minimumWidthOrHeight = STSystemUtil.screenWidth,
-                titleList = allData.map
-                { it.extrasData as? String ?: "" }.toMutableList(),
-                createUncheckedItemView =
-                { title: String ->
-                    TextView(this).apply {
-                        text = title
-                        textSize = 14f
-                        gravity = Gravity.CENTER
-                        @Suppress("DEPRECATION")
-                        setTextColor(resources.getColorStateList(R.color.home_checkbox_selected_color))
-                        setBackgroundResource(R.drawable.home_checkbox_bg_selector)
-                        setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
-                        layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                            weight = 2f
-                            leftMargin = dpMargin
-                            rightMargin = dpMargin
-                        }
+            minimumWidthOrHeight = STSystemUtil.screenWidth,
+            titleList = allData.map
+            { it.extrasData as? String ?: "" }.toMutableList(),
+            createUncheckedItemView =
+            { title: String ->
+                TextView(this).apply {
+                    text = title
+                    textSize = 14f
+                    gravity = Gravity.CENTER
+                    @Suppress("DEPRECATION")
+                    setTextColor(resources.getColorStateList(R.color.home_checkbox_selected_color))
+                    setBackgroundResource(R.drawable.home_checkbox_bg_selector)
+                    setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
+                    layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                        weight = 2f
+                        leftMargin = dpMargin
+                        rightMargin = dpMargin
                     }
-                },
-                updateViewOnCheckChangedListener =
-                { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
-                    descTv.text = "当前选中的数组索引:$checkedViewPositionList\n本次改变的数组索引:$changedViewPositionList"
-                    changedViewPositionList.forEach { position: Int ->
-                        val itemChangedView: TextView = originViewList[position] as TextView
-                        val isChecked = checkBoxGroupView.isChecked(position)
-                        itemChangedView.isSelected = isChecked
-                    }
-                })
+                }
+            },
+            updateViewOnCheckChangedListener =
+            { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
+                descTv.text = "当前选中的数组索引:$checkedViewPositionList\n本次改变的数组索引:$changedViewPositionList"
+                changedViewPositionList.forEach { position: Int ->
+                    val itemChangedView: TextView = originViewList[position] as TextView
+                    val isChecked = checkBoxGroupView.isChecked(position)
+                    itemChangedView.isSelected = isChecked
+                }
+            })
         checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)
     }
 

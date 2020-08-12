@@ -59,6 +59,7 @@ allprojects {
 
         flatDir { dirs "file://$rootProject.projectDir/app/libraries/repo/aars" }
 
+        maven { url "https://jitpack.io" }
         mavenLocal()
         google()
         jcenter()
@@ -67,7 +68,6 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
-        maven { url "https://jitpack.io" }
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
@@ -132,14 +132,13 @@ ext {
     junitVersion = "4.12"
     mockitoVersion = "1.0.0"
     espressoVersion = "1.0.0"
-    rxjavaVersion = "2.1.0"
-    rxkotlinVersion = "2.0.3"
-    rxandroidVersion = "2.0.1"
-    rxlifecycleVersion = "2.0.1"
+    rxjavaVersion = "2.2.19"
+    rxkotlinVersion = "2.4.0"
+    rxandroidVersion = "2.1.1"
     rxbindingVersion = "2.0.0"
     frescoVersion = "1.12.1"
     okhttpVersion = "3.13.1"
-    retrofitVersion = "2.5.0"
+    retrofitVersion = "2.9.0"
     leakcanaryVersion = "2.2"
     crashreportUpgradeVersion = "1.3.1"
     libraryBaseVersion = "0.0.1-SNAPSHOT"

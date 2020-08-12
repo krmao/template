@@ -373,7 +373,12 @@ dependencies {
             implementation 'cn.hikyson.methodcanary:lib:0.15.2'
         }
     } else if (gradle.ext.configs.leakcanary.enable == true) {
+        compileOnly "cn.hikyson.godeye:godeye-core:$rootProject.ext.godeyeVersion" // 核心模块，必须依赖
+        debugCompileOnly "cn.hikyson.godeye:godeye-monitor:$rootProject.ext.godeyeVersion" // Debug包配置Debug看板
         debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
+    } else {
+        compileOnly "cn.hikyson.godeye:godeye-core:$rootProject.ext.godeyeVersion" // 核心模块，必须依赖
+        debugCompileOnly "cn.hikyson.godeye:godeye-monitor:$rootProject.ext.godeyeVersion" // Debug包配置Debug看板
     }
 
     if (gradle.ext.configs.test.enable == true) {

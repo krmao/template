@@ -5,6 +5,8 @@ apply plugin: "kotlin-android-extensions"
 android {
     compileSdkVersion = rootProject.ext.compileSdkVersion
     buildToolsVersion = rootProject.ext.buildToolsVersion
+    ndkVersion = "21.3.6528147"
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

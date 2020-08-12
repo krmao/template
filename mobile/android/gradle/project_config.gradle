@@ -8,7 +8,7 @@ gradle.ext {
             'leakcanary': ['enable': false],
             "monitoring": [
                     "godeye": [
-                            'enable'            : true,
+                            'enable'            : false,
                             'enableMethodCanary': false,
                             'enableLeakcanary'  : false,
                     ],
@@ -19,15 +19,15 @@ gradle.ext {
             'pictureviewer': ['enable': false],
             'liveStreaming': ['enable': false],
             'flutter'      : [
-                    'enable'     : true,
+                    'enable'     : false,
                     'enableBoost': false,
             ],
             'reactNative'  : [
-                    'enable'         : true,
+                    'enable'         : false,
                     'enableHermes'   : false,
                     'nodeModulesPath': "$rootDir/../react_native/node_modules"
             ],
-            'hybird'       : ['enable': true],
+            'hybird'       : ['enable': false],
             'map'          : [
                     'enable'        : false,
                     'enableMapNames': 'baidu,gaode', // baidu,gaode,google 支持多个, 逗号分隔

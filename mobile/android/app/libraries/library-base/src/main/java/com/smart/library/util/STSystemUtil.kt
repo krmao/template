@@ -137,7 +137,7 @@ object STSystemUtil {
     /**
      * 获取 当前虚拟导航栏高度
      * 经过测试 activity onCreate/onStart/onResume/onAttachedToWindow 均失效
-     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式再回到 app, 会额外多一次触发
+     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式(触发 onConfigurationChanged/onApplyWindowInsetsListener)再回到 app, 会在 onWindowFocusChanged 触发之前触发一次onApplyWindowInsetsListener
      *
      * 1: 在 onWindowFocusChanged 之后执行
      * 2: 受到 虚拟键盘显示/隐藏 影响
@@ -148,7 +148,7 @@ object STSystemUtil {
      *
      * @see {https://www.cnblogs.com/ldq2016/p/6835366.html}
      *
-     * 在 app 运行期间, 有的手机比如 华为P20屏幕内三键导航, 可以点击按钮显示/隐藏虚拟导航栏, 可以通过以下方法监听, 重新获取高度
+     * 在 app 运行期间, 有的手机比如 华为P20屏幕内三键导航, 可以点击按钮显示/隐藏虚拟导航栏(不触发 onConfigurationChanged, 触发 onApplyWindowInsetsListener), 可以通过以下方法监听, 重新获取高度
      * 注意: insets.systemWindowInsetBottom 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
      * ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
      *     val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
@@ -166,7 +166,7 @@ object STSystemUtil {
     /**
      * 获取 状态栏高度+内容高度, 不包含虚拟导航栏高度
      * 经过测试 activity onCreate/onStart/onResume/onAttachedToWindow 均失效
-     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式再回到 app, 会额外多一次触发
+     * 唯有 activity onWindowFocusChanged 测试成功, onWindowFocusChanged 切换 app 隐藏/显示都会额外触发一次, 如果切换到设置页面切换虚拟导航栏模式(触发 onConfigurationChanged/onApplyWindowInsetsListener)再回到 app, 会在 onWindowFocusChanged 触发之前触发一次onApplyWindowInsetsListener
      *
      * 1: 在 onWindowFocusChanged 之后执行
      * 2: 受到 虚拟键盘显示/隐藏 影响
@@ -177,7 +177,7 @@ object STSystemUtil {
      *
      * @see {https://www.cnblogs.com/ldq2016/p/6835366.html}
      *
-     * 在 app 运行期间, 有的手机比如 华为P20屏幕内三键导航, 可以点击按钮显示/隐藏虚拟导航栏, 可以通过以下方法监听, 重新获取高度
+     * 在 app 运行期间, 有的手机比如 华为P20屏幕内三键导航, 可以点击按钮显示/隐藏虚拟导航栏(不触发 onConfigurationChanged, 触发 onApplyWindowInsetsListener), 可以通过以下方法监听, 重新获取高度
      * 注意: insets.systemWindowInsetBottom 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
      * ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
      *     val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算

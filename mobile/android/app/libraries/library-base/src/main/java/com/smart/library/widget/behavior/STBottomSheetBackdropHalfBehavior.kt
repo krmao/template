@@ -6,7 +6,6 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
-import kotlin.math.max
 
 /*
 
@@ -46,6 +45,7 @@ java/kotlin->
     }
 
 */
+@Suppress("KDocUnresolvedReference", "unused")
 class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 
     private var lastChildY: Float = 0f
@@ -79,22 +79,35 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
      */
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
         val tmpBottomSheetBehavior = bottomSheetBehavior ?: return false
+        val onDependentViewChanged: Boolean
 
+        //region 都是 dependency.top 值
         val dependExpandedOffset = tmpBottomSheetBehavior.expandedOffset
         val dependHalfExpandedOffset = tmpBottomSheetBehavior.getHalfExpandedOffset()
         val dependCollapsedOffset = tmpBottomSheetBehavior.getCollapsedOffset()
+        //endregion
 
-        val centerY = dependHalfExpandedOffset
+        val childMaxShowOffset: Int = child.height // 完整高度
+        val childMinShowOffset: Int = 20.toPxFromDp() // 漏出一点的距离
+        val childExpandedOffset = dependExpandedOffset - childMinShowOffset
+        val childHalfExpandedOffset = dependHalfExpandedOffset - childMaxShowOffset
+        val childCollapsedOffset = dependCollapsedOffset - childMinShowOffset
 
-        val collapsedY = dependency.height - tmpBottomSheetBehavior.peekHeight
-
-        var currentChildY = (dependency.y - child.height) * collapsedY / (collapsedY - child.height)
-        if (currentChildY <= 0) currentChildY = 0f
-        child.y = currentChildY
-
-        val onDependentViewChanged: Boolean = lastChildY == currentChildY
-        lastChildY = currentChildY
-
+        if (dependency.y >= dependHalfExpandedOffset) {
+            // 在 HalfExpanded - Collapsed 区间
+            val dependMoveTotalOffset = dependCollapsedOffset - dependHalfExpandedOffset
+            val childMoveTotalOffset = childCollapsedOffset - childHalfExpandedOffset
+            child.y = childHalfExpandedOffset + childMoveTotalOffset * (dependency.y - dependHalfExpandedOffset) / dependMoveTotalOffset.toFloat()
+            onDependentViewChanged = lastChildY == child.y
+            lastChildY = child.y
+        } else {
+            // 在 HalfExpanded - Expanded 区间
+            val dependMoveTotalOffset = dependHalfExpandedOffset - dependExpandedOffset
+            val childMoveTotalOffset = childHalfExpandedOffset - childExpandedOffset
+            child.y = childHalfExpandedOffset - childMoveTotalOffset * (dependHalfExpandedOffset - dependency.y) / dependMoveTotalOffset.toFloat()
+            onDependentViewChanged = lastChildY == child.y
+            lastChildY = child.y
+        }
         return onDependentViewChanged
     }
 

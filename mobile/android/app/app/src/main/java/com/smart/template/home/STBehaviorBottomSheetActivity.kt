@@ -14,7 +14,7 @@ import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
-import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
+import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
@@ -53,10 +53,10 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
 
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
-        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(backdropBehaviorViewPager)
+        val backdropBehavior: STBottomSheetBackdropHalfBehavior<*> = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
-        backdropBehaviorViewPager.adapter = STBehaviorBottomSheetBackdropImagesPagerAdapter(this)
+        backdropBehaviorViewPager.adapter = STBehaviorBottomSheetImagesPagerAdapter(this)
         backdropBehaviorViewPager.layoutParams = backdropBehaviorViewPager.layoutParams.apply { height = bottomSheetHalfExpandTop }
     }
 

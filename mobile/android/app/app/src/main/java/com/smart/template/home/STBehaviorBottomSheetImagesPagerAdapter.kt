@@ -10,7 +10,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.smart.library.util.image.STImageManager
 import com.smart.template.R
 
-class STBehaviorBottomSheetBackdropImagesPagerAdapter(context: Context) : PagerAdapter() {
+class STBehaviorBottomSheetImagesPagerAdapter(context: Context) : PagerAdapter() {
 
     private val layoutInflater: LayoutInflater by lazy { context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater }
 

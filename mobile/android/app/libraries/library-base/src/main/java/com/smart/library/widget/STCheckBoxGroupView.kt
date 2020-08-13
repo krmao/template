@@ -1,4 +1,4 @@
-package com.smart.template.home.widget
+package com.smart.library.widget
 
 import android.content.Context
 import android.graphics.Color
@@ -6,8 +6,13 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
+import android.widget.TextView
+import com.smart.library.base.setOnLayoutListener
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
 
 /**
  * 多选/单选 标签 view
@@ -22,25 +27,26 @@ import com.smart.library.util.STLogUtil
  * 支持单选/多选
  * 支持同时设置选中/非选中 只触发一次监听
  */
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "SameParameterValue", "LiftReturnOrAssignment")
 class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
 
     /**
      * 单选/多选 模式, 单选模式下设置多个选中会抛出异常
      */
     var enableSingleCheck = true
+    var mustHaveOneChecked: Boolean = true // 必须有一个是选中的
     private var enableDividerWeight = false // item 数量 不足时居中, 等分宽度, 需设置 minWidth
     private var enableDividerEdgesWeight = false // 有时需求最左边最右边指定宽度
     private var dividerWeight: Float = 0f
 
     private var updateViewOnCheckChangedList: MutableList<(checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit> = mutableListOf()
-    private var createUncheckedItemView: ((title: String) -> View)? = null
+    private var createUncheckedItemViewWithTabInfo: ((position: Int, tabInfo: TabInfo) -> View)? = null
 
     private val itemViewList: MutableList<View> = arrayListOf()
     private val onItemClickListener: OnClickListener = OnClickListener { itemView ->
-        STLogUtil.d("origin checked:${isChecked(itemView)}")
+        STLogUtil.d(TAG, "origin checked:${isChecked(itemView)}")
         setCheckedWithUpdateViewStatus(itemView, !isChecked(itemView))
-        STLogUtil.d("final checked:${isChecked(itemView)}")
+        STLogUtil.d(TAG, "final checked:${isChecked(itemView)}")
     }
 
     /**
@@ -48,11 +54,26 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * 务必手动调用 setCheckedWithUpdateViewStatus
      * @param enableDividerWeight 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
      * @param minimumWidthOrHeight enableDividerWeight==true 的时候必须设置, 宽度不足时 等分剩余空间
+     * @param mustHaveOneChecked enableSingleCheck==true 是否必须有一个是选中的，不能反选全部
      */
     @JvmOverloads
-    fun initialize(enableSingleCheck: Boolean = true, enableDividerWeight: Boolean = false, enableDividerEdgesWeight: Boolean = false, dividerWeight: Float = 1f, minimumWidthOrHeight: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+    @Deprecated("", ReplaceWith("initializeWithTabInfo(enableSingleCheck, mustHaveOneChecked, enableDividerWeight, enableDividerEdgesWeight, dividerWeight, minimumWidthOrHeight, titleList.map { TabInfo(it) }, { createUncheckedItemView(it.title) }, updateViewOnCheckChangedListener)", "ctrip.android.destination.library.widget.GSCheckBoxGroupView.TabInfo"))
+    fun initialize(enableSingleCheck: Boolean = true, mustHaveOneChecked: Boolean = true, enableDividerWeight: Boolean = false, enableDividerEdgesWeight: Boolean = false, dividerWeight: Float = 1f, minimumWidthOrHeight: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
+        initializeWithTabInfo(enableSingleCheck, mustHaveOneChecked, enableDividerWeight, enableDividerEdgesWeight, dividerWeight, minimumWidthOrHeight, titleList.map { TabInfo(title = it) }, { _: Int, tabInfo: TabInfo -> createUncheckedItemView(tabInfo.title) }, updateViewOnCheckChangedListener)
+    }
+
+    /**
+     * 初始化时全部不选中, 不会触发 updateViewOnCheckChanged
+     * 务必手动调用 setCheckedWithUpdateViewStatus
+     * @param enableDividerWeight 宽度不足时 等分剩余空间, 必须设置 fitCenterMinimumSize
+     * @param minimumWidthOrHeight enableDividerWeight==true 的时候必须设置, 宽度不足时 等分剩余空间
+     * @param mustHaveOneChecked enableSingleCheck==true 是否必须有一个是选中的，不能反选全部
+     */
+    @JvmOverloads
+    fun initializeWithTabInfo(enableSingleCheck: Boolean = true, mustHaveOneChecked: Boolean = true, enableDividerWeight: Boolean = false, enableDividerEdgesWeight: Boolean = false, dividerWeight: Float = 1f, minimumWidthOrHeight: Int = 0, tabInfoList: List<TabInfo>, createUncheckedItemViewWithTabInfo: (position: Int, tabInfo: TabInfo) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
         this.enableSingleCheck = enableSingleCheck
         this.enableDividerWeight = enableDividerWeight
+        this.mustHaveOneChecked = mustHaveOneChecked
         this.enableDividerEdgesWeight = enableDividerEdgesWeight
         this.dividerWeight = dividerWeight
 
@@ -62,11 +83,14 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
             minimumHeight = minimumWidthOrHeight
         }
 
-        this.createUncheckedItemView = createUncheckedItemView
+        this.createUncheckedItemViewWithTabInfo = createUncheckedItemViewWithTabInfo
 
+        updateViewOnCheckChangedList.clear()
         addUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener)
 
-        add(*titleList.toTypedArray())
+        removeAllViews()
+        itemViewList.clear()
+        add(*tabInfoList.toTypedArray())
     }
 
     fun addUpdateViewOnCheckChangedListener(updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
@@ -82,9 +106,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * add 时 不选中, 不会触发 updateViewOnCheckChanged
      * 务必手动调用 setCheckedWithUpdateViewStatus
      */
-    fun add(vararg titles: String) {
-        titles.forEach { title ->
-            add(title, itemViewList.size)
+    fun add(vararg tabInfos: TabInfo) {
+        tabInfos.forEach { tabInfo ->
+            add(tabInfo, itemViewList.size)
         }
     }
 
@@ -92,12 +116,14 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * add 时 不选中, 不会触发 updateViewOnCheckChanged
      * 务必手动调用 setCheckedWithUpdateViewStatus
      */
-    fun add(title: String, position: Int) {
+    fun add(tabInfo: TabInfo, position: Int) {
         if (position >= 0 && position <= itemViewList.size) {
-            val createUncheckedItemView: ((title: String) -> View)? = createUncheckedItemView
-            if (createUncheckedItemView != null && title.isNotBlank()) {
-                val uncheckedItemView: View = createUncheckedItemView(title)
-                uncheckedItemView.tag = false // 初始化强制不选中, 不触发 updateViewOnCheckChanged
+            val createUncheckedItemViewWithTabInfo: ((position: Int, tabInfo: TabInfo) -> View)? = createUncheckedItemViewWithTabInfo
+            if (createUncheckedItemViewWithTabInfo != null) {
+                val uncheckedItemView: View = createUncheckedItemViewWithTabInfo(position, tabInfo)
+                val textView: TextView? = getInnerTextView(uncheckedItemView)
+                textView?.tag = false // 初始化强制不选中, 不触发 updateViewOnCheckChanged
+                textView?.includeFontPadding = false
                 uncheckedItemView.setOnClickListener(onItemClickListener)
 
                 if (enableDividerWeight) {
@@ -154,19 +180,61 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * 状态改变的情况下 必然触发 updateViewOnCheckChanged
      */
     fun setCheckedWithUpdateViewStatus(itemView: View?, checked: Boolean) {
+        STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus start, thread=${Thread.currentThread().name}") }
         if (itemView != null) {
             val changeViewList = setCheckedWithoutUpdateViewStatus(itemView, checked)
             if (changeViewList.isNotEmpty()) {
-                updateViewOnCheckChanged(changeViewList)
+                /**
+                 * 选中的标签滚动到中间
+                 * changeViewList.isNotEmpty() 防止重复调用
+                 */
+                if (checked) {
+                    val itemViewWidth: Int = itemView.width
+                    val itemViewLeft: Int = itemView.left
+
+                    val doSmoothScrollToMiddle: (view: View) -> Unit = {
+                        STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus doSmoothScrollToMiddle start, thread=${Thread.currentThread().name}") }
+                        val parentView = parent as ViewGroup
+                        if (parentView is HorizontalScrollView) {
+                            val middleLeftPosition = (STSystemUtil.screenWidth - it.width) / 2 // 计算控件居正中时距离左侧屏幕的距离
+                            val offset = it.left - middleLeftPosition // 正中间位置需要向左偏移的距离
+                            parentView.smoothScrollTo(offset, 0)
+                            STLogUtil.sync { STLogUtil.e(TAG, "doSmoothScrollToMiddle end it.left=${it.left}, it.width=${it.width}, offset=$offset, middleLeftPosition=$middleLeftPosition, thread=${Thread.currentThread().name}") }
+                        } else {
+                            STLogUtil.sync { STLogUtil.e(TAG, "doSmoothScrollToMiddle end parent not HorizontalScrollView , thread=${Thread.currentThread().name}") }
+                        }
+                        STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus doSmoothScrollToMiddle end, thread=${Thread.currentThread().name}") }
+                    }
+
+                    if (itemViewWidth > 0) {
+                        STLogUtil.sync { STLogUtil.w(TAG, "itemViewWidth >0 doSmoothScrollToMiddle start itemViewLeft=$itemViewLeft, itemViewWidth=$itemViewWidth, thread=${Thread.currentThread().name}") }
+                        doSmoothScrollToMiddle(itemView)
+                    } else {
+                        STLogUtil.sync { STLogUtil.w(TAG, "itemViewWidth <=0 setOnLayoutListener start itemViewLeft=$itemViewLeft, itemViewWidth=$itemViewWidth, thread=${Thread.currentThread().name}") }
+                        STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener start, thread=${Thread.currentThread().name}") }
+                        itemView.setOnLayoutListener {
+                            STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener on callback start, thread=${Thread.currentThread().name}") }
+                            doSmoothScrollToMiddle(it)
+                            STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener on callback end, thread=${Thread.currentThread().name}") }
+                        }
+                        STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener end, thread=${Thread.currentThread().name}") }
+                    }
+                }
+
+                // 延时执行, 不然出现后续代码未执行的情况
+                post {
+                    updateViewOnCheckChanged(changeViewList)
+                }
             }
         }
+        STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus end, thread=${Thread.currentThread().name}") }
     }
 
     /**
      * @return changeViewList
      */
     @Throws(IllegalStateException::class)
-    private fun setCheckedWithoutUpdateViewStatus(checkedList: SparseArray<Boolean>): List<View> {
+    fun setCheckedWithoutUpdateViewStatus(checkedList: SparseArray<Boolean>): List<View> {
         val changeViewList: MutableList<View> = arrayListOf()
         if (checkedList.size() > 0 && checkedList.size() == itemViewList.size) {
 
@@ -191,7 +259,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         return changeViewList
     }
 
-    private fun setCheckedWithoutUpdateViewStatus(position: Int, checked: Boolean): List<View> = setCheckedWithoutUpdateViewStatus(getItemView(position), checked)
+    fun setCheckedWithoutUpdateViewStatus(position: Int, checked: Boolean): List<View> = setCheckedWithoutUpdateViewStatus(getItemView(position), checked)
 
     /**
      * 状态改变的情况下 必然触发 updateViewOnCheckChanged
@@ -224,8 +292,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * 是否被选中
      */
     fun isChecked(itemView: View?): Boolean {
-        if (itemView?.tag != null) {
-            return itemView.tag as? Boolean ?: false
+        val textView = getInnerTextView(itemView)
+        if (textView?.tag != null) {
+            return textView.tag as? Boolean ?: false
         }
         return false
     }
@@ -238,14 +307,50 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         addView(dividerView, indexAtChildren, LayoutParams(0, 0).apply { this.weight = weight })
     }
 
+    fun getInnerTextView(itemView: View?): TextView? {
+        return (itemView?.tag as? Array<*>)?.getOrNull(0) as? TextView
+    }
+
+    fun getInnerFlagView(itemView: View?): View? {
+        return (itemView?.tag as? Array<*>)?.getOrNull(1) as? View
+    }
+
     private fun setCheckedWithoutUpdateViewStatus(itemView: View?, checked: Boolean): List<View> {
         val changeViewList: MutableList<View> = mutableListOf()
         if (itemView != null) {
-            if (itemView.tag == null || itemView.tag as? Boolean != checked) {
-                if (enableSingleCheck && checked) { // 单选模式下, 选中之前清除其它标签的选中状态
-                    changeViewList.addAll(uncheckAll())
+
+            val textView = getInnerTextView(itemView)
+            if (textView?.tag == null || textView.tag as? Boolean != checked) {
+                if (enableSingleCheck) {
+                    if (checked || !mustHaveOneChecked) {
+                        changeViewList.addAll(uncheckAll()) // 单选模式下, 选中之前清除其它标签的选中状态
+                        textView?.tag = checked
+                        if (!changeViewList.contains(itemView)) {
+                            changeViewList.add(itemView)
+                        }
+                    } else {
+                        if (getFirstCheckedItemView() != itemView) {
+                            textView?.tag = checked
+                            changeViewList.add(itemView)
+                        } else {
+                            STLogUtil.w("GSCheckBoxGroupView", "mustHaveOneChecked")
+                        }
+                    }
+                } else {
+                    textView?.tag = checked
+                    changeViewList.add(itemView)
                 }
-                itemView.tag = checked
+            }
+        }
+        return changeViewList
+    }
+
+    private fun setItemChecked(itemView: View?, checked: Boolean): List<View> {
+        val changeViewList: MutableList<View> = mutableListOf()
+        if (itemView != null) {
+            val textView = getInnerTextView(itemView)
+            if (textView?.tag == null || textView.tag as? Boolean != checked) {
+                textView?.tag = checked
                 changeViewList.add(itemView)
             }
         }
@@ -253,12 +358,16 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun updateViewOnCheckChanged(changeViewList: List<View>) {
-        this.updateViewOnCheckChangedList.forEach {
-            it.invoke(this, itemViewList, itemViewList.filter { isChecked(it) }.map { itemViewList.indexOf(it) }, changeViewList.map { itemViewList.indexOf(it) }.toList())
+        this.updateViewOnCheckChangedList.forEach { listener ->
+            listener.invoke(this, itemViewList, itemViewList.filter { isChecked(it) }.map { itemViewList.indexOf(it) }, changeViewList.map { itemViewList.indexOf(it) }.toList())
         }
     }
 
-    private fun getItemView(position: Int): View? {
+    fun getFirstCheckedItemView(): View? {
+        return itemViewList.firstOrNull { isChecked(it) }
+    }
+
+    fun getItemView(position: Int): View? {
         if (position >= 0 && position < itemViewList.size) {
             return getChildAt(getIndexAtChildren(position))
         } else {
@@ -273,7 +382,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         val changeViewList = mutableListOf<View>()
         itemViewList.forEach { itemView ->
 
-            val changeList: List<View> = setCheckedWithoutUpdateViewStatus(itemView, false)
+            val changeList: List<View> = setItemChecked(itemView, false)
             if (changeList.isNotEmpty()) {
                 changeViewList.addAll(changeList)
             }
@@ -300,4 +409,9 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
         return changeViewList
     }
 
+    data class TabInfo(val title: String, val extraInfo: Any? = null)
+
+    companion object {
+        const val TAG = "[CHECK_BOX_GROUP]"
+    }
 }

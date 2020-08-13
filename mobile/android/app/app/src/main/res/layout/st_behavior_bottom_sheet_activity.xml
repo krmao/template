@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/st_beauty"
+    android:background="@color/white"
     tools:ignore="HardcodedText">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/backdropBehaviorViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
@@ -17,92 +17,29 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/titleBar"
-        android:layout_width="3dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:visibility="visible"
         app:layout_anchor="@id/bottomSheetLayout"
         app:layout_anchorGravity="top|start">
 
         <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottomSheetExpandTop"
-            app:title="Toolbar Title" />
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            app:title="TOOLBAR" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/bottomSheetLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@drawable/st_beauty"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/bottomSheetPeekHeight"
+        app:behavior_peekHeight="0dp"
         app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior"
-        tools:ignore="MissingPrefix">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/descTv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/yellow_200"
-                android:padding="3dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/snapTv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/yellow_700"
-                android:padding="3dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="8dp"
-            android:background="#E2E2E2" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-
-            <com.smart.template.home.widget.STCheckBoxGroupView
-                android:id="@+id/checkBoxGroupView"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginTop="8dp"
-            android:background="#E2E2E2" />
-
-        <com.smart.template.home.widget.STRecyclerPagerView
-            android:id="@+id/pagerRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:ignore="NestedWeights" />
-    </LinearLayout>
+        tools:behavior_peekHeight="@dimen/bottomSheetPeekHeight"
+        tools:ignore="MissingPrefix" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -110,6 +47,7 @@
         android:layout_height="40dp"
         android:scaleType="center"
         android:src="@mipmap/ic_launcher"
+        android:translationX="20dp"
         android:translationY="-20dp"
         app:backgroundTint="@color/blue_300"
         app:backgroundTintMode="src_over"
@@ -117,7 +55,7 @@
         app:elevation="3dp"
         app:fabSize="normal"
         app:layout_anchor="@id/titleBar"
-        app:layout_anchorGravity="bottom|start"
+        app:layout_anchorGravity="bottom|end"
         app:pressedTranslationZ="3dp"
         app:rippleColor="@color/orange"
         app:useCompatPadding="false" />

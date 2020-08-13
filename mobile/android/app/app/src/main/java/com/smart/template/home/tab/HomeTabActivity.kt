@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -54,19 +51,21 @@ class HomeTabActivity : STBaseActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         STLogUtil.d("home", "activity: onWindowFocusChanged hasFocus=$hasFocus")
-        STSystemUtil.showSystemInfo(this)
+        if (hasFocus) {
+            STSystemUtil.showSystemInfo(this)
+            /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
+                val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
+                STLogUtil.d("home", "home: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, view=$view")
+                STSystemUtil.showSystemInfo(this@HomeTabActivity)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
-            val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
-            STLogUtil.d("home", "activity: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, view=$view")
-            STSystemUtil.showSystemInfo(this@HomeTabActivity)
-
-            insets
+                insets
+            }*/
         }
     }
 
     override fun onPause() {
         super.onPause()
+
         STLogUtil.d("home", "activity: onPause")
     }
 

@@ -1,270 +1,165 @@
 package com.smart.template.home
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
+import com.smart.library.base.toPxFromDp
+import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
-import com.smart.library.widget.behavior.STBottomSheetCallback
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
-import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
-import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
-import com.smart.library.widget.recyclerview.snap.STSnapHelper
 import com.smart.template.R
-import com.smart.template.home.widget.STCheckBoxGroupView
-import com.smart.template.home.widget.STRecyclerPagerView
-import kotlinx.android.synthetic.main.home_recycler_item_poi.view.*
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
-import org.jetbrains.anko.async
 
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class STBehaviorBottomSheetActivity : STBaseActivity() {
+    @Suppress("PrivatePropertyName", "unused")
+    private val TAG = "[BottomSheet]"
 
+    // 面板距离页面底部距离, 面板收缩态的真实高度
     private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
-    private val bottomSheetExpandTop: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetExpandTop) }
     private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetLayout) }
-    private val handler: Handler = Handler()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.st_behavior_bottom_sheet_activity)
-        pagerRecyclerView.enableDrag = true // must not set in onStateChanged
-        bottomSheetBehavior.bindViewPager(pagerRecyclerView)
-        // init floating action button -- level 5
-        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED }
-        // init bottom sheet child views -- level 4
-        initBottomSheetChildViews()
-    }
 
+    private var currentBottomSheetParentHeight: Int = 0
+    private var currentState: Int = STBottomSheetBehavior.STATE_COLLAPSED
     private var didFirstRunOnWindowFocusChanged: Boolean = false
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (!didFirstRunOnWindowFocusChanged) {
-            didFirstRunOnWindowFocusChanged = true
-            onWindowFocusChangedFirstRun(hasFocus)
-        }
-    }
-
-    private fun onWindowFocusChangedFirstRun(hasFocus: Boolean) {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
-            val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
-            STLogUtil.e("STBehaviorBottomSheetActivity", "activity: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, ${STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0}")
-            STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
-
-            val oldState = bottomSheetBehavior.state
-            resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0) // ?: STSystemUtil.screenContentHeightExcludeStatusAndNavigationBar + STSystemUtil.statusBarHeight
-
-            Looper.myQueue().addIdleHandler {
-                bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
-                bottomSheetBehavior.state = oldState
-                false
+    private val onBottomSheetCallback: STBottomSheetBehavior.BottomSheetCallback by lazy {
+        object : STBottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, percent: Float) {
+                bottomSheetBehavior.dragEnabled = true
             }
 
-            insets
-        }
-
-        resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0)
-    }
-
-    private fun resetBottomSheetViews(bottomSheetParentHeight: Int) {
-        STLogUtil.e("mm bottomSheetParentHeight=$bottomSheetParentHeight")
-        if (bottomSheetParentHeight <= 0) {
-            STLogUtil.e("mm bottomSheetParentHeight=$bottomSheetParentHeight error return")
-            return
-        }
-        // init bottomSheet behavior -- level 2
-        val bottomSheetHalfExpandTop: Int = (bottomSheetParentHeight * 0.35f).toInt()
-        val bottomSheetCollapsedTop: Int = bottomSheetParentHeight - bottomSheetPeekHeight
-        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTop
-        bottomSheetBehavior.setHalfExpandedOffset(bottomSheetHalfExpandTop)
-        bottomSheetBehavior.calculateCollapsedOffset()
-        bottomSheetBehavior.peekHeight = 0
-        bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_COLLAPSED
-
-        val behaviorBottomSheetCallback = STBottomSheetCallback(handler, bottomSheetLayout, bottomSheetBehavior, true, bottomSheetExpandTop, bottomSheetHalfExpandTop, bottomSheetCollapsedTop, 30f,
-            onStateChanged = { bottomSheet: View, newState: Int ->
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (STLogUtil.debug) STLogUtil.d(TAG, "onStateChanged newState=${stateString(newState)}, currentState=${stateString(bottomSheetBehavior.state)}")
                 when (newState) {
-                    STBottomSheetViewPagerBehavior.STATE_DRAGGING -> {
+                    STBottomSheetBehavior.STATE_EXPANDED -> {
+                        currentState = newState
+                    }
+
+                    STBottomSheetBehavior.STATE_HALF_EXPANDED, STBottomSheetBehavior.STATE_COLLAPSED -> {
+                        currentState = newState
+                    }
+
+                    STBottomSheetBehavior.STATE_DRAGGING -> {
+                    }
+                    STBottomSheetBehavior.STATE_SETTLING -> {
                     }
                     else -> {
                     }
                 }
             }
-        )
-        bottomSheetBehavior.setBottomSheetCallback(behaviorBottomSheetCallback)
-        // init backdrop behavior and reset viewpager height -- level 3
-        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(viewPager)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.st_behavior_bottom_sheet_activity)
+
+        bottomSheetBehavior.enableHalfExpandedState = true
+        bottomSheetBehavior.dragEnabled = true
+        bottomSheetBehavior.setBottomSheetCallback(onBottomSheetCallback)
+
+        initBackdropBehavior(300.toPxFromDp())
+        initFloatingActionButton()
+    }
+
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        STLogUtil.e(TAG, "onWindowFocusChanged hasFocus=$hasFocus")
+        if (hasFocus) {
+            if (!didFirstRunOnWindowFocusChanged) {
+                didFirstRunOnWindowFocusChanged = true
+                onWindowFocusChangedFirstRun(hasFocus)
+            }
+        }
+    }
+
+    private fun onWindowFocusChangedFirstRun(hasFocus: Boolean) {
+        STLogUtil.e(TAG, "onWindowFocusChangedFirstRun hasFocus=$hasFocus")
+        resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0, STBottomSheetBehavior.STATE_HALF_EXPANDED)
+        initOnApplyWindowInsetsListener()
+    }
+
+    private fun resetBottomSheetViews(bottomSheetParentHeight: Int, state: Int = currentState) {
+        STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight")
+        if (bottomSheetParentHeight <= 0 || currentBottomSheetParentHeight == bottomSheetParentHeight) {
+            STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight, currentBottomSheetParentHeight=$currentBottomSheetParentHeight, error or repeat return")
+            return
+        }
+        // 屏幕可视范围总高度为 状态栏 + 内容高度, 面板总高度
+        currentBottomSheetParentHeight = bottomSheetParentHeight
+
+        // 面板距离页面顶部距离, 面板距离屏幕顶部的距离
+        val bottomSheetExpandMarginTop: Int = (bottomSheetParentHeight * 0.24f).toInt()
+
+        // 面板中间距离, 面板距离页面底部距离, 面板一半的高度
+        val bottomSheetHalfExpandTopY: Int = (bottomSheetParentHeight * 0.5f).toInt()
+
+        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTopY
+        bottomSheetBehavior.setHalfExpandedOffset(bottomSheetHalfExpandTopY)
+        bottomSheetBehavior.calculateCollapsedOffset()
+        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
+        setState(state)
+    }
+
+    /**
+     * 当在设置->系统导航方式 切换导航方式时, 会调用 onConfigurationChanged
+     * 此时获取到的 状态栏+内容高度是正确的
+     * 其中 onApplyWindowInsetsListener 也会触发一次, 但是获取到的值是不正确的, 配置更改之前的高度
+     */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        STLogUtil.e(TAG, "onConfigurationChanged newConfig=$newConfig")
+        STSystemUtil.showSystemInfo(this)
+        resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0, currentState)
+    }
+
+    /**
+     * 当显示/隐藏虚拟导航栏时, 会触发 onApplyWindowInsetsListener (注意不是切换导航方式, 切换配置在触发的onConfigurationChanged中才是正确的)
+     *
+     * 注意:软键盘的展开/收起
+     */
+    private fun initOnApplyWindowInsetsListener() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
+            val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
+            STLogUtil.e(TAG, "initOnApplyWindowInsetsListener: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, ${STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0}")
+            STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
+            resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0, currentState)
+            insets
+        }
+    }
+
+    private fun setState(state: Int = currentState) {
+        bottomSheetBehavior.state = state
+        currentState = state
+    }
+
+    private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
+        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(backdropBehaviorViewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
-        viewPager.adapter = BackdropImagesPagerAdapter(this)
-        viewPager.layoutParams = viewPager.layoutParams.apply {
-            height = behaviorBottomSheetCallback.bottomSheetHalfExpandTop
+        backdropBehaviorViewPager.adapter = BackdropImagesPagerAdapter(this)
+        backdropBehaviorViewPager.layoutParams = backdropBehaviorViewPager.layoutParams.apply {
+            height = bottomSheetHalfExpandTop
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun initBottomSheetChildViews() {
-        fun getScare(pagerIndex: Int): Int {
-            return when (pagerIndex) {
-                0 -> 1
-                1 -> 10
-                2 -> 100
-                3 -> 1000
-                else -> 0
-            }
-        }
-
-        // 模拟数据
-        // 服务端 requestNextIndex 从 0 开始算第一页
-        val allData: MutableList<STRecyclerPagerView.PagerModel<Int>> =
-            mutableListOf(
-                STRecyclerPagerView.PagerModel(1, 1, mutableListOf(0), "景点"),
-                STRecyclerPagerView.PagerModel(1, 2, mutableListOf(0, 1 * getScare(1)), "美食"),
-                STRecyclerPagerView.PagerModel(1, 3, mutableListOf(0, 1 * getScare(2), 2 * getScare(2)), "酒店"),
-                STRecyclerPagerView.PagerModel(
-                    1, 10, mutableListOf(
-                        0,
-                        1 * getScare(3),
-                        2 * getScare(3),
-                        3 * getScare(3),
-                        4 * getScare(3),
-                        5 * getScare(3),
-                        6 * getScare(3),
-                        7 * getScare(3),
-                        8 * getScare(3),
-                        9 * getScare(3)
-                    ), "购物"
-                )
-            )
-
-        var requestCount = 0
-
-        // 初始化 pagerRecyclerView
-        pagerRecyclerView.connectToCheckBoxGroupView(checkBoxGroupView)
-        pagerRecyclerView.initialize(
-            initPagerDataList = allData,
-            requestLoadMore = { refresh: Boolean, pagerIndex: Int, requestIndex: Int, requestSize: Int, lastRequest: Any?, lastResponse: Any?, callback: (lastRequest: Any?, lastResponse: Any?, MutableList<Int>?) -> Unit ->
-                /**
-                 * requestIndex 服务端默认从 0开始 算第一页, 1算第二页
-                 * requestNextIndex = requestIndex + 1
-                 */
-                async {
-                    requestCount++
-                    Thread.sleep(1000)
-                    when {
-                        requestCount % 5 == 0 -> { // 请求失败
-                            STLogUtil.d("request", "请求失败")
-                            callback.invoke(null, null, null)
-                        }
-                        requestCount % 10 == 0 -> { // 没有更多数据
-                            STLogUtil.d("request", "没有更多数据")
-                            callback.invoke(null, null, mutableListOf())
-                        }
-                        else -> { // 请求成功
-                            STLogUtil.d("request", "请求成功")
-                            val list = mutableListOf<Int>()
-
-                            val scare = getScare(pagerIndex)
-                            val nextValue: Int = 1 * requestSize * scare
-
-                            (0 until requestSize).forEach {
-                                list.add(nextValue + it * scare)
-                            }
-                            callback.invoke(null, null, list)
-                        }
-                    }
-                }
-
-                Unit
-            },
-            onRecyclerViewCreateViewHolder = { _: Int, parent: ViewGroup, _: Int ->
-                STRecyclerViewAdapter.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_recycler_item_poi, parent, false))
-            },
-            onRecyclerViewBindViewHolder = { pagerModel: STRecyclerPagerView.PagerModel<Int>, viewHolder: RecyclerView.ViewHolder, position: Int ->
-                viewHolder.itemView.tv_title_item_map.text = "上海东方明珠塔:${pagerModel.dataList[position]}"
-                STImageManager.show(viewHolder.itemView.iv_item_map, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
-            },
-            snap = STSnapHelper.Snap.START,
-            onSnap = { pagerIndex: Int, position: Int, data: Int ->
-                snapTv.text = "当前页面:$pagerIndex, 列表索引: $position 选中数值: $data"
-            },
-            viewEmpty = { parent: ViewGroup, viewType: Int, orientation: Int ->
-                STEmptyLoadingWrapper.createDefaultEmptyView(this, "当前区域内没有结果\n请移动或缩放地图后重新搜索")
-            }
-        )
-
-        /**
-         * 初始化 checkBoxGroupView
-         *
-         * 先初始化 pagerRecyclerView 后初始化 checkBoxGroupView
-         * 这样当 checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true) 的时候, 应该能触发 pagerRecyclerView 联动
-         */
-        val dpPadding = STSystemUtil.getPxFromDp(5f).toInt()
-        val dpMargin = STSystemUtil.getPxFromDp(15f).toInt()
-        checkBoxGroupView.initialize(
-            minimumWidthOrHeight = STSystemUtil.screenWidth,
-            titleList = allData.map
-            { it.extrasData as? String ?: "" }.toMutableList(),
-            createUncheckedItemView =
-            { title: String ->
-                TextView(this).apply {
-                    text = title
-                    textSize = 14f
-                    gravity = Gravity.CENTER
-                    @Suppress("DEPRECATION")
-                    setTextColor(resources.getColorStateList(R.color.home_checkbox_selected_color))
-                    setBackgroundResource(R.drawable.home_checkbox_bg_selector)
-                    setPadding(dpPadding, dpPadding, dpPadding, dpPadding)
-                    layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                        weight = 2f
-                        leftMargin = dpMargin
-                        rightMargin = dpMargin
-                    }
-                }
-            },
-            updateViewOnCheckChangedListener =
-            { checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int> ->
-                descTv.text = "当前选中的数组索引:$checkedViewPositionList\n本次改变的数组索引:$changedViewPositionList"
-                changedViewPositionList.forEach { position: Int ->
-                    val itemChangedView: TextView = originViewList[position] as TextView
-                    val isChecked = checkBoxGroupView.isChecked(position)
-                    itemChangedView.isSelected = isChecked
-                }
-            })
-        checkBoxGroupView.setCheckedWithUpdateViewStatus(0, true)
+    private fun initFloatingActionButton() {
+        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED }
     }
 
     private class BackdropImagesPagerAdapter(mContext: Context) : PagerAdapter() {
@@ -274,8 +169,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             return 3
         }
 
-        override fun isViewFromObject(view: View, `object`: Any): Boolean {
-            return view === `object` as LinearLayout
+        override fun isViewFromObject(view: View, any: Any): Boolean {
+            return view === any as LinearLayout
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -289,5 +184,16 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         override fun destroyItem(container: ViewGroup, position: Int, view: Any) {
             container.removeView(view as LinearLayout)
         }
+    }
+
+    private fun stateString(state: Int): String = when (state) {
+        STBottomSheetBehavior.STATE_DRAGGING -> "STATE_DRAGGING"
+        STBottomSheetBehavior.STATE_SETTLING -> "STATE_SETTLING"
+        STBottomSheetBehavior.STATE_EXPANDED -> "STATE_EXPANDED"
+        STBottomSheetBehavior.STATE_COLLAPSED -> "STATE_COLLAPSED"
+        STBottomSheetBehavior.STATE_HIDDEN -> "STATE_HIDDEN"
+        STBottomSheetBehavior.STATE_HALF_EXPANDED -> "STATE_HALF_EXPANDED"
+        STBottomSheetBehavior.PEEK_HEIGHT_AUTO -> "PEEK_HEIGHT_AUTO"
+        else -> "UNKNOWN_$state"
     }
 }

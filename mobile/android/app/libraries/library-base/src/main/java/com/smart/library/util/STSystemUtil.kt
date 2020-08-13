@@ -191,7 +191,7 @@ object STSystemUtil {
         val windowsVisibleDisplayFrameSize = Rect()
         activity?.window?.decorView?.getWindowVisibleDisplayFrame(windowsVisibleDisplayFrameSize)
         val height = windowsVisibleDisplayFrameSize.bottom
-        return if (height <= screenHeight) return null else height
+        return if (height <= (screenHeight - statusBarHeight - navigationBarHeight)) return null else height // 杜绝由于软键盘的展开/收起导致的计算错误
     }
 
 

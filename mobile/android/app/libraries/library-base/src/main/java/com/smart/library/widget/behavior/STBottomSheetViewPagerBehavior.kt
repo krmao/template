@@ -17,14 +17,14 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * -keep class STBottomSheetViewPagerBehavior{*;}
+ * -keep class ctrip.android.destination.library.widget.behavior.STBottomSheetViewPagerBehavior{*;}
  *
  * Override [.findScrollingChild] to support [ViewPager]'s nested scrolling.
  *
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehavior] located.
  */
-@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment")
+@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused")
 class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 
     /**
@@ -96,7 +96,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
                 STLogUtil.w(TAG, "onViewReleased start pullTopToBottom=$pullTopToBottom")
                 STLogUtil.d(TAG, "onViewReleased yvel=$yvel,enableHalfExpandedState=$enableHalfExpandedState, expandedOffset=$expandedOffset, currentPullTopToBottom=$currentPullTopToBottom, currentTop=$currentTop,")
-                STLogUtil.d(TAG, "onViewReleased bottomSheetHalfExpandTop=$bottomSheetHalfExpandTop, dragThresholdOffset()=${dragThresholdOffset()}, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
+                STLogUtil.d(TAG, "onViewReleased bottomSheetHalfExpandTop=$bottomSheetHalfExpandTop, halfExpandedOffset=$halfExpandedOffset, dragThresholdOffset()=${dragThresholdOffset()}, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
                 STLogUtil.d(TAG, "onViewReleased getViewVerticalDragRange()=${getViewVerticalDragRange()}, fitToContents=$fitToContents")
 
                 // 维持原代码不变
@@ -184,6 +184,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                     }
                 }
 
+                STLogUtil.e(TAG, "onViewReleased bottomSheetHalfExpandTop=$bottomSheetHalfExpandTop, halfExpandedOffset=$halfExpandedOffset, top=$top, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
                 if (viewDragHelper.settleCapturedViewAt(releasedChild.left, top)) {
                     STLogUtil.w(TAG, "onViewReleased setStateInternal STATE_SETTLING")
                     setStateInternal(STBottomSheetBehavior.STATE_SETTLING)
@@ -288,7 +289,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      * drag control start
      **********************************************************************************************/
     /**
-     * 控制 bottom sheet 能否被拖拽滑动
+     * 设置 当拖拽从下拉 recyclerView 列表到顶部的时候, 继续下拉是否联动面板
      */
     var dragEnabled = true
 

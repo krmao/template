@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt"})
-@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection", "ConstantConditions", "unchecked"})
+@SuppressWarnings({"WeakerAccess", "unused", "Convert2Lambda", "unchecked", "SpellCheckingInspection", "ConstantConditions"})
 public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     public static final String TAG = STBottomSheetBehavior.class.getSimpleName();
 

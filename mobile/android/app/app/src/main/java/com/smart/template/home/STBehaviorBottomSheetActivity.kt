@@ -1,16 +1,12 @@
 package com.smart.template.home
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.viewpager.widget.PagerAdapter
-import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
@@ -18,7 +14,6 @@ import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.util.image.STImageManager
 import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
 import com.smart.template.R
@@ -31,9 +26,11 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     // 面板距离页面底部距离, 面板收缩态的真实高度
     private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
-    private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetLayout) }
+    private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetContainer) }
 
     private var currentBottomSheetParentHeight: Int = 0
+    private var currentBottomSheetExpandMarginTop: Int = 0
+    private var currentBottomSheetHalfExpandTop: Int = 0
     private var currentState: Int = STBottomSheetBehavior.STATE_COLLAPSED
     private var didFirstRunOnWindowFocusChanged: Boolean = false
     private val onBottomSheetCallback: STBottomSheetBehavior.BottomSheetCallback by lazy {
@@ -73,9 +70,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         bottomSheetBehavior.setBottomSheetCallback(onBottomSheetCallback)
 
         initBackdropBehavior(300.toPxFromDp())
-        initFloatingActionButton()
+        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
     }
-
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -92,28 +88,6 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         STLogUtil.e(TAG, "onWindowFocusChangedFirstRun hasFocus=$hasFocus")
         resetBottomSheetViews(STSystemUtil.getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(this) ?: 0, STBottomSheetBehavior.STATE_HALF_EXPANDED)
         initOnApplyWindowInsetsListener()
-    }
-
-    private fun resetBottomSheetViews(bottomSheetParentHeight: Int, state: Int = currentState) {
-        STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight")
-        if (bottomSheetParentHeight <= 0 || currentBottomSheetParentHeight == bottomSheetParentHeight) {
-            STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight, currentBottomSheetParentHeight=$currentBottomSheetParentHeight, error or repeat return")
-            return
-        }
-        // 屏幕可视范围总高度为 状态栏 + 内容高度, 面板总高度
-        currentBottomSheetParentHeight = bottomSheetParentHeight
-
-        // 面板距离页面顶部距离, 面板距离屏幕顶部的距离
-        val bottomSheetExpandMarginTop: Int = (bottomSheetParentHeight * 0.24f).toInt()
-
-        // 面板中间距离, 面板距离页面底部距离, 面板一半的高度
-        val bottomSheetHalfExpandTopY: Int = (bottomSheetParentHeight * 0.5f).toInt()
-
-        bottomSheetBehavior.bottomSheetHalfExpandTop = bottomSheetHalfExpandTopY
-        bottomSheetBehavior.setHalfExpandedOffset(bottomSheetHalfExpandTopY)
-        bottomSheetBehavior.calculateCollapsedOffset()
-        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
-        setState(state)
     }
 
     /**
@@ -143,47 +117,44 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
 
-    private fun setState(state: Int = currentState) {
-        bottomSheetBehavior.state = state
-        currentState = state
-    }
 
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
         val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(backdropBehaviorViewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
-        backdropBehaviorViewPager.adapter = BackdropImagesPagerAdapter(this)
+        backdropBehaviorViewPager.adapter = STBehaviorBottomSheetBackdropImagesPagerAdapter(this)
         backdropBehaviorViewPager.layoutParams = backdropBehaviorViewPager.layoutParams.apply {
             height = bottomSheetHalfExpandTop
         }
     }
 
-    private fun initFloatingActionButton() {
-        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED }
+    private fun resetBottomSheetViews(bottomSheetParentHeight: Int, state: Int = currentState) {
+        STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight")
+        if (bottomSheetParentHeight <= 0 || currentBottomSheetParentHeight == bottomSheetParentHeight) {
+            STLogUtil.e(TAG, "resetBottomSheetViews bottomSheetParentHeight=$bottomSheetParentHeight, currentBottomSheetParentHeight=$currentBottomSheetParentHeight, error or repeat return")
+            return
+        }
+        // 屏幕可视范围总高度为 状态栏 + 内容高度, 面板总高度
+        currentBottomSheetParentHeight = bottomSheetParentHeight
+
+        // 面板距离页面顶部距离, 面板距离屏幕顶部的距离
+        currentBottomSheetExpandMarginTop = (bottomSheetParentHeight * 0.24f).toInt()
+
+        // 面板中间距离, 面板距离页面底部距离, 面板一半的高度
+        currentBottomSheetHalfExpandTop = (bottomSheetParentHeight * 0.5f).toInt()
+
+        // 重设最大高度
+        setBottomSheetContainerHeight(getBottomSheetContainerVisibleHeightByState(STBottomSheetBehavior.STATE_EXPANDED))
+        bottomSheetBehavior.bottomSheetHalfExpandTop = currentBottomSheetHalfExpandTop
+        bottomSheetBehavior.setHalfExpandedOffset(currentBottomSheetHalfExpandTop)
+        bottomSheetBehavior.calculateCollapsedOffset()
+        bottomSheetBehavior.peekHeight = bottomSheetPeekHeight
+        setState(state)
     }
 
-    private class BackdropImagesPagerAdapter(mContext: Context) : PagerAdapter() {
-        private var mLayoutInflater: LayoutInflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        override fun getCount(): Int {
-            return 3
-        }
-
-        override fun isViewFromObject(view: View, any: Any): Boolean {
-            return view === any as LinearLayout
-        }
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val itemView = mLayoutInflater.inflate(R.layout.st_behavior_pager_item, container, false)
-            val imageView = itemView.findViewById<View>(R.id.imageView) as SimpleDraweeView
-            STImageManager.show(imageView, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565851968832&di=b73c29d745a1454381ea2276e0707d72&imgtype=0&src=http%3A%2F%2Fzz.fangyi.com%2FR_Img%2Fnews%2F8%2F2016_1%2F9%2F20160109173836_4593.jpg")
-            container.addView(itemView)
-            return itemView
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, view: Any) {
-            container.removeView(view as LinearLayout)
-        }
+    private fun setState(state: Int = currentState) {
+        bottomSheetBehavior.state = state
+        currentState = state
     }
 
     private fun stateString(state: Int): String = when (state) {
@@ -195,5 +166,33 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         STBottomSheetBehavior.STATE_HALF_EXPANDED -> "STATE_HALF_EXPANDED"
         STBottomSheetBehavior.PEEK_HEIGHT_AUTO -> "PEEK_HEIGHT_AUTO"
         else -> "UNKNOWN_$state"
+    }
+
+    /**
+     * 浮层面板容器的可视高度
+     */
+    private fun getBottomSheetContainerVisibleHeightByState(state: Int): Int {
+        val heightOnStateExpanded: Int = currentBottomSheetParentHeight - currentBottomSheetExpandMarginTop
+        val heightOnStateHalfExpanded: Int = currentBottomSheetHalfExpandTop
+        val heightOnStateCollapsed: Int = bottomSheetPeekHeight
+
+        val panelHeight = when (state) {
+            STBottomSheetViewPagerBehavior.STATE_EXPANDED -> heightOnStateExpanded
+            STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED -> heightOnStateHalfExpanded
+            STBottomSheetViewPagerBehavior.STATE_COLLAPSED -> heightOnStateCollapsed
+            else -> heightOnStateHalfExpanded
+        }
+
+        STLogUtil.sync { STLogUtil.d(TAG, "getPanelHeightByState ${stateString(state)}, panelHeight=$panelHeight") }
+        return panelHeight
+    }
+
+    /**
+     * 设置浮层面板容器的高度
+     */
+    private fun setBottomSheetContainerHeight(height: Int) {
+        val params: CoordinatorLayout.LayoutParams = bottomSheetContainer.layoutParams as CoordinatorLayout.LayoutParams
+        params.height = height
+        bottomSheetContainer.layoutParams = params
     }
 }

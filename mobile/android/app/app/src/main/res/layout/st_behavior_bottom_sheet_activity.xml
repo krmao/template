@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        app:layout_anchor="@id/bottomSheetLayout"
+        app:layout_anchor="@id/bottomSheetContainer"
         app:layout_anchorGravity="top|start">
 
         <androidx.appcompat.widget.Toolbar
@@ -30,7 +30,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/bottomSheetLayout"
+        android:id="@+id/bottomSheetContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/st_beauty"

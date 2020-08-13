@@ -25,7 +25,7 @@ import kotlin.math.min
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehavior] located.
  */
-@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused", "UsePropertyAccessSyntax")
 class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 
     /**
@@ -318,19 +318,45 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
     }
 
+    /**
+     * 切换/显示/隐藏 虚拟导航栏时, 会重新调用 onLayoutChild
+     */
+    override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
+        STLogUtil.w(TAG, "onLayoutChild start halfExpandedOffset=$halfExpandedOffset")
+        val onLayoutChild = super.onLayoutChild(parent, child, layoutDirection)
+        STLogUtil.w(TAG, "onLayoutChild end halfExpandedOffset=$halfExpandedOffset")
+        return onLayoutChild
+    }
+
     //region set bottom sheet size and state
-    public override fun setHalfExpandedOffset(halfExpandedOffset: Int): Int {
-        return super.setHalfExpandedOffset(halfExpandedOffset)
+    private var customHalfExpandedOffset: Int = -1
+    fun setCustomHalfExpandedOffset(halfExpandedOffset: Int): Int {
+        this.customHalfExpandedOffset = halfExpandedOffset
+        setHalfExpandedOffset(getParentHeight() / 2)
+        return halfExpandedOffset
+    }
+
+    /**
+     * 在 onLayoutChild 中, super.setHalfExpandedOffset 会被重置为 parentHeight 的一半
+     */
+    override fun setHalfExpandedOffset(halfExpandedOffset: Int): Int {
+        return super.setHalfExpandedOffset(if (customHalfExpandedOffset != -1) customHalfExpandedOffset else halfExpandedOffset)
     }
 
     public override fun calculateCollapsedOffset() {
         super.calculateCollapsedOffset()
     }
 
+    /**
+     * @return 状态为 STATE_HALF_EXPANDED 时, getView().top 与屏幕顶部之间距离
+     */
     fun getHalfExpandedOffset(): Int {
-        return this.halfExpandedOffset
+        return if (customHalfExpandedOffset != -1) customHalfExpandedOffset else this.halfExpandedOffset
     }
 
+    /**
+     * @return 状态为 STATE_COLLAPSED 时, getView().top 与屏幕顶部之间距离
+     */
     fun getCollapsedOffset(): Int {
         return this.collapsedOffset
     }
@@ -351,7 +377,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     /**
-     * 面板距离页面顶部距离, 面板距离屏幕顶部的距离
+     * @return expandedOffset 状态为 STATE_EXPANDED 时, getView().top 与屏幕顶部之间距离
      */
     public override fun getExpandedOffset(): Int {
         return super.getExpandedOffset()
@@ -360,9 +386,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     /**
      * 重设面板可滑动的高度/状态, 当虚拟键盘切换/隐藏/显示导致屏幕内容高度变化时
      *
-     * @param parentHeight 屏幕可视范围总高度为 状态栏 + 内容高度, 面板总高度
-     * @param expandedOffset 面板距离页面顶部距离, 面板距离屏幕顶部的距离
-     * @param halfExpandedOffset 面板中间距离, 面板距离页面底部距离, 面板一半的高度
+     * @param parentHeight 屏幕可视范围总高度为 状态栏 + 内容高度, 面板可滑动总高度, 不包含虚拟状态栏
+     * @param expandedOffset 状态为 STATE_EXPANDED 时, getView().top 与屏幕顶部之间距离
+     * @param halfExpandedOffset 状态为 STATE_HALF_EXPANDED 时, getView().top 与屏幕顶部之间距离
+     * @param peekHeight 状态为 STATE_COLLAPSED 时, getView().top 与屏幕底部之间距离
      */
     fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
         STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState")
@@ -372,9 +399,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
         this.calculateExpandedOffset(expandedOffset)
         // must be call after calculateExpandedOffset
-        this.setBottomSheetContainerHeight(getBottomSheetContainerVisibleHeightByState(STBottomSheetBehavior.STATE_EXPANDED))
+        this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STBottomSheetBehavior.STATE_EXPANDED))
 
-        this.setHalfExpandedOffset(halfExpandedOffset)
+        this.setCustomHalfExpandedOffset(halfExpandedOffset)
         this.calculateCollapsedOffset()
 
         this.setPeekHeight(peekHeight)
@@ -416,10 +443,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      * 浮层面板容器的可视高度
      */
     @Suppress("SameParameterValue")
-    private fun getBottomSheetContainerVisibleHeightByState(state: Int): Int {
-        val heightOnStateExpanded: Int = getParentHeight() - expandedOffset
-        val heightOnStateHalfExpanded: Int = getHalfExpandedOffset()
-        val heightOnStateCollapsed: Int = getPeekHeight()
+    fun getBottomSheetViewHeightByState(state: Int): Int {
+        val heightOnStateExpanded: Int = getParentHeight() - getExpandedOffset()
+        val heightOnStateHalfExpanded: Int = getParentHeight() - getHalfExpandedOffset()
+        val heightOnStateCollapsed: Int = getParentHeight() - getCollapsedOffset()
 
         val panelHeight = when (state) {
             STATE_EXPANDED -> heightOnStateExpanded
@@ -435,7 +462,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     /**
      * 设置浮层面板容器的高度
      */
-    private fun setBottomSheetContainerHeight(height: Int) {
+    private fun setBottomSheetViewHeight(height: Int) {
         val bottomSheetContainer: View? = getView()
         val params: CoordinatorLayout.LayoutParams? = bottomSheetContainer?.layoutParams as? CoordinatorLayout.LayoutParams
         if (params != null) {

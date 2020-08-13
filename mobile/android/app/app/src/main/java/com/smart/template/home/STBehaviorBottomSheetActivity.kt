@@ -112,8 +112,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         bottomSheetBehavior.setStateOnParentHeightChanged(
             state = state,
             parentHeight = parentHeight,
-            expandedOffset = (parentHeight * 0.24f).toInt(),
-            halfExpandedOffset = (parentHeight * 0.5f).toInt(),
+            expandedOffset = (parentHeight * 0.1f).toInt(),
+            halfExpandedOffset = (parentHeight * 0.6f).toInt(),
             peekHeight = bottomSheetPeekHeight
         ) {
             STLogUtil.w(TAG, "onAnimationEndCallback")

@@ -10,7 +10,7 @@ import kotlin.math.max
 
 /*
 
--keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
+-keep class com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior{*;}
 
 xml->
 
@@ -20,7 +20,7 @@ xml->
         android:layout_height="match_parent"
         android:background="@color/colorAccent"
         android:fitsSystemWindows="false"
-        app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetBackdropBehavior" />
+        app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior" />
 
 java/kotlin->
 
@@ -36,7 +36,7 @@ java/kotlin->
     }
 
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
-        val backdropBehavior: STBottomSheetBackdropBehavior<*> = STBottomSheetBackdropBehavior.from(backdropBehaviorViewPager)
+        val backdropBehavior: STBottomSheetBackdropHalfBehavior<*> = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
         backdropBehaviorViewPager.adapter = STBehaviorBottomSheetBackdropImagesPagerAdapter(this)
@@ -46,7 +46,7 @@ java/kotlin->
     }
 
 */
-class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
+class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 
     private var lastChildY: Float = 0f
 
@@ -78,7 +78,15 @@ class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: Attribute
      * 当 bottomSheetBehavior 滚动时, 处理自己的滚动
      */
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
-        val collapsedY = dependency.height - (bottomSheetBehavior?.peekHeight ?: 0)
+        val tmpBottomSheetBehavior = bottomSheetBehavior ?: return false
+
+        val dependExpandedOffset = tmpBottomSheetBehavior.expandedOffset
+        val dependHalfExpandedOffset = tmpBottomSheetBehavior.getHalfExpandedOffset()
+        val dependCollapsedOffset = tmpBottomSheetBehavior.getCollapsedOffset()
+
+        val centerY = dependHalfExpandedOffset
+
+        val collapsedY = dependency.height - tmpBottomSheetBehavior.peekHeight
 
         var currentChildY = (dependency.y - child.height) * collapsedY / (collapsedY - child.height)
         if (currentChildY <= 0) currentChildY = 0f
@@ -92,11 +100,11 @@ class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: Attribute
 
     companion object {
         @JvmStatic
-        fun <V : View> from(view: V): STBottomSheetBackdropBehavior<*> {
+        fun <V : View> from(view: V): STBottomSheetBackdropHalfBehavior<*> {
             val params = view.layoutParams
             require(params is CoordinatorLayout.LayoutParams) { "The view is not a child of CoordinatorLayout" }
             val behavior = params.behavior
-            require(behavior is STBottomSheetBackdropBehavior) { "The view is not associated with " + "STBottomSheetBackdropBehavior" }
+            require(behavior is STBottomSheetBackdropHalfBehavior) { "The view is not associated with " + "STBottomSheetBackdropBehavior" }
             return behavior
         }
     }

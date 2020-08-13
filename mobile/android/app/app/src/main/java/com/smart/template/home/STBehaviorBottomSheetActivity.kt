@@ -13,6 +13,7 @@ import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
+import com.smart.library.util.STToastUtil
 import com.smart.library.widget.behavior.STBottomSheetBackdropBehavior
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
 import com.smart.template.R
@@ -114,7 +115,10 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             expandedOffset = (parentHeight * 0.24f).toInt(),
             halfExpandedOffset = (parentHeight * 0.5f).toInt(),
             peekHeight = bottomSheetPeekHeight
-        )
+        ) {
+            STLogUtil.w(TAG, "onAnimationEndCallback")
+            STToastUtil.show("onAnimationEndCallback")
+        }
     }
 
     override fun onDestroy() {

@@ -57,7 +57,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
      * @param mustHaveOneChecked enableSingleCheck==true 是否必须有一个是选中的，不能反选全部
      */
     @JvmOverloads
-    @Deprecated("", ReplaceWith("initializeWithTabInfo(enableSingleCheck, mustHaveOneChecked, enableDividerWeight, enableDividerEdgesWeight, dividerWeight, minimumWidthOrHeight, titleList.map { TabInfo(it) }, { createUncheckedItemView(it.title) }, updateViewOnCheckChangedListener)", "ctrip.android.destination.library.widget.GSCheckBoxGroupView.TabInfo"))
+    @Deprecated("", ReplaceWith("initializeWithTabInfo(enableSingleCheck, mustHaveOneChecked, enableDividerWeight, enableDividerEdgesWeight, dividerWeight, minimumWidthOrHeight, titleList.map { TabInfo(it) }, { createUncheckedItemView(it.title) }, updateViewOnCheckChangedListener)", "smart.library.widget.GSCheckBoxGroupView.TabInfo"))
     fun initialize(enableSingleCheck: Boolean = true, mustHaveOneChecked: Boolean = true, enableDividerWeight: Boolean = false, enableDividerEdgesWeight: Boolean = false, dividerWeight: Float = 1f, minimumWidthOrHeight: Int = 0, titleList: List<String>, createUncheckedItemView: (title: String) -> View, updateViewOnCheckChangedListener: (checkBoxGroupView: STCheckBoxGroupView, originViewList: List<View>, checkedViewPositionList: List<Int>, changedViewPositionList: List<Int>) -> Unit) {
         initializeWithTabInfo(enableSingleCheck, mustHaveOneChecked, enableDividerWeight, enableDividerEdgesWeight, dividerWeight, minimumWidthOrHeight, titleList.map { TabInfo(title = it) }, { _: Int, tabInfo: TabInfo -> createUncheckedItemView(tabInfo.title) }, updateViewOnCheckChangedListener)
     }

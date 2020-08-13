@@ -63,8 +63,8 @@ public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
     protected int lastNestedScrollDy;
     protected boolean nestedScrolled;
     protected int parentHeight;
-    public WeakReference<V> viewRef;
-    public WeakReference<View> nestedScrollingChildRef;
+    protected WeakReference<V> viewRef;
+    protected WeakReference<View> nestedScrollingChildRef;
     protected BottomSheetCallback callback;
     protected VelocityTracker velocityTracker;
     protected int activePointerId;

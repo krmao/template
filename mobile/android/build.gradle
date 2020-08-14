@@ -127,7 +127,7 @@ ext {
     // React Native Version
     reactNativeVersion = "0.62.2"
 
-    smartRefreshLayoutVersion = "2.0.0-alpha-1"
+    smartRefreshLayoutVersion = "2.0.1"
     guavaVersion = "22.0-android"
     junitVersion = "4.12"
     mockitoVersion = "1.0.0"

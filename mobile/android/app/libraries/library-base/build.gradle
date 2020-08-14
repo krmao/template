@@ -96,22 +96,10 @@ dependencies {
     // https://github.com/scwang90/SmartRefreshLayout
     api "com.scwang.smart:refresh-layout-kernel:$rootProject.ext.smartRefreshLayoutVersion"
     //核心必须依赖
-    api "com.scwang.smart:refresh-header-classics:$rootProject.ext.smartRefreshLayoutVersion"
-    //经典刷新头
-    api "com.scwang.smart:refresh-header-radar:$rootProject.ext.smartRefreshLayoutVersion"
-    //雷达刷新头
-    api "com.scwang.smart:refresh-header-falsify:$rootProject.ext.smartRefreshLayoutVersion"
-    //虚拟刷新头
-    api "com.scwang.smart:refresh-header-material:$rootProject.ext.smartRefreshLayoutVersion"
-    //谷歌刷新头
-    api "com.scwang.smart:refresh-header-two-level:$rootProject.ext.smartRefreshLayoutVersion"
-    //二级刷新头
-    api "com.scwang.smart:refresh-footer-ball:$rootProject.ext.smartRefreshLayoutVersion"
-    //球脉冲加载
-    api "com.scwang.smart:refresh-footer-classics:$rootProject.ext.smartRefreshLayoutVersion"
-    //经典加载
+    api "com.scwang.smart:refresh-header-classics:$rootProject.ext.smartRefreshLayoutVersion" //经典刷新头
+    api "com.scwang.smart:refresh-footer-classics:$rootProject.ext.smartRefreshLayoutVersion"  //经典加载
 
-    api "com.airbnb.android:lottie:2.7.0"
+    api "com.airbnb.android:lottie:3.2.2"
 
     api(name: "bspatch-0.0.2", ext: "aar")
     // api "com.smart.library.util:bspatch:0.0.2"

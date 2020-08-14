@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:ignore="HardcodedText">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/secondFloorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
+        app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetBackdropSecondFloorBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/light_blue_A700"
+                android:gravity="center_vertical"
+                android:text="二楼 TITLE BAR"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/orange"
+                android:gravity="center_vertical"
+                android:text="左右图片滚动"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/backdropBehaviorViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_A100" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_900"
+                android:gravity="center_vertical"
+                android:text="二楼"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_700"
+                android:gravity="center_vertical"
+                android:text="二楼"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_500"
+                android:gravity="center_vertical"
+                android:text="二楼"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_300"
+                android:gravity="center_vertical"
+                android:text="二楼"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/blue_100"
+                android:gravity="center_vertical"
+                android:text="二楼"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/titleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        app:layout_anchor="@id/bottomSheetContainer"
+        app:layout_anchorGravity="top|start">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            app:title="TOOLBAR" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomSheetContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/st_beauty"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior"
+        tools:behavior_peekHeight="@dimen/bottomSheetPeekHeight"
+        tools:ignore="MissingPrefix" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_launcher"
+        android:translationX="20dp"
+        android:translationY="-20dp"
+        app:backgroundTint="@color/blue_300"
+        app:backgroundTintMode="src_over"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/titleBar"
+        app:layout_anchorGravity="bottom|end"
+        app:pressedTranslationZ="3dp"
+        app:rippleColor="@color/orange"
+        app:useCompatPadding="false" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

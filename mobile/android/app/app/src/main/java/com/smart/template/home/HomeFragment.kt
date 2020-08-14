@@ -60,6 +60,9 @@ class HomeFragment : STBaseFragment() {
         btnMagic.setOnClickListener {
             STMagicFragment.goTo(context)
         }
+        secondFloor.setOnClickListener {
+            startActivity(Intent(context, STBehaviorBottomSheetSecondFloorActivity::class.java))
+        }
         btnRipple.setOnClickListener {
             STRippleFragment.goTo(context)
         }

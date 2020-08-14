@@ -79,14 +79,23 @@
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
             android:taskAffinity="template.smart.com"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="MissingClass" />
 
         <activity
             android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
             android:taskAffinity="template.smart.com"
-            android:theme="@style/STAppTheme.Light.NoActionBar"
+            android:theme="@style/STAppTheme.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.template.home.STBehaviorBottomSheetSecondFloorActivity"
+            android:configChanges="orientation"
+            android:launchMode="standard"
+            android:taskAffinity="template.smart.com"
+            android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <meta-data

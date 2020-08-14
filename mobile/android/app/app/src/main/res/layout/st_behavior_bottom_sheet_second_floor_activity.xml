@@ -117,7 +117,77 @@
         app:behavior_peekHeight="0dp"
         app:layout_behavior="com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior"
         tools:behavior_peekHeight="@dimen/bottomSheetPeekHeight"
-        tools:ignore="MissingPrefix" />
+        tools:ignore="MissingPrefix">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="false"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/pink_50"
+                    android:gravity="center_vertical"
+                    android:text="一楼 TITLE BAR"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/pink_900"
+                    android:gravity="center_vertical"
+                    android:text="一楼"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/pink_700"
+                    android:gravity="center_vertical"
+                    android:text="一楼"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/pink_500"
+                    android:gravity="center_vertical"
+                    android:text="一楼"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/pink_300"
+                    android:gravity="center_vertical"
+                    android:text="一楼"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:background="@color/pink_100"
+                    android:gravity="center_vertical"
+                    android:text="一楼"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"

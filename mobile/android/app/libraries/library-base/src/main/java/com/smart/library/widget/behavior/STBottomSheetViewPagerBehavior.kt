@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntDef
+import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils
 import androidx.core.view.ViewCompat
@@ -25,7 +26,7 @@ import kotlin.math.min
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehavior] located.
  */
-@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused", "UsePropertyAccessSyntax")
+@Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused", "UsePropertyAccessSyntax", "RedundantOverride", "ProtectedInFinal")
 class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 
     /**
@@ -348,12 +349,15 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      *     insets
      * }
      */
+    @UiThread
     fun setOnParentHeightChangedListener(onParentHeightChangedListener: (parent: CoordinatorLayout, child: V, isFirst: Boolean) -> Unit) {
         this.onParentHeightChangedListener = onParentHeightChangedListener
     }
     //endregion
 
     private var customHalfExpandedOffset: Int = -1
+
+    @UiThread
     fun setCustomHalfExpandedOffset(halfExpandedOffset: Int): Int {
         this.customHalfExpandedOffset = halfExpandedOffset
         setHalfExpandedOffset(getParentHeight() / 2)
@@ -367,7 +371,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return super.setHalfExpandedOffset(if (customHalfExpandedOffset != -1) customHalfExpandedOffset else halfExpandedOffset)
     }
 
-    public override fun calculateCollapsedOffset() {
+    override fun calculateCollapsedOffset() {
         super.calculateCollapsedOffset()
     }
 
@@ -385,6 +389,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return this.collapsedOffset
     }
 
+    @UiThread
     private fun setParentHeight(parentHeight: Int): Boolean {
         if (parentHeight <= 0 || parentHeight == currentParentHeightOnSetFinalState) {
             STLogUtil.e(TAG, "setParentHeight:$parentHeight failure, return false")
@@ -396,7 +401,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return true
     }
 
-    fun calculateExpandedOffset(expandedOffset: Int = Math.max(0, getParentHeight() - (getView()?.height ?: getParentHeight()))) {
+    protected fun calculateExpandedOffset(expandedOffset: Int = Math.max(0, getParentHeight() - (getView()?.height ?: getParentHeight()))) {
         this.fitToContentsOffset = expandedOffset
         STLogUtil.w(TAG, "calculateExpandedOffset fitToContentsOffset=$fitToContentsOffset, expandedOffset=$expandedOffset, getView()?.height=${getView()?.height}, getParentHeight=${getParentHeight()}")
     }
@@ -444,6 +449,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             }
         }
     */
+    @UiThread
     fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
         STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState")
         if (!setParentHeight(parentHeight) && (parentHeight > 0 && currentFinalState != -1)) {
@@ -466,6 +472,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         STLogUtil.e(TAG, "setStateOnParentHeightChanged end")
     }
 
+    @UiThread
     override fun setState(@FinalState state: Int) {
         val finalState = wrapStateForEnableHalfExpanded(state)
         STLogUtil.w(TAG, "setState state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
@@ -517,7 +524,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     /**
      * 设置浮层面板容器的高度
      */
-    private fun setBottomSheetViewHeight(height: Int) {
+    @UiThread
+    fun setBottomSheetViewHeight(height: Int) {
         val bottomSheetContainer: View? = getView()
         val params: CoordinatorLayout.LayoutParams? = bottomSheetContainer?.layoutParams as? CoordinatorLayout.LayoutParams
         if (params != null) {
@@ -553,6 +561,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     /**
      * 当 viewPager 页面切换时, 更新 nestedScrollingChildRef
      */
+    @UiThread
     fun bindViewPager(viewPager: ViewPager) {
         viewPager.removeOnPageChangeListener(onPageChangeListener)
         viewPager.addOnPageChangeListener(onPageChangeListener)
@@ -580,6 +589,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     //endregion
 
     //region test, set state with animation end callback
+    @UiThread
     fun setStateWithAnimationEndCallback(@FinalState state: Int, onAnimationEndCallback: () -> Unit) {
         val finalState = wrapStateForEnableHalfExpanded(state)
         STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")

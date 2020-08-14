@@ -21,24 +21,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/light_blue_A700"
-                android:gravity="center_vertical"
-                android:text="二楼 TITLE BAR"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:background="@color/orange"
-                android:gravity="center_vertical"
-                android:text="左右图片滚动"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/backdropBehaviorViewPager"
                 android:layout_width="match_parent"
@@ -47,46 +29,10 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/blue_900"
-                android:gravity="center_vertical"
-                android:text="二楼"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/blue_700"
-                android:gravity="center_vertical"
-                android:text="二楼"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="1000dp"
                 android:background="@color/blue_500"
                 android:gravity="center_vertical"
-                android:text="二楼"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/blue_300"
-                android:gravity="center_vertical"
-                android:text="二楼"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/blue_100"
-                android:gravity="center_vertical"
-                android:text="二楼"
+                android:text="二楼内容"
                 android:textSize="50sp"
                 android:textStyle="bold" />
 
@@ -133,55 +79,10 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/pink_50"
-                    android:gravity="center_vertical"
-                    android:text="一楼 TITLE BAR"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/pink_900"
-                    android:gravity="center_vertical"
-                    android:text="一楼"
-                    android:textSize="50sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/pink_700"
-                    android:gravity="center_vertical"
-                    android:text="一楼"
-                    android:textSize="50sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="1200dp"
                     android:background="@color/pink_500"
                     android:gravity="center_vertical"
-                    android:text="一楼"
-                    android:textSize="50sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/pink_300"
-                    android:gravity="center_vertical"
-                    android:text="一楼"
-                    android:textSize="50sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:background="@color/pink_100"
-                    android:gravity="center_vertical"
-                    android:text="一楼"
+                    android:text="一楼内容"
                     android:textSize="50sp"
                     android:textStyle="bold" />
 

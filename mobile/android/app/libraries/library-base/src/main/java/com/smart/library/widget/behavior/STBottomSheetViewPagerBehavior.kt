@@ -43,6 +43,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      *
      * 注意: 从 STATE_EXPANDED 状态拖拽下滑, 如果手指触摸的是内嵌的滚动列表, 则不会触发 onViewReleased, 松手强制设置 STATE_COLLAPSED,
      *      如果手指触摸的是内嵌的非滚动布局, 则会乖乖的到 STATE_HALF_EXPANDED 状态
+     * @see wrapStateForEnableHalfExpanded
      */
     var enableHalfExpandedState = false
 
@@ -466,9 +467,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     override fun setState(@FinalState state: Int) {
-        super.setState(state)
-        STLogUtil.w(TAG, "setState=$state")
-        currentFinalState = state
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        STLogUtil.w(TAG, "setState state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
+
+        super.setState(finalState)
+        currentFinalState = finalState
     }
 
     fun getParentHeight(): Int {
@@ -578,17 +581,18 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
     //region test, set state with animation end callback
     fun setStateWithAnimationEndCallback(@FinalState state: Int, onAnimationEndCallback: () -> Unit) {
-        STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=$state")
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
 
-        if (state == getState()) {
+        if (finalState == getState()) {
             onAnimationEndCallback()
             return
         }
         if (getViewRef() == null) {
-            if (state == STBottomSheetBehavior.STATE_COLLAPSED || state == STBottomSheetBehavior.STATE_EXPANDED || state == STBottomSheetBehavior.STATE_HALF_EXPANDED || hideable && state == STBottomSheetBehavior.STATE_HIDDEN) {
-                this.state = state
-                if (!(hideable && state == STBottomSheetBehavior.STATE_HIDDEN)) {
-                    currentFinalState = state
+            if (finalState == STBottomSheetBehavior.STATE_COLLAPSED || finalState == STBottomSheetBehavior.STATE_EXPANDED || finalState == STBottomSheetBehavior.STATE_HALF_EXPANDED || hideable && finalState == STBottomSheetBehavior.STATE_HIDDEN) {
+                this.state = finalState
+                if (!(hideable && finalState == STBottomSheetBehavior.STATE_HIDDEN)) {
+                    currentFinalState = finalState
                 }
             }
             onAnimationEndCallback()
@@ -601,9 +605,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
         val parent = child.parent
         if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
-            child.post { startSettlingAnimationWithAnimationEndCallback(child, state, onAnimationEndCallback) }
+            child.post { startSettlingAnimationWithAnimationEndCallback(child, finalState, onAnimationEndCallback) }
         } else {
-            startSettlingAnimationWithAnimationEndCallback(child, state, onAnimationEndCallback)
+            startSettlingAnimationWithAnimationEndCallback(child, finalState, onAnimationEndCallback)
         }
     }
 
@@ -633,6 +637,15 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         } else {
             setStateInternalWithAnimationEndCallback(tmpState, onAnimationEndCallback)
         }
+    }
+
+    /**
+     * @see enableHalfExpandedState
+     */
+    private fun wrapStateForEnableHalfExpanded(state: Int): Int = if (!this.enableHalfExpandedState && state == STATE_HALF_EXPANDED) STATE_COLLAPSED else state
+
+    override fun setStateInternal(state: Int) {
+        super.setStateInternal(wrapStateForEnableHalfExpanded(state))
     }
 
     private fun setStateInternalWithAnimationEndCallback(state: Int, onAnimationEndCallback: () -> Unit) {

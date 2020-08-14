@@ -318,17 +318,40 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
     }
 
+    //region window insets changed 时会调用
+    private var currentParentHeightOnSetFinalState: Int = 0
+
     /**
      * 切换/显示/隐藏 虚拟导航栏时, 会重新调用 onLayoutChild
+     * 切换 app 也会调用
      */
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
-        STLogUtil.w(TAG, "onLayoutChild start halfExpandedOffset=$halfExpandedOffset")
+        STLogUtil.w(TAG, "onLayoutChild start currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
         val onLayoutChild = super.onLayoutChild(parent, child, layoutDirection)
-        STLogUtil.w(TAG, "onLayoutChild end halfExpandedOffset=$halfExpandedOffset")
+        val newParentHeight = parent.height
+        if (newParentHeight > 0 && newParentHeight != currentParentHeightOnSetFinalState) {
+            onParentHeightChangedListener?.invoke(parent, child, currentFinalState == -1)
+        }
+        STLogUtil.w(TAG, "onLayoutChild end currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
         return onLayoutChild
     }
 
-    //region set bottom sheet size and state
+    private var onParentHeightChangedListener: ((parent: CoordinatorLayout, child: V, isFirst: Boolean) -> Unit)? = null
+
+    /**
+     * 当切换/显示/隐藏 虚拟导航栏导致的视觉问题时, 重新设置所有高度
+     *
+     * 等同->
+     * ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
+     *     STSystemUtil.showSystemInfo(this)
+     *     insets
+     * }
+     */
+    fun setOnParentHeightChangedListener(onParentHeightChangedListener: (parent: CoordinatorLayout, child: V, isFirst: Boolean) -> Unit) {
+        this.onParentHeightChangedListener = onParentHeightChangedListener
+    }
+    //endregion
+
     private var customHalfExpandedOffset: Int = -1
     fun setCustomHalfExpandedOffset(halfExpandedOffset: Int): Int {
         this.customHalfExpandedOffset = halfExpandedOffset
@@ -362,11 +385,12 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     private fun setParentHeight(parentHeight: Int): Boolean {
-        if (parentHeight <= 0 || parentHeight == this.parentHeight) {
+        if (parentHeight <= 0 || parentHeight == currentParentHeightOnSetFinalState) {
             STLogUtil.e(TAG, "setParentHeight:$parentHeight failure, return false")
             return false
         }
         this.parentHeight = parentHeight
+        this.currentParentHeightOnSetFinalState = parentHeight
         STLogUtil.e(TAG, "setParentHeight:$parentHeight success, return true")
         return true
     }
@@ -384,13 +408,41 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     /**
-     * 重设面板可滑动的高度/状态, 当虚拟键盘切换/隐藏/显示导致屏幕内容高度变化时
+     * 当切换/显示/隐藏 虚拟导航栏导致的视觉问题时, 重新设置所有高度
+     *
+     * 做了以下事情 ->
+     * 在第一次 onWindowFocusChanged 中获取正确的 parentHeight, 代替 isFirst
+     * 使用 onConfigurationChanged/setOnApplyWindowInsetsListener 监听 parentHeight changed
      *
      * @param parentHeight 屏幕可视范围总高度为 状态栏 + 内容高度, 面板可滑动总高度, 不包含虚拟状态栏
      * @param expandedOffset 状态为 STATE_EXPANDED 时, getView().top 与屏幕顶部之间距离
      * @param halfExpandedOffset 状态为 STATE_HALF_EXPANDED 时, getView().top 与屏幕顶部之间距离
      * @param peekHeight 状态为 STATE_COLLAPSED 时, getView().top 与屏幕底部之间距离
      */
+    /*
+        private fun initBottomSheetBehavior() {
+            bottomSheetBehavior.enableHalfExpandedState = true
+            bottomSheetBehavior.dragEnabled = true
+            bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
+            bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->
+                val parentHeight = parent.height
+                STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${bottomSheetBehavior.getStateDescription(bottomSheetBehavior.currentFinalState)}")
+                STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
+                bottomSheetBehavior.setStateOnParentHeightChanged(
+                    state = if (isFirst) STBottomSheetBehavior.STATE_HALF_EXPANDED else bottomSheetBehavior.currentFinalState,
+                    parentHeight = parentHeight,
+                    expandedOffset = (parentHeight * 0.1f).toInt(),
+                    halfExpandedOffset = (parentHeight * 0.6f).toInt(),
+                    peekHeight = bottomSheetPeekHeight
+                ) {
+                    STLogUtil.w(TAG, "onAnimationEndCallback")
+                    STToastUtil.show("onAnimationEndCallback")
+                }
+
+                STLogUtil.e(TAG, "onParentHeightChangedListener end newParentHeight=${parent.height}, isFirst=$isFirst")
+            }
+        }
+    */
     fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
         STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState")
         if (!setParentHeight(parentHeight) && (parentHeight > 0 && currentFinalState != -1)) {
@@ -420,7 +472,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     fun getParentHeight(): Int {
-        return this.parentHeight
+        return if (currentFinalState != -1 && this.currentParentHeightOnSetFinalState > 0) this.currentParentHeightOnSetFinalState else this.parentHeight
     }
 
     fun getView(): V? {
@@ -479,8 +531,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         STATE_COLLAPSED -> "STATE_COLLAPSED"
         STATE_HIDDEN -> "STATE_HIDDEN"
         STATE_HALF_EXPANDED -> "STATE_HALF_EXPANDED"
-        STBottomSheetBehavior.PEEK_HEIGHT_AUTO -> "PEEK_HEIGHT_AUTO"
-        else -> "UNKNOWN_$state"
+        else -> "$state"
     }
 
     //region 当 viewPager 页面切换时, 更新 nestedScrollingChildRef

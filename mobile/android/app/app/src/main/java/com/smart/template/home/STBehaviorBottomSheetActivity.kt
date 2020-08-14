@@ -44,7 +44,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
 
     private fun initBottomSheetBehavior() {
-        bottomSheetBehavior.enableHalfExpandedState = false
+        bottomSheetBehavior.enableHalfExpandedState = true
         bottomSheetBehavior.dragEnabled = true
         bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
         bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->

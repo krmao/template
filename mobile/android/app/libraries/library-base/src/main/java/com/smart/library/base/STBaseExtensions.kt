@@ -100,6 +100,7 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
 /**
  * 方法内加了 requestLayout
  * 会必然触发 onGlobalLayout 回调
+ * @return view.height 并不会随着改变/显示/隐藏 虚拟导航栏而显示不同的值, 经测试一直都是 screenRealHeight, 还是需要调用通过 STSystemUtil.showSystemInfo(this) 去获取正确的高度
  */
 fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
     STLogUtil.w("ensureOnGlobalLayoutListener start")

@@ -77,13 +77,14 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
             window?.decorView?.ensureOnGlobalLayoutListener {
-                STLogUtil.w(TAG, "onLayoutListener")
+                STLogUtil.w(TAG, "onGlobalLayout callback ${it.height}")
                 STSystemUtil.showSystemInfo(this)
+                STToastUtil.show("onGlobalLayout callback ${it.height}")
             }
         }
 
         window?.decorView?.ensureOnGlobalLayoutListener {
-            STLogUtil.w(TAG, "onCreate onLayoutListener")
+            STLogUtil.w(TAG, "onCreate onGlobalLayout callback ${it.height}")
             STSystemUtil.showSystemInfo(this)
         }
     }

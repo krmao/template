@@ -27,7 +27,7 @@
     <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
     <application
-        android:name=".FinalApplication"
+        android:name="com.smart.template.FinalApplication"
         android:allowBackup="true"
         android:allowTaskReparenting="false"
         android:fullBackupContent="@xml/st_backup_descriptor"
@@ -44,14 +44,12 @@
             android:name="com.smart.template.home.tab.HomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:taskAffinity="template.smart.com"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.smart.template.SplashActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
-            android:taskAffinity="template.smart.com"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
@@ -75,18 +73,9 @@
         </activity>
 
         <activity
-            android:name="com.smart.template.home.videoplayer.STVideoPagerActivity"
-            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
-            android:launchMode="standard"
-            android:taskAffinity="template.smart.com"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            tools:ignore="MissingClass" />
-
-        <activity
             android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
-            android:taskAffinity="template.smart.com"
             android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
@@ -94,7 +83,6 @@
             android:name="com.smart.template.home.STBehaviorBottomSheetSecondFloorActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
-            android:taskAffinity="template.smart.com"
             android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 

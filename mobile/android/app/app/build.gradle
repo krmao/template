@@ -58,7 +58,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        archivesBaseName = "app_${versionName}_${versionName}"
+        archivesBaseName = "${applicationId}_V${versionName}_${versionCode}_${new Date().format('yyyyMMddHHmmss')}"
 
         vectorDrawables.useSupportLibrary = true
         // Gradle Plugin 2.0以上,AppCompat23.2以上,Android 5.0之前使用Vector
@@ -272,18 +272,6 @@ android {
                     }
                 }
             }
-
-            def flavorName = "app"
-            if (variant.productFlavors.size() > 0) {
-                flavorName = variant.productFlavors[0].name
-            }
-            def buildType = variant.variantData.variantConfiguration.buildType.name
-            def versionName = variant.versionName
-            def versionCode = variant.versionCode
-            def date = new Date()
-            def formattedDate = date.format('yyyyMMddHHmmss')
-            def apkFileName = "${flavorName}_${versionName}_${versionCode}_${buildType}_${formattedDate}.apk"
-            outputFileName = apkFileName
         }
     }
 }

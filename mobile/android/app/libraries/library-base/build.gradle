@@ -54,7 +54,6 @@ dependencies {
     api "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
 
     /******* 必备工具库 ****************************************************************************/
-    api "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
     api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
     api "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
     api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
@@ -64,17 +63,14 @@ dependencies {
     api "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
     api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
 
-    /******* 数据库管理 ****************************************************************************/
-    //api "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
-
     /******* 网络请求库 ****************************************************************************/
     api "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
-    // api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion" //STHttpLoggingInterceptor
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
-    //api "org.ligboy.retrofit2:converter-fastjson-android:$rootProject.ext.converterfastjsonandroidVersion"
-    //api "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
+    // api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion" //STHttpLoggingInterceptor
+    // api "org.ligboy.retrofit2:converter-fastjson-android:$rootProject.ext.converterfastjsonandroidVersion"
+    // api "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
 
     /******* 网络图片库 ****************************************************************************/
     if (gradle.ext.modules.reactNative.enable == true) {
@@ -89,13 +85,8 @@ dependencies {
     api "com.gyf.immersionbar:immersionbar:2.3.1" // 沉浸式状态栏
     api "com.andkulikov:transitionseverywhere:1.7.8"
     api "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0"
-    // https://github.com/davemorrissey/subsampling-scale-image-view
 
-    // api "com.liaoinstan.springview:library:1.3.2"
-
-    // https://github.com/scwang90/SmartRefreshLayout
-    api "com.scwang.smart:refresh-layout-kernel:$rootProject.ext.smartRefreshLayoutVersion"
-    //核心必须依赖
+    api "com.scwang.smart:refresh-layout-kernel:$rootProject.ext.smartRefreshLayoutVersion" // https://github.com/scwang90/SmartRefreshLayout
     api "com.scwang.smart:refresh-header-classics:$rootProject.ext.smartRefreshLayoutVersion" //经典刷新头
     api "com.scwang.smart:refresh-footer-classics:$rootProject.ext.smartRefreshLayoutVersion"  //经典加载
 
@@ -103,6 +94,10 @@ dependencies {
 
     api(name: "bspatch-0.0.2", ext: "aar")
     // api "com.smart.library.util:bspatch:0.0.2"
+    // api "org.greenrobot:greendao:$rootProject.ext.greendaoVersion"
+    // api "com.google.guava:guava:$rootProject.ext.guavaVersion"  //1.5MB
+    // api "com.liaoinstan.springview:library:1.3.2"
+    // https://github.com/davemorrissey/subsampling-scale-image-view
 }
 
 /*apply plugin: "maven"

@@ -176,10 +176,10 @@ class RxPermissions(activity: Activity) {
                 subject = PublishSubject.create()
                 rxPermissionsFragment.setSubjectForPermission(permission, subject)
             }
-            subject?.let { list.add(it) }
+            subject.let { list.add(it) }
         }
 
-        if (!unrequestedPermissions.isEmpty()) {
+        if (unrequestedPermissions.isNotEmpty()) {
             val unrequestedPermissionsArray = unrequestedPermissions.toTypedArray()
             requestPermissionsFromFragment(unrequestedPermissionsArray)
         }

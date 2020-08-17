@@ -10,7 +10,7 @@
             android:name=".ReactActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait"
-            android:taskAffinity="template.smart.com"
+            android:taskAffinity="${applicationId}"
             android:theme="@style/STAppTheme.Translucent.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
@@ -18,7 +18,7 @@
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="template.smart.com"
+            android:taskAffinity="${applicationId}"
             android:theme="@style/STAppTheme.Translucent.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 

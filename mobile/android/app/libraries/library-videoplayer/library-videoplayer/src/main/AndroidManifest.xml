@@ -3,6 +3,13 @@
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true" />
+        android:supportsRtl="true">
+        <activity
+            android:name="com.smart.template.home.videoplayer.STVideoPagerActivity"
+            tools:ignore="MissingClass"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+    </application>
 
 </manifest>

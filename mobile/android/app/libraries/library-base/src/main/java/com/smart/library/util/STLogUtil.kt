@@ -208,7 +208,7 @@ object STLogUtil {
 
     @JvmStatic
     fun getCacheDir(): File {
-        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STConfig.NAME_LOG_DIR else STChecksumUtil.genMD5Checksum(STConfig.NAME_LOG_DIR))
+        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STConfig.NAME_LOG_DIR else STChecksumUtil.genMD5ForCharSequence(STConfig.NAME_LOG_DIR))
         if (!cacheDir.exists())
             cacheDir.mkdirs()
         return cacheDir

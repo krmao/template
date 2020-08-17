@@ -66,7 +66,7 @@ fun AbsListView.performItemClick(position: Int) {
  * @param debug true 返回自身, false 返回 md5
  */
 @JvmOverloads
-fun String.md5(debug: Boolean = false): String = if (debug) this else STChecksumUtil.genMD5Checksum(this)
+fun String.md5(debug: Boolean = false): String = if (debug) this else STChecksumUtil.genMD5ForCharSequence(this)
 
 fun Fragment.uiThread(fn: () -> Unit) {
     if (this.isDetached) return

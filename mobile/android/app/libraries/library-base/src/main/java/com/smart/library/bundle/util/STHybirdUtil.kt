@@ -94,7 +94,7 @@ object STHybirdUtil {
         var success = false
         if (zipFile != null && !TextUtils.isEmpty(moduleZipMd5)) {
             val zipFileExists = zipFile.exists()
-            val zipFileMd5 = STChecksumUtil.genMD5Checksum(zipFile)
+            val zipFileMd5 = STChecksumUtil.genMD5ForFile(zipFile)
             val isZipFileMd5Valid = zipFileMd5 == moduleZipMd5
             success = zipFileExists && isZipFileMd5Valid
         }
@@ -116,7 +116,7 @@ object STHybirdUtil {
             var validFilesCount = 0
             if (localUnzipDirExists) {
                 STFileUtil.getFileList(unZipDir).forEach {
-                    val fileMd5 = STChecksumUtil.genMD5Checksum(it)
+                    val fileMd5 = STChecksumUtil.genMD5ForFile(it)
                     val remotePath = it.absolutePath.replace(unZipDir.absolutePath, "")
                     val rightMd5 = moduleFilesMd5[remotePath]
                     val isFileMd5Valid = fileMd5 == rightMd5

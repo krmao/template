@@ -34,7 +34,7 @@ class STPatchHelper(type: STDeployManager, val info: STPatchInfo) {
     fun checkPatchFileValid(): Boolean = getTempPatchFile().exists()
     fun checkTempBundleFileValid(): Boolean {
         val tempZipFile = getTempZipFile()
-        val md5 = STChecksumUtil.genMD5Checksum(tempZipFile)
+        val md5 = STChecksumUtil.genMD5ForFile(tempZipFile)
         val fileExists = tempZipFile.exists()
         val md5Check = md5 == info.bundleChecksum
         val checkTempBundleFileValid = fileExists && md5Check

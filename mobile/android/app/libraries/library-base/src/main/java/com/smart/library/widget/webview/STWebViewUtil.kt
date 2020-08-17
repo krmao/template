@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.smart.library.widget.webview
 
 import android.annotation.SuppressLint

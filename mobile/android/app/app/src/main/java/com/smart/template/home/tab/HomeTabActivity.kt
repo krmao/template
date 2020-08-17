@@ -28,6 +28,9 @@ class HomeTabActivity : STBaseActivity() {
         supportFragmentManager.beginTransaction().add(android.R.id.content, HomeTabFragment(), HomeTabFragment::javaClass.name).commitAllowingStateLoss()
     }
 
+    /**
+     * B 页面 如果 android:windowIsTranslucent==true, 则不会调用 A 页面的 onRestart
+     */
     override fun onRestart() {
         super.onRestart()
         STLogUtil.d("home", "activity: onRestart")

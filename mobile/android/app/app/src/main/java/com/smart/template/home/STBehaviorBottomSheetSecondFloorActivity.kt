@@ -1,5 +1,6 @@
 package com.smart.template.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -85,8 +86,52 @@ class STBehaviorBottomSheetSecondFloorActivity : STBaseActivity() {
         floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
     }
 
+    /**
+     * B 页面 如果 android:windowIsTranslucent==true, 则不会调用 A 页面的 onRestart
+     */
+    override fun onRestart() {
+        super.onRestart()
+        STLogUtil.d(TAG, "activity: onRestart")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        STLogUtil.d(TAG, "activity: onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        STLogUtil.d(TAG, "activity: onResume")
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        STLogUtil.d(TAG, "activity: onWindowFocusChanged hasFocus=$hasFocus")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        STLogUtil.d(TAG, "activity: onPause")
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        STLogUtil.d(TAG, "activity: onNewIntent")
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        STLogUtil.d(TAG, "activity: onAttachedToWindow")
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        STLogUtil.d(TAG, "activity: onDetachedFromWindow")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        STLogUtil.d(TAG, "activity: onDestroy")
         bottomSheetBehavior.removeBottomSheetCallback(onBottomSheetCallback)
     }
 }

@@ -83,7 +83,7 @@
             android:name="com.smart.template.home.STBehaviorBottomSheetSecondFloorActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <meta-data

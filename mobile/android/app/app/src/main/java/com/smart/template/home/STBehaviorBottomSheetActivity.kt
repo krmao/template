@@ -90,6 +90,9 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
 
+    /**
+     * B 页面 如果 android:windowIsTranslucent==true, 则不会调用 A 页面的 onRestart
+     */
     override fun onRestart() {
         super.onRestart()
         STLogUtil.d(TAG, "activity: onRestart")
@@ -103,6 +106,11 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     override fun onResume() {
         super.onResume()
         STLogUtil.d(TAG, "activity: onResume")
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        STLogUtil.d(TAG, "activity: onWindowFocusChanged hasFocus=$hasFocus")
     }
 
     override fun onPause() {

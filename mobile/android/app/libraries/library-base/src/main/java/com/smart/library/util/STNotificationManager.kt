@@ -153,16 +153,16 @@ import com.smart.library.base.STBaseApplication
  */
 
 /**
- * @see https://developer.android.com/training/notify-user/navigation.html
- * @see https://developer.android.com/training/notify-user/navigation.html#ExtendedNotification
- * @see https://developer.android.com/training/notify-user/build-notification.html#SimpleNotification
- * @see https://developer.android.com/training/notify-user/channels.html
- * @see https://developer.android.com/training/notify-user/group.html
- * @see https://developer.android.com/training/notify-user/channels.html#CreateChannelGroup
+ * @see @link{https://developer.android.com/training/notify-user/navigation.html}
+ * @see @link{https://developer.android.com/training/notify-user/navigation.html#ExtendedNotification}
+ * @see @link{https://developer.android.com/training/notify-user/build-notification.html#SimpleNotification}
+ * @see @link{https://developer.android.com/training/notify-user/channels.html}
+ * @see @link{https://developer.android.com/training/notify-user/group.html}
+ * @see @link{https://developer.android.com/training/notify-user/channels.html#CreateChannelGroup}
  *
  * 通知栏小图标必须为纯透明背景,白色 icon 内容
- * @see https://blog.csdn.net/u013706904/article/details/51912634
- * @see https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead
+ * @see @link{https://blog.csdn.net/u013706904/article/details/51912634}
+ * @see @link{https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead}
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object STNotificationManager {

@@ -1,12 +1,11 @@
 package com.smart.library.util.rx.permission
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.os.Build
-import androidx.core.content.PermissionChecker
 import android.text.TextUtils
+import androidx.core.content.PermissionChecker
 import com.smart.library.base.STBaseApplication
 import com.smart.library.util.STLogUtil
 import io.reactivex.Observable

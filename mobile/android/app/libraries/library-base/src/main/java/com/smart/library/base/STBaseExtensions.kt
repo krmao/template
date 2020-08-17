@@ -97,17 +97,23 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
     }).start()
 }
 
-fun View.setOnLayoutListener(onLayout: (view: View) -> Unit) {
-    STLogUtil.w("setOnLayoutListener start")
+/**
+ * 方法内加了 requestLayout
+ * 会必然触发 onGlobalLayout 回调
+ */
+fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
+    STLogUtil.w("ensureOnGlobalLayoutListener start")
+    // 调用不会立即出发
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val viewTreeObserver: ViewTreeObserver = viewTreeObserver
-            STLogUtil.w("setOnLayoutListener isAlive=${viewTreeObserver.isAlive}")
+            STLogUtil.w("ensureOnGlobalLayoutListener isAlive=${viewTreeObserver.isAlive}")
             if (viewTreeObserver.isAlive) {
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
-                STLogUtil.w("setOnLayoutListener end")
-                onLayout(this@setOnLayoutListener)
+                STLogUtil.w("ensureOnGlobalLayoutListener end")
+                onLayout(this@ensureOnGlobalLayoutListener)
             }
         }
     })
+    requestLayout() // 加 requestLayout 会必然触发 onGlobalLayout
 }

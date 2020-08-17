@@ -3,9 +3,9 @@ package com.smart.template.home
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
+import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
@@ -75,7 +75,17 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
 
     private fun initFloatingActionButton() {
-        floatingActionButton.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
+        floatingActionButton.setOnClickListener {
+            window?.decorView?.ensureOnGlobalLayoutListener {
+                STLogUtil.w(TAG, "onLayoutListener")
+                STSystemUtil.showSystemInfo(this)
+            }
+        }
+
+        window?.decorView?.ensureOnGlobalLayoutListener {
+            STLogUtil.w(TAG, "onCreate onLayoutListener")
+            STSystemUtil.showSystemInfo(this)
+        }
     }
 
     override fun onDestroy() {

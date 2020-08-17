@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.smart.library.base.setOnLayoutListener
+import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
@@ -212,7 +212,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
                     } else {
                         STLogUtil.sync { STLogUtil.w(TAG, "itemViewWidth <=0 setOnLayoutListener start itemViewLeft=$itemViewLeft, itemViewWidth=$itemViewWidth, thread=${Thread.currentThread().name}") }
                         STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener start, thread=${Thread.currentThread().name}") }
-                        itemView.setOnLayoutListener {
+                        itemView.ensureOnGlobalLayoutListener {
                             STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener on callback start, thread=${Thread.currentThread().name}") }
                             doSmoothScrollToMiddle(it)
                             STLogUtil.sync { STLogUtil.e(TAG, "setOnLayoutListener on callback end, thread=${Thread.currentThread().name}") }

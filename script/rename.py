@@ -64,8 +64,6 @@ def read_origin_csv():
                 if int(first_column_string) > 16:
                     break
 
-    order_row_list.append(("今日头条超宽体领潮轿跑第三代名爵6预计7月上市名爵", 20, "2020/5/7", "今日头条", "超宽体领潮轿跑第三代名爵6预计7月上市", "https://chejiahao.autohome.com.cn/info/6073373", "名爵"))
-    order_row_list.append(("将于7月上市新款名爵6实拍图正式曝光懂车帝名爵", 20, "2020/5/7", "懂车帝", "超宽体领潮轿跑第三代名爵6预计7月上市", "https://chejiahao.autohome.com.cn/info/6073373", "名爵"))
     print("read csv end --->")
     return order_row_list
 

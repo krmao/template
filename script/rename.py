@@ -6,7 +6,9 @@ import csv
 # https://www.cnblogs.com/573734817pc/p/10900379.html
 import difflib
 import os
+import os.path
 import shutil
+import time
 
 # https://www.jianshu.com/p/96b95a6c9210
 # https://www.jianshu.com/p/2c9459059400
@@ -15,6 +17,10 @@ import shutil
 # https://blog.csdn.net/intenttao/article/details/84578571
 import pytesseract
 from PIL import Image
+from selenium import webdriver
+
+# 打开网页自动截屏
+# http://chromedriver.storage.googleapis.com/index.html?path=84.0.4147.30/ 下载自己安装的 chrome 对应的版本
 
 # ======================================================================================================================
 # 批量处理文件名
@@ -134,7 +140,117 @@ def get_all_ratios(image_strings, origin_row):
                 max_ratio = ratio
                 max_image_string = image_string
 
+        open_url_and_screenshot_with_chrome(row[5])
         print("max_ratio=[", format(max_ratio, '.4f'), "] , max_origin_num=[", max_origin_row[1], "] , max_origin_string=", max_origin_row[0], ", max_image_string=", max_image_string)
+
+
+def open_url_and_screenshot_with_chrome(url):
+    print("open_url_and_screenshot_with_chrome->", url)
+
+    options = webdriver.ChromeOptions()
+    # 去除安全提示
+    options.add_argument('disable-infobars')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    driver = webdriver.Chrome("./chromedriver", options=options)
+    # 算上浏览器高度
+    # web_width = 1920
+    # web_height = 906
+    # driver.set_window_size(web_width, web_height + 98)
+    driver.maximize_window()
+    # 返回网页的高度的js代码
+    js_height = "return document.body.clientHeight"
+    try:
+        driver.get(url)
+        k = 1
+        height = driver.execute_script(js_height)
+        while True:
+            if k * 500 < height:
+                js_move = "window.scrollTo(0,{})".format(k * 500)
+                print(js_move)
+                driver.execute_script(js_move)
+                time.sleep(0.2)
+                height = driver.execute_script(js_height)
+                k += 1
+            else:
+                break
+        scroll_width = driver.execute_script('return document.body.parentNode.scrollWidth')
+        scroll_height = driver.execute_script('return document.body.parentNode.scrollHeight')
+        # scroll_height = height
+        driver.set_window_size(scroll_width, scroll_height)
+        driver.get_screenshot_as_file(DIR_PATH_NEW + "a" + ".png")
+        print("Process {} get one pic !!!".format(os.getpid()))
+        time.sleep(0.1)
+    except Exception as e:
+        print(e)
+
+
+def image_merge(images, output_dir, output_name='merge.jpg', restriction_max_width=None, restriction_max_height=None):
+    """垂直合并多张图片
+    images - 要合并的图片路径列表
+    ouput_dir - 输出路径
+    output_name - 输出文件名
+    restriction_max_width - 限制合并后的图片最大宽度，如果超过将等比缩小
+    restriction_max_height - 限制合并后的图片最大高度，如果超过将等比缩小
+    """
+
+    # def image_resize(img, size=(1500, 1100)):
+    def image_resize(img, size=(1960, 1080)):
+        """调整图片大小
+        """
+        try:
+            if img.mode not in ('L', 'RGB'):
+                img = img.convert('RGB')
+            img = img.resize(size)
+        except Exception as e:
+            pass
+        return img
+
+    max_width = 0
+    total_height = 0
+    # 计算合成后图片的宽度（以最宽的为准）和高度
+    for img_path in images:
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            width, height = img.size
+            if width > max_width:
+                max_width = width
+            total_height += height
+
+    # 产生一张空白图
+    new_img = Image.new('RGB', (max_width, total_height), 255)
+    # 合并
+    x = y = 0
+    for img_path in images:
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            width, height = img.size
+            new_img.paste(img, (x, y))
+            y += height
+
+    if restriction_max_width and max_width >= restriction_max_width:
+        # 如果宽带超过限制
+        # 等比例缩小
+        ratio = restriction_max_height / float(max_width)
+        max_width = restriction_max_width
+        total_height = int(total_height * ratio)
+        new_img = image_resize(new_img, size=(max_width, total_height))
+
+    if restriction_max_height and total_height >= restriction_max_height:
+        # 如果高度超过限制
+        # 等比例缩小
+        ratio = restriction_max_height / float(total_height)
+        max_width = int(max_width * ratio)
+        total_height = restriction_max_height
+        new_img = image_resize(new_img, size=(max_width, total_height))
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    save_path = '%s/%s' % (output_dir, output_name)
+    new_img.save(save_path)
+    for img_path in images:
+        os.remove(img_path)
+    return save_path
 
 
 if __name__ == '__main__':
@@ -149,5 +265,15 @@ if __name__ == '__main__':
     old_names = read_old_files()
     get_all_ratios(get_image_string_list(old_names), read_origin_csv())
     # renames(old_names, orders)
+
+    # ps -ef | grep chrome
+    # pool = mp.Pool()
+    # pool.map_async(func=open_url_and_screenshot_with_chrome, iterable=["https://chejiahao.autohome.com.cn/info/6073373"])
+    # pool.close()
+    # pool.join()
+
+    # open_url_and_screenshot_with_chrome("https://chejiahao.autohome.com.cn/info/6073373")
+    # open_url_and_screenshot_with_chrome("https://www.ixigua.com/i6824676721900388871/")
+    # open_url_and_screenshot_with_chrome("https://chejiahao.autohome.com.cn/info/6090351")
 
     print("processing end --->")

@@ -15,10 +15,11 @@ import com.baidu.mapapi.model.LatLng
 import com.smart.library.base.STBaseApplication
 import com.smart.library.map.R
 import com.smart.library.map.location.STLocation
+import com.smart.library.util.STLogUtil
 import kotlin.math.abs
 
 @SuppressLint("InflateParams")
-class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callback: ((LatLng) -> Unit)? = null) : SensorEventListener, View.OnClickListener {
+class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callback: ((STLocation) -> Unit)? = null) : SensorEventListener, View.OnClickListener {
 
     private var lastSensorX: Float = 0f
     private var currentLat: Double = 0.0
@@ -38,21 +39,23 @@ class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callba
         stopLocation()
         this.map.isMyLocationEnabled = true
         this.locationBaiduClient.startLocationLoop(800,
-                onSuccess = { location: STLocation ->
-                    this.currentLat = location.latitude
-                    this.currentLng = location.longitude
-                    this.currentAccuracy = location.accuracy
-                    this.map.setMyLocationData(MyLocationData.Builder()
-                            .accuracy(this.currentAccuracy)
-                            .direction(this.currentDirection)
-                            .latitude(this.currentLat)
-                            .longitude(this.currentLng).build()
-                    )
-                    this.callback?.invoke(LatLng(this.currentLat, this.currentLng))
-                },
-                onFailure = { _: Int, _: String ->
-
-                })
+            onSuccess = { location: STLocation ->
+                STLogUtil.d("location", "sensor location loop callback success, callback=$callback, location=$location")
+                this.currentLat = location.latitude
+                this.currentLng = location.longitude
+                this.currentAccuracy = location.accuracy
+                this.map.setMyLocationData(
+                    MyLocationData.Builder()
+                        .accuracy(this.currentAccuracy)
+                        .direction(this.currentDirection)
+                        .latitude(this.currentLat)
+                        .longitude(this.currentLng).build()
+                )
+                this.callback?.invoke(location)
+            },
+            onFailure = { errorCode: Int, errorMessage: String ->
+                STLogUtil.e("location", "sensor location loop callback failure, errorCode=$errorCode, errorMessage=$errorMessage")
+            })
         startSensorService()
     }
 
@@ -91,12 +94,12 @@ class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callba
             if (abs(x - lastSensorX) > 1.0) {
                 currentDirection = x
                 map.setMyLocationData(
-                        MyLocationData.Builder()
-                                .accuracy(currentAccuracy)
-                                .direction(currentDirection)
-                                .latitude(currentLat)
-                                .longitude(currentLng)
-                                .build()
+                    MyLocationData.Builder()
+                        .accuracy(currentAccuracy)
+                        .direction(currentDirection)
+                        .latitude(currentLat)
+                        .longitude(currentLng)
+                        .build()
                 )
             }
             lastSensorX = x

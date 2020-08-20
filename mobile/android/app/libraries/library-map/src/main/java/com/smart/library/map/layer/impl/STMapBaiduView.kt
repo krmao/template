@@ -20,6 +20,7 @@ import com.smart.library.map.R
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapOptions
 import com.smart.library.map.layer.STMapView
+import com.smart.library.map.location.STLocation
 import com.smart.library.map.location.STLocationManager
 import com.smart.library.map.location.impl.STLocationBaiduSensor
 import com.smart.library.map.model.*
@@ -62,12 +63,13 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     override fun onCreate(context: Context?, savedInstanceState: Bundle?) {
         mapView().onCreate(context, savedInstanceState)
-        locationBaiduSensor = STLocationBaiduSensor(context, map()) {
-            val stLatLng = STLatLng(it.latitude, it.longitude, STLatLngType.BD09)
+        locationBaiduSensor = STLocationBaiduSensor(context, map()) { location: STLocation ->
+            val stLatLng = STLatLng(location.latitude, location.longitude, STLatLngType.BD09)
             if (stLatLng.isValid()) {
                 latestLatLon = stLatLng
                 onLocationChanged?.invoke(latestLatLon)
             }
+            STLogUtil.d("location", "onSensorCallback location=$location, latestLatLon=$latestLatLon")
         }
     }
 
@@ -109,6 +111,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
     }
 
     override fun onClick(locationButtonView: View?) {
+        STLogUtil.d("location", "onClick latestLatLon=$latestLatLon")
         if (latestLatLon?.isValid() == true) {
             setMapCenter(latestLatLon, true)
         }
@@ -250,12 +253,12 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     override fun getCurrentMapOptions(): STMapOptions {
         return STMapOptions(
-                map().mapType,
-                map().isTrafficEnabled,
-                map().isBuildingsEnabled,
-                initMapOptions.showMapPoi,
-                getCurrentMapCenterLatLng(),
-                getCurrentMapZoomLevel()
+            map().mapType,
+            map().isTrafficEnabled,
+            map().isBuildingsEnabled,
+            initMapOptions.showMapPoi,
+            getCurrentMapCenterLatLng(),
+            getCurrentMapZoomLevel()
         )
     }
 
@@ -309,18 +312,18 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
         }
 
         private val mapThemeList: List<Array<String>> = listOf(
-                arrayOf("茶田", "map_config_chatian.json"),
-                arrayOf("朱砂痣", "map_config_zhushazhi.json"),
-                arrayOf("绿野仙踪", "map_config_lvyexianzong.json"),
-                arrayOf("青花瓷", "map_config_qinghuaci.json"),
-                arrayOf("一蓑烟雨", "map_config_yisuoyanyu.json"),
-                arrayOf("眼眸", "map_config_yanmou.json"),
-                arrayOf("Candy", "map_config_candy.json"),
-                arrayOf("OKR", "map_config_okr.json"),
-                arrayOf("赛博朋克", "map_config_saibopengke.json"),
-                arrayOf("物流", "map_config_wuliu.json"),
-                arrayOf("出行", "map_config_chuxing.json"),
-                arrayOf("中秋", "map_config_zhongqiu.json")
+            arrayOf("茶田", "map_config_chatian.json"),
+            arrayOf("朱砂痣", "map_config_zhushazhi.json"),
+            arrayOf("绿野仙踪", "map_config_lvyexianzong.json"),
+            arrayOf("青花瓷", "map_config_qinghuaci.json"),
+            arrayOf("一蓑烟雨", "map_config_yisuoyanyu.json"),
+            arrayOf("眼眸", "map_config_yanmou.json"),
+            arrayOf("Candy", "map_config_candy.json"),
+            arrayOf("OKR", "map_config_okr.json"),
+            arrayOf("赛博朋克", "map_config_saibopengke.json"),
+            arrayOf("物流", "map_config_wuliu.json"),
+            arrayOf("出行", "map_config_chuxing.json"),
+            arrayOf("中秋", "map_config_zhongqiu.json")
         )
 
         private var mapThemeIndex: Int = STPreferencesUtil.getInt("map_baidu_theme", 0)

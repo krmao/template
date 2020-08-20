@@ -128,13 +128,14 @@ open class STLocationGaodeClient(private val isNeedAddress: Boolean = true) : ST
                     val latLng = STLatLng(location.latitude, location.longitude, STLatLngType.GCJ02)
                     if (latLng.isValid()) {
 
-                        STLogUtil.w(TAG, "[循环定位]定位成功, 有效经纬度:$latLng")
-                        refreshCache.invoke(toLocation(location)) // 更新定位缓存
+                        val wrapLocation = toLocation(location)
+                        STLogUtil.w(TAG, "[循环定位]定位成功, 有效经纬度:$wrapLocation")
+                        refreshCache.invoke(wrapLocation) // 更新定位缓存
 
-                        onSuccess?.invoke(toLocation(location))
+                        onSuccess?.invoke(wrapLocation)
                     } else {
-                        STLogUtil.w(TAG, "[循环定位]定位成功, 无效经纬度:$latLng")
-                        onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "UN_VALID LATLNG :$latLng")
+                        STLogUtil.w(TAG, "[循环定位]定位成功, 无效经纬度:$location")
+                        onFailure?.invoke(AMapLocation.ERROR_CODE_UNKNOWN, "UN_VALID LOCATION :$location")
                     }
                 } else {
                     STLogUtil.w(TAG, "[循环定位]定位失败, ${location?.errorCode}:${location?.locationDetail}")

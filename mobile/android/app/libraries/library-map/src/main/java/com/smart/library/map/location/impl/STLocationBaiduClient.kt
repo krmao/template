@@ -74,7 +74,7 @@ open class STLocationBaiduClient(private val isNeedAddress: Boolean = true) : ST
                     if (location?.locType == 61 || location?.locType == 161) {
                         val latLng = STLatLng(location.latitude, location.longitude, STLatLngType.BD09)
                         if (latLng.isValid()) {
-                            STLogUtil.d(TAG, "[单次定位]定位成功, 有效经纬度:$latLng")
+                            STLogUtil.d(TAG, "[单次定位]定位成功, 有效经纬度:$latLng, accuracy=${location.radius}")
                             refreshCache.invoke(toLocation(location)) // 更新定位缓存
 
                             onSuccess?.invoke(toLocation(location))
@@ -160,14 +160,14 @@ open class STLocationBaiduClient(private val isNeedAddress: Boolean = true) : ST
                     if (location?.locType == 61 || location?.locType == 161) {
                         val latLng = STLatLng(location.latitude, location.longitude, STLatLngType.BD09)
                         if (latLng.isValid()) {
+                            val wrapLocation = toLocation(location)
+                            STLogUtil.w(TAG, "[循环定位]定位成功, 有效经纬度:$wrapLocation")
+                            refreshCache.invoke(wrapLocation) // 更新定位缓存
 
-                            STLogUtil.w(TAG, "[循环定位]定位成功, 有效经纬度:$latLng")
-                            refreshCache.invoke(toLocation(location)) // 更新定位缓存
-
-                            onSuccess?.invoke(toLocation(location))
+                            onSuccess?.invoke(wrapLocation)
                         } else {
-                            STLogUtil.w(TAG, "[循环定位]定位成功, 无效经纬度:$latLng")
-                            onFailure?.invoke(62, "UN_VALID LATLNG :$latLng")
+                            STLogUtil.w(TAG, "[循环定位]定位成功, 无效经纬度:$location")
+                            onFailure?.invoke(62, "UN_VALID LOCATION :$location")
                         }
                     } else {
                         STLogUtil.w(TAG, "[循环定位]定位失败, location=$location")

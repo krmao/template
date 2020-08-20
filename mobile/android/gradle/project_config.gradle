@@ -29,8 +29,8 @@ gradle.ext {
             ],
             'hybird'       : ['enable': false],
             'map'          : [
-                    'enable'        : false,
-                    'enableMapNames': 'baidu,gaode', // baidu,gaode,google 支持多个, 逗号分隔
+                    'enable'        : true,
+                    'enableMapNames': 'baidu', // baidu,gaode,google 支持多个, 逗号分隔
                     'baiduKey'      : 'A2SNanQqBaGEtIrLgqlaMgU8VqiZvuEh',
                     'gaodeKey'      : 'f0117d654e20c9b29aad6431f69103c3',
                     'googleKey'     : ''

@@ -73,7 +73,9 @@ class HomeFragment : STBaseFragment() {
             startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))
         }
         baiduMap.setOnClickListener {
-            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment") {
+            val bundle = Bundle()
+            bundle.putBoolean("useBaidu", true)
+            STRouteManager.goToFragment(activity, "com.smart.library.map.STMapFragment", bundle) {
                 STLogUtil.w("home", it.toString())
             }
         }
@@ -83,7 +85,9 @@ class HomeFragment : STBaseFragment() {
             }
         }
         gaodeMap.setOnClickListener {
-            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment") {
+            val bundle = Bundle()
+            bundle.putBoolean("useBaidu", false)
+            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment", bundle) {
                 STLogUtil.w("home", it.toString())
             }
         }

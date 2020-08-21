@@ -9,9 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class AppTemplateAApplicationApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 
 }
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 class CXControllerAdvice {
 
     private val logger: Logger = LogManager.getLogger(CXControllerAdvice::class.java.name)
+
     /**
      * 全局异常捕捉处理
      */

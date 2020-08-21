@@ -52,7 +52,8 @@
 <body>
 
 <div id="app">
-    <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)" @mousemove="onTouchMove($event)">
+    <div class="container" @mousedown="onTouchStart($event)" @mouseup="onTouchEnd($event)"
+         @mousemove="onTouchMove($event)">
 
         <div class="file_list" :style="{width:curX+'px',height:previewHeight+'px'}">
             <!--<a class="prd" target="_Blank" href="/template-files/developer/prd/index.html">点击查看 PRD</a>-->
@@ -76,7 +77,8 @@
 
 <script type="text/x-template" id="item-template">
     <li v-if="model && model.path && model.path.length>0">
-        <div :class="{title_container: isFolder}" @click="onClick(model.path)" @contextmenu.prevent="onRightClick(model.path)">
+        <div :class="{title_container: isFolder}" @click="onClick(model.path)"
+             @contextmenu.prevent="onRightClick(model.path)">
             <span :class="[isFolder?'folder':'file']" :style="{color:curPath==model.path?'red':'black'}">
                 <svg aria-hidden="true" width="1em" height="1em">
                     <use xlink:href="#icon-folder-open" v-if="isFolder&&open"></use>
@@ -87,7 +89,8 @@
             </span>
         </div>
         <ul v-show="open" v-if="isFolder">
-            <item class="item" v-for="(model, index) in model.children" :key="index" :model="model" :cur-path="curPath" :expand="true" :callback="callback"></item>
+            <item class="item" v-for="(model, index) in model.children" :key="index" :model="model" :cur-path="curPath"
+                  :expand="true" :callback="callback"></item>
         </ul>
     </li>
 </script>

@@ -12,4 +12,5 @@ class CXUserDetails @JvmOverloads constructor(
     credentialsNonExpired: Boolean = true,
     accountNonLocked: Boolean = true,
     authorities: MutableCollection<out GrantedAuthority>?
-) : User(userModel.userName ?: "", userModel.password ?: "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities)
+) : User(userModel.userName ?: "", userModel.password
+    ?: "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities)

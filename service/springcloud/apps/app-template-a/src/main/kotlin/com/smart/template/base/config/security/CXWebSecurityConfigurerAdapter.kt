@@ -122,6 +122,7 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
     //==================================================================================================================================
     @Autowired
     private var userService: CXUserDetailService? = null
+
     @Autowired
     private var jwtAuthenticationFilter: JWTAuthenticationFilter? = null
 

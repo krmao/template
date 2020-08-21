@@ -1,0 +1,11 @@
+server:
+    port: 5389
+eureka:
+    client:
+        service-url:
+            # 配置 eureka 服务器地址
+            defaultZone: http://127.0.0.1:5389/eureka
+        # 是否需要将自己注册到注册中心, 不需要, 设置为 false
+        register-with-eureka: false
+        # 是否需要搜索服务信息, 由于自己就是注册中心, 设置为 false
+        fetch-registry: false

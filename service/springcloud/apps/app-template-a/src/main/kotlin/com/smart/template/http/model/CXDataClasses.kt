@@ -15,6 +15,7 @@ class HKRoleIdDataPaging(var roleId: Int = CXConfig.DEFAULT_SQL_ID, pageIndex: I
 
 data class HKUserIdData(var userId: Int = CXConfig.DEFAULT_SQL_ID)
 class HKUserIdDataPaging(var userId: Int = CXConfig.DEFAULT_SQL_ID, pageIndex: Int, pageSize: Int) : HKPagingData(pageIndex, pageSize)
+
 /**
  * 一共有多少行被影响
  */

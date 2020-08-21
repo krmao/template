@@ -69,6 +69,7 @@ class CXUsernamePasswordAuthenticationFilter : AbstractAuthenticationProcessingF
 
     class HKAuthenticationFailureHandler : AuthenticationFailureHandler {
         private val log: Logger = LogManager.getLogger(HKAuthenticationFailureHandler::class.java.name)
+
         @Throws(IOException::class, ServletException::class)
         override fun onAuthenticationFailure(request: HttpServletRequest, response: HttpServletResponse, exception: AuthenticationException) {
             log.error("[HKAuthenticationFailureHandler:onAuthenticationFailure]")

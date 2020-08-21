@@ -6,6 +6,7 @@ import com.google.common.base.CaseFormat
 
 inline fun <reified T : Any> String.parse(): T? = CXJsonUtil.parse(this)
 fun Any.toJSON(): String = CXJsonUtil.toJSON(this)
+
 /**
  * hello_world -> helloWorld
  */

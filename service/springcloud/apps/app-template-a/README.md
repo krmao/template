@@ -52,3 +52,5 @@
 * 运行 [druid](https://github.com/alibaba/druid)
     * ♨ 为监控而生的数据库连接池！阿里云DRDS(https://www.aliyun.com/product/drds )、阿里巴巴TDDL 连接池powered by Druid https://github.com/alibaba/druid/wiki
     * 运行后访问 [http://localhost:7776/druid/index.html](http://localhost:7776/druid/index.html)
+
+* eureka 参考 https://www.cnblogs.com/zhainan-blog/p/11634621.html

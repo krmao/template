@@ -1,0 +1,141 @@
+buildscript {
+    ext {
+        springCloudVersion = "Hoxton.SR7"
+        springBootVersion = "2.3.3.RELEASE"
+        springBootDevToolsVersion = "2.3.3.RELEASE"
+        springBootStarterWebVersion = "2.3.3.RELEASE"
+        springSecurityOauth2Version = "2.3.3.RELEASE"
+        springBootManagementVersion = "1.0.10.RELEASE"
+        kotlinVersion = '1.3.72'
+    }
+
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+        maven { url "http://maven.dds.com/nexus/content/groups/public" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo1.maven.org/maven2/" }
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${rootProject.ext.springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${rootProject.ext.springBootManagementVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath 'org.hidetake:gradle-ssh-plugin:2.9.0'
+    }
+}
+
+allprojects {
+    group "com.smart.springcloud"
+    version "1.0.0"
+
+    configurations {
+        // all*.exclude module: "spring-boot-starter-logging" 不起作用
+        all {
+            // https://stackoverflow.com/questions/59629214/caused-by-org-apache-logging-log4j-loggingexception-log4j-slf4j-impl-cannot-be
+            exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'kotlin'
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'war'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    compileKotlin { kotlinOptions.jvmTarget = "1.8" }
+    compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
+    jar {
+        enabled = true
+    }
+    bootJar {
+        classifier = 'boot'
+    }
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+        maven { url "http://maven.dds.com/nexus/content/groups/public" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo1.maven.org/maven2/" }
+        jcenter()
+    }
+
+    dependencies {
+        implementation(
+                "org.jetbrains.kotlin:kotlin-reflect",
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        )
+        implementation(
+                "org.springframework:spring-test",
+                "junit:junit:4.12"
+        )
+        testImplementation("org.springframework.boot:spring-boot-starter-test") {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+    dependencyManagement {
+        imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+        imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
+    }
+}
+
+ext {
+    logger.warn("\n>>>>>>>>>>==============================>>>>>>>>>>")
+    logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
+    server_debug = false
+    server_port = 8080
+    server_ip = null
+    server_user = null
+    server_password = null
+    server_sql_ip = null
+    server_sql_user = null
+    server_sql_password = null
+    server_jwt_secret = null
+    logger = Logging.getLogger("build-script")
+
+    Properties properties = new Properties()
+
+    try {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    } catch (Exception ignore) {
+        logger.error("miss local.properties")
+    }
+    try {
+        server_debug = properties.get("server_debug")
+    } catch (Exception ignore) {
+        logger.error("miss server_debug in local.properties")
+    }
+    try {
+        server_port = properties.get("server_port")
+    } catch (Exception ignore) {
+        logger.error("miss server_port in local.properties")
+    }
+
+    server_ip = properties.get("server_ip")
+    server_user = properties.get("server_user")
+    server_password = properties.get("server_password")
+    server_sql_ip = properties.get("server_sql_ip")
+    server_sql_user = properties.get("server_sql_user")
+    server_sql_password = properties.get("server_sql_password")
+    server_jwt_secret = properties.get("server_jwt_secret")
+
+    logger.warn("    server_debug:$server_debug")
+    logger.warn("    server_port:$server_port")
+    logger.warn("    server_ip:$server_ip")
+    logger.warn("    server_user:$server_user")
+    logger.warn("    server_password:$server_password")
+    logger.warn("    server_sql_ip:$server_sql_ip")
+    logger.warn("    server_sql_user:$server_sql_user")
+    logger.warn("    server_sql_password:$server_sql_password")
+    logger.warn("    server_jwt_secret:$server_jwt_secret")
+    logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
+    logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
+
+    springfoxSwaggerVersion = "2.5.0" //2.6.0+ token 不更新
+}

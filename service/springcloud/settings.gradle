@@ -1,0 +1,4 @@
+rootProject.name = "springcloud"
+
+include(":app-template-a"); project(":app-template-a").projectDir = new File(settingsDir, "apps/app-template-a")
+include(":eureka-server"); project(":eureka-server").projectDir = new File(settingsDir, "components/springcloud-discovery/eureka-server")

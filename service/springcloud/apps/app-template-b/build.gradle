@@ -1,7 +1,7 @@
 version = "0.0.1-SNAPSHOT"
 
 war {
-    archiveName "app-template-b.war"
+    archiveName "springcloud-app-b.war"
 }
 
 //region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml

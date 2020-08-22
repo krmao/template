@@ -1,6 +1,5 @@
-
 war {
-    archiveName 'template.war'
+    archiveName 'spingcloud-discovery-eureka-server.war'
 }
 
 dependencies {

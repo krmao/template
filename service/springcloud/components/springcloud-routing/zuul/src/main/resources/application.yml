@@ -1,0 +1,28 @@
+server:
+    port: 5390
+eureka:
+    client:
+        service-url:
+            # 配置 eureka 服务器地址
+            defaultZone: http://127.0.0.1:5389/eureka
+    instance:
+        # 使用ip地址注册到注册中心
+        prefer-ip-address: true
+        # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
+        instance-id: 127.0.0.1:5390
+spring:
+    application:
+        # 服务名称 - 服务之间使用名称进行通讯
+        name: springcloud-routing-zuul
+zuul:
+    routes:
+        # 设置服务a 路径名称 随便起
+        service-a:
+            path: /service-a/**
+            # 这里写a服务的注册名字
+            serviceId: APP-TEMPLATE-A # http://127.0.0.1:5390/service-a/app-template-a/test/callB?token=123
+        # 设置服务b 路径名称 随便起
+        service-b:
+            path: /service-b/**
+            # 这里写b服务的注册名字
+            serviceId: APP-TEMPLATE-B

@@ -14,6 +14,18 @@ eureka:
         register-with-eureka: true
         # 是否需要搜索服务信息
         fetch-registry: true
+    instance:
+        # 使用ip地址注册到注册中心
+        prefer-ip-address: true
+        # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
+        instance-id: 127.0.0.1:5387
+# eureka-client-b 调用 eureka-client-a 时, 超时一秒就报错, 在 eureka-client-b 中配置
+# https://www.cnblogs.com/zhainan-blog/p/11634621.html
+ribbon:
+    #建立连接超时时间
+    ReadTimeout: 5000
+    #读取资源超时间
+    ConnectTimeout: 5000
 
 security:
     user:

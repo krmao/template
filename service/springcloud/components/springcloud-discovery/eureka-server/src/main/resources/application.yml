@@ -9,3 +9,4 @@ eureka:
         register-with-eureka: false
         # 是否需要搜索服务信息, 由于自己就是注册中心, 设置为 false
         fetch-registry: false
+        instance-info-replication-interval-seconds:

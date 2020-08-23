@@ -54,3 +54,5 @@
     * 运行后访问 [http://localhost:7776/druid/index.html](http://localhost:7776/druid/index.html)
 
 * eureka 参考 https://www.cnblogs.com/zhainan-blog/p/11634621.html
+* hystrix 集成
+    * 压测工具 JMeter

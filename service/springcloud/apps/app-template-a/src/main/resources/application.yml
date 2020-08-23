@@ -27,6 +27,42 @@ ribbon:
     #读取资源超时间
     ConnectTimeout: 5000
 
+hystrix:
+    command:
+        default:
+            circuitBreaker:
+                enabled: false
+                requestVolumeThreshold: 10
+                errorThresholdPercentage: 50
+                forceOpen: false
+                forceClosed: false
+            fallback:
+                enabled: true
+            execution:
+                timeout:
+                    # https://www.cnblogs.com/throwable/p/11961016.html
+                    # 决定HystrixCommand#run()执行时是否允许超时，只有设置为true的时候，下面提到的“超时时间上限”才会有效。
+                    enabled: false
+            isolation:
+                semaphore:
+                    # 此配置项决定使用HystrixCommand#run()方法和ExecutionIsolationStrategy.SEMAPHORE隔离策略下并发请求数量的最高上限
+                    maxConcurrentRequests: 4
+                strategy: THREAD
+                thread:
+                    timeoutInMilliseconds: 10
+                    # https://www.cnblogs.com/throwable/p/11961016.html
+                    # 此配置项决定HystrixCommand#run()执行的时候调用超时的情况下是否中断。
+                    interruptOnTimeout: true
+                    # 此配置项决定HystrixCommand#run()执行的时候取消调用的情况下是否中断。
+                    interruptOnCancel: true
+
+    # https://blog.csdn.net/weixin_33809981/article/details/88678620
+    threadpool:
+        default:
+            # 配置越小, JMeter 压测越容易复现
+            coreSize: 1
+            maxQueueSize: 4
+
 security:
     user:
         name: root

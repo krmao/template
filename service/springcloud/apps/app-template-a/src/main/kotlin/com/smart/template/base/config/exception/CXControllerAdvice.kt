@@ -46,7 +46,7 @@ class CXControllerAdvice {
     @ExceptionHandler(HKServerException::class)
     fun serverExceptionHandler(ex: HKServerException): HKResponse<Any> {
         logger.error("[全局拦截器] 拦截到特定错误 ! 返回 HKCode.ERROR_SERVER.response(${ex.message})", ex)
-        return HKCode.ERROR_SERVER.response(ex.message)
+        return HKCode.ERROR.response(ex.message)
     }
 
     /**

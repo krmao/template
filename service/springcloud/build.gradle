@@ -5,6 +5,7 @@ buildscript {
         springBootDevToolsVersion = "2.3.3.RELEASE"
         springBootStarterWebVersion = "2.3.3.RELEASE"
         springBootStarterNetflixEurekaClientVersion = "2.2.4.RELEASE"
+        springBootStarterNetflixHystrixVersion = "2.2.4.RELEASE"
         springBootStarterOpenFeignVersion = "2.2.4.RELEASE"
         springSecurityOauth2Version = "2.3.3.RELEASE"
         springBootManagementVersion = "1.0.10.RELEASE"

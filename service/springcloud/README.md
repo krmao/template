@@ -25,3 +25,6 @@ These additional references should also help you:
 
 ### [IDEA Tools Services Windows](https://www.cnblogs.com/javalbb/p/12922238.html)
 > View->Tool Windows->Services
+
+### 压测工具 [JMETER](https://jmeter.apache.org/download_jmeter.cgi)
+* https://jmeter.apache.org/download_jmeter.cgi

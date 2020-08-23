@@ -1,6 +1,7 @@
 package com.smart.template.http.model
 
 import com.smart.template.base.config.config.CXConfig
+import org.springframework.http.HttpStatus
 
 data class HKRequest<T>(
     /**
@@ -62,23 +63,14 @@ data class HKResponse<T>(
 }
 
 enum class HKCode(var code: Int, var message: String) {
-    OK(200, "响应成功"),
-    SUCCESS_LOGIN(OK.code, "登录成功"),
-    SUCCESS_REGISTER(OK.code, "注册成功"),
+    OK(HttpStatus.OK.value(), HttpStatus.OK.reasonPhrase),
 
-    ERROR(20000, "响应失败"),
-    ERROR_UNAUTHORIZED(401, "身份验证错误"),
-    ERROR_ACCESS_DENIED(403, "权限不足"),
-    ERROR_SERVER(500, "服务端错误"),
+    ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase),
+    ERROR_UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.reasonPhrase),
+    ERROR_FORBIDDEN(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.reasonPhrase),
+    ERROR_TOO_MANY_REQUESTS(HttpStatus.TOO_MANY_REQUESTS.value(), HttpStatus.TOO_MANY_REQUESTS.reasonPhrase),
 
-    ERROR_PARAMS(10000, "参数错误"),
-
-    ERROR_SQL(10010, "SQL相关错误"),
-    ERROR_SQL_SYNTAX(10011, "SQL语法错误"),
-    ERROR_SQL_INSERT(10012, "SQL Field '***' doesn't have a default value"),
-
-    ERROR_VERIFICATION_CODE(10100, "验证码错误"),
-    ERROR_REFRESH_TOKEN(100101, "刷新Token失败");
+    ERROR_PARAMS(10000, "Params Error");
 
     fun setMessage(message: String?): HKCode {
         if (message?.isNotBlank() == true) this.message = message

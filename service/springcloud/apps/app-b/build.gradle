@@ -1,4 +1,4 @@
-version = "0.0.1-SNAPSHOT"
+version = rootProject.ext.app_b_version
 
 war {
     archiveName "springcloud-app-b.war"
@@ -50,9 +50,10 @@ dependencies {
     // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // java.net.BindException: Address already in use (Bind failed)
     // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
-    runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version: rootProject.ext.springBootDevToolsVersion
+    // runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version: rootProject.ext.springBootDevToolsVersion
 
     // testCompile("org.springframework.boot:spring-boot-starter-test")
 

@@ -15,10 +15,14 @@ eureka:
         # 是否需要搜索服务信息
         fetch-registry: true
     instance:
+        hostname: \${spring.cloud.client.ip-address}
         # 使用ip地址注册到注册中心
         prefer-ip-address: true
+        # https://www.jianshu.com/p/5ad8317961b7
         # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
-        instance-id: 127.0.0.1:5387
+        # https://stackoverflow.com/a/29194250/4348530
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${app_a_version}
+
 # eureka-client-b 调用 eureka-client-a 时, 超时一秒就报错, 在 eureka-client-b 中配置
 # https://www.cnblogs.com/zhainan-blog/p/11634621.html
 ribbon:

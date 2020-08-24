@@ -1,12 +1,14 @@
 apply from: "./deploy.gradle"
 
-version = "0.0.1-SNAPSHOT"
+version = rootProject.ext.app_a_version
 
 war {
     archiveName "springcloud-app-a.war"
 }
 
 //region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
+// https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/howto-properties-and-configuration.html
+// https://github.com/spring-projects/spring-boot/commit/c0c67f2593dbfd17aa304b43f4da3a3678fa58eb
 processResources {
     inputs.file("${rootProject.projectDir}/local.properties")
     filesMatching("application.yml") {
@@ -19,6 +21,12 @@ processResources {
 //endregion
 
 dependencies {
+
+    // 解决 Eureka instance-id 中找不到 ${spring.cloud.client.ip-address} 属性的问题
+    // https://www.jianshu.com/p/5ad8317961b7
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-commons
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: rootProject.ext.springCloudCommonsVersion
+
 
     implementation project(":library-common")
 

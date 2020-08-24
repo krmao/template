@@ -33,10 +33,10 @@ class FileController() {
             val oldName = file.originalFilename
             val newName = CXChecksumUtil.genMD5Checksum(oldName + "-" + System.currentTimeMillis())
             CXFileUtil.copy(file.inputStream, File(CXConfig.DEFAULT_FILES_DIR, newName))
-            filePathMap.put(oldName, newName)
+            filePathMap[oldName] = newName
         }
 
-        log.warn("filePathMap:" + filePathMap)
+        log.warn("filePathMap:$filePathMap")
         return HKResponse(filePathMap)
     }
 }

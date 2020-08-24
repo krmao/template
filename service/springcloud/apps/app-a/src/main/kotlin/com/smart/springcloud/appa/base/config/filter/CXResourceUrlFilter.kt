@@ -17,12 +17,12 @@ class CXResourceUrlFilter : ResourceUrlEncodingFilter() {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    override fun doFilter(request: ServletRequest?, response: ServletResponse?, filterChain: FilterChain?) {
+    override fun doFilter(request: ServletRequest?, response: ServletResponse, filterChain: FilterChain) {
         val httpRequest = request as HttpServletRequest
-        log.error("---------->doFilter start(${response?.contentType}) " + httpRequest.requestURI)
-        response?.contentType = "UTF-8"
+        log.error("---------->doFilter start(${response.contentType}) " + httpRequest.requestURI)
+        response.contentType = "UTF-8"
 
         super.doFilter(request, response, filterChain)
-        log.error("---------->doFilter end(${response?.contentType}) " + httpRequest.requestURI)
+        log.error("---------->doFilter end(${response.contentType}) " + httpRequest.requestURI)
     }
 }

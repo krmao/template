@@ -1,0 +1,109 @@
+apply from: "./deploy.gradle"
+
+version = "0.0.1-SNAPSHOT"
+
+war {
+    archiveName "springcloud-app-a.war"
+}
+
+//region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
+processResources {
+    inputs.file("${rootProject.projectDir}/local.properties")
+    filesMatching("application.yml") {
+        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+        logger.error("\n[processResources](filesMatched) ${it.path}\n")
+        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
+        expand(rootProject.properties)
+    }
+}
+//endregion
+
+dependencies {
+
+    implementation project(":library-common")
+
+    // https://github.com/spring-projects/spring-boot/releases/tag/v1.5.8.RELEASE
+
+    // https://www.cnblogs.com/jpfss/p/12011661.html
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
+    // 不加版本号报错, 找不到这个包
+    // https://www.jianshu.com/p/37f4ef87efbf
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
+
+
+    /*+--- org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.4.RELEASE
+        |    +--- org.springframework.cloud:spring-cloud-netflix-hystrix:2.2.4.RELEASE
+        |    +--- org.springframework.cloud:spring-cloud-netflix-eureka-client:2.2.4.RELEASE
+        |    |    \--- org.springframework.cloud:spring-cloud-netflix-hystrix:2.2.4.RELEASE (*)
+        |    +--- com.netflix.eureka:eureka-client:1.9.25
+        |    +--- org.springframework.cloud:spring-cloud-starter-netflix-archaius:2.2.4.RELEASE
+        |    +--- org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.4.RELEASE
+        |    +--- org.springframework.cloud:spring-cloud-starter-loadbalancer:2.2.4.RELEASE
+        |    +--- com.netflix.ribbon:ribbon-eureka:2.3.0*/
+    // 依赖中已经集成了 eureka-client/hystrix/ribbon/ribbon-eureka
+    // Eureka 实现了服务的注册发现
+    // Eureka 只是维护了服务生产者、注册中心、服务消费者三者之间的关系
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+
+    // https://www.cnblogs.com/amunote/p/10428594.html
+    // 真正的服务消费者调用服务生产者提供的数据是通过 Spring Cloud Ribbon 来实现的。
+    // 服务消费者是将服务从注册中心获取服务生产者的服务列表并维护在本地的，这种客户端发现模式的方式是服务消费者选择合适的节点进行访问服务生产者提供的数据，
+    // 这种选择合适节点的过程就是Spring Cloud Ribbon完成的。Spring Cloud Ribbon客户端负载均衡器由此而来
+
+    /*+--- org.springframework.cloud:spring-cloud-starter-openfeign:2.2.4.RELEASE
+        |    +--- org.springframework.cloud:spring-cloud-openfeign-core:2.2.4.RELEASE
+        |    \--- io.github.openfeign:feign-hystrix:10.10.1*/
+    // 上述（1）、（2）中我们已经使用最简单的方式实现了服务的注册发现和服务的调用操作，如果具体的使用Ribbon调用服务的话，你就可以感受到使用Ribbon的方式还是有一些复杂，因此Spring Cloud Feign应运而生。
+    //Spring Cloud Feign 是一个声明web服务客户端，这使得编写Web服务客户端更容易，使用Feign 创建一个接口并对它进行注解，它具有可插拔的注解支持包括Feign注解与JAX-RS注解，Feign还支持可插拔的编码器与解码器，Spring Cloud 增加了对 Spring MVC的注解，Spring Web 默认使用了HttpMessageConverters, Spring Cloud 集成 Ribbon 和 Eureka 提供的负载均衡的HTTP客户端 Feign。
+    //简单的可以理解为：Spring Cloud Feign 的出现使得Eureka和Ribbon的使用更为简单。
+    // OpenFeign中已经集成了Hystrix，不用再引入Hystrix依赖
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
+
+    // OpenFeign中已经集成了Hystrix，不用再引入Hystrix依赖
+    // 我们在（1）、（2）、（3）中知道了使用Eureka进行服务的注册和发现，使用Ribbon实现服务的负载均衡调用，还知道了使用Feign可以简化我们的编码。但是，这些还不足以实现一个高可用的微服务架构。
+    // 例如：当有一个服务出现了故障，而服务的调用方不知道服务出现故障，若此时调用放的请求不断的增加，最后就会等待出现故障的依赖方相应形成任务的积压，最终导致自身服务的瘫痪。
+    // Spring Cloud Hystrix正是为了解决这种情况的，防止对某一故障服务持续进行访问。Hystrix的含义是：断路器，断路器本身是一种开关装置，用于我们家庭的电路保护，防止电流的过载，当线路中有电器发生短路的时候，断路器能够及时切换故障的电器，防止发生过载、发热甚至起火等严重后果。
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-hystrix
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: rootProject.ext.springBootStarterNetflixHystrixVersion
+
+    // http://www.jianshu.com/p/39f145c6eb29
+    implementation group: "io.springfox", name: "springfox-swagger2", version: rootProject.ext.springfoxSwaggerVersion
+    implementation group: "io.springfox", name: "springfox-swagger-ui", version: rootProject.ext.springfoxSwaggerVersion
+
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
+
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+    // implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-log4j2")
+
+    // https://bbs.huaweicloud.com/blogs/102630
+    // https://mvnrepository.com/artifact/javax.validation/validation-api
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
+    // implementation "org.springframework:spring-jdbc:5.2.7.RELEASE"
+    // https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
+    // https://my.oschina.net/u/4409146/blog/3306773/print
+    implementation "com.alibaba:druid-spring-boot-starter:1.1.10"
+
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
+
+    implementation "com.google.guava:guava:23.0"
+
+    //spring security
+    // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    runtime("mysql:mysql-connector-java:8.0.21")
+
+    // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
+    // runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version: rootProject.ext.springBootDevToolsVersion
+    // 这里切换是否发布
+    // providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+}

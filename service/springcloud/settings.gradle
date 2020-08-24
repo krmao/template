@@ -1,7 +1,12 @@
 rootProject.name = "springcloud"
 
-include(":app-template-a"); project(":app-template-a").projectDir = new File(settingsDir, "apps/app-template-a")
-include(":app-template-b"); project(":app-template-b").projectDir = new File(settingsDir, "apps/app-template-b")
+// libraries
+include(":library-common"); project(":library-common").projectDir = new File(settingsDir, "apps/libraries/library-common")
 
+// apps
+include(":app-a"); project(":app-a").projectDir = new File(settingsDir, "apps/app-a")
+include(":app-b"); project(":app-b").projectDir = new File(settingsDir, "apps/app-b")
+
+// components
 include(":eureka-server"); project(":eureka-server").projectDir = new File(settingsDir, "components/springcloud-discovery/eureka-server")
 include(":zuul"); project(":zuul").projectDir = new File(settingsDir, "components/springcloud-routing/zuul")

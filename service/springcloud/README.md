@@ -28,3 +28,11 @@ These additional references should also help you:
 
 ### 压测工具 [JMETER](https://jmeter.apache.org/download_jmeter.cgi)
 * https://jmeter.apache.org/download_jmeter.cgi
+
+### 端口被占用
+>  org.springframework.boot.web.server.PortInUseException: Port 5388 is already in use
+
+```shell script
+lsof -i tcp:5388
+kill -9 PID
+```

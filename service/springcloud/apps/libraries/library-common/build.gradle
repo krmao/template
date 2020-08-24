@@ -1,0 +1,5 @@
+dependencies {
+    providedCompile group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
+    providedCompile("org.springframework.boot:spring-boot-starter-log4j2")
+    providedCompile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
+}

@@ -95,8 +95,11 @@ ext {
     logger.warn("\n>>>>>>>>>>==============================>>>>>>>>>>")
     logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
 
+    //region versions
     app_a_version = "0.0.1-SNAPSHOT"
     app_b_version = "0.0.1-SNAPSHOT"
+    spingcloud_routing_zuul_version = "0.0.1-SNAPSHOT"
+    //endregion
 
     server_debug = false
     server_port = 8080

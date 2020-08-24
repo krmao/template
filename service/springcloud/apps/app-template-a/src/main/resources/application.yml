@@ -87,6 +87,8 @@ hystrix:
             maxQueueSize: 4
 
 feign:
+    hystrix:
+        enabled: true
     compression:
         request:
             enabled: true
@@ -96,8 +98,8 @@ feign:
     client:
         config:
             default:
-                connectTimeout: 5000 # 连接超时时间
-                readTimeout: 5000   # 读超时时间
+                connectTimeout: 50 # 连接超时时间
+                readTimeout: 50   # 读超时时间
                 loggerLevel: full # 日志级别
 
 security:

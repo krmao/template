@@ -25,8 +25,8 @@ class TestController {
     }
 
     @RequestMapping("/callB")
-    fun callB(): HKResponse<Any> {
-        return HKResponse.ok("A直接访问B->结果为:${serviceBFeignClient?.testBController()}")
+    fun callB(): ResponseEntity<HKResponse<String>>? {
+        return serviceBFeignClient?.testBController()
     }
 
     fun fallback(): ResponseEntity<HKResponse<String>> {

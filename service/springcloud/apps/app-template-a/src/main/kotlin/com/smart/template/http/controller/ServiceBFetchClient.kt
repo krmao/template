@@ -1,6 +1,8 @@
 package com.smart.template.http.controller
 
+import com.smart.template.http.model.HKResponse
 import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 
 /**
@@ -10,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestMapping
 @FeignClient("APP-TEMPLATE-B", path = "/app-template-b", decode404 = true, fallback = ServiceBFetchClientFallback::class)
 interface ServiceBFetchClient {
     @RequestMapping("/test/messageB")
-    fun testBController(): String?
+    fun testBController(): ResponseEntity<HKResponse<String>>
 }

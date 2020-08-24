@@ -12,17 +12,21 @@ import org.springframework.boot.web.servlet.ServletComponentScan
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.cloud.netflix.hystrix.EnableHystrix
+import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 
-@EnableHystrix
-@ServletComponentScan
-@SpringBootApplication
 //@EnableResourceServer
 //@EnableAuthorizationServer
-@EnableEurekaClient
-@EnableConfigurationProperties
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+
+@EnableHystrix      // 开启 Hystrix
+@EnableEurekaClient // 开启 Eureka
+@EnableFeignClients(basePackages = ["com.smart.template.http.controller"]) // 开启 Feign
+
+@ServletComponentScan           // 开启 自动扫描 Component
+@SpringBootApplication          // 开启 SpringBoot
+@EnableConfigurationProperties  // 开启 local.properties 中读取的变量自动绑定到 application.yml 中
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) // 开启 安全策略
 class AppTemplateAApplication : SpringBootServletInitializer() {
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder {

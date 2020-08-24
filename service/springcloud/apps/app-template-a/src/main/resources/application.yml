@@ -19,6 +19,7 @@ eureka:
         prefer-ip-address: true
         # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
         instance-id: 127.0.0.1:5388
+
 # eureka-client-a 调用 eureka-client-b 时, 超时一秒就报错, 在 eureka-client-a 中配置
 # https://www.cnblogs.com/zhainan-blog/p/11634621.html
 ribbon:
@@ -26,6 +27,28 @@ ribbon:
     ReadTimeout: 5000
     #读取资源超时间
     ConnectTimeout: 5000
+    eager-load:
+        # 开启饥饿加载模式
+        enabled: false
+        # 指定需要饥饿加载的服务名
+        clients:  http://127.0.0.1:5389/eureka
+        # 设置ribbon 最大连接数
+        MaxTotalConnections: 5
+        # 设置ribbon 每个host 最大的连接数
+        MaxConnectionsPerHost: 5
+        # 对当前实例重试的次数
+        maxAutoRetries: 2
+        # 切换实例的重试次数
+        maxAutoRetriesNextServer: 2
+        # 对所有的操作请求都进行重试
+        okToRetryOnAllOperations: true
+        # Http响应码进行重试
+        retryableStatusCodes: 500,404,502
+        ### 针对单个服务的 Ribbon 配置
+        ###eureka-provider:
+        ### ribbon:
+        ###   # 基于配置文件形式的 针对单个服务的 Ribbon指定负载均衡策略
+        ###   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
 
 hystrix:
     command:
@@ -63,12 +86,31 @@ hystrix:
             coreSize: 1
             maxQueueSize: 4
 
+feign:
+    compression:
+        request:
+            enabled: true
+            mime-types: ["text/xml", "application/xml","application/json"]
+        response:
+            enabled: true
+    client:
+        config:
+            default:
+                connectTimeout: 5000 # 连接超时时间
+                readTimeout: 5000   # 读超时时间
+                loggerLevel: full # 日志级别
+
 security:
     user:
         name: root
         password: root
 
 spring:
+    main:
+        # 如果调用多次 @EnableFeignClients, 会报以下错误, 将 allow-bean-definition-overriding 可以避免报错, 所以尽量只调用一次 @EnableFeignClients
+        # org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'APP-TEMPLATE-B.FeignClientSpecification'
+        # defined in null: Cannot register bean definition [Generic bean: class [org.springframework.cloud.openfeign.FeignClientSpecification];
+        allow-bean-definition-overriding: false
     application:
         # 服务注册名称 - 服务之间使用名称进行通讯
         name: app-template-a

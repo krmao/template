@@ -11,9 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-
-@EnableEurekaClient // 添加注解声明是注册中心客户端
-@EnableFeignClients // 实现不同子服务调用
+@Suppress("unused")
 @RestController
 @RequestMapping("/test")
 class TestController {
@@ -27,7 +25,7 @@ class TestController {
     }
 
     @RequestMapping("/callB")
-    fun callA(): HKResponse<Any> {
+    fun callB(): HKResponse<Any> {
         return HKResponse.ok("A直接访问B->结果为:${serviceBFeignClient?.testBController()}")
     }
 

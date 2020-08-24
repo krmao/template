@@ -7,8 +7,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@EnableEurekaClient // 添加注解声明是注册中心客户端
-@EnableFeignClients // 实现不同子服务调用
 @RestController
 @RequestMapping("/test")
 class TestController {

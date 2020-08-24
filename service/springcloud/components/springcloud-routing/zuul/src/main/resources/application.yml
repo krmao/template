@@ -1,8 +1,8 @@
 server:
     port: 5390
     servlet:
-        context-path: /api
-        
+        context-path: /api-gateway
+
 eureka:
     client:
         service-url:
@@ -20,7 +20,7 @@ eureka:
 spring:
     application:
         # 服务名称 - 服务之间使用名称进行通讯
-        name: springcloud-routing-zuul
+        name: API-GATEWAY
 zuul:
     routes:
         # 设置服务a 路径名称 随便起

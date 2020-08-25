@@ -1,7 +1,7 @@
 debug: ${server_debug}
 
 server:
-    port: 5387
+    port: 5339
     servlet:
         context-path: /app-b
 
@@ -9,7 +9,7 @@ eureka:
     client:
         service-url:
             # 填写注册中心服务器地址, 注意不是本 eureka-client 的地址, 是 eureka-server 的地址
-            defaultZone: http://127.0.0.1:5389/eureka
+            defaultZone: http://10.32.33.4:5388/eureka
         # 是否需要将自己注册到注册中心
         register-with-eureka: true
         # 是否需要搜索服务信息

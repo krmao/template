@@ -2,7 +2,7 @@
 debug: ${server_debug}
 
 server:
-    port: 5388
+    port: 5338
     servlet:
         context-path: /app-a
 
@@ -10,7 +10,7 @@ eureka:
     client:
         service-url:
             # 填写注册中心服务器地址, 注意不是本 eureka-client 的地址, 是 eureka-server 的地址
-            defaultZone: http://127.0.0.1:5389/eureka
+            defaultZone: http://10.32.33.4:5388/eureka
         # 是否需要将自己注册到注册中心
         register-with-eureka: true
         # 是否需要搜索服务信息
@@ -35,7 +35,7 @@ ribbon:
         # 开启饥饿加载模式
         enabled: false
         # 指定需要饥饿加载的服务名
-        clients:  http://127.0.0.1:5389/eureka
+        clients:  http://10.32.33.4:5388/eureka
         # 设置ribbon 最大连接数
         MaxTotalConnections: 5
         # 设置ribbon 每个host 最大的连接数

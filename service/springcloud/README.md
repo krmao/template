@@ -36,3 +36,45 @@ These additional references should also help you:
 lsof -i tcp:5388
 kill -9 PID
 ```
+
+### MAC 修改 mysql 端口
+> 系统偏好设置->MYSQL->Configuration->Configuration File->vi ~/.mysql.conf->Apply->重启电脑
+
+```.mysql.conf
+cat ~/.mysql.conf
+[mysqld]
+port=5378
+```
+
+```shell script
+# 查询端口号命令：
+# % mysql -uroot -p
+# Enter password:
+# Welcome to the MySQL monitor.  Commands end with ; or \g.
+# Your MySQL connection id is 8
+# Server version: 8.0.21 MySQL Community Server - GPL
+#
+# Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+# Oracle is a registered trademark of Oracle Corporation and/or its
+# affiliates. Other names may be trademarks of their respective
+# owners.
+#
+# Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+#
+# mysql> show global variables like 'port';
+# +---------------+-------+
+# | Variable_name | Value |
+# +---------------+-------+
+# | port          | 5378  |
+# +---------------+-------+
+# 1 row in set (0.01 sec)
+#
+# mysql> exit;
+# Bye
+```
+
+# 启动顺序
+1. 先开启 springcloud-discovery, 否则 Cannot execute request on any known server
+2. 再开启 app
+3. 最后开启 springcloud-routing

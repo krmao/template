@@ -107,6 +107,7 @@ ext {
     server_user = null
     server_password = null
     server_sql_ip = null
+    server_sql_port = null
     server_sql_user = null
     server_sql_password = null
     server_jwt_secret = null
@@ -134,6 +135,7 @@ ext {
     server_user = properties.get("server_user")
     server_password = properties.get("server_password")
     server_sql_ip = properties.get("server_sql_ip")
+    server_sql_port = properties.get("server_sql_port")
     server_sql_user = properties.get("server_sql_user")
     server_sql_password = properties.get("server_sql_password")
     server_jwt_secret = properties.get("server_jwt_secret")
@@ -145,6 +147,7 @@ ext {
     logger.warn("    server_user:$server_user")
     logger.warn("    server_password:$server_password")
     logger.warn("    server_sql_ip:$server_sql_ip")
+    logger.warn("    server_sql_port:$server_sql_port")
     logger.warn("    server_sql_user:$server_sql_user")
     logger.warn("    server_sql_password:$server_sql_password")
     logger.warn("    server_jwt_secret:$server_jwt_secret")

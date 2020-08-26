@@ -121,8 +121,11 @@ port=5378
 
 ### yml 配置文件不能设置 中文注释, 在 windows 操作系统解析报错
 
-### 关于负载均衡 https://blog.csdn.net/qq_38386438/article/details/107353718
+### 关于负载均衡
 1. 物理负载均衡 nginx
 > 当浏览器向后台发出请求的时候，会首先向反向代理服务器发送请求，反向代理服务器会根据客户端部署的ip：port映射表以及负载均衡策略，来决定向哪台服务器发送请求，一般会使用到nginx反向代理技术。
 2. 网关负载均衡 外部访问内部 zuul
 3. 内部服务之间互相调用的负载均衡 ribbon + eureka
+5. 参考
+    a. https://www.cnblogs.com/smiledada/p/10607923.html
+    b. https://blog.csdn.net/qq_38386438/article/details/107353718

@@ -26,10 +26,10 @@ These additional references should also help you:
 ### [IDEA Tools Services Windows](https://www.cnblogs.com/javalbb/p/12922238.html)
 > View->Tool Windows->Services
 
-### 压测工具 [JMETER](https://jmeter.apache.org/download_jmeter.cgi)
+### 压测工具 [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
 * https://jmeter.apache.org/download_jmeter.cgi
 
-### 端口被占用
+### 解决端口被占用问题
 >  org.springframework.boot.web.server.PortInUseException: Port 5388 is already in use
 
 ```shell script
@@ -74,7 +74,49 @@ port=5378
 # Bye
 ```
 
-# 启动顺序
+### mysql 允许其它主机以 root 用户登录
+```shell script
+# mysql -uroot -p
+# Enter password:
+# Welcome to the MySQL monitor.  Commands end with ; or \g.
+# Your MySQL connection id is 75
+# Server version: 8.0.21 MySQL Community Server - GPL
+#
+# Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+#
+# Oracle is a registered trademark of Oracle Corporation and/or its
+# affiliates. Other names may be trademarks of their respective
+# owners.
+#
+# Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+#
+# mysql> use mysql;
+# Reading table information for completion of table and column names
+# You can turn off this feature to get a quicker startup with -A
+#
+# Database changed
+# mysql> update user set host = '%' where user = 'root';
+# Query OK, 1 row affected (0.01 sec)
+# Rows matched: 1  Changed: 1  Warnings: 0
+#
+# mysql> select host, user from user;
+# +-----------+------------------+
+# | host      | user             |
+# +-----------+------------------+
+# | %         | root             |
+# | localhost | mysql.infoschema |
+# | localhost | mysql.session    |
+# | localhost | mysql.sys        |
+# +-----------+------------------+
+# 4 rows in set (0.00 sec)
+#
+# mysql> flush privileges;
+# Query OK, 0 rows affected (0.01 sec)
+```
+
+### 启动顺序
 1. 先开启 springcloud-discovery, 否则 Cannot execute request on any known server
 2. 再开启 app
 3. 最后开启 springcloud-routing
+
+### yml 配置文件不能设置 中文注释, 在 windows 操作系统解析报错

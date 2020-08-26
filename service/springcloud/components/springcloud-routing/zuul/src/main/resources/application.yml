@@ -28,9 +28,9 @@ zuul:
             path: /service-a/**
             # 这里写a服务的注册名字
             # http://10.32.33.4:5390/service-a/app-template-a/test/callB?token=123
-            serviceId: APP-TEMPLATE-A
+            serviceId: APP-A
         # 设置服务b 路径名称 随便起
         service-b:
             path: /service-b/**
             # 这里写b服务的注册名字
-            serviceId: APP-TEMPLATE-B
+            serviceId: APP-B

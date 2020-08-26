@@ -1,3 +1,6 @@
+# Chinese comments will call Caused by: org.yaml.snakeyaml.error.YAMLException: java.nio.charset.MalformedInputException: Input length = 2
+# error on Windows system, but well on Mac system
+
 # https://stackoverflow.com/a/29194250/4348530
 debug: ${server_debug}
 
@@ -9,49 +12,33 @@ server:
 eureka:
     client:
         service-url:
-            # 填写注册中心服务器地址, 注意不是本 eureka-client 的地址, 是 eureka-server 的地址
+            # eureka-server address
             defaultZone: http://10.32.33.4:5388/eureka
-        # 是否需要将自己注册到注册中心
         register-with-eureka: true
-        # 是否需要搜索服务信息
         fetch-registry: true
     instance:
         hostname: \${spring.cloud.client.ip-address}
-        # 使用ip地址注册到注册中心
         prefer-ip-address: true
         # https://www.jianshu.com/p/5ad8317961b7
-        # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
         # https://stackoverflow.com/a/29194250/4348530
         instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${app_a_version}
 
-# eureka-client-a 调用 eureka-client-b 时, 超时一秒就报错, 在 eureka-client-a 中配置
+# eureka-client-a call eureka-client-b , config in eureka-client-a
 # https://www.cnblogs.com/zhainan-blog/p/11634621.html
 ribbon:
-    #建立连接超时时间
     ReadTimeout: 5000
-    #读取资源超时间
     ConnectTimeout: 5000
     eager-load:
-        # 开启饥饿加载模式
         enabled: false
-        # 指定需要饥饿加载的服务名
         clients:  http://10.32.33.4:5388/eureka
-        # 设置ribbon 最大连接数
         MaxTotalConnections: 5
-        # 设置ribbon 每个host 最大的连接数
         MaxConnectionsPerHost: 5
-        # 对当前实例重试的次数
         maxAutoRetries: 2
-        # 切换实例的重试次数
         maxAutoRetriesNextServer: 2
-        # 对所有的操作请求都进行重试
         okToRetryOnAllOperations: true
-        # Http响应码进行重试
         retryableStatusCodes: 500,404,502
-        ### 针对单个服务的 Ribbon 配置
         ###eureka-provider:
         ### ribbon:
-        ###   # 基于配置文件形式的 针对单个服务的 Ribbon指定负载均衡策略
         ###   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
 
 hystrix:
@@ -68,25 +55,20 @@ hystrix:
             execution:
                 timeout:
                     # https://www.cnblogs.com/throwable/p/11961016.html
-                    # 决定HystrixCommand#run()执行时是否允许超时，只有设置为true的时候，下面提到的“超时时间上限”才会有效。
                     enabled: false
             isolation:
                 semaphore:
-                    # 此配置项决定使用HystrixCommand#run()方法和ExecutionIsolationStrategy.SEMAPHORE隔离策略下并发请求数量的最高上限
                     maxConcurrentRequests: 4
                 strategy: THREAD
                 thread:
                     timeoutInMilliseconds: 10
                     # https://www.cnblogs.com/throwable/p/11961016.html
-                    # 此配置项决定HystrixCommand#run()执行的时候调用超时的情况下是否中断。
                     interruptOnTimeout: true
-                    # 此配置项决定HystrixCommand#run()执行的时候取消调用的情况下是否中断。
                     interruptOnCancel: true
 
     # https://blog.csdn.net/weixin_33809981/article/details/88678620
     threadpool:
         default:
-            # 配置越小, JMeter 压测越容易复现
             coreSize: 1
             maxQueueSize: 4
 
@@ -113,12 +95,12 @@ security:
 
 spring:
     main:
-        # 如果调用多次 @EnableFeignClients, 会报以下错误, 将 allow-bean-definition-overriding 可以避免报错, 所以尽量只调用一次 @EnableFeignClients
+        # if call multi time @EnableFeignClients, will cause error bellow, set allow-bean-definition-overriding will avoid error, so try ony call once @EnableFeignClients
         # org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'APP-TEMPLATE-B.FeignClientSpecification'
         # defined in null: Cannot register bean definition [Generic bean: class [org.springframework.cloud.openfeign.FeignClientSpecification];
         allow-bean-definition-overriding: false
     application:
-        # 服务注册名称 - 服务之间使用名称进行通讯
+        # name in eureka-server
         name: APP-A
     jpa:
         hibernate:
@@ -134,16 +116,12 @@ spring:
         data: classpath:/sql/data-mysql.sql
 
         druid:
-            # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
             filters: stat,wall,log4j2
             maxActive: 20
             initialSize: 0
-            # 配置获取连接等待超时的时间
             maxWait: 60000
             minIdle: 1
-            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
             timeBetweenEvictionRunsMillis: 60000
-            # 配置一个连接在池中最小生存的时间，单位是毫秒
             minEvictableIdleTimeMillis: 300000
             validationQuery: select 'x'
             testWhileIdle: true
@@ -151,16 +129,13 @@ spring:
             testOnReturn: false
             poolPreparedStatements: true
             maxPoolPreparedStatementPerConnectionSize: 20
-            # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
             connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
             maxOpenPreparedStatements: 20
-
-            # 合并多个DruidDataSource的监控数据
             useGlobalDataSourceStat: true
     resources:
         cache:
             # https://www.twblogs.net/a/5b8c454a2b7177188331c861
-            period: 15
+            period: 15s
         static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,classpath:/static/
     #    thymeleaf:
     #        suffix: .html
@@ -176,7 +151,6 @@ spring:
 
 mybatis:
     configuration:
-        # 是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。
         mapUnderscoreToCamelCase: true
     type-aliases-package: com.smart.springcloud.appa.background.model
     mapper-locations: classpath:mapper/**/*.xml
@@ -187,11 +161,9 @@ logging:
         root: WARN
         com.smart: DEBUG
         static: WARN
-
         org.springframework:
             data: WARN
             security: WARN
-
 
 # JWT http://www.jianshu.com/p/6307c89fe3fa
 # https://stackoverflow.com/questions/27416327/configurationproperties-prefix-not-working
@@ -200,10 +172,8 @@ jwt:
     tokenPrefix: "Bearer "
     header: "Authorization"
     accessToken:
-        #access_token 有效期 单位:秒
         expiration: 1800
     refreshToken:
-        #refresh_token 有效期 单位:秒
         expiration: 7200
     authRoute:
         login: "auth/login"

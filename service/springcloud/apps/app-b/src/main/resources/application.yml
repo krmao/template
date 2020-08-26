@@ -119,7 +119,7 @@ spring:
         allow-bean-definition-overriding: false
     application:
         # 服务注册名称 - 服务之间使用名称进行通讯
-        name: APP-A
+        name: APP-B
     jpa:
         hibernate:
             ddl-auto: none

@@ -70,8 +70,19 @@
 - pc webpack vue project
 - pc webpack react project
 
-### <a href="https://github.com/krmao/template/tree/androidx/service/service-template">Spring boot</a>
-- spring-boot project
+### <a href="https://github.com/krmao/template/tree/androidx/service/service-template">Spring Boot</a>
+- spring-boot single project
+
+### <a href="https://github.com/krmao/template/tree/androidx/service/springcloud">Spring Cloud</a>
+- springcloud project
+- springcloud spring-boot
+- springcloud eureka-server
+- springcloud eureka-client
+- springcloud zuul
+- springcloud eureka-ribbon load balancing
+- springcloud zuul cycle balancing
+- springcloud zuul + eureka-ribbon load balancing
+- jmeter test load balancing
 
 ### todo
 - ios examples

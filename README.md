@@ -34,19 +34,19 @@
   <a href="https://github.com/krmao/template/tree/androidx/service/service-template">Spring boot</a>
 </h3>
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/android">Android</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/android">android</a>
 - android flutter mixed with native framework
 - android hybird and hot-deploy framework
 - android react-native and hot-deploy framework
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/IOS">Ios</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/IOS">ios</a>
 - ios object-c template project
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/wechat">Wechat</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/wechat">wechat</a>
 - wechat normal mini-program
 - wechat mpvue mini-program
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/hybird_vue">Hybird</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/hybird_vue">hybird</a>
 - hybird vue
 
 ### mobile web
@@ -55,12 +55,12 @@
 - react
 - nextjs
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/flutter_module">Flutter</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/flutter_module">flutter</a>
 - flutter integration with android
 - flutter integration with ios
 - flutter pure app
 
-### <a href="https://github.com/krmao/template/tree/androidx/mobile/react_native">React Native</a>
+### <a href="https://github.com/krmao/template/tree/androidx/mobile/react_native">react native</a>
 - react native integration with android
 - react native integration with ios
 - react native pure app
@@ -70,10 +70,10 @@
 - pc webpack vue project
 - pc webpack react project
 
-### <a href="https://github.com/krmao/template/tree/androidx/service/service-template">Spring Boot</a>
+### <a href="https://github.com/krmao/template/tree/androidx/service/service-template">spring boot</a>
 - spring-boot single project
 
-### <a href="https://github.com/krmao/template/tree/androidx/service/springcloud">Spring Cloud</a>
+### <a href="https://github.com/krmao/template/tree/androidx/service/springcloud">spring cloud</a>
 - springcloud project
 - springcloud spring-boot
 - springcloud eureka-server
@@ -84,7 +84,13 @@
 - springcloud zuul + eureka-ribbon load balancing
 - jmeter test load balancing
 
-### todo
+### todo list
+- springcloud high availability
+  > [高可用](https://zhuanlan.zhihu.com/p/43723276)（High Availability）是分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计减少系统不能提供服务的时间。
+  - 高可用 eureka-client 集群, zuul 已经实现了
+  - 高可用 eureka-server 集群(eureka-server 本身是可能宕机的)
+  - 高可用 zuul 集群(zuul 本身是可能宕机的)
+  - nginx 是如何负载均衡的
 - ios examples
 - ios hot update
 - flutter mixed with native page stacks

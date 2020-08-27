@@ -129,3 +129,8 @@ port=5378
 5. 参考
     a. https://www.cnblogs.com/smiledada/p/10607923.html
     b. https://blog.csdn.net/qq_38386438/article/details/107353718
+
+### TODO LIST
+* eureka-server 集群(eureka-server 本身是可能宕机的)
+* zuul 集群(zuul 本身是可能宕机的)
+* nginx 是如何负载均衡的

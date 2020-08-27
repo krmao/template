@@ -32,4 +32,8 @@ out/
 ### VS Code ###
 .vscode/
 
+### JMeter ###
+*.log
+
+### Local ###
 local.properties

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.3">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="EurekaClientLoadBalancing" enabled="true">
-      <stringProp name="TestPlan.comments">微服务内部EurekaClient调用负载均衡测试 https://blog.csdn.net/Fish_11/article/details/88826194</stringProp>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="ZuulCycleLoadBalancing" enabled="true">
+      <stringProp name="TestPlan.comments">Zuul自身基于循环策略的负载均衡 https://blog.csdn.net/Fish_11/article/details/88826194</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
@@ -24,7 +24,7 @@
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
-        <stringProp name="TestPlan.comments">EurekaClient-Ribbon负载均衡测试线程组</stringProp>
+        <stringProp name="TestPlan.comments">Zuul自身基于循环策略的负载均衡 测试线程组</stringProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
@@ -35,7 +35,7 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">http://10.32.33.4:5381/app-b/test/callA</stringProp>
+          <stringProp name="HTTPSampler.path">http://10.32.33.4:5389/api-gateway/service-a/app-a/test/messageA?token=123</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -44,7 +44,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="TestPlan.comments">访问 EurekaClient-B 内部中转访问多个实例的 EurekaClient-A</stringProp>
+          <stringProp name="TestPlan.comments">通过 Zuul 直接访问多个实例的 EurekaClient-A, 测试 Zuul自身基于循环策略的负载均衡</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">

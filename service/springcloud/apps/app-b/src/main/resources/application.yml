@@ -31,8 +31,8 @@ ribbon:
     eager-load:
         enabled: false
         clients:  http://10.32.33.4:5388/eureka
-        MaxTotalConnections: 5
-        MaxConnectionsPerHost: 5
+        MaxTotalConnections: 2000
+        MaxConnectionsPerHost: 1000
         maxAutoRetries: 2
         maxAutoRetriesNextServer: 2
         okToRetryOnAllOperations: true
@@ -61,7 +61,7 @@ hystrix:
                     maxConcurrentRequests: 4
                 strategy: THREAD
                 thread:
-                    timeoutInMilliseconds: 10
+                    timeoutInMilliseconds: 1000
                     # https://www.cnblogs.com/throwable/p/11961016.html
                     interruptOnTimeout: true
                     interruptOnCancel: true
@@ -69,8 +69,8 @@ hystrix:
     # https://blog.csdn.net/weixin_33809981/article/details/88678620
     threadpool:
         default:
-            coreSize: 1
-            maxQueueSize: 4
+            coreSize: 2
+            maxQueueSize: 8
 
 feign:
     hystrix:
@@ -84,8 +84,8 @@ feign:
     client:
         config:
             default:
-                connectTimeout: 50
-                readTimeout: 50
+                connectTimeout: 5000
+                readTimeout: 5000
                 loggerLevel: full
 
 security:

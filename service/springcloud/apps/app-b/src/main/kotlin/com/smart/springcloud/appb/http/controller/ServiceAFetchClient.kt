@@ -1,6 +1,8 @@
 package com.smart.springcloud.appb.http.controller
 
+import com.smart.springcloud.appb.http.model.HKResponse
 import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 
 
@@ -11,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping
 @FeignClient("APP-A", path = "/app-a")
 interface ServiceAFetchClient {
     @RequestMapping("/test/messageA")
-    fun testAController(): String?
+    fun testAController(): ResponseEntity<HKResponse<String>>
 }

@@ -17,6 +17,8 @@ processResources {
 //endregion
 
 dependencies {
+    implementation project(":library-common")
+
     // https://www.cnblogs.com/jpfss/p/12011661.html
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion

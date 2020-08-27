@@ -131,6 +131,8 @@ port=5378
     b. https://blog.csdn.net/qq_38386438/article/details/107353718
 
 ### TODO LIST
-* eureka-server 集群(eureka-server 本身是可能宕机的)
-* zuul 集群(zuul 本身是可能宕机的)
+> [高可用](https://zhuanlan.zhihu.com/p/43723276)（High Availability）是分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计减少系统不能提供服务的时间。
+* 高可用 eureka-client 集群, zuul 已经实现了
+* 高可用 eureka-server 集群(eureka-server 本身是可能宕机的)
+* 高可用 zuul 集群(zuul 本身是可能宕机的)
 * nginx 是如何负载均衡的

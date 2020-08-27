@@ -43,7 +43,7 @@ kill -9 PID
 ```.mysql.conf
 cat ~/.mysql.conf
 [mysqld]
-port=5378
+port=5382
 ```
 
 ```shell script
@@ -66,7 +66,7 @@ port=5378
 # +---------------+-------+
 # | Variable_name | Value |
 # +---------------+-------+
-# | port          | 5378  |
+# | port          | 5382  |
 # +---------------+-------+
 # 1 row in set (0.01 sec)
 #

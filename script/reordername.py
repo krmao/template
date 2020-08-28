@@ -27,7 +27,7 @@ def read_origin_csv(csv_file_name):
     print("read csv start --->")
     order_row_list = []
 
-    with open(csv_file_name, 'r') as f:
+    with open(csv_file_name, 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
 
         # print(list(reader)[1]) 直接获取某一行

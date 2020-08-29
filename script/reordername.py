@@ -6,8 +6,22 @@ import os.path
 import shutil
 
 # ======================================================================================================================
-# 按 csv 索引顺序批处批量处理文件名 python 3.7
-#                             ---- by smart template
+# 批处理文件
+#
+# 用途与前提条件:
+# >1. 当 DIR_PATH_OLD 的所有图片名称与 CSV 文件第一列的数字一一对应的时候 (否则肯定出错!!!)
+# >2. 将 图片按照 CSV 本身的递增索引 拷贝并重新命名 到 DIR_PATH_NEW 文件夹
+#
+# 案例:
+#
+#   CSV表格递增索引       CSV 第一列数字          原始图片名称               CSV 递增索引
+#   370                 469                    469-1.jpg                370-1.jpg
+#   371                 470                    470.jpg                  371.jpg
+#   372                 471                    471.jpg/471-1.jpg        372.jpg/372-1.jpg
+#   373                 472                    472.jpg/472-1.jpg        373.jpg/373-1.jpg
+#
+#                                                       ---- python 3.7
+#                                                       ---- by smart template
 # ======================================================================================================================
 
 DIR_PATH_OLD = './files_old/'
@@ -56,22 +70,14 @@ def renames(csv_rows, old_file_names):
         target_order_num = int(data[0]) + 1  # 从 1 开始
         row = data[1]
         current_order_num = int(row[0])
-        print("target_order_num=", target_order_num, "current_order_num=", current_order_num)
 
         for old_file_index, old_file_name in enumerate(old_file_names):
-            # 469-1.jpg ->  370-1.jpg
-            # 470.jpg   ->  371.jpg
-            # 471.jpg   ->  372.jpg
-            # 471-1.jpg ->  372-1.jpg
-            # 472.jpg   ->  373.jpg
-            # 472-1.jpg ->  373-1.jpg
-
             old_num = int(old_file_name.split(".")[0].split("-")[0])
             if old_num == current_order_num:
-                print("current_order_num=", current_order_num, "old_num=", old_num, "old_file_index=", old_file_index, "old_file_name=", old_file_name, "target_order_num=", target_order_num)
                 new_file_name = old_file_name.replace(str(old_num), str(target_order_num))
-                print(old_file_name, "->", new_file_name)
+                print(">>>> (newFileName:" + str(target_order_num), "newFileFullName:" + str(new_file_name) + ")", "(oldFileName=" + str(old_num), "oldFileFullName=" + str(old_file_name) + ")")
                 rename_file_to(os.path.join(DIR_PATH_OLD, old_file_name), os.path.join(DIR_PATH_NEW, new_file_name))
+                print("----")
     print("renames end --->")
 
 

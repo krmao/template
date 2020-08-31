@@ -134,4 +134,14 @@
     <declare-styleable name="STEllipsizeEndTextView">
         <attr name="stLastScale" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="STDotsIndicator">
+        <attr name="stDotsColor" format="color" />
+        <attr name="stSelectedDotColor" format="color" />
+        <attr name="stDotsSize" format="dimension" />
+        <attr name="stDotsWidthFactor" format="float" />
+        <attr name="stDotsSpacing" format="dimension" />
+        <attr name="stDotsCornerRadius" format="dimension" />
+        <attr name="stProgressMode" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -1,8 +1,10 @@
 package com.smart.template.home
 
 import android.content.Intent
+import android.graphics.Outline
 import android.os.Bundle
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.LinearLayout
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
@@ -68,6 +70,15 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
 
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
+        //region viewPager 顶部圆角(不采用设置图片圆角的方式, 左右滑动时图片圆角会跟着滑动, 不好看), https://medium.com/@iamsadesh/android-ui-creating-a-layout-rounded-only-in-the-top-d60514ccab77
+        backdropBehaviorViewPager.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                val radius = 16.toPxFromDp()
+                outline.setRoundRect(0, 0, view.width, view.height + radius, radius.toFloat())
+            }
+        }
+        backdropBehaviorViewPager.clipToOutline = true
+        //endregion
         val backdropBehavior: STBottomSheetBackdropHalfBehavior<*> = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
         backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
         backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java

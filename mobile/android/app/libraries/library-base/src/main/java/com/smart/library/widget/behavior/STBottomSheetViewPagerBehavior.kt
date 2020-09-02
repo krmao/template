@@ -641,6 +641,15 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             onAnimationEndCallback()
             return
         }
+        startSettlingAnimationWithAnimationEndCallback(finalState, onAnimationEndCallback)
+    }
+
+    /**
+     * 强制触发 onStateChanged, 即使 state 相同
+     */
+    @UiThread
+    fun startSettlingAnimationWithAnimationEndCallback(state: Int, onAnimationEndCallback: () -> Unit) {
+        val finalState = wrapStateForEnableHalfExpanded(state)
         val child = getView()
         if (child == null) {
             onAnimationEndCallback()

@@ -98,9 +98,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         floatingActionButton2.setOnClickListener {
             backdropBehavior?.enableHalfExpandedState = false
             bottomSheetBehavior.enableHalfExpandedState = false
-            bottomSheetBehavior.currentFinalState = -1
             bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = if (true) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
+                state = if (false) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
                 parentHeight = bottomSheetBehavior.getParentHeight(),
                 expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.4f).toInt(),
                 halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),
@@ -113,9 +112,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         floatingActionButton3.setOnClickListener {
             backdropBehavior?.enableHalfExpandedState = true
             bottomSheetBehavior.enableHalfExpandedState = true
-            bottomSheetBehavior.currentFinalState = -1
             bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = if (true) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
+                state = if (false) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
                 parentHeight = bottomSheetBehavior.getParentHeight(),
                 expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.3f).toInt(),
                 halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),

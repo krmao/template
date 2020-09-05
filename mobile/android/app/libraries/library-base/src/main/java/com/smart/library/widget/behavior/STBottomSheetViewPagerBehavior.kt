@@ -63,6 +63,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     private fun dragThresholdOffset(): Float = Math.abs(getViewVerticalDragRange() / min(99f, max(dragOffsetPercent, 1f)))
 
     var currentFinalState: Int = -1 // 首次 setState 之前为 -1, 标记第一次
+        private set
 
     init {
 
@@ -484,10 +485,12 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     @UiThread
     fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
         STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState")
-        if (!setParentHeight(parentHeight) && (parentHeight > 0 && currentFinalState != -1)) {
+        if (parentHeight <= 0) {
             STLogUtil.e(TAG, "setStateOnParentHeightChanged setParentHeight:$parentHeight failure, return")
             return
         }
+        setParentHeight(parentHeight)
+
         this.calculateExpandedOffset(expandedOffset)
         // must be call after calculateExpandedOffset
         this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STBottomSheetBehavior.STATE_EXPANDED))

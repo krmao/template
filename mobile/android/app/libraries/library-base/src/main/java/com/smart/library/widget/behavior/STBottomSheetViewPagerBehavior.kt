@@ -63,7 +63,6 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     private fun dragThresholdOffset(): Float = Math.abs(getViewVerticalDragRange() / min(99f, max(dragOffsetPercent, 1f)))
 
     var currentFinalState: Int = -1 // 首次 setState 之前为 -1, 标记第一次
-        private set
 
     init {
 
@@ -434,7 +433,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return true
     }
 
-    protected fun calculateExpandedOffset(expandedOffset: Int = Math.max(0, getParentHeight() - (getView()?.height ?: getParentHeight()))) {
+    fun calculateExpandedOffset(expandedOffset: Int = Math.max(0, getParentHeight() - (getView()?.height ?: getParentHeight()))) {
         this.fitToContentsOffset = expandedOffset
         STLogUtil.w(TAG, "calculateExpandedOffset fitToContentsOffset=$fitToContentsOffset, expandedOffset=$expandedOffset, getView()?.height=${getView()?.height}, getParentHeight=${getParentHeight()}")
     }

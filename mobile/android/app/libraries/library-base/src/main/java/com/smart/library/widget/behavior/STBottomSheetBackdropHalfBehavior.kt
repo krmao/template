@@ -67,6 +67,8 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
         return false
     }
 
+    var enableHalfExpandedState = true
+
     /**
      * 当 bottomSheetBehavior 滚动时, 处理自己的滚动
      * @param parent the parent view of the given child
@@ -89,22 +91,33 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
 
         val childMaxShowOffset: Int = child.height // 完整高度
         val childMinShowOffset: Int = 20.toPxFromDp() // 漏出一点的距离
-        val childExpandedOffset = dependExpandedOffset - childMinShowOffset
-        val childHalfExpandedOffset = dependHalfExpandedOffset - childMaxShowOffset
         val childCollapsedOffset = dependCollapsedOffset - childMinShowOffset
 
-        if (dependency.y >= dependHalfExpandedOffset) {
-            // 在 HalfExpanded - Collapsed 区间
-            val dependMoveTotalOffset = dependCollapsedOffset - dependHalfExpandedOffset
-            val childMoveTotalOffset = childCollapsedOffset - childHalfExpandedOffset
-            child.y = childHalfExpandedOffset + childMoveTotalOffset * (dependency.y - dependHalfExpandedOffset) / dependMoveTotalOffset.toFloat()
-            onDependentViewChanged = lastChildY == child.y
-            lastChildY = child.y
+        if (enableHalfExpandedState) {
+            val childExpandedOffset = dependExpandedOffset - childMinShowOffset
+            val childHalfExpandedOffset = dependHalfExpandedOffset - childMaxShowOffset
+            if (dependency.y >= dependHalfExpandedOffset) {
+                // 在 HalfExpanded - Collapsed 区间
+                val dependMoveTotalOffset = dependCollapsedOffset - dependHalfExpandedOffset
+                val childMoveTotalOffset = childCollapsedOffset - childHalfExpandedOffset
+                child.y = childHalfExpandedOffset + childMoveTotalOffset * (dependency.y - dependHalfExpandedOffset) / dependMoveTotalOffset.toFloat()
+                onDependentViewChanged = lastChildY == child.y
+                lastChildY = child.y
+            } else {
+                // 在 HalfExpanded - Expanded 区间
+                val dependMoveTotalOffset = dependHalfExpandedOffset - dependExpandedOffset
+                val childMoveTotalOffset = childHalfExpandedOffset - childExpandedOffset
+                child.y = childHalfExpandedOffset - childMoveTotalOffset * (dependHalfExpandedOffset - dependency.y) / dependMoveTotalOffset.toFloat()
+                onDependentViewChanged = lastChildY == child.y
+                lastChildY = child.y
+            }
         } else {
-            // 在 HalfExpanded - Expanded 区间
-            val dependMoveTotalOffset = dependHalfExpandedOffset - dependExpandedOffset
-            val childMoveTotalOffset = childHalfExpandedOffset - childExpandedOffset
-            child.y = childHalfExpandedOffset - childMoveTotalOffset * (dependHalfExpandedOffset - dependency.y) / dependMoveTotalOffset.toFloat()
+            // 在 Expanded - Collapsed 区间
+            val childExpandedOffset = dependExpandedOffset - childMaxShowOffset
+            val dependMoveTotalOffset = dependCollapsedOffset - dependExpandedOffset
+            val childMoveTotalOffset = childCollapsedOffset - childExpandedOffset
+
+            child.y = childExpandedOffset + childMoveTotalOffset * (dependency.y - dependExpandedOffset) / dependMoveTotalOffset.toFloat()
             onDependentViewChanged = lastChildY == child.y
             lastChildY = child.y
         }

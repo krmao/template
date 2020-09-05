@@ -59,5 +59,42 @@
         app:pressedTranslationZ="3dp"
         app:rippleColor="@color/orange"
         app:useCompatPadding="false" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="center"
+        android:layout_marginStart="50dp"
+        android:src="@mipmap/ic_launcher"
+        android:translationX="70dp"
+        android:translationY="-20dp"
+        app:backgroundTint="@color/blue_300"
+        app:backgroundTintMode="src_over"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/titleBar"
+        app:layout_anchorGravity="bottom|end"
+        app:pressedTranslationZ="3dp"
+        app:rippleColor="@color/orange"
+        app:useCompatPadding="false" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_launcher"
+        android:translationX="120dp"
+        android:translationY="-20dp"
+        app:backgroundTint="@color/blue_300"
+        app:backgroundTintMode="src_over"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/titleBar"
+        app:layout_anchorGravity="bottom|end"
+        app:pressedTranslationZ="3dp"
+        app:rippleColor="@color/orange"
+        app:useCompatPadding="false" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

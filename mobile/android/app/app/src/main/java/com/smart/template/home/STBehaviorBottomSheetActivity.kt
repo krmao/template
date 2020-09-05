@@ -42,7 +42,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
 
         initBottomSheetBehavior()
-        initBackdropBehavior(300.toPxFromDp())
+        initBackdropBehavior(100.toPxFromDp())
         initFloatingActionButton()
     }
 
@@ -69,6 +69,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
 
+    var backdropBehavior: STBottomSheetBackdropHalfBehavior<*>? = null
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
         //region viewPager 顶部圆角(不采用设置图片圆角的方式, 左右滑动时图片圆角会跟着滑动, 不好看), https://medium.com/@iamsadesh/android-ui-creating-a-layout-rounded-only-in-the-top-d60514ccab77
         backdropBehaviorViewPager.outlineProvider = object : ViewOutlineProvider() {
@@ -79,9 +80,9 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
         backdropBehaviorViewPager.clipToOutline = true
         //endregion
-        val backdropBehavior: STBottomSheetBackdropHalfBehavior<*> = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
-        backdropBehavior.bottomSheetBehavior = bottomSheetBehavior
-        backdropBehavior.bottomSheetBehaviorClass = LinearLayout::class.java
+        backdropBehavior = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
+        backdropBehavior?.bottomSheetBehavior = bottomSheetBehavior
+        backdropBehavior?.bottomSheetBehaviorClass = LinearLayout::class.java
         backdropBehaviorViewPager.adapter = STBehaviorBottomSheetImagesPagerAdapter(this)
         backdropBehaviorViewPager.layoutParams = backdropBehaviorViewPager.layoutParams.apply { height = bottomSheetHalfExpandTop }
     }
@@ -92,6 +93,36 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
                 STLogUtil.w(TAG, "onGlobalLayout callback ${it.height}")
                 STSystemUtil.showSystemInfo(this)
                 STToastUtil.show("onGlobalLayout callback ${it.height}")
+            }
+        }
+        floatingActionButton2.setOnClickListener {
+            backdropBehavior?.enableHalfExpandedState = false
+            bottomSheetBehavior.enableHalfExpandedState = false
+            bottomSheetBehavior.currentFinalState = -1
+            bottomSheetBehavior.setStateOnParentHeightChanged(
+                state = if (true) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
+                parentHeight = bottomSheetBehavior.getParentHeight(),
+                expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.4f).toInt(),
+                halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),
+                peekHeight = bottomSheetPeekHeight
+            ) {
+                STLogUtil.w(TAG, "onAnimationEndCallback")
+                STToastUtil.show("onAnimationEndCallback")
+            }
+        }
+        floatingActionButton3.setOnClickListener {
+            backdropBehavior?.enableHalfExpandedState = true
+            bottomSheetBehavior.enableHalfExpandedState = true
+            bottomSheetBehavior.currentFinalState = -1
+            bottomSheetBehavior.setStateOnParentHeightChanged(
+                state = if (true) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
+                parentHeight = bottomSheetBehavior.getParentHeight(),
+                expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.3f).toInt(),
+                halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),
+                peekHeight = bottomSheetPeekHeight
+            ) {
+                STLogUtil.w(TAG, "onAnimationEndCallback")
+                STToastUtil.show("onAnimationEndCallback")
             }
         }
 

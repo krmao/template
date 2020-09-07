@@ -3,6 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.base.ensureOnGlobalLayoutListener
+import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STDialogManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.widget.colorpicker.STColorPickerUtil
 import com.smart.template.R
@@ -34,6 +38,16 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        labelTV.ensureOnGlobalLayoutListener {
+            val text = labelTV.text.toString().trim()
+            STLogUtil.w("[SYS] LABEL 1 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+            STLogUtil.w("[SYS] LABEL 1 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth)}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp())}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+        }
+        label2TV.ensureOnGlobalLayoutListener {
+            val text = label2TV.text.toString().trim()
+            STLogUtil.w("[SYS] LABEL 2 text=$text, realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+            STLogUtil.w("[SYS] LABEL 2 text=$text, calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth, typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}")
+        }
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
         }

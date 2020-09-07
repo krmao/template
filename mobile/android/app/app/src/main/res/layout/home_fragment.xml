@@ -4,8 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/labelTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/light_green_700"
+        android:includeFontPadding="false"
+        android:lineHeight="16dp"
+        android:text="模板项目 TEMplate"
+        android:textSize="16dp"
+        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/label2TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="@color/light_blue_200"
+        android:includeFontPadding="false"
+        android:lineHeight="16dp"
+        android:lineSpacingExtra="0dp"
+        android:lineSpacingMultiplier="1"
+        android:padding="0dp"
+        android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -263,7 +291,6 @@
                         android:layout_weight="1"
                         android:text="二楼"
                         app:backgroundTint="@color/blue_600" />
-
                 </TableRow>
 
 

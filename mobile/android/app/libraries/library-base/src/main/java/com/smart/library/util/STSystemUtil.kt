@@ -7,12 +7,14 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.*
@@ -21,6 +23,7 @@ import androidx.core.content.PermissionChecker
 import com.smart.library.R
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.toBitmap
+
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
 object STSystemUtil {
@@ -447,6 +450,64 @@ object STSystemUtil {
             return true
         }
         return false
+    }
+
+    /**
+     * 测量文本宽度
+     *
+     * Paint.measureText和Paint.getTextBounds返回的宽度之间略有差异
+     * > measureText 返回的宽度包括字形的 advanceX 值，该值填充字符串的开始和结尾, 即包含字形所需的空间
+     * > getTextBounds 返回的 Rect 宽度没有此填充，因为边界是紧密包裹文本的Rect, 即所需要的最小尺寸
+     *
+     * @see {@link https://stackoverflow.com/a/42091739/4348530}
+     */
+    @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
+    fun measuringTextWidth(text: String?, textSizePx: Float, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
+        if (text == null || text.isEmpty()) return 0f
+
+        val paint = Paint()
+        paint.isAntiAlias = true
+        paint.textSize = textSizePx
+        paint.typeface = typeface
+        paint.color = Color.BLACK
+
+        var width = 0f
+
+        val textLength: Int = text.length
+        val textWidths = FloatArray(textLength)
+
+        paint.getTextWidths(text, textWidths)
+
+        for (index: Int in 0 until textLength) {
+            width += Math.ceil(textWidths[index].toDouble()).toFloat()
+        }
+
+        STLogUtil.w("[SYS] measuringTextWidth:$width")
+        return width
+    }
+
+    /**
+     * 测量多行文本的高度, 每个字符宽度相加
+     */
+    fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Int, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
+        if (text == null || text.isEmpty()) return 0f
+
+        val textPaint = TextPaint()
+        textPaint.isAntiAlias = true
+        textPaint.textSize = textSizePx
+        textPaint.typeface = typeface
+        textPaint.color = Color.BLACK
+
+        val alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
+        val spacingMultiplier = 1f
+        val spacingAddition = 0f
+        val includePadding = false
+
+        val staticLayout = StaticLayout(text, textPaint, widthPx, alignment, spacingMultiplier, spacingAddition, includePadding)
+
+        val height: Float = staticLayout.height.toFloat()
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight:$height")
+        return height
     }
 
     fun showSystemInfo(activity: Activity?) {

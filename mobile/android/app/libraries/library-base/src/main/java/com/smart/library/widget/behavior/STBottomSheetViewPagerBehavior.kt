@@ -483,8 +483,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
     */
     @UiThread
-    fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
-        STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState")
+    fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, forceSettlingOnSameState: Boolean = false, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
+        STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState, forceSettlingOnSameState=$forceSettlingOnSameState")
         if (parentHeight <= 0) {
             STLogUtil.e(TAG, "setStateOnParentHeightChanged setParentHeight:$parentHeight failure, return")
             return
@@ -500,9 +500,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
         this.setPeekHeight(peekHeight)
         if (onAnimationEndCallback == null) {
-            this.setState(state)
+            // this.setState(state)
+            this.setStateWithAnimationEndCallback(state, forceSettlingOnSameState) {}
         } else {
-            this.setStateWithAnimationEndCallback(state, onAnimationEndCallback)
+            this.setStateWithAnimationEndCallback(state, forceSettlingOnSameState, onAnimationEndCallback)
         }
         STLogUtil.e(TAG, "setStateOnParentHeightChanged end")
     }
@@ -625,11 +626,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
     //region test, set state with animation end callback
     @UiThread
-    fun setStateWithAnimationEndCallback(@FinalState state: Int, onAnimationEndCallback: () -> Unit) {
+    fun setStateWithAnimationEndCallback(@FinalState state: Int, forceSettlingOnSameState: Boolean, onAnimationEndCallback: () -> Unit) {
         val finalState = wrapStateForEnableHalfExpanded(state)
-        STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
+        STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState, forceSettlingOnSameState=$forceSettlingOnSameState")
 
-        if (finalState == getState()) {
+        if (!forceSettlingOnSameState && finalState == getState()) {
             onAnimationEndCallback()
             return
         }

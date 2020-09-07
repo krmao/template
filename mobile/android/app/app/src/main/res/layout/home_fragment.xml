@@ -20,16 +20,28 @@
         tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
     <TextView
+        android:id="@+id/label1TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:includeFontPadding="false"
+        android:fontFamily="sans-serif"
+        android:lineHeight="16dp"
+        android:lineSpacingExtra="0dp"
+        android:lineSpacingMultiplier="1"
+        android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate"
+        android:textSize="16dp"
+        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+    <TextView
         android:id="@+id/label2TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="0dp"
         android:background="@color/light_blue_200"
         android:includeFontPadding="false"
         android:lineHeight="16dp"
         android:lineSpacingExtra="0dp"
         android:lineSpacingMultiplier="1"
-        android:padding="0dp"
         android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate"
         android:textSize="16dp"
         android:textStyle="bold"

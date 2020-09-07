@@ -219,7 +219,7 @@ object STSystemUtil {
     fun sendKeyUpEventMenu(context: Context?) = (context as? Activity)?.onKeyUp(KeyEvent.KEYCODE_MENU, KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU))
 
     @JvmStatic
-    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
+    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics) + 0.5f
 
     @JvmStatic
     fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
@@ -471,7 +471,7 @@ object STSystemUtil {
         paint.typeface = typeface
         paint.color = Color.BLACK
 
-        var width = 0f
+        var widthByGetTextWidths = 0f
 
         val textLength: Int = text.length
         val textWidths = FloatArray(textLength)
@@ -479,17 +479,17 @@ object STSystemUtil {
         paint.getTextWidths(text, textWidths)
 
         for (index: Int in 0 until textLength) {
-            width += Math.ceil(textWidths[index].toDouble()).toFloat()
+            widthByGetTextWidths += Math.ceil(textWidths[index].toDouble()).toFloat()
         }
 
-        STLogUtil.w("[SYS] measuringTextWidth:$width")
-        return width
+        STLogUtil.w("[SYS] measuringTextWidth widthByGetTextWidths=$widthByGetTextWidths, widthByMeasureText=${paint.measureText(text)}")
+        return widthByGetTextWidths
     }
 
     /**
      * 测量多行文本的高度, 每个字符宽度相加
      */
-    fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Int, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
+    fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
         if (text == null || text.isEmpty()) return 0f
 
         val textPaint = TextPaint()
@@ -503,11 +503,11 @@ object STSystemUtil {
         val spacingAddition = 0f
         val includePadding = false
 
-        val staticLayout = StaticLayout(text, textPaint, widthPx, alignment, spacingMultiplier, spacingAddition, includePadding)
+        val staticLayout = StaticLayout(text, textPaint, widthPx.toInt(), alignment, spacingMultiplier, spacingAddition, includePadding)
 
-        val height: Float = staticLayout.height.toFloat()
-        STLogUtil.w("[SYS] measuringMultiLineTextHeight:$height")
-        return height
+        val heightByStaticLayout: Float = staticLayout.height.toFloat()
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout")
+        return heightByStaticLayout
     }
 
     fun showSystemInfo(activity: Activity?) {

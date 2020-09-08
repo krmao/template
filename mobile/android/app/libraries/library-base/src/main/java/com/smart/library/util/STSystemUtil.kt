@@ -503,6 +503,10 @@ object STSystemUtil {
      * android:textStyle="normal"
      * android:layout_margin="0dp"
      * android:padding="0dp"
+     *
+     * option:
+     * android:fontFamily="sans-serif"
+     * textPaint.typeface = Typeface.create("sans-serif", Typeface.NORMAL)
      */
     @Deprecated(message = "不同机型不精确")
     fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float): Float {

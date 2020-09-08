@@ -508,7 +508,7 @@ object STSystemUtil {
      * android:fontFamily="sans-serif"
      * textPaint.typeface = Typeface.create("sans-serif", Typeface.NORMAL)
      */
-    @Deprecated(message = "不同机型不精确")
+    @Deprecated(message = "不同机型不精确, 获取到近似值后最好直接 textView.setLayoutParams 这样就精准了")
     fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float): Float {
         if (text == null || text.isEmpty()) return 0f
 

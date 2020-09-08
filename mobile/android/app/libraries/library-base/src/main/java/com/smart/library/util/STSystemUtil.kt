@@ -492,7 +492,19 @@ object STSystemUtil {
     /**
      * 测量一行或者多行文本的高度, 每个字符宽度相加
      * textStyle(normal/bold/italic) 不影响高度计算
+     *
+     * 务必设置以下参数
+     *
+     * android:includeFontPadding="false"
+     * android:textSize="16dp"
+     * android:lineHeight="16dp"
+     * android:lineSpacingExtra="0dp"
+     * android:lineSpacingMultiplier="1"
+     * android:textStyle="normal"
+     * android:layout_margin="0dp"
+     * android:padding="0dp"
      */
+    @Deprecated(message = "不同机型不精确")
     fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float): Float {
         if (text == null || text.isEmpty()) return 0f
 
@@ -500,6 +512,7 @@ object STSystemUtil {
         textPaint.isAntiAlias = true
         textPaint.textSize = textSizePx
         textPaint.color = Color.BLACK
+        textPaint.typeface = Typeface.create("sans-serif", Typeface.NORMAL)
 
         val alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
         val spacingMultiplier = 1f
@@ -518,7 +531,15 @@ object STSystemUtil {
             heightByStaticLayout = heightByStaticLayoutOrigin + (if (staticLayout.lineCount <= 1) 0f else (12 + (staticLayout.lineCount - 1f) * 5f))
         }
 
-        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin")
+        val bounds = Rect()
+        textPaint.getTextBounds(text, 0, text.length, bounds)
+        val singleLineHeightByBounds = bounds.height()
+
+        val fm: Paint.FontMetrics = textPaint.fontMetrics
+        val singleLineHeightByFontMetrics: Float = fm.descent - fm.ascent
+        val finalSingleLineHeight = heightByStaticLayout / staticLayout.lineCount.toFloat()
+
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin, singleLineHeightByFontMetrics=$singleLineHeightByFontMetrics, singleLineHeightByBounds=$singleLineHeightByBounds, finalSingleLineHeight=$finalSingleLineHeight")
         return heightByStaticLayout
     }
 

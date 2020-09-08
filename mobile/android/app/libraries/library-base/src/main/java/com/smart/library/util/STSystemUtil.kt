@@ -513,6 +513,9 @@ object STSystemUtil {
         val density: Float = displayMetrics.density
         if (IS_HUAWEI) { // 华为手机存在偏差
             heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else ((staticLayout.lineCount - density) * density))
+        } else if (IS_SAMSUNG) { // 三星手机存在偏差
+            // SM-A9080 从第二行开始逐行比真实值缺少 17 22 27 32
+            heightByStaticLayout = heightByStaticLayoutOrigin + (if (staticLayout.lineCount <= 1) 0f else (12 + (staticLayout.lineCount - 1f) * 5f))
         }
 
         STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin")
@@ -538,11 +541,14 @@ object STSystemUtil {
     @JvmStatic
     val IS_VIVO: Boolean by lazy { "vivo".equals(MANUFACTURER, ignoreCase = true) }
 
+    @JvmStatic
+    val IS_SAMSUNG: Boolean by lazy { "samsung".equals(MANUFACTURER, ignoreCase = true) }
+
     fun showSystemInfo(activity: Activity?) {
         STLogUtil.sync {
             STLogUtil.d("[SYS] ======================================================================================")
             STLogUtil.d("[SYS] appName=$appName, versionName=$versionName, versionCode=$versionCode, SDK_INT=$SDK_INT")
-            STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO")
+            STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO, IS_SAMSUNG=$IS_SAMSUNG")
             STLogUtil.d("[SYS] screenWidth=$screenWidth, screenHeight=$screenHeight, screenRealHeight=$screenRealHeight, screenContentHeightExcludeStatusAndNavigationBar=$screenContentHeightExcludeStatusAndNavigationBar")
             STLogUtil.d("[SYS] statusBarHeight=$statusBarHeight, navigationBarHeight=$navigationBarHeight")
             STLogUtil.d("[SYS] getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged=${getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(activity)}")

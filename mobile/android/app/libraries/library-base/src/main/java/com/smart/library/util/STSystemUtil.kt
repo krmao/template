@@ -507,17 +507,42 @@ object STSystemUtil {
         val includePadding = false
 
         val staticLayout = StaticLayout(text, textPaint, widthPx.toInt(), alignment, spacingMultiplier, spacingAddition, includePadding)
-        val density = displayMetrics.density
         val heightByStaticLayoutOrigin: Float = staticLayout.height.toFloat()
-        val heightByStaticLayout: Float = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else ((staticLayout.lineCount - density) * density))
+        var heightByStaticLayout: Float = heightByStaticLayoutOrigin
+
+        val density: Float = displayMetrics.density
+        if (IS_HUAWEI) { // 华为手机存在偏差
+            heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else ((staticLayout.lineCount - density) * density))
+        }
+
         STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin")
         return heightByStaticLayout
     }
+
+    /**
+     * 生产者; 制造者; 生产商;
+     * huawei/meizu/xiaomi/vivo
+     */
+    @JvmStatic
+    val MANUFACTURER: String by lazy { Build.MANUFACTURER }
+
+    @JvmStatic
+    val IS_HUAWEI: Boolean by lazy { "huawei".equals(MANUFACTURER, ignoreCase = true) }
+
+    @JvmStatic
+    val IS_MEIZU: Boolean by lazy { "meizu".equals(MANUFACTURER, ignoreCase = true) }
+
+    @JvmStatic
+    val IS_XIAOMI: Boolean by lazy { "xiaomi".equals(MANUFACTURER, ignoreCase = true) }
+
+    @JvmStatic
+    val IS_VIVO: Boolean by lazy { "vivo".equals(MANUFACTURER, ignoreCase = true) }
 
     fun showSystemInfo(activity: Activity?) {
         STLogUtil.sync {
             STLogUtil.d("[SYS] ======================================================================================")
             STLogUtil.d("[SYS] appName=$appName, versionName=$versionName, versionCode=$versionCode, SDK_INT=$SDK_INT")
+            STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO")
             STLogUtil.d("[SYS] screenWidth=$screenWidth, screenHeight=$screenHeight, screenRealHeight=$screenRealHeight, screenContentHeightExcludeStatusAndNavigationBar=$screenContentHeightExcludeStatusAndNavigationBar")
             STLogUtil.d("[SYS] statusBarHeight=$statusBarHeight, navigationBarHeight=$navigationBarHeight")
             STLogUtil.d("[SYS] getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged=${getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(activity)}")

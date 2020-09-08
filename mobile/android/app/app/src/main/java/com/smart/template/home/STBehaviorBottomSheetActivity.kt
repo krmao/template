@@ -13,9 +13,9 @@ import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.util.STToastUtil
 import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.getStateDescription
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
 
@@ -24,14 +24,18 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     @Suppress("PrivatePropertyName", "unused")
     private val TAG = "[BottomSheet]"
 
-    private val backdropBehaviorHeightShow: Int = (com.smart.library.util.STSystemUtil.screenWidth * 9f / 16f).toInt()
+    private val backdropBehaviorHeightShow: Int = (STSystemUtil.screenWidth * 9f / 16f).toInt()
 
     // 面板距离页面底部距离, 面板收缩态的真实高度
 
     private val onBottomSheetCallback: STBottomSheetBehavior.BottomSheetCallback by lazy {
         object : STBottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                STLogUtil.w(TAG, "onStateChanged newState=${getStateDescription(newState)}, bottomSheet.top=${bottomSheet.top}")
+            }
+
             override fun onSlide(bottomSheet: View, percent: Float) {
+                STLogUtil.w(TAG, "onSlide percent=$percent, bottomSheet.top=${bottomSheet.top}")
                 bottomSheetBehavior.dragEnabled = true
             }
         }
@@ -49,26 +53,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
 
     private fun initBottomSheetBehavior() {
-        bottomSheetBehavior.enableHalfExpandedState = true
         bottomSheetBehavior.dragEnabled = true
         bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
-        bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->
-            val parentHeight = parent.height
-            STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${bottomSheetBehavior.getStateDescription(bottomSheetBehavior.currentFinalState)}")
-            STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
-            bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = if (isFirst) STBottomSheetBehavior.STATE_HALF_EXPANDED else bottomSheetBehavior.currentFinalState,
-                parentHeight = parentHeight,
-                expandedOffset = (parentHeight * 0.1f).toInt(),
-                halfExpandedOffset = (parentHeight * 0.6f).toInt(),
-                peekHeight = bottomSheetPeekHeight
-            ) {
-                STLogUtil.w(TAG, "onAnimationEndCallback")
-                STToastUtil.show("onAnimationEndCallback")
-            }
-
-            STLogUtil.e(TAG, "onParentHeightChangedListener end newParentHeight=${parent.height}, isFirst=$isFirst")
-        }
     }
 
     var backdropBehavior: STBottomSheetBackdropHalfBehavior<*>? = null
@@ -91,13 +77,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 1)) {}
+            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 1)) {}
         }
         floatingActionButton2.setOnClickListener {
-            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 0.4).toInt()) {}
+            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 0.4).toInt()) {}
         }
         floatingActionButton3.setOnClickListener {
-            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 0.3).toInt()) {}
+            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 0.2).toInt()) {}
         }
 
         window?.decorView?.ensureOnGlobalLayoutListener {
@@ -108,14 +94,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     // 当前新版是三段式还是两段式
     private var enableHalfExpandedState = true
-    private val peekHeight = 140.toPxFromDp()
 
     @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
-    private fun resetBottomSheetState(realHeight: Int, callback: () -> Unit) {
+    private fun setStateByRealHeight(realHeight: Int, callback: () -> Unit) {
         val parentHeight = bottomSheetBehavior.getParentHeight()
         val minExpandedOffset = (parentHeight * 0.24f).toInt()
         val minHalfExpandedOffset = (parentHeight * 0.5f).toInt()
-        val peekOffset = parentHeight - peekHeight
+        val peekOffset = parentHeight - bottomSheetPeekHeight
         val realOffset = parentHeight - realHeight
         val maxExpandedOffsetOnDisableHalf = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况
         val maxExpandedOffsetOnEnableHalf = minHalfExpandedOffset - 20.toPxFromDp()
@@ -129,11 +114,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
             bottomSheetBehavior.setStateOnParentHeightChanged(
                 state = STBottomSheetBehavior.STATE_HALF_EXPANDED,
+                enableAnimation = false,
+                notifyOnStateChanged = true,
                 forceSettlingOnSameState = true,
                 parentHeight = parentHeight,
                 expandedOffset = finalExpandedOffset,
                 halfExpandedOffset = minHalfExpandedOffset,
-                peekHeight = peekHeight
+                peekHeight = bottomSheetPeekHeight
             ) {
                 callback.invoke()
                 STLogUtil.w(TAG, "onAnimationEndCallback")
@@ -148,11 +135,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
             bottomSheetBehavior.setStateOnParentHeightChanged(
                 state = STBottomSheetBehavior.STATE_EXPANDED,
+                enableAnimation = false,
+                notifyOnStateChanged = true,
                 forceSettlingOnSameState = true,
                 parentHeight = parentHeight,
                 expandedOffset = finalExpandedOffset,
                 halfExpandedOffset = 0,
-                peekHeight = peekHeight
+                peekHeight = bottomSheetPeekHeight
             ) {
                 callback.invoke()
                 STLogUtil.w(TAG, "onAnimationEndCallback")

@@ -13,6 +13,7 @@ import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.widget.behavior.STBottomSheetBackdropSecondFloorBehavior
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.getStateDescription
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.backdropBehaviorViewPager
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.bottomSheetContainer
@@ -53,7 +54,7 @@ class STBehaviorBottomSheetSecondFloorActivity : STBaseActivity() {
         bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
         bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->
             val parentHeight = parent.height
-            STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${bottomSheetBehavior.getStateDescription(bottomSheetBehavior.currentFinalState)}")
+            STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${getStateDescription(bottomSheetBehavior.currentFinalState)}")
             STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetSecondFloorActivity)
             initSecondFloorBehavior(parentHeight - bottomSheetPeekHeight)
             bottomSheetBehavior.setStateOnParentHeightChanged(

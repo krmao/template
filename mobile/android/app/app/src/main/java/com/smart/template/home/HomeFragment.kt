@@ -38,20 +38,30 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        labelTV.ensureOnGlobalLayoutListener {
-            val text = labelTV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 0 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 0 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp())}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-        }
         label1TV.ensureOnGlobalLayoutListener {
             val text = label1TV.text.toString().trim()
             STLogUtil.w("[SYS] LABEL 1 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 1 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat(), typeface = Typeface.create("sans-serif", Typeface.NORMAL))}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL))}")
+            STLogUtil.w("[SYS] LABEL 1 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}")
         }
         label2TV.ensureOnGlobalLayoutListener {
             val text = label2TV.text.toString().trim()
             STLogUtil.w("[SYS] LABEL 2 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 2 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}")
+            STLogUtil.w("[SYS] LABEL 2 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
+        }
+        label3TV.ensureOnGlobalLayoutListener {
+            val text = label3TV.text.toString().trim()
+            STLogUtil.w("[SYS] LABEL 3 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+            STLogUtil.w("[SYS] LABEL 3 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
+        }
+        label4TV.ensureOnGlobalLayoutListener {
+            val text = label4TV.text.toString().trim()
+            STLogUtil.w("[SYS] LABEL 4 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+            STLogUtil.w("[SYS] LABEL 4 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
+        }
+        label5TV.ensureOnGlobalLayoutListener {
+            val text = label5TV.text.toString().trim()
+            STLogUtil.w("[SYS] LABEL 5 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
+            STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
         }
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)

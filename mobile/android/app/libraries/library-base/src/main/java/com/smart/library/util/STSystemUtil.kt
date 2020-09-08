@@ -453,13 +453,16 @@ object STSystemUtil {
     }
 
     /**
-     * 测量文本宽度
+     * 测量一行文本宽度, 多行不起作用
+     * textStyle(normal/bold/italic) 影响宽度计算
      *
      * Paint.measureText和Paint.getTextBounds返回的宽度之间略有差异
      * > measureText 返回的宽度包括字形的 advanceX 值，该值填充字符串的开始和结尾, 即包含字形所需的空间
      * > getTextBounds 返回的 Rect 宽度没有此填充，因为边界是紧密包裹文本的Rect, 即所需要的最小尺寸
      *
      * @see {@link https://stackoverflow.com/a/42091739/4348530}
+     *
+     * @example STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
      */
     @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
     fun measuringTextWidth(text: String?, textSizePx: Float, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
@@ -487,15 +490,15 @@ object STSystemUtil {
     }
 
     /**
-     * 测量多行文本的高度, 每个字符宽度相加
+     * 测量一行或者多行文本的高度, 每个字符宽度相加
+     * textStyle(normal/bold/italic) 不影响高度计算
      */
-    fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float, typeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)): Float {
+    fun measuringMultiLineTextHeight(text: String?, textSizePx: Float, widthPx: Float): Float {
         if (text == null || text.isEmpty()) return 0f
 
         val textPaint = TextPaint()
         textPaint.isAntiAlias = true
         textPaint.textSize = textSizePx
-        textPaint.typeface = typeface
         textPaint.color = Color.BLACK
 
         val alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
@@ -504,9 +507,10 @@ object STSystemUtil {
         val includePadding = false
 
         val staticLayout = StaticLayout(text, textPaint, widthPx.toInt(), alignment, spacingMultiplier, spacingAddition, includePadding)
-
-        val heightByStaticLayout: Float = staticLayout.height.toFloat()
-        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout")
+        val density = displayMetrics.density
+        val heightByStaticLayoutOrigin: Float = staticLayout.height.toFloat()
+        val heightByStaticLayout: Float = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else ((staticLayout.lineCount - density) * density))
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin")
         return heightByStaticLayout
     }
 

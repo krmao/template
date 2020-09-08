@@ -516,7 +516,7 @@ object STSystemUtil {
         textPaint.isAntiAlias = true
         textPaint.textSize = textSizePx
         textPaint.color = Color.BLACK
-        textPaint.typeface = Typeface.create("sans-serif", Typeface.NORMAL)
+        // textPaint.typeface = Typeface.create("sans-serif", Typeface.NORMAL)
 
         val alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
         val spacingMultiplier = 1f
@@ -528,23 +528,44 @@ object STSystemUtil {
         var heightByStaticLayout: Float = heightByStaticLayoutOrigin
 
         val density: Float = displayMetrics.density
-        if (IS_HUAWEI) { // 华为手机存在偏差
-            heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else ((staticLayout.lineCount - density) * density))
-        } else if (IS_SAMSUNG) { // 三星手机存在偏差
-            // SM-A9080 从第二行开始逐行比真实值缺少 17 22 27 32
-            heightByStaticLayout = heightByStaticLayoutOrigin + (if (staticLayout.lineCount <= 1) 0f else (12 + (staticLayout.lineCount - 1f) * 5f))
+        when {
+            IS_HUAWEI -> { // 华为手机存在偏差
+                heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else (0 + (staticLayout.lineCount - 3f) * 3f))
+            }
+            IS_SAMSUNG -> { // 三星手机存在偏差
+                // SM-A9080 从第二行开始逐行比真实值缺少 17 22 27 32
+                heightByStaticLayout = heightByStaticLayoutOrigin + (if (staticLayout.lineCount <= 1) 0f else (12 + (staticLayout.lineCount - 1f) * 5f))
+            }
+            IS_ONEPLUS -> { // 一加手机存在偏差
+                // ONEPLUS A5010 从第二行开始逐行比真实值增加 1 5 9 13 17
+                heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else (1 + (staticLayout.lineCount - 2f) * 4f))
+            }
         }
 
+        //region singleLineHeightByBounds
         val bounds = Rect()
         textPaint.getTextBounds(text, 0, text.length, bounds)
         val singleLineHeightByBounds = bounds.height()
+        //endregion
 
+        //region singleLineHeightByAverage
         val fm: Paint.FontMetrics = textPaint.fontMetrics
         val singleLineHeightByFontMetrics: Float = fm.descent - fm.ascent
-        val finalSingleLineHeight = heightByStaticLayout / staticLayout.lineCount.toFloat()
+        val singleLineHeightByAverage = heightByStaticLayout / staticLayout.lineCount.toFloat()
+        //endregion
 
-        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, density=$density, lineCount=${staticLayout.lineCount}, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin, singleLineHeightByFontMetrics=$singleLineHeightByFontMetrics, singleLineHeightByBounds=$singleLineHeightByBounds, finalSingleLineHeight=$finalSingleLineHeight")
+        //region heightByCalculate
+        val singleLineHeightByCalculate = round(textPaint.getFontMetricsInt(null) * spacingMultiplier + spacingAddition)
+        val heightByCalculate = singleLineHeightByCalculate * staticLayout.lineCount
+        //endregion
+
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin, density=$density, lineCount=${staticLayout.lineCount}, singleLineHeightByFontMetrics=$singleLineHeightByFontMetrics, singleLineHeightByBounds=$singleLineHeightByBounds, singleLineHeightByAverage=$singleLineHeightByAverage, singleLineHeightByCalculate=$singleLineHeightByCalculate, heightByCalculate=$heightByCalculate")
         return heightByStaticLayout
+    }
+
+    private fun round(value: Float): Int {
+        val lx = (value * (65536 * 256f)).toLong()
+        return (lx + 0x800000 shr 24).toInt()
     }
 
     /**
@@ -569,11 +590,14 @@ object STSystemUtil {
     @JvmStatic
     val IS_SAMSUNG: Boolean by lazy { "samsung".equals(MANUFACTURER, ignoreCase = true) }
 
+    @JvmStatic
+    val IS_ONEPLUS: Boolean by lazy { "oneplus".equals(MANUFACTURER, ignoreCase = true) }
+
     fun showSystemInfo(activity: Activity?) {
         STLogUtil.sync {
             STLogUtil.d("[SYS] ======================================================================================")
             STLogUtil.d("[SYS] appName=$appName, versionName=$versionName, versionCode=$versionCode, SDK_INT=$SDK_INT")
-            STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO, IS_SAMSUNG=$IS_SAMSUNG")
+            STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO, IS_SAMSUNG=$IS_SAMSUNG, IS_ONEPLUS=$IS_ONEPLUS")
             STLogUtil.d("[SYS] screenWidth=$screenWidth, screenHeight=$screenHeight, screenRealHeight=$screenRealHeight, screenContentHeightExcludeStatusAndNavigationBar=$screenContentHeightExcludeStatusAndNavigationBar")
             STLogUtil.d("[SYS] statusBarHeight=$statusBarHeight, navigationBarHeight=$navigationBarHeight")
             STLogUtil.d("[SYS] getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged=${getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(activity)}")

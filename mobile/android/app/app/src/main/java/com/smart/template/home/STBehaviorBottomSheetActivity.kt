@@ -24,6 +24,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     @Suppress("PrivatePropertyName", "unused")
     private val TAG = "[BottomSheet]"
 
+    private val backdropBehaviorHeightShow: Int = (com.smart.library.util.STSystemUtil.screenWidth * 9f / 16f).toInt()
+
     // 面板距离页面底部距离, 面板收缩态的真实高度
 
     private val onBottomSheetCallback: STBottomSheetBehavior.BottomSheetCallback by lazy {
@@ -42,7 +44,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
 
         initBottomSheetBehavior()
-        initBackdropBehavior(100.toPxFromDp())
+        initBackdropBehavior(backdropBehaviorHeightShow)
         initFloatingActionButton()
     }
 
@@ -89,44 +91,72 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            window?.decorView?.ensureOnGlobalLayoutListener {
-                STLogUtil.w(TAG, "onGlobalLayout callback ${it.height}")
-                STSystemUtil.showSystemInfo(this)
-                STToastUtil.show("onGlobalLayout callback ${it.height}")
-            }
+            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 1)) {}
         }
         floatingActionButton2.setOnClickListener {
-            backdropBehavior?.enableHalfExpandedState = false
-            bottomSheetBehavior.enableHalfExpandedState = false
-            bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = if (false) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
-                parentHeight = bottomSheetBehavior.getParentHeight(),
-                expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.4f).toInt(),
-                halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),
-                peekHeight = bottomSheetPeekHeight
-            ) {
-                STLogUtil.w(TAG, "onAnimationEndCallback")
-                STToastUtil.show("onAnimationEndCallback")
-            }
+            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 0.4).toInt()) {}
         }
         floatingActionButton3.setOnClickListener {
-            backdropBehavior?.enableHalfExpandedState = true
-            bottomSheetBehavior.enableHalfExpandedState = true
-            bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = if (false) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
-                parentHeight = bottomSheetBehavior.getParentHeight(),
-                expandedOffset = (bottomSheetBehavior.getParentHeight() * 0.3f).toInt(),
-                halfExpandedOffset = (bottomSheetBehavior.getParentHeight() * 0.6f).toInt(),
-                peekHeight = bottomSheetPeekHeight
-            ) {
-                STLogUtil.w(TAG, "onAnimationEndCallback")
-                STToastUtil.show("onAnimationEndCallback")
-            }
+            resetBottomSheetState((bottomSheetBehavior.getParentHeight() * 0.3).toInt()) {}
         }
 
         window?.decorView?.ensureOnGlobalLayoutListener {
             STLogUtil.w(TAG, "onCreate onGlobalLayout callback ${it.height}")
             STSystemUtil.showSystemInfo(this)
+        }
+    }
+
+    // 当前新版是三段式还是两段式
+    private var enableHalfExpandedState = true
+    private val peekHeight = 140.toPxFromDp()
+
+    @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
+    private fun resetBottomSheetState(realHeight: Int, callback: () -> Unit) {
+        val parentHeight = bottomSheetBehavior.getParentHeight()
+        val minExpandedOffset = (parentHeight * 0.24f).toInt()
+        val minHalfExpandedOffset = (parentHeight * 0.5f).toInt()
+        val peekOffset = parentHeight - peekHeight
+        val realOffset = parentHeight - realHeight
+        val maxExpandedOffsetOnDisableHalf = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况
+        val maxExpandedOffsetOnEnableHalf = minHalfExpandedOffset - 20.toPxFromDp()
+
+        if (realOffset < minHalfExpandedOffset) {
+            // 3.当面板高度大于等于中间态，不满扩展态，则扩展态自适应高度，仍支持三段式；
+            enableHalfExpandedState = true
+
+            val finalExpandedOffset = Math.max(Math.min(realOffset, maxExpandedOffsetOnEnableHalf), minExpandedOffset)
+            backdropBehavior?.enableHalfExpandedState = enableHalfExpandedState
+            bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
+            bottomSheetBehavior.setStateOnParentHeightChanged(
+                state = STBottomSheetBehavior.STATE_HALF_EXPANDED,
+                forceSettlingOnSameState = true,
+                parentHeight = parentHeight,
+                expandedOffset = finalExpandedOffset,
+                halfExpandedOffset = minHalfExpandedOffset,
+                peekHeight = peekHeight
+            ) {
+                callback.invoke()
+                STLogUtil.w(TAG, "onAnimationEndCallback")
+            }
+        } else {
+            // 1.不会存在不满收缩态
+            // 2.当高于收缩态，低于中间态，则存在两段式（分别为中间态和收缩态），其中中间态自适应高度，箭头仍是横线，不支持上拉，支持下拉变为收缩态；
+            enableHalfExpandedState = false
+
+            val finalExpandedOffset = Math.min(maxExpandedOffsetOnDisableHalf, realOffset)
+            backdropBehavior?.enableHalfExpandedState = enableHalfExpandedState
+            bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
+            bottomSheetBehavior.setStateOnParentHeightChanged(
+                state = STBottomSheetBehavior.STATE_EXPANDED,
+                forceSettlingOnSameState = true,
+                parentHeight = parentHeight,
+                expandedOffset = finalExpandedOffset,
+                halfExpandedOffset = 0,
+                peekHeight = peekHeight
+            ) {
+                callback.invoke()
+                STLogUtil.w(TAG, "onAnimationEndCallback")
+            }
         }
     }
 

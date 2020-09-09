@@ -57,7 +57,7 @@ class STBehaviorBottomSheetSecondFloorActivity : STBaseActivity() {
             STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${getStateDescription(bottomSheetBehavior.currentFinalState)}")
             STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetSecondFloorActivity)
             initSecondFloorBehavior(parentHeight - bottomSheetPeekHeight)
-            bottomSheetBehavior.setStateOnParentHeightChanged(
+            bottomSheetBehavior.setStateWithResetConfigs(
                 state = if (isFirst) STBottomSheetBehavior.STATE_EXPANDED else bottomSheetBehavior.currentFinalState,
                 parentHeight = parentHeight,
                 expandedOffset = 0,

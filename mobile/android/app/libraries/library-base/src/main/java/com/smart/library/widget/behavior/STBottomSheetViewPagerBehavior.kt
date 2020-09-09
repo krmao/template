@@ -12,6 +12,7 @@ import androidx.core.math.MathUtils
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
 import androidx.viewpager.widget.ViewPager
+import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import java.lang.ref.WeakReference
@@ -446,93 +447,6 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return super.getExpandedOffset()
     }
 
-    /**
-     * 当切换/显示/隐藏 虚拟导航栏导致的视觉问题时, 重新设置所有高度
-     *
-     * 做了以下事情 ->
-     * 在第一次 onWindowFocusChanged 中获取正确的 parentHeight, 代替 isFirst
-     * 使用 onConfigurationChanged/setOnApplyWindowInsetsListener 监听 parentHeight changed
-     *
-     * @param parentHeight 屏幕可视范围总高度为 状态栏 + 内容高度, 面板可滑动总高度, 不包含虚拟状态栏
-     * @param expandedOffset 状态为 STATE_EXPANDED 时, getView().top 与屏幕顶部之间距离
-     * @param halfExpandedOffset 状态为 STATE_HALF_EXPANDED 时, getView().top 与屏幕顶部之间距离
-     * @param peekHeight 状态为 STATE_COLLAPSED 时, getView().top 与屏幕底部之间距离
-     */
-    /*
-        private fun initBottomSheetBehavior() {
-            bottomSheetBehavior.enableHalfExpandedState = true
-            bottomSheetBehavior.dragEnabled = true
-            bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
-            bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->
-                val parentHeight = parent.height
-                STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${bottomSheetBehavior.getStateDescription(bottomSheetBehavior.currentFinalState)}")
-                STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
-                bottomSheetBehavior.setStateOnParentHeightChanged(
-                    state = if (isFirst) STBottomSheetBehavior.STATE_HALF_EXPANDED else bottomSheetBehavior.currentFinalState,
-                    parentHeight = parentHeight,
-                    expandedOffset = (parentHeight * 0.1f).toInt(),
-                    halfExpandedOffset = (parentHeight * 0.6f).toInt(),
-                    peekHeight = bottomSheetPeekHeight
-                ) {
-                    STLogUtil.w(TAG, "onAnimationEndCallback")
-                    STToastUtil.show("onAnimationEndCallback")
-                }
-
-                STLogUtil.e(TAG, "onParentHeightChangedListener end newParentHeight=${parent.height}, isFirst=$isFirst")
-            }
-        }
-    */
-    @UiThread
-    fun setStateOnParentHeightChanged(@FinalState state: Int = currentFinalState, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, forceSettlingOnSameState: Boolean = false, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
-        STLogUtil.e(TAG, "setStateOnParentHeightChanged start parentHeight=$parentHeight, currentFinalState=$currentFinalState, forceSettlingOnSameState=$forceSettlingOnSameState")
-        if (parentHeight <= 0) {
-            STLogUtil.e(TAG, "setStateOnParentHeightChanged setParentHeight:$parentHeight failure, return")
-            return
-        }
-        setParentHeight(parentHeight)
-
-        this.calculateExpandedOffset(expandedOffset)
-        this.setCustomHalfExpandedOffset(halfExpandedOffset)
-        this.calculateCollapsedOffset()
-        this.setPeekHeight(peekHeight)
-
-        //region 第一次在 setStateWithAnimationEndCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
-        // 第二次即以后在 setStateWithAnimationEndCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
-        val finalState: Int = currentFinalState
-        if (finalState == -1) {
-            this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
-        }
-        //endregion
-        this.setStateWithAnimationEndCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
-            //region 动画结束后设置高度, 避免出现闪现问题
-            if (finalState != -1) {
-                val child = getView()
-                val parent = child?.parent
-                if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
-                    child.post {
-                        // must be call after calculateExpandedOffset
-                        this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
-                    }
-                } else {
-                    // must be call after calculateExpandedOffset
-                    this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
-                }
-            }
-            //endregion
-            onAnimationEndCallback?.invoke()
-        }
-        STLogUtil.e(TAG, "setStateOnParentHeightChanged end")
-    }
-
-    @UiThread
-    override fun setState(@FinalState state: Int) {
-        val finalState = wrapStateForEnableHalfExpanded(state)
-        STLogUtil.w(TAG, "setState state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
-
-        super.setState(finalState)
-        currentFinalState = finalState
-    }
-
     fun getParentHeight(): Int {
         return if (currentFinalState != -1 && this.currentParentHeightOnSetFinalState > 0) this.currentParentHeightOnSetFinalState else this.parentHeight
     }
@@ -630,11 +544,154 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
     //endregion
 
-    //region test, set state with animation end callback
+    //region set state with animation end callback
+    /**
+     * @param parentHeight 务必填写正确的值, 最好在 setOnParentHeightChangedListener 里面执行, 因为此时获取的 parentHeight 最精确
+     * @param peekHeight 如果是第一次设置, 务必填写正确的值, 因为第一次 getPeekHeight 是 0/-1
+     */
+    fun setStateByRealHeight(parentHeight: Int, peekHeight: Int, realPanelContentHeight: Int, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
+        STLogUtil.w(TAG, "setStateByRealHeight start parentHeight=$parentHeight, peekHeight=$peekHeight, realPanelContentHeight=$realPanelContentHeight")
+        val minExpandedOffset = (parentHeight * 0.24f).toInt()
+        val minHalfExpandedOffset = (parentHeight * 0.5f).toInt()
+        val peekOffset = parentHeight - peekHeight
+        val realOffset = parentHeight - realPanelContentHeight
+        val maxExpandedOffsetOnDisableHalf = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况
+        val maxExpandedOffsetOnEnableHalf = minHalfExpandedOffset - 20.toPxFromDp()
+
+        if (realOffset < minHalfExpandedOffset) {
+            // 3.当面板高度大于等于中间态，不满扩展态，则扩展态自适应高度，仍支持三段式；
+            enableHalfExpandedState = true
+
+            val finalExpandedOffset = Math.max(Math.min(realOffset, maxExpandedOffsetOnEnableHalf), minExpandedOffset)
+            callbackBeforeSetState?.invoke(enableHalfExpandedState)
+            setStateWithResetConfigs(
+                state = STBottomSheetBehavior.STATE_HALF_EXPANDED,
+                enableAnimation = false,
+                notifyOnStateChanged = true,
+                forceSettlingOnSameState = true,
+                parentHeight = parentHeight,
+                expandedOffset = finalExpandedOffset,
+                halfExpandedOffset = minHalfExpandedOffset,
+                peekHeight = peekHeight
+            ) {
+                callbackAfterSetState?.invoke(enableHalfExpandedState)
+                STLogUtil.w(TAG, "setStateByRealHeight callbackAfterSetState")
+            }
+        } else {
+            // 1.不会存在不满收缩态
+            // 2.当高于收缩态，低于中间态，则存在两段式（分别为中间态和收缩态），其中中间态自适应高度，箭头仍是横线，不支持上拉，支持下拉变为收缩态；
+            enableHalfExpandedState = false
+
+            val finalExpandedOffset = Math.min(maxExpandedOffsetOnDisableHalf, realOffset)
+            callbackBeforeSetState?.invoke(enableHalfExpandedState)
+            setStateWithResetConfigs(
+                state = STBottomSheetBehavior.STATE_EXPANDED,
+                enableAnimation = false,
+                notifyOnStateChanged = true,
+                forceSettlingOnSameState = true,
+                parentHeight = parentHeight,
+                expandedOffset = finalExpandedOffset,
+                halfExpandedOffset = 0,
+                peekHeight = peekHeight
+            ) {
+                callbackAfterSetState?.invoke(enableHalfExpandedState)
+                STLogUtil.w(TAG, "setStateByRealHeight callbackAfterSetState")
+            }
+        }
+        STLogUtil.w(TAG, "setStateByRealHeight end")
+    }
+
     @UiThread
-    fun setStateWithAnimationEndCallback(@FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, forceSettlingOnSameState: Boolean, onAnimationEndCallback: (() -> Unit)? = null) {
+    override fun setState(@FinalState state: Int) {
         val finalState = wrapStateForEnableHalfExpanded(state)
-        STLogUtil.w(TAG, "setStateWithAnimationEndCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState, forceSettlingOnSameState=$forceSettlingOnSameState")
+        STLogUtil.w(TAG, "setState state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState")
+
+        super.setState(finalState)
+        currentFinalState = finalState
+    }
+
+    /**
+     * 当切换/显示/隐藏 虚拟导航栏导致的视觉问题时, 重新设置所有高度
+     *
+     * 做了以下事情 ->
+     * 在第一次 onWindowFocusChanged 中获取正确的 parentHeight, 代替 isFirst
+     * 使用 onConfigurationChanged/setOnApplyWindowInsetsListener 监听 parentHeight changed
+     *
+     * @param parentHeight 屏幕可视范围总高度为 状态栏 + 内容高度, 面板可滑动总高度, 不包含虚拟状态栏
+     * @param expandedOffset 状态为 STATE_EXPANDED 时, getView().top 与屏幕顶部之间距离
+     * @param halfExpandedOffset 状态为 STATE_HALF_EXPANDED 时, getView().top 与屏幕顶部之间距离
+     * @param peekHeight 状态为 STATE_COLLAPSED 时, getView().top 与屏幕底部之间距离
+     */
+    /*
+        private fun initBottomSheetBehavior() {
+            bottomSheetBehavior.enableHalfExpandedState = true
+            bottomSheetBehavior.dragEnabled = true
+            bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
+            bottomSheetBehavior.setOnParentHeightChangedListener { parent, child, isFirst ->
+                val parentHeight = parent.height
+                STLogUtil.e(TAG, "onParentHeightChangedListener start isFirst=$isFirst, parentHeight=$parentHeight, getParentHeight=${bottomSheetBehavior.getParentHeight()}, currentFinalState=${bottomSheetBehavior.getStateDescription(bottomSheetBehavior.currentFinalState)}")
+                STSystemUtil.showSystemInfo(this@STBehaviorBottomSheetActivity)
+                bottomSheetBehavior.setStateOnParentHeightChanged(
+                    state = if (isFirst) STBottomSheetBehavior.STATE_HALF_EXPANDED else bottomSheetBehavior.currentFinalState,
+                    parentHeight = parentHeight,
+                    expandedOffset = (parentHeight * 0.1f).toInt(),
+                    halfExpandedOffset = (parentHeight * 0.6f).toInt(),
+                    peekHeight = bottomSheetPeekHeight
+                ) {
+                    STLogUtil.w(TAG, "onAnimationEndCallback")
+                    STToastUtil.show("onAnimationEndCallback")
+                }
+
+                STLogUtil.e(TAG, "onParentHeightChangedListener end newParentHeight=${parent.height}, isFirst=$isFirst")
+            }
+        }
+    */
+    @UiThread
+    fun setStateWithResetConfigs(@FinalState state: Int = currentFinalState, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, forceSettlingOnSameState: Boolean = false, parentHeight: Int, expandedOffset: Int = getExpandedOffset(), halfExpandedOffset: Int = getHalfExpandedOffset(), peekHeight: Int = this.peekHeight, onAnimationEndCallback: (() -> Unit)? = null) {
+        STLogUtil.e(TAG, "setState start parentHeight=$parentHeight, currentFinalState=$currentFinalState, forceSettlingOnSameState=$forceSettlingOnSameState")
+        if (parentHeight <= 0) {
+            STLogUtil.e(TAG, "setState setParentHeight:$parentHeight failure, return")
+            return
+        }
+        setParentHeight(parentHeight)
+
+        this.calculateExpandedOffset(expandedOffset)
+        this.setCustomHalfExpandedOffset(halfExpandedOffset)
+        this.calculateCollapsedOffset()
+        this.setPeekHeight(peekHeight, requestLayout = false)
+
+        //region 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
+        // 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
+        val finalState: Int = currentFinalState
+        if (finalState == -1) {
+            this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
+        }
+        //endregion
+        this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
+            //region 动画结束后设置高度, 避免出现闪现问题
+            if (finalState != -1) {
+                val child = getView()
+                val parent = child?.parent
+                if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
+                    child.post {
+                        // must be call after calculateExpandedOffset
+                        this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
+                    }
+                } else {
+                    // must be call after calculateExpandedOffset
+                    this.setBottomSheetViewHeight(getBottomSheetViewHeightByState(STATE_EXPANDED))
+                }
+            }
+            //endregion
+            onAnimationEndCallback?.invoke()
+        }
+        STLogUtil.e(TAG, "setState end")
+    }
+
+    @UiThread
+    fun setStateWithCallback(@FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, forceSettlingOnSameState: Boolean, onAnimationEndCallback: (() -> Unit)? = null) {
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        STLogUtil.w(TAG, "setStateWithCallback state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, enableHalfExpandedState=$enableHalfExpandedState, forceSettlingOnSameState=$forceSettlingOnSameState")
 
         if (!forceSettlingOnSameState && finalState == getState()) {
             onAnimationEndCallback?.invoke()
@@ -650,31 +707,34 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             onAnimationEndCallback?.invoke()
             return
         }
-        startSettlingAnimationWithAnimationEndCallback(finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
+        startSettlingAnimationWithCallback(finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
     }
 
     /**
      * 强制触发 onStateChanged, 即使 state 相同
      */
     @UiThread
-    fun startSettlingAnimationWithAnimationEndCallback(@FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
+    private fun startSettlingAnimationWithCallback(@FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
         val finalState = wrapStateForEnableHalfExpanded(state)
-        val child = getView()
+
+        val child: V? = getView()
         if (child == null) {
+            currentFinalState = finalState
             onAnimationEndCallback?.invoke()
             return
         }
         val parent = child.parent
         if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
-            child.post { startSettlingAnimationWithAnimationEndCallback(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback) }
+            child.post { startSettlingAnimationWithCallback(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback) }
         } else {
-            startSettlingAnimationWithAnimationEndCallback(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
+            startSettlingAnimationWithCallback(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
         }
     }
 
-    private fun startSettlingAnimationWithAnimationEndCallback(child: View, @FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
-        STLogUtil.w(TAG, "startSettlingAnimationWithAnimationEndCallback state=${getStateDescription(state)}, child=$child")
-        var tmpState = state
+    private fun startSettlingAnimationWithCallback(child: View, @FinalState state: Int, enableAnimation: Boolean = true, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        STLogUtil.w(TAG, "startSettlingAnimationWithCallback state=${getStateDescription(state)}, child=$child, finalState=${getStateDescription(finalState)}")
+        var tmpState = finalState
         var top: Int
         if (tmpState == STBottomSheetBehavior.STATE_COLLAPSED) {
             top = collapsedOffset
@@ -695,39 +755,39 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             val finalTop: Int = top
             val dy: Int = finalTop - child.top
             ViewCompat.offsetTopAndBottom(child, dy)
-            setStateInternalWithAnimationEndCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
+            setStateInternalWithCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
         } else {
             if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {
                 setStateInternal(STBottomSheetBehavior.STATE_SETTLING)
-                ViewCompat.postOnAnimation(child, SettleRunnableWithAnimationEndCallback(viewDragHelper, child, tmpState) { targetState ->
-                    setStateInternalWithAnimationEndCallback(targetState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
+                ViewCompat.postOnAnimation(child, SettleRunnableWithCallback(viewDragHelper, child, tmpState) { targetState ->
+                    setStateInternalWithCallback(targetState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
                 })
             } else {
-                setStateInternalWithAnimationEndCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
+                setStateInternalWithCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
             }
         }
     }
-
-    /**
-     * @see enableHalfExpandedState
-     */
-    private fun wrapStateForEnableHalfExpanded(state: Int): Int = if (!this.enableHalfExpandedState && state == STATE_HALF_EXPANDED) STATE_COLLAPSED else state
 
     override fun setStateInternal(state: Int) {
         super.setStateInternal(wrapStateForEnableHalfExpanded(state))
     }
 
-    private fun setStateInternalWithAnimationEndCallback(state: Int, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
-        STLogUtil.w(TAG, "setStateInternalWithAnimationEndCallback state=${getStateDescription(state)}")
+    private fun setStateInternalWithCallback(state: Int, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        STLogUtil.w(TAG, "setStateInternalWithCallback state=${getStateDescription(state)}, finalState=$finalState")
 
-        if (this.state == state) {
+        if (this.state == finalState) {
             onAnimationEndCallback?.invoke()
             return
         }
-        this.state = state
-        if (state == STBottomSheetBehavior.STATE_HALF_EXPANDED || state == STBottomSheetBehavior.STATE_EXPANDED) {
+        this.state = finalState
+        if (finalState == STBottomSheetBehavior.STATE_COLLAPSED || finalState == STBottomSheetBehavior.STATE_HALF_EXPANDED || finalState == STBottomSheetBehavior.STATE_EXPANDED) {
+            currentFinalState = finalState
+        }
+
+        if (finalState == STBottomSheetBehavior.STATE_HALF_EXPANDED || finalState == STBottomSheetBehavior.STATE_EXPANDED) {
             updateImportantForAccessibility(true)
-        } else if (state == STBottomSheetBehavior.STATE_HIDDEN || state == STBottomSheetBehavior.STATE_COLLAPSED) {
+        } else if (finalState == STBottomSheetBehavior.STATE_HIDDEN || finalState == STBottomSheetBehavior.STATE_COLLAPSED) {
             updateImportantForAccessibility(false)
         }
 
@@ -736,14 +796,38 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         if (notifyOnStateChanged) {
             val bottomSheet: View? = viewRef.get()
             if (bottomSheet != null && callback != null) {
-                callback.onStateChanged(bottomSheet, state)
+                callback.onStateChanged(bottomSheet, finalState)
             }
         }
     }
 
-    private class SettleRunnableWithAnimationEndCallback(val viewDragHelper: ViewDragHelper?, val view: View, val targetState: Int, val onAnimationEndCallback: (targetState: Int) -> Unit) : Runnable {
+    /**
+     * @see enableHalfExpandedState
+     */
+    private fun wrapStateForEnableHalfExpanded(state: Int): Int = if (!this.enableHalfExpandedState && state == STATE_HALF_EXPANDED) STATE_COLLAPSED else state
+    fun setPeekHeight(peekHeight: Int, requestLayout: Boolean) {
+        var layout = false
+        if (peekHeight == -1) {
+            if (!peekHeightAuto) {
+                peekHeightAuto = true
+                layout = true
+            }
+        } else if (peekHeightAuto || this.peekHeight != peekHeight) {
+            peekHeightAuto = false
+            this.peekHeight = Math.max(0, peekHeight)
+            collapsedOffset = parentHeight - peekHeight
+            layout = true
+        }
+
+        if (requestLayout && layout && state == STBottomSheetBehavior.STATE_COLLAPSED && viewRef != null) {
+            val view = viewRef.get()
+            view?.requestLayout()
+        }
+    }
+
+    private class SettleRunnableWithCallback(val viewDragHelper: ViewDragHelper?, val view: View, val targetState: Int, val onAnimationEndCallback: (targetState: Int) -> Unit) : Runnable {
         override fun run() {
-            STLogUtil.w(TAG, "---- SettleRunnableWithAnimationEndCallback#run targetState=${getStateDescription(targetState)}")
+            STLogUtil.w(TAG, "---- SettleRunnableWithCallback#run targetState=${getStateDescription(targetState)}")
             if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
                 ViewCompat.postOnAnimation(view, this)
             } else {
@@ -786,9 +870,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
          */
         @Suppress("UNCHECKED_CAST")
         fun <V : View> from(view: V): STBottomSheetViewPagerBehavior<V> {
-            val params = view.layoutParams
+            val params: ViewGroup.LayoutParams = view.layoutParams
             require(params is CoordinatorLayout.LayoutParams) { "The view is not a child of CoordinatorLayout" }
-            val behavior = params.behavior
+            val behavior: CoordinatorLayout.Behavior<*>? = params.behavior
             require(behavior is STBottomSheetViewPagerBehavior<*>) { "The view is not associated with STBottomSheetViewPagerBehavior" }
             return behavior as STBottomSheetViewPagerBehavior<V>
         }

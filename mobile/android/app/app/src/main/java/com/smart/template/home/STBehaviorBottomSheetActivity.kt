@@ -77,13 +77,19 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 1)) {}
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = (bottomSheetBehavior.getParentHeight() * 1), callbackBeforeSetState = { newEnableHalfExpandedState ->
+                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+            })
         }
         floatingActionButton2.setOnClickListener {
-            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 0.4).toInt()) {}
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = ((bottomSheetBehavior.getParentHeight() * 0.4).toInt()), callbackBeforeSetState = { newEnableHalfExpandedState ->
+                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+            })
         }
         floatingActionButton3.setOnClickListener {
-            setStateByRealHeight((bottomSheetBehavior.getParentHeight() * 0.2).toInt()) {}
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = ((bottomSheetBehavior.getParentHeight() * 0.2).toInt()), callbackBeforeSetState = { newEnableHalfExpandedState ->
+                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+            })
         }
 
         window?.decorView?.ensureOnGlobalLayoutListener {
@@ -94,60 +100,6 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     // 当前新版是三段式还是两段式
     private var enableHalfExpandedState = true
-
-    @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
-    private fun setStateByRealHeight(realHeight: Int, callback: () -> Unit) {
-        val parentHeight = bottomSheetBehavior.getParentHeight()
-        val minExpandedOffset = (parentHeight * 0.24f).toInt()
-        val minHalfExpandedOffset = (parentHeight * 0.5f).toInt()
-        val peekOffset = parentHeight - bottomSheetPeekHeight
-        val realOffset = parentHeight - realHeight
-        val maxExpandedOffsetOnDisableHalf = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况
-        val maxExpandedOffsetOnEnableHalf = minHalfExpandedOffset - 20.toPxFromDp()
-
-        if (realOffset < minHalfExpandedOffset) {
-            // 3.当面板高度大于等于中间态，不满扩展态，则扩展态自适应高度，仍支持三段式；
-            enableHalfExpandedState = true
-
-            val finalExpandedOffset = Math.max(Math.min(realOffset, maxExpandedOffsetOnEnableHalf), minExpandedOffset)
-            backdropBehavior?.enableHalfExpandedState = enableHalfExpandedState
-            bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
-            bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = STBottomSheetBehavior.STATE_HALF_EXPANDED,
-                enableAnimation = false,
-                notifyOnStateChanged = true,
-                forceSettlingOnSameState = true,
-                parentHeight = parentHeight,
-                expandedOffset = finalExpandedOffset,
-                halfExpandedOffset = minHalfExpandedOffset,
-                peekHeight = bottomSheetPeekHeight
-            ) {
-                callback.invoke()
-                STLogUtil.w(TAG, "onAnimationEndCallback")
-            }
-        } else {
-            // 1.不会存在不满收缩态
-            // 2.当高于收缩态，低于中间态，则存在两段式（分别为中间态和收缩态），其中中间态自适应高度，箭头仍是横线，不支持上拉，支持下拉变为收缩态；
-            enableHalfExpandedState = false
-
-            val finalExpandedOffset = Math.min(maxExpandedOffsetOnDisableHalf, realOffset)
-            backdropBehavior?.enableHalfExpandedState = enableHalfExpandedState
-            bottomSheetBehavior.enableHalfExpandedState = enableHalfExpandedState
-            bottomSheetBehavior.setStateOnParentHeightChanged(
-                state = STBottomSheetBehavior.STATE_EXPANDED,
-                enableAnimation = false,
-                notifyOnStateChanged = true,
-                forceSettlingOnSameState = true,
-                parentHeight = parentHeight,
-                expandedOffset = finalExpandedOffset,
-                halfExpandedOffset = 0,
-                peekHeight = bottomSheetPeekHeight
-            ) {
-                callback.invoke()
-                STLogUtil.w(TAG, "onAnimationEndCallback")
-            }
-        }
-    }
 
     /**
      * B 页面 如果 android:windowIsTranslucent==true, 则不会调用 A 页面的 onRestart

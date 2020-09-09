@@ -78,24 +78,20 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            floatingActionButton.postDelayed({
-                val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.76f).toInt()
-                imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.76f).toInt()
+            imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
 
-                bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
-                    backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
-                })
-            },700)
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
+                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+            })
         }
         floatingActionButton2.setOnClickListener {
-            floatingActionButton2.postDelayed({
-                val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.4).toInt()
-                imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.4).toInt()
+            imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
 
-                bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
-                    backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
-                })
-            }, 700)
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
+                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+            })
         }
         floatingActionButton3.setOnClickListener {
             val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.2).toInt()

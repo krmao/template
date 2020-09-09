@@ -1,7 +1,9 @@
 package com.smart.library.widget.behavior
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -373,14 +375,25 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      * 切换/显示/隐藏 虚拟导航栏时, 会重新调用 onLayoutChild
      * 切换 app 也会调用
      */
+    @SuppressLint("PrivateResource")
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
-        if (!child.isInEditMode) STLogUtil.w(TAG, "onLayoutChild start currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
-        val onLayoutChild = super.onLayoutChild(parent, child, layoutDirection)
-        val newParentHeight = parent.height
+        Log.w(TAG, "onLayoutChild start currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
+        var onLayoutChild = true
+
+        //region TODO 1 设置 bottomSheetContainer(包括其子 view) 的高度会导致重走 onLayoutChild 流程, 导致 bottomSheetContainer 闪现到顶部
+//        if (getParentHeight() != parent.height) {
+        onLayoutChild = super.onLayoutChild(parent, child, layoutDirection)
+
+        //region 当高度改变时, 通知重设配置
+        val newParentHeight: Int = parent.height
         if (newParentHeight > 0 && newParentHeight != currentParentHeightOnSetFinalState) {
             onParentHeightChangedListener?.invoke(parent, child, currentFinalState == -1)
         }
-        if (!child.isInEditMode) STLogUtil.w(TAG, "onLayoutChild end currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
+        //endregion
+//        }
+        //endregion
+
+        Log.w(TAG, "onLayoutChild end currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
         return onLayoutChild
     }
 
@@ -750,6 +763,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         this.setPeekHeight(peekHeight, requestLayout = false)
         lastPeekHeight = peekHeight
         this.calculateCollapsedOffset()
+        fitToContents = true
 
         val minHeightOffset: Int = 20.toPxFromDp()
         // 当真实内容高度超过 STATE_EXPANDED 时, 容器高度最大为 STATE_EXPANDED 高度, 否则自适应容器高度为真实内容高度, 即最大高度不能超过 STATE_EXPANDED
@@ -760,7 +774,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         )
         // 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
         // ? 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
-        this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
+        // TODO 2 this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
             onAnimationEndCallback?.invoke()
         }
@@ -930,7 +944,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         const val STATE_HIDDEN = STBottomSheetBehavior.STATE_HIDDEN
         const val STATE_HALF_EXPANDED = STBottomSheetBehavior.STATE_HALF_EXPANDED
         const val PEEK_HEIGHT_AUTO = STBottomSheetBehavior.PEEK_HEIGHT_AUTO
-        const val TAG = "[sheet-ViewPagerBehavior]"
+        const val TAG = "sheet-behavior"
 
         @JvmStatic
         fun getStateDescription(state: Int): String = when (state) {

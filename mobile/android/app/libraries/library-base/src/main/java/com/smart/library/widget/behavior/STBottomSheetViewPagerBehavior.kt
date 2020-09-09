@@ -545,6 +545,13 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     //endregion
 
     //region set state with animation end callback
+    @JvmOverloads
+    fun getCurrentBottomSheetViewHeight(bottomSheet: View? = getView()): Int {
+        val panelHeight = getParentHeight() - (bottomSheet?.top ?: 0)
+        STLogUtil.sync { STLogUtil.d(TAG, "getCurrentBottomSheetViewHeight panelHeight=$panelHeight, bottomSheet=$bottomSheet, getView()=${getView()}") }
+        return panelHeight
+    }
+
     /**
      * @param parentHeight 务必填写正确的值, 最好在 setOnParentHeightChangedListener 里面执行, 因为此时获取的 parentHeight 最精确
      * @param peekHeight 如果是第一次设置, 务必填写正确的值, 因为第一次 getPeekHeight 是 0/-1

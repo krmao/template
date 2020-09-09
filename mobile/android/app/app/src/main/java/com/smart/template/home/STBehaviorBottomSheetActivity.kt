@@ -78,7 +78,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            val bottomSheetContentHeight: Int = bottomSheetBehavior.getParentHeight() * 1
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.76f).toInt()
             imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
 
             bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->

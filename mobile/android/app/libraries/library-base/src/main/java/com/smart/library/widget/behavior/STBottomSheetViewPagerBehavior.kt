@@ -447,7 +447,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         return true
     }
 
-    fun calculateExpandedOffset(expandedOffset: Int = Math.max(0, getParentHeight() - (getView()?.height ?: getParentHeight()))) {
+    fun calculateExpandedOffset(expandedOffset: Int) {
         this.fitToContentsOffset = expandedOffset
         STLogUtil.w(TAG, "calculateExpandedOffset fitToContentsOffset=$fitToContentsOffset, expandedOffset=$expandedOffset, getView()?.height=${getView()?.height}, getParentHeight=${getParentHeight()}")
     }
@@ -743,16 +743,14 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             STLogUtil.e(TAG, "setState setParentHeight:$parentHeight failure, return")
             return
         }
-        setParentHeight(parentHeight)
 
+        setParentHeight(parentHeight)
         this.calculateExpandedOffset(expandedOffset)
         this.setCustomHalfExpandedOffset(halfExpandedOffset)
-        this.calculateCollapsedOffset()
         this.setPeekHeight(peekHeight, requestLayout = false)
+        lastPeekHeight = peekHeight
+        this.calculateCollapsedOffset()
 
-        //region 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
-        // 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
-        val finalState: Int = currentFinalState
         val minHeightOffset: Int = 20.toPxFromDp()
         // 当真实内容高度超过 STATE_EXPANDED 时, 容器高度最大为 STATE_EXPANDED 高度, 否则自适应容器高度为真实内容高度, 即最大高度不能超过 STATE_EXPANDED
         // 当真实内容高度小于 STATE_EXPANDED 时, 最小不能低于 STATE_HALF_EXPANDED + 20dp 或者 STATE_COLLAPSED + 20dp, 20dp 作为缓冲高度
@@ -760,26 +758,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             Math.min(bottomSheetContentHeight, getBottomSheetViewHeightByState(STATE_EXPANDED)),
             ((if (enableHalfExpandedState) getBottomSheetViewHeightByState(STATE_HALF_EXPANDED) else getBottomSheetViewHeightByState(STATE_COLLAPSED)) + minHeightOffset)
         )
-        if (finalState == -1) {
-            this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
-        }
-        //endregion
+        // 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
+        // ? 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
+        this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
-            //region 动画结束后设置高度, 避免出现闪现问题
-            if (finalState != -1) {
-                val child = getView()
-                val parent = child?.parent
-                if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
-                    child.post {
-                        // must be call after calculateExpandedOffset
-                        this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
-                    }
-                } else {
-                    // must be call after calculateExpandedOffset
-                    this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
-                }
-            }
-            //endregion
             onAnimationEndCallback?.invoke()
         }
         STLogUtil.e(TAG, "setState end")
@@ -851,7 +833,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         if (!enableAnimation) {
             val finalTop: Int = top
             val dy: Int = finalTop - child.top
+            STLogUtil.e(TAG, "startSettlingAnimationWithCallbackInternal offset begin dy=$dy, finalTop=$finalTop, child.top=${child.top}")
             ViewCompat.offsetTopAndBottom(child, dy)
+            STLogUtil.e(TAG, "startSettlingAnimationWithCallbackInternal offset end dy=$dy, finalTop=$finalTop, child.top=${child.top}")
             setStateInternalWithCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
         } else {
             if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {

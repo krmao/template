@@ -5,6 +5,7 @@ import android.graphics.Outline
 import android.os.Bundle
 import android.view.View
 import android.view.ViewOutlineProvider
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
@@ -42,7 +43,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
     }
     private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
     private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetContainer) }
-
+    private val imageContentView: ImageView by lazy { findViewById<ImageView>(R.id.imageContentView) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.st_behavior_bottom_sheet_activity)
@@ -77,17 +78,28 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = (bottomSheetBehavior.getParentHeight() * 1), callbackBeforeSetState = { newEnableHalfExpandedState ->
+            val bottomSheetContentHeight: Int = bottomSheetBehavior.getParentHeight() * 1
+            imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
+
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
                 backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
             })
         }
         floatingActionButton2.setOnClickListener {
-            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = ((bottomSheetBehavior.getParentHeight() * 0.4).toInt()), callbackBeforeSetState = { newEnableHalfExpandedState ->
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.4).toInt()
+            imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
+
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
                 backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
             })
         }
         floatingActionButton3.setOnClickListener {
-            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, realPanelContentHeight = ((bottomSheetBehavior.getParentHeight() * 0.2).toInt()), callbackBeforeSetState = { newEnableHalfExpandedState ->
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.2).toInt()
+            val imageViewLayoutParams: LinearLayout.LayoutParams = imageContentView.layoutParams as LinearLayout.LayoutParams
+            imageViewLayoutParams.height = bottomSheetContentHeight
+            imageContentView.layoutParams = imageViewLayoutParams
+
+            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
                 backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
             })
         }

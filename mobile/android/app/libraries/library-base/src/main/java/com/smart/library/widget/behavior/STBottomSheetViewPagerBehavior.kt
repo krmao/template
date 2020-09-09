@@ -14,6 +14,7 @@ import androidx.core.math.MathUtils
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.R
 import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
@@ -378,19 +379,50 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     @SuppressLint("PrivateResource")
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
         Log.w(TAG, "onLayoutChild start currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
-        var onLayoutChild = true
 
-        //region TODO 1 设置 bottomSheetContainer(包括其子 view) 的高度会导致重走 onLayoutChild 流程, 导致 bottomSheetContainer 闪现到顶部
-//        if (getParentHeight() != parent.height) {
-        onLayoutChild = super.onLayoutChild(parent, child, layoutDirection)
+        // TODO 1 设置 bottomSheetContainer(包括其子 view) 的高度会导致重走 onLayoutChild 流程, 导致 bottomSheetContainer 闪现到顶部
+
+        if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
+            child.fitsSystemWindows = true
+        }
+        val savedTop = child.top
+        parent.onLayoutChild(child, layoutDirection)
+        parentHeight = parent.height
+        if (peekHeightAuto) {
+            if (peekHeightMin == 0) {
+                peekHeightMin = parent.resources.getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min)
+            }
+            lastPeekHeight = Math.max(peekHeightMin, parentHeight - parent.width * 9 / 16)
+        } else {
+            lastPeekHeight = peekHeight
+        }
+        fitToContentsOffset = Math.max(0, parentHeight - child.height)
+        halfExpandedOffset = setHalfExpandedOffset(parentHeight / 2)
+        calculateCollapsedOffset()
+        if (state == STBottomSheetBehavior.STATE_EXPANDED) {
+            ViewCompat.offsetTopAndBottom(child, this.expandedOffset)
+        } else if (state == STBottomSheetBehavior.STATE_HALF_EXPANDED) {
+            ViewCompat.offsetTopAndBottom(child, halfExpandedOffset)
+        } else if (hideable && state == STBottomSheetBehavior.STATE_HIDDEN) {
+            ViewCompat.offsetTopAndBottom(child, parentHeight)
+        } else if (state == STBottomSheetBehavior.STATE_COLLAPSED) {
+            ViewCompat.offsetTopAndBottom(child, collapsedOffset)
+        } else if (state == STBottomSheetBehavior.STATE_DRAGGING || state == STBottomSheetBehavior.STATE_SETTLING) {
+            ViewCompat.offsetTopAndBottom(child, savedTop - child.top)
+        }
+        if (viewDragHelper == null) {
+            viewDragHelper = ViewDragHelper.create(parent, dragCallback)
+        }
+        viewRef = WeakReference(child)
+        nestedScrollingChildRef = WeakReference(findScrollingChild(child))
+        // return true
+        val onLayoutChild = true
 
         //region 当高度改变时, 通知重设配置
         val newParentHeight: Int = parent.height
         if (newParentHeight > 0 && newParentHeight != currentParentHeightOnSetFinalState) {
             onParentHeightChangedListener?.invoke(parent, child, currentFinalState == -1)
         }
-        //endregion
-//        }
         //endregion
 
         Log.w(TAG, "onLayoutChild end currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
@@ -774,7 +806,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         )
         // 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
         // ? 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
-        // TODO 2 this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
+        // TODO 2
+//        if (currentFinalState == -1) {
+            this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
+//        }
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
             onAnimationEndCallback?.invoke()
         }

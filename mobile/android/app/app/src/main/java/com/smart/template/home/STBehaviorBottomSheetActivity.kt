@@ -98,9 +98,6 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
 
-    // 当前新版是三段式还是两段式
-    private var enableHalfExpandedState = true
-
     /**
      * B 页面 如果 android:windowIsTranslucent==true, 则不会调用 A 页面的 onRestart
      */

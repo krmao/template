@@ -386,7 +386,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             child.fitsSystemWindows = true
         }
         val savedTop = child.top
-        parent.onLayoutChild(child, layoutDirection)
+        parent.onLayoutChild(child, layoutDirection) // 注意设置 android:layout_gravity="bottom", 否则有闪现现象
         parentHeight = parent.height
         if (peekHeightAuto) {
             if (peekHeightMin == 0) {
@@ -808,7 +808,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         // ? 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
         // TODO 2
 //        if (currentFinalState == -1) {
-            this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
+        this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
 //        }
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
             onAnimationEndCallback?.invoke()

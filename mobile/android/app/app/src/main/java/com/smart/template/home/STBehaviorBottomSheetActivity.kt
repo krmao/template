@@ -3,9 +3,7 @@ package com.smart.template.home
 import android.content.Intent
 import android.graphics.Outline
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -16,7 +14,6 @@ import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.library.util.STViewUtil
 import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
 import com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
@@ -44,7 +41,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         object : STBottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 STLogUtil.w(TAG, "onStateChanged newState=${getStateDescription(newState)}, bottomSheet.top=${bottomSheet.top}")
-//                setArrowStatus(newState)
+                setArrowStatus(newState)
                 // setNestedScrollViewHeightByState(newState)
             }
 
@@ -52,7 +49,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
                 STLogUtil.w(TAG, "onSlide percent=$percent, bottomSheet.top=${bottomSheet.top}")
                 bottomSheetBehavior.dragEnabled = true
 //                if (enableDragOnlyOnSpecialTouchLayout) {
-                    // setNestedScrollViewHeight(bottomSheetBehavior.getCurrentBottomSheetViewHeight(bottomSheet) - arrowPanelHeight)
+                // setNestedScrollViewHeight(bottomSheetBehavior.getCurrentBottomSheetViewHeight(bottomSheet) - arrowPanelHeight)
 //                }
             }
         }
@@ -224,28 +221,28 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 //        }
 //    }
 
-//    private fun setArrowStatus(panelState: Int) {
-//        when (panelState) {
-//            STBottomSheetViewPagerBehavior.STATE_EXPANDED -> {
-//                if (bottomSheetBehavior.enableHalfExpandedState) {
-//                    arrowIv.setImageResource(R.drawable.st_icon_arrow_down)
-//                    arrowIv.setPadding(0, 0, 0, 0)
-//                } else {
-//                    arrowIv.setImageResource(R.drawable.st_icon_arrow_middle)
-//                    arrowIv.setPadding(0, 0, 0, 3.toPxFromDp())
-//                }
-//            }
-//            STBottomSheetViewPagerBehavior.STATE_COLLAPSED -> {
-//                arrowIv.setImageResource(R.drawable.st_icon_arrow_up)
-//                arrowIv.setPadding(0, 0, 0, 0)
-//            }
-//            STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED -> {
-//                arrowIv.setImageResource(R.drawable.st_icon_arrow_middle)
-//                arrowIv.setPadding(0, 0, 0, 3.toPxFromDp())
-//            }
-//        }
-//        // arrowIv.animateRotation(if (up) 0f else 180f) // 动画方式
-//    }
+    private fun setArrowStatus(panelState: Int) {
+        when (panelState) {
+            STBottomSheetViewPagerBehavior.STATE_EXPANDED -> {
+                if (bottomSheetBehavior.enableHalfExpandedState) {
+                    arrowIv.setImageResource(R.drawable.st_icon_arrow_down)
+                    arrowIv.setPadding(0, 0, 0, 0)
+                } else {
+                    arrowIv.setImageResource(R.drawable.st_icon_arrow_middle)
+                    arrowIv.setPadding(0, 0, 0, 3.toPxFromDp())
+                }
+            }
+            STBottomSheetViewPagerBehavior.STATE_COLLAPSED -> {
+                arrowIv.setImageResource(R.drawable.st_icon_arrow_up)
+                arrowIv.setPadding(0, 0, 0, 0)
+            }
+            STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED -> {
+                arrowIv.setImageResource(R.drawable.st_icon_arrow_middle)
+                arrowIv.setPadding(0, 0, 0, 3.toPxFromDp())
+            }
+        }
+        // arrowIv.animateRotation(if (up) 0f else 180f) // 动画方式
+    }
     //endregion
 
     /**

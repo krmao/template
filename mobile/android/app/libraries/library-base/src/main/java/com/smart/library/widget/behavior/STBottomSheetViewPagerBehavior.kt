@@ -53,7 +53,14 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     var enableHalfExpandedState = false
 
     private var pullTopToBottom: Boolean? = null
-    private var lastBottomSheetDragTop: Int = -1
+
+    // 向下拖拽 可滚动的 childView.nestedScrollView 到顶部继续拖拽联动 childView 面板继续向下滑动时
+    // 默认 false 会从 expanded 直接滑动到 collapsed, true 做自定义处理
+    var enableCustomTargetTopAndStateOnStopNestedScroll: Boolean = true
+    var enableCustomTargetTopAndStateOnViewReleased: Boolean = true
+
+    // 向下拖拽 可滚动的 childView.nestedScrollView 到顶部继续拖拽联动 childView 面板继续向下滑动时, 根据 lastBottomSheetDragTop 获取的 pullTopToBottom 并没有起作用, 这里从 onSlide 里获取 pullTopToBottom
+    private var lastSlideTop: Int = -1
         private set(value) {
             if (field != -1) {
                 pullTopToBottom = value - field > 0
@@ -68,6 +75,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
     var currentFinalState: Int = -1 // 首次 setState 之前为 -1, 标记第一次
         private set
+
+    override fun dispatchOnSlide(top: Int) {
+        super.dispatchOnSlide(top)
+        lastSlideTop = top
+    }
 
     init {
 
@@ -92,9 +104,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             }
 
             override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
-                lastBottomSheetDragTop = top
-                STLogUtil.d(TAG, "onViewPositionChanged left=$left, top=$top, dx=$dx, dy=$dy, lastBottomSheetDragTop=$lastBottomSheetDragTop")
                 dispatchOnSlide(top)
+                STLogUtil.d(TAG, "onViewPositionChanged left=$left, top=$top, dx=$dx, dy=$dy, lastSlideTop=$lastSlideTop")
             }
 
             override fun onViewDragStateChanged(state: Int) {
@@ -108,14 +119,14 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
                 STLogUtil.d(TAG, "onViewReleased xvel=$xvel, yvel=$yvel")
 
-                var top: Int
-                var targetState: Int
+                val top: Int
+                val targetState: Int
                 val currentTop = releasedChild.top
                 val currentPullTopToBottom = pullTopToBottom
 
                 if (STLogUtil.debug) STLogUtil.w(TAG, "onViewReleased start pullTopToBottom=$pullTopToBottom")
                 if (STLogUtil.debug) STLogUtil.d(TAG, "onViewReleased yvel=$yvel,enableHalfExpandedState=$enableHalfExpandedState, expandedOffset=$expandedOffset, currentPullTopToBottom=$currentPullTopToBottom, currentTop=$currentTop,")
-                if (STLogUtil.debug) STLogUtil.w(TAG, "onViewReleased start pullTopToBottom=$pullTopToBottom, lastBottomSheetDragTop=$lastBottomSheetDragTop")
+                if (STLogUtil.debug) STLogUtil.w(TAG, "onViewReleased start pullTopToBottom=$pullTopToBottom, lastSlideTop=$lastSlideTop")
                 if (STLogUtil.debug) STLogUtil.d(TAG, "onViewReleased yvel=$yvel, xvel=$xvel, enableHalfExpandedState=$enableHalfExpandedState, expandedOffset=$expandedOffset, currentPullTopToBottom=$currentPullTopToBottom, currentTop=$currentTop,")
                 if (STLogUtil.debug) STLogUtil.d(TAG, "onViewReleased halfExpandedOffset=$halfExpandedOffset, dragThresholdOffset()=${dragThresholdOffset()}, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
                 if (STLogUtil.debug) STLogUtil.d(TAG, "onViewReleased getViewVerticalDragRange()=${getViewVerticalDragRange()}, fitToContents=$fitToContents")
@@ -170,85 +181,18 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                     targetState = STATE_COLLAPSED
                 }
 
-                // 垂直速度为0, 总位置没有变动, 且当前位置正好与目标位置一致, 则不需要执行动画
-                var isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset = false
-
-                // 根据自己的业务重置 top and targetState
-                if (currentPullTopToBottom != null) {
-                    if (enableHalfExpandedState) {
-                        when {
-                            currentTop < (if (currentPullTopToBottom) (dragThresholdOffset()) else (getHalfExpandedOffset() - dragThresholdOffset())) -> {
-                                STLogUtil.d(TAG, "onViewReleased set targetState=STATE_EXPANDED")
-                                top = expandedOffset
-                                targetState = STATE_EXPANDED
-                            }
-                            currentTop < (if (currentPullTopToBottom) (getHalfExpandedOffset() + dragThresholdOffset()) else (collapsedOffset - dragThresholdOffset())) -> {
-                                STLogUtil.d(TAG, "onViewReleased set targetState=STATE_HALF_EXPANDED")
-                                top = halfExpandedOffset
-                                targetState = STATE_HALF_EXPANDED
-                            }
-                            else -> {
-                                STLogUtil.d(TAG, "onViewReleased set targetState=STATE_COLLAPSED")
-                                top = collapsedOffset
-                                targetState = STATE_COLLAPSED
-                            }
-                        }
+                if (enableCustomTargetTopAndStateOnViewReleased) {
+                    customTargetTopAndState(child = releasedChild, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = false)
+                } else {
+                    if (viewDragHelper.settleCapturedViewAt(releasedChild.left, top)) {
+                        setStateInternal(STATE_SETTLING)
+                        ViewCompat.postOnAnimation(releasedChild, SettleRunnable(releasedChild, targetState))
                     } else {
-                        when {
-                            currentTop < (if (currentPullTopToBottom) (dragThresholdOffset()) else (collapsedOffset - dragThresholdOffset())) -> {
-                                STLogUtil.d(TAG, "onViewReleased set targetState=STATE_EXPANDED")
-                                targetState = STATE_EXPANDED
-                            }
-                            else -> {
-                                STLogUtil.d(TAG, "onViewReleased set targetState=STATE_COLLAPSED")
-                                top = collapsedOffset
-                                targetState = STATE_COLLAPSED
-                            }
-                        }
-                    }
-                } else {
-                    // 垂直速度为0, 总位置没有变动, 且当前位置正好与目标位置一致, 则不需要执行动画
-                    if (yvel == 0f && lastBottomSheetDragTop == -1) {
-                        when (currentTop) {
-                            halfExpandedOffset -> {
-                                top = halfExpandedOffset
-                                targetState = STATE_HALF_EXPANDED
-                                STLogUtil.d(TAG, "onViewReleased currentPullTopToBottom==null, lastBottomSheetDragTop=$lastBottomSheetDragTop, currentTop=$currentTop, set targetState=STATE_HALF_EXPANDED")
-                                isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset = true
-                            }
-                            collapsedOffset -> {
-                                top = collapsedOffset
-                                targetState = STATE_COLLAPSED
-                                STLogUtil.d(TAG, "onViewReleased currentPullTopToBottom==null, lastBottomSheetDragTop=$lastBottomSheetDragTop, currentTop=$currentTop, set targetState=STATE_COLLAPSED")
-                                isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset = true
-                            }
-                            expandedOffset -> {
-                                top = expandedOffset
-                                targetState = STATE_EXPANDED
-                                STLogUtil.d(TAG, "onViewReleased currentPullTopToBottom==null, lastBottomSheetDragTop=$lastBottomSheetDragTop, currentTop=$currentTop, set targetState=STATE_EXPANDED")
-                                isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset = true
-                            }
-                            else -> {
-                                STLogUtil.d(TAG, "onViewReleased currentPullTopToBottom==null, lastBottomSheetDragTop=$lastBottomSheetDragTop, currentTop=$currentTop)")
-                            }
-                        }
+                        setStateInternal(targetState)
                     }
                 }
 
-                STLogUtil.e(TAG, "onViewReleased isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset=$isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset, halfExpandedOffset=$halfExpandedOffset, top=$top, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
-                if (!isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset && viewDragHelper.settleCapturedViewAt(releasedChild.left, top)) {
-                    STLogUtil.w(TAG, "onViewReleased setStateInternal STATE_SETTLING, lastBottomSheetDragTop=$lastBottomSheetDragTop")
-                    setStateInternal(STATE_SETTLING)
-                    ViewCompat.postOnAnimation(releasedChild, SettleRunnable(releasedChild, targetState))
-                } else {
-                    STLogUtil.w(TAG, "onViewReleased setStateInternal targetState=$targetState, lastBottomSheetDragTop=$lastBottomSheetDragTop")
-                    setStateInternal(targetState)
-                }
-
-                // 重置
-                lastBottomSheetDragTop = -1
-
-                STLogUtil.w(TAG, "onViewReleased end pullTopToBottom=$pullTopToBottom, lastBottomSheetDragTop=$lastBottomSheetDragTop")
+                STLogUtil.w(TAG, "onViewReleased end pullTopToBottom=$pullTopToBottom, lastSlideTop=$lastSlideTop")
             }
 
             override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
@@ -299,6 +243,100 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             }
         })
         //endregion
+    }
+
+    /**
+     * 根据自己的业务重置 top and targetState
+     */
+    private fun customTargetTopAndState(child: View, targetOriginTop: Int, targetOriginState: Int, smoothSlideNotCaptured: Boolean): Array<Int> {
+        // 垂直速度为0, 总位置没有变动, 且当前位置正好与目标位置一致, 则不需要执行动画
+        var isTotalOffsetZeroAndTopIsJustTargetStateOffset = false
+
+        var targetFinalTop: Int = targetOriginTop
+        var targetFinalState: Int = targetOriginState
+
+        val currentTop: Int = child.top
+        val currentPullTopToBottom: Boolean? = pullTopToBottom // 当内部滚动松开手指时, child 位置改变才会触发 onViewReleased, 所以通过 onSlide 获得 pullTopToBottom
+        val dragThresholdOffset: Float = dragThresholdOffset()
+        val halfExpandedOffset: Int = getHalfExpandedOffset()
+        val collapsedOffset: Int = collapsedOffset
+        val expandedOffset: Int = expandedOffset
+        STLogUtil.e(TAG, "customTargetTopAndState currentPullTopToBottom=$currentPullTopToBottom, currentTop=$currentTop, dragThresholdOffset=$dragThresholdOffset, halfExpandedOffset=$halfExpandedOffset, collapsedOffset=$collapsedOffset, expandedOffset=$expandedOffset, enableHalfExpandedState=$enableHalfExpandedState")
+
+        if (currentPullTopToBottom != null) {
+            if (enableHalfExpandedState) {
+                when {
+                    currentTop < (if (currentPullTopToBottom) (dragThresholdOffset) else (halfExpandedOffset - dragThresholdOffset)) -> {
+                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_EXPANDED")
+                        targetFinalTop = expandedOffset
+                        targetFinalState = STATE_EXPANDED
+                    }
+                    currentTop < (if (currentPullTopToBottom) (halfExpandedOffset + dragThresholdOffset) else (collapsedOffset - dragThresholdOffset)) -> {
+                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_HALF_EXPANDED")
+                        targetFinalTop = halfExpandedOffset
+                        targetFinalState = STATE_HALF_EXPANDED
+                    }
+                    else -> {
+                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_COLLAPSED")
+                        targetFinalTop = collapsedOffset
+                        targetFinalState = STATE_COLLAPSED
+                    }
+                }
+            } else {
+                when {
+                    currentTop < (if (currentPullTopToBottom) (dragThresholdOffset) else (collapsedOffset - dragThresholdOffset)) -> {
+                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_EXPANDED")
+                        targetFinalState = STATE_EXPANDED
+                    }
+                    else -> {
+                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_COLLAPSED")
+                        targetFinalTop = collapsedOffset
+                        targetFinalState = STATE_COLLAPSED
+                    }
+                }
+            }
+        } else {
+            // 总位置没有变动, 且当前位置正好与目标位置一致, 则不需要执行动画
+            if (lastSlideTop == -1) {
+                when (currentTop) {
+                    halfExpandedOffset -> {
+                        targetFinalTop = halfExpandedOffset
+                        targetFinalState = STATE_HALF_EXPANDED
+                        STLogUtil.d(TAG, "customTargetTopAndState currentPullTopToBottom==null, lastSlideTop=$lastSlideTop, currentTop=$currentTop, set targetState=STATE_HALF_EXPANDED")
+                        isTotalOffsetZeroAndTopIsJustTargetStateOffset = true
+                    }
+                    collapsedOffset -> {
+                        targetFinalTop = collapsedOffset
+                        targetFinalState = STATE_COLLAPSED
+                        STLogUtil.d(TAG, "customTargetTopAndState currentPullTopToBottom==null, lastSlideTop=$lastSlideTop, currentTop=$currentTop, set targetState=STATE_COLLAPSED")
+                        isTotalOffsetZeroAndTopIsJustTargetStateOffset = true
+                    }
+                    expandedOffset -> {
+                        targetFinalTop = expandedOffset
+                        targetFinalState = STATE_EXPANDED
+                        STLogUtil.d(TAG, "customTargetTopAndState currentPullTopToBottom==null, lastSlideTop=$lastSlideTop, currentTop=$currentTop, set targetState=STATE_EXPANDED")
+                        isTotalOffsetZeroAndTopIsJustTargetStateOffset = true
+                    }
+                    else -> {
+                        STLogUtil.d(TAG, "customTargetTopAndState currentPullTopToBottom==null, lastSlideTop=$lastSlideTop, currentTop=$currentTop)")
+                    }
+                }
+            }
+        }
+
+        STLogUtil.e(TAG, "customTargetTopAndState isYVelZeroAndTotalOffsetZeroAndTopIsJustTargetStateOffset=$isTotalOffsetZeroAndTopIsJustTargetStateOffset, halfExpandedOffset=$halfExpandedOffset, top=$targetFinalTop, collapsedOffset=$collapsedOffset, fitToContentsOffset=$fitToContentsOffset")
+        if (!isTotalOffsetZeroAndTopIsJustTargetStateOffset && if (smoothSlideNotCaptured) viewDragHelper.smoothSlideViewTo(child, child.left, targetFinalTop) else viewDragHelper.settleCapturedViewAt(child.left, targetFinalTop)) {
+            STLogUtil.w(TAG, "customTargetTopAndState setStateInternal STATE_SETTLING, lastSlideTop=$lastSlideTop")
+            setStateInternal(STATE_SETTLING)
+            ViewCompat.postOnAnimation(child, SettleRunnable(child, targetFinalState))
+        } else {
+            STLogUtil.w(TAG, "customTargetTopAndState setStateInternal targetState=$targetFinalState, lastSlideTop=$lastSlideTop")
+            setStateInternal(targetFinalState)
+        }
+
+        // 重置
+        lastSlideTop = -1
+        return arrayOf(targetFinalTop, targetFinalState)
     }
 
     //region new callback api
@@ -608,8 +646,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         if (target !== nestedScrollingChildRef.get() || !nestedScrolled) {
             return
         }
-        val top: Int
-        val targetState: Int
+        var top: Int
+        var targetState: Int
         if (lastNestedScrollDy > 0) {
             top = this.expandedOffset
             targetState = STBottomSheetBehavior.STATE_EXPANDED
@@ -654,11 +692,16 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             STLogUtil.e(TAG, "onStopNestedScroll lastNestedScrollDy($lastNestedScrollDy)<=0, force set targetState=STATE_COLLAPSED. won't call onViewReleased!")
             targetState = STBottomSheetBehavior.STATE_COLLAPSED
         }
-        if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {
-            setStateInternal(STBottomSheetBehavior.STATE_SETTLING)
-            ViewCompat.postOnAnimation(child, SettleRunnable(child, targetState))
+
+        if (enableCustomTargetTopAndStateOnStopNestedScroll) {
+            customTargetTopAndState(child = child, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = true)
         } else {
-            setStateInternal(targetState)
+            if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {
+                setStateInternal(STBottomSheetBehavior.STATE_SETTLING)
+                ViewCompat.postOnAnimation(child, SettleRunnable(child, targetState))
+            } else {
+                setStateInternal(targetState)
+            }
         }
         nestedScrolled = false
 

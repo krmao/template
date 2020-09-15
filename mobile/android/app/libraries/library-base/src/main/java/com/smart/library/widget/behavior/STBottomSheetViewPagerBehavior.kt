@@ -418,7 +418,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      */
     @SuppressLint("PrivateResource")
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
-        Log.w(TAG, "onLayoutChild start state=${getStateDescription(state)}, getCollapsedOffset=${getCollapsedOffset()}, expandedOffset=${getExpandedOffset()}, currentFinalState=${getStateDescription(currentFinalState)}, currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
+        val finalState = wrapStateForEnableHalfExpanded(state)
+        Log.w(TAG, "onLayoutChild start finalState=${getStateDescription(finalState)}, getCollapsedOffset=${getCollapsedOffset()}, expandedOffset=${getExpandedOffset()}, currentFinalState=${getStateDescription(currentFinalState)}, currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
 
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.fitsSystemWindows = true
@@ -443,31 +444,31 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
         // 通过 val targetOffset: Int = expandedOffset - child.top 解决 当设置不同的面板内图片或者 设置不同的 view.padding 时导致的面板位置错误改变
         // 参见 onStateChanged 里面的 setArrowStatus, 如果修改为 targetOffset, 则当箭头改变时会导致面板移动到错误的位置
-        if (state == STBottomSheetBehavior.STATE_EXPANDED) {
+        if (finalState == STBottomSheetBehavior.STATE_EXPANDED) {
             val targetOffset: Int = expandedOffset - child.top
             Log.w(TAG, "onLayoutChild offsetTopAndBottom expandedOffset=$expandedOffset, child.top=${child.top}, targetOffset=$targetOffset")
             if (targetOffset != 0) {
                 ViewCompat.offsetTopAndBottom(child, targetOffset)
             }
-        } else if (state == STBottomSheetBehavior.STATE_HALF_EXPANDED) {
+        } else if (finalState == STBottomSheetBehavior.STATE_HALF_EXPANDED) {
             val targetOffset: Int = halfExpandedOffset - child.top
             Log.w(TAG, "onLayoutChild offsetTopAndBottom halfExpandedOffset=$halfExpandedOffset, child.top=${child.top}, targetOffset=$targetOffset")
             if (targetOffset != 0) {
                 ViewCompat.offsetTopAndBottom(child, targetOffset)
             }
-        } else if (hideable && state == STBottomSheetBehavior.STATE_HIDDEN) {
+        } else if (hideable && finalState == STBottomSheetBehavior.STATE_HIDDEN) {
             val targetOffset: Int = parentHeight - child.top
             Log.w(TAG, "onLayoutChild offsetTopAndBottom parentHeight=$parentHeight, child.top=${child.top}, targetOffset=$targetOffset")
             if (targetOffset != 0) {
                 ViewCompat.offsetTopAndBottom(child, targetOffset)
             }
-        } else if (state == STBottomSheetBehavior.STATE_COLLAPSED) {
+        } else if (finalState == STBottomSheetBehavior.STATE_COLLAPSED) {
             val targetOffset: Int = collapsedOffset - child.top
             Log.w(TAG, "onLayoutChild offsetTopAndBottom collapsedOffset=$collapsedOffset, child.top=${child.top}, targetOffset=$targetOffset")
             if (targetOffset != 0) {
                 ViewCompat.offsetTopAndBottom(child, targetOffset)
             }
-        } else if (state == STBottomSheetBehavior.STATE_DRAGGING || state == STBottomSheetBehavior.STATE_SETTLING) {
+        } else if (finalState == STBottomSheetBehavior.STATE_DRAGGING || finalState == STBottomSheetBehavior.STATE_SETTLING) {
             Log.w(TAG, "onLayoutChild offsetTopAndBottom (savedTop-child.top)=${savedTop - child.top}")
             ViewCompat.offsetTopAndBottom(child, savedTop - child.top)
         }
@@ -895,9 +896,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                     currentFinalState = finalState
                 }
             }
+            STLogUtil.e(TAG, "setStateWithCallback getViewRef() == null")
             onAnimationEndCallback?.invoke()
             return
         }
+        STLogUtil.e(TAG, "setStateWithCallback startSettlingAnimationWithCallback")
         startSettlingAnimationWithCallback(finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
     }
 
@@ -911,12 +914,15 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         val child: V? = getView()
         if (child == null) {
             currentFinalState = finalState
+            STLogUtil.e(TAG, "startSettlingAnimationWithCallback child == null")
             onAnimationEndCallback?.invoke()
             return
         }
         val parent = child.parent
         if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
-            child.post { startSettlingAnimationWithCallbackInternal(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback) }
+            child.post {
+                startSettlingAnimationWithCallbackInternal(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
+            }
         } else {
             startSettlingAnimationWithCallbackInternal(child, finalState, enableAnimation, notifyOnStateChanged, onAnimationEndCallback)
         }
@@ -945,9 +951,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         if (!enableAnimation) {
             val finalTop: Int = top
             val dy: Int = finalTop - child.top
-            STLogUtil.e(TAG, "startSettlingAnimationWithCallbackInternal offset begin dy=$dy, finalTop=$finalTop, child.top=${child.top}")
+            STLogUtil.d(TAG, "startSettlingAnimationWithCallbackInternal offset begin dy=$dy, finalTop=$finalTop, child.top=${child.top}")
             ViewCompat.offsetTopAndBottom(child, dy)
-            STLogUtil.e(TAG, "startSettlingAnimationWithCallbackInternal offset end dy=$dy, finalTop=$finalTop, child.top=${child.top}")
+            STLogUtil.d(TAG, "startSettlingAnimationWithCallbackInternal offset end dy=$dy, finalTop=$finalTop, child.top=${child.top}")
             setStateInternalWithCallback(tmpState, notifyOnStateChanged = notifyOnStateChanged, onAnimationEndCallback = onAnimationEndCallback)
         } else {
             if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {
@@ -967,9 +973,10 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
     private fun setStateInternalWithCallback(state: Int, notifyOnStateChanged: Boolean = true, onAnimationEndCallback: (() -> Unit)? = null) {
         val finalState = wrapStateForEnableHalfExpanded(state)
-        STLogUtil.w(TAG, "setStateInternalWithCallback state=${getStateDescription(state)}, finalState=$finalState")
+        STLogUtil.w(TAG, "setStateInternalWithCallback state=${getStateDescription(state)}, finalState=$finalState, notifyOnStateChanged=$notifyOnStateChanged")
 
-        if (this.state == finalState) {
+        if (this.state == finalState && !notifyOnStateChanged) {
+            STLogUtil.e(TAG, "setStateInternalWithCallback this.state == finalState")
             onAnimationEndCallback?.invoke()
             return
         }
@@ -997,7 +1004,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     /**
      * @see enableHalfExpandedState
      */
-    private fun wrapStateForEnableHalfExpanded(state: Int): Int = if (!this.enableHalfExpandedState && state == STATE_HALF_EXPANDED) STATE_COLLAPSED else state
+    private fun wrapStateForEnableHalfExpanded(state: Int): Int = if (!this.enableHalfExpandedState && state == STATE_HALF_EXPANDED) STATE_EXPANDED else state
     fun setPeekHeight(peekHeight: Int, requestLayout: Boolean) {
         var layout = false
         if (peekHeight == -1) {
@@ -1042,7 +1049,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         const val STATE_HIDDEN = STBottomSheetBehavior.STATE_HIDDEN
         const val STATE_HALF_EXPANDED = STBottomSheetBehavior.STATE_HALF_EXPANDED
         const val PEEK_HEIGHT_AUTO = STBottomSheetBehavior.PEEK_HEIGHT_AUTO
-        const val TAG = "sheet-behavior"
+        const val TAG = "[BottomSheet]"
 
         @JvmStatic
         fun getStateDescription(state: Int): String = when (state) {

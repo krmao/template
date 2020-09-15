@@ -3,7 +3,9 @@ package com.smart.template.home
 import android.content.Intent
 import android.graphics.Outline
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -14,9 +16,14 @@ import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
+import com.smart.library.util.STToastUtil
+import com.smart.library.util.STViewUtil
 import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
 import com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_COLLAPSED
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_EXPANDED
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_HALF_EXPANDED
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.getStateDescription
 import com.smart.library.widget.behavior.STNestedScrollView
 import com.smart.template.R
@@ -42,15 +49,19 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 STLogUtil.w(TAG, "onStateChanged newState=${getStateDescription(newState)}, bottomSheet.top=${bottomSheet.top}")
                 setArrowStatus(newState)
-                // setNestedScrollViewHeightByState(newState)
+                setNestedScrollViewHeightByState(newState)
+
+                if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED || newState == STATE_COLLAPSED) {
+                    STToastUtil.show("onStateChanged:${getStateDescription(newState)}")
+                }
             }
 
             override fun onSlide(bottomSheet: View, percent: Float) {
                 STLogUtil.w(TAG, "onSlide percent=$percent, bottomSheet.top=${bottomSheet.top}")
                 bottomSheetBehavior.dragEnabled = true
-//                if (enableDragOnlyOnSpecialTouchLayout) {
-                // setNestedScrollViewHeight(bottomSheetBehavior.getCurrentBottomSheetViewHeight(bottomSheet) - arrowPanelHeight)
-//                }
+                if (enableDragOnlyOnSpecialTouchLayout) {
+                    setNestedScrollViewHeight(bottomSheetBehavior.getCurrentBottomSheetViewHeight(bottomSheet) - arrowPanelHeight)
+                }
             }
         }
     }
@@ -66,73 +77,73 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         initFloatingActionButton()
 
         //region 箭头逻辑与拖拽有效范围
-//        if (enableDragOnlyOnSpecialTouchLayout) {
-//            nestedScrollView.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
-//                when (motionEvent?.action) {
-//                    MotionEvent.ACTION_DOWN -> {
-//                        bottomSheetBehavior.dragEnabled = false // bottomSheetBehavior.state == STBottomSheetViewPagerBehavior.STATE_EXPANDED
-//                        STLogUtil.d(TAG, "ACTION_DOWN nestedScrollView")
-//                    }
-//                    MotionEvent.ACTION_UP -> {
-//                        STLogUtil.d(TAG, "ACTION_UP nestedScrollView")
-//                        bottomSheetBehavior.dragEnabled = true
-//                    }
-//                    MotionEvent.ACTION_CANCEL -> {
-//                        STLogUtil.d(TAG, "ACTION_CANCEL nestedScrollView")
-//                        bottomSheetBehavior.dragEnabled = true
-//                    }
-//                    MotionEvent.ACTION_MOVE -> {
-//                        STLogUtil.d(TAG, "ACTION_MOVE nestedScrollView")
-//                    }
-//                    else -> {
-//                        STLogUtil.d(TAG, "ACTION_OTHER nestedScrollView")
-//                    }
-//                }
-//            }
+        if (enableDragOnlyOnSpecialTouchLayout) {
+            nestedScrollView.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
+                when (motionEvent?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        bottomSheetBehavior.dragEnabled = false // bottomSheetBehavior.state == STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                        STLogUtil.d(TAG, "ACTION_DOWN nestedScrollView")
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        STLogUtil.d(TAG, "ACTION_UP nestedScrollView")
+                        bottomSheetBehavior.dragEnabled = true
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        STLogUtil.d(TAG, "ACTION_CANCEL nestedScrollView")
+                        bottomSheetBehavior.dragEnabled = true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        STLogUtil.d(TAG, "ACTION_MOVE nestedScrollView")
+                    }
+                    else -> {
+                        STLogUtil.d(TAG, "ACTION_OTHER nestedScrollView")
+                    }
+                }
+            }
 
-//            touchLayout.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
-//                when (motionEvent?.action) {
-//                    MotionEvent.ACTION_DOWN -> {
-//                        STLogUtil.d(TAG, "ACTION_DOWN touchLayout")
-//                        bottomSheetBehavior.dragEnabled = true
-//                    }
-//                    MotionEvent.ACTION_UP -> {
-//                        STLogUtil.d(TAG, "ACTION_UP touchLayout")
-//                    }
-//                    MotionEvent.ACTION_CANCEL -> {
-//                        STLogUtil.d(TAG, "ACTION_CANCEL touchLayout")
-//                    }
-//                    MotionEvent.ACTION_MOVE -> {
-//                        STLogUtil.d(TAG, "ACTION_MOVE touchLayout")
-//                    }
-//                    else -> {
-//                        STLogUtil.d(TAG, "ACTION_OTHER touchLayout")
-//                    }
-//                }
-//            }
-//        }
-//        touchLayout.setOnClickListener {
-//            if (!STViewUtil.isDoubleClicked()) {
-//                STLogUtil.d(TAG, "arrowIv clicked")
-//                when (bottomSheetBehavior.state) {
-//                    STBottomSheetViewPagerBehavior.STATE_COLLAPSED -> {
-//                        touchLayout.post {
-//                            bottomSheetBehavior.state = if (bottomSheetBehavior.enableHalfExpandedState) STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED else STBottomSheetViewPagerBehavior.STATE_EXPANDED
-//                        }
-//                    }
-//                    STBottomSheetViewPagerBehavior.STATE_EXPANDED -> {
-//                        touchLayout.post {
-//                            bottomSheetBehavior.state = if (bottomSheetBehavior.enableHalfExpandedState) STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED else STBottomSheetViewPagerBehavior.STATE_COLLAPSED
-//                        }
-//                    }
-//                    STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED -> {
-//                        touchLayout.post {
-//                            bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_EXPANDED
-//                        }
-//                    }
-//                }
-//            }
-//        }
+            touchLayout.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
+                when (motionEvent?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        STLogUtil.d(TAG, "ACTION_DOWN touchLayout")
+                        bottomSheetBehavior.dragEnabled = true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        STLogUtil.d(TAG, "ACTION_UP touchLayout")
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        STLogUtil.d(TAG, "ACTION_CANCEL touchLayout")
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        STLogUtil.d(TAG, "ACTION_MOVE touchLayout")
+                    }
+                    else -> {
+                        STLogUtil.d(TAG, "ACTION_OTHER touchLayout")
+                    }
+                }
+            }
+        }
+        touchLayout.setOnClickListener {
+            if (!STViewUtil.isDoubleClicked()) {
+                STLogUtil.d(TAG, "arrowIv clicked")
+                when (bottomSheetBehavior.state) {
+                    STBottomSheetViewPagerBehavior.STATE_COLLAPSED -> {
+                        touchLayout.post {
+                            bottomSheetBehavior.state = if (bottomSheetBehavior.enableHalfExpandedState) STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED else STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                        }
+                    }
+                    STBottomSheetViewPagerBehavior.STATE_EXPANDED -> {
+                        touchLayout.post {
+                            bottomSheetBehavior.state = if (bottomSheetBehavior.enableHalfExpandedState) STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED else STBottomSheetViewPagerBehavior.STATE_COLLAPSED
+                        }
+                    }
+                    STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED -> {
+                        touchLayout.post {
+                            bottomSheetBehavior.state = STBottomSheetViewPagerBehavior.STATE_EXPANDED
+                        }
+                    }
+                }
+            }
+        }
         //endregion
     }
 
@@ -141,7 +152,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
     }
 
-    var backdropBehavior: STBottomSheetBackdropHalfBehavior<*>? = null
+    private var backdropBehavior: STBottomSheetBackdropHalfBehavior<*>? = null
     private fun initBackdropBehavior(bottomSheetHalfExpandTop: Int) {
         //region viewPager 顶部圆角(不采用设置图片圆角的方式, 左右滑动时图片圆角会跟着滑动, 不好看), https://medium.com/@iamsadesh/android-ui-creating-a-layout-rounded-only-in-the-top-d60514ccab77
         backdropBehaviorViewPager.outlineProvider = object : ViewOutlineProvider() {
@@ -164,9 +175,13 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.76f).toInt()
             imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
 
-            bottomSheetBehavior.setStateByRealHeight(parentHeight = bottomSheetBehavior.getParentHeight(), peekHeight = bottomSheetPeekHeight, bottomSheetContentHeight = bottomSheetContentHeight, callbackBeforeSetState = { newEnableHalfExpandedState ->
-                backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
-            })
+            bottomSheetBehavior.setStateByRealHeight(
+                parentHeight = bottomSheetBehavior.getParentHeight(),
+                peekHeight = bottomSheetPeekHeight,
+                bottomSheetContentHeight = bottomSheetContentHeight,
+                callbackBeforeSetState = { newEnableHalfExpandedState ->
+                    backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
+                })
         }
         floatingActionButton2.setOnClickListener {
             val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.4).toInt()
@@ -199,27 +214,27 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
      * STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED
      * STBottomSheetViewPagerBehavior.STATE_COLLAPSED
      */
-//    private fun setNestedScrollViewHeightByState(@STBottomSheetViewPagerBehavior.FinalState state: Int) {
-//        if (state != STBottomSheetViewPagerBehavior.STATE_EXPANDED && state != STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED && state != STBottomSheetViewPagerBehavior.STATE_COLLAPSED) {
-//            return
-//        }
-//        STLogUtil.sync { STLogUtil.w(TAG, "setNestedScrollViewHeightByState state=${getStateDescription(state)}") }
-//        val targetHeight = bottomSheetBehavior.getBottomSheetViewHeightByState(state) - arrowPanelHeight // 减去拖拽面板高度, 只设置滚动视图高度
-////        setNestedScrollViewHeight(targetHeight)
-//    }
+    private fun setNestedScrollViewHeightByState(@STBottomSheetViewPagerBehavior.FinalState state: Int) {
+        if (state != STBottomSheetViewPagerBehavior.STATE_EXPANDED && state != STBottomSheetViewPagerBehavior.STATE_HALF_EXPANDED && state != STBottomSheetViewPagerBehavior.STATE_COLLAPSED) {
+            return
+        }
+        STLogUtil.sync { STLogUtil.w(TAG, "setNestedScrollViewHeightByState state=${getStateDescription(state)}") }
+        val targetHeight = bottomSheetBehavior.getBottomSheetViewHeightByState(state) - arrowPanelHeight // 减去拖拽面板高度, 只设置滚动视图高度
+        setNestedScrollViewHeight(targetHeight)
+    }
 
-//    private fun setNestedScrollViewHeight(targetHeight: Int) {
-//        val params: ViewGroup.LayoutParams = nestedScrollView.layoutParams
-//        val oldHeight = params.height
-//        STLogUtil.sync { STLogUtil.w(TAG, "setNestedScrollViewHeight targetHeight=$targetHeight, oldScrollY=${nestedScrollView.scrollY}") }
-//        if (params.height != targetHeight) {
-//            params.height = targetHeight
-//            nestedScrollView.layoutParams = params
-//            STLogUtil.w(TAG, "setNestedScrollViewHeight height=${nestedScrollView.layoutParams.height}, oldHeight$oldHeight, newScrollY=${nestedScrollView.scrollY}")
-//        } else {
-//            STLogUtil.e(TAG, "setNestedScrollViewHeight repeat ignore set, height=${nestedScrollView.layoutParams.height}")
-//        }
-//    }
+    private fun setNestedScrollViewHeight(targetHeight: Int) {
+        val params: ViewGroup.LayoutParams = nestedScrollView.layoutParams
+        val oldHeight = params.height
+        STLogUtil.sync { STLogUtil.w(TAG, "setNestedScrollViewHeight targetHeight=$targetHeight, oldScrollY=${nestedScrollView.scrollY}") }
+        if (params.height != targetHeight) {
+            params.height = targetHeight
+            nestedScrollView.layoutParams = params
+            STLogUtil.w(TAG, "setNestedScrollViewHeight height=${nestedScrollView.layoutParams.height}, oldHeight$oldHeight, newScrollY=${nestedScrollView.scrollY}")
+        } else {
+            STLogUtil.e(TAG, "setNestedScrollViewHeight repeat ignore set, height=${nestedScrollView.layoutParams.height}")
+        }
+    }
 
     private fun setArrowStatus(panelState: Int) {
         when (panelState) {

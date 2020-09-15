@@ -380,8 +380,6 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
         Log.w(TAG, "onLayoutChild start currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
 
-        // TODO 1 设置 bottomSheetContainer(包括其子 view) 的高度会导致重走 onLayoutChild 流程, 导致 bottomSheetContainer 闪现到顶部
-
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.fitsSystemWindows = true
         }
@@ -804,12 +802,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             Math.min(bottomSheetContentHeight, getBottomSheetViewHeightByState(STATE_EXPANDED)),
             ((if (enableHalfExpandedState) getBottomSheetViewHeightByState(STATE_HALF_EXPANDED) else getBottomSheetViewHeightByState(STATE_COLLAPSED)) + minHeightOffset)
         )
-        // 第一次在 setStateWithCallback 之前设置, 否则绝对全屏显示且 2/3 段不起作用
-        // ? 第二次即以后在 setStateWithCallback 之后设置, 避免切换 2/3 段时可能因为高度相差太大出现闪屏问题
-        // TODO 2
-//        if (currentFinalState == -1) {
         this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
-//        }
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
             onAnimationEndCallback?.invoke()
         }

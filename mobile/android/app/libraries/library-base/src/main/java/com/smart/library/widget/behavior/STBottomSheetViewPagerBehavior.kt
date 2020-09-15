@@ -119,8 +119,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
                 STLogUtil.d(TAG, "onViewReleased xvel=$xvel, yvel=$yvel")
 
-                val top: Int
-                val targetState: Int
+                var top: Int
+                var targetState: Int
                 val currentTop = releasedChild.top
                 val currentPullTopToBottom = pullTopToBottom
 
@@ -182,7 +182,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                 }
 
                 if (enableCustomTargetTopAndStateOnViewReleased) {
-                    customTargetTopAndState(child = releasedChild, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = false)
+                    val results: Array<Int> = customTargetTopAndState(child = releasedChild, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = false)
+                    top = results[0]
+                    targetState = results[1]
                 } else {
                     if (viewDragHelper.settleCapturedViewAt(releasedChild.left, top)) {
                         setStateInternal(STATE_SETTLING)
@@ -192,7 +194,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                     }
                 }
 
-                STLogUtil.w(TAG, "onViewReleased end pullTopToBottom=$pullTopToBottom, lastSlideTop=$lastSlideTop")
+                STLogUtil.w(TAG, "onViewReleased end top=$top, targetState=$targetState, pullTopToBottom=$pullTopToBottom, lastSlideTop=$lastSlideTop")
             }
 
             override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
@@ -267,17 +269,17 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             if (enableHalfExpandedState) {
                 when {
                     currentTop < (if (currentPullTopToBottom) (dragThresholdOffset) else (halfExpandedOffset - dragThresholdOffset)) -> {
-                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_EXPANDED")
+                        STLogUtil.d(TAG, "customTargetTopAndState set targetState=STATE_EXPANDED")
                         targetFinalTop = expandedOffset
                         targetFinalState = STATE_EXPANDED
                     }
                     currentTop < (if (currentPullTopToBottom) (halfExpandedOffset + dragThresholdOffset) else (collapsedOffset - dragThresholdOffset)) -> {
-                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_HALF_EXPANDED")
+                        STLogUtil.d(TAG, "customTargetTopAndState set targetState=STATE_HALF_EXPANDED")
                         targetFinalTop = halfExpandedOffset
                         targetFinalState = STATE_HALF_EXPANDED
                     }
                     else -> {
-                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_COLLAPSED")
+                        STLogUtil.d(TAG, "customTargetTopAndState set targetState=STATE_COLLAPSED")
                         targetFinalTop = collapsedOffset
                         targetFinalState = STATE_COLLAPSED
                     }
@@ -285,11 +287,11 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             } else {
                 when {
                     currentTop < (if (currentPullTopToBottom) (dragThresholdOffset) else (collapsedOffset - dragThresholdOffset)) -> {
-                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_EXPANDED")
+                        STLogUtil.d(TAG, "customTargetTopAndState set targetState=STATE_EXPANDED")
                         targetFinalState = STATE_EXPANDED
                     }
                     else -> {
-                        STLogUtil.d(TAG, "onStopNestedScroll set targetState=STATE_COLLAPSED")
+                        STLogUtil.d(TAG, "customTargetTopAndState set targetState=STATE_COLLAPSED")
                         targetFinalTop = collapsedOffset
                         targetFinalState = STATE_COLLAPSED
                     }
@@ -635,7 +637,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
     }
 
     override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View, type: Int) {
-        STLogUtil.e(TAG, "onStopNestedScroll type=$type, lastNestedScrollDy=$lastNestedScrollDy")
+        STLogUtil.e(TAG, "onStopNestedScroll start type=$type, lastNestedScrollDy=$lastNestedScrollDy")
         if (!dragEnabled) {
             return
         }
@@ -694,7 +696,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
 
         if (enableCustomTargetTopAndStateOnStopNestedScroll) {
-            customTargetTopAndState(child = child, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = true)
+            val results: Array<Int> = customTargetTopAndState(child = child, targetOriginTop = top, targetOriginState = targetState, smoothSlideNotCaptured = true)
+            top = results[0]
+            targetState = results[1]
         } else {
             if (viewDragHelper.smoothSlideViewTo(child, child.left, top)) {
                 setStateInternal(STBottomSheetBehavior.STATE_SETTLING)
@@ -705,7 +709,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         }
         nestedScrolled = false
 
-        STLogUtil.e(TAG, "onStopNestedScroll targetState=${getStateDescription(targetState)}")
+        STLogUtil.e(TAG, "onStopNestedScroll end top=$top, targetState=${getStateDescription(targetState)}")
     }
     //endregion
 
@@ -849,7 +853,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
             onAnimationEndCallback?.invoke()
         }
-        STLogUtil.e(TAG, "setState end")
+        STLogUtil.e(TAG, "setState end bottomSheetContainerHeight=$bottomSheetContainerHeight, bottomSheetContentHeight=$bottomSheetContentHeight")
     }
 
     @UiThread

@@ -42,7 +42,27 @@
         tools:behavior_peekHeight="@dimen/bottomSheetPeekHeight"
         tools:ignore="MissingPrefix">
 
-        <androidx.core.widget.NestedScrollView
+        <com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout
+            android:id="@+id/touchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="32dp">
+
+            <ImageView
+                android:id="@+id/arrowIv"
+                android:layout_width="26dp"
+                android:layout_height="6dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@null"
+                android:paddingBottom="3dp"
+                android:src="@drawable/st_icon_arrow_middle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout>
+
+        <com.smart.library.widget.behavior.STNestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/red"
@@ -65,7 +85,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/st_beauty" />
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </com.smart.library.widget.behavior.STNestedScrollView>
 
     </LinearLayout>
 

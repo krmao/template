@@ -172,7 +172,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     private fun initFloatingActionButton() {
         floatingActionButton.setOnClickListener {
-            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.76f).toInt()
+            val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.9f).toInt()
             imageContentView.layoutParams = imageContentView.layoutParams.apply { height = bottomSheetContentHeight }
 
             bottomSheetBehavior.setStateByRealHeight(

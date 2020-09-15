@@ -221,6 +221,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         super.setBottomSheetCallback(object : BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, percent: Float) {
                 STLogUtil.d(TAG, "onSlide percent=$percent")
+                resetNestedViewsLayoutParamsByBottomSheetContainerHeight?.invoke(getCurrentBottomSheetContainerHeight(bottomSheet))
                 // 遍历过程中 removeBottomSheetCallback 时是不安全的
                 callbackSet.forEach { it.onSlide(bottomSheet, percent) }
             }
@@ -240,12 +241,18 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
                     else -> {
                     }
                 }
+                resetNestedViewsLayoutParamsByBottomSheetContainerHeight?.invoke(getBottomSheetContainerHeightByState(newState))
                 // 遍历过程中 removeBottomSheetCallback 时是不安全的
                 callbackSet.forEach { it.onStateChanged(bottomSheet, newState) }
             }
         })
         //endregion
     }
+
+    /**
+     * onStateChanged or onSlide 设置 bottomSheet 里面嵌套的子 views(NestedScrollView) 的高度等属性
+     */
+    var resetNestedViewsLayoutParamsByBottomSheetContainerHeight: ((currentBottomSheetContainerHeightByState: Int) -> Unit)? = null
 
     /**
      * 根据自己的业务重置 top and targetState
@@ -590,20 +597,20 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
      * 浮层面板容器的可视高度
      */
     @Suppress("SameParameterValue")
-    fun getBottomSheetViewHeightByState(state: Int): Int {
+    fun getBottomSheetContainerHeightByState(@FinalState state: Int): Int {
         val heightOnStateExpanded: Int = getParentHeight() - getExpandedOffset()
         val heightOnStateHalfExpanded: Int = getParentHeight() - getHalfExpandedOffset()
         val heightOnStateCollapsed: Int = getParentHeight() - getCollapsedOffset()
 
-        val panelHeight = when (state) {
+        val bottomSheetContainerHeightByState = when (state) {
             STATE_EXPANDED -> heightOnStateExpanded
             STATE_HALF_EXPANDED -> heightOnStateHalfExpanded
             STATE_COLLAPSED -> heightOnStateCollapsed
             else -> heightOnStateHalfExpanded
         }
 
-        STLogUtil.sync { STLogUtil.d(TAG, "getPanelHeightByState ${getStateDescription(state)}, panelHeight=$panelHeight") }
-        return panelHeight
+        STLogUtil.sync { STLogUtil.d(TAG, "getBottomSheetContainerHeightByState ${getStateDescription(state)}, bottomSheetContainerHeightByState=$bottomSheetContainerHeightByState") }
+        return bottomSheetContainerHeightByState
     }
 
     /**
@@ -618,7 +625,7 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             bottomSheetContainer.layoutParams = params
         }
     }
-//endregion
+    //endregion
 
     //region 当 viewPager 页面切换时, 更新 nestedScrollingChildRef
     private val onPageChangeListener by lazy {
@@ -641,9 +648,9 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         viewPager.removeOnPageChangeListener(onPageChangeListener)
         viewPager.addOnPageChangeListener(onPageChangeListener)
     }
-//endregion
+    //endregion
 
-//region drag control
+    //region drag control
     /**
      * 设置 当拖拽从下拉 recyclerView 列表到顶部的时候, 继续下拉是否联动面板
      */
@@ -735,21 +742,21 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
 
         STLogUtil.e(TAG, "onStopNestedScroll end top=$top, targetState=${getStateDescription(targetState)}")
     }
-//endregion
+    //endregion
 
     //region set state with animation end callback
     @JvmOverloads
-    fun getCurrentBottomSheetViewHeight(bottomSheet: View? = getView()): Int {
-        val panelHeight = getParentHeight() - (bottomSheet?.top ?: 0)
-        STLogUtil.sync { STLogUtil.d(TAG, "getCurrentBottomSheetViewHeight panelHeight=$panelHeight, bottomSheet=$bottomSheet, getView()=${getView()}") }
-        return panelHeight
+    fun getCurrentBottomSheetContainerHeight(bottomSheet: View? = getView()): Int {
+        val currentBottomSheetContainerHeight = getParentHeight() - (bottomSheet?.top ?: 0)
+        STLogUtil.sync { STLogUtil.d(TAG, "getCurrentBottomSheetContainerHeight currentBottomSheetContainerHeight=$currentBottomSheetContainerHeight, bottomSheet=$bottomSheet, getView()=${getView()}") }
+        return currentBottomSheetContainerHeight
     }
 
     /**
      * @param parentHeight 务必填写正确的值, 最好在 setOnParentHeightChangedListener 里面执行, 因为此时获取的 parentHeight 最精确
      * @param peekHeight 如果是第一次设置, 务必填写正确的值, 因为第一次 getPeekHeight 是 0/-1
      */
-    fun setStateByRealHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
+    fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
         val minExpandedOffset: Int = (parentHeight * 0.24f).toInt()
         val minHalfExpandedOffset: Int = (parentHeight * 0.5f).toInt()
         val peekOffset: Int = parentHeight - peekHeight
@@ -870,8 +877,8 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
         // 当真实内容高度超过 STATE_EXPANDED 时, 容器高度最大为 STATE_EXPANDED 高度, 否则自适应容器高度为真实内容高度, 即最大高度不能超过 STATE_EXPANDED
         // 当真实内容高度小于 STATE_EXPANDED 时, 最小不能低于 STATE_HALF_EXPANDED + 20dp 或者 STATE_COLLAPSED + 20dp, 20dp 作为缓冲高度
         val bottomSheetContainerHeight = Math.max(
-            Math.min(bottomSheetContentHeight, getBottomSheetViewHeightByState(STATE_EXPANDED)),
-            ((if (enableHalfExpandedState) getBottomSheetViewHeightByState(STATE_HALF_EXPANDED) else getBottomSheetViewHeightByState(STATE_COLLAPSED)) + minHeightOffset)
+            Math.min(bottomSheetContentHeight, getBottomSheetContainerHeightByState(STATE_EXPANDED)),
+            ((if (enableHalfExpandedState) getBottomSheetContainerHeightByState(STATE_HALF_EXPANDED) else getBottomSheetContainerHeightByState(STATE_COLLAPSED)) + minHeightOffset)
         )
         this.setBottomSheetContainerHeight(bottomSheetContainerHeight)
         this.setStateWithCallback(state, enableAnimation, notifyOnStateChanged, forceSettlingOnSameState) {
@@ -1035,7 +1042,65 @@ class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context
             }
         }
     }
-//endregion
+    //endregion
+
+    /**
+     * 只有指定的 view 可以拖拽滑动, 内部的可滚动的子 view 只处理自己的滚动事件
+     */
+    private var enableDragOnlyOnSpecialTouchLayout: Boolean = false
+    fun setDragOnlyOnSpecialTouchLayout(enableDragOnlyOnSpecialTouchLayout: () -> Boolean = { false }, touchLayout: OnInterceptTouchEventHandler?, nestedScrollView: OnInterceptTouchEventHandler?) {
+        this.enableDragOnlyOnSpecialTouchLayout = enableDragOnlyOnSpecialTouchLayout()
+        nestedScrollView?.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
+            when (motionEvent?.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    this.enableDragOnlyOnSpecialTouchLayout = enableDragOnlyOnSpecialTouchLayout()
+                    dragEnabled = false //enableDragBottomSheetOnNestedScrollViewActionDown()
+                    STLogUtil.d(TAG, "ACTION_DOWN nestedScrollView")
+                }
+                MotionEvent.ACTION_UP -> {
+                    STLogUtil.d(TAG, "ACTION_UP nestedScrollView")
+                    dragEnabled = true
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    STLogUtil.d(TAG, "ACTION_CANCEL nestedScrollView")
+                    dragEnabled = true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    STLogUtil.d(TAG, "ACTION_MOVE nestedScrollView")
+                }
+                else -> {
+                    STLogUtil.d(TAG, "ACTION_OTHER nestedScrollView")
+                }
+            }
+        }
+        touchLayout?.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
+            when (motionEvent?.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    STLogUtil.d(TAG, "ACTION_DOWN touchLayout")
+                    dragEnabled = true
+                    setNestedScrollingChildRef(null)
+                }
+                MotionEvent.ACTION_UP -> {
+                    STLogUtil.d(TAG, "ACTION_UP touchLayout")
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    STLogUtil.d(TAG, "ACTION_CANCEL touchLayout")
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    STLogUtil.d(TAG, "ACTION_MOVE touchLayout")
+                }
+                else -> {
+                    STLogUtil.d(TAG, "ACTION_OTHER touchLayout")
+                }
+            }
+        }
+    }
+
+    interface OnInterceptTouchEventHandler {
+        fun setOnInterceptTouchEventHandler(onInterceptTouchEventHandler: (ev: MotionEvent?) -> Unit)
+        fun onInterceptTouchEvent(ev: MotionEvent?): Boolean
+        fun getView(): View
+    }
 
     @IntDef(STATE_EXPANDED, STATE_HALF_EXPANDED, STATE_COLLAPSED)
     annotation class FinalState

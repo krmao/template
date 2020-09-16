@@ -12,24 +12,21 @@ import com.smart.library.base.STBaseActivity
 import com.smart.library.base.STBaseApplication
 import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.base.toPxFromDp
-import com.smart.library.source.STBottomSheetBehavior
+import com.smart.library.source.STBottomSheetBehaviorV2
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STViewUtil
-import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
-import com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout
-import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior
-import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_COLLAPSED
-import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_EXPANDED
-import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.STATE_HALF_EXPANDED
-import com.smart.library.widget.behavior.STBottomSheetViewPagerBehavior.Companion.getStateDescription
-import com.smart.library.widget.behavior.STNestedScrollView
+import com.smart.library.widget.behavior.*
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_COLLAPSED
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_EXPANDED
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_HALF_EXPANDED
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.getStateDescription
 import com.smart.template.R
 import kotlinx.android.synthetic.main.st_behavior_bottom_sheet_activity.*
 
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-class STBehaviorBottomSheetActivity : STBaseActivity() {
+class STBehaviorBottomSheetV2Activity : STBaseActivity() {
     @Suppress("PrivatePropertyName", "unused")
     private val TAG = "[BottomSheet]"
 
@@ -43,8 +40,8 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
 
     // 面板距离页面底部距离, 面板收缩态的真实高度
 
-    private val onBottomSheetCallback: STBottomSheetBehavior.BottomSheetCallback by lazy {
-        object : STBottomSheetBehavior.BottomSheetCallback() {
+    private val onBottomSheetCallback: STBottomSheetBehaviorV2.BottomSheetCallback by lazy {
+        object : STBottomSheetBehaviorV2.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 STLogUtil.w(TAG, "onStateChanged newState=${getStateDescription(newState)}, bottomSheet.top=${bottomSheet.top}")
                 setArrowStatus(newState)
@@ -61,22 +58,22 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         }
     }
     private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
-    private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetContainer) }
+    private val bottomSheetBehavior: STBottomSheetViewPagerBehaviorV2<LinearLayout> by lazy { STBottomSheetViewPagerBehaviorV2.from(bottomSheetContainer) }
     private val imageContentView: ImageView by lazy { findViewById<ImageView>(R.id.imageContentView) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.st_behavior_bottom_sheet_activity)
+        setContentView(R.layout.st_behavior_bottom_sheet_activity_v2)
 
         initBottomSheetBehavior()
         initBackdropBehavior(backdropBehaviorHeightShow)
         initFloatingActionButton()
 
         //region 箭头逻辑与拖拽有效范围
-        bottomSheetBehavior.setDragOnlyOnSpecialTouchLayout(
+        /*bottomSheetBehavior.setDragOnlyOnSpecialTouchLayout(
             enableDragOnlyOnSpecialTouchLayout = { enableDragOnlyOnSpecialTouchLayout },
             touchLayout = touchLayout,
             nestedScrollView = nestedScrollView
-        )
+        )*/
         touchLayout.setOnClickListener {
             if (!STViewUtil.isDoubleClicked()) {
                 STLogUtil.d(TAG, "arrowIv clicked")
@@ -156,7 +153,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         backdropBehaviorViewPager.clipToOutline = true
         //endregion
         backdropBehavior = STBottomSheetBackdropHalfBehavior.from(backdropBehaviorViewPager)
-        backdropBehavior?.bottomSheetBehaviorClass = STBottomSheetViewPagerBehavior::class.java
+        backdropBehavior?.bottomSheetBehaviorClass = STBottomSheetViewPagerBehaviorV2::class.java
         backdropBehavior?.bottomSheetContainerLayoutClass = LinearLayout::class.java
         backdropBehavior?.dependCollapsedOffset = bottomSheetBehavior.getCollapsedOffset()
         backdropBehavior?.dependHalfExpandedOffset = bottomSheetBehavior.getHalfExpandedOffset()

@@ -241,14 +241,6 @@
                 <TableRow>
 
                     <Button
-                        android:id="@+id/bottomSheet"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="bottomSheet"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
                         android:id="@+id/baiduMap"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
@@ -336,6 +328,22 @@
                         android:layout_weight="1"
                         android:text="二楼"
                         app:backgroundTint="@color/blue_600" />
+                    <Button
+                        android:id="@+id/bottomSheet"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="bottomSheet old"
+                        app:backgroundTint="@color/blue_600" />
+
+                    <Button
+                        android:id="@+id/bottomSheetV2"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="bottomSheetV2 new"
+                        app:backgroundTint="@color/blue_600" />
+
                 </TableRow>
 
 

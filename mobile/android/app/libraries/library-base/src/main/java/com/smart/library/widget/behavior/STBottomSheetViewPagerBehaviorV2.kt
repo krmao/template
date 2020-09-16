@@ -479,7 +479,6 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
         // First let the parent lay it out
         parent.onLayoutChild(child, layoutDirection) // 注意设置 android:layout_gravity="bottom", 否则有闪现现象
         // Offset the bottom sheet
-        // Offset the bottom sheet
         parentWidth = parent.width
         parentHeight = parent.height
         childHeight = child.height
@@ -1127,7 +1126,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
      */
     private var enableDragOnlyOnSpecialTouchLayout: Boolean = false
     private var touchLayout: View? = null
-    fun setDragOnlyOnSpecialTouchLayout(enableDragOnlyOnSpecialTouchLayout: () -> Boolean = { false }, touchLayout: OnInterceptTouchEventHandler?, nestedScrollView: OnInterceptTouchEventHandler?) {
+    fun setDragOnlyOnSpecialTouchLayout(enableDragOnlyOnSpecialTouchLayout: () -> Boolean = { false }, touchLayout: STBottomSheetViewPagerBehavior.OnInterceptTouchEventHandler?, nestedScrollView: STBottomSheetViewPagerBehavior.OnInterceptTouchEventHandler?) {
         this.touchLayout = touchLayout?.getView()
         this.enableDragOnlyOnSpecialTouchLayout = enableDragOnlyOnSpecialTouchLayout()
         nestedScrollView?.setOnInterceptTouchEventHandler { motionEvent: MotionEvent? ->
@@ -1175,11 +1174,11 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
         }
     }
 
-    interface OnInterceptTouchEventHandler {
+    /*interface OnInterceptTouchEventHandler {
         fun setOnInterceptTouchEventHandler(onInterceptTouchEventHandler: (ev: MotionEvent?) -> Unit)
         fun onInterceptTouchEvent(ev: MotionEvent?): Boolean
         fun getView(): View
-    }
+    }*/
 
     @IntDef(STATE_EXPANDED, STATE_HALF_EXPANDED, STATE_COLLAPSED)
     annotation class FinalState

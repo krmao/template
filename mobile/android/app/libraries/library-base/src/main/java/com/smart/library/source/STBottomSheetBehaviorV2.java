@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowInsets;
 
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
@@ -59,12 +60,10 @@ import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
 
-import com.google.android.material.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.smart.library.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -74,6 +73,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.appcompat.widget.ViewUtils.isLayoutRtl;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -344,14 +344,15 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     public STBottomSheetBehaviorV2(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        peekHeightGestureInsetBuffer =
-                context.getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
+        // https://github.com/material-components/material-components-android/releases/tag/1.2.1
+        // material-components-android-1.2.1/lib/java/com/google/android/material/resources/res/values/dimens.xml
+        peekHeightGestureInsetBuffer = context.getResources().getDimensionPixelSize(R.dimen.st_mtrl_min_touch_target_size);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
-        this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
-        boolean hasBackgroundTint = a.hasValue(R.styleable.BottomSheetBehavior_Layout_backgroundTint);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.STBottomSheetBehaviorV2_Layout);
+        this.shapeThemingEnabled = a.hasValue(R.styleable.STBottomSheetBehaviorV2_Layout_st_shapeAppearance);
+        boolean hasBackgroundTint = a.hasValue(R.styleable.STBottomSheetBehaviorV2_Layout_android_backgroundTint);
         if (hasBackgroundTint) {
-            ColorStateList bottomSheetColor = getColorStateList(context, a, R.styleable.BottomSheetBehavior_Layout_backgroundTint);
+            ColorStateList bottomSheetColor = getColorStateList(context, a, R.styleable.STBottomSheetBehaviorV2_Layout_android_backgroundTint);
             createMaterialShapeDrawable(context, attrs, hasBackgroundTint, bottomSheetColor);
         } else {
             createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
@@ -359,36 +360,36 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
         createShapeValueAnimator();
 
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
+            this.elevation = a.getDimension(R.styleable.STBottomSheetBehaviorV2_Layout_android_elevation, -1);
         }
 
-        TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
+        TypedValue value = a.peekValue(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_peekHeight);
         if (value != null && value.data == PEEK_HEIGHT_AUTO) {
             setPeekHeight(value.data);
         } else {
             setPeekHeight(
                     a.getDimensionPixelSize(
-                            R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, PEEK_HEIGHT_AUTO));
+                            R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_peekHeight, PEEK_HEIGHT_AUTO));
         }
-        setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+        setHideable(a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_hideable, false));
         setGestureInsetBottomIgnored(
-                a.getBoolean(R.styleable.BottomSheetBehavior_Layout_gestureInsetBottomIgnored, false));
+                a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_gestureInsetBottomIgnored, false));
         setFitToContents(
-                a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
+                a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_fitToContents, true));
         setSkipCollapsed(
-                a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
-        setDraggable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_draggable, true));
-        setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
+                a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_skipCollapsed, false));
+        setDraggable(a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_draggable, true));
+        setSaveFlags(a.getInt(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_saveFlags, SAVE_NONE));
         setHalfExpandedRatio(
-                a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
+                a.getFloat(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_halfExpandedRatio, 0.5f));
 
-        value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset);
+        value = a.peekValue(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_expandedOffset);
         if (value != null && value.type == TypedValue.TYPE_FIRST_INT) {
             setExpandedOffset(value.data);
         } else {
             setExpandedOffset(
                     a.getDimensionPixelOffset(
-                            R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
+                            R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_expandedOffset, 0));
         }
         a.recycle();
         ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -434,16 +435,14 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
 
     @Override
-    public boolean onLayoutChild(
-            @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+    public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.setFitsSystemWindows(true);
         }
 
         if (viewRef == null) {
             // First layout with this behavior.
-            peekHeightMin =
-                    parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
+            peekHeightMin = parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
             setSystemGestureInsets(child);
             viewRef = new WeakReference<>(child);
             // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
@@ -461,8 +460,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                 materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
             }
             updateAccessibilityActions();
-            if (ViewCompat.getImportantForAccessibility(child)
-                    == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+            if (ViewCompat.getImportantForAccessibility(child) == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
                 ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
             }
         }
@@ -1291,7 +1289,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
             @Nullable ColorStateList bottomSheetColor) {
         if (this.shapeThemingEnabled) {
             this.shapeAppearanceModelDefault =
-                    ShapeAppearanceModel.builder(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES)
+                    ShapeAppearanceModel.builder(context, attrs, R.attr.STBottomSheetStyle, DEF_STYLE_RES)
                             .build();
 
             this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
@@ -1329,9 +1327,9 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
      */
     protected void setSystemGestureInsets(@NonNull View child) {
         if (VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored() && !peekHeightAuto) {
-            ViewUtils.doOnApplyWindowInsets(
+            doOnApplyWindowInsets(
                     child,
-                    new ViewUtils.OnApplyWindowInsetsListener() {
+                    new OnApplyWindowInsetsListener() {
                         @Override
                         public WindowInsetsCompat onApplyWindowInsets(
                                 View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
@@ -1824,6 +1822,8 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                 });
     }
 
+    //region getColorStateList
+
     /**
      * Returns the {@link ColorStateList} from the given {@link TypedArray} attributes. The resource
      * can include themeable attributes, regardless of API level.
@@ -1851,4 +1851,166 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
 
         return attributes.getColorStateList(index);
     }
+    //endregion
+
+    //region ViewUtils
+
+    /**
+     * Simple data object to store the initial padding for a view.
+     */
+    public static class RelativePadding {
+        public int start;
+        public int top;
+        public int end;
+        public int bottom;
+
+        public RelativePadding(int start, int top, int end, int bottom) {
+            this.start = start;
+            this.top = top;
+            this.end = end;
+            this.bottom = bottom;
+        }
+
+        public RelativePadding(@NonNull RelativePadding other) {
+            this.start = other.start;
+            this.top = other.top;
+            this.end = other.end;
+            this.bottom = other.bottom;
+        }
+
+        /**
+         * Applies this relative padding to the view.
+         */
+        public void applyToView(View view) {
+            ViewCompat.setPaddingRelative(view, start, top, end, bottom);
+        }
+    }
+
+    /**
+     * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
+     * initial padding of the view and requests that insets are applied when attached.
+     */
+    public static void doOnApplyWindowInsets(
+            @NonNull View view, @NonNull final OnApplyWindowInsetsListener listener) {
+        // Create a snapshot of the view's padding state.
+        final RelativePadding initialPadding =
+                new RelativePadding(
+                        ViewCompat.getPaddingStart(view),
+                        view.getPaddingTop(),
+                        ViewCompat.getPaddingEnd(view),
+                        view.getPaddingBottom());
+        // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
+        // in the original padding state.
+        ViewCompat.setOnApplyWindowInsetsListener(
+                view,
+                new androidx.core.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+                        return listener.onApplyWindowInsets(view, insets, new RelativePadding(initialPadding));
+                    }
+                });
+        // Request some insets.
+        requestApplyInsetsWhenAttached(view);
+    }
+
+    /**
+     * Requests that insets should be applied to this view once it is attached.
+     */
+    public static void requestApplyInsetsWhenAttached(@NonNull View view) {
+        if (ViewCompat.isAttachedToWindow(view)) {
+            // We're already attached, just request as normal.
+            ViewCompat.requestApplyInsets(view);
+        } else {
+            // We're not attached to the hierarchy, add a listener to request when we are.
+            view.addOnAttachStateChangeListener(
+                    new View.OnAttachStateChangeListener() {
+                        @Override
+                        public void onViewAttachedToWindow(@NonNull View v) {
+                            v.removeOnAttachStateChangeListener(this);
+                            ViewCompat.requestApplyInsets(v);
+                        }
+
+                        @Override
+                        public void onViewDetachedFromWindow(View v) {
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
+     * automatically apply inset padding based on view attributes.
+     */
+    public static void doOnApplyWindowInsets(
+            @NonNull View view,
+            @Nullable AttributeSet attrs,
+            int defStyleAttr,
+            int defStyleRes,
+            @Nullable final OnApplyWindowInsetsListener listener) {
+        TypedArray a =
+                view.getContext()
+                        .obtainStyledAttributes(attrs, com.google.android.material.R.styleable.Insets, defStyleAttr, defStyleRes);
+
+        final boolean paddingBottomSystemWindowInsets =
+                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingBottomSystemWindowInsets, false);
+        final boolean paddingLeftSystemWindowInsets =
+                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingLeftSystemWindowInsets, false);
+        final boolean paddingRightSystemWindowInsets =
+                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingRightSystemWindowInsets, false);
+
+        a.recycle();
+
+        doOnApplyWindowInsets(
+                view,
+                new OnApplyWindowInsetsListener() {
+                    @NonNull
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(
+                            View view,
+                            @NonNull WindowInsetsCompat insets,
+                            @NonNull RelativePadding initialPadding) {
+                        if (paddingBottomSystemWindowInsets) {
+                            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+                        }
+                        boolean isRtl = isLayoutRtl(view);
+                        if (paddingLeftSystemWindowInsets) {
+                            if (isRtl) {
+                                initialPadding.end += insets.getSystemWindowInsetLeft();
+                            } else {
+                                initialPadding.start += insets.getSystemWindowInsetLeft();
+                            }
+                        }
+                        if (paddingRightSystemWindowInsets) {
+                            if (isRtl) {
+                                initialPadding.start += insets.getSystemWindowInsetRight();
+                            } else {
+                                initialPadding.end += insets.getSystemWindowInsetRight();
+                            }
+                        }
+                        initialPadding.applyToView(view);
+                        return listener != null
+                                ? listener.onApplyWindowInsets(view, insets, initialPadding)
+                                : insets;
+                    }
+                });
+    }
+
+    /**
+     * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
+     * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
+     * STOnApplyWindowInsetsListener)}.
+     */
+    public interface OnApplyWindowInsetsListener {
+
+        /**
+         * When {@link View#setOnApplyWindowInsetsListener(View.OnApplyWindowInsetsListener) set} on a
+         * View, this listener method will be called instead of the view's own {@link
+         * View#onApplyWindowInsets(WindowInsets)} method. The {@code initialPadding} is the view's
+         * original padding which can be updated and will be applied to the view automatically. This
+         * method should return a new {@link WindowInsetsCompat} with any insets consumed.
+         */
+        WindowInsetsCompat onApplyWindowInsets(
+                View view, WindowInsetsCompat insets, RelativePadding initialPadding);
+    }
+    //endregion
 }

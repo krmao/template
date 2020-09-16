@@ -101,6 +101,9 @@ class HomeFragment : STBaseFragment() {
         bottomSheet.setOnClickListener {
             startActivity(Intent(context, STBehaviorBottomSheetActivity::class.java))
         }
+        bottomSheetV2.setOnClickListener {
+            startActivity(Intent(context, STBehaviorBottomSheetV2Activity::class.java))
+        }
         baiduMap.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("useBaidu", true)

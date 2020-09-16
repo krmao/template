@@ -80,6 +80,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
+            android:name="com.smart.template.home.STBehaviorBottomSheetV2Activity"
+            android:configChanges="orientation"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name="com.smart.template.home.STBehaviorBottomSheetSecondFloorActivity"
             android:configChanges="orientation"
             android:launchMode="standard"

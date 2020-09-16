@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.smart.library.base.toPxFromDp
-import com.smart.library.source.STBottomSheetBehavior
+import com.smart.library.util.STSystemUtil
 
 /*
 
@@ -50,24 +50,25 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
 
     private var lastChildY: Float = 0f
 
-    var bottomSheetBehavior: STBottomSheetViewPagerBehavior<*>? = null
     var bottomSheetBehaviorClass: Class<*>? = null
+    var bottomSheetContainerLayoutClass: Class<*>? = null
 
     /**
      * 设置并依赖 bottomSheetBehavior 的滚动
      */
     override fun layoutDependsOn(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
-        if (bottomSheetBehaviorClass?.isInstance(dependency) == true) {
-            try {
-                STBottomSheetBehavior.from<View>(dependency)
-                return true
-            } catch (e: IllegalArgumentException) {
-            }
+        if (bottomSheetContainerLayoutClass?.isInstance(dependency) == true) {
+            val params: CoordinatorLayout.LayoutParams? = dependency.layoutParams as? CoordinatorLayout.LayoutParams
+            return params != null && (bottomSheetBehaviorClass?.isInstance(params.behavior) == true)
         }
         return false
     }
 
     var enableHalfExpandedState = true
+
+    var dependCollapsedOffset: Int = (STSystemUtil.screenHeight / 0.8f).toInt()
+    var dependHalfExpandedOffset: Int = (dependCollapsedOffset * 0.5f).toInt()
+    var dependExpandedOffset: Int = (dependCollapsedOffset * 0.2f).toInt()
 
     /**
      * 当 bottomSheetBehavior 滚动时, 处理自己的滚动
@@ -80,14 +81,7 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
      * 当 bottomSheetBehavior 滚动时, 处理自己的滚动
      */
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
-        val tmpBottomSheetBehavior = bottomSheetBehavior ?: return false
         val onDependentViewChanged: Boolean
-
-        //region 都是 dependency.top 值
-        val dependExpandedOffset = tmpBottomSheetBehavior.expandedOffset
-        val dependHalfExpandedOffset = tmpBottomSheetBehavior.getHalfExpandedOffset()
-        val dependCollapsedOffset = tmpBottomSheetBehavior.getCollapsedOffset()
-        //endregion
 
         val childMaxShowOffset: Int = child.height // 完整高度
         val childMinShowOffset: Int = 20.toPxFromDp() // 漏出一点的距离

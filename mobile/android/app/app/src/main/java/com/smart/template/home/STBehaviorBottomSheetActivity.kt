@@ -72,11 +72,11 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
         initFloatingActionButton()
 
         //region 箭头逻辑与拖拽有效范围
-        /*bottomSheetBehavior.setDragOnlyOnSpecialTouchLayout(
+        bottomSheetBehavior.setDragOnlyOnSpecialTouchLayout(
             enableDragOnlyOnSpecialTouchLayout = { enableDragOnlyOnSpecialTouchLayout },
             touchLayout = touchLayout,
             nestedScrollView = nestedScrollView
-        )*/
+        )
         touchLayout.setOnClickListener {
             if (!STViewUtil.isDoubleClicked()) {
                 STLogUtil.d(TAG, "arrowIv clicked")

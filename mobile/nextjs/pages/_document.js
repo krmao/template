@@ -2,7 +2,7 @@
 // Event handlers like onClick can"t be added to this file
 
 // ./pages/_document.js
-import Document, {Html, Head, Main, NextScript} from "next/document";
+import Document, {Head, Html, Main, NextScript} from "next/document";
 import React from "react";
 
 class MyDocument extends Document {
@@ -22,18 +22,17 @@ class MyDocument extends Document {
         console.log("[LIFECYCLE](Document) render");
         return (
             <Html>
-                <Head>
-                    <link rel="icon" href="/static/favicon/favicon-1-blue.png" type="image/x-icon" />
-                    <link rel="shortcut icon" href="/static/favicon/favicon-1-blue.png" type="image/x-icon" />
+                <Head nonce={""} crossOrigin={""}>
+                    <link rel="icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon"/>
+                    <link rel="shortcut icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon"/>
 
-                    {/*<link rel="stylesheet" href="/static/plugins/hybrid-console/hybird-console.css" />*/}
-                    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+                    <link rel="stylesheet" href={"/static/plugins/hybrid-console/hybird-console.css"}/>
                 </Head>
                 <body>
-                    <Main />
-                    <NextScript />
+                <Main/>
+                <NextScript nonce={""} crossOrigin={""}/>
                 </body>
-                {/*<script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" />*/}
+                <script type="text/javascript" src={"/static/plugins/hybrid-console/hybird-console.js"}/>
             </Html>
         );
     }

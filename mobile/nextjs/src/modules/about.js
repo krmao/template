@@ -39,24 +39,24 @@ class About extends React.Component {
                         <p>template has {this.props.stars} ⭐️</p>
 
                         <div className={css.imageList}>
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
                         </div>
                         <div className={css.imageList}>
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
                         </div>
                         <div className={css.imageList}>
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
                         </div>
                         <div className={css.imageList}>
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
-                            <img src="/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
+                            <img src="/public/static/logo.png" alt="logo" />
                         </div>
                     </div>
                 </div>

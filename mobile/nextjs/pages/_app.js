@@ -1,5 +1,6 @@
 import React from "react";
-import App, {Container} from "next/app";
+import App from "next/app";
+import Head from "next/head";
 
 class MyApp extends App {
     static async getInitialProps({Component, ctx}) {
@@ -13,9 +14,9 @@ class MyApp extends App {
         return {pageProps};
     }
 
-    constructor(props) {
-        super(props);
-        console.log("[LIFECYCLE](App) constructor"); // props=", props, "state=", this.state);
+    constructor() {
+        super();
+        console.log("[LIFECYCLE](App) constructor");
     }
 
     render() {
@@ -23,9 +24,12 @@ class MyApp extends App {
         const {Component, pageProps} = this.props;
 
         return (
-            <Container>
+            <>
+                <Head>
+                    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+                </Head>
                 <Component {...pageProps} />
-            </Container>
+            </>
         );
     }
 }

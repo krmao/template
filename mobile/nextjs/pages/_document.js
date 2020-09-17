@@ -6,26 +6,34 @@ import Document, {Html, Head, Main, NextScript} from "next/document";
 import React from "react";
 
 class MyDocument extends Document {
+
     static async getInitialProps(ctx) {
+        console.log("[LIFECYCLE](Document) getInitialProps");
         const initialProps = await Document.getInitialProps(ctx);
         return {...initialProps};
     }
 
+    constructor() {
+        super();
+        console.log("[LIFECYCLE](Document) constructor");
+    }
+
     render() {
+        console.log("[LIFECYCLE](Document) render");
         return (
             <Html>
                 <Head>
                     <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
                     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 
-                    <link rel="stylesheet" href="/static/plugins/hybrid-console/hybird-console.css" />
+                    {/*<link rel="stylesheet" href="/static/plugins/hybrid-console/hybird-console.css" />*/}
                     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
                 </body>
-                <script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" />
+                {/*<script type="text/javascript" src="/static/plugins/hybrid-console/hybird-console.js" />*/}
             </Html>
         );
     }

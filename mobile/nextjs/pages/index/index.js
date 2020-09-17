@@ -1,4 +1,4 @@
 import {withRouter} from "next/router";
-import Index from "../src/modules/index";
+import Index from "../../src/modules";
 
 export default withRouter(Index);

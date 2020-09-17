@@ -88,7 +88,6 @@ class Test2 extends React.Component {
             <React.Fragment>
                 <Head>
                     <title>TEST 2</title>
-                    <meta name="viewport" content="width=device-width"/>
                 </Head>
                 <div className={css.container}>
                     <h1 className={css.title}>Marvel TV Shows</h1>

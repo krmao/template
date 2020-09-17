@@ -23,8 +23,8 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-                    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+                    <link rel="icon" href="/static/favicon/favicon-1-blue.png" type="image/x-icon" />
+                    <link rel="shortcut icon" href="/static/favicon/favicon-1-blue.png" type="image/x-icon" />
 
                     {/*<link rel="stylesheet" href="/static/plugins/hybrid-console/hybird-console.css" />*/}
                     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />

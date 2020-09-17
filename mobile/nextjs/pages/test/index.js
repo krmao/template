@@ -32,9 +32,7 @@ import {withRouter} from "next/router";
  *          > 1.3.1.6 Request URL: http://localhost:5388/_next/static/css/styles.chunk.css
  *          > 1.3.1.7 Request URL: http://localhost:5388/_next/static/development/dll/dll_599a58a60c43245180de.js?ts=1600326499490
  *          > 1.3.1.8 Request URL: http://localhost:5388/_next/static/chunks/0.js
- *          > 1.3.1.9 Request URL: http://localhost:5388/_next/webpack-hmr
- *          > 1.3.1.10 Request URL: http://localhost:5388/_next/on-demand-entries-ping?page=/test
-        > 1.3.2 执行渲染, 经历了了以下生命周期
+        > 1.3.2 客户端(浏览器)执行渲染, 经历了了以下生命周期
  *          > 1.3.2.1 [LIFECYCLE](App) constructor
  *          > 1.3.2.2 [LIFECYCLE](App) render
  *          > 1.3.2.3 [LIFECYCLE](Test) constructor
@@ -46,12 +44,11 @@ import {withRouter} from "next/router";
  * > 2.1 客户端(浏览器)向服务端(Node Server)请求获取 test2.js 静态文件, 注意这里并不是 test2.html 文件
  *      > 2.1.1 Request URL: http://localhost:5388/_next/static/development/pages/test2.js
  * > 2.3 客户端(浏览器)获取到服务端(Node Server)返回的 test2.js 文件之后, 解析并下载 test2.js 中引用的静态文件(js/css/image), 然后执行渲染
- *      > 2.3.1 客户端(浏览器)解析并下载 test2.js 中引用的静态文件(js/css/image)
- *          > 2.3.1.1 Request URL: https://api.tvmaze.com/search/shows?q=marvel
- *          > 2.3.1.2 Request URL: http://localhost:5388/_next/on-demand-entries-ping?page=/test2
- *      > 2.3.2 执行渲染, 经历了了以下生命周期
+ *      > 2.3.1 客户端(浏览器)加载 test2.js 文件并解析下载其引用的静态文件(js/css/image)
+ *      > 2.3.2 客户端(浏览器)执行渲染, 经历了了以下生命周期
  *          > 2.3.2.1 [LIFECYCLE](App) getInitialProps
  *          > 2.3.2.2 [LIFECYCLE](Test2) getInitialProps
+ *              > 2.3.2.2.1 Request URL: https://api.tvmaze.com/search/shows?q=marvel
  *          > 2.3.2.3 [LIFECYCLE](App) render
  *          > 2.3.2.4 [LIFECYCLE](Test2) constructor
  *          > 2.3.2.5 [LIFECYCLE](Test2) getDerivedStateFromProps

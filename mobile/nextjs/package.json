@@ -9,7 +9,7 @@
         "build": "npm run clean && next build",
         "export": "npm run build && next export -o ./build/out",
         "start": "npm run build && next start -p 5389",
-        "eslint": "eslint --fix pages/ --fix src/",
+        "eslint": "eslint --fix pages/ --fix components/",
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {

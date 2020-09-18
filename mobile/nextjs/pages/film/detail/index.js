@@ -72,7 +72,15 @@ class FilmDetail extends React.Component {
                 </Head>
                 <div className={css.page}>
                     <h1 className={css.title}>{props && props.show && props.show.name ? props.show.name : ""}</h1>
-                    <p className={css.content}>{props && props.show && props.show.summary ? props.show.summary.replace(/<[/]?p>/g, "") : ""}</p>
+                    <p className={css.content}>
+                        {
+                            props && props.show && props.show.summary
+                                ?
+                                <div dangerouslySetInnerHTML={{__html: props.show.summary}}/>
+                                :
+                                ""
+                        }
+                    </p>
 
                     {props && props.show && props.show.image != null && props.show.image.medium != null ? <img className={css.img} src={props.show.image.medium} alt={""}/> : null}
                 </div>

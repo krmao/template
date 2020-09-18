@@ -1,0 +1,117 @@
+html, body, div, p, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, blockquote, pre, code, textarea, iframe, frameset, table, th, tr, td, fieldset {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* IE5/IE6 bug */
+* html body {
+    overflow: visible;
+}
+
+/* body */
+body {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-overflow-scrolling: touch;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+i, em, cite {
+    font-style: normal;
+}
+
+/* a */
+a, a:link {
+    color: #222;
+    text-decoration: none;
+}
+
+a:visited {
+}
+
+a:active, a:hover {
+    text-decoration: none;
+    color: #5f5b5a;
+}
+
+a:focus {
+    outline: none;
+}
+
+/* form */
+textarea, input {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+input {
+    vertical-align: middle;
+    font-size: 12px
+}
+
+.button {
+    vertical-align: middle;
+    font-size: 12px
+}
+
+.button {
+    cursor: pointer;
+}
+
+/* li */
+ul, li {
+    list-style-type: none;
+}
+
+/* img */
+img {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    display: inline;
+}
+
+h1 {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    line-height: 18px;
+}
+
+h3 {
+    font-size: 16px;
+    line-height: 16px;
+}
+
+h4 {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+h5 {
+    font-size: 12px;
+    line-height: 12px;
+}
+
+h6 {
+    font-size: 10px;
+    line-height: 10px;
+}

@@ -1,11 +1,37 @@
-@import "components/library_business/styles/common";
+@import "components/library_business/styles/base";
 
-.container {
-    background-color: deepskyblue;
+.page {
+    background-color: cadetblue;
+    height: 100vh;
 }
 
 .title {
-    background-color: darkgray;
-    color: black;
-    width: 10rem;
+    width: 100%;
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 24px;
+    background-color: rebeccapurple;
+}
+
+.content {
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    background-color: cadetblue;
+}
+
+.img {
+    flex: 1;
+    background-color: #AAAAAA;
+    width: 50%;
+    /**
+     * https://caniuse.com/?search=object-fit
+     * https://www.w3.org/TR/css-images-3/#the-object-fit
+     */
+    object-fit: cover;
+    -o-object-fit: cover;
 }

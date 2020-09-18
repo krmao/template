@@ -4,6 +4,7 @@ import fetch from "isomorphic-unfetch";
 import React from "react";
 import css from "./index.scss";
 import {withRouter} from "next/router";
+import {Button, Toast, WhiteSpace, WingBlank} from "antd-mobile";
 
 /**
  * https://my.oschina.net/chkui/blog/3003767
@@ -105,6 +106,13 @@ class Film extends React.Component {
 
     componentDidMount() {
         console.log("[LIFECYCLE](Film) componentDidMount");
+        Toast.loading("Loading...", 30, () => {
+            console.log("Load complete !!!");
+        });
+
+        setTimeout(() => {
+            Toast.hide();
+        }, 3000);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -136,26 +144,54 @@ class Film extends React.Component {
 
     render() {
         console.log("[LIFECYCLE](Film) render");
+
+        const customIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" className="am-icon am-icon-md">
+                <path fillRule="evenodd" d="M59.177 29.5s-1.25 0-1.25 2.5c0 14.47-11.786 26.244-26.253 26.244C17.206 58.244 5.417 46.47 5.417 32c0-13.837 11.414-25.29 25.005-26.26v6.252c0 .622-.318 1.635.198 1.985a1.88 1.88 0 0 0 1.75.19l21.37-8.545c.837-.334 1.687-1.133 1.687-2.384C55.425 1.99 53.944 2 53.044 2h-21.37C15.134 2 1.667 15.46 1.667 32c0 16.543 13.467 30 30.007 30 16.538 0 29.918-13.458 29.993-30 .01-2.5-1.24-2.5-1.24-2.5h-1.25"/>
+            </svg>
+        );
+
         return (
             <React.Fragment>
                 <Head>
                     <title>FILM</title>
                 </Head>
-                <div className={css.container}>
+                <div className={css.page}>
                     <h1 className={css.title}>Marvel TV Shows</h1>
-                    <ul>
-                        {this.props && this.props.shows
-                            ? this.props.shows.map(({show}) => {
-                                return (
-                                    <li key={show.id}>
-                                        <Link href={`/film/detail?id=${show.id}`}>
-                                            <a>{show.name}</a>
-                                        </Link>
-                                    </li>
-                                );
-                            })
-                            : null}
-                    </ul>
+                    <div className={css.content}>
+                        {
+                            this.props && this.props.shows
+                                ? this.props.shows.map(({show}) => {
+                                    return (
+                                        <li key={show.id}>
+                                            <Link href={`/film/detail?id=${show.id}`}>
+                                                <a>{show.name}</a>
+                                            </Link>
+                                        </li>
+                                    );
+                                })
+                                : null
+                        }
+                    </div>
+                    <div className={css.toastContainer}>
+                        <WingBlank size={"sm"}>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"primary"} onClick={() => Toast.info("This is a toast tips !!!", 1)}>text only</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"primary"} onClick={() => Toast.info("Toast without mask !!!", 2, null, false)}>without mask</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"primary"} onClick={() => Toast.info(customIcon(), 1)}>custom icon</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"primary"} onClick={() => Toast.success("Load success !!!", 1)}>success</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"primary"} onClick={() => Toast.fail("Load failed !!!", 1)}>fail</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"ghost"} onClick={() => Toast.offline("Network connection failed !!!", 1)}>network failure</Button>
+                            <WhiteSpace size={"sm"}/>
+                            <Button size={"small"} type={"warning"} onClick={() => Toast.loading("Loading...", 1, () => console.log("Load complete !!!"))}>loading</Button>
+                            <WhiteSpace size={"sm"}/>
+                        </WingBlank>
+                    </div>
                 </div>
             </React.Fragment>
         );

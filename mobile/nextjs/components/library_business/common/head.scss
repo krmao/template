@@ -1,4 +1,4 @@
-@import "../styles/common";
+@import "components/library_business/styles/base";
 
 .root {
     background-color: white;
@@ -48,7 +48,7 @@
 
     .menu {
         min-width: $pageWidth;
-        background-color: $base-bg-color;
+        background-color: $base-background-color;
         color: white;
         font-size: 18px;
         font-weight: bold;

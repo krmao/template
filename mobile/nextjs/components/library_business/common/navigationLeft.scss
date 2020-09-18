@@ -1,4 +1,4 @@
-@import "../styles/common";
+@import "components/library_business/styles/base";
 
 .root {
     color: white;
@@ -21,7 +21,7 @@
         float: right;
 
         ul {
-            background: $base-bg-color;
+            background: $base-background-color;
         }
 
         li {

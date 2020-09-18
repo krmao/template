@@ -4,13 +4,12 @@ import Head from "next/head";
 import "isomorphic-unfetch";
 
 import css from "./index.scss";
-import ComponentHead from "../../components/library_business/common/head";
-import ComponentFooter from "../../components/library_business/common/footer";
-import ComponentNavigationLeft from "../../components/library_business/common/navigationLeft";
+import ComponentHead from "../../../components/library_business/common/head";
+import ComponentFooter from "../../../components/library_business/common/footer";
+import ComponentNavigationLeft from "../../../components/library_business/common/navigationLeft";
 
 class About extends React.Component {
     static async getInitialProps() {
-        // eslint-disable-next-line no-undef
         const res = await fetch("https://api.github.com/repos/krmao/template");
         const json = await res.json();
         return {stars: json.stargazers_count};

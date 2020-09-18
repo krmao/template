@@ -4,9 +4,9 @@ import Head from "next/head";
 import {withRouter} from "next/router";
 
 import css from "./index.scss";
-import ComponentHead from "../../components/library_business/common/head";
-import ComponentFooter from "../../components/library_business/common/footer";
-import ComponentNavigationLeft from "../../components/library_business/common/navigationLeft";
+import ComponentHead from "../../../components/library_business/common/head";
+import ComponentFooter from "../../../components/library_business/common/footer";
+import ComponentNavigationLeft from "../../../components/library_business/common/navigationLeft";
 
 export default withRouter(
     class extends React.Component {

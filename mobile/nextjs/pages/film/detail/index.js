@@ -12,7 +12,6 @@ class FilmDetail extends React.Component {
         const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
         const show = await res.json();
         return {show};
-
     }
 
     constructor(props) {
@@ -71,11 +70,11 @@ class FilmDetail extends React.Component {
                 <Head>
                     <title>FILM DETAIL</title>
                 </Head>
-                <div className={css.container}>
-                    <h1>{props && props.show && props.show.name ? props.show.name : ""}</h1>
-                    <p>{props && props.show && props.show.summary ? props.show.summary.replace(/<[/]?p>/g, "") : ""}</p>
+                <div className={css.page}>
+                    <h1 className={css.title}>{props && props.show && props.show.name ? props.show.name : ""}</h1>
+                    <p className={css.content}>{props && props.show && props.show.summary ? props.show.summary.replace(/<[/]?p>/g, "") : ""}</p>
 
-                    {props && props.show && props.show.image != null && props.show.image.medium != null ? <img src={props.show.image.medium} alt={""}/> : null}
+                    {props && props.show && props.show.image != null && props.show.image.medium != null ? <img className={css.img} src={props.show.image.medium} alt={""}/> : null}
                 </div>
             </React.Fragment>
         );

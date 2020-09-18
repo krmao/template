@@ -1,11 +1,30 @@
-@import "components/library_business/styles/common";
+@import "components/library_business/styles/base";
 
-.container {
-    background-color: orange;
+.page {
+    background-color: cadetblue;
 }
 
 .title {
-    background-color: darkgray;
-    color: black;
-    width: 10rem;
+    width: 100%;
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 24px;
+    background-color: rebeccapurple;
+}
+
+.content {
+    padding: 10px;
+    flex: 1;
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    background-color: cadetblue;
+}
+
+.toastContainer {
+    width: 100%;
+    background-color: darkblue;
 }

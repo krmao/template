@@ -173,7 +173,8 @@ class STBehaviorBottomSheetV2Activity : STBaseActivity() {
                 bottomSheetContentHeight = bottomSheetContentHeight,
                 callbackBeforeSetState = { newEnableHalfExpandedState ->
                     backdropBehavior?.enableHalfExpandedState = newEnableHalfExpandedState
-                })
+                }
+            )
         }
         floatingActionButton2.setOnClickListener {
             val bottomSheetContentHeight: Int = (bottomSheetBehavior.getParentHeight() * 0.4).toInt()

@@ -823,7 +823,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
      */
     fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
         val minExpandedOffset: Int = (parentHeight * 0.24f).toInt()
-        val minHalfExpandedOffset: Int = (parentHeight * 0.5f).toInt()
+        val minHalfExpandedOffset: Int = (parentHeight * (1f - 0.4f)).toInt()
         val peekOffset: Int = parentHeight - peekHeight
         val realOffset: Int = parentHeight - bottomSheetContentHeight
         val maxExpandedOffsetOnDisableHalf: Int = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况

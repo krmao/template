@@ -302,7 +302,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     protected boolean draggable = true;
 
     @State
-    int state = STATE_COLLAPSED;
+    protected int state = STATE_COLLAPSED;
 
     @Nullable
     protected ViewDragHelper viewDragHelper;

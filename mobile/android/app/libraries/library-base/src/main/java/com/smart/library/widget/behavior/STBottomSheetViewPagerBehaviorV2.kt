@@ -440,7 +440,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
     @SuppressLint("PrivateResource")
     override fun onLayoutChild(@NonNull parent: CoordinatorLayout, @NonNull child: V, layoutDirection: Int): Boolean {
         val finalState = wrapStateForEnableHalfExpanded(state)
-        Log.w(TAG, "onLayoutChild start finalState=${getStateDescription(finalState)}, getCollapsedOffset=${getCollapsedOffset()}, expandedOffset=${getExpandedOffset()}, currentFinalState=${getStateDescription(currentFinalState)}, currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
+        Log.w(TAG, "onLayoutChild start state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, currentFinalState=${getStateDescription(currentFinalState)}, getCollapsedOffset=${getCollapsedOffset()}, expandedOffset=${getExpandedOffset()}, currentParentHeight=$currentParentHeightOnSetFinalState, parentHeight=${getParentHeight()}, parent.height=${parent.height}")
 
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
             child.fitsSystemWindows = true
@@ -486,7 +486,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
         calculateHalfExpandedOffset()
         calculateCollapsedOffset()
 
-        Log.w(TAG, "onLayoutChild offsetTopAndBottom fitToContentsOffset=$fitToContentsOffset, customHalfExpandedOffset=$customHalfExpandedOffset, halfExpandedOffset=$halfExpandedOffset, collapsedOffset=$collapsedOffset")
+        Log.w(TAG, "onLayoutChild offsetTopAndBottom enableHalfExpandedState=$enableHalfExpandedState, state=${getStateDescription(state)}, finalState=${getStateDescription(finalState)}, currentFinalState=${getStateDescription(currentFinalState)}, fitToContentsOffset=$fitToContentsOffset, customHalfExpandedOffset=$customHalfExpandedOffset, halfExpandedOffset=$halfExpandedOffset, collapsedOffset=$collapsedOffset")
 
         // 通过 val targetOffset: Int = expandedOffset - child.top 解决 当设置不同的面板内图片或者 设置不同的 view.padding 时导致的面板位置错误改变
         // 参见 onStateChanged 里面的 setArrowStatus, 如果修改为 targetOffset, 则当箭头改变时会导致面板移动到错误的位置
@@ -992,6 +992,11 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             return
         }
 
+        super.state = finalState
+        if (finalState == STBottomSheetBehaviorV2.STATE_COLLAPSED || finalState == STBottomSheetBehaviorV2.STATE_HALF_EXPANDED || finalState == STBottomSheetBehaviorV2.STATE_EXPANDED) {
+            currentFinalState = finalState
+        }
+
         // Start the animation; wait until a pending layout if there is one.
         val parent = child.parent
         if (parent != null && parent.isLayoutRequested && ViewCompat.isAttachedToWindow(child)) {
@@ -1021,6 +1026,11 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             top = parentHeight
         } else {
             throw IllegalArgumentException("settleToStateWithCallback Illegal state argument: $state")
+        }
+
+        super.state = finalState
+        if (finalState == STBottomSheetBehaviorV2.STATE_COLLAPSED || finalState == STBottomSheetBehaviorV2.STATE_HALF_EXPANDED || finalState == STBottomSheetBehaviorV2.STATE_EXPANDED) {
+            currentFinalState = finalState
         }
 
         if (!enableAnimation) {

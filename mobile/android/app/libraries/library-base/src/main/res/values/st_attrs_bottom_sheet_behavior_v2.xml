@@ -22,45 +22,6 @@
         <attr name="st_paddingRightSystemWindowInsets" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="STShapeAppearance">
-        <!-- Corner size to be used in the ShapeAppearance. All corners default to this value -->
-        <attr name="st_cornerSize" format="dimension|fraction" />
-        <!-- Top left corner size to be used in the ShapeAppearance. -->
-        <attr name="st_cornerSizeTopLeft" format="dimension|fraction" />
-        <!-- Top right corner size to be used in the ShapeAppearance. -->
-        <attr name="st_cornerSizeTopRight" format="dimension|fraction" />
-        <!-- Bottom right corner size to be used in the ShapeAppearance. -->
-        <attr name="st_cornerSizeBottomRight" format="dimension|fraction" />
-        <!-- Bottom left corner size to be used in the ShapeAppearance. -->
-        <attr name="st_cornerSizeBottomLeft" format="dimension|fraction" />
-
-        <!-- Corner family to be used in the ShapeAppearance. All corners default to this value -->
-        <attr name="st_cornerFamily" format="enum">
-            <enum name="st_rounded" value="0" />
-            <enum name="st_cut" value="1" />
-        </attr>
-        <!-- Top left corner family to be used in the ShapeAppearance. -->
-        <attr name="st_cornerFamilyTopLeft" format="enum">
-            <enum name="st_rounded" value="0" />
-            <enum name="st_cut" value="1" />
-        </attr>
-        <!-- Top right corner family to be used in the ShapeAppearance. -->
-        <attr name="st_cornerFamilyTopRight" format="enum">
-            <enum name="st_rounded" value="0" />
-            <enum name="st_cut" value="1" />
-        </attr>
-        <!-- Bottom right corner family to be used in the ShapeAppearance. -->
-        <attr name="st_cornerFamilyBottomRight" format="enum">
-            <enum name="st_rounded" value="0" />
-            <enum name="st_cut" value="1" />
-        </attr>
-        <!-- Bottom left corner family to be used in the ShapeAppearance. -->
-        <attr name="st_cornerFamilyBottomLeft" format="enum">
-            <enum name="st_rounded" value="0" />
-            <enum name="st_cut" value="1" />
-        </attr>
-    </declare-styleable>
-
     <dimen name="st_mtrl_min_touch_target_size">48dp</dimen>
 
     <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->

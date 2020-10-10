@@ -26,6 +26,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -33,6 +35,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.DisplayCutout;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -43,8 +46,10 @@ import android.view.WindowInsets;
 
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleableRes;
 import androidx.annotation.VisibleForTesting;
@@ -52,8 +57,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
+import androidx.core.util.ObjectsCompat;
+import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityViewCommand;
@@ -68,11 +74,17 @@ import com.smart.library.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import static androidx.appcompat.widget.ViewUtils.isLayoutRtl;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -217,13 +229,13 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                     SAVE_NONE,
             })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface SaveFlags {
+    public @interface SaveFlast {
     }
 
     private static final String TAG = "STBottomSheetBehaviorV2";
 
-    @SaveFlags
-    private int saveFlags = SAVE_NONE;
+    @SaveFlast
+    private int saveFlast = SAVE_NONE;
 
     protected static final int SIGNIFICANT_VEL_THRESHOLD = 500;
 
@@ -235,7 +247,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
 
     protected boolean fitToContents = true;
 
-    private boolean updateImportantForAccessibilityOnSiblings = false;
+    private boolean updateImportantForAccessibilityOnSiblinst = false;
 
     private float maximumVelocity;
 
@@ -379,7 +391,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
         setSkipCollapsed(
                 a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_skipCollapsed, false));
         setDraggable(a.getBoolean(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_draggable, true));
-        setSaveFlags(a.getInt(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_saveFlags, SAVE_NONE));
+        setSaveFlast(a.getInt(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_saveFlags, SAVE_NONE));
         setHalfExpandedRatio(
                 a.getFloat(R.styleable.STBottomSheetBehaviorV2_Layout_st_behavior_halfExpandedRatio, 0.5f));
 
@@ -407,7 +419,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
             @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, child, ss.getSuperState());
-        // Restore Optional State values designated by saveFlags
+        // Restore Optional State values designated by saveFlast
         restoreOptionalState(ss);
         // Intermediate states are restored as collapsed state
         if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
@@ -799,7 +811,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
         if (viewRef != null) {
             calculateCollapsedOffset();
         }
-        // Fix incorrect expanded settings depending on whether or not we are fitting sheet to contents.
+        // Fix incorrect expanded settinst depending on whether or not we are fitting sheet to contents.
         setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
 
         updateAccessibilityActions();
@@ -1003,26 +1015,26 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
 
     /**
-     * Sets save flags to be preserved in bottomsheet on configuration change.
+     * Sets save flast to be preserved in bottomsheet on configuration change.
      *
-     * @param flags bitwise int of {@link #SAVE_PEEK_HEIGHT}, {@link #SAVE_FIT_TO_CONTENTS}, {@link
+     * @param flast bitwise int of {@link #SAVE_PEEK_HEIGHT}, {@link #SAVE_FIT_TO_CONTENTS}, {@link
      *              #SAVE_HIDEABLE}, {@link #SAVE_SKIP_COLLAPSED}, {@link #SAVE_ALL} and {@link #SAVE_NONE}.
-     * @attr ref com.google.android.material.R.styleable#STBottomSheetBehaviorV2_Layout_behavior_saveFlags
-     * @see #getSaveFlags()
+     * @attr ref com.google.android.material.R.styleable#STBottomSheetBehaviorV2_Layout_behavior_saveFlast
+     * @see #getSaveFlast()
      */
-    public void setSaveFlags(@SaveFlags int flags) {
-        this.saveFlags = flags;
+    public void setSaveFlast(@SaveFlast int flast) {
+        this.saveFlast = flast;
     }
 
     /**
-     * Returns the save flags.
+     * Returns the save flast.
      *
-     * @attr ref com.google.android.material.R.styleable#STBottomSheetBehaviorV2_Layout_behavior_saveFlags
-     * @see #setSaveFlags(int)
+     * @attr ref com.google.android.material.R.styleable#STBottomSheetBehaviorV2_Layout_behavior_saveFlast
+     * @see #setSaveFlast(int)
      */
-    @SaveFlags
-    public int getSaveFlags() {
-        return this.saveFlags;
+    @SaveFlast
+    public int getSaveFlast() {
+        return this.saveFlast;
     }
 
     /**
@@ -1227,21 +1239,21 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
 
     private void restoreOptionalState(@NonNull SavedState ss) {
-        if (this.saveFlags == SAVE_NONE) {
+        if (this.saveFlast == SAVE_NONE) {
             return;
         }
-        if (this.saveFlags == SAVE_ALL || (this.saveFlags & SAVE_PEEK_HEIGHT) == SAVE_PEEK_HEIGHT) {
+        if (this.saveFlast == SAVE_ALL || (this.saveFlast & SAVE_PEEK_HEIGHT) == SAVE_PEEK_HEIGHT) {
             this.peekHeight = ss.peekHeight;
         }
-        if (this.saveFlags == SAVE_ALL
-                || (this.saveFlags & SAVE_FIT_TO_CONTENTS) == SAVE_FIT_TO_CONTENTS) {
+        if (this.saveFlast == SAVE_ALL
+                || (this.saveFlast & SAVE_FIT_TO_CONTENTS) == SAVE_FIT_TO_CONTENTS) {
             this.fitToContents = ss.fitToContents;
         }
-        if (this.saveFlags == SAVE_ALL || (this.saveFlags & SAVE_HIDEABLE) == SAVE_HIDEABLE) {
+        if (this.saveFlast == SAVE_ALL || (this.saveFlast & SAVE_HIDEABLE) == SAVE_HIDEABLE) {
             this.hideable = ss.hideable;
         }
-        if (this.saveFlags == SAVE_ALL
-                || (this.saveFlags & SAVE_SKIP_COLLAPSED) == SAVE_SKIP_COLLAPSED) {
+        if (this.saveFlast == SAVE_ALL
+                || (this.saveFlast & SAVE_SKIP_COLLAPSED) == SAVE_SKIP_COLLAPSED) {
             this.skipCollapsed = ss.skipCollapsed;
         }
     }
@@ -1639,7 +1651,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
         }
 
         /**
-         * This constructor does not respect flags: {@link STBottomSheetBehaviorV2#SAVE_PEEK_HEIGHT}, {@link
+         * This constructor does not respect flast: {@link STBottomSheetBehaviorV2#SAVE_PEEK_HEIGHT}, {@link
          * STBottomSheetBehaviorV2#SAVE_FIT_TO_CONTENTS}, {@link STBottomSheetBehaviorV2#SAVE_HIDEABLE}, {@link
          * STBottomSheetBehaviorV2#SAVE_SKIP_COLLAPSED}. It is as if {@link STBottomSheetBehaviorV2#SAVE_NONE}
          * were set.
@@ -1653,8 +1665,8 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
         }
 
         @Override
-        public void writeToParcel(@NonNull Parcel out, int flags) {
-            super.writeToParcel(out, flags);
+        public void writeToParcel(@NonNull Parcel out, int flast) {
+            super.writeToParcel(out, flast);
             out.writeInt(state);
             out.writeInt(peekHeight);
             out.writeInt(fitToContents ? 1 : 0);
@@ -1707,14 +1719,14 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
 
     /**
      * Sets whether the BottomSheet should update the accessibility status of its {@link
-     * CoordinatorLayout} siblings when expanded.
+     * CoordinatorLayout} siblinst when expanded.
      *
-     * <p>Set this to true if the expanded state of the sheet blocks access to siblings (e.g., when
+     * <p>Set this to true if the expanded state of the sheet blocks access to siblinst (e.g., when
      * the sheet expands over the full screen).
      */
-    public void setUpdateImportantForAccessibilityOnSiblings(
-            boolean updateImportantForAccessibilityOnSiblings) {
-        this.updateImportantForAccessibilityOnSiblings = updateImportantForAccessibilityOnSiblings;
+    public void setUpdateImportantForAccessibilityOnSiblinst(
+            boolean updateImportantForAccessibilityOnSiblinst) {
+        this.updateImportantForAccessibilityOnSiblinst = updateImportantForAccessibilityOnSiblinst;
     }
 
     protected void updateImportantForAccessibility(boolean expanded) {
@@ -1749,12 +1761,12 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                 if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
                     importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
                 }
-                if (updateImportantForAccessibilityOnSiblings) {
+                if (updateImportantForAccessibilityOnSiblinst) {
                     ViewCompat.setImportantForAccessibility(
                             child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
                 }
             } else {
-                if (updateImportantForAccessibilityOnSiblings
+                if (updateImportantForAccessibilityOnSiblinst
                         && importantForAccessibilityMap != null
                         && importantForAccessibilityMap.containsKey(child)) {
                     // Restores the original important for accessibility value of the child view.
@@ -1822,7 +1834,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                 });
     }
 
-    //region getColorStateList
+    //region dependent method
 
     /**
      * Returns the {@link ColorStateList} from the given {@link TypedArray} attributes. The resource
@@ -1853,7 +1865,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
     //endregion
 
-    //region ViewUtils
+    //region dependent class
 
     /**
      * Simple data object to store the initial padding for a view.
@@ -1887,11 +1899,53 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
 
     /**
+     * Listener for applying window insets on a view in a custom way.
+     *
+     * <p>Apps may choose to implement this interface if they want to apply custom policy
+     * to the way that window insets are treated for a view. If an OnApplyWindowInsetsListener
+     * is set, its
+     * {@link #onApplyWindowInsets(android.view.View, androidx.core.view.WindowInsetsCompat) onApplyWindowInsets}
+     * method will be called instead of the View's own {@code onApplyWindowInsets} method.
+     * The listener may optionally call the parameter View's <code>onApplyWindowInsets</code>
+     * method to apply the View's normal behavior as part of its own.</p>
+     */
+    public interface OnApplyWindowInsetsListenerV1 {
+        /**
+         * When {@link ViewCompat#setOnApplyWindowInsetsListener(View, androidx.core.view.OnApplyWindowInsetsListener) set}
+         * on a View, this listener method will be called instead of the view's own
+         * {@code onApplyWindowInsets} method.
+         *
+         * @param v      The view applying window insets
+         * @param insets The insets to apply
+         * @return The insets supplied, minus any insets that were consumed
+         */
+        WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets);
+    }
+
+    /**
+     * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
+     * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
+     * STOnApplyWindowInsetsListener)}.
+     */
+    public interface OnApplyWindowInsetsListener {
+
+        /**
+         * When {@link View#setOnApplyWindowInsetsListener(View.OnApplyWindowInsetsListener) set} on a
+         * View, this listener method will be called instead of the view's own {@link
+         * View#onApplyWindowInsets(WindowInsets)} method. The {@code initialPadding} is the view's
+         * original padding which can be updated and will be applied to the view automatically. This
+         * method should return a new {@link WindowInsetsCompat} with any insets consumed.
+         */
+        WindowInsetsCompat onApplyWindowInsets(
+                View view, WindowInsetsCompat insets, RelativePadding initialPadding);
+    }
+
+    /**
      * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
      * initial padding of the view and requests that insets are applied when attached.
      */
     public static void doOnApplyWindowInsets(
-            @NonNull View view, @NonNull final OnApplyWindowInsetsListener listener) {
+            @NonNull final View view, @NonNull final OnApplyWindowInsetsListener listener) {
         // Create a snapshot of the view's padding state.
         final RelativePadding initialPadding =
                 new RelativePadding(
@@ -1901,16 +1955,40 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                         view.getPaddingBottom());
         // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
         // in the original padding state.
-        ViewCompat.setOnApplyWindowInsetsListener(
+        setOnApplyWindowInsetsListener(
                 view,
-                new androidx.core.view.OnApplyWindowInsetsListener() {
+                new OnApplyWindowInsetsListenerV1() {
                     @Override
-                    public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+                    public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                         return listener.onApplyWindowInsets(view, insets, new RelativePadding(initialPadding));
                     }
                 });
         // Request some insets.
         requestApplyInsetsWhenAttached(view);
+    }
+
+    /**
+     * Set an {@link androidx.core.view.OnApplyWindowInsetsListener} to take over the policy for applying
+     * window insets to this view. This will only take effect on devices with API 21 or above.
+     */
+    public static void setOnApplyWindowInsetsListener(@NonNull View v,
+                                                      @Nullable final OnApplyWindowInsetsListenerV1 listener) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (listener == null) {
+                v.setOnApplyWindowInsetsListener(null);
+                return;
+            }
+
+            v.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                @Override
+                public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
+                    WindowInsetsCompat compatInsets = WindowInsetsCompat
+                            .toWindowInsetsCompat(insets);
+                    compatInsets = listener.onApplyWindowInsets(view, compatInsets);
+                    return compatInsets.toWindowInsets();
+                }
+            });
+        }
     }
 
     /**
@@ -1949,14 +2027,14 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
             @Nullable final OnApplyWindowInsetsListener listener) {
         TypedArray a =
                 view.getContext()
-                        .obtainStyledAttributes(attrs, com.google.android.material.R.styleable.Insets, defStyleAttr, defStyleRes);
+                        .obtainStyledAttributes(attrs, R.styleable.STInsets, defStyleAttr, defStyleRes);
 
         final boolean paddingBottomSystemWindowInsets =
-                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingBottomSystemWindowInsets, false);
+                a.getBoolean(R.styleable.STInsets_st_paddingBottomSystemWindowInsets, false);
         final boolean paddingLeftSystemWindowInsets =
-                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingLeftSystemWindowInsets, false);
+                a.getBoolean(R.styleable.STInsets_st_paddingLeftSystemWindowInsets, false);
         final boolean paddingRightSystemWindowInsets =
-                a.getBoolean(com.google.android.material.R.styleable.Insets_paddingRightSystemWindowInsets, false);
+                a.getBoolean(R.styleable.STInsets_st_paddingRightSystemWindowInsets, false);
 
         a.recycle();
 
@@ -1996,21 +2074,1372 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
     }
 
     /**
-     * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
-     * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
-     * STOnApplyWindowInsetsListener)}.
+     * Describes a set of insets for window content.
+     *
+     * <p>WindowInsetsCompats are immutable and may be expanded to include more inset types in the
+     * future. To adjust insets, use one of the supplied clone methods to obtain a new
+     * WindowInsetsCompat instance with the adjusted properties.</p>
      */
-    public interface OnApplyWindowInsetsListener {
+    public static class WindowInsetsCompat {
+        private static final String TAG = "WindowInsetsCompat";
 
         /**
-         * When {@link View#setOnApplyWindowInsetsListener(View.OnApplyWindowInsetsListener) set} on a
-         * View, this listener method will be called instead of the view's own {@link
-         * View#onApplyWindowInsets(WindowInsets)} method. The {@code initialPadding} is the view's
-         * original padding which can be updated and will be applied to the view automatically. This
-         * method should return a new {@link WindowInsetsCompat} with any insets consumed.
+         * @hide we'll make this public in a future release
          */
-        WindowInsetsCompat onApplyWindowInsets(
-                View view, WindowInsetsCompat insets, RelativePadding initialPadding);
+        @RestrictTo(LIBRARY_GROUP_PREFIX)
+        public static final WindowInsetsCompat CONSUMED = new WindowInsetsCompat.Builder()
+                .build()
+                .consumeDisplayCutout()
+                .consumeStableInsets()
+                .consumeSystemWindowInsets();
+
+        private final Impl mImpl;
+
+        @RequiresApi(20)
+        private WindowInsetsCompat(@NonNull WindowInsets insets) {
+            if (SDK_INT >= 29) {
+                mImpl = new Impl29(this, insets);
+            } else if (SDK_INT >= 28) {
+                mImpl = new Impl28(this, insets);
+            } else if (SDK_INT >= 21) {
+                mImpl = new Impl21(this, insets);
+            } else if (SDK_INT >= 20) {
+                mImpl = new Impl20(this, insets);
+            } else {
+                mImpl = new Impl(this);
+            }
+        }
+
+        /**
+         * Constructs a new WindowInsetsCompat, copying all values from a source WindowInsetsCompat.
+         *
+         * @param src source from which values are copied
+         */
+        public WindowInsetsCompat(@Nullable final WindowInsetsCompat src) {
+            if (src != null) {
+                // We'll copy over from the 'src' instance's impl
+                final Impl srcImpl = src.mImpl;
+                if (SDK_INT >= 29 && srcImpl instanceof Impl29) {
+                    mImpl = new Impl29(this, (Impl29) srcImpl);
+                } else if (SDK_INT >= 28 && srcImpl instanceof Impl28) {
+                    mImpl = new Impl28(this, (Impl28) srcImpl);
+                } else if (SDK_INT >= 21 && srcImpl instanceof Impl21) {
+                    mImpl = new Impl21(this, (Impl21) srcImpl);
+                } else if (SDK_INT >= 20 && srcImpl instanceof Impl20) {
+                    mImpl = new Impl20(this, (Impl20) srcImpl);
+                } else {
+                    mImpl = new Impl(this);
+                }
+            } else {
+                // Ideally src would be @NonNull, oh well.
+                mImpl = new Impl(this);
+            }
+        }
+
+        /**
+         * Wrap an instance of {@link WindowInsets} into a {@link WindowInsetsCompat}.
+         *
+         * @param insets source insets to wrap
+         * @return the wrapped instance
+         */
+        @NonNull
+        @RequiresApi(20)
+        public static WindowInsetsCompat toWindowInsetsCompat(@NonNull WindowInsets insets) {
+            return new WindowInsetsCompat(Preconditions.checkNotNull(insets));
+        }
+
+        /**
+         * Returns the left system window inset in pixels.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code 0}.
+         *
+         * @return The left system window inset
+         */
+        public int getSystemWindowInsetLeft() {
+            return getSystemWindowInsets().left;
+        }
+
+        /**
+         * Returns the top system window inset in pixels.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code 0}.
+         *
+         * @return The top system window inset
+         */
+        public int getSystemWindowInsetTop() {
+            return getSystemWindowInsets().top;
+        }
+
+        /**
+         * Returns the right system window inset in pixels.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code 0}.
+         *
+         * @return The right system window inset
+         */
+        public int getSystemWindowInsetRight() {
+            return getSystemWindowInsets().right;
+        }
+
+        /**
+         * Returns the bottom system window inset in pixels.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code 0}.
+         *
+         * @return The bottom system window inset
+         */
+        public int getSystemWindowInsetBottom() {
+            return getSystemWindowInsets().bottom;
+        }
+
+        /**
+         * Returns true if this WindowInsets has nonzero system window insets.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code false}.
+         *
+         * @return true if any of the system window inset values are nonzero
+         */
+        public boolean hasSystemWindowInsets() {
+            return !getSystemWindowInsets().equals(Insets.NONE);
+        }
+
+        /**
+         * Returns true if this WindowInsets has any non-zero insets.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code false}.
+         *
+         * @return true if any inset values are nonzero
+         */
+        public boolean hasInsets() {
+            return hasSystemWindowInsets()
+                    || hasStableInsets()
+                    || getDisplayCutout() != null
+                    || !getSystemGestureInsets().equals(Insets.NONE)
+                    || !getMandatorySystemGestureInsets().equals(Insets.NONE)
+                    || !getTappableElementInsets().equals(Insets.NONE);
+        }
+
+        /**
+         * Check if these insets have been fully consumed.
+         *
+         * <p>Insets are considered "consumed" if the applicable <code>consume*</code> methods
+         * have been called such that all insets have been set to zero. This affects propagation of
+         * insets through the view hierarchy; insets that have not been fully consumed will continue
+         * to propagate down to child views.</p>
+         *
+         * <p>The result of this method is equivalent to the return value of
+         * {@link android.view.View#fitSystemWindows(android.graphics.Rect)}.</p>
+         *
+         * @return true if the insets have been fully consumed.
+         */
+        public boolean isConsumed() {
+            return mImpl.isConsumed();
+        }
+
+        /**
+         * Returns true if the associated window has a round shape.
+         *
+         * <p>A round window's left, top, right and bottom edges reach all the way to the
+         * associated edges of the window but the corners may not be visible. Views responding
+         * to round insets should take care to not lay out critical elements within the corners
+         * where they may not be accessible.</p>
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code false}.
+         *
+         * @return true if the window is round
+         */
+        public boolean isRound() {
+            return mImpl.isRound();
+        }
+
+        /**
+         * Returns a copy of this WindowInsets with the system window insets fully consumed.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code null}.
+         *
+         * @return A modified copy of this WindowInsets
+         */
+        @NonNull
+        public WindowInsetsCompat consumeSystemWindowInsets() {
+            return mImpl.consumeSystemWindowInsets();
+        }
+
+        /**
+         * Returns a copy of this WindowInsets with selected system window insets replaced
+         * with new values.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code null}.
+         *
+         * @param left   New left inset in pixels
+         * @param top    New top inset in pixels
+         * @param right  New right inset in pixels
+         * @param bottom New bottom inset in pixels
+         * @return A modified copy of this WindowInsets
+         * @deprecated use {@link WindowInsetsCompat.Builder} with
+         * {@link WindowInsetsCompat.Builder#setSystemWindowInsets(Insets)} instead.
+         */
+        @Deprecated
+        @NonNull
+        public WindowInsetsCompat replaceSystemWindowInsets(int left, int top, int right, int bottom) {
+            return new Builder(this)
+                    .setSystemWindowInsets(Insets.of(left, top, right, bottom))
+                    .build();
+        }
+
+        /**
+         * Returns a copy of this WindowInsets with selected system window insets replaced
+         * with new values.
+         *
+         * <p>When running on platforms with API 19 and below, this method always returns {@code null}.
+         *
+         * @param systemWindowInsets New system window insets. Each field is the inset in pixels
+         *                           for that edge
+         * @return A modified copy of this WindowInsets
+         * @deprecated use {@link WindowInsetsCompat.Builder} with
+         * {@link WindowInsetsCompat.Builder#setSystemWindowInsets(Insets)} instead.
+         */
+        @Deprecated
+        @NonNull
+        public WindowInsetsCompat replaceSystemWindowInsets(@NonNull Rect systemWindowInsets) {
+            return new Builder(this)
+                    .setSystemWindowInsets(Insets.of(systemWindowInsets))
+                    .build();
+        }
+
+        /**
+         * Returns the top stable inset in pixels.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code 0}.
+         *
+         * @return The top stable inset
+         */
+        public int getStableInsetTop() {
+            return getStableInsets().top;
+        }
+
+        /**
+         * Returns the left stable inset in pixels.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code 0}.
+         *
+         * @return The left stable inset
+         */
+        public int getStableInsetLeft() {
+            return getStableInsets().left;
+        }
+
+        /**
+         * Returns the right stable inset in pixels.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code 0}.
+         *
+         * @return The right stable inset
+         */
+        public int getStableInsetRight() {
+            return getStableInsets().right;
+        }
+
+        /**
+         * Returns the bottom stable inset in pixels.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code 0}.
+         *
+         * @return The bottom stable inset
+         */
+        public int getStableInsetBottom() {
+            return getStableInsets().bottom;
+        }
+
+        /**
+         * Returns true if this WindowInsets has nonzero stable insets.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code false}.
+         *
+         * @return true if any of the stable inset values are nonzero
+         */
+        public boolean hasStableInsets() {
+            return !getStableInsets().equals(Insets.NONE);
+        }
+
+        /**
+         * Returns a copy of this WindowInsets with the stable insets fully consumed.
+         *
+         * <p>When running on platforms with API 20 and below, this method always returns {@code null}.
+         *
+         * @return A modified copy of this WindowInsetsCompat
+         */
+        @NonNull
+        public WindowInsetsCompat consumeStableInsets() {
+            return mImpl.consumeStableInsets();
+        }
+
+        /**
+         * Returns the display cutout if there is one.
+         *
+         * <p>When running on platforms with API 27 and below, this method always returns {@code null}.
+         *
+         * @return the display cutout or null if there is none
+         * @see DisplayCutoutCompat
+         */
+        @Nullable
+        public DisplayCutoutCompat getDisplayCutout() {
+            return mImpl.getDisplayCutout();
+        }
+
+        /**
+         * Returns a copy of this WindowInsets with the cutout fully consumed.
+         *
+         * <p>When running on platforms with API 27 and below, this method is a no-op.
+         *
+         * @return A modified copy of this WindowInsets
+         */
+        @NonNull
+        public WindowInsetsCompat consumeDisplayCutout() {
+            return mImpl.consumeDisplayCutout();
+        }
+
+        /**
+         * Returns the system window insets in pixels.
+         *
+         * <p>The system window inset represents the area of a full-screen window that is
+         * partially or fully obscured by the status bar, navigation bar, IME or other system windows.
+         * </p>
+         *
+         * @return The system window insets
+         * @see #getSystemWindowInsetLeft()
+         * @see #getSystemWindowInsetTop()
+         * @see #getSystemWindowInsetRight()
+         * @see #getSystemWindowInsetBottom()
+         */
+        @NonNull
+        public Insets getSystemWindowInsets() {
+            return mImpl.getSystemWindowInsets();
+        }
+
+        /**
+         * Returns the stable insets in pixels.
+         *
+         * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+         * partially or fully obscured by the system UI elements.  This value does not change
+         * based on the visibility state of those elements; for example, if the status bar is
+         * normally shown, but temporarily hidden, the stable inset will still provide the inset
+         * associated with the status bar being shown.</p>
+         *
+         * @return The stable insets
+         * @see #getStableInsetLeft()
+         * @see #getStableInsetTop()
+         * @see #getStableInsetRight()
+         * @see #getStableInsetBottom()
+         */
+        @NonNull
+        public Insets getStableInsets() {
+            return mImpl.getStableInsets();
+        }
+
+        /**
+         * Returns the mandatory system gesture insets.
+         *
+         * <p>The mandatory system gesture insets represent the area of a window where mandatory system
+         * gestures have priority and may consume some or all touch input, e.g. due to the a system bar
+         * occupying it, or it being reserved for touch-only gestures.
+         *
+         * @see WindowInsets#getMandatorySystemGestureInsets
+         */
+        @NonNull
+        public Insets getMandatorySystemGestureInsets() {
+            return mImpl.getMandatorySystemGestureInsets();
+        }
+
+        /**
+         * Returns the tappable element insets.
+         *
+         * <p>The tappable element insets represent how much tappable elements <b>must at least</b> be
+         * inset to remain both tappable and visually unobstructed by persistent system windows.
+         *
+         * <p>This may be smaller than {@link #getSystemWindowInsets()} if the system window is
+         * largely transparent and lets through simple taps (but not necessarily more complex gestures).
+         *
+         * @see WindowInsets#getTappableElementInsets
+         */
+        @NonNull
+        public Insets getTappableElementInsets() {
+            return mImpl.getTappableElementInsets();
+        }
+
+        /**
+         * Returns the system gesture insets.
+         *
+         * <p>The system gesture insets represent the area of a window where system gestures have
+         * priority and may consume some or all touch input, e.g. due to the a system bar
+         * occupying it, or it being reserved for touch-only gestures.
+         *
+         * <p>An app can declare priority over system gestures with
+         * {@link android.view.View#setSystemGestureExclusionRects} outside of the
+         * {@link #getMandatorySystemGestureInsets() mandatory system gesture insets}.
+         *
+         * @see WindowInsets#getSystemGestureInsets
+         */
+        @NonNull
+        public Insets getSystemGestureInsets() {
+            return mImpl.getSystemGestureInsets();
+        }
+
+        /**
+         * Returns a copy of this instance inset in the given directions.
+         * <p>
+         * This is intended for dispatching insets to areas of the window that are smaller than the
+         * current area.
+         *
+         * <p>Example:
+         * <pre>
+         * childView.dispatchApplyWindowInsets(insets.inset(childMargins));
+         * </pre>
+         *
+         * @param insets the amount of insets to remove from all sides.
+         * @see #inset(int, int, int, int)
+         */
+        @NonNull
+        public WindowInsetsCompat inset(@NonNull Insets insets) {
+            return inset(insets.left, insets.top, insets.right, insets.bottom);
+        }
+
+        /**
+         * Returns a copy of this instance inset in the given directions.
+         * <p>
+         * This is intended for dispatching insets to areas of the window that are smaller than the
+         * current area.
+         *
+         * <p>Example:
+         * <pre>
+         * childView.dispatchApplyWindowInsets(insets.inset(
+         *         childMarginLeft, childMarginTop, childMarginBottom, childMarginRight));
+         * </pre>
+         *
+         * @param left   the amount of insets to remove from the left. Must be non-negative.
+         * @param top    the amount of insets to remove from the top. Must be non-negative.
+         * @param right  the amount of insets to remove from the right. Must be non-negative.
+         * @param bottom the amount of insets to remove from the bottom. Must be non-negative.
+         * @return the inset insets
+         */
+        @NonNull
+        public WindowInsetsCompat inset(@IntRange(from = 0) int left, @IntRange(from = 0) int top,
+                                        @IntRange(from = 0) int right, @IntRange(from = 0) int bottom) {
+            return mImpl.inset(left, top, right, bottom);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof WindowInsetsCompat)) {
+                return false;
+            }
+            WindowInsetsCompat other = (WindowInsetsCompat) o;
+            return ObjectsCompat.equals(mImpl, other.mImpl);
+        }
+
+        @Override
+        public int hashCode() {
+            return mImpl == null ? 0 : mImpl.hashCode();
+        }
+
+        /**
+         * Return the source {@link WindowInsets} instance used in this {@link WindowInsetsCompat}.
+         *
+         * @return the wrapped WindowInsets instance
+         */
+        @Nullable
+        @RequiresApi(20)
+        public WindowInsets toWindowInsets() {
+            return mImpl instanceof Impl20 ? ((Impl20) mImpl).mPlatformInsets : null;
+        }
+
+        private static class Impl {
+            final WindowInsetsCompat mHost;
+
+            Impl(@NonNull WindowInsetsCompat host) {
+                mHost = host;
+            }
+
+            boolean isRound() {
+                return false;
+            }
+
+            boolean isConsumed() {
+                return false;
+            }
+
+            @NonNull
+            WindowInsetsCompat consumeSystemWindowInsets() {
+                return mHost;
+            }
+
+            @NonNull
+            WindowInsetsCompat consumeStableInsets() {
+                return mHost;
+            }
+
+            @Nullable
+            DisplayCutoutCompat getDisplayCutout() {
+                return null;
+            }
+
+            @NonNull
+            WindowInsetsCompat consumeDisplayCutout() {
+                return mHost;
+            }
+
+            @NonNull
+            Insets getSystemWindowInsets() {
+                return Insets.NONE;
+            }
+
+            @NonNull
+            Insets getStableInsets() {
+                return Insets.NONE;
+            }
+
+            @NonNull
+            Insets getSystemGestureInsets() {
+                // Pre-Q return the system window insets
+                return getSystemWindowInsets();
+            }
+
+            @NonNull
+            Insets getMandatorySystemGestureInsets() {
+                // Pre-Q return the system window insets
+                return getSystemWindowInsets();
+            }
+
+            @NonNull
+            Insets getTappableElementInsets() {
+                // Pre-Q return the system window insets
+                return getSystemWindowInsets();
+            }
+
+            @NonNull
+            WindowInsetsCompat inset(int left, int top, int right, int bottom) {
+                return CONSUMED;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                // On API < 28 we can not rely on WindowInsets.equals(), so we handle it manually
+                if (this == o) return true;
+                if (!(o instanceof Impl)) return false;
+                final Impl impl = (Impl) o;
+                return isRound() == impl.isRound()
+                        && isConsumed() == impl.isConsumed()
+                        && ObjectsCompat.equals(getSystemWindowInsets(), impl.getSystemWindowInsets())
+                        && ObjectsCompat.equals(getStableInsets(), impl.getStableInsets())
+                        && ObjectsCompat.equals(getDisplayCutout(), impl.getDisplayCutout());
+            }
+
+            @Override
+            public int hashCode() {
+                // On API < 28 we can not rely on WindowInsets.hashCode(), so we handle it manually
+                return ObjectsCompat.hash(isRound(), isConsumed(), getSystemWindowInsets(),
+                        getStableInsets(), getDisplayCutout());
+            }
+        }
+
+        @RequiresApi(20)
+        private static class Impl20 extends Impl {
+            @NonNull
+            final WindowInsets mPlatformInsets;
+
+            // Used to cache the wrapped value
+            private Insets mSystemWindowInsets = null;
+
+            Impl20(@NonNull WindowInsetsCompat host, @NonNull WindowInsets insets) {
+                super(host);
+                mPlatformInsets = insets;
+            }
+
+            Impl20(@NonNull WindowInsetsCompat host, @NonNull Impl20 other) {
+                this(host, new WindowInsets(other.mPlatformInsets));
+            }
+
+            @Override
+            boolean isRound() {
+                return mPlatformInsets.isRound();
+            }
+
+            @Override
+            @NonNull
+            final Insets getSystemWindowInsets() {
+                if (mSystemWindowInsets == null) {
+                    mSystemWindowInsets = Insets.of(
+                            mPlatformInsets.getSystemWindowInsetLeft(),
+                            mPlatformInsets.getSystemWindowInsetTop(),
+                            mPlatformInsets.getSystemWindowInsetRight(),
+                            mPlatformInsets.getSystemWindowInsetBottom());
+                }
+                return mSystemWindowInsets;
+            }
+
+            @NonNull
+            @Override
+            WindowInsetsCompat inset(int left, int top, int right, int bottom) {
+                Builder b = new Builder(toWindowInsetsCompat(mPlatformInsets));
+                b.setSystemWindowInsets(insetInsets(getSystemWindowInsets(), left, top, right, bottom));
+                b.setStableInsets(insetInsets(getStableInsets(), left, top, right, bottom));
+                return b.build();
+            }
+        }
+
+        @RequiresApi(21)
+        private static class Impl21 extends Impl20 {
+            private Insets mStableInsets = null;
+
+            Impl21(@NonNull WindowInsetsCompat host, @NonNull WindowInsets insets) {
+                super(host, insets);
+            }
+
+            Impl21(@NonNull WindowInsetsCompat host, @NonNull Impl21 other) {
+                super(host, other);
+            }
+
+            @Override
+            boolean isConsumed() {
+                return mPlatformInsets.isConsumed();
+            }
+
+            @NonNull
+            @Override
+            WindowInsetsCompat consumeStableInsets() {
+                return toWindowInsetsCompat(mPlatformInsets.consumeStableInsets());
+            }
+
+            @NonNull
+            @Override
+            WindowInsetsCompat consumeSystemWindowInsets() {
+                return toWindowInsetsCompat(mPlatformInsets.consumeSystemWindowInsets());
+            }
+
+            @Override
+            @NonNull
+            final Insets getStableInsets() {
+                if (mStableInsets == null) {
+                    mStableInsets = Insets.of(
+                            mPlatformInsets.getStableInsetLeft(),
+                            mPlatformInsets.getStableInsetTop(),
+                            mPlatformInsets.getStableInsetRight(),
+                            mPlatformInsets.getStableInsetBottom());
+                }
+                return mStableInsets;
+            }
+        }
+
+        @RequiresApi(28)
+        private static class Impl28 extends Impl21 {
+            Impl28(@NonNull WindowInsetsCompat host, @NonNull WindowInsets insets) {
+                super(host, insets);
+            }
+
+            Impl28(@NonNull WindowInsetsCompat host, @NonNull Impl28 other) {
+                super(host, other);
+            }
+
+            @Nullable
+            @Override
+            DisplayCutoutCompat getDisplayCutout() {
+                return DisplayCutoutCompat.wrap(mPlatformInsets.getDisplayCutout());
+            }
+
+            @NonNull
+            @Override
+            WindowInsetsCompat consumeDisplayCutout() {
+                return toWindowInsetsCompat(mPlatformInsets.consumeDisplayCutout());
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof Impl28)) return false;
+                Impl28 otherImpl28 = (Impl28) o;
+                // On API 28+ we can rely on WindowInsets.equals()
+                return Objects.equals(mPlatformInsets, otherImpl28.mPlatformInsets);
+            }
+
+            @Override
+            public int hashCode() {
+                return mPlatformInsets.hashCode();
+            }
+        }
+
+        @RequiresApi(29)
+        private static class Impl29 extends Impl28 {
+            // Used to cache the wrapped values
+            private Insets mSystemGestureInsets = null;
+            private Insets mMandatorySystemGestureInsets = null;
+            private Insets mTappableElementInsets = null;
+
+            Impl29(@NonNull WindowInsetsCompat host, @NonNull WindowInsets insets) {
+                super(host, insets);
+            }
+
+            Impl29(@NonNull WindowInsetsCompat host, @NonNull Impl29 other) {
+                super(host, other);
+            }
+
+            @NonNull
+            @Override
+            Insets getSystemGestureInsets() {
+                if (mSystemGestureInsets == null) {
+                    mSystemGestureInsets = Insets.toCompatInsets(mPlatformInsets.getSystemGestureInsets());
+                }
+                return mSystemGestureInsets;
+            }
+
+            @NonNull
+            @Override
+            Insets getMandatorySystemGestureInsets() {
+                if (mMandatorySystemGestureInsets == null) {
+                    mMandatorySystemGestureInsets =
+                            Insets.toCompatInsets(mPlatformInsets.getMandatorySystemGestureInsets());
+                }
+                return mMandatorySystemGestureInsets;
+            }
+
+            @NonNull
+            @Override
+            Insets getTappableElementInsets() {
+                if (mTappableElementInsets == null) {
+                    mTappableElementInsets = Insets.toCompatInsets(mPlatformInsets.getTappableElementInsets());
+                }
+                return mTappableElementInsets;
+            }
+
+            @NonNull
+            @Override
+            WindowInsetsCompat inset(int left, int top, int right, int bottom) {
+                return toWindowInsetsCompat(mPlatformInsets.inset(left, top, right, bottom));
+            }
+        }
+
+        static Insets insetInsets(Insets insets, int left, int top, int right, int bottom) {
+            int newLeft = Math.max(0, insets.left - left);
+            int newTop = Math.max(0, insets.top - top);
+            int newRight = Math.max(0, insets.right - right);
+            int newBottom = Math.max(0, insets.bottom - bottom);
+            if (newLeft == left && newTop == top && newRight == right && newBottom == bottom) {
+                return insets;
+            }
+            return Insets.of(newLeft, newTop, newRight, newBottom);
+        }
+
+        /**
+         * Builder for {@link WindowInsetsCompat}.
+         */
+        public static final class Builder {
+            private final BuilderImpl mImpl;
+
+            /**
+             * Creates a builder where all insets are initially consumed.
+             */
+            public Builder() {
+                if (SDK_INT >= 29) {
+                    mImpl = new BuilderImpl29();
+                } else if (SDK_INT >= 20) {
+                    mImpl = new BuilderImpl20();
+                } else {
+                    mImpl = new BuilderImpl();
+                }
+            }
+
+            /**
+             * Creates a builder where all insets are initialized from {@link WindowInsetsCompat}.
+             *
+             * @param insets the instance to initialize from.
+             */
+            public Builder(@NonNull WindowInsetsCompat insets) {
+                if (SDK_INT >= 29) {
+                    mImpl = new BuilderImpl29(insets);
+                } else if (SDK_INT >= 20) {
+                    mImpl = new BuilderImpl20(insets);
+                } else {
+                    mImpl = new BuilderImpl(insets);
+                }
+            }
+
+            /**
+             * Sets system window insets in pixels.
+             *
+             * <p>The system window inset represents the area of a full-screen window that is
+             * partially or fully obscured by the status bar, navigation bar, IME or other system
+             * windows.</p>
+             *
+             * @return itself
+             * @see #getSystemWindowInsets()
+             */
+            @NonNull
+            public Builder setSystemWindowInsets(@NonNull Insets insets) {
+                mImpl.setSystemWindowInsets(insets);
+                return this;
+            }
+
+            /**
+             * Sets system gesture insets in pixels.
+             *
+             * <p>The system gesture insets represent the area of a window where system gestures have
+             * priority and may consume some or all touch input, e.g. due to the a system bar
+             * occupying it, or it being reserved for touch-only gestures.
+             *
+             * <p>The insets passed will only take effect when running on API 29 and above.
+             *
+             * @return itself
+             * @see #getSystemGestureInsets()
+             */
+            @NonNull
+            public Builder setSystemGestureInsets(@NonNull Insets insets) {
+                mImpl.setSystemGestureInsets(insets);
+                return this;
+            }
+
+            /**
+             * Sets mandatory system gesture insets in pixels.
+             *
+             * <p>The mandatory system gesture insets represent the area of a window where mandatory
+             * system gestures have priority and may consume some or all touch input, e.g. due to the a
+             * system bar occupying it, or it being reserved for touch-only gestures.
+             *
+             * <p>In contrast to {@link #setSystemGestureInsets regular system gestures},
+             * <b>mandatory</b> system gestures cannot be overridden by
+             * {@link ViewCompat#setSystemGestureExclusionRects}.
+             *
+             * <p>The insets passed will only take effect when running on API 29 and above.
+             *
+             * @return itself
+             * @see #getMandatorySystemGestureInsets()
+             */
+            @NonNull
+            public Builder setMandatorySystemGestureInsets(@NonNull Insets insets) {
+                mImpl.setMandatorySystemGestureInsets(insets);
+                return this;
+            }
+
+            /**
+             * Sets tappable element insets in pixels.
+             *
+             * <p>The tappable element insets represent how much tappable elements <b>must at least</b>
+             * be inset to remain both tappable and visually unobstructed by persistent system windows.
+             *
+             * <p>The insets passed will only take effect when running on API 29 and above.
+             *
+             * @return itself
+             * @see #getTappableElementInsets()
+             */
+            @NonNull
+            public Builder setTappableElementInsets(@NonNull Insets insets) {
+                mImpl.setTappableElementInsets(insets);
+                return this;
+            }
+
+            /**
+             * Sets the stable insets in pixels.
+             *
+             * <p>The stable inset represents the area of a full-screen window that <b>may</b> be
+             * partially or fully obscured by the system UI elements.  This value does not change
+             * based on the visibility state of those elements; for example, if the status bar is
+             * normally shown, but temporarily hidden, the stable inset will still provide the inset
+             * associated with the status bar being shown.</p>
+             *
+             * <p>The insets passed will only take effect when running on API 29 and above.
+             *
+             * @return itself
+             * @see #getStableInsets()
+             */
+            @NonNull
+            public Builder setStableInsets(@NonNull Insets insets) {
+                mImpl.setStableInsets(insets);
+                return this;
+            }
+
+            /**
+             * Sets the display cutout.
+             *
+             * <p>The cutout passed will only take effect when running on API 29 and above.
+             *
+             * @param displayCutout the display cutout or null if there is none
+             * @return itself
+             * @see #getDisplayCutout()
+             */
+            @NonNull
+            public Builder setDisplayCutout(@Nullable DisplayCutoutCompat displayCutout) {
+                mImpl.setDisplayCutout(displayCutout);
+                return this;
+            }
+
+            /**
+             * Builds a {@link WindowInsetsCompat} instance.
+             *
+             * @return the {@link WindowInsetsCompat} instance.
+             */
+            @NonNull
+            public WindowInsetsCompat build() {
+                return mImpl.build();
+            }
+        }
+
+        private static class BuilderImpl {
+            private final WindowInsetsCompat mInsets;
+
+            BuilderImpl() {
+                this(new WindowInsetsCompat((WindowInsetsCompat) null));
+            }
+
+            BuilderImpl(@NonNull WindowInsetsCompat insets) {
+                mInsets = insets;
+            }
+
+            void setSystemWindowInsets(@NonNull Insets insets) {
+            }
+
+            void setSystemGestureInsets(@NonNull Insets insets) {
+            }
+
+            void setMandatorySystemGestureInsets(@NonNull Insets insets) {
+            }
+
+            void setTappableElementInsets(@NonNull Insets insets) {
+            }
+
+            void setStableInsets(@NonNull Insets insets) {
+            }
+
+            void setDisplayCutout(@Nullable DisplayCutoutCompat displayCutout) {
+            }
+
+            @NonNull
+            WindowInsetsCompat build() {
+                return mInsets;
+            }
+        }
+
+        @RequiresApi(api = 20)
+        private static class BuilderImpl20 extends BuilderImpl {
+            private static Field sConsumedField;
+            private static boolean sConsumedFieldFetched = false;
+
+            private static Constructor<WindowInsets> sConstructor;
+            private static boolean sConstructorFetched = false;
+
+            private WindowInsets mInsets;
+
+            BuilderImpl20() {
+                mInsets = createWindowInsetsInstance();
+            }
+
+            BuilderImpl20(@NonNull WindowInsetsCompat insets) {
+                mInsets = insets.toWindowInsets();
+            }
+
+            @Override
+            void setSystemWindowInsets(@NonNull Insets insets) {
+                if (mInsets != null) {
+                    mInsets = mInsets.replaceSystemWindowInsets(
+                            insets.left, insets.top, insets.right, insets.bottom);
+                }
+            }
+
+            @Override
+            @NonNull
+            WindowInsetsCompat build() {
+                return WindowInsetsCompat.toWindowInsetsCompat(mInsets);
+            }
+
+            @Nullable
+            @SuppressWarnings("JavaReflectionMemberAccess")
+            private static WindowInsets createWindowInsetsInstance() {
+                // On API 20-28, there is no public way to create an WindowInsets instance, so we
+                // need to use reflection.
+
+                // We will first try getting the WindowInsets.CONSUMED static field, and creating a
+                // copy of it
+                if (!sConsumedFieldFetched) {
+                    try {
+                        sConsumedField = WindowInsets.class.getDeclaredField("CONSUMED");
+                    } catch (ReflectiveOperationException e) {
+                        Log.i(TAG, "Could not retrieve WindowInsets.CONSUMED field", e);
+                    }
+                    sConsumedFieldFetched = true;
+                }
+                if (sConsumedField != null) {
+                    try {
+                        WindowInsets consumed = (WindowInsets) sConsumedField.get(null);
+                        if (consumed != null) {
+                            return new WindowInsets(consumed);
+                        }
+                    } catch (ReflectiveOperationException e) {
+                        Log.i(TAG, "Could not get value from WindowInsets.CONSUMED field", e);
+                    }
+                }
+
+                // If we reached here, the WindowInsets.CONSUMED field did not exist. We can try
+                // the hidden WindowInsets(Rect) constructor instead
+                if (!sConstructorFetched) {
+                    try {
+                        sConstructor = WindowInsets.class.getConstructor(Rect.class);
+                    } catch (ReflectiveOperationException e) {
+                        Log.i(TAG, "Could not retrieve WindowInsets(Rect) constructor", e);
+                    }
+                    sConstructorFetched = true;
+                }
+                if (sConstructor != null) {
+                    try {
+                        return sConstructor.newInstance(new Rect());
+                    } catch (ReflectiveOperationException e) {
+                        Log.i(TAG, "Could not invoke WindowInsets(Rect) constructor", e);
+                    }
+                }
+
+                // If the reflective calls failed, return null
+                return null;
+            }
+        }
+
+        @RequiresApi(api = 29)
+        private static class BuilderImpl29 extends BuilderImpl {
+            final WindowInsets.Builder mPlatBuilder;
+
+            BuilderImpl29() {
+                mPlatBuilder = new WindowInsets.Builder();
+            }
+
+            BuilderImpl29(@NonNull WindowInsetsCompat insets) {
+                final WindowInsets platInsets = insets.toWindowInsets();
+                mPlatBuilder = platInsets != null
+                        ? new WindowInsets.Builder(platInsets)
+                        : new WindowInsets.Builder();
+            }
+
+            @Override
+            void setSystemWindowInsets(@NonNull Insets insets) {
+                mPlatBuilder.setSystemWindowInsets(insets.toPlatformInsets());
+            }
+
+            @Override
+            void setSystemGestureInsets(@NonNull Insets insets) {
+                mPlatBuilder.setSystemGestureInsets(insets.toPlatformInsets());
+            }
+
+            @Override
+            void setMandatorySystemGestureInsets(@NonNull Insets insets) {
+                mPlatBuilder.setMandatorySystemGestureInsets(insets.toPlatformInsets());
+            }
+
+            @Override
+            void setTappableElementInsets(@NonNull Insets insets) {
+                mPlatBuilder.setTappableElementInsets(insets.toPlatformInsets());
+            }
+
+            @Override
+            void setStableInsets(@NonNull Insets insets) {
+                mPlatBuilder.setStableInsets(insets.toPlatformInsets());
+            }
+
+            @Override
+            void setDisplayCutout(@Nullable DisplayCutoutCompat displayCutout) {
+                mPlatBuilder.setDisplayCutout(displayCutout != null ? displayCutout.unwrap() : null);
+            }
+
+            @Override
+            @NonNull
+            WindowInsetsCompat build() {
+                return WindowInsetsCompat.toWindowInsetsCompat(mPlatBuilder.build());
+            }
+        }
     }
+
+    /**
+     * An Insets instance holds four integer offsets which describe changes to the four
+     * edges of a Rectangle. By convention, positive values move edges towards the
+     * centre of the rectangle.
+     * <p>
+     * Insets are immutable so may be treated as values.
+     */
+    public static final class Insets {
+        @NonNull
+        public static final Insets NONE = new Insets(0, 0, 0, 0);
+
+        public final int left;
+        public final int top;
+        public final int right;
+        public final int bottom;
+
+        private Insets(int left, int top, int right, int bottom) {
+            this.left = left;
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+        }
+
+        // Factory methods
+
+        /**
+         * Return an Insets instance with the appropriate values.
+         *
+         * @param left   the left inset
+         * @param top    the top inset
+         * @param right  the right inset
+         * @param bottom the bottom inset
+         * @return Insets instance with the appropriate values
+         */
+        @NonNull
+        public static Insets of(int left, int top, int right, int bottom) {
+            if (left == 0 && top == 0 && right == 0 && bottom == 0) {
+                return NONE;
+            }
+            return new Insets(left, top, right, bottom);
+        }
+
+        /**
+         * Return an Insets instance with the appropriate values.
+         *
+         * @param r the rectangle from which to take the values
+         * @return an Insets instance with the appropriate values
+         */
+        @NonNull
+        public static Insets of(@NonNull Rect r) {
+            return of(r.left, r.top, r.right, r.bottom);
+        }
+
+        /**
+         * Two Insets instances are equal iff they belong to the same class and their fields are
+         * pairwise equal.
+         *
+         * @param o the object to compare this instance with.
+         * @return true iff this object is equal {@code o}
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Insets insets = (Insets) o;
+
+            if (bottom != insets.bottom) return false;
+            if (left != insets.left) return false;
+            if (right != insets.right) return false;
+            if (top != insets.top) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = left;
+            result = 31 * result + top;
+            result = 31 * result + right;
+            result = 31 * result + bottom;
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Insets{left=" + left + ", top=" + top
+                    + ", right=" + right + ", bottom=" + bottom + '}';
+        }
+
+        /**
+         * @hide
+         * @deprecated Use {@link #toCompatInsets(android.graphics.Insets)} instead.
+         */
+        @RequiresApi(api = 29)
+        @NonNull
+        @Deprecated
+        @RestrictTo(LIBRARY_GROUP_PREFIX)
+        public static Insets wrap(@NonNull android.graphics.Insets insets) {
+            return toCompatInsets(insets);
+        }
+
+        /**
+         * Return a copy of the given {@link android.graphics.Insets} instance, converted to be an
+         * {@link Insets} instance from AndroidX.
+         */
+        @RequiresApi(api = 29)
+        @NonNull
+        public static Insets toCompatInsets(@NonNull android.graphics.Insets insets) {
+            return Insets.of(insets.left, insets.top, insets.right, insets.bottom);
+        }
+
+        /**
+         * Return a copy this instance, converted to be an {@link android.graphics.Insets} instance
+         * from the platform.
+         */
+        @RequiresApi(api = 29)
+        @NonNull
+        public android.graphics.Insets toPlatformInsets() {
+            return android.graphics.Insets.of(left, top, right, bottom);
+        }
+    }
+
+    /**
+     * Represents the area of the display that is not functional for displaying content.
+     *
+     * <p>{@code DisplayCutoutCompat} instances are immutable.
+     */
+    public static final class DisplayCutoutCompat {
+
+        private final Object mDisplayCutout;
+
+        /**
+         * Creates a DisplayCutout instance.
+         *
+         * @param safeInsets    the insets from each edge which avoid the display cutout as returned by
+         *                      {@link #getSafeInsetTop()} etc.
+         * @param boundingRects the bounding rects of the display cutouts as returned by
+         *                      {@link #getBoundingRects()} ()}.
+         */
+        // TODO(b/73953958): @VisibleForTesting(visibility = PRIVATE)
+        public DisplayCutoutCompat(Rect safeInsets, List<Rect> boundingRects) {
+            this(SDK_INT >= 28 ? new DisplayCutout(safeInsets, boundingRects) : null);
+        }
+
+        private DisplayCutoutCompat(Object displayCutout) {
+            mDisplayCutout = displayCutout;
+        }
+
+        /**
+         * Returns the inset from the top which avoids the display cutout in pixels.
+         */
+        public int getSafeInsetTop() {
+            if (SDK_INT >= 28) {
+                return ((DisplayCutout) mDisplayCutout).getSafeInsetTop();
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Returns the inset from the bottom which avoids the display cutout in pixels.
+         */
+        public int getSafeInsetBottom() {
+            if (SDK_INT >= 28) {
+                return ((DisplayCutout) mDisplayCutout).getSafeInsetBottom();
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Returns the inset from the left which avoids the display cutout in pixels.
+         */
+        public int getSafeInsetLeft() {
+            if (SDK_INT >= 28) {
+                return ((DisplayCutout) mDisplayCutout).getSafeInsetLeft();
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Returns the inset from the right which avoids the display cutout in pixels.
+         */
+        public int getSafeInsetRight() {
+            if (SDK_INT >= 28) {
+                return ((DisplayCutout) mDisplayCutout).getSafeInsetRight();
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Returns a list of {@code Rect}s, each of which is the bounding rectangle for a non-functional
+         * area on the display.
+         * <p>
+         * There will be at most one non-functional area per short edge of the device, and none on
+         * the long edges.
+         *
+         * @return a list of bounding {@code Rect}s, one for each display cutout area.
+         */
+        public List<Rect> getBoundingRects() {
+            if (SDK_INT >= 28) {
+                return ((DisplayCutout) mDisplayCutout).getBoundingRects();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            DisplayCutoutCompat other = (DisplayCutoutCompat) o;
+            return mDisplayCutout == null ? other.mDisplayCutout == null
+                    : mDisplayCutout.equals(other.mDisplayCutout);
+        }
+
+        @Override
+        public int hashCode() {
+            return mDisplayCutout == null ? 0 : mDisplayCutout.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "DisplayCutoutCompat{" + mDisplayCutout + "}";
+        }
+
+        static DisplayCutoutCompat wrap(Object displayCutout) {
+            return displayCutout == null ? null : new DisplayCutoutCompat(displayCutout);
+        }
+
+        @RequiresApi(api = 28)
+        DisplayCutout unwrap() {
+            return (DisplayCutout) mDisplayCutout;
+        }
+    }
+
     //endregion
 }

@@ -14,43 +14,50 @@
   ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName,PrivateResource">
+    <declare-styleable name="STInsets">
+        <!-- Just adding the parameters that we need for now. We can add others if we need them, but
+             ideally we'll be able to use https://github.com/chrisbanes/insetter once it's ready. -->
+        <attr name="st_paddingBottomSystemWindowInsets" format="boolean" />
+        <attr name="st_paddingLeftSystemWindowInsets" format="boolean" />
+        <attr name="st_paddingRightSystemWindowInsets" format="boolean" />
+    </declare-styleable>
 
     <declare-styleable name="STShapeAppearance">
         <!-- Corner size to be used in the ShapeAppearance. All corners default to this value -->
-        <attr name="cornerSize" format="dimension|fraction"/>
+        <attr name="cornerSize" format="dimension|fraction" />
         <!-- Top left corner size to be used in the ShapeAppearance. -->
-        <attr name="cornerSizeTopLeft" format="dimension|fraction"/>
+        <attr name="cornerSizeTopLeft" format="dimension|fraction" />
         <!-- Top right corner size to be used in the ShapeAppearance. -->
-        <attr name="cornerSizeTopRight" format="dimension|fraction"/>
+        <attr name="cornerSizeTopRight" format="dimension|fraction" />
         <!-- Bottom right corner size to be used in the ShapeAppearance. -->
-        <attr name="cornerSizeBottomRight" format="dimension|fraction"/>
+        <attr name="cornerSizeBottomRight" format="dimension|fraction" />
         <!-- Bottom left corner size to be used in the ShapeAppearance. -->
-        <attr name="cornerSizeBottomLeft" format="dimension|fraction"/>
+        <attr name="cornerSizeBottomLeft" format="dimension|fraction" />
 
         <!-- Corner family to be used in the ShapeAppearance. All corners default to this value -->
         <attr name="cornerFamily" format="enum">
-            <enum name="rounded" value="0"/>
-            <enum name="cut" value="1"/>
+            <enum name="rounded" value="0" />
+            <enum name="cut" value="1" />
         </attr>
         <!-- Top left corner family to be used in the ShapeAppearance. -->
         <attr name="cornerFamilyTopLeft" format="enum">
-            <enum name="rounded" value="0"/>
-            <enum name="cut" value="1"/>
+            <enum name="rounded" value="0" />
+            <enum name="cut" value="1" />
         </attr>
         <!-- Top right corner family to be used in the ShapeAppearance. -->
         <attr name="cornerFamilyTopRight" format="enum">
-            <enum name="rounded" value="0"/>
-            <enum name="cut" value="1"/>
+            <enum name="rounded" value="0" />
+            <enum name="cut" value="1" />
         </attr>
         <!-- Bottom right corner family to be used in the ShapeAppearance. -->
         <attr name="cornerFamilyBottomRight" format="enum">
-            <enum name="rounded" value="0"/>
-            <enum name="cut" value="1"/>
+            <enum name="rounded" value="0" />
+            <enum name="cut" value="1" />
         </attr>
         <!-- Bottom left corner family to be used in the ShapeAppearance. -->
         <attr name="cornerFamilyBottomLeft" format="enum">
-            <enum name="rounded" value="0"/>
-            <enum name="cut" value="1"/>
+            <enum name="rounded" value="0" />
+            <enum name="cut" value="1" />
         </attr>
     </declare-styleable>
 
@@ -87,15 +94,15 @@
         <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
              package. -->
         <!-- Shape appearance style reference to be used to construct a ShapeAppearanceModel. -->
-        <attr name="st_shapeAppearance" format="reference"/>
+        <attr name="st_shapeAppearance" format="reference" />
         <!-- Shape appearance overlay style reference for BottomSheet. To be used to augment attributes
              declared in the shapeAppearance. Attribute declaration is in the shape package. -->
         <!-- Shape appearance overlay style reference to be used to modify the shapeAppearance. -->
-        <attr name="st_shapeAppearanceOverlay" format="reference"/>
+        <attr name="st_shapeAppearanceOverlay" format="reference" />
         <!-- Background color used by the BottomSheetBehavior background drawable when shape theming is
              enabled. Accepts a ColorStateList or ColorInt. If shape theming is not enabled,
              android:background should instead be utilized to set the background resource. -->
-        <attr name="android:backgroundTint"/>
+        <attr name="android:backgroundTint" />
         <!-- Behavior properties will be saved and restored by evaluating each flag.
               usage: app:behavior_saveFlags=”hideable|skipCollapsed” -->
         <attr name="st_behavior_saveFlags">

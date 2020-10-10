@@ -90,7 +90,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
         //region rewrite dragCallback
         dragCallback = object : ViewDragHelper.Callback() {
             override fun tryCaptureView(@NonNull child: View, pointerId: Int): Boolean {
-                STLogUtil.d(TAG, "tryCaptureView pointerId=$pointerId")
+                STLogUtil.d(TAG, "tryCaptureView pointerId=$pointerId, state=${getStateDescription(state)}, touchingScrollingChild=$touchingScrollingChild, activePointerId=$activePointerId, pointerId=$pointerId")
 
                 if (state == STBottomSheetBehaviorV2.STATE_DRAGGING) {
                     return false
@@ -99,13 +99,18 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
                     return false
                 }
                 if (state == STBottomSheetBehaviorV2.STATE_EXPANDED && activePointerId == pointerId) {
-                    val scroll = if (nestedScrollingChildRef != null) nestedScrollingChildRef!!.get() else null
-                    if (scroll != null && scroll.canScrollVertically(-1)) {
+                    val nestedScrollingView: View? = if (nestedScrollingChildRef != null) nestedScrollingChildRef?.get() else null
+
+                    STLogUtil.d(TAG, "tryCaptureView canScrollVertically=${nestedScrollingView?.canScrollVertically(-1)}, nestedScrollingView=$nestedScrollingView")
+
+                    if (nestedScrollingView != null && nestedScrollingView.canScrollVertically(-1)) {
                         // Let the content scroll up
                         return false
                     }
                 }
-                return viewRef != null && viewRef!!.get() === child
+                STLogUtil.d(TAG, "tryCaptureView viewRef?.get()===child?${viewRef?.get() === child}")
+
+                return viewRef?.get() === child
             }
 
             override fun onViewPositionChanged(@NonNull changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
@@ -274,19 +279,13 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 STLogUtil.d(TAG, "onStateChanged newState=${getStateDescription(newState)}, this.state=${getStateDescription(getState())}, currentFinalState=${getStateDescription(currentFinalState)}")
                 when (newState) {
-                    STBottomSheetBehaviorV2.STATE_EXPANDED -> {
+                    STBottomSheetBehaviorV2.STATE_EXPANDED, STBottomSheetBehaviorV2.STATE_HALF_EXPANDED, STBottomSheetBehaviorV2.STATE_COLLAPSED -> {
                         currentFinalState = newState
-                    }
-                    STBottomSheetBehaviorV2.STATE_HALF_EXPANDED -> {
-                        currentFinalState = newState
-                    }
-                    STBottomSheetBehaviorV2.STATE_COLLAPSED -> {
-                        currentFinalState = newState
+                        resetNestedViewsLayoutParamsByBottomSheetContainerHeight?.invoke(getBottomSheetContainerHeightByState(newState))
                     }
                     else -> {
                     }
                 }
-                resetNestedViewsLayoutParamsByBottomSheetContainerHeight?.invoke(getBottomSheetContainerHeightByState(newState))
             }
         })
         //endregion

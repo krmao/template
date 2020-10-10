@@ -130,7 +130,7 @@ class STBehaviorBottomSheetV2Activity : STBaseActivity() {
             val targetHeight = currentBottomSheetContainerHeightByState - arrowPanelHeight
             val params: ViewGroup.LayoutParams = nestedScrollView.layoutParams
             val oldHeight = params.height
-            STLogUtil.sync { STLogUtil.w(TAG, "resetBottomSheetContainerNestedViewsLayoutParamsOnSlide targetHeight=$targetHeight, oldScrollY=${nestedScrollView.scrollY}") }
+            STLogUtil.sync { STLogUtil.w(TAG, "resetBottomSheetContainerNestedViewsLayoutParamsOnSlide params.height=${params.height}, targetHeight=$targetHeight, oldScrollY=${nestedScrollView.scrollY}") }
             if (params.height != targetHeight) {
                 params.height = targetHeight
                 nestedScrollView.layoutParams = params

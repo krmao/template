@@ -13,6 +13,20 @@
     background-color: rebeccapurple;
 }
 
+
+.banner {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    background-color: cadetblue;
+}
+
+
 .content {
     padding: 10px;
     flex: 1;

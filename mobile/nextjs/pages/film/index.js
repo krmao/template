@@ -4,7 +4,7 @@ import fetch from "isomorphic-unfetch";
 import React from "react";
 import css from "./index.scss";
 import {withRouter} from "next/router";
-import {Button, Toast, WhiteSpace, WingBlank} from "antd-mobile";
+import {Button, Carousel, Toast, WhiteSpace, WingBlank} from "antd-mobile";
 
 /**
  * https://my.oschina.net/chkui/blog/3003767
@@ -75,7 +75,10 @@ class Film extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            data: ["1", "2", "3"],
+            imgHeight: 176
+        };
         console.log("[LIFECYCLE](Film) constructor"); // props=", props, "state=", this.state);
     }
 
@@ -106,13 +109,19 @@ class Film extends React.Component {
 
     componentDidMount() {
         console.log("[LIFECYCLE](Film) componentDidMount");
-        Toast.loading("Loading...", 30, () => {
+        /*Toast.loading("Loading...", 30, () => {
             console.log("Load complete !!!");
         });
 
         setTimeout(() => {
             Toast.hide();
-        }, 3000);
+        }, 3000);*/
+
+        setTimeout(() => {
+            this.setState({
+                data: ["AiyWuByWklrrUDlFignR", "TekJlZRVCjLFexlOCuWn", "IJOtIlfsYdTyaDTRVrLI"]
+            });
+        }, 100);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -158,6 +167,34 @@ class Film extends React.Component {
                 </Head>
                 <div className={css.page}>
                     <h1 className={css.title}>Marvel TV Shows</h1>
+                    <div className={css.banner}>
+                        <Carousel
+                            autoplay={false}
+                            dots={true}
+                            infinite={true}
+                            beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+                            afterChange={index => console.log("slide to", index)}
+                        >
+                            {this.state.data.map(val => (
+                                <a
+                                    key={val}
+                                    href="http://www.alipay.com"
+                                    style={{display: "inline-block", width: "100%", height: this.state.imgHeight}}
+                                >
+                                    <img
+                                        src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                                        alt=""
+                                        style={{width: "100%", verticalAlign: "top", height: "120px"}}
+                                        onLoad={() => {
+                                            // fire window resize event to change height
+                                            window.dispatchEvent(new Event("resize"));
+                                            this.setState({imgHeight: "auto"});
+                                        }}
+                                    />
+                                </a>
+                            ))}
+                        </Carousel>
+                    </div>
                     <div className={css.content}>
                         {
                             this.props && this.props.shows

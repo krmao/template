@@ -82,7 +82,10 @@ class FilmDetail extends React.Component {
                         }
                     </p>
 
-                    {props && props.show && props.show.image != null && props.show.image.medium != null ? <img className={css.img} src={props.show.image.medium} alt={""}/> : null}
+                    <div className={css.image_container}>
+                        <img className={css.image_qr_code} src="/static/template_qr_code.png" alt="二维码"/>
+                        {props && props.show && props.show.image != null && props.show.image.medium != null ? <img className={css.image_content} src={props.show.image.medium} alt={""}/> : null}
+                    </div>
                 </div>
             </React.Fragment>
         );

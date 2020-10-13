@@ -25,7 +25,7 @@
 }
 
 .image_container {
-    display: inline-block;
+    display: block;
     position: relative;
     background-color: red;
     width: 200px;
@@ -39,7 +39,7 @@
      */
     object-fit: cover;
     -o-object-fit: cover;
-    width: 100%;
+    width: 200px;
 }
 
 .image_qr_code {

@@ -82,7 +82,7 @@
 }
 
 /**
- * MOBILE SMALL - PHONE
+ * MOBILE SMALL - PHONE OR CHROME-RESPONSIVE
  * Small screen, retina, stuff to override above media query
  * Small screen, non-retina
  */
@@ -145,7 +145,7 @@ only screen and (min-width: 0px) and (min-resolution: 2dppx) and (max-width: 411
 }
 
 /**
- * MOBILE MEDIUM - PAD PRO
+ * MOBILE MEDIUM - PAD PRO OR CHROME-RESPONSIVE
  * Medium screen, retina, stuff to override above media query
  * Small screen, retina, stuff to override above media query
  * Small screen, non-retina
@@ -182,7 +182,7 @@ only screen and (min-width: 412px) and (min-resolution: 2dppx) and (max-width: 1
  * PC LARGE
  * Large screen, non-retina
  */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1025px) {
     .page {
         @include page(60%);
     }
@@ -207,7 +207,7 @@ only screen and (min-width: 412px) and (min-resolution: 2dppx) and (max-width: 1
 }
 
 /**
- * MOBILE LARGE - CUSTOM SCREEN
+ * MOBILE LARGE - CUSTOM SCREEN OR CHROME-RESPONSIVE
  * Large screen, retina, stuff to override above media query
  */
 @media only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1025px),

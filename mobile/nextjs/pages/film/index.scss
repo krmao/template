@@ -1,10 +1,22 @@
+/**
+ * @media 媒体查询
+ * only(限定某种设备)
+ * screen 是媒体类型里的一种
+ * and 与
+ * <link rel="stylesheet" type="text/css" href="styleB.css"  media="screen and (min-width: 600px) and (max-width: 800px)">
+ */
+
 @import "components/library_business/styles/base";
 
-.page {
-    background-color: cadetblue;
+@mixin page($pageWidth) {
+    width: $pageWidth;
+    background-color: black;
+    margin: 0 auto;
+    min-width: 280px;
+    max-width: 1024px;
 }
 
-.title {
+@mixin title {
     width: 100%;
     padding: 15px;
     color: #ffffff;
@@ -13,13 +25,11 @@
     background-color: rebeccapurple;
 }
 
-
-.banner {
+@mixin banner {
     flex: 1;
     padding: 0;
     margin: 0;
     text-align: center;
-    width: 100%;
     font-size: 16px;
     font-style: italic;
     font-weight: bold;
@@ -27,7 +37,7 @@
 }
 
 
-.content {
+@mixin content {
     padding: 10px;
     flex: 1;
     text-align: center;
@@ -38,7 +48,193 @@
     background-color: cadetblue;
 }
 
-.toastContainer {
+@mixin toastContainer {
     width: 100%;
     background-color: darkblue;
+}
+
+/**
+ * PC SMALL
+ * Small screen, non-retina
+ */
+@media only screen and (min-width: 0px) and (max-width: 411px) {
+    .page {
+        @include page(100%);
+    }
+
+    .title {
+        @include title();
+        background-color: pink;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+
+}
+
+/**
+ * MOBILE SMALL - PHONE
+ * Small screen, retina, stuff to override above media query
+ * Small screen, non-retina
+ */
+@media only screen and (min-width: 0px) and (-webkit-min-device-pixel-ratio: 2) and (max-width: 411px),
+only screen and (min-width: 0px) and (min--moz-device-pixel-ratio: 2) and (max-width: 411px),
+only screen and (min-width: 0px) and (-o-min-device-pixel-ratio: 2/1) and (max-width: 411px),
+only screen and (min-width: 0px) and (min-device-pixel-ratio: 2) and (max-width: 411px),
+only screen and (min-width: 0px) and (min-resolution: 192dpi) and (max-width: 411px),
+only screen and (min-width: 0px) and (min-resolution: 2dppx) and (max-width: 411px) {
+    .page {
+        @include page(100%);
+    }
+
+    .title {
+        @include title();
+        background-color: deeppink;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+}
+
+/**
+ * PC MEDIUM
+ * Medium screen, non-retina
+ * Small screen, retina, stuff to override above media query
+ * Small screen, non-retina
+ */
+@media only screen and (min-width: 412px) and (max-width: 1024px) {
+    .page {
+        @include page(80%);
+    }
+
+    .title {
+        @include title();
+        background-color: yellow;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+
+}
+
+/**
+ * MOBILE MEDIUM - PAD PRO
+ * Medium screen, retina, stuff to override above media query
+ * Small screen, retina, stuff to override above media query
+ * Small screen, non-retina
+ */
+@media only screen and (min-width: 412px) and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px),
+only screen and (min-width: 412px) and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px),
+only screen and (min-width: 412px) and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px),
+only screen and (min-width: 412px) and (min-device-pixel-ratio: 2) and (max-width: 1024px),
+only screen and (min-width: 412px) and (min-resolution: 192dpi) and (max-width: 1024px),
+only screen and (min-width: 412px) and (min-resolution: 2dppx) and (max-width: 1024px) {
+    .page {
+        @include page(80%);
+    }
+
+    .title {
+        @include title();
+        background-color: orange;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+}
+
+/**
+ * PC LARGE
+ * Large screen, non-retina
+ */
+@media only screen and (min-width: 1024px) {
+    .page {
+        @include page(60%);
+    }
+
+    .title {
+        @include title();
+        background-color: lightskyblue;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+
+}
+
+/**
+ * MOBILE LARGE - CUSTOM SCREEN
+ * Large screen, retina, stuff to override above media query
+ */
+@media only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1025px),
+only screen and (min--moz-device-pixel-ratio: 2) and (min-width: 1025px),
+only screen and (-o-min-device-pixel-ratio: 2/1) and (min-width: 1025px),
+only screen and (min-device-pixel-ratio: 2) and (min-width: 1025px),
+only screen and (min-resolution: 192dpi) and (min-width: 1025px),
+only screen and (min-resolution: 2dppx) and (min-width: 1025px) {
+    .page {
+        @include page(60%);
+    }
+
+    .title {
+        @include title();
+        background-color: dodgerblue;
+    }
+
+    .banner {
+        @include banner();
+    }
+
+    .content {
+        @include content();
+    }
+
+    .toastContainer {
+        @include toastContainer();
+    }
+
 }

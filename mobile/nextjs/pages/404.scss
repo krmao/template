@@ -2,7 +2,6 @@
 
 .page {
     display: block;
-    position: relative;
     background-color: #3e3a39;
     height: 100vh;
     text-align: center;
@@ -12,8 +11,8 @@
     position: absolute;
     object-fit: cover;
     -o-object-fit: cover;
-    width: 600px;
-    height: 308px;
+    width: 100%;
+    max-width: 600px;
     left: 0;
     top: 0;
     right: 0;

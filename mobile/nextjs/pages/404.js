@@ -1,4 +1,5 @@
 import React from "react";
+import css from "./404.scss";
 
 /**
  * 404.js Cannot Have getInitialProps
@@ -7,6 +8,8 @@ import React from "react";
  */
 export default class extends React.Component {
     render() {
-        return <p>404 error occurred on client</p>;
+        return <div className={css.page}>
+            <img className={css.image_content} src="/static/404.jpeg" alt="404"/>
+        </div>;
     }
 }

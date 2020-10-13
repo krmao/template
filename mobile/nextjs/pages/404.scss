@@ -1,0 +1,21 @@
+@import "../components/library_business/styles/base";
+
+.page {
+    display: block;
+    position: relative;
+    background-color: #3e3a39;
+    height: 100vh;
+    text-align: center;
+}
+
+.image_content {
+    position: absolute;
+    object-fit: cover;
+    -o-object-fit: cover;
+    width: 600px;
+    height: 308px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}

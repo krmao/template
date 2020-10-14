@@ -17,7 +17,7 @@ gradle.ext {
 
     modules = [
             'pictureviewer': ['enable': false],
-            'liveStreaming': ['enable': false],
+            'liveStreaming': ['enable': true],
             'flutter'      : [
                     'enable'     : false,
                     'enableBoost': false,

@@ -124,7 +124,7 @@ ext {
     androidXFragmentVersion = "1.2.5"
     androidXConstraintlayoutVersion = "2.0.0-rc1"
     androidXMaterialVersion = "1.2.0"
-    androidXLifecycleVersion = "2.2.0"
+    androidXLifecycleVersion = "2.3.0-beta01"
 
     // React Native Version
     reactNativeVersion = "0.62.2"

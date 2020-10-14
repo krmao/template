@@ -105,7 +105,7 @@
                 android:inputType="textUri"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:text="rtmp://10.32.33.20:5388/rtmplive/room-mobile"
+                android:text="rtmp://10.32.33.157:5387/live/room-pc"
                 android:textColor="@color/black"
                 android:textColorHint="@color/blue_grey"
                 android:textSize="12sp" />

@@ -23,7 +23,6 @@ import com.smart.template.R
 import com.smart.template.home.animation.magic.captureanim.STMagicFragment
 import com.smart.template.home.animation.swipe.SwipeMenuFragment
 import com.smart.template.home.animation.wave.STRippleFragment
-import com.smart.template.home.test.PullToNextPageFragment
 import com.smart.template.home.test.RecyclerViewDragAndTransferFragment
 import com.smart.template.home.test.RecyclerViewSnapTopFragment
 import com.smart.template.home.test.VideoPlayerFragment
@@ -38,7 +37,7 @@ class HomeFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        label1TV.ensureOnGlobalLayoutListener {
+        /*label1TV.ensureOnGlobalLayoutListener {
             val text = label1TV.text.toString().trim()
             STLogUtil.w("[SYS] LABEL 1 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
             STLogUtil.w("[SYS] LABEL 1 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}")
@@ -62,7 +61,7 @@ class HomeFragment : STBaseFragment() {
             val text = label5TV.text.toString().trim()
             STLogUtil.w("[SYS] LABEL 5 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
             STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
-        }
+        }*/
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
         }
@@ -89,9 +88,6 @@ class HomeFragment : STBaseFragment() {
         btnMagic.setOnClickListener {
             STMagicFragment.goTo(context)
         }
-        secondFloor.setOnClickListener {
-            startActivity(Intent(context, STBehaviorBottomSheetSecondFloorActivity::class.java))
-        }
         btnRipple.setOnClickListener {
             STRippleFragment.goTo(context)
         }
@@ -116,13 +112,6 @@ class HomeFragment : STBaseFragment() {
                 STLogUtil.w("videoplayer", it.toString())
             }
         }
-        gaodeMap.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putBoolean("useBaidu", false)
-            STRouteManager.goToFragment(activity, "com.smart.library.map.MapFragment", bundle) {
-                STLogUtil.w("home", it.toString())
-            }
-        }
         dialogText.setOnClickListener {
             val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context, "规划中...", canceledOnTouchOutside = true)
             loadingDialog?.show()
@@ -130,14 +119,6 @@ class HomeFragment : STBaseFragment() {
         dialogLoading.setOnClickListener {
             val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context)
             loadingDialog?.show()
-        }
-        flutterHotUpdate.setOnClickListener {
-            //adb push assets/ /sdcard/Android/data/com.smart.template/cache/
-            //val copySuccess = STFileUtil.copyDirectory(STCacheManager.getCacheChildDir("assets"), File(PathUtils.getDataDirectory(STBaseApplication.INSTANCE)))
-            //STToastUtil.show("copySuccess?$copySuccess")
-        }
-        slideToNextPage.setOnClickListener {
-            PullToNextPageFragment.goTo(context)
         }
         recyclersTransferItem.setOnClickListener {
             RecyclerViewDragAndTransferFragment.goTo(context)

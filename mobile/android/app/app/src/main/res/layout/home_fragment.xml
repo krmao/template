@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/label1TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         android:textSize="16dp"
         android:textStyle="bold"
         tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
-
+-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -190,14 +190,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="dialog loading" />
-
-                    <Button
-                        android:id="@+id/flutterHotUpdate"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="flutter热更新" />
-
                 </TableRow>
 
                 <TableRow>
@@ -208,15 +200,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="yesea push rtmp" />
-
-                    <Button
-                        android:id="@+id/slideToNextPage"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="滑动下一页"
-                        app:backgroundTint="@color/blue_600" />
-
                 </TableRow>
 
                 <TableRow>
@@ -249,11 +232,11 @@
                         app:backgroundTint="@color/blue_600" />
 
                     <Button
-                        android:id="@+id/gaodeMap"
+                        android:id="@+id/btnSwipe"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="gaode map"
+                        android:text="swipe"
                         app:backgroundTint="@color/blue_600" />
 
                 </TableRow>
@@ -282,26 +265,6 @@
                 <TableRow>
 
                     <Button
-                        android:id="@+id/btnSwipe"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="swipe"
-                        app:backgroundTint="@color/blue_600" />
-
-                    <Button
-                        android:id="@+id/btnSwipe2"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="swipe 2"
-                        app:backgroundTint="@color/blue_600" />
-
-                </TableRow>
-
-                <TableRow>
-
-                    <Button
                         android:id="@+id/btnColorPicker"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
@@ -322,13 +285,6 @@
                 <TableRow>
 
                     <Button
-                        android:id="@+id/secondFloor"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="二楼"
-                        app:backgroundTint="@color/blue_600" />
-                    <Button
                         android:id="@+id/bottomSheet"
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
@@ -345,8 +301,6 @@
                         app:backgroundTint="@color/blue_600" />
 
                 </TableRow>
-
-
             </TableLayout>
         </LinearLayout>
     </ScrollView>

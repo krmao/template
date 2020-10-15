@@ -24,7 +24,8 @@ dependencies {
     }
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
     kapt "com.jakewharton:butterknife-compiler:10.1.0"
-    kapt "com.github.bumptech.glide:compiler:4.9.0"
+    kapt "com.github.bumptech.glide:compiler:4.10.0"
+    api "com.github.bumptech.glide:glide:4.10.0"
 
     api project(':library-videoplayer')
 
@@ -38,10 +39,8 @@ dependencies {
     api "com.github.ctiao:ndkbitmap-armv5:0.9.21"
     api "com.github.ctiao:ndkbitmap-x86:0.9.21"
 
-    api "com.github.bumptech.glide:glide:4.9.0"
-
-    api "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.ext.androidXLifecycleVersion"
-    api "androidx.lifecycle:lifecycle-runtime:$rootProject.ext.androidXLifecycleVersion"
+    // api "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.ext.androidXLifecycleVersion"
+    // api "androidx.lifecycle:lifecycle-runtime:$rootProject.ext.androidXLifecycleVersion"
 
     api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
     api "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"

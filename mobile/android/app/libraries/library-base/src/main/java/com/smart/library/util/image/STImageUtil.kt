@@ -1,11 +1,13 @@
 package com.smart.library.util.image
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
 import android.view.View.MeasureSpec
@@ -14,11 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.drawToBitmap
 import com.smart.library.base.STBaseApplication
+import com.smart.library.util.STLogUtil
 import java.io.InputStream
 
 
 @Suppress("unused")
 object STImageUtil {
+    const val TAG = "[IMAGE_UTIL]"
 
     /**
      * vectorDrawables.useSupportLibrary = true
@@ -50,6 +54,7 @@ object STImageUtil {
      */
     @JvmStatic
     fun mergeBitmap(firstBitmap: Bitmap?, secondBitmap: Bitmap?, secondBitmapLeft: Float = 0f, secondBitmapTop: Float = 0f): Bitmap? {
+        STLogUtil.e(TAG, "mergeBitmap start firstBitmap=$firstBitmap, secondBitmap=$secondBitmap, secondBitmapLeft=$secondBitmapLeft, secondBitmapTop=$secondBitmapTop")
         firstBitmap ?: return null
         secondBitmap ?: return null
 
@@ -57,12 +62,42 @@ object STImageUtil {
         val canvas = Canvas(bitmap)
         canvas.drawBitmap(firstBitmap, Matrix(), null)
         canvas.drawBitmap(secondBitmap, secondBitmapLeft, secondBitmapTop, null)
+        STLogUtil.e(TAG, "mergeBitmap end bitmap=$bitmap")
         return bitmap
     }
 
+    /**
+     * png/jpg -> drawable/mipmap
+     */
     @JvmStatic
-    fun getBitmapFromResource(imageResId: Int, resource: Resources = STBaseApplication.INSTANCE.resources): Bitmap? {
-        return BitmapFactory.decodeResource(resource, imageResId)
+    fun getBitmapFromResource(imageResId: Int, resource: Resources?): Bitmap? {
+        STLogUtil.e(TAG, "getBitmapFromResource start imageResId=$imageResId, resource=$resource")
+        resource ?: return null
+        val bitmap: Bitmap = BitmapFactory.decodeResource(resource, imageResId)
+        STLogUtil.e(TAG, "getBitmapFromResource end bitmap=$bitmap")
+        return bitmap
+    }
+
+    /**
+     * xml -> layer-list/shape
+     */
+    @JvmStatic
+    fun getBitmapFromResourceVector(vectorResId: Int, context: Context?): Bitmap? {
+        STLogUtil.e(TAG, "getBitmapFromResourceVector start vectorResId=$vectorResId, context=$context")
+        context ?: return null
+        val bitmap: Bitmap?
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            val vectorDrawable: Drawable? = context.getDrawable(vectorResId)
+            vectorDrawable ?: return null
+            bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+            vectorDrawable.draw(canvas)
+        } else {
+            bitmap = BitmapFactory.decodeResource(context.resources, vectorResId)
+        }
+        STLogUtil.e(TAG, "getBitmapFromResourceVector end bitmap=$bitmap")
+        return bitmap
     }
 
     @JvmStatic
@@ -71,12 +106,12 @@ object STImageUtil {
     }
 
     @JvmStatic
-    fun getBitmapFromRaw(@RawRes rawResId: Int, resource: Resources = STBaseApplication.INSTANCE.resources): Bitmap? {
+    fun getBitmapFromRaw(@RawRes rawResId: Int, resource: Resources): Bitmap? {
         return BitmapFactory.decodeStream(resource.openRawResource(rawResId))
     }
 
     @JvmStatic
-    fun getBitmapFromAssets(fileName: String, resource: Resources = STBaseApplication.INSTANCE.resources): Bitmap? {
+    fun getBitmapFromAssets(fileName: String, resource: Resources): Bitmap? {
         return BitmapFactory.decodeStream(resource.assets.open(fileName))
     }
 

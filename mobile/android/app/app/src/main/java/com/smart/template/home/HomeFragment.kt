@@ -65,7 +65,8 @@ class HomeFragment : STBaseFragment() {
             STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
         }*/
 
-        val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResource(R.drawable.launch_background), STImageUtil.getBitmapFromResource(R.drawable.st_image))
+        val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResourceVector(R.drawable.launch_background, context), STImageUtil.getBitmapFromResource(R.drawable.st_image, context?.resources))
+        STLogUtil.w("mergedBitmap=$mergedBitmap")
         imageView.setImageBitmap(mergedBitmap)
 
         btnSwipe.setOnClickListener {

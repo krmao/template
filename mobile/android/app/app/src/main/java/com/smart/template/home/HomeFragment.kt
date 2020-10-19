@@ -3,6 +3,7 @@ package com.smart.template.home
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.bus.STBusManager
+import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.colorpicker.STColorPickerUtil
 import com.smart.template.R
 import com.smart.template.home.animation.magic.captureanim.STMagicFragment
@@ -62,6 +64,10 @@ class HomeFragment : STBaseFragment() {
             STLogUtil.w("[SYS] LABEL 5 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
             STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
         }*/
+
+        val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResource(R.drawable.launch_background), STImageUtil.getBitmapFromResource(R.drawable.st_image))
+        imageView.setImageBitmap(mergedBitmap)
+
         btnSwipe.setOnClickListener {
             SwipeMenuFragment.goTo(context)
         }

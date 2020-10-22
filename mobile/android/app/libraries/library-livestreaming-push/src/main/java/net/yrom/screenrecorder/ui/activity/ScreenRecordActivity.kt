@@ -33,19 +33,47 @@ import net.yrom.screenrecorder.service.ScreenRecordListenerService
 class ScreenRecordActivity : Activity() {
     private var recorderAidlInterface: IScreenRecorderAidlInterface? = null
     private val serviceIntent: Intent by lazy { Intent(this, ScreenRecordListenerService::class.java) }
-    // private val danmakuBeanList: MutableList<DanmakuBean> = ArrayList()
+    private val serviceConnection by lazy {
+        object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName, service: IBinder) {
+                recorderAidlInterface = IScreenRecorderAidlInterface.Stub.asInterface(service)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName) {
+                recorderAidlInterface = null
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         button.setOnClickListener {
             if (recorderAidlInterface?.isStartedScreenRecord == true) {
-                recorderAidlInterface?.stopScreenRecord()
+                stop()
             } else {
-                val captureIntent = (getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent()
-                startActivityForResult(captureIntent, REQUEST_CODE)
+                start()
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun stop() {
+        recorderAidlInterface?.stopScreenRecord()
+        recorderAidlInterface = null
+        unbindService(serviceConnection)
+        stopService(serviceIntent)
+        button.text = "Start Recorder"
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun start() {
+        if (recorderAidlInterface?.isStartedScreenRecord == true) {
+            stop()
+        }
+        val captureIntent = (getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent()
+        startActivityForResult(captureIntent, REQUEST_CODE)
+        button.text = "Stop Recorder"
     }
 
     @SuppressLint("SetTextI18n")
@@ -56,63 +84,25 @@ class ScreenRecordActivity : Activity() {
 
         bindService(
             serviceIntent,
-            object : ServiceConnection {
-                override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                    recorderAidlInterface = IScreenRecorderAidlInterface.Stub.asInterface(service)
-                }
-
-                override fun onServiceDisconnected(name: ComponentName) {
-                    recorderAidlInterface = null
-                }
-            },
+            serviceConnection,
             BIND_AUTO_CREATE
         )
         ContextCompat.startForegroundService(this, serviceIntent)
-        button.text = "Stop Recorder"
         // moveTaskToBack(true)
-        // startAutoSendDanmaku()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (recorderAidlInterface?.isStartedScreenRecord == true) {
-            recorderAidlInterface?.stopScreenRecord()
-        }
-        stopService(serviceIntent)
+        stop()
     }
-
-    /*private fun startAutoSendDanmaku() {
-        val exec = Executors.newCachedThreadPool()
-        exec.execute {
-            var index = 0
-            while (true) {
-                val danmakuBean = DanmakuBean()
-                danmakuBean.message = index++.toString()
-                danmakuBean.name = "little girl"
-                danmakuBeanList.add(danmakuBean)
-                try {
-                    if (recorderAidlInterface != null) {
-                        recorderAidlInterface?.sendDanmaku(danmakuBeanList)
-                    }
-                } catch (e: RemoteException) {
-                    e.printStackTrace()
-                }
-                try {
-                    Thread.sleep(2000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }*/
 
     companion object {
         const val PENDING_REQUEST_CODE = 0x01
         private const val REQUEST_CODE = 1
         fun start(ctx: Context) {
-            val it = Intent(ctx, ScreenRecordActivity::class.java)
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            ctx.startActivity(it)
+            val intent = Intent(ctx, ScreenRecordActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            ctx.startActivity(intent)
         }
     }
 }

@@ -2,40 +2,57 @@ package net.yrom.screenrecorder.service
 
 import android.app.*
 import android.content.Intent
+import android.hardware.display.DisplayManager
+import android.hardware.display.VirtualDisplay
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
-import android.util.Log
+import android.view.Surface
 import androidx.core.app.NotificationCompat
+import com.smart.library.util.STLogUtil
 import net.ossrs.yasea.R
 import net.yrom.screenrecorder.IScreenRecorderAidlInterface
 import net.yrom.screenrecorder.core.RESAudioClient
 import net.yrom.screenrecorder.core.RESCoreParameters
-import net.yrom.screenrecorder.model.DanmakuBean
 import net.yrom.screenrecorder.rtmp.RESFlvData
 import net.yrom.screenrecorder.rtmp.RESFlvDataCollecter
 import net.yrom.screenrecorder.task.RtmpStreamingSender
 import net.yrom.screenrecorder.task.ScreenRecorder
 import net.yrom.screenrecorder.ui.activity.ScreenRecordActivity
-import net.yrom.screenrecorder.view.MyWindowManager
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScreenRecordListenerService : Service() {
-    private val NOTIFICATION_ID = 3
+
     private val mediaProjectionManager: MediaProjectionManager by lazy { getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager }
     private val executorService: ExecutorService by lazy { Executors.newCachedThreadPool() }
     private val streamingSender: RtmpStreamingSender by lazy { RtmpStreamingSender() }
     private val audioClient: RESAudioClient by lazy { RESAudioClient(RESCoreParameters()) }
+    private var isStartedScreenRecord: Boolean = false
+    private var screenRecorder: ScreenRecorder? = null
+    private var mediaProjectionForRecord: MediaProjection? = null
+    private var rtmpURL: String? = ""
+    private var resultCode = 0
+    private var resultData: Intent = Intent()
+    private var surface: Surface? = null
+    private var surfaceWidth: Int = 100
+    private var surfaceHeight: Int = 100
+    private var screenDensity: Int = -1
+    private var virtualDisplay: VirtualDisplay? = null
+    private val notificationBuilder: NotificationCompat.Builder by lazy {
+        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher)
+            .setContentTitle("SMART APP")
+            .setContentText("正在录制屏幕")
+            .setOngoing(true)
+            .setDefaults(Notification.DEFAULT_VIBRATE)
+    }
     private val binder: IScreenRecorderAidlInterface.Stub = object : IScreenRecorderAidlInterface.Stub() {
-        override fun sendDanmaku(danmakuBean: List<DanmakuBean>) {
-            if (MyWindowManager.isWindowShowing()) {
-                MyWindowManager.getSmallWindow().setDataToList(danmakuBean)
-            }
+        override fun startScreenRecord() {
+            this@ScreenRecordListenerService.startScreenRecord()
         }
-
-        override fun startScreenRecord(bundleData: Intent) {}
 
         override fun stopScreenRecord() {
             this@ScreenRecordListenerService.stopScreenRecord()
@@ -44,56 +61,61 @@ class ScreenRecordListenerService : Service() {
         override fun isStartedScreenRecord(): Boolean {
             return this@ScreenRecordListenerService.isStartedScreenRecord
         }
-    }
 
-    private var screenRecorder: ScreenRecorder? = null
-    private val builder: NotificationCompat.Builder by lazy {
-        NotificationCompat.Builder(this)
-            .setSmallIcon(R.drawable.ic_launcher)
-            .setContentTitle(resources.getString(R.string.app_name))
-            .setContentText("您正在录制视频内容哦")
-            .setOngoing(true)
-            .setDefaults(Notification.DEFAULT_VIBRATE)
+        override fun stopScreenCapture() {
+            this@ScreenRecordListenerService.stopScreenCapture()
+        }
+
+        override fun startScreenCapture() {
+            this@ScreenRecordListenerService.startScreenCapture()
+        }
     }
-    var mediaProjection: MediaProjection? = null
-    var rtmpURL: String = ""
 
     override fun onBind(intent: Intent): IBinder? = binder
 
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        initNotification()
-        val resultCode: Int = intent.getIntExtra("code", -1)
-        val data: Intent = intent.getParcelableExtra("data")
+        createNotification()
+
+        surfaceWidth = intent.getIntExtra("surfaceWidth", 0)
+        surfaceHeight = intent.getIntExtra("surfaceHeight", 0)
+        screenDensity = intent.getIntExtra("screenDensity", 0)
+
+        resultCode = intent.getIntExtra("resultCode", 0)
+        resultData = intent.getParcelableExtra("resultData") ?: Intent()
+
+        surface = intent.getParcelableExtra("surface")
         rtmpURL = intent.getStringExtra("rtmpURL")
-        mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data)
+
+        STLogUtil.w(TAG, "surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
+        STLogUtil.w(TAG, "screenDensity=$screenDensity, resultCode=$resultCode, resultData=$resultData")
+        STLogUtil.w(TAG, "surface=$surface, rtmpURL=$rtmpURL")
+
         startScreenRecord()
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private var isStartedScreenRecord: Boolean = false
     private fun startScreenRecord() {
+        STLogUtil.w(TAG, "startScreenRecord start isStartedScreenRecord=$isStartedScreenRecord")
         if (isStartedScreenRecord) return
-        streamingSender.sendStart(rtmpURL)
-        if (!audioClient.prepare()) {
-            throw NullPointerException("audioClient.prepare() failed")
-        }
 
-        Log.e("@@", "mediaProjection=$mediaProjection")
+        if (!audioClient.prepare()) {
+            STLogUtil.e(TAG, "audioClient.prepare() failed")
+            return
+        }
+        mediaProjectionForRecord = mediaProjectionManager.getMediaProjection(resultCode, resultData)
+        STLogUtil.e(TAG, "mediaProjectionForRecord=$mediaProjectionForRecord")
+
+        streamingSender.sendStart(rtmpURL)
+
         val collector = RESFlvDataCollecter { flvData, type -> streamingSender.sendFood(flvData, type) }
-        screenRecorder = ScreenRecorder(collector, RESFlvData.VIDEO_WIDTH, RESFlvData.VIDEO_HEIGHT, RESFlvData.VIDEO_BITRATE, 1, mediaProjection)
+        screenRecorder = ScreenRecorder(collector, RESFlvData.VIDEO_WIDTH, RESFlvData.VIDEO_HEIGHT, RESFlvData.VIDEO_BITRATE, 1, mediaProjectionForRecord)
         screenRecorder?.start()
         audioClient.start(collector)
         executorService.execute(streamingSender)
 
-        // 当前界面是桌面，且没有悬浮窗显示，则创建悬浮窗。
-        /*if (!MyWindowManager.isWindowShowing()) {
-            Handler().post {
-                MyWindowManager.createSmallWindow(applicationContext)
-            }
-        }*/
-
+        startScreenCapture()
         isStartedScreenRecord = true
+        STLogUtil.w(TAG, "startScreenRecord end")
     }
 
     private fun stopScreenRecord() {
@@ -103,28 +125,83 @@ class ScreenRecordListenerService : Service() {
         streamingSender.sendStop()
         streamingSender.quit()
         executorService.shutdown()
+        mediaProjectionForRecord?.stop()
+        mediaProjectionForRecord = null
+
+        stopScreenCapture()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         stopScreenRecord()
-        MyWindowManager.removeSmallWindow(applicationContext)
     }
 
-    private fun initNotification() {
-        builder.setContentIntent(PendingIntent.getActivity(this, ScreenRecordActivity.PENDING_REQUEST_CODE, Intent(this, ScreenRecordActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT))
-        /*以下是对Android 8.0的适配*/
-        //普通notification适配
+    @Suppress("DEPRECATION")
+    private fun createNotification() {
+        notificationBuilder.setContentIntent(PendingIntent.getActivity(this, ScreenRecordActivity.PENDING_REQUEST_CODE, Intent(this, ScreenRecordActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId("notification_id")
-        }
-        //前台服务notification适配
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(NotificationChannel("notification_id", "notification_name", NotificationManager.IMPORTANCE_LOW))
+            notificationManager.createNotificationChannel(NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW))
+
         }
-        val notification = builder.build() // 获取构建好的Notification
-        notification.defaults = Notification.DEFAULT_SOUND //设置为默认的声音
+        val notification = notificationBuilder.build()
+        notification.defaults = Notification.DEFAULT_SOUND
         startForeground(NOTIFICATION_ID, notification)
+    }
+
+    //region capture
+    private fun startScreenCapture() {
+        STLogUtil.w(TAG, "startScreenCapture start")
+        stopScreenCapture()
+        if (virtualDisplay == null) {
+            STLogUtil.w(TAG, "surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
+            STLogUtil.w(TAG, "screenDensity=$screenDensity, resultCode=$resultCode, resultData=$resultData")
+            STLogUtil.w(TAG, "surface=$surface, rtmpURL=$rtmpURL")
+            virtualDisplay = mediaProjectionForRecord?.createVirtualDisplay(
+                "ScreenCapture:" + System.currentTimeMillis(),
+                surfaceWidth,
+                surfaceHeight,
+                screenDensity,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                surface,
+                object : VirtualDisplay.Callback() {
+                    override fun onPaused() {
+                        super.onPaused()
+                        STLogUtil.w(TAG, "VirtualDisplay Callback onPaused")
+                    }
+
+                    override fun onResumed() {
+                        super.onResumed()
+                        STLogUtil.w(TAG, "VirtualDisplay Callback onResumed")
+                    }
+
+                    override fun onStopped() {
+                        super.onStopped()
+                        STLogUtil.w(TAG, "VirtualDisplay Callback onStopped")
+                    }
+                },
+                Handler()
+            )
+        }
+        STLogUtil.w(TAG, "startScreenCapture end mediaProjectionForRecord=$mediaProjectionForRecord, virtualDisplay=$virtualDisplay")
+    }
+
+    private fun stopScreenCapture() {
+        STLogUtil.w(TAG, "stopScreenCapture start virtualDisplay=$virtualDisplay")
+        if (virtualDisplay == null) {
+            return
+        }
+        virtualDisplay?.release()
+        virtualDisplay = null
+        STLogUtil.w(TAG, "stopScreenCapture end")
+    }
+    //endregion
+
+    companion object {
+        private const val TAG = "SCREEN_RECORDER_SERVICE"
+        private const val NOTIFICATION_ID = 3
+        private const val NOTIFICATION_CHANNEL_ID = "NOTIFICATION_CHANNEL_ID"
+        private const val NOTIFICATION_CHANNEL_NAME = "NOTIFICATION_CHANNEL_name"
     }
 }

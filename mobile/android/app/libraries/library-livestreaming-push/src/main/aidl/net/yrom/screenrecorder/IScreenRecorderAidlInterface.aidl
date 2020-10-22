@@ -5,10 +5,10 @@ package net.yrom.screenrecorder;
 import net.yrom.screenrecorder.model.DanmakuBean;
 
 interface IScreenRecorderAidlInterface {
-
-    void sendDanmaku(in List<DanmakuBean> danmakuBean);
-
-    void startScreenRecord(in Intent bundleData);
+    void startScreenRecord();
     void stopScreenRecord();
     boolean isStartedScreenRecord();
+
+    void stopScreenCapture();
+    void startScreenCapture();
 }

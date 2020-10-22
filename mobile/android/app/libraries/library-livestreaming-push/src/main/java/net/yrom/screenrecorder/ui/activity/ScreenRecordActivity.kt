@@ -24,8 +24,12 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import android.os.IBinder
+import android.util.DisplayMetrics
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_main.*
+import com.smart.library.util.STLogUtil
+import com.smart.library.util.STToastUtil
+import kotlinx.android.synthetic.main.screen_record_activity.*
+import kotlinx.android.synthetic.main.st_activity_video_push.view.*
 import net.ossrs.yasea.R
 import net.yrom.screenrecorder.IScreenRecorderAidlInterface
 import net.yrom.screenrecorder.service.ScreenRecordListenerService
@@ -45,9 +49,18 @@ class ScreenRecordActivity : Activity() {
         }
     }
 
+    //region capture
+    private val mScreenDensity by lazy {
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+        metrics.densityDpi
+    }
+
+    //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        setContentView(R.layout.screen_record_activity)
         button.setOnClickListener {
             if (recorderAidlInterface?.isStartedScreenRecord == true) {
                 stop()
@@ -55,6 +68,16 @@ class ScreenRecordActivity : Activity() {
                 start()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // recorderAidlInterface?.startScreenCapture()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // recorderAidlInterface?.stopScreenCapture()
     }
 
     @SuppressLint("SetTextI18n")
@@ -72,23 +95,35 @@ class ScreenRecordActivity : Activity() {
             stop()
         }
         val captureIntent = (getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent()
-        startActivityForResult(captureIntent, REQUEST_CODE)
+        startActivityForResult(captureIntent, REQUEST_CAPETURE_CODE)
         button.text = "Stop Recorder"
     }
 
     @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        serviceIntent.putExtra("code", resultCode)
-        serviceIntent.putExtra("data", data)
-        serviceIntent.putExtra("rtmpURL", et_rtmp_address.text.toString().trim { it <= ' ' })
+        if (requestCode == REQUEST_CAPETURE_CODE) {
+            if (resultCode != RESULT_OK) {
+                STLogUtil.i(TAG, "用户已取消")
+                STToastUtil.show("用户已取消")
+                return
+            }
 
-        bindService(
-            serviceIntent,
-            serviceConnection,
-            BIND_AUTO_CREATE
-        )
-        ContextCompat.startForegroundService(this, serviceIntent)
-        // moveTaskToBack(true)
+            serviceIntent.putExtra("resultCode", resultCode)
+            serviceIntent.putExtra("resultData", data)
+            serviceIntent.putExtra("rtmpURL", et_rtmp_address.text.toString().trim { it <= ' ' })
+            serviceIntent.putExtra("surfaceWidth", mSurfaceView.width)
+            serviceIntent.putExtra("surfaceHeight", mSurfaceView.height)
+            serviceIntent.putExtra("screenDensity", mScreenDensity)
+            serviceIntent.putExtra("surface", mSurfaceView.holder.surface)
+
+            bindService(
+                serviceIntent,
+                serviceConnection,
+                BIND_AUTO_CREATE
+            )
+            ContextCompat.startForegroundService(this, serviceIntent)
+            // moveTaskToBack(true)
+        }
     }
 
     override fun onDestroy() {
@@ -96,9 +131,13 @@ class ScreenRecordActivity : Activity() {
         stop()
     }
 
+
     companion object {
+        const val TAG = "SCREEN_RECORDER"
         const val PENDING_REQUEST_CODE = 0x01
-        private const val REQUEST_CODE = 1
+
+        private const val REQUEST_CAPETURE_CODE = 1
+
         fun start(ctx: Context) {
             val intent = Intent(ctx, ScreenRecordActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

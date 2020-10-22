@@ -206,7 +206,16 @@
                         style="@style/STButton.Default"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@color/orange_A700"
                         android:text="yesea push rtmp" />
+
+                    <Button
+                        android:id="@+id/screenPushRtmp"
+                        style="@style/STButton.Default"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/orange_A700"
+                        android:text="screen push rtmp" />
                 </TableRow>
 
                 <TableRow>

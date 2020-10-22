@@ -8,7 +8,17 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
+
+    /*externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }*/
 
     // resourcePrefix "st_"
 }
@@ -17,6 +27,5 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-base')
-
-    api(name: "yasea-release", ext: "aar") // include rtmp support
+//    api(name: "yasea-release", ext: "aar") // include rtmp support
 }

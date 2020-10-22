@@ -145,6 +145,9 @@ class HomeFragment : STBaseFragment() {
         yeseaPushRtmp.setOnClickListener {
             STBusManager.call(context, "livestreamingpush/push", "rtmp://10.32.33.20:5388/rtmplive/room-mobile")
         }
+        screenPushRtmp.setOnClickListener {
+            STBusManager.call(context, "livestreamingpush/push-screen", "rtmp://10.32.33.20:5388/rtmplive/room-mobile")
+        }
         playVideo.setOnClickListener {
             STBusManager.call(context, "livestreaming/playvideo", "https://vodlnr6niz5.vod.126.net/vodlnr6niz5/c6bc3543-429a-4342-a555-702596131fe4.mp4")
         }

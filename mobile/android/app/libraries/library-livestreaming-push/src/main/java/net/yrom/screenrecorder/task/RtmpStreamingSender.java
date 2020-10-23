@@ -135,7 +135,7 @@ public class RtmpStreamingSender implements Runnable {
     public void sendFood(RESFlvData flvData, int type) {
         synchronized (syncWriteMsgNum) {
             //LAKETODO optimize
-            if (writeMsgNum <= maxQueueLength) {
+            if (writeMsgNum < maxQueueLength) {
                 frameQueue.add(flvData);
                 ++writeMsgNum;
             } else {

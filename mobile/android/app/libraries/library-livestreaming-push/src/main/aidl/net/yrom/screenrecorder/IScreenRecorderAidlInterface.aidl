@@ -11,4 +11,5 @@ interface IScreenRecorderAidlInterface {
 
     void stopScreenCapture();
     void startScreenCapture();
+    boolean isStartedScreenCapture();
 }

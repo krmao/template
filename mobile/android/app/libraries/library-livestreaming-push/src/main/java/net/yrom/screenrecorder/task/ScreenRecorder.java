@@ -88,9 +88,7 @@ public class ScreenRecorder extends Thread {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            mVirtualDisplay = mMediaProjection.createVirtualDisplay(TAG + "-display",
-                    mWidth, mHeight, mDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
-                    mSurface, null, null);
+            mVirtualDisplay = mMediaProjection.createVirtualDisplay(TAG + "-display", mWidth, mHeight, mDpi, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, mSurface, null, null);
             Log.d(TAG, "created virtual display: " + mVirtualDisplay);
             recordVirtualDisplay();
         } catch (Exception e) {
@@ -103,14 +101,13 @@ public class ScreenRecorder extends Thread {
 
     private void prepareEncoder() throws IOException {
         MediaFormat format = MediaFormat.createVideoFormat(MIME_TYPE, mWidth, mHeight);
-        format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
         format.setInteger(MediaFormat.KEY_BIT_RATE, mBitRate);
         format.setInteger(MediaFormat.KEY_FRAME_RATE, FRAME_RATE);
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, IFRAME_INTERVAL);
         Log.d(TAG, "created video format: " + format);
         mEncoder = MediaCodec.createEncoderByType(MIME_TYPE);
-        mEncoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+        mEncoder.configure(format, mSurface, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
         mSurface = mEncoder.createInputSurface();
         Log.d(TAG, "created input surface: " + mSurface);
         mEncoder.start();
@@ -124,11 +121,10 @@ public class ScreenRecorder extends Thread {
                     LogTools.d("VideoSenderThread,MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED");
                     break;
                 case MediaCodec.INFO_TRY_AGAIN_LATER:
-//                    LogTools.d("VideoSenderThread,MediaCodec.INFO_TRY_AGAIN_LATER");
+                    // LogTools.d("VideoSenderThread,MediaCodec.INFO_TRY_AGAIN_LATER");
                     break;
                 case MediaCodec.INFO_OUTPUT_FORMAT_CHANGED:
-                    LogTools.d("VideoSenderThread,MediaCodec.INFO_OUTPUT_FORMAT_CHANGED:" +
-                            mEncoder.getOutputFormat().toString());
+                    LogTools.d("VideoSenderThread,MediaCodec.INFO_OUTPUT_FORMAT_CHANGED:" + mEncoder.getOutputFormat().toString());
                     sendAVCDecoderConfigurationRecord(0, mEncoder.getOutputFormat());
                     break;
                 default:
@@ -172,19 +168,12 @@ public class ScreenRecorder extends Thread {
         return !mQuit.get();
     }
 
-
     private void sendAVCDecoderConfigurationRecord(long tms, MediaFormat format) {
         byte[] AVCDecoderConfigurationRecord = Packager.H264Packager.generateAVCDecoderConfigurationRecord(format);
-        int packetLen = Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH +
-                AVCDecoderConfigurationRecord.length;
+        int packetLen = Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH + AVCDecoderConfigurationRecord.length;
         byte[] finalBuff = new byte[packetLen];
-        Packager.FLVPackager.fillFlvVideoTag(finalBuff,
-                0,
-                true,
-                true,
-                AVCDecoderConfigurationRecord.length);
-        System.arraycopy(AVCDecoderConfigurationRecord, 0,
-                finalBuff, Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH, AVCDecoderConfigurationRecord.length);
+        Packager.FLVPackager.fillFlvVideoTag(finalBuff, 0, true, true, AVCDecoderConfigurationRecord.length);
+        System.arraycopy(AVCDecoderConfigurationRecord, 0, finalBuff, Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH, AVCDecoderConfigurationRecord.length);
         RESFlvData resFlvData = new RESFlvData();
         resFlvData.droppable = false;
         resFlvData.byteBuffer = finalBuff;
@@ -197,20 +186,11 @@ public class ScreenRecorder extends Thread {
 
     private void sendRealData(long tms, ByteBuffer realData) {
         int realDataLength = realData.remaining();
-        int packetLen = Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH +
-                Packager.FLVPackager.NALU_HEADER_LENGTH +
-                realDataLength;
+        int packetLen = Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH + Packager.FLVPackager.NALU_HEADER_LENGTH + realDataLength;
         byte[] finalBuff = new byte[packetLen];
-        realData.get(finalBuff, Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH +
-                        Packager.FLVPackager.NALU_HEADER_LENGTH,
-                realDataLength);
-        int frameType = finalBuff[Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH +
-                Packager.FLVPackager.NALU_HEADER_LENGTH] & 0x1F;
-        Packager.FLVPackager.fillFlvVideoTag(finalBuff,
-                0,
-                false,
-                frameType == 5,
-                realDataLength);
+        realData.get(finalBuff, Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH + Packager.FLVPackager.NALU_HEADER_LENGTH, realDataLength);
+        int frameType = finalBuff[Packager.FLVPackager.FLV_VIDEO_TAG_LENGTH + Packager.FLVPackager.NALU_HEADER_LENGTH] & 0x1F;
+        Packager.FLVPackager.fillFlvVideoTag(finalBuff, 0, false, frameType == 5, realDataLength);
         RESFlvData resFlvData = new RESFlvData();
         resFlvData.droppable = true;
         resFlvData.byteBuffer = finalBuff;

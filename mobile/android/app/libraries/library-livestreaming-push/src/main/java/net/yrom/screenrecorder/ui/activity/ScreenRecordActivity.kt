@@ -25,16 +25,17 @@ import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import android.os.IBinder
 import android.util.DisplayMetrics
+import android.view.SurfaceHolder
 import androidx.core.content.ContextCompat
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import kotlinx.android.synthetic.main.screen_record_activity.*
-import kotlinx.android.synthetic.main.st_activity_video_push.view.*
 import net.ossrs.yasea.R
 import net.yrom.screenrecorder.IScreenRecorderAidlInterface
 import net.yrom.screenrecorder.service.ScreenRecordListenerService
 
-class ScreenRecordActivity : Activity() {
+@SuppressLint("SetTextI18n")
+class ScreenRecordActivity : Activity(), SurfaceHolder.Callback {
     private var recorderAidlInterface: IScreenRecorderAidlInterface? = null
     private val serviceIntent: Intent by lazy { Intent(this, ScreenRecordListenerService::class.java) }
     private val serviceConnection by lazy {
@@ -68,16 +69,30 @@ class ScreenRecordActivity : Activity() {
                 start()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // recorderAidlInterface?.startScreenCapture()
+        buttonCapture.setOnClickListener {
+            if (recorderAidlInterface?.isStartedScreenCapture == true) {
+                stopCapture()
+            } else {
+                startCapture()
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        // recorderAidlInterface?.stopScreenCapture()
+        stopCapture()
+    }
+
+    private fun stopCapture() {
+        if (recorderAidlInterface?.isStartedScreenCapture == true) {
+            recorderAidlInterface?.stopScreenCapture()
+            buttonCapture.text = "start capture"
+        }
+    }
+
+    private fun startCapture() {
+        recorderAidlInterface?.startScreenCapture()
+        buttonCapture.text = "stop capture"
     }
 
     @SuppressLint("SetTextI18n")
@@ -97,6 +112,7 @@ class ScreenRecordActivity : Activity() {
         val captureIntent = (getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent()
         startActivityForResult(captureIntent, REQUEST_CAPETURE_CODE)
         button.text = "Stop Recorder"
+        buttonCapture.text = "stop capture"
     }
 
     @SuppressLint("SetTextI18n")
@@ -143,5 +159,20 @@ class ScreenRecordActivity : Activity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             ctx.startActivity(intent)
         }
+    }
+
+    var surfaceHolder: SurfaceHolder? = null
+
+    override fun surfaceCreated(holder: SurfaceHolder?) {
+        STLogUtil.w(TAG, "surfaceCreated")
+        surfaceHolder = holder
+    }
+
+    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+        STLogUtil.w(TAG, "surfaceChanged")
+    }
+
+    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+        STLogUtil.w(TAG, "surfaceDestroyed")
     }
 }

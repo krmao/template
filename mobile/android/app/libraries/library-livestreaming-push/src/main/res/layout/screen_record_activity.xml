@@ -17,11 +17,12 @@
         <EditText
             android:id="@+id/et_rtmp_address"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:drawable/editbox_background_normal"
             android:gravity="center"
             android:hint="your rtmp address"
+            android:maxLines="1"
             android:text="rtmp://10.32.33.157:5387/live/mm"
             android:textColor="#000000"
             android:textSize="13sp"
@@ -30,9 +31,20 @@
         <Button
             android:id="@+id/button"
             style="@style/STButton.Default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start Recorder"
+            android:layout_width="78dp"
+            android:layout_height="60dp"
+            android:text="Start\nRecorder"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <Button
+            android:id="@+id/buttonCapture"
+            style="@style/STButton.Default"
+            android:layout_width="78dp"
+            android:layout_height="60dp"
+            android:text="Start\nCapture"
+            android:textAllCaps="true"
             android:textSize="10sp"
             tools:ignore="HardcodedText,SmallSp" />
 
@@ -40,6 +52,12 @@
 
     <SurfaceView
         android:id="@+id/mSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="NestedWeights" />
+    <TextureView
+        android:id="@+id/textureView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

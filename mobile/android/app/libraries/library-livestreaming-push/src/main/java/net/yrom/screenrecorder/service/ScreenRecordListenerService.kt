@@ -2,8 +2,10 @@ package net.yrom.screenrecorder.service
 
 import android.app.*
 import android.content.Intent
+import android.graphics.PixelFormat
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
+import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
@@ -31,6 +33,7 @@ class ScreenRecordListenerService : Service() {
     private val streamingSender: RtmpStreamingSender by lazy { RtmpStreamingSender() }
     private val audioClient: RESAudioClient by lazy { RESAudioClient(RESCoreParameters()) }
     private var isStartedScreenRecord: Boolean = false
+    private var isStartedScreenCapture: Boolean = false
     private var screenRecorder: ScreenRecorder? = null
     private var mediaProjectionForRecord: MediaProjection? = null
     private var rtmpURL: String? = ""
@@ -60,6 +63,10 @@ class ScreenRecordListenerService : Service() {
 
         override fun isStartedScreenRecord(): Boolean {
             return this@ScreenRecordListenerService.isStartedScreenRecord
+        }
+
+        override fun isStartedScreenCapture(): Boolean {
+            return this@ScreenRecordListenerService.isStartedScreenCapture
         }
 
         override fun stopScreenCapture() {
@@ -153,37 +160,43 @@ class ScreenRecordListenerService : Service() {
     //region capture
     private fun startScreenCapture() {
         STLogUtil.w(TAG, "startScreenCapture start")
-        stopScreenCapture()
-        if (virtualDisplay == null) {
-            STLogUtil.w(TAG, "surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
-            STLogUtil.w(TAG, "screenDensity=$screenDensity, resultCode=$resultCode, resultData=$resultData")
-            STLogUtil.w(TAG, "surface=$surface, rtmpURL=$rtmpURL")
-            virtualDisplay = mediaProjectionForRecord?.createVirtualDisplay(
-                "ScreenCapture:" + System.currentTimeMillis(),
-                surfaceWidth,
-                surfaceHeight,
-                screenDensity,
-                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                surface,
-                object : VirtualDisplay.Callback() {
-                    override fun onPaused() {
-                        super.onPaused()
-                        STLogUtil.w(TAG, "VirtualDisplay Callback onPaused")
-                    }
-
-                    override fun onResumed() {
-                        super.onResumed()
-                        STLogUtil.w(TAG, "VirtualDisplay Callback onResumed")
-                    }
-
-                    override fun onStopped() {
-                        super.onStopped()
-                        STLogUtil.w(TAG, "VirtualDisplay Callback onStopped")
-                    }
-                },
-                Handler()
-            )
+        if (isStartedScreenCapture) {
+            return
         }
+        stopScreenCapture()
+        if (surface == null) {
+            return
+        }
+
+        STLogUtil.w(TAG, "surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
+        STLogUtil.w(TAG, "screenDensity=$screenDensity, resultCode=$resultCode, resultData=$resultData")
+        STLogUtil.w(TAG, "surface=$surface, rtmpURL=$rtmpURL, mediaProjectionForRecord=$mediaProjectionForRecord")
+        virtualDisplay = mediaProjectionForRecord?.createVirtualDisplay(
+            "ScreenCapture:" + System.currentTimeMillis(),
+            surfaceWidth,
+            surfaceHeight,
+            screenDensity,
+            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+            surface,
+            object : VirtualDisplay.Callback() {
+                override fun onPaused() {
+                    super.onPaused()
+                    STLogUtil.w(TAG, "VirtualDisplay Callback onPaused")
+                }
+
+                override fun onResumed() {
+                    super.onResumed()
+                    STLogUtil.w(TAG, "VirtualDisplay Callback onResumed")
+                }
+
+                override fun onStopped() {
+                    super.onStopped()
+                    STLogUtil.w(TAG, "VirtualDisplay Callback onStopped")
+                }
+            },
+            Handler()
+        )
+        isStartedScreenCapture = true
         STLogUtil.w(TAG, "startScreenCapture end mediaProjectionForRecord=$mediaProjectionForRecord, virtualDisplay=$virtualDisplay")
     }
 
@@ -194,6 +207,7 @@ class ScreenRecordListenerService : Service() {
         }
         virtualDisplay?.release()
         virtualDisplay = null
+        isStartedScreenCapture = false
         STLogUtil.w(TAG, "stopScreenCapture end")
     }
     //endregion

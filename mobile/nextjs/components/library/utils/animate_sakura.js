@@ -15,14 +15,13 @@ const sakuraScaleArray = [0.7, 0.7, 0.9, 0.9, 1.1];
 /***
  * 依赖参数如下
  * data:{
- * availableWidth  屏幕可用宽度
- * availableHeight 屏幕可用高度
- * downSpeed 樱花下落速度,
- * sakuraScaleValue  樱花缩放数值,
- * sakuraImageHeight 樱花图片高度
- * sakuraImageWidth 樱花图片宽度
- * sakuraImgSrc 樱花图片src
- * sakuraImgType ["SAKURA花瓣"]
+ *     availableWidth       屏幕可用宽度, 樱花单个水平位移范围
+ *     availableHeight      屏幕可用高度, 樱花单个垂直位移范围
+ *     downSpeed            樱花单个下落速度,
+ *     sakuraScaleValue     樱花单个缩放数值,
+ *     sakuraImageHeight    樱花单个图片高度
+ *     sakuraImageWidth     樱花单个图片宽度
+ *     sakuraImageArray     樱花随机的图片地址数组
  * }
  */
 export default class AnimateSakura extends Component {

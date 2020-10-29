@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LaunchTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             Flutter draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+
+    <style name="STWidget.Animation.Activity.Left_Right" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/st_slide_out_right</item>
+        <item name="android:taskOpenEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:taskOpenExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:taskCloseEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:taskCloseExitAnimation">@anim/st_slide_out_right</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/st_slide_in_right</item>
+        <item name="android:taskToFrontExitAnimation">@anim/st_slide_out_left</item>
+        <item name="android:taskToBackEnterAnimation">@anim/st_slide_in_left</item>
+        <item name="android:taskToBackExitAnimation">@anim/st_slide_out_right</item>
+    </style>
+
+    <style name="STAppTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+    </style>
+
+    <style name="STAppTheme.Translucent" parent="@style/STAppTheme.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
+    </style>
+
+
+    <style name="STAppTheme.Translucent.Transparent" parent="@style/STAppTheme.Translucent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+</resources>

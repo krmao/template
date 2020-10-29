@@ -161,12 +161,12 @@ target 'Template' do
   pod 'SSZipArchive'
 
   # 集成 react native
-  rnpod
+   rnpod
 
   # 集成 flutter
-  flutterPodWithSourceCode
+  # flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
 
-  removeLibDeploymentTarget
+  # removeLibDeploymentTarget
 
 end

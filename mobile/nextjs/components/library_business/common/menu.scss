@@ -1,7 +1,7 @@
 @import "components/library_business/styles/base";
 
 .menu {
-    min-width: $pageWidth;
+    min-width: $base-page-width;
     background-color: $base-background-color;
     color: white;
     font-size: 18px;
@@ -10,7 +10,7 @@
 
     .menuTable {
         margin: 0 auto;
-        width: $pageWidth;
+        width: $base-page-width;
         height: 60px;
         color: white;
 

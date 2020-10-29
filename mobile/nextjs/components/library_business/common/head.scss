@@ -9,7 +9,7 @@
 
     .header {
         margin: 0 auto;
-        width: $pageWidth;
+        width: $base-page-width;
         height: 100px;
 
         .logo {
@@ -47,7 +47,7 @@
     }
 
     .menu {
-        min-width: $pageWidth;
+        min-width: $base-page-width;
         background-color: $base-background-color;
         color: white;
         font-size: 18px;
@@ -56,7 +56,7 @@
 
         .menuTable {
             margin: 0 auto;
-            width: $pageWidth;
+            width: $base-page-width;
             height: 60px;
             color: white;
 
@@ -89,7 +89,7 @@
     }
 
     .banner {
-        min-width: $pageWidth;
+        min-width: $base-page-width;
         height: 550px;
     }
 }

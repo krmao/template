@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-@import Flutter;
+//@import Flutter;
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "UnavailableInDeploymentTarget"
@@ -8,7 +8,7 @@
 @interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
 
 @property(strong, nonatomic) UIWindow *_Nonnull window;
-@property(strong, nonatomic) FlutterEngine *_Nonnull flutterEngine;
+//@property(strong, nonatomic) FlutterEngine *_Nonnull flutterEngine;
 
 @end
 

@@ -1,5 +1,5 @@
 #import "STMainItemFlutterViewController.h"
-#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
+//#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
 
 @interface STMainItemFlutterViewController ()
 
@@ -133,16 +133,16 @@
     // [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
     // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
 
-    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-    [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
-    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
-
-    FlutterMethodChannel *methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method" binaryMessenger:flutterViewController.binaryMessenger];
-
-    [methodChannel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
-        NSLog(@"%s, method=%@, arguments=%@", __FUNCTION__, call.method, call.arguments);
-    }];
-    [self.navigationController pushViewController:flutterViewController animated:YES];
+//    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
+//    [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
+//    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
+//
+//    FlutterMethodChannel *methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method" binaryMessenger:flutterViewController.binaryMessenger];
+//
+//    [methodChannel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
+//        NSLog(@"%s, method=%@, arguments=%@", __FUNCTION__, call.method, call.arguments);
+//    }];
+//    [self.navigationController pushViewController:flutterViewController animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

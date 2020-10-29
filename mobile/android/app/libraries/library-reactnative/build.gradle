@@ -19,10 +19,14 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-template-base')
-    api project(':react-native-gesture-handler')
-    api project(':react-native-safe-area-context')
-    api project(':react-native-reanimated')
-    api project(':react-native-vector-icons')
 
-    api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
+    if (gradle.ext.modules.reactNative.repository.enable == true) {
+        api gradle.ext.modules.reactNative.repository.dependency
+    } else {
+        api project(':react-native-gesture-handler')
+        api project(':react-native-safe-area-context')
+        api project(':react-native-reanimated')
+        api project(':react-native-vector-icons')
+        api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
+    }
 }

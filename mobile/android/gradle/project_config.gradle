@@ -23,9 +23,14 @@ gradle.ext {
                     'enableBoost': false,
             ],
             'reactNative'  : [
-                    'enable'         : false,
+                    'enable'         : true,
                     'enableHermes'   : false,
-                    'nodeModulesPath': "$rootDir/../react_native/node_modules"
+                    'nodeModulesPath': "$rootDir/../react_native/node_modules",
+                    'repository'     : [
+                            'enable'    : true,
+                            'url'       : '/Users/krmao/workspace/template/mobile/react_native/tools/libsforandroid/repo',
+                            'dependency': 'com.smart.library:libs-reactnative:0.62.2.1-SNAPSHOT'
+                    ]
             ],
             'hybird'       : ['enable': false],
             'map'          : [
@@ -47,3 +52,7 @@ gradle.ext {
     ]
 
 }
+
+println("> gradle.ext.configs=${gradle.ext.configs}")
+println("> gradle.ext.modules=${gradle.ext.modules}")
+println("> gradle.ext.versions=${gradle.ext.versions}")

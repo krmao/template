@@ -1,0 +1,15 @@
+gradle.ext {
+
+    modules = [
+            'reactNative'  : [
+                    'enable'         : true,
+                    'enableHermes'   : false,
+                    'nodeModulesPath': "$rootDir/../../../node_modules"
+            ]
+    ]
+
+    versions = [
+
+    ]
+
+}

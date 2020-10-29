@@ -29,6 +29,21 @@ android {
     resourcePrefix "st_"
 }
 
+/* 依赖配置综合示例
+api('org.hibernate:hibernate:3.1') {
+    // 冲突时优先使用该版本, 默认 false
+    force = true
+
+    // 依据构建名称排除
+    exclude module: 'cglib'
+    // 依据组织名称排除
+    exclude group: 'org.jmock'
+    // 依据组织名称+构件名称排除
+    exclude group: 'org.unwanted', module: 'iAmBuggy'
+
+    // 为本依赖关闭依赖传递特性, 默认 true
+    transitive = false
+}*/
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
@@ -65,6 +80,8 @@ dependencies {
 
     /******* 网络请求库 ****************************************************************************/
     api "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
+    api "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.ext.okhttpVersion"
+
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"

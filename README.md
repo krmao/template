@@ -64,6 +64,8 @@
 - react native integration with android
 - react native integration with ios
 - react native pure app
+- [react native remote dependencies for android](https://github.com/krmao/template/tree/master/mobile/react_native/tools/libsforandroid)
+- [react native remote dependencies for ios](https://github.com/krmao/template/tree/master/mobile/react_native/tools/libsforios/.libsforios)
 
 ### pc web
 - pc gulp custom project

@@ -1,4 +1,4 @@
-### sync fork repo
+### sync git fork repo
 ```shell script
 git clone https://github.com/krmao/react-native.git
 cd react-native

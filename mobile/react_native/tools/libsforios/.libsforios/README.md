@@ -71,8 +71,7 @@ git push origin v0.62.2.1
 # : ${SPEC_REPO:="react-test"}
 # SPEC_REPO_DIR="$HOME/.cocoapods/repos/$SPEC_REPO"
 # 指示该脚本上传到哪一个本地 pod repo 仓库
-export SPEC_REPO=libsforios
-./scripts/process-podspecs.sh
+export SPEC_REPO=repo && export RN_NODE_MODULES_PATH="~/workspace/template/mobile/react_native/node_modules" && ./scripts/process-podspecs.sh
 cd /Users/krmao/.cocoapods/repos/libsforios
 git add .
 git commit -m "rn v0.62.2 libsforios"

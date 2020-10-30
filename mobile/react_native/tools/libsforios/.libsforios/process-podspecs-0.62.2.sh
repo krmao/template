@@ -75,7 +75,7 @@ process() {
 #process "$ROOT/ReactCommon/yoga"
 #process "$ROOT" _ignore_me_subspec_for_linting_
 
-# export SPEC_REPO=repo && ./scripts/process-podspecs.sh
+# export SPEC_REPO=repo && export RN_NODE_MODULES_PATH="~/workspace/template/mobile/react_native/node_modules" && ./scripts/process-podspecs.sh
 function pushPodsSpecs() {
   # shellcheck disable=SC2045
   for element in $(ls "$1"); do
@@ -107,4 +107,4 @@ function pushPodsSpecs_third() {
 }
 
 pushPodsSpecs "$ROOT"
-pushPodsSpecs_third "/Users/krmao/workspace/template/mobile/react_native/node_modules"
+pushPodsSpecs_third "$RN_NODE_MODULES_PATH"

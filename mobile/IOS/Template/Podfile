@@ -1,3 +1,4 @@
+source 'https://github.com/krmao/libsforios.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
@@ -121,6 +122,45 @@ def removeLibDeploymentTarget
   end
 end
 
+def rnpodremote
+  pod 'FBLazyVector', '0.62.2'
+  pod 'FBReactNativeSpec', '0.62.2'
+  pod 'RCTRequired', '0.62.2'
+  pod 'RCTTypeSafety', '0.62.2'
+  pod 'React', '0.62.2'
+  pod 'React-Core', '0.62.2'
+  pod 'React-CoreModules', '0.62.2'
+  pod 'React-Core/DevSupport', '0.62.2'
+  pod 'React-RCTActionSheet', '0.62.2'
+  pod 'React-RCTAnimation', '0.62.2'
+  pod 'React-RCTBlob', '0.62.2'
+  pod 'React-RCTImage', '0.62.2'
+  pod 'React-RCTLinking', '0.62.2'
+  pod 'React-RCTNetwork', '0.62.2'
+  pod 'React-RCTSettings', '0.62.2'
+  pod 'React-RCTText', '0.62.2'
+  pod 'React-RCTVibration', '0.62.2'
+  pod 'React-Core/RCTWebSocket', '0.62.2'
+  pod 'React-cxxreact',  '0.62.2'
+  pod 'React-jsi',  '0.62.2'
+  pod 'React-jsiexecutor',  '0.62.2'
+  pod 'React-jsinspector',  '0.62.2'
+  pod 'ReactCommon/callinvoker', '0.62.2'
+  pod 'ReactCommon/turbomodule/core', '0.62.2'
+
+  pod 'Yoga', '1.14.0'
+  pod 'DoubleConversion', '1.1.6'
+  pod 'glog', '0.3.5'
+  pod 'Folly', '2018.10.22.00'
+
+  # https://github.com/software-mansion/react-native-gesture-handler/pull/366
+  # https://github.com/software-mansion/react-native-gesture-handler/issues/205
+  pod 'RNGestureHandler', '1.5.3'
+  pod 'RNReanimated', '1.13.1'
+  pod 'react-native-safe-area-context', '0.6.4'
+  pod 'RNVectorIcons', '6.7.0'
+end
+
 target 'Template' do
   inherit! :search_paths
 
@@ -161,7 +201,8 @@ target 'Template' do
   pod 'SSZipArchive'
 
   # 集成 react native
-   rnpod
+#   rnpod
+   rnpodremote
 
   # 集成 flutter
   # flutterPodWithSourceCode

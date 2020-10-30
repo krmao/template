@@ -281,47 +281,47 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0)
-  - DoubleConversion (from `../../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - DoubleConversion (= 1.1.6)
   - DZNEmptyDataSet
-  - FBLazyVector (from `../../react_native/node_modules/react-native/Libraries/FBLazyVector`)
-  - FBReactNativeSpec (from `../../react_native/node_modules/react-native/Libraries/FBReactNativeSpec`)
-  - Folly (from `../../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - glog (from `../../react_native/node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - FBLazyVector (= 0.62.2)
+  - FBReactNativeSpec (= 0.62.2)
+  - Folly (= 2018.10.22.00)
+  - glog (= 0.3.5)
   - IQKeyboardManager
   - lottie-ios (= 2.5.3)
   - Masonry (from `https://github.com/warpling/Masonry.git`)
   - MBProgressHUD (~> 1.2.0)
   - MJRefresh
-  - RCTRequired (from `../../react_native/node_modules/react-native/Libraries/RCTRequired`)
-  - RCTTypeSafety (from `../../react_native/node_modules/react-native/Libraries/TypeSafety`)
-  - React (from `../../react_native/node_modules/react-native/`)
-  - React-Core (from `../../react_native/node_modules/react-native/`)
-  - React-Core/DevSupport (from `../../react_native/node_modules/react-native/`)
-  - React-Core/RCTWebSocket (from `../../react_native/node_modules/react-native/`)
-  - React-CoreModules (from `../../react_native/node_modules/react-native/React/CoreModules`)
-  - React-cxxreact (from `../../react_native/node_modules/react-native/ReactCommon/cxxreact`)
-  - React-jsi (from `../../react_native/node_modules/react-native/ReactCommon/jsi`)
-  - React-jsiexecutor (from `../../react_native/node_modules/react-native/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `../../react_native/node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-safe-area-context (from `../../react_native/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec`)
-  - React-RCTActionSheet (from `../../react_native/node_modules/react-native/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `../../react_native/node_modules/react-native/Libraries/NativeAnimation`)
-  - React-RCTBlob (from `../../react_native/node_modules/react-native/Libraries/Blob`)
-  - React-RCTImage (from `../../react_native/node_modules/react-native/Libraries/Image`)
-  - React-RCTLinking (from `../../react_native/node_modules/react-native/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `../../react_native/node_modules/react-native/Libraries/Network`)
-  - React-RCTSettings (from `../../react_native/node_modules/react-native/Libraries/Settings`)
-  - React-RCTText (from `../../react_native/node_modules/react-native/Libraries/Text`)
-  - React-RCTVibration (from `../../react_native/node_modules/react-native/Libraries/Vibration`)
-  - ReactCommon/callinvoker (from `../../react_native/node_modules/react-native/ReactCommon`)
-  - ReactCommon/turbomodule/core (from `../../react_native/node_modules/react-native/ReactCommon`)
-  - RNGestureHandler (from `../../react_native/node_modules/react-native-gesture-handler/RNGestureHandler.podspec`)
-  - RNReanimated (from `../../react_native/node_modules/react-native-reanimated/RNReanimated.podspec`)
-  - RNVectorIcons (from `../../react_native/node_modules/react-native-vector-icons/RNVectorIcons.podspec`)
+  - RCTRequired (= 0.62.2)
+  - RCTTypeSafety (= 0.62.2)
+  - React (= 0.62.2)
+  - React-Core (= 0.62.2)
+  - React-Core/DevSupport (= 0.62.2)
+  - React-Core/RCTWebSocket (= 0.62.2)
+  - React-CoreModules (= 0.62.2)
+  - React-cxxreact (= 0.62.2)
+  - React-jsi (= 0.62.2)
+  - React-jsiexecutor (= 0.62.2)
+  - React-jsinspector (= 0.62.2)
+  - react-native-safe-area-context (= 0.6.4)
+  - React-RCTActionSheet (= 0.62.2)
+  - React-RCTAnimation (= 0.62.2)
+  - React-RCTBlob (= 0.62.2)
+  - React-RCTImage (= 0.62.2)
+  - React-RCTLinking (= 0.62.2)
+  - React-RCTNetwork (= 0.62.2)
+  - React-RCTSettings (= 0.62.2)
+  - React-RCTText (= 0.62.2)
+  - React-RCTVibration (= 0.62.2)
+  - ReactCommon/callinvoker (= 0.62.2)
+  - ReactCommon/turbomodule/core (= 0.62.2)
+  - RNGestureHandler (= 1.5.3)
+  - RNReanimated (= 1.13.1)
+  - RNVectorIcons (= 6.7.0)
   - SDCycleScrollView (>= 1.80)
   - SDWebImage (~> 5.0)
   - SSZipArchive
-  - Yoga (from `../../react_native/node_modules/react-native/ReactCommon/yoga`)
+  - Yoga (= 1.14.0)
   - YYModel
 
 SPEC REPOS:
@@ -337,68 +337,40 @@ SPEC REPOS:
     - SDWebImage
     - SSZipArchive
     - YYModel
+  https://github.com/krmao/libsforios-rn.git:
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - Folly
+    - glog
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-Core
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - react-native-safe-area-context
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - React-RCTVibration
+    - ReactCommon
+    - RNGestureHandler
+    - RNReanimated
+    - RNVectorIcons
+    - Yoga
 
 EXTERNAL SOURCES:
-  DoubleConversion:
-    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  FBLazyVector:
-    :path: "../../react_native/node_modules/react-native/Libraries/FBLazyVector"
-  FBReactNativeSpec:
-    :path: "../../react_native/node_modules/react-native/Libraries/FBReactNativeSpec"
-  Folly:
-    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec"
-  glog:
-    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/glog.podspec"
   Masonry:
     :git: https://github.com/warpling/Masonry.git
-  RCTRequired:
-    :path: "../../react_native/node_modules/react-native/Libraries/RCTRequired"
-  RCTTypeSafety:
-    :path: "../../react_native/node_modules/react-native/Libraries/TypeSafety"
-  React:
-    :path: "../../react_native/node_modules/react-native/"
-  React-Core:
-    :path: "../../react_native/node_modules/react-native/"
-  React-CoreModules:
-    :path: "../../react_native/node_modules/react-native/React/CoreModules"
-  React-cxxreact:
-    :path: "../../react_native/node_modules/react-native/ReactCommon/cxxreact"
-  React-jsi:
-    :path: "../../react_native/node_modules/react-native/ReactCommon/jsi"
-  React-jsiexecutor:
-    :path: "../../react_native/node_modules/react-native/ReactCommon/jsiexecutor"
-  React-jsinspector:
-    :path: "../../react_native/node_modules/react-native/ReactCommon/jsinspector"
-  react-native-safe-area-context:
-    :path: "../../react_native/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec"
-  React-RCTActionSheet:
-    :path: "../../react_native/node_modules/react-native/Libraries/ActionSheetIOS"
-  React-RCTAnimation:
-    :path: "../../react_native/node_modules/react-native/Libraries/NativeAnimation"
-  React-RCTBlob:
-    :path: "../../react_native/node_modules/react-native/Libraries/Blob"
-  React-RCTImage:
-    :path: "../../react_native/node_modules/react-native/Libraries/Image"
-  React-RCTLinking:
-    :path: "../../react_native/node_modules/react-native/Libraries/LinkingIOS"
-  React-RCTNetwork:
-    :path: "../../react_native/node_modules/react-native/Libraries/Network"
-  React-RCTSettings:
-    :path: "../../react_native/node_modules/react-native/Libraries/Settings"
-  React-RCTText:
-    :path: "../../react_native/node_modules/react-native/Libraries/Text"
-  React-RCTVibration:
-    :path: "../../react_native/node_modules/react-native/Libraries/Vibration"
-  ReactCommon:
-    :path: "../../react_native/node_modules/react-native/ReactCommon"
-  RNGestureHandler:
-    :path: "../../react_native/node_modules/react-native-gesture-handler/RNGestureHandler.podspec"
-  RNReanimated:
-    :path: "../../react_native/node_modules/react-native-reanimated/RNReanimated.podspec"
-  RNVectorIcons:
-    :path: "../../react_native/node_modules/react-native-vector-icons/RNVectorIcons.podspec"
-  Yoga:
-    :path: "../../react_native/node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Masonry:
@@ -445,9 +417,9 @@ SPEC CHECKSUMS:
   SDCycleScrollView: b3c9a5ed840c771c4938978174c7c9d9feefeb96
   SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
-  Yoga: 3ebccbdd559724312790e7742142d062476b698e
+  Yoga: f0fe346925b1ab51f40a901a29ea90381e34181c
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 72c812f00ba2b848c5a6874c41d1a9ebd413867f
+PODFILE CHECKSUM: 74e393a9a41857376d6161d785db0bb32070a8a7
 
 COCOAPODS: 1.9.1

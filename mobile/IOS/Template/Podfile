@@ -19,8 +19,7 @@ target 'Template' do
   pod 'lottie-ios', '2.5.3'                                         # 动画 https://github.com/airbnb/lottie-ios
   pod 'SSZipArchive'                                                # 压缩/解压缩工具 https://github.com/ZipArchive/ZipArchive
   
-  source 'https://github.com/krmao/libsforios.git'
-  load 'PodReactNative.rb'                                          # eval(File.read('PodReactNative.rb'))
+  eval(File.read('PodReactNative.rb'))                              # eval方式支持解析source源, load加载的方式则不支持 # load 'PodReactNative.rb'            
   rnpodremote                                                       # rnpodlocal "../../react_native/node_modules"
 
   load 'PodFlutter.rb'

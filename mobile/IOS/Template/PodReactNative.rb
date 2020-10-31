@@ -1,12 +1,10 @@
 #
 # 使用方式
-# source 'https://github.com/krmao/libsforios.git'
-# load 'PodReactNative.rb'                                          # eval(File.read('PodReactNative.rb'))
+# eval(File.read('PodReactNative.rb'))                              # eval方式支持解析source源, load加载的方式则不支持 # load 'PodReactNative.rb'            
 # rnpodremote                                                       # rnpodlocal "../../react_native/node_modules"
 #
-# react-native 0.62.2
-# # https://reactnative.dev/docs/integration-with-existing-apps
-# # ===============================
+
+# https://reactnative.dev/docs/integration-with-existing-apps
 def rnpodlocal(node_modules_path="../../react_native/node_modules")
   pod 'FBLazyVector', :path => node_modules_path + "/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => node_modules_path + "/react-native/Libraries/FBReactNativeSpec"
@@ -57,6 +55,9 @@ def rnpodremote(
     react_native_safe_area_context_version:'0.6.4',
     rn_vector_icons_version:'6.7.0'
   )
+
+  source 'https://github.com/krmao/libsforios.git'
+
   pod 'FBLazyVector', rn_version
   pod 'FBReactNativeSpec', rn_version
   pod 'RCTRequired', rn_version

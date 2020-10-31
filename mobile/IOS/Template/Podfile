@@ -1,8 +1,8 @@
 # source 'https://github.com/CocoaPods/Specs.git'                   # https://github.com/CocoaPods/CocoaPods/issues/2861
-source 'https://cdn.cocoapods.org/'
-inhibit_all_warnings!
-platform :ios, '9.0'
-install! 'cocoapods', generate_multiple_pod_projects: true, :warn_for_unused_master_specs_repo => false
+source 'https://cdn.cocoapods.org/'                                 # 指明依赖库的来源地址
+inhibit_all_warnings!                                               # 忽略引入库的所有警告（强迫症者的福音啊）
+platform :ios, '9.0'                                                # 平台是ios，版本是9.0
+install! 'cocoapods', generate_multiple_pod_projects: true, :warn_for_unused_master_specs_repo => false # 安装引入Podfile里面的依赖库
 
 target 'Template' do
   inherit! :search_paths

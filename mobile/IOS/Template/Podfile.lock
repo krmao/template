@@ -327,7 +327,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
-    - boost-for-react-native
     - DZNEmptyDataSet
     - IQKeyboardManager
     - lottie-ios
@@ -367,6 +366,8 @@ SPEC REPOS:
     - RNReanimated
     - RNVectorIcons
     - Yoga
+  trunk:
+    - boost-for-react-native
 
 EXTERNAL SOURCES:
   Masonry:
@@ -420,6 +421,6 @@ SPEC CHECKSUMS:
   Yoga: f0fe346925b1ab51f40a901a29ea90381e34181c
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 7333ba75deadb874e0dc43cfa9214bdabf7b81eb
+PODFILE CHECKSUM: dbd86a4388d898e605d4f2b513895750df077ef4
 
 COCOAPODS: 1.10.0

@@ -20,10 +20,9 @@ target 'Template' do
   pod 'SSZipArchive'                                                # 压缩/解压缩工具 https://github.com/ZipArchive/ZipArchive
   
   source 'https://github.com/krmao/libsforios.git'
-  load 'PodReactNative.rb'
-  # rnpod
-  rnpodremote
-  
+  load 'PodReactNative.rb'                                          # eval(File.read('PodReactNative.rb'))
+  rnpodremote                                                       # rnpodlocal "../../react_native/node_modules"
+
   load 'PodFlutter.rb'
   # flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
@@ -31,3 +30,7 @@ target 'Template' do
   load 'PodTools.rb'
   removeLibDeploymentTarget
 end
+
+# Podfile 规则参考
+# https://www.jianshu.com/p/b8b889610b7e
+# http://saitjr.com/ios/the-best-practice-of-parsing-podfile.html?utm_source=tuicool&utm_medium=referral

@@ -75,6 +75,7 @@ def rnpodremote(
   pod 'React-RCTSettings', rn_version
   pod 'React-RCTText', rn_version
   pod 'React-RCTVibration', rn_version
+  pod 'React-Fabric',  rn_version # brew install yarn && yarn global add flow-type
   pod 'React-Core/RCTWebSocket', rn_version
   pod 'React-cxxreact',  rn_version
   pod 'React-jsi',  rn_version

@@ -1,213 +1,33 @@
-source 'https://github.com/krmao/libsforios.git'
-source 'https://github.com/CocoaPods/Specs.git'
-
+# source 'https://github.com/CocoaPods/Specs.git'                   # https://github.com/CocoaPods/CocoaPods/issues/2861
+source 'https://cdn.cocoapods.org/'
 inhibit_all_warnings!
-
 platform :ios, '9.0'
-install! 'cocoapods', generate_multiple_pod_projects: true
-
-# react-native 0.62.2
-# # https://reactnative.dev/docs/integration-with-existing-apps
-# # ===============================
-def rnpod
-  # Your 'node_modules' directory is probably in the root of your project,
-  # but if not, adjust the `:path` accordingly
-
-  node_modules_path = "../../react_native/node_modules"
-
-  pod 'FBLazyVector', :path => node_modules_path + "/react-native/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => node_modules_path + "/react-native/Libraries/FBReactNativeSpec"
-  pod 'RCTRequired', :path => node_modules_path + "/react-native/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => node_modules_path + "/react-native/Libraries/TypeSafety"
-  pod 'React', :path => node_modules_path + '/react-native/'
-  pod 'React-Core', :path => node_modules_path + '/react-native/'
-  pod 'React-CoreModules', :path => node_modules_path + '/react-native/React/CoreModules'
-  pod 'React-Core/DevSupport', :path => node_modules_path + '/react-native/'
-  pod 'React-RCTActionSheet', :path => node_modules_path + '/react-native/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', :path => node_modules_path + '/react-native/Libraries/NativeAnimation'
-  pod 'React-RCTBlob', :path => node_modules_path + '/react-native/Libraries/Blob'
-  pod 'React-RCTImage', :path => node_modules_path + '/react-native/Libraries/Image'
-  pod 'React-RCTLinking', :path => node_modules_path + '/react-native/Libraries/LinkingIOS'
-  pod 'React-RCTNetwork', :path => node_modules_path + '/react-native/Libraries/Network'
-  pod 'React-RCTSettings', :path => node_modules_path + '/react-native/Libraries/Settings'
-  pod 'React-RCTText', :path => node_modules_path + '/react-native/Libraries/Text'
-  pod 'React-RCTVibration', :path => node_modules_path + '/react-native/Libraries/Vibration'
-  pod 'React-Core/RCTWebSocket', :path => node_modules_path + '/react-native/'
-
-  pod 'React-cxxreact', :path => node_modules_path + '/react-native/ReactCommon/cxxreact'
-  pod 'React-jsi', :path => node_modules_path + '/react-native/ReactCommon/jsi'
-  pod 'React-jsiexecutor', :path => node_modules_path + '/react-native/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', :path => node_modules_path + '/react-native/ReactCommon/jsinspector'
-  pod 'ReactCommon/callinvoker', :path => node_modules_path + "/react-native/ReactCommon"
-  pod 'ReactCommon/turbomodule/core', :path => node_modules_path + "/react-native/ReactCommon"
-  pod 'Yoga', :path => node_modules_path + '/react-native/ReactCommon/yoga'
-
-  pod 'DoubleConversion', :podspec => node_modules_path + '/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => node_modules_path + '/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => node_modules_path + '/react-native/third-party-podspecs/Folly.podspec'
-  
-  # https://github.com/software-mansion/react-native-gesture-handler/pull/366
-  # https://github.com/software-mansion/react-native-gesture-handler/issues/205
-  pod 'RNGestureHandler', :path => node_modules_path + '/react-native-gesture-handler/RNGestureHandler.podspec'
-  
-  pod 'RNReanimated', :path => node_modules_path + '/react-native-reanimated/RNReanimated.podspec'
-  pod 'react-native-safe-area-context', :path => node_modules_path + '/react-native-safe-area-context/react-native-safe-area-context.podspec'
-  pod 'RNVectorIcons', :path => node_modules_path + '/react-native-vector-icons/RNVectorIcons.podspec'
-  
-end
-
-# # ===============================
-
-# # 以下修改使用非 '..' 路径, 使得 AppCode 不会卡死在索引文件
-# # ===============================
-# # compatible for AppCode start
-# #  plugin_pods.map do |r|
-# #    symlink = File.join(symlinks_dir, r[:name])
-# #    FileUtils.rm_f(symlink)
-# #    File.symlink(r[:path], symlink)
-# #    pod r[:name], :path => File.join(symlink, 'ios'), :inhibit_warnings => true
-# #  end
-#
-# # https://github.com/flutter/flutter/issues/57989
-# # https://www.kikt.top/posts/flutter/channel/flutter-ios-spec-edit/
-# # https://youtrack.jetbrains.com/issue/OC-17145
-#   plugin_pods.map { |p|
-#     name = p[:name]
-#     path = p[:path]
-#     specPath = "#{path}/ios/#{name}.podspec"
-#     pod p[:name],:path=>specPath
-#   }
-# # compatible for AppCode end
-# # ===============================
-#
-# https://flutter.dev/docs/development/add-to-app/ios/project-setup#option-a---embed-with-cocoapods-and-the-flutter-sdk
-def flutterPodWithSourceCode
-  flutter_application_path = '../../flutter_module/'
-  load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
-  install_all_flutter_pods(flutter_application_path)
-end
-
-# https://flutter.dev/docs/development/add-to-app/ios/project-setup#option-c---embed-application-and-plugin-frameworks-in-xcode-and-flutter-framework-with-cocoapods
-# https://github.com/CocoaPods/CocoaPods/issues/2860#issuecomment-273208880
-# https://github.com/flutter/flutter/issues/50204
-#$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Debug" ONLY_ACTIVE_ARCH=NO
-#$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Profile" ONLY_ACTIVE_ARCH=NO
-#$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Release" ONLY_ACTIVE_ARCH=NO
-#flutter build ios-framework --cocoapods --pub --debug --no-profile --output=/Users/krmao/workspace/template/mobile/flutter_module/build-repo/ios -v
-def flutterPodWithCocoaPodSpec
-  pod 'LibraryFlutter', :path => '../Libraries/LibraryFlutter'
-
-  ENV['POD_RELEASE'] = 'false'
-  puts "ENV['POD_RELEASE']=" + ENV['POD_RELEASE']
-
-  if ENV['POD_RELEASE'] == 'true'
-    pod 'Flutter', :podspec => '../../flutter_module/build-repo/ios/Release/Flutter.podspec', :configurations => ['Release']
-  else
-    pod 'Flutter', :podspec => '../../flutter_module/build-repo/ios/Debug/Flutter.podspec', :configurations => ['Debug']
-  end
-
-  pod 'FlutterPluginRegistrant', :podspec => '../../flutter_module/.ios/Flutter/FlutterPluginRegistrant/FlutterPluginRegistrant.podspec'
-
-end
-
-# 删除每个库的 IPHONEOS_DEPLOYMENT_TARGET, 消除很多不必要的警告
-# https://stackoverflow.com/questions/37160688/set-deployment-target-for-cocoapodss-pod
-def removeLibDeploymentTarget
-  post_install do |lib|
-    lib.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
-      end
-    end
-  end
-end
-
-def rnpodremote
-  pod 'FBLazyVector', '0.62.2'
-  pod 'FBReactNativeSpec', '0.62.2'
-  pod 'RCTRequired', '0.62.2'
-  pod 'RCTTypeSafety', '0.62.2'
-  pod 'React', '0.62.2'
-  pod 'React-Core', '0.62.2'
-  pod 'React-CoreModules', '0.62.2'
-  pod 'React-Core/DevSupport', '0.62.2'
-  pod 'React-RCTActionSheet', '0.62.2'
-  pod 'React-RCTAnimation', '0.62.2'
-  pod 'React-RCTBlob', '0.62.2'
-  pod 'React-RCTImage', '0.62.2'
-  pod 'React-RCTLinking', '0.62.2'
-  pod 'React-RCTNetwork', '0.62.2'
-  pod 'React-RCTSettings', '0.62.2'
-  pod 'React-RCTText', '0.62.2'
-  pod 'React-RCTVibration', '0.62.2'
-  pod 'React-Core/RCTWebSocket', '0.62.2'
-  pod 'React-cxxreact',  '0.62.2'
-  pod 'React-jsi',  '0.62.2'
-  pod 'React-jsiexecutor',  '0.62.2'
-  pod 'React-jsinspector',  '0.62.2'
-  pod 'ReactCommon/callinvoker', '0.62.2'
-  pod 'ReactCommon/turbomodule/core', '0.62.2'
-
-  pod 'Yoga', '1.14.0'
-  pod 'DoubleConversion', '1.1.6'
-  pod 'glog', '0.3.5'
-  pod 'Folly', '2018.10.22.00'
-
-  # https://github.com/software-mansion/react-native-gesture-handler/pull/366
-  # https://github.com/software-mansion/react-native-gesture-handler/issues/205
-  pod 'RNGestureHandler', '1.5.3'
-  pod 'RNReanimated', '1.13.1'
-  pod 'react-native-safe-area-context', '0.6.4'
-  pod 'RNVectorIcons', '6.7.0'
-end
+install! 'cocoapods', generate_multiple_pod_projects: true, :warn_for_unused_master_specs_repo => false
 
 target 'Template' do
   inherit! :search_paths
-
-  # 约束布局
-  # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
-  # pod 'Masonry'
-  # https://github.com/SnapKit/Masonry/issues/566#issuecomment-544136418 消除警告的第三方分支, pod 引用不要加 tag
-  pod 'Masonry', :git => 'https://github.com/warpling/Masonry.git' # , :tag => 'v1.1.0'
-
-  # 网络请求库
-  pod 'AFNetworking', '~> 4.0'
-
-  # 异步加载图片
-  pod 'SDWebImage', '~> 5.0'
-
-  # 解析数据 json to model
-  pod 'YYModel'
-
-  # 下拉刷新 pull to refresh
-  pod 'MJRefresh'
-
-  # 键盘遮挡问题 https://github.com/hackiftekhar/IQKeyboardManager
-  pod 'IQKeyboardManager'
-
-  # 加载框
-  pod 'MBProgressHUD', '~> 1.2.0'
-
-  # 轮播图 https://github.com/gsdios/SDCycleScrollView
-  pod 'SDCycleScrollView', '>= 1.80'
-
-  # 数据为空时显示的页面 https://github.com/dzenbot/DZNEmptyDataSet
-  pod 'DZNEmptyDataSet'
-
-  # 动画 https://github.com/airbnb/lottie-ios
-  pod 'lottie-ios', '2.5.3'
-
-  # 压缩/解压缩工具 https://github.com/ZipArchive/ZipArchive
-  pod 'SSZipArchive'
-
-  # 集成 react native
-#   rnpod
-   rnpodremote
-
-  # 集成 flutter
+  # pod 'Masonry'                                                   # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
+  pod 'Masonry', :git => 'https://github.com/warpling/Masonry.git'  # , :tag => 'v1.1.0'  # https://github.com/SnapKit/Masonry/issues/566#issuecomment-544136418
+  pod 'AFNetworking', '~> 4.0'                                      # 网络请求库
+  pod 'SDWebImage', '~> 5.0'                                        # 异步加载图片
+  pod 'YYModel'                                                     # 解析数据 json to model
+  pod 'MJRefresh'                                                   # 下拉刷新 pull to refresh
+  pod 'IQKeyboardManager'                                           # 键盘遮挡问题 https://github.com/hackiftekhar/IQKeyboardManager
+  pod 'MBProgressHUD', '~> 1.2.0'                                   # 加载框
+  pod 'SDCycleScrollView', '>= 1.80'                                # 轮播图 https://github.com/gsdios/SDCycleScrollView
+  pod 'DZNEmptyDataSet'                                             # 数据为空时显示的页面 https://github.com/dzenbot/DZNEmptyDataSet
+  pod 'lottie-ios', '2.5.3'                                         # 动画 https://github.com/airbnb/lottie-ios
+  pod 'SSZipArchive'                                                # 压缩/解压缩工具 https://github.com/ZipArchive/ZipArchive
+  
+  source 'https://github.com/krmao/libsforios.git'
+  load 'PodReactNative.rb'
+  # rnpod
+  rnpodremote
+  
+  load 'PodFlutter.rb'
   # flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
-
-  # removeLibDeploymentTarget
-
+  
+  load 'PodTools.rb'
+  removeLibDeploymentTarget
 end

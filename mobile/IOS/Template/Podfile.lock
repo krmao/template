@@ -337,7 +337,7 @@ SPEC REPOS:
     - SDWebImage
     - SSZipArchive
     - YYModel
-  https://github.com/krmao/libsforios-rn.git:
+  https://github.com/krmao/libsforios.git:
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -420,6 +420,6 @@ SPEC CHECKSUMS:
   Yoga: f0fe346925b1ab51f40a901a29ea90381e34181c
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 74e393a9a41857376d6161d785db0bb32070a8a7
+PODFILE CHECKSUM: 7333ba75deadb874e0dc43cfa9214bdabf7b81eb
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0

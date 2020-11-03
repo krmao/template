@@ -60,6 +60,11 @@ nothing to commit, working tree clean
 git tag -m "scripts/process-podspecs-0.62.2.sh for v0.62.2" v0.62.2.1
 git push origin v0.62.2.1
 ```
+
+##### 3.1. 脚本以及源码的 git patch for react-native v0.62.2 版本
+* git patch https://github.com/krmao/react-native/commit/3bdb0afc7c31f07a18787e98ebd0447d436cd1ca
+* pull request https://github.com/facebook/react-native/pull/30305
+
 #### 4. 执行 ./scripts/process-podspecs-0.62.2.sh 脚本生成所有ios依赖RN的所有配置项并自动上传到第二步的本地仓库(上传后会自动同步到第一步的 github 仓库, 未同步则进入目录 /Users/krmao/.cocoapods/repos/libsforios 手动 git commit/push 提交)
 ```shell script
 # 更新 pod

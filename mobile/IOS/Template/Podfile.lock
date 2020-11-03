@@ -35,11 +35,11 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - IQKeyboardManager (6.5.5)
+  - IQKeyboardManager (6.5.6)
   - lottie-ios (2.5.3)
   - Masonry (1.1.0)
   - MBProgressHUD (1.2.0)
-  - MJRefresh (3.4.3)
+  - MJRefresh (3.5.0)
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
     - FBLazyVector (= 0.62.2)
@@ -270,11 +270,11 @@ PODS:
     - React
   - RNVectorIcons (6.7.0):
     - React
-  - SDCycleScrollView (1.80):
+  - SDCycleScrollView (1.82):
     - SDWebImage (>= 5.0.0)
-  - SDWebImage (5.8.0):
-    - SDWebImage/Core (= 5.8.0)
-  - SDWebImage/Core (5.8.0)
+  - SDWebImage (5.9.4):
+    - SDWebImage/Core (= 5.9.4)
+  - SDWebImage/Core (5.9.4)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YYModel (1.0.4)
@@ -325,17 +325,6 @@ DEPENDENCIES:
   - YYModel
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - AFNetworking
-    - DZNEmptyDataSet
-    - IQKeyboardManager
-    - lottie-ios
-    - MBProgressHUD
-    - MJRefresh
-    - SDCycleScrollView
-    - SDWebImage
-    - SSZipArchive
-    - YYModel
   https://github.com/krmao/libsforios.git:
     - DoubleConversion
     - FBLazyVector
@@ -367,7 +356,17 @@ SPEC REPOS:
     - RNVectorIcons
     - Yoga
   trunk:
+    - AFNetworking
     - boost-for-react-native
+    - DZNEmptyDataSet
+    - IQKeyboardManager
+    - lottie-ios
+    - MBProgressHUD
+    - MJRefresh
+    - SDCycleScrollView
+    - SDWebImage
+    - SSZipArchive
+    - YYModel
 
 EXTERNAL SOURCES:
   Masonry:
@@ -383,44 +382,44 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
-  FBReactNativeSpec: 5465d51ccfeecb7faa12f9ae0024f2044ce4044e
+  FBLazyVector: df77f919684572e9de6dd003065ac9e92e019a54
+  FBReactNativeSpec: 282e43ccfc5f907f7ff7fa52b053b1509ada9dbd
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  IQKeyboardManager: 3a8b9e603f8b0eeaf5f096a1f2b2cfcf121992ef
+  IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  Masonry: 890751a1008d6f33a97b032f4ecad4870d7eed3a
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
-  RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
-  RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
+  MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
+  RCTRequired: 11a42a6e6af7cb6f77d0c296264401ffe1ebe901
+  RCTTypeSafety: e0891ae6b4641f8ecae4733ee48a88926bb323fa
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
   React-Core: b12bffb3f567fdf99510acb716ef1abd426e0e05
-  React-CoreModules: 4a9b87bbe669d6c3173c0132c3328e3b000783d0
-  React-cxxreact: e65f9c2ba0ac5be946f53548c1aaaee5873a8103
-  React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
-  React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
-  React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
+  React-CoreModules: ec6edc89d44f152012af926ec0a6942bbc104e87
+  React-cxxreact: cb296cada79d2525fdee31576f7ed7e0a6252418
+  React-jsi: 21783cc8f4197a08bd70c13037f5ba6d3983a170
+  React-jsiexecutor: 44bb5b71d9c9c99978d7fc88c27cf95103de7891
+  React-jsinspector: 20517cdc3065fb5c6702a0d4f24f4d20858a2558
   react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
-  React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
-  React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
-  React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
-  React-RCTImage: e70be9b9c74fe4e42d0005f42cace7981c994ac3
-  React-RCTLinking: c1b9739a88d56ecbec23b7f63650e44672ab2ad2
-  React-RCTNetwork: 73138b6f45e5a2768ad93f3d57873c2a18d14b44
-  React-RCTSettings: 6e3738a87e21b39a8cb08d627e68c44acf1e325a
-  React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
-  React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
-  ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
+  React-RCTActionSheet: 80a1f24bd3535d49796364629a7b7440a24e82f6
+  React-RCTAnimation: 47926a2f2d358b420c51cfb7e7599152cebfba8e
+  React-RCTBlob: d910bbec679eb27028e85e84c447ca2073f43e9f
+  React-RCTImage: 852f03c4048780ac01ca619d9622a223fa23a0c5
+  React-RCTLinking: fd51ac1fca82e40003d716fbe8f7720244f8c5f3
+  React-RCTNetwork: 480dfe8267b0b308b55387f795d7f0c32dcfee8c
+  React-RCTSettings: 90d5b263d3fd194ff8acd40fa82ee045fcd6e072
+  React-RCTText: 4259d20445898f0f7afb3cd03d66126f30439cde
+  React-RCTVibration: c5730c991d36bf8ba213aa29d5108beb325a57ba
+  ReactCommon: 31e528fca9bca2191809119f23421c86946add1b
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
-  SDCycleScrollView: b3c9a5ed840c771c4938978174c7c9d9feefeb96
-  SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
+  SDCycleScrollView: a0d74c3384caa72bdfc81470bdbc8c14b3e1fbcf
+  SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
-  Yoga: f0fe346925b1ab51f40a901a29ea90381e34181c
+  Yoga: fc3de651ef92c6df19a93b1a65a527c3dcda02b2
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: e7fdbc0726f7aac1b16d6328ef721f86095c6f4b
+PODFILE CHECKSUM: ccd42a4b3e67a5f381ea4c7b180e875a719ca4dd
 
 COCOAPODS: 1.10.0

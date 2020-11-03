@@ -20,7 +20,7 @@ target 'Template' do
   pod 'SSZipArchive'                                                # 压缩/解压缩工具 https://github.com/ZipArchive/ZipArchive
   
   eval(File.read('PodReactNative.rb'))                              # eval方式支持解析source源, load加载的方式则不支持 # load 'PodReactNative.rb'            
-  rnpodremote                                                       # rnpodlocal "../../react_native/node_modules"
+  rnpodremote                                                     # rnpodlocal "../../react_native/node_modules"
 
   load 'PodFlutter.rb'
   # flutterPodWithSourceCode

@@ -31,7 +31,7 @@ import com.smart.library.widget.recyclerview.STRecyclerHeaderViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-class RCTRecyclerViewManager : ViewGroupManager<RCTRecyclerViewManager.RCTRecyclerViewInFrameLayout>() {
+class RNRecyclerViewManager : ViewGroupManager<RNRecyclerViewManager.RCTRecyclerViewInFrameLayout>() {
 
     private val tag: String get() = name
 

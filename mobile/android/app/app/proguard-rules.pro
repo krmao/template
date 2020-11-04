@@ -75,7 +75,7 @@
 
 # support
 -keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
--keep class com.smart.library.reactnative.ReactBusHandler{*;}
+-keep class com.smart.library.reactnative.RNBusHandler{*;}
 
 # GSYVideoPlayer
 -keep class com.shuyu.gsyvideoplayer.video.** { *; }

@@ -7,7 +7,7 @@
     <application>
 
         <activity
-            android:name=".ReactActivity"
+            android:name=".RNActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:taskAffinity="${applicationId}"

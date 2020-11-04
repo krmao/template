@@ -53,7 +53,7 @@ object FinalApplicationInitManager {
 
     private fun asyncInitialize(callback: ((key: String, success: Boolean) -> Unit)? = null) {
         STBusManager.initOnce(STBaseApplication.INSTANCE, hashMapOf(
-                "reactnative" to "com.smart.library.reactnative.ReactBusHandler",
+                "reactnative" to "com.smart.library.reactnative.RNBusHandler",
                 "flutter" to "com.smart.library.flutter.FlutterBusHandler",
                 "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
                 "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"

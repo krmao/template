@@ -5,13 +5,13 @@ import com.facebook.react.bridge.JSBundleLoader
 import com.smart.library.util.STLogUtil
 
 @Suppress("MemberVisibilityCanBePrivate")
-class ReactBundle(val bundlePath: String, private val loader: JSBundleLoader) {
+class RNBundle(val bundlePath: String, private val loader: JSBundleLoader) {
     @Volatile
     var isLoaded = false
         private set
 
-    fun loadScript(catalystInstance: CatalystInstanceImpl?): ReactBundle {
-        STLogUtil.w(ReactManager.TAG, "bundlePath=$bundlePath, isLoaded=$isLoaded")
+    fun loadScript(catalystInstance: CatalystInstanceImpl?): RNBundle {
+        STLogUtil.w(RNInstanceManager.TAG, "bundlePath=$bundlePath, isLoaded=$isLoaded")
 
         if (!isLoaded) {
             catalystInstance?.let {
@@ -19,7 +19,7 @@ class ReactBundle(val bundlePath: String, private val loader: JSBundleLoader) {
                     if (!isLoaded) {
                         isLoaded = true
                         loader.loadScript(it)
-                        STLogUtil.w(ReactManager.TAG, "bundlePath=$bundlePath, isLoaded=$isLoaded, load bundle success")
+                        STLogUtil.w(RNInstanceManager.TAG, "bundlePath=$bundlePath, isLoaded=$isLoaded, load bundle success")
                     }
                 }
             }
@@ -29,7 +29,7 @@ class ReactBundle(val bundlePath: String, private val loader: JSBundleLoader) {
 
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
-        if (other != null && other is ReactBundle) return !bundlePath.isBlank() && other.bundlePath == bundlePath
+        if (other != null && other is RNBundle) return !bundlePath.isBlank() && other.bundlePath == bundlePath
         return false
     }
 

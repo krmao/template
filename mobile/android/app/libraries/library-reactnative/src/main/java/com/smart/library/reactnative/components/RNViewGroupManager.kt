@@ -8,7 +8,7 @@ import com.facebook.react.views.view.ReactViewGroup
 import com.smart.library.util.STLogUtil
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-class RCTViewGroupManager : ViewGroupManager<RCTViewGroupManager.RCTViewGroup>() {
+class RNViewGroupManager : ViewGroupManager<RNViewGroupManager.RCTViewGroup>() {
 
     private val tag: String get() = name
 

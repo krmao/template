@@ -7,7 +7,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
 @Suppress("unused")
-class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class RNBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
 
     override fun getName(): String {
@@ -39,12 +39,12 @@ class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
      */
     @ReactMethod
     fun callNative(functionName: String?, data: String?, promise: Promise?) {
-        STLogUtil.d(ReactManager.TAG, "callNative start[threadName=${Thread.currentThread().name}]:functionName=$functionName, data=$data")
+        STLogUtil.d(RNInstanceManager.TAG, "callNative start[threadName=${Thread.currentThread().name}]:functionName=$functionName, data=$data")
 
         try {
-            ReactManager.onCallNativeListener?.invoke(currentActivity, functionName, data, promise)
+            RNInstanceManager.onCallNativeListener?.invoke(currentActivity, functionName, data, promise)
         } catch (e: Exception) {
-            STLogUtil.e(ReactManager.TAG, "callNative exception:functionName=$functionName, data=$data")
+            STLogUtil.e(RNInstanceManager.TAG, "callNative exception:functionName=$functionName, data=$data")
             promise?.reject("0", "callNative exception::functionName=$functionName, data=$data", e)
         }
     }
@@ -55,7 +55,7 @@ class ReactBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
          */
         @JvmStatic
         fun callReact(reactContext: ReactContext?, eventName: String, data: Any?) {
-            STLogUtil.w(ReactManager.TAG, "callReact:$data")
+            STLogUtil.w(RNInstanceManager.TAG, "callReact:$data")
             reactContext?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)?.emit(eventName, data)
         }
     }

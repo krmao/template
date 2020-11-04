@@ -5,15 +5,15 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.facebook.react.modules.debug.interfaces.DeveloperSettings
-import com.smart.library.reactnative.ReactManager
+import com.smart.library.reactnative.RNInstanceManager
 import com.smart.library.util.STRegexManager
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
-class ReactDevSettingsManager internal constructor(val application: Application, val debug: Boolean) {
+class RNDevSettingsManager internal constructor(val application: Application, val debug: Boolean) {
 
     val devSettings: DeveloperSettings?
-        get() = ReactManager.instanceManager?.devSupportManager?.devSettings
+        get() = RNInstanceManager.instanceManager?.devSupportManager?.devSettings
 
     val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(application) }
 
@@ -154,7 +154,7 @@ class ReactDevSettingsManager internal constructor(val application: Application,
     }
 
     fun showDevOptionsDialog() {
-        ReactManager.instanceManager?.devSupportManager?.showDevOptionsDialog()
+        RNInstanceManager.instanceManager?.devSupportManager?.showDevOptionsDialog()
     }
 
     companion object {

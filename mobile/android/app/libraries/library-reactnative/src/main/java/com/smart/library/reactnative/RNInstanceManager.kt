@@ -22,8 +22,8 @@ import com.facebook.react.uimanager.UIImplementationProvider
 import com.oblador.vectoricons.VectorIconsPackage
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
-import com.smart.library.reactnative.dev.ReactDevSettingsManager
-import com.smart.library.reactnative.packages.ReactCustomPackage
+import com.smart.library.reactnative.dev.RNDevSettingsManager
+import com.smart.library.reactnative.packages.RNCustomPackage
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
@@ -39,7 +39,7 @@ import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 @SuppressLint("StaticFieldLeak")
-object ReactManager {
+object RNInstanceManager {
     const val TAG: String = "[REACT_NATIVE]"
 
     const val KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP: String = "KEY_RN_CALL_NATIVE_PARAMS_HASH_MAP"
@@ -99,7 +99,7 @@ object ReactManager {
     fun initInstanceManager(callback: ((success: Boolean) -> Unit)? = null) {
         STLogUtil.e(TAG, "init instanceManager start instanceManager=$instanceManager")
         if (instanceManager == null || instanceManager?.hasStartedCreatingInitialContext() != true) {
-            val bundlePathInAssets = ReactConstant.PATH_ASSETS_BUNDLE
+            val bundlePathInAssets = RNConstant.PATH_ASSETS_BUNDLE
             val bundlePathInSdcard: String? = indexBundleFileInSdcard?.absolutePath
 
             /**
@@ -107,14 +107,14 @@ object ReactManager {
              * 如果 devSettingsManager.getDebugHttpHost().isNotEmpty()
              */
             if (checkValidRemoteDebugServer()) {
-                ReactConstant.VERSION_RN_CURRENT = -1
+                RNConstant.VERSION_RN_CURRENT = -1
                 val bundleLoader: JSBundleLoader = JSBundleLoader.createCachedBundleFromNetworkLoader(devSettingsManager.getDebugHttpHost(), null)
                 instanceManager = initInstanceManager(bundleLoader, callback)
             } else if (checkValidBundleInSdcard(indexBundleFileInSdcard) && bundlePathInSdcard != null && !bundlePathInSdcard.isNullOrBlank()) {
                 /**
                  * 其次使用 sdcard bundle
                  */
-                ReactConstant.VERSION_RN_CURRENT = versionOfIndexBundleFileInSdcard ?: 0
+                RNConstant.VERSION_RN_CURRENT = versionOfIndexBundleFileInSdcard ?: 0
                 STLogUtil.e(TAG, "checkValidBundleInSdcard=true")
                 val bundleLoader = JSBundleLoader.createFileLoader(bundlePathInSdcard, bundlePathInSdcard, false)
                 instanceManager = initInstanceManager(bundleLoader, callback)
@@ -122,16 +122,16 @@ object ReactManager {
                 /**
                  * 再其次使用 assets bundle
                  */
-                ReactConstant.VERSION_RN_CURRENT = ReactConstant.VERSION_RN_BASE
+                RNConstant.VERSION_RN_CURRENT = RNConstant.VERSION_RN_BASE
                 STLogUtil.e(TAG, "checkValidBundleInAssets=true")
                 val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
                 instanceManager = initInstanceManager(bundleLoader, callback)
             } else {
-                ReactConstant.VERSION_RN_CURRENT = 0
+                RNConstant.VERSION_RN_CURRENT = 0
                 STLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 callback?.invoke(false)
             }
-            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${ReactConstant.VERSION_RN_BASE}, currentVersion=${ReactConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
+            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${RNConstant.VERSION_RN_BASE}, currentVersion=${RNConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
         } else {
             callback?.invoke(false)
         }
@@ -157,7 +157,7 @@ object ReactManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun reloadBundle(indexBundleFileInSdcard: File? = ReactManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = ReactManager.versionOfIndexBundleFileInSdcard, callback: ((success: Boolean) -> Unit)? = null) {
+    fun reloadBundle(indexBundleFileInSdcard: File? = RNInstanceManager.indexBundleFileInSdcard, versionOfIndexBundleFileInSdcard: Int? = RNInstanceManager.versionOfIndexBundleFileInSdcard, callback: ((success: Boolean) -> Unit)? = null) {
         if (!STDeployManager.REACT_NATIVE.isAllPagesClosed()) {
             STToastUtil.show("即将关闭所有的 RN 相关页面")
             STDeployManager.REACT_NATIVE.finishAllReactActivities()
@@ -165,8 +165,8 @@ object ReactManager {
 
         Flowable.fromCallable {
             STLogUtil.w(TAG, "reloadBundleFromSdcard start instanceManager=$instanceManager, thread name = ${Thread.currentThread().name}")
-            ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard
-            ReactManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
+            RNInstanceManager.indexBundleFileInSdcard = indexBundleFileInSdcard
+            RNInstanceManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
 
             destroyInstanceManager()
 
@@ -195,9 +195,9 @@ object ReactManager {
 
     @Volatile
     private var isInitialized = false
-    private val loadBundleTasks: Vector<ReactBundle> = Vector()
+    private val loadBundleTasks: Vector<RNBundle> = Vector()
     @JvmStatic
-    fun loadBundle(bundle: ReactBundle?) {
+    fun loadBundle(bundle: RNBundle?) {
         bundle?.let {
             if (!isInitialized) {
                 synchronized(isInitialized) {
@@ -222,7 +222,7 @@ object ReactManager {
     var onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null
 
     @JvmStatic
-    val devSettingsManager: ReactDevSettingsManager by lazy { ReactDevSettingsManager(application, debug) }
+    val devSettingsManager: RNDevSettingsManager by lazy { RNDevSettingsManager(application, debug) }
 
     const val enableHotPatch = true
     const val indexName = "base.bundle"
@@ -244,12 +244,12 @@ object ReactManager {
     @Synchronized
     fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null, callback: ((success: Boolean) -> Unit)? = null) {
         STLogUtil.e(TAG, "instanceManager init start")
-        ReactManager.application = application
-        ReactManager.debug = debug
-        ReactManager.indexBundleFileInSdcard = indexBundleFileInSdcard
-        ReactManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
-        ReactManager.frescoConfig = frescoConfig
-        ReactManager.onCallNativeListener = onCallNativeListener
+        RNInstanceManager.application = application
+        RNInstanceManager.debug = debug
+        RNInstanceManager.indexBundleFileInSdcard = indexBundleFileInSdcard
+        RNInstanceManager.versionOfIndexBundleFileInSdcard = versionOfIndexBundleFileInSdcard
+        RNInstanceManager.frescoConfig = frescoConfig
+        RNInstanceManager.onCallNativeListener = onCallNativeListener
 
         // 禁止显示该 Dev Loading PopupWindow
         // for bug of android.view.WindowManager$BadTokenException
@@ -317,7 +317,7 @@ object ReactManager {
                                 MainReactPackage(MainPackageConfig.Builder().apply {
                                     frescoConfig?.let { setFrescoConfig(it) }
                                 }.build()),
-                                ReactCustomPackage(),
+                                RNCustomPackage(),
                                 RNGestureHandlerPackage(),
                                 ReanimatedPackage(),
                                 VectorIconsPackage(),

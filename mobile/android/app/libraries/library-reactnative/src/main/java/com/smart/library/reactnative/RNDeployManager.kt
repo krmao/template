@@ -1,7 +1,9 @@
 package com.smart.library.reactnative
 
+import android.app.Activity
 import android.app.Application
 import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.react.bridge.Promise
 import com.smart.library.base.STBaseApplication
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.STBundleInfo
@@ -11,10 +13,11 @@ import com.smart.library.deploy.model.STPatchInfo
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.okhttp.STOkHttpManager
+import com.smart.template.library.STBridgeCommunication
 import java.io.File
 
 @Suppress("LocalVariableName")
-internal object STDeployInitManager {
+internal object RNDeployManager {
 
     @JvmStatic
     fun init(
@@ -26,7 +29,7 @@ internal object STDeployInitManager {
         val TAG = STDeployManager.REACT_NATIVE.TAG
         STDeployManager.REACT_NATIVE.initialize(
             deployConfig = STDeployConfigModel(
-                baseBundle = STBundleInfo(ReactConstant.VERSION_RN_BASE),
+                baseBundle = STBundleInfo(RNConstant.VERSION_RN_BASE),
                 baseBundlePathInAssets = "bundle-rn.zip",
                 checkUpdateHandler = {
                     STLogUtil.d(TAG, "checkUpdateHandler invoke")
@@ -107,21 +110,24 @@ internal object STDeployInitManager {
                     }
                 },
                 reloadHandler = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
-                    if (ReactManager.instanceManager != null) {
+                    if (RNInstanceManager.instanceManager != null) {
                         STLogUtil.e(TAG, "reloadHandler start")
-                        ReactManager.reloadBundle(indexBundleFile, versionOfIndexBundleFileInSdcard)
+                        RNInstanceManager.reloadBundle(
+                            indexBundleFile,
+                            versionOfIndexBundleFileInSdcard
+                        )
                         true
                     } else {
-                        ReactManager.indexBundleFileInSdcard = indexBundleFile
-                        ReactManager.versionOfIndexBundleFileInSdcard =
+                        RNInstanceManager.indexBundleFileInSdcard = indexBundleFile
+                        RNInstanceManager.versionOfIndexBundleFileInSdcard =
                             versionOfIndexBundleFileInSdcard
                         STLogUtil.e(TAG, "reloadHandler failure, instanceManager is null")
                         false
                     }
                 },
                 initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
-                    STLogUtil.e(ReactManager.TAG, "initCallback start")
-                    ReactManager.init(
+                    STLogUtil.e(RNInstanceManager.TAG, "initCallback start")
+                    RNInstanceManager.init(
                         application,
                         STBaseApplication.DEBUG,
                         indexBundleFile,
@@ -130,7 +136,7 @@ internal object STDeployInitManager {
                         OnRNCallNativeHandler(),
                         callback
                     )
-                    STLogUtil.e(ReactManager.TAG, "initCallback end")
+                    STLogUtil.e(RNInstanceManager.TAG, "initCallback end")
                 }
             ),
             // checkUpdateTypes = mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE),
@@ -141,5 +147,32 @@ internal object STDeployInitManager {
                 STDeployApplyType.APP_OPEN_FIRST_PAGE
             )
         )
+    }
+
+
+    /**
+     * react native call native processors
+     */
+    @Suppress("UNUSED_ANONYMOUS_PARAMETER", "UNUSED_VARIABLE")
+    class OnRNCallNativeHandler : Function4<Activity?, String?, String?, Promise?, Unit> {
+
+        /**
+         * @param functionName to native functions
+         *
+         * @param data
+         *                  pageName    :String
+         *                  requestCode :Int?   must be in [0, 65535]
+         *                  params      :HashMap<String, String | Number>?
+         *
+         * @param promise
+         *                  promise?.resolve(RNResult.successJson())
+         *                  promise?.reject("0", "functionName not found !")
+         */
+        override fun invoke(currentActivity: Activity?, functionName: String?, data: String?, promise: Promise?) {
+
+            STBridgeCommunication.handleBridge(currentActivity, functionName, data, null) { _callbackId: String?, resultJsonString: String? ->
+                promise?.resolve(resultJsonString)
+            }
+        }
     }
 }

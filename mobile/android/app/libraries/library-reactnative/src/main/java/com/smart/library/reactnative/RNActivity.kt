@@ -22,7 +22,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import org.json.JSONObject
 
 @Suppress("unused", "PrivatePropertyName", "ObjectLiteralToLambda")
-class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
+class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     companion object {
         const val KEY_RESULT: String = "rn_result"
@@ -32,7 +32,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
         @JvmStatic
         @JvmOverloads
         internal fun startForResult(context: Context?, component: String? = null, extras: Bundle, intentFlag: Int? = null) {
-            val intent = Intent(context, ReactActivity::class.java)
+            val intent = Intent(context, RNActivity::class.java)
             intentFlag?.let { intent.addFlags(it) }
             intent.putExtra(KEY_START_COMPONENT, component)
             intent.putExtras(extras)
@@ -42,7 +42,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private val OVERLAY_PERMISSION_REQ_CODE = 103
 
-    private val TAG: String = ReactManager.TAG
+    private val TAG: String = RNInstanceManager.TAG
 
     private val reactRootView: ReactRootView by lazy { RNGestureHandlerEnabledRootView(this) }//ReactRootView(this)
 
@@ -113,7 +113,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                 STLogUtil.w(TAG, "onApplyCallback($applySuccess)")
                 isOnCreateAppliedSuccess = true
 
-                if (ReactManager.instanceManager != null) {
+                if (RNInstanceManager.instanceManager != null) {
                     /**
                      * debug 环境下的红色调试界面需要权限 ACTION_MANAGE_OVERLAY_PERMISSION
                      * If your app is targeting the Android API level 23 or greater, make sure you have the overlay permission enabled for the development build. You can check it with Settings.canDrawOverlays(this);. This is required in dev builds because react native development errors must be displayed above all the other windows. Due to the new permissions system introduced in the API level 23, the user needs to approve it. This can be achieved by adding the following code to the Activity file in the onCreate() method. OVERLAY_PERMISSION_REQ_CODE is a field of the class which would be responsible for passing the result back to the Activity.
@@ -124,7 +124,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                     startReactApplication()
                     /*}*/
                 } else {
-                    ReactManager.initInstanceManager { success: Boolean ->
+                    RNInstanceManager.initInstanceManager { success: Boolean ->
                         STLogUtil.v(TAG, "initInstanceManager $success")
                         if (success) {
                             STLogUtil.v(TAG, "initInstanceManager will startReactApplication start")
@@ -174,7 +174,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
             }
         })
         reactRootView.post {
-            reactInstanceManager = ReactManager.instanceManager
+            reactInstanceManager = RNInstanceManager.instanceManager
             STLogUtil.w(TAG, "startReactApplication moduleName=$moduleName, initialProperties=$initialProperties")
             reactRootView.startReactApplication(reactInstanceManager, moduleName, initialProperties)
             if (isResumed) reactInstanceManager?.onHostResume(this, this)
@@ -184,8 +184,8 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private fun loadBusinessCode() {
         STLogUtil.w(TAG, "loadBusinessCode")
-        val businessBundlePath = ReactConstant.PATH_ASSETS_BUSINESS_BUNDLE
-        ReactManager.loadBundle(ReactBundle(businessBundlePath, JSBundleLoader.createAssetLoader(this@ReactActivity, businessBundlePath, false)))
+        val businessBundlePath = RNConstant.PATH_ASSETS_BUSINESS_BUNDLE
+        RNInstanceManager.loadBundle(RNBundle(businessBundlePath, JSBundleLoader.createAssetLoader(this@RNActivity, businessBundlePath, false)))
     }
 
     /**
@@ -242,7 +242,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+        if (RNInstanceManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             event.startTracking() // 追踪该按键以判断是否触发 onKeyLongPress
             return true
         }
@@ -250,7 +250,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_MENU) {
+        if (RNInstanceManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_MENU) {
             reactInstanceManager?.showDevOptionsDialog()
             return true
         }
@@ -258,7 +258,7 @@ class ReactActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        if (ReactManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+        if (RNInstanceManager.debug && reactInstanceManager != null && keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             reactInstanceManager?.showDevOptionsDialog()
             return true
         }

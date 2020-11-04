@@ -4,24 +4,24 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
-import com.smart.library.reactnative.ReactBridge
-import com.smart.library.reactnative.components.RCTRecyclerViewManager
-import com.smart.library.reactnative.components.RCTViewGroupManager
-import com.smart.library.reactnative.components.ReactToastComponent
+import com.smart.library.reactnative.RNBridge
+import com.smart.library.reactnative.components.RNRecyclerViewManager
+import com.smart.library.reactnative.components.RNViewGroupManager
+import com.smart.library.reactnative.components.RNToastComponent
 
-class ReactCustomPackage : ReactPackage {
+class RNCustomPackage : ReactPackage {
 
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         return arrayListOf(
-                ReactToastComponent(reactContext),
-                ReactBridge(reactContext)
+                RNToastComponent(reactContext),
+                RNBridge(reactContext)
         )
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
         return arrayListOf(
-                RCTRecyclerViewManager(),
-                RCTViewGroupManager()
+                RNRecyclerViewManager(),
+                RNViewGroupManager()
         )
     }
 }

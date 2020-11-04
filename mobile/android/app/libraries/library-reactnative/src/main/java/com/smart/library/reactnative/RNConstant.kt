@@ -2,7 +2,7 @@ package com.smart.library.reactnative
 
 import com.smart.library.util.STSystemUtil
 
-object ReactConstant {
+object RNConstant {
 
     const val PATH_ASSETS_BUNDLE = "assets://index.android.bundle"
     const val PATH_ASSETS_BASE_BUNDLE = "assets://base.android.bundle"

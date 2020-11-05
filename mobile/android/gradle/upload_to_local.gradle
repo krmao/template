@@ -1,4 +1,7 @@
 // https://github.com/vinint/Android-BluetoothPrinter/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadInternalMaven.gradle
+
+apply plugin: "maven"
+
 // local Maven account info
 def NEXUS_USERNAME=''
 def NEXUS_PASSWORD=''

@@ -82,3 +82,5 @@ uploadArchives {
         }
     }
 }
+
+apply from: "$rootProject.projectDir/gradle/upload_to_jcenter.gradle"

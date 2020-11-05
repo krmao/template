@@ -1,9 +1,10 @@
 /**
  * 上传 android library aar files to jcenter
  *
- * 仓库地址: {@link "https://bintray.com/bintray/jcenter"} Bintray@gmail.com
- * 插件地址: {@link "https://github.com/bintray/gradle-bintray-plugin"}
- * 脚本参考: {@link "https://github.com/krmao/template/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadJcenter.gradle"}
+ * 仓库中心: {@link "https://bintray.com/bintray/jcenter"} Web@gmail
+ * 仓库中心: {@link "https://mvnrepository.com"}, {@link "https://issues.sonatype.org/browse/OSSRH-61823"} Web@krmao
+ * 上传插件: {@link "https://github.com/bintray/gradle-bintray-plugin"}
+ * 上传脚本: {@link "https://github.com/krmao/template/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadJcenter.gradle"}
  */
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'

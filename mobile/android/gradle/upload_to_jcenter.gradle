@@ -9,80 +9,60 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-//Jcenter account info
-def BINTRAY_REPOSITORY = ''
-def BINTRAY_USER = ''
-def BINTRAY_APIKEY = ''
-
-//pom info
-def POM_NAME = ''
-def POM_VERSION = ''
-def POM_ARTIFACTID = ''
-def POM_GROUPID = ''
-def POM_PACKAGING = ''
-def POM_DESCRIPTION = ''
-
-// code url
-def SITE_URL = 'https://github.com/krmao/template'
-def GIT_URL = 'https://github.com/krmao/template.git'
-
-// developer info
-def DEVELOPER_ID = ''
-def DEVELOPER_NAME = 'vin'
-def DEVELOPER_EMAIL = 'vinintg@gmail.com'
-
-// license info
-def LICENSE_NAME = 'Apache License, Version 2.0'
-def LICENSE_URL = 'https://opensource.org/licenses/Apache-2.0'
-def LICENSES_ALL = ["Apache-2.0"]
-
-//read property from local.properties file
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-BINTRAY_REPOSITORY = properties.getProperty("bintray.repository").trim()
-BINTRAY_USER = properties.getProperty("bintray.user").trim()
-BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
+def BINTRAY_REPOSITORY = 'maven'
+def BINTRAY_USER = 'krmao'
+def BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
 
-POM_NAME = properties.getProperty("POM_NAME").trim()
-POM_VERSION = properties.getProperty("POM_VERSION").trim()
-POM_ARTIFACTID = properties.getProperty("POM_ARTIFACTID").trim()
-POM_GROUPID = properties.getProperty("POM_GROUPID").trim()
-POM_PACKAGING = properties.getProperty("POM_PACKAGING").trim()
-POM_DESCRIPTION = properties.getProperty("POM_DESCRIPTION").trim()
+def LIBRARY_NAME = 'libsrn'
+def LIBRARY_VERSION = '0.62.2.1'
+def LIBRARY_GROUP_ID = 'com.smart.library'
+def LIBRARY_PACKAGING = 'com.smart.library.reactnative'
+def LIBRARY_DESCRIPTION = 'react native with tag v0.62.2 remote libs for android'
 
-group = POM_GROUPID
-version = POM_VERSION
+def LIBRARY_URL = 'https://github.com/krmao/template'
+def LIBRARY_URL_GIT = 'https://github.com/krmao/template.git'
+
+def LIBRARY_DEVELOPER_ID = 'krmao'
+def LIBRARY_DEVELOPER_NAME = 'krmao'
+def LIBRARY_DEVELOPER_EMAIL = '767709667@qq.com'
+
+def LIBRARY_LICENSE_NAME = 'Apache License, Version 2.0'
+def LIBRARY_LICENSE_URL = 'https://opensource.org/licenses/Apache-2.0'
+def LIBRARY_LICENSES_ALL = ["Apache-2.0"]
+
+group = LIBRARY_GROUP_ID
+version = LIBRARY_VERSION
 
 install {
     repositories.mavenInstaller {
-        // 生成pom.xml和参数
         pom.project {
-            name POM_NAME// 项目名称（可选）
-            url SITE_URL // 项目主页
-            packaging POM_PACKAGING
-            description POM_DESCRIPTION// 项目描述（可选）
+            name LIBRARY_NAME                           // optional
+            url LIBRARY_URL
+            packaging LIBRARY_PACKAGING
+            description LIBRARY_DESCRIPTION             // optional
 
             licenses {
                 license {
-                    name LICENSE_NAME
-                    url LICENSE_URL
+                    name LIBRARY_LICENSE_NAME
+                    url LIBRARY_LICENSE_URL
                 }
             }
 
             developers {
                 developer {
-                    id DEVELOPER_ID    // 开发者的id。
-                    name DEVELOPER_NAME  // 开发者名字。
-                    email DEVELOPER_EMAIL // 开发者邮箱。
+                    id LIBRARY_DEVELOPER_ID
+                    name LIBRARY_DEVELOPER_NAME
+                    email LIBRARY_DEVELOPER_EMAIL
                 }
             }
 
-            // SCM
             scm {
-                url SITE_URL // 项目主页。
-                connection GIT_URL  // Git仓库地址。
-                developerConnection GIT_URL // Git仓库地址。
+                url LIBRARY_URL
+                connection LIBRARY_URL_GIT
+                developerConnection LIBRARY_URL_GIT
             }
         }
     }
@@ -92,18 +72,18 @@ task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     // destinationDir = file("../javadoc/")
-    failOnError false // 忽略注释语法错误，如果用jdk1.8你的注释写的不规范就编译不过。
+    failOnError false
 }
 
-// package java docs
 task javadocJar(type: Jar, dependsOn: javadoc) {
+    //noinspection GrDeprecatedAPIUsage
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
 
-// package source
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
+    //noinspection GrDeprecatedAPIUsage
     classifier = 'sources'
 }
 
@@ -112,24 +92,22 @@ artifacts {
     archives sourcesJar
 }
 
-// upload to jcenter
 bintray {
-    user = BINTRAY_USER // Bintray的用户名。
-    key = BINTRAY_APIKEY// Bintray刚才保存的ApiKey。
+    user = BINTRAY_USER
+    key = BINTRAY_APIKEY
 
     configurations = ['archives']
     pkg {
-        repo = BINTRAY_REPOSITORY  // bintray网站上的Repository名字（需先添加）
-        name = POM_NAME            // 发布到Repository上面的包名（需先添加）
-        userOrg = ''               //Bintray的组织id
-        websiteUrl = SITE_URL
-        vcsUrl = GIT_URL
-        licenses = LICENSES_ALL
-        publish = true // 是否是公开项目。
+        repo = BINTRAY_REPOSITORY                       // bintray 网站上的 repository 名字(需先添加)
+        name = LIBRARY_NAME                             // 发布到 repository 上面的包名(需先添加)
+        userOrg = ''                                    // bintray 的组织 id
+        websiteUrl = LIBRARY_URL
+        vcsUrl = LIBRARY_URL_GIT
+        licenses = LIBRARY_LICENSES_ALL
+        publish = true                                  // 是否是公开项目
     }
 }
 
-// use new task name
-project.task('uploadToJcenter', group: "vin", description: "upload to Jcenter", dependsOn: ["bintrayUpload"] ).doLast {
+project.task('uploadToJcenter', group: "vin", description: "upload to Jcenter", dependsOn: ["bintrayUpload"]).doLast {
     println "***************upload to Jcenter finish!***************"
 }

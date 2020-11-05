@@ -10,11 +10,14 @@
  * 第二步:
  * ./gradlew clean :library-reactnative:clean :library-reactnative:uploadToJcenter --info --stacktrace
  *
+ * 第三步:
+ * 上传以后 到 https://bintray.com/krmao/maven/libs-reactnative 查看, 点击右下角 "Add to JCenter" 按钮请求添加, 接下来就是等待
+ *
+ * 参考:
  * 仓库中心: {@link "https://bintray.com/bintray/jcenter"} Web@gmail
  * 仓库中心: {@link "https://mvnrepository.com"}, {@link "https://issues.sonatype.org/browse/OSSRH-61823"} Web@krmao
  * 上传插件: {@link "https://github.com/bintray/gradle-bintray-plugin"}
  * 上传脚本: {@link "https://github.com/krmao/template/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadJcenter.gradle"}
- *
  * @see "https://github.com/bintray/gradle-bintray-plugin/issues/110"
  * @see "https://developer.android.com/studio/build/maven-publish-plugin"
  * @see "https://medium.com/devnibbles/publishing-your-first-android-library-to-bintray-da08c8a76e1a"

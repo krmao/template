@@ -32,7 +32,7 @@ if (gradle.ext.modules.liveStreaming.enable == true) {
 if (gradle.ext.modules.reactNative.enable == true) {
     include(":library-reactnative"); project(":library-reactnative").projectDir = new File(settingsDir, "app/libraries/library-reactnative")
 
-    if (gradle.ext.modules.reactNative.repository.enable != true) {
+    if (gradle.ext.modules.reactNative.repositoryLocal.enable != true) {
 
         def nodeModulesDir = new File(gradle.ext.modules.reactNative.nodeModulesPath)
         include(':node_modules'); project(":node_modules").projectDir = nodeModulesDir

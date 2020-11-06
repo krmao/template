@@ -55,8 +55,8 @@ allprojects {
         }
 
         if (gradle.ext.modules.reactNative.enable == true) {
-            if (gradle.ext.modules.reactNative.repository.enable == true) {
-                maven { url gradle.ext.modules.reactNative.repository.url }
+            if (gradle.ext.modules.reactNative.repositoryLocal.enable == true) {
+                maven { url gradle.ext.modules.reactNative.repositoryLocal.url }
             } else {
                 maven { url "${gradle.ext.modules.reactNative.nodeModulesPath}/react-native/android" } // All of React Native (JS, Android binaries) is installed from npm
                 // react-native couldn't find DSO to load: libhermes.so

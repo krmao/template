@@ -20,8 +20,10 @@ dependencies {
 
     api project(':library-template-base')
 
-    if (gradle.ext.modules.reactNative.repository.enable == true) {
-        api gradle.ext.modules.reactNative.repository.dependency
+    if (gradle.ext.modules.reactNative.repositoryRemote.enable == true) {
+        api gradle.ext.modules.reactNative.repositoryRemote.dependency
+    }else if (gradle.ext.modules.reactNative.repositoryLocal.enable == true) {
+        api gradle.ext.modules.reactNative.repositoryLocal.dependency
     } else {
         api project(':react-native-gesture-handler')
         api project(':react-native-safe-area-context')

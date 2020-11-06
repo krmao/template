@@ -23,11 +23,16 @@ gradle.ext {
                     'enableBoost': false,
             ],
             'reactNative'  : [
-                    'enable'         : true,
-                    'enableHermes'   : false,
-                    'nodeModulesPath': "$rootDir/../react_native/node_modules",
-                    'repository'     : [
+                    'enable'          : true,
+                    'enableHermes'    : false,
+                    'nodeModulesPath' : "$rootDir/../react_native/node_modules",
+                    'repositoryRemote'      : [
                             'enable'    : true,
+                            'url'       : 'https://bintray.com/krmao/maven/libs-reactnative',
+                            'dependency': 'com.smart.library:libs-reactnative:0.62.2.1'
+                    ],
+                    'repositoryLocal'      : [
+                            'enable'    : false,
                             'url'       : '/Users/krmao/workspace/template/mobile/react_native/tools/libsforandroid/repo',
                             'dependency': 'com.smart.library:libs-reactnative:0.62.2.1-SNAPSHOT'
                     ]

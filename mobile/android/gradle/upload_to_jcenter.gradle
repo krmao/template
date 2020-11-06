@@ -33,7 +33,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 def BINTRAY_REPOSITORY = 'maven'
 def BINTRAY_USER = 'krmao'
 def BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
-def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
+// def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
 
 def LIBRARY_NAME = 'libs-reactnative'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
 def LIBRARY_VERSION = '0.62.2.1'
@@ -179,7 +179,7 @@ bintray {
         dryRun = false  //[Default: false] Whether to run this as dry-run, without deploying
 
         //Optional version descriptor
-        version {
+        /*version {
             name =                          //Bintray logical version name
             desc =                          //Optional - Version-specific description'
             released  =                     //Optional - Date of the version release. 2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
@@ -197,7 +197,7 @@ bintray {
                 password = SONATYPE_PWD     //OSS user password: mandatory
                 close = '1'                 //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
             }
-        }
+        }*/
     }
 }
 

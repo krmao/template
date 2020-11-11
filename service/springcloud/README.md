@@ -1,27 +1,10 @@
-# Getting Started
+# Spring-Cloud Template Project
 
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Gradle documentation](https://docs.gradle.org)
-* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/gradle-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/gradle-plugin/reference/html/#build-image)
-
-### Guides
-The following guides illustrate how to use some features concretely:
-
-* [Service Registration and Discovery](https://spring.io/guides/gs/service-registration-and-discovery/)
-
-### Additional Links
-These additional references should also help you:
-
-* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
-
-### Mine
-* https://blog.eiyouhe.com/articles/2020/01/06/1578318104295.html
-* https://www.cnblogs.com/huoli/p/11864959.html
-* https://www.springcloud.cc/
-* https://www.cnblogs.com/zhainan-blog/p/11634621.html
+### 编译/运行顺序
+1. springcloud-discovery (or Cannot execute request on any known server)
+2. app-a
+3. app-b
+4. springcloud-routing
 
 ### [IDEA Tools Services Windows](https://www.cnblogs.com/javalbb/p/12922238.html)
 > View->Tool Windows->Services
@@ -114,11 +97,6 @@ port=5382
 # Query OK, 0 rows affected (0.01 sec)
 ```
 
-### 启动顺序
-1. 先开启 springcloud-discovery, 否则 Cannot execute request on any known server
-2. 再开启 app
-3. 最后开启 springcloud-routing
-
 ### yml 配置文件不能设置 中文注释, 在 windows 操作系统解析报错
 
 ### 关于负载均衡
@@ -136,3 +114,10 @@ port=5382
 * 高可用 eureka-server 集群(eureka-server 本身是可能宕机的)
 * 高可用 zuul 集群(zuul 本身是可能宕机的)
 * nginx 是如何负载均衡的
+
+### 参考文档
+* https://blog.eiyouhe.com/articles/2020/01/06/1578318104295.html
+* https://www.cnblogs.com/huoli/p/11864959.html
+* https://www.springcloud.cc/
+* https://www.cnblogs.com/zhainan-blog/p/11634621.html
+

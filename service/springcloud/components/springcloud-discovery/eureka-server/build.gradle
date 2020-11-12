@@ -1,41 +1,44 @@
-def finalName= 'spingcloud-discovery-eureka-server'
+def finalName = 'spingcloud-discovery-eureka-server'
 def finalPort = "5388"
-def finalMainClass = 'com.smart.springcloud.discovery.eurekaserver.EurekaServerApplication'
 
-// 参考文档 https://www.cnblogs.com/edisonchou/p/springboot_on_docker_foundation.html
-// 参考文档 https://spring.io/guides/gs/spring-boot-docker/
-// 错误参考 https://www.jianshu.com/p/b34dbb643a70
-// 下载镜像 docker pull krmao/spingcloud-discovery-eureka-server
-// 运行容器 docker run -d --publish 5388:5388 --detach --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
-// -d, --detach=false            Run container in background and print container ID(后台运行)
-// docker exec -it mysqltest /bin/bash
+/**
+ * create docker image by jib
+ *
+ * > ./gradlew clean --info --stacktrace
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ * > docker rm spingcloud-discovery-eureka-server --force
+ * > docker rmi krmao/spingcloud-discovery-eureka-server --force
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
+ * > docker pull krmao/spingcloud-discovery-eureka-server
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ *
+ * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
+ */
 apply plugin: "com.google.cloud.tools.jib"
 jib {
     from {
-        image = 'java:8'                        // 标签为8的java镜像版本 docker images java
+        image = 'java:8'
     }
     to {
         image = "docker.io/krmao/${finalName}"  // 上传后在 https://hub.docker.com/repositories 中查看
-        tags = ['0.0.1', 'latest']
         auth {
-            username = 'krmao'
-            password = 'D'
+            username = rootProject.ext.docker_io_user
+            password = rootProject.ext.docker_io_password
         }
     }
     container {
         creationTime = 'USE_CURRENT_TIMESTAMP'
         jvmFlags = ['-Xms512m', '-Xdebug', '-Dfile.encoding=utf-8', '-Duser.timezone=Asia/Shanghai']
-        mainClass = finalMainClass
-        args = []
         ports = [finalPort]
     }
     dockerClient {
         executable = "/usr/local/bin/docker"
     }
-}
-
-war {
-    archiveName "${finalName}.war"
 }
 
 dependencies {

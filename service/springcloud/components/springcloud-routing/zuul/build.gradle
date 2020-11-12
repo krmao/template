@@ -1,52 +1,44 @@
 def finalName= 'spingcloud-routing-zuul'
 def finalPort = "5389"
-def finalMainClass = 'com.smart.springcloud.routing.zuul.ZuulApplication'
 
-//
-// 本地运行服务 gradle bootRun
-//
-// 参考文档 https://www.cnblogs.com/edisonchou/p/springboot_on_docker_foundation.html
-// 参考文档 https://spring.io/guides/gs/spring-boot-docker/
-// 错误参考 https://www.jianshu.com/p/b34dbb643a70
-// 上传镜像到远端仓库 gradle jib
-// 下载镜像 docker pull krmao/spingcloud-routing-zuul
-//
-// 上传镜像到本地进程 gradle jibDockerBuild
-// 查看镜像 docker images krmao/spingcloud-routing-zuul
-//
-// 导出镜像文件到本地 gradle jibBuildTar
-//
-// 运行容器 docker run -d --publish 5389:5389 --detach --name spingcloud-routing-zuul krmao/spingcloud-routing-zuul /bin/bash           // -d, --detach=false   Run container in background and print container ID(后台运行)
-//
-// 访问容器 localhost:5389
-//
+/**
+ * create docker image by jib
+ *
+ * > ./gradlew clean --info --stacktrace
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+ * > docker run --rm -p5389:5389 -d --name spingcloud-routing-zuul krmao/spingcloud-routing-zuul
+ * > curl localhost:5389
+ * > docker rm spingcloud-routing-zuul --force
+ * > docker rmi krmao/spingcloud-routing-zuul --force
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
+ * > docker pull krmao/spingcloud-routing-zuul
+ * > docker run --rm -p5389:5389 -d --name spingcloud-routing-zuul krmao/spingcloud-routing-zuul
+ * > curl localhost:5389
+ *
+ * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
+ */
 apply plugin: "com.google.cloud.tools.jib"
 jib {
     from {
-        image = 'java:8'                                // 标签为8的java镜像版本 docker images java
+        image = 'java:8'
     }
     to {
-        image = "docker.io/krmao/${finalName}"   // 上传后在 https://hub.docker.com/repositories 中查看
-        tags = ['0.0.1', 'latest']
+        image = "docker.io/krmao/${finalName}"  // 上传后在 https://hub.docker.com/repositories 中查看
         auth {
-            username = 'krmao'
-            password = 'D'
+            username = rootProject.ext.docker_io_user
+            password = rootProject.ext.docker_io_password
         }
     }
     container {
         creationTime = 'USE_CURRENT_TIMESTAMP'
         jvmFlags = ['-Xms512m', '-Xdebug', '-Dfile.encoding=utf-8', '-Duser.timezone=Asia/Shanghai']
-        mainClass = finalMainClass
-        args = []
         ports = [finalPort]
     }
     dockerClient {
         executable = "/usr/local/bin/docker"
     }
-}
-
-war {
-    archiveName "${finalName}.war"
 }
 
 version = rootProject.ext.spingcloud_routing_zuul_version

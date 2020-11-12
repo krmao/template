@@ -52,7 +52,7 @@ subprojects {
     apply plugin: 'kotlin-spring'
     apply plugin: 'java'
     apply plugin: 'eclipse'
-    apply plugin: 'war'
+    // apply plugin: 'war' // https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -113,6 +113,8 @@ ext {
     server_sql_user = null
     server_sql_password = null
     server_jwt_secret = null
+    docker_io_user = null
+    docker_io_password = null
     logger = Logging.getLogger("build-script") as OutputEventListenerBackedLogger
 
     Properties properties = new Properties()
@@ -141,6 +143,8 @@ ext {
     server_sql_user = properties.get("server_sql_user")
     server_sql_password = properties.get("server_sql_password")
     server_jwt_secret = properties.get("server_jwt_secret")
+    docker_io_user = properties.get("docker_io_user")
+    docker_io_password = properties.get("docker_io_password")
 
     logger.warn("    app_a_version:$app_a_version")
     logger.warn("    server_debug:$server_debug")
@@ -153,6 +157,8 @@ ext {
     logger.warn("    server_sql_user:$server_sql_user")
     logger.warn("    server_sql_password:$server_sql_password")
     logger.warn("    server_jwt_secret:$server_jwt_secret")
+    logger.warn("    docker_io_user:$docker_io_user")
+    logger.warn("    docker_io_password:$docker_io_password")
     logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
     logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
 

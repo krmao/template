@@ -6,6 +6,28 @@
 3. app-b
 4. springcloud-routing
 
+### 生成 docker 镜像
+```shell script
+/**
+ * create docker image by jib
+ *
+ * > ./gradlew clean --info --stacktrace
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ * > docker rm spingcloud-discovery-eureka-server --force
+ * > docker rmi krmao/spingcloud-discovery-eureka-server --force
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
+ * > docker pull krmao/spingcloud-discovery-eureka-server
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ *
+ * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
+ */
+```
+
 ### [IDEA Tools Services Windows](https://www.cnblogs.com/javalbb/p/12922238.html)
 > View->Tool Windows->Services
 

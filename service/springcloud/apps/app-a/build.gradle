@@ -1,10 +1,49 @@
+def finalName= 'spingcloud-app-a'
+def finalPort = "5380"
+
+/**
+ * create docker image by jib
+ *
+ * > ./gradlew clean --info --stacktrace
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+ * > docker run --rm -p5380:5380 -d --name spingcloud-app-a krmao/spingcloud-app-a
+ * > curl localhost:5380
+ * > docker rm spingcloud-app-a --force
+ * > docker rmi krmao/spingcloud-app-a --force
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
+ * > docker pull krmao/spingcloud-app-a
+ * > docker run --rm -p5380:5380 -d --name spingcloud-app-a krmao/spingcloud-app-a
+ * > curl localhost:5380
+ *
+ * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
+ */
+apply plugin: "com.google.cloud.tools.jib"
+jib {
+    from {
+        image = 'java:8'
+    }
+    to {
+        image = "docker.io/krmao/${finalName}"  // 上传后在 https://hub.docker.com/repositories 中查看
+        auth {
+            username = rootProject.ext.docker_io_user
+            password = rootProject.ext.docker_io_password
+        }
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        jvmFlags = ['-Xms512m', '-Xdebug', '-Dfile.encoding=utf-8', '-Duser.timezone=Asia/Shanghai']
+        ports = [finalPort]
+    }
+    dockerClient {
+        executable = "/usr/local/bin/docker"
+    }
+}
+
 apply from: "./deploy.gradle"
 
 version = rootProject.ext.app_a_version
-
-war {
-    archiveName "springcloud-app-a.war"
-}
 
 //region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
 // https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/howto-properties-and-configuration.html

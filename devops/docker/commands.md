@@ -64,6 +64,10 @@
     exit
     exit
     ```
+* 查看网络环境状态
+    ```shell script
+    docker network ls
+    ```
 ``
 --- 容器编排
 * 运行容器栈

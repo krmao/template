@@ -5,7 +5,10 @@
 #
 # visit http://localhost:5388/
 #
-# visit http://localhost:5389/api-gateway/service-a/test/messageA?token=123
+# visit http://localhost:5389/api-gateway/service-a/app-a/test/messageA?token=123
+# visit http://localhost:5389/api-gateway/service-a/app-a/test/callB?token=123
+# visit http://localhost:5389/api-gateway/service-b/app-b/test/messageB?token=123
+# visit http://localhost:5389/api-gateway/service-b/app-b/test/callA?token=123
 #
 # visit http://localhost:5380/app-a/test/messageA?token=123
 # visit http://localhost:5380/app-a/test/callB?token=123

@@ -13,38 +13,60 @@
 # visit http://localhost:5381/app-b/test/callA?token=123
 #
 services:
+    spingcloud-mysql:
+        image: mysql:5.7
+        container_name: spingcloud-mysql
+        ports:
+            - 5379:5379
+        expose:
+            - 5379
+        command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql
+        restart: always
+        volumes:
+            - ./init.sql:/data/application/init.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: 88888888
+            MYSQL_DATABASE: springboot
+            MYSQL_HOST: localhost
+            MYSQL_TCP_PORT: 5379
     spingcloud-discovery-eureka-server:
         image: krmao/spingcloud-discovery-eureka-server
         container_name: spingcloud-discovery-eureka-server
         ports:
-            - "5388:5388"
+            - 5388:5388
     spingcloud-app-a:
         image: krmao/spingcloud-app-a
         container_name: spingcloud-app-a
         ports:
-            - "5380:5380"
+            - 5380:5380
         depends_on:
             - spingcloud-discovery-eureka-server
+            - spingcloud-mysql
         links:
             - spingcloud-discovery-eureka-server:eureka-server
+            - spingcloud-mysql:spingcloud-mysql
         environment:
+            spring.datasource.url: jdbc:mysql://spingcloud-mysql:5379/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true
             eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
     spingcloud-app-b:
         image: krmao/spingcloud-app-b
         container_name: spingcloud-app-b
         ports:
-            - "5381:5381"
+            - 5381:5381
         depends_on:
             - spingcloud-discovery-eureka-server
+            - spingcloud-mysql
         links:
             - spingcloud-discovery-eureka-server:eureka-server
+            - spingcloud-mysql:spingcloud-mysql
         environment:
+            spring.datasource.url: jdbc:mysql://spingcloud-mysql:5379/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true
             eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
     spingcloud-routing-zuul:
         image: krmao/spingcloud-routing-zuul
         container_name: spingcloud-routing-zuul
         ports:
-            - "5389:5389"
+            - 5389:5389
         depends_on:
             - spingcloud-discovery-eureka-server
             - spingcloud-app-a

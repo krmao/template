@@ -34,6 +34,7 @@
     docker ps
     docker ps -a
     docker ps -aq
+    docker ps --filter status=running   # running/exited/paused/dead
     ```
 * 停止所有容器
     ```shell script
@@ -54,12 +55,44 @@
 * 查看单个容器日志
     ```shell script
     docker logs spingcloud-routing-zuul
+    docker logs spingcloud-routing-zuul -f # Follow log output
     ```
-
+* 进入单个容器命令行
+    ```shell script
+    docker exec -it spingcloud-mysql bash
+    mysql -uroot -p
+    exit
+    exit
+    ```
+``
 --- 容器编排
 * 运行容器栈
     ```shell script
     docker-compose -f docker-compose.yml up -d
+    ```
+* 运行单个容器栈
+    ```shell script
+    docker-compose -f docker-compose.yml up -d spingcloud-mysql
+  
+    # 查看日志
+    docker-compose logs spingcloud-mysql
+    # 进入控制台
+    docker exec -it spingcloud-mysql bash
+    # 登录 mysql
+    mysql -uroot -p
+    # 退出 mysql
+    exit
+    # 退出控制台
+    exit
+    ```
+* 停止单个容器栈
+    ```shell script
+    docker-compose -f docker-compose.yml stop spingcloud-mysql
+    ```
+* 重新运行单个容器栈
+    ```shell script
+    docker-compose -f docker-compose.yml start spingcloud-mysql
+    docker-compose -f docker-compose.yml restart spingcloud-mysql
     ```
 * 查看容器栈运行状态
     ```shell script
@@ -69,7 +102,7 @@
     ```shell script
     docker-compose -f docker-compose.yml down
     ```
-* 查看容器栈日志
+* 查看日志
     ```shell script
     docker-compose logs
     docker-compose logs spingcloud-app-b

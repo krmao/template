@@ -7,7 +7,7 @@ eureka:
     client:
         service-url:
             # 配置 eureka 服务器地址
-            defaultZone: http://10.32.33.4:5388/eureka
+            defaultZone: http://10.32.33.6:5388/eureka
     instance:
         hostname: \${spring.cloud.client.ip-address}
         # 使用ip地址注册到注册中心
@@ -27,7 +27,7 @@ zuul:
         service-a:
             path: /service-a/**
             # 这里写a服务的注册名字
-            # http://10.32.33.4:5390/service-a/app-template-a/test/callB?token=123
+            # http://10.32.33.6:5390/service-a/app-template-a/test/callB?token=123
             serviceId: APP-A
         # 设置服务b 路径名称 随便起
         service-b:

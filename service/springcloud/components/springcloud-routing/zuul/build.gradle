@@ -1,24 +1,6 @@
 def finalName= 'spingcloud-routing-zuul'
 def finalPort = "5389"
 
-/**
- * create docker image by jib
- *
- * > ./gradlew clean --info --stacktrace
- *
- * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
- * > docker run --rm -p5389:5389 -d --name spingcloud-routing-zuul krmao/spingcloud-routing-zuul
- * > curl localhost:5389
- * > docker rm spingcloud-routing-zuul --force
- * > docker rmi krmao/spingcloud-routing-zuul --force
- *
- * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
- * > docker pull krmao/spingcloud-routing-zuul
- * > docker run --rm -p5389:5389 -d --name spingcloud-routing-zuul krmao/spingcloud-routing-zuul
- * > curl localhost:5389
- *
- * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
- */
 apply plugin: "com.google.cloud.tools.jib"
 jib {
     from {

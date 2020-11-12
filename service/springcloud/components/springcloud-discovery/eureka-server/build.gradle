@@ -1,24 +1,6 @@
 def finalName = 'spingcloud-discovery-eureka-server'
 def finalPort = "5388"
 
-/**
- * create docker image by jib
- *
- * > ./gradlew clean --info --stacktrace
- *
- * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
- * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
- * > curl localhost:5388
- * > docker rm spingcloud-discovery-eureka-server --force
- * > docker rmi krmao/spingcloud-discovery-eureka-server --force
- *
- * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
- * > docker pull krmao/spingcloud-discovery-eureka-server
- * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
- * > curl localhost:5388
- *
- * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
- */
 apply plugin: "com.google.cloud.tools.jib"
 jib {
     from {

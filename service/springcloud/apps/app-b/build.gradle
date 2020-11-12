@@ -1,24 +1,6 @@
 def finalName= 'spingcloud-app-b'
 def finalPort = "5381"
 
-/**
- * create docker image by jib
- *
- * > ./gradlew clean --info --stacktrace
- *
- * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
- * > docker run --rm -p5381:5381 -d --name spingcloud-app-b krmao/spingcloud-app-b
- * > curl localhost:5381
- * > docker rm spingcloud-app-b --force
- * > docker rmi krmao/spingcloud-app-b --force
- *
- * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
- * > docker pull krmao/spingcloud-app-b
- * > docker run --rm -p5381:5381 -d --name spingcloud-app-b krmao/spingcloud-app-b
- * > curl localhost:5381
- *
- * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
- */
 apply plugin: "com.google.cloud.tools.jib"
 jib {
     from {

@@ -13,7 +13,7 @@ eureka:
     client:
         service-url:
             # eureka-server address
-            defaultZone: http://10.32.33.4:5388/eureka
+            defaultZone: http://10.32.33.6:5388/eureka
         register-with-eureka: true
         fetch-registry: true
     instance:
@@ -30,7 +30,7 @@ ribbon:
     ConnectTimeout: 5000
     eager-load:
         enabled: false
-        clients:  http://10.32.33.4:5388/eureka
+        clients:  http://10.32.33.6:5388/eureka
         MaxTotalConnections: 2000
         MaxConnectionsPerHost: 1000
         maxAutoRetries: 2

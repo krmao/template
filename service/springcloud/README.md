@@ -159,4 +159,5 @@ docker-compose ps
 * https://www.cnblogs.com/huoli/p/11864959.html
 * https://www.springcloud.cc/
 * https://www.cnblogs.com/zhainan-blog/p/11634621.html
+* [Kubernetes 部署 SpringCloud 网关 Zuul 1.x + Eureka 动态路由](http://www.mydlq.club/article/44/)
 

@@ -51,7 +51,32 @@
     ```shell script
     docker rm krmao/spingcloud-discovery-eureka-server
     ```
-  
+* 查看单个容器日志
+    ```shell script
+    docker logs spingcloud-routing-zuul
+    ```
+
+--- 容器编排
+* 运行容器栈
+    ```shell script
+    docker-compose -f docker-compose.yml up -d
+    ```
+* 查看容器栈运行状态
+    ```shell script
+    docker-compose ps
+    ```
+* 停止并删除容器栈
+    ```shell script
+    docker-compose -f docker-compose.yml down
+    ```
+* 查看容器栈日志
+    ```shell script
+    docker-compose logs
+    docker-compose logs spingcloud-app-b
+    ```
+
+---
+
 ### 常见问题
 * docker load' command failed with error: mkdir /var/lib/docker/tmp/docker-import-042855953: read-only file system
     1. https://stackoverflow.com/a/52872667/4348530

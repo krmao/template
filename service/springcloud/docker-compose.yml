@@ -1,36 +1,55 @@
+#
 # docker-compose -f docker-compose.yml up -d
 # docker-compose ps
 # docker-compose -f docker-compose.yml down
+#
 # visit http://localhost:5388/
-spingcloud-discovery-eureka-server:
-    image: krmao/spingcloud-discovery-eureka-server
-    container_name: spingcloud-discovery-eureka-server
-    ports:
-        - "5388:5388"
-spingcloud-app-a:
-    image: krmao/spingcloud-app-a
-    container_name: spingcloud-app-a
-    ports:
-        - "5380:5380"
-    links:
-        - spingcloud-discovery-eureka-server:eureka-server
-    environment:
-        eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
-spingcloud-app-b:
-    image: krmao/spingcloud-app-b
-    container_name: spingcloud-app-b
-    ports:
-        - "5381:5381"
-    links:
-        - spingcloud-discovery-eureka-server:eureka-server
-    environment:
-        eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
-spingcloud-routing-zuul:
-    image: krmao/spingcloud-routing-zuul
-    container_name: spingcloud-routing-zuul
-    ports:
-        - "5389:5389"
-    links:
-        - spingcloud-discovery-eureka-server:eureka-server
-    environment:
-        eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
+#
+# visit http://localhost:5389/api-gateway/service-a/test/messageA?token=123
+#
+# visit http://localhost:5380/app-a/test/messageA?token=123
+# visit http://localhost:5380/app-a/test/callB?token=123
+# visit http://localhost:5381/app-b/test/messageB?token=123
+# visit http://localhost:5381/app-b/test/callA?token=123
+#
+services:
+    spingcloud-discovery-eureka-server:
+        image: krmao/spingcloud-discovery-eureka-server
+        container_name: spingcloud-discovery-eureka-server
+        ports:
+            - "5388:5388"
+    spingcloud-app-a:
+        image: krmao/spingcloud-app-a
+        container_name: spingcloud-app-a
+        ports:
+            - "5380:5380"
+        depends_on:
+            - spingcloud-discovery-eureka-server
+        links:
+            - spingcloud-discovery-eureka-server:eureka-server
+        environment:
+            eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
+    spingcloud-app-b:
+        image: krmao/spingcloud-app-b
+        container_name: spingcloud-app-b
+        ports:
+            - "5381:5381"
+        depends_on:
+            - spingcloud-discovery-eureka-server
+        links:
+            - spingcloud-discovery-eureka-server:eureka-server
+        environment:
+            eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka
+    spingcloud-routing-zuul:
+        image: krmao/spingcloud-routing-zuul
+        container_name: spingcloud-routing-zuul
+        ports:
+            - "5389:5389"
+        depends_on:
+            - spingcloud-discovery-eureka-server
+            - spingcloud-app-a
+            - spingcloud-app-b
+        links:
+            - spingcloud-discovery-eureka-server:eureka-server
+        environment:
+            eureka.client.service-url.defaultZone: http://eureka-server:5388/eureka

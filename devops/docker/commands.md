@@ -35,6 +35,7 @@
     docker ps -a
     docker ps -aq
     docker ps --filter status=running   # running/exited/paused/dead
+    docker container ls --format "table{{.Image}}\t{{.Status}}\t{{.Command}}\t{{.Names}}"
     ```
 * 停止所有容器
     ```shell script

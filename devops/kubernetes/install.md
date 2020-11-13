@@ -1,9 +1,21 @@
-### docker desktop for mac install kubernetes
+### docker desktop for mac install [kubernetes](https://github.com/kubernetes/kubernetes)
 
 ### install
 > docker desktop -> settings -> kubernetes -> enable kubernetes / deploy / show system containers -> apply
 
-### 打开控制台
+### [dashboard 官方方式](https://github.com/kubernetes/dashboard)
+```shell script
+# Install
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.4/aio/deploy/recommended.yaml
+
+# [Access](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+$ kubectl proxy
+
+# [Getting a Bearer Token](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md#getting-a-bearer-token)
+$ kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+```
+
+### [dashboard 本地方式](https://github.com/AliyunContainerService/k8s-for-docker-desktop)
 ```shell script
 git clone https://github.com/AliyunContainerService/k8s-for-docker-desktop.git
 cd k8s-for-docker-desktop
@@ -42,7 +54,7 @@ kubectl config set-credentials docker-for-desktop --token="${TOKEN}"
 echo $TOKEN
 ```
 
-### 安装  ingress
+### [ingress-nginx](https://github.com/kubernetes/ingress-nginx)
 ```shell script
 # 若安装脚本无法安装，[可以跳转到该地址查看最新操作](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md)
 # 安装
@@ -206,6 +218,6 @@ kubectl api-versions
 
 ### 参考
 * https://www.cnblogs.com/darope/p/12624678.html
-s* https://github.com/AliyunContainerService/k8s-for-docker-desktop
+* https://github.com/AliyunContainerService/k8s-for-docker-desktop
 * https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md
 * https://zhuanlan.zhihu.com/p/88994751

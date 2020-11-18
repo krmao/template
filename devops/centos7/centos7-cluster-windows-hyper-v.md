@@ -30,5 +30,13 @@
 
 ---
 
-### windows 虚拟机集群创建参考
+### 宿主机与虚拟机互相 ping 通 亲测失败！
+1. 经过以上步骤(使用网络地址转换NAT+端口转发的方式), 虚拟机可以直接ping通宿主机, 但是宿主机无法ping通虚拟机
+2. win10桌面右击此电脑->属性->远程设置->允许远程连接
+3. 关闭 win10 防火墙
+4. 关闭 centos7 防火墙
+    > systemctl stop firewalld.service && firewall-cmd --state
+5. 宿主机控制面板->网络和 Internet -> 网络连接 -> 选中本地连接 + ctrl + 同时选中默认的 hyper-v 虚拟交换机 + 右击桥接
+### 参考
 * https://blog.csdn.net/psimper/article/details/107016713
+* https://blog.csdn.net/weixin_36914964/article/details/104261171

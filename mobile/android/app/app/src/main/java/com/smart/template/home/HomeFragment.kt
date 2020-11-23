@@ -4,20 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.smart.library.base.STBaseFragment
-import com.smart.library.base.ensureOnGlobalLayoutListener
-import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STDialogManager
+import com.smart.library.util.STFragmentManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
-import com.smart.library.util.STSystemUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.colorpicker.STColorPickerUtil
@@ -30,7 +28,7 @@ import com.smart.template.home.test.RecyclerViewSnapTopFragment
 import com.smart.template.home.test.VideoPlayerFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
-class HomeFragment : STBaseFragment() {
+class HomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
@@ -95,6 +93,40 @@ class HomeFragment : STBaseFragment() {
         btnMagic.setOnClickListener {
             STMagicFragment.goTo(context)
         }
+
+        val fragmentTag = "fragmentTag"
+        fragments.setOnClickListener {
+            STFragmentManager.addFragment(
+                activity = activity,
+                targetFragment = ReactNativeFragment(),
+                tag = fragmentTag,
+                addToBackStack = true,
+                enableCustomAnimations = true,
+                executePendingTransactions = true
+            )
+
+            fragments.postDelayed({
+                STFragmentManager.addFragment(
+                    activity = activity,
+                    targetFragment = FlutterFragment(),
+                    tag = fragmentTag,
+                    addToBackStack = true,
+                    enableCustomAnimations = true,
+                    executePendingTransactions = true
+                )
+            }, 2000)
+
+            fragments.postDelayed({
+                STFragmentManager.addFragmentWithFadeAnimation(
+                    activity = activity,
+                    targetFragment = HybirdFragment(),
+                    tag = fragmentTag,
+                    addToBackStack = true,
+                    enableCustomAnimations = true,
+                    executePendingTransactions = true
+                )
+            }, 4000)
+        }
         btnRipple.setOnClickListener {
             STRippleFragment.goTo(context)
         }
@@ -155,5 +187,9 @@ class HomeFragment : STBaseFragment() {
             VideoPlayerFragment.goTo(context)
         }
 
+    }
+
+    override fun onBackStackChanged() {
+        STLogUtil.w("HomeFragment", "onBackStackChanged")
     }
 }

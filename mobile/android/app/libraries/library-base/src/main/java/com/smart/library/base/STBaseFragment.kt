@@ -1,8 +1,8 @@
 package com.smart.library.base
 
 import android.os.Bundle
-import  androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.smart.library.util.STRouteManager
 
 open class STBaseFragment : Fragment() {

@@ -53,25 +53,25 @@ open class STBaseActivity : AppCompatActivity() {
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
             statusBar = ImmersionBar.with(this)
-                    .transparentStatusBar()
-                    .statusBarColorInt(Color.TRANSPARENT)
-                    .navigationBarEnable(false)
-                    .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
+                .transparentStatusBar()
+                .statusBarColorInt(Color.TRANSPARENT)
+                .navigationBarEnable(false)
+                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
             statusBar?.init()
         }
 
         if (enableSwipeBack) {
             SwipeBackHelper.onCreate(this)
             SwipeBackHelper.getCurrentPage(this)//get current instance
-                    .setSwipeBackEnable(enableSwipeBack)//on-off
-                    //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-                    .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-                    .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-                    .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-                    .setClosePercent(0.7f)//close activity when swipe over this
-                    .setSwipeRelateEnable(true)//if should move together with the following Activity
-                    .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-                    .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+                .setSwipeBackEnable(enableSwipeBack)//on-off
+                //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
+                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
+                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
+                .setClosePercent(0.7f)//close activity when swipe over this
+                .setSwipeRelateEnable(true)//if should move together with the following Activity
+                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
+                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
             /*.addListener(object : SwipeListener {
             override fun onScrollToClose() {
             }
@@ -105,11 +105,11 @@ open class STBaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    open fun onBackPress(): Boolean = false
+    open fun onBackPressedIntercept(): Boolean = false
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (onBackPress()) return true
+            if (onBackPressedIntercept()) return true
 
             window.decorView.clearAnimation()
             supportFragmentManager.fragments.firstOrNull()?.let {

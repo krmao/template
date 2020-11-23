@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.smart.library.base.STBaseActivity
+import com.smart.library.util.STFragmentManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.rx.RxBus
 import java.lang.ref.WeakReference
-
 
 class HomeTabActivity : STBaseActivity() {
 
@@ -95,6 +96,19 @@ class HomeTabActivity : STBaseActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         STLogUtil.d("home", "activity: onRestoreInstanceState ${savedInstanceState.getString("name")}")
     }
+
+    //region test fragment stack with tag 'fragmentTag'
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            val fragmentManager = supportFragmentManager
+            if (fragmentManager.backStackEntryCount > 0) {
+                STFragmentManager.removeFragmentByTag(fragmentManager, "fragmentTag")
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+    //endregion
 
     /**
      * minSdkVersion = 16

@@ -21,8 +21,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.smart.library.livestreaming.R;
-
 public class Settings {
     private Context mAppContext;
     private SharedPreferences mSharedPreferences;

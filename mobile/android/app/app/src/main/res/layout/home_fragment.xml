@@ -1,323 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <!--<TextView
-        android:id="@+id/label1TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/orange"
-        android:fontFamily="sans-serif"
-        android:includeFontPadding="false"
-        android:lineHeight="16dp"
-        android:lineSpacingExtra="0dp"
-        android:lineSpacingMultiplier="1"
-        android:text="模板项目 TEMplate模板项目 TEMplate模板项目"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/label2TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/green_A100"
-        android:includeFontPadding="false"
-        android:lineHeight="16dp"
-        android:lineSpacingExtra="0dp"
-        android:lineSpacingMultiplier="1"
-        android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 "
-        android:textSize="16dp"
-        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/label3TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/light_blue_200"
-        android:includeFontPadding="false"
-        android:lineHeight="16dp"
-        android:lineSpacingExtra="0dp"
-        android:lineSpacingMultiplier="1"
-        android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
-        android:textSize="16dp"
-        android:textStyle="normal"
-        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/label4TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow"
-        android:includeFontPadding="false"
-        android:lineHeight="16dp"
-        android:lineSpacingExtra="0dp"
-        android:lineSpacingMultiplier="1"
-        android:text="模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
-        android:textSize="16dp"
-        android:textStyle="italic"
-        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/label5TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:background="@color/pink_900"
-        android:includeFontPadding="false"
-        android:lineHeight="16dp"
-        android:lineSpacingExtra="0dp"
-        android:lineSpacingMultiplier="1"
-        android:padding="0dp"
-        android:text="TEMplate模板项目 T TEMplate模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
--->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@color/blue_grey"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:ignore="HardcodedText,UselessParent">
+        tools:ignore="UselessParent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--<TextView
+            android:id="@+id/label1TV"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:orientation="vertical">
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:includeFontPadding="false"
+            android:lineHeight="16dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1"
+            android:text="模板项目 TEMplate模板项目 TEMplate模板项目"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:contentDescription="@null"
-                android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/label2TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/green_A100"
+            android:includeFontPadding="false"
+            android:lineHeight="16dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1"
+            android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 "
+            android:textSize="16dp"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
-            <EditText
-                android:id="@+id/rtmpURLET"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:drawable/editbox_background_normal"
-                android:gravity="center_vertical"
-                android:hint="rtmp url"
-                android:importantForAutofill="no"
-                android:inputType="textUri"
-                android:padding="5dp"
-                android:singleLine="true"
-                android:text="rtmp://10.32.33.157:5387/live/room-pc"
-                android:textColor="@color/black"
-                android:textColorHint="@color/blue_grey"
-                android:textSize="12sp" />
+        <TextView
+            android:id="@+id/label3TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue_200"
+            android:includeFontPadding="false"
+            android:lineHeight="16dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1"
+            android:text="模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
-            <TableLayout
+        <TextView
+            android:id="@+id/label4TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow"
+            android:includeFontPadding="false"
+            android:lineHeight="16dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1"
+            android:text="模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
+            android:textSize="16dp"
+            android:textStyle="italic"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/label5TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@color/pink_900"
+            android:includeFontPadding="false"
+            android:lineHeight="16dp"
+            android:lineSpacingExtra="0dp"
+            android:lineSpacingMultiplier="1"
+            android:padding="0dp"
+            android:text="TEMplate模板项目 T TEMplate模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目 TEMplate模板项目"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+    -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:background="@color/blue_grey"
+            android:orientation="vertical"
+            tools:ignore="HardcodedText,UselessParent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@color/green"
-                android:dividerPadding="5dp"
                 android:fitsSystemWindows="true"
-                android:stretchColumns="*">
+                android:orientation="vertical">
 
-                <TableRow>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY" />
 
-                    <Button
-                        android:id="@+id/playVideo"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="ANDROID IJK PLAY MP4" />
+                <EditText
+                    android:id="@+id/rtmpURLET"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:gravity="center_vertical"
+                    android:hint="rtmp url"
+                    android:importantForAutofill="no"
+                    android:inputType="textUri"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:text="rtmp://10.32.33.157:5387/live/room-pc"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/blue_grey"
+                    android:textSize="12sp" />
 
-                    <Button
-                        android:id="@+id/playVideoNormal"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="AndroidVideoView Play MP4"
-                        app:backgroundTint="@color/blue_600" />
-                </TableRow>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/green"
+                    android:dividerPadding="5dp"
+                    android:fitsSystemWindows="true"
+                    android:stretchColumns="*">
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/ijkPullRtmp"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="ijk pull rtmp"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/fragments"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="fragments"
+                            android:textAllCaps="true" />
 
-                    <Button
-                        android:id="@+id/ijkSettings"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="ijk settings"
-                        app:backgroundTint="@color/blue_600" />
-                </TableRow>
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/videoPlayerExamples"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="videoplayer examples"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/playVideo"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="ANDROID IJK PLAY MP4" />
 
-                    <Button
-                        android:id="@+id/videoPager"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="video pager list"
-                        app:backgroundTint="@color/blue_600" />
-                </TableRow>
+                        <Button
+                            android:id="@+id/playVideoNormal"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="AndroidVideoView Play MP4"
+                            app:backgroundTint="@color/blue_600" />
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/dialogText"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="dialog text"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/ijkPullRtmp"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="ijk pull rtmp"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/dialogLoading"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="dialog loading" />
-                </TableRow>
+                        <Button
+                            android:id="@+id/ijkSettings"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="ijk settings"
+                            app:backgroundTint="@color/blue_600" />
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/yeseaPushRtmp"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/orange_A700"
-                        android:text="yesea push rtmp" />
+                        <Button
+                            android:id="@+id/videoPlayerExamples"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="videoplayer examples"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/screenPushRtmp"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/orange_A700"
-                        android:text="screen push rtmp" />
-                </TableRow>
+                        <Button
+                            android:id="@+id/videoPager"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="video pager list"
+                            app:backgroundTint="@color/blue_600" />
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/recyclerItemSnapTop"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="recycler item snap top"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/dialogText"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="dialog text"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/recyclersTransferItem"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="recyclers transfer item"
-                        app:backgroundTint="@color/blue_600" />
-                </TableRow>
+                        <Button
+                            android:id="@+id/dialogLoading"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="dialog loading" />
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/baiduMap"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="baidu map"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/yeseaPushRtmp"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/orange_A700"
+                            android:text="yesea push rtmp" />
 
-                    <Button
-                        android:id="@+id/btnSwipe"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="swipe"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/screenPushRtmp"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/orange_A700"
+                            android:text="screen push rtmp" />
+                    </TableRow>
 
-                </TableRow>
+                    <TableRow>
 
-                <TableRow>
+                        <Button
+                            android:id="@+id/recyclerItemSnapTop"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="recycler item snap top"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/btnRipple"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="ripple"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/recyclersTransferItem"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="recyclers transfer item"
+                            app:backgroundTint="@color/blue_600" />
+                    </TableRow>
 
-                    <Button
-                        android:id="@+id/btnMagic"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="magic"
-                        app:backgroundTint="@color/blue_600" />
+                    <TableRow>
+
+                        <Button
+                            android:id="@+id/baiduMap"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="baidu map"
+                            app:backgroundTint="@color/blue_600" />
+
+                        <Button
+                            android:id="@+id/btnSwipe"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="swipe"
+                            app:backgroundTint="@color/blue_600" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <Button
+                            android:id="@+id/btnRipple"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="ripple"
+                            app:backgroundTint="@color/blue_600" />
+
+                        <Button
+                            android:id="@+id/btnMagic"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="magic"
+                            app:backgroundTint="@color/blue_600" />
 
 
-                </TableRow>
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/btnColorPicker"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="颜色选择器"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/btnColorPicker"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="颜色选择器"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/btnColorAlpha"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="颜色透明度选择器"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/btnColorAlpha"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="颜色透明度选择器"
+                            app:backgroundTint="@color/blue_600" />
 
-                </TableRow>
+                    </TableRow>
 
-                <TableRow>
+                    <TableRow>
 
-                    <Button
-                        android:id="@+id/bottomSheet"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="bottomSheet old"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/bottomSheet"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="bottomSheet old"
+                            app:backgroundTint="@color/blue_600" />
 
-                    <Button
-                        android:id="@+id/bottomSheetV2"
-                        style="@style/STButton.Default"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="bottomSheetV2 new"
-                        app:backgroundTint="@color/blue_600" />
+                        <Button
+                            android:id="@+id/bottomSheetV2"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="bottomSheetV2 new"
+                            app:backgroundTint="@color/blue_600" />
 
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>

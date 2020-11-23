@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-/* //device/apps/common/res/anim/st_slide_in_left.xml
+/* //device/apps/common/res/anim/st_anim_slide_in_left.xml
 **
 ** Copyright 2007, The Android Open Source Project
 **
@@ -20,8 +20,8 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <translate
         android:duration="@android:integer/config_mediumAnimTime"
-        android:fromYDelta="100%p"
-        android:toYDelta="0" />
+        android:fromXDelta="-100%p"
+        android:toXDelta="0" />
     <alpha
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromAlpha="0.0"

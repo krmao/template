@@ -39,7 +39,7 @@ open class STDebugActivity : STBaseActivity() {
                     // 整个应用只有这一个 activity 初始化了
                     STConfig.CLASS_ACTIVITY_MAIN?.let {
                         startActivity(Intent(this, it))
-                        overridePendingTransition(R.anim.st_fade_in, R.anim.st_fade_out)
+                        overridePendingTransition(R.anim.st_anim_fade_in, R.anim.st_anim_fade_out)
                     }
                 } else {
                     // 其它的 activity 都在后台
@@ -47,7 +47,7 @@ open class STDebugActivity : STBaseActivity() {
                 }
             } else {
                 val result = super.onKeyDown(keyCode, event)
-                overridePendingTransition(R.anim.st_fade_in, R.anim.st_fade_out)
+                overridePendingTransition(R.anim.st_anim_fade_in, R.anim.st_anim_fade_out)
                 return result
             }
         }

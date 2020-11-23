@@ -211,7 +211,7 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
         reactInstanceManager?.onHostPause(this)
     }
 
-    override fun onBackPress(): Boolean {
+    override fun onBackPressedIntercept(): Boolean {
         onBackPressed()
         return true
     }

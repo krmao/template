@@ -1,16 +1,28 @@
 package com.smart.library
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
 import com.smart.library.base.STApplicationVisibleChangedEvent
+import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STToastUtil
+import com.smart.library.util.STURLManager
+import com.smart.library.util.bus.STBusManager
+import com.smart.library.util.image.STIImageHandler
+import com.smart.library.util.image.STImageManager
+import com.smart.library.util.image.impl.STImageFrescoHandler
 import com.smart.library.util.network.STNetworkChangedReceiver
+import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.util.rx.RxBus
+import com.smart.library.widget.debug.STDebugFragment
+import com.smart.library.widget.titlebar.STTitleBar
 import org.json.JSONObject
 
 @Suppress("unused")
@@ -65,10 +77,12 @@ object STInitializer {
 
     @JvmStatic
     fun initOnApplicationCreate(options: Options) {
-        if (!this.initialized) {
-            this.options = options
-            this.initialized = true
-        }
+        if (this.initialized) return
+
+        this.initialized = true
+        this.options = options
+
+        Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
     }
 
     /**
@@ -108,7 +122,67 @@ object STInitializer {
         private var enableCompatVectorFromResources: Boolean = true
         private var bridgeHandler: BridgeHandler? = null
 
+        fun initBus(busHandlerClassMap: MutableMap<String, String>, callback: ((key: String, success: Boolean) -> Unit)? = null): Options {
+            STBusManager.initOnce(STInitializer.application(), busHandlerClassMap, callback)
+            return this
+        }
+
+        fun setDefaultTitleBarBackgroundColor(@ColorInt color: Int = STTitleBar.DEFAULT_BACKGROUND_COLOR): Options {
+            STTitleBar.DEFAULT_BACKGROUND_COLOR = color
+            return this
+        }
+
+        fun setDefaultTitleBarTextColor(@ColorInt color: Int = STTitleBar.DEFAULT_TEXT_COLOR): Options {
+            STTitleBar.DEFAULT_TEXT_COLOR = color
+            return this
+        }
+
+        fun setDefaultTitleBarTextSize(textSizeDp: Float = STTitleBar.DEFAULT_TEXT_SIZE): Options {
+            STTitleBar.DEFAULT_TEXT_SIZE = textSizeDp
+            return this
+        }
+
+        @SuppressLint("CheckResult")
+        @JvmOverloads
+        fun setApiURL(devURL: String? = STURLManager.Environments.DEV.getURL(), sitURL: String? = STURLManager.Environments.SIT.getURL(), uatURL: String? = STURLManager.Environments.UAT.getURL(), prdURL: String? = STURLManager.Environments.PRD.getURL()): Options {
+            STURLManager.Environments.DEV.setURL(devURL)
+            STURLManager.Environments.SIT.setURL(sitURL)
+            STURLManager.Environments.UAT.setURL(uatURL)
+            STURLManager.Environments.PRD.setURL(prdURL)
+
+            if (STInitializer.debug()) {
+                STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
+                    STDebugFragment.addHost(
+                        environment.name, environment.map[STURLManager.KEY_HOST]
+                            ?: "", STURLManager.curEnvironment == environment
+                    )
+                }
+                RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java)
+                    .subscribe { changeEvent ->
+                        STURLManager.curEnvironment =
+                            STURLManager.Environments.valueOf(changeEvent.hostModel.label)
+                        STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
+                    }
+
+                STDebugFragment.showDebugNotification()
+                RxBus.toObservable(STApplicationVisibleChangedEvent::class.java)
+                    .subscribe { changeEvent ->
+                        if (changeEvent.isApplicationVisible)
+                            STDebugFragment.showDebugNotification()
+                        else
+                            STDebugFragment.cancelDebugNotification()
+                    }
+            }
+            return this
+        }
+
         fun loginClass(): Class<out Activity>? = this.loginClass
+
+        @JvmOverloads
+        fun initImageManager(imageHandler: STIImageHandler = STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build())): Options {
+            STImageManager.initialize(imageHandler)
+            return this
+        }
 
         fun setLoginClass(loginClass: Class<out Activity>?): Options {
             this.loginClass = loginClass

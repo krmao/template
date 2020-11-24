@@ -1,10 +1,12 @@
 package com.smart.library.util.hybird
 
+import android.app.Activity
 import android.net.Uri
 import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
 import java.lang.reflect.InvocationTargetException
@@ -225,5 +227,26 @@ object STHybirdBridge {
 
     init {
         addNativeClass("hybird://hybird:1234", "native", STHybirdMethods::class)
+
+        // 默认拦截 smart://hybird/bridge/
+        addScheme("smart://hybird/bridge/") { webView: WebView?, _: WebViewClient?, url: String?, _: (() -> Unit?)? ->
+            val uri = Uri.parse(url)
+            if (uri != null) {
+                val functionName: String? = uri.lastPathSegment
+                val params: String? = uri.getQueryParameter("params")
+                val callbackId: String? = uri.getQueryParameter("callbackId")
+
+                STInitializer.bridgeHandler()?.handleBridge(webView?.context as? Activity?, functionName, params, callbackId, object : STInitializer.BridgeHandlerCallback {
+                    override fun onCallback(callbackId: String?, resultJsonString: String?) {
+                        callJsFunction(webView, "javascript:window.bridge.onCallback($callbackId, '$resultJsonString')") { result: String? ->
+                            STLogUtil.v("[hybird]", "executeJs result = $result")
+                        }
+                    }
+                })
+                true
+            } else {
+                false
+            }
+        }
     }
 }

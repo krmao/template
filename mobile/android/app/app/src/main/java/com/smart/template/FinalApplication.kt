@@ -3,13 +3,15 @@ package com.smart.template
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.graphics.Color
 import com.smart.library.STInitializer
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.library.STBridgeCommunication
 
-@Suppress("unused")
+@Suppress("unused", "SpellCheckingInspection")
 class FinalApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
@@ -26,6 +28,10 @@ class FinalApplication : Application() {
                 .enableNetworkChangedReceiver(true)
                 .enableCompatVectorFromResources(true)
                 .enableActivityLifecycleCallbacks(true)
+                .setDefaultTitleBarBackgroundColor(Color.BLACK)
+                .setDefaultTitleBarTextColor(Color.WHITE)
+                .setDefaultTitleBarTextSize(16f)
+                .setApiURL(prdURL = "http://127.0.0.1:1234")
                 .setChannel(STReflectUtil.invokeJavaStaticMethod("com.meituan.android.walle.WalleChannelReader", "getChannel", arrayOf(Application::class.java), arrayOf(this)) as? String ?: "")
                 .setBridgeHandler(object : STInitializer.BridgeHandler {
                     override fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String?, callback: STInitializer.BridgeHandlerCallback?) {
@@ -36,6 +42,18 @@ class FinalApplication : Application() {
                 })
                 .setMainClass(HomeTabActivity::class.java)
                 .setLoginClass(null)
+                .initImageManager()
+                .initBus(
+                    hashMapOf(
+                        "reactnative" to "com.smart.library.reactnative.RNBusHandler",
+                        "flutter" to "com.smart.library.flutter.FlutterBusHandler",
+                        "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
+                        "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
+                    )
+                ) { key: String, success: Boolean ->
+                    STLogUtil.d("init bus $key, $success")
+                }
+
         )
 
         if (isGodEyeEnabled()) {

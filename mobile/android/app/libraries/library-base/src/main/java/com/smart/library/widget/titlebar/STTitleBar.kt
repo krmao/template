@@ -15,7 +15,7 @@ import com.smart.library.util.STCustomViewUtil
 import com.smart.library.util.STSystemUtil
 import kotlinx.android.synthetic.main.st_widget_titlebar.view.*
 
-@Suppress("MemberVisibilityCanPrivate")
+@Suppress("MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 /**
  * TitleView样式一
  * “左0--左1(hide)--Title--右1(hide)--右0”
@@ -119,9 +119,9 @@ class STTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
     }
 
     private fun setLayoutParams(bgView: View, childView: View, index: Int, typedArray: TypedArray) = try {
-        val layoutParams = bgView.layoutParams as RelativeLayout.LayoutParams
+        val layoutParams = bgView.layoutParams as LayoutParams
         var configWidth = typedArray.getDimensionPixelSize(index, -3).toFloat()
-        if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0)
+        if (configWidth == LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0)
             layoutParams.width = configWidth.toInt()
         else if (configWidth == -3f) {
             val resId = typedArray.getResourceId(index, -1)
@@ -132,10 +132,10 @@ class STTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
         }
         //layoutParams.width = if (configWidth == RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat() || configWidth >= 0) layoutParams.width else RelativeLayout.LayoutParams.WRAP_CONTENT
         bgView.layoutParams = layoutParams
-        if (layoutParams.width == RelativeLayout.LayoutParams.WRAP_CONTENT) {
+        if (layoutParams.width == LayoutParams.WRAP_CONTENT) {
         } else {
-            val childLayoutParams = childView.layoutParams as RelativeLayout.LayoutParams
-            childLayoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            val childLayoutParams = childView.layoutParams as LayoutParams
+            childLayoutParams.width = LayoutParams.MATCH_PARENT
             childView.layoutParams = childLayoutParams
         }
     } catch (e: Exception) {

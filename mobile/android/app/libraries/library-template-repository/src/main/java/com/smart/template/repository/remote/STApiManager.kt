@@ -5,6 +5,7 @@ import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
+import com.smart.library.util.STURLManager
 import com.smart.library.util.cache.STCacheFileManager
 import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.util.rx.RxBus
@@ -28,34 +29,6 @@ import java.io.Serializable
 
 @Suppress("UNCHECKED_CAST", "unused")
 internal object STApiManager {
-
-    @SuppressLint("CheckResult")
-    @JvmStatic
-    fun init() {
-        if (STInitializer.debug()) {
-            STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
-                STDebugFragment.addHost(
-                    environment.name, environment.map[STURLManager.KEY_HOST]
-                        ?: "", STURLManager.curEnvironment == environment
-                )
-            }
-            RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java)
-                .subscribe { changeEvent ->
-                    STURLManager.curEnvironment =
-                        STURLManager.Environments.valueOf(changeEvent.hostModel.label)
-                    STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
-                }
-
-            STDebugFragment.showDebugNotification()
-            RxBus.toObservable(STApplicationVisibleChangedEvent::class.java)
-                .subscribe { changeEvent ->
-                    if (changeEvent.isApplicationVisible)
-                        STDebugFragment.showDebugNotification()
-                    else
-                        STDebugFragment.cancelDebugNotification()
-                }
-        }
-    }
 
     fun <T> composeWithResponseModel(): ObservableTransformer<STResponseModel<T>, T> {
         return ObservableTransformer { observable ->

@@ -1,10 +1,11 @@
 package com.smart.template.repository
 
+import android.annotation.SuppressLint
+import com.smart.library.bundle.model.STHybirdModuleConfigModel
+import com.smart.library.util.okhttp.STOkHttpProgressResponseBody
+import com.smart.library.util.rx.RxBus
 import com.smart.template.repository.remote.STApiManager
 import com.smart.template.repository.remote.api.STApi
-import com.smart.library.util.okhttp.STOkHttpProgressResponseBody
-import com.smart.library.bundle.model.STHybirdModuleConfigModel
-import com.smart.library.util.rx.RxBus
 import io.reactivex.Observable
 import java.io.File
 import java.io.InputStream
@@ -17,15 +18,11 @@ import java.io.InputStream
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object STRepository {
 
-    @JvmStatic
-    fun init() {
-        STApiManager.init()
-    }
-
     fun getBundleConfig(): Observable<String> =
         STApiManager.getApi(STApi::class.java).getBundleConfig()
 
 
+    @SuppressLint("CheckResult")
     fun downloadFile(url: String, onProgress: ((current: Long, total: Long) -> Unit?)? = null): Observable<InputStream> {
         if (onProgress != null) {
             RxBus.toObservable(STOkHttpProgressResponseBody.OnProgressEvent::class.java).subscribe { onProgressEvent ->

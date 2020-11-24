@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import com.smart.library.STInitializer
-import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.template.home.tab.HomeTabActivity
@@ -22,8 +21,8 @@ class FinalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        STInitializer.initOnApplicationCreate(
-            STInitializer.Options(this)
+        STInitializer.initOnApplicationCreate(this) {
+            STInitializer.Options()
                 .enableDebug((STSystemUtil.getAppMetaData("DEBUG") ?: false) as Boolean)
                 .enableNetworkChangedReceiver(true)
                 .enableCompatVectorFromResources(true)
@@ -50,11 +49,8 @@ class FinalApplication : Application() {
                         "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
                         "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
                     )
-                ) { key: String, success: Boolean ->
-                    STLogUtil.d("init bus $key, $success")
-                }
-
-        )
+                )
+        }
 
         if (isGodEyeEnabled()) {
             if (cn.hikyson.godeye.core.utils.ProcessUtils.isMainProcess(this)) {

@@ -7,13 +7,15 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.smart.library.util.STEventManager
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
-import com.smart.library.util.STPreferencesUtil
 import com.smart.template.home.tab.HomeTabActivity
-import com.smart.template.library.STBridgeCommunication
 
 class SplashActivity : AppCompatActivity() {
+
+    companion object {
+        const val TAG: String = "SplashActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -38,45 +40,30 @@ class SplashActivity : AppCompatActivity() {
 
         // setContentView(R.layout.home_splash)
 
-        FinalApplicationInitManager.initialize { key: String, success: Boolean ->
-            STLogUtil.w(
-                "FinalApplicationInitManager",
-                "initialize end isFinishing=$isFinishing, $key=$key, success=$success, thread=${Thread.currentThread().name}"
-            )
+        STInitializer.ensureBusInitialized {
+            STLogUtil.w(TAG, "ensureBusInitialized isFinishing=$isFinishing, thread=${Thread.currentThread().name}")
 
-            if (!isFinishing && key == "reactnative" && success) {
+            if (!isFinishing) {
                 //region schema
                 val url: String? = intent.data?.toString()
-                STLogUtil.w("schema", "url=$url")
+                STLogUtil.w(TAG, "schema url=$url")
                 if (url?.startsWith("smart://template") == true) {
-                    STBridgeCommunication.handleBridgeOpenSchema(this@SplashActivity, url)
+                    STInitializer.openSchema(this@SplashActivity, url)
                     finish()
-                    return@initialize
+                    return@ensureBusInitialized
                 }
                 //endregion
             }
         }
 
-        // 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
-
-        // 监听 react native 首屏渲染事件, 此处可以关闭引导页
-        val eventId: Any = this
-        STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
-            STEventManager.unregisterAll(eventId)
-            if ("react-native-inited" == eventKey) {
-                if ("renderSuccess" == value) {
-                    STPreferencesUtil.putBoolean("react-native-inited", true)
-                    /*if (!isFinishing) {
-                        STLogUtil.w("splash", "finish")
-                        finish()
-                    }*/
-                }
-            }
+        STInitializer.ensureRNFirstScreenAttached { attached: Boolean ->
+            STLogUtil.w(TAG, "ensureRNFirstScreenAttached attached=$attached")
+            /*if (!isFinishing) {
+                STLogUtil.w("splash", "finish")
+                finish()
+            }*/
         }
 
-        // test
-        // startActivity(Intent(this, STLocalPicturesActivity::class.java))
-        // startActivity(Intent(this, STPictureViewerExamplesActivity::class.java))
         startActivity(Intent(this, HomeTabActivity::class.java))
         finish()
     }

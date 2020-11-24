@@ -5,10 +5,11 @@ import android.app.Application
 import android.content.Context
 import com.smart.library.util.STLogUtil
 import java.lang.ref.WeakReference
+import java.util.concurrent.atomic.AtomicInteger
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STBusManager {
-    private val TAG: String = STBusManager::class.java.simpleName
+    private val TAG: String = "[bus]"
 
     interface IBusHandler {
         fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?)
@@ -22,29 +23,41 @@ object STBusManager {
 
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
     private var isInit = false
+    fun isInit(): Boolean = this.isInit
 
-    fun initOnce(application: Application?, busHandlerClassMap: MutableMap<String, String>, callback: ((key: String, success: Boolean) -> Unit)? = null) {
+    private var initializedCount: AtomicInteger = AtomicInteger()
+
+    fun initOnce(application: Application?, busHandlerClassMap: MutableMap<String, String>, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null) {
         if (!isInit) {
+            initializedCount.set(0)
             busHandlerClassMap.forEach { entry ->
                 val key: String = entry.key
                 val value: String = entry.value
 
                 try {
-                    STLogUtil.v(TAG, "\nkey:$key, value:$value")
+                    if (STLogUtil.debug) STLogUtil.v(TAG, "key:$key, value:$value start")
                     val busClass = Class.forName(value)
                     if (IBusHandler::class.javaObjectType.isAssignableFrom(busClass)) { // isAssignableFrom 检查 busClass 是否是 IBusHandler 的子类
                         val busHandler = busClass.newInstance() as IBusHandler
                         busHandlerMap[key] = busHandler
                         // init once here
                         busHandler.onInitOnce(application) { success: Boolean ->
-                            callback?.invoke(key, success)
+                            onCallback?.invoke(key, success)
+
+                            initializedCount.incrementAndGet()
+
+                            if (STLogUtil.debug) STLogUtil.v(TAG, "key:$key, value:$value callback initializedCount=${initializedCount.get()}, busHandlerClassMap.keys.size=${busHandlerClassMap.keys.size}")
+
+                            if (initializedCount.get() == busHandlerClassMap.keys.size) {
+                                onCompletely?.invoke()
+                            }
                         }
-                        STLogUtil.i(TAG, "init bus $key:$value success\n")
+                        if (STLogUtil.debug) STLogUtil.v(TAG, "init bus end $key:$value success\n")
                     } else {
-                        STLogUtil.e(TAG, "init bus $key:$value failure, class is not IBusHandler\n")
+                        STLogUtil.e(TAG, "init bus end $key:$value failure, class is not IBusHandler\n")
                     }
                 } catch (e: Exception) {
-                    STLogUtil.e(TAG, "init bus $key:$value exception, ${e.message}\n")
+                    STLogUtil.e(TAG, "init bus exception $key:$value exception, ${e.message}\n")
                 }
             }
             isInit = true

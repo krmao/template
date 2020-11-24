@@ -10,10 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
 import com.smart.library.base.STApplicationVisibleChangedEvent
-import com.smart.library.util.STFileUtil
-import com.smart.library.util.STLogUtil
-import com.smart.library.util.STToastUtil
-import com.smart.library.util.STURLManager
+import com.smart.library.util.*
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STIImageHandler
 import com.smart.library.util.image.STImageManager
@@ -25,10 +22,73 @@ import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import org.json.JSONObject
 
-@Suppress("unused")
+@Suppress("unused", "SpellCheckingInspection", "MemberVisibilityCanBePrivate")
 object STInitializer {
+    private const val TAG = "[initializer]"
+
     private var initialized: Boolean = false
     private var options: Options? = null
+
+    /**
+     * 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
+     * 监听 react native 首屏渲染事件, 此处可以关闭引导页
+     */
+    fun ensureRNFirstScreenAttached(callback: (attached: Boolean) -> Unit) {
+        if (STPreferencesUtil.getBoolean("react-native-inited", false) == true) {
+            callback(true)
+            return
+        }
+
+        val eventId: Any = this
+        STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
+            STEventManager.unregisterAll(eventId)
+            if ("react-native-inited" == eventKey) {
+                if ("renderSuccess" == value) {
+                    STPreferencesUtil.putBoolean("react-native-inited", true)
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+        }
+
+    }
+
+    private var isRNInitialized: Boolean = false
+    fun isRNInitialized(): Boolean = this.isRNInitialized
+    fun setRNInitialized(isRNInitialized: Boolean) {
+        this.isRNInitialized = isRNInitialized
+    }
+
+    private var isRNInitializedSuccess: Boolean = false
+    fun isRNInitializedSuccess(): Boolean = this.isRNInitializedSuccess
+    fun setRNInitializedSuccess(isRNInitializedSuccess: Boolean) {
+        this.isRNInitializedSuccess = isRNInitializedSuccess
+    }
+
+    private var onRNInitializedCallback: ((success: Boolean) -> Unit)? = null
+    fun onRNInitializedCallback(): ((success: Boolean) -> Unit)? = this.onRNInitializedCallback
+    fun ensureRNInitialized(callback: (success: Boolean) -> Unit) {
+        this.onRNInitializedCallback = callback
+        if (isRNInitialized()) {
+            onRNInitializedCallback()?.invoke(isRNInitializedSuccess())
+        }
+    }
+
+    private var isBusInitialized: Boolean = false
+    fun isBusInitialized(): Boolean = this.isBusInitialized
+    fun setBusInitialized(isBusInitialized: Boolean) {
+        this.isBusInitialized = isBusInitialized
+    }
+
+    private var onBusInitializedCallback: (() -> Unit)? = null
+    fun onBusInitializedCallback(): (() -> Unit)? = this.onBusInitializedCallback
+    fun ensureBusInitialized(callback: () -> Unit) {
+        this.onBusInitializedCallback = callback
+        if (isBusInitialized()) {
+            onBusInitializedCallback()?.invoke()
+        }
+    }
 
     @JvmStatic
     fun defaultSharedPreferencesName(): String = this.options?.defaultSharedPreferencesName() ?: "com.smart.shared_preferences"
@@ -49,7 +109,7 @@ object STInitializer {
     fun debug(): Boolean = this.options?.debug() ?: true
 
     @JvmStatic
-    fun application(): Application? = this.options?.application()
+    fun application(): Application? = this.application
 
     @JvmStatic
     fun channel(): String? = this.options?.channel()
@@ -75,12 +135,15 @@ object STInitializer {
             }
         }
 
+    private var application: Application? = null
+
     @JvmStatic
-    fun initOnApplicationCreate(options: Options) {
+    fun initOnApplicationCreate(application: Application, options: () -> Options) {
         if (this.initialized) return
 
+        this.application = application
+        this.options = options()
         this.initialized = true
-        this.options = options
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
     }
@@ -105,7 +168,7 @@ object STInitializer {
         bridgeHandler()?.handleBridge(activity, "open", bridgeParamsJsonObject.toString(), null, callback)
     }
 
-    class Options(private val application: Application) {
+    class Options {
         private var debug: Boolean = false
         private var channel: String = ""
 
@@ -122,8 +185,24 @@ object STInitializer {
         private var enableCompatVectorFromResources: Boolean = true
         private var bridgeHandler: BridgeHandler? = null
 
-        fun initBus(busHandlerClassMap: MutableMap<String, String>, callback: ((key: String, success: Boolean) -> Unit)? = null): Options {
-            STBusManager.initOnce(STInitializer.application(), busHandlerClassMap, callback)
+        fun initBus(busHandlerClassMap: MutableMap<String, String>, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null): Options {
+            STBusManager.initOnce(
+                application(),
+                busHandlerClassMap,
+                onCallback = { key: String, success: Boolean ->
+                    STLogUtil.d(TAG, "-- init bus $key, $success")
+                    if (key == "reactnative") {
+                        setRNInitialized(true)
+                        setRNInitializedSuccess(success)
+                        onRNInitializedCallback()?.invoke(success)
+                    }
+                    onCallback?.invoke(key, success)
+                },
+                onCompletely = {
+                    STLogUtil.w(TAG, "-- init bus onCompletely")
+                    onBusInitializedCallback()?.invoke()
+                    onCompletely?.invoke()
+                })
             return this
         }
 
@@ -225,20 +304,20 @@ object STInitializer {
             if (enable) {
                 if (networkChangedReceiver != null && networkChangedReceiver != this.networkChangedReceiver) {
                     this.networkChangedReceiver?.let { receiver ->
-                        application.let { context ->
+                        application()?.applicationContext?.let { context ->
                             STNetworkChangedReceiver.unregister(context, receiver)
                         }
                         this.networkChangedReceiver = null
                     }
 
-                    application.let { context ->
+                    application()?.applicationContext?.let { context ->
                         this.networkChangedReceiver = STNetworkChangedReceiver.register(context)
                         this.enableNetworkChangedReceiver = enable
                     }
                 }
             } else {
                 this.networkChangedReceiver?.let { receiver ->
-                    application.let { context ->
+                    application()?.applicationContext?.let { context ->
                         STNetworkChangedReceiver.unregister(context, receiver)
                     }
                     this.networkChangedReceiver = null
@@ -254,16 +333,16 @@ object STInitializer {
             if (enable) {
                 if (activityLifecycleCallbacks != null && activityLifecycleCallbacks != this.activityLifecycleCallbacks) {
                     this.activityLifecycleCallbacks?.let {
-                        application().unregisterActivityLifecycleCallbacks(it)
+                        application()?.unregisterActivityLifecycleCallbacks(it)
                         this.activityLifecycleCallbacks = null
                     }
 
-                    application().registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+                    application()?.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
                     this.activityLifecycleCallbacks = activityLifecycleCallbacks
                 }
             } else {
                 this.activityLifecycleCallbacks?.let {
-                    application().unregisterActivityLifecycleCallbacks(it)
+                    application()?.unregisterActivityLifecycleCallbacks(it)
                     this.activityLifecycleCallbacks = null
                 }
             }
@@ -292,8 +371,6 @@ object STInitializer {
             this.channel = channel
             return this
         }
-
-        fun application(): Application = this.application
 
         fun bridgeHandler(): BridgeHandler? = this.bridgeHandler
 

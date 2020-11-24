@@ -21,7 +21,7 @@ open class STWebView @JvmOverloads constructor(context: Context, attrs: Attribut
         private set
 
     init {
-        STWebViewUtil.initWebView(this, " statusBarHeight/${(STSystemUtil.statusBarHeight / STSystemUtil.displayMetrics.density).toInt()} ")
+        STWebViewUtil.initWebView(this, " statusBarHeight/${(STSystemUtil.statusBarHeight / (STSystemUtil.displayMetrics?.density ?: 1f)).toInt()} ")
     }
 
     open fun loadURL(url: String?) {

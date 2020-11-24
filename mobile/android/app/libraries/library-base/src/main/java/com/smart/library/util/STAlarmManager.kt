@@ -4,7 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 
 @Suppress("unused")
 object STAlarmManager {
@@ -15,22 +15,22 @@ object STAlarmManager {
         MAlarmManagerUtil.setNormalAlarm(calendar.getTimeInMillis(), pendingIntent);
      */
     fun setNormalAlarm(timeInMillis: Long, pendingIntent: PendingIntent): PendingIntent {
-        val context = STBaseApplication.INSTANCE.applicationContext
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val context = STInitializer.application()?.applicationContext
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
         return pendingIntent
     }
 
     fun setRepeatAlarm(timeInMillis: Long, intervalMillis: Long, pendingIntent: PendingIntent): PendingIntent {
-        val context = STBaseApplication.INSTANCE.applicationContext
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val context = STInitializer.application()?.applicationContext
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, intervalMillis, pendingIntent)
         return pendingIntent
     }
 
     fun cancelAlarm(pendingIntent: PendingIntent) {
-        val context = STBaseApplication.INSTANCE.applicationContext
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val context = STInitializer.application()?.applicationContext
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
     }
 

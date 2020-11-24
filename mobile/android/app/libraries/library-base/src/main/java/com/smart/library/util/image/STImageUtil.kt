@@ -15,7 +15,7 @@ import androidx.annotation.RawRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.drawToBitmap
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import java.io.InputStream
 
@@ -30,7 +30,9 @@ object STImageUtil {
     @SuppressLint("ObsoleteSdkInt")
     @JvmStatic
     fun getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
-        var drawable = ContextCompat.getDrawable(STBaseApplication.INSTANCE, drawableId) ?: return null
+        val context = STInitializer.application()
+        context ?: return null
+        var drawable = ContextCompat.getDrawable(context, drawableId) ?: return null
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) drawable = DrawableCompat.wrap(drawable).mutate()
 

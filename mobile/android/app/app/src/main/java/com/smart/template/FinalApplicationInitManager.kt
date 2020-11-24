@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.STConfig
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
@@ -18,8 +18,6 @@ import com.smart.library.widget.titlebar.STTitleBar
 import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.library.STBridgeCommunication
 import com.smart.template.repository.STRepository
-import io.reactivex.Flowable
-import io.reactivex.schedulers.Schedulers
 
 @Suppress("unused")
 object FinalApplicationInitManager {
@@ -52,7 +50,7 @@ object FinalApplicationInitManager {
     }
 
     private fun asyncInitialize(callback: ((key: String, success: Boolean) -> Unit)? = null) {
-        STBusManager.initOnce(STBaseApplication.INSTANCE, hashMapOf(
+        STBusManager.initOnce(STInitializer.application(), hashMapOf(
                 "reactnative" to "com.smart.library.reactnative.RNBusHandler",
                 "flutter" to "com.smart.library.flutter.FlutterBusHandler",
                 "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
@@ -65,7 +63,7 @@ object FinalApplicationInitManager {
         // init global repository
         STRepository.init()
 
-        val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
+        val frescoConfig = STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build()
         STImageManager.initialize(STImageFrescoHandler(frescoConfig))
 
         // h5 初始化

@@ -3,7 +3,7 @@ package com.smart.library.hybird
 import android.util.Log
 import com.smart.template.repository.STRepository
 import com.smart.library.util.okhttp.STOkHttpManager
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.bundle.strategy.STHybirdInitStrategy
@@ -63,6 +63,6 @@ object HybirdApplication {
 
         val allConfigUrl = "http://10.47.58.14:8080/background/files/all.json"
         //初始化开始
-        STHybird.init(true, false, STBaseApplication.DEBUG, STHybirdInitStrategy.LOCAL, "index.html", allConfigUrl, allConfiger, configer, downloader, initCallback)
+        STHybird.init(true, false, STInitializer.debug(), STHybirdInitStrategy.LOCAL, "index.html", allConfigUrl, allConfiger, configer, downloader, initCallback)
     }
 }

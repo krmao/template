@@ -7,7 +7,7 @@ import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import io.reactivex.subjects.PublishSubject
 import java.util.*
@@ -23,7 +23,7 @@ class RxPermissionsFragment : Fragment() {
     // Contains all the current permission requests.
     // Once granted or denied, they are removed from it.
     private val mSubjects = HashMap<String, PublishSubject<Permission>>()
-    var enableLog: Boolean = STBaseApplication.DEBUG
+    var enableLog: Boolean = STInitializer.debug()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

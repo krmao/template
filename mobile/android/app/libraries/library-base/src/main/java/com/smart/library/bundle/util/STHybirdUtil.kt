@@ -8,7 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.manager.STHybirdBundleInfoManager
 import com.smart.library.bundle.manager.STHybirdDownloadManager
@@ -175,7 +175,7 @@ object STHybirdUtil {
             try {
                 STFileUtil.deleteFile(zipFile)
                 STFileUtil.deleteDirectory(unzipDir)
-                STFileUtil.copy(STBaseApplication.INSTANCE.assets.open("${STHybird.assetsDirName}/$moduleName-${primaryConfig.moduleVersion}${STHybird.bundleSuffix}"), zipFile)
+                STFileUtil.copy(STInitializer.application()?.assets?.open("${STHybird.assetsDirName}/$moduleName-${primaryConfig.moduleVersion}${STHybird.bundleSuffix}"), zipFile)
                 success = true
             } catch (exception: FileNotFoundException) {
                 STLogUtil.e(STHybird.TAG + ":" + moduleName, "--------[copyModuleZipFromAssets]: 文件不存在", exception)
@@ -200,7 +200,7 @@ object STHybirdUtil {
 
         Observable.fromCallable {
             try {
-                val allConfigJsonString = STFileUtil.readTextFromFile(STBaseApplication.INSTANCE.assets.open("${STHybird.assetsDirName}/all${STHybird.configSuffix}"))
+                val allConfigJsonString = STFileUtil.readTextFromFile(STInitializer.application()?.assets?.open("${STHybird.assetsDirName}/all${STHybird.configSuffix}"))
                 STLogUtil.j(Log.VERBOSE, STHybird.TAG, allConfigJsonString)
                 allConfigList = STJsonUtil.fromJson(allConfigJsonString, Array<STHybirdModuleConfigModel>::class.java) ?: mutableListOf()
             } catch (exception: FileNotFoundException) {

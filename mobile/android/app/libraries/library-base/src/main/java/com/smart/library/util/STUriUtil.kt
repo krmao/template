@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.io.File
 
 /*
@@ -32,7 +32,7 @@ import java.io.File
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STUriUtil {
     private val TAG = STUriUtil::class.java.simpleName
-    val AUTHORITY = STBaseApplication.INSTANCE.packageName + ".provider"
+    val AUTHORITY = STInitializer.application()?.packageName + ".provider"
 
     fun intentForFileProvider(action: String? = null): Intent? {
         val intent = Intent(action)
@@ -51,10 +51,12 @@ object STUriUtil {
             if (uri != null && uri.scheme?.startsWith("file://") == true) fromFileProvider(authority, File(uri.toString().replace(uri.scheme ?: "", ""))) else uri
 
     fun fromFileProvider(authority: String, file: File): Uri? {
+        val context = STInitializer.application()
+        context?:return null
         var result: Uri? = null
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                result = FileProvider.getUriForFile(STBaseApplication.INSTANCE, authority, file)
+                result = FileProvider.getUriForFile(context, authority, file)
             } else {
                 result = Uri.fromFile(file)
             }

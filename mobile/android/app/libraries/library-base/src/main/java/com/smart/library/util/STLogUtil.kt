@@ -2,7 +2,7 @@ package com.smart.library.util
 
 import android.text.TextUtils
 import android.util.Log
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.STConfig
 import com.smart.library.util.cache.STCacheManager
 import io.reactivex.Flowable
@@ -56,7 +56,7 @@ object STLogUtil {
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
 
     @JvmStatic
-    var debug = STBaseApplication.DEBUG
+    var debug = STInitializer.debug()
 
     @JvmStatic
     @JvmOverloads

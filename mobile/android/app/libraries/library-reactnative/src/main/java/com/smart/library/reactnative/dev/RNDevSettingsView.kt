@@ -9,7 +9,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.reactnative.R
 import com.smart.library.reactnative.RNConstant
 import com.smart.library.reactnative.RNJumper
@@ -24,7 +24,7 @@ class RNDevSettingsView @JvmOverloads constructor(context: Context, attrs: Attri
     init {
         LayoutInflater.from(context).inflate(R.layout.rn_dev_settings_view, this)
 
-        dev_cb.isChecked = RNInstanceManager.devSettingsManager.devSettings?.isJSDevModeEnabled ?: STBaseApplication.DEBUG
+        dev_cb.isChecked = RNInstanceManager.devSettingsManager.devSettings?.isJSDevModeEnabled ?: STInitializer.debug()
         minify_cb.isChecked = RNInstanceManager.devSettingsManager.devSettings?.isJSMinifyEnabled ?: false
 
         deltas_cb.isChecked = RNInstanceManager.devSettingsManager.getJSBundleDeltas()
@@ -90,7 +90,7 @@ class RNDevSettingsView @JvmOverloads constructor(context: Context, attrs: Attri
                     val page: String = page_et.text.toString().trim()
                     if (page.isNotBlank()) {
                         STToastUtil.show("检测到 page:$page, 执行跳转")
-                        RNJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+                        RNJumper.goTo(STInitializer.application(), intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                 } else {
                     STToastUtil.show("reload bundle failure")
@@ -106,7 +106,7 @@ class RNDevSettingsView @JvmOverloads constructor(context: Context, attrs: Attri
                     val page: String = page_et.text.toString().trim()
                     if (page.isNotBlank()) {
                         STToastUtil.show("检测到 page:$page, 执行跳转")
-                        RNJumper.goTo(STBaseApplication.INSTANCE, intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
+                        RNJumper.goTo(STInitializer.application(), intentFlag = Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                 } else {
                     STToastUtil.show("reload bundle failure")

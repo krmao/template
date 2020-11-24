@@ -11,8 +11,8 @@ object STBusManager {
     private val TAG: String = STBusManager::class.java.simpleName
 
     interface IBusHandler {
-        fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?)
-        fun onUpgradeOnce(application: Application)
+        fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?)
+        fun onUpgradeOnce(application: Application?)
         fun onCall(context: Context?, busFunctionName: String, vararg params: Any)
         fun onAsyncCall(callback: ((key: Any?, value: Any?) -> Unit)?, context: Context?, busFunctionName: String, vararg params: Any)
     }
@@ -23,7 +23,7 @@ object STBusManager {
     private val busHandlerMap: MutableMap<String, IBusHandler> = hashMapOf()
     private var isInit = false
 
-    fun initOnce(application: Application, busHandlerClassMap: MutableMap<String, String>, callback: ((key: String, success: Boolean) -> Unit)? = null) {
+    fun initOnce(application: Application?, busHandlerClassMap: MutableMap<String, String>, callback: ((key: String, success: Boolean) -> Unit)? = null) {
         if (!isInit) {
             busHandlerClassMap.forEach { entry ->
                 val key: String = entry.key

@@ -1,6 +1,6 @@
 package com.smart.library.util.okhttp
 
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.cache.STCacheManager
 import com.smart.library.util.rx.RxBus
@@ -44,7 +44,7 @@ object STOkHttpManager {
                         })
                 .addInterceptor(
                         STHttpLoggingInterceptor(
-                                if (STBaseApplication.DEBUG) STHttpLoggingInterceptor.Level.BODY else STHttpLoggingInterceptor.Level.NONE,
+                                if (STInitializer.debug()) STHttpLoggingInterceptor.Level.BODY else STHttpLoggingInterceptor.Level.NONE,
                                 object : STHttpLoggingInterceptor.Logger {
                                     override fun log(message: String) {
                                         if (message.length <= 10000)

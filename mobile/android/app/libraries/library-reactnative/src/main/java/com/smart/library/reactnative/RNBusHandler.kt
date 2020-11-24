@@ -3,7 +3,7 @@ package com.smart.library.reactnative
 import android.app.Application
 import android.content.Context
 import com.facebook.soloader.SoLoader
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.reactnative.dev.RNDevSettingsView
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
@@ -16,17 +16,17 @@ import io.reactivex.schedulers.Schedulers
 @Suppress("unused", "PrivatePropertyName")
 class RNBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
+    override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
         SoLoader.init(application, false)
         STDebugFragment.childViewList.add(RNDevSettingsView::class.java)
 
         Flowable.fromCallable {
-            val frescoConfig = STImageFrescoHandler.getConfigBuilder(STBaseApplication.DEBUG, STOkHttpManager.client).build()
+            val frescoConfig = STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build()
             RNDeployManager.init(application, frescoConfig, callback)
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
-    override fun onUpgradeOnce(application: Application) {
+    override fun onUpgradeOnce(application: Application?) {
 
     }
 

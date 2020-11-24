@@ -2,7 +2,7 @@ package com.smart.library.util
 
 import android.graphics.Bitmap
 import android.text.TextUtils
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.cache.STCacheManager
 import java.io.*
 import java.nio.channels.FileChannel
@@ -86,7 +86,7 @@ object STFileUtil {
         if (!fromPathInAssetsDir.isNullOrBlank() && toFile != null) {
             try {
                 deleteFile(toFile)
-                copy(STBaseApplication.INSTANCE.assets.open(fromPathInAssetsDir), toFile)
+                copy(STInitializer.application()?.assets?.open(fromPathInAssetsDir), toFile)
                 success = true
             } catch (exception: FileNotFoundException) {
                 STLogUtil.e("copyFromAssets, FileNotFoundException")
@@ -226,10 +226,10 @@ object STFileUtil {
     @JvmStatic
     fun existsInAssets(pathInAssetsDir: String?): Boolean {
         if (!pathInAssetsDir.isNullOrBlank()) {
-            val assetManager = STBaseApplication.INSTANCE.resources.assets
+            val assetManager = STInitializer.application()?.resources?.assets
             var inputStream: InputStream? = null
             try {
-                inputStream = assetManager.open(pathInAssetsDir.replace("assets://", ""))
+                inputStream = assetManager?.open(pathInAssetsDir.replace("assets://", ""))
                 return true
             } catch (_: IOException) {
             } finally {
@@ -243,7 +243,9 @@ object STFileUtil {
     }
 
     @JvmStatic
-    fun readTextFromFile(inputStream: InputStream): String {
+    fun readTextFromFile(inputStream: InputStream?): String {
+        inputStream ?: return ""
+
         var content = ""
         try {
             val bufferedReader = BufferedReader(InputStreamReader(inputStream, ENCODING_UTF8))

@@ -15,7 +15,7 @@ import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
 import com.baidu.mapapi.utils.DistanceUtil
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.map.R
 import com.smart.library.map.layer.STIMap
 import com.smart.library.map.layer.STMapOptions
@@ -42,7 +42,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
     init {
         if (!isInEditMode) {
-            initialize(STBaseApplication.INSTANCE)
+            initialize(STInitializer.application())
         }
         addView(createMapView(context, initMapOptions))
     }

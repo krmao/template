@@ -3,10 +3,11 @@ package com.smart.library.util.rx.permission
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.text.TextUtils
 import androidx.core.content.PermissionChecker
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -26,7 +27,7 @@ class RxPermissions(activity: Activity) {
          * If your application is targeting an API level before 23 (Android M) then both:ContextCompat.CheckSelfPermission and Context.checkSelfPermission doesn't work and always returns 0 (PERMISSION_GRANTED). Even if you run the application on Android 6.0 (API 23).
          */
         @JvmStatic
-        fun checkSelfPermission(vararg permission: String): Boolean = permission.all { PermissionChecker.checkSelfPermission(STBaseApplication.INSTANCE, it) == PermissionChecker.PERMISSION_GRANTED }
+        fun checkSelfPermission(vararg permission: String, context: Context? = STInitializer.application()): Boolean = if (context == null) false else permission.all { PermissionChecker.checkSelfPermission(context, it) == PermissionChecker.PERMISSION_GRANTED }
 
         @SuppressLint("CheckResult")
         @JvmStatic
@@ -80,18 +81,18 @@ class RxPermissions(activity: Activity) {
     fun <T> ensure(vararg permissions: String): ObservableTransformer<T, Boolean> {
         return ObservableTransformer { o ->
             request(o, *permissions)
-                    // Transform Observable<Permission> to Observable<Boolean>
-                    .buffer(permissions.size)
-                    .flatMap(Function<List<Permission>, ObservableSource<Boolean>> { permissions ->
-                        if (permissions.isEmpty()) {
-                            // Occurs during orientation change, when the subject receives onComplete.
-                            // In that case we don't want to propagate that empty list to the
-                            // subscriber, only the onComplete.
-                            return@Function Observable.empty()
-                        }
-                        // Return true if all permissions are granted.
-                        Observable.just(permissions.all { it.granted })
-                    })
+                // Transform Observable<Permission> to Observable<Boolean>
+                .buffer(permissions.size)
+                .flatMap(Function<List<Permission>, ObservableSource<Boolean>> { permissions ->
+                    if (permissions.isEmpty()) {
+                        // Occurs during orientation change, when the subject receives onComplete.
+                        // In that case we don't want to propagate that empty list to the
+                        // subscriber, only the onComplete.
+                        return@Function Observable.empty()
+                    }
+                    // Return true if all permissions are granted.
+                    Observable.just(permissions.all { it.granted })
+                })
         }
     }
 

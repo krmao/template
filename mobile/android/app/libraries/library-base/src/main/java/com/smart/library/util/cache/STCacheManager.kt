@@ -1,8 +1,7 @@
 package com.smart.library.util.cache
 
 import android.text.TextUtils
-import androidx.annotation.NonNull
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.md5
 import com.smart.library.util.STSystemUtil
 import java.io.File
@@ -32,70 +31,70 @@ object STCacheManager {
     private val allModuleCacheMap = ConcurrentHashMap<String, ConcurrentHashMap<String, Any>>()
 
     @JvmStatic
-    fun getChildDir(@NonNull parent: File, @NonNull childDirName: String): File = File(parent, childDirName).apply { if (!this.exists()) this.mkdirs() }
+    fun getChildDir(parent: File?, childDirName: String?): File? = File(parent, childDirName ?: "").apply { if (!this.exists()) this.mkdirs() }
 
     /**
      * @see https://stackoverflow.com/a/40741881/4348530
      */
     @JvmStatic
-    fun getFilesDir(): File {
-        val file = if (STSystemUtil.isSdCardExist) STBaseApplication.INSTANCE.getExternalFilesDir(null) else STBaseApplication.INSTANCE.filesDir
-        return file ?: STBaseApplication.INSTANCE.filesDir
+    fun getFilesDir(): File? {
+        val file = if (STSystemUtil.isSdCardExist) STInitializer.application()?.getExternalFilesDir(null) else STInitializer.application()?.filesDir
+        return file ?: STInitializer.application()?.filesDir
     }
 
     @JvmStatic
-    fun getFilesHotPatchDir(): File = getChildDir(getFilesDir(), "hot-patch")
+    fun getFilesHotPatchDir(): File? = getChildDir(getFilesDir(), "hot-patch")
 
     @JvmStatic
-    fun getFilesHotPatchChildDir(childDirName: String): File = getChildDir(getFilesHotPatchDir(), childDirName)
+    fun getFilesHotPatchChildDir(childDirName: String): File? = getChildDir(getFilesHotPatchDir(), childDirName)
 
     @JvmStatic
-    fun getFilesHotPatchAndroidDir(): File = getFilesHotPatchChildDir("android".md5(STBaseApplication.DEBUG))
+    fun getFilesHotPatchAndroidDir(): File? = getFilesHotPatchChildDir("android".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getFilesHotPatchHybirdDir(): File = getFilesHotPatchChildDir("hybird".md5(STBaseApplication.DEBUG))
+    fun getFilesHotPatchHybirdDir(): File? = getFilesHotPatchChildDir("hybird".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getFilesHotPatchReactNativeDir(): File = getFilesHotPatchChildDir("react-native".md5(STBaseApplication.DEBUG))
+    fun getFilesHotPatchReactNativeDir(): File? = getFilesHotPatchChildDir("react-native".md5(STInitializer.debug()))
 
     /**
      * @see https://stackoverflow.com/a/40741881/4348530
      */
     @JvmStatic
-    fun getCacheDir(): File {
-        val file = if (STSystemUtil.isSdCardExist) STBaseApplication.INSTANCE.externalCacheDir else STBaseApplication.INSTANCE.cacheDir
-        return file ?: STBaseApplication.INSTANCE.cacheDir
+    fun getCacheDir(): File? {
+        val file = if (STSystemUtil.isSdCardExist) STInitializer.application()?.externalCacheDir else STInitializer.application()?.cacheDir
+        return file ?: STInitializer.application()?.cacheDir
     }
 
     @JvmStatic
-    fun getCacheChildDir(childDir: String): File = getChildDir(getCacheDir(), childDir)
+    fun getCacheChildDir(childDir: String?): File? = getChildDir(getCacheDir(), childDir)
 
     @JvmStatic
-    fun getCacheCrashDir(): File = getCacheChildDir("crash")
+    fun getCacheCrashDir(): File? = getCacheChildDir("crash")
 
     @JvmStatic
-    fun getCacheMediaDir(): File = getCacheChildDir("media".md5(STBaseApplication.DEBUG))
+    fun getCacheMediaDir(): File? = getCacheChildDir("media".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getCacheMediaChildDir(childDirName: String): File = getChildDir(getCacheMediaDir(), childDirName)
+    fun getCacheMediaChildDir(childDirName: String): File? = getChildDir(getCacheMediaDir(), childDirName)
 
     @JvmStatic
-    fun getCacheMusicDir(): File = getChildDir(getCacheMediaDir(), "music".md5(STBaseApplication.DEBUG))
+    fun getCacheMusicDir(): File? = getChildDir(getCacheMediaDir(), "music".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getCacheVideoDir(): File = getChildDir(getCacheMediaDir(), "video".md5(STBaseApplication.DEBUG))
+    fun getCacheVideoDir(): File? = getChildDir(getCacheMediaDir(), "video".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getCacheImageDir(): File = getChildDir(getCacheMediaDir(), "image".md5(STBaseApplication.DEBUG))
+    fun getCacheImageDir(): File? = getChildDir(getCacheMediaDir(), "image".md5(STInitializer.debug()))
 
     @JvmStatic
-    fun getCacheImageChildDir(childDirName: String): File = getChildDir(getCacheImageDir(), childDirName)
+    fun getCacheImageChildDir(childDirName: String): File? = getChildDir(getCacheImageDir(), childDirName)
 
     @JvmStatic
     fun put(module: String, key: String, value: Any) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
             val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
-                    ?: ConcurrentHashMap()
+                ?: ConcurrentHashMap()
             subModuleCacheMap[key] = value
             allModuleCacheMap[module] = subModuleCacheMap
         }
@@ -127,7 +126,7 @@ object STCacheManager {
     fun remove(module: String, key: String) {
         if (!TextUtils.isEmpty(module) && !TextUtils.isEmpty(key)) {
             val subModuleCacheMap: ConcurrentHashMap<String, Any> = allModuleCacheMap[module]
-                    ?: ConcurrentHashMap()
+                ?: ConcurrentHashMap()
             subModuleCacheMap.remove(key)
             allModuleCacheMap[module] = subModuleCacheMap
         }

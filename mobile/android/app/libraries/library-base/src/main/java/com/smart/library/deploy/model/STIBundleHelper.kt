@@ -3,7 +3,7 @@ package com.smart.library.deploy.model
 import com.smart.library.util.STLogUtil
 import java.io.File
 
-abstract class STIBundleHelper(val info: STBundleInfo, val rootDir: File, val TAG: String) {
+abstract class STIBundleHelper(val info: STBundleInfo, val rootDir: File?, val TAG: String) {
 
     fun checkUnzipDirValid(): Boolean {
         val indexFile = getIndexFile()

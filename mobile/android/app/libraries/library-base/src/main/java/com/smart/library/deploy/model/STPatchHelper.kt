@@ -20,16 +20,16 @@ class STPatchHelper(type: STDeployManager, val info: STPatchInfo) {
 
     val TAG: String by lazy { type.TAG }
     val debug: Boolean by lazy { type.isDebug() }
-    val rootDir: File by lazy { type.getRootDir() }
+    val rootDir: File? by lazy { type.getRootDir() }
     val preferenceManager: STDeployPreferenceManager by lazy { type.preferenceManager }
 
-    fun getApplyDir(): File = STCacheManager.getChildDir(rootDir, STDeployConstants.DIR_NAME_APPLY.md5(debug))
+    fun getApplyDir(): File? = STCacheManager.getChildDir(rootDir, STDeployConstants.DIR_NAME_APPLY.md5(debug))
     fun getApplyZipFile(): File = File(getApplyDir(), String.format(STDeployConstants.FILE_NAME_APPLY_ZIP, info.toVersion).md5(debug))
     fun getApplyUnzipDir(): File = File(getApplyDir(), String.format(STDeployConstants.DIR_NAME_APPLY_UNZIP, info.toVersion).md5(debug))
 
     fun getTempPatchFile(): File = File(getTempDir(), String.format(STDeployConstants.FILE_NAME_PATCH, info.baseVersion, info.toVersion).md5(debug))
     fun getTempZipFile(): File = File(getTempDir(), String.format(STDeployConstants.FILE_NAME_TEMP_ZIP, info.toVersion).md5(debug))
-    fun getTempDir(): File = STCacheManager.getChildDir(rootDir, STDeployConstants.DIR_NAME_TEMP.md5(debug))
+    fun getTempDir(): File? = STCacheManager.getChildDir(rootDir, STDeployConstants.DIR_NAME_TEMP.md5(debug))
 
     fun checkPatchFileValid(): Boolean = getTempPatchFile().exists()
     fun checkTempBundleFileValid(): Boolean {

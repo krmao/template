@@ -2,14 +2,14 @@ package com.smart.library.util
 
 import android.database.sqlite.SQLiteDatabase
 import android.text.TextUtils
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("unused")
 object STDatabaseUtil {
 
-    fun getDatabase(dbName: String): File = STBaseApplication.INSTANCE.getDatabasePath(dbName)
+    fun getDatabase(dbName: String): File? = STInitializer.application()?.getDatabasePath(dbName)
 
     fun copyDBFile(dbName: String, dbResId: Int, destDBDir: File?) {
         if (destDBDir == null || dbResId <= 0 || TextUtils.isEmpty(dbName))
@@ -23,8 +23,10 @@ object STDatabaseUtil {
                 destDBFile.delete()
             SQLiteDatabase.openOrCreateDatabase(destDBFile, null)
 
-            val inputStream = STBaseApplication.INSTANCE.resources.openRawResource(dbResId)
+            val inputStream = STInitializer.application()?.resources?.openRawResource(dbResId)
             val outputStream = FileOutputStream(destDBFile)
+
+            inputStream ?: return
 
             val buffer = ByteArray(1024)
             var length: Int = inputStream.read(buffer)

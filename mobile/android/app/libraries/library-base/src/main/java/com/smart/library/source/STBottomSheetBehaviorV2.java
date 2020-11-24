@@ -98,7 +98,7 @@ import static java.lang.Math.min;
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
 @SuppressWarnings("ALL")
-@SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef"})
+@SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef", "Deprecated"})
 public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.Behavior<V> {
 
 

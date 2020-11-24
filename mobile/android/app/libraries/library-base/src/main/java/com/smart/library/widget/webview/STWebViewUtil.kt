@@ -9,7 +9,7 @@ import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.STConfig
 import com.smart.library.bundle.STHybird.TAG
 import com.smart.library.util.STLogUtil
@@ -75,7 +75,7 @@ object STWebViewUtil {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                WebView.setWebContentsDebuggingEnabled(STBaseApplication.DEBUG)
+                WebView.setWebContentsDebuggingEnabled(STInitializer.debug())
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -108,7 +108,7 @@ object STWebViewUtil {
 
     @Suppress("DEPRECATION")
     fun removeAllCookie() {
-        CookieSyncManager.createInstance(STBaseApplication.INSTANCE.applicationContext)
+        CookieSyncManager.createInstance(STInitializer.application()?.applicationContext)
         val cookieManager = CookieManager.getInstance()
         cookieManager.removeAllCookie()
         cookieManager.setAcceptCookie(true)

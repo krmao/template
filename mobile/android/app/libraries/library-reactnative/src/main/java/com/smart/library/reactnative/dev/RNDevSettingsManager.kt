@@ -10,7 +10,7 @@ import com.smart.library.util.STRegexManager
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak")
-class RNDevSettingsManager internal constructor(val application: Application, val debug: Boolean) {
+class RNDevSettingsManager internal constructor(val application: Application?, val debug: Boolean) {
 
     val devSettings: DeveloperSettings?
         get() = RNInstanceManager.instanceManager?.devSupportManager?.devSettings

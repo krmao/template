@@ -1,6 +1,5 @@
 package com.smart.library.util
 
-import okhttp3.internal.http.HttpDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,12 +78,6 @@ object STTimeUtil {
 
     @JvmStatic
     fun format(pattern: String, date: Date): String = SimpleDateFormat(pattern, Locale.getDefault()).format(date)
-
-    /**
-     * @see okhttp3.internal.http.HttpDate.parse
-     */
-    @JvmStatic
-    fun parseHttp(httpValue: String): Date = HttpDate.parse(httpValue)
 
     @JvmStatic
     fun getTimeSlotDescription(pattern: String, value: String): Date? = SimpleDateFormat(pattern, Locale.getDefault()).parse(value)

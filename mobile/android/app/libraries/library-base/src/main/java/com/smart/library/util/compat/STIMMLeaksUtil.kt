@@ -14,14 +14,14 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 @SuppressLint("DiscouragedPrivateApi")
 object STIMMLeaksUtil {
 
-    private val inputMethodManager = STBaseApplication.INSTANCE.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+    private val inputMethodManager = STInitializer.application()?.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
     private var mServedViewField: Field? = null
     private var mHField: Field? = null
     private var finishInputLockedMethod: Method? = null
@@ -45,7 +45,7 @@ object STIMMLeaksUtil {
     }
 
     internal class ReferenceCleaner(
-        private val inputMethodManager: InputMethodManager,
+        private val inputMethodManager: InputMethodManager?,
         private val mHField: Field,
         private val mServedViewField: Field,
         private val finishInputLockedMethod: Method

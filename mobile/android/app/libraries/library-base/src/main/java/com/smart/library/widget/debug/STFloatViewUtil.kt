@@ -12,7 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.smart.library.R
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.STSystemUtil
 
@@ -32,14 +32,14 @@ enum class STFloatViewUtil {
     private val defaultX = 0
     private val defaultY = defaultWH * 5
 
-    private var floatView: ImageView = ImageView(STBaseApplication.INSTANCE)
+    private var floatView: ImageView = ImageView(STInitializer.application())
     private var windowManager: WindowManager
     private var windowLayoutParams: WindowManager.LayoutParams
     private var listener: View.OnClickListener? = null
 
     init {
         floatView.setImageResource(R.drawable.st_emo_im_happy)
-        windowManager = STBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager = STInitializer.application()?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowLayoutParams = WindowManager.LayoutParams()
         windowLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST
         windowLayoutParams.format = PixelFormat.RGBA_8888
@@ -48,8 +48,8 @@ enum class STFloatViewUtil {
         windowLayoutParams.width = defaultWH
         windowLayoutParams.height = defaultWH
         windowLayoutParams.gravity = Gravity.START or Gravity.TOP
-        windowLayoutParams.x = STPreferencesUtil.getInt(KEY_LAST_X, defaultX)
-        windowLayoutParams.y = STPreferencesUtil.getInt(KEY_LAST_Y, defaultY)
+        windowLayoutParams.x = STPreferencesUtil.getInt(KEY_LAST_X, defaultX) ?: 0
+        windowLayoutParams.y = STPreferencesUtil.getInt(KEY_LAST_Y, defaultY) ?: 0
         floatView.setOnTouchListener(object : View.OnTouchListener {
             private var x: Float = 0.toFloat()
             private var y: Float = 0.toFloat()
@@ -88,8 +88,8 @@ enum class STFloatViewUtil {
         })
     }
 
-    var isAwaysHide: Boolean
-        get() = STPreferencesUtil.getBoolean(KEY_HIDE_ALWAYS, false)
+    private var isAwaysHide: Boolean
+        get() = STPreferencesUtil.getBoolean(KEY_HIDE_ALWAYS, false) ?: true
         set(isAwaysHide) {
             STPreferencesUtil.putBoolean(KEY_HIDE_ALWAYS, isAwaysHide)
             if (isAwaysHide)
@@ -104,7 +104,7 @@ enum class STFloatViewUtil {
 
     fun show() = try {
         hide()
-        if (isAwaysHide) {
+        if (isAwaysHide == true) {
         } else {
             windowManager.addView(floatView, windowLayoutParams)
         }

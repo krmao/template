@@ -25,7 +25,7 @@ class RNBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaModu
                 "isSdCardExist" to STSystemUtil.isSdCardExist,
                 "statusBarHeight" to STSystemUtil.statusBarHeight,
                 "statusBarHeightByDensity" to STSystemUtil.statusBarHeight.toDpFromPx(),
-                "density" to STSystemUtil.displayMetrics.density
+                "density" to STSystemUtil.displayMetrics?.density
         )
     }
 

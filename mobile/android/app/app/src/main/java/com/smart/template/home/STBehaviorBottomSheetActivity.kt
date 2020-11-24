@@ -9,7 +9,7 @@ import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.smart.library.base.STBaseActivity
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
@@ -60,7 +60,7 @@ class STBehaviorBottomSheetActivity : STBaseActivity() {
             }
         }
     }
-    private val bottomSheetPeekHeight: Int by lazy { STBaseApplication.INSTANCE.resources.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) }
+    private val bottomSheetPeekHeight: Int by lazy { STInitializer.application()?.resources?.getDimensionPixelSize(R.dimen.bottomSheetPeekHeight) ?: 0 }
     private val bottomSheetBehavior: STBottomSheetViewPagerBehavior<LinearLayout> by lazy { STBottomSheetViewPagerBehavior.from(bottomSheetContainer) }
     private val imageContentView: ImageView by lazy { findViewById<ImageView>(R.id.imageContentView) }
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,12 +1,40 @@
 package com.smart.template
 
-import com.smart.library.base.STBaseApplication
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import com.smart.library.STInitializer
+import com.smart.library.util.STReflectUtil
+import com.smart.library.util.STSystemUtil
+import com.smart.template.library.STBridgeCommunication
 
 @Suppress("unused")
-class FinalApplication : STBaseApplication() {
+class FinalApplication : Application() {
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        STInitializer.attachApplicationBaseContext(base)
+    }
 
     override fun onCreate() {
         super.onCreate()
+
+        STInitializer.initOnApplicationCreate(
+            STInitializer.Options(this)
+                .enableDebug((STSystemUtil.getAppMetaData("DEBUG") ?: false) as Boolean)
+                .enableNetworkChangedReceiver(true)
+                .enableCompatVectorFromResources(true)
+                .enableActivityLifecycleCallbacks(true)
+                .setChannel(STReflectUtil.invokeJavaStaticMethod("com.meituan.android.walle.WalleChannelReader", "getChannel", arrayOf(Application::class.java), arrayOf(this)) as? String ?: "")
+                .setBridgeHandler(object : STInitializer.BridgeHandler {
+                    override fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String?, callback: STInitializer.BridgeHandlerCallback?) {
+                        STBridgeCommunication.handleBridge(activity, functionName, params, callbackId) { _callbackId: String?, resultJsonString: String? ->
+                            callback?.onCallback(_callbackId, resultJsonString)
+                        }
+                    }
+                })
+        )
+
         if (isGodEyeEnabled()) {
             if (cn.hikyson.godeye.core.utils.ProcessUtils.isMainProcess(this)) {
                 cn.hikyson.godeye.core.GodEye.instance().init(this)

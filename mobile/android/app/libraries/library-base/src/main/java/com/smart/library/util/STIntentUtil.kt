@@ -13,7 +13,7 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import android.text.TextUtils
 import androidx.annotation.RequiresPermission
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.io.File
 import java.util.*
 
@@ -123,10 +123,10 @@ object STIntentUtil {
         return null
     }
 
-    fun goToAppDetails(context: Context?) = goToDefault(context, getInstalledAppDetailsIntent(STBaseApplication.INSTANCE.packageName))
+    fun goToAppDetails(context: Context?) = goToDefault(context, getInstalledAppDetailsIntent(STInitializer.application()?.packageName))
 
     @SuppressLint("ObsoleteSdkInt")
-    fun getInstalledAppDetailsIntent(packageName: String): Intent {
+    fun getInstalledAppDetailsIntent(packageName: String?): Intent {
         val intent = Intent()
         if (Build.VERSION.SDK_INT >= 9) {
             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -226,7 +226,7 @@ object STIntentUtil {
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             try {
-                STBaseApplication.INSTANCE.startActivity(intent)
+                STInitializer.application()?.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

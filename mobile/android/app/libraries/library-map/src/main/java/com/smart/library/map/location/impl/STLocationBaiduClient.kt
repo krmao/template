@@ -5,7 +5,7 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.map.location.STILocationClient
 import com.smart.library.map.location.STLocation
 import com.smart.library.map.location.STLocationManager
@@ -29,7 +29,7 @@ open class STLocationBaiduClient(private val isNeedAddress: Boolean = true) : ST
 
     protected var locationTimerDisposable: Disposable? = null
     protected val locationClient: LocationClient by lazy {
-        LocationClient(STBaseApplication.INSTANCE).apply {
+        LocationClient(STInitializer.application()).apply {
             locOption = LocationClientOption().apply {
                 setScanSpan(800)
                 locationMode = LocationClientOption.LocationMode.Hight_Accuracy
@@ -118,7 +118,7 @@ open class STLocationBaiduClient(private val isNeedAddress: Boolean = true) : ST
     override fun startLocationLoop(interval: Long, ensurePermissions: ((callback: (allPermissionsGranted: Boolean) -> Unit?) -> Unit?)?, onSuccess: ((location: STLocation) -> Unit?)?, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)?) {
         stopLocationLoop()
 
-        locationLoopClient = LocationClient(STBaseApplication.INSTANCE).apply {
+        locationLoopClient = LocationClient(STInitializer.application()).apply {
 
             locOption = LocationClientOption().apply {
                 setScanSpan(800)

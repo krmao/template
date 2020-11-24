@@ -1,7 +1,7 @@
 package com.smart.library.deploy
 
 import android.app.Activity
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.deploy.client.STIDeployClient
 import com.smart.library.deploy.client.impl.STDeployClientForReactNative
 import com.smart.library.deploy.model.STDeployApplyType
@@ -15,11 +15,11 @@ import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
-enum class STDeployManager(private var debug: Boolean, private var rootDir: File, private val checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, private val applyTypes: MutableSet<STDeployApplyType>) : STIDeployClient {
+enum class STDeployManager(private var debug: Boolean, private var rootDir: File?, private val checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, private val applyTypes: MutableSet<STDeployApplyType>) : STIDeployClient {
 
-    ANDROID(STBaseApplication.DEBUG, STCacheManager.getFilesHotPatchAndroidDir(), mutableSetOf(), mutableSetOf()),
-    HYBIRD(STBaseApplication.DEBUG, STCacheManager.getFilesHotPatchHybirdDir(), mutableSetOf(), mutableSetOf()),
-    REACT_NATIVE(STBaseApplication.DEBUG, STCacheManager.getFilesHotPatchReactNativeDir(), mutableSetOf(), mutableSetOf());
+    ANDROID(STInitializer.debug(), STCacheManager.getFilesHotPatchAndroidDir(), mutableSetOf(), mutableSetOf()),
+    HYBIRD(STInitializer.debug(), STCacheManager.getFilesHotPatchHybirdDir(), mutableSetOf(), mutableSetOf()),
+    REACT_NATIVE(STInitializer.debug(), STCacheManager.getFilesHotPatchReactNativeDir(), mutableSetOf(), mutableSetOf());
 
     val TAG = "[deploy-${this.name}]"
 
@@ -115,7 +115,7 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
      * @param deployConfig if is null, may custom init by @see resetClient
      */
     @JvmOverloads
-    fun initialize(debug: Boolean = this.debug, rootDir: File = this.rootDir, deployConfig: STDeployConfigModel?, checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, applyTypes: MutableSet<STDeployApplyType>) {
+    fun initialize(debug: Boolean = this.debug, rootDir: File? = this.rootDir, deployConfig: STDeployConfigModel?, checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, applyTypes: MutableSet<STDeployApplyType>) {
         this.debug = debug
         this.rootDir = rootDir
         this.checkUpdateTypes.clear()
@@ -156,7 +156,7 @@ enum class STDeployManager(private var debug: Boolean, private var rootDir: File
         }
     }
 
-    override fun getRootDir(): File = this.rootDir
+    override fun getRootDir(): File? = this.rootDir
 
     override fun tryApply() {
         deployClient?.tryApply()

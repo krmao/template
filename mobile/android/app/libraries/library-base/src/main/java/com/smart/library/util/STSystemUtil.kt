@@ -21,7 +21,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.PermissionChecker
 import com.smart.library.R
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.toBitmap
 
 
@@ -47,12 +47,12 @@ object STSystemUtil {
     val appBitmap: Bitmap? by lazy { getAppBitmap() }
 
     @JvmStatic
-    val displayMetrics: DisplayMetrics
-        get() = STBaseApplication.INSTANCE.resources.displayMetrics
+    val displayMetrics: DisplayMetrics?
+        get() = STInitializer.application()?.resources?.displayMetrics
 
     @JvmStatic
     val screenWidth: Int
-        get() = displayMetrics.widthPixels
+        get() = displayMetrics?.widthPixels ?: 0
 
     /**
      * 不包含虚拟导航栏的高度, 有的包含状态栏高度, 有的不包含状态栏高度
@@ -63,7 +63,7 @@ object STSystemUtil {
      * 假定肯定不包含虚拟导航栏高度
      */
     @JvmStatic
-    val screenHeight: Int by lazy { STBaseApplication.INSTANCE.resources.displayMetrics.heightPixels }
+    val screenHeight: Int by lazy { STInitializer.application()?.resources?.displayMetrics?.heightPixels ?: 0 }
 
     /**
      * 三星 S8-G9500 分辨率2960×1440(存在多种虚拟导航栏)   screenHeight=2076 screenRealHeight=2220(状态栏+内容高度+大虚拟导航栏高度)  statusBarHeight=72 navigationBarHeight=144 screenContentHeightExcludeStatusAndNavigationBar=2004
@@ -74,7 +74,7 @@ object STSystemUtil {
      */
     @JvmStatic
     val screenRealHeight: Int by lazy {
-        val defaultDisplay: Display? = (STBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
+        val defaultDisplay: Display? = (STInitializer.application()?.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
         val displayMetrics = DisplayMetrics()
         defaultDisplay?.getRealMetrics(displayMetrics)
         displayMetrics.heightPixels
@@ -89,7 +89,7 @@ object STSystemUtil {
      */
     @JvmStatic
     @Deprecated(message = "受机型不同影响, 比如三星 S8-G9500 存在小/大两种虚拟导航栏")
-    val screenContentHeightExcludeStatusAndNavigationBar: Int by lazy {
+    val screenContentHeightExcludeStatusAndNavigationBar: Int? by lazy {
         val screenHeight = screenHeight
         val screenRealHeight = screenRealHeight
         val statusBarHeight = statusBarHeight
@@ -112,8 +112,8 @@ object STSystemUtil {
     @JvmStatic
     val statusBarHeight: Int by lazy {
         var statusBarHeight = 0
-        val resourceId = STBaseApplication.INSTANCE.resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) statusBarHeight = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(resourceId)
+        val resourceId = STInitializer.application()?.resources?.getIdentifier("status_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) statusBarHeight = STInitializer.application()?.resources?.getDimensionPixelSize(resourceId) ?: 0
         statusBarHeight
     }
 
@@ -132,8 +132,8 @@ object STSystemUtil {
     @Deprecated(message = "三星 S8-G9500 不同高度的虚拟导航栏均返回高度 144, 所以该变量是不推荐使用的")
     val navigationBarHeight: Int by lazy {
         var navigationBarHeight = 0
-        val resourceId = STBaseApplication.INSTANCE.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (resourceId > 0) navigationBarHeight = STBaseApplication.INSTANCE.resources.getDimensionPixelSize(resourceId)
+        val resourceId = STInitializer.application()?.resources?.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) navigationBarHeight = STInitializer.application()?.resources?.getDimensionPixelSize(resourceId) ?: 0
         navigationBarHeight
     }
 
@@ -203,7 +203,9 @@ object STSystemUtil {
      */
     @JvmStatic
     fun checkSelfPermission(vararg permission: String): Boolean = permission.all {
-        PermissionChecker.checkSelfPermission(STBaseApplication.INSTANCE, it) == PermissionChecker.PERMISSION_GRANTED
+        val context = STInitializer.application()
+        context ?: return false
+        PermissionChecker.checkSelfPermission(context, it) == PermissionChecker.PERMISSION_GRANTED
     }
 
     @JvmStatic
@@ -225,13 +227,13 @@ object STSystemUtil {
     fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
 
     @JvmStatic
-    fun getDpFromPx(px: Int): Float = px / displayMetrics.density
+    fun getDpFromPx(px: Int): Float = px / (displayMetrics?.density ?: 1f)
 
     @JvmStatic
     fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
 
     @JvmStatic
-    fun collapseStatusBar() = STBaseApplication.INSTANCE.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) // 收起下拉通知栏
+    fun collapseStatusBar() = STInitializer.application()?.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) // 收起下拉通知栏
 
     @JvmStatic
     fun hideKeyboard(view: View?) = view?.let { _view ->
@@ -263,17 +265,17 @@ object STSystemUtil {
     fun isAppInstalled(packageName: String): Boolean = getPackageInfo(packageName) != null
 
     @JvmStatic
-    fun getAppVersionCode(packageName: String = STBaseApplication.INSTANCE.packageName): Int = getPackageInfo(packageName)?.versionCode ?: 0
+    fun getAppVersionCode(packageName: String? = STInitializer.application()?.packageName): Int = getPackageInfo(packageName)?.versionCode ?: 0
 
     @JvmStatic
-    fun getAppVersionName(packageName: String = STBaseApplication.INSTANCE.packageName): String = getPackageInfo(packageName)?.versionName ?: ""
+    fun getAppVersionName(packageName: String? = STInitializer.application()?.packageName): String = getPackageInfo(packageName)?.versionName ?: ""
 
     @JvmStatic
-    fun getAppName(packageName: String = STBaseApplication.INSTANCE.packageName): String {
+    fun getAppName(packageName: String? = STInitializer.application()?.packageName): String {
         var appName = ""
         try {
             getPackageInfo(packageName)?.applicationInfo?.labelRes?.let {
-                appName = STBaseApplication.INSTANCE.resources.getString(it)
+                appName = STInitializer.application()?.resources?.getString(it) ?: ""
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -292,7 +294,7 @@ object STSystemUtil {
      * 建议使用 png
      */
     @JvmStatic
-    fun getAppIcon(packageName: String = STBaseApplication.INSTANCE.packageName): Int? = getPackageInfo(packageName)?.applicationInfo?.icon
+    fun getAppIcon(packageName: String? = STInitializer.application()?.packageName): Int? = getPackageInfo(packageName)?.applicationInfo?.icon
 
     @JvmStatic
     fun getAppMetaData(key: String): Any? = getApplicationInfo()?.metaData?.get(key)
@@ -355,7 +357,7 @@ object STSystemUtil {
     fun copyToClipboard(label: String, contentText: String): Boolean {
         return try {
             val cm =
-                STBaseApplication.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                STInitializer.application()?.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(label, contentText)
             cm.setPrimaryClip(clip)
             true
@@ -404,23 +406,23 @@ object STSystemUtil {
      * android o appIcon 获取不到, 所以只提供 appBitmap
      */
     @JvmStatic
-    fun getAppBitmap(packageName: String = STBaseApplication.INSTANCE.packageName): Bitmap? {
+    fun getAppBitmap(packageName: String? = STInitializer.application()?.packageName): Bitmap? {
         var drawable: Drawable? = null
         try {
-            drawable = STBaseApplication.INSTANCE.packageManager.getApplicationIcon(packageName)
+            drawable = STInitializer.application()?.packageManager?.getApplicationIcon(packageName ?: "")
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        if (drawable == STBaseApplication.INSTANCE.packageManager.defaultActivityIcon) drawable =
+        if (drawable == STInitializer.application()?.packageManager?.defaultActivityIcon) drawable =
             null
         return drawable?.toBitmap()
     }
 
     @JvmStatic
-    fun getPackageInfo(packageName: String = STBaseApplication.INSTANCE.packageName): PackageInfo? {
+    fun getPackageInfo(packageName: String? = STInitializer.application()?.packageName): PackageInfo? {
         try {
-            return STBaseApplication.INSTANCE.packageManager.getPackageInfo(
-                packageName,
+            return STInitializer.application()?.packageManager?.getPackageInfo(
+                packageName ?: "",
                 PackageManager.GET_META_DATA
             )
         } catch (e: Exception) {
@@ -430,10 +432,10 @@ object STSystemUtil {
     }
 
     @JvmStatic
-    fun getApplicationInfo(packageName: String = STBaseApplication.INSTANCE.packageName): ApplicationInfo? {
+    fun getApplicationInfo(packageName: String? = STInitializer.application()?.packageName): ApplicationInfo? {
         try {
-            return STBaseApplication.INSTANCE.packageManager.getApplicationInfo(
-                packageName,
+            return STInitializer.application()?.packageManager?.getApplicationInfo(
+                packageName ?: "",
                 PackageManager.GET_META_DATA
             )
         } catch (e: Exception) {
@@ -445,7 +447,7 @@ object STSystemUtil {
     @JvmStatic
     @JvmOverloads
     fun isAppOnTestEnvironment(doSomethingOnYes: (() -> Unit)? = null): Boolean {
-        if (STBaseApplication.DEBUG) {
+        if (STInitializer.debug()) {
             doSomethingOnYes?.invoke()
             return true
         }
@@ -527,7 +529,6 @@ object STSystemUtil {
         val heightByStaticLayoutOrigin: Float = staticLayout.height.toFloat()
         var heightByStaticLayout: Float = heightByStaticLayoutOrigin
 
-        val density: Float = displayMetrics.density
         when {
             IS_HUAWEI -> { // 华为手机存在偏差
                 heightByStaticLayout = heightByStaticLayoutOrigin - (if (staticLayout.lineCount <= 1) 0f else (0 + (staticLayout.lineCount - 3f) * 3f))
@@ -559,7 +560,7 @@ object STSystemUtil {
         val heightByCalculate = singleLineHeightByCalculate * staticLayout.lineCount
         //endregion
 
-        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin, density=$density, lineCount=${staticLayout.lineCount}, singleLineHeightByFontMetrics=$singleLineHeightByFontMetrics, singleLineHeightByBounds=$singleLineHeightByBounds, singleLineHeightByAverage=$singleLineHeightByAverage, singleLineHeightByCalculate=$singleLineHeightByCalculate, heightByCalculate=$heightByCalculate")
+        STLogUtil.w("[SYS] measuringMultiLineTextHeight heightByStaticLayout=$heightByStaticLayout, heightByStaticLayoutOrigin=$heightByStaticLayoutOrigin, lineCount=${staticLayout.lineCount}, singleLineHeightByFontMetrics=$singleLineHeightByFontMetrics, singleLineHeightByBounds=$singleLineHeightByBounds, singleLineHeightByAverage=$singleLineHeightByAverage, singleLineHeightByCalculate=$singleLineHeightByCalculate, heightByCalculate=$heightByCalculate")
         return heightByStaticLayout
     }
 

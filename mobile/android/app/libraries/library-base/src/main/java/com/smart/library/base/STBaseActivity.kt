@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.smart.library.STInitializer
 import com.smart.library.util.STRouteManager
 import com.smart.library.util.STToastUtil
 import com.smart.library.widget.debug.STDebugFragment
@@ -140,7 +141,7 @@ open class STBaseActivity : AppCompatActivity() {
         STToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
-        if (STBaseApplication.DEBUG) STDebugFragment.cancelDebugNotification()
+        if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
 
         finish()
         exitProcess(0)

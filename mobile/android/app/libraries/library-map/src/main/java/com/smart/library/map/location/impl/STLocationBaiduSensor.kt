@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.map.R
 import com.smart.library.map.location.STLocation
 import com.smart.library.util.STLogUtil
@@ -26,7 +26,7 @@ class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callba
     private var currentLng: Double = 0.0
     private var currentAccuracy: Float = 0f
     private var currentDirection: Float = 0f
-    private val sensorManager by lazy { STBaseApplication.INSTANCE.getSystemService(SENSOR_SERVICE) as? SensorManager? }
+    private val sensorManager by lazy { STInitializer.application().getSystemService(SENSOR_SERVICE) as? SensorManager? }
     private val locationBaiduClient by lazy { STLocationBaiduClient(false) }
 
     init {

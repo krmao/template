@@ -168,7 +168,7 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
                 STToastUtil.show("渲染成功, 耗时:$time ms")
 
                 // 首屏发送通知
-                if (!STPreferencesUtil.getBoolean("react-native-inited", false)) {
+                if (STPreferencesUtil.getBoolean("react-native-inited", false) != true) {
                     STEventManager.sendEvent("react-native-inited", "renderSuccess")
                 }
             }

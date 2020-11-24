@@ -6,7 +6,7 @@ import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.smart.library.R
 import com.smart.library.base.STBaseActivity
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.STConfig
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -33,9 +33,9 @@ open class STDebugActivity : STBaseActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
             // 当前 activity 算一个
-            if (STBaseApplication.activityStartedCount - STBaseApplication.activityStoppedCount <= 1) {
+            if (STInitializer.activityStartedCount - STInitializer.activityStoppedCount <= 1) {
                 // 只有这一个 activity 显示在前台
-                if (STBaseApplication.activityStartedCount <= 1) {
+                if (STInitializer.activityStartedCount <= 1) {
                     // 整个应用只有这一个 activity 初始化了
                     STConfig.CLASS_ACTIVITY_MAIN?.let {
                         startActivity(Intent(this, it))

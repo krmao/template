@@ -6,7 +6,7 @@ import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.location.AMapLocationListener
 import com.amap.api.maps.LocationSource
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.map.location.STILocationClient
 import com.smart.library.map.location.STLocation
 import com.smart.library.map.location.STLocationManager
@@ -30,7 +30,7 @@ open class STLocationGaodeClient(private val isNeedAddress: Boolean = true) : ST
 
     protected var locationTimerDisposable: Disposable? = null
     protected val locationClient: AMapLocationClient by lazy {
-        AMapLocationClient(STBaseApplication.INSTANCE).apply {
+        AMapLocationClient(STInitializer.application()).apply {
             setLocationOption(AMapLocationClientOption().apply {
                 interval = 800L
                 httpTimeOut = 10000             // 默认 10s
@@ -110,7 +110,7 @@ open class STLocationGaodeClient(private val isNeedAddress: Boolean = true) : ST
     override fun startLocationLoop(interval: Long, ensurePermissions: ((callback: (allPermissionsGranted: Boolean) -> Unit?) -> Unit?)?, onSuccess: ((location: STLocation) -> Unit?)?, onFailure: ((errorCode: Int, errorMessage: String) -> Unit?)?) {
         stopLocationLoop()
 
-        locationLoopClient = AMapLocationClient(STBaseApplication.INSTANCE).apply {
+        locationLoopClient = AMapLocationClient(STInitializer.application()).apply {
 
             setLocationOption(AMapLocationClientOption().apply {
                 this.interval = interval

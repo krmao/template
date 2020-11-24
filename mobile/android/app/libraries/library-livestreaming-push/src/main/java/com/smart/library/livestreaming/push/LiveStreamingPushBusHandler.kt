@@ -13,10 +13,10 @@ import net.yrom.screenrecorder.ui.activity.ScreenRecorderLaunchActivity
 @Suppress("unused", "PrivatePropertyName")
 class LiveStreamingPushBusHandler : STBusManager.IBusHandler {
 
-    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
+    override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
     }
 
-    override fun onUpgradeOnce(application: Application) {
+    override fun onUpgradeOnce(application: Application?) {
 
     }
 

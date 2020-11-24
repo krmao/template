@@ -32,12 +32,12 @@ import java.util.*
 @Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
 internal class STDeployClientForReactNative(
         private val debug: Boolean,
-        private val rootDir: File,
+        private val rootDir: File?,
         private val deployConfig: STDeployConfigModel,
         private val TAG: String = STDeployManager.REACT_NATIVE.TAG
 ) : STIDeployClient {
 
-    override fun getRootDir(): File = this.rootDir
+    override fun getRootDir(): File? = this.rootDir
 
     private val baseBundleHelper: STBaseBundleHelper by lazy { STBaseBundleHelper(debug, deployConfig.baseBundle, rootDir, deployConfig.baseBundlePathInAssets, TAG) }
     private val preferenceManager: STDeployPreferenceManager by lazy { STDeployManager.REACT_NATIVE.preferenceManager }

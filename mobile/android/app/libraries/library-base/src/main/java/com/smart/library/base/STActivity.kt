@@ -7,6 +7,7 @@ import android.os.Bundle
 import  androidx.fragment.app.Fragment
 import android.util.Log
 import android.widget.FrameLayout
+import com.smart.library.STInitializer
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STActivity : STBaseActivity() {
@@ -28,12 +29,12 @@ open class STActivity : STBaseActivity() {
         @JvmOverloads
         @JvmStatic
         fun startNewTask(fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                STBaseApplication.INSTANCE.startActivity(getNewTaskIntent(STBaseApplication.INSTANCE, fragmentClass, args))
+                STInitializer.application()?.startActivity(getNewTaskIntent(STInitializer.application(), fragmentClass, args))
 
         @JvmOverloads
         @JvmStatic
         fun startSingleTask(from: Context?, fragmentClass: Class<*>, args: Bundle = Bundle()) =
-                STBaseApplication.INSTANCE.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
+                STInitializer.application()?.startActivity(getSingleTaskIntent(from, 0, fragmentClass, args))
 
         @JvmOverloads
         @JvmStatic
@@ -115,7 +116,7 @@ open class STActivity : STBaseActivity() {
 
         @JvmOverloads
         @JvmStatic
-        fun getNewTaskIntent(context: Context, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int = 0): Intent {
+        fun getNewTaskIntent(context: Context?, fragmentClass: Class<*>, args: Bundle = Bundle(), themResId: Int = 0): Intent {
             val intent = Intent(context, STActivity::class.java)
             intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
             intent.putExtra(KEY_FRAGMENT_ARGS, args)

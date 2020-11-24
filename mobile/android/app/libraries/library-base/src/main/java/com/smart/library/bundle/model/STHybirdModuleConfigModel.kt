@@ -1,12 +1,12 @@
 package com.smart.library.bundle.model
 
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.bundle.strategy.STHybirdUpdateStrategy
 
 data class STHybirdModuleConfigModel(
     var moduleName: String = "",
     var moduleVersion: String = "", //只分当前版本与线上最新版本
-    var moduleDebug: Boolean = STBaseApplication.DEBUG, //只下发到测试机
+    var moduleDebug: Boolean = STInitializer.debug(), //只下发到测试机
     var moduleUpdateStrategy: STHybirdUpdateStrategy = STHybirdUpdateStrategy.ONLINE,
     var moduleMainUrl: String = "",
     var moduleConfigUrl: String = "",

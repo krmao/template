@@ -9,7 +9,7 @@ import android.net.NetworkInfo
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import androidx.annotation.RequiresPermission
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.*
@@ -38,7 +38,7 @@ object STNetworkUtil {
 
     @JvmStatic
     @JvmOverloads
-    fun getNetworkInfo(connectivityManager: ConnectivityManager? = STBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? = connectivityManager?.activeNetworkInfo
+    fun getNetworkInfo(connectivityManager: ConnectivityManager? = STInitializer.application()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? = connectivityManager?.activeNetworkInfo
 
     @JvmStatic
     fun getIPAddress(useIPv4: Boolean): String? {
@@ -68,7 +68,7 @@ object STNetworkUtil {
     @JvmStatic
     @JvmOverloads
     @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
-    fun getType(connectivityManager: ConnectivityManager? = STBaseApplication.INSTANCE.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): Type {
+    fun getType(connectivityManager: ConnectivityManager? = STInitializer.application()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): Type {
         var networkType = Type.NONE
         val networkInfo = getNetworkInfo(connectivityManager)
         if (networkInfo != null && networkInfo.isConnected && networkInfo.isAvailable) {
@@ -81,9 +81,9 @@ object STNetworkUtil {
     @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     private fun updateNetProvider(type: Int): Type {
         var networkType = Type.NONE
-        val application = STBaseApplication.INSTANCE
+        val application = STInitializer.application()
         val tempType = getSwitchedType(type)
-        val telephonyManager = application.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
+        val telephonyManager = application?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
         var subscriberId: String? = null
         var netType = 0
         if (telephonyManager != null) {

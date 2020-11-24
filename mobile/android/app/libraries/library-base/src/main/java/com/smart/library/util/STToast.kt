@@ -12,7 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.smart.library.R
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -32,7 +32,7 @@ open class STToast {
 
         var debug = true
 
-        protected val windowManager: WindowManager by lazy { STBaseApplication.INSTANCE.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
+        protected val windowManager: WindowManager? by lazy { STInitializer.application()?.getSystemService(Context.WINDOW_SERVICE) as? WindowManager }
         protected val handler by lazy { Handler(Looper.getMainLooper()) }
         protected val queue by lazy { LinkedBlockingQueue<STToast>() }
         protected var atomicInteger = AtomicInteger(0)
@@ -99,8 +99,8 @@ open class STToast {
         }
     }
 
-    protected fun addView() = view?.let { windowManager.addView(it, layoutParams) }
-    protected fun removeView() = view?.let { if (it.parent != null) windowManager.removeView(it) } // note: checking parent() just to make sure the view has  been added...  i have seen cases where we get here when the view isn't yet added, so let's try not to crash.
+    protected fun addView() = view?.let { windowManager?.addView(it, layoutParams) }
+    protected fun removeView() = view?.let { if (it.parent != null) windowManager?.removeView(it) } // note: checking parent() just to make sure the view has  been added...  i have seen cases where we get here when the view isn't yet added, so let's try not to crash.
 
     @SuppressLint("ObsoleteSdkInt")
     @JvmOverloads
@@ -143,7 +143,7 @@ open class STToast {
     @JvmOverloads
     @SuppressLint("InflateParams")
     fun setText(text: String, textGravity: Int = Gravity.CENTER_HORIZONTAL): STToast {
-        val viewHolder = STToastUtil.ViewHolder(LayoutInflater.from(STBaseApplication.INSTANCE).inflate(R.layout.st_widget_transient_notification, null))
+        val viewHolder = STToastUtil.ViewHolder(LayoutInflater.from(STInitializer.application()).inflate(R.layout.st_widget_transient_notification, null))
         viewHolder.textView.text = text
         viewHolder.textView.gravity = textGravity
         setView(viewHolder.rootView)

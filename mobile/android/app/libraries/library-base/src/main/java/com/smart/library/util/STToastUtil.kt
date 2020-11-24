@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.smart.library.R
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 
 @SuppressLint("InflateParams")
 @Suppress("unused", "MemberVisibilityCanPrivate", "StaticFieldLeak", "MemberVisibilityCanBePrivate")
@@ -19,13 +19,13 @@ object STToastUtil {
     @JvmOverloads
     @JvmStatic
     fun show(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
-        show(msg = STBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
+        show(msg = STInitializer.application()?.resources?.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
     @JvmStatic
     fun showTop(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
-        showTop(msg = STBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
+        showTop(msg = STInitializer.application()?.resources?.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
@@ -37,7 +37,7 @@ object STToastUtil {
     @JvmOverloads
     @JvmStatic
     fun showCenter(@StringRes strId: Int, textGravity: Int = Gravity.CENTER_HORIZONTAL, cancelLastImmediately: Boolean = true, xOffset: Int = 0, yOffset: Int = 0) {
-        showCenter(msg = STBaseApplication.INSTANCE.resources.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
+        showCenter(msg = STInitializer.application()?.resources?.getString(strId), textGravity = textGravity, cancelLastImmediately = cancelLastImmediately, xOffset = xOffset, yOffset = yOffset)
     }
 
     @JvmOverloads
@@ -53,8 +53,8 @@ object STToastUtil {
         if (msg?.isNotBlank() == true) {
             if (cancelLastImmediately)
                 toast?.cancel()
-            toast = Toast(STBaseApplication.INSTANCE)
-            val viewHolder = ViewHolder(LayoutInflater.from(STBaseApplication.INSTANCE).inflate(R.layout.st_widget_transient_notification, null))
+            toast = Toast(STInitializer.application())
+            val viewHolder = ViewHolder(LayoutInflater.from(STInitializer.application()).inflate(R.layout.st_widget_transient_notification, null))
             viewHolder.textView.text = msg
             viewHolder.textView.gravity = textGravity
             toast?.setView(viewHolder.rootView)

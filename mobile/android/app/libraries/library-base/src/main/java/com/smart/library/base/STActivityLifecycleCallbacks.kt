@@ -3,6 +3,7 @@ package com.smart.library.base
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.smart.library.STInitializer
 
 open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
@@ -17,10 +18,10 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
     override fun onActivityResumed(activity: Activity?) = Unit
 
     override fun onActivityStarted(activity: Activity) {
-        STBaseApplication.isApplicationVisible = ++STBaseApplication.activityStartedCount > STBaseApplication.activityStoppedCount
+        STInitializer.isApplicationVisible = ++STInitializer.activityStartedCount > STInitializer.activityStoppedCount
     }
 
     override fun onActivityStopped(activity: Activity) {
-        STBaseApplication.isApplicationVisible = STBaseApplication.activityStartedCount > ++STBaseApplication.activityStoppedCount
+        STInitializer.isApplicationVisible = STInitializer.activityStartedCount > ++STInitializer.activityStoppedCount
     }
 }

@@ -20,7 +20,7 @@ import com.facebook.react.shell.MainPackageConfig
 import com.facebook.react.shell.MainReactPackage
 import com.facebook.react.uimanager.UIImplementationProvider
 import com.oblador.vectoricons.VectorIconsPackage
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.reactnative.dev.RNDevSettingsManager
 import com.smart.library.reactnative.packages.RNCustomPackage
@@ -47,11 +47,11 @@ object RNInstanceManager {
     const val KEY_NATIVE_CALL_RN_PARAMS: String = "params"
 
     @JvmStatic
-    var application: Application = STBaseApplication.INSTANCE
+    var application: Application? = null
         private set
 
     @JvmStatic
-    var debug: Boolean = STBaseApplication.DEBUG
+    var debug: Boolean = STInitializer.debug()
         private set
 
     var versionOfIndexBundleFileInSdcard: Int? = null
@@ -242,7 +242,7 @@ object RNInstanceManager {
     @JvmStatic
     @JvmOverloads
     @Synchronized
-    fun init(application: Application, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null, callback: ((success: Boolean) -> Unit)? = null) {
+    fun init(application: Application?, debug: Boolean, indexBundleFileInSdcard: File? = null, versionOfIndexBundleFileInSdcard: Int? = null, frescoConfig: ImagePipelineConfig?, onCallNativeListener: ((activity: Activity?, functionName: String?, data: String?, promise: Promise?) -> Unit?)? = null, callback: ((success: Boolean) -> Unit)? = null) {
         STLogUtil.e(TAG, "instanceManager init start")
         RNInstanceManager.application = application
         RNInstanceManager.debug = debug

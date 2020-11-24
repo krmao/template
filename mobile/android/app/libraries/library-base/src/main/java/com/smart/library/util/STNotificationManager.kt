@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.TaskStackBuilder
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 
 
 /* 必备操作一:配置
@@ -62,13 +62,13 @@ import com.smart.library.base.STBaseApplication
         STLogUtil.e("notification", "channelGroupId=$channelGroupId")
         STLogUtil.e("notification", "channelGroupName=$channelGroupName")
 
-        val intent = Intent(STBaseApplication.INSTANCE, STDebugActivity::class.java)
+        val intent = Intent(STInitializer.application(), STDebugActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-        val pendingIntent = PendingIntent.getActivity(STBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(STInitializer.application(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
-        val builder = NotificationCompat.Builder(STBaseApplication.INSTANCE, channelId)
+        val builder = NotificationCompat.Builder(STInitializer.application(), channelId)
             .setSmallIcon(smallIcon)
             .setLargeIcon(STSystemUtil.appBitmap)
             .setContentTitle(title)
@@ -117,7 +117,7 @@ import com.smart.library.base.STBaseApplication
 
         //========== notification group
 
-        val summaryNotification = NotificationCompat.Builder(STBaseApplication.INSTANCE, channelId)
+        val summaryNotification = NotificationCompat.Builder(STInitializer.application(), channelId)
             .setSmallIcon(smallIcon)
             .setLargeIcon(STSystemUtil.appBitmap)
             .setContentTitle(title)
@@ -174,18 +174,18 @@ object STNotificationManager {
     fun getChannelName(notificationId: Int?): String? = if (notificationId == null) null else "NOTIFICATION_CHANNEL_NAME_$notificationId"
 
     @JvmStatic
-    fun getNotificationManager(): NotificationManager = STBaseApplication.INSTANCE.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun getNotificationManager(): NotificationManager? = STInitializer.application()?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
 
     @JvmStatic
     @JvmOverloads
     fun cancelNotify(notificationId: Int? = null, channelId: String? = if (notificationId == null) null else getChannelId(notificationId)) {
         val notificationManager = getNotificationManager()
         if (notificationId == null) {
-            notificationManager.cancelAll()
+            notificationManager?.cancelAll()
         } else {
-            notificationManager.cancel(notificationId)
+            notificationManager?.cancel(notificationId)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                channelId?.let { notificationManager.deleteNotificationChannel(channelId) }
+                channelId?.let { notificationManager?.deleteNotificationChannel(channelId) }
             }
         }
     }
@@ -205,7 +205,9 @@ object STNotificationManager {
     @JvmStatic
     @Deprecated("使用后回退栈有问题,且mainActivity 重启或者 finish")
     private fun getPendingIntent(intent: Intent, requestCode: Int = 0, flags: Int = PendingIntent.FLAG_UPDATE_CURRENT): PendingIntent? {
-        val stackBuilder = TaskStackBuilder.create(STBaseApplication.INSTANCE)
+        val context = STInitializer.application()
+        context ?: return null
+        val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addNextIntentWithParentStack(intent)
         return stackBuilder.getPendingIntent(requestCode, flags)
     }

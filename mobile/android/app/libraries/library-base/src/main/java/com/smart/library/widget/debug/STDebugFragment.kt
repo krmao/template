@@ -20,7 +20,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import com.smart.library.R
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.base.STBaseFragment
 import com.smart.library.base.STConfig
 import com.smart.library.util.*
@@ -46,8 +46,8 @@ open class STDebugFragment : STBaseFragment() {
         fun addHost(vararg hostModels: HostModel) {
             if (hostModels.isNotEmpty()) {
                 hostModels
-                        .filterNot { hostList.contains(it) }
-                        .forEach { hostList.add(it) }
+                    .filterNot { hostList.contains(it) }
+                    .forEach { hostList.add(it) }
                 saveHostList()
             }
         }
@@ -110,37 +110,40 @@ open class STDebugFragment : STBaseFragment() {
             STLogUtil.e("notification", "channelGroupId=$channelGroupId")
             STLogUtil.e("notification", "channelGroupName=$channelGroupName")
 
-            val intent = Intent(STBaseApplication.INSTANCE, STDebugActivity::class.java)
+            val intent = Intent(STInitializer.application(), STDebugActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-            val pendingIntent = PendingIntent.getActivity(STBaseApplication.INSTANCE, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            val pendingIntent = PendingIntent.getActivity(STInitializer.application(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
-            val builder = NotificationCompat.Builder(STBaseApplication.INSTANCE, channelId)
-                    .setSmallIcon(smallIcon)
-                    .setColor(Color.parseColor("#4E6A78"))
-                    .setColorized(true)
-                    .setLargeIcon(STSystemUtil.appBitmap)
-                    .setContentTitle(title)
-                    .setContentText(text) // set content text to support devices running API level < 24
-                    // .setDefaults(Notification.DEFAULT_ALL)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
-                    .setOngoing(true)
-                    .setGroup(summaryGroupKey) // specify which group this notification belongs to
-                    .setAutoCancel(false) // automatically removes the notification when the user taps it
+            val context = STInitializer.application()
+            context ?: return
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(smallIcon)
+                .setColor(Color.parseColor("#4E6A78"))
+                .setColorized(true)
+                .setLargeIcon(STSystemUtil.appBitmap)
+                .setContentTitle(title)
+                .setContentText(text) // set content text to support devices running API level < 24
+                // .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
+                .setOngoing(true)
+                .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                .setAutoCancel(false) // automatically removes the notification when the user taps it
 
             actionList.forEach { builder.addAction(it) }
 
             val notificationManager = STNotificationManager.getNotificationManager()
+            notificationManager ?: return
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // 首先设置通知渠道组
                 val channelGroup = NotificationChannelGroup(channelGroupId, channelGroupName)
-                if (notificationManager.notificationChannelGroups.filter { it == channelGroup }.size > 1) {
+                if (notificationManager.notificationChannelGroups?.filter { it == channelGroup }?.size ?: 0 > 1) {
                     notificationManager.deleteNotificationChannelGroup(channelGroupId)
                 }
-                if (!notificationManager.notificationChannelGroups.contains(channelGroup)) {
+                if (notificationManager.notificationChannelGroups?.contains(channelGroup) != true) {
                     notificationManager.createNotificationChannelGroup(channelGroup)
                 }
 
@@ -170,14 +173,16 @@ open class STDebugFragment : STBaseFragment() {
             //========== notification group
 
             val summaryNotification = builder
-                    // build summary info into InboxStyle template
-                    .setStyle(NotificationCompat.InboxStyle()
-                            .addLine(text)
-                            .setBigContentTitle(title)
-                            .setSummaryText(summaryGroupText))
-                    .setGroup(summaryGroupKey) // specify which group this notification belongs to
-                    .setGroupSummary(true) // set this notification as the summary for the group
-                    .build()
+                // build summary info into InboxStyle template
+                .setStyle(
+                    NotificationCompat.InboxStyle()
+                        .addLine(text)
+                        .setBigContentTitle(title)
+                        .setSummaryText(summaryGroupText)
+                )
+                .setGroup(summaryGroupKey) // specify which group this notification belongs to
+                .setGroupSummary(true) // set this notification as the summary for the group
+                .build()
 
             notificationManager.notify(summaryGroupId, summaryNotification)
             //========== ======================================================================== ==========

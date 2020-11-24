@@ -2,7 +2,7 @@ package com.smart.template.repository.remote
 
 import android.annotation.SuppressLint
 import com.smart.library.base.STApplicationVisibleChangedEvent
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheFileManager
@@ -32,7 +32,7 @@ internal object STApiManager {
     @SuppressLint("CheckResult")
     @JvmStatic
     fun init() {
-        if (STBaseApplication.DEBUG) {
+        if (STInitializer.debug()) {
             STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
                 STDebugFragment.addHost(
                     environment.name, environment.map[STURLManager.KEY_HOST]
@@ -182,7 +182,7 @@ internal object STApiManager {
         return ObservableTransformer { observable ->
             Observable.create<T> { emitter ->
                 // 1.检查缓存数据, 若有则先显示缓存
-                val localData = STCacheFileManager.get(STBaseApplication.INSTANCE).getAsObject(key)
+                val localData = STCacheFileManager.get(STInitializer.application()).getAsObject(key)
                 if (localData != null)
                     emitter.onNext(localData as T)
 
@@ -191,7 +191,7 @@ internal object STApiManager {
                     emitter.onNext(data)
 
                     // 3.拉取数据成功, 缓存数据到本体
-                    STCacheFileManager.get(STBaseApplication.INSTANCE)
+                    STCacheFileManager.get(STInitializer.application())
                         .put(key, data as Serializable)
 
                 }, { error ->

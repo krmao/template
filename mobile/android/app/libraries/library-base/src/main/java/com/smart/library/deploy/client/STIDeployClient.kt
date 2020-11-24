@@ -5,7 +5,7 @@ import java.io.File
 
 interface STIDeployClient {
 
-    fun getRootDir(): File
+    fun getRootDir(): File?
 
     fun tryApply()
 

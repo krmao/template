@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.react.bridge.Promise
-import com.smart.library.base.STBaseApplication
+import com.smart.library.STInitializer
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.model.STBundleInfo
 import com.smart.library.deploy.model.STDeployApplyType
@@ -13,7 +13,6 @@ import com.smart.library.deploy.model.STPatchInfo
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.okhttp.STOkHttpManager
-import com.smart.template.library.STBridgeCommunication
 import java.io.File
 
 @Suppress("LocalVariableName")
@@ -21,7 +20,7 @@ internal object RNDeployManager {
 
     @JvmStatic
     fun init(
-        application: Application,
+        application: Application?,
         frescoConfig: ImagePipelineConfig,
         callback: ((success: Boolean) -> Unit)? = null
     ) {
@@ -129,7 +128,7 @@ internal object RNDeployManager {
                     STLogUtil.e(RNInstanceManager.TAG, "initCallback start")
                     RNInstanceManager.init(
                         application,
-                        STBaseApplication.DEBUG,
+                        STInitializer.debug(),
                         indexBundleFile,
                         versionOfIndexBundleFileInSdcard,
                         frescoConfig,
@@ -169,10 +168,11 @@ internal object RNDeployManager {
          *                  promise?.reject("0", "functionName not found !")
          */
         override fun invoke(currentActivity: Activity?, functionName: String?, data: String?, promise: Promise?) {
-
-            STBridgeCommunication.handleBridge(currentActivity, functionName, data, null) { _callbackId: String?, resultJsonString: String? ->
-                promise?.resolve(resultJsonString)
-            }
+            STInitializer.bridgeHandler()?.handleBridge(currentActivity, functionName, data, null, object : STInitializer.BridgeHandlerCallback {
+                override fun onCallback(callbackId: String?, resultJsonString: String?) {
+                    promise?.resolve(resultJsonString)
+                }
+            })
         }
     }
 }

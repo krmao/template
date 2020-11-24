@@ -283,7 +283,6 @@ android {
  */
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':library-template-base')
     implementation project(':library-template-repository')
 
     if (gradle.ext.modules.liveStreaming.enable == true) {

@@ -8,7 +8,6 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.template.home.tab.HomeTabActivity
-import com.smart.template.library.STBridgeCommunication
 
 @Suppress("unused", "SpellCheckingInspection")
 class FinalApplication : Application() {

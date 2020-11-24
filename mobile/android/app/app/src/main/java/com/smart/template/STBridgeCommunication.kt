@@ -1,4 +1,4 @@
-package com.smart.template.library
+package com.smart.template
 
 import android.app.Activity
 import android.content.Intent
@@ -13,13 +13,6 @@ import com.smart.library.widget.webview.STWebFragment
 import org.json.JSONObject
 
 object STBridgeCommunication {
-
-    @JvmStatic
-    fun handleBridgeOpenSchema(activity: Activity?, url: String?) {
-        val bridgeParamsJsonObject = JSONObject()
-        bridgeParamsJsonObject.put("url", url)
-        handleBridge(activity, "open", bridgeParamsJsonObject.toString())
-    }
 
     @JvmStatic
     fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String? = null, callback: ((callbackId: String?, resultJsonString: String?) -> Unit)? = null) {

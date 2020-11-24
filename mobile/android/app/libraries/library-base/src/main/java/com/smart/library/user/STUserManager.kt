@@ -1,4 +1,4 @@
-package com.smart.template.library.user
+package com.smart.library.user
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ object STUserManager {
         set(value) {
             field = value
             STPreferencesUtil.putEntity(KEY_USER, value)
-            RxBus.post(STLoginOrLogoutEvent(isLogin()))
+            RxBus.post(STLoginStateChangedEvent(isLogin()))
         }
 
     val accessToken: String
@@ -34,7 +34,7 @@ object STUserManager {
         STLogUtil.w(TAG, "已退出登录, isLogin:${isLogin()}")
     }
 
-    fun checkLogin(context: Context?, callback: (isLogin: Boolean) -> Unit?) {
+    fun ensureLogin(context: Context?, callback: (isLogin: Boolean) -> Unit?) {
         if (isLogin()) {
             callback.invoke(true)
         } else {
@@ -44,13 +44,10 @@ object STUserManager {
 
     fun goToLogin(context: Context?, callback: ((isLogin: Boolean) -> Unit?)? = null) {
         STInitializer.loginClass()?.let {
-
             if (callback != null) {
                 STCacheManager.put(it.name, "callback", callback)
             }
-
             context?.startActivity(Intent(context, it))
-
             Unit
         }
     }

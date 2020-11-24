@@ -1,4 +1,4 @@
-package com.smart.template.library.user
+package com.smart.library.user
 
 data class STUserModel(
     var id: Int = 0,
@@ -9,5 +9,6 @@ data class STUserModel(
     var phone: String,
     var email: String,
     var avatar: String,
-    var accessToken: String
+    var accessToken: String,
+    var extras: HashMap<String, Any?> = hashMapOf()
 )

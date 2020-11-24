@@ -18,7 +18,7 @@ android {
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
-    api project(':library-template-base')
+    api project(':library-base')
 
     if (gradle.ext.modules.reactNative.repositoryRemote.enable == true) {
         api gradle.ext.modules.reactNative.repositoryRemote.dependency

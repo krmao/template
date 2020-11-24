@@ -8,6 +8,7 @@ import com.smart.library.util.bus.STBusManager
 class LiveStreamingBusHandler : STBusManager.IBusHandler {
 
     override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
+        callback?.invoke(true)
     }
 
     override fun onUpgradeOnce(application: Application?) {

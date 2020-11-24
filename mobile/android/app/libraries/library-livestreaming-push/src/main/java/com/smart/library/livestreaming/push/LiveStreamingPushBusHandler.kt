@@ -14,6 +14,7 @@ import net.yrom.screenrecorder.ui.activity.ScreenRecorderLaunchActivity
 class LiveStreamingPushBusHandler : STBusManager.IBusHandler {
 
     override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
+        callback?.invoke(true)
     }
 
     override fun onUpgradeOnce(application: Application?) {

@@ -29,6 +29,17 @@ object STInitializer {
     private var initialized: Boolean = false
     private var options: Options? = null
 
+    //region rn first screen callback
+    private var onRNFirstScreenAttachedCallbacks: MutableList<(attached: Boolean) -> Unit> = mutableListOf()
+    private fun notifyOnRNFirstScreenAttachedCallback() {
+        val reactNativeInited: Boolean = STPreferencesUtil.getBoolean("react-native-inited", false) ?: false
+        if (!reactNativeInited) return
+        synchronized(onRNFirstScreenAttachedCallbacks) {
+            onRNFirstScreenAttachedCallbacks.forEach { it(reactNativeInited) }
+            onRNFirstScreenAttachedCallbacks.clear()
+        }
+    }
+
     /**
      * 程序运行黑屏或白屏的问题 https://www.jianshu.com/p/23f4bbb372c8
      * 监听 react native 首屏渲染事件, 此处可以关闭引导页
@@ -39,20 +50,19 @@ object STInitializer {
             return
         }
 
+        if (!onRNFirstScreenAttachedCallbacks.contains(callback)) onRNFirstScreenAttachedCallbacks.add(callback)
+        notifyOnRNFirstScreenAttachedCallback()
+
         val eventId: Any = this
         STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
             STEventManager.unregisterAll(eventId)
             if ("react-native-inited" == eventKey) {
-                if ("renderSuccess" == value) {
-                    STPreferencesUtil.putBoolean("react-native-inited", true)
-                    callback(true)
-                } else {
-                    callback(false)
-                }
+                STPreferencesUtil.putBoolean("react-native-inited", "renderSuccess" == value)
+                notifyOnRNFirstScreenAttachedCallback()
             }
         }
-
     }
+    //endregion
 
     private var isRNInitialized: Boolean = false
     fun isRNInitialized(): Boolean = this.isRNInitialized
@@ -66,14 +76,27 @@ object STInitializer {
         this.isRNInitializedSuccess = isRNInitializedSuccess
     }
 
-    private var onRNInitializedCallback: ((success: Boolean) -> Unit)? = null
-    fun onRNInitializedCallback(): ((success: Boolean) -> Unit)? = this.onRNInitializedCallback
+    //region rn init callbacks
+    private var onRNInitializedCallbacks: MutableList<(success: Boolean) -> Unit> = mutableListOf()
     fun ensureRNInitialized(callback: (success: Boolean) -> Unit) {
-        this.onRNInitializedCallback = callback
         if (isRNInitialized()) {
-            onRNInitializedCallback()?.invoke(isRNInitializedSuccess())
+            callback(isRNInitialized())
+            return
+        }
+        if (!onRNInitializedCallbacks.contains(callback)) onRNInitializedCallbacks.add(callback)
+        notifyOnRNInitializedCallback()
+    }
+
+    fun notifyOnRNInitializedCallback() {
+        if (!isRNInitialized()) return
+        synchronized(onRNInitializedCallbacks) {
+            if (onRNInitializedCallbacks.isNotEmpty()) {
+                onRNInitializedCallbacks.forEach { it(isRNInitializedSuccess()) }
+                onRNInitializedCallbacks.clear()
+            }
         }
     }
+    //endregion
 
     private var isBusInitialized: Boolean = false
     fun isBusInitialized(): Boolean = this.isBusInitialized
@@ -81,14 +104,27 @@ object STInitializer {
         this.isBusInitialized = isBusInitialized
     }
 
-    private var onBusInitializedCallback: (() -> Unit)? = null
-    fun onBusInitializedCallback(): (() -> Unit)? = this.onBusInitializedCallback
+    //region bus init callbacks
+    private val onBusInitializedCallbacks: MutableList<() -> Unit> = mutableListOf()
     fun ensureBusInitialized(callback: () -> Unit) {
-        this.onBusInitializedCallback = callback
         if (isBusInitialized()) {
-            onBusInitializedCallback()?.invoke()
+            callback()
+            return
+        }
+        if (!onBusInitializedCallbacks.contains(callback)) onBusInitializedCallbacks.add(callback)
+        notifyOnBusInitializedCallback()
+    }
+
+    fun notifyOnBusInitializedCallback() {
+        if (!isBusInitialized()) return
+        synchronized(onBusInitializedCallbacks) {
+            if (onBusInitializedCallbacks.isNotEmpty()) {
+                onBusInitializedCallbacks.forEach { it() }
+                onBusInitializedCallbacks.clear()
+            }
         }
     }
+    //endregion
 
     @JvmStatic
     fun defaultSharedPreferencesName(): String = this.options?.defaultSharedPreferencesName() ?: "com.smart.shared_preferences"
@@ -194,13 +230,13 @@ object STInitializer {
                     if (key == "reactnative") {
                         setRNInitialized(true)
                         setRNInitializedSuccess(success)
-                        onRNInitializedCallback()?.invoke(success)
+                        notifyOnRNInitializedCallback()
                     }
                     onCallback?.invoke(key, success)
                 },
                 onCompletely = {
                     STLogUtil.w(TAG, "-- init bus onCompletely")
-                    onBusInitializedCallback()?.invoke()
+                    notifyOnBusInitializedCallback()
                     onCompletely?.invoke()
                 })
             return this

@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import com.smart.library.R
 import com.smart.library.base.STBaseActivity
 import com.smart.library.STInitializer
-import com.smart.library.base.STConfig
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
@@ -37,7 +36,7 @@ open class STDebugActivity : STBaseActivity() {
                 // 只有这一个 activity 显示在前台
                 if (STInitializer.activityStartedCount <= 1) {
                     // 整个应用只有这一个 activity 初始化了
-                    STConfig.CLASS_ACTIVITY_MAIN?.let {
+                    STInitializer.mainClass()?.let {
                         startActivity(Intent(this, it))
                         overridePendingTransition(R.anim.st_anim_fade_in, R.anim.st_anim_fade_out)
                     }

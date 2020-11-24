@@ -6,7 +6,6 @@ import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.smart.library.STInitializer
-import com.smart.library.base.STConfig
 import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
@@ -15,7 +14,6 @@ import com.smart.library.util.image.STImageManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
 import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.widget.titlebar.STTitleBar
-import com.smart.template.home.tab.HomeTabActivity
 import com.smart.template.library.STBridgeCommunication
 import com.smart.template.repository.STRepository
 
@@ -32,9 +30,6 @@ object FinalApplicationInitManager {
         STLogUtil.e("application", "initialize start isInitialized=${isInitialized()}, thread:${Thread.currentThread().name}")
 
         if (isInitialized()) return
-
-        STConfig.NOTIFICATION_ICON_SMALL = R.mipmap.ic_notification
-        STConfig.CLASS_ACTIVITY_MAIN = HomeTabActivity::class.java
 
         STTitleBar.DEFAULT_BACKGROUND_COLOR = Color.BLACK
         STTitleBar.DEFAULT_TEXT_COLOR = Color.WHITE

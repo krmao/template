@@ -2,7 +2,7 @@ package com.smart.template.library.user
 
 import android.content.Context
 import android.content.Intent
-import com.smart.library.base.STConfig
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.cache.STCacheManager
@@ -22,7 +22,7 @@ object STUserManager {
             RxBus.post(STLoginOrLogoutEvent(isLogin()))
         }
 
-    var accessToken: String = ""
+    val accessToken: String
         get() = userModel?.accessToken ?: ""
 
     fun isLogin(): Boolean {
@@ -43,7 +43,7 @@ object STUserManager {
     }
 
     fun goToLogin(context: Context?, callback: ((isLogin: Boolean) -> Unit?)? = null) {
-        STConfig.CLASS_ACTIVITY_LOGIN?.let {
+        STInitializer.loginClass()?.let {
 
             if (callback != null) {
                 STCacheManager.put(it.name, "callback", callback)

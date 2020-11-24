@@ -10,7 +10,6 @@ import android.webkit.CookieSyncManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import com.smart.library.STInitializer
-import com.smart.library.base.STConfig
 import com.smart.library.bundle.STHybird.TAG
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.webview.client.STWebChromeClient
@@ -45,7 +44,7 @@ object STWebViewUtil {
             webView.settings.setSupportMultipleWindows(true)
             webView.settings.setGeolocationEnabled(true)
             webView.settings.setAppCacheEnabled(true)
-            webView.settings.setAppCachePath(webView.context.getDir(STConfig.NAME_CACHE_WEB_DIR, Context.MODE_PRIVATE).path)
+            webView.settings.setAppCachePath(webView.context.getDir(STInitializer.defaultCacheWebDirName(), Context.MODE_PRIVATE).path)
 
             /**
              * Android中默认mWebView.setAllowFileAccess(true)，

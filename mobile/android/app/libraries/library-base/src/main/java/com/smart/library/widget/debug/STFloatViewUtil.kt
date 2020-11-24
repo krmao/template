@@ -4,7 +4,6 @@ package com.smart.library.widget.debug
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
-import android.os.Build
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -119,13 +118,8 @@ enum class STFloatViewUtil {
     }
 
     fun hide() = try {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (!floatView.isAttachedToWindow) {
-            } else windowManager.removeViewImmediate(floatView)
-        } else {
-            if (floatView.parent == null) {
-            } else windowManager.removeViewImmediate(floatView)
-        }
+        if (!floatView.isAttachedToWindow) {
+        } else windowManager.removeViewImmediate(floatView)
     } catch (e: Exception) {
         e.printStackTrace()
     }

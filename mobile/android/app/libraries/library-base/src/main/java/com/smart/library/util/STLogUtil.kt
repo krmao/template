@@ -3,7 +3,6 @@ package com.smart.library.util
 import android.text.TextUtils
 import android.util.Log
 import com.smart.library.STInitializer
-import com.smart.library.base.STConfig
 import com.smart.library.util.cache.STCacheManager
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
@@ -12,6 +11,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -52,11 +52,12 @@ import java.util.*
 object STLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
     private const val PAGE_SUFFIX = "#_PAGE_#"
-
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
 
     @JvmStatic
     var debug = STInitializer.debug()
+
+    fun getNewLogName(): String = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 
     @JvmStatic
     @JvmOverloads
@@ -208,7 +209,7 @@ object STLogUtil {
 
     @JvmStatic
     fun getCacheDir(): File {
-        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STConfig.NAME_LOG_DIR else STChecksumUtil.genMD5ForCharSequence(STConfig.NAME_LOG_DIR))
+        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STInitializer.defaultLogDirName() else STChecksumUtil.genMD5ForCharSequence(STInitializer.defaultLogDirName()))
         if (!cacheDir.exists())
             cacheDir.mkdirs()
         return cacheDir
@@ -223,7 +224,7 @@ object STLogUtil {
     @JvmStatic
     fun write(tag: String? = null, msg: String, throwable: Throwable? = null, isForce: Boolean? = false) {
         if (debug || isForce == true) {
-            STFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), STConfig.NAME_NEW_LOG))
+            STFileUtil.writeTextToFile(p(Log.VERBOSE, tag, msg, throwable), throwable, File(getCacheDir(), getNewLogName()))
         }
     }
 
@@ -305,11 +306,11 @@ object STLogUtil {
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null): String =
-            p(level, tag, message, throwable, null)
+        p(level, tag, message, throwable, null)
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String =
-            p(level, tag, message, false, throwable, stackTraceElement)
+        p(level, tag, message, false, throwable, stackTraceElement)
 
     @JvmStatic
     fun p(level: Int, tag: String? = null, message: String, appendLocation: Boolean = true, throwable: Throwable? = null, stackTraceElement: StackTraceElement? = null): String {

@@ -19,6 +19,21 @@ object STInitializer {
     private var options: Options? = null
 
     @JvmStatic
+    fun defaultSharedPreferencesName(): String = this.options?.defaultSharedPreferencesName() ?: "com.smart.shared_preferences"
+
+    @JvmStatic
+    fun defaultCacheWebDirName(): String = this.options?.defaultCacheWebDirName() ?: "cache_web"
+
+    @JvmStatic
+    fun defaultLogDirName(): String = this.options?.defaultLogDirName() ?: "log"
+
+    @JvmStatic
+    fun loginClass(): Class<out Activity>? = this.options?.loginClass()
+
+    @JvmStatic
+    fun mainClass(): Class<out Activity>? = this.options?.mainClass()
+
+    @JvmStatic
     fun debug(): Boolean = this.options?.debug() ?: true
 
     @JvmStatic
@@ -79,12 +94,56 @@ object STInitializer {
     class Options(private val application: Application) {
         private var debug: Boolean = false
         private var channel: String = ""
+
+        private var defaultSharedPreferencesName: String = "com.smart.shared_preferences"
+        private var defaultCacheWebDirName: String = "cache_web"
+        private var defaultLogDirName: String = "log"
+        private var mainClass: Class<out Activity>? = null
+        private var loginClass: Class<out Activity>? = null
+
         private var enableNetworkChangedReceiver: Boolean = true
         private var networkChangedReceiver: STNetworkChangedReceiver? = null
         private var enableActivityLifecycleCallbacks: Boolean = true
         private var activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks? = null
         private var enableCompatVectorFromResources: Boolean = true
         private var bridgeHandler: BridgeHandler? = null
+
+        fun loginClass(): Class<out Activity>? = this.loginClass
+
+        fun setLoginClass(loginClass: Class<out Activity>?): Options {
+            this.loginClass = loginClass
+            return this
+        }
+
+        fun mainClass(): Class<out Activity>? = this.mainClass
+
+        fun setMainClass(mainClass: Class<out Activity>?): Options {
+            this.mainClass = mainClass
+            return this
+        }
+
+        fun defaultLogDirName(): String = this.defaultLogDirName
+
+        fun setDefaultLogDirName(name: String): Options {
+            this.defaultLogDirName = name
+            return this
+        }
+
+
+        fun defaultCacheWebDirName(): String = this.defaultCacheWebDirName
+
+        fun setDefaultCacheWebDirName(name: String): Options {
+            this.defaultCacheWebDirName = name
+            return this
+        }
+
+        fun defaultSharedPreferencesName(): String = this.defaultSharedPreferencesName
+
+        fun setDefaultSharedPreferencesName(name: String): Options {
+            this.defaultSharedPreferencesName = name
+            return this
+        }
+
 
         fun isEnabledNetworkChangedReceiver(): Boolean = this.enableNetworkChangedReceiver
 
@@ -168,6 +227,7 @@ object STInitializer {
             this.bridgeHandler = bridgeHandler
             return this
         }
+
 
         override fun toString(): String {
             return "Options(debug=$debug, application=$application, bridgeHandler=$bridgeHandler)"

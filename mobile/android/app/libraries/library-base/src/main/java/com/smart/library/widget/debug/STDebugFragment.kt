@@ -10,7 +10,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.core.app.NotificationCompat
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +18,10 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseFragment
-import com.smart.library.base.STConfig
 import com.smart.library.util.*
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.st_fragment_debug.*
@@ -35,6 +34,26 @@ open class STDebugFragment : STBaseFragment() {
         private const val KEY_CUSTOM_LIST = "KEY_CUSTOM_LIST"
         private var hostList: MutableList<HostModel> = STPreferencesUtil.getList(KEY_CUSTOM_LIST, HostModel::class.java)
 
+        @JvmStatic
+        var ENABLE_TRACE_DEBUG = false //开启埋点调试开关，执行 toast 提示 以及 log 打印, 只有debug包可用
+
+        @JvmStatic
+        var ENABLE_ACTIVITY_INFO_DEBUG = false //开启页面信息提示开关, 只有debug包可用
+
+        @JvmStatic
+        val NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID: Int = 100000000
+
+        @JvmStatic
+        val NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY: String = "NOTIFICATION_DEFAULT_GROUP_KEY"
+
+        @JvmStatic
+        val NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT: String = "SETTINGS"
+
+        @JvmStatic
+        val NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID: Int = 200000000
+
+        @JvmStatic
+        val NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID: String = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID.toString()
 
         @JvmStatic
         val actionList: MutableList<NotificationCompat.Action> = arrayListOf()
@@ -87,20 +106,20 @@ open class STDebugFragment : STBaseFragment() {
             // notification
             val title = "${STSystemUtil.appName} 调试助手"
             val text = "点击跳转到调试界面"
-            val notificationId = STConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
+            val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)
             val channelName = "在通知栏上显示程式调试入口"
-            val smallIcon = STConfig.NOTIFICATION_ICON_SMALL
+            val smallIcon = android.R.drawable.ic_menu_send
 
             // notification group ( 注意: 通知组只有 sdk >= 24 support )
             // 注意 summaryGroupId 与 notificationId 不能相同, 否则会出现没有合并到一个组的意外情况
-            val summaryGroupId = STConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
-            val summaryGroupText = STConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
-            val summaryGroupKey = STConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
+            val summaryGroupId = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
+            val summaryGroupText = NOTIFICATION_DEFAULT_SUMMARY_GROUP_TEXT
+            val summaryGroupKey = NOTIFICATION_DEFAULT_SUMMARY_GROUP_KEY
 
             // channel group
-            val channelGroupId = STConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID
-            val channelGroupName = STConfig.NOTIFICATION_DEFAULT_CHANNEL_GROUP_NAME
+            val channelGroupId = NOTIFICATION_DEFAULT_CHANNEL_GROUP_ID
+            val channelGroupName = "DEBUG"
 
             STLogUtil.e("notification", "notificationId=$notificationId")
             STLogUtil.e("notification", "channelId=$summaryGroupId")
@@ -193,8 +212,8 @@ open class STDebugFragment : STBaseFragment() {
 
         @JvmStatic
         fun cancelDebugNotification() {
-            val summaryGroupId = STConfig.NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
-            val notificationId = STConfig.NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
+            val summaryGroupId = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
+            val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)
             STNotificationManager.cancelNotify(notificationId, channelId)
             STNotificationManager.cancelNotify(summaryGroupId)
@@ -208,11 +227,11 @@ open class STDebugFragment : STBaseFragment() {
 
         childViewList.forEach { addChildView(it.getConstructor(Context::class.java).newInstance(context)) }
 
-        activity_info_cb.isChecked = STConfig.ENABLE_ACTIVITY_INFO_DEBUG
-        activity_info_cb.setOnCheckedChangeListener { _, isChecked -> STConfig.ENABLE_ACTIVITY_INFO_DEBUG = isChecked }
+        activity_info_cb.isChecked = ENABLE_ACTIVITY_INFO_DEBUG
+        activity_info_cb.setOnCheckedChangeListener { _, isChecked -> ENABLE_ACTIVITY_INFO_DEBUG = isChecked }
 
-        trace_cb.isChecked = STConfig.ENABLE_TRACE_DEBUG
-        trace_cb.setOnCheckedChangeListener { _, isChecked -> STConfig.ENABLE_TRACE_DEBUG = isChecked }
+        trace_cb.isChecked = ENABLE_TRACE_DEBUG
+        trace_cb.setOnCheckedChangeListener { _, isChecked -> ENABLE_TRACE_DEBUG = isChecked }
 
         val adapter = DebugAdapter(hostList, activity)
         listView.adapter = adapter

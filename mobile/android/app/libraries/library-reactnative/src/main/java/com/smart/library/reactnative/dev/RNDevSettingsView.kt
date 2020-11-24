@@ -124,7 +124,7 @@ class RNDevSettingsView @JvmOverloads constructor(context: Context, attrs: Attri
 
         }
 
-        rn_info_tv.text = "VERSION_RN_BASE: ${RNConstant.VERSION_RN_BASE}\nVERSION_RN_CURRENT: ${RNConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
+        rn_info_tv.text = "VERSION_RN_BASE: ${STInitializer.rnBaseVersion()}\nVERSION_RN_CURRENT: ${RNConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
     }
 
     private fun save() {

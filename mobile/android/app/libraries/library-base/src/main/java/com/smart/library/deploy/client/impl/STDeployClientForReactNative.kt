@@ -2,6 +2,7 @@
 
 package com.smart.library.deploy.client.impl
 
+import android.annotation.SuppressLint
 import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.STDeployPreferenceManager
@@ -11,8 +12,6 @@ import com.smart.library.util.STFileUtil
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STZipUtil
 import com.smart.library.util.rx.RxBus
-import com.smart.library.deploy.model.STBaseBundleHelper
-import com.smart.library.deploy.model.STBundleInfo
 import java.io.File
 import java.util.*
 
@@ -29,12 +28,13 @@ import java.util.*
  * patch:   具体应用后的新版本的代码
  *
  */
-@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
+@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate", "KDocUnresolvedReference")
+@SuppressLint("CheckResult")
 internal class STDeployClientForReactNative(
-        private val debug: Boolean,
-        private val rootDir: File?,
-        private val deployConfig: STDeployConfigModel,
-        private val TAG: String = STDeployManager.REACT_NATIVE.TAG
+    private val debug: Boolean,
+    private val rootDir: File?,
+    private val deployConfig: STDeployConfigModel,
+    private val TAG: String = STDeployManager.REACT_NATIVE.TAG
 ) : STIDeployClient {
 
     override fun getRootDir(): File? = this.rootDir
@@ -43,6 +43,7 @@ internal class STDeployClientForReactNative(
     private val preferenceManager: STDeployPreferenceManager by lazy { STDeployManager.REACT_NATIVE.preferenceManager }
 
     private val onReadyCallbackList: Vector<() -> Unit?> = Vector()
+
     @Volatile
     private var isReadyForOpen: Boolean = false
         private set(value) {
@@ -97,6 +98,7 @@ internal class STDeployClientForReactNative(
 
 
     private var isChecking = false
+
     /**
      * 检查是否有需要处理的更新
      * bundle-rn-1.zip
@@ -114,7 +116,7 @@ internal class STDeployClientForReactNative(
         }
         isChecking = true
 
-        deployConfig.checkUpdateHandler.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
+        deployConfig.checkUpdateHandler?.invoke { bundleInfo, patchInfo, downloadUrl, isPatch ->
             val latestValidAppliedBundleHelper = getLatestValidAppliedBundleHelper()
             STLogUtil.w(TAG, "isPatch=$isPatch, baseBundleInfo   = ${baseBundleHelper.info}")
             STLogUtil.w(TAG, "isPatch=$isPatch, latestValidAppliedBundleInfo   = ${latestValidAppliedBundleHelper?.info}")
@@ -131,38 +133,38 @@ internal class STDeployClientForReactNative(
                             if (!patchHelper.checkPatchFileValid()) {
                                 STLogUtil.w(TAG, "checkPatchFileValid invalid, start download patch")
                                 downloadPatch(STPatchHelper(STDeployManager.REACT_NATIVE, patchInfo), downloadUrl,
-                                        downloadCallback = {
-                                            checkUpdateCallback?.onDownloadCallback(it)
-                                        },
-                                        mergeCallback = {
-                                            checkUpdateCallback?.onMergePatchCallback(it)
-                                        },
-                                        applyCallback = {
-                                            checkUpdateCallback?.onApplyCallback(it)
-                                        }
+                                    downloadCallback = {
+                                        checkUpdateCallback?.onDownloadCallback(it)
+                                    },
+                                    mergeCallback = {
+                                        checkUpdateCallback?.onMergePatchCallback(it)
+                                    },
+                                    applyCallback = {
+                                        checkUpdateCallback?.onApplyCallback(it)
+                                    }
                                 )
                             } else {
                                 STLogUtil.e(TAG, "patch file is valid now, no need to download, need merge and copy to apply")
                                 checkUpdateCallback?.onDownloadCallback(true)
                                 merge(patchHelper,
-                                        mergeCallback = {
-                                            checkUpdateCallback?.onMergePatchCallback(it)
-                                        },
-                                        applyCallback = {
-                                            checkUpdateCallback?.onApplyCallback(it)
-                                        })
-                                isChecking = false
-                            }
-                        } else {
-                            STLogUtil.e(TAG, "checkTempBundleFileValid is valid now, no need to download, need copy to apply")
-                            checkUpdateCallback?.onDownloadCallback(true)
-                            merge(patchHelper,
                                     mergeCallback = {
                                         checkUpdateCallback?.onMergePatchCallback(it)
                                     },
                                     applyCallback = {
                                         checkUpdateCallback?.onApplyCallback(it)
                                     })
+                                isChecking = false
+                            }
+                        } else {
+                            STLogUtil.e(TAG, "checkTempBundleFileValid is valid now, no need to download, need copy to apply")
+                            checkUpdateCallback?.onDownloadCallback(true)
+                            merge(patchHelper,
+                                mergeCallback = {
+                                    checkUpdateCallback?.onMergePatchCallback(it)
+                                },
+                                applyCallback = {
+                                    checkUpdateCallback?.onApplyCallback(it)
+                                })
                             isChecking = false
                         }
                     } else {
@@ -210,7 +212,7 @@ internal class STDeployClientForReactNative(
      * 下载新的更新数据
      */
     fun download(deployBundleHelper: STDeployBundleHelper, downloadUrl: String, applyCallback: ((applySuccess: Boolean) -> Unit?)? = null) {
-        deployConfig.downloadHandler.invoke(downloadUrl, deployBundleHelper.getTempZipFile()) { bundleFile: File? ->
+        deployConfig.downloadHandler?.invoke(downloadUrl, deployBundleHelper.getTempZipFile()) { bundleFile: File? ->
             if (deployBundleHelper.checkZipFileValid(bundleFile)) {
                 preferenceManager.saveTempBundleInfo(deployBundleHelper.info)
                 tryApply(applyCallback)
@@ -225,7 +227,7 @@ internal class STDeployClientForReactNative(
      */
     fun downloadPatch(patchHelper: STPatchHelper, downloadUrl: String, downloadCallback: ((applySuccess: Boolean) -> Unit?)? = null, mergeCallback: ((mergeSuccess: Boolean) -> Unit?)? = null, applyCallback: ((applySuccess: Boolean) -> Unit?)? = null) {
         STLogUtil.e(TAG, "downloadHandler invoke start")
-        deployConfig.downloadHandler.invoke(downloadUrl, patchHelper.getTempPatchFile()) { patchFile: File? ->
+        deployConfig.downloadHandler?.invoke(downloadUrl, patchHelper.getTempPatchFile()) { patchFile: File? ->
             STLogUtil.e(TAG, "downloadHandler invoke end, patchFile=${patchFile?.absolutePath}")
             if (patchFile?.exists() == true) {
                 STLogUtil.e(TAG, "downloadPatch success, start merge ${patchFile.absolutePath}")
@@ -276,7 +278,7 @@ internal class STDeployClientForReactNative(
                     if (deployBundleHelper.checkUnzipDirValid()) {
                         STLogUtil.w(TAG, "apply checkUnzipDirValid(${deployBundleHelper.getApplyUnzipDir()}) success")
 
-                        deployConfig.reloadHandler.invoke(deployBundleHelper.getIndexFile(), deployBundleHelper.info.version)
+                        deployConfig.reloadHandler?.invoke(deployBundleHelper.getIndexFile(), deployBundleHelper.info.version)
 
                         STLogUtil.d(TAG, "apply reload success")
 
@@ -323,7 +325,7 @@ internal class STDeployClientForReactNative(
 
         val validBundleHelper = getLatestValidAppliedBundleHelper()
 
-        deployConfig.initCallback.invoke(validBundleHelper?.getIndexFile(), validBundleHelper?.info?.version)
+        deployConfig.initCallback?.invoke(validBundleHelper?.getIndexFile(), validBundleHelper?.info?.version)
         RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe {
             if (!it.isApplicationVisible) {
                 STLogUtil.e(TAG, "detect isApplicationVisible=false, start checkUpdate")

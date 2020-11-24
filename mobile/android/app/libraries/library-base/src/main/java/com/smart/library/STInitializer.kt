@@ -29,6 +29,18 @@ object STInitializer {
     private var initialized: Boolean = false
     private var options: Options? = null
 
+    fun initOptions(options: Options?): STInitializer {
+        this.options = options
+        return this
+    }
+
+    /**
+     * 跟随 apk 一起打包的 react native 离线包版本号, 0代表当前无可使用的离线包
+     */
+    fun rnBaseVersion(): Int = this.options?.rnBaseVersion() ?: 0
+    fun rnBundlePathInAssets(): String = this.options?.rnBundlePathInAssets() ?: "bundle-rn.zip"
+    fun rnCheckUpdateHTTPGetUrl(): String = this.options?.rnCheckUpdateHTTPGetUrl() ?: ""
+
     //region rn first screen callback
     private var onRNFirstScreenAttachedCallbacks: MutableList<(attached: Boolean) -> Unit> = mutableListOf()
     private fun notifyOnRNFirstScreenAttachedCallback() {
@@ -174,14 +186,14 @@ object STInitializer {
     private var application: Application? = null
 
     @JvmStatic
-    fun initOnApplicationCreate(application: Application, options: () -> Options) {
-        if (this.initialized) return
+    fun initOnApplicationCreate(application: Application): STInitializer {
+        if (this.initialized) return this
 
         this.application = application
-        this.options = options()
         this.initialized = true
 
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
+        return this
     }
 
     /**
@@ -191,10 +203,11 @@ object STInitializer {
      * http://androidxref.com/4.4.4_r1/xref/dalvik/libdex/DexFile.cpp
      * https://github.com/lanshifu/MultiDexTest
      */
-    fun attachApplicationBaseContext(base: Context?) {
+    fun attachApplicationBaseContext(base: Context?): STInitializer {
         val startTime = System.currentTimeMillis()
         MultiDex.install(base)
         println("MultiDex.install 耗时:${System.currentTimeMillis() - startTime}ms")
+        return this
     }
 
     @JvmStatic
@@ -202,6 +215,33 @@ object STInitializer {
         val bridgeParamsJsonObject = JSONObject()
         bridgeParamsJsonObject.put("url", url)
         bridgeHandler()?.handleBridge(activity, "open", bridgeParamsJsonObject.toString(), null, callback)
+    }
+
+    @JvmOverloads
+    fun initImageManager(imageHandler: STIImageHandler = STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build())): STInitializer {
+        STImageManager.initialize(imageHandler)
+        return this
+    }
+
+    fun initBus(busHandlerClassMap: MutableMap<String, String>, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null): STInitializer {
+        STBusManager.initOnce(
+            application(),
+            busHandlerClassMap,
+            onCallback = { key: String, success: Boolean ->
+                STLogUtil.d(TAG, "-- init bus $key, $success")
+                if (key == "reactnative") {
+                    setRNInitialized(true)
+                    setRNInitializedSuccess(success)
+                    notifyOnRNInitializedCallback()
+                }
+                onCallback?.invoke(key, success)
+            },
+            onCompletely = {
+                STLogUtil.w(TAG, "-- init bus onCompletely")
+                notifyOnBusInitializedCallback()
+                onCompletely?.invoke()
+            })
+        return this
     }
 
     class Options {
@@ -221,24 +261,25 @@ object STInitializer {
         private var enableCompatVectorFromResources: Boolean = true
         private var bridgeHandler: BridgeHandler? = null
 
-        fun initBus(busHandlerClassMap: MutableMap<String, String>, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null): Options {
-            STBusManager.initOnce(
-                application(),
-                busHandlerClassMap,
-                onCallback = { key: String, success: Boolean ->
-                    STLogUtil.d(TAG, "-- init bus $key, $success")
-                    if (key == "reactnative") {
-                        setRNInitialized(true)
-                        setRNInitializedSuccess(success)
-                        notifyOnRNInitializedCallback()
-                    }
-                    onCallback?.invoke(key, success)
-                },
-                onCompletely = {
-                    STLogUtil.w(TAG, "-- init bus onCompletely")
-                    notifyOnBusInitializedCallback()
-                    onCompletely?.invoke()
-                })
+        private var rnBaseVersion: Int = 0
+        private var rnBundlePathInAssets: String = "bundle-rn.zip"
+        private var rnCheckUpdateHTTPGetUrl: String = ""
+
+        fun rnBaseVersion(): Int = this.rnBaseVersion
+        fun setRNBaseVersion(rnBaseVersion: Int = this.rnBaseVersion): Options {
+            this.rnBaseVersion = rnBaseVersion
+            return this
+        }
+
+        fun rnBundlePathInAssets(): String = this.rnBundlePathInAssets
+        fun setRNBundlePathInAssets(rnBundlePathInAssets: String = this.rnBundlePathInAssets): Options {
+            this.rnBundlePathInAssets = rnBundlePathInAssets
+            return this
+        }
+
+        fun rnCheckUpdateHTTPGetUrl(): String = this.rnCheckUpdateHTTPGetUrl
+        fun setRNCheckUpdateHTTPGetUrl(rnCheckUpdateHTTPGetUrl: String = this.rnCheckUpdateHTTPGetUrl): Options {
+            this.rnCheckUpdateHTTPGetUrl = rnCheckUpdateHTTPGetUrl
             return this
         }
 
@@ -292,12 +333,6 @@ object STInitializer {
         }
 
         fun loginClass(): Class<out Activity>? = this.loginClass
-
-        @JvmOverloads
-        fun initImageManager(imageHandler: STIImageHandler = STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build())): Options {
-            STImageManager.initialize(imageHandler)
-            return this
-        }
 
         fun setLoginClass(loginClass: Class<out Activity>?): Options {
             this.loginClass = loginClass

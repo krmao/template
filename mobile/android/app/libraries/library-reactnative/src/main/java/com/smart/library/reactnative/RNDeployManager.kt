@@ -19,86 +19,49 @@ import java.io.File
 internal object RNDeployManager {
 
     @JvmStatic
-    fun init(
-        application: Application?,
-        frescoConfig: ImagePipelineConfig,
-        callback: ((success: Boolean) -> Unit)? = null
-    ) {
-
+    fun init(application: Application?, frescoConfig: ImagePipelineConfig, callback: ((success: Boolean) -> Unit)? = null) {
         val TAG = STDeployManager.REACT_NATIVE.TAG
         STDeployManager.REACT_NATIVE.initialize(
             deployConfig = STDeployConfigModel(
-                baseBundle = STBundleInfo(RNConstant.VERSION_RN_BASE),
-                baseBundlePathInAssets = "bundle-rn.zip",
+                baseBundle = STBundleInfo(STInitializer.rnBaseVersion()),
+                baseBundlePathInAssets = STInitializer.rnBundlePathInAssets(),
                 checkUpdateHandler = {
                     STLogUtil.d(TAG, "checkUpdateHandler invoke")
-                    STOkHttpManager.doGet(
-                        url = "http://10.47.62.17:7001/android/update",
-                        readTimeoutMS = 30 * 1000,
-                        callback = { result: String? ->
-                            STLogUtil.d(TAG, "checkUpdateHandler downloadString success $result")
-                            val jsonObject = STJsonUtil.toJSONObjectOrNull(result)
-                            if (jsonObject != null) {
-                                val errorCode = jsonObject.optInt("errorCode", -1)
-                                if (errorCode == 0) {
-                                    val resultObject = jsonObject.optJSONObject("result")
-                                    val baseVersion = resultObject?.optInt("baseVersion", -1) ?: -1
-                                    val toVersion = resultObject?.optInt("toVersion", -1) ?: -1
-                                    val downloadUrl = resultObject?.optString("downloadUrl") ?: ""
-                                    val bundleChecksum =
-                                        resultObject?.optString("bundleChecksum") ?: ""
-                                    if (baseVersion != -1 && toVersion != -1 && !downloadUrl.isBlank() && !bundleChecksum.isBlank()) {
-                                        STLogUtil.w(
-                                            TAG,
-                                            "check result is valid, adjust is need to download"
-                                        )
-                                        it.invoke(
-                                            null,
-                                            STPatchInfo(
-                                                baseVersion,
-                                                toVersion,
-                                                bundleChecksum = bundleChecksum
-                                            ),
-                                            downloadUrl,
-                                            true
-                                        )
-                                        return@doGet
-                                    }
+                    STOkHttpManager.doGet(url = STInitializer.rnCheckUpdateHTTPGetUrl(), readTimeoutMS = 30 * 1000, callback = { result: String? ->
+                        STLogUtil.d(TAG, "checkUpdateHandler downloadString success $result")
+                        val jsonObject = STJsonUtil.toJSONObjectOrNull(result)
+                        if (jsonObject != null) {
+                            val errorCode = jsonObject.optInt("errorCode", -1)
+                            if (errorCode == 0) {
+                                val resultObject = jsonObject.optJSONObject("result")
+                                val baseVersion = resultObject?.optInt("baseVersion", -1) ?: -1
+                                val toVersion = resultObject?.optInt("toVersion", -1) ?: -1
+                                val downloadUrl = resultObject?.optString("downloadUrl") ?: ""
+                                val bundleChecksum = resultObject?.optString("bundleChecksum") ?: ""
+                                if (baseVersion != -1 && toVersion != -1 && !downloadUrl.isBlank() && !bundleChecksum.isBlank()) {
+                                    STLogUtil.w(TAG, "check result is valid, adjust is need to download")
+                                    it.invoke(null, STPatchInfo(baseVersion, toVersion, bundleChecksum = bundleChecksum), downloadUrl, true)
+                                    return@doGet
                                 }
-                                STLogUtil.e(
-                                    TAG,
-                                    "checkUpdateHandler failure with error result ! $result"
-                                )
-                            } else {
-                                STLogUtil.d(
-                                    TAG,
-                                    "checkUpdateHandler parse downloadString to json failure $result"
-                                )
                             }
-                            it.invoke(null, null, null, false)
-
-                        })
+                            STLogUtil.e(TAG, "checkUpdateHandler failure with error result ! $result")
+                        } else {
+                            STLogUtil.d(TAG, "checkUpdateHandler parse downloadString to json failure $result")
+                        }
+                        it.invoke(null, null, null, false)
+                    })
                 },
                 downloadHandler = { patchDownloadUrl: String?, file: File, downloadCallback: (file: File?) -> Unit ->
                     STLogUtil.e(TAG, "downloadHandler invoke")
                     if (file.exists()) {
-                        STLogUtil.e(
-                            TAG,
-                            "downloadHandler file exists, no need to download, return null"
-                        )
+                        STLogUtil.e(TAG, "downloadHandler file exists, no need to download, return null")
                         downloadCallback.invoke(null)
                     } else {
                         STLogUtil.d(TAG, "downloadHandler start")
                         if (patchDownloadUrl != null && !patchDownloadUrl.isNullOrBlank()) {
-                            STOkHttpManager.doGetFile(
-                                patchDownloadUrl,
-                                file.absolutePath
-                            ) { toFile ->
+                            STOkHttpManager.doGetFile(patchDownloadUrl, file.absolutePath) { toFile ->
                                 if (toFile?.exists() == true) {
-                                    STLogUtil.e(
-                                        TAG,
-                                        "downloadHandler success and copy dest file exists, return file"
-                                    )
+                                    STLogUtil.e(TAG, "downloadHandler success and copy dest file exists, return file")
                                     downloadCallback.invoke(file)
                                 } else {
                                     STLogUtil.e(TAG, "downloadHandler file failure, return null")
@@ -109,42 +72,16 @@ internal object RNDeployManager {
                     }
                 },
                 reloadHandler = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
-                    if (RNInstanceManager.instanceManager != null) {
-                        STLogUtil.e(TAG, "reloadHandler start")
-                        RNInstanceManager.reloadBundle(
-                            indexBundleFile,
-                            versionOfIndexBundleFileInSdcard
-                        )
-                        true
-                    } else {
-                        RNInstanceManager.indexBundleFileInSdcard = indexBundleFile
-                        RNInstanceManager.versionOfIndexBundleFileInSdcard =
-                            versionOfIndexBundleFileInSdcard
-                        STLogUtil.e(TAG, "reloadHandler failure, instanceManager is null")
-                        false
-                    }
+                    RNInstanceManager.reloadBundle(indexBundleFile, versionOfIndexBundleFileInSdcard)
                 },
                 initCallback = { indexBundleFile: File?, versionOfIndexBundleFileInSdcard: Int? ->
                     STLogUtil.e(RNInstanceManager.TAG, "initCallback start")
-                    RNInstanceManager.init(
-                        application,
-                        STInitializer.debug(),
-                        indexBundleFile,
-                        versionOfIndexBundleFileInSdcard,
-                        frescoConfig,
-                        OnRNCallNativeHandler(),
-                        callback
-                    )
+                    RNInstanceManager.init(application, STInitializer.debug(), indexBundleFile, versionOfIndexBundleFileInSdcard, frescoConfig, OnRNCallNativeHandler(), callback)
                     STLogUtil.e(RNInstanceManager.TAG, "initCallback end")
                 }
             ),
-            // checkUpdateTypes = mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE),
-            checkUpdateTypes = mutableSetOf(),
-            applyTypes = mutableSetOf(
-                STDeployApplyType.APP_START,
-                STDeployApplyType.APP_CLOSE_ALL_PAGES,
-                STDeployApplyType.APP_OPEN_FIRST_PAGE
-            )
+            checkUpdateTypes = mutableSetOf(), // mutableSetOf(STDeployCheckUpdateType.APP_START, STDeployCheckUpdateType.APP_FORGROUND_TO_BACKGROUND, STDeployCheckUpdateType.APP_OPEN_FIRST_PAGE)
+            applyTypes = mutableSetOf(STDeployApplyType.APP_START, STDeployApplyType.APP_CLOSE_ALL_PAGES, STDeployApplyType.APP_OPEN_FIRST_PAGE)
         )
     }
 

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.smart.library.reactnative
 
 import android.annotation.SuppressLint
@@ -75,9 +77,10 @@ object RNInstanceManager {
 
                 val currentReactContext: ReactContext? = innerInstanceManager.currentReactContext
                 if (currentReactContext != null) {
-                    STReflectUtil.invokeDeclaredMethod(innerInstanceManager, "tearDownReactContext",
-                            arrayOf(ReactContext::class.javaObjectType),
-                            arrayOf(currentReactContext)
+                    STReflectUtil.invokeDeclaredMethod(
+                        innerInstanceManager, "tearDownReactContext",
+                        arrayOf(ReactContext::class.javaObjectType),
+                        arrayOf(currentReactContext)
                     )
                 }
 
@@ -122,7 +125,7 @@ object RNInstanceManager {
                 /**
                  * 再其次使用 assets bundle
                  */
-                RNConstant.VERSION_RN_CURRENT = RNConstant.VERSION_RN_BASE
+                RNConstant.VERSION_RN_CURRENT = STInitializer.rnBaseVersion()
                 STLogUtil.e(TAG, "checkValidBundleInAssets=true")
                 val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
                 instanceManager = initInstanceManager(bundleLoader, callback)
@@ -131,7 +134,7 @@ object RNInstanceManager {
                 STLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 callback?.invoke(false)
             }
-            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${RNConstant.VERSION_RN_BASE}, currentVersion=${RNConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
+            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${STInitializer.rnBaseVersion()}, currentVersion=${RNConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
         } else {
             callback?.invoke(false)
         }
@@ -196,6 +199,7 @@ object RNInstanceManager {
     @Volatile
     private var isInitialized = false
     private val loadBundleTasks: Vector<RNBundle> = Vector()
+
     @JvmStatic
     fun loadBundle(bundle: RNBundle?) {
         bundle?.let {
@@ -295,37 +299,37 @@ object RNInstanceManager {
     @JvmStatic
     private fun getInstanceBuilder(bundleLoader: JSBundleLoader, jsMainModulePath: String = "index", frescoConfig: ImagePipelineConfig?): ReactInstanceManagerBuilder {
         return ReactInstanceManager.builder()
-                .setApplication(application)
-                .setUIImplementationProvider(UIImplementationProvider())
-                .setRedBoxHandler(object : RedBoxHandler {
-                    override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: RedBoxHandler.ErrorType?) {
-                        STLogUtil.e(TAG, "handleRedbox errorType:${errorType?.name}, title:$title, stack:$stack")
-                    }
+            .setApplication(application)
+            .setUIImplementationProvider(UIImplementationProvider())
+            .setRedBoxHandler(object : RedBoxHandler {
+                override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: RedBoxHandler.ErrorType?) {
+                    STLogUtil.e(TAG, "handleRedbox errorType:${errorType?.name}, title:$title, stack:$stack")
+                }
 
-                    override fun isReportEnabled(): Boolean {
-                        return false
-                    }
+                override fun isReportEnabled(): Boolean {
+                    return false
+                }
 
-                    override fun reportRedbox(context: Context?, title: String?, stack: Array<out StackFrame>?, sourceUrl: String?, reportCompletedListener: RedBoxHandler.ReportCompletedListener?) {
-                        STLogUtil.e(TAG, "reportRedbox title:$title, stack:$stack, sourceUrl:$sourceUrl")
-                    }
-                })
-                .setJSMainModulePath(jsMainModulePath)
-                .setJSBundleLoader(bundleLoader)
-                .addPackages(
-                        mutableListOf(
-                                MainReactPackage(MainPackageConfig.Builder().apply {
-                                    frescoConfig?.let { setFrescoConfig(it) }
-                                }.build()),
-                                RNCustomPackage(),
-                                RNGestureHandlerPackage(),
-                                ReanimatedPackage(),
-                                VectorIconsPackage(),
-                                SafeAreaContextPackage()
-                        )
+                override fun reportRedbox(context: Context?, title: String?, stack: Array<out StackFrame>?, sourceUrl: String?, reportCompletedListener: RedBoxHandler.ReportCompletedListener?) {
+                    STLogUtil.e(TAG, "reportRedbox title:$title, stack:$stack, sourceUrl:$sourceUrl")
+                }
+            })
+            .setJSMainModulePath(jsMainModulePath)
+            .setJSBundleLoader(bundleLoader)
+            .addPackages(
+                mutableListOf(
+                    MainReactPackage(MainPackageConfig.Builder().apply {
+                        frescoConfig?.let { setFrescoConfig(it) }
+                    }.build()),
+                    RNCustomPackage(),
+                    RNGestureHandlerPackage(),
+                    ReanimatedPackage(),
+                    VectorIconsPackage(),
+                    SafeAreaContextPackage()
                 )
-                .setUseDeveloperSupport(debug)
-                .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
+            )
+            .setUseDeveloperSupport(debug)
+            .setInitialLifecycleState(LifecycleState.BEFORE_CREATE)
     }
 
 }

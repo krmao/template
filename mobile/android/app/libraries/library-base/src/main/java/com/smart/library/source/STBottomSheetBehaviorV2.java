@@ -82,6 +82,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import kotlin.Suppress;
+
 import static android.os.Build.VERSION.SDK_INT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
@@ -98,7 +100,7 @@ import static java.lang.Math.min;
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
 @SuppressWarnings("ALL")
-@SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef", "Deprecated"})
+@SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef"})
 public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.Behavior<V> {
 
 
@@ -3084,8 +3086,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
             @Override
             void setSystemWindowInsets(@NonNull Insets insets) {
                 if (mInsets != null) {
-                    mInsets = mInsets.replaceSystemWindowInsets(
-                            insets.left, insets.top, insets.right, insets.bottom);
+                    mInsets = mInsets.replaceSystemWindowInsets(insets.left, insets.top, insets.right, insets.bottom);
                 }
             }
 

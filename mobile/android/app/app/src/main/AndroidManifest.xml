@@ -50,7 +50,7 @@
             android:name="com.smart.template.FinalSplashActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
-            android:theme="@style/FinalLaunchTheme2"
+            android:theme="@style/FinalLaunchTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

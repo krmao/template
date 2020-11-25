@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/holo_blue_dark" />
+    <item android:drawable="@color/final_launch_bg_color" />
     <item>
         <bitmap
-            android:gravity="fill"
+            android:gravity="bottom"
             android:src="@drawable/final_guide" />
     </item>
 </layer-list>

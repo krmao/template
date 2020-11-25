@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="final_root_background">#EFEFEF</color>
+    <color name="final_launch_bg_color">#fbc549</color>
 </resources>

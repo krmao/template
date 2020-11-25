@@ -7,6 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
+import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.template.home.tab.FinalHomeTabActivity
 
@@ -16,7 +17,7 @@ import com.smart.template.home.tab.FinalHomeTabActivity
 class FinalSplashActivity : FragmentActivity() {
 
     companion object {
-        const val TAG: String = "SplashActivity"
+        const val TAG = "[splash]"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class FinalSplashActivity : FragmentActivity() {
 
         setContentView(R.layout.final_splash)
 
-        /*STInitializer.ensureBusInitialized {
+        STInitializer.ensureBusInitialized {
             STLogUtil.w(TAG, "ensureBusInitialized isFinishing=$isFinishing, thread=${Thread.currentThread().name}")
 
             if (!isFinishing) {
@@ -72,11 +73,11 @@ class FinalSplashActivity : FragmentActivity() {
 
         STInitializer.ensureRNFirstScreenAttached { attached: Boolean ->
             STLogUtil.w(TAG, "ensureRNFirstScreenAttached attached=$attached")
-            *//*if (!isFinishing) {
+            /*if (!isFinishing) {
                 STLogUtil.w("splash", "finish")
                 finish()
-            }*//*
-        }*/
+            }*/
+        }
     }
 
     private fun goToHome() {

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
+import android.hardware.*;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -29,6 +29,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Leo Ma on 2016/2/25.
  */
+@SuppressWarnings("deprecation")
 public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
     private GPUImageFilter magicFilter;

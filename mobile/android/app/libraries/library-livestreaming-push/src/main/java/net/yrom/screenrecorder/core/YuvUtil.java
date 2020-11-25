@@ -5,6 +5,7 @@ import android.media.MediaCodecInfo;
 /**
  * Created by raomengyang on 5/3/17.
  */
+@SuppressWarnings("deprecation")
 public class YuvUtil {
 
     //yuv420FormatIndex仅支持3种取值: MediaCodecInfo.CodecCapabilities#COLOR_FormatYUV420Planar, #COLOR_FormatYUV420PackedPlanar, #COLOR_FormatYUV420SemiPlanar

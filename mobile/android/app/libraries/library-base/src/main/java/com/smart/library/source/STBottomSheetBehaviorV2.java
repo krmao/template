@@ -82,8 +82,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import kotlin.Suppress;
-
 import static android.os.Build.VERSION.SDK_INT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
@@ -3083,6 +3081,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
                 mInsets = insets.toWindowInsets();
             }
 
+            @SuppressWarnings("deprecation")
             @Override
             void setSystemWindowInsets(@NonNull Insets insets) {
                 if (mInsets != null) {
@@ -3340,6 +3339,7 @@ public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.B
          *                      {@link #getBoundingRects()} ()}.
          */
         // TODO(b/73953958): @VisibleForTesting(visibility = PRIVATE)
+        @SuppressWarnings("deprecation")
         public DisplayCutoutCompat(Rect safeInsets, List<Rect> boundingRects) {
             this(SDK_INT >= 28 ? new DisplayCutout(safeInsets, boundingRects) : null);
         }

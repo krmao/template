@@ -1,0 +1,8 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="final_activity_horizontal_margin">16dp</dimen>
+    <dimen name="final_activity_vertical_margin">16dp</dimen>
+    <dimen name="final_fab_margin">16dp</dimen>
+    <dimen name="final_anchor_point">300dp</dimen>
+    <dimen name="final_bottom_sheet_peek_height">80dp</dimen>
+</resources>

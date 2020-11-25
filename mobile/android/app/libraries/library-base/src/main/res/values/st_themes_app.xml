@@ -62,7 +62,7 @@
     </style>
 
     <style name="STAppTheme.Translucent.Transparent" parent="@style/STAppTheme.Translucent">
-        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowBackground">@color/finalTransparent</item>
     </style>
 
     <style name="STAppTheme.Translucent.Notification" parent="@style/STAppTheme.Translucent">

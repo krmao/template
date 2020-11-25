@@ -30,10 +30,10 @@
         android:name="com.smart.template.FinalApplication"
         android:allowBackup="true"
         android:allowTaskReparenting="false"
-        android:fullBackupContent="@xml/st_backup_descriptor"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/st_app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
+        android:fullBackupContent="@xml/final_backup_descriptor"
+        android:icon="@mipmap/final_launcher"
+        android:label="@string/final_app_name"
+        android:networkSecurityConfig="@xml/final_network_security_config"
         android:supportsRtl="false"
         android:theme="@style/STAppTheme.Light.NoActionBar"
         android:usesCleartextTraffic="true"
@@ -41,16 +41,16 @@
         tools:replace="android:label,android:allowBackup,android:supportsRtl">
 
         <activity
-            android:name="com.smart.template.home.tab.HomeTabActivity"
+            android:name="com.smart.template.home.tab.FinalHomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:theme="@style/STAppTheme.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name="com.smart.template.SplashActivity"
+            android:name="com.smart.template.FinalSplashActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/FinalLaunchTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -73,14 +73,14 @@
         </activity>
 
         <activity
-            android:name="com.smart.template.home.STBehaviorBottomSheetActivity"
+            android:name="com.smart.template.home.test.FinalBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
-            android:name="com.smart.template.home.STBehaviorBottomSheetV2Activity"
+            android:name="com.smart.template.home.test.FinalBehaviorBottomSheetV2Activity"
             android:configChanges="orientation"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Translucent"

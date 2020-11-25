@@ -577,6 +577,7 @@ public class SrsMp4Muxer {
             }
         }
 
+        @SuppressWarnings("deprecation")
         public void addSample(long offset, MediaCodec.BufferInfo bi) {
             long delta = bi.presentationTimeUs - lastPresentationTimeUs;
             if (delta < 0) {

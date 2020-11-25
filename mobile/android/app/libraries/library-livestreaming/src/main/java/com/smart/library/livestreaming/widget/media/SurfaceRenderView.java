@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.ISurfaceTextureHolder;
 
+@SuppressWarnings("deprecation")
 public class SurfaceRenderView extends SurfaceView implements IRenderView {
     private MeasureHelper mMeasureHelper;
 

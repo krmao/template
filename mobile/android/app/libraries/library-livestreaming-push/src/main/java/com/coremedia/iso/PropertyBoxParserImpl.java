@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 /**
  * A Property file based BoxFactory
  */
+@SuppressWarnings({"deprecation", "unchecked"})
 public class PropertyBoxParserImpl extends AbstractBoxParser {
     Properties mapping;
 
@@ -124,13 +125,7 @@ public class PropertyBoxParserImpl extends AbstractBoxParser {
                 }
 
                 return constructorObject.newInstance(constructorArgs);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
                 throw new RuntimeException(e);
             }
 

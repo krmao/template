@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- @see http://www.gadgetsaint.com/tips/change-statusbar-color-android/#.Wt6yf1OFPVo -->
+
+    <style name="FinalLaunchTheme" parent="@style/STAppTheme.Translucent.Launch">
+        <item name="android:windowBackground">@drawable/final_launch_background</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+</resources>

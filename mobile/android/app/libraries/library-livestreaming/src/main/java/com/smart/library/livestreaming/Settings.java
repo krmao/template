@@ -19,8 +19,8 @@ package com.smart.library.livestreaming;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
+@SuppressWarnings("deprecation")
 public class Settings {
     private Context mAppContext;
     private SharedPreferences mSharedPreferences;
@@ -32,7 +32,7 @@ public class Settings {
 
     public Settings(Context context) {
         mAppContext = context.getApplicationContext();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        mSharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(mAppContext);
     }
 
     public boolean getEnableBackgroundPlay() {

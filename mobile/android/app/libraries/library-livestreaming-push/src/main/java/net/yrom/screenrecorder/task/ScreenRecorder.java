@@ -40,6 +40,7 @@ import static net.yrom.screenrecorder.rtmp.RESFlvData.FLV_RTMP_PACKET_TYPE_VIDEO
  * @author Yrom
  * Modified by raomengyang 2017-03-12
  */
+@SuppressWarnings("deprecation")
 public class ScreenRecorder extends Thread {
     private static final String TAG = "ScreenRecorder";
 

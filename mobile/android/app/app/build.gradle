@@ -105,7 +105,7 @@ android {
 
     useLibrary 'org.apache.http.legacy'
 
-    resourcePrefix ""
+    resourcePrefix "final_"
 
     compileOptions {
         sourceCompatibility 1.8

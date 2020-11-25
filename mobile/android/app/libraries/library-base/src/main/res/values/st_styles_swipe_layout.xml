@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="STSwipeMenuLayout">
+        <attr
+            name="stEnableSwipe"
+            format="boolean" />
+        <attr
+            name="stEnableBlockingMode"
+            format="boolean" />
+        <attr
+            name="stIsRightToLeft"
+            format="boolean" />
+    </declare-styleable>
+</resources>

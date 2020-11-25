@@ -7,7 +7,7 @@ import android.graphics.Color
 import com.smart.library.STInitializer
 import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STSystemUtil
-import com.smart.template.home.tab.HomeTabActivity
+import com.smart.template.home.tab.FinalHomeTabActivity
 
 @Suppress("unused", "SpellCheckingInspection")
 class FinalApplication : Application() {
@@ -37,12 +37,12 @@ class FinalApplication : Application() {
                     .setChannel(STReflectUtil.invokeJavaStaticMethod("com.meituan.android.walle.WalleChannelReader", "getChannel", arrayOf(Application::class.java), arrayOf(this)) as? String ?: "")
                     .setBridgeHandler(object : STInitializer.BridgeHandler {
                         override fun handleBridge(activity: Activity?, functionName: String?, params: String?, callbackId: String?, callback: STInitializer.BridgeHandlerCallback?) {
-                            STBridgeCommunication.handleBridge(activity, functionName, params, callbackId) { _callbackId: String?, resultJsonString: String? ->
+                            FinalBridgeCommunication.handleBridge(activity, functionName, params, callbackId) { _callbackId: String?, resultJsonString: String? ->
                                 callback?.onCallback(_callbackId, resultJsonString)
                             }
                         }
                     })
-                    .setMainClass(HomeTabActivity::class.java)
+                    .setMainClass(FinalHomeTabActivity::class.java)
                     .setLoginClass(null)
             )
             .initImageManager()

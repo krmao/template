@@ -169,7 +169,7 @@ public class DetailFilterActivity extends GSYBaseActivityDetail<StandardGSYVideo
         //自定义render需要在播放器开始播放之前，播放过程中不允许切换render
 
         //水印图效果
-        /*Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        /*Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.final_launcher);
         mGSYVideoGLViewCustomRender = new GSYVideoGLViewCustomRender();
         mCustomBitmapIconEffect = new BitmapIconEffect(bitmap, dp2px(50), dp2px(50), 0.6f);
         mGSYVideoGLViewCustomRender.setBitmapEffect(mCustomBitmapIconEffect);

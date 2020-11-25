@@ -25,7 +25,7 @@ java/kotlin->
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.st_behavior_bottom_sheet_activity)
+        setContentView(R.layout.final_behavior_bottom_sheet_activity)
 
         bottomSheetBehavior.enableHalfExpandedState = true
         bottomSheetBehavior.dragEnabled = true

@@ -15,6 +15,7 @@ import static net.yrom.screenrecorder.rtmp.RESFlvData.FLV_RTMP_PACKET_TYPE_AUDIO
 /**
  * Created by lakeinchina on 26/05/16.
  */
+@SuppressWarnings("deprecation")
 public class AudioSenderThread extends Thread {
     private static final long WAIT_TIME = 5000;//1ms;
     private MediaCodec.BufferInfo eInfo;

@@ -1,6 +1,6 @@
 package net.ossrs.yasea;
 
-import android.hardware.Camera;
+import android.hardware.*;
 import android.media.AudioRecord;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.AutomaticGainControl;
@@ -13,6 +13,7 @@ import java.io.File;
 /**
  * Created by Leo Ma on 2016/7/25.
  */
+@SuppressWarnings("deprecation")
 public class SrsPublisher {
 
     private static AudioRecord mic;

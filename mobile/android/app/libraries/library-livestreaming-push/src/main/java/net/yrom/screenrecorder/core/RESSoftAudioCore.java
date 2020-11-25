@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by lake on 16-5-24.
  */
+@SuppressWarnings("deprecation")
 public class RESSoftAudioCore {
     RESCoreParameters resCoreParameters;
     private final Object syncOp = new Object();

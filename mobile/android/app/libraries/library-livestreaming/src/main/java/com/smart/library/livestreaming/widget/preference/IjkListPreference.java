@@ -61,6 +61,7 @@ public class IjkListPreference extends ListPreference {
         a.recycle();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         super.onSetInitialValue(restoreValue, defaultValue);

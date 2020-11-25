@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 /**
  *
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractAppleMetaDataBox extends AbstractBox implements ContainerBox {
     private static Logger LOG = Logger.getLogger(AbstractAppleMetaDataBox.class.getName());
     AppleDataBox appleDataBox = new AppleDataBox();

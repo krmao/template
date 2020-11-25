@@ -36,7 +36,7 @@ import com.smart.library.util.STSystemUtil
     private val adapter: STRecyclerViewAdapter<String, RecyclerView.ViewHolder> by lazy {
         object : STRecyclerViewAdapter<String, RecyclerView.ViewHolder>(context, mutableListOf()) {
             override fun onCreateViewHolder(container: ViewGroup, position: Int): STViewHolder {
-                return STViewHolder(LayoutInflater.from(context).inflate(R.layout.home_fragment_recycler_view_drag_and_transfer_item_days, container, false))
+                return STViewHolder(LayoutInflater.from(context).inflate(R.layout.final_fragment_recycler_view_drag_and_transfer_item_days, container, false))
             }
 
             override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {

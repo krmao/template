@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.hardware.Camera;
+import android.hardware.*;
 import android.os.Bundle;
 import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class STVideoPushActivity extends AppCompatActivity implements RtmpHandler.RtmpListener,
         SrsRecordHandler.SrsRecordListener, SrsEncodeHandler.SrsEncodeListener {
 

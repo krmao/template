@@ -14,7 +14,7 @@ import net.ossrs.yasea.R;
  * source code author : guolin
  * reference csdn blog：http://blog.csdn.net/guolin_blog/article/details/8689140
  */
-
+@SuppressWarnings("deprecation")
 public class MyWindowManager {
 
     /**

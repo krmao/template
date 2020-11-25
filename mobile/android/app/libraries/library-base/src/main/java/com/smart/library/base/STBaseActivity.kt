@@ -2,6 +2,7 @@ package com.smart.library.base
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Process
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.barlibrary.ImmersionBar
@@ -144,6 +145,7 @@ open class STBaseActivity : AppCompatActivity() {
         if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
 
         finish()
+        Process.killProcess(Process.myPid())
         exitProcess(0)
     }
 }

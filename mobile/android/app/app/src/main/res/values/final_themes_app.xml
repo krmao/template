@@ -5,11 +5,15 @@
 
     <style name="FinalLaunchTheme" parent="@style/STAppTheme.Translucent.Launch">
         <item name="android:windowBackground">@drawable/final_launch_background</item>
-        <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="FinalLaunchTheme2" parent="@android:style/Theme">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowBackground">@drawable/final_launch_background</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>

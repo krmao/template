@@ -152,7 +152,7 @@ interface STSnapHelper {
                             if (smooth) {
                                 recyclerView?.smoothScrollBy(distanceArray[0], distanceArray[1])
                             } else {
-                                val offset = STSystemUtil.screenWidth / 3
+                                val offset = STSystemUtil.screenWidth() / 3
                                 val dx: Int = if (distanceArray[0] < 0) min(abs(distanceArray[0]) - 1, offset) else if (distanceArray[0] > 0) -min(abs(distanceArray[0]) - 1, offset) else 0
                                 val dy: Int = if (distanceArray[1] < 0) min(abs(distanceArray[1]) - 1, offset) else if (distanceArray[1] > 0) -min(abs(distanceArray[1]) - 1, offset) else 0
                                 recyclerView?.scrollBy(distanceArray[0] + dx, distanceArray[1] + dy)

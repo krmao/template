@@ -38,7 +38,7 @@ object STCacheManager {
      */
     @JvmStatic
     fun getFilesDir(): File? {
-        val file = if (STSystemUtil.isSdCardExist) STInitializer.application()?.getExternalFilesDir(null) else STInitializer.application()?.filesDir
+        val file = if (STSystemUtil.isSDCardExist()) STInitializer.application()?.getExternalFilesDir(null) else STInitializer.application()?.filesDir
         return file ?: STInitializer.application()?.filesDir
     }
 
@@ -62,7 +62,7 @@ object STCacheManager {
      */
     @JvmStatic
     fun getCacheDir(): File? {
-        val file = if (STSystemUtil.isSdCardExist) STInitializer.application()?.externalCacheDir else STInitializer.application()?.cacheDir
+        val file = if (STSystemUtil.isSDCardExist()) STInitializer.application()?.externalCacheDir else STInitializer.application()?.cacheDir
         return file ?: STInitializer.application()?.cacheDir
     }
 

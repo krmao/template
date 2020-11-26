@@ -196,7 +196,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
                         STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus doSmoothScrollToMiddle start, thread=${Thread.currentThread().name}") }
                         val parentView = parent as ViewGroup
                         if (parentView is HorizontalScrollView) {
-                            val middleLeftPosition = (STSystemUtil.screenWidth - it.width) / 2 // 计算控件居正中时距离左侧屏幕的距离
+                            val middleLeftPosition = (STSystemUtil.screenWidth() - it.width) / 2 // 计算控件居正中时距离左侧屏幕的距离
                             val offset = it.left - middleLeftPosition // 正中间位置需要向左偏移的距离
                             parentView.smoothScrollTo(offset, 0)
                             STLogUtil.sync { STLogUtil.e(TAG, "doSmoothScrollToMiddle end it.left=${it.left}, it.width=${it.width}, offset=$offset, middleLeftPosition=$middleLeftPosition, thread=${Thread.currentThread().name}") }

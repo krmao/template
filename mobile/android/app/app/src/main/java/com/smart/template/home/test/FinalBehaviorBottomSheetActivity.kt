@@ -39,7 +39,7 @@ class FinalBehaviorBottomSheetActivity : STBaseActivity() {
     private val touchLayout: STBottomSheetTouchContainerConstrainLayout by lazy { findViewById<STBottomSheetTouchContainerConstrainLayout>(R.id.touchLayout) }
     private val arrowIv: ImageView by lazy { findViewById<ImageView>(R.id.arrowIv) }
 
-    private val backdropBehaviorHeightShow: Int = (STSystemUtil.screenWidth * 9f / 16f).toInt()
+    private val backdropBehaviorHeightShow: Int = (STSystemUtil.screenWidth() * 9f / 16f).toInt()
 
     // 面板距离页面底部距离, 面板收缩态的真实高度
 

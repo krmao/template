@@ -66,7 +66,7 @@ class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: Attri
 
     var enableHalfExpandedState = true
 
-    var dependCollapsedOffset: Int = (STSystemUtil.screenHeight / 0.8f).toInt()
+    var dependCollapsedOffset: Int = (STSystemUtil.screenHeight() / 0.8f).toInt()
     var dependHalfExpandedOffset: Int = (dependCollapsedOffset * 0.5f).toInt()
     var dependExpandedOffset: Int = (dependCollapsedOffset * 0.2f).toInt()
 

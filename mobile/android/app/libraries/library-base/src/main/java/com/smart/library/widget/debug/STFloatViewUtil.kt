@@ -66,7 +66,7 @@ enum class STFloatViewUtil {
                     }
                     MotionEvent.ACTION_MOVE -> {
                         windowLayoutParams.x = (event.rawX - x).toInt()
-                        windowLayoutParams.y = (event.rawY - STSystemUtil.statusBarHeight.toFloat() - y).toInt()
+                        windowLayoutParams.y = (event.rawY - STSystemUtil.statusBarHeight().toFloat() - y).toInt()
                         windowManager.updateViewLayout(v, windowLayoutParams)
                     }
                     MotionEvent.ACTION_UP -> {

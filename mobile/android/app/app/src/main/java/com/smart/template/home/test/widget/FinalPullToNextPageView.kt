@@ -17,7 +17,7 @@ import com.smart.library.util.STSystemUtil
 class FinalPullToNextPageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     private val tag: String = FinalPullToNextPageView::class.java.name
-    private var thresholdDistance = STSystemUtil.screenHeight / 5
+    private var thresholdDistance = STSystemUtil.screenHeight() / 5
     private var pageViewList = mutableListOf<View>()
     var pageIndex = 1
         private set

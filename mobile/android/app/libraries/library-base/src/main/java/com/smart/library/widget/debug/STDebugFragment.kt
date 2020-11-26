@@ -104,7 +104,7 @@ open class STDebugFragment : STBaseFragment() {
             //========== ======================================================================== ==========
 
             // notification
-            val title = "${STSystemUtil.appName} 调试助手"
+            val title = "${STSystemUtil.getAppName(STInitializer.application())} 调试助手"
             val text = "点击跳转到调试界面"
             val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)
@@ -141,7 +141,7 @@ open class STDebugFragment : STBaseFragment() {
                 .setSmallIcon(smallIcon)
                 .setColor(Color.parseColor("#4E6A78"))
                 .setColorized(true)
-                .setLargeIcon(STSystemUtil.appBitmap)
+                .setLargeIcon(STSystemUtil.getAppBitmap(STInitializer.application()))
                 .setContentTitle(title)
                 .setContentText(text) // set content text to support devices running API level < 24
                 // .setDefaults(Notification.DEFAULT_ALL)

@@ -57,7 +57,7 @@ object STLogUtil {
     @JvmStatic
     var debug = STInitializer.debug()
 
-    fun getNewLogName(): String = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
+    private fun getNewLogName(): String = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 
     @JvmStatic
     @JvmOverloads

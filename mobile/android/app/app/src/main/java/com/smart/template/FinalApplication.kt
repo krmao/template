@@ -22,7 +22,7 @@ class FinalApplication : Application() {
         STInitializer.initialApplication(
             STInitializer.Config(
                 application = this,
-                appDebug = (STSystemUtil.getAppMetaData("DEBUG") ?: false) as Boolean,
+                appDebug = (STSystemUtil.getAppMetaData(applicationInfo, "DEBUG") ?: false) as Boolean,
                 configChannel = STInitializer.ConfigChannel(appChannel = STReflectUtil.invokeJavaStaticMethod("com.meituan.android.walle.WalleChannelReader", "getChannel", arrayOf(Application::class.java), arrayOf(this)) as? String ?: ""),
                 configClass = STInitializer.ConfigClass(homeClass = FinalHomeTabActivity::class.java),
                 configBridge = STInitializer.ConfigBridge(bridgeHandler = object : STInitializer.BridgeHandler {
@@ -30,7 +30,7 @@ class FinalApplication : Application() {
                         FinalBridgeCommunication.handleBridge(activity, functionName, params, callbackId) { _callbackId: String?, resultJsonString: String? -> callback?.onCallback(_callbackId, resultJsonString) }
                     }
                 }),
-                configRN = STInitializer.ConfigRN(baseVersion = (STSystemUtil.getAppMetaData("VERSION_RN") ?: 0) as Int),
+                configRN = STInitializer.ConfigRN(baseVersion = (STSystemUtil.getAppMetaData(applicationInfo, "VERSION_RN") ?: 0) as Int),
                 configBundle = STInitializer.ConfigBundle(
                     bundleBusHandlerClassMap = hashMapOf(
                         "reactnative" to "com.smart.library.reactnative.RNBusHandler",

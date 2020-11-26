@@ -2,6 +2,7 @@ package com.smart.library.util
 
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -25,34 +26,26 @@ import com.smart.library.STInitializer
 import com.smart.library.base.toBitmap
 
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection")
 object STSystemUtil {
 
     @JvmStatic
     val SDK_INT: Int = Build.VERSION.SDK_INT
 
     @JvmStatic
-    val versionCode: Int by lazy { getAppVersionCode() }
+    fun displayMetrics(application: Application? = STInitializer.application()): DisplayMetrics? = application?.resources?.displayMetrics
 
     @JvmStatic
-    val versionName: String by lazy { getAppVersionName() }
+    fun displayRealMetrics(application: Application? = STInitializer.application()): DisplayMetrics? {
+        val defaultDisplay: Display? = (application?.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
+        val displayMetrics = DisplayMetrics()
+        defaultDisplay?.getRealMetrics(displayMetrics)
+        return displayMetrics
+    }
+
 
     @JvmStatic
-    val appName: String by lazy { getAppName() }
-
-    @JvmStatic
-    val appIcon: Int? by lazy { getAppIcon() }
-
-    @JvmStatic
-    val appBitmap: Bitmap? by lazy { getAppBitmap() }
-
-    @JvmStatic
-    val displayMetrics: DisplayMetrics?
-        get() = STInitializer.application()?.resources?.displayMetrics
-
-    @JvmStatic
-    val screenWidth: Int
-        get() = displayMetrics?.widthPixels ?: 0
+    fun screenWidth(application: Application? = STInitializer.application()): Int = displayMetrics(application)?.widthPixels ?: 0
 
     /**
      * 不包含虚拟导航栏的高度, 有的包含状态栏高度, 有的不包含状态栏高度
@@ -63,7 +56,7 @@ object STSystemUtil {
      * 假定肯定不包含虚拟导航栏高度
      */
     @JvmStatic
-    val screenHeight: Int by lazy { STInitializer.application()?.resources?.displayMetrics?.heightPixels ?: 0 }
+    fun screenHeight(application: Application? = STInitializer.application()): Int = displayMetrics(application)?.heightPixels ?: 0
 
     /**
      * 三星 S8-G9500 分辨率2960×1440(存在多种虚拟导航栏)   screenHeight=2076 screenRealHeight=2220(状态栏+内容高度+大虚拟导航栏高度)  statusBarHeight=72 navigationBarHeight=144 screenContentHeightExcludeStatusAndNavigationBar=2004
@@ -73,11 +66,8 @@ object STSystemUtil {
      * 华为 P20 (不存在虚拟导航栏)                        screenHeight=1439 screenRealHeight=1493(状态栏+内容高度)               statusBarHeight=54 navigationBarHeight=82  screenContentHeightExcludeStatusAndNavigationBar=1439
      */
     @JvmStatic
-    val screenRealHeight: Int by lazy {
-        val defaultDisplay: Display? = (STInitializer.application()?.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
-        val displayMetrics = DisplayMetrics()
-        defaultDisplay?.getRealMetrics(displayMetrics)
-        displayMetrics.heightPixels
+    fun screenRealHeight(application: Application? = STInitializer.application()): Int {
+        return displayRealMetrics(application)?.heightPixels ?: 0
     }
 
     // 三星S8 G9500 小虚拟导航栏高度 45但是navigationBarHeight=144/大虚拟导航栏高度为navigationBarHeight=144
@@ -89,11 +79,11 @@ object STSystemUtil {
      */
     @JvmStatic
     @Deprecated(message = "受机型不同影响, 比如三星 S8-G9500 存在小/大两种虚拟导航栏")
-    val screenContentHeightExcludeStatusAndNavigationBar: Int? by lazy {
-        val screenHeight = screenHeight
-        val screenRealHeight = screenRealHeight
-        val statusBarHeight = statusBarHeight
-        @Suppress("DEPRECATION") val navigationBarHeight = navigationBarHeight
+    fun screenContentHeightExcludeStatusAndNavigationBar(): Int? {
+        val screenHeight = screenHeight()
+        val screenRealHeight = screenRealHeight()
+        val statusBarHeight = statusBarHeight()
+        @Suppress("DEPRECATION") val navigationBarHeight = navigationBarHeight()
 
         val heightDelta: Int = screenRealHeight - screenHeight
 
@@ -106,17 +96,16 @@ object STSystemUtil {
             screenHeight
         }
 
-        contentHeight
+        return contentHeight
     }
 
     @JvmStatic
-    val statusBarHeight: Int by lazy {
+    fun statusBarHeight(application: Application? = STInitializer.application()): Int {
         var statusBarHeight = 0
-        val resourceId = STInitializer.application()?.resources?.getIdentifier("status_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) statusBarHeight = STInitializer.application()?.resources?.getDimensionPixelSize(resourceId) ?: 0
-        statusBarHeight
+        val resourceId = application?.resources?.getIdentifier("status_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) statusBarHeight = application?.resources?.getDimensionPixelSize(resourceId) ?: 0
+        return statusBarHeight
     }
-
 
     /**
      * 三星 S8-G9500 不同高度的虚拟导航栏均返回高度 144, 所以该变量是不推荐使用的
@@ -130,11 +119,11 @@ object STSystemUtil {
      */
     @JvmStatic
     @Deprecated(message = "三星 S8-G9500 不同高度的虚拟导航栏均返回高度 144, 所以该变量是不推荐使用的")
-    val navigationBarHeight: Int by lazy {
+    fun navigationBarHeight(application: Application? = STInitializer.application()): Int {
         var navigationBarHeight = 0
-        val resourceId = STInitializer.application()?.resources?.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) navigationBarHeight = STInitializer.application()?.resources?.getDimensionPixelSize(resourceId) ?: 0
-        navigationBarHeight
+        val resourceId = application?.resources?.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) navigationBarHeight = application?.resources?.getDimensionPixelSize(resourceId) ?: 0
+        return navigationBarHeight
     }
 
     /**
@@ -163,7 +152,7 @@ object STSystemUtil {
      */
     fun getVisibleNavigationBarHeightOnWindowFocusChanged(activity: Activity?): Int? {
         val height = getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(activity)
-        return if (height != null) screenRealHeight - height else null
+        return if (height != null) screenRealHeight() - height else null
     }
 
     /**
@@ -194,7 +183,7 @@ object STSystemUtil {
         val windowsVisibleDisplayFrameSize = Rect()
         activity?.window?.decorView?.getWindowVisibleDisplayFrame(windowsVisibleDisplayFrameSize)
         val height = windowsVisibleDisplayFrameSize.bottom
-        return if (height <= (screenHeight - statusBarHeight - navigationBarHeight)) return null else height // 杜绝由于软键盘的展开/收起导致的计算错误
+        return if (height <= (screenHeight() - statusBarHeight() - navigationBarHeight())) return null else height // 杜绝由于软键盘的展开/收起导致的计算错误
     }
 
 
@@ -221,16 +210,16 @@ object STSystemUtil {
     fun sendKeyUpEventMenu(context: Context?) = (context as? Activity)?.onKeyUp(KeyEvent.KEYCODE_MENU, KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU))
 
     @JvmStatic
-    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics) + 0.5f
+    fun getPxFromDp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics(STInitializer.application())) + 0.5f
 
     @JvmStatic
-    fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics)
+    fun getPxFromPx(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, displayMetrics(STInitializer.application()))
 
     @JvmStatic
-    fun getDpFromPx(px: Int): Float = px / (displayMetrics?.density ?: 1f)
+    fun getDpFromPx(px: Int): Float = px / (displayMetrics(STInitializer.application())?.density ?: 1f)
 
     @JvmStatic
-    fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
+    fun getPxFromSp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics(STInitializer.application()))
 
     @JvmStatic
     fun collapseStatusBar() = STInitializer.application()?.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) // 收起下拉通知栏
@@ -262,19 +251,19 @@ object STSystemUtil {
     fun toggleKeyboard(view: View?) = (view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
 
     @JvmStatic
-    fun isAppInstalled(packageName: String): Boolean = getPackageInfo(packageName) != null
+    fun isAppInstalled(application: Application?, packageName: String): Boolean = getPackageInfo(application, packageName) != null
 
     @JvmStatic
-    fun getAppVersionCode(packageName: String? = STInitializer.application()?.packageName): Int = getPackageInfo(packageName)?.versionCode ?: 0
+    fun getAppVersionCode(application: Application?, packageName: String? = application?.packageName): Int = getPackageInfo(application, packageName)?.versionCode ?: 0
 
     @JvmStatic
-    fun getAppVersionName(packageName: String? = STInitializer.application()?.packageName): String = getPackageInfo(packageName)?.versionName ?: ""
+    fun getAppVersionName(application: Application?, packageName: String? = application?.packageName): String = getPackageInfo(application, packageName)?.versionName ?: ""
 
     @JvmStatic
-    fun getAppName(packageName: String? = STInitializer.application()?.packageName): String {
+    fun getAppName(application: Application?, packageName: String? = application?.packageName): String {
         var appName = ""
         try {
-            getPackageInfo(packageName)?.applicationInfo?.labelRes?.let {
+            getPackageInfo(application, packageName)?.applicationInfo?.labelRes?.let {
                 appName = STInitializer.application()?.resources?.getString(it) ?: ""
             }
         } catch (e: Exception) {
@@ -294,13 +283,13 @@ object STSystemUtil {
      * 建议使用 png
      */
     @JvmStatic
-    fun getAppIcon(packageName: String? = STInitializer.application()?.packageName): Int? = getPackageInfo(packageName)?.applicationInfo?.icon
+    fun getAppIcon(application: Application?, packageName: String? = application?.packageName): Int? = getPackageInfo(application, packageName)?.applicationInfo?.icon
 
     @JvmStatic
-    fun getAppMetaData(key: String): Any? = getApplicationInfo()?.metaData?.get(key)
+    fun getAppMetaData(applicationInfo: ApplicationInfo?, key: String): Any? = applicationInfo?.metaData?.get(key)
 
     @JvmStatic
-    fun getAppMetaDataForInt(key: String): Int? = getApplicationInfo()?.metaData?.getInt(key)
+    fun getAppMetaDataForInt(applicationInfo: ApplicationInfo?, key: String): Int? = applicationInfo?.metaData?.getInt(key)
 
     /**
      * sdCardInfo[0]=总大小
@@ -308,30 +297,27 @@ object STSystemUtil {
      */
     @Suppress("DEPRECATION")
     @JvmStatic
-    val sdCardMemory: LongArray
-        get() {
-            val sdCardInfo = LongArray(2)
-            val state = Environment.getExternalStorageState()
-            if (Environment.MEDIA_MOUNTED == state) {
-                val sdcardDir = Environment.getExternalStorageDirectory()
-                val sf = StatFs(sdcardDir.path)
-                val bSize = sf.blockSize.toLong()
-                val bCount = sf.blockCount.toLong()
-                val availBlocks = sf.availableBlocks.toLong()
+    fun getSDCardMemory(): LongArray {
+        val sdCardInfo = LongArray(2)
+        val state = Environment.getExternalStorageState()
+        if (Environment.MEDIA_MOUNTED == state) {
+            val sdcardDir = Environment.getExternalStorageDirectory()
+            val sf = StatFs(sdcardDir.path)
+            val bSize = sf.blockSize.toLong()
+            val bCount = sf.blockCount.toLong()
+            val availBlocks = sf.availableBlocks.toLong()
 
-                sdCardInfo[0] = bSize * bCount
-                sdCardInfo[1] = bSize * availBlocks
-            }
-            return sdCardInfo
+            sdCardInfo[0] = bSize * bCount
+            sdCardInfo[1] = bSize * availBlocks
         }
+        return sdCardInfo
+    }
 
     @JvmStatic
-    val isSdCardExist: Boolean
-        get() = Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
+    fun isSDCardExist(): Boolean = Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
 
     @JvmStatic
-    val sdCardPath: String?
-        get() = if (isSdCardExist) Environment.getExternalStorageDirectory().absolutePath else null
+    fun getSDCardPath(): String? = if (isSDCardExist()) Environment.getExternalStorageDirectory().absolutePath else null
 
     /**
      * 使得处于后台的 app 显示到前台
@@ -406,25 +392,22 @@ object STSystemUtil {
      * android o appIcon 获取不到, 所以只提供 appBitmap
      */
     @JvmStatic
-    fun getAppBitmap(packageName: String? = STInitializer.application()?.packageName): Bitmap? {
+    fun getAppBitmap(application: Application?, packageName: String? = application?.packageName): Bitmap? {
         var drawable: Drawable? = null
         try {
-            drawable = STInitializer.application()?.packageManager?.getApplicationIcon(packageName ?: "")
+            drawable = application?.packageManager?.getApplicationIcon(packageName ?: "")
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        if (drawable == STInitializer.application()?.packageManager?.defaultActivityIcon) drawable =
+        if (drawable == application?.packageManager?.defaultActivityIcon) drawable =
             null
         return drawable?.toBitmap()
     }
 
     @JvmStatic
-    fun getPackageInfo(packageName: String? = STInitializer.application()?.packageName): PackageInfo? {
+    fun getPackageInfo(application: Application?, packageName: String?): PackageInfo? {
         try {
-            return STInitializer.application()?.packageManager?.getPackageInfo(
-                packageName ?: "",
-                PackageManager.GET_META_DATA
-            )
+            return application?.packageManager?.getPackageInfo(packageName ?: "", PackageManager.GET_META_DATA)
         } catch (e: Exception) {
             STLogUtil.e("getPackageInfo failure, packageName=$packageName", e)
         }
@@ -432,12 +415,9 @@ object STSystemUtil {
     }
 
     @JvmStatic
-    fun getApplicationInfo(packageName: String? = STInitializer.application()?.packageName): ApplicationInfo? {
+    fun getApplicationInfo(application: Application?, packageName: String? = application?.packageName): ApplicationInfo? {
         try {
-            return STInitializer.application()?.packageManager?.getApplicationInfo(
-                packageName ?: "",
-                PackageManager.GET_META_DATA
-            )
+            return application?.packageManager?.getApplicationInfo(packageName ?: "", PackageManager.GET_META_DATA)
         } catch (e: Exception) {
             STLogUtil.e("getApplicationInfo failure, packageName=$packageName", e)
         }
@@ -597,10 +577,10 @@ object STSystemUtil {
     fun showSystemInfo(activity: Activity?) {
         STLogUtil.sync {
             STLogUtil.d("[SYS] ======================================================================================")
-            STLogUtil.d("[SYS] appName=$appName, versionName=$versionName, versionCode=$versionCode, SDK_INT=$SDK_INT")
+            STLogUtil.d("[SYS] appName=${getAppName(STInitializer.application())}, versionName=${getAppVersionName(STInitializer.application())}, versionCode=${getAppVersionCode(STInitializer.application())}, SDK_INT=$SDK_INT")
             STLogUtil.d("[SYS] MANUFACTURER=${MANUFACTURER}, IS_HUAWEI=$IS_HUAWEI, IS_MEIZU=$IS_MEIZU, IS_XIAOMI=$IS_XIAOMI, IS_VIVO=$IS_VIVO, IS_SAMSUNG=$IS_SAMSUNG, IS_ONEPLUS=$IS_ONEPLUS")
-            STLogUtil.d("[SYS] screenWidth=$screenWidth, screenHeight=$screenHeight, screenRealHeight=$screenRealHeight, screenContentHeightExcludeStatusAndNavigationBar=$screenContentHeightExcludeStatusAndNavigationBar")
-            STLogUtil.d("[SYS] statusBarHeight=$statusBarHeight, navigationBarHeight=$navigationBarHeight")
+            STLogUtil.d("[SYS] screenWidth=${screenWidth()}, screenHeight=${screenHeight()}, screenRealHeight=${screenRealHeight()}, screenContentHeightExcludeStatusAndNavigationBar=${screenContentHeightExcludeStatusAndNavigationBar()}")
+            STLogUtil.d("[SYS] statusBarHeight=${statusBarHeight()}, navigationBarHeight=${navigationBarHeight()}")
             STLogUtil.d("[SYS] getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged=${getScreenContentHeightIncludeStatusBarAndExcludeNavigationBarOnWindowFocusChanged(activity)}")
             STLogUtil.d("[SYS] getVisibleNavigationBarHeightOnWindowFocusChanged=${getVisibleNavigationBarHeightOnWindowFocusChanged(activity)}")
             STLogUtil.d("[SYS] ======================================================================================")

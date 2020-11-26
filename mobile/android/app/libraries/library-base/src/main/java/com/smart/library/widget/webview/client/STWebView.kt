@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -21,7 +22,7 @@ open class STWebView @JvmOverloads constructor(context: Context, attrs: Attribut
         private set
 
     init {
-        STWebViewUtil.initWebView(this, " statusBarHeight/${(STSystemUtil.statusBarHeight / (STSystemUtil.displayMetrics?.density ?: 1f)).toInt()} ")
+        STWebViewUtil.initWebView(this, " statusBarHeight/${(STSystemUtil.statusBarHeight() / (STSystemUtil.displayMetrics(STInitializer.application())?.density ?: 1f)).toInt()} ")
     }
 
     open fun loadURL(url: String?) {

@@ -18,12 +18,12 @@ import com.smart.template.R
 class FinalViewPagerScrollView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val tag: String = FinalViewPagerScrollView::class.java.name
-    private var thresholdDistance = STSystemUtil.screenHeight / 5
+    private var thresholdDistance = STSystemUtil.screenHeight() / 5
     val viewPager: ViewPager by lazy { findViewById<ViewPager>(R.id.viewPager) }
 
     private val NORMAL_HEIGHT = STSystemUtil.getPxFromDp(200f).toInt()
-    private val MAX_HEIGHT = STSystemUtil.screenHeight - STSystemUtil.getPxFromDp(50f).toInt()
-    private val NORMAL_MARGIN_TOP = STSystemUtil.screenHeight - NORMAL_HEIGHT
+    private val MAX_HEIGHT = STSystemUtil.screenHeight() - STSystemUtil.getPxFromDp(50f).toInt()
+    private val NORMAL_MARGIN_TOP = STSystemUtil.screenHeight() - NORMAL_HEIGHT
 
     private val MAX_TOP = 1000
     private val MAX_TOP_BOTTOM = 200

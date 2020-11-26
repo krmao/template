@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Process
+import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
@@ -277,8 +278,10 @@ object STInitializer {
     @JvmStatic
     fun initialApplication(config: Config? = this.config): STInitializer {
         if (this.initialized) return this
+        
+        if (this.config == null) this.config = config
 
-        this.config = config
+        Log.w(TAG, "appDebug=${debug()}")
 
         //region defaultUncaughtExceptionHandler
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }

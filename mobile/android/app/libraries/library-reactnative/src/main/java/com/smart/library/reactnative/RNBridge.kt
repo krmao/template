@@ -2,6 +2,7 @@ package com.smart.library.reactnative
 
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.smart.library.STInitializer
 import com.smart.library.base.toDpFromPx
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -17,15 +18,15 @@ class RNBridge(reactContext: ReactApplicationContext) : ReactContextBaseJavaModu
     override fun getConstants(): MutableMap<String, Any?> {
         return mutableMapOf(
                 "SDK_INT" to STSystemUtil.SDK_INT,
-                "versionCode" to STSystemUtil.versionCode,
-                "versionName" to STSystemUtil.versionName,
-                "appName" to STSystemUtil.appName,
-                "screenWidth" to STSystemUtil.screenWidth,
-                "screenHeight" to STSystemUtil.screenHeight,
-                "isSdCardExist" to STSystemUtil.isSdCardExist,
-                "statusBarHeight" to STSystemUtil.statusBarHeight,
-                "statusBarHeightByDensity" to STSystemUtil.statusBarHeight.toDpFromPx(),
-                "density" to STSystemUtil.displayMetrics?.density
+                "versionCode" to STSystemUtil.getAppVersionCode(STInitializer.application()),
+                "versionName" to STSystemUtil.getAppVersionName(STInitializer.application()),
+                "appName" to STSystemUtil.getAppName(STInitializer.application()),
+                "screenWidth" to STSystemUtil.screenWidth(),
+                "screenHeight" to STSystemUtil.screenHeight(),
+                "isSdCardExist" to STSystemUtil.isSDCardExist(),
+                "statusBarHeight" to STSystemUtil.statusBarHeight(),
+                "statusBarHeightByDensity" to STSystemUtil.statusBarHeight().toDpFromPx(),
+                "density" to STSystemUtil.displayMetrics(STInitializer.application())?.density
         )
     }
 

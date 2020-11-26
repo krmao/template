@@ -2,8 +2,6 @@
 buildscript {
     ext.kotlinVersion = "1.3.71"
     ext.ankoVersion = "0.8.2"
-    ext.godeyeVersion = "3.2.1"
-    ext.godeyeMethodCanaryVersion = "0.15.2"
     ext.walleVersion = "1.1.6"
 
     repositories {
@@ -38,11 +36,6 @@ buildscript {
         if (gradle.ext.modules.videoplayer.enable == true) {
             // 为了使得 butterKnife 能在 library 中使用
             classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.1'
-        }
-
-        // https://github.com/Kyson/MethodCanary 监控方法耗时 第一处配置
-        if (gradle.ext.configs.monitoring.godeye.enable == true && gradle.ext.configs.monitoring.godeye.enableMethodCanary == true) {
-            classpath "cn.hikyson.methodcanary:plugin:0.15.2"
         }
     }
 }

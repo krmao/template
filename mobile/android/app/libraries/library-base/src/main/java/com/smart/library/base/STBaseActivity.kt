@@ -143,9 +143,6 @@ open class STBaseActivity : AppCompatActivity() {
         exitTime = System.currentTimeMillis()
     } else {
         if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
-
-        finish()
-        Process.killProcess(Process.myPid())
-        exitProcess(0)
+        STInitializer.quitApplication()
     }
 }

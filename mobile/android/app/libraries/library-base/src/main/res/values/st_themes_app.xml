@@ -50,6 +50,10 @@
         <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Left_Right</item>
     </style>
 
+    <style name="STAppTheme.Home" parent="STAppTheme.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Home</item>
+    </style>
+
     <style name="STAppTheme.Launch" parent="@android:style/Theme">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>

@@ -58,7 +58,7 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
             STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
         }*/
 
-        val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResourceVector(R.drawable.final_launch_background, context), STImageUtil.getBitmapFromResource(R.drawable.st_image, context?.resources))
+        val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResourceVector(R.drawable.st_launch_background, context), STImageUtil.getBitmapFromResource(R.drawable.st_image, context?.resources))
         STLogUtil.w("mergedBitmap=$mergedBitmap")
         imageView.setImageBitmap(mergedBitmap)
 

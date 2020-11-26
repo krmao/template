@@ -32,9 +32,9 @@ open class STDebugActivity : STBaseActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
             // 当前 activity 算一个
-            if (STInitializer.activityStartedCount - STInitializer.activityStoppedCount <= 1) {
+            if ((STInitializer.activityLifecycleCallbacks()?.activityStartedCount ?: 0) - (STInitializer.activityLifecycleCallbacks()?.activityStoppedCount ?: 0) <= 1) {
                 // 只有这一个 activity 显示在前台
-                if (STInitializer.activityStartedCount <= 1) {
+                if ((STInitializer.activityLifecycleCallbacks()?.activityStartedCount ?: 0) <= 1) {
                     // 整个应用只有这一个 activity 初始化了
                     STInitializer.mainClass()?.let {
                         startActivity(Intent(this, it))

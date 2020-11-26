@@ -3,19 +3,18 @@ package com.smart.library.reactnative.dev
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.facebook.react.modules.debug.interfaces.DeveloperSettings
 import com.smart.library.reactnative.RNInstanceManager
 import com.smart.library.util.STRegexManager
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 @SuppressLint("StaticFieldLeak")
 class RNDevSettingsManager internal constructor(val application: Application?, val debug: Boolean) {
 
     val devSettings: DeveloperSettings?
         get() = RNInstanceManager.instanceManager?.devSupportManager?.devSettings
 
-    val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(application) }
+    val preferences: SharedPreferences by lazy { android.preference.PreferenceManager.getDefaultSharedPreferences(application) }
 
     /**
      * JS Dev Mode

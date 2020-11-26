@@ -31,6 +31,10 @@
         <item name="android:taskToBackExitAnimation">@anim/st_anim_slide_out_right</item>
     </style>
 
+    <style name="STWidget.Animation.Activity.Home" mce_bogus="1" parent="@style/STWidget.Animation.Activity.Left_Right">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+    </style>
+
     <style name="STWidget.Animation.Activity.FADE_IN_OUT" mce_bogus="1" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/st_anim_fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_out</item>

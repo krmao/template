@@ -26,7 +26,6 @@ class FinalApplication : Application() {
                     .enableDebug((STSystemUtil.getAppMetaData("DEBUG") ?: false) as Boolean)
                     .enableNetworkChangedReceiver(true)
                     .enableCompatVectorFromResources(true)
-                    .enableActivityLifecycleCallbacks(true)
                     .setRNCheckUpdateHTTPGetUrl("")
                     .setRNBundlePathInAssets("bundle-rn.zip")
                     .setRNBaseVersion((STSystemUtil.getAppMetaData("VERSION_RN") ?: 0) as Int)
@@ -54,30 +53,5 @@ class FinalApplication : Application() {
                     "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
                 )
             )
-
-        if (isGodEyeEnabled()) {
-            if (cn.hikyson.godeye.core.utils.ProcessUtils.isMainProcess(this)) {
-                cn.hikyson.godeye.core.GodEye.instance().init(this)
-                cn.hikyson.godeye.core.GodEye.instance().install(cn.hikyson.godeye.core.GodEyeConfig.fromAssets("config/config_godeye.xml"))
-                cn.hikyson.godeye.monitor.GodEyeMonitor.work(this, 5388) // adb forward tcp:5388 tcp:5388 http://localhost:5388/index.html
-            }
-        }
     }
-
-    private fun isGodEyeEnabled(): Boolean {
-        try {
-            Class.forName("cn.hikyson.godeye.core.GodEye")
-            return true
-        } catch (e: Exception) {
-        }
-        return false
-    }
-
-    fun exitApplication() {
-        if (isGodEyeEnabled()) {
-            cn.hikyson.godeye.monitor.GodEyeMonitor.shutDown()
-            cn.hikyson.godeye.core.GodEye.instance().uninstall()
-        }
-    }
-
 }

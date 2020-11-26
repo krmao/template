@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.os.Process
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
@@ -32,6 +33,19 @@ object STInitializer {
     fun initOptions(options: Options?): STInitializer {
         this.options = options
         return this
+    }
+
+    @JvmStatic
+    fun quitApplication() {
+        STImageManager.clearMemoryCaches()
+        activityLifecycleCallbacks()?.finishAllActivity()
+
+        try {
+            STThreadUtils.runOnUiThread(Runnable { Process.killProcess(Process.myPid()) }, 200)
+            Process.killProcess(Process.myPid())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     /**
@@ -165,23 +179,7 @@ object STInitializer {
     @JvmStatic
     fun bridgeHandler(): BridgeHandler? = this.options?.bridgeHandler()
 
-    @JvmStatic
-    var activityStartedCount: Int = 0
-        internal set
-
-    @JvmStatic
-    var activityStoppedCount: Int = 0
-        internal set
-
-    @JvmStatic
-    var isApplicationVisible: Boolean = false
-        internal set(value) {
-            if (field != value) {
-                STLogUtil.e("applicationLifeCycle", "系统监测到应用程序 正在 从 ${if (field) "前台" else "后台"} 切换到 ${if (value) "前台" else "后台"} ")
-                field = value
-                RxBus.post(STApplicationVisibleChangedEvent(value))
-            }
-        }
+    fun activityLifecycleCallbacks(): STActivityLifecycleCallbacks? = this.options?.activityLifecycleCallbacks()
 
     private var application: Application? = null
 
@@ -218,7 +216,7 @@ object STInitializer {
     }
 
     @JvmOverloads
-    fun initImageManager(imageHandler: STIImageHandler = STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(STInitializer.debug(), STOkHttpManager.client).build())): STInitializer {
+    fun initImageManager(imageHandler: STIImageHandler = STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(debug(), STOkHttpManager.client).build())): STInitializer {
         STImageManager.initialize(imageHandler)
         return this
     }
@@ -238,6 +236,7 @@ object STInitializer {
             },
             onCompletely = {
                 STLogUtil.w(TAG, "-- init bus onCompletely")
+                setBusInitialized(true)
                 notifyOnBusInitializedCallback()
                 onCompletely?.invoke()
             })
@@ -257,7 +256,7 @@ object STInitializer {
         private var enableNetworkChangedReceiver: Boolean = true
         private var networkChangedReceiver: STNetworkChangedReceiver? = null
         private var enableActivityLifecycleCallbacks: Boolean = true
-        private var activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks? = null
+        private var activityLifecycleCallbacks: STActivityLifecycleCallbacks? = null
         private var enableCompatVectorFromResources: Boolean = true
         private var bridgeHandler: BridgeHandler? = null
 
@@ -399,8 +398,9 @@ object STInitializer {
         }
 
         fun isEnabledActivityLifecycleCallbacks(): Boolean = this.enableActivityLifecycleCallbacks
+        fun activityLifecycleCallbacks(): STActivityLifecycleCallbacks? = this.activityLifecycleCallbacks
 
-        fun enableActivityLifecycleCallbacks(enable: Boolean, activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks? = STActivityLifecycleCallbacks()): Options {
+        private fun enableActivityLifecycleCallbacks(enable: Boolean, activityLifecycleCallbacks: STActivityLifecycleCallbacks? = STActivityLifecycleCallbacks()): Options {
             if (enable) {
                 if (activityLifecycleCallbacks != null && activityLifecycleCallbacks != this.activityLifecycleCallbacks) {
                     this.activityLifecycleCallbacks?.let {
@@ -453,6 +453,10 @@ object STInitializer {
 
         override fun toString(): String {
             return "Options(debug=$debug, application=$application, bridgeHandler=$bridgeHandler)"
+        }
+
+        init {
+            enableActivityLifecycleCallbacks(true)
         }
     }
 

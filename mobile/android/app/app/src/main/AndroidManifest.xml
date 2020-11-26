@@ -44,10 +44,10 @@
             android:name="com.smart.template.home.tab.FinalHomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:theme="@style/STAppTheme.Light.NoActionBar"
+            android:theme="@style/FinalHomeTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name="com.smart.template.FinalSplashActivity"
+            android:name="com.smart.template.FinalLaunchActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
             android:theme="@style/FinalLaunchTheme"

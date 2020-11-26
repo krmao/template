@@ -3,6 +3,7 @@ package com.smart.library.util.image
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
+import com.facebook.drawee.backends.pipeline.Fresco
 import java.io.File
 
 interface STIImageHandler {
@@ -14,6 +15,7 @@ interface STIImageHandler {
     fun isDownloaded(uri: Uri?): Boolean
     fun fetchImageFromCache(uri: Uri?): File?
     fun type(): Type
+    fun clearMemoryCaches()
 
     enum class Type {
         FRESCO,

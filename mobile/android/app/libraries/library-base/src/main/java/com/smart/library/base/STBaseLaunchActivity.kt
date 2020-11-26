@@ -1,4 +1,4 @@
-package com.smart.template
+package com.smart.library.base
 
 import android.content.Intent
 import android.os.Build
@@ -7,20 +7,20 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
-import com.smart.library.STInitializer
+import com.smart.library.R
 import com.smart.library.util.STLogUtil
-import com.smart.template.home.tab.FinalHomeTabActivity
 
 /**
  * 务必继承 FragmentActivity
  */
-class FinalSplashActivity : FragmentActivity() {
+open class STBaseLaunchActivity : FragmentActivity() {
 
     companion object {
         const val TAG = "[splash]"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(null)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -51,37 +51,6 @@ class FinalSplashActivity : FragmentActivity() {
             }
         }
 
-        setContentView(R.layout.final_splash)
-
-        STInitializer.ensureBusInitialized {
-            STLogUtil.w(TAG, "ensureBusInitialized isFinishing=$isFinishing, thread=${Thread.currentThread().name}")
-
-            if (!isFinishing) {
-                //region schema
-                val url: String? = intent.data?.toString()
-                STLogUtil.w(TAG, "schema url=$url")
-                if (url?.startsWith("smart://template") == true) {
-                    STInitializer.openSchema(this@FinalSplashActivity, url)
-                    finish()
-                    return@ensureBusInitialized
-                } else {
-                    goToHome()
-                }
-                //endregion
-            }
-        }
-
-        STInitializer.ensureRNFirstScreenAttached { attached: Boolean ->
-            STLogUtil.w(TAG, "ensureRNFirstScreenAttached attached=$attached")
-            /*if (!isFinishing) {
-                STLogUtil.w("splash", "finish")
-                finish()
-            }*/
-        }
-    }
-
-    private fun goToHome() {
-        startActivity(Intent(this, FinalHomeTabActivity::class.java))
-        finish()
+        setContentView(R.layout.st_launch)
     }
 }

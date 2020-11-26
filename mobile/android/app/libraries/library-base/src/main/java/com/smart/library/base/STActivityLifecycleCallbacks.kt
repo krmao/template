@@ -4,12 +4,40 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.smart.library.STInitializer
+import com.smart.library.util.STLogUtil
+import com.smart.library.util.rx.RxBus
+import java.lang.ref.WeakReference
+import java.util.*
 
 open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+    private val activityList: MutableList<WeakReference<Activity?>?> = LinkedList()
+    var activityStartedCount: Int = 0
+        private set
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+    var activityStoppedCount: Int = 0
+        private set
 
-    override fun onActivityDestroyed(activity: Activity) = Unit
+    var isApplicationVisible: Boolean = false
+        private set(value) {
+            if (field != value) {
+                STLogUtil.e("applicationLifeCycle", "系统监测到应用程序 正在 从 ${if (field) "前台" else "后台"} 切换到 ${if (value) "前台" else "后台"} ")
+                field = value
+                RxBus.post(STApplicationVisibleChangedEvent(value))
+            }
+        }
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        activityList.add(WeakReference(activity))
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+        activityList.removeAll { it?.get() == activity }
+    }
+
+    fun finishAllActivity() {
+        activityList.forEach { it?.get()?.finish() }
+        activityList.clear()
+    }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) = Unit
 
@@ -18,10 +46,10 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
     override fun onActivityResumed(activity: Activity?) = Unit
 
     override fun onActivityStarted(activity: Activity) {
-        STInitializer.isApplicationVisible = ++STInitializer.activityStartedCount > STInitializer.activityStoppedCount
+        isApplicationVisible = ++activityStartedCount > activityStoppedCount
     }
 
     override fun onActivityStopped(activity: Activity) {
-        STInitializer.isApplicationVisible = STInitializer.activityStartedCount > ++STInitializer.activityStoppedCount
+        isApplicationVisible = activityStartedCount > ++activityStoppedCount
     }
 }

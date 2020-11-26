@@ -3,6 +3,7 @@ package com.smart.library.util.image
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
+import com.facebook.drawee.backends.pipeline.Fresco
 import java.io.File
 
 
@@ -68,9 +69,9 @@ object STImageManager {
     fun getAssetUriString(assetRelativePath: String?): String? {
         var uriString: String? = null
         if (!assetRelativePath.isNullOrBlank()) {
-            when (imageHandler?.type()) {
-                STIImageHandler.Type.FRESCO -> uriString = "asset:///$assetRelativePath"
-                else -> uriString = null
+            uriString = when (imageHandler?.type()) {
+                STIImageHandler.Type.FRESCO -> "asset:///$assetRelativePath"
+                else -> null
             }
         }
         return uriString
@@ -86,5 +87,10 @@ object STImageManager {
             }
         }
         return uriString
+    }
+
+    @JvmStatic
+    fun clearMemoryCaches() {
+        imageHandler?.clearMemoryCaches()
     }
 }

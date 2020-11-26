@@ -5,14 +5,7 @@ gradle.ext {
             'tinker'    : ['enable': false],
             'walle'     : ['enable': false],
             'test'      : ['enable': false],
-            'leakcanary': ['enable': false],
-            "monitoring": [
-                    "godeye": [
-                            'enable'            : false,
-                            'enableMethodCanary': false,
-                            'enableLeakcanary'  : false,
-                    ],
-            ]
+            'leakcanary': ['enable': false]
     ]
 
     modules = [

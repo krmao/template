@@ -2,7 +2,6 @@ package com.smart.library.base
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Process
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.barlibrary.ImmersionBar
@@ -13,8 +12,6 @@ import com.smart.library.util.STToastUtil
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
-import kotlin.system.exitProcess
-
 
 /**
  * 默认沉浸式布局

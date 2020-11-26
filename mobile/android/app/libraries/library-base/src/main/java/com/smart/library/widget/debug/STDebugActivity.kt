@@ -36,7 +36,7 @@ open class STDebugActivity : STBaseActivity() {
                 // 只有这一个 activity 显示在前台
                 if ((STInitializer.activityLifecycleCallbacks()?.activityStartedCount ?: 0) <= 1) {
                     // 整个应用只有这一个 activity 初始化了
-                    STInitializer.mainClass()?.let {
+                    STInitializer.homeClass()?.let {
                         startActivity(Intent(this, it))
                         overridePendingTransition(R.anim.st_anim_fade_in, R.anim.st_anim_fade_out)
                     }

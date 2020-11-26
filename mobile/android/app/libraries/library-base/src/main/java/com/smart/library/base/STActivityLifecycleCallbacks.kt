@@ -3,13 +3,18 @@ package com.smart.library.base
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.rx.RxBus
 import java.lang.ref.WeakReference
 import java.util.*
 
+@Suppress("MemberVisibilityCanBePrivate")
 open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+
+    companion object {
+        const val TAG = "[activityLifecycle]"
+    }
+
     private val activityList: MutableList<WeakReference<Activity?>?> = LinkedList()
     var activityStartedCount: Int = 0
         private set
@@ -34,9 +39,12 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
         activityList.removeAll { it?.get() == activity }
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun finishAllActivity() {
+        STLogUtil.w(TAG, "finishAllActivity start activityList=${activityList.size}")
         activityList.forEach { it?.get()?.finish() }
         activityList.clear()
+        STLogUtil.w(TAG, "finishAllActivity end activityList=${activityList.size}")
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) = Unit

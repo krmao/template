@@ -42,7 +42,6 @@ object STInitializer {
 
         try {
             STThreadUtils.runOnUiThread(Runnable { Process.killProcess(Process.myPid()) }, 200)
-            Process.killProcess(Process.myPid())
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -165,7 +164,7 @@ object STInitializer {
     fun loginClass(): Class<out Activity>? = this.options?.loginClass()
 
     @JvmStatic
-    fun mainClass(): Class<out Activity>? = this.options?.mainClass()
+    fun homeClass(): Class<out Activity>? = this.options?.homeClass()
 
     @JvmStatic
     fun debug(): Boolean = this.options?.debug() ?: true
@@ -250,7 +249,7 @@ object STInitializer {
         private var defaultSharedPreferencesName: String = "com.smart.shared_preferences"
         private var defaultCacheWebDirName: String = "cache_web"
         private var defaultLogDirName: String = "log"
-        private var mainClass: Class<out Activity>? = null
+        private var homeClass: Class<out Activity>? = null
         private var loginClass: Class<out Activity>? = null
 
         private var enableNetworkChangedReceiver: Boolean = true
@@ -338,10 +337,10 @@ object STInitializer {
             return this
         }
 
-        fun mainClass(): Class<out Activity>? = this.mainClass
+        fun homeClass(): Class<out Activity>? = this.homeClass
 
-        fun setMainClass(mainClass: Class<out Activity>?): Options {
-            this.mainClass = mainClass
+        fun setHomeClass(homeClass: Class<out Activity>?): Options {
+            this.homeClass = homeClass
             return this
         }
 

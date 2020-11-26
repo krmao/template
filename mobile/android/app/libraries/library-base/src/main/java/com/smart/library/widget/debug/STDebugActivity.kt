@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.FrameLayout
 import com.smart.library.R
-import com.smart.library.base.STBaseActivity
 import com.smart.library.STInitializer
+import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
@@ -32,11 +32,11 @@ open class STDebugActivity : STBaseActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
             // 当前 activity 算一个
-            if ((STInitializer.activityLifecycleCallbacks()?.activityStartedCount ?: 0) - (STInitializer.activityLifecycleCallbacks()?.activityStoppedCount ?: 0) <= 1) {
+            if ((STInitializer.config?.configLifecycle?.activityLifecycleCallbacks?.activityStartedCount ?: 0) - (STInitializer.config?.configLifecycle?.activityLifecycleCallbacks?.activityStoppedCount ?: 0) <= 1) {
                 // 只有这一个 activity 显示在前台
-                if ((STInitializer.activityLifecycleCallbacks()?.activityStartedCount ?: 0) <= 1) {
+                if ((STInitializer.config?.configLifecycle?.activityLifecycleCallbacks?.activityStartedCount ?: 0) <= 1) {
                     // 整个应用只有这一个 activity 初始化了
-                    STInitializer.homeClass()?.let {
+                    STInitializer.config?.configClass?.homeClass?.let {
                         startActivity(Intent(this, it))
                         overridePendingTransition(R.anim.st_anim_fade_in, R.anim.st_anim_fade_out)
                     }

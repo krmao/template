@@ -209,7 +209,7 @@ object STLogUtil {
 
     @JvmStatic
     fun getCacheDir(): File {
-        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STInitializer.defaultLogDirName() else STChecksumUtil.genMD5ForCharSequence(STInitializer.defaultLogDirName()))
+        val cacheDir = File(STCacheManager.getCacheDir(), if (debug) STInitializer.configName?.appLogDirName ?: "log" else STChecksumUtil.genMD5ForCharSequence(STInitializer.config?.configName?.appLogDirName ?: "log"))
         if (!cacheDir.exists())
             cacheDir.mkdirs()
         return cacheDir

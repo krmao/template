@@ -236,7 +236,7 @@ object STHybirdBridge {
                 val params: String? = uri.getQueryParameter("params")
                 val callbackId: String? = uri.getQueryParameter("callbackId")
 
-                STInitializer.bridgeHandler()?.handleBridge(webView?.context as? Activity?, functionName, params, callbackId, object : STInitializer.BridgeHandlerCallback {
+                STInitializer.configBridge?.bridgeHandler?.handleBridge(webView?.context as? Activity?, functionName, params, callbackId, object : STInitializer.BridgeHandlerCallback {
                     override fun onCallback(callbackId: String?, resultJsonString: String?) {
                         callJsFunction(webView, "javascript:window.bridge.onCallback($callbackId, '$resultJsonString')") { result: String? ->
                             STLogUtil.v("[hybird]", "executeJs result = $result")

@@ -43,7 +43,7 @@ object STUserManager {
     }
 
     fun goToLogin(context: Context?, callback: ((isLogin: Boolean) -> Unit?)? = null) {
-        STInitializer.loginClass()?.let {
+        STInitializer.configClass?.loginClass?.let {
             if (callback != null) {
                 STCacheManager.put(it.name, "callback", callback)
             }

@@ -26,7 +26,7 @@ import java.util.*
  */
 object STPreferencesUtil {
 
-    private val sharedPreferences: SharedPreferences? by lazy { STInitializer.application()?.getSharedPreferences(STInitializer.defaultSharedPreferencesName(), Context.MODE_PRIVATE) }
+    private val sharedPreferences: SharedPreferences? by lazy { STInitializer.application()?.getSharedPreferences(STInitializer.config?.configName?.appSPName ?: "com.codesdancing.shared_preferences", Context.MODE_PRIVATE) }
 
     //private var objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
     private var gson: Gson = Gson()

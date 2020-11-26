@@ -12,8 +12,8 @@ import android.widget.LinearLayout
 import com.smart.library.STInitializer
 import com.smart.library.reactnative.R
 import com.smart.library.reactnative.RNConstant
-import com.smart.library.reactnative.RNJumper
 import com.smart.library.reactnative.RNInstanceManager
+import com.smart.library.reactnative.RNJumper
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import kotlinx.android.synthetic.main.rn_dev_settings_view.view.*
@@ -124,7 +124,7 @@ class RNDevSettingsView @JvmOverloads constructor(context: Context, attrs: Attri
 
         }
 
-        rn_info_tv.text = "VERSION_RN_BASE: ${STInitializer.rnBaseVersion()}\nVERSION_RN_CURRENT: ${RNConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
+        rn_info_tv.text = "VERSION_RN_BASE: ${STInitializer.configRN?.baseVersion ?: 0}\nVERSION_RN_CURRENT: ${RNConstant.VERSION_RN_CURRENT}\t(注意:'-1'代表在线调试, '0'代表无有效离线包并且初始化失败)"
     }
 
     private fun save() {

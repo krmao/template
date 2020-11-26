@@ -22,40 +22,40 @@ object STOkHttpManager {
         val sslParams = STHttpsManager.getSslSocketFactory(null, null, null)
 
         OkHttpClient.Builder()
-                .cache(Cache(STCacheManager.getCacheDir(), CACHE_SIZE_BYTES))
-                .sslSocketFactory(sslParams.ssLSocketFactory, sslParams.trustManager)
-                .readTimeout(READ_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
-                .writeTimeout(WRITE_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
-                .connectTimeout(CONNECT_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
-                .addInterceptor { chain ->
-                    val origRequest = chain.request()
-                    val request: Request = origRequest.newBuilder()
-                            .header("Accept-Language", "en,zh-CN,zh")
-                            .header("Accept-Charset", "utf-8")
-                            .header("Content-type", "application/json")
-                            .header("Connection", "close")
-                            // .header("accessToken", STUserManager.accessToken)
-                            .build()
-                    chain.proceed(request)
-                }
-                .addNetworkInterceptor(
-                        STOkHttpProgressInterceptor { requestUrl, current, total ->
-                            RxBus.post(STOkHttpProgressResponseBody.OnProgressEvent(requestUrl, current, total))
-                        })
-                .addInterceptor(
-                        STHttpLoggingInterceptor(
-                                if (STInitializer.debug()) STHttpLoggingInterceptor.Level.BODY else STHttpLoggingInterceptor.Level.NONE,
-                                object : STHttpLoggingInterceptor.Logger {
-                                    override fun log(message: String) {
-                                        if (message.length <= 10000)
-                                            STLogUtil.j("[OKHTTP]", message)
-                                        else
-                                            STLogUtil.j("[OKHTTP]", "content is too large and don't print at console ...")
-                                    }
-                                }
-                        )
+            .cache(Cache(STCacheManager.getCacheDir(), CACHE_SIZE_BYTES))
+            .sslSocketFactory(sslParams.ssLSocketFactory, sslParams.trustManager)
+            .readTimeout(READ_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .connectTimeout(CONNECT_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val origRequest = chain.request()
+                val request: Request = origRequest.newBuilder()
+                    .header("Accept-Language", "en,zh-CN,zh")
+                    .header("Accept-Charset", "utf-8")
+                    .header("Content-type", "application/json")
+                    .header("Connection", "close")
+                    // .header("accessToken", STUserManager.accessToken)
+                    .build()
+                chain.proceed(request)
+            }
+            .addNetworkInterceptor(
+                STOkHttpProgressInterceptor { requestUrl, current, total ->
+                    RxBus.post(STOkHttpProgressResponseBody.OnProgressEvent(requestUrl, current, total))
+                })
+            .addInterceptor(
+                STHttpLoggingInterceptor(
+                    if (STInitializer.debug()) STHttpLoggingInterceptor.Level.BODY else STHttpLoggingInterceptor.Level.NONE,
+                    object : STHttpLoggingInterceptor.Logger {
+                        override fun log(message: String) {
+                            if (message.length <= 10000)
+                                STLogUtil.j("[OKHTTP]", message)
+                            else
+                                STLogUtil.j("[OKHTTP]", "content is too large and don't print at console ...")
+                        }
+                    }
                 )
-                .build()
+            )
+            .build()
     }
 
 
@@ -83,15 +83,20 @@ object STOkHttpManager {
 
     @JvmStatic
     @JvmOverloads
-    fun doGet(url: String, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null, callback: (content: String?) -> Unit) {
+    fun doGet(url: String?, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null, callback: (content: String?) -> Unit) {
         var result: String? = null
-        var okhttpClient = client
+        var okHttpClient = client
 
-        if (readTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().readTimeout(readTimeoutMS, TimeUnit.MILLISECONDS).build()
-        if (writeTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().writeTimeout(writeTimeoutMS, TimeUnit.MILLISECONDS).build()
-        if (connectTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().connectTimeout(connectTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (url == null) {
+            callback.invoke(result)
+            return
+        }
 
-        okhttpClient.newCall(Request.Builder().url(url).get().build()).enqueue(object : Callback {
+        if (readTimeoutMS != null) okHttpClient = okHttpClient.newBuilder().readTimeout(readTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (writeTimeoutMS != null) okHttpClient = okHttpClient.newBuilder().writeTimeout(writeTimeoutMS, TimeUnit.MILLISECONDS).build()
+        if (connectTimeoutMS != null) okHttpClient = okHttpClient.newBuilder().connectTimeout(connectTimeoutMS, TimeUnit.MILLISECONDS).build()
+
+        okHttpClient.newCall(Request.Builder().url(url).get().build()).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
                 callback.invoke(result)
             }

@@ -11,19 +11,19 @@ import com.smart.library.util.rx.RxBus
 
 
 @Suppress("DEPRECATION", "unused")
-class STNetworkChangedReceiver : BroadcastReceiver() {
+open class STNetworkChangedReceiver : BroadcastReceiver() {
 
     companion object {
 
         @Throws(Exception::class)
-        fun register(context: Context): STNetworkChangedReceiver {
+        fun register(context: Context, networkChangedReceiver: STNetworkChangedReceiver? = null): STNetworkChangedReceiver {
             val filter = IntentFilter()
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-            val networkChangedReceiver = STNetworkChangedReceiver()
-            context.registerReceiver(networkChangedReceiver, filter)
-            return networkChangedReceiver
+            val finalNetworkChangedReceiver = networkChangedReceiver ?: STNetworkChangedReceiver()
+            context.registerReceiver(finalNetworkChangedReceiver, filter)
+            return finalNetworkChangedReceiver
         }
 
         @Throws(Exception::class)

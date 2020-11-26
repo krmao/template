@@ -125,7 +125,7 @@ object RNInstanceManager {
                 /**
                  * 再其次使用 assets bundle
                  */
-                RNConstant.VERSION_RN_CURRENT = STInitializer.rnBaseVersion()
+                RNConstant.VERSION_RN_CURRENT = STInitializer.configRN?.baseVersion ?: 0
                 STLogUtil.e(TAG, "checkValidBundleInAssets=true")
                 val bundleLoader = JSBundleLoader.createAssetLoader(application, bundlePathInAssets, false)
                 instanceManager = initInstanceManager(bundleLoader, callback)
@@ -134,7 +134,7 @@ object RNInstanceManager {
                 STLogUtil.e(TAG, "no valid bundleLoader for init instanceManager")
                 callback?.invoke(false)
             }
-            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${STInitializer.rnBaseVersion()}, currentVersion=${RNConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
+            STLogUtil.e(TAG, "init instanceManager ${if (instanceManager == null) "failure" else "success"}, baseVersion=${STInitializer.configRN?.baseVersion ?: 0}, currentVersion=${RNConstant.VERSION_RN_CURRENT}, (注意:currentVersion==-1 代表正在使用在线调试, 无版本号)")
         } else {
             callback?.invoke(false)
         }

@@ -44,7 +44,7 @@ object STWebViewUtil {
             webView.settings.setSupportMultipleWindows(true)
             webView.settings.setGeolocationEnabled(true)
             webView.settings.setAppCacheEnabled(true)
-            webView.settings.setAppCachePath(webView.context.getDir(STInitializer.defaultCacheWebDirName(), Context.MODE_PRIVATE).path)
+            webView.settings.setAppCachePath(webView.context.getDir(STInitializer.configName?.appWebCacheDirName, Context.MODE_PRIVATE).path)
 
             /**
              * Android中默认mWebView.setAllowFileAccess(true)，

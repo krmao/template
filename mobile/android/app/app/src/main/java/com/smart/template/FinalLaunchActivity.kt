@@ -1,11 +1,7 @@
 package com.smart.template
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseLaunchActivity
 import com.smart.library.util.STLogUtil
@@ -16,7 +12,7 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
 
-        STInitializer.ensureBusInitialized {
+        STInitializer.state.ensureBusInitialized {
             STLogUtil.w(TAG, "ensureBusInitialized isFinishing=$isFinishing, thread=${Thread.currentThread().name}")
 
             if (!isFinishing) {
@@ -34,7 +30,7 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
             }
         }
 
-        STInitializer.ensureRNFirstScreenAttached { attached: Boolean ->
+        STInitializer.state.ensureRNFirstScreenAttached { attached: Boolean ->
             STLogUtil.w(TAG, "ensureRNFirstScreenAttached attached=$attached")
             /*if (!isFinishing) {
                 STLogUtil.w("splash", "finish")

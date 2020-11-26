@@ -23,11 +23,11 @@ internal object RNDeployManager {
         val TAG = STDeployManager.REACT_NATIVE.TAG
         STDeployManager.REACT_NATIVE.initialize(
             deployConfig = STDeployConfigModel(
-                baseBundle = STBundleInfo(STInitializer.rnBaseVersion()),
-                baseBundlePathInAssets = STInitializer.rnBundlePathInAssets(),
+                baseBundle = STBundleInfo(STInitializer.configRN?.baseVersion ?: 0),
+                baseBundlePathInAssets = STInitializer.configRN?.bundlePathInAssets ?: "bundle-rn.zip",
                 checkUpdateHandler = {
                     STLogUtil.d(TAG, "checkUpdateHandler invoke")
-                    STOkHttpManager.doGet(url = STInitializer.rnCheckUpdateHTTPGetUrl(), readTimeoutMS = 30 * 1000, callback = { result: String? ->
+                    STOkHttpManager.doGet(url = STInitializer.configRN?.checkUpdateHTTPGetUrl, readTimeoutMS = 30 * 1000, callback = { result: String? ->
                         STLogUtil.d(TAG, "checkUpdateHandler downloadString success $result")
                         val jsonObject = STJsonUtil.toJSONObjectOrNull(result)
                         if (jsonObject != null) {
@@ -105,7 +105,7 @@ internal object RNDeployManager {
          *                  promise?.reject("0", "functionName not found !")
          */
         override fun invoke(currentActivity: Activity?, functionName: String?, data: String?, promise: Promise?) {
-            STInitializer.bridgeHandler()?.handleBridge(currentActivity, functionName, data, null, object : STInitializer.BridgeHandlerCallback {
+            STInitializer.configBridge?.bridgeHandler?.handleBridge(currentActivity, functionName, data, null, object : STInitializer.BridgeHandlerCallback {
                 override fun onCallback(callbackId: String?, resultJsonString: String?) {
                     promise?.resolve(resultJsonString)
                 }

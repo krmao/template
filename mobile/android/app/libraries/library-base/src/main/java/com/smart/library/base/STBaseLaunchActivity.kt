@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.smart.library.R
 import com.smart.library.util.STLogUtil
@@ -13,7 +14,7 @@ import com.smart.library.util.STLogUtil
 /**
  * 务必继承 FragmentActivity
  */
-open class STBaseLaunchActivity : FragmentActivity() {
+open class STBaseLaunchActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "[splash]"

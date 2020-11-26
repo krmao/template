@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="FinalAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="FinalBehaviorAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -9,14 +9,14 @@
         <!--<item name="mergedAppBarLayoutStyle">@style/MergedAppBarLayoutStyle</item>-->
     </style>
 
-    <style name="FinalAppTheme.NoActionBar">
+    <style name="FinalBehaviorAppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="FinalAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="FinalBehaviorAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />-->
-    <style name="FinalAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="FinalBehaviorAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

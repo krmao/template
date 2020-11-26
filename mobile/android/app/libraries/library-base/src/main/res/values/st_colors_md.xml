@@ -285,8 +285,8 @@
     <color name="white">#FFFFFF</color>
 
     <!-- Colors for the app -->
-    <color name="primary">@color/indigo_500</color>
-    <color name="primary_dark">@color/indigo_700</color>
+    <color name="primary">@color/light_bg_dark_primary_text</color>
+    <color name="primary_dark">#2394f5</color>
     <color name="accent">@color/pink_A200</color>
 
     <!--Light Background Dark Text-->

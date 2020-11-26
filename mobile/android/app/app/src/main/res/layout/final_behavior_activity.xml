@@ -23,14 +23,14 @@
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/FinalAppTheme.AppBarOverlay"
+        android:theme="@style/FinalBehaviorAppTheme.AppBarOverlay"
         app:layout_behavior="@string/final_ScrollingAppBarLayoutBehavior">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/FinalAppTheme.PopupOverlay" />
+            app:popupTheme="@style/FinalBehaviorAppTheme.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

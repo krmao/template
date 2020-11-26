@@ -24,7 +24,7 @@ MergedAppBarLayout.java init() method-->
             android:id="@+id/expanded_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/FinalAppTheme.PopupOverlay"
+            app:popupTheme="@style/FinalBehaviorAppTheme.PopupOverlay"
             app:titleTextColor="@android:color/white"
             app:title="@string/final_key_binding_default_toolbar_name"
             app:navigationIcon="@drawable/final_behavior_ic_close_white_24dp"/>

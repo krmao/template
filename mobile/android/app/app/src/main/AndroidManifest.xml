@@ -35,7 +35,7 @@
         android:label="@string/final_app_name"
         android:networkSecurityConfig="@xml/final_network_security_config"
         android:supportsRtl="false"
-        android:theme="@style/STAppTheme.Light.NoActionBar"
+        android:theme="@style/STAppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label,android:allowBackup,android:supportsRtl">
@@ -44,13 +44,13 @@
             android:name="com.smart.template.home.tab.FinalHomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:theme="@style/FinalHomeTheme"
+            android:theme="@style/STAppTheme.Home"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.smart.template.FinalLaunchActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="standard"
-            android:theme="@style/FinalLaunchTheme"
+            android:theme="@style/STAppTheme.Launch"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

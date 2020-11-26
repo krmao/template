@@ -32,7 +32,7 @@ public class FinalMergedAppBarLayout extends AppBarLayout {
         inflate(getContext(), R.layout.final_behavior_mergedappbarlayout, this);
         //to avoid expose xml attributes to the final programmer user, I added some of them here
         setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
-        getContext().setTheme(R.style.FinalAppTheme_AppBarOverlay);
+        getContext().setTheme(R.style.FinalBehaviorAppTheme_AppBarOverlay);
 
         toolbar = findViewById(R.id.expanded_toolbar);
         background = findViewById(R.id.background);

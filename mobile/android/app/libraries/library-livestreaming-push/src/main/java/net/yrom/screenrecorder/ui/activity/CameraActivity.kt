@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.experimental.and
 
+@Suppress("DEPRECATION")
 class CameraActivity : AppCompatActivity(), Camera.PreviewCallback, SurfaceHolder.Callback {
     private val mQuit = AtomicBoolean(false)
     private val mBufferInfo = MediaCodec.BufferInfo()

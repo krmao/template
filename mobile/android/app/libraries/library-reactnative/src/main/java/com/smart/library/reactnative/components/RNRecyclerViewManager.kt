@@ -80,12 +80,14 @@ class RNRecyclerViewManager : ViewGroupManager<RNRecyclerViewManager.RCTRecycler
     }
 
     private var stickyHeaderViewHeight: Int = 80
+    @Suppress("UNUSED_PARAMETER")
     @ReactProp(name = "stickyHeaderViewHeight", defaultInt = 80)
     fun setStickyHeaderViewHeight(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, stickyHeaderViewHeight: Int) {
         this.stickyHeaderViewHeight = stickyHeaderViewHeight
         STLogUtil.d(tag, "setStickyHeaderViewHeight thread=${Thread.currentThread().name} stickyHeaderViewHeight=$stickyHeaderViewHeight stickyHeaderView==null?${stickyHeaderView == null}")
     }
 
+    @Suppress("NAME_SHADOWING")
     private fun setLayoutManager(recyclerViewInFrameLayout: RCTRecyclerViewInFrameLayout, layoutManager: RecyclerView.LayoutManager? = null): RecyclerView.LayoutManager {
         val layoutManager: RecyclerView.LayoutManager = layoutManager ?: recyclerViewInFrameLayout.innerRecyclerView.layoutManager ?: StaggeredGridLayoutManager(1, 1)
         recyclerViewInFrameLayout.innerRecyclerView.layoutManager = layoutManager

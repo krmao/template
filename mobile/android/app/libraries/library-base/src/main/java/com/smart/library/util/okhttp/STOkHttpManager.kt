@@ -22,7 +22,7 @@ object STOkHttpManager {
         val sslParams = STHttpsManager.getSslSocketFactory(null, null, null)
 
         OkHttpClient.Builder()
-            .cache(Cache(STCacheManager.getCacheDir(), CACHE_SIZE_BYTES))
+            .cache(Cache(STCacheManager.getCacheDir() ?: File(""), CACHE_SIZE_BYTES))
             .sslSocketFactory(sslParams.ssLSocketFactory, sslParams.trustManager)
             .readTimeout(READ_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)

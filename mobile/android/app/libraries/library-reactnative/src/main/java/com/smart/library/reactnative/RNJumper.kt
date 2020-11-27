@@ -9,9 +9,10 @@ import com.smart.library.util.STLogUtil
 /**
  * react native pages jumper
  */
-@Suppress("unused")
+@Suppress("unused", "UNUSED_PARAMETER")
 object RNJumper {
 
+    @Suppress("UNUSED_VALUE")
     @JvmStatic
     @JvmOverloads
     fun goTo(context: Context?, pageName: String = RNInstanceManager.devSettingsManager.getDefaultStartComponentPage(), paramJsonObjectString: String = "{}", component: String = RNInstanceManager.devSettingsManager.getDefaultStartComponent(), intentFlag: Int? = null, _requestCode: Int = 0, callback: ((requestCode: Int, resultCode: Int, data: Intent?) -> Unit?)? = null) {

@@ -1,0 +1,13 @@
+gradle.ext {
+
+    modules = [
+            'flutter'      : [
+                    'enable'     : true,
+            ],
+    ]
+
+    versions = [
+
+    ]
+
+}

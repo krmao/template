@@ -1,5 +1,5 @@
 //import 'package:flutter/cupertino.dart';
-import 'package:smart/settings/imports/flutter_imports_material.dart';
+import '../settings/imports/flutter_imports_material.dart';
 
 typedef void OnInitStateCallback();
 

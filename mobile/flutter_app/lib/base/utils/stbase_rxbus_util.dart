@@ -1,0 +1,10 @@
+import 'package:rxdart/rxdart.dart';
+
+class STBaseRxBus {
+  static final _bus = PublishSubject<dynamic>();
+
+  static void post(dynamic event) => _bus.add(event);
+
+//  static Observable<T> toObservable<T>() => _bus;
+//  static Observable<T> toObservable<T>() => _bus.ofType(TypeToken<T>());
+}

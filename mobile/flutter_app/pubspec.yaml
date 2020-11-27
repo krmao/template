@@ -1,12 +1,20 @@
-name: smart
-description: flutter smart project.
+name: flutter_app
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
-# Read more about versioning at semver.org.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
 environment:
@@ -17,25 +25,25 @@ dependencies:
     sdk: flutter
 
   # rx
-  rxdart: ^0.22.0
+  rxdart: ^0.24.1
 
   # http
-  dio: ^2.1.7
+  dio: 3.0.10
 
   # flutter_boost: ^0.0.411
   flutter_boost:
     git:
       url: 'https://github.com/alibaba/flutter_boost.git'
-      ref: '0.1.50'
-#  flutter_boost2:
-#    git:
-#      url: 'https://github.com/alibaba/flutter_boost.git'
-#      ref: 'flutter1.5_upgrade_opt'
+      ref: 'v1.22.4-hotfixes'
+  #  flutter_boost2:s
+  #    git:
+  #      url: 'https://github.com/alibaba/flutter_boost.git'
+  #      ref: 'flutter1.5_upgrade_opt'
   # banner
   # flutter_swiper: ^1.0.6
 
   # shared_preferences
-  shared_preferences: 0.5.3+1
+  shared_preferences: 0.5.12+4
 
   # pull_to_refresh
   # pull_to_refresh: ^1.1.6
@@ -48,24 +56,21 @@ dependencies:
 
   # image
   # flutter_cache_manager: ^0.2.0
-  cached_network_image: ^0.8.0
+  cached_network_image: ^2.3.3
   # transparent_image: ^0.1.0
 
-  # intl: ^0.15.7  
+  # intl: ^0.15.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-dependency_overrides:
-#  http: ^0.12.0
-
 # For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+# following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
@@ -77,15 +82,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
   assets:
     - images/
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.io/assets-and-images/#resolution-aware.
+  # https://flutter.dev/assets-and-images/#resolution-aware.
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.io/assets-and-images/#from-packages
+  # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -105,15 +110,4 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.io/custom-fonts/#from-packages
-
-
-  # This section identifies your Flutter project as a module meant for
-  # embedding in a native host app.  These identifiers should _not_ ordinarily
-  # be changed after generation - they are used to ensure that the tooling can
-  # maintain consistency when adding or modifying assets and plugins.
-  # They also do not have any bearing on your native host application's
-  # identifiers, which may be completely independent or the same as these.
-  module:
-    # androidPackage: com.smart.flutter.template
-    iosBundleIdentifier: com.smart.flutter.template
+  # see https://flutter.dev/custom-fonts/#from-packages

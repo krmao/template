@@ -30,7 +30,7 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import com.smart.library.widget.recyclerview.STRecyclerHeaderViewAdapter
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST", "UNUSED_ANONYMOUS_PARAMETER")
 class RNRecyclerViewManager : ViewGroupManager<RNRecyclerViewManager.RCTRecyclerViewInFrameLayout>() {
 
     private val tag: String get() = name

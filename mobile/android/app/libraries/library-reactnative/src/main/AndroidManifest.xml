@@ -11,7 +11,7 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:taskAffinity="${applicationId}"
-            android:theme="@style/STAppTheme.Translucent.Transparent"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
@@ -19,7 +19,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="${applicationId}"
-            android:theme="@style/STAppTheme.Translucent.Transparent"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
     </application>

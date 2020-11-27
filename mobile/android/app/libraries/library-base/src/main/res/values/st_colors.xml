@@ -10,7 +10,7 @@
     <color name="st_title_bar">@color/primary</color>
     <color name="st_launch_bg_color">#2394f5</color>
 
-    <color name="finalTransparent">#00000000</color>
+    <color name="st_transparent">#00000000</color>
 
     <color name="red">@color/red_500</color>
     <color name="pink">@color/pink_500</color>

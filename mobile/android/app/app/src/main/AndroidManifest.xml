@@ -76,14 +76,14 @@
             android:name="com.smart.template.home.test.FinalBehaviorBottomSheetActivity"
             android:configChanges="orientation"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name="com.smart.template.home.test.FinalBehaviorBottomSheetV2Activity"
             android:configChanges="orientation"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <meta-data

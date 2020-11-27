@@ -20,13 +20,13 @@
         <activity
             android:name=".base.STActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".base.STTransparentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/STAppTheme.Translucent.Transparent"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->
@@ -37,7 +37,7 @@
             android:parentActivityName="com.smart.template.home.HomeTabActivity"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/STAppTheme.Translucent.Notification"
+            android:theme="@style/STAppTheme.Normal.Translucent.Fade"
             android:windowSoftInputMode="stateHidden|adjustResize"
             tools:ignore="UnusedAttribute" />
     </application>

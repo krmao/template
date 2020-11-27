@@ -3,14 +3,14 @@
     package="com.smart.library.flutter">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--android:theme="@style/STAppTheme.Translucent.Launch"-->
+    <!--android:theme="@style/STAppTheme.Normal.Translucent.Launch"-->
     <application>
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
@@ -31,7 +31,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
@@ -52,7 +52,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
               until Flutter renders its first frame. It can be removed if
@@ -73,12 +73,12 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Translucent.Launch"
+            android:theme="@style/STAppTheme.Normal.Translucent.Launch"
             android:windowSoftInputMode="adjustResize">
             <!-- Flutter 启动页 -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/STAppTheme.Translucent" />
+                android:resource="@style/STAppTheme.Normal.Translucent" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

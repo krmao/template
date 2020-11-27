@@ -21,7 +21,7 @@
             android:name="com.smart.library.livestreaming.push.STVideoPushActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="user"
-            android:theme="@style/STAppTheme.ActionBar" />
+            android:theme="@style/STAppTheme.Normal.ActionBar" />
 
         <activity
             android:name="net.yrom.screenrecorder.ui.activity.ScreenRecordActivity"

@@ -69,7 +69,7 @@ class STTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(m
             left0BgView.visibility = typedArray.getInt(R.styleable.STTitleBar_stLeft0Visible, View.VISIBLE)
             setTextAppearance(left0Btn, R.styleable.STTitleBar_stLeft0Appearance, typedArray)
             @Suppress("DEPRECATION")
-            val transparentColor = resources.getColor(R.color.finalTransparent)
+            val transparentColor = resources.getColor(R.color.st_transparent)
             setBackground(left0Btn, R.styleable.STTitleBar_stLeft0Background, transparentColor, -1, typedArray)
             setText(left0Btn, R.styleable.STTitleBar_stLeft0Text, null, typedArray)
             setTextColor(left0Btn, R.styleable.STTitleBar_stLeft0TextColor, DEFAULT_TEXT_COLOR, typedArray)

@@ -15,7 +15,7 @@
             android:name=".VideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="user"
-            android:theme="@style/STAppTheme.NoActionBar.FullScreen">
+            android:theme="@style/STAppTheme.Normal.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

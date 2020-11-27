@@ -21,7 +21,7 @@ import com.smart.library.STInitializer
         android:parentActivityName="com.smart.template.tab.HomeTabActivity"
         android:screenOrientation="portrait"
         android:taskAffinity=""
-        android:theme="@style/STAppTheme.Translucent"
+        android:theme="@style/STAppTheme.Normal.Translucent"
         android:windowSoftInputMode="stateHidden|adjustResize" />
 
  */

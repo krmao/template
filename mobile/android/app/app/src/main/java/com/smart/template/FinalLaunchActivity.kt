@@ -12,6 +12,8 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
 
+        // window?.decorView?.post { STInitializer.initialApplication() }
+
         STInitializer.state.ensureBusInitialized {
             STLogUtil.w(TAG, "ensureBusInitialized isFinishing=$isFinishing, thread=${Thread.currentThread().name}")
 

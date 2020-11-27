@@ -1,5 +1,6 @@
 package com.smart.library.util.image
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
@@ -13,10 +14,10 @@ object STImageManager {
     private var imageHandler: STIImageHandler? = null
 
     @JvmStatic
-    fun initialize(imageHandler: STIImageHandler) {
+    fun initialize(application: Application?, imageHandler: STIImageHandler) {
         if (STImageManager.imageHandler == null) {
             STImageManager.imageHandler = imageHandler
-            imageHandler.initialize()
+            imageHandler.initialize(application)
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Process
 import android.util.Log
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
 import com.smart.library.base.STApplicationVisibleChangedEvent
@@ -132,9 +131,9 @@ object STInitializer {
         var bundleBusHandlerClassMap: MutableMap<String, String> = hashMapOf()
     )
 
-    data class ConfigChannel(
-        var appChannel: String = ""
-    )
+    data class ConfigChannel(private var appChannelInvoker: () -> String = { "" }) {
+        val appChannel: String by lazy { appChannelInvoker.invoke() }
+    }
 
     data class ConfigName(
         var appSPName: String = "com.codesdancing.shared_preferences",
@@ -278,14 +277,12 @@ object STInitializer {
     @JvmStatic
     fun initialApplication(config: Config? = this.config): STInitializer {
         if (this.initialized) return this
-        
+
         if (this.config == null) this.config = config
 
         Log.w(TAG, "appDebug=${debug()}")
 
-        //region defaultUncaughtExceptionHandler
-        Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
-        //endregion
+        STLogUtil.debug = debug()
 
         //region register activityLifecycleCallbacks
         val application: Application? = config?.application
@@ -295,50 +292,28 @@ object STInitializer {
         }
         //endregion
 
-        //region image
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-
-        val imageHandler = config?.configImage?.imageHandler ?: STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(STInitializer.config?.appDebug ?: false, STOkHttpManager.client).build())
-        STImageManager.initialize(imageHandler)
-        //endregion
-
         //region environments and debug host
-        //region register networkChangedReceiver
-        val applicationContext: Context? = config?.application?.applicationContext
-        if (applicationContext != null) {
-            config.configNetwork.networkChangedReceiver = STNetworkChangedReceiver.register(applicationContext, config.configNetwork.networkChangedReceiver)
-        }
-        //endregion
-
         val environments = config?.configNetwork?.environments
         if (environments != null) {
             STURLManager.Environments.DEV.setURL(environments.devURL)
             STURLManager.Environments.SIT.setURL(environments.sitURL)
             STURLManager.Environments.UAT.setURL(environments.uatURL)
             STURLManager.Environments.PRD.setURL(environments.prdURL)
-
-            if (debug()) {
-                STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
-                    STDebugFragment.addHost(environment.name, environment.map[STURLManager.KEY_HOST] ?: "", STURLManager.curEnvironment == environment)
-                }
-                @Suppress("UNUSED_VARIABLE")
-                val ignoreResult = RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java).subscribe { changeEvent ->
-                    STURLManager.curEnvironment = STURLManager.Environments.valueOf(changeEvent.hostModel.label)
-                    STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
-                }
-
-                STDebugFragment.showDebugNotification()
-                @Suppress("UNUSED_VARIABLE")
-                val ignoreResultV2 = RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
-                    if (changeEvent.isApplicationVisible) STDebugFragment.showDebugNotification() else STDebugFragment.cancelDebugNotification()
-                }
-            }
         }
+        //endregion
+
+        //region defaultUncaughtExceptionHandler
+        Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
         //endregion
 
         //region bundle and bus
         STThreadUtils.runOnUiThread(object : Runnable {
             override fun run() {
+                //region image
+                val imageHandler = config?.configImage?.imageHandler ?: STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(application, debug(), STOkHttpManager.client).build())
+                STImageManager.initialize(application, imageHandler)
+                //endregion
+
                 val bundleBusHandlerClassMap = config?.configBundle?.bundleBusHandlerClassMap
                 if (bundleBusHandlerClassMap != null) {
                     STBusManager.initOnce(
@@ -359,8 +334,32 @@ object STInitializer {
                         }
                     )
                 }
+
+                //region register networkChangedReceiver
+                val applicationContext: Context? = config?.application?.applicationContext
+                if (applicationContext != null) {
+                    config.configNetwork.networkChangedReceiver = STNetworkChangedReceiver.register(applicationContext, config.configNetwork.networkChangedReceiver)
+                }
+                //endregion
+
+                if (debug()) {
+                    STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
+                        STDebugFragment.addHost(environment.name, environment.map[STURLManager.KEY_HOST] ?: "", STURLManager.curEnvironment == environment)
+                    }
+                    @Suppress("UNUSED_VARIABLE")
+                    val ignoreResult = RxBus.toObservable(STDebugFragment.HostChangeEvent::class.java).subscribe { changeEvent ->
+                        STURLManager.curEnvironment = STURLManager.Environments.valueOf(changeEvent.hostModel.label)
+                        STToastUtil.show("检测到环境切换(${changeEvent.hostModel.label})\n已切换到:${STURLManager.curEnvironment.name}")
+                    }
+
+                    STDebugFragment.showDebugNotification()
+                    @Suppress("UNUSED_VARIABLE")
+                    val ignoreResultV2 = RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+                        if (changeEvent.isApplicationVisible) STDebugFragment.showDebugNotification() else STDebugFragment.cancelDebugNotification()
+                    }
+                }
             }
-        }, 200)
+        }, 1200)
         //endregion
 
         return this

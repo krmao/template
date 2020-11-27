@@ -52,10 +52,10 @@ import java.util.*
 object STLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"
     private const val PAGE_SUFFIX = "#_PAGE_#"
-    private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>(Comparator<String> { o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
+    private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>({ o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
 
     @JvmStatic
-    var debug = STInitializer.debug()
+    var debug:Boolean = false
 
     private fun getNewLogName(): String = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 

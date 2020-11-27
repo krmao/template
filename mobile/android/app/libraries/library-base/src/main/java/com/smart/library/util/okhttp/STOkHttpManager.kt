@@ -87,7 +87,7 @@ object STOkHttpManager {
         var result: String? = null
         var okHttpClient = client
 
-        if (url == null) {
+        if (url.isNullOrBlank()) {
             callback.invoke(result)
             return
         }

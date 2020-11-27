@@ -1,5 +1,6 @@
 package com.smart.library.util.image
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
@@ -7,7 +8,7 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import java.io.File
 
 interface STIImageHandler {
-    fun initialize()
+    fun initialize(application: Application?)
     fun show(imageView: ImageView?, uri: Uri?)
     fun showBlur(imageView: ImageView?, uri: Uri?, blurRadius: Int?)
     fun download(uri: Uri?, callback: (bitmap: Bitmap?) -> Unit?)

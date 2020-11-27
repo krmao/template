@@ -1,5 +1,6 @@
 package com.smart.library.util.image.impl
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
@@ -49,11 +50,11 @@ open class STImageFrescoHandler(val config: ImagePipelineConfig) : STIImageHandl
 
         @JvmStatic
         @JvmOverloads
-        fun getConfigBuilder(debug: Boolean = STInitializer.debug(), okHttpClient: OkHttpClient, cacheDir: File? = STCacheManager.getCacheImageChildDir(if (debug) "fresco" else "fresco".md5()), mainCacheDirName: String = if (debug) "main" else "main".md5(), smallCacheDirName: String = if (debug) "small" else "small".md5(), maxCacheSize: Long = 70 * 1024 * 1024, maxCacheSizeOnLowDiskSpace: Long = 40 * 1024 * 1024, maxCacheSizeOnVeryLowDiskSpace: Long = 10 * 1024 * 1024): ImagePipelineConfig.Builder {
+        fun getConfigBuilder(application: Application?, debug: Boolean = STInitializer.debug(), okHttpClient: OkHttpClient, cacheDir: File? = STCacheManager.getCacheImageChildDir(if (debug) "fresco" else "fresco".md5()), mainCacheDirName: String = if (debug) "main" else "main".md5(), smallCacheDirName: String = if (debug) "small" else "small".md5(), maxCacheSize: Long = 70 * 1024 * 1024, maxCacheSizeOnLowDiskSpace: Long = 40 * 1024 * 1024, maxCacheSizeOnVeryLowDiskSpace: Long = 10 * 1024 * 1024): ImagePipelineConfig.Builder {
             return OkHttpImagePipelineConfigFactory
-                .newBuilder(STInitializer.application(), okHttpClient)
+                .newBuilder(application, okHttpClient)
                 .setMainDiskCacheConfig(
-                    DiskCacheConfig.newBuilder(STInitializer.application())
+                    DiskCacheConfig.newBuilder(application)
                         .setBaseDirectoryPath(cacheDir)
                         .setBaseDirectoryName(mainCacheDirName)
                         .setMaxCacheSize(maxCacheSize)
@@ -61,7 +62,7 @@ open class STImageFrescoHandler(val config: ImagePipelineConfig) : STIImageHandl
                         .setMaxCacheSizeOnVeryLowDiskSpace(maxCacheSizeOnVeryLowDiskSpace)
                         .build()
                 ).setSmallImageDiskCacheConfig(
-                    DiskCacheConfig.newBuilder(STInitializer.application())
+                    DiskCacheConfig.newBuilder(application)
                         .setBaseDirectoryPath(cacheDir)
                         .setBaseDirectoryName(smallCacheDirName)
                         .setMaxCacheSize(maxCacheSize)
@@ -72,8 +73,8 @@ open class STImageFrescoHandler(val config: ImagePipelineConfig) : STIImageHandl
         }
     }
 
-    override fun initialize() {
-        Fresco.initialize(STInitializer.application(), config)
+    override fun initialize(application: Application?) {
+        Fresco.initialize(application, config)
     }
 
     /**

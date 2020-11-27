@@ -68,10 +68,7 @@ android {
                 "BAIDU_MAP_KEY=${gradle.ext.modules.map.baiduKey}, \n" +
                 "GAODE_MAP_KEY=${gradle.ext.modules.map.gaodeKey} \n"
 
-        manifestPlaceholders = [
-                'DEBUG'     : rootProject.ext.debug,
-                'VERSION_RN': rootProject.ext.versionRN
-        ]
+        manifestPlaceholders = [:]
 
         if (gradle.ext.modules.map.enable == true) {
             manifestPlaceholders.put('ENABLE_MAP_NAMES', gradle.ext.modules.map.enableMapNames)
@@ -124,6 +121,8 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "int", "VERSION_RN", "$rootProject.ext.versionRN"
+
             debuggable true
             jniDebuggable true
             minifyEnabled false
@@ -141,6 +140,8 @@ android {
         }*/
 
         release {
+            buildConfigField "int", "VERSION_RN", "$rootProject.ext.versionRN"
+
             debuggable true
             jniDebuggable true
             minifyEnabled false

@@ -85,13 +85,6 @@
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <meta-data
-            android:name="DEBUG"
-            android:value="${DEBUG}" />
-        <meta-data
-            android:name="VERSION_RN"
-            android:value="${VERSION_RN}" />
     </application>
 
 </manifest>

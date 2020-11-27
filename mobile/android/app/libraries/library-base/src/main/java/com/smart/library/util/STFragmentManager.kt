@@ -62,10 +62,10 @@ object STFragmentManager {
         addToBackStack: Boolean = true,
         enableCustomAnimations: Boolean = true,
         executePendingTransactions: Boolean = true,
-        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_fragment_in,
-        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_fragment_out,
-        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_fragment_close_in,
-        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_fragment_close_out
+        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_left_right_open_enter,
+        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_left_right_open_exit,
+        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_left_right_close_enter,
+        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_left_right_close_exit
     ) {
         supportFragmentManager ?: return
         targetFragment ?: return
@@ -123,10 +123,10 @@ object STFragmentManager {
         addToBackStack: Boolean = true,
         enableCustomAnimations: Boolean = true,
         executePendingTransactions: Boolean = true,
-        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_fragment_in,
-        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_fragment_out,
-        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_fragment_close_in,
-        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_fragment_close_out
+        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_left_right_open_enter,
+        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_left_right_open_exit,
+        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_left_right_close_enter,
+        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_left_right_close_exit
     ) {
         addFragment(
             supportFragmentManager = activity?.supportFragmentManager,
@@ -152,10 +152,10 @@ object STFragmentManager {
         addToBackStack: Boolean = true,
         enableCustomAnimations: Boolean = true,
         executePendingTransactions: Boolean = true,
-        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_fragment_in,
-        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_fragment_out,
-        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_fragment_close_in,
-        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_fragment_close_out
+        @AnimatorRes @AnimRes enter: Int = R.anim.st_anim_left_right_open_enter,
+        @AnimatorRes @AnimRes exit: Int = R.anim.st_anim_left_right_open_exit,
+        @AnimatorRes @AnimRes popEnter: Int = R.anim.st_anim_left_right_close_enter,
+        @AnimatorRes @AnimRes popExit: Int = R.anim.st_anim_left_right_close_exit
     ) {
         supportFragmentManager ?: return
         targetFragment ?: return

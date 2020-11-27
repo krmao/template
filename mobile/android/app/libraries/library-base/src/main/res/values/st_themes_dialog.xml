@@ -11,11 +11,11 @@
     </style>
 
     <style name="STDialog.App.FromBottom" parent="@style/STDialog.App">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.BottomInOut</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Window.Bottom</item>
     </style>
 
     <style name="STDialog.App.FromFadeInOut" parent="@style/STDialog.App">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.FadeInOut</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Window.Fade</item>
     </style>
 
 </resources>

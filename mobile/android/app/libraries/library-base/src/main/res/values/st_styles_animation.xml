@@ -28,9 +28,16 @@
         <item name="android:activityCloseExitAnimation">@anim/st_anim_fade_exit</item>
     </style>
 
-    <style name="STAnimation.Activity.Home" parent="STAnimation.Activity.LeftRight">
+    <style name="STAnimation.Activity.Launch" parent="STAnimation.Activity.Fade">
         <item name="android:activityOpenEnterAnimation">@null</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+    </style>
+
+    <style name="STAnimation.Activity.Home" parent="STAnimation.Activity.LeftRight">
+        <item name="android:activityOpenEnterAnimation">@anim/st_anim_fade_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
     </style>
 
     <style name="STAnimation.Window.Bottom" parent="@android:style/Animation">

@@ -15,8 +15,9 @@
     <!--region launch-->
     <style name="STAppTheme.Launch" parent="STAppTheme">
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Launch</item>
         <item name="android:windowNoTitle">true</item>
+        <!-- 在代码中设置全屏, 可以看到状态栏文字向上退出的动画 -->
         <item name="android:windowFullscreen">false</item>
         <!-- 只有设置为true, 才能改变状态栏颜色 -->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

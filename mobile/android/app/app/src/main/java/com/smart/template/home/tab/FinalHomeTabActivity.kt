@@ -22,6 +22,7 @@ class FinalHomeTabActivity : STBaseActivity() {
         STLogUtil.d("home", "activity: onCreate")
         enableSwipeBack = false
         enableExitWithDoubleBackPressed = true
+        enableImmersionStatusBarWithDarkFont = true
         super.onCreate(savedInstanceState)
         sRef = WeakReference(this)
         STBusManager.homeActivity = sRef

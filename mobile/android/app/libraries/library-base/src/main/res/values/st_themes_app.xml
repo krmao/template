@@ -39,10 +39,12 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
         <item name="android:windowDisablePreview">true</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 
     <style name="STAppTheme.Normal.Fade" parent="STAppTheme.Normal">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Fade</item>
     </style>
 
     <style name="STAppTheme.Normal.FullScreen" parent="STAppTheme.Normal">
@@ -60,6 +62,8 @@
         <item name="colorPrimary">@color/st_primary</item>
         <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
         <item name="colorAccent">@color/st_accent</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 
     <style name="STAppTheme.Normal.ActionBar.Translucent" parent="STAppTheme.Normal.ActionBar">
@@ -67,7 +71,7 @@
     </style>
 
     <style name="STAppTheme.Normal.ActionBar.Translucent.Fade" parent="STAppTheme.Normal.ActionBar.Translucent">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Fade</item>
     </style>
 
     <style name="STAppTheme.Normal.ActionBar.Transparent" parent="STAppTheme.Normal.ActionBar">
@@ -76,7 +80,7 @@
     </style>
 
     <style name="STAppTheme.Normal.ActionBar.Transparent.Fade" parent="STAppTheme.Normal.ActionBar.Transparent">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Fade</item>
     </style>
     <!--endregion-->
 
@@ -91,11 +95,11 @@
 
     <style name="STAppTheme.Normal.Transparent.Fade" parent="STAppTheme.Normal.Translucent">
         <item name="android:windowBackground">@color/st_transparent</item>
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Fade</item>
     </style>
 
     <style name="STAppTheme.Normal.Translucent.Fade" parent="STAppTheme.Normal.Translucent">
-        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.FADE_IN_OUT</item>
+        <item name="android:windowAnimationStyle">@style/STWidget.Animation.Activity.Fade</item>
     </style>
     <!--endregion-->
 </resources>

@@ -44,9 +44,6 @@ android {
         versionName rootProject.ext.versionName
         archivesBaseName = "${applicationId}_V${versionName}_${versionCode}_${new Date().format('yyyyMMddHHmmss')}"
 
-        vectorDrawables.useSupportLibrary = true
-        // Gradle Plugin 2.0以上,AppCompat23.2以上,Android 5.0之前使用Vector
-
         /**
          * 分包，指定某个类在main dex
          * https://juejin.im/post/5d95f4a4f265da5b8f10714b

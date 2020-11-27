@@ -1,22 +1,14 @@
-# flutter
-* [https://flutter.io/](https://flutter.io/)
-* [https://flutterchina.club/setup-macos/](https://flutterchina.club/setup-macos/)
-* [https://flutter-io.cn/](https://flutter-io.cn/)
-* [✓] Flutter (Channel stable, v1.7.8+hotfix.4, on Mac OS X 10.14.6 18G87, locale zh-Hans-CN)
+### flutter boost v1.22.4-hotfixes
 
-### 克隆 flutter 代码
+### 配置 flutter sdk
 ```
 git clone https://github.com/flutter/flutter.git
 git pull && git checkout stable # 升级到最新稳定版
 cd bin && ./flutter doctor  # 检查并安装所有依赖, 包含 dart sdk
-```
 
-### 环境变量
-```
+# 配置环境变量
 vi ~/.bash_profile
-```
 
-```
 ANDROID_HOME=~/sdks/android/sdk
 ANDROID_TOOLS=$ANDROID_HOME/tools
 ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
@@ -37,34 +29,23 @@ export ANDROID_NDK=/Users/krmao/sdks/android/ndk-old/android-ndk-r10e
 
 export JAVA_HOME
 export PATH
-```
 
-```
+# 应用环境变量
 source ~/.bash_profile
-```
 
-### 检查环境
-```
+# 检查当前环境
 flutter doctor
-```
-
-### 查看当前分支
-```
+# 查看当前分支
 flutter channel
-```
-
-### 切换当前分支
-```
+# 切换当前分支
 flutter channel master
 cd ~/workspace/flutter
 git branch
 git pull
 flutter upgrade
 flutter doctor
-```
 
-### flutter 升级
-```
+# flutter 升级
 flutter upgrade
 ```
 
@@ -90,6 +71,8 @@ flutter install --verbose
 > 自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
 
 ```
+flutter packages get --verbose
+
 cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
 ./gradlew clean flutter-bundle:assembleDebug --info         #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
 ./gradlew clean flutter-bundle:assembleRelease --info       #自动 copy 到 template/mobile/android/app/libraries/repo/aars 目录
@@ -112,3 +95,9 @@ cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
 * [集成到 ios 现有项目](https://github.com/flutter/flutter/wiki/Upgrading-Flutter-added-to-existing-iOS-Xcode-project) [新版集成方式代码变动](https://github.com/flutter/flutter/pull/36793)
 * [集成到现有项目](https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps)
 * [老板 ios 集成方式 升级到 新版](https://github.com/flutter/flutter/wiki/Upgrading-Flutter-added-to-existing-iOS-Xcode-project)
+
+### 参考
+* [https://flutter.io/](https://flutter.io/)
+* [https://flutterchina.club/setup-macos/](https://flutterchina.club/setup-macos/)
+* [https://flutter-io.cn/](https://flutter-io.cn/)
+* [✓] Flutter (Channel stable, v1.7.8+hotfix.4, on Mac OS X 10.14.6 18G87, locale zh-Hans-CN)

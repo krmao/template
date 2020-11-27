@@ -41,6 +41,7 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
+    api project(':library-base')
 
     if (gradle.ext.modules.flutter.enableBoost != true) {
         debugApi "com.smart.flutter.flutter_module:flutter_debug:1.0"

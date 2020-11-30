@@ -1,5 +1,0 @@
-apply from: "$settingsDir/gradle/project_config.gradle"
-rootProject.name = "libsforandroid"
-if (gradle.ext.modules.flutter.enable == true) {
-    include(":library-flutter"); project(":library-flutter").projectDir = new File(settingsDir, "app/libraries/library-flutter")
-}

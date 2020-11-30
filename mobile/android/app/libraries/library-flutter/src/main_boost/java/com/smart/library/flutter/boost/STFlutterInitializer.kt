@@ -5,11 +5,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.annotation.NonNull
-import com.idlefish.flutterboost.*
+import com.idlefish.flutterboost.FlutterBoost
+import com.idlefish.flutterboost.FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED
+import com.idlefish.flutterboost.Platform
 import com.idlefish.flutterboost.interfaces.IContainerRecord
-import com.idlefish.flutterboost.interfaces.IFlutterEngineProvider
 import com.smart.library.util.bus.STBusManager
-import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.android.FlutterView
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.view.FlutterMain
 
@@ -31,18 +32,18 @@ object STFlutterInitializer {
      *      参数就是类似 aaa=bbb 这样的键值对
      */
     @JvmStatic
-    fun startInitialization(@NonNull application: Application, mainActivity: Activity? = null, isDebug: Boolean = true, settings: Map<*, *>? = null, startActivity: (context: Context, url: String, requestCode: Int) -> Boolean) {
+    fun startInitialization(application: Application?, mainActivity: Activity? = null, isDebug: Boolean = true, settings: Map<*, *>? = null, startActivity: (context: Context, url: String, requestCode: Int) -> Boolean) {
         STFlutterInitializer.application = application
 
-        FlutterBoost.init(
+        FlutterBoost.instance().init(
                 object : Platform() {
 
                     override fun registerPlugins(registry: PluginRegistry?) {
                         super.registerPlugins(registry)
-                        BoostChannel.registerWith(registry?.registrarFor("flutter_boost_channel"))
+                        // BoostChannel.registerWith(registry?.registrarFor("flutter_boost_channel"))
                     }
 
-                    override fun engineProvider(): IFlutterEngineProvider {
+                    /*fun engineProvider(): IFlutterEngineProvider {
                         return object : BoostEngineProvider() {
                             override fun createEngine(context: Context): BoostFlutterEngine {
                                 return BoostFlutterEngine(
@@ -55,9 +56,12 @@ object STFlutterInitializer {
                                         "/")
                             }
                         };
-                    }
+                    }*/
 
                     override fun whenEngineStart(): Int = ANY_ACTIVITY_CREATED
+                    override fun renderMode(): FlutterView.RenderMode {
+                        return FlutterView.RenderMode.texture
+                    }
 
                     override fun openContainer(context: Context?, url: String?, urlParams: MutableMap<String, Any>?, requestCode: Int, exts: MutableMap<String, Any>?) {
                         STFlutterRouter.openContainer(context, url, urlParams, requestCode, exts)
@@ -67,12 +71,20 @@ object STFlutterInitializer {
                         containerRecord?.container?.finishContainer(result)
                     }
 
-                    override fun getApplication(): Application = application
+                    override fun getApplication(): Application? = application
 
                     override fun isDebug(): Boolean = isDebug
+                    override fun initialRoute(): String {
+                        return "main"
+                    }
+
+                    override fun shellArgs(): MutableList<String> {
+                        return mutableListOf()
+                    }
                 }
         )
 
+        application?: return
         FlutterMain.startInitialization(application)
     }
 

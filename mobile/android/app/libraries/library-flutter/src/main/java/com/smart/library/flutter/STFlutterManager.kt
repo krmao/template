@@ -7,7 +7,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.UiThread
 import com.smart.library.util.STLogUtil
-import com.smart.template.library.STBridgeCommunication
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
@@ -32,10 +31,10 @@ object STFlutterManager {
     fun onFlutterCallNativeMethod(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
         val argumentsJsonString: String = call.arguments()// STJsonUtil.toJson(call.arguments()) // flutter call jsonEncode
         STLogUtil.w(TAG, "onFlutterCallNativeMethod functionName=${call.method}, arguments=$argumentsJsonString")
-        STBridgeCommunication.handleBridge(activity, functionName = call.method, params = argumentsJsonString) { _: String?, resultJsonString: String? ->
+        /*STBridgeCommunication.handleBridge(activity, functionName = call.method, params = argumentsJsonString) { _: String?, resultJsonString: String? ->
             STLogUtil.w(TAG, "onFlutterCallNativeMethod return $resultJsonString")
             result.success(resultJsonString)
-        }
+        }*/
     }
 
     /**
@@ -47,7 +46,9 @@ object STFlutterManager {
     }
 
     @JvmStatic
-    fun createCachedFlutterEngine(application: Application, initialRoute: String): String {
+    fun createCachedFlutterEngine(application: Application?, initialRoute: String): String {
+        application ?: return ""
+
         val engineId = SystemClock.elapsedRealtime().toString()
         if (!FlutterEngineCache.getInstance().contains(engineId)) {
             val flutterEngine = FlutterEngine(application)

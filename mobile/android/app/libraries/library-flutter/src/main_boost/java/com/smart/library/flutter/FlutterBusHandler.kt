@@ -17,7 +17,8 @@ class FlutterBusHandler : STBusManager.IBusHandler {
 
     lateinit var flutterEngine: FlutterEngine
 
-    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
+    override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
+        application ?: return
 
         STFlutterInitializer.startInitialization(application) { context: Context, url: String, requestCode: Int ->
             callback?.invoke(true)
@@ -27,14 +28,14 @@ class FlutterBusHandler : STBusManager.IBusHandler {
         // Instantiate a FlutterEngine.
         flutterEngine = FlutterEngine(application)
         // Configure an initial route.
-        flutterEngine.navigationChannel.initialRoute = "index";
+        flutterEngine.navigationChannel.setInitialRoute("index");
         // Start executing Dart code to pre-warm the FlutterEngine.
         flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
         // Cache the FlutterEngine to be used by FlutterActivity or FlutterFragment.
         FlutterEngineCache.getInstance().put("my_engine_id", flutterEngine)
     }
 
-    override fun onUpgradeOnce(application: Application) {
+    override fun onUpgradeOnce(application: Application?) {
 
     }
 
@@ -49,7 +50,7 @@ class FlutterBusHandler : STBusManager.IBusHandler {
                         // .withNewEngine()
                         // .initialRoute("/index")
                         .withCachedEngine("my_engine_id")
-                        .backgroundMode(BackgroundMode.transparent)
+                        .backgroundMode(io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                         .build(context)
                 }
             }

@@ -189,7 +189,7 @@ cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
                  String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
                  repositories {
                    maven {
-                       url '/Users/krmao/Desktop/new/flutter_module/build/host/outputs/repo'
+                       url '~/workspace/template/mobile/flutter_module/build/host/outputs/repo'
                    }
                    maven {
                        url '$storageUrl/download.flutter.io'

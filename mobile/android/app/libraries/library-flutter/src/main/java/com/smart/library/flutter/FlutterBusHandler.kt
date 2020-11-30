@@ -11,12 +11,12 @@ import com.smart.library.util.bus.STBusManager
 class FlutterBusHandler : STBusManager.IBusHandler {
 
     var cachedPageDemoFlutterEngineId: String? = null
-    override fun onInitOnce(application: Application, callback: ((success: Boolean) -> Unit)?) {
+    override fun onInitOnce(application: Application?, callback: ((success: Boolean) -> Unit)?) {
         cachedPageDemoFlutterEngineId = STFlutterManager.createCachedFlutterEngine(application, SCHEMA_FLUTTER_PAGE_DEMO)
         callback?.invoke(true)
     }
 
-    override fun onUpgradeOnce(application: Application) {
+    override fun onUpgradeOnce(application: Application?) {
     }
 
 

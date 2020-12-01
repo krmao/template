@@ -1,7 +1,6 @@
 package com.smart.library.flutter
 
 import android.os.Bundle
-import io.flutter.embedding.android.SplashScreen
 
 /**
  * Flutter 启动页
@@ -18,10 +17,6 @@ class STFlutterFragmentLaunchActivity : STFlutterBoostActivity() {
             .build(context)
 
         super.onCreate(savedInstanceState)
-    }
-
-    override fun provideSplashScreen(): SplashScreen? {
-        return super.provideSplashScreen()
     }
 
 }

@@ -8,8 +8,8 @@
 
     <!-- You can insert your own image assets here -->
     <item
-        android:width="40dp"
-        android:height="40dp"
+        android:width="20dp"
+        android:height="20dp"
         android:bottom="80dp"
         android:left="80dp"
         android:right="80dp"

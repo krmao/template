@@ -47,7 +47,7 @@ object STFlutterInitializer {
 
         val router = INativeRouter { context, url, urlParams, requestCode, exts ->
             val assembleUrl: String = Utils.assembleUrl(url, urlParams)
-            STFlutterRouter.openContainer(context, assembleUrl, urlParams, requestCode, exts)
+            STFlutterRouter.openByName(context, assembleUrl, urlParams, requestCode, exts)
         }
 
         // 生命周期监听

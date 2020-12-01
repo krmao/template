@@ -26,7 +26,7 @@ class FlutterBusHandler : STBusManager.IBusHandler {
             "flutter/open" -> {
                 if (context != null) {
                     val schemaUrl = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
-                    STFlutterRouter.openContainerBySchema(context, schemaUrl)
+                    STFlutterRouter.openBySchema(context, schemaUrl)
                 }
             }
             "flutter/mine" -> {

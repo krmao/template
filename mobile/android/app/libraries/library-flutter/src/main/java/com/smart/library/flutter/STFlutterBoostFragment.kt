@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.android.SplashScreen
@@ -82,7 +83,8 @@ class STFlutterBoostFragment : com.idlefish.flutterboost.containers.FlutterFragm
                 val activityInfo = parentActivity.packageManager.getActivityInfo(parentActivity.componentName, PackageManager.GET_META_DATA)
                 val metadata = activityInfo.metaData
                 val splashScreenId = metadata?.getInt("io.flutter.embedding.android.SplashScreenDrawable") ?: 0
-                if (splashScreenId != 0) if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) resources.getDrawable(splashScreenId, parentActivity.theme) else resources.getDrawable(splashScreenId) else null
+                val splashUntilFirstFrame = metadata?.getBoolean("io.flutter.app.android.SplashScreenUntilFirstFrame")
+                if (splashUntilFirstFrame == true && splashScreenId != 0) (if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) resources.getDrawable(splashScreenId, parentActivity.theme) else resources.getDrawable(splashScreenId)) else null
             } catch (e: PackageManager.NameNotFoundException) {
                 // This is never expected to happen.
                 null
@@ -144,7 +146,9 @@ class STFlutterBoostFragment : com.idlefish.flutterboost.containers.FlutterFragm
             val arguments = Bundle()
             arguments.putString(EXTRA_URL, containerUrl)
             if (containerParams != null) {
-                arguments.putSerializable(EXTRA_PARAMS, HashMap<String, Any>(containerParams))
+                val serializableMap = BoostFlutterActivity.SerializableMap()
+                serializableMap.map = containerParams
+                arguments.putSerializable(EXTRA_PARAMS, serializableMap)
             }
             return arguments
         }

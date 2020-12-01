@@ -20,8 +20,8 @@ gradle.ext {
                             'enable'               : true,
                             'url'                  : '/Users/krmao/workspace/template/mobile/flutter_module/build/host/outputs/repo',
                             'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
-                            'dependencyProfile': 'com.codesdancing.flutter_module:flutter_profile:0.0.1-SNAPSHOT',
-                            'dependencyRelease': 'com.codesdancing.flutter_module:flutter_release:0.0.1-SNAPSHOT'
+                            'dependencyProfile': '',
+                            'dependencyRelease': ''
                     ]
             ],
             'reactNative'  : [

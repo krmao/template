@@ -22,9 +22,12 @@ android {
         }
     }
 
-    buildTypes {
-        profile {
-            initWith debug
+    if (gradle.ext.modules.flutter.repositoryLocal.dependencyProfile) {
+        // ERROR: Unable to resolve dependency for @profile/compileClasspath
+        buildTypes {
+            profile {
+                initWith debug
+            }
         }
     }
 }
@@ -35,8 +38,14 @@ dependencies {
     api project(':library-base')
 
     if (gradle.ext.modules.flutter.repositoryLocal.enable == true) {
-        debugApi gradle.ext.modules.flutter.repositoryLocal.dependencyDebug
-        profileApi gradle.ext.modules.flutter.repositoryLocal.dependencyProfile
-        releaseApi gradle.ext.modules.flutter.repositoryLocal.dependencyRelease
+        if (gradle.ext.modules.flutter.repositoryLocal.dependencyDebug){
+            debugApi gradle.ext.modules.flutter.repositoryLocal.dependencyDebug
+        }
+        if (gradle.ext.modules.flutter.repositoryLocal.dependencyProfile) {
+            profileApi gradle.ext.modules.flutter.repositoryLocal.dependencyProfile
+        }
+        if (gradle.ext.modules.flutter.repositoryLocal.dependencyRelease) {
+            releaseApi gradle.ext.modules.flutter.repositoryLocal.dependencyRelease
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
+import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.smart.library.flutter.test.MineActivity
 import com.smart.library.util.STJsonUtil
 
@@ -22,18 +23,18 @@ enum class STFlutterRouter(val url: String, val goTo: (context: Context?, contai
         context?.startActivity(android.content.Intent(context, MineActivity::class.java))
         true
     }),
-    URL_ORDER("flutter_order", { context: Context?, containerParams: MutableMap<String, Any>?, requestCode: Int, exts: MutableMap<String, Any>? ->
+    URL_ORDER("flutter_order", { context: Context?, containerParams: MutableMap<String, Any>?, requestCode: Int, _: MutableMap<String, Any>? ->
         STFlutterBoostFragment.startForResult(context as? Activity, URL_ORDER.url, containerParams, requestCode)
         true
     }),
-    URL_SETTINGS("flutter_settings", { context: Context?, containerParams: MutableMap<String, Any>?, requestCode: Int, exts: MutableMap<String, Any>? ->
+    URL_SETTINGS("flutter_settings", { context: Context?, containerParams: MutableMap<String, Any>?, requestCode: Int, _: MutableMap<String, Any>? ->
         // 这直接用的Boost提供的Activity作为Flutter的容器，也可以继承BoostFlutterActivity后做一些自定义的行为
         if (context != null) {
-            val intent = com.idlefish.flutterboost.containers.BoostFlutterActivity
+            val intent = STFlutterBoostActivity
                 .withNewEngine()
                 .url(URL_SETTINGS.url)
-                .params(containerParams ?: kotlin.collections.HashMap<String, Any?>())
-                .backgroundMode(com.idlefish.flutterboost.containers.BoostFlutterActivity.BackgroundMode.opaque)
+                .params(containerParams ?: HashMap<String, Any?>())
+                .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
                 .build(context)
             if (context is Activity) {
                 context.startActivityForResult(intent, requestCode)

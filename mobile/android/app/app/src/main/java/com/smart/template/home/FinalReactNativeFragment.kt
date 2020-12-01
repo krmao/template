@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
+import com.smart.template.home.tab.FinalHomeTabActivity
 import kotlinx.android.synthetic.main.final_react_native_fragment.*
 
 class FinalReactNativeFragment : STBaseFragment() {
@@ -31,16 +32,17 @@ class FinalReactNativeFragment : STBaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "ReactNativeFragment:onStart");
+        Log.w(FinalHomeTabActivity.TAG, "ReactNativeFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "ReactNativeFragment:onStop");
+        Log.w(FinalHomeTabActivity.TAG, "ReactNativeFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "ReactNativeFragment:onDestroy");
+        Log.w(FinalHomeTabActivity.TAG, "ReactNativeFragment:onDestroy");
     }
+
 }

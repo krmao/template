@@ -1,30 +1,27 @@
 package com.smart.library.flutter
 
-import android.content.Context
-import android.content.Intent
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import io.flutter.embedding.android.STFlutterActivityLaunchConfigs
+import android.os.Bundle
+import io.flutter.embedding.android.SplashScreen
 
 /**
  * Flutter 启动页
  * https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen
  */
 @Suppress("unused", "PrivatePropertyName")
-class STFlutterFragmentLaunchActivity : STFlutterFragmentActivity() {
+class STFlutterFragmentLaunchActivity : STFlutterBoostActivity() {
 
-    companion object {
-        @JvmStatic
-        fun goToFlutterFragment(@NonNull from: Context, @Nullable initialRoute: String? = null, @Nullable cachedEngineId: String? = null) {
-            val intent = Intent(from, STFlutterFragmentLaunchActivity::class.java)
-            if (!initialRoute.isNullOrBlank()) {
-                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_INITIAL_ROUTE, initialRoute)
-            }
-            if (!cachedEngineId.isNullOrBlank()) {
-                intent.putExtra(STFlutterActivityLaunchConfigs.EXTRA_CACHED_ENGINE_ID, cachedEngineId)
-            }
-            from.startActivity(intent)
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        intent = withNewEngine()
+            .url("flutter://flutter/settings")
+            .params(hashMapOf<String, Any?>())
+            .backgroundMode(BackgroundMode.transparent)
+            .build(context)
+
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun provideSplashScreen(): SplashScreen? {
+        return super.provideSplashScreen()
     }
 
 }

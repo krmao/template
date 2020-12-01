@@ -7,7 +7,7 @@ void main() {
     statusBarColor: STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
     child: OrderWidget(),
     onInitStateCallback: () {
-      FlutterRouter.init();
+      FlutterRouter.initialize();
     },
   ));
 }

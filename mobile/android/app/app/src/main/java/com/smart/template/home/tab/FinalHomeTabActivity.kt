@@ -19,7 +19,7 @@ class FinalHomeTabActivity : STBaseActivity() {
     var sRef: WeakReference<Activity>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        STLogUtil.d("home", "activity: onCreate")
+        STLogUtil.d(TAG, "activity: onCreate")
         enableSwipeBack = false
         enableExitWithDoubleBackPressed = true
         enableImmersionStatusBarWithDarkFont = true
@@ -35,32 +35,32 @@ class FinalHomeTabActivity : STBaseActivity() {
      */
     override fun onRestart() {
         super.onRestart()
-        STLogUtil.d("home", "activity: onRestart")
+        STLogUtil.d(TAG, "activity: onRestart")
     }
 
     override fun onStart() {
         super.onStart()
-        STLogUtil.d("home", "activity: onStart")
+        STLogUtil.d(TAG, "activity: onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        STLogUtil.d("home", "activity: onResume")
+        STLogUtil.d(TAG, "activity: onResume")
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        STLogUtil.d("home", "activity: onAttachedToWindow")
+        STLogUtil.d(TAG, "activity: onAttachedToWindow")
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        STLogUtil.d("home", "activity: onWindowFocusChanged hasFocus=$hasFocus")
+        STLogUtil.d(TAG, "activity: onWindowFocusChanged hasFocus=$hasFocus")
         if (hasFocus) {
             STSystemUtil.showSystemInfo(this)
             /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view: View?, insets: WindowInsetsCompat ->
                 val navigationBarHeight = insets.systemWindowInsetBottom // 无效, 华为 P20 无论隐藏/显示虚拟导航栏, 都显示为 0, 需要通过 getVisibleNavigationBarHeightOnWindowFocusChanged 重新计算
-                STLogUtil.d("home", "home: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, view=$view")
+                STLogUtil.d(TAG, "home: onApplyWindowInsetsListener navigationBarHeight=$navigationBarHeight, view=$view")
                 STSystemUtil.showSystemInfo(this@HomeTabActivity)
 
                 insets
@@ -71,12 +71,12 @@ class FinalHomeTabActivity : STBaseActivity() {
     override fun onPause() {
         super.onPause()
 
-        STLogUtil.d("home", "activity: onPause")
+        STLogUtil.d(TAG, "activity: onPause")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        STLogUtil.d("home", "activity: onDestroy")
+        STLogUtil.d(TAG, "activity: onDestroy")
 
         sRef?.clear()
         sRef = null
@@ -84,18 +84,18 @@ class FinalHomeTabActivity : STBaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        STLogUtil.d("home", "activity: onNewIntent")
+        STLogUtil.d(TAG, "activity: onNewIntent")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("name", "da mao ge ge")
-        STLogUtil.d("home", "activity: onSaveInstanceState")
+        STLogUtil.d(TAG, "activity: onSaveInstanceState")
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        STLogUtil.d("home", "activity: onRestoreInstanceState ${savedInstanceState.getString("name")}")
+        STLogUtil.d(TAG, "activity: onRestoreInstanceState ${savedInstanceState.getString("name")}")
     }
 
     //region test fragment stack with tag 'fragmentTag'
@@ -135,10 +135,14 @@ class FinalHomeTabActivity : STBaseActivity() {
      */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        STLogUtil.d("home", "activity: onConfigurationChanged")
+        STLogUtil.d(TAG, "activity: onConfigurationChanged")
         RxBus.post(ConfigurationEvent(newConfig))
     }
 
     @Suppress("unused")
     class ConfigurationEvent(val newConfig: Configuration?)
+
+    companion object {
+        const val TAG = "[home]"
+    }
 }

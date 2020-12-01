@@ -14,21 +14,11 @@ android {
     }
     resourcePrefix "flutter_"
 
-    if (gradle.ext.modules.flutter.enableBoost != true) {
-        sourceSets {
-            main {
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-                res.srcDir 'src/main/res'
-                java { srcDirs = ['src/main/java'] }
-            }
-        }
-    } else {
-        sourceSets {
-            main {
-                manifest.srcFile 'src/main_boost/AndroidManifest.xml'
-                res.srcDir 'src/main/res'
-                java { srcDirs = ['src/main_boost/java'] }
-            }
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            res.srcDir 'src/main/res'
+            java { srcDirs = ['src/main/java'] }
         }
     }
 
@@ -45,14 +35,8 @@ dependencies {
     api project(':library-base')
 
     if (gradle.ext.modules.flutter.repositoryLocal.enable == true) {
-        debugApi gradle.ext.modules.flutter.repositoryLocal.debugImplementation
-        // profileApi gradle.ext.modules.flutter.repositoryLocal.profileImplementation
-        releaseApi gradle.ext.modules.flutter.repositoryLocal.releaseImplementation
-    } else if (gradle.ext.modules.flutter.enableBoost != true) {
-        debugApi "com.smart.flutter.flutter_module:flutter_debug:1.0"
-        // profileApi 'com.smart.flutter.flutter_module:flutter_profile:1.0'
-        releaseApi "com.smart.flutter.flutter_module:flutter_release:1.0"
-    } else {
-        api(name: "flutter-bundle-1.0.0-debug", ext: "aar")
+        debugApi gradle.ext.modules.flutter.repositoryLocal.dependencyDebug
+        profileApi gradle.ext.modules.flutter.repositoryLocal.dependencyProfile
+        releaseApi gradle.ext.modules.flutter.repositoryLocal.dependencyRelease
     }
 }

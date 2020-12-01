@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.colorpicker.STColorPickerUtil
 import com.smart.template.R
+import com.smart.template.home.tab.FinalHomeTabActivity
 import com.smart.template.home.test.*
 import kotlinx.android.synthetic.main.final_home_fragment.*
 
@@ -184,7 +186,22 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStart");
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStop");
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onDestroy");
+    }
+
     override fun onBackStackChanged() {
-        STLogUtil.w("HomeFragment", "onBackStackChanged")
+        STLogUtil.w(FinalHomeTabActivity.TAG, "onBackStackChanged")
     }
 }

@@ -35,47 +35,22 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/flutterPageDemo"
+                    android:id="@+id/flutterPageSettings"
                     style="@style/STButton.Default"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="FLUTTER PAGE DEMO (CACHE)"
-                    app:backgroundTint="@color/deep_orange_500" />
-
-                <Button
-                    android:id="@+id/flutterPageOrder"
-                    style="@style/STButton.Default"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="FLUTTER PAGE ORDER"
-                    app:backgroundTint="@color/blue_600" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:background="@color/deep_orange_50"
-                android:minHeight="48dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/flutterPageBridge"
-                    style="@style/STButton.Default"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="FLUTTER PAGE BRIDGE"
+                    android:textAllCaps="true"
+                    android:text="flutter_settings"
                     app:backgroundTint="@color/blue_600" />
                 <Button
-                    android:id="@+id/flutterPageNotFound"
+                    android:id="@+id/flutterPageMine"
                     style="@style/STButton.Default"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="FLUTTER PAGE NOT FOUND"
+                    android:text="native_mine"
+                    android:textAllCaps="true"
                     app:backgroundTint="@color/deep_orange_500" />
 
             </TableRow>

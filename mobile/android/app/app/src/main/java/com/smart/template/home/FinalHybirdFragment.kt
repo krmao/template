@@ -10,6 +10,7 @@ import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STRouteManager
 import com.smart.template.R
+import com.smart.template.home.tab.FinalHomeTabActivity
 import kotlinx.android.synthetic.main.final_hybird_fragment.*
 
 class FinalHybirdFragment : STBaseFragment() {
@@ -30,16 +31,17 @@ class FinalHybirdFragment : STBaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "HybirdFragment:onStart")
+        Log.w(FinalHomeTabActivity.TAG, "HybirdFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "HybirdFragment:onStop")
+        Log.w(FinalHomeTabActivity.TAG, "HybirdFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "HybirdFragment:onDestroy")
+        Log.w(FinalHomeTabActivity.TAG, "HybirdFragment:onDestroy");
     }
+
 }

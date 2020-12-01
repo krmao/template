@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.bus.STBusManager
 import com.smart.template.R
+import com.smart.template.home.tab.FinalHomeTabActivity
 import kotlinx.android.synthetic.main.final_flutter_fragment.*
 
 class FinalFlutterFragment : STBaseFragment() {
@@ -20,32 +21,26 @@ class FinalFlutterFragment : STBaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        flutterPageBridge.setOnClickListener {
-            STBusManager.call(context, "flutter/open", "smart://template/flutter?page=bridge&params=")
+        flutterPageSettings.setOnClickListener {
+            STBusManager.call(context, "flutter/open", "smart://template/flutter?page=flutter_settings&params=")
         }
-        flutterPageDemo.setOnClickListener {
-            STBusManager.call(context, "flutter/demo")
-        }
-        flutterPageOrder.setOnClickListener {
-            STBusManager.call(context, "flutter/order")
-        }
-        flutterPageNotFound.setOnClickListener {
-            STBusManager.call(context, "flutter/not_found")
+        flutterPageMine.setOnClickListener {
+            STBusManager.call(context, "flutter/mine")
         }
     }
 
     override fun onStart() {
         super.onStart()
-        Log.w("krmao", "FlutterFragment:onStart");
+        Log.w(FinalHomeTabActivity.TAG, "FlutterFragment:onStart");
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w("krmao", "FlutterFragment:onStop");
+        Log.w(FinalHomeTabActivity.TAG, "FlutterFragment:onStop");
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w("krmao", "FlutterFragment:onDestroy");
+        Log.w(FinalHomeTabActivity.TAG, "FlutterFragment:onDestroy");
     }
 }

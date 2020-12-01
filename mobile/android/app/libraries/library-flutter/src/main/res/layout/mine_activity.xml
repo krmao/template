@@ -7,35 +7,10 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText,ResourceName">
 
-    <TextView
-        android:id="@+id/info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:text="[Native] 我的页面"
-        android:textColor="#fff"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
     <View
         android:layout_width="1dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/openHome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8.0dp"
-        android:background="@android:color/holo_orange_dark"
-        android:padding="15.0dp"
-        android:text="打开首页(native)"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/openOrder"

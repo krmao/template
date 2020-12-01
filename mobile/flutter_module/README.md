@@ -10,13 +10,13 @@ flutter create -t module --ios-language objc --android-language kotlin --org com
 ## build aar
 * local repo
     ```shell script
-    flutter build aar --debug --build-number 0.0.1 --pub --verbose
-    # /Users/krmao/Desktop/flutter_module/flutter_module/.android/gradlew -I=/Users/krmao/fvm/versions/1.22.4/packages/flutter_tools/gradle/aar_init_script.gradle -Pflutter-root=/Users/krmao/fvm/versions/1.22.4 -Poutput-dir=/Users/krmao/Desktop/flutter_module/flutter_module/build/host -Pis-plugin=false -PbuildNumber=0.0.1 -Pverbose=true -Pfont-subset=true -Ptarget-platform=android-arm,android-arm64,android-x64 assembleAarRelease --info --stacktrace
+    flutter build aar --debug --build-number 0.0.1-SNAPSHOT --pub --verbose
+    # /Users/krmao/Desktop/flutter_module/flutter_module/.android/gradlew -I=/Users/krmao/fvm/versions/1.22.4/packages/flutter_tools/gradle/aar_init_script.gradle -Pflutter-root=/Users/krmao/fvm/versions/1.22.4 -Poutput-dir=/Users/krmao/Desktop/flutter_module/flutter_module/build/host -Pis-plugin=false -PbuildNumber=0.0.1-SNAPSHOT -Pverbose=true -Pfont-subset=true -Ptarget-platform=android-arm,android-arm64,android-x64 assembleAarRelease --info --stacktrace
     ```
 * custom repo
     ```shell script
     cd .. && fvm install && fvm flutter packages get
-    cd .android && ./gradlew -I=../tools/aar_init_script.gradle -Pflutter-root=/Users/krmao/fvm/versions/1.22.4 -Poutput-dir=/Users/krmao/Desktop/new/flutter_module/build/host  -Pis-plugin=false -PbuildNumber=0.0.1 -Pverbose=true -Pfont-subset=true -Ptarget-platform=android-arm,android-arm64,android-x64 assembleAarRelease --info --stacktrace
+    cd .android && ./gradlew -I=../tools/aar_init_script.gradle -Pflutter-root=/Users/krmao/fvm/versions/1.22.4 -Poutput-dir=/Users/krmao/Desktop/new/flutter_module/build/host  -Pis-plugin=false -PbuildNumber=0.0.1-SNAPSHOT -Pverbose=true -Pfont-subset=true -Ptarget-platform=android-arm,android-arm64,android-x64 assembleAarRelease --info --stacktrace
     ```
 
 ### 通过 clone 方式下载 flutter sdk

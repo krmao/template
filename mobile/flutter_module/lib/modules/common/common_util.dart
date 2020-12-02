@@ -14,37 +14,25 @@ class CommonUtils {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Container(
           margin: const EdgeInsets.only(top: 80.0),
-          child: Text("params:${params == null ? "" : params['tag'] ?? ''}", style: TextStyle(fontSize: 28.0, color: Colors.blue)),
+          child: Text("params:${params == null ? "" : params['tag'] ?? ''}", style: TextStyle(fontSize: 20.0, color: Colors.blue)),
           alignment: AlignmentDirectional.center),
       Expanded(child: Container()),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
               color: Colors.yellow,
               child: Text(
-                'OPENINCURRENTCONTAINER FLUTTER PLAYER',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
-              )),
-          onTap: () => {FlutterRouter.openInCurrentContainer(FlutterRouter.URL_FLUTTER_PLAYER)}),
-      InkWell(
-          child: Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              color: Colors.yellow,
-              child: Text(
-                'OPEN FLUTTER PLAYER',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
+                'open flutter player',
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () => {FlutterRouter.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
               color: Colors.yellow,
               child: Text(
-                'OPEN NATIVE MINE',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
+                'open native mine',
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () => FlutterRouter.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then((Map<String, dynamic> result) {
                 print("URL_MINE did recieve second route result");
@@ -53,11 +41,10 @@ class CommonUtils {
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
               color: Colors.yellow,
               child: Text(
-                'OPEN FLUTTER ORDER',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
+                'open flutter order',
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () => FlutterRouter.open(FlutterRouter.URL_FLUTTER_ORDER).then((Map<String, dynamic> result) {
                 print("URL_ORDER did recieve second route result");
@@ -66,11 +53,10 @@ class CommonUtils {
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 80.0),
               color: Colors.yellow,
               child: Text(
-                'OPEN FLUTTER SETTINGS',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
+                'open flutter settings',
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
             FlutterRouter.open(FlutterRouter.URL_FLUTTER_SETTINGS).then((Map<String, dynamic> result) {
@@ -81,11 +67,10 @@ class CommonUtils {
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 80.0),
               color: Colors.yellow,
               child: Text(
-                'CLOSE(LOGIN:YES, TOKEN:KKK)',
-                style: TextStyle(fontSize: 22.0, color: Colors.black),
+                'close(login:yes, token:kkk)',
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
             FlutterRouter.close(settings.uniqueId, result: {

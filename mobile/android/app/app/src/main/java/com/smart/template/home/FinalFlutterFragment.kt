@@ -27,6 +27,9 @@ class FinalFlutterFragment : STBaseFragment() {
         flutterPageMine.setOnClickListener {
             STBusManager.call(context, "flutter/mine")
         }
+        flutterPageBridge.setOnClickListener {
+            STBusManager.call(context, "flutter/open", "smart://template/flutter?page=flutter_bridge&params=")
+        }
     }
 
     override fun onStart() {

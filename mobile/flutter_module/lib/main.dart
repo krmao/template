@@ -1,3 +1,5 @@
+import 'package:flutter_module/modules/bridge/bridge_widget.dart';
+
 import 'settings/imports/flutter_imports_material.dart';
 
 void main() {
@@ -5,7 +7,7 @@ void main() {
   runApp(STBaseApplication(
     enableSafeArea: false,
     statusBarColor: STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
-    child: OrderWidget(),
+    child: BridgeWidget({}),
     onInitStateCallback: () {
       FlutterRouter.initialize();
     },

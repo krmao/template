@@ -83,6 +83,10 @@ allprojects {
     tasks.withType(Javadoc) {
         options.encoding = "UTF-8"
     }
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+        resolutionStrategy.cacheDynamicVersionsFor 0, "seconds"
+    }
 }
 
 task clean(type: Delete) {

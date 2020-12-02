@@ -31,6 +31,9 @@ enum class STFlutterRouter(val url: String, val goTo: (context: Context, contain
     }),
     URL_FLUTTER_SETTINGS("flutter_settings", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
         openNewFlutterActivity(context, URL_FLUTTER_SETTINGS.url, containerParams, requestCode, exts)
+    }),
+    URL_FLUTTER_BRIDGE("flutter_bridge", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
+        openNewFlutterActivity(context, URL_FLUTTER_BRIDGE.url, containerParams, requestCode, exts)
     });
 
     companion object {

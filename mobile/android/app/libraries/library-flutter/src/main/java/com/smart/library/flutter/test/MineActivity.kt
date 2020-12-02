@@ -20,6 +20,9 @@ class MineActivity : AppCompatActivity() {
         findViewById<View>(R.id.openSettings).setOnClickListener {
             STFlutterRouter.URL_FLUTTER_SETTINGS.goTo(this, hashMapOf(), 0, null)
         }
+        findViewById<View>(R.id.openBridge).setOnClickListener {
+            STFlutterRouter.URL_FLUTTER_BRIDGE.goTo(this, hashMapOf(), 0, null)
+        }
         findViewById<View>(R.id.openOther).setOnClickListener {
             STFlutterRouter.openByName(this, "flutter_not_found")
         }

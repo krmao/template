@@ -16,13 +16,13 @@ class PlayerTabMineWidgetState extends STBaseStatefulWidgetState<PlayerTabMineWi
       title: "玩家信息",
     );
     loadingWidget = STBaseLoadingWidget(isShow: false);
-    statusBarColor = Colors.blueAccent;
+    statusBarColor = Color(0x4169e1ff);
     super.initState();
   }
 
   @override
   Widget buildBody() {
-    return getOnTapWidget(Container(color: Colors.blueAccent, child: STBaseWidgetUtils.getNetworkImageWidget("http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg", width: double.infinity, height: 100, fit: BoxFit.fitHeight)), () {
+    return getOnTapWidget(Container(color: Color(0x4169e1ff), child: STBaseWidgetUtils.getNetworkImageWidget("http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg", width: double.infinity, height: 100, fit: BoxFit.fitHeight)), () {
       showSnackBar("you clicked");
     });
   }

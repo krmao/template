@@ -1,3 +1,5 @@
+import 'package:flutter_module/modules/bridge/bridge_widget.dart';
+
 import '../../settings/imports/flutter_imports_material.dart';
 
 class FlutterRouter {
@@ -5,6 +7,7 @@ class FlutterRouter {
   static const String URL_FLUTTER_ORDER = "flutter_order";
   static const String URL_FLUTTER_SETTINGS = "flutter_settings";
   static const String URL_FLUTTER_PLAYER = "flutter_player";
+  static const String URL_FLUTTER_BRIDGE = "flutter_bridge";
 
   static bool _isInitialized = false;
 
@@ -13,8 +16,10 @@ class FlutterRouter {
     FlutterBoost.singleton.registerPageBuilders({
       FlutterRouter.URL_FLUTTER_SETTINGS: (pageName, params, _) => SettingsWidget(params),
       FlutterRouter.URL_FLUTTER_ORDER: (pageName, params, _) => OrderWidget(),
-      FlutterRouter.URL_FLUTTER_PLAYER: (pageName, params, _) => STBaseStatefulWidget(state: MainTabWidgetState())
+      FlutterRouter.URL_FLUTTER_PLAYER: (pageName, params, _) => STBaseStatefulWidget(state: MainTabWidgetState()),
+      FlutterRouter.URL_FLUTTER_BRIDGE: (pageName, params, _) => BridgeWidget(params)
     });
+    FlutterBoost.singleton.registerRouteSettingsBuilder((url, {exts, urlParams}) => BoostRouteSettings(uniqueId: '${url}_${DateTime.now().millisecondsSinceEpoch}', name: url, params: urlParams));
     FlutterBoost.singleton.registerDefaultPageBuilder((pageName, params, uniqueId) {
       return Scaffold(
           backgroundColor: Colors.blue,
@@ -47,7 +52,10 @@ class FlutterRouter {
     return FlutterBoost.singleton.open(url, urlParams: urlParams, exts: exts);
   }
 
-  static Future<Map<String, dynamic>> openInCurrentContainer(String url, {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) {
+  /**
+   * 有 bug, 暂时不起作用
+   */
+  static Future<Map<String, dynamic>> _openInCurrentContainer(String url, {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) {
     return FlutterBoost.singleton.openInCurrentContainer(url, urlParams: urlParams, exts: exts);
   }
 

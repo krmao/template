@@ -40,9 +40,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textAllCaps="true"
                     android:text="flutter_settings"
+                    android:textAllCaps="true"
                     app:backgroundTint="@color/blue_600" />
+
                 <Button
                     android:id="@+id/flutterPageMine"
                     style="@style/STButton.Default"
@@ -52,6 +53,26 @@
                     android:text="native_mine"
                     android:textAllCaps="true"
                     app:backgroundTint="@color/deep_orange_500" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:background="@color/deep_orange_50"
+                android:minHeight="48dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/flutterPageBridge"
+                    style="@style/STButton.Default"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="flutter_bridge"
+                    android:textAllCaps="true"
+                    app:backgroundTint="@color/blue_600" />
 
             </TableRow>
         </TableLayout>

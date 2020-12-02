@@ -57,4 +57,20 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/openBridge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8.0dp"
+        android:layout_marginTop="8.0dp"
+        android:layout_marginRight="8.0dp"
+        android:layout_marginBottom="8.0dp"
+        android:background="@android:color/holo_orange_dark"
+        android:padding="15.0dp"
+        android:text="打开Bridge页面(flutter)"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

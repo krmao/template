@@ -14,11 +14,14 @@ class MineActivity : AppCompatActivity() {
         setContentView(R.layout.mine_activity)
 
         findViewById<View>(R.id.openOrder).setOnClickListener {
-            STFlutterRouter.URL_ORDER.goTo(this, hashMapOf(), 0, null)
+            STFlutterRouter.URL_FLUTTER_ORDER.goTo(this, hashMapOf(), 0, null)
         }
 
         findViewById<View>(R.id.openSettings).setOnClickListener {
-            STFlutterRouter.URL_SETTINGS.goTo(this, hashMapOf(), 0, null)
+            STFlutterRouter.URL_FLUTTER_SETTINGS.goTo(this, hashMapOf(), 0, null)
+        }
+        findViewById<View>(R.id.openOther).setOnClickListener {
+            STFlutterRouter.openByName(this, "flutter_not_found")
         }
     }
 

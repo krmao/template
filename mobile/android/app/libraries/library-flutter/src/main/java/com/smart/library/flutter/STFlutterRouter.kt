@@ -20,14 +20,17 @@ import com.smart.library.util.STLogUtil
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 enum class STFlutterRouter(val url: String, val goTo: (context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>?) -> Unit) {
 
-    URL_MINE("native_mine", { context: Context, _: MutableMap<String, Any>?, _: Int, _: MutableMap<String, Any>? ->
+    URL_NATIVE_MINE("native_mine", { context: Context, _: MutableMap<String, Any>?, _: Int, _: MutableMap<String, Any>? ->
         context.startActivity(android.content.Intent(context, MineActivity::class.java))
     }),
-    URL_ORDER("flutter_order", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
-        openNewFlutterActivity(context, URL_SETTINGS.url, containerParams, requestCode, exts)
+    URL_FLUTTER_ORDER("flutter_order", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
+        openNewFlutterActivity(context, URL_FLUTTER_ORDER.url, containerParams, requestCode, exts)
     }),
-    URL_SETTINGS("flutter_settings", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
-        openNewFlutterActivity(context, URL_SETTINGS.url, containerParams, requestCode, exts)
+    URL_FLUTTER_PLAYER("flutter_player", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
+        openNewFlutterActivity(context, URL_FLUTTER_PLAYER.url, containerParams, requestCode, exts)
+    }),
+    URL_FLUTTER_SETTINGS("flutter_settings", { context: Context, containerParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? ->
+        openNewFlutterActivity(context, URL_FLUTTER_SETTINGS.url, containerParams, requestCode, exts)
     });
 
     companion object {
@@ -66,7 +69,12 @@ enum class STFlutterRouter(val url: String, val goTo: (context: Context, contain
         fun openByName(context: Context?, pageName: String?, pageParams: MutableMap<String, Any>? = null, requestCode: Int = 0, exts: MutableMap<String, Any>? = null) {
             STLogUtil.d("openByName pageName=$pageName, params$pageName, requestCode$requestCode, exts=$exts")
             if (context != null) {
-                find(pageName)?.goTo?.invoke(context, pageParams ?: hashMapOf(), requestCode, exts)
+                val router = find(pageName)
+                if (router != null) {
+                    router.goTo(context, pageParams ?: hashMapOf(), requestCode, exts)
+                } else {
+                    openNewFlutterActivity(context, pageName ?: "", pageParams ?: hashMapOf(), requestCode, exts)
+                }
             }
         }
     }

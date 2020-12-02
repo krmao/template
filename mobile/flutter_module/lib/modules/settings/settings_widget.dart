@@ -9,9 +9,9 @@ class SettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     print("SettingsWidget build");
     return Scaffold(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.orange,
         appBar: AppBar(
-            title: Text('设置页面')
+            title: Text('SETTINGS')
         ),
         body: CommonUtils.getColumn(context, params));
   }

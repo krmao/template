@@ -7,11 +7,7 @@ class STBaseApplication extends StatefulWidget {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea,
-      enableSafeAreaTop,
-      enableSafeAreaBottom,
-      enableSafeAreaLeft,
-      enableSafeAreaRight;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
   STBaseApplication(
       {Key key,
@@ -41,11 +37,7 @@ class STBaseApplicationState extends State<STBaseApplication> {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea,
-      enableSafeAreaTop,
-      enableSafeAreaBottom,
-      enableSafeAreaLeft,
-      enableSafeAreaRight;
+  final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
   STBaseApplicationState(
       {@required this.child,
@@ -64,6 +56,7 @@ class STBaseApplicationState extends State<STBaseApplication> {
     if (this.onInitStateCallback != null) this.onInitStateCallback();
   }
 
+  /// flutter_boost no need config about onUnknownRoute/initialRoute
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -72,10 +65,10 @@ class STBaseApplicationState extends State<STBaseApplication> {
       statusBarIconBrightness: Brightness.light, // android >= M
     ));
     return MaterialApp(
-        builder: FlutterBoost.init() /* init container manager */,
-        /*(context, child) {
-           return ScrollConfiguration(child: child, behavior: NoOverScrollBehavior());
-        },*/
+        localizationsDelegates: [DefaultMaterialLocalizations.delegate],
+        builder: FlutterBoost.init(postPush: (String pageName, String uniqueId, Map params, Route route, Future _) {
+          print("onRoutePushed -> pageName:$pageName, uniqueId:$uniqueId, params:$params");
+        }),
         home: Scaffold(
             backgroundColor: this.statusBarColor,
             // android status bar and iphone X top and bottom edges color
@@ -85,9 +78,7 @@ class STBaseApplicationState extends State<STBaseApplication> {
                   left: this.enableSafeArea && this.enableSafeAreaLeft,
                   right: this.enableSafeArea && this.enableSafeAreaRight,
                   bottom: this.enableSafeArea && this.enableSafeAreaBottom,
-                  child: WillPopScope(
-                      child: this.child,
-                      onWillPop: () => _processExit(context)));
+                  child: WillPopScope(child: this.child, onWillPop: () => _processExit(context)));
             })),
         theme: ThemeData(
             // This is the theme of your application.
@@ -109,17 +100,14 @@ class STBaseApplicationState extends State<STBaseApplication> {
             primaryColorBrightness: Brightness.light,
             hintColor: STBaseConstants.HINT_COLOR,
             highlightColor: STBaseConstants.HIGHLIGHT_COLOR,
-            inputDecorationTheme: InputDecorationTheme(
-                labelStyle:
-                    TextStyle(color: STBaseConstants.INPUT_DECORATION_COLOR))));
+            inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: STBaseConstants.INPUT_DECORATION_COLOR))));
   }
 }
 
 // ignore: unused_element
 class _NoOverScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
@@ -133,8 +121,7 @@ Future<bool> _processExit(BuildContext context) {
   _lastTime = now;
   if (duration > 1500) {
     print("_processExit -> context==null?${context == null}");
-    Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
     return Future.value(false);
   } else {
     return Future.value(true);

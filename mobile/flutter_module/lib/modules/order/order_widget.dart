@@ -8,9 +8,9 @@ class OrderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.pink,
         appBar: AppBar(
-            title: Text('订单页面')
+            title: Text('ORDER')
         ),
         body: CommonUtils.getColumn(context, null));
   }

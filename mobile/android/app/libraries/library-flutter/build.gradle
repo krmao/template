@@ -30,44 +30,6 @@ android {
             }
         }
     }
-
-    task buildFlutterLibAAR(type: Exec) {
-        def flutterLibDir = "$rootProject.projectDir/../flutter_module"
-        def flutterSDKDir = "$flutterLibDir/.fvm/flutter_sdk"
-        println("> Configure project :library-flutter:buildFlutterLibAAR flutterLibDir=$flutterLibDir")
-        println("> Configure project :library-flutter:buildFlutterLibAAR flutterSDKDir=$flutterSDKDir")
-
-        inputs.file("$flutterLibDir/pubspec.yaml")
-        inputs.dir("$flutterLibDir/lib")
-        inputs.dir("$flutterLibDir/images")
-        outputs.dir("$flutterLibDir/build/host/outputs/repo")
-
-        workingDir flutterLibDir
-
-        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")) {
-            commandLine "cmd", "/c", "$flutterSDKDir/bin/flutter.bat build aar --debug --build-number 0.0.1-SNAPSHOT --pub --verbose"
-        } else {
-            commandLine "sh", "-c", "$flutterSDKDir/bin/flutter build aar --debug --build-number 0.0.1-SNAPSHOT --pub --verbose"
-        }
-        doFirst {
-            println("==================== buildFlutterLibAAR start ====================")
-            if (!project.file(flutterSDKDir).exists()) {
-                println("==================== buildFlutterLibAAR install flutter sdk ====================")
-                def result = exec {
-                    workingDir flutterLibDir
-                    commandLine "sh", "-c", "fvm install"
-                }
-                println("==================== buildFlutterLibAAR install flutter result=$result")
-                println("==================== buildFlutterLibAAR install flutter end ====================")
-            }
-        }
-        doLast {
-            println("==================== buildFlutterLibAAR result=${getExecResult()}")
-            println("==================== buildFlutterLibAAR end ====================")
-        }
-    }
-
-    getTasksByName("preBuild", false).first().dependsOn("buildFlutterLibAAR")
 }
 
 dependencies {
@@ -77,13 +39,19 @@ dependencies {
 
     if (gradle.ext.modules.flutter.repositoryLocal.enable == true) {
         if (gradle.ext.modules.flutter.repositoryLocal.dependencyDebug) {
-            debugApi gradle.ext.modules.flutter.repositoryLocal.dependencyDebug
+            debugApi(gradle.ext.modules.flutter.repositoryLocal.dependencyDebug) {
+                changing = true
+            }
         }
         if (gradle.ext.modules.flutter.repositoryLocal.dependencyProfile) {
-            profileApi gradle.ext.modules.flutter.repositoryLocal.dependencyProfile
+            profileApi(gradle.ext.modules.flutter.repositoryLocal.dependencyProfile) {
+                changing = true
+            }
         }
         if (gradle.ext.modules.flutter.repositoryLocal.dependencyRelease) {
-            releaseApi gradle.ext.modules.flutter.repositoryLocal.dependencyRelease
+            releaseApi(gradle.ext.modules.flutter.repositoryLocal.dependencyRelease) {
+                changing = true
+            }
         }
     }
 }

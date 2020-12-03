@@ -3,10 +3,11 @@ package com.smart.library.flutter.test
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.smart.library.base.STBaseActivity
 import com.smart.library.flutter.R
 import com.smart.library.flutter.STFlutterRouter
 
-class MineActivity : AppCompatActivity() {
+class MineActivity : STBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

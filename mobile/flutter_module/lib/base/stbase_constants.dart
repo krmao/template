@@ -13,5 +13,5 @@ class STBaseConstants {
     static const Color HIGHLIGHT_COLOR = Colors.black12;
     static const Color INPUT_DECORATION_COLOR = Color(0XFFDDDDDD);
     static const Color DEFAULT_LINE_COLOR = Color(0xFFEEEEEE);
-    static const DEFAULT_STATUS_BAR_COLOR = Color(0x40000000); // android status bar and iphone X top and bottom edges color
+    static const DEFAULT_STATUS_BAR_COLOR = Colors.blueGrey; // android status bar and iphone X top and bottom edges color
 }

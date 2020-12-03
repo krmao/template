@@ -17,7 +17,7 @@ class FlutterRouter {
       FlutterRouter.URL_FLUTTER_SETTINGS: (pageName, params, _) => SettingsWidget(params),
       FlutterRouter.URL_FLUTTER_ORDER: (pageName, params, _) => OrderWidget(),
       FlutterRouter.URL_FLUTTER_PLAYER: (pageName, params, _) => STBaseStatefulWidget(state: MainTabWidgetState()),
-      FlutterRouter.URL_FLUTTER_BRIDGE: (pageName, params, _) => BridgeWidget(params)
+      FlutterRouter.URL_FLUTTER_BRIDGE: (pageName, params, _) => BridgeWidget()
     });
     FlutterBoost.singleton.registerRouteSettingsBuilder((url, {exts, urlParams}) => BoostRouteSettings(uniqueId: '${url}_${DateTime.now().millisecondsSinceEpoch}', name: url, params: urlParams));
     FlutterBoost.singleton.registerDefaultPageBuilder((pageName, params, uniqueId) {

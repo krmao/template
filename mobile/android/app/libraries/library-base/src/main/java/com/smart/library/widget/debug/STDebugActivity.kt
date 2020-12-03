@@ -16,9 +16,9 @@ open class STDebugActivity : STBaseActivity() {
     protected val TAG: String = STDebugActivity::class.java.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableSwipeBack = false
-        enableImmersionStatusBar = true
-        enableImmersionStatusBarWithDarkFont = true
+        enableSwipeBack(false)
+        enableImmersionStatusBar(true)
+        enableImmersionStatusBarWithDarkFont(true)
         super.onCreate(savedInstanceState)
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, STDebugFragment(), STDebugFragment::class.java.name).commitAllowingStateLoss()

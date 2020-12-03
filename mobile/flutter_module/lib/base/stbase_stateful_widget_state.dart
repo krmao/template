@@ -25,14 +25,14 @@ class STBaseStatefulWidgetState<T extends StatefulWidget> extends State<T> with 
   bool enableSafeAreaBottom = true;
   bool enableSafeAreaLeft = true;
   bool enableSafeAreaRight = true;
-  bool enableTitleBar = true;
+  bool enableTitleBar = false;
 
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  STBaseStatefulWidgetState({ this.child, this.statusBarColor, this.loadingWidget, this.enableTitleBar = true, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
+  STBaseStatefulWidgetState({ this.child, this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true});
 
-  STBaseStatefulWidgetState.initWithChild(WidgetBuildFunction child, { this.statusBarColor, this.loadingWidget, this.enableTitleBar = true, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true}){
+  STBaseStatefulWidgetState.initWithChild(WidgetBuildFunction child, { this.statusBarColor, this.loadingWidget, this.enableTitleBar = false, this.titleBarWidget, this.keepAlive = false, this.enableSafeArea = true, this.enableSafeAreaTop = true, this.enableSafeAreaBottom = true, this.enableSafeAreaLeft = true, this.enableSafeAreaRight = true}){
     this.child = child;
   }
 

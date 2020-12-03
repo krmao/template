@@ -20,9 +20,9 @@ class FinalHomeTabActivity : STBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         STLogUtil.d(TAG, "activity: onCreate")
-        enableSwipeBack = false
-        enableExitWithDoubleBackPressed = true
-        enableImmersionStatusBarWithDarkFont = true
+        enableSwipeBack(false)
+        enableExitWithDoubleBackPressed(true)
+        enableImmersionStatusBarWithDarkFont(true)
         super.onCreate(savedInstanceState)
         sRef = WeakReference(this)
         STBusManager.homeActivity = sRef

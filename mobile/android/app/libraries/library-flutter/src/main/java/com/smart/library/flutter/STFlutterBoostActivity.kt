@@ -3,16 +3,22 @@ package com.smart.library.flutter
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
+import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.ImageView
 import androidx.annotation.NonNull
+import com.gyf.barlibrary.ImmersionBar
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
+import com.smart.library.base.STBaseActivityDelegate
+import com.smart.library.base.STBaseActivityDelegateImpl
 import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.reactivex.disposables.CompositeDisposable
 
-open class STFlutterBoostActivity : BoostFlutterActivity() {
+open class STFlutterBoostActivity : BoostFlutterActivity(), STBaseActivityDelegate {
 
     private var methodChannel: MethodChannel? = null
 
@@ -53,11 +59,6 @@ open class STFlutterBoostActivity : BoostFlutterActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        STFlutterInitializer.currentMethodChannel = methodChannel
-    }
-
     override fun provideSplashScreen(): SplashScreen? {
         val manifestSplashDrawable = getSplashScreenFromManifest()
         return if (manifestSplashDrawable != null) DrawableSplashScreen(manifestSplashDrawable, ImageView.ScaleType.CENTER, 500L) else null
@@ -74,6 +75,52 @@ open class STFlutterBoostActivity : BoostFlutterActivity() {
             null
         }
     }
+
+    protected open val delegate: STBaseActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
+
+    override fun callback(): ((bundle: Bundle?) -> Unit?)? = delegate.callback()
+    override fun disposables(): CompositeDisposable = delegate.disposables()
+    override fun statusBar(): ImmersionBar? = delegate.statusBar()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        delegate.onCreate(savedInstanceState)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        delegate.onPostCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        delegate.onResume()
+        STFlutterInitializer.currentMethodChannel = methodChannel
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        delegate.onDestroy()
+    }
+
+    override fun onBackPressedIntercept(): Boolean = delegate.onBackPressedIntercept()
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return if (delegate.onKeyDown(keyCode, event)) {
+            true
+        } else {
+            super.onKeyDown(keyCode, event)
+        }
+    }
+
+    override fun enableSwipeBack(): Boolean = delegate.enableSwipeBack()
+    override fun enableSwipeBack(enable: Boolean) = delegate.enableSwipeBack(enable)
+    override fun enableImmersionStatusBar(): Boolean = delegate.enableImmersionStatusBar()
+    override fun enableImmersionStatusBar(enable: Boolean) = delegate.enableImmersionStatusBar(enable)
+    override fun enableImmersionStatusBarWithDarkFont(): Boolean = delegate.enableImmersionStatusBarWithDarkFont()
+    override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
+    override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
+    override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
+    override fun quitApplication() = delegate.quitApplication()
 
     companion object {
         fun withNewEngine(): NewEngineIntentBuilder {

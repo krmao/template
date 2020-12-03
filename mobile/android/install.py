@@ -9,9 +9,9 @@ if __name__ == '__main__':
     opts, args = getopt.getopt(sys.argv[1:], 'hf:fv:c:r:i:', ['f=', 'fv=', 'c=', 'r=', 'i=', 'help'])
 
     flutter = True
-    clean = True
-    release = True
-    info = True
+    clean = False
+    release = False
+    info = False
     flutter_version = "0.0.1-SNAPSHOT"
 
     for key, value in opts:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
             print "==========>>>>>>>>>> install flutter sdk end"
         print "==========>>>>>>>>>> build flutter lib aar start"
         print "current path ->", os.getcwd()
-        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("debug --no-profile --no-release" if release else "release --no-profile --no-debug") + " --build-number " + flutter_version + " --pub " + ("" if info else "--verbose")
+        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "")
         print shell_build_flutter_aar
         os.system(shell_build_flutter_aar)
         print "==========>>>>>>>>>> build flutter lib aar end"
@@ -58,11 +58,11 @@ if __name__ == '__main__':
     print "==========>>>>>>>>>> install android app start"
     print "current path ->", os.getcwd()
     if clean:
-        shell_install = "./gradlew clean install" + ("Debug" if release else "Release") + (" " if info else " --info") + " --stacktrace"
+        shell_install = "./gradlew clean install" + ("Release" if release else "Debug") + (" --info" if info else " ") + " --stacktrace"
         print shell_install
         os.system(shell_install)
     else:
-        shell_install = "./gradlew install" + ("Debug" if release else "Release") + (" " if info else " --info") + " --stacktrace"
+        shell_install = "./gradlew install" + ("Release" if release else "Debug") + (" --info" if info else " ") + " --stacktrace"
         print shell_install
         os.system(shell_install)
     print "==========>>>>>>>>>> install android app end"

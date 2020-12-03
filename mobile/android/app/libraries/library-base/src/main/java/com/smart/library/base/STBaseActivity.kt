@@ -1,16 +1,9 @@
 package com.smart.library.base
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.barlibrary.ImmersionBar
-import com.jude.swipbackhelper.SwipeBackHelper
-import com.smart.library.STInitializer
-import com.smart.library.util.STRouteManager
-import com.smart.library.util.STToastUtil
-import com.smart.library.widget.debug.STDebugFragment
-import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -34,112 +27,50 @@ import io.reactivex.disposables.CompositeDisposable
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
 @Suppress("MemberVisibilityCanBePrivate")
-open class STBaseActivity : AppCompatActivity() {
+open class STBaseActivity : AppCompatActivity(), STBaseActivityDelegate {
 
-    /**
-     * 通过 STRouteManager 跳转到 activity | fragment 可以添加此回调方法，方便跨组件传递参数(atlas)
-     * 在 onDestroy 里会自动清除
-     */
-    val callback: ((bundle: Bundle?) -> Unit?)? by lazy { STRouteManager.getCallback(this) }
+    protected open val delegate: STBaseActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
 
-    open val disposables: CompositeDisposable = CompositeDisposable()
-
-    open var statusBar: ImmersionBar? = null
-
+    override fun callback(): ((bundle: Bundle?) -> Unit?)? = delegate.callback()
+    override fun disposables(): CompositeDisposable = delegate.disposables()
+    override fun statusBar(): ImmersionBar? = delegate.statusBar()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (enableImmersionStatusBar) {
-            //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
-            statusBar = ImmersionBar.with(this)
-                .transparentStatusBar()
-                .statusBarColorInt(Color.TRANSPARENT)
-                .navigationBarEnable(false)
-                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
-            statusBar?.init()
-        }
-
-        if (enableSwipeBack) {
-            SwipeBackHelper.onCreate(this)
-            SwipeBackHelper.getCurrentPage(this)//get current instance
-                .setSwipeBackEnable(enableSwipeBack)//on-off
-                //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-                .setClosePercent(0.7f)//close activity when swipe over this
-                .setSwipeRelateEnable(true)//if should move together with the following Activity
-                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
-            /*.addListener(object : SwipeListener {
-            override fun onScrollToClose() {
-            }
-
-            override fun onEdgeTouch() {
-            }
-
-            override fun onScroll(p0: Float, p1: Int) {
-            }
-        })*/
-
-        }
-
+        delegate.onCreate(savedInstanceState)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        if (enableSwipeBack) SwipeBackHelper.onPostCreate(this)
+        delegate.onPostCreate(savedInstanceState)
     }
 
     override fun onResume() {
         super.onResume()
-        STDebugManager.showActivityInfo(this)
+        delegate.onResume()
     }
 
     override fun onDestroy() {
-        disposables.dispose()
-        statusBar?.destroy()
-        if (enableSwipeBack) SwipeBackHelper.onDestroy(this)
-        STRouteManager.removeCallback(this)
         super.onDestroy()
+        delegate.onDestroy()
     }
 
-    open fun onBackPressedIntercept(): Boolean = false
+    override fun onBackPressedIntercept(): Boolean = delegate.onBackPressedIntercept()
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (onBackPressedIntercept()) return true
-
-            window.decorView.clearAnimation()
-            supportFragmentManager.fragments.firstOrNull()?.let {
-                if (it is STBaseFragment.OnBackPressedListener) {
-                    if (it.onBackPressed()) {
-                        supportFragmentManager.popBackStackImmediate()
-                        return true
-                    }
-                }
-            }
-
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                if (enableExitWithDoubleBackPressed) exitApp() else finish()
-            } else supportFragmentManager.popBackStackImmediate()
-            return true
+        return if (delegate.onKeyDown(keyCode, event)) {
+            true
         } else {
-            return super.onKeyDown(keyCode, event)
+            super.onKeyDown(keyCode, event)
         }
     }
 
-    protected var exitTime: Long = 0
-    protected var enableSwipeBack = true
-    protected var enableImmersionStatusBar = true
-    protected var enableImmersionStatusBarWithDarkFont = false
-    protected var enableExitWithDoubleBackPressed = false
-
-    protected fun exitApp() = if (System.currentTimeMillis() - exitTime > 2000) {
-        STToastUtil.show("再按一次退出程序")
-        exitTime = System.currentTimeMillis()
-    } else {
-        if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
-        STInitializer.quitApplication()
-    }
+    override fun enableSwipeBack(): Boolean = delegate.enableSwipeBack()
+    override fun enableSwipeBack(enable: Boolean) = delegate.enableSwipeBack(enable)
+    override fun enableImmersionStatusBar(): Boolean = delegate.enableImmersionStatusBar()
+    override fun enableImmersionStatusBar(enable: Boolean) = delegate.enableImmersionStatusBar(enable)
+    override fun enableImmersionStatusBarWithDarkFont(): Boolean = delegate.enableImmersionStatusBarWithDarkFont()
+    override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
+    override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
+    override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
+    override fun quitApplication() = delegate.quitApplication()
 }

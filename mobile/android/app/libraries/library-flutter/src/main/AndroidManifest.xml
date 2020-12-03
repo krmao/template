@@ -9,7 +9,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Normal"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="adjustResize">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
@@ -17,7 +17,7 @@
                  defined in @style/LaunchTheme). -->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="true" />
+                android:value="false" />
 
             <!-- Flutter 闪屏页 -->
             <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
@@ -29,7 +29,7 @@
         <activity
             android:name="com.smart.library.flutter.test.MineActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/STAppTheme.Normal"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!--<activity

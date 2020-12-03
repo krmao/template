@@ -48,7 +48,7 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
     private var reactInstanceManager: ReactInstanceManager? = null
 
-    private val moduleName: String? by lazy {  intent.getStringExtra(KEY_START_COMPONENT) }
+    private val moduleName: String? by lazy { intent.getStringExtra(KEY_START_COMPONENT) }
 
     private val initialProperties: Bundle? by lazy { intent.extras }
 
@@ -72,28 +72,28 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
     private val startTime = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableImmersionStatusBar = true
-        enableImmersionStatusBarWithDarkFont = paramDarkFont == 1
-        enableExitWithDoubleBackPressed = paramDoubleBack == 1
-        enableSwipeBack = !enableExitWithDoubleBackPressed && (paramSwipeBack == 1)
+        enableImmersionStatusBar(true)
+        enableImmersionStatusBarWithDarkFont(paramDarkFont == 1)
+        enableExitWithDoubleBackPressed(paramDoubleBack == 1)
+        enableSwipeBack(!enableExitWithDoubleBackPressed() && (paramSwipeBack == 1))
 
         STLogUtil.v(TAG, "initialProperties:$initialProperties")
         STLogUtil.v(TAG, "pageName:$pageName")
         STLogUtil.v(TAG, "params:$params")
         STLogUtil.v(TAG, "paramSwipeBack:$paramSwipeBack")
         STLogUtil.v(TAG, "paramDarkFont:$paramDarkFont")
-        STLogUtil.v(TAG, "enableImmersionStatusBar:$enableImmersionStatusBar")
-        STLogUtil.v(TAG, "enableImmersionStatusBarWithDarkFont:$enableImmersionStatusBarWithDarkFont")
-        STLogUtil.v(TAG, "enableExitWithDoubleBackPressed:$enableExitWithDoubleBackPressed")
-        STLogUtil.v(TAG, "enableSwipeBack:$enableSwipeBack")
+        STLogUtil.v(TAG, "enableImmersionStatusBar:${enableImmersionStatusBar()}")
+        STLogUtil.v(TAG, "enableImmersionStatusBarWithDarkFont:${(enableImmersionStatusBarWithDarkFont())}")
+        STLogUtil.v(TAG, "enableExitWithDoubleBackPressed:${(enableExitWithDoubleBackPressed())}")
+        STLogUtil.v(TAG, "enableSwipeBack:${(enableSwipeBack())}")
 
         super.onCreate(savedInstanceState)
 
         setContentView(
-                FrameLayout(this).apply {
-                    this.fitsSystemWindows = false
-                    this.addView(reactRootView)
-                }
+            FrameLayout(this).apply {
+                this.fitsSystemWindows = false
+                this.addView(reactRootView)
+            }
         )
 
         STDeployManager.REACT_NATIVE.onCreate(this, object : STIDeployCheckUpdateCallback {
@@ -234,8 +234,8 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
      */
     override fun invokeDefaultOnBackPressed() {
         STLogUtil.d(TAG, "invokeDefaultOnBackPressed")
-        if (enableExitWithDoubleBackPressed) {
-            exitApp()
+        if (enableExitWithDoubleBackPressed()) {
+            quitApplication()
         } else {
             super.onBackPressed()
         }

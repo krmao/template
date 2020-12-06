@@ -5,6 +5,6 @@ import io.flutter.embedding.engine.FlutterEngine
 object STFlutterPluginRegistrant {
     @JvmStatic
     fun registerWith(flutterEngine: FlutterEngine) {
-        flutterEngine.plugins.add(STFlutterBridgeChannel)
+        flutterEngine.plugins.add(STFlutterBridgeChannel.INSTANCE())
     }
 }

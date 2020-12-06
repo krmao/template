@@ -70,7 +70,7 @@ object STFlutterInitializer {
             }
 
             override fun onPluginsRegistered() {
-                STLogUtil.w(TAG, "onPluginsRegistered ${FlutterBoost.instance().engineProvider().plugins.toString()}")
+                STLogUtil.w(TAG, "onPluginsRegistered ${FlutterBoost.instance().engineProvider().plugins}")
             }
 
             override fun onEngineDestroy() {
@@ -92,7 +92,7 @@ object STFlutterInitializer {
             .build()
         // 初始化
 
-        STFlutterBridgeChannel.registerPlugins(
+        STFlutterBridgeChannel.INSTANCE().registerPlugins(
             mutableListOf(
                 STFlutterPagePlugin(),
                 STFlutterToastPlugin(),

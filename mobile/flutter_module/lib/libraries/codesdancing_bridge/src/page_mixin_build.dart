@@ -10,7 +10,7 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
   //region build
 
   Widget buildBase(BuildContext context) {
-    print("[page_widget] $runtimeType - build context=$context");
+    print("[page] $runtimeType - build context=$context");
     this.context = context;
 
     if (statusBarColor == null) statusBarColor = Colors.blueGrey;
@@ -34,7 +34,7 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
       body: Builder(
         builder: (BuildContext context) {
           scaffoldContext = context;
-          print("[page_widget] $runtimeType - build scaffoldContext=$scaffoldContext");
+          print("[page] $runtimeType - build scaffoldContext=$scaffoldContext");
           return SafeArea(
             top: enableSafeArea && enableSafeAreaTop,
             left: enableSafeArea && enableSafeAreaLeft,
@@ -82,17 +82,17 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
   ///region push and pop
 
   Future<T> push<T extends Object>(BuildContext context, Route<T> route) {
-    print("[page_widget] $runtimeType - push");
+    print("[page] $runtimeType - push");
     return Navigator.of(context).push(route);
   }
 
   Future<T> pushNamed<T extends Object>(BuildContext context, String routeName, {Object arguments}) {
-    print("[page_widget] $runtimeType - pushNamed $routeName");
+    print("[page] $runtimeType - pushNamed $routeName");
     return Navigator.of(context).pushNamed<T>(routeName, arguments: arguments);
   }
 
   dynamic pop<T extends Object>(BuildContext context, [T result]) {
-    print("[page_widget] $runtimeType - pop");
+    print("[page] $runtimeType - pop");
     final ModalRoute<dynamic> parentRoute = ModalRoute.of(context);
     final bool canPop = parentRoute?.canPop ?? false;
     if (canPop) {

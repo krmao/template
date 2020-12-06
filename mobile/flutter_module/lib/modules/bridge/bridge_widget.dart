@@ -26,8 +26,8 @@ class BridgeWidgetState extends PageState {
           () => {
             FlutterRouter.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then(
               (Map<String, dynamic> result) {
-                print("URL_MINE did recieve second route result");
-                print("URL_MINE did recieve second route result $result");
+                print("URL_MINE did receive second route result");
+                print("URL_MINE did receive second route result $result");
               },
             ),
           },

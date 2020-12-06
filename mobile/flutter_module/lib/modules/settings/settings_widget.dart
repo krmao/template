@@ -1,18 +1,22 @@
-import '../../settings/imports/flutter_imports_material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_module/libraries/codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_module/modules/common/common_util.dart';
 
-class SettingsWidget extends StatelessWidget {
+class SettingsState extends PageState {
   final Map params;
 
-  SettingsWidget(this.params);
+  SettingsState(this.params);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildBase(BuildContext context) {
+    statusBarColor = Colors.orange;
+    return super.buildBase(context);
+  }
+
+  @override
+  Widget buildBaseChild(BuildContext context) {
     print("SettingsWidget build");
-    return Scaffold(
-        backgroundColor: Colors.orange,
-        appBar: AppBar(
-            title: Text('SETTINGS')
-        ),
-        body: CommonUtils.getColumn(context, params));
+    return CommonUtils.getColumn(context, params);
   }
 }

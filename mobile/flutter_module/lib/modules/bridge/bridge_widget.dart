@@ -1,25 +1,25 @@
-import '../../settings/imports/flutter_imports_material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_module/libraries/codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_module/libraries/codesdancing_bridge/src/page_state.dart';
+import 'package:flutter_module/settings/router/flutter_router.dart';
 
-class BridgeWidget extends StatefulWidget {
-  @override
-  createState() => BridgeWidgetState();
-}
-
-class BridgeWidgetState extends STBaseStatefulWidgetState<BridgeWidget> {
+class BridgeWidgetState extends PageState {
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    loadingWidget = STBaseLoadingWidget(isShow: false);
+    loadingWidget = Loading(isShow: false);
     statusBarColor = Color(0xff00008b);
     super.initState();
   }
 
   @override
-  Widget buildBody() {
+  Widget buildBaseChild(BuildContext context) {
     return ListView(
       children: <Widget>[
+        getItemWidget('show native toast', () => {Toast.show("I am native Toast!!!")}),
         getItemWidget('open flutter player', () => {FlutterRouter.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
         getItemWidget(
           'open native mine',
@@ -79,11 +79,7 @@ class BridgeWidgetState extends STBaseStatefulWidgetState<BridgeWidget> {
                 onTap: () => Future.delayed(Duration(milliseconds: 200), () => onTap()), // 打开页面看不到水波纹效果, 加延时就可以
                 splashColor: Color(0xff191970),
                 borderRadius: new BorderRadius.all(new Radius.circular(0.0)),
-                child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(label, style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold))))),
+                child: Container(width: double.infinity, alignment: Alignment.centerLeft, padding: const EdgeInsets.all(15.0), child: Text(label, style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold))))),
       ),
     );
   }

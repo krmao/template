@@ -71,8 +71,7 @@ object STThreadUtils {
     }
 
     @JvmStatic
-    val isMainThread: Boolean
-        get() = Looper.myLooper() == Looper.getMainLooper()
+    fun isMainThread(): Boolean = Looper.myLooper() == Looper.getMainLooper()
 
     @JvmStatic
     fun removeCallback(runnable: Runnable) {

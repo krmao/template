@@ -1,4 +1,8 @@
-import '../../settings/imports/flutter_imports_material.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_boost/container/boost_container.dart';
+import 'package:flutter_module/settings/router/flutter_router.dart';
 
 class CommonUtils {
   static Widget getColumn(BuildContext context, Map params) {

@@ -1,4 +1,9 @@
-import '../../settings/imports/flutter_imports_material.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_module/modules/player/player_tab_home_widget.dart';
+
+import 'player_tab_mine_widget.dart';
 
 class MainTabWidgetState extends State<StatefulWidget> {
   PageController controller;
@@ -17,8 +22,6 @@ class MainTabWidgetState extends State<StatefulWidget> {
     }
 
     // init at widget which parent state is MaterialApp
-    STBaseNativeManager.initialize(context);
-
     controller = PageController(initialPage: 0);
     return Scaffold(
         backgroundColor: Colors.white,

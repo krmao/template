@@ -11,14 +11,14 @@ const DEFAULT_LOADING_HIDE_DELAY = 500;
 
 /// loading widget for flutter
 // ignore: must_be_immutable
-class STBaseLoadingWidget extends StatefulWidget {
+class Loading extends StatefulWidget {
 
   final double width;
   final double height;
   bool isShow;
   final _loadingState = _LoadingState();
 
-  STBaseLoadingWidget({ this.width = DEFAULT_LOADING_WIDTH, this.height = DEFAULT_LOADING_WIDTH, this.isShow = false, Key key}) : super(key: key);
+  Loading({ this.width = DEFAULT_LOADING_WIDTH, this.height = DEFAULT_LOADING_WIDTH, this.isShow = false, Key key}) : super(key: key);
 
   @override
   createState() => _loadingState;
@@ -29,7 +29,7 @@ class STBaseLoadingWidget extends StatefulWidget {
 
 }
 
-class _LoadingState extends State<STBaseLoadingWidget> {
+class _LoadingState extends State<Loading> {
 
   void _showLoading({int delay }) => Future.delayed(Duration(milliseconds: delay ?? DEFAULT_LOADING_SHOW_DELAY), () => setState(() => widget.isShow = true));
 

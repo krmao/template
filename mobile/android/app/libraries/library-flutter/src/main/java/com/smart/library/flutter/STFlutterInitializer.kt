@@ -8,6 +8,7 @@ import androidx.annotation.UiThread
 import com.idlefish.flutterboost.FlutterBoost
 import com.idlefish.flutterboost.interfaces.INativeRouter
 import com.smart.library.STInitializer
+import com.smart.library.flutter.plugins.*
 import com.smart.library.util.STLogUtil
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterEngineProvider
@@ -50,6 +51,12 @@ object STFlutterInitializer {
             STFlutterRouter.openByName(context, url, urlParams, requestCode, exts)
         }
 
+        val initialRoute = "flutter_settings"
+        val flutterEngine: FlutterEngine? = getOrCreateCachedFlutterEngine(application, cacheEngineId = "flutter_boost_engine", initialRoute = initialRoute, automaticallyRegisterPlugins = false)
+        val flutterEngineProvider: FlutterEngineProvider? = if (flutterEngine == null) null else {
+            FlutterEngineProvider { flutterEngine }
+        }
+
         // 生命周期监听
         val boostLifecycleListener: FlutterBoost.BoostLifecycleListener = object : FlutterBoost.BoostLifecycleListener {
             override fun beforeCreateEngine() {
@@ -59,10 +66,11 @@ object STFlutterInitializer {
             override fun onEngineCreated() {
                 // 引擎创建后的操作，比如自定义MethodChannel，PlatformView等
                 STLogUtil.w(TAG, "onEngineCreated")
+                STFlutterPluginRegistrant.registerWith(FlutterBoost.instance().engineProvider())
             }
 
             override fun onPluginsRegistered() {
-                STLogUtil.w(TAG, "onPluginsRegistered")
+                STLogUtil.w(TAG, "onPluginsRegistered ${FlutterBoost.instance().engineProvider().plugins.toString()}")
             }
 
             override fun onEngineDestroy() {
@@ -70,11 +78,6 @@ object STFlutterInitializer {
             }
         }
 
-        val initialRoute = "flutter_settings"
-        val flutterEngine: FlutterEngine? = getOrCreateCachedFlutterEngine(application, cacheEngineId = "flutter_boost_engine", initialRoute = initialRoute, automaticallyRegisterPlugins = false)
-        val flutterEngineProvider: FlutterEngineProvider? = if (flutterEngine == null) null else {
-            FlutterEngineProvider { flutterEngine }
-        }
         // 生成Platform配置
         @Suppress("DEPRECATION")
         val platform = FlutterBoost.ConfigBuilder(application, router)
@@ -88,6 +91,18 @@ object STFlutterInitializer {
             .shellArgs(listOf())
             .build()
         // 初始化
+
+        STFlutterBridgeChannel.registerPlugins(
+            mutableListOf(
+                STFlutterPagePlugin(),
+                STFlutterToastPlugin(),
+                STFlutterURLPlugin(),
+                STFlutterEnvPlugin(),
+                STFlutterEventPlugin(),
+                STFlutterApplicationPlugin()
+            )
+        )
+
         FlutterBoost.instance().init(platform)
         isInitialized = true
     }

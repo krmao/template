@@ -243,6 +243,9 @@ object STInitializer {
     fun debug(): Boolean = this.config?.appDebug ?: false
 
     @JvmStatic
+    fun currentActivity(): Activity? = this.configLifecycle?.activityLifecycleCallbacks?.currentActivity()
+
+    @JvmStatic
     fun application(): Application? = this.config?.application
 
     @JvmStatic

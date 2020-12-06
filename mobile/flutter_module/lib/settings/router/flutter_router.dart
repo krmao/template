@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_boost/flutter_boost.dart';
+import 'package:flutter_module/libraries/codesdancing_bridge/codesdancing_bridge.dart';
 import 'package:flutter_module/modules/bridge/bridge_widget.dart';
-
-import '../../settings/imports/flutter_imports_material.dart';
+import 'package:flutter_module/modules/order/order_widget.dart';
+import 'package:flutter_module/modules/player/player_tab_widget_state.dart';
+import 'package:flutter_module/modules/settings/settings_widget.dart';
 
 class FlutterRouter {
   static const String URL_NATIVE_MINE = "native_mine";
@@ -14,10 +18,10 @@ class FlutterRouter {
   static initialize() {
     if (_isInitialized) return;
     FlutterBoost.singleton.registerPageBuilders({
-      FlutterRouter.URL_FLUTTER_SETTINGS: (pageName, params, _) => SettingsWidget(params),
+      FlutterRouter.URL_FLUTTER_SETTINGS: (pageName, params, _) => PageWidget(state: SettingsState(params)),
       FlutterRouter.URL_FLUTTER_ORDER: (pageName, params, _) => OrderWidget(),
-      FlutterRouter.URL_FLUTTER_PLAYER: (pageName, params, _) => STBaseStatefulWidget(state: MainTabWidgetState()),
-      FlutterRouter.URL_FLUTTER_BRIDGE: (pageName, params, _) => BridgeWidget()
+      FlutterRouter.URL_FLUTTER_PLAYER: (pageName, params, _) => PageWidget(state: MainTabWidgetState()),
+      FlutterRouter.URL_FLUTTER_BRIDGE: (pageName, params, _) => PageWidget(state: BridgeWidgetState())
     });
     FlutterBoost.singleton.registerRouteSettingsBuilder((url, {exts, urlParams}) => BoostRouteSettings(uniqueId: '${url}_${DateTime.now().millisecondsSinceEpoch}', name: url, params: urlParams));
     FlutterBoost.singleton.registerDefaultPageBuilder((pageName, params, uniqueId) {
@@ -36,14 +40,22 @@ class FlutterRouter {
           ]));
     });
 
-    FlutterBoost.singleton.addBoostNavigatorObserver(BoostNavigatorObserver());
-    FlutterBoost.singleton.addContainerObserver((ContainerOperation operation, BoostContainerSettings settings) {});
+    FlutterBoost.singleton.addBoostNavigatorObserver(PageRouteObserver.singleton);
+    FlutterBoost.singleton.addContainerObserver((ContainerOperation operation, BoostContainerSettings settings) {
+      print("flutter boostContainerObserver");
+    });
 
-    FlutterBoostAPI.singleton.routeSettingsBuilder = (String url, {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) => BoostRouteSettings(
-          uniqueId: '${url}_${DateTime.now().millisecondsSinceEpoch}',
-          name: url,
-          params: urlParams,
-        );
+    FlutterBoost.singleton.addBoostContainerLifeCycleObserver((state, settings) {
+      if (state == ContainerLifeCycle.Appear) {
+        PageRouteObserver.singleton.pageDidAppear(settings.name, settings.uniqueId);
+      } else if (state == ContainerLifeCycle.Disappear) {
+        PageRouteObserver.singleton.pageDidDisappear(settings.name, settings.uniqueId);
+      } else if (state == ContainerLifeCycle.Destroy) {
+        PageRouteObserver.singleton.pageDidDestroy(settings.name, settings.uniqueId);
+      }
+    });
+
+    FlutterBoostAPI.singleton.routeSettingsBuilder = (String url, {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) => BoostRouteSettings(uniqueId: '${url}_${DateTime.now().millisecondsSinceEpoch}', name: url, params: urlParams);
 
     _isInitialized = true;
   }
@@ -52,9 +64,8 @@ class FlutterRouter {
     return FlutterBoost.singleton.open(url, urlParams: urlParams, exts: exts);
   }
 
-  /**
-   * 有 bug, 暂时不起作用
-   */
+  /// 有 bug, 暂时不起作用
+  // ignore: unused_element
   static Future<Map<String, dynamic>> _openInCurrentContainer(String url, {Map<String, dynamic> urlParams, Map<String, dynamic> exts}) {
     return FlutterBoost.singleton.openInCurrentContainer(url, urlParams: urlParams, exts: exts);
   }
@@ -73,28 +84,5 @@ class FlutterRouter {
 
   static Future<bool> closeByContext(BuildContext context, {Map<String, dynamic> result, Map<String, dynamic> exts}) {
     return FlutterBoost.singleton.closeByContext(context, result: result, exts: exts);
-  }
-}
-
-class BoostNavigatorObserver extends ContainerNavigatorObserver {
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    //新页面已经push完成
-    print("flutterboost#didPush");
-  }
-
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    print("flutterboost#didPop");
-  }
-
-  void didRemove(Route<dynamic> route, Route<dynamic> previousRoute) {
-    print("flutterboost#didRemove");
-  }
-
-  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
-    print("flutterboost#didReplace");
-  }
-
-  void willPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    print("flutterboost#willPush");
   }
 }

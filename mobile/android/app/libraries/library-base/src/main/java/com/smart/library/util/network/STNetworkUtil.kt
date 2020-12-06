@@ -2,13 +2,11 @@
 
 package com.smart.library.util.network
 
-import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.telephony.TelephonyManager
-import android.text.TextUtils
-import androidx.annotation.RequiresPermission
 import com.smart.library.STInitializer
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -16,29 +14,12 @@ import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 object STNetworkUtil {
-
-    enum class Type {
-        G2, G3, G4, NONE, WIFI;
-
-        var provider = ""
-
-        val isMobile: Boolean
-            get() = this == G2 || this == G3 || this == G4
-
-        override fun toString(): String {
-            return if (isMobile) {
-                if (TextUtils.isEmpty(provider)) "" else provider + ":" + super.toString()
-            } else
-                super.toString()
-        }
-    }
-
-    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    @JvmStatic
     fun isNetworkAvailable(): Boolean = getNetworkInfo()?.isAvailable ?: false
 
     @JvmStatic
     @JvmOverloads
-    fun getNetworkInfo(connectivityManager: ConnectivityManager? = STInitializer.application()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? = connectivityManager?.activeNetworkInfo
+    fun getNetworkInfo(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = application?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? = connectivityManager?.activeNetworkInfo
 
     @JvmStatic
     fun getIPAddress(useIPv4: Boolean): String? {
@@ -66,60 +47,45 @@ object STNetworkUtil {
     }
 
     @JvmStatic
-    @JvmOverloads
-    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
-    fun getType(connectivityManager: ConnectivityManager? = STInitializer.application()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): Type {
-        var networkType = Type.NONE
-        val networkInfo = getNetworkInfo(connectivityManager)
-        if (networkInfo != null && networkInfo.isConnected && networkInfo.isAvailable) {
-            networkType = updateNetProvider(networkInfo.type)
-        }
-        return networkType
+    fun getNetworkType(application: Application? = STInitializer.application()): Int {
+        return getTelephonyService(application)?.networkType ?: TelephonyManager.NETWORK_TYPE_UNKNOWN
     }
 
-    @SuppressLint("HardwareIds")
-    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
-    private fun updateNetProvider(type: Int): Type {
-        var networkType = Type.NONE
-        val application = STInitializer.application()
-        val tempType = getSwitchedType(type)
-        val telephonyManager = application?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
-        var subscriberId: String? = null
-        var netType = 0
-        if (telephonyManager != null) {
-            subscriberId = telephonyManager.subscriberId
-            netType = telephonyManager.networkType
-        }
-        val provide = getNetworkProvider(subscriberId)
-        if (tempType == ConnectivityManager.TYPE_WIFI) {
-            networkType = Type.WIFI
-        } else if (tempType == ConnectivityManager.TYPE_MOBILE) {
-            when (netType) {
-                TelephonyManager.NETWORK_TYPE_GPRS, TelephonyManager.NETWORK_TYPE_EDGE, TelephonyManager.NETWORK_TYPE_CDMA, TelephonyManager.NETWORK_TYPE_1xRTT, TelephonyManager.NETWORK_TYPE_IDEN -> networkType = Type.G2
-                TelephonyManager.NETWORK_TYPE_UMTS, TelephonyManager.NETWORK_TYPE_EVDO_0, TelephonyManager.NETWORK_TYPE_EVDO_A, TelephonyManager.NETWORK_TYPE_HSDPA, TelephonyManager.NETWORK_TYPE_HSUPA, TelephonyManager.NETWORK_TYPE_HSPA, TelephonyManager.NETWORK_TYPE_EVDO_B, TelephonyManager.NETWORK_TYPE_EHRPD, TelephonyManager.NETWORK_TYPE_HSPAP -> networkType = Type.G3
-                TelephonyManager.NETWORK_TYPE_LTE -> networkType = Type.G4
+    @JvmStatic
+    fun getTelephonyService(application: Application? = STInitializer.application()) = application?.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+
+    private fun getNetworkProviderIndex(application: Application? = STInitializer.application()): Int {
+        val telephonyManager = getTelephonyService(application)
+        val operator = telephonyManager?.networkOperator
+        var provide = -1
+        if (operator != null && operator.length > 3) {
+            val mnc = operator.substring(3)
+            if (!mnc.equals("00", ignoreCase = true) && !mnc.equals("02", ignoreCase = true) && !mnc.equals("08", ignoreCase = true) && !mnc.equals("07", ignoreCase = true)) {
+                if (!mnc.equals("01", ignoreCase = true) && !mnc.equals("06", ignoreCase = true) && !mnc.equals("09", ignoreCase = true)) {
+                    if (mnc.equals("03", ignoreCase = true) || mnc.equals("05", ignoreCase = true) || mnc.equals("11", ignoreCase = true)) {
+                        provide = 3
+                    }
+                } else {
+                    provide = 2
+                }
+            } else {
+                provide = 1
             }
         }
-        networkType.provider = provide
-        return networkType
+        return provide
     }
 
-    private fun getSwitchedType(type: Int): Int {
-        @Suppress("DEPRECATION")
-        (return when (type) {
-            ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI, ConnectivityManager.TYPE_MOBILE_MMS, ConnectivityManager.TYPE_MOBILE_SUPL -> ConnectivityManager.TYPE_MOBILE
-            else -> type
-        })
-    }
-
-    private fun getNetworkProvider(subscriberId: String?): String {
-        var provide = "未知"
-        if (subscriberId != null) {
-            if (subscriberId.startsWith("46000") || subscriberId.startsWith("46002") || subscriberId.startsWith("46007")) {
+    @JvmStatic
+    fun getNetworkProvider(): String? {
+        var provide = ""
+        when (getNetworkProviderIndex()) {
+            1 -> {
                 provide = "移动"
-            } else if (subscriberId.startsWith("46001")) {
+            }
+            2 -> {
                 provide = "联通"
-            } else if (subscriberId.startsWith("46003")) {
+            }
+            3 -> {
                 provide = "电信"
             }
         }

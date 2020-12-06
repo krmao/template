@@ -1,18 +1,25 @@
 //import 'package:flutter/cupertino.dart';
-import '../settings/imports/flutter_imports_material.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_boost/flutter_boost.dart';
+
+import 'app_constants.dart';
+import 'page_route_observer.dart';
 
 typedef void OnInitStateCallback();
 
-class STBaseApplication extends StatefulWidget {
+class App extends StatefulWidget {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
   final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
-  STBaseApplication(
+  App(
       {Key key,
       @required this.child,
-      this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
+      this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
       this.enableSafeArea = true,
       this.enableSafeAreaTop = true,
       this.enableSafeAreaBottom = true,
@@ -22,7 +29,7 @@ class STBaseApplication extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => STBaseApplicationState(
+  State<StatefulWidget> createState() => AppState(
       child: this.child,
       statusBarColor: this.statusBarColor,
       enableSafeArea: this.enableSafeArea,
@@ -33,15 +40,15 @@ class STBaseApplication extends StatefulWidget {
       onInitStateCallback: this.onInitStateCallback);
 }
 
-class STBaseApplicationState extends State<STBaseApplication> {
+class AppState extends State<App> {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
   final bool enableSafeArea, enableSafeAreaTop, enableSafeAreaBottom, enableSafeAreaLeft, enableSafeAreaRight;
 
-  STBaseApplicationState(
+  AppState(
       {@required this.child,
-      this.statusBarColor = STBaseConstants.DEFAULT_STATUS_BAR_COLOR,
+      this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
       this.enableSafeArea = true,
       this.enableSafeAreaTop = true,
       this.enableSafeAreaBottom = true,
@@ -69,6 +76,7 @@ class STBaseApplicationState extends State<STBaseApplication> {
         builder: FlutterBoost.init(postPush: (String pageName, String uniqueId, Map params, Route route, Future _) {
           print("onRoutePushed -> pageName:$pageName, uniqueId:$uniqueId, params:$params");
         }),
+        navigatorObservers: [PageRouteObserver.singleton],
         home: Scaffold(
             backgroundColor: this.statusBarColor,
             // android status bar and iphone X top and bottom edges color
@@ -95,12 +103,12 @@ class STBaseApplicationState extends State<STBaseApplication> {
             // the app on. For desktop platforms, the controls will be smaller and
             // closer together (more dense) than on mobile platforms.
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            primaryColor: STBaseConstants.PRIMARY_COLOR,
-            accentColor: STBaseConstants.ACCENT_COLOR,
+            primaryColor: Constants.PRIMARY_COLOR,
+            accentColor: Constants.ACCENT_COLOR,
             primaryColorBrightness: Brightness.light,
-            hintColor: STBaseConstants.HINT_COLOR,
-            highlightColor: STBaseConstants.HIGHLIGHT_COLOR,
-            inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: STBaseConstants.INPUT_DECORATION_COLOR))));
+            hintColor: Constants.HINT_COLOR,
+            highlightColor: Constants.HIGHLIGHT_COLOR,
+            inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
   }
 }
 

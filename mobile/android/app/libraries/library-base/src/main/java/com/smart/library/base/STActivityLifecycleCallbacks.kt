@@ -15,6 +15,8 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
         const val TAG = "[activityLifecycle]"
     }
 
+    private var currentActivity: Activity? = null
+    fun currentActivity(): Activity? = currentActivity
     private val activityList: MutableList<WeakReference<Activity?>?> = LinkedList()
     var activityStartedCount: Int = 0
         private set
@@ -32,6 +34,7 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
         }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        currentActivity = activity
         activityList.add(WeakReference(activity))
     }
 
@@ -51,7 +54,9 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
 
     override fun onActivityPaused(activity: Activity?) = Unit
 
-    override fun onActivityResumed(activity: Activity?) = Unit
+    override fun onActivityResumed(activity: Activity?) {
+        currentActivity = activity
+    }
 
     override fun onActivityStarted(activity: Activity) {
         isApplicationVisible = ++activityStartedCount > activityStoppedCount

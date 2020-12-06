@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 /// title bar widget for flutter
-class STBaseTitleBarWidget extends StatefulWidget {
+class TitleBar extends StatefulWidget {
   static const DEFAULT_TITLE_HEIGHT = 48.0;
 
   final double width;
@@ -17,7 +17,7 @@ class STBaseTitleBarWidget extends StatefulWidget {
   final Color titleBackgroundColor;
   final bool disableBack;
 
-  STBaseTitleBarWidget(
+  TitleBar(
       {this.title,
       this.width = double.infinity,
       this.height = DEFAULT_TITLE_HEIGHT,
@@ -30,10 +30,10 @@ class STBaseTitleBarWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  createState() => _STBaseTitleBarWidgetState();
+  createState() => _TitleBarState();
 }
 
-class _STBaseTitleBarWidgetState extends State<STBaseTitleBarWidget> {
+class _TitleBarState extends State<TitleBar> {
   @override
   Widget build(BuildContext context) {
     return Container(

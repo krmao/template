@@ -33,7 +33,7 @@ buildscript {
             classpath "com.tencent.bugly:tinker-support:1.0.8"
         }
 
-        if (gradle.ext.modules.videoplayer.enable == true) {
+        if (gradle.ext.modules.library_videoplayer.enable == true) {
             // 为了使得 butterKnife 能在 library 中使用
             classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.1'
         }
@@ -42,10 +42,10 @@ buildscript {
 
 allprojects {
     repositories {
-        if (gradle.ext.modules.flutter.enable == true) {
-            if (gradle.ext.modules.flutter.repositoryLocal.enable == true) {
+        if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
+            if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.enable == true) {
                 String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
-                maven { url gradle.ext.modules.flutter.repositoryLocal.url }
+                maven { url gradle.ext.modules.library_flutter.lib_flutter.repository_local.url }
                 maven { url "$storageUrl/download.flutter.io" }
             } else {
                 maven { url "$rootDir/app/libraries/repo/host/outputs/repo" }
@@ -53,13 +53,13 @@ allprojects {
             }
         }
 
-        if (gradle.ext.modules.reactNative.enable == true) {
-            if (gradle.ext.modules.reactNative.repositoryLocal.enable == true) {
-                maven { url gradle.ext.modules.reactNative.repositoryLocal.url }
+        if (gradle.ext.modules.library_reactnative.lib_reactnative.enable == true) {
+            if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.enable == true) {
+                maven { url gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.url }
             } else {
-                maven { url "${gradle.ext.modules.reactNative.nodeModulesPath}/react-native/android" } // All of React Native (JS, Android binaries) is installed from npm
+                maven { url "${gradle.ext.modules.library_reactnative.lib_reactnative.nodeModulesPath}/react-native/android" } // All of React Native (JS, Android binaries) is installed from npm
                 // react-native couldn't find DSO to load: libhermes.so
-                maven { url("${gradle.ext.modules.reactNative.nodeModulesPath}/jsc-android/dist") } // Android JSC is installed from npm
+                maven { url("${gradle.ext.modules.library_reactnative.lib_reactnative.nodeModulesPath}/jsc-android/dist") } // Android JSC is installed from npm
             }
         }
 

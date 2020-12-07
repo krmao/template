@@ -13,7 +13,7 @@ dependencies {
     api project(':library-videoplayer-libs-java')
     api project(':library-videoplayer-libs-all-extra')
 
-    if (gradle.ext.modules.videoplayer.enableExoPlayer == true) {
+    if (gradle.ext.modules.library_videoplayer.enableExoPlayer == true) {
         api project(':library-videoplayer-exoplayer')
     }
 }

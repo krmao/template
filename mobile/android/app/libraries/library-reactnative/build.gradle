@@ -20,10 +20,10 @@ dependencies {
 
     api project(':library-base')
 
-    if (gradle.ext.modules.reactNative.repositoryRemote.enable == true) {
-        api gradle.ext.modules.reactNative.repositoryRemote.dependency
-    }else if (gradle.ext.modules.reactNative.repositoryLocal.enable == true) {
-        api gradle.ext.modules.reactNative.repositoryLocal.dependency
+    if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_remote.enable == true) {
+        api gradle.ext.modules.library_reactnative.lib_reactnative.repository_remote.dependency
+    }else if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.enable == true) {
+        api gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.dependency
     } else {
         api project(':react-native-gesture-handler')
         api project(':react-native-safe-area-context')
@@ -32,3 +32,5 @@ dependencies {
         api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
     }
 }
+
+apply from: "./upload_to_jcenter.gradle"

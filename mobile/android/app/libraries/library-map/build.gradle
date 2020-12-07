@@ -13,12 +13,12 @@ android {
     def _jniLibsPath = []
     def _ignoreAssetsPattern = ""
 
-    if (!gradle.ext.modules.map.enableMapNames.contains("baidu")) {
+    if (!gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
         _ignoreAssetsPattern += "<dir>baidu:" // "<dir>dirName:file.txt:!*.*" 冒号分隔, 加 '!' 避免输出警告, '*' 匹配所有
     } else {
         _jniLibsPath.add('libsbaidu')
     }
-    if (!gradle.ext.modules.map.enableMapNames.contains("gaode")) {
+    if (!gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
         _ignoreAssetsPattern += "<dir>gaode:"
     } else {
         _jniLibsPath.add('libs')
@@ -40,12 +40,12 @@ android {
 dependencies {
     def amapType = "map3d"
 
-    if (gradle.ext.modules.map.enableMapNames.contains("baidu")) {
+    if (gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
         api files('libsbaidu/BaiduLBS_Android.jar')
     } else {
         compileOnly files('libsbaidu/BaiduLBS_Android.jar')
     }
-    if (gradle.ext.modules.map.enableMapNames.contains("gaode")) {
+    if (gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
         // api 'com.amap.api:navi-3dmap:latest.integration'         // 导航
         api "com.amap.api:${amapType}:latest.integration"           // 2D/3d地图
         api 'com.amap.api:search:latest.integration'                // 搜索

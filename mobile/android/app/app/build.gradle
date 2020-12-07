@@ -60,22 +60,22 @@ android {
 
         println "\ndebug=${rootProject.ext.debug}, \n" +
                 "VERSION_RN=${rootProject.ext.versionRN}, \n" +
-                "MAP_ENABLE=${gradle.ext.modules.map.enable}, \n" +
-                "ENABLE_MAP_NAMES=${gradle.ext.modules.map.enableMapNames}, \n" +
-                "BAIDU_MAP_KEY=${gradle.ext.modules.map.baiduKey}, \n" +
-                "GAODE_MAP_KEY=${gradle.ext.modules.map.gaodeKey} \n"
+                "MAP_ENABLE=${gradle.ext.modules.library_map.enable}, \n" +
+                "ENABLE_MAP_NAMES=${gradle.ext.modules.library_map.enableMapNames}, \n" +
+                "BAIDU_MAP_KEY=${gradle.ext.modules.library_map.baiduKey}, \n" +
+                "GAODE_MAP_KEY=${gradle.ext.modules.library_map.gaodeKey} \n"
 
         manifestPlaceholders = [:]
 
-        if (gradle.ext.modules.map.enable == true) {
-            manifestPlaceholders.put('ENABLE_MAP_NAMES', gradle.ext.modules.map.enableMapNames)
-            if (gradle.ext.modules.map.enableMapNames.contains("baidu")) {
-                manifestPlaceholders.put('BAIDU_MAP_KEY', gradle.ext.modules.map.baiduKey)
+        if (gradle.ext.modules.library_map.enable == true) {
+            manifestPlaceholders.put('ENABLE_MAP_NAMES', gradle.ext.modules.library_map.enableMapNames)
+            if (gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
+                manifestPlaceholders.put('BAIDU_MAP_KEY', gradle.ext.modules.library_map.baiduKey)
             } else {
                 manifestPlaceholders.put('BAIDU_MAP_KEY', '')
             }
-            if (gradle.ext.modules.map.enableMapNames.contains("gaode")) {
-                manifestPlaceholders.put('GAODE_MAP_KEY', gradle.ext.modules.map.gaodeKey)
+            if (gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
+                manifestPlaceholders.put('GAODE_MAP_KEY', gradle.ext.modules.library_map.gaodeKey)
             } else {
                 manifestPlaceholders.put('GAODE_MAP_KEY', '')
             }
@@ -130,7 +130,7 @@ android {
             // testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
         }
 
-        /*if (gradle.ext.modules.flutter.enable == true) {
+        /*if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
             profile {
                 initWith debug
             }
@@ -267,32 +267,33 @@ android {
  */
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':library-base')
     implementation project(':library-template-repository')
 
-    if (gradle.ext.modules.liveStreaming.enable == true) {
+    if (gradle.ext.modules.library_livestreaming.enable == true) {
         implementation project(':library-livestreaming')
         implementation project(':library-livestreaming-push')
     }
 
-    if (gradle.ext.modules.flutter.enable == true) {
+    if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
         implementation project(':library-flutter')
     }
-    if (gradle.ext.modules.pictureviewer.enable == true) {
+    if (gradle.ext.modules.library_pictureviewer.enable == true) {
         implementation project(':library-pictureviewer')
     }
 
-    if (gradle.ext.modules.hybird.enable == true) {
+    if (gradle.ext.modules.library_hybird.enable == true) {
         implementation project(':library-hybird')
     }
 
-    if (gradle.ext.modules.map.enable == true) {
+    if (gradle.ext.modules.library_map.enable == true) {
         implementation project(':library-map')
     }
 
-    if (gradle.ext.modules.reactNative.enable == true) {
+    if (gradle.ext.modules.library_reactnative.lib_reactnative.enable == true) {
         implementation project(':library-reactnative')
 
-        if (gradle.ext.modules.reactNative.enableHermes == true) {
+        if (gradle.ext.modules.library_reactnative.lib_reactnative.enableHermes == true) {
             /**
              * Hermes集成
              * Hermes的启用对ReactNative应用提升明显,减小了启动时间和安装包大小还有运行内存的占用。
@@ -315,8 +316,8 @@ dependencies {
         }
     }
 
-    if (gradle.ext.modules.videoplayer.enable == true) {
-        if (gradle.ext.modules.videoplayer.enableSamples == true) {
+    if (gradle.ext.modules.library_videoplayer.enable == true) {
+        if (gradle.ext.modules.library_videoplayer.enableSamples == true) {
             implementation project(':library-videoplayer-samples')
         } else {
             implementation project(':library-videoplayer')

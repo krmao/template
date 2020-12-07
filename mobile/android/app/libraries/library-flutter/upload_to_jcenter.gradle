@@ -36,7 +36,7 @@ def BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
 // def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
 
 def LIBRARY_NAME = 'libs-flutter'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
-def LIBRARY_VERSION = '0.0.1.1'
+def LIBRARY_VERSION = '0.0.1.2'
 def LIBRARY_GROUP_ID = 'com.smart.library'
 def LIBRARY_LABELS = ['flutter']
 def LIBRARY_ARTIFACT_ID = "libs-flutter"

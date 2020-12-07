@@ -20,7 +20,7 @@ gradle.ext {
             'library_flutter'      : [
                     'repository_remote': [
                             'enable'    : false,
-                            'dependency': 'com.smart.library:libs-flutter:0.0.1.1',
+                            'dependency': 'com.smart.library:libs-flutter:0.0.1.2',
                     ],
                     'lib_flutter'      : [
                             'enable'           : true,
@@ -29,7 +29,7 @@ gradle.ext {
                             ],
                             'repository_local' : [
                                     'enable'           : true,
-                                    'url'              : '/Users/krmao/workspace/template/mobile/flutter_module/build/host/outputs/repo',
+                                    'url'              : '/Users/krmao/workspace/template/mobile/flutter/flutter_modules/flutter_module_template/build/host/outputs/repo',
                                     'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
                                     'dependencyProfile': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
                                     'dependencyRelease': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT'

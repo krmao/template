@@ -31,7 +31,7 @@ if __name__ == '__main__':
             flutter_version = value
         if key in ['-c', '--clean']:
             clean = value == "true" or value == "True" or value == "1"
-        if key in ['-c', '--clean']:
+        if key in ['-r', '--release']:
             release = value == "true" or value == "True" or value == "1"
         if key in ['-i', '--info']:
             info = value == "true" or value == "True" or value == "1"
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     print 'arguments -> clean:', clean, ',flutter:', flutter, 'flutter-version:', flutter_version, 'release:', release
 
     if flutter:
-        os.chdir("../flutter_module")
+        os.chdir("../flutter/flutter_modules/flutter_module_template")
         if not os.path.exists(".fvm/flutter_sdk/bin/flutter"):
             print "==========>>>>>>>>>> install flutter sdk start"
             print "current path ->", os.getcwd()
@@ -54,7 +54,7 @@ if __name__ == '__main__':
         print shell_build_flutter_aar
         os.system(shell_build_flutter_aar)
         print "==========>>>>>>>>>> build flutter lib aar end"
-        os.chdir("../android")
+        os.chdir("../../../android")
     print "==========>>>>>>>>>> install android app start"
     print "current path ->", os.getcwd()
     if clean:

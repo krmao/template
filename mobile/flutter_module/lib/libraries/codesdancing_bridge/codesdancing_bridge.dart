@@ -6,6 +6,7 @@ export 'src/widgets/widget_loading.dart';
 export 'src/widgets/widget_titlebar.dart';
 export 'src/app.dart';
 export 'src/app_constants.dart';
+export 'src/bridge_compact.dart';
 export 'src/bridge_application.dart';
 export 'src/bridge.dart';
 export 'src/bridge_env.dart';

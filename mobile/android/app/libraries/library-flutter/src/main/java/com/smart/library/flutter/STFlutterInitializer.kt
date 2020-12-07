@@ -94,6 +94,7 @@ object STFlutterInitializer {
 
         STFlutterBridgeChannel.INSTANCE().registerPlugins(
             mutableListOf(
+                STFlutterBridgeCompactPlugin(),
                 STFlutterPagePlugin(),
                 STFlutterToastPlugin(),
                 STFlutterURLPlugin(),

@@ -22,7 +22,7 @@ module.export = (function(bindObj = null) {
 
     //======================================================================
 
-    _bind.open = function(url, callback) {
+    _bind.c = function(url, callback) {
         let params = JSON.stringify({url: url});
         _bind.invoke("open", params, callback);
     };

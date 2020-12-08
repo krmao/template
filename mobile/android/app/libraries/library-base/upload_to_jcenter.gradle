@@ -11,7 +11,7 @@
  * ../../../gradlew clean :library-base:clean :library-base:uploadToJcenter --info --stacktrace
  *
  * 第三步:
- * 上传以后 到 https://bintray.com/krmao/maven/libs-reactnative 查看, 点击右下角 "Add to JCenter" 按钮请求添加, 接下来就是等待
+ * 上传以后 到 https://bintray.com/krmao/maven/library-base 查看, 点击右下角 "Add to JCenter" 按钮请求添加, 接下来就是等待
  *
  * 参考:
  * 仓库中心: {@link "https://bintray.com/bintray/jcenter"} Web@gmail
@@ -35,11 +35,11 @@ def BINTRAY_USER = 'krmao'
 def BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
 // def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
 
-def LIBRARY_NAME = 'libs-base'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
-def LIBRARY_VERSION = '0.0.1.1'
-def LIBRARY_GROUP_ID = 'com.smart.library'
-def LIBRARY_LABELS = ['base']
-def LIBRARY_ARTIFACT_ID = "libs-base"
+def LIBRARY_NAME = 'library-base'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
+def LIBRARY_VERSION = '0.0.1.2'
+def LIBRARY_GROUP_ID = 'com.codesdancing.libraries'
+def LIBRARY_LABELS = ['library-base']
+def LIBRARY_ARTIFACT_ID = "library-base"
 def LIBRARY_DESCRIPTION = 'library-base'
 
 def LIBRARY_URL = 'https://github.com/krmao/template'

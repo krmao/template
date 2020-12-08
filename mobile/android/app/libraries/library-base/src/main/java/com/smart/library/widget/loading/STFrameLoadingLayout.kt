@@ -159,9 +159,9 @@ class STFrameLoadingLayout : FrameLayout {
 
     fun getDefaultText(viewType: ViewType): String {
         return when (viewType) {
-            ViewType.NODATA -> resources.getString(R.string.st_frameloading_empty)
-            ViewType.LOADING -> resources.getString(R.string.st_frameloading_loadingnow)
-            ViewType.NETWORK_EXCEPTION -> resources.getString(R.string.st_frameloading_networkerror)
+            ViewType.NODATA -> resources.getString(R.string.st_loading_empty)
+            ViewType.LOADING -> resources.getString(R.string.st_loading_now)
+            ViewType.NETWORK_EXCEPTION -> resources.getString(R.string.st_loading_network_error)
         }
     }
 

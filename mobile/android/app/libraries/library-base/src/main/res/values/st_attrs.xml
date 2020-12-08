@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <declare-styleable name="STRoundImageView">
         <!-- 描边宽度-->
         <attr name="stBorderWidth" format="dimension" />
@@ -38,7 +36,6 @@
         <attr name="stScaleFactor" format="float" />
         <attr name="stAllBackground" format="reference|color" />
     </declare-styleable>
-
 
     <declare-styleable name="STTitleBar">
         <attr name="android:background" />

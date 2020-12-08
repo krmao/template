@@ -38,7 +38,7 @@
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:paddingTop="15dp"
-            android:text="@string/st_frameloading_loadingnow"
+            android:text="@string/st_loading_now"
             android:textColor="#C3C3BD"
             android:textSize="12dp"
             android:textStyle="bold"

@@ -18,6 +18,7 @@ import com.smart.library.STInitializer
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+@Deprecated("no need now")
 @SuppressLint("DiscouragedPrivateApi")
 object STIMMLeaksUtil {
 

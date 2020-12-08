@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference
 
 class FinalHomeTabActivity : STBaseActivity() {
 
-    var sRef: WeakReference<Activity>? = null
+    var weakReference: WeakReference<Activity>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         STLogUtil.d(TAG, "activity: onCreate")
@@ -24,8 +24,8 @@ class FinalHomeTabActivity : STBaseActivity() {
         enableExitWithDoubleBackPressed(true)
         enableImmersionStatusBarWithDarkFont(true)
         super.onCreate(savedInstanceState)
-        sRef = WeakReference(this)
-        STBusManager.homeActivity = sRef
+        weakReference = WeakReference(this)
+        STBusManager.homeActivity = weakReference
         setContentView(FrameLayout(this))
         supportFragmentManager.beginTransaction().add(android.R.id.content, FinalHomeTabFragment(), FinalHomeTabFragment::javaClass.name).commitAllowingStateLoss()
     }
@@ -78,8 +78,8 @@ class FinalHomeTabActivity : STBaseActivity() {
         super.onDestroy()
         STLogUtil.d(TAG, "activity: onDestroy")
 
-        sRef?.clear()
-        sRef = null
+        weakReference?.clear()
+        weakReference = null
     }
 
     override fun onNewIntent(intent: Intent?) {

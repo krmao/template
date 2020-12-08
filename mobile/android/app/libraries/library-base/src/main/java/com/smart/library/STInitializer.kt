@@ -309,6 +309,29 @@ object STInitializer {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
         //endregion
 
+        //region init rn and flutter immediately
+        val bundleBusHandlerClassMap = config?.configBundle?.bundleBusHandlerClassMap
+        if (bundleBusHandlerClassMap != null) {
+            STBusManager.initOnce(
+                config.application,
+                bundleBusHandlerClassMap,
+                onCallback = { key: String, success: Boolean ->
+                    STLogUtil.d(TAG, "-- init bus $key, $success")
+                    if (key == "reactnative") {
+                        state.isRNInitialized = true
+                        state.isRNInitializedSuccess = success
+                        state.notifyOnRNInitializedCallback()
+                    }
+                },
+                onCompletely = {
+                    STLogUtil.w(TAG, "-- init bus onCompletely")
+                    state.isBusInitialized = true
+                    state.notifyOnBusInitializedCallback()
+                }
+            )
+        }
+        //endregion
+
         //region bundle and bus
         STThreadUtils.runOnUiThread(object : Runnable {
             override fun run() {
@@ -316,27 +339,6 @@ object STInitializer {
                 val imageHandler = config?.configImage?.imageHandler ?: STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(application, debug(), STOkHttpManager.client).build())
                 STImageManager.initialize(application, imageHandler)
                 //endregion
-
-                val bundleBusHandlerClassMap = config?.configBundle?.bundleBusHandlerClassMap
-                if (bundleBusHandlerClassMap != null) {
-                    STBusManager.initOnce(
-                        config.application,
-                        bundleBusHandlerClassMap,
-                        onCallback = { key: String, success: Boolean ->
-                            STLogUtil.d(TAG, "-- init bus $key, $success")
-                            if (key == "reactnative") {
-                                state.isRNInitialized = true
-                                state.isRNInitializedSuccess = success
-                                state.notifyOnRNInitializedCallback()
-                            }
-                        },
-                        onCompletely = {
-                            STLogUtil.w(TAG, "-- init bus onCompletely")
-                            state.isBusInitialized = true
-                            state.notifyOnBusInitializedCallback()
-                        }
-                    )
-                }
 
                 //region register networkChangedReceiver
                 val applicationContext: Context? = config?.application?.applicationContext

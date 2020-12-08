@@ -70,6 +70,29 @@ gradle.ext {
                     'enableSamples'  : false,
                     'enableExoPlayer': false,
             ],
+            'module_algorithm'     : [
+                    'module_algorithm_main' : [
+                            'enable'              : true,
+                            'load'                : 'lazy', // default/lazy
+                            'remote'              : false,
+                            'dependency_libraries': [
+                                    'library-base'
+                            ],
+                            'dependency_modules'  : [
+                            ]
+                    ],
+                    'module_algorithm_debug': [
+                            'enable'    : true,
+                            'dependency': [
+                                    'dependency_libraries': [
+                                            'library_base'
+                                    ],
+                                    'dependency_modules'  : [
+                                            'module_algorithm_main'
+                                    ]
+                            ]
+                    ]
+            ]
     ]
 
     versions = [

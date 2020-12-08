@@ -8,6 +8,13 @@ include(':app'); project(":app").projectDir = new File(settingsDir, "app/app")
 include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "app/libraries/library-base")
 // include(":library-support"); project(":library-support").projectDir = new File(settingsDir, "app/libraries/library-support")
 
+if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+    include(":module_algorithm_main"); project(":module_algorithm_main").projectDir = new File(settingsDir, "app/modules/module_algorithm/module_algorithm_main")
+}
+if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+    include(":module_algorithm_debug"); project(":module_algorithm_debug").projectDir = new File(settingsDir, "app/modules/module_algorithm/module_algorithm_debug")
+}
+
 if (gradle.ext.modules.library_map.enable == true) {
     include(":library-map"); project(":library-map").projectDir = new File(settingsDir, "app/libraries/library-map")
 }

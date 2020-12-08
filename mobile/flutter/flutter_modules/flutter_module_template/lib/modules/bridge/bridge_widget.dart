@@ -18,6 +18,8 @@ class BridgeWidgetState extends PageState {
     textEditingController.addListener(() {
       print("textEditingController listener callback");
     });
+
+    PageBridge.enableExitWithDoubleBackPressed(true);
   }
 
   @override

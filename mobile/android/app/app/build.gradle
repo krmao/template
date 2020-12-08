@@ -270,6 +270,13 @@ dependencies {
     implementation project(':library-base')
     implementation project(':library-template-repository')
 
+    if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+        implementation project(":module_algorithm_main");
+    }
+    if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+        implementation project(":module_algorithm_debug");
+    }
+
     if (gradle.ext.modules.library_livestreaming.enable == true) {
         implementation project(':library-livestreaming')
         implementation project(':library-livestreaming-push')

@@ -10,21 +10,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Normal.Transparent"
-            android:windowSoftInputMode="adjustResize">
-            <!-- This keeps the window background of the activity showing
-                 until Flutter renders its first frame. It can be removed if
-                 there is no splash screen (such as the default splash screen
-                 defined in @style/LaunchTheme). -->
-            <meta-data
-                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="false" />
-
-            <!-- Flutter 闪屏页 -->
-            <!-- https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen -->
-            <meta-data
-                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/flutter_splash_screen_drawable" />
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="com.smart.library.flutter.test.MineActivity"
@@ -33,33 +19,35 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!--<activity
-            android:name=".STFlutterFragmentLaunchActivity"
+            android:name="com.smart.library.flutter.STFlutterBoostLaunchActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:theme="@style/STAppTheme.Launch"
             android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            &lt;!&ndash; Flutter 启动页 &ndash;&gt;
+
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/STAppTheme.Launch" />
-            &lt;!&ndash; This keeps the window background of the activity showing
-             until Flutter renders its first frame. It can be removed if
-             there is no splash screen (such as the default splash screen
-             defined in @style/LaunchTheme). &ndash;&gt;
+            &lt;!&ndash;This keeps the window background of the activity showing
+            until Flutter renders its first frame. It can be removed if
+            there is no splash screen (such as the default splash screen
+            defined in @style/LaunchTheme). &ndash;&gt;
+            &lt;!&ndash; must be false &ndash;&gt;
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="true" />
-
-            &lt;!&ndash; Flutter 闪屏页 &ndash;&gt;
-            &lt;!&ndash; https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen &ndash;&gt;
+                android:value="false" />
+            &lt;!&ndash;Flutter 闪屏页
+            https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen#showing-a-drawable-splash-screen &ndash;&gt;
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
                 android:resource="@drawable/flutter_splash_screen_drawable" />
+
         </activity>-->
 
     </application>

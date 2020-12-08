@@ -46,7 +46,7 @@ enum class STFlutterRouter(val url: String, val goTo: (context: Context, contain
         }
 
         private fun openNewFlutterActivity(context: Context, pageName: String, pageParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? = null) {
-            val intent = STFlutterBoostActivity.withNewEngine().url(pageName).params(pageParams).backgroundMode(BoostFlutterActivity.BackgroundMode.opaque).build(context)
+            val intent = STFlutterBoostActivity.withNewEngine().url(pageName).params(pageParams).backgroundMode(BoostFlutterActivity.BackgroundMode.transparent).build(context)
             if (context is Activity) context.startActivityForResult(intent, requestCode) else context.startActivity(intent)
         }
 

@@ -27,10 +27,6 @@ object STFlutterInitializer {
     const val TAG = "[flutter]"
     const val CHANNEL_METHOD = "smart.template.flutter/method"
 
-    @JvmStatic
-    var currentMethodChannel: MethodChannel? = null
-        internal set
-
     private var application: Application? = null
 
     var debug: Boolean = false
@@ -106,30 +102,6 @@ object STFlutterInitializer {
 
         FlutterBoost.instance().init(platform)
         isInitialized = true
-    }
-
-    /**
-     *  Note: this method is invoked on the main thread.
-     */
-    @UiThread
-    @JvmStatic
-    fun onFlutterCallNativeMethod(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
-        val argumentsJsonString: String = call.arguments()// STJsonUtil.toJson(call.arguments()) // flutter call jsonEncode
-        STLogUtil.w(TAG, "onFlutterCallNativeMethod functionName=${call.method}, arguments=$argumentsJsonString")
-        STInitializer.configBridge?.bridgeHandler?.handleBridge(activity, call.method, argumentsJsonString, null, object : STInitializer.BridgeHandlerCallback {
-            override fun onCallback(callbackId: String?, resultJsonString: String?) {
-                STLogUtil.w(TAG, "onFlutterCallNativeMethod return $resultJsonString")
-                result.success(resultJsonString)
-            }
-        })
-    }
-
-    /**
-     * 调用最上层的 Flutter method
-     */
-    @JvmStatic
-    fun invokeFlutterMethod(@NonNull method: String, @Nullable arguments: Any, callback: MethodChannel.Result) {
-        currentMethodChannel?.invokeMethod(method, arguments, callback)
     }
 
     /**

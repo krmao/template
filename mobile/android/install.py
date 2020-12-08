@@ -68,6 +68,7 @@ if __name__ == '__main__':
     print "==========>>>>>>>>>> install android app end"
     print "==========>>>>>>>>>> auto open android app start"
     shell_install = """adb shell am start -n "com.smart.template/com.smart.template.FinalLaunchActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER"""
+    # shell_install = """adb shell am start -n "com.smart.template/com.smart.library.flutter.STFlutterBoostLaunchActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER"""
     print shell_install
     os.system(shell_install)
     print "==========>>>>>>>>>> auto open android app end"

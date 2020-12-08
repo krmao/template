@@ -14,7 +14,7 @@ gradle.ext {
             'library_base'         : [
                     'repository_remote': [
                             'enable'    : false,
-                            'dependency': 'com.codesdancing.libraries:library-base:0.0.1.2', // 'com.smart.library:libs-base:0.0.1.1',
+                            'dependency': 'com.codesdancing.libraries:library-base:0.0.1.3',
                     ]
             ],
             'library_flutter'      : [

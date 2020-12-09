@@ -45,7 +45,7 @@ object STPreferencesUtil {
         return editor?.commit()
     }
 
-    fun putJsonString(key: String, value: Any): Boolean? {
+    fun putJsonString(key: String, value: Any?): Boolean? {
         val editor = sharedPreferences?.edit()
         editor?.putString(key, gson.toJson(value))
         return editor?.commit()

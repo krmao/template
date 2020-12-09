@@ -1,14 +1,11 @@
 package com.smart.library.base
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.R
-import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
 
 /**
  * 检测 App 冷启动到 LaunchActivity 成功渲染耗时:
@@ -28,24 +25,9 @@ open class STBaseLaunchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.decorView.setBackgroundResource(R.drawable.st_launch)
         super.onCreate(null)
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-        // 设置页面全屏显示 务必继承 FragmentActivity
-        if (Build.VERSION.SDK_INT >= 28) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            val layoutParams = window.attributes
-            val layoutParamsClass: Class<*> = layoutParams.javaClass
-            try {
-                val field = layoutParamsClass.getDeclaredField("layoutInDisplayCutoutMode")
-                field.isAccessible = true
-                field[layoutParams] = 1
-                // 设置页面延伸到刘海区显示
-                window.attributes = layoutParams
-            } catch (e: Exception) {
-                STLogUtil.e("splash", e)
-            }
-        }
+        STSystemUtil.setActivityFullScreenAndExpandLayout(this)
 
         // 避免通过其他方式启动程序后，再通过程序列表中的launcher启动，重新走启动流程
         if (!isTaskRoot) {
@@ -57,6 +39,5 @@ open class STBaseLaunchActivity : AppCompatActivity() {
             }
         }
 
-        setContentView(R.layout.st_launch)
     }
 }

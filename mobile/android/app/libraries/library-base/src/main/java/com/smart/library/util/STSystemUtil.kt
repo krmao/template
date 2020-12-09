@@ -544,6 +544,30 @@ object STSystemUtil {
         return heightByStaticLayout
     }
 
+    /**
+     * 设置 activity full screen, 并且扩展布局显示到刘海区域
+     */
+    @JvmStatic
+    fun setActivityFullScreenAndExpandLayout(activity: Activity) {
+        val window: Window = activity.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        // 设置页面全屏显示 务必继承 FragmentActivity
+        if (Build.VERSION.SDK_INT >= 28) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            val layoutParams = window.attributes
+            val layoutParamsClass: Class<*> = layoutParams.javaClass
+            try {
+                val field = layoutParamsClass.getDeclaredField("layoutInDisplayCutoutMode")
+                field.isAccessible = true
+                field[layoutParams] = 1
+                // 设置页面延伸到刘海区显示
+                window.attributes = layoutParams
+            } catch (e: Exception) {
+                STLogUtil.e("splash", e)
+            }
+        }
+    }
+
     private fun round(value: Float): Int {
         val lx = (value * (65536 * 256f)).toLong()
         return (lx + 0x800000 shr 24).toInt()

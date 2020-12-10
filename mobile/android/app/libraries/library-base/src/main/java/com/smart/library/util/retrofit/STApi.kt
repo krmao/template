@@ -20,6 +20,7 @@ import java.io.InputStream
 import java.util.*
 
 /*
+// 使用案例
 
 // repo/model/FinalRequestUserInfo.kt
 class FinalRequestUserInfo {
@@ -56,6 +57,33 @@ interface FinalApi : STApi {
             return STApiManager.getApi(FinalApi::class.java).testGetUserInfo(request).compose(transformerDataFromResponse())
         }
     }
+}
+
+override fun onDestroy() {
+    super.onDestroy()
+    disposable?.dispose()
+    disposable = null
+    Log.w(TAG, "onDestroy")
+}
+
+private var disposable: Disposable? = null
+private fun request() {
+    disposable = FinalApi.testGetUserInfo(FinalRequestUserInfo.RequestUserData()).subscribe(
+        { data ->
+            STLogUtil.d("[retrofit]", "onNext")
+            if (data != null) {
+                STLogUtil.d("[retrofit]", "onNext data=$data")
+            } else {
+                STLogUtil.d("[retrofit]", "onNext data=null")
+            }
+        },
+        { error ->
+            STLogUtil.d("[retrofit]", "onError $error")
+        },
+        {
+            STLogUtil.d("[retrofit]", "onComplete")
+        }
+    )
 }
 
 */

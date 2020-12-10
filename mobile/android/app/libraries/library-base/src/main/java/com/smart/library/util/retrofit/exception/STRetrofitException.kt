@@ -1,4 +1,4 @@
-package com.smart.template.repository.remote.exception
+package com.smart.library.util.retrofit.exception
 
 
 import android.util.Log
@@ -14,16 +14,16 @@ import java.net.UnknownHostException
 import java.text.ParseException
 
 object STRetrofitException {
-    private const val TAG = "[OKHTTP]"
+    private const val TAG = "[ok http]"
 
-    private val UNAUTHORIZED = 401
-    private val FORBIDDEN = 403
-    private val NOT_FOUND = 404
-    private val REQUEST_TIMEOUT = 408
-    private val INTERNAL_SERVER_ERROR = 500
-    private val BAD_GATEWAY = 502
-    private val SERVICE_UNAVAILABLE = 503
-    private val GATEWAY_TIMEOUT = 504
+    private const val UNAUTHORIZED = 401
+    private const val FORBIDDEN = 403
+    private const val NOT_FOUND = 404
+    private const val REQUEST_TIMEOUT = 408
+    private const val INTERNAL_SERVER_ERROR = 500
+    private const val BAD_GATEWAY = 502
+    private const val SERVICE_UNAVAILABLE = 503
+    private const val GATEWAY_TIMEOUT = 504
 
     fun handleException(throwable: Throwable): STRetrofitApiException {
         STLogUtil.e(TAG, "网络请求遇到错误", throwable)
@@ -43,10 +43,9 @@ object STRetrofitException {
             }
             return apiException
         } else if (throwable is STRetrofitServerException) {
-            val resultException = throwable
-            apiException = STRetrofitApiException(resultException, resultException.code)
-            apiException.displayMessage = resultException.msg
-            Log.e(TAG, resultException.msg)
+            apiException = STRetrofitApiException(throwable, throwable.code)
+            apiException.displayMessage = throwable.msg
+            Log.e(TAG, throwable.msg)
             return apiException
         } /*else if (throwable is com.alibaba.fastjson.JSONException
                 || throwable is JSONException

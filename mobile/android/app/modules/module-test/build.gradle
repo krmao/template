@@ -16,5 +16,4 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api project(':library-base')
-    api project(':library-template-repository')
 }

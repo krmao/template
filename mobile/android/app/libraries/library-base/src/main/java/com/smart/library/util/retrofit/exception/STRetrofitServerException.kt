@@ -1,3 +1,3 @@
-package com.smart.template.repository.remote.exception
+package com.smart.library.util.retrofit.exception
 
 class STRetrofitServerException(val code: Int, val msg: String) : RuntimeException()

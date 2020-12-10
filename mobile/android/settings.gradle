@@ -77,8 +77,6 @@ if (gradle.ext.modules.library_videoplayer.enable == true) {
     include(":library-videoplayer-libs-cache"); project(':library-videoplayer-libs-cache').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-cache')
 }
 
-include(":library-template-repository"); project(":library-template-repository").projectDir = new File(settingsDir, "app/libraries/library-template-repository")
-
 //modules
 include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "app/modules/module-template-mine")
 

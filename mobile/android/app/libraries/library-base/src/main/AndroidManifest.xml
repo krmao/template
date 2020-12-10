@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.smart.library">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application android:taskAffinity="${applicationId}">
         <!--region 安卓 N 文件访问方式适配 -->
         <provider

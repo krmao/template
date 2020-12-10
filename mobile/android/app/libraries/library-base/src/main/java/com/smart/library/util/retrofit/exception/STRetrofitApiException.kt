@@ -1,4 +1,4 @@
-package com.smart.template.repository.remote.exception
+package com.smart.library.util.retrofit.exception
 
 class STRetrofitApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     var displayMessage: String? = null

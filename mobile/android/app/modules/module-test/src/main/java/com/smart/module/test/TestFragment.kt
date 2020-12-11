@@ -21,7 +21,7 @@ class TestFragment : STBaseFragment(), TestContract.View {
 
     companion object {
         fun goTo(activity: Activity) {
-            STActivity.start(activity, TestFragment::class.java)
+            STActivity.startActivity(activity, TestFragment::class.java)
         }
     }
 

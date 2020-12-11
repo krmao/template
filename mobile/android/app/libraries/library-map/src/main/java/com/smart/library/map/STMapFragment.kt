@@ -20,7 +20,7 @@ class STMapFragment : STBaseFragment() {
         fun goTo(activity: Activity?, useBaidu: Boolean) {
             val bundle = Bundle()
             bundle.putBoolean("useBaidu", useBaidu)
-            STActivity.start(activity, STMapFragment::class.java, bundle)
+            STActivity.startActivity(activity, STMapFragment::class.java, bundle)
         }
     }
 

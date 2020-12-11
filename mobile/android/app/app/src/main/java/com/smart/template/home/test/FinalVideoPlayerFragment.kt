@@ -14,7 +14,7 @@ class FinalVideoPlayerFragment : STBaseFragment() {
 
     companion object {
         fun goTo(context: Context?) {
-            STActivity.start(context, FinalVideoPlayerFragment::class.java)
+            STActivity.startActivity(context, FinalVideoPlayerFragment::class.java)
         }
     }
 

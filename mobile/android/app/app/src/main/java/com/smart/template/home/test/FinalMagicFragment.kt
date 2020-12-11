@@ -120,7 +120,7 @@ class FinalMagicFragment : STBaseFragment() {
 
     companion object {
         fun goTo(activity: Context?) {
-            STActivity.start(activity, FinalMagicFragment::class.java)
+            STActivity.startActivity(activity, FinalMagicFragment::class.java)
         }
     }
 }

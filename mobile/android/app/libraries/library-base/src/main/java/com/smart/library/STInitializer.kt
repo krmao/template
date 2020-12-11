@@ -387,12 +387,13 @@ object STInitializer {
         val application: Application? = config?.application
         val activityLifecycleCallbacks = config?.configLifecycle?.activityLifecycleCallbacks
         if (activityLifecycleCallbacks != null) {
-            activityLifecycleCallbacks.finishAllActivity()
             application?.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
+            activityLifecycleCallbacks.finishAllActivity()
         }
         //endregion
 
         try {
+            @Suppress("RedundantSamConstructor")
             STThreadUtils.runOnUiThread(Runnable { Process.killProcess(Process.myPid()) }, 200)
         } catch (e: Exception) {
             e.printStackTrace()

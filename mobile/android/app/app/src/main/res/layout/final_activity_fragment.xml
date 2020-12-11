@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_A700"
+    tools:ignore="HardcodedText,UselessParent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/green"
+                android:dividerPadding="5dp"
+                android:fitsSystemWindows="true"
+                android:stretchColumns="*">
+
+                <TableRow android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableSwipeBack"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="true"
+                        android:text="enableSwipeBack"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableImmersionStatusBar"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="true"
+                        android:text="enableImmersionStatusBar"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableImmersionStatusBarWithDarkFont"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="enableImmersionStatusBarWithDarkFont"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableExitWithDoubleBackPressed"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="enableExitWithDoubleBackPressed"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkedFadeOrLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="checkedFadeOrLeft"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkedTransparentOrTranslucent"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="checkedTransparentOrTranslucent"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableFinishIfIsNotTaskRoot"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="enableFinishIfIsNotTaskRoot"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableActivityFullScreenAndExpandLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="enableActivityFullScreenAndExpandLayout"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/enableActivityFeatureNoTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+                        android:text="enableActivityFeatureNoTitle"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/activityDecorViewBackgroundResource"
+                        android:layout_width="0dp"
+                        android:layout_height="68dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue"
+                        android:checked="false"
+
+                        android:text="activityDecorViewBackgroundResource"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow android:gravity="center_vertical">
+
+                    <Button
+                        android:id="@+id/startActivity"
+                        style="@style/STButton.Default"
+                        android:layout_width="match_parent"
+                        android:layout_height="88dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="startActivity"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

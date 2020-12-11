@@ -43,7 +43,7 @@ class FinalRippleFragment : STBaseFragment() {
 
     companion object {
         fun goTo(activity: Context?) {
-            STActivity.start(activity, FinalRippleFragment::class.java)
+            STActivity.startActivity(activity, FinalRippleFragment::class.java)
         }
     }
 }

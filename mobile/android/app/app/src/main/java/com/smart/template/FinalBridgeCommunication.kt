@@ -51,13 +51,13 @@ object FinalBridgeCommunication {
                         val uri = Uri.parse(url)
                         val h5Url: String? = uri.getQueryParameter("url")
                         if (h5Url?.isNotBlank() == true) {
-                            STActivity.start(activity, STWebFragment::class.java, Bundle().apply { putString("url", h5Url) })
+                            STActivity.startActivity(activity, STWebFragment::class.java, Bundle().apply { putString("url", h5Url) })
                             result.put("result", true)
                         } else {
                             result.put("result", false)
                         }
                     } else if (url?.startsWith("http") == true) {
-                        STActivity.start(activity, STWebFragment::class.java, Bundle().apply { putString("url", url) })
+                        STActivity.startActivity(activity, STWebFragment::class.java, Bundle().apply { putString("url", url) })
                         result.put("result", true)
                     } else {
                         result.put("result", false)

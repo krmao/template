@@ -7,36 +7,39 @@ import com.gyf.barlibrary.ImmersionBar
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * 默认沉浸式布局
+ * 沉浸式布局
  *
- * 1: activity/fragment 手动设置根布局背景色即可影响状态栏背景色
- *    即-> 需要设置 activity/fragment 根布局 去影响状态栏背景色
+ * 1: activity 包含 fragment (列如 STActivity) 手动设置 fragment 根布局背景色即可影响状态栏背景色
+ *      > STBaseFragment 默认设置了根布局 fitsSystemWindows = true , 所以开发人员无需处理, 如果是自定义 Fragment 需要自己设置 fitsSystemWindows = true
  *
- * 2: fragment 默认设置了根布局 fitsSystemWindows = true , 所以开发人员无需处理
+ * 2: 如果 activity 没有包含 fragment, 则需要手动设置 activity 根布局 fitsSystemWindows = true
  *
- * 3: 如果activity 没有包含fragment, 则需要手动设置 根布局 fitsSystemWindows = true
- *    即-> 没有包含fragment 的 activity 无需做任何处理需要设置根布局 fitsSystemWindows = true
- *
- * 4: 如果activity    包含fragment, 则不需要设置 根布局 fitsSystemWindows = true, 因为步骤2 fragment 以及默认设置了
- *    即-> 包含fragment 的 activity 无需做任何处理
- *
- * 5: 总结: fragment/activity 的根布局 不可同时设置 fitsSystemWindows = true , 否则没有效果(即内容显示在状态栏的后面)
- *    注意: 以上方案 在 根布局不是 CoordinatorLayout 时 可行
+ * 总结: fragment/activity 的根布局 不可同时设置 fitsSystemWindows = true, 否则没有效果(即内容显示在状态栏的后面)
+ * 注意: 以上方案 在 根布局不是 CoordinatorLayout 时 可行
  *
  * sdk >= 4.4 纯透明
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
 @Suppress("MemberVisibilityCanBePrivate")
-open class STBaseActivity : AppCompatActivity(), STBaseActivityDelegate {
+open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
 
-    protected open val delegate: STBaseActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
+    protected open val delegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
 
-    override fun callback(): ((bundle: Bundle?) -> Unit?)? = delegate.callback()
     override fun disposables(): CompositeDisposable = delegate.disposables()
     override fun statusBar(): ImmersionBar? = delegate.statusBar()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        onCreateBefore(savedInstanceState)
         super.onCreate(savedInstanceState)
-        delegate.onCreate(savedInstanceState)
+        onCreateAfter(savedInstanceState)
+    }
+
+    override fun onCreateBefore(savedInstanceState: Bundle?) {
+        delegate.onCreateBefore(savedInstanceState)
+    }
+
+    override fun onCreateAfter(savedInstanceState: Bundle?) {
+        delegate.onCreateAfter(savedInstanceState)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -52,6 +55,16 @@ open class STBaseActivity : AppCompatActivity(), STBaseActivityDelegate {
     override fun onDestroy() {
         super.onDestroy()
         delegate.onDestroy()
+        javaClass.canonicalName
+    }
+
+    override fun finish() {
+        super.finish()
+        finishAfter()
+    }
+
+    override fun finishAfter() {
+        delegate.finishAfter()
     }
 
     override fun onBackPressedIntercept(): Boolean = delegate.onBackPressedIntercept()
@@ -72,5 +85,19 @@ open class STBaseActivity : AppCompatActivity(), STBaseActivityDelegate {
     override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
     override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
     override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
+    override fun enableFinishIfIsNotTaskRoot(): Boolean = delegate.enableFinishIfIsNotTaskRoot()
+    override fun enableFinishIfIsNotTaskRoot(enable: Boolean) = delegate.enableFinishIfIsNotTaskRoot(enable)
+    override fun enableActivityFullScreenAndExpandLayout(): Boolean = delegate.enableActivityFullScreenAndExpandLayout()
+    override fun enableActivityFullScreenAndExpandLayout(enable: Boolean) = delegate.enableActivityFullScreenAndExpandLayout(enable)
+    override fun enableActivityFeatureNoTitle(): Boolean = delegate.enableActivityFeatureNoTitle()
+    override fun enableActivityFeatureNoTitle(enable: Boolean) = delegate.enableActivityFeatureNoTitle(enable)
+    override fun activityDecorViewBackgroundResource(): Int = delegate.activityDecorViewBackgroundResource()
+    override fun activityDecorViewBackgroundResource(drawableResource: Int) = delegate.activityDecorViewBackgroundResource(drawableResource)
+    override fun activityCloseEnterAnimation(): Int = delegate.activityCloseEnterAnimation()
+    override fun activityCloseEnterAnimation(animation: Int) = delegate.activityCloseEnterAnimation(animation)
+    override fun activityCloseExitAnimation(): Int = delegate.activityCloseExitAnimation()
+    override fun activityCloseExitAnimation(animation: Int) = delegate.activityCloseExitAnimation(animation)
+    override fun activityTheme(): Int = delegate.activityTheme()
+    override fun activityTheme(activityTheme: Int) = delegate.activityTheme(activityTheme)
     override fun quitApplication() = delegate.quitApplication()
 }

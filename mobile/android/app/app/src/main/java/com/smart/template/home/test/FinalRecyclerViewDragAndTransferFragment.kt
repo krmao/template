@@ -20,7 +20,7 @@ class FinalRecyclerViewDragAndTransferFragment : STBaseFragment() {
 
     companion object {
         fun goTo(context: Context?) {
-            STActivity.start(context, FinalRecyclerViewDragAndTransferFragment::class.java)
+            STActivity.startActivity(context, FinalRecyclerViewDragAndTransferFragment::class.java)
         }
     }
 

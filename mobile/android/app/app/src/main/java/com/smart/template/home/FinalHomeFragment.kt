@@ -12,11 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STDialogManager
 import com.smart.library.util.STFragmentManager
 import com.smart.library.util.STLogUtil
-import com.smart.library.util.STRouteManager
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.colorpicker.STColorPickerUtil
@@ -91,6 +91,10 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
             FinalMagicFragment.goTo(context)
         }
 
+        activityBtn.setOnClickListener {
+            FinalActivityFragment.goTo(context)
+        }
+
         val fragmentTag = "fragmentTag"
         fragments.setOnClickListener {
             STFragmentManager.addFragment(
@@ -139,14 +143,10 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         baiduMap.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("useBaidu", true)
-            STRouteManager.goToFragment(activity, "com.smart.library.map.STMapFragment", bundle) {
-                STLogUtil.w("home", it.toString())
-            }
+            STActivity.startActivity(activity, "com.smart.library.map.STMapFragment", bundle)
         }
         videoPlayerExamples.setOnClickListener {
-            STRouteManager.goToActivity(activity, "com.example.gsyvideoplayer.VideoPlayerExamplesActivity") {
-                STLogUtil.w("videoplayer", it.toString())
-            }
+            STActivity.startActivity(activity, "com.example.gsyvideoplayer.VideoPlayerExamplesActivity")
         }
         dialogText.setOnClickListener {
             val loadingDialog: Dialog? = STDialogManager.createLoadingDialog(context, "规划中...", canceledOnTouchOutside = true)

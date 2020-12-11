@@ -25,7 +25,7 @@ class FinalSwipeMenuFragment : STBaseFragment() {
 
     companion object {
         fun goTo(context: Context?) {
-            STActivity.start(context, FinalSwipeMenuFragment::class.java)
+            STActivity.startActivity(context, FinalSwipeMenuFragment::class.java)
         }
     }
 

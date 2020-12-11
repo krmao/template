@@ -37,7 +37,7 @@ open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListene
             bundle.putBoolean("hideTitleBar", hideTitleBar)
             bundle.putBoolean("hideBackAtFirstPage", hideBackAtFirstPage)
             bundle.putBoolean("fullScreenAndBehindStatusBar", fullScreenAndBehindStatusBar)
-            STActivity.start(activity, STWebFragment::class.java, bundle)
+            STActivity.startActivity(activity, STWebFragment::class.java, bundle)
         }
     }
 

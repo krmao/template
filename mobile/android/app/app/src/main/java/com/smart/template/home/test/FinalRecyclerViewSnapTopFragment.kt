@@ -24,7 +24,7 @@ class FinalRecyclerViewSnapTopFragment : STBaseFragment() {
 
     companion object {
         fun goTo(context: Context?) {
-            STActivity.start(context, FinalRecyclerViewSnapTopFragment::class.java)
+            STActivity.startActivity(context, FinalRecyclerViewSnapTopFragment::class.java)
         }
     }
 

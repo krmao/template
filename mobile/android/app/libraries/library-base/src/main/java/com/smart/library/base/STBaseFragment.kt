@@ -3,9 +3,18 @@ package com.smart.library.base
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.smart.library.util.STRouteManager
+import io.reactivex.disposables.CompositeDisposable
 
 open class STBaseFragment : Fragment() {
+
+    private val disposables: CompositeDisposable by lazy { CompositeDisposable() }
+
+    fun disposables(): CompositeDisposable = this.disposables
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.fitsSystemWindows = true
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     interface OnBackPressedListener {
         /**
@@ -14,19 +23,4 @@ open class STBaseFragment : Fragment() {
         fun onBackPressed(): Boolean
     }
 
-    /**
-     * 通过 STRouteManager 跳转到 activity | fragment 可以添加此回调方法，方便跨组件传递参数(atlas)
-     * 在 onDestroy 里会自动清除
-     */
-    val callback: ((bundle: Bundle?) -> Unit?)? by lazy { STRouteManager.getCallback(this) }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.fitsSystemWindows = true
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        STRouteManager.removeCallback(this)
-        super.onDestroy()
-    }
 }

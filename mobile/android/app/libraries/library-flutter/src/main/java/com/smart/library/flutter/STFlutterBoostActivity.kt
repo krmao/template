@@ -8,22 +8,30 @@ import android.view.KeyEvent
 import android.widget.ImageView
 import com.gyf.barlibrary.ImmersionBar
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
-import com.smart.library.base.STBaseActivityDelegate
+import com.smart.library.base.STActivityDelegate
 import com.smart.library.base.STBaseActivityDelegateImpl
 import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.SplashScreen
 import io.reactivex.disposables.CompositeDisposable
 
-open class STFlutterBoostActivity : BoostFlutterActivity(), STBaseActivityDelegate {
+open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
 
-    protected open val delegate: STBaseActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
+    protected open val delegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
 
-    override fun callback(): ((bundle: Bundle?) -> Unit?)? = delegate.callback()
     override fun disposables(): CompositeDisposable = delegate.disposables()
     override fun statusBar(): ImmersionBar? = delegate.statusBar()
     override fun onCreate(savedInstanceState: Bundle?) {
+        onCreateBefore(savedInstanceState)
         super.onCreate(savedInstanceState)
-        delegate.onCreate(savedInstanceState)
+        onCreateAfter(savedInstanceState)
+    }
+
+    override fun onCreateBefore(savedInstanceState: Bundle?) {
+        delegate.onCreateBefore(savedInstanceState)
+    }
+
+    override fun onCreateAfter(savedInstanceState: Bundle?) {
+        delegate.onCreateAfter(savedInstanceState)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -39,6 +47,14 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STBaseActivityDelega
     override fun onDestroy() {
         super.onDestroy()
         delegate.onDestroy()
+    }
+
+    override fun finish() {
+        super.finish()
+        finishAfter()
+    }
+    override fun finishAfter() {
+        delegate.finishAfter()
     }
 
     override fun provideSplashScreen(): SplashScreen? {
@@ -76,6 +92,20 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STBaseActivityDelega
     override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
     override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
     override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
+    override fun enableFinishIfIsNotTaskRoot(): Boolean = delegate.enableFinishIfIsNotTaskRoot()
+    override fun enableFinishIfIsNotTaskRoot(enable: Boolean) = delegate.enableFinishIfIsNotTaskRoot(enable)
+    override fun enableActivityFullScreenAndExpandLayout(): Boolean = delegate.enableActivityFullScreenAndExpandLayout()
+    override fun enableActivityFullScreenAndExpandLayout(enable: Boolean) = delegate.enableActivityFullScreenAndExpandLayout(enable)
+    override fun enableActivityFeatureNoTitle(): Boolean = delegate.enableActivityFeatureNoTitle()
+    override fun enableActivityFeatureNoTitle(enable: Boolean) = delegate.enableActivityFeatureNoTitle(enable)
+    override fun activityDecorViewBackgroundResource(): Int = delegate.activityDecorViewBackgroundResource()
+    override fun activityDecorViewBackgroundResource(drawableResource: Int) = delegate.activityDecorViewBackgroundResource(drawableResource)
+    override fun activityTheme(): Int = delegate.activityTheme()
+    override fun activityTheme(activityTheme: Int) = delegate.activityTheme(activityTheme)
+    override fun activityCloseEnterAnimation(): Int = delegate.activityCloseEnterAnimation()
+    override fun activityCloseEnterAnimation(animation: Int) = delegate.activityCloseEnterAnimation(animation)
+    override fun activityCloseExitAnimation(): Int = delegate.activityCloseExitAnimation()
+    override fun activityCloseExitAnimation(animation: Int) = delegate.activityCloseExitAnimation(animation)
     override fun quitApplication() = delegate.quitApplication()
 
     companion object {

@@ -1,48 +1,25 @@
 package com.smart.library.base
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.Window
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.STInitializer
-import com.smart.library.util.STRouteManager
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
 
-/**
- * 默认沉浸式布局
- *
- * 1: activity/fragment 手动设置根布局背景色即可影响状态栏背景色
- *    即-> 需要设置 activity/fragment 根布局 去影响状态栏背景色
- *
- * 2: fragment 默认设置了根布局 fitsSystemWindows = true , 所以开发人员无需处理
- *
- * 3: 如果activity 没有包含fragment, 则需要手动设置 根布局 fitsSystemWindows = true
- *    即-> 没有包含fragment 的 activity 无需做任何处理需要设置根布局 fitsSystemWindows = true
- *
- * 4: 如果activity    包含fragment, 则不需要设置 根布局 fitsSystemWindows = true, 因为步骤2 fragment 以及默认设置了
- *    即-> 包含fragment 的 activity 无需做任何处理
- *
- * 5: 总结: fragment/activity 的根布局 不可同时设置 fitsSystemWindows = true , 否则没有效果(即内容显示在状态栏的后面)
- *    注意: 以上方案 在 根布局不是 CoordinatorLayout 时 可行
- *
- * sdk >= 4.4 纯透明
- * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
- */
 @Suppress("MemberVisibilityCanBePrivate")
-open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDelegate {
+open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelegate {
 
-    /**
-     * 通过 STRouteManager 跳转到 activity | fragment 可以添加此回调方法，方便跨组件传递参数(atlas)
-     * 在 onDestroy 里会自动清除
-     */
-    protected val callback: ((bundle: Bundle?) -> Unit?)? by lazy { STRouteManager.getCallback(activity) }
-    protected val disposables: CompositeDisposable = CompositeDisposable()
+    protected val disposables: CompositeDisposable by lazy { CompositeDisposable() }
     protected var statusBar: ImmersionBar? = null
 
     protected var exitTime: Long = 0
@@ -50,8 +27,42 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
     protected var enableImmersionStatusBar = true
     protected var enableImmersionStatusBarWithDarkFont = false
     protected var enableExitWithDoubleBackPressed = false
+    protected var enableFinishIfIsNotTaskRoot = false
+    protected var enableActivityFullScreenAndExpandLayout = false
+    protected var enableActivityFeatureNoTitle = false
+    protected var activityDecorViewBackgroundResource = -1
+    protected var activityTheme = -1
+    protected var activityCloseEnterAnimation: Int = -1
+    protected var activityCloseExitAnimation: Int = -1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateBefore(savedInstanceState: Bundle?) {
+        if (activityTheme != -1) {
+            activity.setTheme(activityTheme)
+        }
+        // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
+        if (enableActivityFeatureNoTitle) {
+            activity.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        }
+        if (activityDecorViewBackgroundResource > 0) {
+            activity.window.decorView.setBackgroundResource(activityDecorViewBackgroundResource)
+        }
+    }
+
+    override fun onCreateAfter(savedInstanceState: Bundle?) {
+        if (enableActivityFullScreenAndExpandLayout) {
+            STSystemUtil.setActivityFullScreenAndExpandLayout(activity)
+        }
+
+        // 避免通过其他方式启动程序后，再通过程序列表中的launcher启动，重新走启动流程
+        if (enableFinishIfIsNotTaskRoot && !activity.isTaskRoot) {
+            val intent: Intent? = activity.intent
+            val action: String? = intent?.action
+            if (intent?.hasCategory(Intent.CATEGORY_LAUNCHER) == true && action == Intent.ACTION_MAIN) {
+                activity.finish()
+                return
+            }
+        }
+
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
             statusBar = ImmersionBar.with(activity)
@@ -66,14 +77,14 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
             SwipeBackHelper.onCreate(activity)
             SwipeBackHelper.getCurrentPage(activity)//get current instance
                 .setSwipeBackEnable(enableSwipeBack)//on-off
-                //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+                .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
+                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
                 .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
                 .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
                 .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
                 .setClosePercent(0.7f)//close activity when swipe over activity
-                .setSwipeRelateEnable(true)//if should move together with the following Activity
-                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
                 .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+            //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
             /*.addListener(object : SwipeListener {
             override fun onScrollToClose() {
             }
@@ -86,7 +97,6 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
         })*/
 
         }
-
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -101,7 +111,12 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
         disposables.dispose()
         statusBar?.destroy()
         if (enableSwipeBack) SwipeBackHelper.onDestroy(activity)
-        STRouteManager.removeCallback(activity)
+    }
+
+    override fun finishAfter() {
+        if (activityCloseEnterAnimation != -1 && activityCloseExitAnimation != -1) {
+            STActivity.overrideWindowAnim(activity, activityCloseEnterAnimation, activityCloseExitAnimation)
+        }
     }
 
     override fun onBackPressedIntercept(): Boolean = false
@@ -132,12 +147,19 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
         }
     }
 
-    override fun callback(): ((bundle: Bundle?) -> Unit?)? = callback
     override fun disposables(): CompositeDisposable = disposables
     override fun statusBar(): ImmersionBar? = statusBar
     override fun enableSwipeBack(): Boolean = enableSwipeBack
     override fun enableSwipeBack(enable: Boolean) {
-        this.enableSwipeBack = enable
+        //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
+        if (!enableExitWithDoubleBackPressed) {
+            //endregion
+            this.enableSwipeBack = enable
+            try {
+                SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
+            } catch (_: RuntimeException) {
+            }
+        }
     }
 
     override fun enableImmersionStatusBar(): Boolean = enableImmersionStatusBar
@@ -155,11 +177,70 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STBaseActivityDe
         this.enableExitWithDoubleBackPressed = enable
     }
 
+    override fun enableFinishIfIsNotTaskRoot(): Boolean = enableFinishIfIsNotTaskRoot
+    override fun enableFinishIfIsNotTaskRoot(enable: Boolean) {
+        this.enableFinishIfIsNotTaskRoot = enable
+    }
+
+    override fun enableActivityFullScreenAndExpandLayout(): Boolean = enableActivityFullScreenAndExpandLayout
+    override fun enableActivityFullScreenAndExpandLayout(enable: Boolean) {
+        this.enableActivityFullScreenAndExpandLayout = enable
+    }
+
+    override fun enableActivityFeatureNoTitle(): Boolean = enableActivityFeatureNoTitle
+    override fun enableActivityFeatureNoTitle(enable: Boolean) {
+        this.enableActivityFeatureNoTitle = enable
+    }
+
+    override fun activityDecorViewBackgroundResource(): Int = activityDecorViewBackgroundResource
+    override fun activityDecorViewBackgroundResource(drawableResource: Int) {
+        this.activityDecorViewBackgroundResource = drawableResource
+    }
+
+    override fun activityCloseEnterAnimation(): Int = activityCloseEnterAnimation
+    override fun activityCloseEnterAnimation(animation: Int) {
+        this.activityCloseEnterAnimation = animation
+    }
+
+    override fun activityCloseExitAnimation(): Int = activityCloseExitAnimation
+    override fun activityCloseExitAnimation(animation: Int) {
+        this.activityCloseExitAnimation = animation
+    }
+
+    override fun activityTheme(): Int = activityTheme
+    override fun activityTheme(activityTheme: Int) {
+        this.activityTheme = activityTheme
+    }
+
     override fun quitApplication() = if (System.currentTimeMillis() - exitTime > 2000) {
         STToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
         if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
         STInitializer.quitApplication()
+    }
+
+    init {
+        val bundle: Bundle? = activity.intent.extras
+        if (bundle != null) {
+            activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
+            enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
+            enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
+
+            //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
+            enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
+            enableExitWithDoubleBackPressed = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
+            if (enableExitWithDoubleBackPressed) {
+                enableSwipeBack = false
+            }
+            //endregion
+
+            enableFinishIfIsNotTaskRoot = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT, enableFinishIfIsNotTaskRoot)
+            enableActivityFullScreenAndExpandLayout = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT, enableActivityFullScreenAndExpandLayout)
+            enableActivityFeatureNoTitle = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FEATURE_NO_TITLE, enableActivityFeatureNoTitle)
+            activityDecorViewBackgroundResource = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
+            activityCloseEnterAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
+            activityCloseExitAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
+        }
     }
 }

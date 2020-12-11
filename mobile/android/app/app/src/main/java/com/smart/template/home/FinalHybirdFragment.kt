@@ -6,9 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
-import com.smart.library.util.STLogUtil
-import com.smart.library.util.STRouteManager
 import com.smart.template.R
 import com.smart.template.home.tab.FinalHomeTabActivity
 import kotlinx.android.synthetic.main.final_hybird_fragment.*
@@ -23,9 +22,7 @@ class FinalHybirdFragment : STBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hybirdPage.setOnClickListener {
-            STRouteManager.goToActivity(activity, "com.smart.library.hybird.HybirdActivity") {
-                STLogUtil.w("krmao", it.toString())
-            }
+            STActivity.startActivity(activity, "com.smart.library.hybird.HybirdActivity")
         }
     }
 

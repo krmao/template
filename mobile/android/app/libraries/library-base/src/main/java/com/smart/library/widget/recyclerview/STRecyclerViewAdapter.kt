@@ -11,6 +11,8 @@ import kotlin.math.abs
 abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context?, var dataList: MutableList<Entity>) : RecyclerView.Adapter<ViewHolder>(), STRecyclerViewItemTouchHelperAdapter {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ExtrasViewHolder(itemView: View, val extras: Any? = null) : RecyclerView.ViewHolder(itemView)
+    class BindingViewHolder<T>(val binding: T, rootView: View) : RecyclerView.ViewHolder(rootView)
 
     fun resetDataList(dataList: MutableList<Entity>) {
         this.dataList = dataList

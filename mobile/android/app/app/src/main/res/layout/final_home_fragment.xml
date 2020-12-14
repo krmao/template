@@ -342,6 +342,18 @@
                             app:backgroundTint="@color/blue_600" />
 
                     </TableRow>
+
+                    <TableRow>
+
+                        <Button
+                            android:id="@+id/wifiBtn"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="wifi manager"
+                            app:backgroundTint="@color/blue_600" />
+
+                    </TableRow>
                 </TableLayout>
             </LinearLayout>
         </ScrollView>

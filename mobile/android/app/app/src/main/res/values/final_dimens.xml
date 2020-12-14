@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="final_title_bar_height">48dp</dimen>
     <dimen name="finalBottomSheetExpandTop">100dp</dimen>
     <dimen name="finalBottomSheetPeekHeight">155dp</dimen>
+
+    <!-- Custom view example -->
+    <dimen name="customTitle" tools:ignore="ResourceName">14sp</dimen>
+    <dimen name="customEntry" tools:ignore="ResourceName">18sp</dimen>
 </resources>

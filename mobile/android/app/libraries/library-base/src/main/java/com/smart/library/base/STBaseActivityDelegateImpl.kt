@@ -36,9 +36,9 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var activityCloseExitAnimation: Int = -1
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
-        if (activityTheme != -1) {
+        /*if (activityTheme != -1) {
             activity.setTheme(activityTheme)
-        }
+        }*/
         // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         if (enableActivityFeatureNoTitle) {
             activity.requestWindowFeature(Window.FEATURE_NO_TITLE)

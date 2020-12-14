@@ -67,6 +67,9 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         btnSwipe.setOnClickListener {
             FinalSwipeMenuFragment.goTo(context)
         }
+        wifiBtn.setOnClickListener {
+            FinalWifiFragment.goTo(context)
+        }
         var lastSelectedAlpha = 1.0
         var lastSelectedColor: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             resources.getColor(R.color.red_500, null)

@@ -31,7 +31,7 @@ class RxPermissions(activity: Activity) {
 
         @SuppressLint("CheckResult")
         @JvmStatic
-        fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit?, vararg permission: String) {
+        fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit, vararg permission: String) {
             if (checkSelfPermission(*permission)) {
                 callback.invoke(true)
             } else {

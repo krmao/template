@@ -55,7 +55,7 @@ object STLogUtil {
     private val MODULE_MAP_ASC by lazy { TreeMap<String, Boolean>({ o1, o2 -> o2.compareTo(o1) }) }//升序,大模块优先级高
 
     @JvmStatic
-    var debug:Boolean = false
+    var debug:Boolean = true
 
     private fun getNewLogName(): String = "log_" + SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault()).format(Date(System.currentTimeMillis())) + ".txt"
 

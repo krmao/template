@@ -60,10 +60,10 @@ class STHomeKeyUtil(private val context: Context, listener: OnClickListener) {
         }
 
         companion object {
-            val SYSTEM_DIALOG_REASON_KEY = "reason"
-            val SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions"
-            val SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps"
-            val SYSTEM_DIALOG_REASON_HOME_KEY = "homekey"
+            const val SYSTEM_DIALOG_REASON_KEY = "reason"
+            const val SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions"
+            const val SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps"
+            const val SYSTEM_DIALOG_REASON_HOME_KEY = "homekey"
         }
     }
 }

@@ -131,7 +131,7 @@ ext {
     androidXMultidexVersion = "2.0.1"
     androidXAnnotationVersion = "1.1.0"
     androidXAppCompatVersion = "1.2.0"
-    androidXRecyclerViewVersion = "1.1.0"
+    androidXRecyclerViewVersion = "1.2.0-beta01"
     androidXVectorDrawableVersion = "1.1.0"
     androidXFragmentVersion = "1.2.5"
     androidXConstraintlayoutVersion = "2.0.4"

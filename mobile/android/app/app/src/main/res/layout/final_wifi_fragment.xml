@@ -55,6 +55,34 @@
             android:text="DISCONNECT"
             app:backgroundTint="@color/orange_900"
             tools:ignore="HardcodedText" />
-        
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/disableWifiBtn"
+            style="@style/STButton.Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="DISABLE WIFI"
+            app:backgroundTint="@color/orange_900"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/enableWifiBtn"
+            style="@style/STButton.Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="ENABLE WIFI"
+            app:backgroundTint="@color/orange_900"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

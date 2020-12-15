@@ -50,8 +50,9 @@ dependencies {
     /******* 官方支持库 ****************************************************************************/
     api "androidx.core:core-ktx:$rootProject.ext.androidXCoreVersion"
     api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
-    api "androidx.fragment:fragment:$rootProject.ext.androidXFragmentVersion"
+    // api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
     api "androidx.viewpager:viewpager:$rootProject.ext.androidXVersion"
+    api "androidx.viewpager2:viewpager2:1.1.0-alpha01"
     api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
     api "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
     api "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
@@ -80,7 +81,9 @@ dependencies {
     api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
 
     /******* 网络请求库 ****************************************************************************/
+    //noinspection GradleDependency
     api "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
+    //noinspection GradleDependency
     api "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.ext.okhttpVersion"
 
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
@@ -107,6 +110,41 @@ dependencies {
 
     api "com.airbnb.android:lottie:3.2.2"
     api "com.smart.library.util:bspatch:0.0.2" // api(name: "bspatch-0.0.2", ext: "aar") // must not dependency local if upload to JCenter
+
+    // region wifi util https://github.com/ThanosFisherman/WifiUtils
+    // api "com.thanosfisherman.wifiutils:wifiutils:1.6.4"
+    // api 'com.thanosfisherman.elvis:elvis:3.0'
+    // endregion
+
+    //region lifecycle https://developer.android.google.cn/topic/libraries/architecture/lifecycle
+    /*
+    def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
+    // ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // Saved state module for ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    // LiveData
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // Lifecycles only (without ViewModel or LiveData)
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // Annotation processor
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    api "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    // optional - helpers for implementing LifecycleOwner in a Service
+    api "androidx.lifecycle:lifecycle-service:$lifecycle_version"
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    api "androidx.lifecycle:lifecycle-process:$lifecycle_version"
+    // optional - ReactiveStreams support for LiveData
+    api "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
+    // optional - Test helpers for LiveData
+    testApi "androidx.arch.core:core-testing:$arch_version"
+    */
+    //endregion
 }
 
 /*apply plugin: "maven"

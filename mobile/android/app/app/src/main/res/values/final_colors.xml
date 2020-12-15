@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="final_root_background">#EFEFEF</color>
+    <color name="final_root_background">@color/blue_grey_500</color>
+    <color name="final_content_background">#EFEFEF</color>
 </resources>

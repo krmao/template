@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_grey_100"
+    android:background="@color/blue_grey_500"
     android:orientation="vertical">
 
     <com.smart.library.widget.titlebar.STTitleBar
         android:layout_width="match_parent"
         android:layout_height="@dimen/final_title_bar_height"
-        android:background="@color/blue_grey_500"
+        android:background="@color/final_root_background"
         app:stTitleText="WIFI TEST"
         app:stTitleTxtColor="@color/white" />
 
@@ -19,12 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/final_content_background"
         android:overScrollMode="never"
         android:scrollbars="none" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/final_content_background"
         android:orientation="horizontal">
 
         <Button
@@ -43,6 +45,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/final_content_background"
         android:orientation="horizontal">
 
         <Button
@@ -61,6 +64,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/final_content_background"
         android:orientation="horizontal">
 
         <Button

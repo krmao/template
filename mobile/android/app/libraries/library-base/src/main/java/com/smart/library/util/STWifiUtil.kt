@@ -136,6 +136,7 @@ object STWifiUtil {
 
     /**
      * android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag.
+     * @see {@link https://stackoverflow.com/questions/25678216/android-internet-connectivity-change-listener}
      */
     @JvmStatic
     fun openSystemWifiSettings(context: Context?) {

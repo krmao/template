@@ -31,6 +31,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".util.wifi.WifiDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/STAppTheme.Normal.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->
         <!-- android:parentActivityName="com.smart.template.home.HomeTabActivity" -->

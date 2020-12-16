@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
@@ -37,6 +38,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurity
+import com.smart.library.util.wifi.WifiDialogActivity
 import com.smart.library.widget.recyclerview.STDividerItemDecoration
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
@@ -80,7 +82,7 @@ class FinalWifiFragment : STBaseFragment() {
                 holder.itemView.bssIdTv.text = "bssid:${itemData.BSSID}"
                 holder.itemView.frequencyTv.text = "frequency:${itemData.frequency}"
                 holder.itemView.levelTv.text = "level:${itemData.level}"
-                holder.itemView.securityTypeTv.text = getSecurity(itemData.capabilities)
+                holder.itemView.securityTypeTv.text = itemData.capabilities + "(${getSecurity(itemData.capabilities)})"
                 holder.itemView.signalStrengthTv.text = STWifiUtil.getSignalStrengthDescByScanResult(itemData)
                 holder.itemView.setOnClickListener {
                     showCustomViewDialog(itemData, BottomSheet(LayoutMode.WRAP_CONTENT))
@@ -114,6 +116,10 @@ class FinalWifiFragment : STBaseFragment() {
                     STWifiUtil.setWifiEnabled(application, true)
                 }
             }
+        }
+
+        wifiDialogBtn.setOnClickListener {
+            startActivity(Intent(context, WifiDialogActivity::class.java))
         }
 
         disconnectBtn.setOnClickListener {
@@ -194,17 +200,19 @@ class FinalWifiFragment : STBaseFragment() {
             customView(R.layout.final_wifi_fragment_dialog, scrollable = true, horizontalPadding = true)
             positiveButton(R.string.connect) { dialog ->
                 // Pull the password out of the custom view when the positive button is pressed
+                val identityInput: EditText = dialog.getCustomView().findViewById(R.id.identity)
                 val passwordInput: EditText = dialog.getCustomView().findViewById(R.id.password)
+                val identityString = identityInput.text.toString().trim()
                 val passwordString = passwordInput.text.toString().trim()
                 STLogUtil.w(TAG, "Build.VERSION.SDK_INT=${Build.VERSION.SDK_INT}")
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     STLogUtil.w(TAG, "android >= 10 requestNetwork")
-                    STWifiUtil.connectWifiAndroidQ(application, connectivityManager, STWifiUtil.createNetworkRequestBuilderAndroidQ(scanResult.SSID, scanResult.BSSID, passwordString).build(), onNetworkCallback)
+                    STWifiUtil.connectWifiAndroidQ(application, connectivityManager, STWifiUtil.createNetworkRequestBuilderAndroidQ(scanResult.SSID, scanResult.BSSID, passwordString, identityString).build(), onNetworkCallback)
                 } else {
                     STLogUtil.w(TAG, "android < 10 connect wifi")
-                    networkId = STWifiUtil.connectWifi(application, config = STWifiUtil.createWifiConfigurationPreAndroidQ(application, scanResult = scanResult, password = passwordString))
+                    networkId = STWifiUtil.connectWifi(application, wifiConfiguration = STWifiUtil.createWifiConfigurationPreAndroidQ(application, scanResult = scanResult, password = passwordString, identity = identityString))
                     /*
                     val securityType = getSecurity(scanResult.capabilities)
                     if (securityType.toUpperCase(locale = Locale.getDefault()).contains("WPS")) {

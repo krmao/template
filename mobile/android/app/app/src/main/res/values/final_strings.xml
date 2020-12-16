@@ -7,6 +7,7 @@
     <string name="excellent">Excellent</string>
     <string name="security">Security</string>
     <string name="securityType">802.1x EAP</string>
+    <string name="identity">Identity</string>
     <string name="password">Password</string>
     <string name="ssid">SSID</string>
     <string name="ssidLit">Material Dialogs</string>

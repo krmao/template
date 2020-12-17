@@ -30,16 +30,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/wifiDialogBtn"
-            style="@style/STButton.Default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:text="WIFI DIALOG"
-            app:backgroundTint="@color/orange_900"
-            tools:ignore="HardcodedText" />
-        <Button
             android:id="@+id/scanBtn"
             style="@style/STButton.Default"
             android:layout_width="wrap_content"

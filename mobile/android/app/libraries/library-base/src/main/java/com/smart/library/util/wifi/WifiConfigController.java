@@ -1,25 +1,9 @@
-/*
- * Copyright (C) 2010 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.smart.library.util.wifi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.net.LinkAddress;
 import android.net.NetworkInfo.DetailedState;
 import android.net.ProxyInfo;
 import android.net.Uri;
@@ -31,11 +15,13 @@ import android.net.wifi.WifiEnterpriseConfig.Eap;
 import android.net.wifi.WifiEnterpriseConfig.Phase2;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
-import android.os.UserManager;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -55,16 +41,12 @@ import android.widget.TextView;
 import androidx.annotation.VisibleForTesting;
 
 import com.smart.library.R;
-import com.smart.library.util.STReflectUtil;
 import com.smart.library.util.STThreadUtils;
-import com.smart.library.util.wifi.accesspoint.AccessPoint;
-import com.smart.library.util.wifi.settingslib.Utils;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,6 +56,33 @@ import java.util.regex.Pattern;
  * share the logic for controlling buttons, text fields, etc.
  */
 public class WifiConfigController implements TextWatcher, AdapterView.OnItemSelectedListener, OnCheckedChangeListener, TextView.OnEditorActionListener, View.OnKeyListener {
+
+    public enum IpAssignment {
+        /* Use statically configured IP settings. Configuration can be accessed
+         * with staticIpConfiguration */
+        STATIC,
+        /* Use dynamically configured IP settigns */
+        DHCP,
+        /* no IP details are assigned, this is used to indicate
+         * that any existing IP settings should be retained */
+        UNASSIGNED
+    }
+
+    public enum ProxySettings {
+        /* No proxy is to be used. Any existing proxy settings
+         * should be cleared. */
+        NONE,
+        /* Use statically configured proxy. Configuration can be accessed
+         * with httpProxy. */
+        STATIC,
+        /* no proxy details are assigned, this is used to indicate
+         * that any existing proxy settings should be retained */
+        UNASSIGNED,
+        /* Use a Pac based proxy.
+         */
+        PAC
+    }
+
     private static final String TAG = "WifiConfigController";
 
     private static final String SYSTEM_CA_STORE_PATH = "/system/etc/security/cacerts";
@@ -157,10 +166,9 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
     private TextView mProxyPacView;
     private CheckBox mSharedCheckBox;
 
-    private IpConfiguration.IpAssignment mIpAssignment = IpConfiguration.IpAssignment.UNASSIGNED;
-    private IpConfiguration.ProxySettings mProxySettings = IpConfiguration.ProxySettings.UNASSIGNED;
+    private IpAssignment mIpAssignment = IpAssignment.UNASSIGNED;
+    private ProxySettings mProxySettings = ProxySettings.UNASSIGNED;
     private ProxyInfo mHttpProxy = null;
-    private StaticIpConfiguration mStaticIpConfiguration = null;
 
     private String[] mLevels;
     private int mMode;
@@ -168,25 +176,23 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
     private Context mContext;
 
-    public WifiConfigController(WifiConfigUiBase parent, View view, AccessPoint accessPoint,
-                                int mode) {
+    public WifiConfigController(WifiConfigUiBase parent, View view, AccessPoint accessPoint, int mode) {
         mConfigUi = parent;
 
         mView = view;
         mAccessPoint = accessPoint;
-        mAccessPointSecurity = (accessPoint == null) ? AccessPoint.SECURITY_NONE : accessPoint.getSecurity();
+        mAccessPointSecurity = (accessPoint == null) ? WifiUtils.SECURITY_NONE : accessPoint.getSecurity();
         mMode = mode;
 
         mContext = mConfigUi.getContext();
         final Resources res = mContext.getResources();
 
         mLevels = res.getStringArray(R.array.wifi_signal);
-        // todo
-        if (Utils.isWifiOnly(mContext) /*|| !mContext.getResources().getBoolean(R.bool.config_eap_sim_based_auth_supported)*/) {
+        /*if (Utils.isWifiOnly(mContext) || !mContext.getResources().getBoolean(android.R.bool.config_eap_sim_based_auth_supported)) {
             mPhase2PeapAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, res.getStringArray(R.array.wifi_peap_phase2_entries));
-        } else {
-            mPhase2PeapAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, res.getStringArray(R.array.wifi_peap_phase2_entries_with_sim_auth));
-        }
+        } else {*/
+        mPhase2PeapAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, res.getStringArray(R.array.wifi_peap_phase2_entries_with_sim_auth));
+        /*}*/
         mPhase2PeapAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mPhase2FullAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, res.getStringArray(R.array.wifi_phase2_entries));
@@ -228,56 +234,39 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
             mConfigUi.setSubmitButton(res.getString(R.string.wifi_save));
         } else {
-            if (!mAccessPoint.isPasspointConfig()) {
-                mConfigUi.setTitle(mAccessPoint.getSsid());
+            if (!mAccessPoint.isPasspointNetwork()) {
+                String ssidStr = accessPoint.getSsidStr();
+                SpannableString str = new SpannableString(ssidStr);
+                str.setSpan(new TtsSpan.TelephoneBuilder(ssidStr).build(), 0, ssidStr.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                mConfigUi.setTitle(str);
             } else {
-                mConfigUi.setTitle(mAccessPoint.getConfigName());
+                String configName = accessPoint.getSsidStr();
+                if (accessPoint.isPasspointNetwork()) {
+                    configName = accessPoint.getProviderFriendlyName();
+                }
+                mConfigUi.setTitle(configName);
             }
 
             ViewGroup group = (ViewGroup) mView.findViewById(R.id.info);
 
             boolean showAdvancedFields = false;
             if (mAccessPoint.isSaved()) {
-                WifiConfiguration config = mAccessPoint.getConfig();
-                mMeteredSettingsSpinner.setSelection((Integer) STReflectUtil.getFieldValue(config, "meteredOverride"));
-                mHiddenSettingsSpinner.setSelection(config.hiddenSSID ? HIDDEN_NETWORK : NOT_HIDDEN_NETWORK);
+                mMeteredSettingsSpinner.setSelection(0);
+                mHiddenSettingsSpinner.setSelection(NOT_HIDDEN_NETWORK);
+                mIpSettingsSpinner.setSelection(DHCP);
+                mSharedCheckBox.setEnabled(false);
+                showAdvancedFields = true;
 
+                mProxySettingsSpinner.setSelection(PROXY_NONE);
 
-                if (STReflectUtil.invokeDeclaredMethod(config, "getIpAssignment") == IpConfiguration.IpAssignment.STATIC) {
-                    mIpSettingsSpinner.setSelection(STATIC_IP);
-                    showAdvancedFields = true;
-                    // Display IP address.
-                    StaticIpConfiguration staticConfig = (StaticIpConfiguration) STReflectUtil.invokeDeclaredMethod(config, "getStaticIpConfiguration");
-                    if (staticConfig != null && staticConfig.ipAddress != null) {
-                        addRow(group, R.string.wifi_ip_address, staticConfig.ipAddress.getAddress().getHostAddress());
-                    }
-                } else {
-                    mIpSettingsSpinner.setSelection(DHCP);
-                }
-
-                Boolean configShared = (Boolean) STReflectUtil.getFieldValue(config, "shared");
-                mSharedCheckBox.setEnabled(configShared);
-                if (!configShared) {
-                    showAdvancedFields = true;
-                }
-
-                Object configProxySettings = STReflectUtil.invokeDeclaredMethod(config, "getProxySettings");
-
-                if (configProxySettings == IpConfiguration.ProxySettings.STATIC) {
-                    mProxySettingsSpinner.setSelection(PROXY_STATIC);
-                    showAdvancedFields = true;
-                } else if (configProxySettings == IpConfiguration.ProxySettings.PAC) {
-                    mProxySettingsSpinner.setSelection(PROXY_PAC);
-                    showAdvancedFields = true;
-                } else {
-                    mProxySettingsSpinner.setSelection(PROXY_NONE);
-                }
-                if (config != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && config.isPasspoint()) {
-                    addRow(group, R.string.passpoint_label, String.format(mContext.getString(R.string.passpoint_content), config.providerFriendlyName));
+                if (accessPoint.isPasspointNetwork()) {
+                    addRow(group, R.string.passpoint_label, String.format(mContext.getString(R.string.passpoint_content), accessPoint.getProviderFriendlyName()));
                 }
             }
 
-            if ((!mAccessPoint.isSaved() && !mAccessPoint.isActive() && !mAccessPoint.isPasspointConfig()) || mMode != WifiConfigUiBase.MODE_VIEW) {
+            showAdvancedFields = false; // force hide advanced fields default
+
+            if ((!mAccessPoint.isSaved() && !mAccessPoint.isPasspointNetwork()) || mMode != WifiConfigUiBase.MODE_VIEW) {
                 showSecurityFields();
                 showIpConfigFields();
                 showProxyFields();
@@ -296,20 +285,18 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             } else if (mMode == WifiConfigUiBase.MODE_CONNECT) {
                 mConfigUi.setSubmitButton(res.getString(R.string.wifi_connect));
             } else {
-                final DetailedState state = mAccessPoint.getDetailedState();
+                final DetailedState state = null;
                 final String signalLevel = getSignalString();
 
                 if ((state == null || state == DetailedState.DISCONNECTED) && signalLevel != null) {
                     mConfigUi.setSubmitButton(res.getString(R.string.wifi_connect));
                 } else {
                     if (state != null) {
-                        boolean isEphemeral = mAccessPoint.isEphemeral();
-                        WifiConfiguration config = mAccessPoint.getConfig();
                         String providerFriendlyName = null;
-                        if (config != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && config.isPasspoint()) {
-                            providerFriendlyName = config.providerFriendlyName;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && mAccessPoint.isPasspointNetwork()) {
+                            providerFriendlyName = mAccessPoint.getProviderFriendlyName();
                         }
-                        String summary = AccessPoint.getSummary(mConfigUi.getContext(), state, isEphemeral, providerFriendlyName);
+                        String summary = WifiUtils.getSummary(mConfigUi.getContext(), state, false, providerFriendlyName);
                         addRow(group, R.string.wifi_status, summary);
                     }
 
@@ -317,7 +304,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                         addRow(group, R.string.wifi_signal, signalLevel);
                     }
 
-                    WifiInfo info = mAccessPoint.getInfo();
+                    WifiInfo info = null;
                     if (info != null && info.getLinkSpeed() != -1) {
                         addRow(group, R.string.wifi_speed, String.format(res.getString(R.string.link_speed), info.getLinkSpeed()));
                     }
@@ -326,9 +313,9 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                         final int frequency = info.getFrequency();
                         String band = null;
 
-                        if (frequency >= AccessPoint.LOWER_FREQ_24GHZ && frequency < AccessPoint.HIGHER_FREQ_24GHZ) {
+                        if (frequency >= WifiUtils.LOWER_FREQ_24GHZ && frequency < WifiUtils.HIGHER_FREQ_24GHZ) {
                             band = res.getString(R.string.wifi_band_24ghz);
-                        } else if (frequency >= AccessPoint.LOWER_FREQ_5GHZ && frequency < AccessPoint.HIGHER_FREQ_5GHZ) {
+                        } else if (frequency >= WifiUtils.LOWER_FREQ_5GHZ && frequency < WifiUtils.HIGHER_FREQ_5GHZ) {
                             band = res.getString(R.string.wifi_band_5ghz);
                         } else {
                             Log.e(TAG, "Unexpected frequency " + frequency);
@@ -338,18 +325,16 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                         }
                     }
 
-                    addRow(group, R.string.wifi_security, mAccessPoint.getSecurityString(false));
+                    addRow(group, R.string.wifi_security, WifiUtils.getSecurityString(mContext, false, accessPoint.getSecurity(), WifiUtils.getPskType(accessPoint.getScanResult())));
                     mView.findViewById(R.id.ip_fields).setVisibility(View.GONE);
                 }
-                if (mAccessPoint.isSaved() || mAccessPoint.isActive() || mAccessPoint.isPasspointConfig()) {
+                if (mAccessPoint.isSaved() || mAccessPoint.isPasspointNetwork()) {
                     mConfigUi.setForgetButton(res.getString(R.string.wifi_forget));
                 }
             }
         }
 
-        if (!isSplitSystemUser()) {
-            mSharedCheckBox.setVisibility(View.GONE);
-        }
+        mSharedCheckBox.setVisibility(View.GONE);
 
         mConfigUi.setCancelButton(res.getString(R.string.wifi_cancel));
         if (mConfigUi.getSubmitButton() != null) {
@@ -358,12 +343,6 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
         // After done view show and hide, request focus from parent view
         mView.findViewById(R.id.l_wifidialog).requestFocus();
-    }
-
-    @VisibleForTesting
-    boolean isSplitSystemUser() {
-        final UserManager userManager = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
-        return (Boolean) STReflectUtil.invokeDeclaredMethod(userManager, "isSplitSystemUser");
     }
 
     private void addRow(ViewGroup group, int name, String value) {
@@ -375,10 +354,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
     @VisibleForTesting
     String getSignalString() {
-        if (!mAccessPoint.isReachable()) {
-            return null;
-        }
-        final int level = mAccessPoint.getLevel();
+        final int level = 0;// todo WifiUtils.getLevel(mRssi);
 
         return (level > -1 && level < mLevels.length) ? mLevels[level] : null;
     }
@@ -418,9 +394,9 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
         boolean enabled = false;
         boolean passwordInvalid = false;
         if (mPasswordView != null
-                && ((mAccessPointSecurity == AccessPoint.SECURITY_WEP
+                && ((mAccessPointSecurity == WifiUtils.SECURITY_WEP
                 && mPasswordView.length() == 0)
-                || (mAccessPointSecurity == AccessPoint.SECURITY_PSK
+                || (mAccessPointSecurity == WifiUtils.SECURITY_PSK
                 && !isValidPsk(mPasswordView.getText().toString())))) {
             passwordInvalid = true;
         }
@@ -551,22 +527,22 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
     private boolean ipAndProxyFieldsAreValid() {
         mIpAssignment = (mIpSettingsSpinner != null
                 && mIpSettingsSpinner.getSelectedItemPosition() == STATIC_IP)
-                ? IpConfiguration.IpAssignment.STATIC
-                : IpConfiguration.IpAssignment.DHCP;
+                ? IpAssignment.STATIC
+                : IpAssignment.DHCP;
 
-        if (mIpAssignment == IpConfiguration.IpAssignment.STATIC) {
-            mStaticIpConfiguration = new StaticIpConfiguration();
-            int result = validateIpConfigFields(mStaticIpConfiguration);
+        if (mIpAssignment == IpAssignment.STATIC) {
+            // mStaticIpConfiguration = new StaticIpConfiguration();
+            int result = 0; // validateIpConfigFields(mStaticIpConfiguration);
             if (result != 0) {
                 return false;
             }
         }
 
         final int selectedPosition = mProxySettingsSpinner.getSelectedItemPosition();
-        mProxySettings = IpConfiguration.ProxySettings.NONE;
+        mProxySettings = ProxySettings.NONE;
         mHttpProxy = null;
         if (selectedPosition == PROXY_STATIC && mProxyHostView != null) {
-            mProxySettings = IpConfiguration.ProxySettings.STATIC;
+            mProxySettings = ProxySettings.STATIC;
             String host = mProxyHostView.getText().toString();
             String portStr = mProxyPortView.getText().toString();
             String exclusionList = mProxyExclusionListView.getText().toString();
@@ -584,7 +560,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 return false;
             }
         } else if (selectedPosition == PROXY_PAC && mProxyPacView != null) {
-            mProxySettings = IpConfiguration.ProxySettings.PAC;
+            mProxySettings = ProxySettings.PAC;
             CharSequence uriSequence = mProxyPacView.getText();
             if (TextUtils.isEmpty(uriSequence)) {
                 return false;
@@ -647,24 +623,22 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
         WifiConfiguration config = new WifiConfiguration();
 
         if (mAccessPoint == null) {
-            config.SSID = AccessPoint.convertToQuotedString(mSsidView.getText().toString());
+            config.SSID = WifiUtils.convertToQuotedString(mSsidView.getText().toString());
             // If the user adds a network manually, assume that it is hidden.
             config.hiddenSSID = mHiddenSettingsSpinner.getSelectedItemPosition() == HIDDEN_NETWORK;
         } else if (!mAccessPoint.isSaved()) {
-            config.SSID = AccessPoint.convertToQuotedString(mAccessPoint.getSsidStr());
+            config.SSID = WifiUtils.convertToQuotedString(mAccessPoint.getSsidStr());
         } else {
-            config.networkId = mAccessPoint.getConfig().networkId;
-            config.hiddenSSID = mAccessPoint.getConfig().hiddenSSID;
+            config.networkId = mAccessPoint.getNetworkId();
+            config.hiddenSSID = mAccessPoint.getHiddenSSID();
         }
 
-        STReflectUtil.setFieldValue(config, "shared", mSharedCheckBox.isChecked());
-
         switch (mAccessPointSecurity) {
-            case AccessPoint.SECURITY_NONE:
+            case WifiUtils.SECURITY_NONE:
                 config.allowedKeyManagement.set(KeyMgmt.NONE);
                 break;
 
-            case AccessPoint.SECURITY_WEP:
+            case WifiUtils.SECURITY_WEP:
                 config.allowedKeyManagement.set(KeyMgmt.NONE);
                 config.allowedAuthAlgorithms.set(AuthAlgorithm.OPEN);
                 config.allowedAuthAlgorithms.set(AuthAlgorithm.SHARED);
@@ -672,8 +646,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                     int length = mPasswordView.length();
                     String password = mPasswordView.getText().toString();
                     // WEP-40, WEP-104, and 256-bit WEP (WEP-232?)
-                    if ((length == 10 || length == 26 || length == 58)
-                            && password.matches("[0-9A-Fa-f]*")) {
+                    if ((length == 10 || length == 26 || length == 58) && password.matches("[0-9A-Fa-f]*")) {
                         config.wepKeys[0] = password;
                     } else {
                         config.wepKeys[0] = '"' + password + '"';
@@ -681,7 +654,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 }
                 break;
 
-            case AccessPoint.SECURITY_PSK:
+            case WifiUtils.SECURITY_PSK:
                 config.allowedKeyManagement.set(KeyMgmt.WPA_PSK);
                 if (mPasswordView.length() != 0) {
                     String password = mPasswordView.getText().toString();
@@ -693,7 +666,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 }
                 break;
 
-            case AccessPoint.SECURITY_EAP:
+            case WifiUtils.SECURITY_EAP:
                 config.allowedKeyManagement.set(KeyMgmt.WPA_EAP);
                 config.allowedKeyManagement.set(KeyMgmt.IEEE8021X);
                 config.enterpriseConfig = new WifiEnterpriseConfig();
@@ -735,32 +708,57 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                         break;
                 }
 
-                String caCert = (String) mEapCaCertSpinner.getSelectedItem();
+                // do not support ca
+                /*String caCert = (String) mEapCaCertSpinner.getSelectedItem();
 
-                // todo
+                //region reflect
+                Class<?>[] parameterTypes = new Class[1];
+                Object[] params = new Object[1];
+                parameterTypes[0] = String[].class;
+                params[0] = null;
+                STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypes, params);
                 // config.enterpriseConfig.setCaCertificateAliases(null);
+                //endregion
+
+                //region reflect
+                Class<?>[] parameterTypesForCaPath = new Class[1];
+                Object[] paramsForCaPath = new Object[1];
+                parameterTypesForCaPath[0] = String.class;
+                paramsForCaPath[0] = null;
+                STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesForCaPath, paramsForCaPath);
                 // config.enterpriseConfig.setCaPath(null);
+                //endregion
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     config.enterpriseConfig.setDomainSuffixMatch(mEapDomainView.getText().toString());
                 }
 
-                if (caCert.equals(mUnspecifiedCertString)
-                        || caCert.equals(mDoNotValidateEapServerString)) {
+                if (caCert.equals(mUnspecifiedCertString) || caCert.equals(mDoNotValidateEapServerString)) {
                     // ca_cert already set to null, so do nothing.
                 } else if (caCert.equals(mUseSystemCertsString)) {
-                    // todo
+                    Class<?>[] parameterTypesForCaPath2 = new Class[1];
+                    Object[] paramsForCaPath2 = new Object[1];
+                    parameterTypesForCaPath2[0] = String.class;
+                    paramsForCaPath2[0] = SYSTEM_CA_STORE_PATH;
+                    STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesForCaPath2, paramsForCaPath2);
                     // config.enterpriseConfig.setCaPath(SYSTEM_CA_STORE_PATH);
                 } else if (caCert.equals(mMultipleCertSetString)) {
                     if (mAccessPoint != null) {
                         if (!mAccessPoint.isSaved()) {
-                            Log.e(TAG, "Multiple certs can only be set "
-                                    + "when editing saved network");
+                            Log.e(TAG, "Multiple certs can only be set " + "when editing saved network");
                         }
-                        // todo
+                        Class<?>[] parameterTypesAliases = new Class[1];
+                        Object[] paramsAliases = new Object[1];
+                        parameterTypesAliases[0] = String[].class;
+                        paramsAliases[0] = STReflectUtil.invokeDeclaredMethod(mAccessPoint.getWifiConfiguration().enterpriseConfig, "getCaCertificateAliases");
+                        STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesAliases, paramsAliases);
                         // config.enterpriseConfig.setCaCertificateAliases(mAccessPoint.getConfig().enterpriseConfig.getCaCertificateAliases());
                     }
                 } else {
-                    // todo
+                    Class<?>[] parameterTypesAliases = new Class[1];
+                    Object[] paramsAliases = new Object[1];
+                    parameterTypesAliases[0] = String[].class;
+                    paramsAliases[0] = new String[]{caCert};
+                    STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesAliases, paramsAliases);
                     // config.enterpriseConfig.setCaCertificateAliases(new String[]{caCert});
                 }
 
@@ -768,24 +766,27 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 // the use either their own certificate, or the system certificates, not both.
                 // The variable that is not used must explicitly be set to null, so that a
                 // previously-set value on a saved configuration will be erased on an update.
-                // todo
-                /*if (config.enterpriseConfig.getCaCertificateAliases() != null && config.enterpriseConfig.getCaPath() != null) {
+                *//*if (config.enterpriseConfig.getCaCertificateAliases() != null && config.enterpriseConfig.getCaPath() != null) {
                     Log.e(TAG, "ca_cert ("
                             + config.enterpriseConfig.getCaCertificateAliases()
                             + ") and ca_path ("
                             + config.enterpriseConfig.getCaPath()
                             + ") should not both be non-null");
-                }*/
+                }*//*
 
                 String clientCert = (String) mEapUserCertSpinner.getSelectedItem();
-                if (clientCert.equals(mUnspecifiedCertString)
-                        || clientCert.equals(mDoNotProvideEapUserCertString)) {
+                if (clientCert.equals(mUnspecifiedCertString) || clientCert.equals(mDoNotProvideEapUserCertString)) {
                     // Note: |clientCert| should not be able to take the value |unspecifiedCert|,
                     // since we prevent such configurations from being saved.
                     clientCert = "";
                 }
-                // todo
-                // config.enterpriseConfig.setClientCertificateAlias(clientCert);
+                Class<?>[] parameterTypesClientAliases = new Class[1];
+                Object[] paramsClientAliases = new Object[1];
+                parameterTypesClientAliases[0] = String.class;
+                paramsClientAliases[0] = clientCert;
+                STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setClientCertificateAlias", parameterTypesClientAliases, paramsClientAliases);
+                // config.enterpriseConfig.setClientCertificateAlias(clientCert);*/
+
                 if (eapMethod == Eap.SIM || eapMethod == Eap.AKA || eapMethod == Eap.AKA_PRIME) {
                     config.enterpriseConfig.setIdentity("");
                     config.enterpriseConfig.setAnonymousIdentity("");
@@ -811,102 +812,11 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             default:
                 return null;
         }
-
-        // todo
-        /*config.setIpConfiguration(
-                new IpConfiguration(mIpAssignment, mProxySettings,
-                        mStaticIpConfiguration, mHttpProxy));
-        if (mMeteredSettingsSpinner != null) {
-            config.meteredOverride = mMeteredSettingsSpinner.getSelectedItemPosition();
-        }*/
-
         return config;
     }
 
-    private Inet4Address getIPv4Address(String text) {
-        try {
-            return (Inet4Address) NetworkUtils.numericToInetAddress(text);
-        } catch (IllegalArgumentException | ClassCastException e) {
-            return null;
-        }
-    }
-
-    private int validateIpConfigFields(StaticIpConfiguration staticIpConfiguration) {
-        if (mIpAddressView == null) return 0;
-
-        String ipAddr = mIpAddressView.getText().toString();
-        if (TextUtils.isEmpty(ipAddr)) return R.string.wifi_ip_settings_invalid_ip_address;
-
-        Inet4Address inetAddr = getIPv4Address(ipAddr);
-        if (inetAddr == null /*|| inetAddr.equals(Inet4Address.ANY)*/) {
-            return R.string.wifi_ip_settings_invalid_ip_address;
-        }
-
-        int networkPrefixLength = -1;
-        try {
-            networkPrefixLength = Integer.parseInt(mNetworkPrefixLengthView.getText().toString());
-            if (networkPrefixLength < 0 || networkPrefixLength > 32) {
-                return R.string.wifi_ip_settings_invalid_network_prefix_length;
-            }
-            // todo
-            // staticIpConfiguration.ipAddress = new LinkAddress(inetAddr, networkPrefixLength);
-        } catch (NumberFormatException e) {
-            // Set the hint as default after user types in ip address
-            mNetworkPrefixLengthView.setText(mConfigUi.getContext().getString(
-                    R.string.wifi_network_prefix_length_hint));
-        } catch (IllegalArgumentException e) {
-            return R.string.wifi_ip_settings_invalid_ip_address;
-        }
-
-        String gateway = mGatewayView.getText().toString();
-        if (TextUtils.isEmpty(gateway)) {
-            try {
-                //Extract a default gateway from IP address
-                InetAddress netPart = NetworkUtils.getNetworkPart(inetAddr, networkPrefixLength);
-                byte[] addr = netPart.getAddress();
-                addr[addr.length - 1] = 1;
-                mGatewayView.setText(InetAddress.getByAddress(addr).getHostAddress());
-            } catch (RuntimeException ee) {
-            } catch (java.net.UnknownHostException u) {
-            }
-        } else {
-            InetAddress gatewayAddr = getIPv4Address(gateway);
-            if (gatewayAddr == null) {
-                return R.string.wifi_ip_settings_invalid_gateway;
-            }
-            if (gatewayAddr.isMulticastAddress()) {
-                return R.string.wifi_ip_settings_invalid_gateway;
-            }
-            staticIpConfiguration.gateway = gatewayAddr;
-        }
-
-        String dns = mDns1View.getText().toString();
-        InetAddress dnsAddr = null;
-
-        if (TextUtils.isEmpty(dns)) {
-            //If everything else is valid, provide hint as a default option
-            mDns1View.setText(mConfigUi.getContext().getString(R.string.wifi_dns1_hint));
-        } else {
-            dnsAddr = getIPv4Address(dns);
-            if (dnsAddr == null) {
-                return R.string.wifi_ip_settings_invalid_dns;
-            }
-            staticIpConfiguration.dnsServers.add(dnsAddr);
-        }
-
-        if (mDns2View.length() > 0) {
-            dns = mDns2View.getText().toString();
-            dnsAddr = getIPv4Address(dns);
-            if (dnsAddr == null) {
-                return R.string.wifi_ip_settings_invalid_dns;
-            }
-            staticIpConfiguration.dnsServers.add(dnsAddr);
-        }
-        return 0;
-    }
-
     private void showSecurityFields() {
-        if (mAccessPointSecurity == AccessPoint.SECURITY_NONE) {
+        if (mAccessPointSecurity == WifiUtils.SECURITY_NONE) {
             mView.findViewById(R.id.security_fields).setVisibility(View.GONE);
             return;
         }
@@ -925,7 +835,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             }
         }
 
-        if (mAccessPointSecurity != AccessPoint.SECURITY_EAP) {
+        if (mAccessPointSecurity != WifiUtils.SECURITY_EAP) {
             mView.findViewById(R.id.eap).setVisibility(View.GONE);
             return;
         }
@@ -934,13 +844,13 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
         if (mEapMethodSpinner == null) {
             mEapMethodSpinner = (Spinner) mView.findViewById(R.id.method);
             mEapMethodSpinner.setOnItemSelectedListener(this);
-            // todo http://androidxref.com/9.0.0_r3/xref/frameworks/base/core/res/res/values/config.xml
-            if (Utils.isWifiOnly(mContext)/* || !mContext.getResources().getBoolean(R.bool.config_eap_sim_based_auth_supported)*/) {
+            // http://androidxref.com/9.0.0_r3/xref/frameworks/base/core/res/res/values/config.xml
+            /*if (Utils.isWifiOnly(mContext)|| !mContext.getResources().getBoolean(R.bool.config_eap_sim_based_auth_supported)) {
                 String[] eapMethods = mContext.getResources().getStringArray(R.array.eap_method_without_sim_auth);
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, eapMethods);
                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mEapMethodSpinner.setAdapter(spinnerAdapter);
-            }
+            }*/
             mPhase2Spinner = (Spinner) mView.findViewById(R.id.phase2);
             mPhase2Spinner.setOnItemSelectedListener(this);
             mEapCaCertSpinner = (Spinner) mView.findViewById(R.id.ca_cert);
@@ -970,42 +880,11 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
             // Modifying an existing network
             if (mAccessPoint != null && mAccessPoint.isSaved()) {
-                WifiEnterpriseConfig enterpriseConfig = mAccessPoint.getConfig().enterpriseConfig;
-                int eapMethod = enterpriseConfig.getEapMethod();
-                int phase2Method = enterpriseConfig.getPhase2Method();
-                mEapMethodSpinner.setSelection(eapMethod);
-                showEapFieldsByMethod(eapMethod);
-                switch (eapMethod) {
-                    case Eap.PEAP:
-                        switch (phase2Method) {
-                            case Phase2.NONE:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_NONE);
-                                break;
-                            case Phase2.MSCHAPV2:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_MSCHAPV2);
-                                break;
-                            case Phase2.GTC:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_GTC);
-                                break;
-                            case Phase2.SIM:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_SIM);
-                                break;
-                            case Phase2.AKA:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_AKA);
-                                break;
-                            case Phase2.AKA_PRIME:
-                                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_AKA_PRIME);
-                                break;
-                            default:
-                                Log.e(TAG, "Invalid phase 2 method " + phase2Method);
-                                break;
-                        }
-                        break;
-                    default:
-                        mPhase2Spinner.setSelection(phase2Method);
-                        break;
-                }
-                if (!TextUtils.isEmpty((CharSequence) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getCaPath"))) {
+                mEapMethodSpinner.setSelection(Eap.PEAP);
+                showEapFieldsByMethod(WIFI_EAP_METHOD_PEAP);
+                mPhase2Spinner.setSelection(WIFI_PEAP_PHASE2_NONE);
+                setSelection(mEapCaCertSpinner, mDoNotValidateEapServerString); // default not validate
+                /*if (!TextUtils.isEmpty((CharSequence) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getCaPath"))) {
                     setSelection(mEapCaCertSpinner, mUseSystemCertsString);
                 } else {
                     String[] caCerts = (String[]) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getCaCertificateAliases");
@@ -1023,17 +902,17 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                                 true);
                         setSelection(mEapCaCertSpinner, mMultipleCertSetString);
                     }
-                }
+                }*/
 
-                mEapDomainView.setText((Integer) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getDomainSuffixMatch"));
+                // mEapDomainView.setText((Integer) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getDomainSuffixMatch"));
                 String userCert = null; // enterpriseConfig.getClientCertificateAlias();
                 if (TextUtils.isEmpty(userCert)) {
                     setSelection(mEapUserCertSpinner, mDoNotProvideEapUserCertString);
                 } else {
                     setSelection(mEapUserCertSpinner, userCert);
                 }
-                mEapIdentityView.setText(enterpriseConfig.getIdentity());
-                mEapAnonymousView.setText(enterpriseConfig.getAnonymousIdentity());
+                // mEapIdentityView.setText(enterpriseConfig.getIdentity());
+                // mEapAnonymousView.setText(enterpriseConfig.getAnonymousIdentity());
             } else {
                 mPhase2Spinner = (Spinner) mView.findViewById(R.id.phase2);
                 showEapFieldsByMethod(mEapMethodSpinner.getSelectedItemPosition());
@@ -1077,7 +956,6 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
         mView.findViewById(R.id.password_layout).setVisibility(View.VISIBLE);
         mView.findViewById(R.id.show_password_layout).setVisibility(View.VISIBLE);
 
-        Context context = mConfigUi.getContext();
         switch (eapMethod) {
             case WIFI_EAP_METHOD_PWD:
                 setPhase2Invisible();
@@ -1195,14 +1073,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
     @SuppressLint("SetTextI18n")
     private void showIpConfigFields() {
-        WifiConfiguration config = null;
-
         mView.findViewById(R.id.ip_fields).setVisibility(View.VISIBLE);
-
-        if (mAccessPoint != null && mAccessPoint.isSaved()) {
-            config = mAccessPoint.getConfig();
-        }
-
         if (mIpSettingsSpinner.getSelectedItemPosition() == STATIC_IP) {
             mView.findViewById(R.id.staticip).setVisibility(View.VISIBLE);
             if (mIpAddressView == null) {
@@ -1210,36 +1081,12 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 mIpAddressView.addTextChangedListener(this);
                 mGatewayView = (TextView) mView.findViewById(R.id.gateway);
                 mGatewayView.addTextChangedListener(this);
-                mNetworkPrefixLengthView = (TextView) mView.findViewById(
-                        R.id.network_prefix_length);
+                mNetworkPrefixLengthView = (TextView) mView.findViewById(R.id.network_prefix_length);
                 mNetworkPrefixLengthView.addTextChangedListener(this);
                 mDns1View = (TextView) mView.findViewById(R.id.dns1);
                 mDns1View.addTextChangedListener(this);
                 mDns2View = (TextView) mView.findViewById(R.id.dns2);
                 mDns2View.addTextChangedListener(this);
-            }
-            if (config != null) {
-                StaticIpConfiguration staticConfig = (StaticIpConfiguration) STReflectUtil.invokeDeclaredMethod(config, "getStaticIpConfiguration");
-                if (staticConfig != null) {
-                    if (staticConfig.ipAddress != null) {
-                        mIpAddressView.setText(staticConfig.ipAddress.getAddress().getHostAddress());
-                        Object networkPrefixLength = STReflectUtil.invokeDeclaredMethod(staticConfig.ipAddress, "getNetworkPrefixLength");
-                        mNetworkPrefixLengthView.setText(Integer.toString((Integer) networkPrefixLength));
-                        mNetworkPrefixLengthView.setText(Integer.toString((Integer) networkPrefixLength));
-                    }
-
-                    if (staticConfig.gateway != null) {
-                        mGatewayView.setText(staticConfig.gateway.getHostAddress());
-                    }
-
-                    Iterator<InetAddress> dnsIterator = staticConfig.dnsServers.iterator();
-                    if (dnsIterator.hasNext()) {
-                        mDns1View.setText(dnsIterator.next().getHostAddress());
-                    }
-                    if (dnsIterator.hasNext()) {
-                        mDns2View.setText(dnsIterator.next().getHostAddress());
-                    }
-                }
             }
         } else {
             mView.findViewById(R.id.staticip).setVisibility(View.GONE);
@@ -1248,13 +1095,7 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
     @SuppressLint("SetTextI18n")
     private void showProxyFields() {
-        WifiConfiguration config = null;
-
         mView.findViewById(R.id.proxy_settings_fields).setVisibility(View.VISIBLE);
-
-        if (mAccessPoint != null && mAccessPoint.isSaved()) {
-            config = mAccessPoint.getConfig();
-        }
 
         if (mProxySettingsSpinner.getSelectedItemPosition() == PROXY_STATIC) {
             setVisibility(R.id.proxy_warning_limited_support, View.VISIBLE);
@@ -1268,17 +1109,6 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
                 mProxyExclusionListView = (TextView) mView.findViewById(R.id.proxy_exclusionlist);
                 mProxyExclusionListView.addTextChangedListener(this);
             }
-            if (config != null) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    ProxyInfo proxyProperties = config.getHttpProxy();
-                    if (proxyProperties != null) {
-                        mProxyHostView.setText(proxyProperties.getHost());
-                        mProxyPortView.setText(Integer.toString(proxyProperties.getPort()));
-                        mProxyExclusionListView.setText((String) STReflectUtil.getFieldValue(proxyProperties, "mExclusionList"));
-                        mProxyExclusionListView.setText((Integer) STReflectUtil.invokeDeclaredMethod(proxyProperties, "getExclusionListAsString"));
-                    }
-                }
-            }
         } else if (mProxySettingsSpinner.getSelectedItemPosition() == PROXY_PAC) {
             setVisibility(R.id.proxy_warning_limited_support, View.GONE);
             setVisibility(R.id.proxy_fields, View.GONE);
@@ -1287,12 +1117,6 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             if (mProxyPacView == null) {
                 mProxyPacView = (TextView) mView.findViewById(R.id.proxy_pac);
                 mProxyPacView.addTextChangedListener(this);
-            }
-            if (config != null) {
-                ProxyInfo proxyInfo = (ProxyInfo) STReflectUtil.invokeDeclaredMethod(config, "getHttpProxy");
-                if (proxyInfo != null) {
-                    mProxyPacView.setText(proxyInfo.getPacFileUrl().toString());
-                }
             }
         } else {
             setVisibility(R.id.proxy_warning_limited_support, View.GONE);
@@ -1307,6 +1131,23 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             v.setVisibility(visibility);
         }
     }
+
+    @VisibleForTesting
+    KeyStore getKeyStore() {
+        try {
+            return KeyStore.getInstance(KeyStore.getDefaultType());
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Defines the UID/GID for the WIFI supplicant process.
+     *
+     * @hide
+     */
+    public static final int WIFI_UID = 1010;
 
     private void loadCertificates(
             Spinner spinner,
@@ -1325,16 +1166,17 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
             certs.add(mUseSystemCertsString);
         }
         try {
-            // todo
-            // certs.addAll(Arrays.asList(getKeyStore().list(prefix, android.os.Process.WIFI_UID)));
+            KeyStore keyStore = getKeyStore();
+            if (keyStore != null) {
+                // todo
+                // certs.addAll(Arrays.asList(keyStore.list(prefix, WIFI_UID)));
+            }
         } catch (Exception e) {
             Log.e(TAG, "can't get the certificate list from KeyStore");
         }
         certs.add(noCertificateString);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                context, android.R.layout.simple_spinner_item,
-                certs.toArray(new String[certs.size()]));
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, certs.toArray(new String[certs.size()]));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
@@ -1477,5 +1319,60 @@ public class WifiConfigController implements TextWatcher, AdapterView.OnItemSele
 
     public AccessPoint getAccessPoint() {
         return mAccessPoint;
+    }
+
+
+    static final int[] WIFI_PIE = {
+            R.drawable.ic_wifi_signal_0,
+            R.drawable.ic_wifi_signal_1,
+            R.drawable.ic_wifi_signal_2,
+            R.drawable.ic_wifi_signal_3,
+            R.drawable.ic_wifi_signal_4
+    };
+
+    /**
+     * Returns the Wifi icon resource for a given RSSI level.
+     *
+     * @param level The number of bars to show (0-4)
+     * @throws IllegalArgumentException if an invalid RSSI level is given.
+     */
+    public static int getWifiIconResource(int level) {
+        if (level < 0 || level >= WIFI_PIE.length) {
+            throw new IllegalArgumentException("No Wifi icon found for level: " + level);
+        }
+        return WIFI_PIE[level];
+    }
+
+    public boolean hasSystemFeature(PackageManager pm, String name) {
+        return pm.hasSystemFeature(name);
+    }
+
+    public static class Credentials {
+        /**
+         * Key prefix for CA certificates.
+         */
+        public static final String CA_CERTIFICATE = "CACERT_";
+
+        /**
+         * Key prefix for user private and secret keys.
+         */
+        public static final String USER_PRIVATE_KEY = "USRPKEY_";
+
+        /**
+         * Key prefix for user secret keys.
+         *
+         * @deprecated use {@code USER_PRIVATE_KEY} for this category instead.
+         */
+        public static final String USER_SECRET_KEY = "USRSKEY_";
+
+
+        private static Credentials singleton;
+
+        public static Credentials getInstance() {
+            if (singleton == null) {
+                singleton = new Credentials();
+            }
+            return singleton;
+        }
     }
 }

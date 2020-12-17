@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
@@ -39,6 +38,7 @@ import com.smart.library.util.STToastUtil
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurity
 import com.smart.library.util.wifi.WifiDialogActivity
+import com.smart.library.util.wifi.WifiUtils
 import com.smart.library.widget.recyclerview.STDividerItemDecoration
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
@@ -83,9 +83,13 @@ class FinalWifiFragment : STBaseFragment() {
                 holder.itemView.frequencyTv.text = "frequency:${itemData.frequency}"
                 holder.itemView.levelTv.text = "level:${itemData.level}"
                 holder.itemView.securityTypeTv.text = itemData.capabilities + "(${getSecurity(itemData.capabilities)})"
-                holder.itemView.signalStrengthTv.text = STWifiUtil.getSignalStrengthDescByScanResult(itemData)
+                holder.itemView.signalStrengthTv.text = WifiUtils.getSpeedLabel(context, itemData)
                 holder.itemView.setOnClickListener {
                     showCustomViewDialog(itemData, BottomSheet(LayoutMode.WRAP_CONTENT))
+                }
+                holder.itemView.setOnLongClickListener {
+                    WifiDialogActivity.goTo(context, itemData)
+                    true
                 }
             }
         }
@@ -116,10 +120,6 @@ class FinalWifiFragment : STBaseFragment() {
                     STWifiUtil.setWifiEnabled(application, true)
                 }
             }
-        }
-
-        wifiDialogBtn.setOnClickListener {
-            startActivity(Intent(context, WifiDialogActivity::class.java))
         }
 
         disconnectBtn.setOnClickListener {
@@ -207,43 +207,54 @@ class FinalWifiFragment : STBaseFragment() {
                 STLogUtil.w(TAG, "Build.VERSION.SDK_INT=${Build.VERSION.SDK_INT}")
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     STLogUtil.w(TAG, "android >= 10 requestNetwork")
-                    STWifiUtil.connectWifiAndroidQ(application, connectivityManager, STWifiUtil.createNetworkRequestBuilderAndroidQ(scanResult.SSID, scanResult.BSSID, passwordString, identityString).build(), onNetworkCallback)
-                } else {
-                    STLogUtil.w(TAG, "android < 10 connect wifi")
-                    networkId = STWifiUtil.connectWifi(application, wifiConfiguration = STWifiUtil.createWifiConfigurationPreAndroidQ(application, scanResult = scanResult, password = passwordString, identity = identityString))
-                    /*
-                    val securityType = getSecurity(scanResult.capabilities)
-                    if (securityType.toUpperCase(locale = Locale.getDefault()).contains("WPS")) {
-                        val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
-                        builder.connectWithWps(scanResult.BSSID, passwordString)
-                            .setWpsTimeout(15000)
-                            .onConnectionWpsResult { isSuccess ->
-                                if (isSuccess) Toast.makeText(context, "WIFI ENABLED", Toast.LENGTH_SHORT).show() else Toast.makeText(context, "COULDN'T ENABLE WIFI", Toast.LENGTH_SHORT).show()
-                            }
-                            .start()
-                        // builder.cancelAutoConnect(); // Canceling an ongoing connection
-                        return@positiveButton
-                    }
-                    if (securityType.toUpperCase(Locale.getDefault()).contains("WPA") || securityType.toUpperCase(Locale.getDefault()).contains("WPA2")) {
-                        val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
-                        builder
-                            .connectWith(scanResult.SSID, scanResult.BSSID, passwordString)
-                            .setTimeout(15000)
-                            .onConnectionResult(object : ConnectionSuccessListener {
-                                override fun success() {
-                                    Toast.makeText(context, "SUCCESS!", Toast.LENGTH_SHORT).show()
-                                }
-
-                                override fun failed(errorCode: ConnectionErrorCode) {
-                                    Toast.makeText(context, "EPIC FAIL!$errorCode", Toast.LENGTH_SHORT).show()
-                                }
-                            })
-                            .start()
-                        // builder.cancelAutoConnect(); // Canceling an ongoing connection
-                    }*/
+                    STWifiUtil.connectWifiAndroidQ(
+                        application, connectivityManager, , onNetworkCallback
+                    )
+                } else {*/
+                STLogUtil.w(TAG, "android < 10 connect wifi")
+                networkId = STWifiUtil.connectWifi(
+                    application = application,
+                    wifiConfiguration = STWifiUtil.createWifiConfiguration(
+                        application = application,
+                        scanResult = scanResult,
+                        password = passwordString,
+                        identity = identityString
+                    ),
+                    networkCallback = onNetworkCallback
+                )
+                /*
+                val securityType = getSecurity(scanResult.capabilities)
+                if (securityType.toUpperCase(locale = Locale.getDefault()).contains("WPS")) {
+                    val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
+                    builder.connectWithWps(scanResult.BSSID, passwordString)
+                        .setWpsTimeout(15000)
+                        .onConnectionWpsResult { isSuccess ->
+                            if (isSuccess) Toast.makeText(context, "WIFI ENABLED", Toast.LENGTH_SHORT).show() else Toast.makeText(context, "COULDN'T ENABLE WIFI", Toast.LENGTH_SHORT).show()
+                        }
+                        .start()
+                    // builder.cancelAutoConnect(); // Canceling an ongoing connection
+                    return@positiveButton
                 }
+                if (securityType.toUpperCase(Locale.getDefault()).contains("WPA") || securityType.toUpperCase(Locale.getDefault()).contains("WPA2")) {
+                    val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
+                    builder
+                        .connectWith(scanResult.SSID, scanResult.BSSID, passwordString)
+                        .setTimeout(15000)
+                        .onConnectionResult(object : ConnectionSuccessListener {
+                            override fun success() {
+                                Toast.makeText(context, "SUCCESS!", Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun failed(errorCode: ConnectionErrorCode) {
+                                Toast.makeText(context, "EPIC FAIL!$errorCode", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        .start()
+                    // builder.cancelAutoConnect(); // Canceling an ongoing connection
+                }*/
+//                }
             }
             negativeButton(android.R.string.cancel)
             lifecycleOwner(this@FinalWifiFragment)
@@ -254,7 +265,7 @@ class FinalWifiFragment : STBaseFragment() {
         val signalStrengthTV: TextView = customView.findViewById(R.id.signalStrengthTV)
         val securityTV: TextView = customView.findViewById(R.id.securityTV)
         val ssidTV: TextView = customView.findViewById(R.id.ssidTV)
-        signalStrengthTV.text = STWifiUtil.getSignalStrengthDescByScanResult(scanResult)
+        signalStrengthTV.text = WifiUtils.getSpeedLabel(context, scanResult)
         ssidTV.text = scanResult.SSID
         securityTV.text = getSecurity(scanResult.capabilities)
         val passwordInput: EditText = customView.findViewById(R.id.password)

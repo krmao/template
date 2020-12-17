@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import com.smart.library.STInitializer
 import com.smart.library.util.rx.permission.RxPermissions
+import com.smart.library.util.wifi.WifiUtils
 import java.util.*
 
 /**
@@ -44,6 +45,15 @@ object STWifiUtil {
     const val LOCATION_AVAILABLE = 1000
     const val LOCATION_NONE = 1111
     const val LOCATION_DISABLED = 1112
+
+    /**
+     * For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return null
+     */
+    @JvmStatic
+    fun isPasspointNetwork(scanResult: ScanResult): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) scanResult.isPasspointNetwork else WifiUtils.isPasspointNetwork(getWifiConfiguration(scanResult = scanResult))
+    }
+
 
     // android9.0以上需要申请定位权限
     // android10.0需要申请新添加的隐私权限ACCESS_FINE_LOCATION详情见android官方10.0重大隐私权变更，如果还需要后台获取或者使用wifi api则还需要申请后台使用定位权限ACCESS_BACKGROUND_LOCATION
@@ -216,10 +226,11 @@ object STWifiUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     @JvmOverloads
-    fun disconnectWifi(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), networkId: Int? = null, ssid: String? = null, connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback? = null, removeWifi: Boolean = true) {
+    fun disconnectWifi(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), networkId: Int? = null, connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback? = null, removeWifi: Boolean = true) {
         if (!isAndroidQOrLater()) {
             wifiManager?.disconnect()
             if (removeWifi && networkId != null) {
+                // Compatibility Note: For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will always return false.
                 wifiManager?.removeNetwork(networkId)
             }
         } else {
@@ -227,15 +238,6 @@ object STWifiUtil {
                 disconnectWifiAndroidQ(application, connectivityManager = connectivityManager, networkCallback = networkCallback)
             }
         }
-        if (removeWifi) {
-            removeWifi(wifiManager, ssid)
-        }
-    }
-
-    @JvmStatic
-    fun removeWifi(wifiManager: WifiManager?, ssid: String? = null): Boolean {
-        val wifiConfiguration: WifiConfiguration? = getWifiConfiguration(wifiManager, ssid)
-        return cleanPreviousConfiguration(wifiManager, wifiConfiguration)
     }
 
     @JvmStatic
@@ -243,19 +245,7 @@ object STWifiUtil {
     private fun cleanPreviousConfiguration(wifiManager: WifiManager?, scanResult: ScanResult): Boolean {
         wifiManager ?: return false
         //On Android 6.0 (API level 23) and above if my app did not create the configuration in the first place, it can not remove it either.
-        val config: WifiConfiguration = getWifiConfiguration(wifiManager, scanResult) ?: return true
-        if (wifiManager.removeNetwork(config.networkId)) {
-            wifiManager.saveConfiguration()
-            return true
-        }
-        return false
-    }
-
-    @JvmStatic
-    private fun cleanPreviousConfiguration(wifiManager: WifiManager?, config: WifiConfiguration?): Boolean {
-        //On Android 6.0 (API level 23) and above if my app did not create the configuration in the first place, it can not remove it either.
-        wifiManager ?: return false
-        config ?: return true
+        val config: WifiConfiguration = getWifiConfiguration(STInitializer.application(), wifiManager, scanResult) ?: return true
         if (wifiManager.removeNetwork(config.networkId)) {
             wifiManager.saveConfiguration()
             return true
@@ -270,11 +260,12 @@ object STWifiUtil {
     @JvmStatic
     @JvmOverloads
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), wifiConfiguration: WifiConfiguration? = null, networkRequest: NetworkRequest? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+    fun connectWifi(application: Application? = STInitializer.application(), wifiConfiguration: WifiConfiguration? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
         if (!isAndroidQOrLater()) {
+            val wifiManager: WifiManager? = getWifiManager(application)
             if (wifiManager == null) {
                 STLogUtil.e(TAG, "wifiManager == null !!!")
-                return -1;
+                return -1
             }
             STLogUtil.w(TAG, "disconnect")
             wifiManager.disconnect()
@@ -288,7 +279,7 @@ object STWifiUtil {
             wifiManager.reconnect()
             return networkId
         } else {
-            var finalNetworkRequest = networkRequest
+            var finalNetworkRequest: NetworkRequest? = null
             if (finalNetworkRequest == null && wifiConfiguration != null) {
                 STLogUtil.w(TAG, "networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
                 finalNetworkRequest = createNetworkRequestBuilderAndroidQ(wifiConfiguration).build()
@@ -378,24 +369,83 @@ object STWifiUtil {
         return if (isAndroidQOrLater()) wifiManager?.removeNetworkSuggestions(networkSuggestions) ?: -1 else -1
     }
 
+
+    @Suppress("DEPRECATION")
+    @JvmStatic
+    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
+    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
+        val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
+        wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
+        wifiConfiguration.enterpriseConfig = wifiConfiguration.enterpriseConfig ?: WifiEnterpriseConfig()
+        wifiConfiguration.enterpriseConfig.anonymousIdentity = anonymousIdentity
+        wifiConfiguration.enterpriseConfig.password = password
+        wifiConfiguration.enterpriseConfig.eapMethod = eapMethod
+        wifiConfiguration.enterpriseConfig.phase2Method = phase2Method
+        setupSecurity(
+            config = wifiConfiguration,
+            security = getSecurity(wifiConfiguration),
+            password = password,
+            identity = identity,
+            anonymousIdentity = anonymousIdentity,
+            eapMethod = eapMethod,
+            phase2Method = phase2Method
+        )
+        return wifiConfiguration
+    }
+
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, bssid: String? = null, passwordString: String, identity: String? = null, anonymousIdentity: String? = null): NetworkRequest.Builder {
-        val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(ssid)
+    fun createNetworkRequestBuilderAndroidQ(wifiConfig: WifiConfiguration): NetworkRequest.Builder {
+        return createNetworkRequestBuilderAndroidQ(
+            ssid = wifiConfig.SSID,
+            isPasspoint = wifiConfig.isPasspoint,
+            identity = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.identity else null,
+            anonymousIdentity = wifiConfig.enterpriseConfig.anonymousIdentity,
+            password = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.password else wifiConfig.preSharedKey,
+            eapMethod = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.eapMethod else WifiEnterpriseConfig.Eap.NONE,
+            phase2Method = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.phase2Method else WifiEnterpriseConfig.Phase2.NONE,
+        )
+    }
 
-        if (!bssid.isNullOrBlank()) specifierBuilder.setBssid(MacAddress.fromString(bssid))
-
-        if (!identity.isNullOrBlank()) {
-            specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
+    @JvmStatic
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
+        return createNetworkRequestBuilderAndroidQ(
+            ssid = ssid,
+            isPasspoint = isPasspoint,
+            password = password ?: "",
+            enterpriseConfig = WifiEnterpriseConfig().apply {
                 this.identity = identity
-                this.password = passwordString
-                this.eapMethod = WifiEnterpriseConfig.Eap.PEAP
-                this.phase2Method = WifiEnterpriseConfig.Phase2.NONE
+                this.password = password ?: ""
+                if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
+                    this.eapMethod = eapMethod
+                }
+                this.phase2Method = phase2Method
                 this.anonymousIdentity = anonymousIdentity
                 this.caCertificate = null
+            }
+        )
+    }
+
+    @JvmStatic
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, password: String? = null, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid")
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ password=$password")
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ enterpriseConfig=$enterpriseConfig")
+
+        val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(ssid)
+        if (isPasspoint && enterpriseConfig?.identity?.isNotBlank() == true) {
+            specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
+                this.identity = enterpriseConfig.identity
+                this.password = enterpriseConfig.password
+                this.eapMethod = enterpriseConfig.eapMethod
+                this.phase2Method = enterpriseConfig.phase2Method
+                this.anonymousIdentity = enterpriseConfig.anonymousIdentity
+                this.caCertificate = enterpriseConfig.caCertificate
             })
         } else {
-            specifierBuilder.setWpa2Passphrase(passwordString)
+            specifierBuilder.setWpa2Passphrase(password ?: "")
         }
         return NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI) //创建的是WIFI网络
@@ -405,78 +455,6 @@ object STWifiUtil {
             .setNetworkSpecifier(specifierBuilder.build())
     }
 
-    @JvmStatic
-    @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(wifiConfig: WifiConfiguration): NetworkRequest.Builder {
-        val enterpriseConfig = wifiConfig.enterpriseConfig
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ wifiConfig==null?${false}, wifiConfig=$wifiConfig")
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ enterpriseConfig==null?${enterpriseConfig == null}, enterpriseConfig=\n $enterpriseConfig")
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ SSID=${wifiConfig.SSID}, wpa2Passphras=${wifiConfig.preSharedKey}")
-        cleanPreviousConfiguration(getWifiManager(), getWifiConfigurationBySSID(getWifiManager(), wifiConfig.SSID))
-        return NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI) //创建的是WIFI网络
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED) //网络不受限
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED) //信任网络，增加这个连个参数让设备连接wifi之后还联网
-            .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            /*.setNetworkSpecifier(
-                WifiNetworkSpecifier.Builder()
-                    .setSsid(wifiConfig.SSID)
-                    .setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
-                        this.identity = "krmao"
-                        this.password = "MMjj#000"
-                        this.eapMethod = WifiEnterpriseConfig.Eap.PEAP
-                    })
-                    .build()
-            )*/
-            .setNetworkSpecifier(
-                if (enterpriseConfig == null) {
-                    WifiNetworkSpecifier.Builder()
-                        .setSsid(wifiConfig.SSID)
-                        .setWpa2Passphrase(wifiConfig.preSharedKey)
-                        .build()
-                } else {
-                    WifiNetworkSpecifier.Builder()
-                        .setSsid(wifiConfig.SSID)
-                        .setWpa2EnterpriseConfig(enterpriseConfig)
-                        .build()
-                }
-            )
-    }
-
-    @JvmStatic
-    @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, enterpriseConfig: WifiEnterpriseConfig?, passwordString: String): NetworkRequest.Builder {
-        return NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI) //创建的是WIFI网络
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED) //网络不受限
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED) //信任网络，增加这个连个参数让设备连接wifi之后还联网
-            .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .setNetworkSpecifier(
-                if (enterpriseConfig == null) {
-                    WifiNetworkSpecifier.Builder()
-                        .setSsid(ssid)
-                        .setWpa2Passphrase(passwordString)
-                        .build()
-                } else {
-                    WifiNetworkSpecifier.Builder()
-                        .setSsid(ssid)
-                        .setWpa2EnterpriseConfig(enterpriseConfig)
-                        .build()
-                }
-            )
-    }
-
-    @Suppress("DEPRECATION")
-    @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun createWifiConfigurationPreAndroidQ(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult, password: String, identity: String? = null, anonymousIdentity: String? = null): WifiConfiguration {
-        val wifiConfiguration: WifiConfiguration = getWifiConfiguration(wifiManager, scanResult) ?: WifiConfiguration()
-        wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
-        wifiConfiguration.BSSID = scanResult.BSSID
-        setupSecurity(wifiConfiguration, getSecurity(scanResult), password, identity, anonymousIdentity)
-        return wifiConfiguration
-    }
-
     /**
      * @param signalStrength
      * @see getSignalStrength
@@ -484,6 +462,7 @@ object STWifiUtil {
     @JvmStatic
     fun getSignalStrengthDesc(signalStrength: Int): String? {
         return when (signalStrength) {
+            3 -> "网络质量好"
             2 -> "网络质量好"
             1 -> "网络质量一般"
             0 -> "网络质量不佳"
@@ -492,22 +471,30 @@ object STWifiUtil {
     }
 
     /**
-     * @param scanResult
+     * @param signalStrength
      * @see getSignalStrength
      */
     @JvmStatic
-    fun getSignalStrengthDescByScanResult(scanResult: ScanResult): String? = getSignalStrengthDesc((getSignalStrength(scanResult)))
+    fun getSpeed(signalStrength: Int): WifiUtils.Speed {
+        return when (signalStrength) {
+            4 -> WifiUtils.Speed.VERY_FAST
+            3 -> WifiUtils.Speed.FAST
+            2 -> WifiUtils.Speed.MODERATE
+            1 -> WifiUtils.Speed.SLOW
+            0 -> WifiUtils.Speed.NONE
+            else -> WifiUtils.Speed.NONE
+        }
+    }
 
     /**
-     * 0-2
      * @param rssi scanResult.level, The detected signal level in dBm, also known as the RSSI.
      * @see {@link https://github.com/paladinzh/decompile-hw/blob/4c3efd95f3e997b44dd4ceec506de6164192eca3/decompile/app/SystemUI/src/main/res/values-zh-rCN/strings.xml}
      */
     @JvmStatic
-    fun getSignalStrength(rssi: Int): Int = WifiManager.calculateSignalLevel(rssi, 3)
+    fun getSignalStrength(rssi: Int): Int = WifiManager.calculateSignalLevel(rssi, WifiUtils.SIGNAL_LEVELS)
 
     @JvmStatic
-    fun getSignalStrength(scanResult: ScanResult): Int = WifiManager.calculateSignalLevel(scanResult.level, 3)
+    fun getSignalStrength(scanResult: ScanResult): Int = WifiManager.calculateSignalLevel(scanResult.level, WifiUtils.SIGNAL_LEVELS)
 
     @JvmStatic
     fun getSecurity(scanResult: ScanResult, includeWPS: Boolean = true): String = getSecurity(scanResult.capabilities, includeWPS)
@@ -560,7 +547,7 @@ object STWifiUtil {
     @JvmStatic
     @Suppress("DEPRECATION")
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun setupSecurity(config: WifiConfiguration, security: String, password: String, identity: String? = null, anonymousIdentity: String? = null) {
+    fun setupSecurity(config: WifiConfiguration, security: String, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE) {
         config.allowedAuthAlgorithms.clear()
         config.allowedGroupCiphers.clear()
         config.allowedKeyManagement.clear()
@@ -635,8 +622,10 @@ object STWifiUtil {
                 config.enterpriseConfig = WifiEnterpriseConfig().also { enterpriseConfig ->
                     enterpriseConfig.identity = identity
                     enterpriseConfig.password = password
-                    enterpriseConfig.eapMethod = WifiEnterpriseConfig.Eap.PEAP
-                    enterpriseConfig.phase2Method = WifiEnterpriseConfig.Phase2.NONE
+                    if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
+                        enterpriseConfig.eapMethod = eapMethod
+                    }
+                    enterpriseConfig.phase2Method = phase2Method
                     enterpriseConfig.anonymousIdentity = anonymousIdentity
                     enterpriseConfig.caCertificate = null
                 }
@@ -647,75 +636,34 @@ object STWifiUtil {
     }
 
     @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun getWifiConfiguration(wifiMgr: WifiManager, configToFind: WifiConfiguration): WifiConfiguration? {
-        val ssid = configToFind.SSID
-        if (ssid == null || ssid.isEmpty()) {
-            return null
-        }
-        val bssid = if (configToFind.BSSID != null) configToFind.BSSID else ""
-        val security = getSecurity(configToFind)
-        val configurations = wifiMgr.configuredNetworks ?: return null
-        for (config in configurations) {
-            if (bssid == config.BSSID || ssid == config.SSID) {
-                val configSecurity = getSecurity(config)
-                if (security == configSecurity) {
-                    return config
-                }
-            }
-        }
-        return null
-    }
-
-    @JvmStatic
     @Suppress("DEPRECATION")
-    fun getWifiConfiguration(wifiManager: WifiManager?, ssid: String? = null): WifiConfiguration? {
-        ssid ?: return null
-        val configuredNetworks = wifiManager?.configuredNetworks
-        if (configuredNetworks != null) {
-            val findSSID = '"'.toString() + ssid + '"'
-            for (wifiConfiguration in configuredNetworks) {
-                if (wifiConfiguration.SSID == findSSID) {
-                    return wifiConfiguration
-                }
-            }
-        }
-        return null
-    }
-
-    @JvmStatic
-    @Suppress("DEPRECATION")
-    fun getWifiConfiguration(wifiManager: WifiManager?, scanResult: ScanResult): WifiConfiguration? {
-        if (scanResult.BSSID == null || scanResult.SSID == null || scanResult.SSID.isEmpty() || scanResult.BSSID.isEmpty()) {
+    fun getWifiConfiguration(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult): WifiConfiguration? {
+        if (wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()) {
+            STLogUtil.e(TAG, "getWifiConfiguration return null !!! wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()")
             return null
         }
         val ssid: String = convertSsidToQuotedString(scanResult.SSID)
         val bssid = scanResult.BSSID
         val security = getSecurity(scanResult)
-        val configurations = wifiManager?.configuredNetworks ?: return null
-        for (config in configurations) {
+        // configuredNetworks -> For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return an empty list
+        val configurations: MutableList<WifiConfiguration>? = wifiManager.configuredNetworks
+
+        if (configurations.isNullOrEmpty()) {
+            STLogUtil.e(TAG, "getWifiConfiguration return null !!! configurations isNullOrEmpty !!! configurations=$configurations")
+            return null
+        }
+        STLogUtil.d(TAG, "getWifiConfiguration scanResult=$scanResult \nconfigurations=$configurations")
+        for (config: WifiConfiguration in configurations) {
+            STLogUtil.d(TAG, "getWifiConfiguration item config=$config")
             if (bssid == config.BSSID || ssid == config.SSID) {
-                val configSecurity = getSecurity(config)
+                val configSecurity: String = getSecurity(config)
                 if (security == configSecurity) {
+                    STLogUtil.w(TAG, "getWifiConfiguration return success !!! config = $config")
                     return config
                 }
             }
         }
-        return null
-    }
-
-    @JvmStatic
-    fun getWifiConfigurationBySSID(wifiManager: WifiManager?, SSID: String?): WifiConfiguration? {
-        if (SSID == null || SSID.isEmpty()) {
-            return null
-        }
-        val ssid: String = convertSsidToQuotedString(SSID)
-        val configurations = wifiManager?.configuredNetworks ?: return null
-        for (config in configurations) {
-            if (ssid == config.SSID) {
-                return config
-            }
-        }
+        STLogUtil.w(TAG, "getWifiConfiguration return failure !!! config = null")
         return null
     }
 

@@ -56,6 +56,7 @@ class WifiDialogActivity : Activity(), WifiDialogListener, DialogInterface.OnDis
             w("[wifi]", "config!=null wifiConfiguration=$wifiConfiguration")
             connectWifi(
                 application = application(),
+                scanResult = dialog.controller.accessPoint.scanResult,
                 wifiConfiguration = wifiConfiguration,
                 networkCallback = null
             )

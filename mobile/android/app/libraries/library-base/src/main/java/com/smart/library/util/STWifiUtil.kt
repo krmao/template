@@ -268,21 +268,22 @@ object STWifiUtil {
                 isPasspoint = isPasspointNetwork(scanResult),
                 password = password,
                 identity = identity,
-                anonymousIdentity=anonymousIdentity,
-                eapMethod=eapMethod,
-                phase2Method=phase2Method
+                anonymousIdentity = anonymousIdentity,
+                eapMethod = eapMethod,
+                phase2Method = phase2Method
             ).build()
         }
-        return STWifiUtil.connectWifi(
+        return connectWifi(
             application = application,
+            scanResult = scanResult,
             wifiConfiguration = createWifiConfiguration(
                 application = application,
                 scanResult = scanResult,
                 password = password,
                 identity = identity,
-                anonymousIdentity=anonymousIdentity,
-                eapMethod=eapMethod,
-                phase2Method=phase2Method
+                anonymousIdentity = anonymousIdentity,
+                eapMethod = eapMethod,
+                phase2Method = phase2Method
             ),
             networkRequest = requestForAndroidQ,
             networkCallback = networkCallback
@@ -294,9 +295,8 @@ object STWifiUtil {
      */
     @Suppress("DEPRECATION")
     @JvmStatic
-    @JvmOverloads
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), wifiConfiguration: WifiConfiguration? = null, networkRequest: NetworkRequest? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration? = null, networkRequest: NetworkRequest? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
         if (!isAndroidQOrLater()) {
             val wifiManager: WifiManager? = getWifiManager(application)
             if (wifiManager == null) {
@@ -318,7 +318,15 @@ object STWifiUtil {
             var finalNetworkRequest: NetworkRequest? = networkRequest
             if (finalNetworkRequest == null && wifiConfiguration != null) {
                 STLogUtil.w(TAG, "networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
-                finalNetworkRequest = createNetworkRequestBuilderAndroidQ(wifiConfiguration).build()
+                finalNetworkRequest = createNetworkRequestBuilderAndroidQ(
+                    ssid = scanResult.SSID,
+                    isPasspoint = isPasspointNetwork(scanResult),
+                    password = if (isPasspointNetwork(scanResult)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
+                    identity = wifiConfiguration.enterpriseConfig.identity,
+                    anonymousIdentity = wifiConfiguration.enterpriseConfig.anonymousIdentity,
+                    eapMethod = wifiConfiguration.enterpriseConfig.eapMethod,
+                    phase2Method = wifiConfiguration.enterpriseConfig.phase2Method
+                ).build()
             }
             connectWifiAndroidQ(application, networkRequest = finalNetworkRequest, networkCallback = networkCallback)
             return null
@@ -331,7 +339,7 @@ object STWifiUtil {
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkRequest: NetworkRequest?, networkCallback: ConnectivityManager.NetworkCallback?) {
+    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkRequest: NetworkRequest?, networkCallback: ConnectivityManager.NetworkCallback?) {
         if (connectivityManager == null) {
             STLogUtil.e(TAG, "connectivityManager==null!!")
             return
@@ -427,20 +435,6 @@ object STWifiUtil {
             phase2Method = phase2Method
         )
         return wifiConfiguration
-    }
-
-    @JvmStatic
-    @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(wifiConfig: WifiConfiguration): NetworkRequest.Builder {
-        return createNetworkRequestBuilderAndroidQ(
-            ssid = wifiConfig.SSID,
-            isPasspoint = wifiConfig.isPasspoint,
-            identity = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.identity else null,
-            anonymousIdentity = wifiConfig.enterpriseConfig.anonymousIdentity,
-            password = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.password else wifiConfig.preSharedKey,
-            eapMethod = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.eapMethod else WifiEnterpriseConfig.Eap.NONE,
-            phase2Method = if (wifiConfig.isPasspoint) wifiConfig.enterpriseConfig.phase2Method else WifiEnterpriseConfig.Phase2.NONE,
-        )
     }
 
     @JvmStatic

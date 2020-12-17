@@ -3,6 +3,7 @@ package com.smart.template.home.test
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
@@ -47,7 +48,7 @@ import kotlinx.android.synthetic.main.final_wifi_fragment_item.view.*
 
 class FinalWifiFragment : STBaseFragment() {
 
-    private val loadingDialog by lazy { STDialogManager.createLoadingDialog(context) }
+    private val loadingDialog: Dialog? by lazy { STDialogManager.createLoadingDialog(context) }
     private val dataList: MutableList<ScanResult> = arrayListOf()
     private var networkId: Int? = null
     private val application: Application by lazy { STInitializer.application()!! }
@@ -123,16 +124,6 @@ class FinalWifiFragment : STBaseFragment() {
         }
 
         disconnectBtn.setOnClickListener {
-            /*WifiUtils.withContext(application)
-                .disconnect(object : DisconnectionSuccessListener {
-                    override fun success() {
-                        Toast.makeText(context, "Disconnect success!", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun failed(errorCode: DisconnectionErrorCode) {
-                        Toast.makeText(context, "Failed to disconnect: $errorCode", Toast.LENGTH_SHORT).show()
-                    }
-                })*/
             STWifiUtil.disconnectWifi(application, networkId = networkId, networkCallback = onNetworkCallback, removeWifi = true)
         }
 
@@ -163,31 +154,12 @@ class FinalWifiFragment : STBaseFragment() {
                     } else {
                         STLogUtil.i(TAG, "checkSelfPermission failure")
                     }
-                    /*WifiUtils.withContext(application).scanWifi(object : ScanResultsListener {
-                        override fun onScanResults(scanResults: MutableList<ScanResult>) {
-                            loadingDialog?.dismiss()
-                            if (scanResults.isEmpty()) {
-                                STLogUtil.i(TAG, "SCAN RESULTS IT'S EMPTY")
-                                return
-                            }
-                            STLogUtil.i(TAG, "GOT SCAN RESULTS $scanResults")
-                            adapter.removeAll()
-                            adapter.add(scanResults.sortedByDescending { it.level })
-                        }
-                    }).start()*/
-
                 } else {
                     STToastUtil.show("need permission!")
                 }
             }
         }
         scanBtn.callOnClick()
-    }
-
-    @Suppress("RedundantOverride")
-    override fun onDestroy() {
-        super.onDestroy()
-        // STWifiUtil.disconnectWifiAndroidQ(application, connectivityManager, onNetworkCallback)
     }
 
     @SuppressLint("SetTextI18n", "MissingPermission")
@@ -207,54 +179,14 @@ class FinalWifiFragment : STBaseFragment() {
                 STLogUtil.w(TAG, "Build.VERSION.SDK_INT=${Build.VERSION.SDK_INT}")
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
-                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    STLogUtil.w(TAG, "android >= 10 requestNetwork")
-                    STWifiUtil.connectWifiAndroidQ(
-                        application, connectivityManager, , onNetworkCallback
-                    )
-                } else {*/
                 STLogUtil.w(TAG, "android < 10 connect wifi")
                 networkId = STWifiUtil.connectWifi(
                     application = application,
-                    wifiConfiguration = STWifiUtil.createWifiConfiguration(
-                        application = application,
-                        scanResult = scanResult,
-                        password = passwordString,
-                        identity = identityString
-                    ),
+                    scanResult = scanResult,
+                    identity = identityString,
+                    password = passwordString,
                     networkCallback = onNetworkCallback
                 )
-                /*
-                val securityType = getSecurity(scanResult.capabilities)
-                if (securityType.toUpperCase(locale = Locale.getDefault()).contains("WPS")) {
-                    val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
-                    builder.connectWithWps(scanResult.BSSID, passwordString)
-                        .setWpsTimeout(15000)
-                        .onConnectionWpsResult { isSuccess ->
-                            if (isSuccess) Toast.makeText(context, "WIFI ENABLED", Toast.LENGTH_SHORT).show() else Toast.makeText(context, "COULDN'T ENABLE WIFI", Toast.LENGTH_SHORT).show()
-                        }
-                        .start()
-                    // builder.cancelAutoConnect(); // Canceling an ongoing connection
-                    return@positiveButton
-                }
-                if (securityType.toUpperCase(Locale.getDefault()).contains("WPA") || securityType.toUpperCase(Locale.getDefault()).contains("WPA2")) {
-                    val builder: WifiConnectorBuilder.WifiUtilsBuilder = WifiUtils.withContext(application)
-                    builder
-                        .connectWith(scanResult.SSID, scanResult.BSSID, passwordString)
-                        .setTimeout(15000)
-                        .onConnectionResult(object : ConnectionSuccessListener {
-                            override fun success() {
-                                Toast.makeText(context, "SUCCESS!", Toast.LENGTH_SHORT).show()
-                            }
-
-                            override fun failed(errorCode: ConnectionErrorCode) {
-                                Toast.makeText(context, "EPIC FAIL!$errorCode", Toast.LENGTH_SHORT).show()
-                            }
-                        })
-                        .start()
-                    // builder.cancelAutoConnect(); // Canceling an ongoing connection
-                }*/
-//                }
             }
             negativeButton(android.R.string.cancel)
             lifecycleOwner(this@FinalWifiFragment)
@@ -277,6 +209,12 @@ class FinalWifiFragment : STBaseFragment() {
         STLogUtil.w(TAG, "scanResult=$scanResult")
     }
 
+    @Suppress("RedundantOverride")
+    override fun onDestroy() {
+        super.onDestroy()
+        // STWifiUtil.disconnectWifiAndroidQ(application, connectivityManager, onNetworkCallback)
+    }
+
     companion object {
         private const val TAG = "[wifi]"
 
@@ -285,5 +223,4 @@ class FinalWifiFragment : STBaseFragment() {
             STActivity.startActivity(context, FinalWifiFragment::class.java)
         }
     }
-
 }

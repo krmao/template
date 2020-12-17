@@ -260,7 +260,43 @@ object STWifiUtil {
     @JvmStatic
     @JvmOverloads
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), wifiConfiguration: WifiConfiguration? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+        var requestForAndroidQ: NetworkRequest? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requestForAndroidQ = createNetworkRequestBuilderAndroidQ(
+                ssid = scanResult.SSID,
+                isPasspoint = isPasspointNetwork(scanResult),
+                password = password,
+                identity = identity,
+                anonymousIdentity=anonymousIdentity,
+                eapMethod=eapMethod,
+                phase2Method=phase2Method
+            ).build()
+        }
+        return STWifiUtil.connectWifi(
+            application = application,
+            wifiConfiguration = createWifiConfiguration(
+                application = application,
+                scanResult = scanResult,
+                password = password,
+                identity = identity,
+                anonymousIdentity=anonymousIdentity,
+                eapMethod=eapMethod,
+                phase2Method=phase2Method
+            ),
+            networkRequest = requestForAndroidQ,
+            networkCallback = networkCallback
+        )
+    }
+
+    /**
+     * @return networkId
+     */
+    @Suppress("DEPRECATION")
+    @JvmStatic
+    @JvmOverloads
+    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
+    fun connectWifi(application: Application? = STInitializer.application(), wifiConfiguration: WifiConfiguration? = null, networkRequest: NetworkRequest? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
         if (!isAndroidQOrLater()) {
             val wifiManager: WifiManager? = getWifiManager(application)
             if (wifiManager == null) {
@@ -279,7 +315,7 @@ object STWifiUtil {
             wifiManager.reconnect()
             return networkId
         } else {
-            var finalNetworkRequest: NetworkRequest? = null
+            var finalNetworkRequest: NetworkRequest? = networkRequest
             if (finalNetworkRequest == null && wifiConfiguration != null) {
                 STLogUtil.w(TAG, "networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
                 finalNetworkRequest = createNetworkRequestBuilderAndroidQ(wifiConfiguration).build()
@@ -373,7 +409,7 @@ object STWifiUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
+    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
         val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
         wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
         wifiConfiguration.enterpriseConfig = wifiConfiguration.enterpriseConfig ?: WifiEnterpriseConfig()
@@ -384,7 +420,7 @@ object STWifiUtil {
         setupSecurity(
             config = wifiConfiguration,
             security = getSecurity(wifiConfiguration),
-            password = password,
+            password = password ?: "",
             identity = identity,
             anonymousIdentity = anonymousIdentity,
             eapMethod = eapMethod,

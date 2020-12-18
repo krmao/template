@@ -38,6 +38,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurity
+import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.wifi.STWifiConfigUiBase
 import com.smart.library.util.wifi.STWifiDialog
 import com.smart.library.widget.recyclerview.STDividerItemDecoration
@@ -83,7 +84,7 @@ class FinalWifiFragment : STBaseFragment() {
                 holder.itemView.bssIdTv.text = "bssid:${scanResult.BSSID}"
                 holder.itemView.frequencyTv.text = "frequency:${scanResult.frequency}"
                 holder.itemView.levelTv.text = "level:${scanResult.level}"
-                holder.itemView.securityTypeTv.text = scanResult.capabilities + "(${getSecurity(scanResult.capabilities)})"
+                holder.itemView.securityTypeTv.text = scanResult.capabilities + "(${getSecurityString(scanResult)})"
                 holder.itemView.signalStrengthTv.text = STWifiUtil.getSpeedLabel(context, scanResult)
                 holder.itemView.setOnClickListener {
                     showCustomViewDialog(scanResult, BottomSheet(LayoutMode.WRAP_CONTENT))
@@ -206,7 +207,7 @@ class FinalWifiFragment : STBaseFragment() {
         val ssidTV: TextView = customView.findViewById(R.id.ssidTV)
         signalStrengthTV.text = STWifiUtil.getSpeedLabel(context, scanResult)
         ssidTV.text = scanResult.SSID
-        securityTV.text = getSecurity(scanResult.capabilities)
+        securityTV.text = getSecurityString(scanResult)
         val passwordInput: EditText = customView.findViewById(R.id.password)
         val showPasswordCheck: CheckBox = customView.findViewById(R.id.showPassword)
         showPasswordCheck.setOnCheckedChangeListener { _, isChecked ->

@@ -23,7 +23,6 @@ import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.library.util.wifi.STWifiUtils
-import java.util.*
 
 /**
  *
@@ -39,10 +38,13 @@ import java.util.*
 object STWifiUtil {
     const val TAG = "[wifi]"
 
-    const val SECURITY_WEP: String = "WEP"
-    const val SECURITY_PSK: String = "PSK"
-    const val SECURITY_EAP: String = "EAP"
-    const val SECURITY_NONE: String = "OPEN"
+    /**
+     * These values are matched in string arrays -- changes must be kept in sync
+     */
+    const val SECURITY_NONE = 0
+    const val SECURITY_WEP = 1
+    const val SECURITY_PSK = 2
+    const val SECURITY_EAP = 3
 
     const val LOCATION_AVAILABLE = 1000
     const val LOCATION_NONE = 1111
@@ -392,8 +394,8 @@ object STWifiUtil {
                 STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
                 networkRequest = createNetworkRequestBuilderAndroidQ(
                     ssid = scanResult.SSID,
-                    isPasspoint = isPasspointNetwork(wifiConfiguration),
-                    password = if (isPasspointNetwork(wifiConfiguration)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
+                    isPasspointNetwork = isPasspointNetwork(wifiConfiguration),
+                    password = if (!isPasspointNetwork(wifiConfiguration)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
                     identity = wifiConfiguration.enterpriseConfig.identity,
                     anonymousIdentity = wifiConfiguration.enterpriseConfig.anonymousIdentity,
                     eapMethod = wifiConfiguration.enterpriseConfig.eapMethod,
@@ -477,17 +479,17 @@ object STWifiUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
+    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
         val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
         wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
-        wifiConfiguration.enterpriseConfig = wifiConfiguration.enterpriseConfig ?: WifiEnterpriseConfig()
-        wifiConfiguration.enterpriseConfig.anonymousIdentity = anonymousIdentity
-        wifiConfiguration.enterpriseConfig.password = password
-        wifiConfiguration.enterpriseConfig.eapMethod = eapMethod
-        wifiConfiguration.enterpriseConfig.phase2Method = phase2Method
+        // wifiConfiguration.enterpriseConfig = wifiConfiguration.enterpriseConfig ?: WifiEnterpriseConfig()
+        // wifiConfiguration.enterpriseConfig.anonymousIdentity = anonymousIdentity
+        // wifiConfiguration.enterpriseConfig.password = password
+        // wifiConfiguration.enterpriseConfig.eapMethod = eapMethod
+        // wifiConfiguration.enterpriseConfig.phase2Method = phase2Method
         setupSecurity(
             config = wifiConfiguration,
-            security = getSecurity(wifiConfiguration),
+            security = getSecurity(scanResult),
             password = password ?: "",
             identity = identity,
             anonymousIdentity = anonymousIdentity,
@@ -499,10 +501,11 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ isPasspoint=$isPasspoint")
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspointNetwork: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ isPasspointNetwork=$isPasspointNetwork, isPasspoint=$isPasspointNetwork, password=$password")
         return createNetworkRequestBuilderAndroidQ(
             ssid = ssid,
+            isPasspointNetwork = isPasspointNetwork,
             password = password ?: "",
             enterpriseConfig = WifiEnterpriseConfig().apply {
                 this.identity = identity
@@ -519,12 +522,12 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid, password=$password, identity=${enterpriseConfig?.identity}")
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, isPasspointNetwork: Boolean, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid, isPasspointNetwork=$isPasspointNetwork, password=$password, identity=${enterpriseConfig?.identity}")
         STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ enterpriseConfig=$enterpriseConfig")
 
         val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(ssid)
-        if (enterpriseConfig != null && enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE) {
+        if (isPasspointNetwork && enterpriseConfig != null && enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE) {
             specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
                 this.identity = enterpriseConfig.identity
                 this.password = enterpriseConfig.password
@@ -572,22 +575,44 @@ object STWifiUtil {
     fun getSignalStrength(scanResult: ScanResult?): Int = WifiManager.calculateSignalLevel(scanResult?.level ?: -100, SIGNAL_LEVELS)
 
     @JvmStatic
-    fun getSecurity(scanResult: ScanResult, includeWPS: Boolean = true): String = getSecurity(scanResult.capabilities, includeWPS)
-
-    @JvmStatic
     @JvmOverloads
-    fun getSecurity(capabilities: String, includeWPS: Boolean = true): String {
-        return (when {
-            capabilities.contains(SECURITY_WEP) -> SECURITY_WEP
-            capabilities.contains(SECURITY_PSK) -> SECURITY_PSK
-            capabilities.contains(SECURITY_EAP) -> SECURITY_EAP
-            else -> SECURITY_NONE
-        }) + (if (includeWPS && canUseWPS(capabilities)) "(CAN USE WPS)" else "")
+    fun getSecurityString(scanResult: ScanResult, concise: Boolean = false): String? {
+        return getSecurityString(concise = concise, security = getSecurity(scanResult), pskType = getPskType(scanResult))
     }
 
+    @JvmStatic
+    fun getSecurityString(security: Int, pskType: Int, concise: Boolean): String? {
+        val context: Context? = STInitializer.application()
+        context ?: return null
+        return when (security) {
+            STWifiUtils.SECURITY_EAP -> if (concise) context.getString(R.string.wifi_security_short_eap) else context.getString(R.string.wifi_security_eap)
+            STWifiUtils.SECURITY_PSK -> when (pskType) {
+                PSK_WPA -> if (concise) context.getString(R.string.wifi_security_short_wpa) else context.getString(R.string.wifi_security_wpa)
+                PSK_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa2) else context.getString(R.string.wifi_security_wpa2)
+                PSK_WPA_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa_wpa2) else context.getString(R.string.wifi_security_wpa_wpa2)
+                PSK_UNKNOWN -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
+                else -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
+            }
+            STWifiUtils.SECURITY_WEP -> if (concise) context.getString(R.string.wifi_security_short_wep) else context.getString(R.string.wifi_security_wep)
+            STWifiUtils.SECURITY_NONE -> if (concise) "" else context.getString(R.string.wifi_security_none)
+            else -> if (concise) "" else context.getString(R.string.wifi_security_none)
+        }
+    }
 
     @JvmStatic
-    fun getSecurityOrigin(config: WifiConfiguration): Int {
+    fun getSecurity(result: ScanResult?): Int {
+        return when {
+            result!=null && result.capabilities.contains("WEP") -> STWifiUtils.SECURITY_WEP
+            result!=null && result.capabilities.contains("PSK") -> STWifiUtils.SECURITY_PSK
+            result!=null &&  result.capabilities.contains("EAP") -> STWifiUtils.SECURITY_EAP
+            else -> STWifiUtils.SECURITY_NONE
+        }
+    }
+
+    @JvmStatic
+    fun getSecurity(config: WifiConfiguration?): Int {
+        config ?: return STWifiUtils.SECURITY_NONE
+
         if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.WPA_PSK]) {
             return STWifiUtils.SECURITY_PSK
         }
@@ -595,30 +620,6 @@ object STWifiUtil {
             return STWifiUtils.SECURITY_EAP
         }
         return if (config.wepKeys[0] != null) STWifiUtils.SECURITY_WEP else STWifiUtils.SECURITY_NONE
-    }
-
-    @Suppress("DEPRECATION")
-    @JvmStatic
-    fun getSecurity(config: WifiConfiguration): String {
-        var security = SECURITY_NONE
-        val securities: MutableCollection<String> = ArrayList()
-        if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.NONE]) {
-            // If we never set group ciphers, wpa_supplicant puts all of them.
-            // For open, we don't set group ciphers.
-            // For WEP, we specifically only set WEP40 and WEP104, so CCMP
-            // and TKIP should not be there.
-            security = if (config.wepKeys[0] != null) SECURITY_WEP else SECURITY_NONE
-            securities.add(security)
-        }
-        if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.WPA_EAP] || config.allowedKeyManagement[WifiConfiguration.KeyMgmt.IEEE8021X]) {
-            security = SECURITY_EAP
-            securities.add(security)
-        }
-        if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.WPA_PSK]) {
-            security = SECURITY_PSK
-            securities.add(security)
-        }
-        return security
     }
 
     @JvmStatic
@@ -634,7 +635,7 @@ object STWifiUtil {
     @JvmStatic
     @Suppress("DEPRECATION")
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun setupSecurity(config: WifiConfiguration, security: String, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE) {
+    fun setupSecurity(config: WifiConfiguration, security: Int, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE) {
         config.allowedAuthAlgorithms.clear()
         config.allowedGroupCiphers.clear()
         config.allowedKeyManagement.clear()
@@ -743,7 +744,7 @@ object STWifiUtil {
         for (config: WifiConfiguration in configurations) {
             STLogUtil.d(TAG, "getWifiConfiguration item config=$config")
             if (bssid == config.BSSID || ssid == config.SSID) {
-                val configSecurity: String = getSecurity(config)
+                val configSecurity: Int = getSecurity(config)
                 if (security == configSecurity) {
                     STLogUtil.w(TAG, "getWifiConfiguration return success !!! config = $config")
                     return config
@@ -783,19 +784,6 @@ object STWifiUtil {
         return getSpeed(getSignalStrength(scanResult = scanResult))
     }
 
-
-    @JvmStatic
-    fun getKey(result: ScanResult): String? {
-        val builder = StringBuilder()
-        if (TextUtils.isEmpty(result.SSID)) {
-            builder.append(result.BSSID)
-        } else {
-            builder.append(result.SSID)
-        }
-        builder.append(',').append(getSecurity(result))
-        return builder.toString()
-    }
-
     @JvmStatic
     fun getKey(config: WifiConfiguration): String? {
         val builder = StringBuilder()
@@ -804,7 +792,7 @@ object STWifiUtil {
         } else {
             builder.append(removeDoubleQuotes(config.SSID))
         }
-        builder.append(',').append(getSecurityOrigin(config))
+        builder.append(',').append(getSecurity(config))
         return builder.toString()
     }
 
@@ -828,50 +816,6 @@ object STWifiUtil {
     fun getLevel(rssi: Int): Int {
         return WifiManager.calculateSignalLevel(rssi, SIGNAL_LEVELS)
     }
-
-    @JvmStatic
-    fun getSecurityOrigin(result: ScanResult?): Int {
-        return when {
-            result != null && result.capabilities.contains("WEP") -> {
-                STWifiUtils.SECURITY_WEP
-            }
-            result != null && result.capabilities.contains("PSK") -> {
-                STWifiUtils.SECURITY_PSK
-            }
-            result != null && result.capabilities.contains("EAP") -> {
-                STWifiUtils.SECURITY_EAP
-            }
-            else -> STWifiUtils.SECURITY_NONE
-        }
-    }
-
-    @JvmStatic
-    fun securityToString(security: Int, pskType: Int): String? {
-        when (security) {
-            STWifiUtils.SECURITY_WEP -> {
-                return "WEP"
-            }
-            STWifiUtils.SECURITY_PSK -> {
-                return when (pskType) {
-                    PSK_WPA -> {
-                        "WPA"
-                    }
-                    PSK_WPA2 -> {
-                        "WPA2"
-                    }
-                    PSK_WPA_WPA2 -> {
-                        "WPA_WPA2"
-                    }
-                    else -> "PSK"
-                }
-            }
-            STWifiUtils.SECURITY_EAP -> {
-                return "EAP"
-            }
-            else -> return "NONE"
-        }
-    }
-
 
     //region 双引号处理
 
@@ -918,23 +862,6 @@ object STWifiUtil {
     @JvmStatic
     fun getSummary(context: Context, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
         return getSummary(context, null, state, isEphemeral, passpointProvider)
-    }
-
-    @JvmStatic
-    fun getSecurityString(context: Context, concise: Boolean, security: Int, pskType: Int): String? {
-        return when (security) {
-            STWifiUtils.SECURITY_EAP -> if (concise) context.getString(R.string.wifi_security_short_eap) else context.getString(R.string.wifi_security_eap)
-            STWifiUtils.SECURITY_PSK -> when (pskType) {
-                PSK_WPA -> if (concise) context.getString(R.string.wifi_security_short_wpa) else context.getString(R.string.wifi_security_wpa)
-                PSK_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa2) else context.getString(R.string.wifi_security_wpa2)
-                PSK_WPA_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa_wpa2) else context.getString(R.string.wifi_security_wpa_wpa2)
-                PSK_UNKNOWN -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
-                else -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
-            }
-            STWifiUtils.SECURITY_WEP -> if (concise) context.getString(R.string.wifi_security_short_wep) else context.getString(R.string.wifi_security_wep)
-            STWifiUtils.SECURITY_NONE -> if (concise) "" else context.getString(R.string.wifi_security_none)
-            else -> if (concise) "" else context.getString(R.string.wifi_security_none)
-        }
     }
 
     interface WifiScanCallback {

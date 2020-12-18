@@ -52,7 +52,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
     private val ssidStr: String by lazy { STWifiUtil.removeDoubleQuotes(scanResult?.SSID ?: "") }
     private val hiddenSSID: Boolean by lazy { oldWifiConfiguration?.hiddenSSID ?: false }
     private val isSaved: Boolean by lazy { false } // 该网络是否已连接(已保存)
-    private val security: Int by lazy { STWifiUtil.getSecurityOrigin(scanResult) }
+    private val security: Int by lazy { STWifiUtil.getSecurity(scanResult) }
 
     /* Phase2 methods supported by PEAP are limited */
     private val phase2PeapAdapter: ArrayAdapter<String> by lazy {
@@ -170,7 +170,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
 
     /* show submit button if password, ip and proxy settings are valid */
     fun enableSubmitIfAppropriate() {
-        configUi.getSubmitButton()?.isEnabled = isSubmittable
+        configUi.getSubmitButton()?.isEnabled = isSubmittable()
     }
 
     fun isValidPsk(password: String): Boolean {
@@ -182,53 +182,45 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         return false
     }
 
-    val isSubmittable: Boolean
-        get() {
-            var enabled: Boolean
-            var passwordInvalid = false
-            if ((accessPointSecurity == STWifiUtils.SECURITY_WEP && passwordView.length() == 0) || (accessPointSecurity == STWifiUtils.SECURITY_PSK && !isValidPsk(passwordView.text.toString()))
-            ) {
-                passwordInvalid = true
-            }
-            enabled = if (ssidView.length() == 0 || ((scanResult == null || !isSaved) && passwordInvalid // If AccessPoint is saved (modifying network) and password is changed, apply
-                        // Invalid password check
-                        || (scanResult != null && isSaved && passwordInvalid && passwordView.length() > 0))
-            ) {
-                false
-            } else {
-                ipAndProxyFieldsAreValid()
-            }
-            if (contentView.findViewById<View>(R.id.l_ca_cert).visibility != View.GONE) {
-                val caCertSelection = eapCaCertSpinner.selectedItem as String
-                if (caCertSelection == unspecifiedCertString) {
-                    // Disallow submit if the user has not selected a CA certificate for an EAP network
-                    // configuration.
-                    enabled = false
-                }
-                if (caCertSelection == useSystemCertsString && contentView.findViewById<View>(R.id.l_domain).visibility != View.GONE && TextUtils.isEmpty(eapDomainView.text.toString())) {
-                    // Disallow submit if the user chooses to use system certificates for EAP server
-                    // validation, but does not provide a domain.
-                    enabled = false
-                }
-            }
-            if (contentView.findViewById<View>(R.id.l_user_cert).visibility != View.GONE && (eapUserCertSpinner.selectedItem as String == unspecifiedCertString)) {
-                // Disallow submit if the user has not selected a user certificate for an EAP network
+    fun isSubmittable(): Boolean {
+        var enabled: Boolean
+        var passwordInvalid = false
+
+        if ((accessPointSecurity == STWifiUtils.SECURITY_WEP && passwordView.length() == 0) || (accessPointSecurity == STWifiUtils.SECURITY_PSK && !isValidPsk(passwordView.text.toString()))) {
+            passwordInvalid = true
+        }
+        enabled = if (scanResult == null && ssidView.length() == 0 ||
+            ((scanResult == null || !isSaved) && passwordInvalid)
+            || (scanResult != null && isSaved && passwordInvalid && passwordView.length() > 0)
+        ) {
+            false
+        } else {
+            ipAndProxyFieldsAreValid()
+        }
+        if (contentView.findViewById<View>(R.id.l_ca_cert).visibility != View.GONE) {
+            val caCertSelection = eapCaCertSpinner.selectedItem as String
+            if (caCertSelection == unspecifiedCertString) {
+                // Disallow submit if the user has not selected a CA certificate for an EAP network
                 // configuration.
                 enabled = false
             }
-            return enabled
+            if (caCertSelection == useSystemCertsString && contentView.findViewById<View>(R.id.l_domain).visibility != View.GONE && TextUtils.isEmpty(eapDomainView.text.toString())) {
+                // Disallow submit if the user chooses to use system certificates for EAP server
+                // validation, but does not provide a domain.
+                enabled = false
+            }
         }
+        if (contentView.findViewById<View>(R.id.l_user_cert).visibility != View.GONE && (eapUserCertSpinner.selectedItem as String == unspecifiedCertString)) {
+            // Disallow submit if the user has not selected a user certificate for an EAP network
+            // configuration.
+            enabled = false
+        }
+        return enabled
+    }
 
     //endregion
     private fun ipAndProxyFieldsAreValid(): Boolean {
         ipAssignment = if (ipSettingsSpinner.selectedItemPosition == STATIC_IP) IpAssignment.STATIC else IpAssignment.DHCP
-        if (ipAssignment == IpAssignment.STATIC) {
-            // mStaticIpConfiguration = new StaticIpConfiguration();
-            val result = 0 // validateIpConfigFields(mStaticIpConfiguration);
-            if (result != 0) {
-                return false
-            }
-        }
         val selectedPosition = proxySettingsSpinner.selectedItemPosition
         proxySettings = ProxySettings.NONE
         httpProxy = null
@@ -883,9 +875,9 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         // work done in afterTextChanged
     }
 
-    override fun onEditorAction(textView: TextView, id: Int, keyEvent: KeyEvent): Boolean {
+    override fun onEditorAction(textView: TextView?, id: Int, keyEvent: KeyEvent?): Boolean {
         if (textView === passwordView) {
-            if (id == EditorInfo.IME_ACTION_DONE && isSubmittable) {
+            if (id == EditorInfo.IME_ACTION_DONE && isSubmittable()) {
                 configUi.dispatchSubmit()
                 return true
             }
@@ -895,7 +887,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
 
     override fun onKey(view: View, keyCode: Int, keyEvent: KeyEvent): Boolean {
         if (view === passwordView) {
-            if (keyCode == KeyEvent.KEYCODE_ENTER && isSubmittable) {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && isSubmittable()) {
                 configUi.dispatchSubmit()
                 return true
             }
@@ -1046,7 +1038,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
                             addRow(group, R.string.wifi_frequency, band)
                         }
                     }
-                    addRow(group, R.string.wifi_security, getSecurityString(context, false, security, getPskType(scanResult)))
+                    addRow(group, R.string.wifi_security, getSecurityString(scanResult))
                     contentView.findViewById<View>(R.id.ip_fields).visibility = View.GONE
                 }
                 if (isSaved || isPasspointNetwork) {

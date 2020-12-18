@@ -251,7 +251,7 @@
         <item>0</item>
     </string-array>
 
-    <!-- Match this with the constants in WifiDialog. --> <skip />
+    <!-- Match this with the constants in Wifi Dialog. --> <skip />
     <!-- Wi-Fi settings.  The type of EAP method a Wi-Fi network has. -->
     <string-array name="wifi_eap_method">
         <!-- Do not translate. -->

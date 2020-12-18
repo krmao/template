@@ -16,11 +16,13 @@ import android.net.wifi.*
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
+import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.rx.permission.RxPermissions
-import com.smart.library.util.wifi.WifiUtils
+import com.smart.library.util.wifi.STWifiUtils
 import java.util.*
 
 /**
@@ -33,7 +35,7 @@ import java.util.*
  * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
  * <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "KDocUnresolvedReference")
 object STWifiUtil {
     const val TAG = "[wifi]"
 
@@ -46,14 +48,103 @@ object STWifiUtil {
     const val LOCATION_NONE = 1111
     const val LOCATION_DISABLED = 1112
 
+
     /**
-     * For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return null
+     * Lower bound on the 2.4 GHz (802.11b/g/n) WLAN channels
      */
-    @JvmStatic
-    fun isPasspointNetwork(scanResult: ScanResult): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) scanResult.isPasspointNetwork else WifiUtils.isPasspointNetwork(getWifiConfiguration(scanResult = scanResult))
+    const val LOWER_FREQ_24GHZ = 2400
+
+    /**
+     * Upper bound on the 2.4 GHz (802.11b/g/n) WLAN channels
+     */
+    const val HIGHER_FREQ_24GHZ = 2500
+
+    /**
+     * Lower bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
+     */
+    const val LOWER_FREQ_5GHZ = 4900
+
+    /**
+     * Upper bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
+     */
+    const val HIGHER_FREQ_5GHZ = 5900
+
+
+    const val PSK_UNKNOWN = 0
+    const val PSK_WPA = 1
+    const val PSK_WPA2 = 2
+    const val PSK_WPA_WPA2 = 3
+
+    enum class Speed {
+        NONE,
+
+        /**
+         * Constant value representing a slow speed network connection.
+         */
+        SLOW,
+
+        /**
+         * Constant value representing a medium speed network connection.
+         */
+        MODERATE,
+
+        /**
+         * Constant value representing a fast speed network connection.
+         */
+        FAST,
+
+        /**
+         * Constant value representing a very fast speed network connection.
+         */
+        VERY_FAST;
     }
 
+    /**
+     * The number of distinct wifi levels.
+     *
+     *
+     * Must keep in sync with [R.array.wifi_signal] and [WifiManager.RSSI_LEVELS].
+     */
+    const val SIGNAL_LEVELS = 5
+
+
+    private const val SSID_ASCII_MAX_LENGTH = 32
+    fun isSSIDTooLong(ssid: String): Boolean {
+        return if (TextUtils.isEmpty(ssid)) {
+            false
+        } else ssid.length > SSID_ASCII_MAX_LENGTH
+    }
+
+    private val WIFI_PIE = intArrayOf(
+        R.drawable.ic_wifi_signal_0,
+        R.drawable.ic_wifi_signal_1,
+        R.drawable.ic_wifi_signal_2,
+        R.drawable.ic_wifi_signal_3,
+        R.drawable.ic_wifi_signal_4
+    )
+
+    /**
+     * Returns the Wifi icon resource for a given RSSI level.
+     *
+     * @param level The number of bars to show (0-4)
+     * @throws IllegalArgumentException if an invalid RSSI level is given.
+     */
+    @Suppress("unused")
+    @JvmStatic
+    fun getWifiIconResource(level: Int): Int {
+        require(!(level < 0 || level >= WIFI_PIE.size)) { "No Wifi icon found for level: $level" }
+        return WIFI_PIE[level]
+    }
+
+    /**
+     * Identify if this configuration represents a PassPoint network
+     */
+    @JvmStatic
+    fun isPasspointNetwork(config: WifiConfiguration?): Boolean {
+        val isPasspointNetwork = config?.enterpriseConfig != null && config.enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE
+        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
+        return isPasspointNetwork
+    }
 
     // android9.0以上需要申请定位权限
     // android10.0需要申请新添加的隐私权限ACCESS_FINE_LOCATION详情见android官方10.0重大隐私权变更，如果还需要后台获取或者使用wifi api则还需要申请后台使用定位权限ACCESS_BACKGROUND_LOCATION
@@ -230,7 +321,6 @@ object STWifiUtil {
         if (!isAndroidQOrLater()) {
             wifiManager?.disconnect()
             if (removeWifi && networkId != null) {
-                // Compatibility Note: For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will always return false.
                 wifiManager?.removeNetwork(networkId)
             }
         } else {
@@ -240,96 +330,47 @@ object STWifiUtil {
         }
     }
 
-    @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun cleanPreviousConfiguration(wifiManager: WifiManager?, scanResult: ScanResult): Boolean {
-        wifiManager ?: return false
-        //On Android 6.0 (API level 23) and above if my app did not create the configuration in the first place, it can not remove it either.
-        val config: WifiConfiguration = getWifiConfiguration(STInitializer.application(), wifiManager, scanResult) ?: return true
-        if (wifiManager.removeNetwork(config.networkId)) {
-            wifiManager.saveConfiguration()
-            return true
-        }
-        return false
-    }
-
-    /**
-     * @return networkId
-     */
-    @Suppress("DEPRECATION")
-    @JvmStatic
-    @JvmOverloads
-    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
-        var requestForAndroidQ: NetworkRequest? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            requestForAndroidQ = createNetworkRequestBuilderAndroidQ(
-                ssid = scanResult.SSID,
-                isPasspoint = isPasspointNetwork(scanResult),
-                password = password,
-                identity = identity,
-                anonymousIdentity = anonymousIdentity,
-                eapMethod = eapMethod,
-                phase2Method = phase2Method
-            ).build()
-        }
-        return connectWifi(
-            application = application,
-            scanResult = scanResult,
-            wifiConfiguration = createWifiConfiguration(
-                application = application,
-                scanResult = scanResult,
-                password = password,
-                identity = identity,
-                anonymousIdentity = anonymousIdentity,
-                eapMethod = eapMethod,
-                phase2Method = phase2Method
-            ),
-            networkRequest = requestForAndroidQ,
-            networkCallback = networkCallback
-        )
-    }
-
     /**
      * @return networkId
      */
     @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration? = null, networkRequest: NetworkRequest? = null, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+        return if (!isAndroidQOrLater()) {
+            connectWifiPreAndroidQ(application, wifiConfiguration)
+        } else {
+            connectWifiAndroidQ(application, scanResult, wifiConfiguration, networkCallback = networkCallback)
+            null
+        }
+    }
+
+    @JvmStatic
+    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), wifiConfiguration: WifiConfiguration?): Int {
         if (!isAndroidQOrLater()) {
             val wifiManager: WifiManager? = getWifiManager(application)
             if (wifiManager == null) {
-                STLogUtil.e(TAG, "wifiManager == null !!!")
+                STLogUtil.e(TAG, "connectWifiPreAndroidQ -> wifiManager == null !!!")
                 return -1
             }
-            STLogUtil.w(TAG, "disconnect")
+
+            STLogUtil.w(TAG, "connectWifiPreAndroidQ -> disconnect")
             wifiManager.disconnect()
-            STLogUtil.w(TAG, "addNetwork")
-            val networkId: Int? = wifiManager.addNetwork(wifiConfiguration)
-            STLogUtil.w(TAG, "saveConfiguration")
+            // remove last configuration
+            wifiConfiguration?.networkId?.let { if (wifiManager.removeNetwork(it)) wifiManager.saveConfiguration() }
+            // reAdd wifiConfiguration
+            STLogUtil.w(TAG, "connectWifiPreAndroidQ -> addNetwork")
+            val networkId: Int = wifiManager.addNetwork(wifiConfiguration)
+            STLogUtil.w(TAG, "connectWifiPreAndroidQ -> saveConfiguration")
             wifiManager.saveConfiguration()
-            STLogUtil.w(TAG, "enableNetwork")
-            if (networkId != null) wifiManager.enableNetwork(networkId, true)
-            STLogUtil.w(TAG, "reconnect")
+            STLogUtil.w(TAG, "connectWifiPreAndroidQ -> enableNetwork")
+            wifiManager.enableNetwork(networkId, true)
+            STLogUtil.w(TAG, "connectWifiPreAndroidQ -> reconnect")
             wifiManager.reconnect()
             return networkId
         } else {
-            var finalNetworkRequest: NetworkRequest? = networkRequest
-            if (finalNetworkRequest == null && wifiConfiguration != null) {
-                STLogUtil.w(TAG, "networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
-                finalNetworkRequest = createNetworkRequestBuilderAndroidQ(
-                    ssid = scanResult.SSID,
-                    isPasspoint = isPasspointNetwork(scanResult),
-                    password = if (isPasspointNetwork(scanResult)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
-                    identity = wifiConfiguration.enterpriseConfig.identity,
-                    anonymousIdentity = wifiConfiguration.enterpriseConfig.anonymousIdentity,
-                    eapMethod = wifiConfiguration.enterpriseConfig.eapMethod,
-                    phase2Method = wifiConfiguration.enterpriseConfig.phase2Method
-                ).build()
-            }
-            connectWifiAndroidQ(application, networkRequest = finalNetworkRequest, networkCallback = networkCallback)
-            return null
+            STLogUtil.e(TAG, "connectWifiPreAndroidQ -> must preAndroidQ !!!")
+            return -1
         }
     }
 
@@ -338,53 +379,73 @@ object STWifiUtil {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkRequest: NetworkRequest?, networkCallback: ConnectivityManager.NetworkCallback?) {
+    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback?) {
+        val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
         if (connectivityManager == null) {
-            STLogUtil.e(TAG, "connectivityManager==null!!")
+            STLogUtil.e(TAG, "connectWifiAndroidQ -> connectivityManager==null!!")
             return
         }
-        if (isAndroidQOrLater() && networkRequest != null) {
-            STLogUtil.w(TAG, "requestNetwork start")
-            connectivityManager.requestNetwork(networkRequest, networkCallback ?: object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    super.onAvailable(network)
-                    STLogUtil.w(TAG, "onAvailable")
-                }
+        if (isAndroidQOrLater()) {
+            //region create networkRequest by wifiConfiguration
+            var networkRequest: NetworkRequest? = null
+            if (networkRequest == null && wifiConfiguration != null) {
+                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
+                networkRequest = createNetworkRequestBuilderAndroidQ(
+                    ssid = scanResult.SSID,
+                    isPasspoint = isPasspointNetwork(wifiConfiguration),
+                    password = if (isPasspointNetwork(wifiConfiguration)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
+                    identity = wifiConfiguration.enterpriseConfig.identity,
+                    anonymousIdentity = wifiConfiguration.enterpriseConfig.anonymousIdentity,
+                    eapMethod = wifiConfiguration.enterpriseConfig.eapMethod,
+                    phase2Method = wifiConfiguration.enterpriseConfig.phase2Method
+                ).build()
+            }
+            //endregion
 
-                override fun onUnavailable() {
-                    super.onUnavailable()
-                    STLogUtil.w(TAG, "onUnavailable")
-                }
+            if (networkRequest != null) {
+                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest!=null, requestNetwork start")
+                connectivityManager.requestNetwork(networkRequest, networkCallback ?: object : ConnectivityManager.NetworkCallback() {
+                    override fun onAvailable(network: Network) {
+                        super.onAvailable(network)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onAvailable")
+                    }
 
-                override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
-                    super.onBlockedStatusChanged(network, blocked)
-                    STLogUtil.w(TAG, "onBlockedStatusChanged")
-                }
+                    override fun onUnavailable() {
+                        super.onUnavailable()
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onUnavailable")
+                    }
 
-                override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-                    super.onCapabilitiesChanged(network, networkCapabilities)
-                    STLogUtil.w(TAG, "onCapabilitiesChanged")
-                }
+                    override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+                        super.onBlockedStatusChanged(network, blocked)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onBlockedStatusChanged")
+                    }
 
-                override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
-                    super.onLinkPropertiesChanged(network, linkProperties)
-                    STLogUtil.w(TAG, "onLinkPropertiesChanged")
-                }
+                    override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                        super.onCapabilitiesChanged(network, networkCapabilities)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onCapabilitiesChanged")
+                    }
 
-                override fun onLosing(network: Network, maxMsToLive: Int) {
-                    super.onLosing(network, maxMsToLive)
-                    STLogUtil.w(TAG, "onLosing")
-                }
+                    override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
+                        super.onLinkPropertiesChanged(network, linkProperties)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onLinkPropertiesChanged")
+                    }
 
-                override fun onLost(network: Network) {
-                    super.onLost(network)
-                    STLogUtil.w(TAG, "onLost")
-                }
-            })
-            STLogUtil.w(TAG, "requestNetwork start end")
+                    override fun onLosing(network: Network, maxMsToLive: Int) {
+                        super.onLosing(network, maxMsToLive)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onLosing")
+                    }
+
+                    override fun onLost(network: Network) {
+                        super.onLost(network)
+                        STLogUtil.w(TAG, "connectWifiAndroidQ -> onLost")
+                    }
+                })
+            } else {
+                STLogUtil.e(TAG, "connectWifiAndroidQ -> networkRequest==null!!!")
+            }
+            STLogUtil.w(TAG, "connectWifiAndroidQ -> requestNetwork start end")
         } else {
-            STLogUtil.w(TAG, "preAndroidQ or networkRequest==null")
+            STLogUtil.e(TAG, "connectWifiAndroidQ -> preAndroidQ or networkRequest==null")
         }
     }
 
@@ -392,8 +453,7 @@ object STWifiUtil {
      * https://stackoverflow.com/questions/58769623/android-10-api-29-how-to-connect-the-phone-to-a-configured-network
      */
     @JvmStatic
-    @JvmOverloads
-    fun disconnectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback) {
+    private fun disconnectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback) {
         if (isAndroidQOrLater()) {
             connectivityManager?.unregisterNetworkCallback(networkCallback)
         }
@@ -440,6 +500,7 @@ object STWifiUtil {
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
     fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ isPasspoint=$isPasspoint")
         return createNetworkRequestBuilderAndroidQ(
             ssid = ssid,
             password = password ?: "",
@@ -489,14 +550,14 @@ object STWifiUtil {
      * @see getSignalStrength
      */
     @JvmStatic
-    fun getSpeed(signalStrength: Int): WifiUtils.Speed {
+    fun getSpeed(signalStrength: Int): Speed {
         return when (signalStrength) {
-            4 -> WifiUtils.Speed.VERY_FAST
-            3 -> WifiUtils.Speed.FAST
-            2 -> WifiUtils.Speed.MODERATE
-            1 -> WifiUtils.Speed.SLOW
-            0 -> WifiUtils.Speed.NONE
-            else -> WifiUtils.Speed.NONE
+            4 -> Speed.VERY_FAST
+            3 -> Speed.FAST
+            2 -> Speed.MODERATE
+            1 -> Speed.SLOW
+            0 -> Speed.NONE
+            else -> Speed.NONE
         }
     }
 
@@ -505,10 +566,10 @@ object STWifiUtil {
      * @see {@link https://github.com/paladinzh/decompile-hw/blob/4c3efd95f3e997b44dd4ceec506de6164192eca3/decompile/app/SystemUI/src/main/res/values-zh-rCN/strings.xml}
      */
     @JvmStatic
-    fun getSignalStrength(rssi: Int): Int = WifiManager.calculateSignalLevel(rssi, WifiUtils.SIGNAL_LEVELS)
+    fun getSignalStrength(rssi: Int): Int = WifiManager.calculateSignalLevel(rssi, SIGNAL_LEVELS)
 
     @JvmStatic
-    fun getSignalStrength(scanResult: ScanResult): Int = WifiManager.calculateSignalLevel(scanResult.level, WifiUtils.SIGNAL_LEVELS)
+    fun getSignalStrength(scanResult: ScanResult?): Int = WifiManager.calculateSignalLevel(scanResult?.level ?: -100, SIGNAL_LEVELS)
 
     @JvmStatic
     fun getSecurity(scanResult: ScanResult, includeWPS: Boolean = true): String = getSecurity(scanResult.capabilities, includeWPS)
@@ -522,6 +583,18 @@ object STWifiUtil {
             capabilities.contains(SECURITY_EAP) -> SECURITY_EAP
             else -> SECURITY_NONE
         }) + (if (includeWPS && canUseWPS(capabilities)) "(CAN USE WPS)" else "")
+    }
+
+
+    @JvmStatic
+    fun getSecurityOrigin(config: WifiConfiguration): Int {
+        if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.WPA_PSK]) {
+            return STWifiUtils.SECURITY_PSK
+        }
+        if (config.allowedKeyManagement[WifiConfiguration.KeyMgmt.WPA_EAP] || config.allowedKeyManagement[WifiConfiguration.KeyMgmt.IEEE8021X]) {
+            return STWifiUtils.SECURITY_EAP
+        }
+        return if (config.wepKeys[0] != null) STWifiUtils.SECURITY_WEP else STWifiUtils.SECURITY_NONE
     }
 
     @Suppress("DEPRECATION")
@@ -651,8 +724,8 @@ object STWifiUtil {
 
     @JvmStatic
     @Suppress("DEPRECATION")
-    fun getWifiConfiguration(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult): WifiConfiguration? {
-        if (wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()) {
+    fun getWifiConfiguration(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult?): WifiConfiguration? {
+        if (wifiManager == null || scanResult == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()) {
             STLogUtil.e(TAG, "getWifiConfiguration return null !!! wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()")
             return null
         }
@@ -686,6 +759,182 @@ object STWifiUtil {
         if (TextUtils.isEmpty(ssid)) return ""
         val lastPos = ssid.length - 1
         return if (lastPos < 0 || ssid[0] == '"' && ssid[lastPos] == '"') ssid else "\"" + ssid + "\""
+    }
+
+    @JvmStatic
+    fun getSpeedLabel(context: Context?, speed: Speed?): String? {
+        return when {
+            context != null && speed == Speed.VERY_FAST -> context.getString(R.string.speed_label_very_fast)
+            context != null && speed == Speed.FAST -> context.getString(R.string.speed_label_fast)
+            context != null && speed == Speed.MODERATE -> context.getString(R.string.speed_label_okay)
+            context != null && speed == Speed.SLOW -> context.getString(R.string.speed_label_slow)
+            context != null && speed == Speed.NONE -> null
+            else -> null
+        }
+    }
+
+    @JvmStatic
+    fun getSpeedLabel(context: Context?, scanResult: ScanResult): String? {
+        return getSpeedLabel(context, getSpeed(scanResult))
+    }
+
+    @JvmStatic
+    fun getSpeed(scanResult: ScanResult): Speed {
+        return getSpeed(getSignalStrength(scanResult = scanResult))
+    }
+
+
+    @JvmStatic
+    fun getKey(result: ScanResult): String? {
+        val builder = StringBuilder()
+        if (TextUtils.isEmpty(result.SSID)) {
+            builder.append(result.BSSID)
+        } else {
+            builder.append(result.SSID)
+        }
+        builder.append(',').append(getSecurity(result))
+        return builder.toString()
+    }
+
+    @JvmStatic
+    fun getKey(config: WifiConfiguration): String? {
+        val builder = StringBuilder()
+        if (TextUtils.isEmpty(config.SSID)) {
+            builder.append(config.BSSID)
+        } else {
+            builder.append(removeDoubleQuotes(config.SSID))
+        }
+        builder.append(',').append(getSecurityOrigin(config))
+        return builder.toString()
+    }
+
+    @JvmStatic
+    fun getPskType(result: ScanResult): Int {
+        val wpa = result.capabilities.contains("WPA-PSK")
+        val wpa2 = result.capabilities.contains("WPA2-PSK")
+        return if (wpa2 && wpa) {
+            PSK_WPA_WPA2
+        } else if (wpa2) {
+            PSK_WPA2
+        } else if (wpa) {
+            PSK_WPA
+        } else {
+            Log.w(TAG, "Received abnormal flag string: " + result.capabilities)
+            PSK_UNKNOWN
+        }
+    }
+
+    @JvmStatic
+    fun getLevel(rssi: Int): Int {
+        return WifiManager.calculateSignalLevel(rssi, SIGNAL_LEVELS)
+    }
+
+    @JvmStatic
+    fun getSecurityOrigin(result: ScanResult?): Int {
+        return when {
+            result != null && result.capabilities.contains("WEP") -> {
+                STWifiUtils.SECURITY_WEP
+            }
+            result != null && result.capabilities.contains("PSK") -> {
+                STWifiUtils.SECURITY_PSK
+            }
+            result != null && result.capabilities.contains("EAP") -> {
+                STWifiUtils.SECURITY_EAP
+            }
+            else -> STWifiUtils.SECURITY_NONE
+        }
+    }
+
+    @JvmStatic
+    fun securityToString(security: Int, pskType: Int): String? {
+        when (security) {
+            STWifiUtils.SECURITY_WEP -> {
+                return "WEP"
+            }
+            STWifiUtils.SECURITY_PSK -> {
+                return when (pskType) {
+                    PSK_WPA -> {
+                        "WPA"
+                    }
+                    PSK_WPA2 -> {
+                        "WPA2"
+                    }
+                    PSK_WPA_WPA2 -> {
+                        "WPA_WPA2"
+                    }
+                    else -> "PSK"
+                }
+            }
+            STWifiUtils.SECURITY_EAP -> {
+                return "EAP"
+            }
+            else -> return "NONE"
+        }
+    }
+
+
+    //region 双引号处理
+
+    //region 双引号处理
+    /**
+     * 在字符串前后加上双引号
+     */
+    @JvmStatic
+    fun convertToQuotedString(string: String): String? {
+        return "\"" + string + "\""
+    }
+
+    /**
+     * 如果该字符串第一个和最后一个是双引号, 则删除双引号
+     */
+    @JvmStatic
+    fun removeDoubleQuotes(string: String?): String {
+        if (string == null || TextUtils.isEmpty(string)) return ""
+        val length = string.length
+        return if (length > 1 && string[0] == '"' && string[length - 1] == '"') string.substring(1, length - 1) else string
+    }
+
+    //endregion
+
+    @JvmStatic
+    fun getSummary(context: Context, ssid: String?, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
+        if (state == NetworkInfo.DetailedState.CONNECTED && ssid == null) {
+            if (!TextUtils.isEmpty(passpointProvider)) {
+                return String.format(context.getString(R.string.connected_via_passpoint), passpointProvider)
+            } else if (isEphemeral) {
+                return context.getString(R.string.connected_via_network_scorer_default)
+            }
+        }
+        // Case when there is wifi connected without internet connectivity.
+        if (state == null) {
+            Log.w(TAG, "state is null, returning empty summary")
+            return ""
+        }
+        val formats = context.resources.getStringArray(if (ssid == null) R.array.wifi_status else R.array.wifi_status_with_ssid)
+        val index = state.ordinal
+        return if (index >= formats.size || formats[index].isEmpty()) "" else String.format(formats[index], ssid)
+    }
+
+    @JvmStatic
+    fun getSummary(context: Context, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
+        return getSummary(context, null, state, isEphemeral, passpointProvider)
+    }
+
+    @JvmStatic
+    fun getSecurityString(context: Context, concise: Boolean, security: Int, pskType: Int): String? {
+        return when (security) {
+            STWifiUtils.SECURITY_EAP -> if (concise) context.getString(R.string.wifi_security_short_eap) else context.getString(R.string.wifi_security_eap)
+            STWifiUtils.SECURITY_PSK -> when (pskType) {
+                PSK_WPA -> if (concise) context.getString(R.string.wifi_security_short_wpa) else context.getString(R.string.wifi_security_wpa)
+                PSK_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa2) else context.getString(R.string.wifi_security_wpa2)
+                PSK_WPA_WPA2 -> if (concise) context.getString(R.string.wifi_security_short_wpa_wpa2) else context.getString(R.string.wifi_security_wpa_wpa2)
+                PSK_UNKNOWN -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
+                else -> if (concise) context.getString(R.string.wifi_security_short_psk_generic) else context.getString(R.string.wifi_security_psk_generic)
+            }
+            STWifiUtils.SECURITY_WEP -> if (concise) context.getString(R.string.wifi_security_short_wep) else context.getString(R.string.wifi_security_wep)
+            STWifiUtils.SECURITY_NONE -> if (concise) "" else context.getString(R.string.wifi_security_none)
+            else -> if (concise) "" else context.getString(R.string.wifi_security_none)
+        }
     }
 
     interface WifiScanCallback {

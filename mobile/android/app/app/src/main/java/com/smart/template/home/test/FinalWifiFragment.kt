@@ -38,8 +38,8 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurity
-import com.smart.library.util.wifi.WifiDialogActivity
-import com.smart.library.util.wifi.WifiUtils
+import com.smart.library.util.wifi.STWifiConfigUiBase
+import com.smart.library.util.wifi.STWifiDialog
 import com.smart.library.widget.recyclerview.STDividerItemDecoration
 import com.smart.library.widget.recyclerview.STRecyclerViewAdapter
 import com.smart.template.R
@@ -53,7 +53,7 @@ class FinalWifiFragment : STBaseFragment() {
     private var networkId: Int? = null
     private val application: Application by lazy { STInitializer.application()!! }
     private val connectivityManager: ConnectivityManager? by lazy { STWifiUtil.getConnectivityManager(application) }
-    private val onNetworkCallback by lazy {
+    private val networkCallback by lazy {
         object : ConnectivityManager.NetworkCallback() {
             override fun onUnavailable() {
                 STLogUtil.d(TAG, "onUnavailable")
@@ -78,18 +78,21 @@ class FinalWifiFragment : STBaseFragment() {
 
             @SuppressLint("SetTextI18n")
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                val itemData: ScanResult = dataList[position]
-                holder.itemView.nameTv.text = itemData.SSID
-                holder.itemView.bssIdTv.text = "bssid:${itemData.BSSID}"
-                holder.itemView.frequencyTv.text = "frequency:${itemData.frequency}"
-                holder.itemView.levelTv.text = "level:${itemData.level}"
-                holder.itemView.securityTypeTv.text = itemData.capabilities + "(${getSecurity(itemData.capabilities)})"
-                holder.itemView.signalStrengthTv.text = WifiUtils.getSpeedLabel(context, itemData)
+                val scanResult: ScanResult = dataList[position]
+                holder.itemView.nameTv.text = scanResult.SSID
+                holder.itemView.bssIdTv.text = "bssid:${scanResult.BSSID}"
+                holder.itemView.frequencyTv.text = "frequency:${scanResult.frequency}"
+                holder.itemView.levelTv.text = "level:${scanResult.level}"
+                holder.itemView.securityTypeTv.text = scanResult.capabilities + "(${getSecurity(scanResult.capabilities)})"
+                holder.itemView.signalStrengthTv.text = STWifiUtil.getSpeedLabel(context, scanResult)
                 holder.itemView.setOnClickListener {
-                    showCustomViewDialog(itemData, BottomSheet(LayoutMode.WRAP_CONTENT))
+                    showCustomViewDialog(scanResult, BottomSheet(LayoutMode.WRAP_CONTENT))
                 }
                 holder.itemView.setOnLongClickListener {
-                    WifiDialogActivity.goTo(context, itemData)
+                    val finalContext = context
+                    if (finalContext != null) {
+                        STWifiDialog.createModal(finalContext, scanResult, STWifiConfigUiBase.MODE_CONNECT).show()
+                    }
                     true
                 }
             }
@@ -124,7 +127,7 @@ class FinalWifiFragment : STBaseFragment() {
         }
 
         disconnectBtn.setOnClickListener {
-            STWifiUtil.disconnectWifi(application, networkId = networkId, networkCallback = onNetworkCallback, removeWifi = true)
+            STWifiUtil.disconnectWifi(application, networkId = networkId, networkCallback = networkCallback, removeWifi = true)
         }
 
         scanBtn.setOnClickListener {
@@ -174,8 +177,8 @@ class FinalWifiFragment : STBaseFragment() {
                 // Pull the password out of the custom view when the positive button is pressed
                 val identityInput: EditText = dialog.getCustomView().findViewById(R.id.identity)
                 val passwordInput: EditText = dialog.getCustomView().findViewById(R.id.password)
-                val identityString = identityInput.text.toString().trim()
-                val passwordString = passwordInput.text.toString().trim()
+                val identity = identityInput.text.toString().trim()
+                val password = passwordInput.text.toString().trim()
                 STLogUtil.w(TAG, "Build.VERSION.SDK_INT=${Build.VERSION.SDK_INT}")
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
@@ -183,9 +186,13 @@ class FinalWifiFragment : STBaseFragment() {
                 networkId = STWifiUtil.connectWifi(
                     application = application,
                     scanResult = scanResult,
-                    identity = identityString,
-                    password = passwordString,
-                    networkCallback = onNetworkCallback
+                    wifiConfiguration = STWifiUtil.createWifiConfiguration(
+                        application = application,
+                        scanResult = scanResult,
+                        password = password,
+                        identity = identity
+                    ),
+                    networkCallback = networkCallback
                 )
             }
             negativeButton(android.R.string.cancel)
@@ -197,7 +204,7 @@ class FinalWifiFragment : STBaseFragment() {
         val signalStrengthTV: TextView = customView.findViewById(R.id.signalStrengthTV)
         val securityTV: TextView = customView.findViewById(R.id.securityTV)
         val ssidTV: TextView = customView.findViewById(R.id.ssidTV)
-        signalStrengthTV.text = WifiUtils.getSpeedLabel(context, scanResult)
+        signalStrengthTV.text = STWifiUtil.getSpeedLabel(context, scanResult)
         ssidTV.text = scanResult.SSID
         securityTV.text = getSecurity(scanResult.capabilities)
         val passwordInput: EditText = customView.findViewById(R.id.password)

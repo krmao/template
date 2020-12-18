@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>map</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/> 
+    <style>
+        html,body,#container{
+            margin:0;
+            height:100%;
+            background-color:"#2b3a7c"
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=&plugin=AMap.DistrictSearch,AMap.DistrictLayer"></script>
+<script type="text/javascript">
+
+    var disCountry = new AMap.DistrictLayer.Country({
+    zIndex:10,
+    SOC:'CHN',
+    depth:2,
+    styles:{
+         // 颜色格式: #RRGGBB、rgba()、rgb()、[r, g, b, a]
+         // 默认国境线颜色
+        'nation-stroke':'#00000000',    // 国境线颜色 level-1
+         // 海岸线
+        'coastline-stroke':[0.85, 0.63, 0.94, 0],
+        'province-stroke':'#FFFFFF',      // 省份边界线颜色
+            'city-stroke': '#00000000',   // 城市边界颜色
+            // 'fill':function(props){
+            //     return 'green'        // 城市填充颜色
+            // },
+         // 填充
+        'fill': '#00000000' // 国内填充色 level-1
+    }
+    })
+  
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("container", {
+      // mapStyle: 'amap://styles/ade8bad285a31dd95aba984c3f0ce400',
+        resizeEnable: true,
+        viewMode:'2D',
+        center: [104.29885, 31.957237], // 地图中心点
+        zooms: [3,10],
+        zoom: 3, //地图显示的缩放级别
+        showIndoorMap:false,
+        isHotspot:false,
+        defaultCursor:'pointer',
+        touchZoomCenter:1,
+        pitch: 0,
+        layers:[
+            // 背景图层
+            new AMap.TileLayer({
+                zIndex:9,
+                getTileUrl: function(x,y,z){
+                    return 'https://i.loli.net/2020/12/18/XBUe2rWoiYxyDHm.jpg'; 
+                }
+            }),
+            disCountry,
+            // new AMap.TileLayer.Satellite()
+        ],
+    });
+    
+    var district = null;
+    var polygons=[];
+    var polygon;
+    function drawBounds() {
+        //加载行政区划插件
+        if(!district){
+            //实例化DistrictSearch
+            var opts = {
+                subdistrict: 0,     //获取边界不需要返回下级行政区
+                extensions: 'all',  // all 返回行政区边界坐标组等具体信息
+                level: 'country',   //查询行政级别为 省
+                showbiz: false,
+            };
+            district = new AMap.DistrictSearch(opts);
+        }
+       
+        district.setLevel("country")
+        
+        district.search("中国", function(status, result) {
+            //重绘国境线
+            // map.remove(polygons)//清除上次结果
+            // polygons = [];
+            // var bounds = result.districtList[0].boundaries;
+            // if (bounds) {
+            //     for (var i = 0, l = bounds.length; i < l; i++) {
+            //         //生成行政区划polygon
+            //         var polygon = new AMap.Polygon({
+            //             strokeWeight: 0,
+            //             strokeColor: '#00000000',   // 国境线颜色 level-2
+            //             path: bounds[i],
+            //             fillOpacity: 0.55,          // 国内填充色 覆盖 disCountry.styles.fill
+            //             fillColor: '#173470',       // 国内填充色 level-2
+            //         });
+            //         polygons.push(polygon);
+            //     }
+            // }
+            // map.add(polygons)
+            // map.setFitView(polygons);//视口自适应
+
+            // ----------------------------------------------------------------------
+
+            map.remove(polygons)
+            // 国外地图背景蒙层
+            // 外多边形坐标数组和内多边形坐标数组
+            var outer = [
+                new AMap.LngLat(-360,90,true),
+                new AMap.LngLat(-360,-90,true),
+                new AMap.LngLat(360,-90,true),
+                new AMap.LngLat(360,90,true),
+            ];
+            var holes = result.districtList[0].boundaries
+            console.log("holes",JSON.stringify(holes));
+            var pathArray = [outer];
+            pathArray.push.apply(pathArray,holes)
+            var polygon = new AMap.Polygon( {
+                pathL:pathArray,
+                strokeColor: '#73ECFE',     // 国境线颜色 level-3
+                strokeWeight: 3,            // 国境线宽度 level-3
+                fillColor: '#71B3ff',       // 国外地图背景填充色
+                fillOpacity: 0.9            // 国外地图背景透明度
+            });
+            polygon.setPath(pathArray);
+            polygons.push(polygon);
+            map.add(polygon)
+            // map.setFitView(polygon);     // 视口自适应
+        });
+    }
+    drawBounds();
+</script>
+</body>
+</html>

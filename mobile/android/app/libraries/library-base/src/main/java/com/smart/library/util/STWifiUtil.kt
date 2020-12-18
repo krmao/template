@@ -442,7 +442,6 @@ object STWifiUtil {
     fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
         return createNetworkRequestBuilderAndroidQ(
             ssid = ssid,
-            isPasspoint = isPasspoint,
             password = password ?: "",
             enterpriseConfig = WifiEnterpriseConfig().apply {
                 this.identity = identity
@@ -459,13 +458,12 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspoint: Boolean, password: String? = null, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid")
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ password=$password")
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
+        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid, password=$password, identity=${enterpriseConfig?.identity}")
         STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ enterpriseConfig=$enterpriseConfig")
 
         val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(ssid)
-        if (isPasspoint && enterpriseConfig?.identity?.isNotBlank() == true) {
+        if (enterpriseConfig != null && enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE) {
             specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
                 this.identity = enterpriseConfig.identity
                 this.password = enterpriseConfig.password
@@ -477,27 +475,13 @@ object STWifiUtil {
         } else {
             specifierBuilder.setWpa2Passphrase(password ?: "")
         }
+
         return NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI) //创建的是WIFI网络
             .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED) //网络不受限
             .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED) //信任网络，增加这个连个参数让设备连接wifi之后还联网
             .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .setNetworkSpecifier(specifierBuilder.build())
-    }
-
-    /**
-     * @param signalStrength
-     * @see getSignalStrength
-     */
-    @JvmStatic
-    fun getSignalStrengthDesc(signalStrength: Int): String? {
-        return when (signalStrength) {
-            3 -> "网络质量好"
-            2 -> "网络质量好"
-            1 -> "网络质量一般"
-            0 -> "网络质量不佳"
-            else -> "网络质量未知"
-        }
     }
 
     /**

@@ -1045,6 +1045,10 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
                 }
             }
         }
+
+        // custom force hide advanced layout, not support!!!
+        contentView.findViewById<View>(R.id.wifi_advanced_toggle).visibility = View.GONE
+
         configUi.setCancelButton(resources.getString(R.string.wifi_cancel))
 
         if (configUi.getSubmitButton() != null) {

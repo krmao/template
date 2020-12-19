@@ -80,6 +80,8 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
             scanResult = scanResult,
             identity = wifiConfiguration?.enterpriseConfig?.identity,
             password = if (!STWifiUtil.isPasspointNetwork(wifiConfiguration)) wifiConfiguration?.preSharedKey else wifiConfiguration?.enterpriseConfig?.password,
+            eapMethod = wifiConfiguration?.enterpriseConfig?.eapMethod,
+            phase2Method = wifiConfiguration?.enterpriseConfig?.phase2Method,
             networkCallback = networkCallback
         )
     }

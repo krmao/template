@@ -363,7 +363,7 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int? = null, phase2Method: Int? = null, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
         STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, password=$password, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
         return if (!isAndroidQOrLater()) {
             connectWifiPreAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)
@@ -374,7 +374,7 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): ConnectResult {
+    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?): ConnectResult {
         return if (!isAndroidQOrLater()) {
             ConnectResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)))
         } else {
@@ -417,11 +417,12 @@ object STWifiUtil {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
-    fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
         val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
         if (connectivityManager != null) {
             if (isAndroidQOrLater()) {
                 val networkRequest: NetworkRequest = createNetworkRequestBuilderAndroidQ(
+                    security = getSecurity(scanResult),
                     ssid = scanResult.SSID,
                     password = password,
                     identity = identity,
@@ -498,7 +499,7 @@ object STWifiUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
+    private fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int?, phase2Method: Int?): WifiConfiguration {
         val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
         wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
         setupSecurity(
@@ -515,22 +516,14 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
+    private fun createNetworkRequestBuilderAndroidQ(security: Int, ssid: String, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?): NetworkRequest.Builder {
         val finalSsid = removeDoubleQuotes(ssid)
         val finalPassword = removeDoubleQuotes(password)
 
-        STLogUtil.w(TAG, "==> finalSsid=$finalSsid, finalPassword=$finalPassword, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
-
+        STLogUtil.w(TAG, "==> security=$security, finalSsid=$finalSsid, finalPassword=$finalPassword, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
         val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(finalSsid)
-        if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
-            specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
-                this.identity = identity
-                this.password = finalPassword
-                this.eapMethod = eapMethod
-                this.phase2Method = phase2Method
-                this.anonymousIdentity = anonymousIdentity
-                this.caCertificate = null
-            })
+        if (security == SECURITY_EAP/* || (eapMethod != null && eapMethod != WifiEnterpriseConfig.Eap.NONE)*/) {
+            specifierBuilder.setWpa2EnterpriseConfig(createWifiEnterpriseConfig(identity, anonymousIdentity, finalPassword, eapMethod, phase2Method))
         } else {
             try {
                 specifierBuilder.setWpa2Passphrase(finalPassword)
@@ -634,7 +627,7 @@ object STWifiUtil {
     @JvmStatic
     @Suppress("DEPRECATION")
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    fun setupSecurity(config: WifiConfiguration, security: Int, password: String, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.PEAP, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE) {
+    private fun setupSecurity(config: WifiConfiguration, security: Int, password: String, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?) {
         config.allowedAuthAlgorithms.clear()
         config.allowedGroupCiphers.clear()
         config.allowedKeyManagement.clear()
@@ -706,19 +699,34 @@ object STWifiUtil {
                 config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP)
                 config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X)
                 config.preSharedKey = convertSsidToQuotedString(password)
-                config.enterpriseConfig = WifiEnterpriseConfig().also { enterpriseConfig ->
-                    enterpriseConfig.identity = identity
-                    enterpriseConfig.password = password
-                    if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
-                        enterpriseConfig.eapMethod = eapMethod
-                    }
-                    enterpriseConfig.phase2Method = phase2Method
-                    enterpriseConfig.anonymousIdentity = anonymousIdentity
-                    enterpriseConfig.caCertificate = null
-                }
+                config.enterpriseConfig = createWifiEnterpriseConfig(identity, anonymousIdentity, password, eapMethod, phase2Method)
             }
             else -> {
             }
+        }
+    }
+
+    @JvmStatic
+    private fun createWifiEnterpriseConfig(identity: String?, anonymousIdentity: String?, password: String, eapMethod: Int?, phase2Method: Int?): WifiEnterpriseConfig {
+        return WifiEnterpriseConfig().also { enterpriseConfig ->
+            enterpriseConfig.identity = identity
+            enterpriseConfig.password = password
+            if (eapMethod != null) {
+                try {
+                    enterpriseConfig.eapMethod = eapMethod
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            if (phase2Method != null) {
+                try {
+                    enterpriseConfig.phase2Method = phase2Method
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            enterpriseConfig.anonymousIdentity = anonymousIdentity
+            enterpriseConfig.caCertificate = null
         }
     }
 

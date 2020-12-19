@@ -31,7 +31,6 @@ import com.smart.library.R
 import com.smart.library.util.STThreadUtils.post
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.convertToQuotedString
-import com.smart.library.util.STWifiUtil.getPskType
 import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.STWifiUtil.getSummary
 import java.security.KeyStore

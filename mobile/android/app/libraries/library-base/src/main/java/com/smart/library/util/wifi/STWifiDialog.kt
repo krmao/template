@@ -65,10 +65,14 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
 
     @SuppressLint("MissingPermission")
     private fun onSubmit() {
-        STWifiUtil.connectWifi(
+        val wifiConfiguration = getController().getConfig()
+
+         STWifiUtil.connectWifi(
             application = STInitializer.application(),
             scanResult = scanResult,
-            wifiConfiguration = getController().getConfig()
+            identity = wifiConfiguration?.enterpriseConfig?.identity,
+            password = if (!STWifiUtil.isPasspointNetwork(wifiConfiguration)) wifiConfiguration?.preSharedKey else wifiConfiguration?.enterpriseConfig?.password,
+            networkCallback = null
         )
     }
 

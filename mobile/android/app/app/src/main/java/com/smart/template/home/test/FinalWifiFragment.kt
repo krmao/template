@@ -37,7 +37,6 @@ import com.smart.library.util.STDialogManager
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STWifiUtil
-import com.smart.library.util.STWifiUtil.getSecurity
 import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.wifi.STWifiConfigUiBase
 import com.smart.library.util.wifi.STWifiDialog
@@ -166,7 +165,7 @@ class FinalWifiFragment : STBaseFragment() {
         scanBtn.callOnClick()
     }
 
-    @SuppressLint("SetTextI18n", "MissingPermission")
+    @SuppressLint("SetTextI18n", "MissingPermission", "NewApi")
     private fun showCustomViewDialog(scanResult: ScanResult, dialogBehavior: DialogBehavior = ModalDialog) {
         val context = context
         context ?: return
@@ -184,15 +183,12 @@ class FinalWifiFragment : STBaseFragment() {
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
                 STLogUtil.w(TAG, "android < 10 connect wifi")
+
                 networkId = STWifiUtil.connectWifi(
                     application = application,
                     scanResult = scanResult,
-                    wifiConfiguration = STWifiUtil.createWifiConfiguration(
-                        application = application,
-                        scanResult = scanResult,
-                        password = password,
-                        identity = identity
-                    ),
+                    identity = identity,
+                    password = password,
                     networkCallback = networkCallback
                 )
             }

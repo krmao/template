@@ -148,6 +148,16 @@ object STWifiUtil {
         return isPasspointNetwork
     }
 
+    /**
+     * Identify if this configuration represents a PassPoint network
+     */
+    @JvmStatic
+    fun isPasspointNetwork(eapMethod: Int): Boolean {
+        val isPasspointNetwork = eapMethod != WifiEnterpriseConfig.Eap.NONE
+        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
+        return isPasspointNetwork
+    }
+
     // android9.0以上需要申请定位权限
     // android10.0需要申请新添加的隐私权限ACCESS_FINE_LOCATION详情见android官方10.0重大隐私权变更，如果还需要后台获取或者使用wifi api则还需要申请后台使用定位权限ACCESS_BACKGROUND_LOCATION
     // https://developer.android.google.cn/about/versions/10/privacy/
@@ -335,14 +345,14 @@ object STWifiUtil {
     /**
      * @return networkId
      */
-    @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback? = null): Int? {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): Int? {
+        STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, password=$password, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
         return if (!isAndroidQOrLater()) {
-            connectWifiPreAndroidQ(application, wifiConfiguration)
+            null //connectWifiPreAndroidQ(application, wifiConfiguration)
         } else {
-            connectWifiAndroidQ(application, scanResult, wifiConfiguration, networkCallback = networkCallback)
+            connectWifiAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, networkCallback)
             null
         }
     }
@@ -381,29 +391,25 @@ object STWifiUtil {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
-    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback?) {
+    fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?) {
         val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
         if (connectivityManager == null) {
             STLogUtil.e(TAG, "connectWifiAndroidQ -> connectivityManager==null!!")
             return
         }
         if (isAndroidQOrLater()) {
-            //region create networkRequest by wifiConfiguration
             var networkRequest: NetworkRequest? = null
-            if (networkRequest == null && wifiConfiguration != null) {
-                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest==null && wifiConfiguration!=null, createNetworkRequestBuilderAndroidQ")
+            if (networkRequest == null) {
+                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest==null!!")
                 networkRequest = createNetworkRequestBuilderAndroidQ(
                     ssid = scanResult.SSID,
-                    isPasspointNetwork = isPasspointNetwork(wifiConfiguration),
-                    password = if (!isPasspointNetwork(wifiConfiguration)) wifiConfiguration.preSharedKey else wifiConfiguration.enterpriseConfig.password,
-                    identity = wifiConfiguration.enterpriseConfig.identity,
-                    anonymousIdentity = wifiConfiguration.enterpriseConfig.anonymousIdentity,
-                    eapMethod = wifiConfiguration.enterpriseConfig.eapMethod,
-                    phase2Method = wifiConfiguration.enterpriseConfig.phase2Method
+                    password = password,
+                    identity = identity,
+                    anonymousIdentity = anonymousIdentity,
+                    eapMethod = eapMethod,
+                    phase2Method = phase2Method
                 ).build()
             }
-            //endregion
-
             if (networkRequest != null) {
                 STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest!=null, requestNetwork start")
                 connectivityManager.requestNetwork(networkRequest, networkCallback ?: object : ConnectivityManager.NetworkCallback() {
@@ -475,18 +481,12 @@ object STWifiUtil {
         return if (isAndroidQOrLater()) wifiManager?.removeNetworkSuggestions(networkSuggestions) ?: -1 else -1
     }
 
-
     @Suppress("DEPRECATION")
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
     fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): WifiConfiguration {
         val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
         wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
-        // wifiConfiguration.enterpriseConfig = wifiConfiguration.enterpriseConfig ?: WifiEnterpriseConfig()
-        // wifiConfiguration.enterpriseConfig.anonymousIdentity = anonymousIdentity
-        // wifiConfiguration.enterpriseConfig.password = password
-        // wifiConfiguration.enterpriseConfig.eapMethod = eapMethod
-        // wifiConfiguration.enterpriseConfig.phase2Method = phase2Method
         setupSecurity(
             config = wifiConfiguration,
             security = getSecurity(scanResult),
@@ -501,43 +501,28 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, isPasspointNetwork: Boolean, identity: String? = null, anonymousIdentity: String? = null, password: String?, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ isPasspointNetwork=$isPasspointNetwork, isPasspoint=$isPasspointNetwork, password=$password")
-        return createNetworkRequestBuilderAndroidQ(
-            ssid = ssid,
-            isPasspointNetwork = isPasspointNetwork,
-            password = password ?: "",
-            enterpriseConfig = WifiEnterpriseConfig().apply {
+    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): NetworkRequest.Builder {
+        val finalSsid = removeDoubleQuotes(ssid)
+        val finalPassword = removeDoubleQuotes(password)
+
+        STLogUtil.w(TAG, "==> finalSsid=$finalSsid, finalPassword=$finalPassword, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
+
+        val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(finalSsid)
+        if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
+            specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
                 this.identity = identity
-                this.password = password ?: ""
-                if (eapMethod != WifiEnterpriseConfig.Eap.NONE) {
-                    this.eapMethod = eapMethod
-                }
+                this.password = finalPassword
+                this.eapMethod = eapMethod
                 this.phase2Method = phase2Method
                 this.anonymousIdentity = anonymousIdentity
                 this.caCertificate = null
-            }
-        )
-    }
-
-    @JvmStatic
-    @RequiresApi(Build.VERSION_CODES.Q)
-    fun createNetworkRequestBuilderAndroidQ(ssid: String, password: String? = null, isPasspointNetwork: Boolean, enterpriseConfig: WifiEnterpriseConfig? = null): NetworkRequest.Builder {
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ ssid=$ssid, isPasspointNetwork=$isPasspointNetwork, password=$password, identity=${enterpriseConfig?.identity}")
-        STLogUtil.w(TAG, "createNetworkRequestBuilderAndroidQ enterpriseConfig=$enterpriseConfig")
-
-        val specifierBuilder: WifiNetworkSpecifier.Builder = WifiNetworkSpecifier.Builder().setSsid(ssid)
-        if (isPasspointNetwork && enterpriseConfig != null && enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE) {
-            specifierBuilder.setWpa2EnterpriseConfig(WifiEnterpriseConfig().apply {
-                this.identity = enterpriseConfig.identity
-                this.password = enterpriseConfig.password
-                this.eapMethod = enterpriseConfig.eapMethod
-                this.phase2Method = enterpriseConfig.phase2Method
-                this.anonymousIdentity = enterpriseConfig.anonymousIdentity
-                this.caCertificate = enterpriseConfig.caCertificate
             })
         } else {
-            specifierBuilder.setWpa2Passphrase(password ?: "")
+            try {
+                specifierBuilder.setWpa2Passphrase(finalPassword)
+            } catch (exception: IllegalArgumentException) {
+                exception.printStackTrace()
+            }
         }
 
         return NetworkRequest.Builder()
@@ -602,9 +587,9 @@ object STWifiUtil {
     @JvmStatic
     fun getSecurity(result: ScanResult?): Int {
         return when {
-            result!=null && result.capabilities.contains("WEP") -> STWifiUtils.SECURITY_WEP
-            result!=null && result.capabilities.contains("PSK") -> STWifiUtils.SECURITY_PSK
-            result!=null &&  result.capabilities.contains("EAP") -> STWifiUtils.SECURITY_EAP
+            result != null && result.capabilities.contains("WEP") -> STWifiUtils.SECURITY_WEP
+            result != null && result.capabilities.contains("PSK") -> STWifiUtils.SECURITY_PSK
+            result != null && result.capabilities.contains("EAP") -> STWifiUtils.SECURITY_EAP
             else -> STWifiUtils.SECURITY_NONE
         }
     }

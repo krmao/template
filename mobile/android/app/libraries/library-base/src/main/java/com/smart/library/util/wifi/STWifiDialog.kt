@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.net.ConnectivityManager
 import android.net.wifi.ScanResult
 import android.os.Bundle
 import android.view.View
@@ -17,10 +18,12 @@ import com.smart.library.util.STWifiUtil
  */
 @SuppressLint("InflateParams")
 @Suppress("unused")
-class STWifiDialog @JvmOverloads constructor(context: Context, private val scanResult: ScanResult, private val mode: Int = STWifiConfigUiBase.MODE_CONNECT, style: Int, private val hideSubmitButton: Boolean) : AlertDialog(context, style), STWifiConfigUiBase, DialogInterface.OnClickListener {
+class STWifiDialog @JvmOverloads constructor(context: Context, private val scanResult: ScanResult, private val mode: Int = STWifiConfigUiBase.MODE_CONNECT, style: Int, private val hideSubmitButton: Boolean, private val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {}) : AlertDialog(context, style), STWifiConfigUiBase, DialogInterface.OnClickListener {
 
     private val view: View by lazy { layoutInflater.inflate(R.layout.wifi_dialog, null) }
     private lateinit var configController: STWifiConfigController
+    private var connectResult: STWifiUtil.ConnectResult? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setView(view)
@@ -41,6 +44,11 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         configController.updatePassword()
+    }
+
+    fun connectResult(): STWifiUtil.ConnectResult? = connectResult
+    fun disconnect() {
+        STWifiUtil.disconnectWifi(STInitializer.application(), connectResult = connectResult)
     }
 
     override fun dispatchSubmit() {
@@ -67,12 +75,12 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
     private fun onSubmit() {
         val wifiConfiguration = getController().getConfig()
 
-         STWifiUtil.connectWifi(
+        connectResult = STWifiUtil.connectWifi(
             application = STInitializer.application(),
             scanResult = scanResult,
             identity = wifiConfiguration?.enterpriseConfig?.identity,
             password = if (!STWifiUtil.isPasspointNetwork(wifiConfiguration)) wifiConfiguration?.preSharedKey else wifiConfiguration?.enterpriseConfig?.password,
-            networkCallback = null
+            networkCallback = networkCallback
         )
     }
 
@@ -102,8 +110,8 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
          */
         @JvmStatic
         @JvmOverloads
-        fun createModal(context: Context, scanResult: ScanResult, mode: Int, style: Int = 0): STWifiDialog {
-            return STWifiDialog(context, scanResult, mode, style, mode == STWifiConfigUiBase.MODE_VIEW /* hideSubmitButton*/)
+        fun createModal(context: Context, scanResult: ScanResult, mode: Int, style: Int = 0, networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {}): STWifiDialog {
+            return STWifiDialog(context, scanResult, mode, style, mode == STWifiConfigUiBase.MODE_VIEW /* hideSubmitButton*/, networkCallback = networkCallback)
         }
     }
 }

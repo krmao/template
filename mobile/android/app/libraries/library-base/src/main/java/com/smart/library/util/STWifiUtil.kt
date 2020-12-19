@@ -326,34 +326,60 @@ object STWifiUtil {
         }
     }
 
+    /**
+     * https://stackoverflow.com/questions/58769623/android-10-api-29-how-to-connect-the-phone-to-a-configured-network
+     */
     @Suppress("DEPRECATION")
     @JvmStatic
     @JvmOverloads
-    fun disconnectWifi(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), networkId: Int? = null, connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback? = null, removeWifi: Boolean = true) {
+    fun disconnectWifi(application: Application? = STInitializer.application(), connectResult: ConnectResult?, removeWifi: Boolean = true) {
+        STLogUtil.d(TAG, "disconnectWifi start connectResult=$connectResult")
         if (!isAndroidQOrLater()) {
-            wifiManager?.disconnect()
-            if (removeWifi && networkId != null) {
-                wifiManager?.removeNetwork(networkId)
+            val wifiManager: WifiManager? = getWifiManager(application)
+            val networkId: Int? = connectResult?.networkId
+
+            if (wifiManager != null) {
+                wifiManager.disconnect()
+                STLogUtil.d(TAG, "disconnectWifi disconnect success!!!")
+
+                if (removeWifi && networkId != null) {
+                    wifiManager.removeNetwork(networkId)
+                    STLogUtil.d(TAG, "disconnectWifi removeNetwork success!!!")
+                }
             }
+
+            STLogUtil.d(TAG, "disconnectWifi wifiManager=$wifiManager, networkId=$networkId, removeWifi=$removeWifi")
         } else {
-            if (networkCallback != null) {
-                disconnectWifiAndroidQ(application, connectivityManager = connectivityManager, networkCallback = networkCallback)
+            val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
+            val networkCallback: ConnectivityManager.NetworkCallback? = connectResult?.networkCallback
+            if (connectivityManager != null && networkCallback != null) {
+                connectivityManager.unregisterNetworkCallback(networkCallback)
+                STLogUtil.d(TAG, "disconnectWifi success !!!")
             }
+            STLogUtil.d(TAG, "disconnectWifi connectivityManager=$connectivityManager, networkCallback=$networkCallback")
+        }
+        STLogUtil.d(TAG, "disconnectWifi end")
+    }
+
+    @JvmStatic
+    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+        STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, password=$password, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
+        return if (!isAndroidQOrLater()) {
+            connectWifiPreAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)
+        } else {
+            connectWifiAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, networkCallback)
         }
     }
 
-    /**
-     * @return networkId
-     */
     @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): Int? {
-        STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, password=$password, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
+    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
+    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE): ConnectResult {
         return if (!isAndroidQOrLater()) {
-            null //connectWifiPreAndroidQ(application, wifiConfiguration)
+            ConnectResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)))
         } else {
-            connectWifiAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, networkCallback)
-            null
+            STLogUtil.e(TAG, "connectWifiPreAndroidQ -> must preAndroidQ !!!")
+            return ConnectResult()
         }
     }
 
@@ -391,17 +417,11 @@ object STWifiUtil {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
-    fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?) {
+    fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int = WifiEnterpriseConfig.Eap.NONE, phase2Method: Int = WifiEnterpriseConfig.Phase2.NONE, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
         val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
-        if (connectivityManager == null) {
-            STLogUtil.e(TAG, "connectWifiAndroidQ -> connectivityManager==null!!")
-            return
-        }
-        if (isAndroidQOrLater()) {
-            var networkRequest: NetworkRequest? = null
-            if (networkRequest == null) {
-                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest==null!!")
-                networkRequest = createNetworkRequestBuilderAndroidQ(
+        if (connectivityManager != null) {
+            if (isAndroidQOrLater()) {
+                val networkRequest: NetworkRequest = createNetworkRequestBuilderAndroidQ(
                     ssid = scanResult.SSID,
                     password = password,
                     identity = identity,
@@ -409,12 +429,15 @@ object STWifiUtil {
                     eapMethod = eapMethod,
                     phase2Method = phase2Method
                 ).build()
-            }
-            if (networkRequest != null) {
-                STLogUtil.w(TAG, "connectWifiAndroidQ -> networkRequest!=null, requestNetwork start")
+                STLogUtil.w(TAG, "connectWifiAndroidQ requestNetwork start")
                 connectivityManager.requestNetwork(networkRequest, networkCallback ?: object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            connectivityManager.bindProcessToNetwork(network)
+                        } else {
+                            ConnectivityManager.setProcessDefaultNetwork(network)
+                        }
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onAvailable")
                     }
 
@@ -448,23 +471,14 @@ object STWifiUtil {
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onLost")
                     }
                 })
+                STLogUtil.w(TAG, "connectWifiAndroidQ requestNetwork end")
             } else {
-                STLogUtil.e(TAG, "connectWifiAndroidQ -> networkRequest==null!!!")
+                STLogUtil.e(TAG, "connectWifiAndroidQ must be preAndroidQ !!!")
             }
-            STLogUtil.w(TAG, "connectWifiAndroidQ -> requestNetwork start end")
         } else {
-            STLogUtil.e(TAG, "connectWifiAndroidQ -> preAndroidQ or networkRequest==null")
+            STLogUtil.e(TAG, "connectWifiAndroidQ connectivityManager must not be null !!!")
         }
-    }
-
-    /**
-     * https://stackoverflow.com/questions/58769623/android-10-api-29-how-to-connect-the-phone-to-a-configured-network
-     */
-    @JvmStatic
-    private fun disconnectWifiAndroidQ(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = getConnectivityManager(application), networkCallback: ConnectivityManager.NetworkCallback) {
-        if (isAndroidQOrLater()) {
-            connectivityManager?.unregisterNetworkCallback(networkCallback)
-        }
+        return ConnectResult(networkCallback = networkCallback)
     }
 
     @JvmStatic
@@ -885,4 +899,6 @@ object STWifiUtil {
             }
         }
     }
+
+    data class ConnectResult(val networkId: Int = -1, val networkCallback: ConnectivityManager.NetworkCallback? = null)
 }

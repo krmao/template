@@ -7,7 +7,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.wifi.ScanResult
 import android.os.Build
 import android.os.Bundle
@@ -50,26 +49,10 @@ class FinalWifiFragment : STBaseFragment() {
 
     private val loadingDialog: Dialog? by lazy { STDialogManager.createLoadingDialog(context) }
     private val dataList: MutableList<ScanResult> = arrayListOf()
-    private var networkId: Int? = null
+    private var connectResult: STWifiUtil.ConnectResult? = null
+    private var wifiDialog: STWifiDialog? = null
     private val application: Application by lazy { STInitializer.application()!! }
-    private val connectivityManager: ConnectivityManager? by lazy { STWifiUtil.getConnectivityManager(application) }
-    private val networkCallback by lazy {
-        object : ConnectivityManager.NetworkCallback() {
-            override fun onUnavailable() {
-                STLogUtil.d(TAG, "onUnavailable")
-            }
-
-            @Suppress("DEPRECATION")
-            override fun onAvailable(network: Network) {
-                STLogUtil.d(TAG, "onAvailable network=$network")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    connectivityManager?.bindProcessToNetwork(network)
-                } else {
-                    ConnectivityManager.setProcessDefaultNetwork(network)
-                }
-            }
-        }
-    }
+    private val networkCallback by lazy { object : ConnectivityManager.NetworkCallback() {} }
     private val adapter: STRecyclerViewAdapter<ScanResult, STRecyclerViewAdapter.ViewHolder> by lazy {
         object : STRecyclerViewAdapter<ScanResult, STRecyclerViewAdapter.ViewHolder>(context, dataList) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -91,7 +74,8 @@ class FinalWifiFragment : STBaseFragment() {
                 holder.itemView.setOnLongClickListener {
                     val finalContext = context
                     if (finalContext != null) {
-                        STWifiDialog.createModal(finalContext, scanResult, STWifiConfigUiBase.MODE_CONNECT).show()
+                        wifiDialog = STWifiDialog.createModal(finalContext, scanResult, STWifiConfigUiBase.MODE_CONNECT, networkCallback = networkCallback)
+                        wifiDialog?.show()
                     }
                     true
                 }
@@ -127,7 +111,8 @@ class FinalWifiFragment : STBaseFragment() {
         }
 
         disconnectBtn.setOnClickListener {
-            STWifiUtil.disconnectWifi(application, networkId = networkId, networkCallback = networkCallback, removeWifi = true)
+            wifiDialog?.disconnect()
+            STWifiUtil.disconnectWifi(application, connectResult = connectResult)
         }
 
         scanBtn.setOnClickListener {
@@ -184,7 +169,7 @@ class FinalWifiFragment : STBaseFragment() {
 
                 STLogUtil.w(TAG, "android < 10 connect wifi")
 
-                networkId = STWifiUtil.connectWifi(
+                connectResult = STWifiUtil.connectWifi(
                     application = application,
                     scanResult = scanResult,
                     identity = identity,
@@ -216,7 +201,8 @@ class FinalWifiFragment : STBaseFragment() {
     @Suppress("RedundantOverride")
     override fun onDestroy() {
         super.onDestroy()
-        // STWifiUtil.disconnectWifiAndroidQ(application, connectivityManager, onNetworkCallback)
+        wifiDialog?.disconnect()
+        STWifiUtil.disconnectWifi(application, connectResult)
     }
 
     companion object {

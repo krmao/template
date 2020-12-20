@@ -10,9 +10,6 @@ import android.net.ProxyInfo
 import android.net.Uri
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiConfiguration
-import android.net.wifi.WifiConfiguration.AuthAlgorithm
-import android.net.wifi.WifiConfiguration.KeyMgmt
-import android.net.wifi.WifiEnterpriseConfig
 import android.net.wifi.WifiEnterpriseConfig.Eap
 import android.net.wifi.WifiEnterpriseConfig.Phase2
 import android.net.wifi.WifiInfo
@@ -28,9 +25,9 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.TextView.OnEditorActionListener
 import com.smart.library.R
+import com.smart.library.STInitializer
 import com.smart.library.util.STThreadUtils.post
 import com.smart.library.util.STWifiUtil
-import com.smart.library.util.STWifiUtil.convertToQuotedString
 import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.STWifiUtil.getSummary
 import java.security.KeyStore
@@ -43,7 +40,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
     /**
      * For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return null
      */
-    val oldWifiConfiguration: WifiConfiguration? by lazy { STWifiUtil.getWifiConfiguration(scanResult = scanResult) }
+    val oldWifiConfiguration: WifiConfiguration? by lazy { STWifiUtil.getWifiConfigurationPreAndroidQ(scanResult = scanResult) }
     private val isPasspointNetwork: Boolean by lazy { STWifiUtil.isPasspointNetwork(oldWifiConfiguration) }
 
     private val providerFriendlyName: String by lazy { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) scanResult?.operatorFriendlyName?.toString() ?: "" else "" }
@@ -370,178 +367,46 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         if (mode == STWifiConfigUiBase.MODE_VIEW) {
             return null
         }
-        val config = WifiConfiguration()
-        if (scanResult == null) {
-            config.SSID = convertToQuotedString(ssidView.text.toString())
-            // If the user adds a network manually, assume that it is hidden.
-            config.hiddenSSID = hiddenSettingsSpinner.selectedItemPosition == HIDDEN_NETWORK
-        } else if (!isSaved) {
-            config.SSID = convertToQuotedString(ssidStr)
-        } else {
-            val networkId = oldWifiConfiguration?.networkId
-            if (networkId != null) {
-                config.networkId = networkId
+        val eapMethod: Int = eapMethodSpinner.selectedItemPosition
+        val phase2MethodPosition: Int = phase2Spinner.selectedItemPosition
+        val phase2Method: Int = when (eapMethod) {
+            Eap.PEAP -> when (phase2MethodPosition) {
+                WIFI_PEAP_PHASE2_NONE -> Phase2.NONE
+                WIFI_PEAP_PHASE2_MSCHAPV2 -> Phase2.MSCHAPV2
+                WIFI_PEAP_PHASE2_GTC -> Phase2.GTC
+                WIFI_PEAP_PHASE2_SIM -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Phase2.SIM else Phase2.NONE
+                WIFI_PEAP_PHASE2_AKA -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Phase2.AKA else Phase2.NONE
+                WIFI_PEAP_PHASE2_AKA_PRIME -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Phase2.AKA_PRIME else Phase2.NONE
+                else -> Phase2.NONE
             }
-            config.hiddenSSID = hiddenSSID
+            else -> {
+                // The default index from PHASE2_FULL_ADAPTER maps to the API
+                phase2MethodPosition
+            }
         }
-        when (accessPointSecurity) {
-            STWifiUtils.SECURITY_NONE -> config.allowedKeyManagement.set(KeyMgmt.NONE)
-            STWifiUtils.SECURITY_WEP -> {
-                config.allowedKeyManagement.set(KeyMgmt.NONE)
-                config.allowedAuthAlgorithms.set(AuthAlgorithm.OPEN)
-                config.allowedAuthAlgorithms.set(AuthAlgorithm.SHARED)
-                if (passwordView.length() != 0) {
-                    val length = passwordView.length()
-                    val password = passwordView.text.toString()
-                    // WEP-40, WEP-104, and 256-bit WEP (WEP-232?)
-                    if ((length == 10 || length == 26 || length == 58) && password.matches(Regex("[0-9A-Fa-f]*"))) {
-                        config.wepKeys[0] = password
-                    } else {
-                        config.wepKeys[0] = '"'.toString() + password + '"'
-                    }
-                }
+
+        /*var caCert =  eapCaCertSpinner.selectedItem;
+        if (caCert == "unspecified") caCert = "";
+        config.enterpriseConfig.setCaCertificateAlias(caCert)
+        var clientCert = eapUserCertSpinner.selectedItem
+        if (clientCert == "unspecified") clientCert = ""
+        config.enterpriseConfig.setClientCertificateAlias(clientCert)*/
+
+        return STWifiUtil.createWifiConfiguration(
+            application = STInitializer.application(),
+            scanResult = scanResult,
+            password = passwordView.text.toString(),
+            identity = eapIdentityView.text.toString(),
+            anonymousIdentity = eapAnonymousView.text.toString(),
+            eapMethod = eapMethod,
+            phase2Method = phase2Method,
+            hiddenSSID = if (scanResult == null) {
+                // If the user adds a network manually, assume that it is hidden
+                hiddenSettingsSpinner.selectedItemPosition == HIDDEN_NETWORK
+            } else {
+                hiddenSSID
             }
-            STWifiUtils.SECURITY_PSK -> {
-                config.allowedKeyManagement.set(KeyMgmt.WPA_PSK)
-                if (passwordView.length() != 0) {
-                    val password = passwordView.text.toString()
-                    if (password.matches(Regex("[0-9A-Fa-f]{64}"))) {
-                        config.preSharedKey = password
-                    } else {
-                        config.preSharedKey = '"'.toString() + password + '"'
-                    }
-                }
-            }
-            STWifiUtils.SECURITY_EAP -> {
-                config.allowedKeyManagement.set(KeyMgmt.WPA_EAP)
-                config.allowedKeyManagement.set(KeyMgmt.IEEE8021X)
-                config.enterpriseConfig = WifiEnterpriseConfig()
-                val eapMethod = eapMethodSpinner.selectedItemPosition
-                val phase2Method = phase2Spinner.selectedItemPosition
-                config.enterpriseConfig.eapMethod = eapMethod
-                when (eapMethod) {
-                    Eap.PEAP -> when (phase2Method) {
-                        WIFI_PEAP_PHASE2_NONE -> config.enterpriseConfig.phase2Method = Phase2.NONE
-                        WIFI_PEAP_PHASE2_MSCHAPV2 -> config.enterpriseConfig.phase2Method = Phase2.MSCHAPV2
-                        WIFI_PEAP_PHASE2_GTC -> config.enterpriseConfig.phase2Method = Phase2.GTC
-                        WIFI_PEAP_PHASE2_SIM -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            config.enterpriseConfig.phase2Method = Phase2.SIM
-                        }
-                        WIFI_PEAP_PHASE2_AKA -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            config.enterpriseConfig.phase2Method = Phase2.AKA
-                        }
-                        WIFI_PEAP_PHASE2_AKA_PRIME -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            config.enterpriseConfig.phase2Method = Phase2.AKA_PRIME
-                        }
-                        else -> Log.e(TAG, "Unknown phase2 method$phase2Method")
-                    }
-                    else -> config.enterpriseConfig.phase2Method = phase2Method
-                }
-
-                // do not support ca
-                /*String caCert = (String) mEapCaCertSpinner.getSelectedItem();
-
-                 //region reflect
-                 Class<?>[] parameterTypes = new Class[1];
-                 Object[] params = new Object[1];
-                 parameterTypes[0] = String[].class;
-                 params[0] = null;
-                 STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypes, params);
-                 // config.enterpriseConfig.setCaCertificateAliases(null);
-                 //endregion
-
-                 //region reflect
-                 Class<?>[] parameterTypesForCaPath = new Class[1];
-                 Object[] paramsForCaPath = new Object[1];
-                 parameterTypesForCaPath[0] = String.class;
-                 paramsForCaPath[0] = null;
-                 STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesForCaPath, paramsForCaPath);
-                 // config.enterpriseConfig.setCaPath(null);
-                 //endregion
-                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                     config.enterpriseConfig.setDomainSuffixMatch(mEapDomainView.getText().toString());
-                 }
-
-                 if (caCert.equals(mUnspecifiedCertString) || caCert.equals(mDoNotValidateEapServerString)) {
-                     // ca_cert already set to null, so do nothing.
-                 } else if (caCert.equals(mUseSystemCertsString)) {
-                     Class<?>[] parameterTypesForCaPath2 = new Class[1];
-                     Object[] paramsForCaPath2 = new Object[1];
-                     parameterTypesForCaPath2[0] = String.class;
-                     paramsForCaPath2[0] = SYSTEM_CA_STORE_PATH;
-                     STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesForCaPath2, paramsForCaPath2);
-                     // config.enterpriseConfig.setCaPath(SYSTEM_CA_STORE_PATH);
-                 } else if (caCert.equals(mMultipleCertSetString)) {
-                     if (mAccessPoint != null) {
-                         if (!mAccessPoint.isSaved()) {
-                             Log.e(TAG, "Multiple certs can only be set " + "when editing saved network");
-                         }
-                         Class<?>[] parameterTypesAliases = new Class[1];
-                         Object[] paramsAliases = new Object[1];
-                         parameterTypesAliases[0] = String[].class;
-                         paramsAliases[0] = STReflectUtil.invokeDeclaredMethod(mAccessPoint.getWifiConfiguration().enterpriseConfig, "getCaCertificateAliases");
-                         STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesAliases, paramsAliases);
-                         // config.enterpriseConfig.setCaCertificateAliases(mAccessPoint.getConfig().enterpriseConfig.getCaCertificateAliases());
-                     }
-                 } else {
-                     Class<?>[] parameterTypesAliases = new Class[1];
-                     Object[] paramsAliases = new Object[1];
-                     parameterTypesAliases[0] = String[].class;
-                     paramsAliases[0] = new String[]{caCert};
-                     STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setCaCertificateAliases", parameterTypesAliases, paramsAliases);
-                     // config.enterpriseConfig.setCaCertificateAliases(new String[]{caCert});
-                 }
-
-                 // ca_cert or ca_path should not both be non-null, since we only intend to let
-                 // the use either their own certificate, or the system certificates, not both.
-                 // The variable that is not used must explicitly be set to null, so that a
-                 // previously-set value on a saved configuration will be erased on an update.
-                 */
-                /*if (config.enterpriseConfig.getCaCertificateAliases() != null && config.enterpriseConfig.getCaPath() != null) {
-                                    Log.e(TAG, "ca_cert ("
-                                            + config.enterpriseConfig.getCaCertificateAliases()
-                                            + ") and ca_path ("
-                                            + config.enterpriseConfig.getCaPath()
-                                            + ") should not both be non-null");
-                                }*/
-                /*
-
-                                String clientCert = (String) mEapUserCertSpinner.getSelectedItem();
-                                if (clientCert.equals(mUnspecifiedCertString) || clientCert.equals(mDoNotProvideEapUserCertString)) {
-                                    // Note: |clientCert| should not be able to take the value |unspecifiedCert|,
-                                    // since we prevent such configurations from being saved.
-                                    clientCert = "";
-                                }
-                                Class<?>[] parameterTypesClientAliases = new Class[1];
-                                Object[] paramsClientAliases = new Object[1];
-                                parameterTypesClientAliases[0] = String.class;
-                                paramsClientAliases[0] = clientCert;
-                                STReflectUtil.invokeDeclaredMethod(config.enterpriseConfig, "setClientCertificateAlias", parameterTypesClientAliases, paramsClientAliases);
-                                // config.enterpriseConfig.setClientCertificateAlias(clientCert);*/
-                if (eapMethod == Eap.SIM || eapMethod == Eap.AKA || eapMethod == Eap.AKA_PRIME) {
-                    config.enterpriseConfig.identity = ""
-                    config.enterpriseConfig.anonymousIdentity = ""
-                } else if (eapMethod == Eap.PWD) {
-                    config.enterpriseConfig.identity = eapIdentityView.text.toString()
-                    config.enterpriseConfig.anonymousIdentity = ""
-                } else {
-                    config.enterpriseConfig.identity = eapIdentityView.text.toString()
-                    config.enterpriseConfig.anonymousIdentity = eapAnonymousView.text.toString()
-                }
-                if (passwordView.isShown) {
-                    // For security reasons, a previous password is not displayed to user.
-                    // Update only if it has been changed.
-                    if (passwordView.length() > 0) {
-                        config.enterpriseConfig.password = passwordView.text.toString()
-                    }
-                } else {
-                    // clear password
-                    config.enterpriseConfig.password = passwordView.text.toString()
-                }
-            }
-            else -> return null
-        }
-        return config
+        )
     }
 
     private fun showSecurityFields() {

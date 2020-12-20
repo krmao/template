@@ -333,10 +333,25 @@ object STWifiUtil {
     }
 
     @JvmStatic
+    @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+        STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, wifiConfiguration=$wifiConfiguration")
+        return connectWifi(
+            application = application,
+            scanResult = scanResult,
+            identity = wifiConfiguration?.enterpriseConfig?.identity,
+            password = if (!isPasspointNetwork(wifiConfiguration)) wifiConfiguration?.preSharedKey else wifiConfiguration?.enterpriseConfig?.password,
+            eapMethod = wifiConfiguration?.enterpriseConfig?.eapMethod,
+            phase2Method = wifiConfiguration?.enterpriseConfig?.phase2Method,
+            networkCallback = networkCallback
+        )
+    }
+
+    @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?): ConnectResult {
+    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, hiddenSSID: Boolean = false): ConnectResult {
         return if (!isAndroidQOrLater()) {
-            ConnectResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)))
+            ConnectResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, hiddenSSID)))
         } else {
             STLogUtil.e(TAG, "connectWifiPreAndroidQ -> must preAndroidQ !!!")
             return ConnectResult()
@@ -458,11 +473,11 @@ object STWifiUtil {
 
     @Suppress("DEPRECATION")
     @JvmStatic
-    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int?, phase2Method: Int?): WifiConfiguration {
-        val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
-        wifiConfiguration.SSID = this.convertToQuotedString(scanResult.SSID)
-        setupSecurity(
+    fun createWifiConfiguration(application: Application?, scanResult: ScanResult?, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, hiddenSSID: Boolean): WifiConfiguration {
+        val wifiConfiguration: WifiConfiguration = getWifiConfigurationPreAndroidQ(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
+        wifiConfiguration.SSID = this.convertToQuotedString(scanResult?.SSID ?: "")
+        wifiConfiguration.hiddenSSID = hiddenSSID
+        setupWifiConfigurationSecurity(
             config = wifiConfiguration,
             security = getSecurity(scanResult),
             password = password ?: "",
@@ -568,8 +583,7 @@ object STWifiUtil {
      */
     @JvmStatic
     @Suppress("DEPRECATION")
-    @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun setupSecurity(config: WifiConfiguration, security: Int, password: String, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?) {
+    fun setupWifiConfigurationSecurity(config: WifiConfiguration, security: Int, password: String, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?) {
         config.allowedAuthAlgorithms.clear()
         config.allowedGroupCiphers.clear()
         config.allowedKeyManagement.clear()
@@ -598,13 +612,8 @@ object STWifiUtil {
                 config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40)
                 config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104)
 
-                fun isHexWepKey(wepKey: String?): Boolean {
-                    val passwordLen = wepKey?.length ?: 0
-                    return (passwordLen == 10 || passwordLen == 26 || passwordLen == 58) && wepKey?.matches(Regex("[0-9A-Fa-f]*")) == true
-                }
-
-                val passwordLen: Int = password.length
-                val isHexWepKey: Boolean = (passwordLen == 10 || passwordLen == 26 || passwordLen == 58) && password.matches(Regex("[0-9A-Fa-f]*"))
+                val passwordLength: Int = password.length
+                val isHexWepKey: Boolean = (passwordLength == 10 || passwordLength == 26 || passwordLength == 58) && password.matches(Regex("[0-9A-Fa-f]*"))
 
                 // WEP-40, WEP-104, and 256-bit WEP (WEP-232?)
                 if (isHexWepKey) {
@@ -651,8 +660,6 @@ object STWifiUtil {
     @JvmStatic
     private fun createWifiEnterpriseConfig(identity: String?, anonymousIdentity: String?, password: String, eapMethod: Int?, phase2Method: Int?): WifiEnterpriseConfig {
         return WifiEnterpriseConfig().also { enterpriseConfig ->
-            enterpriseConfig.identity = identity
-            enterpriseConfig.password = password
             if (eapMethod != null) {
                 try {
                     enterpriseConfig.eapMethod = eapMethod
@@ -669,19 +676,36 @@ object STWifiUtil {
             }
             enterpriseConfig.anonymousIdentity = anonymousIdentity
             enterpriseConfig.caCertificate = null
+
+
+
+            if (eapMethod == WifiEnterpriseConfig.Eap.SIM || eapMethod == WifiEnterpriseConfig.Eap.AKA || eapMethod == WifiEnterpriseConfig.Eap.AKA_PRIME) {
+                enterpriseConfig.identity = ""
+                enterpriseConfig.anonymousIdentity = ""
+            } else if (eapMethod == WifiEnterpriseConfig.Eap.PWD) {
+                enterpriseConfig.identity = identity
+                enterpriseConfig.anonymousIdentity = ""
+            } else {
+                enterpriseConfig.identity = identity
+                enterpriseConfig.anonymousIdentity = anonymousIdentity
+            }
+            enterpriseConfig.password = password
         }
     }
 
+    /**
+     * wifiManager.configuredNetworks -> For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return an empty list
+     */
     @JvmStatic
     @Suppress("DEPRECATION")
-    fun getWifiConfiguration(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult?): WifiConfiguration? {
+    fun getWifiConfigurationPreAndroidQ(application: Application? = STInitializer.application(), wifiManager: WifiManager? = getWifiManager(application), scanResult: ScanResult?): WifiConfiguration? {
         if (wifiManager == null || scanResult == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()) {
             STLogUtil.e(TAG, "getWifiConfiguration return null !!! wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()")
             return null
         }
         val ssid: String = this.convertToQuotedString(scanResult.SSID)
-        val bssid = scanResult.BSSID
-        val security = getSecurity(scanResult)
+        val bssid: String = scanResult.BSSID
+        val security: Int = getSecurity(scanResult)
         // configuredNetworks -> For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return an empty list
         val configurations: MutableList<WifiConfiguration>? = wifiManager.configuredNetworks
 

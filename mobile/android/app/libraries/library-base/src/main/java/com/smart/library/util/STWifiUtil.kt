@@ -27,7 +27,6 @@ import com.smart.library.util.wifi.STWifiUtils
 /**
  *
  * SDK >= Q, This {@link NetworkRequest} will live until released via {@link #unregisterNetworkCallback(NetworkCallback)} or the calling application exits.
- * SDK >  Q, This wifi connect will still live while the calling application exits.
  *
  * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  * <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -36,20 +35,36 @@ import com.smart.library.util.wifi.STWifiUtils
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "KDocUnresolvedReference")
 object STWifiUtil {
+
     const val TAG = "[wifi]"
 
+    private val WIFI_PIE: IntArray by lazy {
+        intArrayOf(
+            R.drawable.ic_wifi_signal_0,
+            R.drawable.ic_wifi_signal_1,
+            R.drawable.ic_wifi_signal_2,
+            R.drawable.ic_wifi_signal_3,
+            R.drawable.ic_wifi_signal_4
+        )
+    }
+
     /**
-     * These values are matched in string arrays -- changes must be kept in sync
+     * The number of distinct wifi levels.
+     *
+     * Must keep in sync with [R.array.wifi_signal] and [WifiManager.RSSI_LEVELS].
      */
+    const val SIGNAL_LEVELS = 5
     const val SECURITY_NONE = 0
     const val SECURITY_WEP = 1
     const val SECURITY_PSK = 2
     const val SECURITY_EAP = 3
-
     const val LOCATION_AVAILABLE = 1000
     const val LOCATION_NONE = 1111
     const val LOCATION_DISABLED = 1112
-
+    const val PSK_UNKNOWN = 0
+    const val PSK_WPA = 1
+    const val PSK_WPA2 = 2
+    const val PSK_WPA_WPA2 = 3
 
     /**
      * Lower bound on the 2.4 GHz (802.11b/g/n) WLAN channels
@@ -71,121 +86,10 @@ object STWifiUtil {
      */
     const val HIGHER_FREQ_5GHZ = 5900
 
-
-    const val PSK_UNKNOWN = 0
-    const val PSK_WPA = 1
-    const val PSK_WPA2 = 2
-    const val PSK_WPA_WPA2 = 3
-
-    enum class Speed {
-        NONE,
-
-        /**
-         * Constant value representing a slow speed network connection.
-         */
-        SLOW,
-
-        /**
-         * Constant value representing a medium speed network connection.
-         */
-        MODERATE,
-
-        /**
-         * Constant value representing a fast speed network connection.
-         */
-        FAST,
-
-        /**
-         * Constant value representing a very fast speed network connection.
-         */
-        VERY_FAST;
-    }
-
-    /**
-     * The number of distinct wifi levels.
-     *
-     *
-     * Must keep in sync with [R.array.wifi_signal] and [WifiManager.RSSI_LEVELS].
-     */
-    const val SIGNAL_LEVELS = 5
-
-
-    private const val SSID_ASCII_MAX_LENGTH = 32
-    fun isSSIDTooLong(ssid: String): Boolean {
-        return if (TextUtils.isEmpty(ssid)) {
-            false
-        } else ssid.length > SSID_ASCII_MAX_LENGTH
-    }
-
-    private val WIFI_PIE = intArrayOf(
-        R.drawable.ic_wifi_signal_0,
-        R.drawable.ic_wifi_signal_1,
-        R.drawable.ic_wifi_signal_2,
-        R.drawable.ic_wifi_signal_3,
-        R.drawable.ic_wifi_signal_4
-    )
-
-    /**
-     * Returns the Wifi icon resource for a given RSSI level.
-     *
-     * @param level The number of bars to show (0-4)
-     * @throws IllegalArgumentException if an invalid RSSI level is given.
-     */
-    @Suppress("unused")
-    @JvmStatic
-    fun getWifiIconResource(level: Int): Int {
-        require(!(level < 0 || level >= WIFI_PIE.size)) { "No Wifi icon found for level: $level" }
-        return WIFI_PIE[level]
-    }
-
-    /**
-     * Identify if this configuration represents a PassPoint network
-     */
-    @JvmStatic
-    fun isPasspointNetwork(config: WifiConfiguration?): Boolean {
-        val isPasspointNetwork = config?.enterpriseConfig != null && config.enterpriseConfig.eapMethod != WifiEnterpriseConfig.Eap.NONE
-        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
-        return isPasspointNetwork
-    }
-
-    /**
-     * Identify if this configuration represents a PassPoint network
-     */
-    @JvmStatic
-    fun isPasspointNetwork(eapMethod: Int): Boolean {
-        val isPasspointNetwork = eapMethod != WifiEnterpriseConfig.Eap.NONE
-        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
-        return isPasspointNetwork
-    }
-
-    // android9.0以上需要申请定位权限
-    // android10.0需要申请新添加的隐私权限ACCESS_FINE_LOCATION详情见android官方10.0重大隐私权变更，如果还需要后台获取或者使用wifi api则还需要申请后台使用定位权限ACCESS_BACKGROUND_LOCATION
-    // https://developer.android.google.cn/about/versions/10/privacy/
-    @JvmStatic
-    fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit) {
-        RxPermissions.ensurePermissions(activity, callback, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION)
-    }
-
-
-    private fun registerReceiver(context: Context?, receiver: BroadcastReceiver?, filter: IntentFilter) {
-        STLogUtil.w(TAG, "registerReceiver ${receiver?.javaClass?.name}")
-        if (receiver != null) {
-            try {
-                context?.registerReceiver(receiver, filter)
-            } catch (ignored: Exception) {
-            }
-        }
-    }
-
-    private fun unregisterReceiver(context: Context?, receiver: BroadcastReceiver?) {
-        STLogUtil.w(TAG, "unregisterReceiver ${receiver?.javaClass?.name}")
-        if (receiver != null) {
-            try {
-                context?.unregisterReceiver(receiver)
-            } catch (ignored: IllegalArgumentException) {
-            }
-        }
-    }
+    private val wifiStateSetListener: MutableSet<WifiStateListener> = mutableSetOf()
+    private val scanResultsSetListener: MutableSet<ScanResultsListener> = mutableSetOf()
+    private val wifiScanReceiver: WifiScanReceiver by lazy { WifiScanReceiver(wifiScanCallback) }
+    private val wifiStateReceiver: WifiStateReceiver by lazy { WifiStateReceiver(wifiStateCallback) }
 
     private val wifiStateCallback: WifiStateCallback = object : WifiStateCallback {
         @SuppressLint("MissingPermission")
@@ -195,6 +99,7 @@ object STWifiUtil {
             scanWifi()
         }
     }
+
     private val wifiScanCallback: WifiScanCallback = object : WifiScanCallback {
         @SuppressLint("MissingPermission")
         override fun onScanResultsReady() {
@@ -208,14 +113,8 @@ object STWifiUtil {
         }
     }
 
-    private val scanResultsSetListener: MutableSet<ScanResultsListener> = mutableSetOf()
-    private val wifiStateSetListener: MutableSet<WifiStateListener> = mutableSetOf()
-
-    private val wifiScanReceiver: WifiScanReceiver by lazy { WifiScanReceiver(wifiScanCallback) }
-    private val wifiStateReceiver: WifiStateReceiver by lazy { WifiStateReceiver(wifiStateCallback) }
-
     @JvmStatic
-    fun checkLocationAvailability(context: Context?): Int {
+    private fun checkLocationAvailability(context: Context?): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val packageManager = context?.packageManager
             if (packageManager?.hasSystemFeature(PackageManager.FEATURE_LOCATION) == true) {
@@ -230,14 +129,77 @@ object STWifiUtil {
     }
 
     @JvmStatic
-    fun checkIfNeedOpenLocationSettings(application: Application? = STInitializer.application()): Boolean {
+    @JvmOverloads
+    fun checkIfNeedOpenLocationSettings(application: Application? = STInitializer.application(), autoOpen: Boolean = true): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             if (checkLocationAvailability(application) == LOCATION_DISABLED) {
-                openSystemLocationSettings(application)
+                if (autoOpen) openSystemLocationSettings(application)
                 return true
             }
         }
         return false
+    }
+
+    /**
+     * Returns the Wifi icon resource for a given RSSI level.
+     *
+     * @param level The number of bars to show (0-4)
+     * @return -1 if an invalid RSSI level is given.
+     */
+    @JvmStatic
+    fun getWifiIconResource(level: Int): Int {
+        if (level < 0 || level >= WIFI_PIE.size) {
+            STLogUtil.e(TAG, "No Wifi icon found for level: $level")
+            return -1
+        }
+        return WIFI_PIE[level]
+    }
+
+    /**
+     * AP -> 无线路由器
+     * passpoint -> 传统 wifi 由于受信号强度限制只能在一定范围内使用，当用户到另一区域时，需要重新选择和连接 AP, 而 passpoint 实现了可以从一个 AP 漫游无缝切换到另一个 AP, 无需输入密码, 类似手机SIM使用的蜂窝网络一样
+     * Identify(确定) if this configuration represents a PassPoint network
+     */
+    @JvmStatic
+    fun isPasspointNetwork(config: WifiConfiguration?): Boolean = isPasspointNetwork(config?.enterpriseConfig?.eapMethod)
+
+    @JvmStatic
+    fun isPasspointNetwork(eapMethod: Int?): Boolean {
+        val isPasspointNetwork = eapMethod != null && eapMethod != WifiEnterpriseConfig.Eap.NONE
+        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
+        return isPasspointNetwork
+    }
+
+    // android9.0以上需要申请定位权限
+    // android10.0需要申请新添加的隐私权限ACCESS_FINE_LOCATION详情见android官方10.0重大隐私权变更，如果还需要后台获取或者使用wifi api则还需要申请后台使用定位权限ACCESS_BACKGROUND_LOCATION
+    // https://developer.android.google.cn/about/versions/10/privacy/
+    @JvmStatic
+    fun ensurePermissions(activity: Activity?, callback: (allPermissionsGranted: Boolean) -> Unit) {
+        RxPermissions.ensurePermissions(activity, callback, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION)
+    }
+
+    @JvmStatic
+    private fun registerReceiver(context: Context?, receiver: BroadcastReceiver?, filter: IntentFilter) {
+        STLogUtil.w(TAG, "registerReceiver ${receiver?.javaClass?.name}")
+        if (receiver != null) {
+            try {
+                context?.registerReceiver(receiver, filter)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @JvmStatic
+    private fun unregisterReceiver(context: Context?, receiver: BroadcastReceiver?) {
+        STLogUtil.w(TAG, "unregisterReceiver ${receiver?.javaClass?.name}")
+        if (receiver != null) {
+            try {
+                context?.unregisterReceiver(receiver)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun isLocationEnabled(context: Context?): Boolean {
@@ -298,10 +260,9 @@ object STWifiUtil {
      */
     @Suppress("DEPRECATION")
     @JvmStatic
-    @JvmOverloads
     @Deprecated("Starting with Build.VERSION_CODES#Q, applications are not allowed to")
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun setWifiEnabledPreAndroidQ(application: Application? = STInitializer.application(), enable: Boolean, wifiManager: WifiManager? = getWifiManager(application), wifiStateListener: WifiStateListener? = null) {
+    private fun setWifiEnabledPreAndroidQ(application: Application? = STInitializer.application(), enable: Boolean, wifiManager: WifiManager? = getWifiManager(application), wifiStateListener: WifiStateListener? = null) {
         if (!isAndroidQOrLater()) {
             wifiManager ?: return
             if (wifiManager.isWifiEnabled) {
@@ -347,7 +308,6 @@ object STWifiUtil {
                     STLogUtil.d(TAG, "disconnectWifi removeNetwork success!!!")
                 }
             }
-
             STLogUtil.d(TAG, "disconnectWifi wifiManager=$wifiManager, networkId=$networkId, removeWifi=$removeWifi")
         } else {
             val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
@@ -501,7 +461,7 @@ object STWifiUtil {
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
     private fun createWifiConfiguration(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int?, phase2Method: Int?): WifiConfiguration {
         val wifiConfiguration: WifiConfiguration = getWifiConfiguration(application, getWifiManager(application), scanResult) ?: WifiConfiguration()
-        wifiConfiguration.SSID = convertSsidToQuotedString(scanResult.SSID)
+        wifiConfiguration.SSID = this.convertToQuotedString(scanResult.SSID)
         setupSecurity(
             config = wifiConfiguration,
             security = getSecurity(scanResult),
@@ -541,39 +501,21 @@ object STWifiUtil {
     }
 
     /**
-     * @param signalStrength
-     * @see getSignalStrength
-     */
-    @JvmStatic
-    fun getSpeed(signalStrength: Int): Speed {
-        return when (signalStrength) {
-            4 -> Speed.VERY_FAST
-            3 -> Speed.FAST
-            2 -> Speed.MODERATE
-            1 -> Speed.SLOW
-            0 -> Speed.NONE
-            else -> Speed.NONE
-        }
-    }
-
-    /**
      * @param rssi scanResult.level, The detected signal level in dBm, also known as the RSSI.
      * @see {@link https://github.com/paladinzh/decompile-hw/blob/4c3efd95f3e997b44dd4ceec506de6164192eca3/decompile/app/SystemUI/src/main/res/values-zh-rCN/strings.xml}
      */
     @JvmStatic
-    fun getSignalStrength(rssi: Int): Int = WifiManager.calculateSignalLevel(rssi, SIGNAL_LEVELS)
+    private fun getSignalStrength(rssi: Int?): Int = WifiManager.calculateSignalLevel(rssi ?: -100, SIGNAL_LEVELS)
 
     @JvmStatic
-    fun getSignalStrength(scanResult: ScanResult?): Int = WifiManager.calculateSignalLevel(scanResult?.level ?: -100, SIGNAL_LEVELS)
+    fun getSignalStrength(scanResult: ScanResult?): Int = getSignalStrength(scanResult?.level)
 
     @JvmStatic
     @JvmOverloads
-    fun getSecurityString(scanResult: ScanResult, concise: Boolean = false): String? {
-        return getSecurityString(concise = concise, security = getSecurity(scanResult), pskType = getPskType(scanResult))
-    }
+    fun getSecurityString(scanResult: ScanResult, concise: Boolean = false): String? = getSecurityString(concise = concise, security = getSecurity(scanResult), pskType = getPskType(scanResult))
 
     @JvmStatic
-    fun getSecurityString(security: Int, pskType: Int, concise: Boolean): String? {
+    private fun getSecurityString(security: Int, pskType: Int, concise: Boolean): String? {
         val context: Context? = STInitializer.application()
         context ?: return null
         return when (security) {
@@ -594,9 +536,9 @@ object STWifiUtil {
     @JvmStatic
     fun getSecurity(result: ScanResult?): Int {
         return when {
-            result != null && result.capabilities.contains("WEP") -> STWifiUtils.SECURITY_WEP
             result != null && result.capabilities.contains("PSK") -> STWifiUtils.SECURITY_PSK
             result != null && result.capabilities.contains("EAP") -> STWifiUtils.SECURITY_EAP
+            result != null && result.capabilities.contains("WEP") -> STWifiUtils.SECURITY_WEP
             else -> STWifiUtils.SECURITY_NONE
         }
     }
@@ -668,7 +610,7 @@ object STWifiUtil {
                 if (isHexWepKey) {
                     config.wepKeys[0] = password
                 } else {
-                    config.wepKeys[0] = convertSsidToQuotedString(password)
+                    config.wepKeys[0] = this.convertToQuotedString(password)
                 }
             }
             SECURITY_PSK -> {
@@ -684,7 +626,7 @@ object STWifiUtil {
                 if (password.matches(Regex("[0-9A-Fa-f]{64}"))) {
                     config.preSharedKey = password
                 } else {
-                    config.preSharedKey = convertSsidToQuotedString(password)
+                    config.preSharedKey = this.convertToQuotedString(password)
                 }
             }
             SECURITY_EAP -> {
@@ -698,7 +640,7 @@ object STWifiUtil {
                 config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP)
                 config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP)
                 config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X)
-                config.preSharedKey = convertSsidToQuotedString(password)
+                config.preSharedKey = this.convertToQuotedString(password)
                 config.enterpriseConfig = createWifiEnterpriseConfig(identity, anonymousIdentity, password, eapMethod, phase2Method)
             }
             else -> {
@@ -737,7 +679,7 @@ object STWifiUtil {
             STLogUtil.e(TAG, "getWifiConfiguration return null !!! wifiManager == null || scanResult.SSID.isNullOrBlank() || scanResult.BSSID.isNullOrBlank()")
             return null
         }
-        val ssid: String = convertSsidToQuotedString(scanResult.SSID)
+        val ssid: String = this.convertToQuotedString(scanResult.SSID)
         val bssid = scanResult.BSSID
         val security = getSecurity(scanResult)
         // configuredNetworks -> For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return an empty list
@@ -762,12 +704,24 @@ object STWifiUtil {
         return null
     }
 
+    /**
+     * @param signalStrength
+     * @see getSignalStrength
+     */
     @JvmStatic
-    fun convertSsidToQuotedString(ssid: String): String {
-        if (TextUtils.isEmpty(ssid)) return ""
-        val lastPos = ssid.length - 1
-        return if (lastPos < 0 || ssid[0] == '"' && ssid[lastPos] == '"') ssid else "\"" + ssid + "\""
+    private fun getSpeed(signalStrength: Int): Speed {
+        return when (signalStrength) {
+            4 -> Speed.VERY_FAST
+            3 -> Speed.FAST
+            2 -> Speed.MODERATE
+            1 -> Speed.SLOW
+            0 -> Speed.NONE
+            else -> Speed.NONE
+        }
     }
+
+    @JvmStatic
+    fun getSpeed(scanResult: ScanResult): Speed = getSpeed(getSignalStrength(scanResult = scanResult))
 
     @JvmStatic
     fun getSpeedLabel(context: Context?, speed: Speed?): String? {
@@ -782,31 +736,12 @@ object STWifiUtil {
     }
 
     @JvmStatic
-    fun getSpeedLabel(context: Context?, scanResult: ScanResult): String? {
-        return getSpeedLabel(context, getSpeed(scanResult))
-    }
-
-    @JvmStatic
-    fun getSpeed(scanResult: ScanResult): Speed {
-        return getSpeed(getSignalStrength(scanResult = scanResult))
-    }
-
-    @JvmStatic
-    fun getKey(config: WifiConfiguration): String? {
-        val builder = StringBuilder()
-        if (TextUtils.isEmpty(config.SSID)) {
-            builder.append(config.BSSID)
-        } else {
-            builder.append(removeDoubleQuotes(config.SSID))
-        }
-        builder.append(',').append(getSecurity(config))
-        return builder.toString()
-    }
+    fun getSpeedLabel(context: Context?, scanResult: ScanResult): String? = getSpeedLabel(context, getSpeed(scanResult))
 
     @JvmStatic
     fun getPskType(result: ScanResult): Int {
-        val wpa = result.capabilities.contains("WPA-PSK")
-        val wpa2 = result.capabilities.contains("WPA2-PSK")
+        val wpa: Boolean = result.capabilities.contains("WPA-PSK")
+        val wpa2: Boolean = result.capabilities.contains("WPA2-PSK")
         return if (wpa2 && wpa) {
             PSK_WPA_WPA2
         } else if (wpa2) {
@@ -814,25 +749,19 @@ object STWifiUtil {
         } else if (wpa) {
             PSK_WPA
         } else {
-            Log.w(TAG, "Received abnormal flag string: " + result.capabilities)
+            STLogUtil.w(TAG, "Received abnormal flag string: " + result.capabilities)
             PSK_UNKNOWN
         }
     }
 
-    @JvmStatic
-    fun getLevel(rssi: Int): Int {
-        return WifiManager.calculateSignalLevel(rssi, SIGNAL_LEVELS)
-    }
-
-    //region 双引号处理
-
-    //region 双引号处理
     /**
      * 在字符串前后加上双引号
      */
     @JvmStatic
-    fun convertToQuotedString(string: String): String? {
-        return "\"" + string + "\""
+    fun convertToQuotedString(string: String): String {
+        if (TextUtils.isEmpty(string)) return ""
+        val lastPosition: Int = string.length - 1
+        return if (lastPosition < 0 || string[0] == '"' && string[lastPosition] == '"') string else ("\"" + string + "\"")
     }
 
     /**
@@ -841,11 +770,9 @@ object STWifiUtil {
     @JvmStatic
     fun removeDoubleQuotes(string: String?): String {
         if (string == null || TextUtils.isEmpty(string)) return ""
-        val length = string.length
+        val length: Int = string.length
         return if (length > 1 && string[0] == '"' && string[length - 1] == '"') string.substring(1, length - 1) else string
     }
-
-    //endregion
 
     @JvmStatic
     fun getSummary(context: Context, ssid: String?, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
@@ -867,9 +794,7 @@ object STWifiUtil {
     }
 
     @JvmStatic
-    fun getSummary(context: Context, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
-        return getSummary(context, null, state, isEphemeral, passpointProvider)
-    }
+    fun getSummary(context: Context, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? = getSummary(context, null, state, isEphemeral, passpointProvider)
 
     interface WifiScanCallback {
         fun onScanResultsReady()
@@ -909,4 +834,28 @@ object STWifiUtil {
     }
 
     data class ConnectResult(val networkId: Int = -1, val networkCallback: ConnectivityManager.NetworkCallback? = null)
+
+    enum class Speed {
+        NONE,
+
+        /**
+         * Constant value representing a slow speed network connection.
+         */
+        SLOW,
+
+        /**
+         * Constant value representing a medium speed network connection.
+         */
+        MODERATE,
+
+        /**
+         * Constant value representing a fast speed network connection.
+         */
+        FAST,
+
+        /**
+         * Constant value representing a very fast speed network connection.
+         */
+        VERY_FAST;
+    }
 }

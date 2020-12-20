@@ -253,12 +253,18 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         return true
     }
 
+    private fun isSSIDTooLong(ssid: String): Boolean {
+        return if (TextUtils.isEmpty(ssid)) {
+            false
+        } else ssid.length > SSID_ASCII_MAX_LENGTH
+    }
+
     fun showWarningMessagesIfAppropriate() {
         contentView.findViewById<View>(R.id.no_ca_cert_warning).visibility = View.GONE
         contentView.findViewById<View>(R.id.no_domain_warning).visibility = View.GONE
         contentView.findViewById<View>(R.id.ssid_too_long_warning).visibility = View.GONE
         val ssid = ssidView.text.toString()
-        if (STWifiUtil.isSSIDTooLong(ssid)) {
+        if (isSSIDTooLong(ssid)) {
             contentView.findViewById<View>(R.id.ssid_too_long_warning).visibility = View.VISIBLE
         }
         if (contentView.findViewById<View>(R.id.l_ca_cert).visibility != View.GONE) {
@@ -1063,6 +1069,9 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
     companion object {
         private const val TAG = "WifiConfigController"
         private const val SYSTEM_CA_STORE_PATH = "/system/etc/security/cacerts"
+
+
+        private const val SSID_ASCII_MAX_LENGTH = 32
 
         /**
          * Key prefix for CA certificates.

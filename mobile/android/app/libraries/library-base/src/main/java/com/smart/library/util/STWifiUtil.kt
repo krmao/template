@@ -660,24 +660,18 @@ object STWifiUtil {
     @JvmStatic
     private fun createWifiEnterpriseConfig(identity: String?, anonymousIdentity: String?, password: String, eapMethod: Int?, phase2Method: Int?): WifiEnterpriseConfig {
         return WifiEnterpriseConfig().also { enterpriseConfig ->
-            if (eapMethod != null) {
-                try {
-                    enterpriseConfig.eapMethod = eapMethod
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+            try {
+                enterpriseConfig.eapMethod = eapMethod ?: WifiEnterpriseConfig.Eap.PEAP
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            if (phase2Method != null) {
-                try {
-                    enterpriseConfig.phase2Method = phase2Method
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+            try {
+                enterpriseConfig.phase2Method = phase2Method ?: WifiEnterpriseConfig.Phase2.NONE
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
             enterpriseConfig.anonymousIdentity = anonymousIdentity
             enterpriseConfig.caCertificate = null
-
-
 
             if (eapMethod == WifiEnterpriseConfig.Eap.SIM || eapMethod == WifiEnterpriseConfig.Eap.AKA || eapMethod == WifiEnterpriseConfig.Eap.AKA_PRIME) {
                 enterpriseConfig.identity = ""

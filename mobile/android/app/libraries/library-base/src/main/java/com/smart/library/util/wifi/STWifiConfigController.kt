@@ -34,6 +34,10 @@ import java.security.KeyStore
 import java.util.*
 import java.util.regex.Pattern
 
+/**
+ * http://androidxref.com/5.0.0_r2/xref/packages/apps/Settings/src/com/android/settings/wifi/WifiConfigController.java
+ * http://androidxref.com/9.0.0_r3/xref/packages/apps/Settings/src/com/android/settings/wifi/WifiConfigController.java
+ */
 @Suppress("MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection", "unused")
 class STWifiConfigController(private val configUi: STWifiConfigUiBase, private val contentView: View, val scanResult: ScanResult?, val mode: Int) : TextWatcher, OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, OnEditorActionListener, View.OnKeyListener {
 
@@ -74,11 +78,8 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
     private val doNotValidateEapServerString: String by lazy { context.getString(R.string.wifi_do_not_validate_eap_server) }
     private val dialogContainer: ScrollView by lazy { contentView.findViewById(R.id.dialog_scrollview) }
     private val securitySpinner: Spinner by lazy { contentView.findViewById(R.id.security) }
-    private val eapMethodSpinner: Spinner by lazy {
-        contentView.findViewById<Spinner>(R.id.method).apply {
-            onItemSelectedListener = this@STWifiConfigController
-        }
-    }
+    private var eapMethodSpinner: Spinner? = null
+
     private val eapCaCertSpinner: Spinner by lazy {
         contentView.findViewById<Spinner>(R.id.ca_cert).apply {
             onItemSelectedListener = this@STWifiConfigController
@@ -367,7 +368,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         if (mode == STWifiConfigUiBase.MODE_VIEW) {
             return null
         }
-        val eapMethod: Int = eapMethodSpinner.selectedItemPosition
+        val eapMethod: Int = eapMethodSpinner?.selectedItemPosition ?: Eap.PEAP
         val phase2MethodPosition: Int = phase2Spinner.selectedItemPosition
         val phase2Method: Int = when (eapMethod) {
             Eap.PEAP -> when (phase2MethodPosition) {
@@ -392,7 +393,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         if (clientCert == "unspecified") clientCert = ""
         config.enterpriseConfig.setClientCertificateAlias(clientCert)*/
 
-        return STWifiUtil.createWifiConfiguration(
+        val configuration= STWifiUtil.createWifiConfiguration(
             application = STInitializer.application(),
             scanResult = scanResult,
             password = passwordView.text.toString(),
@@ -407,6 +408,8 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
                 hiddenSSID
             }
         )
+
+        return configuration
     }
 
     private fun showSecurityFields() {
@@ -427,68 +430,82 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
             return
         }
         contentView.findViewById<View>(R.id.eap).visibility = View.VISIBLE
-        // http://androidxref.com/9.0.0_r3/xref/frameworks/base/core/res/res/values/config.xml
-        /*if (Utils.isWifiOnly(mContext)|| !mContext.getResources().getBoolean(R.bool.config_eap_sim_based_auth_supported)) {
+
+        if (eapMethodSpinner == null) {
+            eapMethodSpinner = contentView.findViewById<Spinner>(R.id.method).apply {
+                onItemSelectedListener = this@STWifiConfigController
+            }
+
+            // http://androidxref.com/9.0.0_r3/xref/frameworks/base/core/res/res/values/config.xml
+            /*if (Utils.isWifiOnly(mContext)|| !mContext.getResources().getBoolean(R.bool.config_eap_sim_based_auth_supported)) {
             String[] eapMethods = mContext.getResources().getStringArray(R.array.eap_method_without_sim_auth);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, eapMethods);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mEapMethodSpinner.setAdapter(spinnerAdapter);
         }*/
-        if (scanResult != null && isCarrierAp) {
-            eapMethodSpinner.setSelection(0)
-        }
-        loadCertificates(
-            eapCaCertSpinner,
-            CA_CERTIFICATE,
-            doNotValidateEapServerString,
-            false,
-            showUsePreinstalledCertOption = true
-        )
-        loadCertificates(
-            eapUserCertSpinner,
-            USER_PRIVATE_KEY,
-            doNotProvideEapUserCertString,
-            false,
-            showUsePreinstalledCertOption = false
-        )
+            if (scanResult != null && isCarrierAp) {
+                eapMethodSpinner?.setSelection(0)
+            }
+            loadCertificates(
+                eapCaCertSpinner,
+                CA_CERTIFICATE,
+                doNotValidateEapServerString,
+                false,
+                showUsePreinstalledCertOption = true
+            )
+            loadCertificates(
+                eapUserCertSpinner,
+                USER_PRIVATE_KEY,
+                doNotProvideEapUserCertString,
+                false,
+                showUsePreinstalledCertOption = false
+            )
 
-        // Modifying an existing network
-        if (scanResult != null && isSaved) {
-            eapMethodSpinner.setSelection(Eap.PEAP)
-            showEapFieldsByMethod(WIFI_EAP_METHOD_PEAP)
-            phase2Spinner.setSelection(WIFI_PEAP_PHASE2_NONE)
-            setSelection(eapCaCertSpinner, doNotValidateEapServerString) // default not validate
-            /*if (!TextUtils.isEmpty((CharSequence) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getCaPath"))) {
-                setSelection(mEapCaCertSpinner, mUseSystemCertsString);
+            // Modifying an existing network
+            if (scanResult != null && isSaved) {
+                eapMethodSpinner?.setSelection(Eap.PEAP)
+                showEapFieldsByMethod(WIFI_EAP_METHOD_PEAP)
+                phase2Spinner.setSelection(WIFI_PEAP_PHASE2_NONE)
+
+                /* val caCertificate = oldWifiConfiguration?.enterpriseConfig?.caCertificate
+             if (caCertificate != null) {
+                 setSelection(eapCaCertSpinner, useSystemCertsString);
+             } else {
+                 val caCerts: String[]? =  oldWifiConfiguration?.enterpriseConfig?.caCertificateAlias
+                 if (caCerts == null) {*/
+                setSelection(eapCaCertSpinner, doNotValidateEapServerString)
+                /*} else if (caCerts.length == 1) {
+                setSelection(eapCaCertSpinner, caCerts[0]);
             } else {
-                String[] caCerts = (String[]) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getCaCertificateAliases");
-                if (caCerts == null) {
-                    setSelection(mEapCaCertSpinner, mDoNotValidateEapServerString);
-                } else if (caCerts.length == 1) {
-                    setSelection(mEapCaCertSpinner, caCerts[0]);
-                } else {
-                    // Reload the cert spinner with an extra "multiple certificates added" item.
-                    loadCertificates(
-                            mEapCaCertSpinner,
-                            Credentials.CA_CERTIFICATE,
-                            mDoNotValidateEapServerString,
-                            true,
-                            true);
-                    setSelection(mEapCaCertSpinner, mMultipleCertSetString);
-                }
+                // Reload the cert spinner with an extra "multiple certificates added" item.
+                loadCertificates(
+                    eapCaCertSpinner,
+                    CA_CERTIFICATE,
+                    doNotValidateEapServerString,
+                    true,
+                    showUsePreinstalledCertOption = true
+                );
+                setSelection(eapCaCertSpinner, multipleCertSetString);
+            }
             }*/
 
-            // mEapDomainView.setText((Integer) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getDomainSuffixMatch"));
-            val userCert: String? = null // enterpriseConfig.getClientCertificateAlias();
-            if (TextUtils.isEmpty(userCert)) {
-                setSelection(eapUserCertSpinner, doNotProvideEapUserCertString)
+                // mEapDomainView.setText((Integer) STReflectUtil.invokeDeclaredMethod(enterpriseConfig, "getDomainSuffixMatch"));
+                val userCert: String? = null // enterpriseConfig.getClientCertificateAlias();
+                if (TextUtils.isEmpty(userCert)) {
+                    setSelection(eapUserCertSpinner, doNotProvideEapUserCertString)
+                } else {
+                    setSelection(eapUserCertSpinner, userCert)
+                }
+                eapIdentityView.text = oldWifiConfiguration?.enterpriseConfig?.identity;
+                eapAnonymousView.text = oldWifiConfiguration?.enterpriseConfig?.anonymousIdentity;
             } else {
-                setSelection(eapUserCertSpinner, userCert)
+                // Choose a default for a new network and show only appropriate fields
+                eapMethodSpinner?.setSelection(Eap.PEAP)
+                showEapFieldsByMethod(Eap.PEAP)
+                setSelection(eapCaCertSpinner, doNotValidateEapServerString)
             }
-            // mEapIdentityView.setText(enterpriseConfig.getIdentity());
-            // mEapAnonymousView.setText(enterpriseConfig.getAnonymousIdentity());
         } else {
-            showEapFieldsByMethod(eapMethodSpinner.selectedItemPosition)
+            showEapFieldsByMethod(eapMethodSpinner!!.selectedItemPosition)
         }
     }
 
@@ -792,9 +809,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
             showSecurityFields()
         } else if (parent === eapMethodSpinner || parent === eapCaCertSpinner) {
             showSecurityFields()
-        } else if (parent === phase2Spinner
-            && eapMethodSpinner.selectedItemPosition == WIFI_EAP_METHOD_PEAP
-        ) {
+        } else if (parent === phase2Spinner && eapMethodSpinner?.selectedItemPosition == WIFI_EAP_METHOD_PEAP) {
             showPeapFields()
         } else if (parent === proxySettingsSpinner) {
             showProxyFields()

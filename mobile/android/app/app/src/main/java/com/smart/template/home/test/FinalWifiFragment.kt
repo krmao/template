@@ -7,6 +7,9 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.LinkProperties
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.wifi.ScanResult
 import android.os.Build
 import android.os.Bundle
@@ -52,7 +55,47 @@ class FinalWifiFragment : STBaseFragment() {
     private var connectResult: STWifiUtil.ConnectResult? = null
     private var wifiDialog: STWifiDialog? = null
     private val application: Application by lazy { STInitializer.application()!! }
-    private val networkCallback by lazy { object : ConnectivityManager.NetworkCallback() {} }
+    private val networkCallback by lazy { object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                STWifiUtil.getConnectivityManager()?.bindProcessToNetwork(network)
+            } else {
+                ConnectivityManager.setProcessDefaultNetwork(network)
+            }
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onAvailable")
+        }
+
+        override fun onUnavailable() {
+            super.onUnavailable()
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onUnavailable")
+        }
+
+        override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+            super.onBlockedStatusChanged(network, blocked)
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onBlockedStatusChanged")
+        }
+
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            super.onCapabilitiesChanged(network, networkCapabilities)
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onCapabilitiesChanged")
+        }
+
+        override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
+            super.onLinkPropertiesChanged(network, linkProperties)
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onLinkPropertiesChanged")
+        }
+
+        override fun onLosing(network: Network, maxMsToLive: Int) {
+            super.onLosing(network, maxMsToLive)
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onLosing")
+        }
+
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            STLogUtil.w(STWifiUtil.TAG, "connectWifiAndroidQ -> onLost")
+        }
+    } }
     private val adapter: STRecyclerViewAdapter<ScanResult, STRecyclerViewAdapter.ViewHolder> by lazy {
         object : STRecyclerViewAdapter<ScanResult, STRecyclerViewAdapter.ViewHolder>(context, dataList) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -156,7 +199,7 @@ class FinalWifiFragment : STBaseFragment() {
         context ?: return
 
         val dialog: MaterialDialog = MaterialDialog(context, dialogBehavior).show {
-            title(R.string.googleWifi)
+            title(text = scanResult.SSID.toString())
             customView(R.layout.final_wifi_fragment_dialog, scrollable = true, horizontalPadding = true)
             positiveButton(R.string.connect) { dialog ->
                 // Pull the password out of the custom view when the positive button is pressed
@@ -167,7 +210,7 @@ class FinalWifiFragment : STBaseFragment() {
                 STLogUtil.w(TAG, "Build.VERSION.SDK_INT=${Build.VERSION.SDK_INT}")
                 STLogUtil.w(TAG, "Build.VERSION_CODES.Q=${Build.VERSION_CODES.Q}")
 
-                STLogUtil.w(TAG, "android < 10 connect wifi")
+                STLogUtil.w(TAG, "identity=$identity, password=$password, ssid=${scanResult.SSID}")
 
                 connectResult = STWifiUtil.connectWifi(
                     application = application,

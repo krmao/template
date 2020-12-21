@@ -5,6 +5,7 @@ package com.smart.library.util.wifi
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import android.net.NetworkInfo.DetailedState
 import android.net.ProxyInfo
 import android.net.Uri
@@ -26,10 +27,12 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.TextView.OnEditorActionListener
 import com.smart.library.R
 import com.smart.library.STInitializer
+import com.smart.library.util.STLogUtil
 import com.smart.library.util.STThreadUtils.post
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.STWifiUtil.getSummary
+import com.smart.library.util.network.STNetworkUtil
 import java.security.KeyStore
 import java.util.*
 import java.util.regex.Pattern
@@ -41,17 +44,12 @@ import java.util.regex.Pattern
 @Suppress("MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection", "unused")
 class STWifiConfigController(private val configUi: STWifiConfigUiBase, private val contentView: View, val scanResult: ScanResult?, val mode: Int) : TextWatcher, OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, OnEditorActionListener, View.OnKeyListener {
 
-    /**
-     * For applications targeting {@link android.os.Build.VERSION_CODES#Q} or above, this API will return null
-     */
-    val oldWifiConfiguration: WifiConfiguration? by lazy { STWifiUtil.getWifiConfigurationPreAndroidQ(scanResult = scanResult) }
-    private val isPasspointNetwork: Boolean by lazy { STWifiUtil.isPasspointNetwork(oldWifiConfiguration) }
-
+    private val isPasspointNetwork: Boolean by lazy { STWifiUtil.isPasspointNetwork(scanResult) }
     private val providerFriendlyName: String by lazy { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) scanResult?.operatorFriendlyName?.toString() ?: "" else "" }
     private val isCarrierAp: Boolean by lazy { false } // 运营商网络
     private val ssidStr: String by lazy { STWifiUtil.removeDoubleQuotes(scanResult?.SSID ?: "") }
-    private val hiddenSSID: Boolean by lazy { oldWifiConfiguration?.hiddenSSID ?: false }
-    private val isSaved: Boolean by lazy { false } // 该网络是否已连接(已保存)
+    private val hiddenSSID: Boolean by lazy { STWifiUtil.getConnectedWifiHiddenSSID(STInitializer.application()) }
+    private val isSaved: Boolean by lazy { mode == STWifiConfigUiBase.MODE_VIEW } // 该网络是否已连接(已保存)
     private val security: Int by lazy { STWifiUtil.getSecurity(scanResult) }
 
     /* Phase2 methods supported by PEAP are limited */
@@ -393,7 +391,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
         if (clientCert == "unspecified") clientCert = ""
         config.enterpriseConfig.setClientCertificateAlias(clientCert)*/
 
-        val configuration= STWifiUtil.createWifiConfiguration(
+        return STWifiUtil.createWifiConfiguration(
             application = STInitializer.application(),
             scanResult = scanResult,
             password = passwordView.text.toString(),
@@ -408,8 +406,6 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
                 hiddenSSID
             }
         )
-
-        return configuration
     }
 
     private fun showSecurityFields() {
@@ -496,8 +492,8 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
                 } else {
                     setSelection(eapUserCertSpinner, userCert)
                 }
-                eapIdentityView.text = oldWifiConfiguration?.enterpriseConfig?.identity;
-                eapAnonymousView.text = oldWifiConfiguration?.enterpriseConfig?.anonymousIdentity;
+                eapIdentityView.text = ""
+                eapAnonymousView.text = ""
             } else {
                 // Choose a default for a new network and show only appropriate fields
                 eapMethodSpinner?.setSelection(Eap.PEAP)
@@ -840,7 +836,8 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
     init {
         accessPointSecurity = security
 
-        if (scanResult == null) { // new network
+        if (scanResult == null) {
+            // add new network
             configUi.setTitle(R.string.wifi_add_network)
             ssidView.addTextChangedListener(this)
             securitySpinner.onItemSelectedListener = this
@@ -853,6 +850,7 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
             (contentView.findViewById<View>(R.id.wifi_advanced_togglebox) as CheckBox).setOnCheckedChangeListener(this)
             configUi.setSubmitButton(resources.getString(R.string.wifi_save))
         } else {
+            // connect / edit / view
             if (!isPasspointNetwork) {
                 val str = SpannableString(ssidStr)
                 str.setSpan(TelephoneBuilder(ssidStr).build(), 0, ssidStr.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
@@ -891,9 +889,10 @@ class STWifiConfigController(private val configUi: STWifiConfigUiBase, private v
             } else if (this.mode == STWifiConfigUiBase.MODE_CONNECT) {
                 configUi.setSubmitButton(resources.getString(R.string.wifi_connect))
             } else {
-                val state: DetailedState? = null
-                val signalStrength = STWifiUtil.getSignalStrength(scanResult)
-                val signalLevel = if (signalStrength > -1 && signalStrength < levels.size) levels[signalStrength] else null
+                val state: DetailedState? = STNetworkUtil.getNetworkInfoByType(STInitializer.application(), type = ConnectivityManager.TYPE_WIFI)?.detailedState
+                STLogUtil.w(TAG, "state=$state")
+                val signalStrength: Int = STWifiUtil.getSignalStrength(scanResult)
+                val signalLevel: String? = if (signalStrength > -1 && signalStrength < levels.size) levels[signalStrength] else null
                 if ((state == null || state == DetailedState.DISCONNECTED) && signalLevel != null) {
                     configUi.setSubmitButton(resources.getString(R.string.wifi_connect))
                 } else {

@@ -5,9 +5,13 @@ package com.smart.library.util.network
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.NetworkInfo
+import android.os.Build
 import android.telephony.TelephonyManager
 import com.smart.library.STInitializer
+import com.smart.library.util.STWifiUtil
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.*
@@ -18,8 +22,64 @@ object STNetworkUtil {
     fun isNetworkAvailable(): Boolean = getNetworkInfo()?.isAvailable ?: false
 
     @JvmStatic
+    fun isInternetAvailable(application: Application? = STInitializer.application()): Boolean {
+        var result = false
+        val connectivityManager: ConnectivityManager? = STWifiUtil.getConnectivityManager(application = application)
+        if (connectivityManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val network: Network = connectivityManager.activeNetwork ?: return false
+                val networkCapabilities: NetworkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+                result = when {
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } else {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+
+                }
+            }
+        }
+        return result
+    }
+
+    /**
+     * getActiveNetwork has been deprecated in API 29, so this is the best solution
+     *
+     * @param type ConnectivityManager.TYPE_WIFI
+     */
+    @JvmStatic
     @JvmOverloads
-    fun getNetworkInfo(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = application?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? = connectivityManager?.activeNetworkInfo
+    fun getNetworkInfo(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = application?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?): NetworkInfo? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network: Network? = connectivityManager?.activeNetwork
+            connectivityManager?.getNetworkInfo(network)
+        } else {
+            connectivityManager?.activeNetworkInfo
+        }
+    }
+
+    /**
+     * getActiveNetwork has been deprecated in API 29, so this is the best solution
+     *
+     * @param type ConnectivityManager.TYPE_WIFI
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getNetworkInfoByType(application: Application? = STInitializer.application(), connectivityManager: ConnectivityManager? = application?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?, type: Int? = null): NetworkInfo? {
+        return connectivityManager?.allNetworks?.mapNotNull {
+            val networkInfo: NetworkInfo? = connectivityManager.getNetworkInfo(it)
+            if (networkInfo != null && (type == null || (networkInfo.type == type))) networkInfo else null
+        }?.firstOrNull()
+    }
+
 
     @JvmStatic
     fun getIPAddress(useIPv4: Boolean): String? {

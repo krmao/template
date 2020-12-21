@@ -5,10 +5,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.net.ConnectivityManager
+import android.net.LinkProperties
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.wifi.ScanResult
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.STWifiUtil
@@ -38,7 +43,6 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
              * visibility. Right after creation, update button visibility */
             configController.enableSubmitIfAppropriate()
         }
-        configController.hideForgetButton()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -48,7 +52,7 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
 
     fun connectResult(): STWifiUtil.ConnectResult? = connectResult
     fun disconnect() {
-        STWifiUtil.disconnectWifi(STInitializer.application(), connectResult = connectResult)
+        STWifiUtil.disconnectWifi(STInitializer.application(), connectResult = connectResult, removeWifi = true)
     }
 
     override fun dispatchSubmit() {
@@ -57,29 +61,57 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
     }
 
     private fun onForget() {
-        /*if (WifiUtils.isNetworkLockedDown(getContext(), mAccessPoint.getConfig())) {
-           RestrictedLockUtils.sendShowAdminSupportDetailsIntent(getContext(), RestrictedLockUtils.getDeviceOwner(getContext()));
-           return;
-        }*/
-
-        // val accessPoint = dialog.controller.accessPoint
-        // val wifiManager = getWifiManager(STInitializer.application())
-        // if (accessPoint != null) {
-        //     if (accessPoint.isSaved) {
-        //         // wifiManager.forget(accessPoint.getConfig().networkId, null /* listener */);
-        //     }
-        // }
+        STWifiUtil.disconnectWifi(application = STInitializer.application(), connectResult = connectResult, removeWifi = true)
     }
 
     @SuppressLint("MissingPermission")
     private fun onSubmit() {
         val wifiConfiguration = getController().getConfig()
 
+        val finalNetworkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                networkCallback.onAvailable(network)
+            }
+
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onUnavailable() {
+                super.onUnavailable()
+                networkCallback.onUnavailable()
+            }
+
+            @RequiresApi(Build.VERSION_CODES.Q)
+            override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+                super.onBlockedStatusChanged(network, blocked)
+                networkCallback.onBlockedStatusChanged(network, blocked)
+            }
+
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                super.onCapabilitiesChanged(network, networkCapabilities)
+                networkCallback.onCapabilitiesChanged(network, networkCapabilities)
+            }
+
+            override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
+                super.onLinkPropertiesChanged(network, linkProperties)
+                networkCallback.onLinkPropertiesChanged(network, linkProperties)
+            }
+
+            override fun onLosing(network: Network, maxMsToLive: Int) {
+                super.onLosing(network, maxMsToLive)
+                networkCallback.onLosing(network, maxMsToLive)
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                networkCallback.onLost(network)
+            }
+        }
+
         connectResult = STWifiUtil.connectWifi(
             application = STInitializer.application(),
             scanResult = scanResult,
             wifiConfiguration = wifiConfiguration,
-            networkCallback = networkCallback
+            networkCallback = finalNetworkCallback
         )
     }
 
@@ -110,7 +142,14 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
         @JvmStatic
         @JvmOverloads
         fun createModal(context: Context, scanResult: ScanResult, mode: Int, style: Int = 0, networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {}): STWifiDialog {
-            return STWifiDialog(context, scanResult, mode, style, mode == STWifiConfigUiBase.MODE_VIEW /* hideSubmitButton*/, networkCallback = networkCallback)
+            var finalModel: Int = mode
+            val isConnected: Boolean = (STWifiUtil.removeDoubleQuotes(STWifiUtil.getConnectedWifiSSID(application = STInitializer.application())) == scanResult.SSID) && (STWifiUtil.getConnectedWifiBSSID(application = STInitializer.application()) == scanResult.BSSID)
+            if (isConnected) {
+                if (finalModel == STWifiConfigUiBase.MODE_CONNECT) {
+                    finalModel = STWifiConfigUiBase.MODE_VIEW
+                }
+            }
+            return STWifiDialog(context, scanResult, finalModel, style, finalModel == STWifiConfigUiBase.MODE_VIEW /* hideSubmitButton*/, networkCallback = networkCallback)
         }
     }
 }

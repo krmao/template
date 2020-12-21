@@ -24,6 +24,7 @@ import com.smart.library.STInitializer
 import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.library.util.wifi.STWifiUtils
 
+
 /**
  *
  * SDK >= Q, This {@link NetworkRequest} will live until released via {@link #unregisterNetworkCallback(NetworkCallback)} or the calling application exits.
@@ -114,6 +115,35 @@ object STWifiUtil {
     }
 
     @JvmStatic
+    fun isWifiConnected(application: Application?): Boolean {
+        return getConnectedWifiInfo(application) != null
+    }
+
+    @JvmStatic
+    fun getConnectedWifiInfo(application: Application?): WifiInfo? {
+        val wifiInfo: WifiInfo? = getWifiManager(application)?.connectionInfo
+        if (wifiInfo != null && wifiInfo.supplicantState == SupplicantState.COMPLETED) {
+            return wifiInfo
+        }
+        return null
+    }
+
+    @JvmStatic
+    fun getConnectedWifiSSID(application: Application?): String? {
+        return getConnectedWifiInfo(application)?.ssid
+    }
+
+    @JvmStatic
+    fun getConnectedWifiHiddenSSID(application: Application?): Boolean {
+        return getConnectedWifiInfo(application)?.hiddenSSID ?: false
+    }
+
+    @JvmStatic
+    fun getConnectedWifiBSSID(application: Application?): String? {
+        return getConnectedWifiInfo(application)?.bssid
+    }
+
+    @JvmStatic
     private fun checkLocationAvailability(context: Context?): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val packageManager = context?.packageManager
@@ -164,6 +194,17 @@ object STWifiUtil {
     fun isPasspointNetwork(config: WifiConfiguration?): Boolean = isPasspointNetwork(config?.enterpriseConfig?.eapMethod)
 
     @JvmStatic
+    fun isPasspointNetwork(scanResult: ScanResult?): Boolean {
+        val isPasspointNetwork = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scanResult?.isPasspointNetwork ?: false
+        } else {
+            false
+        }
+        STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
+        return isPasspointNetwork
+    }
+
+    @JvmStatic
     fun isPasspointNetwork(eapMethod: Int?): Boolean {
         val isPasspointNetwork = eapMethod != null && eapMethod != WifiEnterpriseConfig.Eap.NONE
         STLogUtil.w(TAG, "isPasspointNetwork=$isPasspointNetwork")
@@ -196,8 +237,7 @@ object STWifiUtil {
         if (receiver != null) {
             try {
                 context?.unregisterReceiver(receiver)
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
+            } catch (ignore: IllegalArgumentException) {
             }
         }
     }
@@ -406,7 +446,7 @@ object STWifiUtil {
                     phase2Method = phase2Method
                 ).build()
                 STLogUtil.w(TAG, "connectWifiAndroidQ requestNetwork start")
-                connectivityManager.requestNetwork(networkRequest, networkCallback ?: object : ConnectivityManager.NetworkCallback() {
+                val finalNetworkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -415,46 +455,55 @@ object STWifiUtil {
                             ConnectivityManager.setProcessDefaultNetwork(network)
                         }
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onAvailable")
+                        networkCallback?.onAvailable(network)
                     }
 
                     override fun onUnavailable() {
                         super.onUnavailable()
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onUnavailable")
+                        networkCallback?.onUnavailable()
                     }
 
                     override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
                         super.onBlockedStatusChanged(network, blocked)
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onBlockedStatusChanged")
+                        networkCallback?.onBlockedStatusChanged(network, blocked)
                     }
 
                     override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
                         super.onCapabilitiesChanged(network, networkCapabilities)
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onCapabilitiesChanged")
+                        networkCallback?.onCapabilitiesChanged(network, networkCapabilities)
                     }
 
                     override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
                         super.onLinkPropertiesChanged(network, linkProperties)
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onLinkPropertiesChanged")
+                        networkCallback?.onLinkPropertiesChanged(network, linkProperties)
                     }
 
                     override fun onLosing(network: Network, maxMsToLive: Int) {
                         super.onLosing(network, maxMsToLive)
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onLosing")
+                        networkCallback?.onLosing(network, maxMsToLive)
                     }
 
                     override fun onLost(network: Network) {
                         super.onLost(network)
                         STLogUtil.w(TAG, "connectWifiAndroidQ -> onLost")
+                        networkCallback?.onLost(network)
                     }
-                })
+                }
+                connectivityManager.requestNetwork(networkRequest, finalNetworkCallback)
                 STLogUtil.w(TAG, "connectWifiAndroidQ requestNetwork end")
+                return ConnectResult(networkCallback = finalNetworkCallback)
             } else {
                 STLogUtil.e(TAG, "connectWifiAndroidQ must be preAndroidQ !!!")
             }
         } else {
             STLogUtil.e(TAG, "connectWifiAndroidQ connectivityManager must not be null !!!")
         }
-        return ConnectResult(networkCallback = networkCallback)
+        return ConnectResult()
     }
 
     @JvmStatic

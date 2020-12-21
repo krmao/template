@@ -22,12 +22,11 @@ import com.smart.library.util.STWifiUtil
  * package com.android.settings.wifi; @link{ http://androidxref.com/9.0.0_r3/xref/packages/apps/Settings/src/com/android/settings/wifi/ }
  */
 @SuppressLint("InflateParams")
-@Suppress("unused")
+@Suppress("unused", "DEPRECATION")
 class STWifiDialog @JvmOverloads constructor(context: Context, private val scanResult: ScanResult, private val mode: Int = STWifiConfigUiBase.MODE_CONNECT, style: Int, private val hideSubmitButton: Boolean, private val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {}) : AlertDialog(context, style), STWifiConfigUiBase, DialogInterface.OnClickListener {
 
     private val view: View by lazy { layoutInflater.inflate(R.layout.wifi_dialog, null) }
     private lateinit var configController: STWifiConfigController
-    private var connectResult: STWifiUtil.ConnectResult? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,9 +49,10 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
         configController.updatePassword()
     }
 
-    fun connectResult(): STWifiUtil.ConnectResult? = connectResult
+    fun connectResult(): STWifiUtil.ConnectionResult? = STWifiUtil.getCachedWifiModel(scanResult)?.connectionResult
+
     fun disconnect() {
-        STWifiUtil.disconnectWifi(STInitializer.application(), connectResult = connectResult, removeWifi = true)
+        STWifiUtil.disconnectWifi(STInitializer.application(), connectResult = STWifiUtil.getCachedWifiModel(scanResult)?.connectionResult, removeWifi = true)
     }
 
     override fun dispatchSubmit() {
@@ -61,17 +61,19 @@ class STWifiDialog @JvmOverloads constructor(context: Context, private val scanR
     }
 
     private fun onForget() {
-        STWifiUtil.disconnectWifi(application = STInitializer.application(), connectResult = connectResult, removeWifi = true)
+        STWifiUtil.disconnectWifi(application = STInitializer.application(), connectResult = STWifiUtil.getCachedWifiModel(scanResult)?.connectionResult, removeWifi = true)
     }
 
     @SuppressLint("MissingPermission")
     private fun onSubmit() {
         val wifiConfiguration = getController().getConfig()
+        var connectResult: STWifiUtil.ConnectionResult? = null
 
         val finalNetworkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 networkCallback.onAvailable(network)
+                STWifiUtil.cacheWifiModel(scanResult, wifiConfiguration, connectResult)
             }
 
             @RequiresApi(Build.VERSION_CODES.O)

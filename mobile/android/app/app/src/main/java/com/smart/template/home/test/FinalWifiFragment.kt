@@ -52,7 +52,7 @@ class FinalWifiFragment : STBaseFragment() {
 
     private val loadingDialog: Dialog? by lazy { STDialogManager.createLoadingDialog(context) }
     private val dataList: MutableList<ScanResult> = arrayListOf()
-    private var connectResult: STWifiUtil.ConnectResult? = null
+    private var connectResult: STWifiUtil.ConnectionResult? = null
     private var wifiDialog: STWifiDialog? = null
     private val application: Application by lazy { STInitializer.application()!! }
     private val networkCallback by lazy { object : ConnectivityManager.NetworkCallback() {

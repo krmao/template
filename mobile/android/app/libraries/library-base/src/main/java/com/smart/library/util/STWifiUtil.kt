@@ -333,7 +333,7 @@ object STWifiUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     @JvmOverloads
-    fun disconnectWifi(application: Application? = STInitializer.application(), connectResult: ConnectResult?, removeWifi: Boolean = true) {
+    fun disconnectWifi(application: Application? = STInitializer.application(), connectResult: ConnectionResult?, removeWifi: Boolean = true) {
         STLogUtil.d(TAG, "disconnectWifi start connectResult=$connectResult")
         if (!isAndroidQOrLater()) {
             val wifiManager: WifiManager? = getWifiManager(application)
@@ -363,7 +363,7 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int? = null, phase2Method: Int? = null, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String? = null, identity: String? = null, anonymousIdentity: String? = null, eapMethod: Int? = null, phase2Method: Int? = null, networkCallback: ConnectivityManager.NetworkCallback?): ConnectionResult {
         STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, password=$password, identity=$identity, anonymousIdentity=$anonymousIdentity, eapMethod=$eapMethod, phase2Method=$phase2Method")
         return if (!isAndroidQOrLater()) {
             connectWifiPreAndroidQ(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method)
@@ -374,7 +374,7 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
-    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+    fun connectWifi(application: Application? = STInitializer.application(), scanResult: ScanResult, wifiConfiguration: WifiConfiguration?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectionResult {
         STLogUtil.w(TAG, "connectWifi scanResult=$scanResult, wifiConfiguration=$wifiConfiguration")
         return connectWifi(
             application = application,
@@ -389,12 +389,12 @@ object STWifiUtil {
 
     @JvmStatic
     @RequiresPermission(allOf = [permission.ACCESS_FINE_LOCATION, permission.ACCESS_WIFI_STATE])
-    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, hiddenSSID: Boolean = false): ConnectResult {
+    private fun connectWifiPreAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, hiddenSSID: Boolean = false): ConnectionResult {
         return if (!isAndroidQOrLater()) {
-            ConnectResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, hiddenSSID)))
+            ConnectionResult(networkId = connectWifiPreAndroidQ(application, createWifiConfiguration(application, scanResult, password, identity, anonymousIdentity, eapMethod, phase2Method, hiddenSSID)))
         } else {
             STLogUtil.e(TAG, "connectWifiPreAndroidQ -> must preAndroidQ !!!")
-            return ConnectResult()
+            return ConnectionResult()
         }
     }
 
@@ -407,6 +407,8 @@ object STWifiUtil {
                 return -1
             }
 
+            disconnectAllCachedWifi(true)
+            
             STLogUtil.w(TAG, "connectWifiPreAndroidQ -> disconnect")
             wifiManager.disconnect()
             // remove last configuration
@@ -432,7 +434,7 @@ object STWifiUtil {
      */
     @RequiresApi(Build.VERSION_CODES.Q)
     @JvmStatic
-    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectResult {
+    private fun connectWifiAndroidQ(application: Application? = STInitializer.application(), scanResult: ScanResult, password: String?, identity: String?, anonymousIdentity: String?, eapMethod: Int?, phase2Method: Int?, networkCallback: ConnectivityManager.NetworkCallback?): ConnectionResult {
         val connectivityManager: ConnectivityManager? = getConnectivityManager(application)
         if (connectivityManager != null) {
             if (isAndroidQOrLater()) {
@@ -494,16 +496,17 @@ object STWifiUtil {
                         networkCallback?.onLost(network)
                     }
                 }
+                disconnectAllCachedWifi(true)
                 connectivityManager.requestNetwork(networkRequest, finalNetworkCallback)
                 STLogUtil.w(TAG, "connectWifiAndroidQ requestNetwork end")
-                return ConnectResult(networkCallback = finalNetworkCallback)
+                return ConnectionResult(networkCallback = finalNetworkCallback)
             } else {
                 STLogUtil.e(TAG, "connectWifiAndroidQ must be preAndroidQ !!!")
             }
         } else {
             STLogUtil.e(TAG, "connectWifiAndroidQ connectivityManager must not be null !!!")
         }
-        return ConnectResult()
+        return ConnectionResult()
     }
 
     @JvmStatic
@@ -863,6 +866,68 @@ object STWifiUtil {
     @JvmStatic
     fun getSummary(context: Context, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? = getSummary(context, null, state, isEphemeral, passpointProvider)
 
+    //region cache scanResult/wifiConfiguration/connectionResult, because connect dialog view for unConnect wifi and detail dialog view for connected wifi, and cached connectionResult for forget wifi on detail dialog view
+    //also SDK >= Q, This {@link NetworkRequest} will live until released via {@link #unregisterNetworkCallback(NetworkCallback)} or the calling application exits.
+    //so cachedConnectionResultMap only need valid while the calling application exits
+    data class CachedWifiModel(var scanResult: ScanResult? = null, var wifiConfiguration: WifiConfiguration? = null, var connectionResult: ConnectionResult? = null)
+
+    fun getCachedWifiModelUniqueKey(scanResult: ScanResult?): String? = if (scanResult == null) "" else "${scanResult.SSID}-${scanResult.BSSID}-${scanResult.capabilities}-${scanResult.frequency}"
+    val cachedConnectionResultMap: MutableMap<String, CachedWifiModel> = mutableMapOf()
+    fun cacheWifiModel(scanResult: ScanResult?, wifiConfiguration: WifiConfiguration?, connectionResult: ConnectionResult?) {
+        val key: String? = getCachedWifiModelUniqueKey(scanResult)
+        if (!key.isNullOrBlank()) {
+            val cachedWifiModel: CachedWifiModel = getCachedWifiModel(scanResult) ?: CachedWifiModel()
+            cachedWifiModel.scanResult = scanResult
+            cachedWifiModel.wifiConfiguration = wifiConfiguration
+            cachedWifiModel.connectionResult = connectionResult
+            cachedConnectionResultMap[key] = cachedWifiModel
+            STLogUtil.w(TAG, "cacheWifiModel success!!!")
+        } else {
+            STLogUtil.w(TAG, "cacheWifiModel failure, key must not be null or blank !!! key=$key")
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun disconnectAllCachedWifi(removedAll: Boolean = true) {
+        cachedConnectionResultMap.forEach {
+            disconnectWifi(STInitializer.application(), it.value.connectionResult, true)
+        }
+        if (removedAll) {
+            cachedConnectionResultMap.clear()
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun removeAllCachedWifiModel(autoDisconnect: Boolean = true) {
+        if (autoDisconnect) {
+            cachedConnectionResultMap.forEach {
+                disconnectWifi(STInitializer.application(), it.value.connectionResult, true)
+            }
+        }
+        cachedConnectionResultMap.clear()
+    }
+
+    @JvmStatic
+    fun removeCachedWifiModel(scanResult: ScanResult?) {
+        val key: String? = getCachedWifiModelUniqueKey(scanResult)
+        if (!key.isNullOrBlank()) {
+            cachedConnectionResultMap.remove(key)
+        }
+    }
+
+    @JvmStatic
+    fun getCachedWifiModel(scanResult: ScanResult?): CachedWifiModel? {
+        val key: String? = getCachedWifiModelUniqueKey(scanResult)
+        return if (!key.isNullOrBlank()) {
+            cachedConnectionResultMap[key]
+        } else {
+            null
+        }
+    }
+    //endregion
+
     interface WifiScanCallback {
         fun onScanResultsReady()
     }
@@ -900,7 +965,7 @@ object STWifiUtil {
         }
     }
 
-    data class ConnectResult(val networkId: Int = -1, val networkCallback: ConnectivityManager.NetworkCallback? = null)
+    data class ConnectionResult(val networkId: Int = -1, val networkCallback: ConnectivityManager.NetworkCallback? = null)
 
     enum class Speed {
         NONE,

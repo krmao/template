@@ -2,10 +2,19 @@
 source 'https://cdn.cocoapods.org/'                                 # 指明依赖库的来源地址
 inhibit_all_warnings!                                               # 忽略引入库的所有警告（强迫症者的福音啊）
 platform :ios, '9.0'                                                # 平台是ios，版本是9.0
+#use_frameworks!
 install! 'cocoapods', generate_multiple_pod_projects: true, :warn_for_unused_master_specs_repo => false # 安装引入Podfile里面的依赖库
 
 target 'Template' do
   inherit! :search_paths
+  
+  pod 'FlutterBusiness', :subspecs => ["FlutterBusinessDebug"], :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
+  pod 'FlutterEngineDebug', :podspec => '/Users/krmao/workspace/libsforios-flutter/FlutterEngine/FlutterEngineDebug_v1.22.400.podspec'
+  
+  # pod 'FlutterBusiness/FlutterBusinessDebug', :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
+  # pod 'FlutterBusiness/FlutterEngineDebug', :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
+  # pod 'FlutterBusiness/FlutterBusinessRelease', :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
+  
   # pod 'Masonry'                                                   # 会出现大量警告 https://github.com/SnapKit/Masonry/issues/566
   pod 'Masonry', :git => 'https://github.com/warpling/Masonry.git'  # , :tag => 'v1.1.0'  # https://github.com/SnapKit/Masonry/issues/566#issuecomment-544136418
   pod 'AFNetworking', '~> 4.0'                                      # 网络请求库
@@ -22,7 +31,7 @@ target 'Template' do
   eval(File.read('PodReactNative.rb'))                              # eval方式支持解析source源, load加载的方式则不支持 # load 'PodReactNative.rb'            
   rnpodremote                                                     # rnpodlocal "../../react_native/node_modules"
 
-  load 'PodFlutter.rb'
+  # load 'PodFlutter.rb'
   # flutterPodWithSourceCode
   # flutterPodWithCocoaPodSpec
   

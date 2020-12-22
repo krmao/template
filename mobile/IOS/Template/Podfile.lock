@@ -25,6 +25,8 @@ PODS:
     - React-Core (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/turbomodule/core (= 0.62.2)
+  - FlutterBusiness/FlutterBusinessDebug (0.1.0)
+  - FlutterEngineDebug (1.22.400)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -285,6 +287,8 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - FBLazyVector (= 0.62.2)
   - FBReactNativeSpec (= 0.62.2)
+  - FlutterBusiness/FlutterBusinessDebug (from `/Users/krmao/workspace/libsforios-flutter/FlutterBusiness`)
+  - FlutterEngineDebug (from `/Users/krmao/workspace/libsforios-flutter/FlutterEngine/FlutterEngineDebug_v1.22.400.podspec`)
   - Folly (= 2018.10.22.00)
   - glog (= 0.3.5)
   - IQKeyboardManager
@@ -369,6 +373,10 @@ SPEC REPOS:
     - YYModel
 
 EXTERNAL SOURCES:
+  FlutterBusiness:
+    :path: "/Users/krmao/workspace/libsforios-flutter/FlutterBusiness"
+  FlutterEngineDebug:
+    :podspec: "/Users/krmao/workspace/libsforios-flutter/FlutterEngine/FlutterEngineDebug_v1.22.400.podspec"
   Masonry:
     :git: https://github.com/warpling/Masonry.git
 
@@ -384,6 +392,8 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   FBLazyVector: df77f919684572e9de6dd003065ac9e92e019a54
   FBReactNativeSpec: 282e43ccfc5f907f7ff7fa52b053b1509ada9dbd
+  FlutterBusiness: c855549c615ce82901a13a15807f60c7b57e762e
+  FlutterEngineDebug: 79a6f9bf183a98f3a037a2da941254130bd32412
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
@@ -420,6 +430,6 @@ SPEC CHECKSUMS:
   Yoga: fc3de651ef92c6df19a93b1a65a527c3dcda02b2
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: ccd42a4b3e67a5f381ea4c7b180e875a719ca4dd
+PODFILE CHECKSUM: 4c4dc0f390a5667719786cf1e843dc8464d81b26
 
 COCOAPODS: 1.10.0

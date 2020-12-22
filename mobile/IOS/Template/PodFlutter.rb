@@ -34,7 +34,7 @@ end
 #$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Debug" ONLY_ACTIVE_ARCH=NO
 #$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Profile" ONLY_ACTIVE_ARCH=NO
 #$ xcrun xcodebuild -alltargets -sdk iphoneos -configuration "Release" ONLY_ACTIVE_ARCH=NO
-#flutter build ios-framework --cocoapods --pub --debug --no-profile --output=/Users/krmao/workspace/template/mobile/flutter_module/build-repo/ios -v
+#flutter build ios-framework --cocoapods --pub --debug --no-profile --output=/Users/krmao/workspace/template/mobile/flutter/flutter_modules/flutter_module_template/build/host/outputs/repo-ios -v
 def flutterPodWithCocoaPodSpec
   pod 'LibraryFlutter', :path => '../Libraries/LibraryFlutter'
   ENV['POD_RELEASE'] = 'false'

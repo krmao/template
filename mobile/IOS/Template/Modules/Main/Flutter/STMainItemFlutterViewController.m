@@ -1,5 +1,6 @@
 #import "STMainItemFlutterViewController.h"
-//#import <FlutterPluginRegistrant/GeneratedPluginRegistrant.h>
+#import "STFlutterEmbedIntoNativeViewController.h"
+#import "STFlutterRouter.h"
 
 @interface STMainItemFlutterViewController ()
 
@@ -92,6 +93,20 @@
             make.height.equalTo(50);
         }
     }];
+    
+    UIButton *pushFlutterEmbedIntoNative = [UIButton buttonWithType:UIButtonTypeCustom];
+    pushFlutterEmbedIntoNative.frame = CGRectMake(self.view.frame.size.width * 0.5 - 100, 150, 240, 40);
+    pushFlutterEmbedIntoNative.backgroundColor = [UIColor redColor];
+    [pushFlutterEmbedIntoNative setTitle:@"OPEN FLUTTER EMBED" forState:UIControlStateNormal];
+    [pushFlutterEmbedIntoNative addTarget:self action:@selector(pushFlutterEmbedIntoNative) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:pushFlutterEmbedIntoNative];
+    
+    UIButton *presentFlutterOrderPage = [UIButton buttonWithType:UIButtonTypeCustom];
+    presentFlutterOrderPage.frame = CGRectMake(self.view.frame.size.width * 0.5 - 100, 250, 240, 40);
+    presentFlutterOrderPage.backgroundColor = [UIColor redColor];
+    [presentFlutterOrderPage setTitle:@"OPEN FLUTTER ORDER" forState:UIControlStateNormal];
+    [presentFlutterOrderPage addTarget:self action:@selector(presentFlutterOrderPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:presentFlutterOrderPage];
 
     // 订阅事件
     [STEventSubscriber addTarget:self name:@"event_flutter" priority:STEventSubscriberPriorityDefault inMainTread:YES action:^(STEventUserInfo *info) {
@@ -126,23 +141,16 @@
 
 - (void)goToFlutter {
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long) self.navigationController.viewControllers.count);
+    
+    [STFlutterRouter openFlutterBridge:nil];
+}
 
-    // self.flutterEngine = [[FlutterEngine alloc] initWithName:@"my flutter engine"];
-    // [[self.flutterEngine navigationChannel] invokeMethod:@"setInitialRoute" arguments:@"smart://template/flutter?page=bridge&params="];
-    // [self.flutterEngine run];
-    // [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];
-    // FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithEngine:self.flutterEngine nibName:nil bundle:nil];
+- (void)pushFlutterEmbedIntoNative{
+    [self.navigationController pushViewController:[[STFlutterEmbedIntoNativeViewController alloc] init] animated:YES];
+}
 
-//    FlutterViewController *flutterViewController = [[FlutterViewController alloc] initWithProject:nil nibName:nil bundle:nil];
-//    [GeneratedPluginRegistrant registerWithRegistry:flutterViewController];
-//    [flutterViewController setInitialRoute:@"smart://template/flutter?page=bridge&params="];
-//
-//    FlutterMethodChannel *methodChannel = [FlutterMethodChannel methodChannelWithName:@"smart.template.flutter/method" binaryMessenger:flutterViewController.binaryMessenger];
-//
-//    [methodChannel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
-//        NSLog(@"%s, method=%@, arguments=%@", __FUNCTION__, call.method, call.arguments);
-//    }];
-//    [self.navigationController pushViewController:flutterViewController animated:YES];
+- (void)presentFlutterOrderPage {
+    [STFlutterRouter openFlutterOrder:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

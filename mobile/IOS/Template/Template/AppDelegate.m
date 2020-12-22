@@ -1,5 +1,6 @@
 #import "STMainTabBarViewController.h"
-
+#import <flutter_boost/FlutterBoost.h>
+#import "STFlutterRouterHandler.h"
 #import "STBusObject.h"
 #import "STBus.h"
 
@@ -27,14 +28,22 @@
 }
 
 + (UIViewController *)initRootViewController {
+    STFlutterRouterHandler *router = [STFlutterRouterHandler new];
+    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router
+        onStart:^(FlutterEngine *engine) {
+        NSLog(@"FlutterBoostPlugin onStart");
+    }];
+    
     STMainTabBarViewController *rootViewController = [STMainTabBarViewController new];
     STBaseNavigationController *rootViewNavigationController = [[STBaseNavigationController alloc] initWithRootViewController:rootViewController];
 
     rootViewNavigationController.navigationBarHidden = YES;
+    router.navigationController = rootViewNavigationController;
     return rootViewNavigationController;
 }
 
 + (void)initApplication {
+    
     NSDictionary *busMap = @{@"STRNBusObject": @"rn"};
     [busMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         STBusObject *busObject = [(STBusObject *) [NSClassFromString((NSString *) key) alloc] initWithHost:(NSString *) obj];

@@ -59,6 +59,9 @@
 		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
 		F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86803E9247670A500D29159 /* LaunchScreen.storyboard */; };
 		F86803EE247670A500D29159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803ED247670A500D29159 /* main.m */; };
+		F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */; };
+		F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */; };
+		F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D272591D9EB00993772 /* STFlutterRouter.m */; };
 		F89B7D1A249B4C4000B2FDC7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D19249B4C4000B2FDC7 /* libz.tbd */; };
 		F89B7D1E249B4D1800B2FDC7 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */; };
 		F89B7D20249B5AA000B2FDC7 /* bundle-rn.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */; };
@@ -181,6 +184,12 @@
 		F86803EA247670A500D29159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F86803EC247670A500D29159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86803ED247670A500D29159 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F87A5D0E2591C80900993772 /* STFlutterRouterHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouterHandler.h; sourceTree = "<group>"; };
+		F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouterHandler.m; sourceTree = "<group>"; };
+		F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEmbedIntoNativeViewController.m; sourceTree = "<group>"; };
+		F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEmbedIntoNativeViewController.h; sourceTree = "<group>"; };
+		F87A5D262591D9EB00993772 /* STFlutterRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouter.h; sourceTree = "<group>"; };
+		F87A5D272591D9EB00993772 /* STFlutterRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouter.m; sourceTree = "<group>"; };
 		F89B7D19249B4C4000B2FDC7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F89B7D1B249B4C6B00B2FDC7 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
 		F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -487,18 +496,11 @@
 		F81FAFEF247677E800CF4FC8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				F81FAFF0247677E800CF4FC8 /* LibraryFlutter */,
+				F87A5D0D2591C7D600993772 /* LibraryFlutter */,
 				F81FAFF5247677E800CF4FC8 /* LibraryBase */,
 				6194AFE630C8ABCA47751214 /* LibraryReactNative */,
 			);
 			path = Libraries;
-			sourceTree = "<group>";
-		};
-		F81FAFF0247677E800CF4FC8 /* LibraryFlutter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LibraryFlutter;
 			sourceTree = "<group>";
 		};
 		F81FAFF5247677E800CF4FC8 /* LibraryBase */ = {
@@ -562,6 +564,19 @@
 				F8DB3C9024768DED00B3B5A0 /* PrefixHeader.pch */,
 			);
 			path = Template;
+			sourceTree = "<group>";
+		};
+		F87A5D0D2591C7D600993772 /* LibraryFlutter */ = {
+			isa = PBXGroup;
+			children = (
+				F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */,
+				F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */,
+				F87A5D0E2591C80900993772 /* STFlutterRouterHandler.h */,
+				F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */,
+				F87A5D262591D9EB00993772 /* STFlutterRouter.h */,
+				F87A5D272591D9EB00993772 /* STFlutterRouter.m */,
+			);
+			path = LibraryFlutter;
 			sourceTree = "<group>";
 		};
 		F8DB3E152477CB0F00B3B5A0 /* Modules */ = {
@@ -653,6 +668,7 @@
 				F86803D5247670A400D29159 /* Frameworks */,
 				F86803D6247670A400D29159 /* Resources */,
 				9D497019375F63F449DE99CB /* [CP] Copy Pods Resources */,
+				BC1F540D5E4627BA6731AAAB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -726,6 +742,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BC1F540D5E4627BA6731AAAB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D2369938B217BB9796D00D5A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -775,11 +808,13 @@
 				6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */,
 				6194AE78F16107D158F47C7D /* STEventBus.m in Sources */,
 				6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */,
+				F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */,
 				6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */,
 				6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */,
 				6194A71EEB9DDE620D31C006 /* STRNViewController.m in Sources */,
 				6194A0DAB76F194AD7CA4C91 /* STRNView.m in Sources */,
 				6194A138D9DB6A5933E6A0BA /* STRNURL.m in Sources */,
+				F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */,
 				6194A308C4BA44F042EDC022 /* ReactBridgeModule.m in Sources */,
 				6194A9C5665E37AA84F8AF95 /* ReactBridge.m in Sources */,
 				6194A4F3F4F4C52F5479675C /* STRNBusObject.m in Sources */,
@@ -798,6 +833,7 @@
 				6194AA633C671D5397B2C340 /* NSDate+STExtension.m in Sources */,
 				6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */,
 				6194A576DD8C3CB488BD7295 /* NSArray+STExtension.m in Sources */,
+				F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */,
 				6194A10E9D19FFE053EBD767 /* NSString+STExtension.m in Sources */,
 				6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */,
 				6194AEBF2EED5C0F00E733A9 /* NSDictionary+STExtension.m in Sources */,

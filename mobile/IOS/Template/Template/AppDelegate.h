@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
+#import <flutter_boost/FlutterBoost.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property(strong, nonatomic) UIWindow *_Nonnull window;
+@property(nullable, nonatomic, strong) UIWindow *window;
 
 + (UIViewController *_Nonnull)initRootViewController;
 

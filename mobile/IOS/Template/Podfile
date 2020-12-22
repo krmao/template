@@ -8,8 +8,13 @@ install! 'cocoapods', generate_multiple_pod_projects: true, :warn_for_unused_mas
 target 'Template' do
   inherit! :search_paths
   
-  pod 'FlutterBusiness', :subspecs => ["FlutterBusinessDebug"], :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
-  pod 'FlutterEngineDebug', :podspec => '/Users/krmao/workspace/libsforios-flutter/FlutterEngine/FlutterEngineDebug_v1.22.400.podspec'
+   # pod 'FlutterBusiness', :subspecs => ["FlutterBusinessDebug"], :path => '/Users/krmao/workspace/libsforios-flutter'
+   pod 'FlutterBusiness',  '0.1.0', :subspecs => ["FlutterBusinessDebug"]
+  
+  # pod 'FlutterEngineDebug', :podspec => '/Users/krmao/workspace/libsforios-flutter/FlutterEngine/FlutterEngineDebug_v1.22.400.podspec'
+  
+  # pod 'FlutterBusiness', '0.1.0'
+  pod 'FlutterEngineDebug', '1.22.400'
   
   # pod 'FlutterBusiness/FlutterBusinessDebug', :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'
   # pod 'FlutterBusiness/FlutterEngineDebug', :path => '/Users/krmao/workspace/libsforios-flutter/FlutterBusiness'

@@ -58,6 +58,11 @@
 ### <a href="https://github.com/krmao/template/tree/androidx/mobile/flutter_module">flutter</a>
 - flutter integration with android
 - flutter integration with ios
+  ```
+  source 'https://github.com/krmao/libsforios.git'
+  pod 'FlutterEngineDebug', '1.22.400'
+  pod 'FlutterBusiness',  '0.1.0', :subspecs => ["FlutterBusinessDebug"]
+  ```
 - flutter pure app
 
 ### <a href="https://github.com/krmao/template/tree/androidx/mobile/react_native">react native</a>

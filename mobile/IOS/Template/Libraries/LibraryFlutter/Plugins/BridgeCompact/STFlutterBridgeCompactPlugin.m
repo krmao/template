@@ -8,6 +8,7 @@
 
 #import "STFlutterBridgeCompactPlugin.h"
 #import "STToastUtil.h"
+#import "STCommunication.h"
 
 @implementation STFlutterBridgeCompactPlugin
 
@@ -19,7 +20,10 @@
        NSString * params = [((NSDictionary *)arguments) valueForKey:@"params"];
        NSLog(@"functionName methodName=%@, params=%@",methodName, params);
        
-       [STToastUtil show:methodName];
+       [STCommunication callFunction:methodName jsonStr:params callback:^(id tmpResult) {
+           result(tmpResult);
+       }];
+       
    } else {
        result(FlutterMethodNotImplemented);
    }

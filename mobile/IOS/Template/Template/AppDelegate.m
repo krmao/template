@@ -3,6 +3,7 @@
 #import "STFlutterRouterHandler.h"
 #import "STBusObject.h"
 #import "STBus.h"
+#import "STFlutterBridge.h"
 
 
 @interface AppDelegate ()
@@ -29,9 +30,10 @@
 
 + (UIViewController *)initRootViewController {
     STFlutterRouterHandler *router = [STFlutterRouterHandler new];
-    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router
-        onStart:^(FlutterEngine *engine) {
+    
+    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router onStart:^(FlutterEngine *engine) {
         NSLog(@"FlutterBoostPlugin onStart");
+        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
     }];
     
     STMainTabBarViewController *rootViewController = [STMainTabBarViewController new];

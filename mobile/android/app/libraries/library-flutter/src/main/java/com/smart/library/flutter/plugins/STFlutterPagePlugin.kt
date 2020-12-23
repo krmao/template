@@ -11,13 +11,6 @@ import org.json.JSONObject
 class STFlutterPagePlugin : STFlutterBasePlugin() {
 
     @STFlutterPluginMethod
-    fun getNetworkType(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
-        val jsonObject = JSONObject()
-        jsonObject.putOpt("networkType", STNetworkUtil.getNetworkType())
-        callbackSuccess(result, jsonObject)
-    }
-
-    @STFlutterPluginMethod
     fun enableExitWithDoubleBackPressed(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
         STLogUtil.w("FlutterToastPlugin", "requestData=$requestData")
         val enable = requestData?.optBoolean("enable") ?: false

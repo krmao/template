@@ -47,6 +47,7 @@
     BOOL animated = [exts[@"animated"] boolValue];
     FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
     [vc setName:name params:params];
+    [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
     [self.navigationController pushViewController:vc animated:animated];
     if(completion) completion(YES);
 }
@@ -59,6 +60,7 @@
     BOOL animated = [exts[@"animated"] boolValue];
     FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
     [vc setName:name params:params];
+    [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
     [self.navigationController presentViewController:vc animated:animated completion:^{
         if(completion) completion(YES);
     }];

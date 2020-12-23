@@ -62,6 +62,18 @@
 		F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */; };
 		F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */; };
 		F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D272591D9EB00993772 /* STFlutterRouter.m */; };
+		F88C1E5B2592E66800C3FFBE /* STFlutterPagePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */; };
+		F88C1E5E2592E66800C3FFBE /* STFlutterToastPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */; };
+		F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */; };
+		F88C1E612592E66800C3FFBE /* STFlutterEnvPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */; };
+		F88C1E652592E66800C3FFBE /* STFlutterApplicationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */; };
+		F88C1E662592E66800C3FFBE /* STFlutterEventPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */; };
+		F88C1E682592E66800C3FFBE /* STFlutterPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */; };
+		F88C1E692592E66800C3FFBE /* STFlutterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E582592E66800C3FFBE /* STFlutterBridge.m */; };
+		F88C1E6A2592E66800C3FFBE /* STFlutterPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */; };
+		F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */; };
+		F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */; };
+		F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E952593213B00C3FFBE /* STToastUtil.m */; };
 		F89B7D1A249B4C4000B2FDC7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D19249B4C4000B2FDC7 /* libz.tbd */; };
 		F89B7D1E249B4D1800B2FDC7 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */; };
 		F89B7D20249B5AA000B2FDC7 /* bundle-rn.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */; };
@@ -190,6 +202,30 @@
 		F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEmbedIntoNativeViewController.h; sourceTree = "<group>"; };
 		F87A5D262591D9EB00993772 /* STFlutterRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouter.h; sourceTree = "<group>"; };
 		F87A5D272591D9EB00993772 /* STFlutterRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouter.m; sourceTree = "<group>"; };
+		F88C1E2C2592E66800C3FFBE /* STFlutterPagePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPagePlugin.h; sourceTree = "<group>"; };
+		F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPagePlugin.m; sourceTree = "<group>"; };
+		F88C1E352592E66800C3FFBE /* STFlutterToastPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterToastPlugin.h; sourceTree = "<group>"; };
+		F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterToastPlugin.m; sourceTree = "<group>"; };
+		F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterURLPlugin.m; sourceTree = "<group>"; };
+		F88C1E392592E66800C3FFBE /* STFlutterURLPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterURLPlugin.h; sourceTree = "<group>"; };
+		F88C1E3E2592E66800C3FFBE /* STFlutterEnvPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEnvPlugin.h; sourceTree = "<group>"; };
+		F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEnvPlugin.m; sourceTree = "<group>"; };
+		F88C1E4A2592E66800C3FFBE /* STFlutterApplicationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterApplicationPlugin.h; sourceTree = "<group>"; };
+		F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterApplicationPlugin.m; sourceTree = "<group>"; };
+		F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEventPlugin.m; sourceTree = "<group>"; };
+		F88C1E4E2592E66800C3FFBE /* STFlutterEventPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEventPlugin.h; sourceTree = "<group>"; };
+		F88C1E532592E66800C3FFBE /* STFlutterPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPluginManager.h; sourceTree = "<group>"; };
+		F88C1E542592E66800C3FFBE /* STFlutterPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPlugin.h; sourceTree = "<group>"; };
+		F88C1E552592E66800C3FFBE /* STFlutterBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterBridge.h; sourceTree = "<group>"; };
+		F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPluginManager.m; sourceTree = "<group>"; };
+		F88C1E582592E66800C3FFBE /* STFlutterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterBridge.m; sourceTree = "<group>"; };
+		F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPlugin.m; sourceTree = "<group>"; };
+		F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterViewController.m; sourceTree = "<group>"; };
+		F88C1E7F2592EA2700C3FFBE /* STFlutterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterViewController.h; sourceTree = "<group>"; };
+		F88C1E8F25931E8600C3FFBE /* STFlutterBridgeCompactPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterBridgeCompactPlugin.h; sourceTree = "<group>"; };
+		F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterBridgeCompactPlugin.m; sourceTree = "<group>"; };
+		F88C1E942593213B00C3FFBE /* STToastUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STToastUtil.h; sourceTree = "<group>"; };
+		F88C1E952593213B00C3FFBE /* STToastUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STToastUtil.m; sourceTree = "<group>"; };
 		F89B7D19249B4C4000B2FDC7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F89B7D1B249B4C6B00B2FDC7 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
 		F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -569,6 +605,9 @@
 		F87A5D0D2591C7D600993772 /* LibraryFlutter */ = {
 			isa = PBXGroup;
 			children = (
+				F88C1E7F2592EA2700C3FFBE /* STFlutterViewController.h */,
+				F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */,
+				F88C1E252592E35C00C3FFBE /* Plugins */,
 				F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */,
 				F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */,
 				F87A5D0E2591C80900993772 /* STFlutterRouterHandler.h */,
@@ -577,6 +616,97 @@
 				F87A5D272591D9EB00993772 /* STFlutterRouter.m */,
 			);
 			path = LibraryFlutter;
+			sourceTree = "<group>";
+		};
+		F88C1E252592E35C00C3FFBE /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E8E25931E6500C3FFBE /* BridgeCompact */,
+				F88C1E2B2592E66800C3FFBE /* Page */,
+				F88C1E342592E66800C3FFBE /* Toast */,
+				F88C1E372592E66800C3FFBE /* URL */,
+				F88C1E3D2592E66800C3FFBE /* Env */,
+				F88C1E4C2592E66800C3FFBE /* Event */,
+				F88C1E522592E66800C3FFBE /* Base */,
+				F88C1E492592E66800C3FFBE /* Application */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		F88C1E2B2592E66800C3FFBE /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E2C2592E66800C3FFBE /* STFlutterPagePlugin.h */,
+				F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
+		F88C1E342592E66800C3FFBE /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E352592E66800C3FFBE /* STFlutterToastPlugin.h */,
+				F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		F88C1E372592E66800C3FFBE /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */,
+				F88C1E392592E66800C3FFBE /* STFlutterURLPlugin.h */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
+		F88C1E3D2592E66800C3FFBE /* Env */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E3E2592E66800C3FFBE /* STFlutterEnvPlugin.h */,
+				F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */,
+			);
+			path = Env;
+			sourceTree = "<group>";
+		};
+		F88C1E492592E66800C3FFBE /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E4A2592E66800C3FFBE /* STFlutterApplicationPlugin.h */,
+				F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		F88C1E4C2592E66800C3FFBE /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */,
+				F88C1E4E2592E66800C3FFBE /* STFlutterEventPlugin.h */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		F88C1E522592E66800C3FFBE /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E532592E66800C3FFBE /* STFlutterPluginManager.h */,
+				F88C1E542592E66800C3FFBE /* STFlutterPlugin.h */,
+				F88C1E552592E66800C3FFBE /* STFlutterBridge.h */,
+				F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */,
+				F88C1E582592E66800C3FFBE /* STFlutterBridge.m */,
+				F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		F88C1E8E25931E6500C3FFBE /* BridgeCompact */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E8F25931E8600C3FFBE /* STFlutterBridgeCompactPlugin.h */,
+				F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */,
+			);
+			path = BridgeCompact;
 			sourceTree = "<group>";
 		};
 		F8DB3E152477CB0F00B3B5A0 /* Modules */ = {
@@ -643,6 +773,8 @@
 				F8F85E3A247BBAB500C6BFFA /* STSystemUtil.h */,
 				F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */,
 				6194A7B777E02C7EB5AC4F1B /* EventBus */,
+				F88C1E942593213B00C3FFBE /* STToastUtil.h */,
+				F88C1E952593213B00C3FFBE /* STToastUtil.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -788,6 +920,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */,
 				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
 				F86803EE247670A500D29159 /* main.m in Sources */,
 				F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */,
@@ -799,6 +932,7 @@
 				F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */,
 				F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */,
 				F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */,
+				F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */,
 				F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */,
 				6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */,
 				6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */,
@@ -816,10 +950,12 @@
 				6194A138D9DB6A5933E6A0BA /* STRNURL.m in Sources */,
 				F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */,
 				6194A308C4BA44F042EDC022 /* ReactBridgeModule.m in Sources */,
+				F88C1E5B2592E66800C3FFBE /* STFlutterPagePlugin.m in Sources */,
 				6194A9C5665E37AA84F8AF95 /* ReactBridge.m in Sources */,
 				6194A4F3F4F4C52F5479675C /* STRNBusObject.m in Sources */,
 				6194A796992B4E05C83C9347 /* STRNDispatcher.m in Sources */,
 				6194A7243D18D0DE4BCA9890 /* STSchemalRule.m in Sources */,
+				F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */,
 				6194ABFF21C0635695DA878D /* STCommunication.m in Sources */,
 				6194A03B0CD254EA9E34ADD2 /* STCommunicationPlugin.m in Sources */,
 				6194A96CE4392CB522BDC4DE /* STRNFileManager.m in Sources */,
@@ -827,17 +963,22 @@
 				6194AE32877AD84955D2C33B /* STDragNavigationController.m in Sources */,
 				6194A4584A1A69F5FEFBF776 /* STLeftDragPanGestureRecognizer.m in Sources */,
 				6194A16AE9062FEF56A95031 /* STBus.m in Sources */,
+				F88C1E6A2592E66800C3FFBE /* STFlutterPlugin.m in Sources */,
 				6194A134C4FB52C6E3583F65 /* STBusObject.m in Sources */,
 				6194AB931E45F44AEEC24DFC /* StringUtil.m in Sources */,
 				6194AAE92D9CAAD4127D0BC6 /* NSData+STExtension.m in Sources */,
+				F88C1E692592E66800C3FFBE /* STFlutterBridge.m in Sources */,
 				6194AA633C671D5397B2C340 /* NSDate+STExtension.m in Sources */,
 				6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */,
 				6194A576DD8C3CB488BD7295 /* NSArray+STExtension.m in Sources */,
 				F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */,
 				6194A10E9D19FFE053EBD767 /* NSString+STExtension.m in Sources */,
 				6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */,
+				F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */,
+				F88C1E652592E66800C3FFBE /* STFlutterApplicationPlugin.m in Sources */,
 				6194AEBF2EED5C0F00E733A9 /* NSDictionary+STExtension.m in Sources */,
 				6194A93645DDE2D2B819897D /* NSFileManager+STExtension.m in Sources */,
+				F88C1E612592E66800C3FFBE /* STFlutterEnvPlugin.m in Sources */,
 				6194A96A9D036B38AA9D109E /* NSUserDefaults+STExtension.m in Sources */,
 				6194A34A71A9E797DD255FD8 /* NSNotificationCenter+STExtension.m in Sources */,
 				6194A465937AC68B6490EDCA /* STHybirdViewController.m in Sources */,
@@ -846,7 +987,10 @@
 				6194A826E8DDEF58C2DAB371 /* STThredUtil.m in Sources */,
 				6194A6654994E6476E46069A /* STRNUnZip.m in Sources */,
 				6194AFA7411C6DC05E75ECCB /* STJSONSerialization.m in Sources */,
+				F88C1E5E2592E66800C3FFBE /* STFlutterToastPlugin.m in Sources */,
+				F88C1E662592E66800C3FFBE /* STFlutterEventPlugin.m in Sources */,
 				6194A6A7F1E7C5A13FE9729C /* STNavViewController.m in Sources */,
+				F88C1E682592E66800C3FFBE /* STFlutterPluginManager.m in Sources */,
 				6194AC9FD4CF9F794934516D /* UIViewController+TopMostViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

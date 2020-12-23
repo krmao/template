@@ -57,7 +57,7 @@
     
     [self setViewControllers:@[itemHomeViewController, itemReactNativeViewController, itemHybirdViewController, itemFlutterViewController] animated:YES];
     
-    self.selectedIndex = 1; // 默认显示第几个
+    self.selectedIndex = 3; // 默认显示第几个
 }
 
 - (void) viewWillAppear:(BOOL)animated{

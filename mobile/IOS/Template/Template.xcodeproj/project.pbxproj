@@ -74,6 +74,7 @@
 		F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */; };
 		F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */; };
 		F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E952593213B00C3FFBE /* STToastUtil.m */; };
+		F88C1F152594690400C3FFBE /* STThreadUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1F142594690400C3FFBE /* STThreadUtil.m */; };
 		F89B7D1A249B4C4000B2FDC7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D19249B4C4000B2FDC7 /* libz.tbd */; };
 		F89B7D1E249B4D1800B2FDC7 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */; };
 		F89B7D20249B5AA000B2FDC7 /* bundle-rn.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */; };
@@ -226,6 +227,8 @@
 		F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterBridgeCompactPlugin.m; sourceTree = "<group>"; };
 		F88C1E942593213B00C3FFBE /* STToastUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STToastUtil.h; sourceTree = "<group>"; };
 		F88C1E952593213B00C3FFBE /* STToastUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STToastUtil.m; sourceTree = "<group>"; };
+		F88C1F132594690400C3FFBE /* STThreadUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STThreadUtil.h; sourceTree = "<group>"; };
+		F88C1F142594690400C3FFBE /* STThreadUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STThreadUtil.m; sourceTree = "<group>"; };
 		F89B7D19249B4C4000B2FDC7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F89B7D1B249B4C6B00B2FDC7 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
 		F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
@@ -775,6 +778,8 @@
 				6194A7B777E02C7EB5AC4F1B /* EventBus */,
 				F88C1E942593213B00C3FFBE /* STToastUtil.h */,
 				F88C1E952593213B00C3FFBE /* STToastUtil.m */,
+				F88C1F132594690400C3FFBE /* STThreadUtil.h */,
+				F88C1F142594690400C3FFBE /* STThreadUtil.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -955,6 +960,7 @@
 				6194A4F3F4F4C52F5479675C /* STRNBusObject.m in Sources */,
 				6194A796992B4E05C83C9347 /* STRNDispatcher.m in Sources */,
 				6194A7243D18D0DE4BCA9890 /* STSchemalRule.m in Sources */,
+				F88C1F152594690400C3FFBE /* STThreadUtil.m in Sources */,
 				F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */,
 				6194ABFF21C0635695DA878D /* STCommunication.m in Sources */,
 				6194A03B0CD254EA9E34ADD2 /* STCommunicationPlugin.m in Sources */,

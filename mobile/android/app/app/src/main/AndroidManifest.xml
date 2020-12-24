@@ -28,9 +28,17 @@
     <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
     <!-- WIFI -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    　　
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
     <application
         android:name="com.smart.template.FinalApplication"
@@ -39,12 +47,20 @@
         android:fullBackupContent="@xml/final_backup_descriptor"
         android:icon="@mipmap/final_launcher"
         android:label="@string/final_app_name"
+        android:maxAspectRatio="2.1"
         android:networkSecurityConfig="@xml/final_network_security_config"
+        android:resizeableActivity="false"
         android:supportsRtl="false"
         android:theme="@style/STAppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label,android:allowBackup,android:supportsRtl">
+
+        <!-- SDK >= 26 android:maxAspectRatio="2.4" -->
+        <!-- meta-data SDK <= 25, must be set android:resizeableActivity="false" -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
 
         <activity
             android:name="com.smart.template.home.tab.FinalHomeTabActivity"

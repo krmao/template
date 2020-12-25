@@ -57,14 +57,14 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
         }
     }
 
-    public void sendEventToDart(final String eventName, final JSONObject data) {
+    public void sendEventToDart(final String eventKey, final JSONObject data) {
         Runnable sendEventToDart = new Runnable() {
             @Override
             public void run() {
                 if (methodChannel != null) {
                     JSONObject eventData = new JSONObject();
                     try {
-                        eventData.put("eventName", eventName);
+                        eventData.put("eventKey", eventKey);
                         eventData.put("eventInfo", data);
                     } catch (JSONException e) {
                         e.printStackTrace();

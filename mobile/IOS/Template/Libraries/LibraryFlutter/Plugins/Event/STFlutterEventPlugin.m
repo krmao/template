@@ -14,7 +14,22 @@
         NSString * eventKey = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventKey"]];
 
         [[STEventManager sharedInstance] registerListener:eventId eventName:eventKey callback:^(NSDictionary * _Nullable data) {
-                    
+            if (result) {
+                NSMutableDictionary *resultInfo = [NSMutableDictionary dictionary];
+               
+                NSDictionary *eventInfo = [NSMutableDictionary dictionaryWithDictionary:data];
+                if (eventId && eventId.length > 0) {
+                    [eventInfo setValue:eventId forKey:@"eventId"];
+                }
+                if (eventKey && eventKey.length > 0){
+                    [eventInfo setValue:eventKey forKey:@"eventKey"];
+                }
+                
+                [resultInfo setValue:eventKey forKey:@"eventKey"];
+                [resultInfo setValue:eventInfo forKey:@"eventInfo"];
+
+                [[STFlutterBridge sharedInstance].methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
+            }
         }];
     }
     else if ([functionName isEqualToString:@"removeEventListener"]) {

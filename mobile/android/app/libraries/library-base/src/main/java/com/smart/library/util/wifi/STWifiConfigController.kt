@@ -32,7 +32,7 @@ import com.smart.library.util.STThreadUtils.post
 import com.smart.library.util.STWifiUtil
 import com.smart.library.util.STWifiUtil.getSecurityString
 import com.smart.library.util.STWifiUtil.getSummary
-import com.smart.library.util.network.STNetworkUtil
+import com.smart.library.util.STNetworkUtil
 import java.security.KeyStore
 import java.util.*
 import java.util.regex.Pattern

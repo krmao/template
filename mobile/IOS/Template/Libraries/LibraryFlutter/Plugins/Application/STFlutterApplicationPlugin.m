@@ -14,7 +14,6 @@
     }
 }
 
-
 - (NSDictionary *)getApplicationConstants {
     NSMutableDictionary *constantsToExport = [NSMutableDictionary dictionary];
     [constantsToExport setValue:[self deviceInfo] forKey:@"deviceInfo"];

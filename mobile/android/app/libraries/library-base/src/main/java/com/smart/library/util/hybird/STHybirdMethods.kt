@@ -3,7 +3,7 @@ package com.smart.library.util.hybird
 import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
-import com.smart.library.util.network.STNetworkUtil
+import com.smart.library.util.STNetworkUtil
 
 /**
  * getAppInfo/getDeviceInfo 放到 userAgent
@@ -33,6 +33,6 @@ class STHybirdMethods {
 
         fun removeFromMemory(module: String, key: String) = STCacheManager.remove(module, key)
 
-        fun isNetworkAvailable(): Boolean = STNetworkUtil.isNetworkAvailable()
+        fun isNetworkAvailable(): Boolean = STNetworkUtil.checkNetworkState()
     }
 }

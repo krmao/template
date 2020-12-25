@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIViewController *)currentViewController;
 - (UIViewController *)currentFlutterViewController;
 
-
 + (void)callModule:(NSString *)moduleName
           function:(NSString *)functionName
          arguments:(id)arguments

@@ -14,7 +14,6 @@ import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STIImageHandler
 import com.smart.library.util.image.STImageManager
 import com.smart.library.util.image.impl.STImageFrescoHandler
-import com.smart.library.util.network.STNetworkChangedReceiver
 import com.smart.library.util.okhttp.STOkHttpManager
 import com.smart.library.util.rx.RxBus
 import com.smart.library.widget.debug.STDebugFragment
@@ -163,8 +162,7 @@ object STInitializer {
     )
 
     data class ConfigNetwork(
-        val environments: ConfigNetworkEnvironments = ConfigNetworkEnvironments(),
-        var networkChangedReceiver: STNetworkChangedReceiver? = null
+        val environments: ConfigNetworkEnvironments = ConfigNetworkEnvironments()
     )
 
     data class ConfigNetworkEnvironments(
@@ -340,13 +338,6 @@ object STInitializer {
                 STImageManager.initialize(application, imageHandler)
                 //endregion
 
-                //region register networkChangedReceiver
-                val applicationContext: Context? = config?.application?.applicationContext
-                if (applicationContext != null) {
-                    config.configNetwork.networkChangedReceiver = STNetworkChangedReceiver.register(applicationContext, config.configNetwork.networkChangedReceiver)
-                }
-                //endregion
-
                 if (debug()) {
                     STURLManager.Environments.values().forEach { environment: STURLManager.Environments ->
                         STDebugFragment.addHost(environment.name, environment.map[STURLManager.KEY_HOST] ?: "", STURLManager.curEnvironment == environment)
@@ -375,13 +366,6 @@ object STInitializer {
         val applicationContext: Context? = config?.application?.applicationContext
 
         STImageManager.clearMemoryCaches()
-
-        //region unregister networkChangedReceiver
-        val networkChangedReceiver = config?.configNetwork?.networkChangedReceiver
-        if (applicationContext != null && networkChangedReceiver != null) {
-            STNetworkChangedReceiver.unregister(applicationContext, networkChangedReceiver)
-        }
-        //endregion
 
         //region unregister activityLifecycleCallbacks
         val application: Application? = config?.application

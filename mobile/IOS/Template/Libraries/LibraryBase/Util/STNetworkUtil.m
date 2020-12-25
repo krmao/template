@@ -20,58 +20,49 @@
 #include <arpa/inet.h>
 
 @interface STNetworkUtil() {
-    
 }
+
 @property (nonatomic, strong) CTTelephonyNetworkInfo *telephonyInfo;
-@property (nonatomic, assign) eNetworkType innerNetworkType;
+@property (nonatomic, assign) STNetworkType innerNetworkType;
 @property (nonatomic, strong) AFNetworkReachabilityManager *reachabilityManager;
 
 @end
 
-static STNetworkUtil *theSharedNetworkUtil = nil;
+static STNetworkUtil *instance = nil;
 
 @implementation STNetworkUtil
 
-+ (STNetworkUtil *)sharedInstance
-{
-    if (theSharedNetworkUtil == NULL) {
++ (STNetworkUtil *)sharedInstance {
+    if (instance == NULL) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            theSharedNetworkUtil = [[STNetworkUtil alloc] init];
+            instance = [[STNetworkUtil alloc] init];
         });
     }
-    
-    return theSharedNetworkUtil;
+    return instance;
 }
 
-- (id)init
-{
+- (id)init {
     if (self = [super init]) {
         _telephonyInfo = [[CTTelephonyNetworkInfo alloc] init];
         _reachabilityManager = [AFNetworkReachabilityManager sharedManager];
         __weak STNetworkUtil *weakSelf = self;
-        
         [_reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             __strong __typeof(&*self)strongSelf = weakSelf;
             [strongSelf networkChangedActionRA];
         }];
         [_reachabilityManager startMonitoring];
-        
         _innerNetworkType = [self networkType];
-        
     }
-    
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)networkChangedActionRA
-{
-    eNetworkType tmpNetworkType = [self networkType];
+- (void)networkChangedActionRA {
+    STNetworkType tmpNetworkType = [self networkType];
     if (self.innerNetworkType != tmpNetworkType) {
         self.innerNetworkType = tmpNetworkType;
         [self performSelectorOnMainThread:@selector(notifyNetworkChanged) withObject:NULL waitUntilDone:NO];
@@ -82,9 +73,8 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KEY_NETWORK_DID_CHANGED_NOTIFICATION object:NULL userInfo:NULL];
 }
 
-- (eNetworkType)networkType
-{
-    eNetworkType networkType = NetworkType_None;
+- (STNetworkType)networkType {
+    STNetworkType networkType = NetworkType_None;
     AFNetworkReachabilityStatus status = [self.reachabilityManager networkReachabilityStatus];
     
     if (status == AFNetworkReachabilityStatusReachableViaWiFi) {
@@ -97,9 +87,8 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
                 networkType = NetworkType_4G;
             }else {
                 if (@available(iOS 14.0, *)){
-                    //mcd目前是xcode12 还没有CTRadioAccessTechnologyNRNSA和CTRadioAccessTechnologyNR，所以用字符串
-                    if([self.telephonyInfo.currentRadioAccessTechnology isEqualToString:@"CTRadioAccessTechnologyNRNSA"] ||
-                       [self.telephonyInfo.currentRadioAccessTechnology isEqualToString:@"CTRadioAccessTechnologyNR"]) {
+                    if([self.telephonyInfo.currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyNRNSA] ||
+                       [self.telephonyInfo.currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyNR] ) {
                         networkType = NetworkType_5G;
                     }else{
                         networkType = NetworkType_3G;
@@ -122,7 +111,6 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
     else if (status == AFNetworkReachabilityStatusNotReachable) {
         networkType = NetworkType_None;
     }
-
     return networkType;
 }
 
@@ -133,7 +121,7 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
 - (NSString *)networkTypeInfo
 {
     NSString *ret = @"None";
-    eNetworkType netType = [self networkType];
+    STNetworkType netType = [self networkType];
     switch (netType ) {
         case NetworkType_Unknown:
             ret = @"Unknown";
@@ -159,22 +147,18 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
         default:
             break;
     }
-    
     return ret;
 }
 
-- (BOOL)isNetworkAvailable
-{
+- (BOOL)isNetworkAvailable {
     BOOL isReachable = [self.reachabilityManager isReachable];
     return isReachable || (self.networkType != NetworkType_None);
 }
 
-- (NSString *)carrierName
-{
+- (NSString *)carrierName {
     NSString *provider;
     CTCarrier *carrier = self.telephonyInfo.subscriberCellularProvider;
     NSString *providerCode = [carrier mobileNetworkCode];
-    
     if (providerCode == nil) {
         provider = @"无运营商信息";
     }
@@ -208,15 +192,7 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
     } else if ([radioAccessTechnology isEqualToString:CTRadioAccessTechnologyLTE]) {
         return YES;
     }
-    
     return YES;
-}
-
-
-+ (void)checkNetworkGFWStatus
-{
-    
-    
 }
 
 + (NSString *)getWIFIIPAddress
@@ -236,33 +212,25 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
                 // Check if interface is en0 which is the wifi connection on the iPhone
                 if ([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
                     // Get NSString from C String
-
                     char ip[INET_ADDRSTRLEN] = {0};
                     address = [NSString stringWithUTF8String:inet_ntop(AF_INET, &(((struct sockaddr_in *)(temp_addr->ifa_addr))->sin_addr), ip, INET_ADDRSTRLEN)];
-                    
-                    
                 }
             }else if(temp_addr->ifa_addr->sa_family == AF_INET6){
                 if ([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
                     char ip[INET6_ADDRSTRLEN] = {0};
                     address = [NSString stringWithUTF8String:inet_ntop(AF_INET6, &(((struct sockaddr_in6 *)(temp_addr->ifa_addr)) -> sin6_addr), ip, INET6_ADDRSTRLEN)];
-                    
                 }
-                
             }
-            
             temp_addr = temp_addr->ifa_next;
         }
     }
     
     // Free memory
     freeifaddrs(interfaces);
-    
     return address;
 }
 
-+ (NSString *)lookupHostName:(NSString *)hostName
-{
++ (NSString *)lookupHostName:(NSString *)hostName {
     NSString *resolvedIP = nil;
     
     CFHostRef hostRef = CFHostCreateWithName(kCFAllocatorDefault, (__bridge CFStringRef)hostName);
@@ -278,14 +246,11 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
     return resolvedIP;
 }
 
-
-
 // 获取运营商类型
-+ (eNetworkCarrierType)getCarrierType{
++ (STNetworkCarrierType)getCarrierType{
     CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
     __block CTCarrier *avalibleCarrier;
     if (@available(iOS 12.0, *)) {
-        
         if (@available(iOS 13.0, *)) {
             avalibleCarrier = info.serviceSubscriberCellularProviders[info.dataServiceIdentifier?:@""];
         }
@@ -299,6 +264,7 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
         }
         
     }
+    
     if(!avalibleCarrier) {
         avalibleCarrier = info.subscriberCellularProvider;
     }
@@ -312,22 +278,22 @@ static STNetworkUtil *theSharedNetworkUtil = nil;
             [mobileNetWorkCode isEqualToString:@"07"] ||
             [mobileNetWorkCode isEqualToString:@"08"]) {
             // 中国移动
-            return eNetworkCarrierTypeChinaMobile;
+            return NetworkCarrierTypeChinaMobile;
         }
         if ([mobileNetWorkCode isEqualToString:@"01"] ||
             [mobileNetWorkCode isEqualToString:@"06"] ||
             [mobileNetWorkCode isEqualToString:@"09"]) {
             // 中国联通
-            return eNetworkCarrierTypeChinaUnicom;
+            return NetworkCarrierTypeChinaUnicom;
         }
         if ([mobileNetWorkCode isEqualToString:@"03"] ||
              [mobileNetWorkCode isEqualToString:@"05"] ||
              [mobileNetWorkCode isEqualToString:@"11"]) {
             // 中国电信
-            return eNetworkCarrierTypeTelecom;
+            return NetworkCarrierTypeTelecom;
         }
     }
-    return eNetworkCarrierTypeUnknown;
+    return NetworkCarrierTypeUnknown;
 }
 
 @end

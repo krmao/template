@@ -9,8 +9,7 @@
 + (void)callModule:(NSString *)moduleName
           function:(NSString *)functionName
          arguments:(id)arguments
-            result:(FlutterResult)result
-{
+            result:(FlutterResult)result {
     NSString *moduleClassName = [[@"STFlutter" stringByAppendingString:moduleName] stringByAppendingString:@"Plugin"];
     STFlutterPlugin *object = [STFlutterPluginManager pluginObjectForModuleClass:moduleClassName];
     if (object){
@@ -52,8 +51,7 @@
     
     if ([controller isKindOfClass:[UINavigationController class]]) {
         return (UINavigationController*)controller;
-    }
-    else if ([controller isKindOfClass:[UIViewController class]]) {
+    } else if ([controller isKindOfClass:[UIViewController class]]) {
         return controller.navigationController;
     }
     return nil;

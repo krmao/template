@@ -2,7 +2,7 @@ package com.smart.library.flutter.plugins
 
 import android.app.Activity
 import com.smart.library.util.STURLManager
-import com.smart.library.util.network.STNetworkUtil
+import com.smart.library.util.STNetworkUtil
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -14,7 +14,7 @@ class STFlutterEnvPlugin : STFlutterBasePlugin() {
     @STFlutterPluginMethod
     fun getNetworkType(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
         val jsonObject = JSONObject()
-        jsonObject.putOpt("networkType", STNetworkUtil.getNetworkType())
+        jsonObject.putOpt("networkType", STNetworkUtil.getNetworkTypeInfo())
         callbackSuccess(result, jsonObject)
     }
 

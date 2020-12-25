@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum eNetworkType {
+typedef enum STNetworkType {
     NetworkType_Unknown = -1,
     NetworkType_None = 0,
     NetworkType_WIFI = 1,
@@ -18,14 +18,14 @@ typedef enum eNetworkType {
     NetworkType_3G = 3,
     NetworkType_4G = 4,
     NetworkType_5G = 5
-} eNetworkType;
+} STNetworkType;
 
 typedef enum eNetworkCarrierType {
-    eNetworkCarrierTypeUnknown = 0,
-    eNetworkCarrierTypeChinaMobile = 1,
-    eNetworkCarrierTypeChinaUnicom = 2,
-    eNetworkCarrierTypeTelecom = 3,
-} eNetworkCarrierType;
+    NetworkCarrierTypeUnknown = 0,
+    NetworkCarrierTypeChinaMobile = 1,
+    NetworkCarrierTypeChinaUnicom = 2,
+    NetworkCarrierTypeTelecom = 3,
+} STNetworkCarrierType;
 
 //网络状态变更的时候通知
 #define KEY_NETWORK_DID_CHANGED_NOTIFICATION @"KEY_NETWORK_DID_CHANGED_NOTIFICATION"
@@ -35,7 +35,7 @@ typedef enum eNetworkCarrierType {
 + (STNetworkUtil *)sharedInstance;
 
 /*当前网络类型，None,WIFI,2G,3G,4G*/
-@property (nonatomic, readonly) eNetworkType networkType;
+@property (nonatomic, readonly) STNetworkType networkType;
 
 /*当前网络类型描述，None,WIFI,2G,3G,4G*/
 @property (nonatomic, readonly) NSString *networkTypeInfo;
@@ -53,7 +53,7 @@ typedef enum eNetworkCarrierType {
 + (NSString *)lookupHostName:(NSString *)hostName;
 
 //返回运营商信息，只支持移动，联通，电信
-+ (eNetworkCarrierType)getCarrierType;
++ (STNetworkCarrierType)getCarrierType;
 @end
 
 NS_ASSUME_NONNULL_END

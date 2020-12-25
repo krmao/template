@@ -14,13 +14,10 @@
 		6194A138D9DB6A5933E6A0BA /* STRNURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A29C63B26E7F128361D4 /* STRNURL.m */; };
 		6194A16AE9062FEF56A95031 /* STBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AAF766A9DDBDDF61EE2B /* STBus.m */; };
 		6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AE1E44E843730E602584 /* UIView+STExtension.m */; };
-		6194A21EB1CFFA96A7D40F4C /* STEventUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */; };
 		6194A308C4BA44F042EDC022 /* ReactBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9DCF4569D456916A923 /* ReactBridgeModule.m */; };
 		6194A34A71A9E797DD255FD8 /* NSNotificationCenter+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0A1ED412B95FED6F0E4 /* NSNotificationCenter+STExtension.m */; };
 		6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD7A3B59E5179562FE5E /* UIDevice+STExtension.m */; };
-		6194A3D8D65391E05300C9BA /* STEventSubscribeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */; };
 		6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */; };
-		6194A41418491260F8812C45 /* STEventDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A7E091970BA5D58DDB3C /* STEventDebug.m */; };
 		6194A4584A1A69F5FEFBF776 /* STLeftDragPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A8E731AD66F7CEC432C5 /* STLeftDragPanGestureRecognizer.m */; };
 		6194A465937AC68B6490EDCA /* STHybirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD65AED130D6F828999D /* STHybirdViewController.m */; };
 		6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0994C02CAD7478308B2 /* STBaseViewController.m */; };
@@ -38,17 +35,13 @@
 		6194A96A9D036B38AA9D109E /* NSUserDefaults+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AEE4B594774BBEDCD629 /* NSUserDefaults+STExtension.m */; };
 		6194A96CE4392CB522BDC4DE /* STRNFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AC16EE9B1867B91154C1 /* STRNFileManager.m */; };
 		6194A9C5665E37AA84F8AF95 /* ReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A1DE0809717C7C9DCD41 /* ReactBridge.m */; };
-		6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3716B82955316783691 /* STEventPoster.m */; };
-		6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */; };
 		6194AA633C671D5397B2C340 /* NSDate+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AB51924E3F3EB7E09E3D /* NSDate+STExtension.m */; };
-		6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */; };
 		6194AAE92D9CAAD4127D0BC6 /* NSData+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ABCCBBC406FB6B4CE667 /* NSData+STExtension.m */; };
 		6194AB931E45F44AEEC24DFC /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A29FCE5CA1324E12E6F2 /* StringUtil.m */; };
 		6194ABFF21C0635695DA878D /* STCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A7EF18A4D50A24DC996E /* STCommunication.m */; };
 		6194AC9FD4CF9F794934516D /* UIViewController+TopMostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ABEE796806A03C4C6B8E /* UIViewController+TopMostViewController.m */; };
 		6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */; };
 		6194AE32877AD84955D2C33B /* STDragNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3E07FC3B89915E735F8 /* STDragNavigationController.m */; };
-		6194AE78F16107D158F47C7D /* STEventBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0CCAE7B7447858B63C7 /* STEventBus.m */; };
 		6194AEAEA654E7EDDECB4F79 /* STWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A1C0B15E5C83BD0FC021 /* STWKWebViewController.m */; };
 		6194AEBF2EED5C0F00E733A9 /* NSDictionary+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A87E235D8946004A5966 /* NSDictionary+STExtension.m */; };
 		6194AFA7411C6DC05E75ECCB /* STJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AB9545E013CE714D3F6D /* STJSONSerialization.m */; };
@@ -62,6 +55,10 @@
 		F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */; };
 		F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */; };
 		F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D272591D9EB00993772 /* STFlutterRouter.m */; };
+		F8851B3F2595852E001F2FBA /* STEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B3E2595852E001F2FBA /* STEventManager.m */; };
+		F8851B44259589E6001F2FBA /* STValueUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B43259589E6001F2FBA /* STValueUtil.m */; };
+		F8851B482595968F001F2FBA /* STURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B472595968F001F2FBA /* STURLManager.m */; };
+		F8851B4C25959A99001F2FBA /* STNetworkUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B4B25959A99001F2FBA /* STNetworkUtil.m */; };
 		F88C1E5B2592E66800C3FFBE /* STFlutterPagePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */; };
 		F88C1E5E2592E66800C3FFBE /* STFlutterToastPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */; };
 		F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */; };
@@ -94,51 +91,40 @@
 		6194A0994C02CAD7478308B2 /* STBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseViewController.m; sourceTree = "<group>"; };
 		6194A0A1ED412B95FED6F0E4 /* NSNotificationCenter+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+STExtension.m"; sourceTree = "<group>"; };
 		6194A0BD01F3F0A25E0CB4B6 /* STNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNavViewController.h; sourceTree = "<group>"; };
-		6194A0CCAE7B7447858B63C7 /* STEventBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventBus.m; sourceTree = "<group>"; };
 		6194A0F7BFA20438CA85EC75 /* ReactBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactBridge.h; sourceTree = "<group>"; };
 		6194A104CB169EF33BA2A378 /* NSString+Md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Md5.h"; sourceTree = "<group>"; };
 		6194A10EA9F5D5DD6CE09C4E /* STDragNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDragNavigationController.h; sourceTree = "<group>"; };
 		6194A18176B91F0E858C0711 /* NSNotificationCenter+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+STExtension.h"; sourceTree = "<group>"; };
-		6194A185E8E4521FDD4A5022 /* STEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventBus.h; sourceTree = "<group>"; };
 		6194A1C0B15E5C83BD0FC021 /* STWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKWebViewController.m; sourceTree = "<group>"; };
 		6194A1DE0809717C7C9DCD41 /* ReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBridge.m; sourceTree = "<group>"; };
 		6194A21280CD66F0C661A4A6 /* STRNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNViewController.m; sourceTree = "<group>"; };
-		6194A219CE9E0FEE52DFA586 /* STEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEvent.h; sourceTree = "<group>"; };
 		6194A267B83D8BAB47B85286 /* STCommunicationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCommunicationPlugin.m; sourceTree = "<group>"; };
 		6194A28D515ED7A2CC687D11 /* STRNBusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNBusObject.h; sourceTree = "<group>"; };
 		6194A29C63B26E7F128361D4 /* STRNURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNURL.m; sourceTree = "<group>"; };
 		6194A29FCE5CA1324E12E6F2 /* StringUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringUtil.m; sourceTree = "<group>"; };
 		6194A2FCAC06176AE4484F6B /* STWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKWebViewController.h; sourceTree = "<group>"; };
 		6194A36FEA3CCB60E3B4A97E /* STBSPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBSPatch.h; sourceTree = "<group>"; };
-		6194A3716B82955316783691 /* STEventPoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventPoster.m; sourceTree = "<group>"; };
-		6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventSubscribeModel.m; sourceTree = "<group>"; };
 		6194A3E07FC3B89915E735F8 /* STDragNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDragNavigationController.m; sourceTree = "<group>"; };
-		6194A46B349939BC7E06FDE3 /* STEventUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventUserInfo.h; sourceTree = "<group>"; };
 		6194A49170EECF238B787AC6 /* NSDate+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+STExtension.h"; sourceTree = "<group>"; };
 		6194A4BDA63EAEC4B93654A0 /* STRNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNViewController.h; sourceTree = "<group>"; };
 		6194A4C4F5E0737ED9DA5C08 /* STThredUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STThredUtil.h; sourceTree = "<group>"; };
 		6194A4DD4DE9611969EC7CB7 /* NSUserDefaults+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+STExtension.h"; sourceTree = "<group>"; };
 		6194A4F06AF4B3CFB53A0ABF /* STRNUnZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNUnZip.m; sourceTree = "<group>"; };
 		6194A53174A31319E5887269 /* UIColor+ARGB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ARGB.h"; sourceTree = "<group>"; };
-		6194A5657ACBEF5628A9E6AB /* STEventDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventDefinition.h; sourceTree = "<group>"; };
 		6194A571693F942629A109A7 /* STBusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBusObject.h; sourceTree = "<group>"; };
 		6194A63A7CE2FB281EEC5EA9 /* STCommunicationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCommunicationPlugin.h; sourceTree = "<group>"; };
 		6194A6676B156FDA92EA2AFA /* NSFileManager+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+STExtension.h"; sourceTree = "<group>"; };
-		6194A686AD61A6519B9946DB /* STEventPoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventPoster.h; sourceTree = "<group>"; };
 		6194A71A42DD8F53C156DD73 /* NSString+Md5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Md5.m"; sourceTree = "<group>"; };
 		6194A7281B1B4E3235104DFA /* STRNURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNURL.h; sourceTree = "<group>"; };
 		6194A7339A1B22D2E1AD9D86 /* STNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNavViewController.m; sourceTree = "<group>"; };
 		6194A7A261B6CB4709540F77 /* STRNView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNView.h; sourceTree = "<group>"; };
-		6194A7E091970BA5D58DDB3C /* STEventDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventDebug.m; sourceTree = "<group>"; };
 		6194A7EF18A4D50A24DC996E /* STCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCommunication.m; sourceTree = "<group>"; };
 		6194A810D0E2435AEB12E3C0 /* NSString+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+STExtension.m"; sourceTree = "<group>"; };
 		6194A8429BDAC7CF7EBDEC9A /* NSData+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+STExtension.h"; sourceTree = "<group>"; };
 		6194A87AC89E2DFB549B4803 /* STRNUnZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNUnZip.h; sourceTree = "<group>"; };
 		6194A87E235D8946004A5966 /* NSDictionary+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+STExtension.m"; sourceTree = "<group>"; };
-		6194A8A4AA2C8D2640BB8978 /* STEventDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventDebug.h; sourceTree = "<group>"; };
 		6194A8B87B944A077B5D9D7E /* STRNDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNDispatcher.h; sourceTree = "<group>"; };
 		6194A8E731AD66F7CEC432C5 /* STLeftDragPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLeftDragPanGestureRecognizer.m; sourceTree = "<group>"; };
-		6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventSubscriber.m; sourceTree = "<group>"; };
 		6194A91F0B76B38533D90D22 /* STHybirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHybirdViewController.h; sourceTree = "<group>"; };
 		6194A9711A1A5553E3BD012B /* NSArray+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+STExtension.h"; sourceTree = "<group>"; };
 		6194A9798B4A10786167307E /* NSDictionary+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+STExtension.h"; sourceTree = "<group>"; };
@@ -146,7 +132,6 @@
 		6194A9B2E54EE8A8F3A22C02 /* STThredUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STThredUtil.m; sourceTree = "<group>"; };
 		6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseTabBarController.m; sourceTree = "<group>"; };
 		6194A9DCF4569D456916A923 /* ReactBridgeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBridgeModule.m; sourceTree = "<group>"; };
-		6194AA32EDB57E003BBC93D4 /* STEventSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventSubscriber.h; sourceTree = "<group>"; };
 		6194AA4AF488C6408F48F6A5 /* STCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCommunication.h; sourceTree = "<group>"; };
 		6194AAE6C2E195D2C6C0EF83 /* STLeftDragPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLeftDragPanGestureRecognizer.h; sourceTree = "<group>"; };
 		6194AAEACE540AEEE5121D40 /* UIDevice+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+STExtension.h"; sourceTree = "<group>"; };
@@ -160,20 +145,16 @@
 		6194AC0533252ACDE06ECA93 /* STRNFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNFileManager.h; sourceTree = "<group>"; };
 		6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseTabBarController.h; sourceTree = "<group>"; };
 		6194AC16EE9B1867B91154C1 /* STRNFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNFileManager.m; sourceTree = "<group>"; };
-		6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEventUserInfo.m; sourceTree = "<group>"; };
 		6194ACAF5B5DAD759962E638 /* NSFileManager+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+STExtension.m"; sourceTree = "<group>"; };
 		6194ACAFB645E70822B7B204 /* STBSPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBSPatch.m; sourceTree = "<group>"; };
 		6194AD062D94D28BFE6667FA /* STBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBus.h; sourceTree = "<group>"; };
 		6194AD12AA71819671BEFFEB /* NSString+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+STExtension.h"; sourceTree = "<group>"; };
-		6194AD38B6F8F440456768C1 /* STEventSubscribeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventSubscribeModel.h; sourceTree = "<group>"; };
 		6194AD65AED130D6F828999D /* STHybirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHybirdViewController.m; sourceTree = "<group>"; };
 		6194AD7A3B59E5179562FE5E /* UIDevice+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+STExtension.m"; sourceTree = "<group>"; };
 		6194AD85A7ACC89E9507FD76 /* STMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMacros.h; sourceTree = "<group>"; };
 		6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ARGB.m"; sourceTree = "<group>"; };
 		6194AD9CC972FAE9FE5CF17C /* STJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STJSONSerialization.h; sourceTree = "<group>"; };
-		6194ADD05B88259BCC706CD4 /* STEventBusKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STEventBusKit.h; sourceTree = "<group>"; };
 		6194ADD069521D561EE38BB8 /* NSArray+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+STExtension.m"; sourceTree = "<group>"; };
-		6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STEvent.m; sourceTree = "<group>"; };
 		6194AE1E44E843730E602584 /* UIView+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+STExtension.m"; sourceTree = "<group>"; };
 		6194AE9C4D03B6EACFEA87B0 /* STSchemalRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSchemalRule.h; sourceTree = "<group>"; };
 		6194AEE19397E401C3C96C9F /* STRNView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNView.m; sourceTree = "<group>"; };
@@ -203,6 +184,14 @@
 		F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEmbedIntoNativeViewController.h; sourceTree = "<group>"; };
 		F87A5D262591D9EB00993772 /* STFlutterRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouter.h; sourceTree = "<group>"; };
 		F87A5D272591D9EB00993772 /* STFlutterRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouter.m; sourceTree = "<group>"; };
+		F8851B3D2595852E001F2FBA /* STEventManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STEventManager.h; sourceTree = "<group>"; };
+		F8851B3E2595852E001F2FBA /* STEventManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STEventManager.m; sourceTree = "<group>"; };
+		F8851B42259589E6001F2FBA /* STValueUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STValueUtil.h; sourceTree = "<group>"; };
+		F8851B43259589E6001F2FBA /* STValueUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STValueUtil.m; sourceTree = "<group>"; };
+		F8851B462595968F001F2FBA /* STURLManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STURLManager.h; sourceTree = "<group>"; };
+		F8851B472595968F001F2FBA /* STURLManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STURLManager.m; sourceTree = "<group>"; };
+		F8851B4A25959A99001F2FBA /* STNetworkUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STNetworkUtil.h; sourceTree = "<group>"; };
+		F8851B4B25959A99001F2FBA /* STNetworkUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STNetworkUtil.m; sourceTree = "<group>"; };
 		F88C1E2C2592E66800C3FFBE /* STFlutterPagePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPagePlugin.h; sourceTree = "<group>"; };
 		F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPagePlugin.m; sourceTree = "<group>"; };
 		F88C1E352592E66800C3FFBE /* STFlutterToastPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterToastPlugin.h; sourceTree = "<group>"; };
@@ -372,17 +361,6 @@
 			path = Communication;
 			sourceTree = "<group>";
 		};
-		6194A259F4BCC1F37FA8D86A /* Action */ = {
-			isa = PBXGroup;
-			children = (
-				6194A686AD61A6519B9946DB /* STEventPoster.h */,
-				6194A3716B82955316783691 /* STEventPoster.m */,
-				6194AA32EDB57E003BBC93D4 /* STEventSubscriber.h */,
-				6194A8F6C710843F5E6DD1D5 /* STEventSubscriber.m */,
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
 		6194A3FAA9C6B96654B88CDB /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,50 +372,6 @@
 				6194A1DE0809717C7C9DCD41 /* ReactBridge.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		6194A673FD2E88C7CA75D245 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				6194A219CE9E0FEE52DFA586 /* STEvent.h */,
-				6194ADD07A0B13B8AA1B1FD6 /* STEvent.m */,
-				6194A185E8E4521FDD4A5022 /* STEventBus.h */,
-				6194A0CCAE7B7447858B63C7 /* STEventBus.m */,
-			);
-			path = Event;
-			sourceTree = "<group>";
-		};
-		6194A7B777E02C7EB5AC4F1B /* EventBus */ = {
-			isa = PBXGroup;
-			children = (
-				6194A9218BDD77671891A6C3 /* Objs */,
-				6194AA35F570ADC23B1872D4 /* Debug */,
-				6194A673FD2E88C7CA75D245 /* Event */,
-				6194A259F4BCC1F37FA8D86A /* Action */,
-				6194ADD05B88259BCC706CD4 /* STEventBusKit.h */,
-				6194A5657ACBEF5628A9E6AB /* STEventDefinition.h */,
-			);
-			path = EventBus;
-			sourceTree = "<group>";
-		};
-		6194A9218BDD77671891A6C3 /* Objs */ = {
-			isa = PBXGroup;
-			children = (
-				6194A46B349939BC7E06FDE3 /* STEventUserInfo.h */,
-				6194AC3B50AF32B4528C35D7 /* STEventUserInfo.m */,
-				6194AD38B6F8F440456768C1 /* STEventSubscribeModel.h */,
-				6194A3804CD0AC77375C6BD4 /* STEventSubscribeModel.m */,
-			);
-			path = Objs;
-			sourceTree = "<group>";
-		};
-		6194AA35F570ADC23B1872D4 /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				6194A8A4AA2C8D2640BB8978 /* STEventDebug.h */,
-				6194A7E091970BA5D58DDB3C /* STEventDebug.m */,
-			);
-			path = Debug;
 			sourceTree = "<group>";
 		};
 		6194AA7DEE22F53622E8CADE /* Bus */ = {
@@ -775,11 +709,18 @@
 			children = (
 				F8F85E3A247BBAB500C6BFFA /* STSystemUtil.h */,
 				F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */,
-				6194A7B777E02C7EB5AC4F1B /* EventBus */,
 				F88C1E942593213B00C3FFBE /* STToastUtil.h */,
 				F88C1E952593213B00C3FFBE /* STToastUtil.m */,
 				F88C1F132594690400C3FFBE /* STThreadUtil.h */,
 				F88C1F142594690400C3FFBE /* STThreadUtil.m */,
+				F8851B3D2595852E001F2FBA /* STEventManager.h */,
+				F8851B3E2595852E001F2FBA /* STEventManager.m */,
+				F8851B42259589E6001F2FBA /* STValueUtil.h */,
+				F8851B43259589E6001F2FBA /* STValueUtil.m */,
+				F8851B462595968F001F2FBA /* STURLManager.h */,
+				F8851B472595968F001F2FBA /* STURLManager.m */,
+				F8851B4A25959A99001F2FBA /* STNetworkUtil.h */,
+				F8851B4B25959A99001F2FBA /* STNetworkUtil.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -926,6 +867,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */,
+				F8851B3F2595852E001F2FBA /* STEventManager.m in Sources */,
+				F8851B44259589E6001F2FBA /* STValueUtil.m in Sources */,
 				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
 				F86803EE247670A500D29159 /* main.m in Sources */,
 				F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */,
@@ -936,19 +879,13 @@
 				F8F85E3C247BBAB500C6BFFA /* STSystemUtil.m in Sources */,
 				F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */,
 				F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */,
+				F8851B482595968F001F2FBA /* STURLManager.m in Sources */,
 				F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */,
 				F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */,
 				F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */,
 				6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */,
 				6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */,
-				6194A21EB1CFFA96A7D40F4C /* STEventUserInfo.m in Sources */,
-				6194A3D8D65391E05300C9BA /* STEventSubscribeModel.m in Sources */,
-				6194A41418491260F8812C45 /* STEventDebug.m in Sources */,
-				6194AA549A1365D5846FA2C1 /* STEvent.m in Sources */,
-				6194AE78F16107D158F47C7D /* STEventBus.m in Sources */,
-				6194A9E937DE8D0C19B07E77 /* STEventPoster.m in Sources */,
 				F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */,
-				6194AA9CB70EDAA78174C682 /* STEventSubscriber.m in Sources */,
 				6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */,
 				6194A71EEB9DDE620D31C006 /* STRNViewController.m in Sources */,
 				6194A0DAB76F194AD7CA4C91 /* STRNView.m in Sources */,
@@ -978,6 +915,7 @@
 				6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */,
 				6194A576DD8C3CB488BD7295 /* NSArray+STExtension.m in Sources */,
 				F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */,
+				F8851B4C25959A99001F2FBA /* STNetworkUtil.m in Sources */,
 				6194A10E9D19FFE053EBD767 /* NSString+STExtension.m in Sources */,
 				6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */,
 				F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */,

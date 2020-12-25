@@ -109,8 +109,8 @@
     [self.view addSubview:presentFlutterOrderPage];
 
     // 订阅事件
-    [STEventSubscriber addTarget:self name:@"event_flutter" priority:STEventSubscriberPriorityDefault inMainTread:YES action:^(STEventUserInfo *info) {
-        NSLog(@"%s, receive event:%@, thread:%@", __FUNCTION__, [info description], [NSThread currentThread]);
+    [[STEventManager sharedInstance] registerListener:self eventName:@"event_flutter" callback:^(NSDictionary * _Nullable data) {
+        NSLog(@"%s, receive event:%@, thread:%@", __FUNCTION__, [data description], [NSThread currentThread]);
         [self.bridgeButton setTitle:@"CHANGED BY HOME" forState:UIControlStateNormal];
     }];
 }
@@ -192,7 +192,7 @@
     NSLog(@"%s, %lu", __FUNCTION__, (unsigned long) self.navigationController.viewControllers.count);
 
     // 取消订阅
-    [STEventSubscriber removeTarget:self];
+    [[STEventManager sharedInstance] unRegisterListener:self];
 }
 
 /*

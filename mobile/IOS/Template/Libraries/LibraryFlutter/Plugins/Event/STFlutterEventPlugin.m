@@ -8,19 +8,29 @@
            arguments:(id)arguments
               result:(FlutterResult)result{
     NSDictionary *parameters = arguments;
+    
     if ([functionName isEqualToString:@"addEventListener"]) {
-        
-//        NSString *eventName = parameters[@"eventName"];
-//        NSString *sequenceId = parameters[@"sequenceId"];
-//        NSString *containerId = parameters[@"containerId"];
+        NSString * eventId = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventId"]];
+        NSString * eventKey = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventKey"]];
+
+        [[STEventManager sharedInstance] registerListener:eventId eventName:eventKey callback:^(NSDictionary * _Nullable data) {
+                    
+        }];
     }
     else if ([functionName isEqualToString:@"removeEventListener"]) {
-//        NSString *name = parameters[@"eventName"];
-//        NSString *containerId = parameters[@"containerId"];
+        NSString * eventId = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventId"]];
+        NSString * eventKey = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventKey"]];
+
+        if(!eventKey || eventKey.length == 0 ){
+            [[STEventManager sharedInstance] unRegisterListener:eventId];
+        }else{
+            [[STEventManager sharedInstance] unRegisterListener:eventId eventName:eventKey];
+        }
     }
     else if ([functionName isEqualToString:@"sendEvent"]){
-//        NSString *name = parameters[@"eventName"];
-//        NSDictionary *eventInfo = parameters[@"eventInfo"];
+        NSString * eventName = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventName"]];
+        NSDictionary * eventInfo = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"eventInfo"]];
+        [[STEventManager sharedInstance] sendEvent:eventName eventInfo:eventInfo];
     }
 }
 @end

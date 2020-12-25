@@ -15,18 +15,21 @@
 - (void)callFunction:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
-   if ([functionName isEqualToString:@"callNative"]) {
-       NSString * methodName = [((NSDictionary *)arguments) valueForKey:@"functionName"];
-       NSString * params = [((NSDictionary *)arguments) valueForKey:@"params"];
-       NSLog(@"functionName methodName=%@, params=%@",methodName, params);
+    
+    NSDictionary *parameters = arguments;
+    
+    if ([functionName isEqualToString:@"callNative"]) {
+        NSString * methodName = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"functionName"]];
+        NSString * params = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"params"]];
+        NSLog(@"functionName methodName=%@, params=%@",methodName, params);
+
+        [STCommunication callFunction:methodName jsonStr:params callback:^(id tmpResult) {
+            result(tmpResult);
+        }];
        
-       [STCommunication callFunction:methodName jsonStr:params callback:^(id tmpResult) {
-           result(tmpResult);
-       }];
-       
-   } else {
-       result(FlutterMethodNotImplemented);
-   }
+    } else {
+        result(FlutterMethodNotImplemented);
+    }
 }
 
 @end

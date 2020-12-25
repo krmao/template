@@ -7,13 +7,16 @@
 - (void)callFunction:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
-   if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
-       [STThreadUtil runInMainThread:^{
+    NSDictionary *parameters = arguments;
+    
+    if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
+        [STThreadUtil runInMainThread:^{
            UIViewController *vc = [self currentViewController];
            if ([vc isKindOfClass:[STFlutterViewController class]]) {
-               vc.navigationController.interactivePopGestureRecognizer.enabled = NO;
+               BOOL enable = [parameters valueForKey:@"enable"];
+               vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
            }
-       }];
+        }];
     }
     else {
         result(FlutterMethodNotImplemented);

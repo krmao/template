@@ -117,7 +117,7 @@
 
             // 发送事件
             NSLog(@"%s, send event:%@, thread:%@", __FUNCTION__, @"nil", [NSThread currentThread]);
-            [STEventPoster postEventName:@"event_flutter" object:nil forceMain:YES];
+            [[STEventManager sharedInstance] sendEvent:@"event_flutter" eventInfo:nil];
         }];
     }
     return _labelView;

@@ -46,7 +46,6 @@ object STValueUtil {
     @JvmStatic
     fun isValid(fragment: android.app.Fragment?): Boolean = fragment != null && !fragment.isDetached
 
-
     /**
      * 是否 A 等于 B
      */
@@ -89,6 +88,22 @@ object STValueUtil {
 
     @JvmStatic
     fun toIntOrNull(value: String?): Int? = value?.toIntOrNull()
+
+    @JvmStatic
+    @JvmOverloads
+    fun wrap0Left(intValue: Any, fullLength: Int = 2): String {
+        return when (intValue) {
+            is String -> {
+                String.format("%0${fullLength}d", intValue.toIntOrNull() ?: 0)
+            }
+            is Number -> {
+                String.format("%0${fullLength}d", intValue.toInt())
+            }
+            else -> {
+                String.format("%0${fullLength}d", 0)
+            }
+        }
+    }
 
     @JvmOverloads
     @JvmStatic

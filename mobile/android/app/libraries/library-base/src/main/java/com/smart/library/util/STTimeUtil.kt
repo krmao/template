@@ -1,5 +1,6 @@
 package com.smart.library.util
 
+import android.os.CountDownTimer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,6 +67,10 @@ object STTimeUtil {
     @JvmStatic
     fun Hms(date: Date): String = format("HH:mm:ss", date)
 
+    @JvmStatic
+    @JvmOverloads
+    fun wrap0Left(intValue: Any, fullLength: Int = 2): String = STValueUtil.wrap0Left(intValue, fullLength)
+
     /**
      * H 时 在一天中 (0~23)
      */
@@ -113,6 +118,14 @@ object STTimeUtil {
         return format("yyyy年MM月dd日", Date(date))
     }
 
+    @JvmStatic
+    @JvmOverloads
+    fun getDayOfMonth(timeInMillis: Long = System.currentTimeMillis()): Int {
+        val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
+        calendar.timeInMillis = timeInMillis
+        return calendar[Calendar.DAY_OF_MONTH]
+    }
+
     /**
      * 星期几
      */
@@ -138,6 +151,91 @@ object STTimeUtil {
         6 -> "星期五"
         7 -> "星期六"
         else -> null
+    }
+
+    /**
+     * 获取星座
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getHoroscopeCHINA(month: Int = getMonth(), dayOfMonth: Int = getDayOfMonth()): String? {
+        return if (month == 3 && dayOfMonth >= 21 || month == 4 && dayOfMonth <= 19) {
+            "白羊座"
+        } else if (month == 4 && dayOfMonth >= 20 || month == 5 && dayOfMonth <= 20) {
+            "金牛座"
+        } else if (month == 5 && dayOfMonth >= 21 || month == 6 && dayOfMonth <= 21) {
+            "双子座"
+        } else if (month == 6 && dayOfMonth >= 22 || month == 7 && dayOfMonth <= 22) {
+            "巨蟹座"
+        } else if (month == 7 && dayOfMonth >= 23 || month == 8 && dayOfMonth <= 22) {
+            "狮子座"
+        } else if (month == 8 && dayOfMonth >= 23 || month == 9 && dayOfMonth <= 22) {
+            "处女座"
+        } else if (month == 9 && dayOfMonth >= 23 || month == 10 && dayOfMonth <= 23) {
+            "天秤座"
+        } else if (month == 10 && dayOfMonth >= 24 || month == 11 && dayOfMonth <= 22) {
+            "天蝎座"
+        } else if (month == 11 && dayOfMonth >= 23 || month == 12 && dayOfMonth <= 21) {
+            "射手座"
+        } else if (month == 12 && dayOfMonth >= 22 || month == 1 && dayOfMonth <= 19) {
+            "摩羯座"
+        } else if (month == 1 && dayOfMonth >= 20 || month == 2 && dayOfMonth <= 18) {
+            "水瓶座"
+        } else {
+            "双鱼座"
+        }
+    }
+
+    /**
+     * 倒计时
+     * @param millisInFuture 总时长
+     * @param countDownInterval 倒计时间隔
+     * @param onTick 倒计时监听, 主线程回调
+     * @example
+     *
+     * ---
+     *
+     *   private var countDownTimer: CountDownTimer? = null
+     *
+     * ---
+     *   countDownTimer = STTimeUtil.countDown(
+     *       millisInFuture = (data.overview?.left_time ?: 0) * 1000L,
+     *       countDownInterval = 1000L,
+     *       onTick = { millisUntilFinished ->
+     *           if (activity?.isFinishing != true) {
+     *           val day: Long = millisUntilFinished / (1000 * 24 * 60 * 60)
+     *           val hour: Long = (millisUntilFinished - day * (1000 * 24 * 60 * 60)) / (1000 * 60 * 60)
+     *           val minute: Long = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60)) / (1000 * 60)
+     *           val second: Long = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60) - minute * (1000 * 60)) / 1000
+     *           binding.leftTimeTv.text = "倒计时: ${STTimeUtil.wrap0Left(hour)}:${STTimeUtil.wrap0Left(minute)}:${STTimeUtil.wrap0Left(second)}"
+     *       }
+     *       },
+     *       onFinish = {}
+     *   )
+     *   countDownTimer?.start()
+     *
+     * ---
+     *
+     *   override fun onDestroy() {
+     *       super.onDestroy()
+     *       countDownTimer?.cancel()
+     *       countDownTimer = null
+     *   }
+     *
+     * ---
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun countDown(millisInFuture: Long = 30 * 1000L, countDownInterval: Long = 1000L, onTick: (millisUntilFinished: Long) -> Unit = {}, onFinish: () -> Unit = {}): CountDownTimer {
+        return object : CountDownTimer(millisInFuture, countDownInterval) {
+            override fun onTick(millisUntilFinished: Long) {
+                onTick(millisUntilFinished)
+            }
+
+            override fun onFinish() {
+                onFinish()
+            }
+        }
     }
 
     /**

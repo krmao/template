@@ -119,7 +119,13 @@ object STInitializer {
         var configNetwork: ConfigNetwork = ConfigNetwork(),
         var configLifecycle: ConfigLifecycle = ConfigLifecycle(),
         var configBundle: ConfigBundle = ConfigBundle(),
-        var configImage: ConfigImage = ConfigImage()
+        var configImage: ConfigImage = ConfigImage(),
+        var configAdapterDesign: ConfigAdapterDesign = ConfigAdapterDesign(),
+    )
+
+    data class ConfigAdapterDesign(
+        var adapterDesignWidth: Int = -1,
+        var adapterDesignHeight: Int = -1
     )
 
     data class ConfigImage(
@@ -189,6 +195,10 @@ object STInitializer {
     @JvmStatic
     var config: Config? = null
         private set
+
+    @JvmStatic
+    val configAdapterDesign: ConfigAdapterDesign?
+        get() = config?.ConfigAdapterDesign
 
     @JvmStatic
     val configChannel: ConfigChannel?

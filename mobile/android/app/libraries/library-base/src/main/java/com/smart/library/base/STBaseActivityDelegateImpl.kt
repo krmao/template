@@ -225,9 +225,13 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     }
 
     override fun getResources(resources: Resources): Resources {
+        val configAdapterDesignWidth = STInitializer.configAdapterDesign?.adapterDesignWidth ?: -1
+        val configAdapterDesignHeight = STInitializer.configAdapterDesign?.adapterDesignHeight ?: -1
         return when {
             adapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, adapterDesignWidth)
             adapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, adapterDesignHeight)
+            configAdapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, configAdapterDesignWidth)
+            configAdapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, configAdapterDesignHeight)
             else -> STAdaptScreenUtils.closeAdapt(resources)
         }
     }

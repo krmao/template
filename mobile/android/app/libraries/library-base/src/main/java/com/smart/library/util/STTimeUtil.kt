@@ -88,7 +88,9 @@ object STTimeUtil {
     /**
      * 哪一年
      */
-    fun getYear(timeInMillis: Long): Int {
+    @JvmStatic
+    @JvmOverloads
+    fun getYear(timeInMillis: Long = System.currentTimeMillis()): Int {
         val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timeInMillis
         return calendar[Calendar.YEAR]
@@ -97,16 +99,26 @@ object STTimeUtil {
     /**
      * 哪个月
      */
-    fun getMonth(timeInMillis: Long): Int {
+    @JvmStatic
+    @JvmOverloads
+    fun getMonth(timeInMillis: Long = System.currentTimeMillis()): Int {
         val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timeInMillis
         return calendar[Calendar.MONTH]
     }
 
+    @JvmStatic
+    @JvmOverloads
+    fun ymdCHINA(date: Long = System.currentTimeMillis()): String {
+        return format("yyyy年MM月dd日", Date(date))
+    }
+
     /**
      * 星期几
      */
-    fun getDayOfWeek(timeInMillis: Long): Int {
+    @JvmStatic
+    @JvmOverloads
+    fun getDayOfWeek(timeInMillis: Long = System.currentTimeMillis()): Int {
         val calendar: Calendar = GregorianCalendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timeInMillis
         return calendar[Calendar.DAY_OF_WEEK]
@@ -115,7 +127,9 @@ object STTimeUtil {
     /**
      * 获取星期的中文描述
      */
-    fun getDayOfWeekStr(dayOfWeek: Int): String? = when (dayOfWeek) {
+    @JvmStatic
+    @JvmOverloads
+    fun getDayOfWeekStr(dayOfWeek: Int = getDayOfWeek()): String? = when (dayOfWeek) {
         1 -> "星期天"
         2 -> "星期一"
         3 -> "星期二"

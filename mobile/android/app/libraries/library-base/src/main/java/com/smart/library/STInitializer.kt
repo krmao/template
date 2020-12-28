@@ -198,7 +198,7 @@ object STInitializer {
 
     @JvmStatic
     val configAdapterDesign: ConfigAdapterDesign?
-        get() = config?.ConfigAdapterDesign
+        get() = config?.configAdapterDesign
 
     @JvmStatic
     val configChannel: ConfigChannel?

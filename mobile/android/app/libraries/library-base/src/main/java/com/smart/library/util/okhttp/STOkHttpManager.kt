@@ -13,15 +13,16 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("unused")
 object STOkHttpManager {
-    private var CONNECT_TIMEOUT_SECONDS = 20
-    private var READ_TIMEOUT_SECONDS = 20
-    private var WRITE_TIMEOUT_SECONDS = 20
-    private val CACHE_SIZE_BYTES = 1024 * 1024 * 10L
+    private const val CONNECT_TIMEOUT_SECONDS = 20
+    private const val READ_TIMEOUT_SECONDS = 20
+    private const val WRITE_TIMEOUT_SECONDS = 20
+    private const val CACHE_SIZE_BYTES = 1024 * 1024 * 10L
 
-    val client: OkHttpClient by lazy {
+    @JvmStatic
+    fun getCommonBuilder(): OkHttpClient.Builder {
         val sslParams = STHttpsManager.getSslSocketFactory(null, null, null)
 
-        OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .cache(Cache(STCacheManager.getCacheDir() ?: File(""), CACHE_SIZE_BYTES))
             .sslSocketFactory(sslParams.ssLSocketFactory, sslParams.trustManager)
             .readTimeout(READ_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
@@ -55,16 +56,23 @@ object STOkHttpManager {
                     }
                 )
             )
-            .build()
     }
 
+    @JvmOverloads
+    fun getClient(builderExtraHandler: ((OkHttpClient.Builder) -> OkHttpClient.Builder)? = null): OkHttpClient {
+        val builder: OkHttpClient.Builder = getCommonBuilder()
+        return ((builderExtraHandler?.invoke(builder)) ?: builder).build()
+    }
+
+    @JvmStatic
+    var defaultClient: OkHttpClient = getCommonBuilder().build()
 
     @JvmStatic
     @JvmOverloads
     fun doGetSync(url: String, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null): String? {
         var result: String? = null
         var response: Response? = null
-        var okhttpClient = client
+        var okhttpClient = defaultClient
 
         if (readTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().readTimeout(readTimeoutMS, TimeUnit.MILLISECONDS).build()
         if (writeTimeoutMS != null) okhttpClient = okhttpClient.newBuilder().writeTimeout(writeTimeoutMS, TimeUnit.MILLISECONDS).build()
@@ -85,7 +93,7 @@ object STOkHttpManager {
     @JvmOverloads
     fun doGet(url: String?, readTimeoutMS: Long? = null, writeTimeoutMS: Long? = null, connectTimeoutMS: Long? = null, callback: (content: String?) -> Unit) {
         var result: String? = null
-        var okHttpClient = client
+        var okHttpClient = defaultClient
 
         if (url.isNullOrBlank()) {
             callback.invoke(result)
@@ -110,7 +118,7 @@ object STOkHttpManager {
 
     @JvmStatic
     fun doGet(url: String, callback: Callback) {
-        client.newCall(Request.Builder().url(url).get().build()).enqueue(callback)
+        defaultClient.newCall(Request.Builder().url(url).get().build()).enqueue(callback)
     }
 
     fun doGetFile(url: String, filePath: String, callback: (file: File?) -> Unit) {

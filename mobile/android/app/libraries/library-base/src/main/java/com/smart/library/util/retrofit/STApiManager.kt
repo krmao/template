@@ -11,6 +11,7 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Headers
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -131,9 +132,11 @@ object STApiManager {
 
     private val builder: Retrofit.Builder by lazy { Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()) }
 
+    var okHttpClient: OkHttpClient = STOkHttpManager.defaultClient
+
     @JvmStatic
     @Synchronized
     fun <T> getApi(clazz: Class<T>, baseUrl: String = STURLManager.curHost): T {
-        return builder.baseUrl(baseUrl).client(STOkHttpManager.client).build().create(clazz)
+        return builder.baseUrl(baseUrl).client(okHttpClient).build().create(clazz)
     }
 }

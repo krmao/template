@@ -21,7 +21,7 @@ class RNBusHandler : STBusManager.IBusHandler {
         STDebugFragment.childViewList.add(RNDevSettingsView::class.java)
 
         Flowable.fromCallable {
-            val frescoConfig = STImageFrescoHandler.getConfigBuilder(application, STInitializer.debug(), STOkHttpManager.client).build()
+            val frescoConfig = STImageFrescoHandler.getConfigBuilder(application, STInitializer.debug(), STOkHttpManager.defaultClient).build()
             RNDeployManager.init(application, frescoConfig, callback)
         }.subscribeOn(Schedulers.io()).subscribe()
     }

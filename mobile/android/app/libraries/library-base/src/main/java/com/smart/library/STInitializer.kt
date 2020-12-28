@@ -334,7 +334,7 @@ object STInitializer {
         STThreadUtils.runOnUiThread(object : Runnable {
             override fun run() {
                 //region image
-                val imageHandler = config?.configImage?.imageHandler ?: STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(application, debug(), STOkHttpManager.client).build())
+                val imageHandler = config?.configImage?.imageHandler ?: STImageFrescoHandler(STImageFrescoHandler.getConfigBuilder(application, debug(), STOkHttpManager.defaultClient).build())
                 STImageManager.initialize(application, imageHandler)
                 //endregion
 

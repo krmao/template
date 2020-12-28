@@ -330,6 +330,9 @@ object STInitializer {
         }
         //endregion
 
+        // 重置屏幕适配
+        STAdaptScreenUtils.getPreLoadRunnable().run()
+
         //region bundle and bus
         STThreadUtils.runOnUiThread(object : Runnable {
             override fun run() {

@@ -1,5 +1,6 @@
 package com.smart.library.base
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
@@ -67,6 +68,10 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
         delegate.finishAfter()
     }
 
+    override fun getResources(): Resources {
+        return getResources(super.getResources())
+    }
+
     override fun onBackPressedIntercept(): Boolean = delegate.onBackPressedIntercept()
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -99,5 +104,8 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
     override fun activityCloseExitAnimation(animation: Int) = delegate.activityCloseExitAnimation(animation)
     override fun activityTheme(): Int = delegate.activityTheme()
     override fun activityTheme(activityTheme: Int) = delegate.activityTheme(activityTheme)
+    override fun adapterDesignWidth(designWidth: Int) = delegate.adapterDesignWidth(designWidth)
+    override fun adapterDesignHeight(designHeight: Int) = delegate.adapterDesignHeight(designHeight)
+    override fun getResources(resources: Resources): Resources = delegate.getResources(resources)
     override fun quitApplication() = delegate.quitApplication()
 }

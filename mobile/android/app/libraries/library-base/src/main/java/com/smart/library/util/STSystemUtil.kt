@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -24,6 +25,7 @@ import androidx.core.content.PermissionChecker
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.toBitmap
+import kotlin.math.sqrt
 
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection")
@@ -43,6 +45,40 @@ object STSystemUtil {
         return displayMetrics
     }
 
+    /**
+     * 获取当前屏幕尺寸
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getScreenSize(application: Application? = STInitializer.application()): Float {
+        val displayMetrics: DisplayMetrics? = displayRealMetrics(application)
+        displayMetrics ?: return 0f
+
+        val xdpi: Float = displayMetrics.xdpi
+        val ydpi: Float = displayMetrics.ydpi
+        val screenWidth: Int = displayMetrics.widthPixels
+
+        val tmpWidth: Float = screenWidth / xdpi * (screenWidth / xdpi)
+        val tmpHeight: Float = displayMetrics.heightPixels / ydpi * (screenWidth / xdpi)
+        return sqrt(tmpWidth + tmpHeight)
+    }
+
+    /**
+     * 获取屏幕信息
+     *
+     * 屏幕适配方案:
+     * https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA (头条方案)
+     * https://mp.weixin.qq.com/s/X-aL2vb4uEhqnLzU5wjc4Q (smallestWidth方案)
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getScreenInfo(application: Application? = STInitializer.application()): String {
+        val width: Int = screenWidth(application)
+        val height: Int = screenRealHeight(application)
+        val density: Float = displayRealMetrics()?.density ?: 0f
+        val size: Float = getScreenSize(application)
+        return "(w:$width h:$height density:$density size=$size)"
+    }
 
     @JvmStatic
     fun screenWidth(application: Application? = STInitializer.application()): Int = displayMetrics(application)?.widthPixels ?: 0
@@ -100,10 +136,11 @@ object STSystemUtil {
     }
 
     @JvmStatic
-    fun statusBarHeight(application: Application? = STInitializer.application()): Int {
+    fun statusBarHeight(): Int {
+        val resources: Resources = Resources.getSystem()
         var statusBarHeight = 0
-        val resourceId = application?.resources?.getIdentifier("status_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) statusBarHeight = application?.resources?.getDimensionPixelSize(resourceId) ?: 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) statusBarHeight = resources.getDimensionPixelSize(resourceId) ?: 0
         return statusBarHeight
     }
 
@@ -119,10 +156,11 @@ object STSystemUtil {
      */
     @JvmStatic
     @Deprecated(message = "三星 S8-G9500 不同高度的虚拟导航栏均返回高度 144, 所以该变量是不推荐使用的")
-    fun navigationBarHeight(application: Application? = STInitializer.application()): Int {
+    fun navigationBarHeight(): Int {
+        val resources: Resources = Resources.getSystem()
         var navigationBarHeight = 0
-        val resourceId = application?.resources?.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) navigationBarHeight = application?.resources?.getDimensionPixelSize(resourceId) ?: 0
+        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
+        if (resourceId > 0) navigationBarHeight = resources.getDimensionPixelSize(resourceId) ?: 0
         return navigationBarHeight
     }
 

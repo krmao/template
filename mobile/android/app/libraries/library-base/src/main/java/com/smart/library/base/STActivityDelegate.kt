@@ -1,5 +1,6 @@
 package com.smart.library.base
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.annotation.StyleRes
@@ -51,6 +52,9 @@ interface STActivityDelegate {
     fun activityCloseExitAnimation(animation: Int)
     fun activityTheme(): Int
     fun activityTheme(activityTheme: Int)
+    fun adapterDesignWidth(designWidth: Int)
+    fun adapterDesignHeight(designHeight: Int)
+    fun getResources(resources:Resources): Resources
     fun quitApplication()
 
     @Suppress("unused")
@@ -86,5 +90,7 @@ interface STActivityDelegate {
         const val KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE = "KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE"
         const val KEY_ACTIVITY_CLOSE_ENTER_ANIMATION = "KEY_ACTIVITY_CLOSE_ENTER_ANIMATION"
         const val KEY_ACTIVITY_CLOSE_EXIT_ANIMATION = "KEY_ACTIVITY_CLOSE_EXIT_ANIMATION"
+        const val KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH = "KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH"
+        const val KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT = "KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT"
     }
 }

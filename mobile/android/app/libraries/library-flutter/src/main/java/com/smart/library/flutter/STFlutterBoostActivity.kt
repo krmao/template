@@ -1,6 +1,7 @@
 package com.smart.library.flutter
 
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
 import android.os.Bundle
@@ -106,6 +107,9 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
     override fun activityCloseEnterAnimation(animation: Int) = delegate.activityCloseEnterAnimation(animation)
     override fun activityCloseExitAnimation(): Int = delegate.activityCloseExitAnimation()
     override fun activityCloseExitAnimation(animation: Int) = delegate.activityCloseExitAnimation(animation)
+    override fun adapterDesignWidth(designWidth: Int) = delegate.adapterDesignWidth(designWidth)
+    override fun adapterDesignHeight(designHeight: Int) = delegate.adapterDesignHeight(designHeight)
+    override fun getResources(resources: Resources): Resources = delegate.getResources(resources)
     override fun quitApplication() = delegate.quitApplication()
 
     companion object {

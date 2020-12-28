@@ -2,6 +2,7 @@ package com.smart.library.base
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.STInitializer
+import com.smart.library.util.STAdaptScreenUtils
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.widget.debug.STDebugFragment
@@ -34,6 +36,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var activityTheme = -1
     protected var activityCloseEnterAnimation: Int = -1
     protected var activityCloseExitAnimation: Int = -1
+    protected var adapterDesignWidth: Int = -1
+    protected var adapterDesignHeight: Int = -1
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
         /*if (activityTheme != -1) {
@@ -212,6 +216,22 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         this.activityTheme = activityTheme
     }
 
+    override fun adapterDesignWidth(designWidth: Int) {
+        this.adapterDesignWidth = designWidth
+    }
+
+    override fun adapterDesignHeight(designHeight: Int) {
+        this.adapterDesignHeight = designHeight
+    }
+
+    override fun getResources(resources: Resources): Resources {
+        return when {
+            adapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, adapterDesignWidth)
+            adapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, adapterDesignHeight)
+            else -> STAdaptScreenUtils.closeAdapt(resources)
+        }
+    }
+
     override fun quitApplication() = if (System.currentTimeMillis() - exitTime > 2000) {
         STToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
@@ -241,6 +261,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             activityDecorViewBackgroundResource = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
             activityCloseEnterAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
             activityCloseExitAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
+            adapterDesignWidth = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
+            adapterDesignHeight = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
         }
     }
 }

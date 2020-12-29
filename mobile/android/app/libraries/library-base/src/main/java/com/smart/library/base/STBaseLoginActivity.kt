@@ -1,22 +1,15 @@
 package com.smart.library.base
 
 import android.os.Bundle
-import android.view.Window
-import androidx.appcompat.app.AppCompatActivity
 import com.smart.library.R
-import com.smart.library.util.STSystemUtil
 
-@Suppress("MemberVisibilityCanBePrivate")
-open class STBaseLoginActivity : AppCompatActivity(), STBaseLoginActivityDelegate {
+@Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
+open class STBaseLoginActivity : STBaseActivity(), STBaseLoginActivityDelegate {
 
     protected var loginActivityDelegate: STBaseLoginActivityDelegate? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.decorView.setBackgroundResource(R.drawable.st_launch)
         super.onCreate(null)
-        STSystemUtil.setActivityFullScreenAndExpandLayout(this)
         loginActivityDelegate = STBaseLoginActivityDelegateImpl()
     }
 
@@ -41,4 +34,12 @@ open class STBaseLoginActivity : AppCompatActivity(), STBaseLoginActivityDelegat
         const val TAG = "[login]"
     }
 
+    init {
+        enableActivityFeatureNoTitle(true)
+        activityDecorViewBackgroundResource(R.drawable.st_launch)
+        enableActivityFullScreenAndExpandLayout(true)
+        enableSwipeBack(false)
+        enableImmersionStatusBar(false)
+        enableExitWithDoubleBackPressed(false)
+    }
 }

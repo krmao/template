@@ -245,7 +245,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     }
 
     init {
-        val bundle: Bundle? = activity.intent.extras
+        val bundle: Bundle? = activity.intent?.extras
         if (bundle != null) {
             activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
             enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)

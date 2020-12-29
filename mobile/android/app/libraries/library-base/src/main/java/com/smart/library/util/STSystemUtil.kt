@@ -35,6 +35,9 @@ object STSystemUtil {
     val SDK_INT: Int = Build.VERSION.SDK_INT
 
     @JvmStatic
+    val SDK_RELEASE: String = Build.VERSION.RELEASE
+
+    @JvmStatic
     fun displayMetrics(application: Application? = STInitializer.application()): DisplayMetrics? = application?.resources?.displayMetrics
 
     @JvmStatic
@@ -77,7 +80,7 @@ object STSystemUtil {
         val height: Int = screenRealHeight(application)
         val density: Float = displayRealMetrics()?.density ?: 0f
         val size: Float = getScreenSize(application)
-        return "(w:$width h:$height density:$density size=$size)"
+        return "(w:${width}px h:${height}px density:$density size=${size}英寸 \nSDK_INT:$SDK_INT SDK_RELEASE:$SDK_RELEASE)"
     }
 
     @JvmStatic

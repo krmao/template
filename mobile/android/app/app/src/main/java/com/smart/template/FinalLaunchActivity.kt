@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseLaunchActivity
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
+import com.smart.library.util.STToastUtil
 import com.smart.template.home.tab.FinalHomeTabActivity
 
 class FinalLaunchActivity : STBaseLaunchActivity() {
@@ -39,6 +41,8 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
                 finish()
             }*/
         }
+
+        STToastUtil.show(STSystemUtil.getScreenInfo())
     }
 
     private fun goToHome() {

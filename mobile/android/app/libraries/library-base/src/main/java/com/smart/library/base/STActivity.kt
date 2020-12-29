@@ -82,10 +82,11 @@ open class STActivity : STBaseActivity() {
             @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
             @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
-            adapterDesignWidth: Int = -1,
-            adapterDesignHeight: Int = -1,
+            adapterDesignWidth: Int? = null,
+            adapterDesignHeight: Int? = null,
+            enableAdapterDesign: Boolean? = null
         ) {
-            val intent: Intent = createIntent(from.context, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight)
+            val intent: Intent = createIntent(from.context, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
             from.startActivityForResult(intent, requestCode)
             overrideWindowAnim(from.activity, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
         }
@@ -114,11 +115,12 @@ open class STActivity : STBaseActivity() {
             @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
             @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
-            adapterDesignWidth: Int = -1,
-            adapterDesignHeight: Int = -1,
+            adapterDesignWidth: Int? = null,
+            adapterDesignHeight: Int? = null,
+            enableAdapterDesign: Boolean? = null
         ) {
             if (from != null) {
-                val intent: Intent = createIntent(from, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight)
+                val intent: Intent = createIntent(from, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
                 if (from is Activity) {
                     from.startActivityForResult(intent, requestCode)
                 } else {
@@ -147,8 +149,9 @@ open class STActivity : STBaseActivity() {
             activityDecorViewBackgroundResource: Int = -1,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
             @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
-            adapterDesignWidth: Int = -1,
-            adapterDesignHeight: Int = -1,
+            adapterDesignWidth: Int? = null,
+            adapterDesignHeight: Int? = null,
+            enableAdapterDesign: Boolean? = null
         ): Intent {
             val intent = Intent(context, STActivity::class.java)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_THEME, activityThem)
@@ -162,8 +165,11 @@ open class STActivity : STBaseActivity() {
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
+
+            if (adapterDesignWidth != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
+            if (adapterDesignHeight != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
+            if (enableAdapterDesign != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN, enableAdapterDesign)
+
             if (fragmentClass is Class<*>) {
                 intent.putExtra(KEY_FRAGMENT_CLASS, fragmentClass)
             } else if (fragmentClass is String) {

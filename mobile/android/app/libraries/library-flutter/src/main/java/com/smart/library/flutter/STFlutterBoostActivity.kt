@@ -110,6 +110,7 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
     override fun adapterDesignWidth(designWidth: Int) = delegate.adapterDesignWidth(designWidth)
     override fun adapterDesignHeight(designHeight: Int) = delegate.adapterDesignHeight(designHeight)
     override fun getResources(resources: Resources): Resources = delegate.getResources(resources)
+    override fun enableAdapterDesign(enable: Boolean) = delegate.enableAdapterDesign(enable)
     override fun quitApplication() = delegate.quitApplication()
 
     companion object {

@@ -106,6 +106,8 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
     override fun activityTheme(activityTheme: Int) = delegate.activityTheme(activityTheme)
     override fun adapterDesignWidth(designWidth: Int) = delegate.adapterDesignWidth(designWidth)
     override fun adapterDesignHeight(designHeight: Int) = delegate.adapterDesignHeight(designHeight)
+    override fun enableAdapterDesign(enable: Boolean) = delegate.enableAdapterDesign(enable)
+
     override fun getResources(resources: Resources): Resources = delegate.getResources(resources)
     override fun quitApplication() = delegate.quitApplication()
 }

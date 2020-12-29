@@ -36,6 +36,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var activityTheme = -1
     protected var activityCloseEnterAnimation: Int = -1
     protected var activityCloseExitAnimation: Int = -1
+    protected var enableAdapterDesign: Boolean = STInitializer.configAdapterDesign?.enableAdapterDesign ?: true
     protected var adapterDesignWidth: Int = -1
     protected var adapterDesignHeight: Int = -1
 
@@ -224,14 +225,19 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         this.adapterDesignHeight = designHeight
     }
 
+    override fun enableAdapterDesign(enable: Boolean) {
+        this.enableAdapterDesign = enable
+    }
+
     override fun getResources(resources: Resources): Resources {
-        val configAdapterDesignWidth = STInitializer.configAdapterDesign?.adapterDesignWidth ?: -1
-        val configAdapterDesignHeight = STInitializer.configAdapterDesign?.adapterDesignHeight ?: -1
+        val globalAdapterDesignWidth = STInitializer.configAdapterDesign?.adapterDesignWidth ?: -1
+        val globalAdapterDesignHeight = STInitializer.configAdapterDesign?.adapterDesignHeight ?: -1
+        val enableGlobalAdapterDesign = STInitializer.configAdapterDesign?.enableAdapterDesign ?: false
         return when {
-            adapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, adapterDesignWidth)
-            adapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, adapterDesignHeight)
-            configAdapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, configAdapterDesignWidth)
-            configAdapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, configAdapterDesignHeight)
+            enableAdapterDesign && adapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, adapterDesignWidth)
+            enableAdapterDesign && adapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, adapterDesignHeight)
+            enableAdapterDesign && enableGlobalAdapterDesign && globalAdapterDesignWidth != -1 -> STAdaptScreenUtils.adaptWidth(resources, globalAdapterDesignWidth)
+            enableAdapterDesign && enableGlobalAdapterDesign && globalAdapterDesignHeight != -1 -> STAdaptScreenUtils.adaptHeight(resources, globalAdapterDesignHeight)
             else -> STAdaptScreenUtils.closeAdapt(resources)
         }
     }
@@ -267,6 +273,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             activityCloseExitAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
             adapterDesignWidth = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
             adapterDesignHeight = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
+            enableAdapterDesign = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN, enableAdapterDesign)
         }
     }
 }

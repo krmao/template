@@ -36,7 +36,7 @@ def BINTRAY_APIKEY = properties.getProperty("bintray.apikey").trim()
 // def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
 
 def LIBRARY_NAME = 'library-base'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
-def LIBRARY_VERSION = '0.0.1.15'
+def LIBRARY_VERSION = '0.0.1.16'
 def LIBRARY_GROUP_ID = 'com.codesdancing.libraries'
 def LIBRARY_LABELS = ['library-base']
 def LIBRARY_ARTIFACT_ID = "library-base"

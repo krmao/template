@@ -124,8 +124,9 @@ object STInitializer {
     )
 
     data class ConfigAdapterDesign(
-        var adapterDesignWidth: Int = -1,
-        var adapterDesignHeight: Int = -1
+        val enableAdapterDesign: Boolean = false,
+        val adapterDesignWidth: Int = -1,
+        val adapterDesignHeight: Int = -1
     )
 
     data class ConfigImage(

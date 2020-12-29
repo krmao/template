@@ -54,6 +54,7 @@ interface STActivityDelegate {
     fun activityTheme(activityTheme: Int)
     fun adapterDesignWidth(designWidth: Int)
     fun adapterDesignHeight(designHeight: Int)
+    fun enableAdapterDesign(enable: Boolean)
     fun getResources(resources:Resources): Resources
     fun quitApplication()
 
@@ -92,5 +93,6 @@ interface STActivityDelegate {
         const val KEY_ACTIVITY_CLOSE_EXIT_ANIMATION = "KEY_ACTIVITY_CLOSE_EXIT_ANIMATION"
         const val KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH = "KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH"
         const val KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT = "KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT"
+        const val KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN = "KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN"
     }
 }

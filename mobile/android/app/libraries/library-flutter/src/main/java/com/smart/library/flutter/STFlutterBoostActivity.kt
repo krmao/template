@@ -7,7 +7,8 @@ import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.ImageView
-import com.gyf.barlibrary.ImmersionBar
+import androidx.annotation.FloatRange
+import com.gyf.immersionbar.ImmersionBar
 import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.smart.library.base.STActivityDelegate
 import com.smart.library.base.STBaseActivityDelegateImpl
@@ -91,6 +92,7 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
     override fun enableImmersionStatusBar(enable: Boolean) = delegate.enableImmersionStatusBar(enable)
     override fun enableImmersionStatusBarWithDarkFont(): Boolean = delegate.enableImmersionStatusBarWithDarkFont()
     override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
+    override fun statusBarAlphaForDarkFont(@FloatRange(from = 0.0, to = 1.0) alpha: Float) = delegate.statusBarAlphaForDarkFont(alpha)
     override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
     override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
     override fun enableFinishIfIsNotTaskRoot(): Boolean = delegate.enableFinishIfIsNotTaskRoot()

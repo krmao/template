@@ -62,12 +62,23 @@
             android:name="android.max_aspect"
             android:value="2.4" />
 
+        <!-- 适配华为（HUA_WEI）刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+
+        <!-- 适配小米（XIAO_MI）刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
         <activity
             android:name="com.smart.template.home.tab.FinalHomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:theme="@style/STAppTheme.Home"
+            android:theme="@style/STAppTheme.Normal.Translucent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity
             android:name="com.smart.template.FinalLaunchActivity"
             android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"

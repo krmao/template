@@ -7,8 +7,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Window
+import androidx.annotation.FloatRange
 import androidx.fragment.app.FragmentActivity
-import com.gyf.barlibrary.ImmersionBar
+import com.gyf.immersionbar.ImmersionBar
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.STInitializer
 import com.smart.library.util.STAdaptScreenUtils
@@ -28,6 +29,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var enableSwipeBack = true
     protected var enableImmersionStatusBar = true
     protected var enableImmersionStatusBarWithDarkFont = false
+    protected var statusBarAlphaForDarkFont: Float = 0.8f
     protected var enableExitWithDoubleBackPressed = false
     protected var enableFinishIfIsNotTaskRoot = false
     protected var enableActivityFullScreenAndExpandLayout = false
@@ -41,9 +43,9 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var adapterDesignHeight: Int = -1
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
-        /*if (activityTheme != -1) {
+        if (activityTheme != -1) {
             activity.setTheme(activityTheme)
-        }*/
+        }
         // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         if (enableActivityFeatureNoTitle) {
             activity.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -71,10 +73,11 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
             statusBar = ImmersionBar.with(activity)
-                .transparentStatusBar()
-                .statusBarColorInt(Color.TRANSPARENT)
                 .navigationBarEnable(false)
-                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) 0.2f else 0f)
+                .statusBarColorInt(Color.TRANSPARENT)
+                .statusBarAlpha(0f)
+                .transparentStatusBar()
+                .statusBarDarkFont(enableImmersionStatusBarWithDarkFont, if (enableImmersionStatusBarWithDarkFont) statusBarAlphaForDarkFont else 0f)
             statusBar?.init()
         }
 
@@ -114,7 +117,6 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
     override fun onDestroy() {
         disposables.dispose()
-        statusBar?.destroy()
         if (enableSwipeBack) SwipeBackHelper.onDestroy(activity)
     }
 
@@ -175,6 +177,10 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     override fun enableImmersionStatusBarWithDarkFont(): Boolean = enableImmersionStatusBarWithDarkFont
     override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) {
         this.enableImmersionStatusBarWithDarkFont = enable
+    }
+
+    override fun statusBarAlphaForDarkFont(@FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        this.statusBarAlphaForDarkFont = alpha
     }
 
     override fun enableExitWithDoubleBackPressed(): Boolean = enableExitWithDoubleBackPressed
@@ -256,6 +262,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
             enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
             enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
+            statusBarAlphaForDarkFont = bundle.getFloat(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)
 
             //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
             enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)

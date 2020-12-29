@@ -28,7 +28,6 @@
 
         <activity
             android:name=".base.STActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 

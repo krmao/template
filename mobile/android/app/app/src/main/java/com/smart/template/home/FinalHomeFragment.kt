@@ -34,6 +34,7 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.fitsSystemWindows = false
         /*label1TV.ensureOnGlobalLayoutListener {
             val text = label1TV.text.toString().trim()
             STLogUtil.w("[SYS] LABEL 1 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")

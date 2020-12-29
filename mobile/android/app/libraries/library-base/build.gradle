@@ -94,7 +94,7 @@ dependencies {
     api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
     /******* 其它常用库 ****************************************************************************/
     api "com.jude:swipebackhelper:3.1.2"
-    api "com.gyf.immersionbar:immersionbar:2.3.1" // 沉浸式状态栏
+    api "com.gyf.immersionbar:immersionbar:3.0.0"
     api "com.andkulikov:transitionseverywhere:1.7.8"
     api "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0" // https://github.com/davemorrissey/subsampling-scale-image-view
 

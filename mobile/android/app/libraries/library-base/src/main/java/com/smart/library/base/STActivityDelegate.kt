@@ -3,8 +3,9 @@ package com.smart.library.base
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
-import com.gyf.barlibrary.ImmersionBar
+import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.R
 import io.reactivex.disposables.CompositeDisposable
 
@@ -35,6 +36,7 @@ interface STActivityDelegate {
     fun enableImmersionStatusBar(): Boolean
     fun enableImmersionStatusBar(enable: Boolean)
     fun enableImmersionStatusBarWithDarkFont(): Boolean
+    fun statusBarAlphaForDarkFont(@FloatRange(from = 0.0, to = 1.0) alpha: Float)
     fun enableImmersionStatusBarWithDarkFont(enable: Boolean)
     fun enableExitWithDoubleBackPressed(): Boolean
     fun enableExitWithDoubleBackPressed(enable: Boolean)
@@ -84,6 +86,7 @@ interface STActivityDelegate {
         const val KEY_ACTIVITY_ENABLE_SWIPE_BACK = "KEY_ACTIVITY_ENABLE_SWIPE_BACK"
         const val KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR = "KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR"
         const val KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT = "KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT"
+        const val KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT = "KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT"
         const val KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED = "KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED"
         const val KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT = "KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT"
         const val KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT = "KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT"

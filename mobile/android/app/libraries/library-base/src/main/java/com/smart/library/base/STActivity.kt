@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.annotation.AnimRes
+import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
@@ -53,7 +54,6 @@ open class STActivity : STBaseActivity() {
         }
     }
 
-
     companion object {
         private const val TAG = "[STActivity]"
         const val KEY_FRAGMENT_CLASS = "KEY_FRAGMENT_CLASS"
@@ -73,11 +73,12 @@ open class STActivity : STBaseActivity() {
             enableSwipeBack: Boolean = true,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
+            @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
             enableExitWithDoubleBackPressed: Boolean = false,
-            enableFinishIfIsNotTaskRoot: Boolean = false,
-            enableActivityFullScreenAndExpandLayout: Boolean = false,
-            enableActivityFeatureNoTitle: Boolean = false,
-            activityDecorViewBackgroundResource: Int = -1,
+            enableFinishIfIsNotTaskRoot: Boolean? = null,
+            enableActivityFullScreenAndExpandLayout: Boolean? = null,
+            enableActivityFeatureNoTitle: Boolean? = null,
+            activityDecorViewBackgroundResource: Int? = null,
             @AnimRes activityOpenEnterAnimation: Int = R.anim.st_anim_left_right_open_enter,
             @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
@@ -86,7 +87,7 @@ open class STActivity : STBaseActivity() {
             adapterDesignHeight: Int? = null,
             enableAdapterDesign: Boolean? = null
         ) {
-            val intent: Intent = createIntent(from.context, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
+            val intent: Intent = createIntent(from.context, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, statusBarAlphaForDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
             from.startActivityForResult(intent, requestCode)
             overrideWindowAnim(from.activity, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
         }
@@ -106,11 +107,12 @@ open class STActivity : STBaseActivity() {
             enableSwipeBack: Boolean = true,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
+            @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
             enableExitWithDoubleBackPressed: Boolean = false,
-            enableFinishIfIsNotTaskRoot: Boolean = false,
-            enableActivityFullScreenAndExpandLayout: Boolean = false,
-            enableActivityFeatureNoTitle: Boolean = false,
-            activityDecorViewBackgroundResource: Int = -1,
+            enableFinishIfIsNotTaskRoot: Boolean? = null,
+            enableActivityFullScreenAndExpandLayout: Boolean? = null,
+            enableActivityFeatureNoTitle: Boolean? = null,
+            activityDecorViewBackgroundResource: Int? = null,
             @AnimRes activityOpenEnterAnimation: Int = R.anim.st_anim_left_right_open_enter,
             @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
@@ -120,7 +122,7 @@ open class STActivity : STBaseActivity() {
             enableAdapterDesign: Boolean? = null
         ) {
             if (from != null) {
-                val intent: Intent = createIntent(from, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
+                val intent: Intent = createIntent(from, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, statusBarAlphaForDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
                 if (from is Activity) {
                     from.startActivityForResult(intent, requestCode)
                 } else {
@@ -142,11 +144,12 @@ open class STActivity : STBaseActivity() {
             enableSwipeBack: Boolean = true,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
+            @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
             enableExitWithDoubleBackPressed: Boolean = false,
-            enableFinishIfIsNotTaskRoot: Boolean = false,
-            enableActivityFullScreenAndExpandLayout: Boolean = false,
-            enableActivityFeatureNoTitle: Boolean = false,
-            activityDecorViewBackgroundResource: Int = -1,
+            enableFinishIfIsNotTaskRoot: Boolean? = null,
+            enableActivityFullScreenAndExpandLayout: Boolean? = null,
+            enableActivityFeatureNoTitle: Boolean? = null,
+            activityDecorViewBackgroundResource: Int? = null,
             @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
             @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
             adapterDesignWidth: Int? = null,
@@ -158,11 +161,12 @@ open class STActivity : STBaseActivity() {
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
+            if (statusBarAlphaForDarkFont != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT, enableFinishIfIsNotTaskRoot)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT, enableActivityFullScreenAndExpandLayout)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FEATURE_NO_TITLE, enableActivityFeatureNoTitle)
-            intent.putExtra(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
+            if (enableFinishIfIsNotTaskRoot != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT, enableFinishIfIsNotTaskRoot)
+            if (enableActivityFullScreenAndExpandLayout != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT, enableActivityFullScreenAndExpandLayout)
+            if (enableActivityFeatureNoTitle != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_FEATURE_NO_TITLE, enableActivityFeatureNoTitle)
+            if (activityDecorViewBackgroundResource != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
 
@@ -203,6 +207,4 @@ open class STActivity : STBaseActivity() {
             }
         }
     }
-
 }
-

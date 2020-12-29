@@ -3,8 +3,9 @@ package com.smart.library.base
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.annotation.FloatRange
 import androidx.appcompat.app.AppCompatActivity
-import com.gyf.barlibrary.ImmersionBar
+import com.gyf.immersionbar.ImmersionBar
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -88,6 +89,7 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
     override fun enableImmersionStatusBar(enable: Boolean) = delegate.enableImmersionStatusBar(enable)
     override fun enableImmersionStatusBarWithDarkFont(): Boolean = delegate.enableImmersionStatusBarWithDarkFont()
     override fun enableImmersionStatusBarWithDarkFont(enable: Boolean) = delegate.enableImmersionStatusBarWithDarkFont(enable)
+    override fun statusBarAlphaForDarkFont(@FloatRange(from = 0.0, to = 1.0) alpha: Float) = delegate.statusBarAlphaForDarkFont(alpha)
     override fun enableExitWithDoubleBackPressed(): Boolean = delegate.enableExitWithDoubleBackPressed()
     override fun enableExitWithDoubleBackPressed(enable: Boolean) = delegate.enableExitWithDoubleBackPressed(enable)
     override fun enableFinishIfIsNotTaskRoot(): Boolean = delegate.enableFinishIfIsNotTaskRoot()

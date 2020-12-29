@@ -19,11 +19,11 @@ gradle.ext {
             ],
             'library_flutter'      : [
                     'repository_remote': [
-                            'enable'    : false,
+                            'enable'    : true,
                             'dependency': 'com.smart.library:libs-flutter:0.0.1.2',
                     ],
                     'lib_flutter'      : [
-                            'enable'           : true,
+                            'enable'           : false,
                             'repository_remote': [
                                     'enable': false
                             ],
@@ -42,7 +42,7 @@ gradle.ext {
                             'dependency': 'com.smart.library:libs-rn:0.0.1.1',
                     ],
                     'lib_reactnative'  : [
-                            'enable'           : true,
+                            'enable'           : false,
                             'enableHermes'     : false,
                             'nodeModulesPath'  : "$rootDir/../react_native/node_modules",
                             'repository_remote': [

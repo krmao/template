@@ -43,6 +43,34 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var adapterDesignHeight: Int = -1
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
+        //region read params
+        val bundle: Bundle? = activity.intent?.extras
+        if (bundle != null) {
+            activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
+            enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
+            enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
+            statusBarAlphaForDarkFont = bundle.getFloat(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)
+
+            //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
+            enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
+            enableExitWithDoubleBackPressed = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
+            if (enableExitWithDoubleBackPressed) {
+                enableSwipeBack = false
+            }
+            //endregion
+
+            enableFinishIfIsNotTaskRoot = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT, enableFinishIfIsNotTaskRoot)
+            enableActivityFullScreenAndExpandLayout = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT, enableActivityFullScreenAndExpandLayout)
+            enableActivityFeatureNoTitle = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FEATURE_NO_TITLE, enableActivityFeatureNoTitle)
+            activityDecorViewBackgroundResource = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
+            activityCloseEnterAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
+            activityCloseExitAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
+            adapterDesignWidth = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
+            adapterDesignHeight = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
+            enableAdapterDesign = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN, enableAdapterDesign)
+        }
+        //endregion
+
         if (activityTheme != -1) {
             activity.setTheme(activityTheme)
         }
@@ -60,15 +88,15 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             STSystemUtil.setActivityFullScreenAndExpandLayout(activity)
         }
 
-        // 避免通过其他方式启动程序后，再通过程序列表中的launcher启动，重新走启动流程
-        if (enableFinishIfIsNotTaskRoot && !activity.isTaskRoot) {
+        // 避免通过其他方式启动程序后，再通过程序列表中的launcher启动，重新走启动流程 todo
+        /*if (enableFinishIfIsNotTaskRoot && !activity.isTaskRoot) {
             val intent: Intent? = activity.intent
             val action: String? = intent?.action
             if (intent?.hasCategory(Intent.CATEGORY_LAUNCHER) == true && action == Intent.ACTION_MAIN) {
                 activity.finish()
                 return
             }
-        }
+        }*/
 
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题
@@ -254,33 +282,5 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     } else {
         if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
         STInitializer.quitApplication()
-    }
-
-    init {
-        val bundle: Bundle? = activity.intent?.extras
-        if (bundle != null) {
-            activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
-            enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
-            enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
-            statusBarAlphaForDarkFont = bundle.getFloat(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)
-
-            //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
-            enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
-            enableExitWithDoubleBackPressed = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
-            if (enableExitWithDoubleBackPressed) {
-                enableSwipeBack = false
-            }
-            //endregion
-
-            enableFinishIfIsNotTaskRoot = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FINISH_IF_IS_NOT_TASK_ROOT, enableFinishIfIsNotTaskRoot)
-            enableActivityFullScreenAndExpandLayout = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FULLSCREEN_AND_EXPAND_LAYOUT, enableActivityFullScreenAndExpandLayout)
-            enableActivityFeatureNoTitle = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_FEATURE_NO_TITLE, enableActivityFeatureNoTitle)
-            activityDecorViewBackgroundResource = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_DECOR_VIEW_BACKGROUND_RESOURCE, activityDecorViewBackgroundResource)
-            activityCloseEnterAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_ENTER_ANIMATION, activityCloseEnterAnimation)
-            activityCloseExitAnimation = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_CLOSE_EXIT_ANIMATION, activityCloseExitAnimation)
-            adapterDesignWidth = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_WIDTH, adapterDesignWidth)
-            adapterDesignHeight = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_ADAPTER_DESIGN_HEIGHT, adapterDesignHeight)
-            enableAdapterDesign = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_ADAPTER_DESIGN, enableAdapterDesign)
-        }
     }
 }

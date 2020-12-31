@@ -76,7 +76,7 @@
             android:name="com.smart.template.home.tab.FinalHomeTabActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
-            android:theme="@style/STAppTheme.Normal.Translucent"
+            android:theme="@style/STAppTheme.Home"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity

@@ -9,7 +9,7 @@ import com.gyf.immersionbar.ImmersionBar
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * 沉浸式布局
+ * 沉浸式布局(不需要 windowIsTranslucent)
  *
  * 1: activity 包含 fragment (列如 STActivity) 手动设置 fragment 根布局背景色即可影响状态栏背景色
  *      > STBaseFragment 默认设置了根布局 fitsSystemWindows = true , 所以开发人员无需处理, 如果是自定义 Fragment 需要自己设置 fitsSystemWindows = true
@@ -18,6 +18,9 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * 总结: fragment/activity 的根布局 不可同时设置 fitsSystemWindows = true, 否则没有效果(即内容显示在状态栏的后面)
  * 注意: 以上方案 在 根布局不是 CoordinatorLayout 时 可行
+ *
+ * 侧滑退出需要 windowIsTranslucent
+ * home 不需要 windowIsTranslucent, 否则退出 app 时动画是向下退出
  *
  * sdk >= 4.4 纯透明
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用

@@ -87,7 +87,26 @@ open class STActivity : STBaseActivity() {
             adapterDesignHeight: Int? = null,
             enableAdapterDesign: Boolean? = null
         ) {
-            val intent: Intent = createIntent(from.context, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, statusBarAlphaForDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
+            val intent: Intent = createIntent(
+                context = from.context,
+                fragmentClass = fragmentClass,
+                fragmentArguments = fragmentArguments,
+                activityThem = activityTheme,
+                enableSwipeBack = enableSwipeBack,
+                enableImmersionStatusBar = enableImmersionStatusBar,
+                enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
+                statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
+                enableExitWithDoubleBackPressed = enableExitWithDoubleBackPressed,
+                enableFinishIfIsNotTaskRoot = enableFinishIfIsNotTaskRoot,
+                enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
+                enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,
+                activityDecorViewBackgroundResource = activityDecorViewBackgroundResource,
+                activityCloseEnterAnimation = activityCloseEnterAnimation,
+                activityCloseExitAnimation = activityCloseExitAnimation,
+                adapterDesignWidth = adapterDesignWidth,
+                adapterDesignHeight = adapterDesignHeight,
+                enableAdapterDesign = enableAdapterDesign
+            )
             from.startActivityForResult(intent, requestCode)
             overrideWindowAnim(from.activity, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
         }
@@ -122,7 +141,26 @@ open class STActivity : STBaseActivity() {
             enableAdapterDesign: Boolean? = null
         ) {
             if (from != null) {
-                val intent: Intent = createIntent(from, fragmentClass, fragmentArguments, activityTheme, enableSwipeBack, enableImmersionStatusBar, enableImmersionStatusBarWithDarkFont, statusBarAlphaForDarkFont, enableExitWithDoubleBackPressed, enableFinishIfIsNotTaskRoot, enableActivityFullScreenAndExpandLayout, enableActivityFeatureNoTitle, activityDecorViewBackgroundResource, activityCloseEnterAnimation, activityCloseExitAnimation, adapterDesignWidth, adapterDesignHeight, enableAdapterDesign)
+                val intent: Intent = createIntent(
+                    context = from,
+                    fragmentClass = fragmentClass,
+                    fragmentArguments = fragmentArguments,
+                    activityThem = activityTheme,
+                    enableSwipeBack = enableSwipeBack,
+                    enableImmersionStatusBar = enableImmersionStatusBar,
+                    enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
+                    statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
+                    enableExitWithDoubleBackPressed = enableExitWithDoubleBackPressed,
+                    enableFinishIfIsNotTaskRoot = enableFinishIfIsNotTaskRoot,
+                    enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
+                    enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,
+                    activityDecorViewBackgroundResource = activityDecorViewBackgroundResource,
+                    activityCloseEnterAnimation = activityCloseEnterAnimation,
+                    activityCloseExitAnimation = activityCloseExitAnimation,
+                    adapterDesignWidth = adapterDesignWidth,
+                    adapterDesignHeight = adapterDesignHeight,
+                    enableAdapterDesign = enableAdapterDesign
+                )
                 if (from is Activity) {
                     from.startActivityForResult(intent, requestCode)
                 } else {

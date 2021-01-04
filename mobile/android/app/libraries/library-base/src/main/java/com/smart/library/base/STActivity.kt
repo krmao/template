@@ -64,7 +64,7 @@ open class STActivity : STBaseActivity() {
          */
         @JvmStatic
         @JvmOverloads
-        fun startActivity(
+        fun startActivityFromFragment(
             from: Fragment,
             fragmentClass: Any?,
             fragmentArguments: Bundle = Bundle(),

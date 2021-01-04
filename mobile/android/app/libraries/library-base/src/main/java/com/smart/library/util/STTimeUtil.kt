@@ -43,29 +43,57 @@ object STTimeUtil {
     @JvmOverloads
     fun yMdHmsSWithoutSeparator(date: Long = System.currentTimeMillis()): String = format("yyyyMMddHHmmssSSS", Date(date))
 
+    @JvmStatic
+    @JvmOverloads
+    fun yMdHmsS(calendar: Calendar, includeMillisecond: Boolean = true): String = yMdHmsS(getDateFromCalendar(calendar), includeMillisecond)
+
+    @JvmStatic
+    fun getDateFromCalendar(calendar: Calendar): Date = calendar.time
+
+    @JvmStatic
+    fun getCalendarFromDate(date: Date): Calendar = Calendar.getInstance().apply { time = date }
+
     /**
      * yyyy-MM-dd HH:mm:ss SSS
      */
     @JvmStatic
     @JvmOverloads
-    fun yMdHmsS(date: Long = System.currentTimeMillis()): String = yMdHmsS(Date(date))
-
-    @JvmStatic
-    fun yMdHmsS(date: Date): String = format("yyyy-MM-dd HH:mm:ss SSS", date)
+    fun yMdHmsS(date: Long = System.currentTimeMillis(), includeMillisecond: Boolean = true): String = yMdHmsS(Date(date), includeMillisecond)
 
     @JvmStatic
     @JvmOverloads
-    fun HmsS(date: Long = System.currentTimeMillis()): String = HmsS(Date(date))
+    fun yMdHmsS(date: Date, includeMillisecond: Boolean = true): String = format("yyyy-MM-dd HH:mm:ss" + (if (includeMillisecond) " SSS" else ""), date)
 
     @JvmStatic
-    fun HmsS(date: Date): String = format("HH:mm:ss SSS", date)
+    fun yMdHms(date: Date): String = yMdHmsS(date, false)
+
+    @JvmStatic
+    fun yMdHms(calendar: Calendar): String = yMdHmsS(getDateFromCalendar(calendar), false)
+
+    @JvmStatic
+    @JvmOverloads
+    fun yMdHms(date: Long = System.currentTimeMillis()): String = yMdHmsS(Date(date), false)
+
+    @JvmStatic
+    @JvmOverloads
+    fun HmsS(calendar: Calendar, includeMillisecond: Boolean = true): String = HmsS(getDateFromCalendar(calendar), includeMillisecond)
+
+    @JvmStatic
+    @JvmOverloads
+    fun HmsS(date: Long = System.currentTimeMillis(), includeMillisecond: Boolean = true): String = HmsS(Date(date), includeMillisecond)
+
+    @JvmStatic
+    fun HmsS(date: Date, includeMillisecond: Boolean = true): String = format("HH:mm:ss" + (if (includeMillisecond) " SSS" else ""), date)
+
+    @JvmStatic
+    fun Hms(calendar: Calendar): String = Hms(getDateFromCalendar(calendar))
 
     @JvmStatic
     @JvmOverloads
     fun Hms(date: Long = System.currentTimeMillis()): String = Hms(Date(date))
 
     @JvmStatic
-    fun Hms(date: Date): String = format("HH:mm:ss", date)
+    fun Hms(date: Date): String = HmsS(date, false)
 
     @JvmStatic
     @JvmOverloads

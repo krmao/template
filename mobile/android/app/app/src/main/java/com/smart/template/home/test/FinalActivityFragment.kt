@@ -39,6 +39,8 @@ class FinalActivityFragment : STBaseFragment() {
                 activityOpenExitAnimation = if (checkedFadeOrLeft.isChecked) R.anim.st_anim_fade_exit else R.anim.st_anim_left_right_open_exit,
                 activityCloseEnterAnimation = if (checkedFadeOrLeft.isChecked) R.anim.st_anim_fade_enter else R.anim.st_anim_left_right_close_enter,
                 activityCloseExitAnimation = if (checkedFadeOrLeft.isChecked) R.anim.st_anim_fade_exit else R.anim.st_anim_left_right_close_exit,
+                enableAdapterDesign = true,
+                adapterDesignWidth = 1920
             )
         }
     }

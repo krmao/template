@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STSystemUtil
 import com.smart.library.util.rx.RxBus
 import java.lang.ref.WeakReference
 import java.util.*
@@ -52,7 +53,9 @@ open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) = Unit
 
-    override fun onActivityPaused(activity: Activity?) = Unit
+    override fun onActivityPaused(activity: Activity?) {
+        STSystemUtil.hideKeyboard(activity)
+    }
 
     override fun onActivityResumed(activity: Activity?) {
         currentActivity = activity

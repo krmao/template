@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pink">
+    android:background="@color/blue"
+    android:fitsSystemWindows="true"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,SpUsage">
 
+    <!--  检测键盘是否自动关闭  -->
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="80pt"
+        android:layout_height="80pt"
+        android:background="@color/green_500"
+        android:contentDescription="@null"
+        android:src="@drawable/final_behavior_ic_close_white_24dp" />
+
+    <!-- 固定高度,  adjustResize 不起作用, 存在 layout_height="0dp" android:layout_weight="1" 时起作用  -->
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="STActivity"
-        android:textColor="@color/blue"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText,SpUsage" />
-</RelativeLayout>
+        android:layout_width="match_parent"
+        android:layout_height="900pt"
+        android:text="xxxxxxxxxxxxxxxxxxxxxxxx"
+        android:textColor="#000"
+        android:textSize="100pt"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/fen_liang_et"
+        android:layout_width="match_parent"
+        android:layout_height="100pt"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="请输入XXX"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="#333"
+        android:textColorHint="#999999"
+        android:textSize="20pt" />
+
+</LinearLayout>

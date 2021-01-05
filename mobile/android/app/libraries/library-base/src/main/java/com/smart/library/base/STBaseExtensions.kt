@@ -104,7 +104,7 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
  */
 fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
     STLogUtil.w("ensureOnGlobalLayoutListener start")
-    // 调用不会立即出发
+    // 调用不会立即触发
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             val viewTreeObserver: ViewTreeObserver = viewTreeObserver

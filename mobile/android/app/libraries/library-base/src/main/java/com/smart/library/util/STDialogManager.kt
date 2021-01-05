@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import com.smart.library.R
 
@@ -67,9 +65,13 @@ object STDialogManager {
         dialog.setOnShowListener(onShowListener)
         dialog.setOnCancelListener(onCancelListener)
 
-        dialog.window?.attributes?.dimAmount = dimAmount
-        dialog.window?.attributes?.width = width
-        dialog.window?.attributes?.height = height
+        val attributes: WindowManager.LayoutParams? = dialog.window?.attributes
+        if (attributes != null) {
+            attributes.dimAmount = dimAmount
+            attributes.width = width
+            attributes.height = height
+            attributes.gravity = Gravity.CENTER
+        }
         return dialog
     }
 }

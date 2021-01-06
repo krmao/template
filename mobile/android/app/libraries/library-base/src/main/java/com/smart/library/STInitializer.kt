@@ -365,7 +365,7 @@ object STInitializer {
                     STDebugFragment.showDebugNotification()
                     @Suppress("UNUSED_VARIABLE")
                     val ignoreResultV2 = RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
-                        if (changeEvent.isApplicationVisible) STDebugFragment.showDebugNotification() else STDebugFragment.cancelDebugNotification()
+                        // if (changeEvent.isApplicationVisible) STDebugFragment.showDebugNotification() else STDebugFragment.cancelDebugNotification()
                     }
                 }
             }
@@ -377,8 +377,6 @@ object STInitializer {
 
     @JvmStatic
     fun quitApplication() {
-        val applicationContext: Context? = config?.application?.applicationContext
-
         STImageManager.clearMemoryCaches()
 
         //region unregister activityLifecycleCallbacks

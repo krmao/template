@@ -10,15 +10,41 @@ import android.net.Uri
 import android.os.Build
 import android.os.Parcelable
 import android.provider.Settings
-import androidx.core.app.ActivityCompat
 import android.text.TextUtils
 import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
 import com.smart.library.STInitializer
 import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STIntentUtil {
+
+    @JvmStatic
+    fun getBroadcastReceiverIntentForCloseSystemNotificationPanel(): Intent {
+        return Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+    }
+
+    /**
+     * 辅助功能设置页面
+     */
+    @JvmStatic
+    fun getAccessibilitySettingsIntent(): Intent {
+        return Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+    }
+
+    /**
+     * 悬浮窗权限设置页面
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getOverlaySettingsIntent(context: Context? = STInitializer.application()): Intent? {
+        return if (context != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context.packageName)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } else null
+    }
 
     /**
      * @param content  短信内容

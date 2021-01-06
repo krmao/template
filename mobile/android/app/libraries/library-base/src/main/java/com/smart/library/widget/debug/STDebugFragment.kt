@@ -23,6 +23,7 @@ import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.*
+import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.st_fragment_debug.*
 
@@ -95,21 +96,31 @@ open class STDebugFragment : STBaseFragment() {
             return currentSelectedModel
         }
 
-        @SuppressLint("NewApi")
+        private var isDebugNotificationShowingNow: Boolean = false
+
+        @SuppressLint("NewApi", "CheckResult")
         @JvmStatic
-        fun showDebugNotification() {
+        fun showDebugNotification(title: String = "${STSystemUtil.getAppName(STInitializer.application())} 调试助手", subTitle: String = "点击跳转到调试界面", autoStartActivityTrackerService: Boolean = true) {
+            isDebugNotificationShowingNow = true
+            if (autoStartActivityTrackerService) {
+                // STActivityTrackerService.startService()
+                RxBus.toObservable(STActivityTrackerService.ActivityChangedEvent::class.java).subscribe { changeEvent ->
+                    STLogUtil.w(STActivityTrackerService.TAG, "onSubscribe isDebugNotificationShowingNow=$isDebugNotificationShowingNow, changeEvent=$changeEvent")
+                    if (isDebugNotificationShowingNow) {
+                        showDebugNotification(changeEvent.packageName, changeEvent.className.substringAfterLast("."), false)
+                    }
+                }
+            }
 
             //========== ======================================================================== ==========
             //========== notification example start
             //========== ======================================================================== ==========
 
             // notification
-            val title = "${STSystemUtil.getAppName(STInitializer.application())} 调试助手"
-            val text = "点击跳转到调试界面"
             val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)
             val channelName = "在通知栏上显示程式调试入口"
-            val smallIcon = android.R.drawable.ic_menu_send
+            val smallIcon = android.R.drawable.ic_menu_myplaces
 
             // notification group ( 注意: 通知组只有 sdk >= 24 support )
             // 注意 summaryGroupId 与 notificationId 不能相同, 否则会出现没有合并到一个组的意外情况
@@ -141,15 +152,16 @@ open class STDebugFragment : STBaseFragment() {
                 .setSmallIcon(smallIcon)
                 .setColor(Color.parseColor("#4E6A78"))
                 .setColorized(true)
-                .setLargeIcon(STSystemUtil.getAppBitmap(STInitializer.application()))
+                // .setLargeIcon(STSystemUtil.getAppBitmap(STInitializer.application()))
                 .setContentTitle(title)
-                .setContentText(text) // set content text to support devices running API level < 24
+                .setContentText(subTitle) // set content text to support devices running API level < 24
                 // .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)  // set the intent that will fire when the user taps the notification
                 .setOngoing(true)
                 .setGroup(summaryGroupKey) // specify which group this notification belongs to
                 .setAutoCancel(false) // automatically removes the notification when the user taps it
+                .addAction(android.R.drawable.ic_menu_send, "点击开启查看页面信息功能", STActivityTrackerService.Companion.ActivityTrackerBroadcastReceiver.createBroadcastReceiverStartPendingIntent())
 
             actionList.forEach { builder.addAction(it) }
 
@@ -195,7 +207,7 @@ open class STDebugFragment : STBaseFragment() {
                 // build summary info into InboxStyle template
                 .setStyle(
                     NotificationCompat.InboxStyle()
-                        .addLine(text)
+                        .addLine(subTitle)
                         .setBigContentTitle(title)
                         .setSummaryText(summaryGroupText)
                 )
@@ -211,7 +223,11 @@ open class STDebugFragment : STBaseFragment() {
         }
 
         @JvmStatic
-        fun cancelDebugNotification() {
+        @JvmOverloads
+        fun cancelDebugNotification(autoStopActivityTrackerService: Boolean = true) {
+            isDebugNotificationShowingNow = false
+            if (autoStopActivityTrackerService) STActivityTrackerService.stopService(STInitializer.application())
+
             val summaryGroupId = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
             val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)

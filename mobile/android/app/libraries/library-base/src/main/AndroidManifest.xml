@@ -13,7 +13,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <application android:taskAffinity="${applicationId}">
+    <application
+        android:allowBackup="true"
+        android:taskAffinity="${applicationId}">
         <!--region 安卓 N 文件访问方式适配 -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -42,6 +44,33 @@
             android:theme="@style/STAppTheme.Normal.Translucent.Fade"
             android:windowSoftInputMode="stateHidden|adjustResize"
             tools:ignore="UnusedAttribute" />
+
+        <service
+            android:name=".util.accessibility.STActivityTrackerService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/st_accessibility_service_config" />
+
+        </service>
+
+        <receiver
+            android:name=".util.accessibility.STActivityTrackerService$Companion$ActivityTrackerBroadcastReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.codesdancing.broadcast.receiver.activity.tracker.start" />
+                <action android:name="com.codesdancing.broadcast.receiver.activity.tracker.stop" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

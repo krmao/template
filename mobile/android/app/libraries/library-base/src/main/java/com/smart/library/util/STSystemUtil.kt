@@ -610,6 +610,12 @@ object STSystemUtil {
         }
     }
 
+    @JvmStatic
+    @JvmOverloads
+    fun closeSystemNotificationPanel(context: Context? = STInitializer.application()) {
+        context?.sendBroadcast(STIntentUtil.getBroadcastReceiverIntentForCloseSystemNotificationPanel())
+    }
+
     private fun round(value: Float): Int {
         val lx = (value * (65536 * 256f)).toLong()
         return (lx + 0x800000 shr 24).toInt()

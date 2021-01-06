@@ -1,7 +1,6 @@
 package com.smart.library.base
 
 import android.app.Activity
-import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -15,6 +14,7 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STAdaptScreenUtils
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
+import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
@@ -280,7 +280,9 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         STToastUtil.show("再按一次退出程序")
         exitTime = System.currentTimeMillis()
     } else {
-        if (STInitializer.debug()) STDebugFragment.cancelDebugNotification()
+        if (STInitializer.debug()) {
+            STDebugFragment.cancelDebugNotification()
+        }
         STInitializer.quitApplication()
     }
 }

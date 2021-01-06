@@ -3,7 +3,7 @@
     <string name="final_app_name">CodesDancing</string>
 
     <!-- Custom view example -->
-    <string name="signalStrength" >Signal strength</string>
+    <string name="signalStrength">Signal strength</string>
     <string name="excellent">Excellent</string>
     <string name="security">Security</string>
     <string name="securityType">802.1x EAP</string>

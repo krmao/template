@@ -4,4 +4,5 @@
     <string name="st_loading_network_error">加载错误,点击空白重试</string>
     <string name="st_loading_empty">信息正在建设中…</string>
     <string name="st_loading_now">努力加载中…</string>
+    <string name="st_accessibility_description">在通知栏上辅助显示当前屏幕正在显示的 \'Activity\' 的包名和类名</string>
 </resources>

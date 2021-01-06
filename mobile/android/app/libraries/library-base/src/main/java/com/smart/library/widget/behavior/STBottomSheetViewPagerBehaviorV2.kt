@@ -700,32 +700,34 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
     }
 
     /**
-     * @param parentHeight 务必填写正确的值, 最好在 setOnParentHeightChangedListener 里面执行, 因为此时获取的 parentHeight 最精确
+     * @param parentHeight 务必填写正确的值, 最好在 ensureOnLayoutChild 里面执行, 因为此时获取的 parentHeight 最精确, must be >= 0
      * @param peekHeight 如果是第一次设置, 务必填写正确的值, 因为第一次 getPeekHeight 是 0/-1
      */
-    fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, notifyOnStateChanged: Boolean = true, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
-        val minExpandedOffset: Int = (parentHeight * 0.24f).toInt()
-        val minHalfExpandedOffset: Int = (parentHeight * (1f - 0.4f)).toInt()
-        val peekOffset: Int = parentHeight - peekHeight
-        val realOffset: Int = parentHeight - bottomSheetContentHeight
+    fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, minExpandedOffset: Int = -1, notifyOnStateChanged: Boolean = true, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
+        val innerParentHeight: Int = if (parentHeight <= 0) getParentHeight() else parentHeight
+        val innerMinExpandedOffset: Int = if (minExpandedOffset <= 0) (innerParentHeight * 0.24f).toInt() else minExpandedOffset
+
+        val minHalfExpandedOffset: Int = (innerParentHeight * (1f - 0.4f)).toInt()
+        val peekOffset: Int = innerParentHeight - peekHeight
+        val realOffset: Int = innerParentHeight - bottomSheetContentHeight
         val maxExpandedOffsetOnDisableHalf: Int = peekOffset - 20.toPxFromDp() // 安全距离 20, 为避免正好多了几个像素这种极限情况
         val maxExpandedOffsetOnEnableHalf: Int = minHalfExpandedOffset - 20.toPxFromDp()
 
-        STLogUtil.w(TAG, "setStateByRealHeight start parentHeight=$parentHeight, peekHeight=$peekHeight, realPanelContentHeight=$bottomSheetContentHeight, realOffset=$realOffset, minHalfExpandedOffset=$minHalfExpandedOffset")
+        STLogUtil.w(TAG, "setStateByRealHeight start innerParentHeight=$innerParentHeight, peekHeight=$peekHeight, realPanelContentHeight=$bottomSheetContentHeight, realOffset=$realOffset, minHalfExpandedOffset=$minHalfExpandedOffset")
 
         if (realOffset < minHalfExpandedOffset) {
             // 3.当面板高度大于等于中间态，不满扩展态，则扩展态自适应高度，仍支持三段式；
             enableHalfExpandedState = true
 
-            val finalExpandedOffset = Math.max(Math.min(realOffset, maxExpandedOffsetOnEnableHalf), minExpandedOffset)
-            STLogUtil.w(TAG, "setStateByRealHeight enableHalfExpandedState=$enableHalfExpandedState, finalExpandedOffset=$finalExpandedOffset, minHalfExpandedOffset=$minHalfExpandedOffset, parentHeight=$parentHeight")
+            val finalExpandedOffset = Math.max(Math.min(realOffset, maxExpandedOffsetOnEnableHalf), innerMinExpandedOffset)
+            STLogUtil.w(TAG, "setStateByRealHeight enableHalfExpandedState=$enableHalfExpandedState, finalExpandedOffset=$finalExpandedOffset, minHalfExpandedOffset=$minHalfExpandedOffset, parentHeight=$innerParentHeight")
             callbackBeforeSetState?.invoke(enableHalfExpandedState)
             setStateWithResetConfigs(
                 state = STBottomSheetBehaviorV2.STATE_HALF_EXPANDED,
                 enableAnimation = false,
                 notifyOnStateChanged = notifyOnStateChanged,
                 forceSettlingOnSameState = true,
-                parentHeight = parentHeight,
+                parentHeight = innerParentHeight,
                 expandedOffset = finalExpandedOffset,
                 halfExpandedOffset = minHalfExpandedOffset,
                 peekHeight = peekHeight,
@@ -740,14 +742,14 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             enableHalfExpandedState = false
 
             val finalExpandedOffset = Math.min(maxExpandedOffsetOnDisableHalf, realOffset)
-            STLogUtil.w(TAG, "setStateByRealHeight enableHalfExpandedState=$enableHalfExpandedState, finalExpandedOffset=$finalExpandedOffset, minHalfExpandedOffset=$minHalfExpandedOffset, parentHeight=$parentHeight")
+            STLogUtil.w(TAG, "setStateByRealHeight enableHalfExpandedState=$enableHalfExpandedState, finalExpandedOffset=$finalExpandedOffset, minHalfExpandedOffset=$minHalfExpandedOffset, parentHeight=$innerParentHeight")
             callbackBeforeSetState?.invoke(enableHalfExpandedState)
             setStateWithResetConfigs(
                 state = STBottomSheetBehaviorV2.STATE_EXPANDED,
                 enableAnimation = false,
                 notifyOnStateChanged = notifyOnStateChanged,
                 forceSettlingOnSameState = true,
-                parentHeight = parentHeight,
+                parentHeight = innerParentHeight,
                 expandedOffset = finalExpandedOffset,
                 halfExpandedOffset = 0,
                 peekHeight = peekHeight

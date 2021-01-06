@@ -34,10 +34,9 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
     private val TAG = "[BottomSheet]"
 
     private val arrowPanelHeight: Int = 32.toPxFromDp()
-    private val enableDragOnlyOnSpecialTouchLayout: Boolean = true
-    private val nestedScrollView: STNestedScrollView by lazy { findViewById<STNestedScrollView>(R.id.nestedScrollView) }
-    private val touchLayout: STBottomSheetTouchContainerConstrainLayout by lazy { findViewById<STBottomSheetTouchContainerConstrainLayout>(R.id.touchLayout) }
-    private val arrowIv: ImageView by lazy { findViewById<ImageView>(R.id.arrowIv) }
+    private val nestedScrollView: STNestedScrollView by lazy { findViewById(R.id.nestedScrollView) }
+    private val touchLayout: STBottomSheetTouchContainerConstrainLayout by lazy { findViewById(R.id.touchLayout) }
+    private val arrowIv: ImageView by lazy { findViewById(R.id.arrowIv) }
 
     private val backdropBehaviorHeightShow: Int = (STSystemUtil.screenWidth() * 9f / 16f).toInt()
 
@@ -62,7 +61,7 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
     }
     private val bottomSheetPeekHeight: Int by lazy { STInitializer.application()?.resources?.getDimensionPixelSize(R.dimen.finalBottomSheetPeekHeight) ?: 0 }
     private val bottomSheetBehavior: STBottomSheetViewPagerBehaviorV2<LinearLayout> by lazy { STBottomSheetViewPagerBehaviorV2.from(bottomSheetContainer) }
-    private val imageContentView: ImageView by lazy { findViewById<ImageView>(R.id.imageContentView) }
+    private val imageContentView: ImageView by lazy { findViewById(R.id.imageContentView) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.final_behavior_bottom_sheet_activity_v2)
@@ -82,7 +81,7 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
         bottomSheetBehavior.addOnParentHeightChangedListener {
             STLogUtil.w(TAG, "[height] 5 addOnParentHeightChangedListener=${it} ${System.currentTimeMillis()}")
         }
-        bottomSheetBehavior.ensureOnLayoutChild { it ->
+        bottomSheetBehavior.ensureOnLayoutChild {
             STLogUtil.w(TAG, "[height] 6 ensureOnLayoutChild=${it} ${System.currentTimeMillis()}")
             bottomSheetBehavior.ensureOnLayoutChild { height ->
                 STLogUtil.w(TAG, "[height] 7 ensureOnLayoutChild=${height} ${System.currentTimeMillis()}")

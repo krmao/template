@@ -105,6 +105,7 @@ object STSystemUtil {
      * 华为 P20 (不存在虚拟导航栏)                        screenHeight=1439 screenRealHeight=1493(状态栏+内容高度)               statusBarHeight=54 navigationBarHeight=82  screenContentHeightExcludeStatusAndNavigationBar=1439
      */
     @JvmStatic
+    @JvmOverloads
     fun screenRealHeight(application: Application? = STInitializer.application()): Int {
         return displayRealMetrics(application)?.heightPixels ?: 0
     }

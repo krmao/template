@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.smart.library.base.STBaseActivity
 import com.smart.library.STInitializer
+import com.smart.library.base.STBaseActivity
 import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehaviorV2
@@ -17,11 +17,14 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STViewUtil
-import com.smart.library.widget.behavior.*
+import com.smart.library.widget.behavior.STBottomSheetBackdropHalfBehavior
+import com.smart.library.widget.behavior.STBottomSheetTouchContainerConstrainLayout
+import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_COLLAPSED
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_EXPANDED
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.STATE_HALF_EXPANDED
 import com.smart.library.widget.behavior.STBottomSheetViewPagerBehaviorV2.Companion.getStateDescription
+import com.smart.library.widget.behavior.STNestedScrollView
 import com.smart.template.R
 import kotlinx.android.synthetic.main.final_behavior_bottom_sheet_activity.*
 
@@ -57,12 +60,34 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
             }
         }
     }
-    private val bottomSheetPeekHeight: Int by lazy { STInitializer.application()?.resources?.getDimensionPixelSize(R.dimen.finalBottomSheetPeekHeight)?:0 }
+    private val bottomSheetPeekHeight: Int by lazy { STInitializer.application()?.resources?.getDimensionPixelSize(R.dimen.finalBottomSheetPeekHeight) ?: 0 }
     private val bottomSheetBehavior: STBottomSheetViewPagerBehaviorV2<LinearLayout> by lazy { STBottomSheetViewPagerBehaviorV2.from(bottomSheetContainer) }
     private val imageContentView: ImageView by lazy { findViewById<ImageView>(R.id.imageContentView) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.final_behavior_bottom_sheet_activity_v2)
+
+        STLogUtil.w(TAG, "[height] 1 after setContentView bottomSheetBehavior.getParentHeight()=${bottomSheetBehavior.getParentHeight()} ${System.currentTimeMillis()}")
+        bottomSheetBehavior.getView()?.ensureOnGlobalLayoutListener {
+            STLogUtil.e(TAG, "[height] 2 bottomSheetBehavior.getView()?.ensureOnGlobalLayoutListener=${bottomSheetBehavior.getParentHeight()} ${System.currentTimeMillis()}")
+        }
+        bottomSheetContainer?.ensureOnGlobalLayoutListener {
+            STLogUtil.w(TAG, "[height] 3 bottomSheetContainer?.ensureOnGlobalLayoutListener=${bottomSheetBehavior.getParentHeight()} ${System.currentTimeMillis()}")
+        }
+
+        bottomSheetBehavior.ensureOnLayoutChild {
+            STLogUtil.w(TAG, "[height] 4 ensureOnLayoutChild=${it} ${System.currentTimeMillis()}")
+        }
+
+        bottomSheetBehavior.addOnParentHeightChangedListener {
+            STLogUtil.w(TAG, "[height] 5 addOnParentHeightChangedListener=${it} ${System.currentTimeMillis()}")
+        }
+        bottomSheetBehavior.ensureOnLayoutChild { it ->
+            STLogUtil.w(TAG, "[height] 6 ensureOnLayoutChild=${it} ${System.currentTimeMillis()}")
+            bottomSheetBehavior.ensureOnLayoutChild { height ->
+                STLogUtil.w(TAG, "[height] 7 ensureOnLayoutChild=${height} ${System.currentTimeMillis()}")
+            }
+        }
 
         initBottomSheetBehavior()
         initBackdropBehavior(backdropBehaviorHeightShow)
@@ -126,7 +151,9 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
 
     private fun initBottomSheetBehavior() {
         bottomSheetBehavior.addBottomSheetCallback(onBottomSheetCallback)
-        bottomSheetBehavior.resetNestedViewsLayoutParamsByBottomSheetContainerHeight = { currentBottomSheetContainerHeightByState ->
+        bottomSheetBehavior.addOnBottomSheetContainerHeightChangedListener { currentBottomSheetContainerHeightByState ->
+            STLogUtil.e(TAG, "[height] 0 currentBottomSheetContainerHeightByState=$currentBottomSheetContainerHeightByState")
+
             val targetHeight = currentBottomSheetContainerHeightByState - arrowPanelHeight
             val params: ViewGroup.LayoutParams = nestedScrollView.layoutParams
             val oldHeight = params.height
@@ -246,6 +273,8 @@ class FinalBehaviorBottomSheetV2Activity : STBaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        bottomSheetBehavior.removeOnBottomSheetContainerHeightChangedListeners()
+        bottomSheetBehavior.removeOnParentHeightChangedListeners()
         STLogUtil.d(TAG, "activity: onDestroy")
         bottomSheetBehavior.removeBottomSheetCallback(onBottomSheetCallback)
     }

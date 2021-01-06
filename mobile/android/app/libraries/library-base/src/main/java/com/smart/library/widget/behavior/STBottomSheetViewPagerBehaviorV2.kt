@@ -703,7 +703,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
      * @param parentHeight 务必填写正确的值, 最好在 setOnParentHeightChangedListener 里面执行, 因为此时获取的 parentHeight 最精确
      * @param peekHeight 如果是第一次设置, 务必填写正确的值, 因为第一次 getPeekHeight 是 0/-1
      */
-    fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
+    fun setStateByRealContentHeight(parentHeight: Int, peekHeight: Int, bottomSheetContentHeight: Int, notifyOnStateChanged: Boolean = true, callbackBeforeSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null, callbackAfterSetState: ((newEnableHalfExpandedState: Boolean) -> Unit)? = null) {
         val minExpandedOffset: Int = (parentHeight * 0.24f).toInt()
         val minHalfExpandedOffset: Int = (parentHeight * (1f - 0.4f)).toInt()
         val peekOffset: Int = parentHeight - peekHeight
@@ -723,7 +723,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             setStateWithResetConfigs(
                 state = STBottomSheetBehaviorV2.STATE_HALF_EXPANDED,
                 enableAnimation = false,
-                notifyOnStateChanged = true,
+                notifyOnStateChanged = notifyOnStateChanged,
                 forceSettlingOnSameState = true,
                 parentHeight = parentHeight,
                 expandedOffset = finalExpandedOffset,
@@ -745,7 +745,7 @@ class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(conte
             setStateWithResetConfigs(
                 state = STBottomSheetBehaviorV2.STATE_EXPANDED,
                 enableAnimation = false,
-                notifyOnStateChanged = true,
+                notifyOnStateChanged = notifyOnStateChanged,
                 forceSettlingOnSameState = true,
                 parentHeight = parentHeight,
                 expandedOffset = finalExpandedOffset,

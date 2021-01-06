@@ -21,7 +21,7 @@ object STAccessibilityUtil {
         if (!isAccessibilitySettingsOn(context)) {
             // 引导至辅助功能设置页面
             context.startActivity(STIntentUtil.getAccessibilitySettingsIntent())
-            Toast.makeText(context, "请先打开辅助权限", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "请先开启 '${STSystemUtil.getAppName()}' 的辅助功能", Toast.LENGTH_LONG).show()
             STSystemUtil.closeSystemNotificationPanel()
             return false
         }

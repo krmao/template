@@ -302,7 +302,8 @@ object STSystemUtil {
     fun getAppVersionName(application: Application?, packageName: String? = application?.packageName): String = getPackageInfo(application, packageName)?.versionName ?: ""
 
     @JvmStatic
-    fun getAppName(application: Application?, packageName: String? = application?.packageName): String {
+    @JvmOverloads
+    fun getAppName(application: Application? = STInitializer.application(), packageName: String? = application?.packageName): String {
         var appName = ""
         try {
             getPackageInfo(application, packageName)?.applicationInfo?.labelRes?.let {

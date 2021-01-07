@@ -10,7 +10,6 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.rx.RxBus
-import com.smart.library.widget.debug.STDebugFragment
 
 /**
  * https://github.com/fashare2015/ActivityTracker

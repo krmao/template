@@ -3,6 +3,7 @@ package com.smart.library.util
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -267,30 +268,50 @@ object STSystemUtil {
     fun collapseStatusBar() = STInitializer.application()?.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) // 收起下拉通知栏
 
     @JvmStatic
+    @JvmOverloads
+    fun getInputMethodManager(context: Context? = STInitializer.application()): InputMethodManager? {
+        return context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    }
+
+    /*
+     * 注意: 如果 dialog 包含一个或者多个EditText, 点击外部(canceledOnTouchOutside==true)不会隐藏已经显示的输入法弹框, 且通过点击取消按钮必须先隐藏输入法弹框再延时 dismiss, 因为在 onCancel/onDismiss 中 dialog?.currentFocus?.windowToken 必然已经是 null, 且 inputMethodManager?.isActive 必然是 false
+     * ----> canceledOnTouchOutside = false
+     * ----> binding.cancelBtn.setOnClickListener {
+     *          STSystemUtil.hideKeyboardFromDialogBeforeDismiss(dialog)
+     *          binding.root.postDelayed({ dialog?.dismiss() }, 200)
+     *       }
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun hideKeyboardFromDialogBeforeDismiss(context: Context? = STInitializer.application(), dialog: Dialog? = null) {
+        val inputMethodManager: InputMethodManager? = getInputMethodManager(context)
+        if (dialog == null) {
+            if (inputMethodManager?.isActive == true) {
+                inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+        } else {
+            getInputMethodManager()?.hideSoftInputFromWindow(dialog.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun isKeyboardActive(context: Context? = STInitializer.application(), view: View? = null): Boolean = if (view == null) getInputMethodManager(context)?.isActive == true else getInputMethodManager(context)?.isActive(view) == true
+
+    @JvmStatic
     fun hideKeyboard(view: View?) = view?.let { _view ->
-        (_view.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.let {
-            if (it.isActive) it.hideSoftInputFromWindow(
-                view.applicationWindowToken,
-                0
-            )
-        }
+        val inputMethodManager: InputMethodManager? = getInputMethodManager(_view.context)
+        if (inputMethodManager?.isActive(view) == true) inputMethodManager.hideSoftInputFromWindow(view.applicationWindowToken, 0)
     }
 
     @JvmStatic
-    fun hideKeyboard(activity: Activity?) = activity?.currentFocus?.let { view ->
-        (view.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.let {
-            if (it.isActive) it.hideSoftInputFromWindow(
-                view.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
-        }
-    }
+    fun hideKeyboard(activity: Activity?) = hideKeyboard(activity?.currentFocus)
 
     @JvmStatic
-    fun showKeyboard(view: View?) = (view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+    fun showKeyboard(view: View?) = getInputMethodManager(view?.context)?.showSoftInput(view, InputMethodManager.SHOW_FORCED)
 
     @JvmStatic
-    fun toggleKeyboard(view: View?) = (view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+    fun toggleKeyboard(view: View?) = getInputMethodManager(view?.context)?.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
 
     @JvmStatic
     fun isAppInstalled(application: Application?, packageName: String): Boolean = getPackageInfo(application, packageName) != null

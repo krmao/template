@@ -51,6 +51,13 @@ object STDialogManager {
      * @param dimAmount     背景模糊程度
      * @param width         dialog 宽度
      * @param height        dialog 高度
+     *
+     * 注意: 如果 dialog 包含一个或者多个EditText, 点击外部(canceledOnTouchOutside==true)不会隐藏已经显示的输入法弹框, 且通过点击取消按钮必须先隐藏输入法弹框再延时 dismiss, 因为在 onCancel/onDismiss 中 dialog?.currentFocus?.windowToken 必然已经是 null, 且 inputMethodManager?.isActive 必然是 false
+     * ----> canceledOnTouchOutside = false
+     * ----> binding.cancelBtn.setOnClickListener {
+     *          STSystemUtil.hideKeyboardFromDialogBeforeDismiss(dialog)
+     *          binding.root.postDelayed({ dialog?.dismiss() }, 200)
+     *       }
      */
     @JvmStatic
     @JvmOverloads

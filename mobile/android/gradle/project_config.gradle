@@ -14,27 +14,24 @@ gradle.ext {
             'library_base'         : [
                     'repository_remote': [
                             'enable'    : false,
-                            'dependency': 'com.codesdancing.libraries:library-base:0.0.1.27',
+                            'dependency': 'com.codesdancing.libraries:library-base:0.0.1.27', // base utils
                     ]
             ],
             'library_flutter'      : [
-                    'repository_remote': [
-                            'enable'    : true,
-                            'dependency': 'com.smart.library:libs-flutter:0.0.1.2',
-                    ],
-                    'lib_flutter'      : [
-                            'enable'           : false,
-                            'repository_remote': [
-                                    'enable': false
-                            ],
-                            'repository_local' : [
+                    'library_pureflutterwithbusiness': [
+                            'enable'          : true,
+                            'repository_local': [
                                     'enable'           : true,
-                                    'url'              : '/Users/krmao/workspace/template/mobile/flutter/flutter_modules/flutter_module_template/build/host/outputs/repo',
-                                    'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
+                                    'url'              : './gradle/host/outputs/repo',
+                                    'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT', // flutter libs + business
                                     'dependencyProfile': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
                                     'dependencyRelease': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT'
                             ]
                     ],
+                    'library_baseflutterutils'   : [
+                            'enable'    : false,
+                            'dependency': 'com.codesdancing.libraries:library-base-flutterutils:0.0.0.1', // base flutter utils // todo
+                    ]
             ],
             'library_reactnative'  : [
                     'repository_remote': [

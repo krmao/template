@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.codesdancing.flutter_module</groupId>
+  <artifactId>flutter_debug</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20210107.072436</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20210107072436</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>aar</extension>
+        <value>0.0.1-20210107.072436-1</value>
+        <updated>20210107072436</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.0.1-20210107.072436-1</value>
+        <updated>20210107072436</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

@@ -50,7 +50,12 @@ if __name__ == '__main__':
             print "==========>>>>>>>>>> install flutter sdk end"
         print "==========>>>>>>>>>> build flutter lib aar start"
         print "current path ->", os.getcwd()
-        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "")
+
+        dest_host_path = os.path.abspath('../../../android/gradle/')
+        if not os.path.exists(dest_host_path):
+            os.makedirs(dest_host_path)
+
+        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "") + "--output-dir " + dest_host_path
         print shell_build_flutter_aar
         os.system(shell_build_flutter_aar)
         print "==========>>>>>>>>>> build flutter lib aar end"

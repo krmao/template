@@ -23,7 +23,7 @@ if (gradle.ext.modules.library_hybird.enable == true) {
     include(":library-hybird"); project(":library-hybird").projectDir = new File(settingsDir, "app/libraries/library-hybird")
 }
 
-if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
+if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
     include(":library-flutter"); project(":library-flutter").projectDir = new File(settingsDir, "app/libraries/library-flutter")
 }
 

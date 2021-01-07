@@ -134,7 +134,7 @@ android {
             // testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
         }
 
-        /*if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
+        /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
             profile {
                 initWith debug
             }
@@ -295,7 +295,7 @@ dependencies {
         implementation project(':library-livestreaming-push')
     }
 
-    if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
+    if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
         implementation project(':library-flutter')
     }
     if (gradle.ext.modules.library_pictureviewer.enable == true) {

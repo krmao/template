@@ -48,7 +48,7 @@ class STActivityTrackerService : AccessibilityService() {
             override fun onReceive(context: Context, intent: Intent) {
                 when (intent.action) {
                     ACTION_BROADCAST_RECEIVER_OPEN_ACCESSIBILITY -> {
-                        if (STAccessibilityUtil.checkAccessibility(context = STInitializer.application())) {
+                        if (STAccessibilityUtil.checkAccessibility(context = STInitializer.application(), autoOpenAccessibilitySettings = true)) {
                             STSystemUtil.closeSystemNotificationPanel()
                         }
                     }

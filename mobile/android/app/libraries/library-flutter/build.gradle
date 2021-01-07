@@ -22,7 +22,7 @@ android {
         }
     }
 
-    /*if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyProfile) {
+    /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
         // ERROR: Unable to resolve dependency for @profile/compileClasspath
         buildTypes {
             profile {
@@ -37,19 +37,19 @@ dependencies {
 
     api project(':library-base')
 
-    if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.enable == true) {
-        if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyDebug) {
-            debugApi(gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyDebug) {
+    if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+            debugApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
                 changing = true
             }
         }
-        /*if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyProfile) {
-            profileApi(gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyProfile) {
+        /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+            profileApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
                 changing = true
             }
         }*/
-        if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyRelease) {
-            releaseApi(gradle.ext.modules.library_flutter.lib_flutter.repository_local.dependencyRelease) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+            releaseApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
                 changing = true
             }
         }

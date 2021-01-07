@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.flutter.plugins.pathprovider</groupId>
+  <artifactId>path_provider_debug</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20210107072436</lastUpdated>
+  </versioning>
+</metadata>

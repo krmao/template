@@ -45,10 +45,10 @@ buildscript {
 
 allprojects {
     repositories {
-        if (gradle.ext.modules.library_flutter.lib_flutter.enable == true) {
-            if (gradle.ext.modules.library_flutter.lib_flutter.repository_local.enable == true) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
+            if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
                 String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
-                maven { url gradle.ext.modules.library_flutter.lib_flutter.repository_local.url }
+                maven { url gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.url }
                 maven { url "$storageUrl/download.flutter.io" }
             } else {
                 maven { url "$rootDir/app/libraries/repo/host/outputs/repo" }

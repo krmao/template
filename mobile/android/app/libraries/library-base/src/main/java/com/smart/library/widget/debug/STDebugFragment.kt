@@ -155,7 +155,7 @@ open class STDebugFragment : STBaseFragment() {
                 .setAutoCancel(false) // automatically removes the notification when the user taps it
 
             // 如果没有辅助权限功能, 增加跳转辅助权限设置页面
-            if (!STAccessibilityUtil.checkAccessibility(context = STInitializer.application())) {
+            if (!STAccessibilityUtil.checkAccessibility(context = STInitializer.application(), autoOpenAccessibilitySettings = false)) {
                 builder.addAction(android.R.drawable.ic_menu_info_details, "开启辅助权限", STActivityTrackerService.Companion.ActivityTrackerBroadcastReceiver.createBroadcastReceiverOpenAccessibilityPendingIntent())
             }
 

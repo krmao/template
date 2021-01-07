@@ -110,6 +110,7 @@ object STInitializer {
     data class Config(
         var application: Application,
         var appDebug: Boolean = false,
+        var configAppInfo: ConfigAppInfo = ConfigAppInfo(),
         var configChannel: ConfigChannel = ConfigChannel(),
         var configName: ConfigName = ConfigName(),
         var configClass: ConfigClass = ConfigClass(),
@@ -135,6 +136,10 @@ object STInitializer {
 
     data class ConfigBundle(
         var bundleBusHandlerClassMap: MutableMap<String, String> = hashMapOf()
+    )
+
+    data class ConfigAppInfo(
+        var appIcon: Int = -1
     )
 
     data class ConfigChannel(private var appChannelInvoker: () -> String = { "" }) {
@@ -196,6 +201,10 @@ object STInitializer {
     @JvmStatic
     var config: Config? = null
         private set
+
+    @JvmStatic
+    val configAppInfo: ConfigAppInfo?
+        get() = config?.configAppInfo
 
     @JvmStatic
     val configAdapterDesign: ConfigAdapterDesign?

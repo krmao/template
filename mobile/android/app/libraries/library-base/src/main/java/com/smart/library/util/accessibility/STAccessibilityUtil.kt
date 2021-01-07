@@ -15,7 +15,7 @@ object STAccessibilityUtil {
 
     @JvmStatic
     @JvmOverloads
-    fun checkAccessibility(context: Context?, autoOpenAccessibilitySettings: Boolean = true): Boolean {
+    fun checkAccessibility(context: Context?, autoOpenAccessibilitySettings: Boolean = false): Boolean {
         context ?: return false
 
         // 判断辅助功能是否开启

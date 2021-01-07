@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.st_fragment_debug.*
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugFragment : STBaseFragment() {
 
+    @SuppressLint("CheckResult")
     companion object {
         private const val KEY_CUSTOM_LIST = "KEY_CUSTOM_LIST"
         private var hostList: MutableList<HostModel> = STPreferencesUtil.getList(KEY_CUSTOM_LIST, HostModel::class.java)

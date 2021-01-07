@@ -23,10 +23,10 @@ import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.*
+import com.smart.library.util.accessibility.STAccessibilityUtil
 import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.st_fragment_debug.*
-
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugFragment : STBaseFragment() {
@@ -100,17 +100,8 @@ open class STDebugFragment : STBaseFragment() {
 
         @SuppressLint("NewApi", "CheckResult")
         @JvmStatic
-        fun showDebugNotification(title: String = "${STSystemUtil.getAppName(STInitializer.application())} 调试助手", subTitle: String = "点击跳转到调试界面", autoStartActivityTrackerService: Boolean = true) {
+        fun showDebugNotification(title: String = "${STSystemUtil.getAppName(STInitializer.application())} 调试助手", subTitle: String = "点击跳转到调试界面") {
             isDebugNotificationShowingNow = true
-            if (autoStartActivityTrackerService) {
-                // STActivityTrackerService.startService()
-                RxBus.toObservable(STActivityTrackerService.ActivityChangedEvent::class.java).subscribe { changeEvent ->
-                    STLogUtil.w(STActivityTrackerService.TAG, "onSubscribe isDebugNotificationShowingNow=$isDebugNotificationShowingNow, changeEvent=$changeEvent")
-                    if (isDebugNotificationShowingNow) {
-                        showDebugNotification(changeEvent.packageName, changeEvent.className.substringAfterLast("."), false)
-                    }
-                }
-            }
 
             //========== ======================================================================== ==========
             //========== notification example start
@@ -161,7 +152,11 @@ open class STDebugFragment : STBaseFragment() {
                 .setOngoing(true)
                 .setGroup(summaryGroupKey) // specify which group this notification belongs to
                 .setAutoCancel(false) // automatically removes the notification when the user taps it
-                .addAction(android.R.drawable.ic_menu_send, "点击开启查看页面信息功能", STActivityTrackerService.Companion.ActivityTrackerBroadcastReceiver.createBroadcastReceiverStartPendingIntent())
+
+            // 如果没有辅助权限功能, 增加跳转辅助权限设置页面
+            if (!STAccessibilityUtil.checkAccessibility(context = STInitializer.application())) {
+                builder.addAction(android.R.drawable.ic_menu_info_details, "开启辅助权限", STActivityTrackerService.Companion.ActivityTrackerBroadcastReceiver.createBroadcastReceiverOpenAccessibilityPendingIntent())
+            }
 
             actionList.forEach { builder.addAction(it) }
 
@@ -223,16 +218,23 @@ open class STDebugFragment : STBaseFragment() {
         }
 
         @JvmStatic
-        @JvmOverloads
-        fun cancelDebugNotification(autoStopActivityTrackerService: Boolean = true) {
+        fun cancelDebugNotification() {
             isDebugNotificationShowingNow = false
-            if (autoStopActivityTrackerService) STActivityTrackerService.stopService(STInitializer.application())
 
             val summaryGroupId = NOTIFICATION_DEFAULT_SUMMARY_GROUP_ID
             val notificationId = NOTIFICATION_DEFAULT_DEBUG_CHANNEL_ID
             val channelId: String = STNotificationManager.getChannelId(notificationId)
             STNotificationManager.cancelNotify(notificationId, channelId)
             STNotificationManager.cancelNotify(summaryGroupId)
+        }
+
+        init {
+            RxBus.toObservable(STActivityTrackerService.ActivityChangedEvent::class.java).subscribe { changeEvent ->
+                STLogUtil.w(STActivityTrackerService.TAG, "onSubscribe isDebugNotificationShowingNow=$isDebugNotificationShowingNow, changeEvent=$changeEvent")
+                if (isDebugNotificationShowingNow) {
+                    showDebugNotification(changeEvent.packageName, changeEvent.className.substringAfterLast("."))
+                }
+            }
         }
     }
 

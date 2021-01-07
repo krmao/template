@@ -14,15 +14,18 @@ import java.util.*
 object STAccessibilityUtil {
 
     @JvmStatic
-    fun checkAccessibility(context: Context?): Boolean {
+    @JvmOverloads
+    fun checkAccessibility(context: Context?, autoOpenAccessibilitySettings: Boolean = true): Boolean {
         context ?: return false
 
         // 判断辅助功能是否开启
         if (!isAccessibilitySettingsOn(context)) {
-            // 引导至辅助功能设置页面
-            context.startActivity(STIntentUtil.getAccessibilitySettingsIntent())
-            Toast.makeText(context, "请先开启 '${STSystemUtil.getAppName()}' 的辅助功能", Toast.LENGTH_LONG).show()
-            STSystemUtil.closeSystemNotificationPanel()
+            if (autoOpenAccessibilitySettings) {
+                // 引导至辅助功能设置页面
+                context.startActivity(STIntentUtil.getAccessibilitySettingsIntent())
+                Toast.makeText(context, "请先开启 '${STSystemUtil.getAppName()}' 的辅助功能", Toast.LENGTH_LONG).show()
+                STSystemUtil.closeSystemNotificationPanel()
+            }
             return false
         }
         return true

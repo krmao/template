@@ -10,7 +10,11 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.rx.RxBus
+import com.smart.library.widget.debug.STDebugFragment
 
+/**
+ * https://github.com/fashare2015/ActivityTracker
+ */
 class STActivityTrackerService : AccessibilityService() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -44,68 +48,29 @@ class STActivityTrackerService : AccessibilityService() {
         class ActivityTrackerBroadcastReceiver : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 when (intent.action) {
-                    ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_START -> {
+                    ACTION_BROADCAST_RECEIVER_OPEN_ACCESSIBILITY -> {
                         if (STAccessibilityUtil.checkAccessibility(context = STInitializer.application())) {
-                            startService()
+                            STSystemUtil.closeSystemNotificationPanel()
                         }
-                        return
-                    }
-                    ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_STOP -> {
-                        stopService()
                     }
                 }
             }
 
             companion object {
-                const val ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_START = "com.codesdancing.broadcast.receiver.activity.tracker.start"
-                const val ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_STOP = "com.codesdancing.broadcast.receiver.activity.tracker.stop"
+                const val ACTION_BROADCAST_RECEIVER_OPEN_ACCESSIBILITY = "com.codesdancing.broadcast.receiver.accessibility.open"
 
                 @JvmStatic
                 @JvmOverloads
-                fun createBroadcastReceiverStartPendingIntent(context: Context? = STInitializer.application()): PendingIntent {
-                    return createBroadcastReceiverPendingIntent(context, ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_START)
-                }
-
-                @JvmStatic
-                @JvmOverloads
-                fun createBroadcastReceiverStopPendingIntent(context: Context? = STInitializer.application()): PendingIntent {
-                    return createBroadcastReceiverPendingIntent(context, ACTION_BROADCAST_RECEIVER_ACTIVITY_TRACKER_STOP)
-                }
-
-                @JvmStatic
-                @JvmOverloads
-                fun createBroadcastReceiverPendingIntent(context: Context? = STInitializer.application(), actionName: String): PendingIntent {
+                fun createBroadcastReceiverOpenAccessibilityPendingIntent(context: Context? = STInitializer.application()): PendingIntent {
                     val intent = Intent(context, ActivityTrackerBroadcastReceiver::class.java)
-                    intent.action = actionName
+                    intent.action = ACTION_BROADCAST_RECEIVER_OPEN_ACCESSIBILITY
                     return PendingIntent.getBroadcast(context, 0, intent, 0)
                 }
             }
         }
 
-        private var serviceIntent: Intent? = null
-
         // 过滤掉下拉的系统通知面板, 否则每次查看通知显示的包名类名都是显示通知面板本身所在的包名类名
         private const val SYSTEM_NOTIFICATION_PANEL_PACKAGE_NAME = "com.android.systemui"
         private const val SYSTEM_NOTIFICATION_PANEL_CLASS_NAME = "android.widget.FrameLayout"
-
-        @JvmStatic
-        @JvmOverloads
-        fun startService(context: Context? = STInitializer.application()) {
-            if (context != null) {
-                stopService(context)
-                serviceIntent = Intent(context, STActivityTrackerService::class.java)
-                context.startService(serviceIntent)
-            }
-        }
-
-        @JvmStatic
-        @JvmOverloads
-        fun stopService(context: Context? = STInitializer.application()) {
-            val intent: Intent? = serviceIntent
-            if (context != null && intent != null) {
-                context.stopService(intent)
-                serviceIntent = null
-            }
-        }
     }
 }

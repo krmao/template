@@ -18,5 +18,7 @@ export 'src/page_state.dart';
 export 'src/page_widget.dart';
 export 'src/utils/util_http.dart';
 export 'src/utils/util_widget.dart';
+export 'src/utils/util_router.dart';
 export 'src/widgets/widget_loading.dart';
 export 'src/widgets/widget_titlebar.dart';
+export 'package:flutter_boost/flutter_boost.dart';

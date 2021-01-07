@@ -1,4 +1,5 @@
 
+import 'package:codesdancing_bridge/codesdancing_bridge.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boost/container/boost_container.dart';
@@ -29,7 +30,7 @@ class CommonUtils {
                 'open flutter player',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => {FlutterRouter.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
+          onTap: () => {RouterUtil.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -38,7 +39,7 @@ class CommonUtils {
                 'open native mine',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => FlutterRouter.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then((Map<String, dynamic> result) {
+          onTap: () => RouterUtil.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then((Map<String, dynamic> result) {
                 print("URL_MINE did recieve second route result");
                 print("URL_MINE did recieve second route result $result");
               })),
@@ -50,7 +51,7 @@ class CommonUtils {
                 'open flutter order',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => FlutterRouter.open(FlutterRouter.URL_FLUTTER_ORDER).then((Map<String, dynamic> result) {
+          onTap: () => RouterUtil.open(FlutterRouter.URL_FLUTTER_ORDER).then((Map<String, dynamic> result) {
                 print("URL_ORDER did recieve second route result");
                 print("URL_ORDER did recieve second route result $result");
               })),
@@ -63,7 +64,7 @@ class CommonUtils {
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
-            FlutterRouter.open(FlutterRouter.URL_FLUTTER_SETTINGS).then((Map<String, dynamic> result) {
+              RouterUtil.open(FlutterRouter.URL_FLUTTER_SETTINGS).then((Map<String, dynamic> result) {
               print("URL_SETTINGS did recieve second route result");
               print("URL_SETTINGS did recieve second route result $result");
             });
@@ -77,7 +78,7 @@ class CommonUtils {
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
-            FlutterRouter.close(settings.uniqueId, result: {
+              RouterUtil.close(settings.uniqueId, result: {
               "result": {"name": settings.name, "params": settings.params, "login": 1, "token": "kkk"}
             });
           })

@@ -1,15 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'bridge_page.dart';
 import 'page_aware.dart';
-import 'page_mixin_variables.dart';
 import 'page_mixin_build.dart';
+import 'page_mixin_variables.dart';
 import 'widgets/widget_loading.dart';
 import 'widgets/widget_titlebar.dart';
 
-class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAliveClientMixin<T>, WidgetsBindingObserver, WidgetsBindingObserver, PageAware, PageMixinVariables, PageMixinBuild {
+class PageState<T extends StatefulWidget> extends State<T>
+    with
+        AutomaticKeepAliveClientMixin<T>,
+        WidgetsBindingObserver,
+        WidgetsBindingObserver,
+        PageAware,
+        PageMixinVariables,
+        PageMixinBuild {
   @override
   bool get wantKeepAlive => this.keepAlive;
+
+  String containerId;
 
   PageState(
       {child,
@@ -63,6 +73,14 @@ class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAli
     this.enableSafeAreaRight = enableSafeAreaRight;
   }
 
+  String getPageId() {
+    return '';
+  }
+
+  String getPageName() {
+    return '';
+  }
+
   //region build
 
   @override
@@ -75,7 +93,10 @@ class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAli
     //region common body
     if (child == null) child = (context) => Container();
     List<Widget> children = <Widget>[];
-    children.add(Container(child: buildBaseChild(context), margin: EdgeInsets.only(top: enableTitleBar ? titleBarWidget.height : 0)));
+    children.add(Container(
+        child: buildBaseChild(context),
+        margin:
+            EdgeInsets.only(top: enableTitleBar ? titleBarWidget.height : 0)));
     if (enableLoading && loadingWidget == null) {
       loadingWidget = Loading();
       children.add(loadingWidget);
@@ -95,7 +116,8 @@ class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAli
   @mustCallSuper
   void initState() {
     super.initState();
-    print("[page] $runtimeType - initState ${this.toStringShort()}");
+    containerId = PageBridge.getContainerId(context);
+    print("[page] $runtimeType - initState ${this.toStringShort()}, containerId=$containerId");
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -121,7 +143,8 @@ class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAli
   @mustCallSuper
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print("[page] $runtimeType - didChangeAppLifecycleState state=${state.toString()}");
+    print(
+        "[page] $runtimeType - didChangeAppLifecycleState state=${state.toString()}");
   }
 
   @override
@@ -199,4 +222,26 @@ class PageState<T extends StatefulWidget> extends State<T> with AutomaticKeepAli
 
 //endregion
 
+  Future<T> push<T extends Object>(BuildContext context, Route<T> route) {
+    return Navigator.of(context).push(route);
+  }
+
+  Future<T> pushNamed<T extends Object>(
+    BuildContext context,
+    String routeName, {
+    Object arguments,
+  }) {
+    return Navigator.of(context).pushNamed<T>(routeName, arguments: arguments);
+  }
+
+  dynamic pop<T extends Object>(BuildContext context, [T result]) {
+    final ModalRoute<dynamic> parentRoute = ModalRoute.of(context);
+    final bool canPop = parentRoute?.canPop ?? false;
+    if (canPop) {
+      Navigator.pop<T>(context, result);
+      pageDidDisappear();
+    } else {
+      return PageBridge.close();
+    }
+  }
 }

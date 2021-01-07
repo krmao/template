@@ -12,7 +12,7 @@ mixin PageMixinVariables {
   Loading loadingWidget;
   TitleBar titleBarWidget;
   Color statusBarColor;
-  BuildContext context;
+  // BuildContext context;
   BuildContext scaffoldContext;
 
   bool enableSafeArea = true;

@@ -11,7 +11,6 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
 
   Widget buildBase(BuildContext context) {
     print("[page] $runtimeType - build context=$context");
-    this.context = context;
 
     if (statusBarColor == null) statusBarColor = Colors.blueGrey;
 
@@ -63,11 +62,7 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
   @mustCallSuper
   void pageDidAppear() {
     super.pageDidAppear();
-
-    final ModalRoute<dynamic> parentRoute = ModalRoute.of(context);
-    final bool canPop = parentRoute?.canPop ?? false;
-
-    print("[page] $runtimeType - pageDidAppear canPop=$canPop");
+    print("[page] $runtimeType - pageDidAppear");
   }
 
   @override

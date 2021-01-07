@@ -35,7 +35,7 @@ class BridgeWidgetState extends PageState {
         getItemWidget(
           'close current page with result',
           () => {
-            FlutterRouter.closeCurrent(
+            RouterUtil.closeCurrent(
               result: {
                 "result": {"name": "mm", "params": "aa", "login": 1, "token": "kkk"}
               },
@@ -85,11 +85,11 @@ class BridgeWidgetState extends PageState {
           },
         ),
         getItemWidget('show toast by Toast plugin', () => {Toast.show("I am native Toast!!!")}),
-        getItemWidget('open flutter-player by boost', () => {FlutterRouter.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
+        getItemWidget('open flutter-player by boost', () => {RouterUtil.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
         getItemWidget(
           'open native-mine by boost',
           () => {
-            FlutterRouter.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then(
+            RouterUtil.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then(
               (Map<String, dynamic> result) {
                 print("URL_MINE did receive second route result");
                 print("URL_MINE did receive second route result $result");
@@ -100,7 +100,7 @@ class BridgeWidgetState extends PageState {
         getItemWidget(
           'open flutter-order by boost',
           () => {
-            FlutterRouter.open(FlutterRouter.URL_FLUTTER_ORDER).then(
+            RouterUtil.open(FlutterRouter.URL_FLUTTER_ORDER).then(
               (Map<String, dynamic> result) {
                 print("URL_ORDER did recieve second route result");
                 print("URL_ORDER did recieve second route result $result");
@@ -111,7 +111,7 @@ class BridgeWidgetState extends PageState {
         getItemWidget(
           'open flutter-settings by boost',
           () => {
-            FlutterRouter.open(FlutterRouter.URL_FLUTTER_SETTINGS).then(
+            RouterUtil.open(FlutterRouter.URL_FLUTTER_SETTINGS).then(
               (Map<String, dynamic> result) {
                 print("URL_SETTINGS did recieve second route result");
                 print("URL_SETTINGS did recieve second route result $result");

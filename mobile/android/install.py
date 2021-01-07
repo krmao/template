@@ -4,6 +4,7 @@
 import getopt
 import os.path
 import sys
+import shutil
 
 if __name__ == '__main__':
     opts, args = getopt.getopt(sys.argv[1:], 'hf:fv:c:r:i:', ['f=', 'fv=', 'c=', 'r=', 'i=', 'help'])
@@ -53,6 +54,10 @@ if __name__ == '__main__':
 
         dest_host_path = os.path.abspath('../../../android/gradle/')
         if not os.path.exists(dest_host_path):
+            os.makedirs(dest_host_path)
+        else:
+            if os.path.exists(os.path.abspath('../../../android/gradle/host')):
+                shutil.rmtree(os.path.join(root))
             os.makedirs(dest_host_path)
 
         shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "") + "--output-dir " + dest_host_path

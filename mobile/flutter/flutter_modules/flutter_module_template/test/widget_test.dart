@@ -8,7 +8,6 @@
 import 'package:codesdancing_bridge/codesdancing_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_module_template/modules/bridge/bridge_widget.dart';
-import 'package:flutter_module_template/settings/router/flutter_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -18,9 +17,7 @@ void main() {
       enableSafeArea: false,
       statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR,
       child: PageWidget(state: BridgeWidgetState()),
-      onInitStateCallback: () {
-        FlutterRouter.initialize();
-      },
+      onInitStateCallback: () {},
     ));
 
     // Verify that our counter starts at 0.

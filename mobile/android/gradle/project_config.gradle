@@ -22,7 +22,7 @@ gradle.ext {
                             'enable'          : true,
                             'repository_local': [
                                     'enable'           : true,
-                                    'url'              : './gradle/host/outputs/repo',
+                                    'url'              : "${rootProject.projectDir}/gradle/host/outputs/repo",
                                     'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT', // flutter libs + business
                                     'dependencyProfile': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
                                     'dependencyRelease': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT'

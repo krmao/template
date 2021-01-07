@@ -290,7 +290,7 @@ object STSystemUtil {
                 inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         } else {
-            getInputMethodManager()?.hideSoftInputFromWindow(dialog.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            inputMethodManager?.hideSoftInputFromWindow(dialog.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 

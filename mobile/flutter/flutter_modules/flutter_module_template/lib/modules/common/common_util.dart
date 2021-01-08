@@ -30,7 +30,9 @@ class CommonUtils {
                 'open flutter player',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => {RouterUtil.open(FlutterRouter.URL_FLUTTER_PLAYER)}),
+          onTap: () => {
+              RouterUtil.open(FlutterRouter.URL_FLUTTER_PLAYER)
+          }),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -39,7 +41,7 @@ class CommonUtils {
                 'open native mine',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => RouterUtil.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then((Map<String, dynamic> result) {
+          onTap: () => RouterUtil.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then((Map<dynamic, dynamic> result) {
                 print("URL_MINE did recieve second route result");
                 print("URL_MINE did recieve second route result $result");
               })),
@@ -51,7 +53,7 @@ class CommonUtils {
                 'open flutter order',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => RouterUtil.open(FlutterRouter.URL_FLUTTER_ORDER).then((Map<String, dynamic> result) {
+          onTap: () => RouterUtil.open(FlutterRouter.URL_FLUTTER_ORDER).then((Map<dynamic, dynamic> result) {
                 print("URL_ORDER did recieve second route result");
                 print("URL_ORDER did recieve second route result $result");
               })),
@@ -64,7 +66,7 @@ class CommonUtils {
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
-              RouterUtil.open(FlutterRouter.URL_FLUTTER_SETTINGS).then((Map<String, dynamic> result) {
+              RouterUtil.open(FlutterRouter.URL_FLUTTER_SETTINGS).then((Map<dynamic, dynamic> result) {
               print("URL_SETTINGS did recieve second route result");
               print("URL_SETTINGS did recieve second route result $result");
             });

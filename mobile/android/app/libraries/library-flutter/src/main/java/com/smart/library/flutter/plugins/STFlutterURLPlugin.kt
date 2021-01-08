@@ -2,6 +2,7 @@ package com.smart.library.flutter.plugins
 
 import android.app.Activity
 import com.idlefish.flutterboost.FlutterBoost
+import com.smart.library.flutter.STFlutterRouter
 import com.smart.library.util.STJsonUtil
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -16,9 +17,11 @@ class STFlutterURLPlugin : STFlutterBasePlugin() {
             val url = requestData.optString("url", "")
             val params = requestData.optJSONObject("urlParams")
             val exts = requestData.optJSONObject("exts")
-            FlutterBoost.instance().containerManager().currentTopRecord.container.contextActivity.apply {
+
+            STFlutterRouter.openBySchema(activity,url)
+            /*FlutterBoost.instance().containerManager().currentTopRecord.container.contextActivity.apply {
                 FlutterBoost.instance().platform().openContainer(this, url, STJsonUtil.toMapOrNull(params?.toString()), 0, STJsonUtil.toMapOrNull(exts?.toString()))
-            }
+            }*/
             result.success("OK")
         } else {
             result.error("1", "url is empty", requestData)

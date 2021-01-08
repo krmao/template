@@ -56,9 +56,10 @@ if __name__ == '__main__':
         if not os.path.exists(dest_host_path):
             os.makedirs(dest_host_path)
         else:
-            if os.path.exists(os.path.abspath('../../../android/gradle/host')):
-                shutil.rmtree(os.path.join(root))
-            os.makedirs(dest_host_path)
+            dest_host_flutter_repo = os.path.abspath('../../../android/gradle/host')
+            if os.path.exists(dest_host_flutter_repo):
+                shutil.rmtree(dest_host_flutter_repo)
+            os.makedirs(dest_host_flutter_repo)
 
         shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "") + "--output-dir " + dest_host_path
         print shell_build_flutter_aar

@@ -18,8 +18,6 @@ class BridgeWidgetState extends PageState {
     textEditingController.addListener(() {
       print("textEditingController listener callback");
     });
-
-    PageBridge.enableExitWithDoubleBackPressed(true);
   }
 
   @override
@@ -90,7 +88,7 @@ class BridgeWidgetState extends PageState {
           'open native-mine by boost',
           () => {
             RouterUtil.open(FlutterRouter.URL_NATIVE_MINE, urlParams: {"urlParams": "1"}, exts: {"exts": "1"}).then(
-              (Map<String, dynamic> result) {
+              (Map<dynamic, dynamic> result) {
                 print("URL_MINE did receive second route result");
                 print("URL_MINE did receive second route result $result");
               },
@@ -101,7 +99,7 @@ class BridgeWidgetState extends PageState {
           'open flutter-order by boost',
           () => {
             RouterUtil.open(FlutterRouter.URL_FLUTTER_ORDER).then(
-              (Map<String, dynamic> result) {
+              (Map<dynamic, dynamic> result) {
                 print("URL_ORDER did recieve second route result");
                 print("URL_ORDER did recieve second route result $result");
               },
@@ -112,7 +110,7 @@ class BridgeWidgetState extends PageState {
           'open flutter-settings by boost',
           () => {
             RouterUtil.open(FlutterRouter.URL_FLUTTER_SETTINGS).then(
-              (Map<String, dynamic> result) {
+              (Map<dynamic, dynamic> result) {
                 print("URL_SETTINGS did recieve second route result");
                 print("URL_SETTINGS did recieve second route result $result");
               },

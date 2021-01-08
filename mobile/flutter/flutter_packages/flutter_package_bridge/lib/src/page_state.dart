@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boost/container/boost_page_route.dart';
 
 import 'bridge_page.dart';
 import 'page_aware.dart';
 import 'page_mixin_build.dart';
 import 'page_mixin_variables.dart';
+import 'page_route_observer.dart';
 import 'widgets/widget_loading.dart';
 import 'widgets/widget_titlebar.dart';
 
@@ -20,6 +22,10 @@ class PageState<T extends StatefulWidget> extends State<T>
   bool get wantKeepAlive => this.keepAlive;
 
   String containerId;
+
+  PageRouteObserver<Route> _routeObserver;
+  Route _relatedRoute;
+  BoostPageRoute _relatedRootRoute;
 
   PageState(
       {child,
@@ -90,21 +96,6 @@ class PageState<T extends StatefulWidget> extends State<T>
 
     if (statusBarColor == null) statusBarColor = Colors.blueGrey;
 
-    //region common body
-    if (child == null) child = (context) => Container();
-    List<Widget> children = <Widget>[];
-    children.add(Container(
-        child: buildBaseChild(context),
-        margin:
-            EdgeInsets.only(top: enableTitleBar ? titleBarWidget.height : 0)));
-    if (enableLoading && loadingWidget == null) {
-      loadingWidget = Loading();
-      children.add(loadingWidget);
-    }
-    if (enableTitleBar && titleBarWidget == null) {
-      titleBarWidget = TitleBar(onBackPressed: () => pop(scaffoldContext));
-      children.add(titleBarWidget);
-    }
     //endregion
 
     return buildBase(context);
@@ -128,6 +119,18 @@ class PageState<T extends StatefulWidget> extends State<T>
   void didChangeDependencies() {
     super.didChangeDependencies();
     print("[page] $runtimeType - didChangeDependencies");
+
+    if (_routeObserver != null) {
+      return;
+    }
+    _relatedRoute = ModalRoute.of(context);
+    _relatedRootRoute = BoostPageRoute.tryOf(context);
+    _routeObserver = PageRouteObserver.singleton
+      ..subscribe(
+        this,
+        _relatedRootRoute,
+        _relatedRoute,
+      );
   }
 
   //region did change
@@ -216,6 +219,7 @@ class PageState<T extends StatefulWidget> extends State<T>
   @mustCallSuper
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _routeObserver?.unsubscribe(this, _relatedRoute);
     super.dispose();
     print("[page] $runtimeType - dispose");
   }
@@ -239,6 +243,7 @@ class PageState<T extends StatefulWidget> extends State<T>
     final bool canPop = parentRoute?.canPop ?? false;
     if (canPop) {
       Navigator.pop<T>(context, result);
+      print("[page] pop, call pageDidDisappear");
       pageDidDisappear();
     } else {
       return PageBridge.close();

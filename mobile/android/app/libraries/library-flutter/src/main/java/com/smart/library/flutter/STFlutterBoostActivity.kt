@@ -47,7 +47,11 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        try {
+            super.onDestroy()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
         delegate.onDestroy()
     }
 

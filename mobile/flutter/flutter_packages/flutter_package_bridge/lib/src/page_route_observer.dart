@@ -56,7 +56,7 @@ class PageRouteObserver<R extends Route<dynamic>> extends NavigatorObserver {
     assert(pageAware != null);
     assert(route != null);
 
-    print("PageRouteObserver-subscribe->$rootRoute-$route");
+    print("[PageRouteObserver] subscribe $rootRoute, $route");
 
     // 绑定RootRoute与当前Route之间的关系
     _rootRoutes.add(RouteHolder(route, route is BoostPageRoute ? route : rootRoute));
@@ -79,7 +79,7 @@ class PageRouteObserver<R extends Route<dynamic>> extends NavigatorObserver {
   void unsubscribe(PageAware pageAware, Route route) {
     assert(pageAware != null);
 
-    print("PageRouteObserver-unsubscribe->-$route");
+    print("[PageRouteObserver] unsubscribe $route");
 
     _rootRoutes.removeWhere((element) => element.route == route);
 
@@ -113,7 +113,7 @@ class PageRouteObserver<R extends Route<dynamic>> extends NavigatorObserver {
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
 
-    print("PageRouteObserver-didPush->-$route-$previousRoute");
+    print("[PageRouteObserver] didPush $route, $previousRoute");
     // 之后正常页面（非弹窗）入栈之后，才会触发前一个页面的离开
     if (route is PageRoute) {
       // 触发PageExit事件
@@ -150,7 +150,7 @@ class PageRouteObserver<R extends Route<dynamic>> extends NavigatorObserver {
   void didPop(Route route, Route previousRoute) {
     super.didPop(route, previousRoute);
 
-    print("PageRouteObserver-didPop->-$route-$previousRoute");
+    print("[PageRouteObserver] didPop $route, $previousRoute");
     if (route is PageRoute) {
       // 触发PageExit
       final Set<PageAware> subscribers = _listeners[route];

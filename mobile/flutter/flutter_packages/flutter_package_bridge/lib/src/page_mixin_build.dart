@@ -27,13 +27,15 @@ mixin PageMixinBuild on PageAware, PageMixinVariables {
       children.add(titleBarWidget);
     }
     //endregion
-
+    print("[page] enableSafeArea && enableSafeAreaTop = ${enableSafeArea && enableSafeAreaTop}");
     return Scaffold(
       backgroundColor: statusBarColor,
       body: Builder(
         builder: (BuildContext context) {
           scaffoldContext = context;
           print("[page] $runtimeType - build scaffoldContext=$scaffoldContext");
+          // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
+          // https://github.com/flutter/flutter/issues/46060
           return SafeArea(
             top: enableSafeArea && enableSafeAreaTop,
             left: enableSafeArea && enableSafeAreaLeft,

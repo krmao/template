@@ -64,6 +64,7 @@ class Event extends Bridge {
     if (context != null) {
       containerIdInner = BoostContainer.tryOf(context)?.uniqueId;
     }
+    print("_getContainerId containerIdInner=$containerIdInner");
     return containerIdInner ?? "";
   }
 

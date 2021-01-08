@@ -134,7 +134,8 @@ class AppState extends State<App> {
 // ignore: unused_element
 class _NoOverScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
@@ -182,35 +183,35 @@ class _GlobalErrorStatus {
 _GlobalErrorStatus _globalErrorStatus = _GlobalErrorStatus();
 
 BoostContainerSettings getCurrentContainer() {
-    return FlutterBoost.containerManager?.onstageSettings;
+  return FlutterBoost.containerManager?.onstageSettings;
 }
 
 /// 全局错误捕获
 void _onZoneGlobalError(Object error, StackTrace stackTrace) {
-    // log console
-    print(error);
-    print(stackTrace);
+  // log console
+  print(error);
+  print(stackTrace);
 
-    if (_globalErrorStatus.isGlobalErrorBoom(error, stackTrace)) {
-        print("error count boom, just skip");
-        return;
+  if (_globalErrorStatus.isGlobalErrorBoom(error, stackTrace)) {
+    print("error count boom, just skip");
+    return;
+  }
+
+  // send log to UBT
+  var errorMsg = error.toString();
+  var stackTraceStr = stackTrace.toString();
+  if (Application.debug) {
+    if (getCurrentContainer()?.name == '_error_page') {
+      FlutterBoost.singleton.closeCurrent();
     }
 
-    // send log to UBT
-    var errorMsg = error.toString();
-    var stackTraceStr = stackTrace.toString();
-    if (Application.debug) {
-        if (getCurrentContainer()?.name == '_error_page') {
-            FlutterBoost.singleton.closeCurrent();
-        }
-
-        // show error page
-        URL.openURL<dynamic>(
-            'smart://template/flutter?page=_error_page', urlParams: {
-            "error": errorMsg,
-            "stacktrace": stackTraceStr,
+    // show error page
+    URL.openURL<dynamic>('smart://template/flutter?page=_error_page',
+        urlParams: {
+          "error": errorMsg,
+          "stacktrace": stackTraceStr,
         });
-    }
+  }
 }
 //endregion
 
@@ -357,7 +358,9 @@ class _PageNotFoundHomeState extends PageState<PageNotFoundHomePage> {
   }
 }
 
-void appRun(app, {TopRouterProvider routerProvider, OnInitStateCallback onInitStateCallback}) {
+void appRun(app,
+    {TopRouterProvider routerProvider,
+    OnInitStateCallback onInitStateCallback}) {
   FlutterError.onError = (FlutterErrorDetails details) async {
     Zone.current.handleUncaughtError(details.exception, details.stack);
   };
@@ -401,7 +404,8 @@ void appRun(app, {TopRouterProvider routerProvider, OnInitStateCallback onInitSt
         statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR,
         child: app,
         onInitStateCallback: () {
-          TopRouterProvider finalRouterProvider = _mixGlobalRouters(routerProvider);
+          TopRouterProvider finalRouterProvider =
+              _mixGlobalRouters(routerProvider);
           if (finalRouterProvider != null) {
             FlutterBoost.singleton.registerPageBuilders(finalRouterProvider());
             FlutterBoost.singleton.registerRouteSettingsBuilder(
@@ -435,11 +439,12 @@ void appRun(app, {TopRouterProvider routerProvider, OnInitStateCallback onInitSt
             FlutterBoost.singleton.addContainerObserver(
                 (ContainerOperation operation,
                     BoostContainerSettings settings) {
-              print("flutter boostContainerObserver");
+              print("flutter boostContainerObserver settings=$settings");
             });
 
             FlutterBoost.singleton
                 .addBoostContainerLifeCycleObserver((state, settings) {
+              print("onBoostContainerLifeCycleObserver settings.uniqueId ${settings.uniqueId}");
               if (state == ContainerLifeCycle.Appear) {
                 PageRouteObserver.singleton
                     .pageDidAppear(settings.name, settings.uniqueId);
@@ -461,7 +466,7 @@ void appRun(app, {TopRouterProvider routerProvider, OnInitStateCallback onInitSt
                     params: urlParams);
           }
 
-          if(onInitStateCallback!=null) onInitStateCallback();
+          if (onInitStateCallback != null) onInitStateCallback();
         },
       ));
       widgetsBinding.scheduleWarmUpFrame();

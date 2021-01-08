@@ -223,7 +223,8 @@ class PageRouteObserver<R extends Route<dynamic>> extends NavigatorObserver {
   /// 根据 BoostPageRoute 和保存的对应关系，找到对应的容器的栈顶 Route
   Route _findRoute(String pageName, String uniqueId) {
     RouteHolder routeHolder = _rootRoutes.lastWhere((element) {
-      return element.rootRoute.uniqueId == uniqueId && element.rootRoute.pageName == pageName;
+      print("element.rootRoute = ${element.rootRoute}");
+      return element.rootRoute!=null && element.rootRoute.uniqueId == uniqueId && element.rootRoute.pageName == pageName;
     }, orElse: () => null);
     return routeHolder?.route;
   }

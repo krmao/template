@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.codesdancing.flutter_module</groupId>
+  <artifactId>flutter_release</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20210108062847</lastUpdated>
+  </versioning>
+</metadata>

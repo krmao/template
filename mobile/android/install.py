@@ -61,7 +61,7 @@ if __name__ == '__main__':
                 shutil.rmtree(dest_host_flutter_repo)
             os.makedirs(dest_host_flutter_repo)
 
-        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "") + "--output-dir " + dest_host_path
+        shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile" if release else "debug --no-profile") + " --build-number " + flutter_version + " --pub " + ("--verbose" if info else "") + "--output-dir " + dest_host_path
         print shell_build_flutter_aar
         os.system(shell_build_flutter_aar)
         print "==========>>>>>>>>>> build flutter lib aar end"

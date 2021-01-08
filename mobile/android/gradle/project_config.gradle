@@ -24,8 +24,8 @@ gradle.ext {
                                     'enable'           : true,
                                     'url'              : "${rootProject.projectDir}/gradle/host/outputs/repo",
                                     'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT', // flutter libs + business
-                                    'dependencyProfile': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT',
-                                    'dependencyRelease': 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT'
+                                    'dependencyProfile': 'com.codesdancing.flutter_module:flutter_profile:0.0.1-SNAPSHOT',
+                                    'dependencyRelease': 'com.codesdancing.flutter_module:flutter_release:0.0.1-SNAPSHOT'
                             ]
                     ],
                     'library_baseflutterutils'   : [

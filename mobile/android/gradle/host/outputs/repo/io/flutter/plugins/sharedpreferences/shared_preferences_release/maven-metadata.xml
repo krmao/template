@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.flutter.plugins.sharedpreferences</groupId>
+  <artifactId>shared_preferences_release</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20210108062847</lastUpdated>
+  </versioning>
+</metadata>

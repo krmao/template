@@ -46,7 +46,7 @@
     <style name="STAppTheme.Normal" parent="STAppTheme">
         <item name="android:windowAnimationStyle">@style/STAnimation.Activity.LeftRight</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDisablePreview">false</item>
         <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
@@ -64,7 +64,7 @@
     <!--region normal actionBar translucent/transparent/fade-->
     <style name="STAppTheme.Normal.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDisablePreview">false</item>
         <item name="drawerArrowStyle">@style/STWidget.App.DrawerArrowToggle</item>
         <item name="android:windowAnimationStyle">@style/STAnimation.Activity.LeftRight</item>

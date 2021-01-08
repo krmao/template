@@ -1,23 +1,26 @@
 package com.smart.library.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.Window
 import androidx.annotation.FloatRange
 import androidx.fragment.app.FragmentActivity
+import cn.simonlee.widget.swipeback.SwipeBackHelper
 import com.gyf.immersionbar.ImmersionBar
-import com.jude.swipbackhelper.SwipeBackHelper
 import com.smart.library.STInitializer
 import com.smart.library.util.STAdaptScreenUtils
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
-import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
+
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelegate {
@@ -41,6 +44,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var enableAdapterDesign: Boolean = STInitializer.configAdapterDesign?.enableAdapterDesign ?: true
     protected var adapterDesignWidth: Int = -1
     protected var adapterDesignHeight: Int = -1
+    protected var swipeBackHelper: SwipeBackHelper? = null
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
         //region read params
@@ -83,6 +87,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onCreateAfter(savedInstanceState: Bundle?) {
         if (enableActivityFullScreenAndExpandLayout) {
             STSystemUtil.setActivityFullScreenAndExpandLayout(activity)
@@ -110,7 +115,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         }
 
         if (enableSwipeBack) {
-            SwipeBackHelper.onCreate(activity)
+            enableSwipeBack(true)
+            /*SwipeBackHelper.onCreate(activity)
             SwipeBackHelper.getCurrentPage(activity)//get current instance
                 .setSwipeBackEnable(enableSwipeBack)//on-off
                 .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
@@ -119,7 +125,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
                 .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
                 .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
                 .setClosePercent(0.7f)//close activity when swipe over activity
-                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+                .setDisallowInterceptTouchEvent(false)*///your view can hand the events first.default false;
             //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
             /*.addListener(object : SwipeListener {
             override fun onScrollToClose() {
@@ -136,16 +142,27 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        if (enableSwipeBack) SwipeBackHelper.onPostCreate(activity)
+        // if (enableSwipeBack) SwipeBackHelper.onPostCreate(activity)
     }
 
     override fun onResume() {
         STDebugManager.showActivityInfo(activity)
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        return enableSwipeBack() && swipeBackHelper?.dispatchTouchEvent(event) == true
+    }
+
+    override fun onTouchEvent(event: MotionEvent?):Boolean {
+        if (enableSwipeBack()) {
+            swipeBackHelper?.onTouchEvent(event)
+        }
+        return false
+    }
+
     override fun onDestroy() {
         disposables.dispose()
-        if (enableSwipeBack) SwipeBackHelper.onDestroy(activity)
+        // if (enableSwipeBack) SwipeBackHelper.onDestroy(activity)
     }
 
     override fun finishAfter() {
@@ -185,13 +202,18 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     override fun disposables(): CompositeDisposable = disposables
     override fun statusBar(): ImmersionBar? = statusBar
     override fun enableSwipeBack(): Boolean = enableSwipeBack
+
+    @SuppressLint("ObsoleteSdkInt")
     override fun enableSwipeBack(enable: Boolean) {
         //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
         if (!enableExitWithDoubleBackPressed) {
             //endregion
-            this.enableSwipeBack = enable
             try {
-                SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    swipeBackHelper = SwipeBackHelper(activity)
+                    this.enableSwipeBack = enable
+                }
+                // SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
             } catch (_: RuntimeException) {
             }
         }

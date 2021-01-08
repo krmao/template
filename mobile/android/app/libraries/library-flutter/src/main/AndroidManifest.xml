@@ -9,7 +9,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
-            android:theme="@style/STAppTheme.Normal.Transparent"
+            android:theme="@style/STAppTheme.Normal"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

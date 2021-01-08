@@ -28,7 +28,7 @@ class PlayerTabHomeWidgetState extends PageState<PlayerTabHomeWidget> {
     return WidgetUtil.getOnTapWidget(
       Container(
         color: Colors.pink,
-        child: WidgetUtil.getNetworkImageWidget("http://oznsh6z3y.bkt.clouddn.com/banner_0.jpg", width: double.infinity, height: 100, fit: BoxFit.fitHeight),
+        child: WidgetUtil.getNetworkImageWidget("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.kepuchina.cn%2Fzmt%2Fmt%2Fbw%2F201701%2FW020170113475943316605.jpg&refer=http%3A%2F%2Fwww.kepuchina.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1612688782&t=9d7aae97717bc9483eccc9dc3287fb6f", width: double.infinity, height: 100, fit: BoxFit.fitHeight),
       ),
       () => WidgetUtil.showSnackBar(scaffoldContext, "you clicked"),
     );

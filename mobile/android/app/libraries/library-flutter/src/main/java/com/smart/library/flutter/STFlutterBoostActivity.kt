@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.widget.ImageView
 import androidx.annotation.FloatRange
 import com.gyf.immersionbar.ImmersionBar
@@ -44,6 +45,19 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
     override fun onResume() {
         super.onResume()
         delegate.onResume()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        return if(delegate.dispatchTouchEvent(event)){
+            true
+        }else {
+            super.dispatchTouchEvent(event)
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        delegate.onTouchEvent(event)
+        return super.onTouchEvent(event)
     }
 
     override fun onDestroy() {

@@ -93,7 +93,12 @@ dependencies {
     //noinspection GradleDependency
     api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
     /******* 其它常用库 ****************************************************************************/
-    api "com.jude:swipebackhelper:3.1.2"
+
+    // api "com.jude:swipebackhelper:3.1.2"
+    // https://www.jianshu.com/p/b6d682e301c2
+    // https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
+    api 'cn.simonlee.widget:swipeback:1.1.1'
+
     api "com.gyf.immersionbar:immersionbar:3.0.0"
     api "com.andkulikov:transitionseverywhere:1.7.8"
     api "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0" // https://github.com/davemorrissey/subsampling-scale-image-view

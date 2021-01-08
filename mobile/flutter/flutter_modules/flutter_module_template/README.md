@@ -220,3 +220,22 @@ cd android # 以下任意指令均可生成 fat flutter-bundle-1.0.0-debug.aar
            
 
 ```
+
+### 运行
+```
+cd xxx/template/mobile/android
+python install.py
+```
+
+### debug & hot reload
+> android studio 工具栏有 
+
+```
+// https://flutter.dev/docs/development/add-to-app/debugging
+// https://flutter.cn/docs/development/add-to-app/debugging
+// flutter attach
+// flutter attach -d deviceId # AKC7N19118000852
+// flutter attach --isolate-filter='debug'
+
+flutter attach
+```

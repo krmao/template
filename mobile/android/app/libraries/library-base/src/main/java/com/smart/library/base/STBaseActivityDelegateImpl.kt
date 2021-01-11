@@ -78,6 +78,9 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         //endregion
 
         if (activityTheme != -1) {
+            // setTheme 设置透明主题无效
+            // https://blog.csdn.net/qq_43278826/article/details/107557784
+            // https://medium.com/pxhouse/runtime-theming-of-translucent-activities-640013ad40d0
             activity.setTheme(activityTheme)
             isActivityThemeTranslucent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT_FADE.id ||

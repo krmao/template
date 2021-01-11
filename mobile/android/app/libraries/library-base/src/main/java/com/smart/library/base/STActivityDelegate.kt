@@ -3,7 +3,6 @@ package com.smart.library.base
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import com.gyf.immersionbar.ImmersionBar

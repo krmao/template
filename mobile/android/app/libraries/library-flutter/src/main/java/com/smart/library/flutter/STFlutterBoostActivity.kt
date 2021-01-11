@@ -1,12 +1,12 @@
 package com.smart.library.flutter
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.widget.ImageView
 import androidx.annotation.FloatRange
 import com.gyf.immersionbar.ImmersionBar
@@ -47,19 +47,6 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
         delegate.onResume()
     }
 
-//    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-//        return if(delegate.dispatchTouchEvent(event)){
-//            true
-//        }else {
-//            super.dispatchTouchEvent(event)
-//        }
-//    }
-//
-//    override fun onTouchEvent(event: MotionEvent?): Boolean {
-//        delegate.onTouchEvent(event)
-//        return super.onTouchEvent(event)
-//    }
-
     override fun onDestroy() {
         try {
             super.onDestroy()
@@ -82,6 +69,7 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
         return if (manifestSplashDrawable != null) DrawableSplashScreen(manifestSplashDrawable, ImageView.ScaleType.CENTER, 500L) else null
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun getSplashScreenFromManifest(): Drawable? {
         return try {
             val activityInfo = this.packageManager.getActivityInfo(this.componentName, PackageManager.GET_META_DATA)

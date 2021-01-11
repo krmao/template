@@ -3,7 +3,6 @@ package com.smart.library.base
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import androidx.annotation.FloatRange
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.immersionbar.ImmersionBar
@@ -57,19 +56,6 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
         super.onResume()
         delegate.onResume()
     }
-
-//    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-//        return if(delegate.dispatchTouchEvent(event)){
-//            true
-//        }else {
-//            super.dispatchTouchEvent(event)
-//        }
-//    }
-//
-//    override fun onTouchEvent(event: MotionEvent?): Boolean {
-//        delegate.onTouchEvent(event)
-//        return super.onTouchEvent(event)
-//    }
 
     override fun onDestroy() {
         super.onDestroy()

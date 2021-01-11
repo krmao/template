@@ -4,19 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.Window
 import androidx.annotation.FloatRange
 import androidx.fragment.app.FragmentActivity
-import cn.simonlee.widget.swipeback.SwipeBackHelper
 import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.STInitializer
 import com.smart.library.util.STAdaptScreenUtils
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
+import com.smart.library.util.swipeback.STSwipeBackActivityHelper
+import com.smart.library.util.swipeback.STSwipeBackUtils
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
@@ -44,7 +43,10 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var enableAdapterDesign: Boolean = STInitializer.configAdapterDesign?.enableAdapterDesign ?: true
     protected var adapterDesignWidth: Int = -1
     protected var adapterDesignHeight: Int = -1
-    protected var swipeBackHelper: SwipeBackHelper? = null
+    protected var isActivityThemeTranslucent: Boolean = false
+
+    // protected var swipeBackHelper: SwipeBackHelper? = null
+    protected var swipeBackHelper: STSwipeBackActivityHelper? = null
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
         //region read params
@@ -77,6 +79,14 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
         if (activityTheme != -1) {
             activity.setTheme(activityTheme)
+            isActivityThemeTranslucent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
         }
         // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         if (enableActivityFeatureNoTitle) {
@@ -142,14 +152,14 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        // if (enableSwipeBack) SwipeBackHelper.onPostCreate(activity)
+        if (enableSwipeBack) swipeBackHelper?.onPostCreate()
     }
 
     override fun onResume() {
         STDebugManager.showActivityInfo(activity)
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+    /*override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
         return enableSwipeBack() && swipeBackHelper?.dispatchTouchEvent(event) == true
     }
 
@@ -158,7 +168,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             swipeBackHelper?.onTouchEvent(event)
         }
         return false
-    }
+    }*/
 
     override fun onDestroy() {
         disposables.dispose()
@@ -209,9 +219,23 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         if (!enableExitWithDoubleBackPressed) {
             //endregion
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    swipeBackHelper = SwipeBackHelper(activity)
-                    this.enableSwipeBack = enable
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // swipeBackHelper = SwipeBackHelper(activity)
+//                    this.enableSwipeBack = enable
+//                }
+                if (enable) {
+                    swipeBackHelper = STSwipeBackActivityHelper(activity)
+                    swipeBackHelper?.onActivityCreate()
+                    if (!isActivityThemeTranslucent) {
+                        val opaque = STSwipeBackUtils.convertActivityFromTranslucent(activity)
+                        swipeBackHelper?.swipeBackLayout?.isPageTranslucent = !opaque
+                        swipeBackHelper?.swipeBackLayout?.setToChangeWindowTranslucent(true)
+                    } else {
+                        swipeBackHelper?.swipeBackLayout?.setToChangeWindowTranslucent(false)
+                    }
+                    swipeBackHelper?.swipeBackLayout?.setEnableGesture(true)
+                } else {
+                    swipeBackHelper?.swipeBackLayout?.setEnableGesture(false)
                 }
                 // SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
             } catch (_: RuntimeException) {

@@ -47,18 +47,18 @@ open class STFlutterBoostActivity : BoostFlutterActivity(), STActivityDelegate {
         delegate.onResume()
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        return if(delegate.dispatchTouchEvent(event)){
-            true
-        }else {
-            super.dispatchTouchEvent(event)
-        }
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        delegate.onTouchEvent(event)
-        return super.onTouchEvent(event)
-    }
+//    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+//        return if(delegate.dispatchTouchEvent(event)){
+//            true
+//        }else {
+//            super.dispatchTouchEvent(event)
+//        }
+//    }
+//
+//    override fun onTouchEvent(event: MotionEvent?): Boolean {
+//        delegate.onTouchEvent(event)
+//        return super.onTouchEvent(event)
+//    }
 
     override fun onDestroy() {
         try {

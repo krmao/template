@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="STSwipeMenuLayout">
-        <attr
-            name="stEnableSwipe"
-            format="boolean" />
-        <attr
-            name="stEnableBlockingMode"
-            format="boolean" />
-        <attr
-            name="stIsRightToLeft"
-            format="boolean" />
+        <attr name="stEnableSwipe" format="boolean" />
+        <attr name="stEnableBlockingMode" format="boolean" />
+        <attr name="stIsRightToLeft" format="boolean" />
     </declare-styleable>
+
+    <style name="STSwipeBackLayout">
+        <item name="stEdgeSize">50dip</item>
+        <item name="stShadowLeft">@drawable/st_swipe_back_shadow_left</item>
+        <item name="stShadowRight">@drawable/st_swipe_back_shadow_right</item>
+        <item name="stShadowBottom">@drawable/st_swipe_back_shadow_bottom</item>
+    </style>
 </resources>

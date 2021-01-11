@@ -24,9 +24,9 @@ interface STActivityDelegate {
 
     fun onResume()
 
-    fun dispatchTouchEvent(event: MotionEvent?): Boolean
+//    fun dispatchTouchEvent(event: MotionEvent?): Boolean
 
-    fun onTouchEvent(event: MotionEvent?): Boolean
+//    fun onTouchEvent(event: MotionEvent?): Boolean
 
     fun onDestroy()
 

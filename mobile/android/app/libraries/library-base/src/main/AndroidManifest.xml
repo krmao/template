@@ -30,7 +30,7 @@
 
         <activity
             android:name=".base.STActivity"
-            android:theme="@style/STAppTheme.Normal"
+            android:theme="@style/STAppTheme.Normal.Transparent"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->

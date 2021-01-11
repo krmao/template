@@ -26,7 +26,7 @@ class FinalActivityFragment : STBaseFragment() {
                 fragmentClass = FinalActivityDetailFragment::class.java,
                 fragmentArguments = Bundle(),
                 requestCode = 0,
-                activityTheme = if (checkedTransparentOrTranslucent.isChecked) STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id else STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id,
+                activityTheme = if (checkedTransparentOrTranslucent.isChecked) STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id else STActivityDelegate.Theme.APP_THEME_NORMAL.id,
                 enableSwipeBack = enableSwipeBack.isChecked,
                 enableImmersionStatusBar = enableImmersionStatusBar.isChecked,
                 enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont.isChecked,
@@ -40,7 +40,7 @@ class FinalActivityFragment : STBaseFragment() {
                 activityCloseEnterAnimation = if (checkedFadeOrLeft.isChecked) R.anim.st_anim_fade_enter else R.anim.st_anim_left_right_close_enter,
                 activityCloseExitAnimation = if (checkedFadeOrLeft.isChecked) R.anim.st_anim_fade_exit else R.anim.st_anim_left_right_close_exit,
                 enableAdapterDesign = true,
-                adapterDesignWidth = 1920
+                adapterDesignHeight = 1920
             )
         }
     }

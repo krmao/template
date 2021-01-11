@@ -141,4 +141,20 @@
         <attr name="stDotsCornerRadius" format="dimension" />
         <attr name="stProgressMode" format="boolean" />
     </declare-styleable>
+
+    <!-- swipe back attrs -->
+    <declare-styleable name="STSwipeBackLayout">
+        <attr name="stEdgeSize" format="dimension" />
+        <attr name="stEdgeFlag">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="stShadowLeft" format="reference" />
+        <attr name="stShadowRight" format="reference" />
+        <attr name="stShadowBottom" format="reference" />
+    </declare-styleable>
+
+    <attr name="STSwipeBackLayoutStyle" format="reference" />
 </resources>

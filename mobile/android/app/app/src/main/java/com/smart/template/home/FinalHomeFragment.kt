@@ -65,6 +65,9 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         STLogUtil.w("mergedBitmap=$mergedBitmap")
         imageView.setImageBitmap(mergedBitmap)
 
+        roundLayout.setOnClickListener {
+            FinalRoundLayoutFragment.goTo(context)
+        }
         btnSwipe.setOnClickListener {
             FinalSwipeMenuFragment.goTo(context)
         }

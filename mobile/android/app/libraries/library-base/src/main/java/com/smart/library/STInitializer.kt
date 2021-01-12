@@ -3,9 +3,11 @@ package com.smart.library
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.graphics.Color
 import android.os.Process
 import android.util.Log
 import androidx.annotation.ColorInt
+import androidx.annotation.LayoutRes
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
 import com.smart.library.base.STApplicationVisibleChangedEvent
@@ -117,6 +119,7 @@ object STInitializer {
         var configBridge: ConfigBridge = ConfigBridge(),
         var configRN: ConfigRN = ConfigRN(),
         var configTitleBar: ConfigTitleBar = ConfigTitleBar(),
+        var configLoading: ConfigLoading = ConfigLoading(),
         var configNetwork: ConfigNetwork = ConfigNetwork(),
         var configLifecycle: ConfigLifecycle = ConfigLifecycle(),
         var configBundle: ConfigBundle = ConfigBundle(),
@@ -171,6 +174,16 @@ object STInitializer {
         @ColorInt var backgroundColor: Int = STTitleBar.DEFAULT_BACKGROUND_COLOR,
         @ColorInt var textColor: Int = STTitleBar.DEFAULT_TEXT_COLOR,
         var textSize: Float = STTitleBar.DEFAULT_TEXT_SIZE
+    )
+
+    data class ConfigLoading(
+        @LayoutRes var layoutLoadingID: Int = R.layout.st_widget_frameloading_loading,
+        @LayoutRes var layoutNoDataID: Int = R.layout.st_widget_frameloading_nodata,
+        @LayoutRes var layoutFailureID: Int = R.layout.st_widget_frameloading_failure,
+        var descriptionLoading: String? = null,
+        var descriptionNoData: String? = null,
+        var descriptionFailure: String? = null,
+        @ColorInt var allBackgroundColor: Int = Color.parseColor("#FFFFFFFE"),
     )
 
     data class ConfigNetwork(
@@ -233,6 +246,10 @@ object STInitializer {
     @JvmStatic
     val configTitleBar: ConfigTitleBar?
         get() = config?.configTitleBar
+
+    @JvmStatic
+    val configLoading: ConfigLoading?
+        get() = config?.configLoading
 
     @JvmStatic
     val configNetwork: ConfigNetwork?

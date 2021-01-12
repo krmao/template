@@ -9,11 +9,12 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.smart.library.R
+import com.smart.library.STInitializer
 import com.smart.library.util.STCustomViewUtil
+import com.smart.library.widget.roundlayout.STRoundFrameLayout
 import java.util.*
 
 /**
@@ -42,61 +43,32 @@ import java.util.*
  * 默认要向上一点点不是居中的,因为titlebar占有一定的高度 宽高必须大于等于 120dp
  */
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
-class STFrameLoadingLayout : FrameLayout {
+class STFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : STRoundFrameLayout(context, attrs, defStyleAttr) {
 
     enum class ViewType {
-        NODATA, //没有数据
+        NO_DATA, //没有数据
         LOADING, //加载中
-        NETWORK_EXCEPTION//网络异常
+        FAILURE//网络异常
     }
 
-    companion object {
-        var LAYOUT_ID_LOADING = R.layout.st_widget_frameloading_loading
-        var LAYOUT_ID_NO_DATA = R.layout.st_widget_frameloading_empty
-        var LAYOUT_ID_NET_WORK_EXCEPTION = R.layout.st_widget_frameloading_failure
-    }
-
-    private var mViewMaps = HashMap<ViewType, View>()
-
-    constructor(context: Context) : this(context, null)
-
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-        if (attrs != null) {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.STFrameLoadingLayout)
-            val loadingLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stLoadingView, LAYOUT_ID_LOADING)
-            val networkExceptionLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stFailureView, LAYOUT_ID_NET_WORK_EXCEPTION)
-            val nodataLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stEmptyView, LAYOUT_ID_NO_DATA)
-            val centerInParent = STCustomViewUtil.getBoolean(typedArray, R.styleable.STFrameLoadingLayout_stCenterInParent, false)
-            val useSmallStyle = STCustomViewUtil.getBoolean(typedArray, R.styleable.STFrameLoadingLayout_stUseSmallStyle, false)
-            val defaultScaleFactor = 0.6f
-            var scaleFactor = STCustomViewUtil.getFloat(typedArray, R.styleable.STFrameLoadingLayout_stScaleFactor, defaultScaleFactor)
-            if (scaleFactor <= 0 || scaleFactor > 1)
-                scaleFactor = defaultScaleFactor
-            val drawable = STCustomViewUtil.getDrawable(typedArray, R.styleable.STFrameLoadingLayout_stAllBackground, Color.parseColor("#FFFFFFFE"), -1)
-            typedArray.recycle()
-
-            resetWithCustomViews(LayoutInflater.from(context), loadingLayoutId, networkExceptionLayoutId, nodataLayoutId)
-            enableCenterInParent(centerInParent)
-            enableUseSmallStyle(useSmallStyle, scaleFactor)
-            setViewsBackground(drawable)
-        }
-    }
+    private var viewMaps = HashMap<ViewType, View>()
+    private var layoutLoadingID = R.layout.st_widget_frameloading_loading
+    private var layoutNoDataID = R.layout.st_widget_frameloading_nodata
+    private var layoutFailureID = R.layout.st_widget_frameloading_failure
 
     //在构造函数最后
     fun resetWithCustomViews(inflater: LayoutInflater, loadingLayoutId: Int, networkExceptionLayoutId: Int, nodataLayoutId: Int) {
         //remove oldViews
-        removeView(mViewMaps[ViewType.LOADING])
-        removeView(mViewMaps[ViewType.NETWORK_EXCEPTION])
-        removeView(mViewMaps[ViewType.NODATA])
+        removeView(viewMaps[ViewType.LOADING])
+        removeView(viewMaps[ViewType.FAILURE])
+        removeView(viewMaps[ViewType.NO_DATA])
         //add newViews
-        mViewMaps[ViewType.LOADING] = inflater.inflate(loadingLayoutId, null)
-        mViewMaps[ViewType.NETWORK_EXCEPTION] = inflater.inflate(networkExceptionLayoutId, null)
-        mViewMaps[ViewType.NODATA] = inflater.inflate(nodataLayoutId, null)
-        addView(mViewMaps[ViewType.LOADING], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
-        addView(mViewMaps[ViewType.NETWORK_EXCEPTION], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
-        addView(mViewMaps[ViewType.NODATA], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
+        viewMaps[ViewType.LOADING] = inflater.inflate(loadingLayoutId, null)
+        viewMaps[ViewType.FAILURE] = inflater.inflate(networkExceptionLayoutId, null)
+        viewMaps[ViewType.NO_DATA] = inflater.inflate(nodataLayoutId, null)
+        addView(viewMaps[ViewType.LOADING], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
+        addView(viewMaps[ViewType.FAILURE], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
+        addView(viewMaps[ViewType.NO_DATA], LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.CENTER))
         hideAll()
     }
 
@@ -105,7 +77,7 @@ class STFrameLoadingLayout : FrameLayout {
     }
 
     private fun processViewToFrontByType(viewType: ViewType): View? {
-        for ((key, view) in mViewMaps) {
+        for ((key, view) in viewMaps) {
             if (key == viewType) {
                 view.visibility = View.VISIBLE
                 view.bringToFront()
@@ -121,12 +93,12 @@ class STFrameLoadingLayout : FrameLayout {
         val view = processViewToFrontByType(viewType)
         if (view != null) {
             try {
-                val textView: TextView? = when (viewType) {
-                    ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
+                val textView: TextView = when (viewType) {
+                    ViewType.NO_DATA -> view.findViewById(R.id.text_empty) as TextView
                     ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
-                    ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
+                    ViewType.FAILURE -> view.findViewById(R.id.text_failure) as TextView
                 }
-                textView?.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView?.text).toString() + "\n" + text else text
+                textView.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView.text).toString() + "\n" + text else text
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -135,15 +107,15 @@ class STFrameLoadingLayout : FrameLayout {
     }
 
     fun updateText(viewType: ViewType, text: String, appendToNewLine: Boolean, removeOldAppend: Boolean) {
-        val view = mViewMaps[viewType]
+        val view = viewMaps[viewType]
         if (view != null) {
             try {
-                val textView: TextView? = when (viewType) {
-                    ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
+                val textView: TextView = when (viewType) {
+                    ViewType.NO_DATA -> view.findViewById(R.id.text_empty) as TextView
                     ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
-                    ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
+                    ViewType.FAILURE -> view.findViewById(R.id.text_failure) as TextView
                 }
-                textView?.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView?.text).toString() + "\n" + text else text
+                textView.text = if (appendToNewLine) (if (removeOldAppend) getDefaultText(viewType) else textView.text).toString() + "\n" + text else text
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -152,38 +124,38 @@ class STFrameLoadingLayout : FrameLayout {
     }
 
     fun hideView(viewType: ViewType) {
-        val view = mViewMaps[viewType]
+        val view = viewMaps[viewType]
         if (view != null)
             view.visibility = View.GONE
     }
 
     fun getDefaultText(viewType: ViewType): String {
         return when (viewType) {
-            ViewType.NODATA -> resources.getString(R.string.st_loading_empty)
+            ViewType.NO_DATA -> resources.getString(R.string.st_loading_empty)
             ViewType.LOADING -> resources.getString(R.string.st_loading_now)
-            ViewType.NETWORK_EXCEPTION -> resources.getString(R.string.st_loading_network_error)
+            ViewType.FAILURE -> resources.getString(R.string.st_loading_network_error)
         }
     }
 
     fun getText(viewType: ViewType): String? {
         var text: String? = null
-        val view = mViewMaps[viewType]
+        val view = viewMaps[viewType]
         if (view != null) {
-            val textView: TextView? = when (viewType) {
-                ViewType.NODATA -> view.findViewById(R.id.text_empty) as TextView
+            val textView: TextView = when (viewType) {
+                ViewType.NO_DATA -> view.findViewById(R.id.text_empty) as TextView
                 ViewType.LOADING -> view.findViewById(R.id.text_loading) as TextView
-                ViewType.NETWORK_EXCEPTION -> view.findViewById(R.id.text_failure) as TextView
+                ViewType.FAILURE -> view.findViewById(R.id.text_failure) as TextView
             }
-            text = textView?.text.toString().trim { it <= ' ' }
+            text = textView.text.toString().trim { it <= ' ' }
         }
         return text
     }
 
     //默认要向上一点点不是居中的,因为titlebar占有一定的高度  宽高必须大于等于 120dp
     fun enableCenterInParent(enableCenterLayout: Boolean) = try {
-        for ((key, view) in mViewMaps) {
+        for ((key, view) in viewMaps) {
             when (key) {
-                ViewType.NODATA -> {
+                ViewType.NO_DATA -> {
                     view.findViewById<View>(R.id.topEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                     view.findViewById<View>(R.id.bottomEmptyView_empty).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
@@ -191,7 +163,7 @@ class STFrameLoadingLayout : FrameLayout {
                     view.findViewById<View>(R.id.topEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                     view.findViewById<View>(R.id.bottomEmptyView_loading).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
-                ViewType.NETWORK_EXCEPTION -> {
+                ViewType.FAILURE -> {
                     view.findViewById<View>(R.id.topEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                     view.findViewById<View>(R.id.bottomEmptyView_failure).visibility = if (enableCenterLayout) View.GONE else View.VISIBLE
                 }
@@ -203,26 +175,26 @@ class STFrameLoadingLayout : FrameLayout {
 
     @Suppress("DEPRECATION")
     fun setViewsBackground(drawable: Drawable?) {
-        for ((_, view) in mViewMaps) {
+        for ((_, view) in viewMaps) {
             view.setBackgroundDrawable(drawable)
         }
     }
 
     fun enableUseSmallStyle(enableUseSmallStyle: Boolean, scaleFactor: Float) = try {
-        for ((key, view) in mViewMaps) {
+        for ((key, view) in viewMaps) {
             var imageView: View? = null
             var textView: TextView? = null
             when (key) {
-                ViewType.NODATA -> {
-                    textView = view.findViewById(R.id.text_empty) as TextView
+                ViewType.NO_DATA -> {
+                    textView = view.findViewById(R.id.text_empty) as? TextView
                     imageView = view.findViewById(R.id.imageView_empty)
                 }
                 ViewType.LOADING -> {
-                    textView = view.findViewById(R.id.text_loading) as TextView
+                    textView = view.findViewById(R.id.text_loading) as? TextView
                     imageView = view.findViewById(R.id.imageView_loading)
                 }
-                ViewType.NETWORK_EXCEPTION -> {
-                    textView = view.findViewById(R.id.text_failure) as TextView
+                ViewType.FAILURE -> {
+                    textView = view.findViewById(R.id.text_failure) as? TextView
                     imageView = view.findViewById(R.id.imageView_failure)
                 }
             }
@@ -234,10 +206,10 @@ class STFrameLoadingLayout : FrameLayout {
                 imageView.layoutParams = layoutParams
             }
 
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (if (enableUseSmallStyle) 10 else 14).toFloat())
-            textView.setTypeface(null, if (enableUseSmallStyle) Typeface.NORMAL else Typeface.BOLD)
-            textView.paint.isFakeBoldText = !enableUseSmallStyle
-            textView.setPadding(
+            textView?.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (if (enableUseSmallStyle) 10 else 14).toFloat())
+            textView?.setTypeface(null, if (enableUseSmallStyle) Typeface.NORMAL else Typeface.BOLD)
+            textView?.paint?.isFakeBoldText = !enableUseSmallStyle
+            textView?.setPadding(
                 getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
                 getPxFromDp((if (enableUseSmallStyle) 3 else 15).toFloat()),
                 getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
@@ -251,20 +223,47 @@ class STFrameLoadingLayout : FrameLayout {
     fun getPxFromDp(value: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context.resources.displayMetrics).toInt()
 
     fun hideAll() {
-        for ((_, view) in mViewMaps) {
+        for ((_, view) in viewMaps) {
             view.visibility = View.GONE
         }
     }
 
     fun setOnRefreshClickListener(listener: OnClickListener) {
-        val refreshView = mViewMaps[ViewType.NETWORK_EXCEPTION]
+        val refreshView = viewMaps[ViewType.FAILURE]
         refreshView?.setOnClickListener { v -> listener.onClick(v) }
     }
 
     fun setOnClickListener(viewType: ViewType, listener: OnClickListener) {
-        for ((key, view) in mViewMaps) {
+        for ((key, view) in viewMaps) {
             if (key == viewType)
                 view.setOnClickListener(listener)
         }
     }
+
+    init {
+        layoutLoadingID = STInitializer.configLoading?.layoutLoadingID ?: layoutLoadingID
+        layoutNoDataID = STInitializer.configLoading?.layoutNoDataID ?: layoutNoDataID
+        layoutFailureID = STInitializer.configLoading?.layoutFailureID ?: layoutFailureID
+
+        if (attrs != null) {
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.STFrameLoadingLayout)
+            val loadingLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stLoadingView, layoutLoadingID)
+            val networkExceptionLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stFailureView, layoutFailureID)
+            val noDataLayoutId = typedArray.getResourceId(R.styleable.STFrameLoadingLayout_stEmptyView, layoutNoDataID)
+            val centerInParent = STCustomViewUtil.getBoolean(typedArray, R.styleable.STFrameLoadingLayout_stCenterInParent, false)
+            val useSmallStyle = STCustomViewUtil.getBoolean(typedArray, R.styleable.STFrameLoadingLayout_stUseSmallStyle, false)
+            val defaultScaleFactor = 0.6f
+            var scaleFactor = STCustomViewUtil.getFloat(typedArray, R.styleable.STFrameLoadingLayout_stScaleFactor, defaultScaleFactor)
+            if (scaleFactor <= 0 || scaleFactor > 1)
+                scaleFactor = defaultScaleFactor
+            val drawable = STCustomViewUtil.getDrawable(typedArray, R.styleable.STFrameLoadingLayout_stAllBackground, STInitializer.configLoading?.allBackgroundColor ?: Color.parseColor("#FFFFFFFE"), -1)
+            typedArray.recycle()
+
+            resetWithCustomViews(LayoutInflater.from(context), loadingLayoutId, networkExceptionLayoutId, noDataLayoutId)
+            enableCenterInParent(centerInParent)
+            enableUseSmallStyle(useSmallStyle, scaleFactor)
+            setViewsBackground(drawable)
+        }
+    }
+
 }

@@ -56,7 +56,7 @@ class TestFragment : STBaseFragment(), TestContract.View {
     }
 
     override fun showException(message: String) {
-        loading_view.showView(STFrameLoadingLayout.ViewType.NETWORK_EXCEPTION, message, true)
+        loading_view.showView(STFrameLoadingLayout.ViewType.FAILURE, message, true)
     }
 
     override fun showLoading() {

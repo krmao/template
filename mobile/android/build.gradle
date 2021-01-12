@@ -87,8 +87,31 @@ allprojects {
         options.encoding = "UTF-8"
     }
     configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
-        resolutionStrategy.cacheDynamicVersionsFor 0, "seconds"
+        resolutionStrategy {
+            cacheChangingModulesFor 0, "seconds"
+            cacheDynamicVersionsFor 0, "seconds"
+
+            force "com.google.code.findbugs:jsr305:$rootProject.ext.findBugsVersion"
+            force "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
+            force "com.squareup.okio:okio:$rootProject.ext.okioVersion"
+            force "com.facebook.soloader:soloader:$rootProject.ext.soLoaderVersion"
+
+            force "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
+            force "androidx.fragment:fragment:$rootProject.ext.androidXFragmentVersion"
+            force "androidx.viewpager:viewpager:$rootProject.ext.androidXVersion"
+            force "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
+            force "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
+            force "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
+            force "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintlayoutVersion"
+            force "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
+            force "androidx.recyclerview:recyclerview-selection:$rootProject.ext.androidXVersion"
+            force "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"
+            force "androidx.cardview:cardview:$rootProject.ext.androidXVersion"
+            force "androidx.vectordrawable:vectordrawable-animated:$rootProject.ext.androidXVectorDrawableVersion"
+            force "androidx.multidex:multidex:$rootProject.ext.androidXMultidexVersion"
+            force "org.jetbrains.kotlin:kotlin-reflect:$rootProject.ext.kotlinVersion"
+            force "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+        }
     }
 }
 

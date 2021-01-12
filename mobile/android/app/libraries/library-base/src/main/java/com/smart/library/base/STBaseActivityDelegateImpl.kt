@@ -2,6 +2,7 @@ package com.smart.library.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -107,14 +108,14 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         }
 
         // 避免通过其他方式启动程序后，再通过程序列表中的launcher启动，重新走启动流程 todo
-        /*if (enableFinishIfIsNotTaskRoot && !activity.isTaskRoot) {
+        if (enableFinishIfIsNotTaskRoot && !activity.isTaskRoot) {
             val intent: Intent? = activity.intent
             val action: String? = intent?.action
             if (intent?.hasCategory(Intent.CATEGORY_LAUNCHER) == true && action == Intent.ACTION_MAIN) {
                 activity.finish()
                 return
             }
-        }*/
+        }
 
         if (enableImmersionStatusBar) {
             //navigationBarEnable=true 华为荣耀6 4.4.2 手机会出现导航栏错乱问题

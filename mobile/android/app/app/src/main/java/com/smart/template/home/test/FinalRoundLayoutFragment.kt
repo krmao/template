@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.final_activity_fragment.*
 class FinalRoundLayoutFragment : STBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.final_activity_fragment, container, false)
+        return inflater.inflate(R.layout.final_round_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

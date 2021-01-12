@@ -70,5 +70,9 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
 
     init {
         shapeableHelper.init(attrs, defStyleAttr)
+        //region 否则不弹出键盘
+        isFocusable = true
+        isFocusableInTouchMode = true
+        //endregion
     }
 }

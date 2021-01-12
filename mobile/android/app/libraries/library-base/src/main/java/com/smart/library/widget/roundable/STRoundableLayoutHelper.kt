@@ -1,4 +1,4 @@
-package com.smart.library.widget.roundlayout
+package com.smart.library.widget.roundable
 
 import android.annotation.TargetApi
 import android.graphics.*
@@ -39,9 +39,9 @@ class STRoundConstraintLayout @JvmOverloads constructor(context: Context, attrs:
 }
 */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class STRoundLayoutHelper(val view: View) : STRoundDelegate {
+class STRoundableLayoutHelper(val view: View) : STRoundableDelegate {
 
-    var path: Path? = null
+    private val path: Path = Path()
 
     /** corner radius */
     var cornerLeftTop: Float = 0F
@@ -67,7 +67,6 @@ class STRoundLayoutHelper(val view: View) : STRoundDelegate {
             field = value
             view.postInvalidate()
         }
-
 
     /** side option means top and bottom corner */
 
@@ -153,19 +152,19 @@ class STRoundLayoutHelper(val view: View) : STRoundDelegate {
     fun render(attrs: AttributeSet?) {
         attrs?.let {
             /** set corner radii */
-            with(view.context.obtainStyledAttributes(it, R.styleable.RoundableLayout)) {
-                cornerLeftTop = getDimensionPixelSize(R.styleable.RoundableLayout_cornerLeftTop, 0).toFloat()
-                cornerRightTop = getDimensionPixelSize(R.styleable.RoundableLayout_cornerRightTop, 0).toFloat()
-                cornerLeftBottom = getDimensionPixelSize(R.styleable.RoundableLayout_cornerLeftBottom, 0).toFloat()
-                cornerRightBottom = getDimensionPixelSize(R.styleable.RoundableLayout_cornerRightBottom, 0).toFloat()
-                backgroundColor = getColor(R.styleable.RoundableLayout_backgroundColor, Color.WHITE)
-                strokeLineWidth = getDimensionPixelSize(R.styleable.RoundableLayout_strokeLineWidth, 0).toFloat()
-                strokeLineColor = getColor(R.styleable.RoundableLayout_strokeLineColor, Color.BLACK)
-                dashLineWidth = getDimensionPixelSize(R.styleable.RoundableLayout_dashLineWidth, 0).toFloat()
-                dashLineGap = getDimensionPixelSize(R.styleable.RoundableLayout_dashLineGap, 0).toFloat()
-                cornerLeftSide = getDimensionPixelSize(R.styleable.RoundableLayout_cornerLeftSide, 0).toFloat()
-                cornerRightSide = getDimensionPixelSize(R.styleable.RoundableLayout_cornerRightSide, 0).toFloat()
-                cornerAll = getDimensionPixelSize(R.styleable.RoundableLayout_cornerAll, 0).toFloat()
+            with(view.context.obtainStyledAttributes(it, R.styleable.STRoundableLayout)) {
+                cornerLeftTop = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerLeftTop, 0).toFloat()
+                cornerRightTop = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerRightTop, 0).toFloat()
+                cornerLeftBottom = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerLeftBottom, 0).toFloat()
+                cornerRightBottom = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerRightBottom, 0).toFloat()
+                backgroundColor = getColor(R.styleable.STRoundableLayout_backgroundColor, Color.WHITE)
+                strokeLineWidth = getDimensionPixelSize(R.styleable.STRoundableLayout_strokeWidth, 0).toFloat()
+                strokeLineColor = getColor(R.styleable.STRoundableLayout_strokeColor, Color.BLACK)
+                dashLineWidth = getDimensionPixelSize(R.styleable.STRoundableLayout_dashLineWidth, 0).toFloat()
+                dashLineGap = getDimensionPixelSize(R.styleable.STRoundableLayout_dashLineGap, 0).toFloat()
+                cornerLeftSide = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerLeftSide, 0).toFloat()
+                cornerRightSide = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerRightSide, 0).toFloat()
+                cornerAll = getDimensionPixelSize(R.styleable.STRoundableLayout_cornerAll, 0).toFloat()
                 recycle()
             }
         }
@@ -176,18 +175,13 @@ class STRoundLayoutHelper(val view: View) : STRoundDelegate {
      */
     override fun dispatchDraw(canvas: Canvas) {
         /** for outline remake whenever draw */
-        path = null
-
-        if (path == null) {
-            path = Path()
-        }
-
-        floatArrayOf(
-            cornerLeftTop, cornerLeftTop, cornerRightTop, cornerRightTop, cornerRightBottom,
-            cornerRightBottom, cornerLeftBottom, cornerLeftBottom
-        ).let {
-            clipPathCanvas(canvas, it)
-        }
+        clipPathCanvas(
+            canvas,
+            floatArrayOf(
+                cornerLeftTop, cornerLeftTop, cornerRightTop, cornerRightTop, cornerRightBottom,
+                cornerRightBottom, cornerLeftBottom, cornerLeftBottom
+            )
+        )
 
         /** set drawable resource corner & background & stroke */
         with(GradientDrawable()) {
@@ -196,14 +190,13 @@ class STRoundLayoutHelper(val view: View) : STRoundDelegate {
                 cornerRightBottom, cornerRightBottom, cornerLeftBottom, cornerLeftBottom
             )
 
-            if (strokeLineWidth != 0F)
+            if (strokeLineWidth != 0F) {
                 setStroke(strokeLineWidth.toInt(), strokeLineColor, dashLineWidth, dashLineGap)
+            }
 
             setColor(backgroundColor ?: Color.WHITE)
-
             view.background = this
         }
-
         view.outlineProvider = getOutlineProvider()
         if (view is ViewGroup) {
             view.clipChildren = false
@@ -213,26 +206,21 @@ class STRoundLayoutHelper(val view: View) : STRoundDelegate {
     }
 
     private fun clipPathCanvas(canvas: Canvas, floatArray: FloatArray) {
-        path?.let {
-            it.addRoundRect(
-                RectF(0F, 0F, canvas.width.toFloat(), canvas.height.toFloat()),
-                floatArray,
-                Path.Direction.CW
-            )
-            canvas.clipPath(it)
-        }
+        path.addRoundRect(
+            RectF(0F, 0F, canvas.width.toFloat(), canvas.height.toFloat()),
+            floatArray,
+            Path.Direction.CW
+        )
+        canvas.clipPath(path)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getOutlineProvider(): ViewOutlineProvider {
         return object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                path?.let {
-                    outline.setConvexPath(it)
-                } ?: throw Exception()
+                outline.setConvexPath(path)
             }
         }
     }
-
 
 }

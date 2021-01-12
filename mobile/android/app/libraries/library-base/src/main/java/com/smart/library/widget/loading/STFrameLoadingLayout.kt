@@ -14,7 +14,7 @@ import android.widget.TextView
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.STCustomViewUtil
-import com.smart.library.widget.roundlayout.STRoundFrameLayout
+import com.smart.library.widget.roundable.STRoundableFrameLayout
 import java.util.*
 
 /**
@@ -43,7 +43,7 @@ import java.util.*
  * 默认要向上一点点不是居中的,因为titlebar占有一定的高度 宽高必须大于等于 120dp
  */
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
-class STFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : STRoundFrameLayout(context, attrs, defStyleAttr) {
+class STFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : STRoundableFrameLayout(context, attrs, defStyleAttr) {
 
     enum class ViewType {
         NO_DATA, //没有数据

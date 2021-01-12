@@ -11,10 +11,8 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
-import com.smart.library.util.STChecksumUtil
-import com.smart.library.util.STLogUtil
-import com.smart.library.util.STSystemUtil
-import com.smart.library.util.STViewUtil
+import com.google.android.material.shape.CornerSize
+import com.smart.library.util.*
 import org.jetbrains.anko.AnkoAsyncContext
 
 /**
@@ -117,4 +115,8 @@ fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
         }
     })
     requestLayout() // 加 requestLayout 会必然触发 onGlobalLayout
+}
+
+fun CornerSize.description(): String {
+    return STCustomViewUtil.getCornerSizeDescription(this)
 }

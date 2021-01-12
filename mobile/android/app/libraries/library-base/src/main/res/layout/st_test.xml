@@ -14,7 +14,7 @@
         android:background="#fefefe"
         app:stTitleText="测试页面" />
 
-    <com.smart.library.widget.imageview.STRoundImageView
+    <com.smart.library.widget.roundable.STRoundImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/black"
@@ -24,14 +24,14 @@
         app:stLeftTopCornerRadius="30dp"
         app:stRightBottomCornerRadius="30dp" />
 
-    <com.smart.library.widget.imageview.STRoundImageView
+    <com.smart.library.widget.roundable.STRoundImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/pink"
         android:scaleType="centerCrop"
         android:src="@drawable/st_image" />
 
-    <com.smart.library.widget.imageview.STRoundImageView
+    <com.smart.library.widget.roundable.STRoundImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/yellow"
@@ -39,7 +39,7 @@
         android:src="@drawable/st_image"
         app:stType="circle" />
 
-    <com.smart.library.widget.imageview.STRoundImageView
+    <com.smart.library.widget.roundable.STRoundImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/orange"
@@ -50,7 +50,7 @@
         app:stCornerRadius="30dp"
         app:stType="round" />
 
-    <com.smart.library.widget.imageview.STRoundImageView
+    <com.smart.library.widget.roundable.STRoundImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@color/black"

@@ -1,17 +1,126 @@
 package com.smart.library.util
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.TextUtils
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.StyleableRes
+import androidx.appcompat.content.res.AppCompatResources
+import com.google.android.material.shape.AbsoluteCornerSize
+import com.google.android.material.shape.CornerSize
+import com.google.android.material.shape.RelativeCornerSize
 
-@Suppress("unused")
+@Suppress("unused", "ControlFlowWithEmptyBody")
 object STCustomViewUtil {
 
+    @JvmStatic
+    fun getCornerSizeDescription(cornerSize: CornerSize): String {
+        return when (cornerSize) {
+            is AbsoluteCornerSize -> {
+                cornerSize.cornerSize.toString()
+            }
+            is RelativeCornerSize -> {
+                cornerSize.relativePercent.toString()
+            }
+            else -> {
+                "$cornerSize"
+            }
+        }
+    }
+
+    @JvmStatic
+    fun getCornerSize(typedArray: TypedArray, index: Int, defaultValue: CornerSize): CornerSize {
+        val value = typedArray.peekValue(index) ?: return defaultValue
+        return when (value.type) {
+            TypedValue.TYPE_DIMENSION -> {
+                // Eventually we might want to change this to call getDimension() since corner sizes support
+                // floats.
+                AbsoluteCornerSize(
+                    TypedValue.complexToDimensionPixelSize(value.data, typedArray.resources.displayMetrics).toFloat()
+                )
+            }
+            TypedValue.TYPE_FRACTION -> {
+                RelativeCornerSize(value.getFraction(1.0f, 1.0f))
+            }
+            else -> {
+                defaultValue
+            }
+        }
+    }
+
+    /**
+     * Called by [.setTheme] and [.getTheme] to apply a theme
+     * resource to the current Theme object. May be overridden to change the
+     * default (simple) behavior. This method will not be called in multiple
+     * threads simultaneously.
+     *
+     * @param resId the style resource being applied to <var>theme</var>
+     * applied to <var>theme</var>
+     */
+    @JvmStatic
+    fun initializeAndApplyThemeResource(context: Context, resId: Int): Resources.Theme {
+        val newTheme: Resources.Theme = context.resources.newTheme()
+        val contextTheme: Resources.Theme? = context.theme
+        if (contextTheme != null) {
+            newTheme.setTo(contextTheme)
+        }
+        newTheme.applyStyle(resId, true)
+        return newTheme
+    }
+
+    @JvmStatic
+    fun getDimensionOrByFractionValue(typedValue: TypedValue?, height: Float, metrics: DisplayMetrics, defaultValue: Float): Float {
+        if (typedValue == null) {
+            return defaultValue
+        }
+        if (typedValue.type == TypedValue.TYPE_FRACTION) {
+            return typedValue.getFraction(1f, 1f) * height
+        } else if (typedValue.type == TypedValue.TYPE_DIMENSION) {
+            return typedValue.getDimension(metrics)
+        }
+        return defaultValue
+    }
+
+    /**
+     * Returns the [ColorStateList] from the given [TypedArray] attributes. The resource
+     * can include themeable attributes, regardless of API level.
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    @JvmStatic
+    fun getColorStateList(context: Context, attributes: TypedArray, @StyleableRes index: Int): ColorStateList? {
+        if (attributes.hasValue(index)) {
+            val resourceId = attributes.getResourceId(index, 0)
+            if (resourceId != 0) {
+                val value = AppCompatResources.getColorStateList(context, resourceId)
+                if (value != null) {
+                    return value
+                }
+            }
+        }
+
+        // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
+        // read the value. Instead we'll first try to read the color directly here.
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            val color = attributes.getColor(index, -1)
+            if (color != -1) {
+                return ColorStateList.valueOf(color)
+            }
+        }
+        return attributes.getColorStateList(index)
+    }
+
+    @JvmStatic
     fun getBoolean(typedArray: TypedArray, index: Int, defaultValue: Boolean): Boolean {
         return try {
             val resId = typedArray.getResourceId(index, -1)
@@ -25,6 +134,7 @@ object STCustomViewUtil {
         }
     }
 
+    @JvmStatic
     fun getFloat(typedArray: TypedArray, index: Int, defaultValue: Float): Float {
         val result: Float
         result = try {
@@ -37,6 +147,8 @@ object STCustomViewUtil {
         return result
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @JvmStatic
     fun getDrawable(typedArray: TypedArray, index: Int, @ColorInt defaultColorInt: Int, @DrawableRes defaultRes: Int): Drawable? {
         var result: Drawable? = null
         try {
@@ -78,6 +190,7 @@ object STCustomViewUtil {
         return result
     }
 
+    @JvmStatic
     fun getString(typedArray: TypedArray, index: Int, defaultValue: String): String {
         var result: String?
         result = try {
@@ -104,6 +217,7 @@ object STCustomViewUtil {
      * @param defaultRes   -1 or >0
      * @param typedArray   typedArray
      */
+    @JvmStatic
     fun setBackground(view: View, index: Int, defaultColor: Int, defaultRes: Int, typedArray: TypedArray) = try {
         if (defaultColor != -1)
             view.setBackgroundColor(defaultColor)

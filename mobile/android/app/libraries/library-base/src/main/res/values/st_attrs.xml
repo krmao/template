@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="STRoundImageView">
-        <!-- 描边宽度-->
-        <attr name="stBorderWidth" format="dimension" />
-        <!-- 描边颜色-->
-        <attr name="stBorderColor" format="color" />
-        <!-- 进度条颜色-->
-        <attr name="stProgressColor" format="color" />
-        <!-- 进度条进度-->
-        <attr name="stProgressBorder" format="integer" />
-        <!--圆角大小-->
-        <attr name="stCornerRadius" format="dimension" />
-        <!--左上圆角大小-->
-        <attr name="stLeftTopCornerRadius" format="dimension" />
-        <!--右上圆角大小-->
-        <attr name="stRightTopCornerRadius" format="dimension" />
-        <!--左下圆角大小-->
-        <attr name="stLeftBottomCornerRadius" format="dimension" />
-        <!--右下圆角大小-->
-        <attr name="stRightBottomCornerRadius" format="dimension" />
-        <!--图片类型：圆角或者圆形-->
-        <attr name="stType" format="enum">
-            <enum name="oval" value="2" />
-            <enum name="round" value="1" />
-            <enum name="circle" value="0" />
-        </attr>
-    </declare-styleable>
-
+<resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="STFrameLoadingLayout">
         <attr name="stLoadingView" format="reference" />
         <attr name="stFailureView" format="reference" />
@@ -157,21 +130,4 @@
     </declare-styleable>
 
     <attr name="STSwipeBackLayoutStyle" format="reference" />
-
-    <declare-styleable name="RoundableLayout">
-        <attr name="cornerLeftTop" format="dimension"/>
-        <attr name="cornerRightTop" format="dimension"/>
-        <attr name="cornerLeftBottom" format="dimension"/>
-        <attr name="cornerRightBottom" format="dimension"/>
-        <attr name="backgroundColor" format="color"/>
-        <attr name="strokeLineWidth" format="dimension"/>
-        <attr name="strokeLineColor" format="color"/>
-        <attr name="dashLineWidth" format="dimension"/>
-        <attr name="dashLineGap" format="dimension"/>
-
-        <attr name="cornerLeftSide" format="dimension"/>
-        <attr name="cornerRightSide" format="dimension"/>
-
-        <attr name="cornerAll" format="dimension"/>
-    </declare-styleable>
 </resources>

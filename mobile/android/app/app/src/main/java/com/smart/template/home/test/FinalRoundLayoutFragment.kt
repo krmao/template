@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.base.STActivity
-import com.smart.library.base.STActivityDelegate
 import com.smart.library.base.STBaseFragment
+import com.smart.library.util.STToastUtil
 import com.smart.template.R
-import kotlinx.android.synthetic.main.final_activity_fragment.*
+import kotlinx.android.synthetic.main.final_round_fragment.*
 
 @Suppress("unused", "DEPRECATION")
 class FinalRoundLayoutFragment : STBaseFragment() {
@@ -20,6 +20,9 @@ class FinalRoundLayoutFragment : STBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        click_btn.setOnClickListener {
+            STToastUtil.show("clicked")
+        }
     }
 
     companion object {

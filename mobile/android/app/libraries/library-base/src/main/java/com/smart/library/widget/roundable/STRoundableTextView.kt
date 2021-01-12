@@ -1,4 +1,4 @@
-package com.smart.library.widget.roundlayout
+package com.smart.library.widget.roundable
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -6,13 +6,12 @@ import android.graphics.Canvas
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewOutlineProvider
-import android.widget.RelativeLayout
 
 @Suppress("unused")
-class STRoundRelativeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr), STRoundDelegate {
+class STRoundableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support
-    private val roundLayoutHelper: STRoundLayoutHelper by lazy { STRoundLayoutHelper(this) }
+    private val roundLayoutHelper: STRoundableLayoutHelper by lazy { STRoundableLayoutHelper(this) }
     override fun setBackgroundColor(color: Int) {
         roundLayoutHelper.setBackgroundColor(color)
     }

@@ -1,10 +1,9 @@
-package com.smart.library.widget.roundlayout
+package com.smart.library.widget.roundable
 
 import android.graphics.Canvas
-import android.util.AttributeSet
 import android.view.ViewOutlineProvider
 
-interface STRoundDelegate {
+interface STRoundableDelegate {
     fun getOutlineProvider(): ViewOutlineProvider
     fun dispatchDraw(canvas: Canvas)
     fun setBackgroundColor(color: Int)

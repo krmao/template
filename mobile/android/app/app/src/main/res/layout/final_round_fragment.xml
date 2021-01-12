@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_A700"
+    android:background="@color/teal_400"
     tools:ignore="HardcodedText,UselessParent">
+    <!--
+https://juejin.cn/post/6913528967232225293
+https://juejin.cn/post/6844903880854077454
+        <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="@color/blue"
+            android:checked="true"
+            android:text="enableSwipeBack"
+            android:textColor="#333"
+            android:textSize="12sp" />
+    -->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,241 +38,760 @@
                 android:divider="@color/green"
                 android:dividerPadding="5dp"
                 android:fitsSystemWindows="true"
-                android:stretchColumns="*">
+                android:minHeight="1000dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="RoundImageView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
 
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
+                    <com.smart.library.widget.roundable.STRoundImageView
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
+
+                        android:contentDescription="@null"
+                        android:padding="10dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STLeafImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
+                        app:stBorderColor="#ff0000"
+                        app:stBorderWidth="2dp"
+                        app:stCornerRadius="10dp"
+                        app:stType="round" />
 
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
+                    <com.smart.library.widget.roundable.STRoundImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STTopLeftRoundImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-                </TableRow>
-
-                <TableRow android:gravity="center_vertical">
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STTipImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STDiamondImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-                </TableRow>
-
-                <TableRow android:gravity="center_vertical">
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STCutImageStyle_15DP"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STWaterImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-                </TableRow>
-
-                <TableRow android:gravity="center_vertical">
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STRoundedCornerImageStyle_10DP"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-
-                    <!-- 圆角图片 -->
-                    <!-- shapeAppearanceOverlay或shapeAppearance 加载style -->
-                    <!-- strokeColo描边颜色 -->
-                    <!-- strokeWidth描边宽度 -->
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:padding="3dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:shapeAppearanceOverlay="@style/STCircleImageStyle"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="6dp" />
-                </TableRow>
-
-
-                <TableRow android:gravity="center_vertical">
-
-                    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/blue"
-                        android:checked="true"
-                        android:text="enableSwipeBack"
-                        android:textColor="#333"
-                        android:textSize="12sp" />
-
-                    <com.smart.library.widget.imageview.STRoundImageView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
-                        app:stCornerRadius="10dp" />
+                        app:stBorderColor="#ff0000"
+                        app:stBorderWidth="2dp"
+                        app:stType="oval" />
+
+                    <com.smart.library.widget.roundable.STRoundImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:contentDescription="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:stBorderColor="#ff0000"
+                        app:stBorderWidth="2dp"
+                        app:stType="circle" />
                 </TableRow>
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:padding="2dp"-->
+                <!--                    android:text="roundable layout"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="12sp" />-->
+
+                <!--                <TableRow android:gravity="center_vertical">-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableFrameLayout>-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableFrameLayout>-->
+
+                <!--                </TableRow>-->
+
+                <!--                <TableRow android:gravity="center_vertical">-->
+
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableRelativeLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableRelativeLayout>-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableFrameLayout>-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableConstraintLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableConstraintLayout>-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableLinearLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:contentDescription="@null"-->
+                <!--                            android:scaleType="centerCrop"-->
+                <!--                            android:src="@drawable/st_image" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableLinearLayout>-->
+                <!--                </TableRow>-->
+
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:padding="2dp"-->
+                <!--                    android:text="roundable layout text view"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="12sp" />-->
+
+                <!--                <TableRow android:gravity="center_vertical">-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableLinearLayout-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp">-->
+
+                <!--                        <TextView-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="match_parent"-->
+                <!--                            android:ellipsize="end"-->
+                <!--                            android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"-->
+                <!--                            android:textColor="#333"-->
+                <!--                            android:textSize="12sp" />-->
+                <!--                    </com.smart.library.widget.roundable.STRoundableLinearLayout>-->
+                <!--                </TableRow>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:padding="2dp"-->
+                <!--                    android:text="roundable text view"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="12sp" />-->
+
+                <!--                <TableRow android:gravity="center_vertical">-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableTextView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:background="@color/purple_500"-->
+                <!--                        android:ellipsize="end"-->
+                <!--                        android:padding="10dp"-->
+                <!--                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"-->
+                <!--                        android:textColor="#333"-->
+                <!--                        android:textSize="12sp"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp" />-->
+                <!--                </TableRow>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:padding="2dp"-->
+                <!--                    android:text="roundable image view"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="12sp" />-->
+
+                <!--                <TableRow android:gravity="center_vertical">-->
+
+                <!--                    <com.smart.library.widget.roundable.STRoundableImageView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_margin="5dp"-->
+                <!--                        -->
+                <!--                        android:padding="10dp"-->
+                <!--                        android:scaleType="centerCrop"-->
+                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:srcCompat="@drawable/st_image"-->
+                <!--                        app:strokeColor="#ff0000"-->
+                <!--                        app:strokeWidth="2dp" />-->
+
+                <!--                </TableRow>-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="shapeable layout"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
 
-                    <com.smart.library.widget.roundlayout.STRoundFrameLayout
+                    <com.smart.library.widget.shapeable.STShapeableRelativeLayout
                         android:layout_width="0dp"
-                        android:layout_height="24dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        app:cornerAll="10dp"
-                        app:strokeLineColor="#ff0000"
-                        app:strokeLineWidth="2dp">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/st_image" />
-                    </com.smart.library.widget.roundlayout.STRoundFrameLayout>
-
-                    <com.smart.library.widget.roundlayout.STRoundTextView
-                        android:layout_width="0dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/orange"
+                        android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="5dp"
+                        android:padding="10dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
-                        app:cornerAll="10dp"
-                        app:strokeLineColor="#ff0000"
-                        app:strokeLineWidth="2dp" />
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableRelativeLayout>
+
+                    <com.smart.library.widget.shapeable.STShapeableFrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableFrameLayout>
+
+                    <com.smart.library.widget.shapeable.STShapeableConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableConstraintLayout>
+
+                    <com.smart.library.widget.shapeable.STShapeableLinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableLinearLayout>
+
                 </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="shapeable layout text view"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
 
-                    <com.smart.library.widget.roundlayout.STRoundConstraintLayout
+                    <com.smart.library.widget.shapeable.STShapeableLinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="24dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        app:cornerAll="10dp"
-                        app:strokeLineColor="#ff0000"
-                        app:strokeLineWidth="2dp">
 
-                        <ImageView
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/st_image" />
-                    </com.smart.library.widget.roundlayout.STRoundConstraintLayout>
+                            android:ellipsize="end"
+                            android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                            android:textColor="#333"
+                            android:textSize="12sp" />
+                    </com.smart.library.widget.shapeable.STShapeableLinearLayout>
+                </TableRow>
 
-                    <com.smart.library.widget.roundlayout.STRoundLinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="shapeable text view"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="0dp"
-                        android:layout_height="24dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        app:cornerAll="10dp"
-                        app:strokeLineColor="#ff0000"
-                        app:strokeLineWidth="2dp">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/st_image" />
-                    </com.smart.library.widget.roundlayout.STRoundLinearLayout>
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="false"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="true"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="ShapeableImageView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Tip"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/click_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Diamond"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_TopLeft"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Leaf"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Cut_15DP"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Circle"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Water"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="ShapeableTextView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="10dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="cut"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="cut"
+                        app:cornerSizeBottomLeft="50%"
+                        app:cornerSizeBottomRight="50%"
+                        app:cornerSizeTopLeft="50%"
+                        app:cornerSizeTopRight="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="false"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="cut"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerSizeTopLeft="100%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerSizeBottomRight="50%"
+                        app:cornerSizeTopLeft="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="cut"
+                        app:cornerSize="15dp"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="10dp"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="25dp"
+                        app:cornerSizeBottomRight="25dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="STShapeableImageView and STShapeableEditText"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TableRow>
+
+                    <com.smart.library.widget.shapeable.STShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="cut"
+                        app:cornerSize="15dp"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableEditText
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_column="3"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:hint="input"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="1dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="10dp"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="STShapeableImageButton and STShapeableButton"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TableRow>
+
+                    <com.smart.library.widget.shapeable.STShapeableImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/st_image"
+                        android:gravity="center"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textStyle="bold"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="25dp"
+                        app:cornerSizeBottomRight="25dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

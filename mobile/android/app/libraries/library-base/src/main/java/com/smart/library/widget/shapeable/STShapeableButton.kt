@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.*
-import android.graphics.drawable.shapes.RoundRectShape
-import android.os.Build
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
@@ -17,9 +15,9 @@ import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.smart.library.R
+import com.smart.library.util.STColorUtil
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
-import java.util.*
 
 
 /*
@@ -152,57 +150,6 @@ class STShapeableButton @JvmOverloads constructor(context: Context, attrs: Attri
     override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
     //endregion
 
-    /**
-     * https://stackoverflow.com/questions/27787870/how-to-use-rippledrawable-programmatically-in-code-not-xml-with-android-5-0-lo
-     */
-    private fun getAdaptiveRippleDrawable(normalColor: Int, pressedColor: Int): Drawable {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // RippleDrawable(getPressedColorSelector(normalColor, pressedColor), getColorDrawableFromColor(normalColor), getRippleMask(normalColor))
-            // RippleDrawable(getPressedColorSelector(normalColor, pressedColor), getColorDrawableFromColor(normalColor), null)
-            RippleDrawable(ColorStateList.valueOf(pressedColor), getColorDrawableFromColor(normalColor), null)
-        } else {
-            getStateListDrawable(normalColor, pressedColor)
-        }
-    }
-
-    private fun getPressedColorSelector(normalColor: Int, pressedColor: Int): ColorStateList {
-        return ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_pressed),
-                // intArrayOf(android.R.attr.state_focused),
-                // intArrayOf(android.R.attr.state_activated),
-                intArrayOf()
-            ), intArrayOf(
-                pressedColor,
-                // pressedColor,
-                pressedColor,
-                normalColor
-            )
-        )
-    }
-
-    private fun getStateListDrawable(normalColor: Int, pressedColor: Int): StateListDrawable {
-        val states = StateListDrawable()
-        states.addState(intArrayOf(android.R.attr.state_pressed), ColorDrawable(pressedColor))
-        // states.addState(intArrayOf(android.R.attr.state_focused), ColorDrawable(pressedColor))
-        // states.addState(intArrayOf(android.R.attr.state_activated), ColorDrawable(pressedColor))
-        states.addState(intArrayOf(), ColorDrawable(normalColor))
-        return states
-    }
-
-    private fun getRippleMask(color: Int, radius: Float = 3f): Drawable {
-        val outerRadii = FloatArray(8)
-        Arrays.fill(outerRadii, radius)
-        val roundRectShape = RoundRectShape(outerRadii, null, null)
-        val shapeDrawable = ShapeDrawable(roundRectShape)
-        shapeDrawable.paint.color = color
-        return shapeDrawable
-    }
-
-    private fun getColorDrawableFromColor(color: Int): ColorDrawable {
-        return ColorDrawable(color)
-    }
-
     init {
         shapeableHelper.init(attrs, defStyleAttr)
         edgeDrawableHelper.init(attrs, defStyleAttr)
@@ -213,6 +160,7 @@ class STShapeableButton @JvmOverloads constructor(context: Context, attrs: Attri
         isLongClickable = true*/
         //endregion
 
-        background = getAdaptiveRippleDrawable(Color.YELLOW, Color.BLUE)
+        @Suppress("DEPRECATION")
+        background = STColorUtil.getAdaptiveRippleDrawable((background as? ColorDrawable)?.color ?: Color.TRANSPARENT, resources.getColor(R.color.st_pressed))
     }
 }

@@ -7,6 +7,7 @@
     android:background="@color/teal_400"
     tools:ignore="HardcodedText,UselessParent">
     <!--
+        https://www.jianshu.com/p/e73d2f2556a8
         https://juejin.cn/post/6913528967232225293
         https://juejin.cn/post/6844903880854077454
         <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
@@ -816,14 +817,14 @@
                     android:background="@color/grey"
                     android:gravity="center_vertical">
 
+                    <!-- android:backgroundTint will be used only for api >= 21-->
                     <!-- android:background="?attr/selectableItemBackground"-->
                     <com.smart.library.widget.shapeable.STShapeableButton
                         android:id="@+id/button"
-                        style="@style/STButton.TextButton.Icon"
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        android:backgroundTint="@color/orange"
+                        android:background="@color/orange"
                         android:drawablePadding="5dp"
                         android:gravity="center"
                         android:paddingLeft="5dp"
@@ -833,6 +834,7 @@
                         android:text="button"
                         android:textColor="@color/red"
                         android:textSize="10sp"
+                        app:backgroundTint="@color/orange"
                         app:cornerFamilyBottomLeft="rounded"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
@@ -848,7 +850,7 @@
                         app:strokeWidth="2dp"
                         tools:ignore="SmallSp" />
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/button2"
                         style="@style/STButton.Default"
                         android:layout_width="60dp"
@@ -858,12 +860,11 @@
                         android:text="button"
                         android:textColor="@color/blue_700"
                         android:textSize="10sp"
-                        android:theme="@style/Widget.MaterialComponents.TextView"
+                        app:backgroundTint="@color/orange"
                         tools:ignore="SmallSp" />
 
                     <!-- android:background="?attr/selectableItemBackground"-->
-                    <com.smart.library.widget.shapeable.STShapeableButton
-                        style="@style/STButton.TextButton.Icon"
+                    <com.smart.library.widget.shapeable.STShapeableMaterialButton
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
@@ -877,8 +878,7 @@
                         android:paddingBottom="1dp"
                         android:text="button"
                         android:textColor="@color/blue_700"
-                        android:textSize="10sp"
-                        android:theme="@style/Widget.MaterialComponents.TextView"
+                        android:textSize="8sp"
                         app:cornerFamilyBottomLeft="rounded"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
@@ -887,14 +887,10 @@
                         app:cornerSizeBottomRight="15dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
-                        app:drawableLeftCompat="@drawable/st_emo_im_happy"
-                        app:drawableLeftHeight="20dp"
-                        app:drawableLeftWidth="20dp"
                         app:icon="@drawable/st_emo_im_happy"
                         app:iconGravity="end"
-                        app:iconSize="15dp"
+                        app:iconSize="10dp"
                         app:iconTint="@color/red"
-                        app:iconTintMode="src_in"
                         app:strokeColor="#0000ff"
                         app:strokeWidth="2dp"
                         tools:ignore="SmallSp" />
@@ -908,7 +904,6 @@
                         android:text="button"
                         android:textColor="@color/blue_700"
                         android:textSize="10sp"
-                        android:theme="@style/Widget.MaterialComponents.TextView"
                         app:icon="@drawable/st_emo_im_happy"
                         app:iconGravity="end"
                         app:iconSize="15dp"

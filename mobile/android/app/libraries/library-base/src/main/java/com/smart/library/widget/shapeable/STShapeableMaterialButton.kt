@@ -1,26 +1,19 @@
 package com.smart.library.widget.shapeable
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.*
-import android.graphics.drawable.shapes.RoundRectShape
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Button
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.smart.library.R
+import com.smart.library.util.STReflectUtil
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
-import java.util.*
-
 
 /*
 <!-- android:background="?attr/selectableItemBackground"-->
@@ -63,8 +56,7 @@ import java.util.*
  * xml 中使用 Button 会被自动替换为 AppCompactButton
  * 所以自定义 Button 的时候需要继承 AppCompactButton(AppCompactButton 实现了 backgroundTint/backgroundTintMode)
  */
-@SuppressLint("AppCompatCustomView")
-class STShapeableButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = R.style.STButton_Default) : Button(context, attrs, defStyleAttr, defStyleRes), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
+class STShapeableMaterialButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : com.google.android.material.button.MaterialButton(context, attrs, defStyleAttr), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
     private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }
 
@@ -152,67 +144,19 @@ class STShapeableButton @JvmOverloads constructor(context: Context, attrs: Attri
     override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
     //endregion
 
-    /**
-     * https://stackoverflow.com/questions/27787870/how-to-use-rippledrawable-programmatically-in-code-not-xml-with-android-5-0-lo
-     */
-    private fun getAdaptiveRippleDrawable(normalColor: Int, pressedColor: Int): Drawable {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // RippleDrawable(getPressedColorSelector(normalColor, pressedColor), getColorDrawableFromColor(normalColor), getRippleMask(normalColor))
-            // RippleDrawable(getPressedColorSelector(normalColor, pressedColor), getColorDrawableFromColor(normalColor), null)
-            RippleDrawable(ColorStateList.valueOf(pressedColor), getColorDrawableFromColor(normalColor), null)
-        } else {
-            getStateListDrawable(normalColor, pressedColor)
-        }
-    }
-
-    private fun getPressedColorSelector(normalColor: Int, pressedColor: Int): ColorStateList {
-        return ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_pressed),
-                // intArrayOf(android.R.attr.state_focused),
-                // intArrayOf(android.R.attr.state_activated),
-                intArrayOf()
-            ), intArrayOf(
-                pressedColor,
-                // pressedColor,
-                pressedColor,
-                normalColor
-            )
-        )
-    }
-
-    private fun getStateListDrawable(normalColor: Int, pressedColor: Int): StateListDrawable {
-        val states = StateListDrawable()
-        states.addState(intArrayOf(android.R.attr.state_pressed), ColorDrawable(pressedColor))
-        // states.addState(intArrayOf(android.R.attr.state_focused), ColorDrawable(pressedColor))
-        // states.addState(intArrayOf(android.R.attr.state_activated), ColorDrawable(pressedColor))
-        states.addState(intArrayOf(), ColorDrawable(normalColor))
-        return states
-    }
-
-    private fun getRippleMask(color: Int, radius: Float = 3f): Drawable {
-        val outerRadii = FloatArray(8)
-        Arrays.fill(outerRadii, radius)
-        val roundRectShape = RoundRectShape(outerRadii, null, null)
-        val shapeDrawable = ShapeDrawable(roundRectShape)
-        shapeDrawable.paint.color = color
-        return shapeDrawable
-    }
-
-    private fun getColorDrawableFromColor(color: Int): ColorDrawable {
-        return ColorDrawable(color)
-    }
-
     init {
         shapeableHelper.init(attrs, defStyleAttr)
         edgeDrawableHelper.init(attrs, defStyleAttr)
-        //region 增加这几行代码会是的 ripple 多个浮层颜色
-        /*isFocusable = true
+        isFocusable = true
         isFocusableInTouchMode = true
         isClickable = true
-        isLongClickable = true*/
-        //endregion
+        isLongClickable = true
+    }
 
-        background = getAdaptiveRippleDrawable(Color.YELLOW, Color.BLUE)
+    companion object {
+        init {
+            // 如果在 xml 中未设置 style, 则默认使用这个 style
+            STReflectUtil.setJavaStaticFieldValue(com.google.android.material.button.MaterialButton::class.java, "DEF_STYLE_RES", R.style.STButton_TextButton_Icon)
+        }
     }
 }

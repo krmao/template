@@ -14,9 +14,8 @@
         <item name="android:background">?attr/selectableItemBackground</item>
     -->
 
-    <style name="STButton.Default" parent="Widget.AppCompat.Button">
+    <style name="STButton.Default" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="colorButtonNormal">@color/accent</item>
-        <item name="android:textSize">12sp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:textAllCaps">false</item>
@@ -35,6 +34,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="STButton.ContainedButton.Icon" parent="Widget.MaterialComponents.Button.Icon">
@@ -49,6 +49,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="STButton.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -63,6 +64,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
     <!-- app:icon="@drawable/ic_add_24dp" -->
     <!-- https://material.io/components/buttons/android#text-button -->
@@ -79,6 +81,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="STButton.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -93,6 +96,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="STButton.OutlinedButton.Icon" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
@@ -106,7 +110,8 @@
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:minWidth">0dp</item>
-        <item name="android:minHeight">0dp</item>l
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
 </resources>

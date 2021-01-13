@@ -44,6 +44,31 @@ object STReflectUtil {
         return result
     }
 
+    @JvmStatic
+    fun setJavaStaticFieldValue(javaClass: Class<*>?, fieldName: String?, value: Any?) {
+        STLogUtil.e(TAG, "do set ${javaClass?.simpleName}.$fieldName = $value start ...")
+        try {
+            val filed = javaClass?.getDeclaredField(fieldName ?: "")
+            filed?.isAccessible = true
+            filed?.set(javaClass, value)
+            STLogUtil.e(TAG, "do set ${javaClass?.simpleName}.$fieldName = $value success !!!")
+        } catch (e: NoSuchFieldException) {
+            STLogUtil.e(TAG, "set failure with NoSuchFieldException!", e)
+        } catch (e: NullPointerException) {
+            STLogUtil.e(TAG, "set failure with NullPointerException !", e)
+        } catch (e: SecurityException) {
+            STLogUtil.e(TAG, "set failure with SecurityException !", e)
+        } catch (e: IllegalAccessException) {
+            STLogUtil.e(TAG, "set failure with IllegalAccessException !", e)
+        } catch (e: IllegalArgumentException) {
+            STLogUtil.e(TAG, "set failure with IllegalArgumentException !", e)
+        } catch (e: ExceptionInInitializerError) {
+            STLogUtil.e(TAG, "set failure with ExceptionInInitializerError !", e)
+        } catch (e: Exception) {
+            STLogUtil.e(TAG, "set failure with Exception !", e)
+        }
+    }
+
     /**
      * 调用私有方法
      */

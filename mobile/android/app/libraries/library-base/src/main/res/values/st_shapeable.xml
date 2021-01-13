@@ -179,6 +179,40 @@
     </declare-styleable>
 
     <!-- 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示  -->
+    <declare-styleable name="STShapeableMaterialButton" tools:ignore="ResourceName">
+        <attr name="strokeWidth" />
+        <attr name="strokeColor" />
+        <attr name="strokeInPadding" />
+        <!-- Shape appearance style reference for ShapeableImageView. Attribute declaration is in the
+             shape package. -->
+        <attr name="shapeAppearance" />
+        <!-- Shape appearance overlay style reference for ShapeableImageView. To be used to augment
+             attributes declared in the shapeAppearance. Attribute declaration is in the shape package.
+             -->
+        <attr name="shapeAppearanceOverlay" />
+
+        <attr name="cornerSize" />
+        <attr name="cornerSizeBottomLeft" />
+        <attr name="cornerSizeBottomRight" />
+        <attr name="cornerSizeTopLeft" />
+        <attr name="cornerSizeTopRight" />
+        <attr name="cornerFamily" />
+        <attr name="cornerFamilyBottomLeft" />
+        <attr name="cornerFamilyBottomRight" />
+        <attr name="cornerFamilyTopLeft" />
+        <attr name="cornerFamilyTopRight" />
+
+        <attr name="drawableLeftWidth" />
+        <attr name="drawableLeftHeight" />
+        <attr name="drawableTopWidth" />
+        <attr name="drawableTopHeight" />
+        <attr name="drawableRightWidth" />
+        <attr name="drawableRightHeight" />
+        <attr name="drawableBottomHeight" />
+        <attr name="drawableBottomWidth" />
+    </declare-styleable>
+
+    <!-- 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示  -->
     <declare-styleable name="STShapeableEditText" tools:ignore="ResourceName">
         <attr name="strokeWidth" />
         <attr name="strokeColor" />

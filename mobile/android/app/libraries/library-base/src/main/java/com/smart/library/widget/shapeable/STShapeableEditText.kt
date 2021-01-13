@@ -12,10 +12,13 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
 import com.smart.library.R
+import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
+import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatEditText(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate {
+class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatEditText(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
+    private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }
 
     override fun onDetachedFromWindow() {
         shapeableHelper.onDetachedFromWindow()
@@ -35,6 +38,7 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         shapeableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
+        edgeDrawableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
     }
 
     override fun setShapeAppearanceModel(shapeAppearanceModel: ShapeAppearanceModel) {
@@ -85,9 +89,25 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
     override fun getStyleableResCornerSizeBottomRight(): Int = R.styleable.STShapeableEditText_cornerSizeBottomRight
     override fun getStyleableResCornerSizeTopLeft(): Int = R.styleable.STShapeableEditText_cornerSizeTopLeft
     override fun getStyleableResCornerSizeTopRight(): Int = R.styleable.STShapeableEditText_cornerSizeTopRight
-    
+
+    //region edge drawable
+    override fun getStyleableResDrawableLeftWidth(): Int = R.styleable.STShapeableEditText_drawableLeftWidth
+    override fun getStyleableResDrawableLeftHeight(): Int = R.styleable.STShapeableEditText_drawableLeftHeight
+    override fun getStyleableResDrawableTopWidth(): Int = R.styleable.STShapeableEditText_drawableTopWidth
+    override fun getStyleableResDrawableTopHeight(): Int = R.styleable.STShapeableEditText_drawableTopHeight
+    override fun getStyleableResDrawableRightWidth(): Int = R.styleable.STShapeableEditText_drawableRightWidth
+    override fun getStyleableResDrawableRightHeight(): Int = R.styleable.STShapeableEditText_drawableRightHeight
+    override fun getStyleableResDrawableBottomWidth(): Int = R.styleable.STShapeableEditText_drawableBottomWidth
+    override fun getStyleableResDrawableBottomHeight(): Int = R.styleable.STShapeableEditText_drawableBottomHeight
+    override fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnLeftDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnTopDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnRightDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
+    //endregion
+
     init {
         shapeableHelper.init(attrs, defStyleAttr)
+        edgeDrawableHelper.init(attrs, defStyleAttr)
         //region 否则不弹出键盘
         isFocusable = true
         isFocusableInTouchMode = true

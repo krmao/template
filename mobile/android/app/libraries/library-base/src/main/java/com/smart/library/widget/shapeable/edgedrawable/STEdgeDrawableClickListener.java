@@ -1,4 +1,4 @@
-package com.smart.library.widget.shapeable;
+package com.smart.library.widget.shapeable.edgedrawable;
 
 /*
  * Copyright 2017, Andrey Makeev
@@ -23,18 +23,21 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
+ * https://gist.github.com/amaksoft/dbfb0fa827619dcb64b6a587efde34d9#file-compounddrawableclicklistener-java
+ * https://github.com/yongtiger/android-CompoundDrawable/blob/dcee83b71c00f843c9acf8b28fc6985c593cff6b/app/src/main/java/cc/brainbook/compounddrawable/app/MainActivity.java
+ *
  * Handles compound drawable click events.
  * @see TextView#getCompoundDrawables()
  * @see TextView#setCompoundDrawablesRelativeWithIntrinsicBounds(int, int, int, int)
- * @see STCompoundDrawableTouchListener
+ * @see STEdgeDrawableTouchListener
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class STCompoundDrawableClickListener extends STCompoundDrawableTouchListener {
+public abstract class STEdgeDrawableClickListener extends STEdgeDrawableTouchListener {
 
     /**
      * Default constructor
      */
-    public STCompoundDrawableClickListener() {
+    public STEdgeDrawableClickListener() {
         super();
     }
 
@@ -42,7 +45,7 @@ public abstract class STCompoundDrawableClickListener extends STCompoundDrawable
      * Constructor with fuzz
      * @param fuzz desired fuzz in px
      */
-    public STCompoundDrawableClickListener(int fuzz) {
+    public STEdgeDrawableClickListener(int fuzz) {
         super(fuzz);
     }
 

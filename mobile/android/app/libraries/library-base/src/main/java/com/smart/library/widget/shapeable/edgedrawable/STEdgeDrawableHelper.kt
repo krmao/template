@@ -1,4 +1,4 @@
-package com.smart.library.widget.shapeable
+package com.smart.library.widget.shapeable.edgedrawable
 
 import android.annotation.SuppressLint
 import android.content.res.TypedArray
@@ -14,7 +14,7 @@ import android.widget.TextView
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class STShapeableEdgeDrawableHelper(val delegate: STShapeableEdgeDrawableDelegate) {
+class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
 
     private var drawableLeftWidth = 0
     private var drawableTopWidth: Int = 0
@@ -77,7 +77,7 @@ class STShapeableEdgeDrawableHelper(val delegate: STShapeableEdgeDrawableDelegat
     private fun initEdgeDrawableOnTouchListener() {
         val textView = getTextView() ?: return
 
-        textView.setOnTouchListener(object : STCompoundDrawableClickListener() {
+        textView.setOnTouchListener(object : STEdgeDrawableClickListener() {
             override fun onDrawableClick(v: View, drawableIndex: Int) {
                 when (drawableIndex) {
                     LEFT -> onLeftDrawableTouchUp?.invoke()

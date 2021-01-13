@@ -1,4 +1,4 @@
-package com.smart.library.widget.shapeable;
+package com.smart.library.widget.shapeable.edgedrawable;
 
 /*
  * Copyright 2017, Andrey Makeev
@@ -34,7 +34,7 @@ import androidx.annotation.NonNull;
  * @see TextView#setCompoundDrawablesRelativeWithIntrinsicBounds(int, int, int, int)
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class STCompoundDrawableTouchListener implements View.OnTouchListener {
+public abstract class STEdgeDrawableTouchListener implements View.OnTouchListener {
 
     @SuppressWarnings("FieldCanBeLocal")
     private final String LOG_TAG = "CmpDrawableTouch";
@@ -50,7 +50,7 @@ public abstract class STCompoundDrawableTouchListener implements View.OnTouchLis
     /**
      * Default constructor
      */
-    public STCompoundDrawableTouchListener() {
+    public STEdgeDrawableTouchListener() {
         this(0);
     }
 
@@ -59,7 +59,7 @@ public abstract class STCompoundDrawableTouchListener implements View.OnTouchLis
      *
      * @param fuzz desired fuzz in px
      */
-    public STCompoundDrawableTouchListener(int fuzz) {
+    public STEdgeDrawableTouchListener(int fuzz) {
         this.fuzz = fuzz;
     }
 
@@ -109,23 +109,19 @@ public abstract class STCompoundDrawableTouchListener implements View.OnTouchLis
 
         switch (index) {
             case LEFT:
-                bounds.offsetTo(view.getPaddingLeft(),
-                        view.getHeight() / 2 - bounds.height() / 2);
+                bounds.offsetTo(view.getPaddingLeft(), view.getHeight() / 2 - bounds.height() / 2);
                 break;
 
             case TOP:
-                bounds.offsetTo(view.getWidth() / 2 - bounds.width() / 2,
-                        view.getPaddingTop());
+                bounds.offsetTo(view.getWidth() / 2 - bounds.width() / 2, view.getPaddingTop());
                 break;
 
             case RIGHT:
-                bounds.offsetTo(view.getWidth() - view.getPaddingRight() - bounds.width(),
-                        view.getHeight() / 2 - bounds.height() / 2);
+                bounds.offsetTo(view.getWidth() - view.getPaddingRight() - bounds.width(), view.getHeight() / 2 - bounds.height() / 2);
                 break;
 
             case BOTTOM:
-                bounds.offsetTo(view.getWidth() / 2 - bounds.width() / 2,
-                        view.getHeight() - view.getPaddingBottom() - bounds.height());
+                bounds.offsetTo(view.getWidth() / 2 - bounds.width() / 2, view.getHeight() - view.getPaddingBottom() - bounds.height());
                 break;
         }
 

@@ -23,6 +23,12 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         click_btn.setOnClickListener {
             STToastUtil.show("clicked")
         }
+        button.setOnClickListener {
+            STToastUtil.show("button1")
+        }
+        button2.setOnClickListener {
+            STToastUtil.show("button2")
+        }
         textView.setOnClickListener {
             STToastUtil.show("you clicked me!")
         }

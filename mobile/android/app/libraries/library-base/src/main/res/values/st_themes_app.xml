@@ -2,9 +2,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- @see http://www.gadgetsaint.com/tips/change-statusbar-color-android/#.Wt6yf1OFPVo -->
-
+    <!-- 深色主题 https://weibo.com/ttarticle/p/show?id=2309634551925650554887 -->
     <!--region app-->
-    <style name="STAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="STAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="colorPrimary">@color/st_primary</item>
         <!-- 状态栏颜色 -->
         <item name="colorPrimaryDark">@color/st_primary_dark</item>
@@ -62,7 +62,7 @@
     <!--endregion-->
 
     <!--region normal actionBar translucent/transparent/fade-->
-    <style name="STAppTheme.Normal.ActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="STAppTheme.Normal.ActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDisablePreview">false</item>

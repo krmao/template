@@ -12,12 +12,14 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
 import com.smart.library.R
+import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
+import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate, STShapeableEdgeDrawableDelegate {
+class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
-    private val shapeableEdgeDrawableHelper: STShapeableEdgeDrawableHelper by lazy { STShapeableEdgeDrawableHelper(this) }
+    private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }
 
     override fun onDetachedFromWindow() {
         shapeableHelper.onDetachedFromWindow()
@@ -37,7 +39,7 @@ class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: Att
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         shapeableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
-        shapeableEdgeDrawableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
+        edgeDrawableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
     }
 
     override fun setShapeAppearanceModel(shapeAppearanceModel: ShapeAppearanceModel) {
@@ -99,15 +101,15 @@ class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: Att
     override fun getStyleableResDrawableRightHeight(): Int = R.styleable.STShapeableTextView_drawableRightHeight
     override fun getStyleableResDrawableBottomWidth(): Int = R.styleable.STShapeableTextView_drawableBottomWidth
     override fun getStyleableResDrawableBottomHeight(): Int = R.styleable.STShapeableTextView_drawableBottomHeight
-    override fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnLeftDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnTopDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnRightDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnLeftDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnTopDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnRightDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
     //endregion
 
     init {
         shapeableHelper.init(attrs, defStyleAttr)
-        shapeableEdgeDrawableHelper.init(attrs, defStyleAttr)
+        edgeDrawableHelper.init(attrs, defStyleAttr)
         isFocusable = true
         isFocusableInTouchMode = true
         isClickable = true

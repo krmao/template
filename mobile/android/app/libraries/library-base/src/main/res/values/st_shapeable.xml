@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
     <attr name="strokeInPadding" format="reference|boolean" />
+    <attr name="drawableLeftWidth" format="dimension" />
+    <attr name="drawableLeftHeight" format="dimension" />
+    <attr name="drawableTopWidth" format="dimension" />
+    <attr name="drawableTopHeight" format="dimension" />
+    <attr name="drawableRightWidth" format="dimension" />
+    <attr name="drawableRightHeight" format="dimension" />
+    <attr name="drawableBottomHeight" format="dimension" />
+    <attr name="drawableBottomWidth" format="dimension" />
 
     <!--region 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示 -->
     <declare-styleable name="STShapeableTextView" tools:ignore="ResourceName">
@@ -26,14 +34,14 @@
         <attr name="cornerFamilyTopLeft" />
         <attr name="cornerFamilyTopRight" />
 
-        <attr name="drawableLeftWidth" format="dimension" />
-        <attr name="drawableLeftHeight" format="dimension" />
-        <attr name="drawableTopWidth" format="dimension" />
-        <attr name="drawableTopHeight" format="dimension" />
-        <attr name="drawableRightWidth" format="dimension" />
-        <attr name="drawableRightHeight" format="dimension" />
-        <attr name="drawableBottomHeight" format="dimension" />
-        <attr name="drawableBottomWidth" format="dimension" />
+        <attr name="drawableLeftWidth" />
+        <attr name="drawableLeftHeight" />
+        <attr name="drawableTopWidth" />
+        <attr name="drawableTopHeight" />
+        <attr name="drawableRightWidth" />
+        <attr name="drawableRightHeight" />
+        <attr name="drawableBottomHeight" />
+        <attr name="drawableBottomWidth" />
     </declare-styleable>
 
     <!-- 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示  -->
@@ -159,6 +167,15 @@
         <attr name="cornerFamilyBottomRight" />
         <attr name="cornerFamilyTopLeft" />
         <attr name="cornerFamilyTopRight" />
+
+        <attr name="drawableLeftWidth" />
+        <attr name="drawableLeftHeight" />
+        <attr name="drawableTopWidth" />
+        <attr name="drawableTopHeight" />
+        <attr name="drawableRightWidth" />
+        <attr name="drawableRightHeight" />
+        <attr name="drawableBottomHeight" />
+        <attr name="drawableBottomWidth" />
     </declare-styleable>
 
     <!-- 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示  -->
@@ -184,6 +201,15 @@
         <attr name="cornerFamilyBottomRight" />
         <attr name="cornerFamilyTopLeft" />
         <attr name="cornerFamilyTopRight" />
+
+        <attr name="drawableLeftWidth" />
+        <attr name="drawableLeftHeight" />
+        <attr name="drawableTopWidth" />
+        <attr name="drawableTopHeight" />
+        <attr name="drawableRightWidth" />
+        <attr name="drawableRightHeight" />
+        <attr name="drawableBottomHeight" />
+        <attr name="drawableBottomWidth" />
     </declare-styleable>
 
     <declare-styleable name="STShapeableImageButton" tools:ignore="ResourceName">

@@ -67,8 +67,7 @@ interface STShapeableDelegate {
      * @see .setStrokeWidth
      * @see .setStrokeWidthResource
      */
-    @Dimension
-    fun getStrokeWidth(): Float
+    fun getStrokeWidth(): Number
 
     fun setStrokeColor(strokeColor: ColorStateList?)
 

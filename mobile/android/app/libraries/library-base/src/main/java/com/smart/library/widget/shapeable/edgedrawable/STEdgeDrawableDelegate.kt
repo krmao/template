@@ -1,9 +1,9 @@
-package com.smart.library.widget.shapeable
+package com.smart.library.widget.shapeable.edgedrawable
 
 import android.view.View
 import androidx.annotation.StyleableRes
 
-interface STShapeableEdgeDrawableDelegate {
+interface STEdgeDrawableDelegate {
     fun view(): View
     fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int)
 

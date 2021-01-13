@@ -7,8 +7,8 @@
     android:background="@color/teal_400"
     tools:ignore="HardcodedText,UselessParent">
     <!--
-https://juejin.cn/post/6913528967232225293
-https://juejin.cn/post/6844903880854077454
+        https://juejin.cn/post/6913528967232225293
+        https://juejin.cn/post/6844903880854077454
         <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
             android:layout_width="0dp"
             android:layout_height="30dp"
@@ -40,7 +40,7 @@ https://juejin.cn/post/6844903880854077454
                 android:background="@color/yellow"
                 android:drawablePadding="10dp"
                 android:ellipsize="end"
-                android:paddingLeft="10dp"
+                android:paddingStart="20dp"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="3dp"
@@ -452,7 +452,6 @@ https://juejin.cn/post/6844903880854077454
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
                         android:background="@color/yellow"
                         android:ellipsize="end"
                         android:padding="3dp"
@@ -486,12 +485,11 @@ https://juejin.cn/post/6844903880854077454
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
                         android:background="@color/yellow"
                         android:ellipsize="end"
                         android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
-                        android:textColor="#333"
+                        android:textColor="@color/blue_700"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
                         app:strokeColor="#F44336"
@@ -529,7 +527,10 @@ https://juejin.cn/post/6844903880854077454
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="1dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Tip"
@@ -767,6 +768,18 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
+                    <com.smart.library.widget.shapeable.STShapeableImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
                     <com.smart.library.widget.shapeable.STShapeableEditText
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -798,29 +811,74 @@ https://juejin.cn/post/6844903880854077454
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
-                <TableRow>
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
+                    android:gravity="center_vertical">
 
-                    <com.smart.library.widget.shapeable.STShapeableImageButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:cornerFamily="rounded"
-                        app:cornerSize="50%"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="2dp" />
-
+                    <!-- android:background="?attr/selectableItemBackground"-->
                     <com.smart.library.widget.shapeable.STShapeableButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:id="@+id/button"
+                        style="@style/STButton.TextButton.Icon"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        android:background="@drawable/st_image"
+                        android:backgroundTint="@color/orange"
+                        android:drawablePadding="5dp"
                         android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="button"
+                        android:textColor="@color/red"
+                        android:textSize="10sp"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="5dp"
+                        app:cornerSizeBottomRight="5dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:drawableLeftCompat="@drawable/st_emo_im_happy"
+                        app:drawableLeftHeight="10dp"
+                        app:drawableLeftWidth="10dp"
+                        app:strokeColor="#0000ff"
+                        app:strokeWidth="2dp"
+                        tools:ignore="SmallSp" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        style="@style/STButton.Default"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/orange"
                         android:text="button"
                         android:textColor="@color/blue_700"
-                        android:textStyle="bold"
+                        android:textSize="10sp"
+                        android:theme="@style/Widget.MaterialComponents.TextView"
+                        tools:ignore="SmallSp" />
+
+                    <!-- android:background="?attr/selectableItemBackground"-->
+                    <com.smart.library.widget.shapeable.STShapeableButton
+                        style="@style/STButton.TextButton.Icon"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/orange"
+                        android:backgroundTintMode="src_in"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textSize="10sp"
+                        android:theme="@style/Widget.MaterialComponents.TextView"
                         app:cornerFamilyBottomLeft="rounded"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
@@ -829,8 +887,34 @@ https://juejin.cn/post/6844903880854077454
                         app:cornerSizeBottomRight="15dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="2dp" />
+                        app:drawableLeftCompat="@drawable/st_emo_im_happy"
+                        app:drawableLeftHeight="20dp"
+                        app:drawableLeftWidth="20dp"
+                        app:icon="@drawable/st_emo_im_happy"
+                        app:iconGravity="end"
+                        app:iconSize="15dp"
+                        app:iconTint="@color/red"
+                        app:iconTintMode="src_in"
+                        app:strokeColor="#0000ff"
+                        app:strokeWidth="2dp"
+                        tools:ignore="SmallSp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/STButton.TextButton.Icon"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/orange"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textSize="10sp"
+                        android:theme="@style/Widget.MaterialComponents.TextView"
+                        app:icon="@drawable/st_emo_im_happy"
+                        app:iconGravity="end"
+                        app:iconSize="15dp"
+                        app:iconTint="@color/red"
+                        app:iconTintMode="src_in"
+                        tools:ignore="SmallSp" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
+import com.smart.library.R
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatEditText(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShableableDelegate {
+class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatEditText(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
 
     override fun onDetachedFromWindow() {
@@ -68,11 +70,29 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
         shapeableHelper.setStrokeColor(strokeColor)
     }
 
+    override fun view(): View = this
+    override fun getStyleableRes(): IntArray = R.styleable.STShapeableEditText
+    override fun getStyleableResStrokeColor(): Int = R.styleable.STShapeableEditText_strokeColor
+    override fun getStyleableResStrokeWidth(): Int = R.styleable.STShapeableEditText_strokeWidth
+    override fun getStyleableResStrokeInPadding(): Int = R.styleable.STShapeableEditText_strokeInPadding
+    override fun getStyleableResCornerFamily(): Int = R.styleable.STShapeableEditText_cornerFamily
+    override fun getStyleableResCornerFamilyBottomLeft(): Int = R.styleable.STShapeableEditText_cornerFamilyBottomLeft
+    override fun getStyleableResCornerFamilyBottomRight(): Int = R.styleable.STShapeableEditText_cornerFamilyBottomRight
+    override fun getStyleableResCornerFamilyTopLeft(): Int = R.styleable.STShapeableEditText_cornerFamilyTopLeft
+    override fun getStyleableResCornerFamilyTopRight(): Int = R.styleable.STShapeableEditText_cornerFamilyTopRight
+    override fun getStyleableResCornerSize(): Int = R.styleable.STShapeableEditText_cornerSize
+    override fun getStyleableResCornerSizeBottomLeft(): Int = R.styleable.STShapeableEditText_cornerSizeBottomLeft
+    override fun getStyleableResCornerSizeBottomRight(): Int = R.styleable.STShapeableEditText_cornerSizeBottomRight
+    override fun getStyleableResCornerSizeTopLeft(): Int = R.styleable.STShapeableEditText_cornerSizeTopLeft
+    override fun getStyleableResCornerSizeTopRight(): Int = R.styleable.STShapeableEditText_cornerSizeTopRight
+    
     init {
         shapeableHelper.init(attrs, defStyleAttr)
         //region 否则不弹出键盘
         isFocusable = true
         isFocusableInTouchMode = true
+        isClickable = true
+        isLongClickable = true
         //endregion
     }
 }

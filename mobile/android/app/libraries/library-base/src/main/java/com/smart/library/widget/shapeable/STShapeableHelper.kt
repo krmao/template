@@ -26,7 +26,7 @@ import org.jetbrains.anko.displayMetrics
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
+class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     private val pathProvider = ShapeAppearancePathProvider()
     private val destination: RectF = RectF()
     private val maskRect: RectF = RectF()
@@ -42,23 +42,24 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
     private var maskPath: Path = Path()
     private var shadowDrawable: MaterialShapeDrawable? = null
 
-    override fun onDetachedFromWindow() {
-        view.setLayerType(View.LAYER_TYPE_NONE, null)
+    fun onDetachedFromWindow() {
+        delegate.view().setLayerType(View.LAYER_TYPE_NONE, null)
         // super.onDetachedFromWindow()
     }
 
-    override fun onAttachedToWindow() {
+    fun onAttachedToWindow() {
         // super.onAttachedToWindow()
-        view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        delegate.view().setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
-    override fun onDraw(canvas: Canvas) {
+    fun onDraw(canvas: Canvas) {
         // super.onDraw(canvas)
         canvas.drawPath(maskPath, clearPaint)
         drawStroke(canvas)
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+    @Suppress("UNUSED_PARAMETER")
+    fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         // super.onSizeChanged(width, height, oldWidth, oldHeight)
         updateShapeMask(width, height)
     }
@@ -66,8 +67,8 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
     override fun setShapeAppearanceModel(shapeAppearanceModel: ShapeAppearanceModel) {
         this.shapeAppearanceModel = shapeAppearanceModel
         shadowDrawable?.shapeAppearanceModel = shapeAppearanceModel
-        updateShapeMask(view.width, view.height)
-        view.invalidate()
+        updateShapeMask(delegate.view().width, delegate.view().height)
+        delegate.view().invalidate()
     }
 
     override fun getShapeAppearanceModel(): ShapeAppearanceModel {
@@ -76,11 +77,11 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
     }
 
     private var fractionHeight = 0
-    private val displayMetrics by lazy { view.context.displayMetrics }
+    private val displayMetrics by lazy { delegate.view().context.displayMetrics }
 
     private fun updateShapeMask(width: Int, height: Int) {
         if (strokeInPadding) {
-            destination[view.paddingLeft.toFloat(), view.paddingTop.toFloat(), (width - view.paddingRight).toFloat()] = (height - view.paddingBottom).toFloat()
+            destination[delegate.view().paddingLeft.toFloat(), delegate.view().paddingTop.toFloat(), (width - delegate.view().paddingRight).toFloat()] = (height - delegate.view().paddingBottom).toFloat()
         } else {
             val strokeSafePadding = strokeWidth / 2f
             destination[strokeSafePadding, strokeSafePadding, (width - strokeSafePadding)] = (height - strokeSafePadding)
@@ -100,7 +101,7 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
             return
         }
         borderPaint.strokeWidth = strokeWidth
-        val colorForState = strokeColor?.getColorForState(view.drawableState, strokeColor!!.defaultColor)
+        val colorForState = strokeColor?.getColorForState(delegate.view().drawableState, strokeColor!!.defaultColor)
         if (strokeWidth > 0 && colorForState != Color.TRANSPARENT) {
             borderPaint.color = colorForState!!
             canvas.drawPath(path, borderPaint)
@@ -116,8 +117,8 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
      * @see .setStrokeColor
      * @see .getStrokeColor
      */
-    override fun setStrokeColorResource(@ColorRes strokeColorResourceId: Int) {
-        setStrokeColor(AppCompatResources.getColorStateList(view.context, strokeColorResourceId))
+    fun setStrokeColorResource(@ColorRes strokeColorResourceId: Int) {
+        setStrokeColor(AppCompatResources.getColorStateList(delegate.view().context, strokeColorResourceId))
     }
 
     /**
@@ -127,7 +128,7 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
      * @see .setStrokeColor
      * @see .setStrokeColorResource
      */
-    override fun getStrokeColor(): ColorStateList? {
+    fun getStrokeColor(): ColorStateList? {
         return strokeColor
     }
 
@@ -140,10 +141,10 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
      * @see .setStrokeWidthResource
      * @see .getStrokeWidth
      */
-    override fun setStrokeWidth(@Dimension strokeWidth: Float) {
+    fun setStrokeWidth(@Dimension strokeWidth: Float) {
         if (this.strokeWidth != strokeWidth) {
             this.strokeWidth = strokeWidth
-            view.invalidate()
+            delegate.view().invalidate()
         }
     }
 
@@ -156,8 +157,8 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
      * @see .setStrokeWidth
      * @see .getStrokeWidth
      */
-    override fun setStrokeWidthResource(@DimenRes strokeWidthResourceId: Int) {
-        setStrokeWidth(view.resources.getDimensionPixelSize(strokeWidthResourceId).toFloat())
+    fun setStrokeWidthResource(@DimenRes strokeWidthResourceId: Int) {
+        setStrokeWidth(delegate.view().resources.getDimensionPixelSize(strokeWidthResourceId).toFloat())
     }
 
     /**
@@ -169,13 +170,13 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
      * @see .setStrokeWidthResource
      */
     @Dimension
-    override fun getStrokeWidth(): Float {
+    fun getStrokeWidth(): Float {
         return strokeWidth
     }
 
-    override fun setStrokeColor(strokeColor: ColorStateList?) {
+    fun setStrokeColor(strokeColor: ColorStateList?) {
         this.strokeColor = strokeColor
-        view.invalidate()
+        delegate.view().invalidate()
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
@@ -202,30 +203,30 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
 
     fun init(attrs: AttributeSet?, defStyleAttr: Int) {
         // Ensure we are using the correctly themed context rather than the context that was passed in.
-        val wrapContext = view.context
+        val wrapContext = delegate.view().context
         clearPaint.isAntiAlias = true
         clearPaint.color = Color.WHITE
         clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
-        val typedArray: TypedArray = wrapContext.obtainStyledAttributes(attrs, R.styleable.STShapeableAppearance, defStyleAttr, DEF_STYLE_RES)
-        strokeColor = STCustomViewUtil.getColorStateList(wrapContext, typedArray, R.styleable.STShapeableAppearance_strokeColor)
-        strokeWidth = typedArray.getDimensionPixelSize(R.styleable.STShapeableAppearance_strokeWidth, 0).toFloat()
+        val typedArray: TypedArray = wrapContext.obtainStyledAttributes(attrs, delegate.getStyleableRes(), defStyleAttr, DEF_STYLE_RES)
+        strokeColor = STCustomViewUtil.getColorStateList(wrapContext, typedArray, delegate.getStyleableResStrokeColor())
+        strokeWidth = typedArray.getDimensionPixelSize(delegate.getStyleableResStrokeWidth(), 0).toFloat()
 
-        strokeInPadding = typedArray.getBoolean(R.styleable.STShapeableAppearance_strokeInPadding, strokeInPadding)
+        strokeInPadding = typedArray.getBoolean(delegate.getStyleableResStrokeInPadding(), strokeInPadding)
         borderPaint.style = Paint.Style.STROKE
         borderPaint.isAntiAlias = true
 
-        val cornerFamily = typedArray.getInt(R.styleable.STShapeableAppearance_cornerFamily, CornerFamily.ROUNDED)
-        val cornerFamilyBottomLeft = typedArray.getInt(R.styleable.STShapeableAppearance_cornerFamilyBottomLeft, cornerFamily)
-        val cornerFamilyBottomRight = typedArray.getInt(R.styleable.STShapeableAppearance_cornerFamilyBottomRight, cornerFamily)
-        val cornerFamilyTopLeft = typedArray.getInt(R.styleable.STShapeableAppearance_cornerFamilyTopLeft, cornerFamily)
-        val cornerFamilyTopRight = typedArray.getInt(R.styleable.STShapeableAppearance_cornerFamilyTopRight, cornerFamily)
+        val cornerFamily = typedArray.getInt(delegate.getStyleableResCornerFamily(), CornerFamily.ROUNDED)
+        val cornerFamilyBottomLeft = typedArray.getInt(delegate.getStyleableResCornerFamilyBottomLeft(), cornerFamily)
+        val cornerFamilyBottomRight = typedArray.getInt(delegate.getStyleableResCornerFamilyBottomRight(), cornerFamily)
+        val cornerFamilyTopLeft = typedArray.getInt(delegate.getStyleableResCornerFamilyTopLeft(), cornerFamily)
+        val cornerFamilyTopRight = typedArray.getInt(delegate.getStyleableResCornerFamilyTopRight(), cornerFamily)
 
         val noDefinedCornerSize = AbsoluteCornerSize(-1000f)
-        val cornerSize = STCustomViewUtil.getCornerSize(typedArray, R.styleable.STShapeableAppearance_cornerSize, noDefinedCornerSize)
-        val cornerSizeBottomLeft = STCustomViewUtil.getCornerSize(typedArray, R.styleable.STShapeableAppearance_cornerSizeBottomLeft, cornerSize)
-        val cornerSizeBottomRight = STCustomViewUtil.getCornerSize(typedArray, R.styleable.STShapeableAppearance_cornerSizeBottomRight, cornerSize)
-        val cornerSizeTopLeft = STCustomViewUtil.getCornerSize(typedArray, R.styleable.STShapeableAppearance_cornerSizeTopLeft, cornerSize)
-        val cornerSizeTopRight = STCustomViewUtil.getCornerSize(typedArray, R.styleable.STShapeableAppearance_cornerSizeTopRight, cornerSize)
+        val cornerSize = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSize(), noDefinedCornerSize)
+        val cornerSizeBottomLeft = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeBottomLeft(), cornerSize)
+        val cornerSizeBottomRight = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeBottomRight(), cornerSize)
+        val cornerSizeTopLeft = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeTopLeft(), cornerSize)
+        val cornerSizeTopRight = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeTopRight(), cornerSize)
 
         shapeAppearanceModel = ShapeAppearanceModel.builder(wrapContext, attrs, defStyleAttr, DEF_STYLE_RES).apply {
             // 如果自定义了 **app:cornerSize**, 则会覆盖 **shapeAppearanceOverlay**
@@ -237,7 +238,7 @@ class STShapeableHelper(val view: View) : Shapeable, STShableableDelegate {
             .build().also { shadowDrawable = MaterialShapeDrawable(it) }
 
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            view.outlineProvider = OutlineProvider()
+            delegate.view().outlineProvider = OutlineProvider()
         }
     }
 

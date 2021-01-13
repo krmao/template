@@ -23,6 +23,21 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         click_btn.setOnClickListener {
             STToastUtil.show("clicked")
         }
+        textView.setOnClickListener {
+            STToastUtil.show("you clicked me!")
+        }
+        textView.addOnLeftDrawableTouchUpListener {
+            STToastUtil.show("left")
+        }
+        textView.addOnTopDrawableTouchUpListener {
+            STToastUtil.show("top")
+        }
+        textView.addOnRightDrawableTouchUpListener {
+            STToastUtil.show("right")
+        }
+        textView.addOnBottomDrawableTouchUpListener {
+            STToastUtil.show("bottom")
+        }
     }
 
     companion object {

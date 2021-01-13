@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.*
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
+import com.smart.library.R
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-class STShapeableImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatImageView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShableableDelegate {
+class STShapeableImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatImageView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
 
     override fun onDetachedFromWindow() {
@@ -67,8 +69,28 @@ class STShapeableImageView @JvmOverloads constructor(context: Context, attrs: At
     override fun setStrokeColor(strokeColor: ColorStateList?) {
         shapeableHelper.setStrokeColor(strokeColor)
     }
+    
+    override fun view(): View = this
+    override fun getStyleableRes(): IntArray = R.styleable.STShapeableImageView
+    override fun getStyleableResStrokeColor(): Int = R.styleable.STShapeableImageView_strokeColor
+    override fun getStyleableResStrokeWidth(): Int = R.styleable.STShapeableImageView_strokeWidth
+    override fun getStyleableResStrokeInPadding(): Int = R.styleable.STShapeableImageView_strokeInPadding
+    override fun getStyleableResCornerFamily(): Int = R.styleable.STShapeableImageView_cornerFamily
+    override fun getStyleableResCornerFamilyBottomLeft(): Int = R.styleable.STShapeableImageView_cornerFamilyBottomLeft
+    override fun getStyleableResCornerFamilyBottomRight(): Int = R.styleable.STShapeableImageView_cornerFamilyBottomRight
+    override fun getStyleableResCornerFamilyTopLeft(): Int = R.styleable.STShapeableImageView_cornerFamilyTopLeft
+    override fun getStyleableResCornerFamilyTopRight(): Int = R.styleable.STShapeableImageView_cornerFamilyTopRight
+    override fun getStyleableResCornerSize(): Int = R.styleable.STShapeableImageView_cornerSize
+    override fun getStyleableResCornerSizeBottomLeft(): Int = R.styleable.STShapeableImageView_cornerSizeBottomLeft
+    override fun getStyleableResCornerSizeBottomRight(): Int = R.styleable.STShapeableImageView_cornerSizeBottomRight
+    override fun getStyleableResCornerSizeTopLeft(): Int = R.styleable.STShapeableImageView_cornerSizeTopLeft
+    override fun getStyleableResCornerSizeTopRight(): Int = R.styleable.STShapeableImageView_cornerSizeTopRight
 
     init {
         shapeableHelper.init(attrs, defStyleAttr)
+        isFocusable = true
+        isFocusableInTouchMode = true
+        isClickable = true
+        isLongClickable = true
     }
 }

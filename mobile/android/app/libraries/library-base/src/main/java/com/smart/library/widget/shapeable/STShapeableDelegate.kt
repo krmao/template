@@ -2,12 +2,15 @@ package com.smart.library.widget.shapeable
 
 import android.content.res.ColorStateList
 import android.graphics.Canvas
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
+import androidx.annotation.StyleableRes
 import com.google.android.material.shape.ShapeAppearanceModel
 
-interface STShableableDelegate {
+interface STShapeableDelegate {
+    fun view(): View
     fun onDetachedFromWindow()
     fun onAttachedToWindow()
     fun onDraw(canvas: Canvas)
@@ -68,5 +71,47 @@ interface STShableableDelegate {
     fun getStrokeWidth(): Float
 
     fun setStrokeColor(strokeColor: ColorStateList?)
+
+    @StyleableRes
+    fun getStyleableRes(): IntArray
+
+    @StyleableRes
+    fun getStyleableResStrokeColor(): Int
+
+    @StyleableRes
+    fun getStyleableResStrokeWidth(): Int
+
+    @StyleableRes
+    fun getStyleableResStrokeInPadding(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerFamily(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerFamilyBottomLeft(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerFamilyBottomRight(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerFamilyTopLeft(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerFamilyTopRight(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerSize(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerSizeBottomLeft(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerSizeBottomRight(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerSizeTopLeft(): Int
+
+    @StyleableRes
+    fun getStyleableResCornerSizeTopRight(): Int
 
 }

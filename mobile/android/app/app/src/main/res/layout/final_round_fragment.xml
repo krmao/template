@@ -11,7 +11,7 @@ https://juejin.cn/post/6913528967232225293
 https://juejin.cn/post/6844903880854077454
         <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             android:background="@color/blue"
             android:checked="true"
@@ -31,6 +31,45 @@ https://juejin.cn/post/6844903880854077454
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:orientation="vertical">
+
+            <com.smart.library.widget.shapeable.STShapeableTextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:background="@color/yellow"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="3dp"
+                android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                android:textColor="#333"
+                android:textSize="12sp"
+                app:cornerFamilyBottomLeft="rounded"
+                app:cornerFamilyBottomRight="cut"
+                app:cornerFamilyTopLeft="rounded"
+                app:cornerFamilyTopRight="cut"
+                app:cornerSizeBottomLeft="50%"
+                app:cornerSizeBottomRight="50%"
+                app:cornerSizeTopLeft="50%"
+                app:cornerSizeTopRight="50%"
+                app:drawableBottomCompat="@drawable/st_emo_im_happy"
+                app:drawableBottomHeight="20dp"
+                app:drawableBottomWidth="20dp"
+                app:drawableLeftCompat="@drawable/st_emo_im_happy"
+                app:drawableLeftHeight="20dp"
+                app:drawableLeftWidth="20dp"
+                app:drawableRightCompat="@drawable/st_emo_im_happy"
+                app:drawableRightHeight="20dp"
+                app:drawableRightWidth="20dp"
+                app:drawableTopCompat="@drawable/st_emo_im_happy"
+                app:drawableTopHeight="20dp"
+                app:drawableTopWidth="20dp"
+                app:strokeColor="#F44336"
+                app:strokeInPadding="false"
+                app:strokeWidth="2dp" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -52,21 +91,21 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.roundable.STRoundImageView
                         android:layout_width="120dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:contentDescription="@null"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
                         app:stBorderColor="#ff0000"
                         app:stBorderWidth="2dp"
-                        app:stCornerRadius="10dp"
+                        app:stCornerRadius="3dp"
                         app:stType="round" />
 
                     <com.smart.library.widget.roundable.STRoundImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
@@ -76,8 +115,8 @@ https://juejin.cn/post/6844903880854077454
                         app:stType="oval" />
 
                     <com.smart.library.widget.roundable.STRoundImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
@@ -99,12 +138,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -118,12 +157,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -142,12 +181,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableRelativeLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -161,12 +200,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableFrameLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -180,12 +219,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableConstraintLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -199,12 +238,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableLinearLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -230,12 +269,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableLinearLayout-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        android:padding="3dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp">-->
 
@@ -261,16 +300,16 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableTextView-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
                 <!--                        android:background="@color/purple_500"-->
                 <!--                        android:ellipsize="end"-->
-                <!--                        android:padding="10dp"-->
+                <!--                        android:padding="3dp"-->
                 <!--                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"-->
                 <!--                        android:textColor="#333"-->
                 <!--                        android:textSize="12sp"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp" />-->
                 <!--                </TableRow>-->
@@ -287,12 +326,12 @@ https://juejin.cn/post/6844903880854077454
 
                 <!--                    <com.smart.library.widget.roundable.STRoundableImageView-->
                 <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="60dp"-->
+                <!--                        android:layout_height="30dp"-->
                 <!--                        android:layout_margin="5dp"-->
                 <!--                        -->
-                <!--                        android:padding="10dp"-->
+                <!--                        android:padding="3dp"-->
                 <!--                        android:scaleType="centerCrop"-->
-                <!--                        app:cornerAll="10dp"-->
+                <!--                        app:cornerAll="3dp"-->
                 <!--                        app:srcCompat="@drawable/st_image"-->
                 <!--                        app:strokeColor="#ff0000"-->
                 <!--                        app:strokeWidth="2dp" />-->
@@ -311,12 +350,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableRelativeLayout
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
@@ -333,12 +372,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableFrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
@@ -355,12 +394,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
@@ -377,12 +416,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableLinearLayout
                         android:layout_width="80dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
@@ -411,12 +450,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableLinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
                         android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
@@ -445,12 +484,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp"
@@ -461,12 +500,12 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp"
@@ -487,8 +526,8 @@ https://juejin.cn/post/6844903880854077454
                 <TableRow android:gravity="center_vertical">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -499,8 +538,8 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/click_btn"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -510,8 +549,8 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -522,7 +561,7 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
 
                         android:padding="1dp"
@@ -536,8 +575,8 @@ https://juejin.cn/post/6844903880854077454
                 <TableRow>
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -547,8 +586,8 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -558,8 +597,8 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -570,7 +609,7 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
@@ -591,11 +630,11 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        android:padding="10dp"
+                        android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp"
@@ -612,8 +651,8 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -624,8 +663,8 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -637,7 +676,7 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -653,8 +692,8 @@ https://juejin.cn/post/6844903880854077454
                 <TableRow>
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -665,20 +704,20 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
                         app:cornerFamily="rounded"
-                        app:cornerSize="10dp"
+                        app:cornerSize="3dp"
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -690,7 +729,7 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
@@ -698,8 +737,8 @@ https://juejin.cn/post/6844903880854077454
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
                         app:cornerFamilyTopRight="rounded"
-                        app:cornerSizeBottomLeft="25dp"
-                        app:cornerSizeBottomRight="25dp"
+                        app:cornerSizeBottomLeft="15dp"
+                        app:cornerSizeBottomRight="15dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
                         app:strokeColor="#F44336"
@@ -717,8 +756,8 @@ https://juejin.cn/post/6844903880854077454
                 <TableRow>
 
                     <com.smart.library.widget.shapeable.STShapeableImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -729,7 +768,7 @@ https://juejin.cn/post/6844903880854077454
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableEditText
-                        android:layout_width="60dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_column="3"
                         android:layout_gravity="center_vertical"
@@ -739,14 +778,14 @@ https://juejin.cn/post/6844903880854077454
                         android:hint="input"
                         android:inputType="number"
                         android:maxLines="1"
+                        android:paddingStart="3dp"
                         android:paddingTop="1dp"
+                        android:paddingEnd="3dp"
                         android:paddingBottom="1dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/st_image"
                         app:cornerFamily="rounded"
-                        app:cornerSize="10dp"
+                        app:cornerSize="3dp"
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
                 </TableRow>
@@ -762,8 +801,8 @@ https://juejin.cn/post/6844903880854077454
                 <TableRow>
 
                     <com.smart.library.widget.shapeable.STShapeableImageButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:padding="1dp"
                         android:scaleType="centerCrop"
@@ -775,7 +814,7 @@ https://juejin.cn/post/6844903880854077454
 
                     <com.smart.library.widget.shapeable.STShapeableButton
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:background="@drawable/st_image"
                         android:gravity="center"
@@ -786,8 +825,8 @@ https://juejin.cn/post/6844903880854077454
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
                         app:cornerFamilyTopRight="rounded"
-                        app:cornerSizeBottomLeft="25dp"
-                        app:cornerSizeBottomRight="25dp"
+                        app:cornerSizeBottomLeft="15dp"
+                        app:cornerSizeBottomRight="15dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
                         app:strokeColor="#F44336"

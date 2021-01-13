@@ -2,18 +2,22 @@ package com.smart.library.widget.shapeable
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.*
+import android.graphics.Canvas
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
+import com.smart.library.R
+
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShableableDelegate {
+class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate, STShapeableEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
+    private val shapeableEdgeDrawableHelper: STShapeableEdgeDrawableHelper by lazy { STShapeableEdgeDrawableHelper(this) }
 
     override fun onDetachedFromWindow() {
         shapeableHelper.onDetachedFromWindow()
@@ -33,6 +37,7 @@ class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: Att
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         shapeableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
+        shapeableEdgeDrawableHelper.onSizeChanged(width, height, oldWidth, oldHeight)
     }
 
     override fun setShapeAppearanceModel(shapeAppearanceModel: ShapeAppearanceModel) {
@@ -68,7 +73,44 @@ class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: Att
         shapeableHelper.setStrokeColor(strokeColor)
     }
 
+    override fun view(): View = this
+    override fun getStyleableRes(): IntArray = R.styleable.STShapeableTextView
+
+    override fun getStyleableResStrokeColor(): Int = R.styleable.STShapeableTextView_strokeColor
+    override fun getStyleableResStrokeWidth(): Int = R.styleable.STShapeableTextView_strokeWidth
+    override fun getStyleableResStrokeInPadding(): Int = R.styleable.STShapeableTextView_strokeInPadding
+    override fun getStyleableResCornerFamily(): Int = R.styleable.STShapeableTextView_cornerFamily
+    override fun getStyleableResCornerFamilyBottomLeft(): Int = R.styleable.STShapeableTextView_cornerFamilyBottomLeft
+    override fun getStyleableResCornerFamilyBottomRight(): Int = R.styleable.STShapeableTextView_cornerFamilyBottomRight
+    override fun getStyleableResCornerFamilyTopLeft(): Int = R.styleable.STShapeableTextView_cornerFamilyTopLeft
+    override fun getStyleableResCornerFamilyTopRight(): Int = R.styleable.STShapeableTextView_cornerFamilyTopRight
+    override fun getStyleableResCornerSize(): Int = R.styleable.STShapeableTextView_cornerSize
+    override fun getStyleableResCornerSizeBottomLeft(): Int = R.styleable.STShapeableTextView_cornerSizeBottomLeft
+    override fun getStyleableResCornerSizeBottomRight(): Int = R.styleable.STShapeableTextView_cornerSizeBottomRight
+    override fun getStyleableResCornerSizeTopLeft(): Int = R.styleable.STShapeableTextView_cornerSizeTopLeft
+    override fun getStyleableResCornerSizeTopRight(): Int = R.styleable.STShapeableTextView_cornerSizeTopRight
+
+    //region edge drawable
+    override fun getStyleableResDrawableLeftWidth(): Int = R.styleable.STShapeableTextView_drawableLeftWidth
+    override fun getStyleableResDrawableLeftHeight(): Int = R.styleable.STShapeableTextView_drawableLeftHeight
+    override fun getStyleableResDrawableTopWidth(): Int = R.styleable.STShapeableTextView_drawableTopWidth
+    override fun getStyleableResDrawableTopHeight(): Int = R.styleable.STShapeableTextView_drawableTopHeight
+    override fun getStyleableResDrawableRightWidth(): Int = R.styleable.STShapeableTextView_drawableRightWidth
+    override fun getStyleableResDrawableRightHeight(): Int = R.styleable.STShapeableTextView_drawableRightHeight
+    override fun getStyleableResDrawableBottomWidth(): Int = R.styleable.STShapeableTextView_drawableBottomWidth
+    override fun getStyleableResDrawableBottomHeight(): Int = R.styleable.STShapeableTextView_drawableBottomHeight
+    override fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnLeftDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnTopDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnRightDrawableTouchUpListener(onDrawableTouchUp)
+    override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = shapeableEdgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
+    //endregion
+
     init {
         shapeableHelper.init(attrs, defStyleAttr)
+        shapeableEdgeDrawableHelper.init(attrs, defStyleAttr)
+        isFocusable = true
+        isFocusableInTouchMode = true
+        isClickable = true
+        isLongClickable = true
     }
 }

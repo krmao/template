@@ -120,6 +120,30 @@ object STCustomViewUtil {
         return attributes.getColorStateList(index)
     }
 
+    @ColorInt
+    fun getColor(typedArray: TypedArray, @StyleableRes index: Int, @ColorInt defaultColor: Int): Int {
+        return try {
+            val color = typedArray.getColor(index, Integer.MAX_VALUE)
+            if (color != Integer.MAX_VALUE) {
+                color
+            } else {
+                val colorStr = typedArray.getString(index)
+                if (TextUtils.isEmpty(colorStr)) {
+                    defaultColor
+                } else {
+                    try {
+                        Color.parseColor(colorStr)
+                    } catch (ignored: Exception) {
+                        defaultColor
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            defaultColor
+        }
+    }
+
     @JvmStatic
     fun getBoolean(typedArray: TypedArray, index: Int, defaultValue: Boolean): Boolean {
         return try {

@@ -227,6 +227,7 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
         val cornerSizeBottomRight = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeBottomRight(), cornerSize)
         val cornerSizeTopLeft = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeTopLeft(), cornerSize)
         val cornerSizeTopRight = STCustomViewUtil.getCornerSize(typedArray, delegate.getStyleableResCornerSizeTopRight(), cornerSize)
+        typedArray.recycle()
 
         shapeAppearanceModel = ShapeAppearanceModel.builder(wrapContext, attrs, defStyleAttr, DEF_STYLE_RES).apply {
             // 如果自定义了 **app:cornerSize**, 则会覆盖 **shapeAppearanceOverlay**

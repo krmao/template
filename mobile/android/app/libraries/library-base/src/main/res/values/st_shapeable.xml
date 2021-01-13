@@ -12,6 +12,8 @@
 
     <!--region 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示 -->
     <declare-styleable name="STShapeableTextView" tools:ignore="ResourceName">
+        <attr name="rippleColor" />
+
         <attr name="strokeWidth" />
         <attr name="strokeColor" />
         <attr name="strokeInPadding" />
@@ -146,6 +148,8 @@
 
     <!-- 名字与自定义类名一致在 xml 中抒写代码时才会有被动提示  -->
     <declare-styleable name="STShapeableButton" tools:ignore="ResourceName">
+        <attr name="rippleColor" />
+
         <attr name="strokeWidth" />
         <attr name="strokeColor" />
         <attr name="strokeInPadding" />
@@ -296,14 +300,19 @@
     <!--endregion-->
 
     <style name="STShapeableAppearanceDefaultStyle">
-        <item name="strokeColor">@color/material_on_surface_stroke</item>
-        <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+        <item name="strokeColor">@color/st_transparent</item>
+        <item name="shapeAppearance">@style/STShapeAppearanceOverlay_Rounded_NONE</item>
     </style>
 
     <!-- 圆角图片 -->
     <style name="STShapeAppearanceOverlay_Rounded_25DP">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">25dp</item>
+    </style>
+
+    <style name="STShapeAppearanceOverlay_Rounded_NONE">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
     </style>
 
     <style name="STShapeAppearanceOverlay_Rounded_10DP">

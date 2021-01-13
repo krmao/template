@@ -781,6 +781,16 @@
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+
                     <com.smart.library.widget.shapeable.STShapeableEditText
                         android:layout_width="30dp"
                         android:layout_height="30dp"

@@ -215,12 +215,18 @@ class STRoundableLayoutHelper(val view: View) : STRoundableDelegate {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun getOutlineProvider(): ViewOutlineProvider {
-        return object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setConvexPath(path)
+    override fun getOutlineProvider(): ViewOutlineProvider? {
+        var outlineProvider: ViewOutlineProvider? = null
+        try {
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    outline.setConvexPath(path)
+                }
             }
+        } catch (pathMustBeConvexException: IllegalArgumentException) {
+            pathMustBeConvexException.printStackTrace()
         }
+        return outlineProvider
     }
 
 }

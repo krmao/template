@@ -23,7 +23,7 @@ class STRoundableTextView @JvmOverloads constructor(context: Context, attrs: Att
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getOutlineProvider(): ViewOutlineProvider {
-        return roundLayoutHelper.getOutlineProvider()
+        return roundLayoutHelper.getOutlineProvider() ?: super.getOutlineProvider()
     }
 
     //endregion

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
@@ -61,6 +59,7 @@ import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
  * xml 中使用 Button 会被自动替换为 AppCompactButton
  * 所以自定义 Button 的时候需要继承 AppCompactButton(AppCompactButton 实现了 backgroundTint/backgroundTintMode)
  */
+@Suppress("UnnecessaryVariable")
 @SuppressLint("AppCompatCustomView")
 class STShapeableButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = R.style.STButton_Default) : Button(context, attrs, defStyleAttr, defStyleRes), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
@@ -160,7 +159,6 @@ class STShapeableButton @JvmOverloads constructor(context: Context, attrs: Attri
         isLongClickable = true*/
         //endregion
 
-        @Suppress("DEPRECATION")
-        background = STColorUtil.getAdaptiveRippleDrawable((background as? ColorDrawable)?.color ?: Color.TRANSPARENT, resources.getColor(R.color.st_pressed))
+        STColorUtil.setViewBackgroundAdaptiveRippleDrawable(this, attrs, defStyleAttr, R.styleable.STShapeableButton, R.styleable.STShapeableButton_rippleColor)
     }
 }

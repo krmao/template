@@ -1,12 +1,16 @@
 package com.smart.library.util
 
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.drawable.*
 import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
+import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.StyleableRes
+import com.smart.library.R
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "LiftReturnOrAssignment")
@@ -26,6 +30,32 @@ object STColorUtil {
         } else {
             getStateListDrawable(normalColor, pressedColor)
         }
+    }
+
+
+    /**
+     * https://stackoverflow.com/questions/27787870/how-to-use-rippledrawable-programmatically-in-code-not-xml-with-android-5-0-lo
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun setViewBackgroundAdaptiveRippleDrawable(view: View, attrs: AttributeSet?, defStyleAttr: Int, @StyleableRes styleableRes: IntArray, @StyleableRes rippleColorIndex: Int, @ColorInt pressedColor: Int = view.resources.getColor(R.color.st_pressed)) {
+        val wrapContext = view.context
+        val typedArray: TypedArray = wrapContext.obtainStyledAttributes(attrs, styleableRes, defStyleAttr, 0)
+
+        @Suppress("DEPRECATION")
+        val rippleColor = STCustomViewUtil.getColor(typedArray, rippleColorIndex, pressedColor)
+        typedArray.recycle()
+
+        setViewBackgroundAdaptiveRippleDrawable(view, pressedColor = rippleColor)
+    }
+
+    /**
+     * https://stackoverflow.com/questions/27787870/how-to-use-rippledrawable-programmatically-in-code-not-xml-with-android-5-0-lo
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun setViewBackgroundAdaptiveRippleDrawable(view: View, normalColor: Int = (view.background as? ColorDrawable)?.color ?: Color.TRANSPARENT, pressedColor: Int = view.resources.getColor(R.color.st_pressed)) {
+        view.background = getAdaptiveRippleDrawable(normalColor, pressedColor)
     }
 
     @JvmStatic

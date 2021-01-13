@@ -24,7 +24,7 @@ open class STRoundableFrameLayout @JvmOverloads constructor(context: Context, at
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getOutlineProvider(): ViewOutlineProvider {
-        return roundLayoutHelper.getOutlineProvider()
+        return roundLayoutHelper.getOutlineProvider() ?: super.getOutlineProvider()
     }
 
     //endregion

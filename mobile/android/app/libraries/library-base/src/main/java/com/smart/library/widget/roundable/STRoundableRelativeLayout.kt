@@ -24,7 +24,7 @@ class STRoundableRelativeLayout @JvmOverloads constructor(context: Context, attr
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getOutlineProvider(): ViewOutlineProvider {
-        return roundLayoutHelper.getOutlineProvider()
+        return roundLayoutHelper.getOutlineProvider() ?: super.getOutlineProvider()
     }
 
     //endregion

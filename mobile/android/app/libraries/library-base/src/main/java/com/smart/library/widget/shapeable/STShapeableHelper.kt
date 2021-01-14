@@ -19,6 +19,7 @@ import com.google.android.material.shape.*
 import com.smart.library.R
 import com.smart.library.util.STColorUtil
 import com.smart.library.util.STCustomViewUtil
+import com.smart.library.util.STLogUtil
 import org.jetbrains.anko.displayMetrics
 
 
@@ -56,12 +57,30 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
 
     fun onDraw(canvas: Canvas) {
         // super.onDraw(canvas)
-        canvas.drawPath(maskPath, clearPaint)
-        drawStroke(canvas)
+        wrapCanvas(canvas) { wrapCanvas ->
+            wrapCanvas.drawPath(maskPath, clearPaint)
+            drawStroke(wrapCanvas)
+        }
     }
+
+    //region wrap translate for editText
+    fun wrapCanvas(canvas: Canvas, doDraw: (canvas: Canvas) -> Unit) {
+        val view = delegate.view()
+        if (view !is EditText) {
+            doDraw(canvas)
+            return
+        }
+        canvas.save()
+        canvas.translate(view.scrollX.toFloat(), view.scrollY.toFloat())
+        doDraw(canvas)
+        canvas.restore()
+    }
+    //endregion
 
     @Suppress("UNUSED_PARAMETER")
     fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+        STLogUtil.w(TAG, "onSizeChanged width=$width, height=$height, oldWidth=$oldWidth, oldHeight=$oldHeight")
+        STLogUtil.w(TAG, "view.width=${delegate.view().width}, view.measuredWidth=${delegate.view().measuredWidth}")
         // super.onSizeChanged(width, height, oldWidth, oldHeight)
         updateShapeMask(width, height)
     }
@@ -82,6 +101,8 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     private val displayMetrics by lazy { delegate.view().context.displayMetrics }
 
     private fun updateShapeMask(width: Int, height: Int) {
+        STLogUtil.w(TAG, "updateShapeMask start width$width, height=$height, destination=$destination")
+        STLogUtil.w(TAG, "view.width=${delegate.view().width}, view.measuredWidth=${delegate.view().measuredWidth}")
         if (strokeInPadding) {
             destination[delegate.view().paddingLeft.toFloat(), delegate.view().paddingTop.toFloat(), (width - delegate.view().paddingRight).toFloat()] = (height - delegate.view().paddingBottom).toFloat()
         } else {
@@ -95,7 +116,7 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
         // Do not include padding to clip the background too.
         maskRect[0f, 0f, width.toFloat()] = height.toFloat()
         maskPath.addRect(maskRect, Path.Direction.CCW)
-
+        STLogUtil.w(TAG, "updateShapeMask end width$width, height=$height, destination=$destination")
     }
 
     private fun drawStroke(canvas: Canvas) {
@@ -197,6 +218,7 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     companion object {
         @JvmField
         val DEF_STYLE_RES = R.style.STShapeableAppearanceDefaultStyle
+        const val TAG = "[shapeable]"
     }
 
     private fun peekValue(typedArray: TypedArray, index: Int): TypedValue {

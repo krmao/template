@@ -33,6 +33,144 @@
             android:fitsSystemWindows="true"
             android:orientation="vertical">
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="User ID"
+                android:textColorHint="@color/blue_900"
+                app:boxBackgroundColor="@color/amber_A100"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxStrokeColor="@color/pink"
+                app:boxStrokeErrorColor="@color/red"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
+                app:counterOverflowTextColor="@color/blue_grey"
+                app:counterTextColor="@color/green"
+                app:helperText="长度超过限制"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/grey_500"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:hintTextColor="@color/blue_100"
+                app:passwordToggleContentDescription="显示"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/orange"
+                app:placeholderTextColor="@color/green"
+                app:prefixTextColor="@color/blue_700"
+                app:startIconCheckable="true"
+                app:startIconContentDescription="hi"
+                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
+                app:startIconTint="@color/cyan_100">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    app:boxStrokeColor="@color/orange"
+                    app:textInputLayoutFocusedRectEnabled="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/autoCompleteInput"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:startIconCheckable="true"
+                app:startIconContentDescription="hi"
+                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
+                app:startIconTint="@color/cyan_100">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- https://material.io/components/menus/android#exposed-dropdown-menus -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/autoCompleteInput2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="right"
+                app:startIconCheckable="true"
+                app:startIconContentDescription="hi"
+                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
+                app:startIconTint="@color/cyan_100"
+                tools:ignore="RtlHardcoded">
+
+                <AutoCompleteTextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <com.smart.library.widget.shapeable.STShapeableEditText
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:hint="input"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/st_image"
+                    android:text="hello hello hello hello hello hello hello hello hello"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    app:strokeColor="#F44336"
+                    app:strokeWidth="2dp" />
+
+                <com.smart.library.widget.shapeable.STShapeableEditText
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:hint="input"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/st_image"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    app:drawableLeftCompat="@drawable/st_emo_im_happy"
+                    app:drawableLeftHeight="10dp"
+                    app:drawableLeftWidth="10dp"
+                    app:strokeColor="#F44336"
+                    app:strokeWidth="2dp" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -619,28 +757,6 @@
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp" />
-
-                    <com.smart.library.widget.shapeable.STShapeableEditText
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_column="3"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="@color/white"
-                        android:gravity="center_vertical"
-                        android:hint="input"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:paddingStart="3dp"
-                        android:paddingTop="1dp"
-                        android:paddingEnd="3dp"
-                        android:paddingBottom="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
-                        app:cornerFamily="rounded"
-                        app:cornerSize="3dp"
-                        app:strokeColor="#F44336"
-                        app:strokeWidth="2dp" />
                 </TableRow>
 
                 <TextView
@@ -706,7 +822,7 @@
                         android:layout_width="60dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        android:backgroundTint="@color/orange"
+                        app:backgroundTint="@color/orange"
                         android:backgroundTintMode="src_in"
                         android:drawablePadding="5dp"
                         android:gravity="center"

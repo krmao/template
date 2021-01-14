@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STToastUtil
@@ -44,6 +47,50 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         textView.addOnBottomDrawableTouchUpListener {
             STToastUtil.show("bottom")
         }
+
+        setupAutoCompleteView()
+        setupAutoCompleteView2()
+    }
+
+    /**
+     * https://material.io/components/menus/android#exposed-dropdown-menus
+     */
+    private fun setupAutoCompleteView() {
+        val context = context
+        context ?: return
+
+        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
+        (autoCompleteInput.editText as? AutoCompleteTextView)?.also {
+            it.setAdapter(adapter)
+            it.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                STToastUtil.show("you clicked ${items[position]}")
+            }
+        }
+    }
+
+    private fun setupAutoCompleteView2() {
+        val context = context
+        context ?: return
+
+        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
+        (autoCompleteInput2.editText as? AutoCompleteTextView)?.also {
+            it.setAdapter(adapter)
+            it.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                STToastUtil.show("you clicked ${items[position]}")
+            }
+        }
+    }
+
+    private fun getAnimalList(): ArrayList<String> {
+        val animalList = ArrayList<String>()
+        animalList.add("dog")
+        animalList.add("cat")
+        animalList.add("cow")
+        animalList.add("elephant")
+        animalList.add("snake")
+        return animalList
     }
 
     companion object {

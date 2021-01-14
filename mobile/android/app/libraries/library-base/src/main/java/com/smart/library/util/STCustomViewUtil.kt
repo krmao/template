@@ -25,6 +25,11 @@ import com.google.android.material.shape.RelativeCornerSize
 object STCustomViewUtil {
 
     @JvmStatic
+    fun isLayoutRtl(view: View): Boolean {
+        return view.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    }
+
+    @JvmStatic
     fun getCornerSizeDescription(cornerSize: CornerSize): String {
         return when (cornerSize) {
             is AbsoluteCornerSize -> {

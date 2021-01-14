@@ -49,7 +49,6 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         }
 
         setupAutoCompleteView()
-        setupAutoCompleteView2()
     }
 
     /**
@@ -62,20 +61,6 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
         (autoCompleteInput.editText as? AutoCompleteTextView)?.also {
-            it.setAdapter(adapter)
-            it.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                STToastUtil.show("you clicked ${items[position]}")
-            }
-        }
-    }
-
-    private fun setupAutoCompleteView2() {
-        val context = context
-        context ?: return
-
-        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
-        (autoCompleteInput2.editText as? AutoCompleteTextView)?.also {
             it.setAdapter(adapter)
             it.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 STToastUtil.show("you clicked ${items[position]}")

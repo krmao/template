@@ -37,7 +37,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:hint="User ID"
                 android:textColorHint="@color/blue_900"
                 app:boxBackgroundColor="@color/amber_A100"
@@ -79,7 +80,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:startIconCheckable="true"
                 app:startIconContentDescription="hi"
                 app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
@@ -92,33 +94,11 @@
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
-            <!-- https://material.io/components/menus/android#exposed-dropdown-menus -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/autoCompleteInput2"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="right"
-                app:startIconCheckable="true"
-                app:startIconContentDescription="hi"
-                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
-                app:startIconTint="@color/cyan_100"
-                tools:ignore="RtlHardcoded">
-
-                <AutoCompleteTextView
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="horizontal">
 
                 <com.smart.library.widget.shapeable.STShapeableEditText
                     android:layout_width="0dp"
@@ -174,12 +154,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="horizontal">
 
                 <com.smart.library.widget.shapeable.STShapeableButton
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
@@ -199,7 +178,7 @@
                 <com.google.android.material.button.MaterialButton
                     style="@style/STButton.TextButton.Icon"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#1946B04A"
@@ -212,12 +191,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="horizontal">
 
                 <com.smart.library.widget.shapeable.STShapeableButton
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
@@ -237,7 +215,7 @@
                 <com.google.android.material.button.MaterialButton
                     style="@style/STButton.TextButton.Icon"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#46B04A"
@@ -250,15 +228,15 @@
             <com.smart.library.widget.shapeable.STShapeableTextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="60dp"
                 android:layout_margin="5dp"
                 android:background="@color/yellow"
-                android:drawablePadding="10dp"
+                android:drawablePadding="5dp"
                 android:ellipsize="end"
                 android:paddingStart="20dp"
-                android:paddingTop="3dp"
+                android:paddingTop="1dp"
                 android:paddingRight="10dp"
-                android:paddingBottom="3dp"
+                android:paddingBottom="1dp"
                 android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                 android:textColor="#333"
                 android:textSize="12sp"
@@ -271,17 +249,17 @@
                 app:cornerSizeTopLeft="50%"
                 app:cornerSizeTopRight="50%"
                 app:drawableBottomCompat="@drawable/st_emo_im_happy"
-                app:drawableBottomHeight="20dp"
-                app:drawableBottomWidth="20dp"
+                app:drawableBottomHeight="10dp"
+                app:drawableBottomWidth="10dp"
                 app:drawableLeftCompat="@drawable/st_emo_im_happy"
-                app:drawableLeftHeight="20dp"
-                app:drawableLeftWidth="20dp"
+                app:drawableLeftHeight="10dp"
+                app:drawableLeftWidth="10dp"
                 app:drawableRightCompat="@drawable/st_emo_im_happy"
-                app:drawableRightHeight="20dp"
-                app:drawableRightWidth="20dp"
+                app:drawableRightHeight="10dp"
+                app:drawableRightWidth="10dp"
                 app:drawableTopCompat="@drawable/st_emo_im_happy"
-                app:drawableTopHeight="20dp"
-                app:drawableTopWidth="20dp"
+                app:drawableTopHeight="10dp"
+                app:drawableTopWidth="10dp"
                 app:strokeColor="#F44336"
                 app:strokeInPadding="false"
                 app:strokeWidth="2dp" />
@@ -298,17 +276,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    android:text="RoundImageView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
                     android:text="shapeable layout"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
@@ -317,12 +286,8 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
                         android:background="@color/yellow"
-                        android:ellipsize="end"
                         android:padding="3dp"
-                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
-                        android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
                         app:strokeColor="#ff0000"
                         app:strokeWidth="2dp">
@@ -339,12 +304,7 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
-                        android:background="@color/yellow"
-                        android:ellipsize="end"
                         android:padding="3dp"
-                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
-                        android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
                         app:strokeColor="#ff0000"
                         app:strokeWidth="2dp">
@@ -361,12 +321,7 @@
                         android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
-                        android:background="@color/yellow"
-                        android:ellipsize="end"
                         android:padding="3dp"
-                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
-                        android:textSize="12sp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
                         app:strokeColor="#ff0000"
                         app:strokeWidth="2dp">
@@ -383,12 +338,7 @@
                         android:layout_width="50dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-
-                        android:background="@color/yellow"
-                        android:ellipsize="end"
-                        android:padding="3dp"
-                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
-                        android:textSize="12sp"
+                        android:padding="1dp"
                         app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
                         app:strokeColor="#ff0000"
                         app:strokeWidth="2dp">
@@ -408,7 +358,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:text="shapeable layout text view"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
@@ -441,7 +391,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:text="shapeable text view"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
@@ -483,7 +433,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:text="ShapeableImageView"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
@@ -568,7 +518,7 @@
                         android:layout_margin="5dp"
                         android:padding="2dp"
                         android:text="STShapeableImageView and STShapeableEditText"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -598,7 +548,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:text="ShapeableTextView"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow android:gravity="center_vertical">
@@ -629,9 +579,12 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamily="cut"
                         app:cornerSize="50%"
                         app:strokeColor="#F44336"
@@ -641,21 +594,27 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamilyTopLeft="rounded"
                         app:cornerSizeTopLeft="100%"
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
                         app:cornerSizeBottomRight="50%"
@@ -672,9 +631,12 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamily="cut"
                         app:cornerSize="15dp"
                         app:strokeColor="#F44336"
@@ -684,9 +646,12 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamily="rounded"
                         app:cornerSize="3dp"
                         app:strokeColor="#F44336"
@@ -696,26 +661,33 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:padding="1dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamily="rounded"
                         app:cornerSize="50%"
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/st_image"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
                         app:cornerFamilyBottomLeft="rounded"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
                         app:cornerFamilyTopRight="rounded"
-                        app:cornerSizeBottomLeft="15dp"
-                        app:cornerSizeBottomRight="15dp"
+                        app:cornerSizeBottomLeft="5dp"
+                        app:cornerSizeBottomRight="5dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
                         app:strokeColor="#F44336"
@@ -764,7 +736,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:text="STShapeableImageButton and STShapeableButton"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <TableRow
@@ -822,8 +794,8 @@
                         android:layout_width="60dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        app:backgroundTint="@color/orange"
-                        android:backgroundTintMode="src_in"
+                        android:background="@color/yellow"
+                        android:backgroundTint="@color/yellow"
                         android:drawablePadding="5dp"
                         android:gravity="center"
                         android:paddingLeft="5dp"

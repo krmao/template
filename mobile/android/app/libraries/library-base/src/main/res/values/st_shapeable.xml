@@ -355,8 +355,8 @@
         <item name="cornerFamilyBottomRight">rounded</item>
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSizeBottomLeft">25dp</item>
-        <item name="cornerSizeBottomRight">25dp</item>
+        <item name="cornerSizeBottomLeft">15dp</item>
+        <item name="cornerSizeBottomRight">15dp</item>
         <item name="cornerSizeTopLeft">70%</item>
         <item name="cornerSizeTopRight">70%</item>
     </style>

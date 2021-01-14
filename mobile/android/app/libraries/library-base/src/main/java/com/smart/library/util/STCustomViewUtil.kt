@@ -5,24 +5,65 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.content.res.TypedArray
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.MotionEvent
+import android.view.TouchDelegate
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.doOnLayout
 import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.CornerSize
 import com.google.android.material.shape.RelativeCornerSize
 
+
 @Suppress("unused", "ControlFlowWithEmptyBody")
 object STCustomViewUtil {
+
+    @JvmStatic
+    fun setExpandedTouchArea(view: View, extraSpace: Int) {
+        val parent = view.parent as View
+        parent.doOnLayout {
+            val area = Rect()
+
+            view.getHitRect(area)
+
+            area.top -= extraSpace
+            area.bottom += extraSpace
+            area.left -= extraSpace
+            area.right += extraSpace
+
+            parent.touchDelegate = TouchDelegate(area, view)
+        }
+    }
+
+    /**
+     * 透明区域不可点击
+     * https://stackoverflow.com/questions/25014132/android-make-custom-views-transparent-area-not-clickable
+     */
+    @JvmStatic
+    fun isInClickableAreaExcludeTransparent(view: View, bitmap: Bitmap?, event: MotionEvent): Boolean {
+        val clickX = (event.x * (bitmap?.width?.toDouble() ?: view.width.toDouble()) / view.width.toDouble()).toInt()
+        val clickY = (event.y * (bitmap?.height?.toDouble() ?: view.height.toDouble()) / view.height.toDouble()).toInt()
+        if (bitmap != null) {
+            if (clickX >= 0 && clickX < bitmap.width && clickY >= 0 && clickY < bitmap.height) {
+                if (Color.alpha(bitmap.getPixel(clickX, clickY)) > 0) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     @JvmStatic
     fun isLayoutRtl(view: View): Boolean {

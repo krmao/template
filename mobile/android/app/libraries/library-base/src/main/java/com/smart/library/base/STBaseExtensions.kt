@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.shape.CornerSize
 import com.smart.library.util.*
@@ -100,6 +101,17 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
  * 会必然触发 onGlobalLayout 回调
  * @return view.height 并不会随着改变/显示/隐藏 虚拟导航栏而显示不同的值, 经测试一直都是 screenRealHeight, 还是需要调用通过 STSystemUtil.showSystemInfo(this) 去获取正确的高度
  */
+/**
+ * Performs the given action when this view is laid out. If the view has been laid out and it
+ * has not requested a layout, the action will be performed straight away, otherwise the
+ * action will be performed after the view is next laid out.
+ *
+ * The action will only be invoked once on the next layout and then removed.
+ *
+ * @see View.doOnNextLayout
+ * @see View.doOnLayout
+ */
+@Deprecated(message = "this function is deprecated !", replaceWith = ReplaceWith("doOnLayout{}", "androidx.core.view.doOnLayout"))
 fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
     STLogUtil.w("ensureOnGlobalLayoutListener start")
     // 调用不会立即触发

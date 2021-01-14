@@ -204,7 +204,7 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     fun init(attrs: AttributeSet?, defStyleAttr: Int) {
         // Ensure we are using the correctly themed context rather than the context that was passed in.
         val wrapContext = delegate.view().context
-        clearPaint.isAntiAlias = true
+        clearPaint.isAntiAlias = false // 透明度的背景圆角周围预览时有阴影
         clearPaint.color = Color.WHITE
         clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
         val typedArray: TypedArray = wrapContext.obtainStyledAttributes(attrs, delegate.getStyleableRes(), defStyleAttr, DEF_STYLE_RES)
@@ -213,7 +213,7 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
 
         strokeInPadding = typedArray.getBoolean(delegate.getStyleableResStrokeInPadding(), strokeInPadding)
         borderPaint.style = Paint.Style.STROKE
-        borderPaint.isAntiAlias = true
+        borderPaint.isAntiAlias = false // 透明度的背景圆角周围预览时有阴影
 
         val cornerFamily = typedArray.getInt(delegate.getStyleableResCornerFamily(), CornerFamily.ROUNDED)
         val cornerFamilyBottomLeft = typedArray.getInt(delegate.getStyleableResCornerFamilyBottomLeft(), cornerFamily)

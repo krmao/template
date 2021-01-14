@@ -5,7 +5,11 @@
     <color name="st_primary_dark">@color/primary_dark</color>
     <color name="st_accent">@color/accent</color>
 
-    <color name="st_pressed">#2B000000</color>
+    <!-- #11000000 7% 000000 selected_holo_light.9.png -->
+    <!-- #0F000000 6% 000000 selected_holo_light.9.png bingo! -->
+    <!-- #0C000000 5% 000000 selected_holo_light.9.png -->
+    <color name="st_pressed">#0F000000</color>
+
     <color name="st_background">@color/grey_200</color>
     <color name="st_title_bar">@color/primary</color>
     <color name="st_launch_bg_color">#2394f5</color>

@@ -13,7 +13,6 @@ import androidx.annotation.Dimension
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.smart.library.R
-import com.smart.library.util.STColorUtil
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 
@@ -158,7 +157,5 @@ class STShapeableButton @JvmOverloads constructor(context: Context, attrs: Attri
         isClickable = true
         isLongClickable = true*/
         //endregion
-
-        STColorUtil.setViewBackgroundAdaptiveRippleDrawable(this, attrs, defStyleAttr, R.styleable.STShapeableButton, R.styleable.STShapeableButton_rippleColor)
     }
 }

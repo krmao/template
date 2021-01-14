@@ -150,12 +150,9 @@ public class STSwipeBackLayout extends FrameLayout {
         int mode = EDGE_FLAGS[a.getInt(R.styleable.STSwipeBackLayout_stEdgeFlag, 0)];
         setEdgeTrackingEnabled(mode);
 
-        int shadowLeft = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowLeft,
-                R.drawable.st_swipe_back_shadow_left);
-        int shadowRight = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowRight,
-                R.drawable.st_swipe_back_shadow_right);
-        int shadowBottom = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowBottom,
-                R.drawable.st_swipe_back_shadow_bottom);
+        int shadowLeft = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowLeft, R.drawable.st_swipe_back_shadow_left);
+        int shadowRight = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowRight, R.drawable.st_swipe_back_shadow_right);
+        int shadowBottom = a.getResourceId(R.styleable.STSwipeBackLayout_stShadowBottom, R.drawable.st_swipe_back_shadow_bottom);
         setShadow(shadowLeft, EDGE_LEFT);
         setShadow(shadowRight, EDGE_RIGHT);
         setShadow(shadowBottom, EDGE_BOTTOM);

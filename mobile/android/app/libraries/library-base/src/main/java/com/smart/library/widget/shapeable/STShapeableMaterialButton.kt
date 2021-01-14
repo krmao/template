@@ -147,10 +147,6 @@ class STShapeableMaterialButton @JvmOverloads constructor(context: Context, attr
     init {
         shapeableHelper.init(attrs, defStyleAttr)
         edgeDrawableHelper.init(attrs, defStyleAttr)
-        isFocusable = true
-        isFocusableInTouchMode = true
-        isClickable = true
-        isLongClickable = true
     }
 
     companion object {

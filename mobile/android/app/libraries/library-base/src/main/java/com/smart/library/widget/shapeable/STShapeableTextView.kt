@@ -12,7 +12,6 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
 import com.smart.library.R
-import com.smart.library.util.STColorUtil
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 
@@ -111,7 +110,5 @@ class STShapeableTextView @JvmOverloads constructor(context: Context, attrs: Att
     init {
         shapeableHelper.init(attrs, defStyleAttr)
         edgeDrawableHelper.init(attrs, defStyleAttr)
-
-        STColorUtil.setViewBackgroundAdaptiveRippleDrawable(this, attrs, defStyleAttr, R.styleable.STShapeableTextView, R.styleable.STShapeableTextView_rippleColor)
     }
 }

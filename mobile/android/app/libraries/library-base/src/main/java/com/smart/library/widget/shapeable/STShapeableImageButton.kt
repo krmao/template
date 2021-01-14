@@ -88,9 +88,5 @@ class STShapeableImageButton @JvmOverloads constructor(context: Context, attrs: 
 
     init {
         shapeableHelper.init(attrs, defStyleAttr)
-        isFocusable = true
-        isFocusableInTouchMode = true
-        isClickable = true
-        isLongClickable = true
     }
 }

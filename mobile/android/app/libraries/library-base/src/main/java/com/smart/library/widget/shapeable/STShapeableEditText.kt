@@ -111,8 +111,6 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
         //region 否则不弹出键盘
         isFocusable = true
         isFocusableInTouchMode = true
-        isClickable = true
-        isLongClickable = true
         //endregion
     }
 }

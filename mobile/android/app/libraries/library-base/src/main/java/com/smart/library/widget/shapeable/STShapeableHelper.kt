@@ -10,12 +10,14 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewOutlineProvider
+import android.widget.EditText
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.shape.*
 import com.smart.library.R
+import com.smart.library.util.STColorUtil
 import com.smart.library.util.STCustomViewUtil
 import org.jetbrains.anko.displayMetrics
 
@@ -241,7 +243,12 @@ class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             delegate.view().outlineProvider = OutlineProvider()
         }
-    }
 
+        //region 如果设置点击事件, 将自带 "点按水波纹" 效果
+        if (delegate.view() !is EditText) {
+            STColorUtil.setViewBackgroundAdaptiveRippleDrawable(delegate.view(), attrs, defStyleAttr, R.styleable.STShapeableTextView, R.styleable.STShapeableTextView_rippleColor)
+        }
+        //endregion
+    }
 
 }

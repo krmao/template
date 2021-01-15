@@ -173,7 +173,7 @@
                     tools:ignore="SmallSp" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/STButton.TextButton.Icon"
+                    style="@style/STButton.MaterialComponents.Text.Icon"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
@@ -210,7 +210,7 @@
                     tools:ignore="SmallSp" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/STButton.TextButton.Icon"
+                    style="@style/STButton.MaterialComponents.Text.Icon"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
@@ -839,7 +839,7 @@
                         tools:ignore="SmallSp" />
 
                     <com.google.android.material.button.MaterialButton
-                        style="@style/STButton.TextButton.Icon"
+                        style="@style/STButton.MaterialComponents.Text.Icon"
                         android:layout_width="60dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"

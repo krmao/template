@@ -192,18 +192,18 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
             activity.window.decorView.clearAnimation()
             if (activity is FragmentActivity) {
-                activity.supportFragmentManager.fragments.firstOrNull()?.let {
-                    if (it is STBaseFragment.OnBackPressedListener) {
-                        if (it.onBackPressed()) {
-                            activity.supportFragmentManager.popBackStackImmediate()
-                            return true
-                        }
+                activity.supportFragmentManager.fragments.firstOrNull { it is STBaseFragment.OnBackPressedListener }?.let {
+                    if ((it as? STBaseFragment.OnBackPressedListener)?.onBackPressed() == true) {
+                        // intercept
+                        return true
                     }
                 }
 
                 if (activity.supportFragmentManager.backStackEntryCount == 0) {
                     if (enableExitWithDoubleBackPressed) quitApplication() else activity.finish()
-                } else activity.supportFragmentManager.popBackStackImmediate()
+                } else {
+                    activity.supportFragmentManager.popBackStackImmediate()
+                }
             } else {
                 if (enableExitWithDoubleBackPressed) quitApplication() else activity.finish()
             }

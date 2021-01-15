@@ -152,7 +152,7 @@ class STShapeableMaterialButton @JvmOverloads constructor(context: Context, attr
     companion object {
         init {
             // 如果在 xml 中未设置 style, 则默认使用这个 style
-            STReflectUtil.setJavaStaticFieldValue(com.google.android.material.button.MaterialButton::class.java, "DEF_STYLE_RES", R.style.STButton_TextButton_Icon)
+            STReflectUtil.setJavaStaticFieldValue(com.google.android.material.button.MaterialButton::class.java, "DEF_STYLE_RES", R.style.STButton_MaterialComponents_Text_Icon)
         }
     }
 }

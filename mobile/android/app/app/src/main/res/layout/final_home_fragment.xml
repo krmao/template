@@ -352,6 +352,7 @@
                             android:layout_weight="1"
                             android:text="wifi manager"
                             app:backgroundTint="@color/blue_600" />
+
                         <Button
                             android:id="@+id/roundLayout"
                             style="@style/STButton.Default"

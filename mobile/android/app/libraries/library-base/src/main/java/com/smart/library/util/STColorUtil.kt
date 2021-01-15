@@ -32,6 +32,15 @@ object STColorUtil {
         }
     }
 
+    @JvmStatic
+    fun getAdaptiveRippleDrawable(drawableNormal: Drawable, pressedColor: Int): Drawable {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            RippleDrawable(ColorStateList.valueOf(pressedColor), drawableNormal, null)
+        } else {
+            getStateListDrawable(drawableNormal, ColorDrawable(pressedColor))
+        }
+    }
+
 
     /**
      * https://stackoverflow.com/questions/27787870/how-to-use-rippledrawable-programmatically-in-code-not-xml-with-android-5-0-lo
@@ -82,6 +91,16 @@ object STColorUtil {
         // states.addState(intArrayOf(android.R.attr.state_focused), ColorDrawable(pressedColor))
         // states.addState(intArrayOf(android.R.attr.state_activated), ColorDrawable(pressedColor))
         states.addState(intArrayOf(), ColorDrawable(normalColor))
+        return states
+    }
+
+    @JvmStatic
+    fun getStateListDrawable(drawableNormal: Drawable, drawablePressed: Drawable): StateListDrawable {
+        val states = StateListDrawable()
+        states.addState(intArrayOf(android.R.attr.state_pressed), drawablePressed)
+        // states.addState(intArrayOf(android.R.attr.state_focused), ColorDrawable(pressedColor))
+        // states.addState(intArrayOf(android.R.attr.state_activated), ColorDrawable(pressedColor))
+        states.addState(intArrayOf(), drawableNormal)
         return states
     }
 

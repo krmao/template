@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import com.smart.library.util.STLogUtil
 
 
 /**
@@ -15,6 +17,13 @@ import android.widget.TextView
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
+
+    enum class Position(val value: Int) {
+        LEFT(0),
+        TOP(1),
+        RIGHT(2),
+        BOTTOM(3);
+    }
 
     private var drawableLeftWidth = 0
     private var drawableTopWidth: Int = 0
@@ -26,51 +35,60 @@ class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
     private var drawableBottomHeight: Int = 0
     private var isDrawableAlignCenter = true
 
+    private var onDrawableClickListener: ((Position) -> Unit)? = null
+
     fun getTextView(): TextView? = delegate.view() as? TextView
 
     @Suppress("UNUSED_PARAMETER")
     fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         // super.onSizeChanged(width, height, oldWidth, oldHeight)
 
+        setCompoundDrawables()
+    }
+
+    @Suppress("DEPRECATION")
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @JvmOverloads
+    fun setEdgeDrawable(position: Position, @DrawableRes drawableResId: Int, width: Int = 0, height: Int = 0) {
+        setEdgeDrawable(position, delegate.view().resources.getDrawable(drawableResId), width, height)
+    }
+
+    @JvmOverloads
+    fun setEdgeDrawable(position: Position, drawable: Drawable?, width: Int = 0, height: Int = 0) {
+        setCompoundDrawables(position, drawable, width, height)
+    }
+
+    fun setOnEdgeDrawableClickListener(onDrawableClickListener: ((Position) -> Unit)?) {
+        this.onDrawableClickListener = onDrawableClickListener
+    }
+
+    /**
+     * @param position null reset all
+     */
+    private fun setCompoundDrawables(position: Position? = null, drawable: Drawable? = null, drawableWidth: Int = 0, drawableHeight: Int = 0) {
         val textView = getTextView() ?: return
         val drawables: Array<Drawable?> = textView.compoundDrawables
-        val drawableLeft = drawables[0]
-        val drawableTop = drawables[1]
-        val drawableRight = drawables[2]
-        val drawableBottom = drawables[3]
-        setDrawable(drawableLeft, 0, drawableLeftWidth, drawableLeftHeight)
-        setDrawable(drawableTop, 1, drawableTopWidth, drawableTopHeight)
-        setDrawable(drawableRight, 2, drawableRightWidth, drawableRightHeight)
-        setDrawable(drawableBottom, 3, drawableBottomWidth, drawableBottomHeight)
+
+        val drawableLeft = if (position == Position.LEFT) drawable else drawables[0]
+        val drawableTop = if (position == Position.TOP) drawable else drawables[1]
+        val drawableRight = if (position == Position.RIGHT) drawable else drawables[2]
+        val drawableBottom = if (position == Position.BOTTOM) drawable else drawables[3]
+
+        setCompoundDrawableBounds(drawableLeft, if (position == Position.LEFT && drawableWidth > 0) drawableWidth else drawableLeftWidth, if (position == Position.LEFT && drawableHeight > 0) drawableHeight else drawableLeftHeight)
+        setCompoundDrawableBounds(drawableTop, if (position == Position.TOP && drawableWidth > 0) drawableWidth else drawableTopWidth, if (position == Position.TOP && drawableHeight > 0) drawableHeight else drawableTopHeight)
+        setCompoundDrawableBounds(drawableRight, if (position == Position.RIGHT && drawableWidth > 0) drawableWidth else drawableRightWidth, if (position == Position.RIGHT && drawableHeight > 0) drawableHeight else drawableRightHeight)
+        setCompoundDrawableBounds(drawableBottom, if (position == Position.BOTTOM && drawableWidth > 0) drawableWidth else drawableBottomWidth, if (position == Position.BOTTOM && drawableHeight > 0) drawableHeight else drawableBottomHeight)
+
         textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom)
     }
 
-    private fun setDrawable(drawable: Drawable?, position: Int, drawableWidth: Int, drawableHeight: Int) {
-        drawable ?: return
-        val finalDrawableWidth = if (drawableWidth == 0) drawable.intrinsicWidth else drawableWidth
-        val finalDrawableHeight = if (drawableHeight == 0) drawable.intrinsicHeight else drawableHeight
+    private fun setCompoundDrawableBounds(drawable: Drawable?, drawableWidth: Int, drawableHeight: Int): Drawable? {
+        drawable ?: return null
+        STLogUtil.d("[drawable]", "drawableWidth=$drawableWidth, drawableHeight=$drawableHeight")
+        val finalDrawableWidth = if (drawableWidth <= 0) drawable.intrinsicWidth else drawableWidth
+        val finalDrawableHeight = if (drawableHeight <= 0) drawable.intrinsicHeight else drawableHeight
         drawable.setBounds(0, 0, finalDrawableWidth, finalDrawableHeight)
-    }
-
-    private var onLeftDrawableTouchUp: (() -> Unit)? = null
-    private var onTopDrawableTouchUp: (() -> Unit)? = null
-    private var onRightDrawableTouchUp: (() -> Unit)? = null
-    private var onBottomDrawableTouchUp: (() -> Unit)? = null
-
-    fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) {
-        this.onLeftDrawableTouchUp = onDrawableTouchUp
-    }
-
-    fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) {
-        this.onTopDrawableTouchUp = onDrawableTouchUp
-    }
-
-    fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) {
-        this.onRightDrawableTouchUp = onDrawableTouchUp
-    }
-
-    fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) {
-        this.onBottomDrawableTouchUp = onDrawableTouchUp
+        return drawable
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -80,10 +98,10 @@ class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
         textView.setOnTouchListener(object : STEdgeDrawableClickListener() {
             override fun onDrawableClick(v: View, drawableIndex: Int) {
                 when (drawableIndex) {
-                    LEFT -> onLeftDrawableTouchUp?.invoke()
-                    TOP -> onTopDrawableTouchUp?.invoke()
-                    RIGHT -> onRightDrawableTouchUp?.invoke()
-                    BOTTOM -> onBottomDrawableTouchUp?.invoke()
+                    LEFT -> onDrawableClickListener?.invoke(Position.LEFT)
+                    TOP -> onDrawableClickListener?.invoke(Position.TOP)
+                    RIGHT -> onDrawableClickListener?.invoke(Position.RIGHT)
+                    BOTTOM -> onDrawableClickListener?.invoke(Position.BOTTOM)
                 }
             }
         })
@@ -106,6 +124,7 @@ class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
 
         typedArray.recycle()
 
+        setCompoundDrawables()
         initEdgeDrawableOnTouchListener()
     }
 

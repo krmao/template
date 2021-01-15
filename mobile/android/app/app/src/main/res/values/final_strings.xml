@@ -14,4 +14,10 @@
     <string name="showPassword">Show password</string>
     <string name="googleWifi">Wifi</string>
     <string name="connect">Connect</string>
+
+    <string-array name="menus">
+        <item>JAVA</item>
+        <item>C++</item>
+        <item>KOTLIN</item>
+    </string-array>
 </resources>

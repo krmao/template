@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.*
+import android.widget.PopupWindow
 import android.widget.TextView
 import com.smart.library.R
 
@@ -14,6 +15,19 @@ object STDialogManager {
     private val dpTranslation by lazy { STSystemUtil.getPxFromDp(6f) }
     private val dpAnimationViewSize by lazy { STSystemUtil.getPxFromDp(64f).toInt() }
     private val dpAnimationViewLargeSize by lazy { STSystemUtil.getPxFromDp(76f).toInt() }
+
+    /**
+     * popupWindow.showAsDropDown(anchorView, 0, 0, Gravity.BOTTOM or Gravity.END)
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun createPopupWindow(context: Context, width: Int, height: Int, focusable: Boolean = false, isOutsideTouchable: Boolean = true, contentViewHandler: (Context) -> View, onDismissListener: PopupWindow.OnDismissListener? = null): PopupWindow? {
+        val contentView = contentViewHandler(context)
+        val popupWindow = PopupWindow(contentView, width, height, focusable)
+        popupWindow.isOutsideTouchable = isOutsideTouchable
+        popupWindow.setOnDismissListener { onDismissListener?.onDismiss() }
+        return popupWindow
+    }
 
     @JvmStatic
     @JvmOverloads

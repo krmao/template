@@ -1,6 +1,8 @@
 package com.smart.library.widget.shapeable.edgedrawable
 
+import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.StyleableRes
 
 interface STEdgeDrawableDelegate {
@@ -34,12 +36,10 @@ interface STEdgeDrawableDelegate {
     @StyleableRes
     fun getStyleableResDrawableBottomHeight(): Int
 
-    fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?)
+    fun setEdgeDrawable(position: STEdgeDrawableHelper.Position, @DrawableRes drawableResId: Int, width: Int = 0, height: Int = 0)
 
-    fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?)
+    fun setEdgeDrawable(position: STEdgeDrawableHelper.Position, drawable: Drawable?, width: Int = 0, height: Int = 0)
 
-    fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?)
-
-    fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?)
+    fun setOnEdgeDrawableClickListener(onEdgeDrawableClickListener: ((STEdgeDrawableHelper.Position) -> Unit)?)
 
 }

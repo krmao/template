@@ -143,9 +143,6 @@
                     android:src="@drawable/st_image"
                     app:cornerFamily="rounded"
                     app:cornerSize="10dp"
-                    app:drawableLeftCompat="@drawable/st_emo_im_happy"
-                    app:drawableLeftHeight="10dp"
-                    app:drawableLeftWidth="10dp"
                     app:strokeColor="#F44336"
                     app:strokeWidth="2dp" />
 
@@ -225,44 +222,53 @@
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
-            <com.smart.library.widget.shapeable.STShapeableTextView
-                android:id="@+id/textView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_margin="5dp"
-                android:background="@color/yellow"
-                android:drawablePadding="5dp"
-                android:ellipsize="end"
-                android:paddingStart="20dp"
-                android:paddingTop="1dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="1dp"
-                android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
-                android:textColor="#333"
-                android:textSize="12sp"
-                app:cornerFamilyBottomLeft="rounded"
-                app:cornerFamilyBottomRight="cut"
-                app:cornerFamilyTopLeft="rounded"
-                app:cornerFamilyTopRight="cut"
-                app:cornerSizeBottomLeft="50%"
-                app:cornerSizeBottomRight="50%"
-                app:cornerSizeTopLeft="50%"
-                app:cornerSizeTopRight="50%"
-                app:drawableBottomCompat="@drawable/st_emo_im_happy"
-                app:drawableBottomHeight="10dp"
-                app:drawableBottomWidth="10dp"
-                app:drawableLeftCompat="@drawable/st_emo_im_happy"
-                app:drawableLeftHeight="10dp"
-                app:drawableLeftWidth="10dp"
-                app:drawableRightCompat="@drawable/st_emo_im_happy"
-                app:drawableRightHeight="10dp"
-                app:drawableRightWidth="10dp"
-                app:drawableTopCompat="@drawable/st_emo_im_happy"
-                app:drawableTopHeight="10dp"
-                app:drawableTopWidth="10dp"
-                app:strokeColor="#F44336"
-                app:strokeInPadding="false"
-                app:strokeWidth="2dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.smart.library.widget.shapeable.STShapeableTextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/yellow"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="1dp"
+                    android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                    android:textColor="#333"
+                    android:textSize="12sp"
+                    app:cornerFamilyBottomLeft="rounded"
+                    app:cornerFamilyBottomRight="cut"
+                    app:cornerFamilyTopLeft="rounded"
+                    app:cornerFamilyTopRight="cut"
+                    app:cornerSizeBottomLeft="50%"
+                    app:cornerSizeBottomRight="50%"
+                    app:cornerSizeTopLeft="50%"
+                    app:cornerSizeTopRight="50%"
+                    app:drawableRightCompat="@drawable/st_icon_arrow_down"
+                    app:drawableRightHeight="20dp"
+                    app:drawableRightWidth="20dp"
+                    app:strokeColor="#F44336"
+                    app:strokeInPadding="false"
+                    app:strokeWidth="2dp" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="100dp"
+                    android:entries="@array/menus"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -783,9 +789,6 @@
                         app:cornerSizeBottomRight="5dp"
                         app:cornerSizeTopLeft="70%"
                         app:cornerSizeTopRight="70%"
-                        app:drawableLeftCompat="@drawable/st_emo_im_happy"
-                        app:drawableLeftHeight="10dp"
-                        app:drawableLeftWidth="10dp"
                         app:strokeColor="#0000ff"
                         app:strokeWidth="2dp"
                         tools:ignore="SmallSp" />

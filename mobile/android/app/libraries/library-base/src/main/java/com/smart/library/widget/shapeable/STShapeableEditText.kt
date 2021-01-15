@@ -3,6 +3,7 @@ package com.smart.library.widget.shapeable
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorRes
@@ -99,10 +100,9 @@ class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: Att
     override fun getStyleableResDrawableRightHeight(): Int = R.styleable.STShapeableEditText_drawableRightHeight
     override fun getStyleableResDrawableBottomWidth(): Int = R.styleable.STShapeableEditText_drawableBottomWidth
     override fun getStyleableResDrawableBottomHeight(): Int = R.styleable.STShapeableEditText_drawableBottomHeight
-    override fun addOnLeftDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnLeftDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnTopDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnTopDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnRightDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnRightDrawableTouchUpListener(onDrawableTouchUp)
-    override fun addOnBottomDrawableTouchUpListener(onDrawableTouchUp: (() -> Unit)?) = edgeDrawableHelper.addOnBottomDrawableTouchUpListener(onDrawableTouchUp)
+    override fun setEdgeDrawable(position: STEdgeDrawableHelper.Position, drawableResId: Int, width: Int, height: Int) = edgeDrawableHelper.setEdgeDrawable(position, drawableResId, width, height)
+    override fun setEdgeDrawable(position: STEdgeDrawableHelper.Position, drawable: Drawable?, width: Int, height: Int) = edgeDrawableHelper.setEdgeDrawable(position, drawable, width, height)
+    override fun setOnEdgeDrawableClickListener(onEdgeDrawableClickListener: ((STEdgeDrawableHelper.Position) -> Unit)?) = edgeDrawableHelper.setOnEdgeDrawableClickListener(onEdgeDrawableClickListener)
     //endregion
 
     init {

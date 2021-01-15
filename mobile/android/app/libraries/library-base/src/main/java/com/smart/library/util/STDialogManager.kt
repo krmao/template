@@ -16,9 +16,62 @@ object STDialogManager {
     private val dpAnimationViewSize by lazy { STSystemUtil.getPxFromDp(64f).toInt() }
     private val dpAnimationViewLargeSize by lazy { STSystemUtil.getPxFromDp(76f).toInt() }
 
-    /**
-     * popupWindow.showAsDropDown(anchorView, 0, 0, Gravity.BOTTOM or Gravity.END)
-     */
+    private var isChecked = false
+    private var popupWindow: PopupWindow? = null
+
+    /*
+    custom spinner example:
+
+    ...
+    val onRoleClick = {
+        setTextViewRightArrow(binding.roleTv, !isChecked && popupWindow?.isShowing != true)
+    }
+    binding.roleTv.setOnClickListener {
+        onRoleClick()
+    }
+    binding.roleTv.setOnEdgeDrawableClickListener {
+        if (it == STEdgeDrawableHelper.Position.RIGHT) {
+            onRoleClick()
+        }
+    }
+    ...
+
+    @SuppressLint("SetTextI18n")
+    private fun setTextViewRightArrow(textView: STShapeableTextView, checked: Boolean, force: Boolean = false) {
+        if (!force && checked == isChecked) return
+        textView.setEdgeDrawable(STEdgeDrawableHelper.Position.RIGHT, if (checked) R.mipmap.final_icon_arrow_up else R.mipmap.final_icon_arrow_down)
+        if (checked) {
+            if (popupWindow == null) {
+                popupWindow = STDialogManager.createPopupWindow(
+                    requireContext(),
+                    width = STAdaptScreenUtils.pt2Px(288f),
+                    height = STAdaptScreenUtils.pt2Px(212f),
+                    contentViewHandler = {
+                        val roleMenuBinding: FinalSettingsAccountManagerAddDialogRoleMenuBinding = FinalSettingsAccountManagerAddDialogRoleMenuBinding.inflate(layoutInflater, null, false)
+                        roleMenuBinding.txt1.setOnClickListener {
+                            textView.text = "请选择: ${roleMenuBinding.txt1.text.toString().trim()}"
+                            popupWindow?.dismiss()
+                        }
+                        roleMenuBinding.txt2.setOnClickListener {
+                            textView.text = "请选择: ${roleMenuBinding.txt2.text.toString().trim()}"
+                            popupWindow?.dismiss()
+                        }
+                        roleMenuBinding.txt3.setOnClickListener {
+                            textView.text = "请选择: ${roleMenuBinding.txt3.text.toString().trim()}"
+                            popupWindow?.dismiss()
+                        }
+                        roleMenuBinding.root
+                    },
+                    onDismissListener = {
+                        textView.postDelayed({
+                            setTextViewRightArrow(textView, false)
+                        }, 50)
+                    })
+            }
+            popupWindow?.showAsDropDown(textView, 0, 0, Gravity.BOTTOM or Gravity.END)
+        }
+        isChecked = checked
+    }*/
     @JvmStatic
     @JvmOverloads
     fun createPopupWindow(context: Context, width: Int, height: Int, focusable: Boolean = false, isOutsideTouchable: Boolean = true, contentViewHandler: (Context) -> View, onDismissListener: PopupWindow.OnDismissListener? = null): PopupWindow? {

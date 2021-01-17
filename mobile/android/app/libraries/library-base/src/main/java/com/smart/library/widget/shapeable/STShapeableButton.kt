@@ -61,7 +61,7 @@ import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
  */
 @Suppress("UnnecessaryVariable")
 @SuppressLint("AppCompatCustomView")
-class STShapeableButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = R.style.STButton_Default) : Button(context, attrs, defStyleAttr, defStyleRes), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
+class STShapeableButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.buttonBarButtonStyle, defStyleRes: Int = R.style.STButton_Default_None) : Button(context, attrs, defStyleAttr, defStyleRes), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
     private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }
 

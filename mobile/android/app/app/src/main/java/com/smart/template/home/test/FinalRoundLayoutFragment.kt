@@ -23,13 +23,32 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         return inflater.inflate(R.layout.final_round_fragment, container, false)
     }
 
+    fun onClick(v:View) {
+        button.setOnClickListener {
+            STToastUtil.show("hehe")
+        }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        edit1.setOnClickListener {
+            STToastUtil.show("clicked")
+        }
+        layout_1.setOnClickListener {
+            STToastUtil.show("clicked")
+        }
+        txt3.setOnClickListener {
+            STToastUtil.show("clicked")
+        }
         click_btn.setOnClickListener {
             STToastUtil.show("clicked")
         }
         button.setOnClickListener {
             STToastUtil.show("button1")
+        }
+        textTest.setOnClickListener {
+            STToastUtil.show("textTest")
         }
         button2.setOnClickListener {
             STToastUtil.show("button2")

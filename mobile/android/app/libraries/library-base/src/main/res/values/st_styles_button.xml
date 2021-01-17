@@ -19,6 +19,13 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="STButton.Default.None" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/accent</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
     <!-- contained   -->
     <style name="STButton.MaterialComponents.Contained" parent="Widget.MaterialComponents.Button">
         <item name="iconPadding">0dp</item>

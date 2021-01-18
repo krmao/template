@@ -37,11 +37,12 @@ object STColorUtil {
 
     @ColorInt
     fun getRipplePressedColor(context: Context, @ColorInt normalColor: Int): Int {
-        if (isColorDark(normalColor)) {
+        return ContextCompat.getColor(context, R.color.st_pressed)
+        /*if (isColorDark(normalColor)) {
             return ContextCompat.getColor(context, R.color.st_pressed)
         } else {
             return ContextCompat.getColor(context, R.color.st_pressed_deeper)
-        }
+        }*/
     }
 
     @JvmStatic

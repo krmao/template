@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    api project(':library-base')
+
     def amapType = "map3d"
 
     if (gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {

@@ -423,7 +423,7 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
                 val mapStyleDir = STCacheManager.getChildDir(STCacheManager.getFilesDir(), "map_style")
                 val gaodeMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "gaode")
-                parentPath = gaodeMapStyleDir.absolutePath
+                parentPath = gaodeMapStyleDir?.absolutePath
 
                 val customStyleFile = File("$parentPath/$customStyleFileName")
                 if (customStyleFile.exists()) {

@@ -5,8 +5,9 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AlertDialog
 import android.text.TextUtils
+import androidx.appcompat.app.AlertDialog
+import com.smart.library.STInitializer
 import com.smart.library.util.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -31,7 +32,7 @@ object STNavigationManager {
         BMAP("百度地图", "com.baidu.BaiduMap", MapSupportScope.CHINA),
         GOOGLE("系统地图", "com.google.android.apps.maps", MapSupportScope.OVERSEA);
 
-        fun isAppInstalled(): Boolean = STSystemUtil.isAppInstalled(packageName)
+        fun isAppInstalled(): Boolean = STSystemUtil.isAppInstalled(STInitializer.application(), packageName ?: "")
 
         /**
          * AMAP/BMAP 使用火星坐标系 GCJ02
@@ -42,7 +43,7 @@ object STNavigationManager {
             when (this) {
                 AMAP -> {
                     try {
-                        val versionNo = STSystemUtil.getAppVersionCode("com.autonavi.minimap")
+                        val versionNo = STSystemUtil.getAppVersionCode(STInitializer.application(), packageName = "com.autonavi.minimap")
                         STLogUtil.d("versionNo:$versionNo")
                         if (versionNo < 153) {
                             STToastUtil.show("您当前地图版本可能不支持导航功能")
@@ -50,7 +51,7 @@ object STNavigationManager {
                         }
                         val intentUri = StringBuffer()
                         intentUri.append("androidamap://route")
-                        intentUri.append("?sourceApplication=${STSystemUtil.appName}&slat=$fromGCJ02Lat&slon=$fromGCJ02Lon&sname=${if (TextUtils.isEmpty(fromAddressName)) "起点" else fromAddressName}\"")
+                        intentUri.append("?sourceApplication=${STSystemUtil.getAppName()}&slat=$fromGCJ02Lat&slon=$fromGCJ02Lon&sname=${if (TextUtils.isEmpty(fromAddressName)) "起点" else fromAddressName}\"")
                         intentUri.append("&dlat=$toGCJ02Lat&dlon=$toGCJ02Lon&dname=${if (TextUtils.isEmpty(toAddressName)) "终点" else toAddressName}&dev=0&m=0")
                         var mode = 2
                         when (navigateMode.toLowerCase()) {
@@ -152,16 +153,16 @@ object STNavigationManager {
         context?.let {
             if (STValueUtil.isValid(context)) {
                 dialog = AlertDialog.Builder(it)
-                        .setItems(names) { _, which ->
-                            val selectedType = MapType.values().firstOrNull { it.displayName == names[which] }
-                            if (selectedType != null) {
-                                lastSelectedMapType = selectedType
-                                selectedType.open(context, fromGCJ02Lat, fromGCJ02Lon, fromWGS84Lat, fromWGS84Lon, fromAddressName, toGCJ02Lat, toGCJ02Lon, toWGS84Lat, toWGS84Lon, toAddressName, navigateMode)
-                            }
+                    .setItems(names) { _, which ->
+                        val selectedType = MapType.values().firstOrNull { it.displayName == names[which] }
+                        if (selectedType != null) {
+                            lastSelectedMapType = selectedType
+                            selectedType.open(context, fromGCJ02Lat, fromGCJ02Lon, fromWGS84Lat, fromWGS84Lon, fromAddressName, toGCJ02Lat, toGCJ02Lon, toWGS84Lat, toWGS84Lon, toAddressName, navigateMode)
                         }
-                        .setTitle("本地已安装地图应用")
-                        .setCancelable(true)
-                        .create()
+                    }
+                    .setTitle("本地已安装地图应用")
+                    .setCancelable(true)
+                    .create()
                 dialog?.show()
             }
         }

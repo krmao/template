@@ -26,7 +26,7 @@ class STLocationBaiduSensor(val context: Context?, val map: BaiduMap, val callba
     private var currentLng: Double = 0.0
     private var currentAccuracy: Float = 0f
     private var currentDirection: Float = 0f
-    private val sensorManager by lazy { STInitializer.application().getSystemService(SENSOR_SERVICE) as? SensorManager? }
+    private val sensorManager by lazy { STInitializer.application()?.getSystemService(SENSOR_SERVICE) as? SensorManager? }
     private val locationBaiduClient by lazy { STLocationBaiduClient(false) }
 
     init {

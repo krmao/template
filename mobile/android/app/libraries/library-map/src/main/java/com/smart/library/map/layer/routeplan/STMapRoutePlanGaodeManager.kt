@@ -10,8 +10,8 @@ import com.amap.api.services.route.DriveRouteResult
 import com.amap.api.services.route.RouteSearch
 import com.smart.library.map.layer.STDialogManager
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.STNetworkUtil
 import com.smart.library.util.STToastUtil
-import com.smart.library.util.network.STNetworkUtil
 import org.jetbrains.anko.AnkoAsyncContext
 import org.jetbrains.anko.async
 import org.jetbrains.anko.onUiThread
@@ -50,7 +50,7 @@ class STMapRoutePlanGaodeManager(_context: Context, val map: AMap, val onLocatio
         routePlanningOverlayManager?.removeFromMap()
         routePlanningOverlayManager = null
 
-        if (!STNetworkUtil.isNetworkAvailable()) {
+        if (!STNetworkUtil.checkNetworkState()) {
             STToastUtil.show("网络不给力")
             callback?.invoke(false)
             return

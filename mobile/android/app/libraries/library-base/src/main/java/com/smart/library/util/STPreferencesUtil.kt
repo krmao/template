@@ -154,7 +154,7 @@ object STPreferencesUtil {
         return stack
     }
 
-    fun getInt(key: String, iDefault: Int): Int? = sharedPreferences?.getInt(key, iDefault)
+    fun getInt(key: String, defaultValue: Int): Int = sharedPreferences?.getInt(key, defaultValue) ?: defaultValue
 
     fun putLong(key: String, value: Long): Boolean? {
         val editor = sharedPreferences?.edit()

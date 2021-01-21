@@ -154,7 +154,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
         val distance: Double = radius * 2.0
 
-        val screenSize = Math.min(STSystemUtil.screenWidth, STSystemUtil.screenHeight)
+        val screenSize = Math.min(STSystemUtil.screenWidth(), STSystemUtil.screenHeight())
         // The meters per pixel required to show the whole area the user might be located in
         val requiredMpp = distance / screenSize
 
@@ -427,7 +427,7 @@ internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs:
 
                 val mapStyleDir = STCacheManager.getChildDir(STCacheManager.getFilesDir(), "map_style")
                 val baiduMapStyleDir = STCacheManager.getChildDir(mapStyleDir, "baidu")
-                parentPath = baiduMapStyleDir.absolutePath
+                parentPath = baiduMapStyleDir?.absolutePath
 
                 val customStyleFile = File("$parentPath/$customStyleFileName")
                 if (customStyleFile.exists()) {

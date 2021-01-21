@@ -38,7 +38,7 @@ import kotlin.math.roundToInt
  * 通过 wrapGaodeZoomLevelFromBaidu/wrapGaodeZoomLevelToBaidu 使得输入输出皆为 百度 zoomLevel, 方便客户端统一缩放级别
  */
 @Suppress("CanBeParameter")
-internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+class STMapGaodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {
@@ -246,12 +246,12 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
 
     override fun getCurrentMapOptions(): STMapOptions {
         return STMapOptions(
-                map().mapType,
-                map().isTrafficEnabled,
-                initMapOptions.isBuildingsEnabled,
-                initMapOptions.showMapPoi,
-                getCurrentMapCenterLatLng(),
-                getCurrentMapZoomLevel()
+            map().mapType,
+            map().isTrafficEnabled,
+            initMapOptions.isBuildingsEnabled,
+            initMapOptions.showMapPoi,
+            getCurrentMapCenterLatLng(),
+            getCurrentMapZoomLevel()
         )
     }
 
@@ -311,11 +311,11 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         }
 
         private val mapThemeList: List<Array<String>> = listOf(
-                arrayOf("远山黛", "yuanshandai"),
-                arrayOf("极夜蓝", "jiyelan"),
-                arrayOf("草色青", "caoseqing"),
-                arrayOf("涂鸦", "tuya"),
-                arrayOf("酱籽", "jiangzi")
+            arrayOf("远山黛", "yuanshandai"),
+            arrayOf("极夜蓝", "jiyelan"),
+            arrayOf("草色青", "caoseqing"),
+            arrayOf("涂鸦", "tuya"),
+            arrayOf("酱籽", "jiangzi")
         )
 
         private var mapThemeIndex: Int = STPreferencesUtil.getInt("map_gaode_theme", 0)
@@ -338,9 +338,9 @@ internal class STMapGaodeView @JvmOverloads constructor(context: Context, attrs:
         @JvmStatic
         private fun setMapTheme(mapView: TextureMapView, themeIndex: Int = mapThemeIndex) {
             val customMapStyleOptions: CustomMapStyleOptions = CustomMapStyleOptions()
-                    .setEnable(true)
-                    .setStyleDataPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style.data"))
-                    .setStyleExtraPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style_extra.data"))
+                .setEnable(true)
+                .setStyleDataPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style.data"))
+                .setStyleExtraPath(getCustomStyleFilePath(mapView.context, "${mapThemeList[themeIndex][1]}_style_extra.data"))
 
             mapView.map.setCustomMapStyle(customMapStyleOptions)
         }

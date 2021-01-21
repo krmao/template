@@ -5,12 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.baidu.mapapi.map.BaiduMap
+import com.baidu.mapapi.map.BitmapDescriptor
+import com.baidu.mapapi.map.BitmapDescriptorFactory
+import com.baidu.mapapi.map.TextureMapView
+import com.baidu.mapapi.model.LatLng
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.map.clusterutil.baidu.clustering.Cluster
+import com.smart.library.map.clusterutil.baidu.clustering.ClusterItem
+import com.smart.library.map.clusterutil.baidu.clustering.ClusterManager
 import com.smart.library.map.layer.STMapView
+import com.smart.library.map.model.STLatLng
+import com.smart.library.map.model.STLatLngType
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STStatusBarUtil
 import kotlinx.android.synthetic.main.st_map_fragment.*
+import java.util.*
 
 @Suppress("unused")
 class STMapFragment : STBaseFragment() {
@@ -27,6 +39,10 @@ class STMapFragment : STBaseFragment() {
     private val mapView: STMapView by lazy { mapBaiduView }
     private val useBaidu: Boolean by lazy { arguments?.getBoolean("useBaidu") ?: true }
 
+    private val realMapView: TextureMapView by lazy { mapView.mapView() as TextureMapView }
+    private val realBaiduMap: BaiduMap by lazy { realMapView.map }
+    private val clusterManager: ClusterManager<MyItem> by lazy { ClusterManager<MyItem>(context, realBaiduMap) }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.st_map_fragment, container, false)
     }
@@ -36,7 +52,9 @@ class STMapFragment : STBaseFragment() {
         view.fitsSystemWindows = false // 顶到状态栏后面
         activity?.let { STStatusBarUtil.setStatusBarTextColor(it, false) } // 设置状态栏字体深色
 
-        mapView.initialize(mapType = if (useBaidu) STMapType.BAIDU else STMapType.GAODE)
+        mapView.initialize(mapType = if (useBaidu) STMapType.BAIDU else STMapType.GAODE) {
+            initMarkers()
+        }
         mapView.onCreate(context, savedInstanceState)
     }
 
@@ -60,4 +78,65 @@ class STMapFragment : STBaseFragment() {
         mapView.onDestroy()
     }
 
+    private fun initMarkers() {
+        // 添加Marker点
+        addMarkers()
+        // 设置地图监听，当地图状态发生改变时，进行点聚合运算
+        realBaiduMap.setOnMapStatusChangeListener(clusterManager)
+        // 设置maker点击时的响应
+        realBaiduMap.setOnMarkerClickListener(clusterManager)
+        clusterManager.setOnClusterClickListener(object : ClusterManager.OnClusterClickListener<MyItem?> {
+            override fun onClusterClick(cluster: Cluster<MyItem?>): Boolean {
+                Toast.makeText(context, "有" + cluster.getSize().toString() + "个点", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        })
+        clusterManager.setOnClusterItemClickListener(object : ClusterManager.OnClusterItemClickListener<MyItem?> {
+            override fun onClusterItemClick(item: MyItem?): Boolean {
+                Toast.makeText(context, "点击单个Item", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        })
+
+        mapView.setMapCenter(true, 8f, STLatLng(39.914935, 116.403119, STLatLngType.BD09))
+    }
+
+
+    /**
+     * 向地图添加Marker点
+     */
+    private fun addMarkers() {
+        // 添加Marker点
+        val llA = LatLng(39.963175, 116.400244)
+        val llB = LatLng(39.942821, 116.369199)
+        val llC = LatLng(39.939723, 116.425541)
+        val llD = LatLng(39.906965, 116.401394)
+        val llE = LatLng(39.956965, 116.331394)
+        val llF = LatLng(39.886965, 116.441394)
+        val llG = LatLng(39.996965, 116.411394)
+        val items: MutableList<MyItem> = ArrayList()
+        items.add(MyItem(llA))
+        items.add(MyItem(llB))
+        items.add(MyItem(llC))
+        items.add(MyItem(llD))
+        items.add(MyItem(llE))
+        items.add(MyItem(llF))
+        items.add(MyItem(llG))
+        clusterManager.addItems(items)
+    }
+
+    /**
+     * 每个Marker点，包含Marker点坐标以及图标
+     */
+    class MyItem constructor(private val position: LatLng) : ClusterItem {
+        private val bitmapDescriptor: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)
+        override fun getBitmapDescriptor(): BitmapDescriptor {
+            return bitmapDescriptor
+        }
+
+        override fun getPosition(): LatLng {
+            return this.position
+        }
+
+    }
 }

@@ -38,7 +38,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 @Suppress("unused", "CanBeParameter", "CanBeParameter")
-internal class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
+class STMapBaiduView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, private val initMapOptions: STMapOptions = STMapOptions()) : FrameLayout(context, attrs, defStyleAttr), STIMap, View.OnClickListener, View.OnLongClickListener {
 
     init {
         if (!isInEditMode) {

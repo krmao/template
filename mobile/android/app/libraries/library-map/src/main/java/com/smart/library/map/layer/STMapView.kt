@@ -20,7 +20,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     private fun map(): STIMap = getChildAt(0) as STIMap
 
     @JvmOverloads
-    fun initialize(mapType: STMapType = STMapType.BAIDU, initMapOptions: STMapOptions = this.initMapOptions) {
+    fun initialize(mapType: STMapType = STMapType.BAIDU, initMapOptions: STMapOptions = this.initMapOptions, onMapLoadedCallback: (() -> Unit)? = null) {
         this.initMapOptions = initMapOptions
 
         when (mapType) {
@@ -35,6 +35,7 @@ class STMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         controlView().showLoading()
         map().setOnMapLoadedCallback {
             controlView().setButtonClickedListener(this)
+            onMapLoadedCallback?.invoke()
             controlView().hideLoading()
         }
     }

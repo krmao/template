@@ -16,7 +16,7 @@ import com.smart.library.map.clusterutil.baidu.clustering.algo.Algorithm;
 import com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.smart.library.map.clusterutil.baidu.clustering.algo.PreCachingAlgorithmDecorator;
 import com.smart.library.map.clusterutil.baidu.clustering.view.ClusterRenderer;
-import com.smart.library.map.clusterutil.baidu.clustering.view.DefaultClusterRenderer;
+import com.smart.library.map.clusterutil.baidu.clustering.view.LessMoreClusterRenderer;
 import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.Collection;
@@ -59,7 +59,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         mMarkerManager = markerManager;
         mClusterMarkers = markerManager.newCollection();
         mMarkers = markerManager.newCollection();
-        mRenderer = new DefaultClusterRenderer<T>(context, map, this);
+        mRenderer = new LessMoreClusterRenderer<T>(context, map, this);
         mAlgorithm = new PreCachingAlgorithmDecorator<T>(new NonHierarchicalDistanceBasedAlgorithm<T>());
         mClusterTask = new ClusterTask();
         mRenderer.onAdd();

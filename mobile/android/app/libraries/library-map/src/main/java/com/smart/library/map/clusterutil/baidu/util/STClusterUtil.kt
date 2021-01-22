@@ -17,9 +17,9 @@ import java.util.*
  * 四叉树算法 http://www.cocoachina.com/articles/21265
  *
  * DefaultClusterRenderer
- *      private static final int MIN_CLUSTER_SIZE = 2; // todo default is 4
+ *      private static final int MIN_CLUSTER_SIZE = 2; // 至少大于多少个 markers 才能聚合
  * NonHierarchicalDistanceBasedAlgorithm
- *      public static final int MAX_DISTANCE_AT_ZOOM = 100; // essentially 100 dp.
+ *      public static final int MAX_DISTANCE_AT_ZOOM = 100; // 两个 marker 之间满足多少距离可以聚合
  */
 @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
 object STClusterUtil {
@@ -55,8 +55,8 @@ object STClusterUtil {
 
         val mPolygonOptions = PolygonOptions()
             .points(points)
-            .fillColor(-0x55000100)
-            .stroke(Stroke(5, -0x55ff0100))
+            .fillColor(-0x33000100)
+            .stroke(Stroke(3, -0x33ff0100))
         hashMap[cluster.position] = map.addOverlay(mPolygonOptions)
     }
 

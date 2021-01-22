@@ -22,7 +22,7 @@ import com.smart.library.map.model.STLatLngType
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STStatusBarUtil
 import kotlinx.android.synthetic.main.st_map_fragment.*
-import java.util.*
+import kotlin.random.Random
 
 @Suppress("unused")
 class STMapFragment : STBaseFragment() {
@@ -87,18 +87,17 @@ class STMapFragment : STBaseFragment() {
         realBaiduMap.setOnMarkerClickListener(clusterManager)
         clusterManager.setOnClusterClickListener(object : ClusterManager.OnClusterClickListener<MyItem?> {
             override fun onClusterClick(cluster: Cluster<MyItem?>): Boolean {
-                Toast.makeText(context, "有" + cluster.getSize().toString() + "个点", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "有" + cluster.size.toString() + "个点", Toast.LENGTH_SHORT).show()
                 return false
             }
         })
         clusterManager.setOnClusterItemClickListener(object : ClusterManager.OnClusterItemClickListener<MyItem?> {
             override fun onClusterItemClick(item: MyItem?): Boolean {
-                Toast.makeText(context, "点击单个Item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "${item?.position}}", Toast.LENGTH_SHORT).show()
                 return false
             }
         })
-
-        mapView.setMapCenter(true, 8f, STLatLng(39.914935, 116.403119, STLatLngType.BD09))
+        mapView.setMapCenter(true, 11f, STLatLng(39.9655, 116.4055, STLatLngType.BD09))
     }
 
 
@@ -107,22 +106,12 @@ class STMapFragment : STBaseFragment() {
      */
     private fun addMarkers() {
         // 添加Marker点
-        val llA = LatLng(39.963175, 116.400244)
-        val llB = LatLng(39.942821, 116.369199)
-        val llC = LatLng(39.939723, 116.425541)
-        val llD = LatLng(39.906965, 116.401394)
-        val llE = LatLng(39.956965, 116.331394)
-        val llF = LatLng(39.886965, 116.441394)
-        val llG = LatLng(39.996965, 116.411394)
-        val items: MutableList<MyItem> = ArrayList()
-        items.add(MyItem(llA))
-        items.add(MyItem(llB))
-        items.add(MyItem(llC))
-        items.add(MyItem(llD))
-        items.add(MyItem(llE))
-        items.add(MyItem(llF))
-        items.add(MyItem(llG))
-        clusterManager.addItems(items)
+        val random = Random(1)
+        clusterManager.addItems(
+            (0..100).mapIndexed { index, i ->
+                MyItem(LatLng(39.96 + (random.nextFloat() / 1f), 116.40 + random.nextFloat() / 1f))
+            }
+        )
     }
 
     /**

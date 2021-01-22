@@ -5,7 +5,10 @@
 package com.smart.library.map.clusterutil.baidu.clustering;
 
 
+import androidx.annotation.Nullable;
+
 import com.baidu.mapapi.model.LatLng;
+import com.smart.library.map.clusterutil.baidu.projection.Bounds;
 
 import java.util.Collection;
 
@@ -18,4 +21,9 @@ public interface Cluster<T extends com.smart.library.map.clusterutil.baidu.clust
     Collection<T> getItems();
 
     int getSize();
+
+    @Nullable
+    Bounds getSearchBounds();
+
+    void setSearchBounds(Bounds bounds);
 }

@@ -4,6 +4,8 @@
 
 package com.smart.library.map.clusterutil.baidu.clustering.algo;
 
+import androidx.annotation.Nullable;
+
 import com.baidu.mapapi.model.LatLng;
 import com.smart.library.map.clusterutil.baidu.clustering.Cluster;
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterItem;
@@ -48,7 +50,7 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
      */
     private final PointQuadTree<QuadItem<T>> mQuadTree = new PointQuadTree<QuadItem<T>>(0, 1, 0, 1);
 
-    private static final SphericalMercatorProjection PROJECTION = new SphericalMercatorProjection(1);
+    public static final SphericalMercatorProjection PROJECTION = new SphericalMercatorProjection(1);
 
     @Override
     public void addItem(T item) {
@@ -111,12 +113,14 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
                 clusterItems = mQuadTree.search(searchBounds);
                 if (clusterItems.size() == 1) {
                     // Only the current marker is in range. Just add the single item to the results.
+                    candidate.setSearchBounds(searchBounds);
                     results.add(candidate);
                     visitedCandidates.add(candidate);
                     distanceToCluster.put(candidate, 0d);
                     continue;
                 }
                 StaticCluster<T> cluster = new StaticCluster<T>(candidate.mClusterItem.getPosition());
+                cluster.setSearchBounds(searchBounds);
                 results.add(cluster);
 
                 for (QuadItem<T> clusterItem : clusterItems) {
@@ -157,7 +161,7 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
 
     private Bounds createBoundsFromSpan(Point p, double span) {
         // TODO: Use a span that takes into account the visual size of the marker, not just its LatLng.
-        double halfSpan = span / 0.5;
+        double halfSpan = span / 2;
         return new Bounds(p.x - halfSpan, p.x + halfSpan, p.y - halfSpan, p.y + halfSpan);
     }
 
@@ -192,6 +196,19 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
         @Override
         public int getSize() {
             return 1;
+        }
+
+        private Bounds bounds;
+
+        @Nullable
+        @Override
+        public Bounds getSearchBounds() {
+            return bounds;
+        }
+
+        @Override
+        public void setSearchBounds(Bounds bounds) {
+            this.bounds = bounds;
         }
     }
 }

@@ -28,6 +28,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <p/>
  * ClusterManager should be added to the map
  * <li>
+ *
+ * 相关研究   https://blog.csdn.net/javine/article/details/51195014
+ * 四叉树算法 http://www.cocoachina.com/articles/21265
  */
 public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStatusChangeListener, BaiduMap.OnMarkerClickListener {
     private final MarkerManager mMarkerManager;

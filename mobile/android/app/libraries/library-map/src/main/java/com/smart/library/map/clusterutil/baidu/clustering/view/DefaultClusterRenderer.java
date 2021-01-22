@@ -41,6 +41,7 @@ import com.smart.library.map.clusterutil.baidu.clustering.ClusterManager;
 import com.smart.library.map.clusterutil.baidu.projection.Point;
 import com.smart.library.map.clusterutil.baidu.projection.SphericalMercatorProjection;
 import com.smart.library.map.clusterutil.baidu.ui.IconGenerator;
+import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -318,8 +319,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
         public void setMapZoom(float zoom) {
             this.mMapZoom = zoom;
-            this.mSphericalMercatorProjection =
-                    new SphericalMercatorProjection(256 * Math.pow(2, Math.min(zoom, mZoom)));
+            this.mSphericalMercatorProjection = new SphericalMercatorProjection(256 * Math.pow(2, Math.min(zoom, mZoom)));
         }
 
         @SuppressLint("NewApi")
@@ -353,8 +353,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
             }
 
             // Create the new markers and animate them to their new positions.
-            final Set<MarkerWithPosition> newMarkers = Collections.newSetFromMap(
-                    new ConcurrentHashMap<MarkerWithPosition, Boolean>());
+            final Set<MarkerWithPosition> newMarkers = Collections.newSetFromMap(new ConcurrentHashMap<MarkerWithPosition, Boolean>());
             for (Cluster<T> c : clusters) {
                 boolean onScreen = visibleBounds.contains(c.getPosition());
                 if (zoomingIn && onScreen && SHOULD_ANIMATE) {
@@ -714,6 +713,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
      * Called after the marker for a Cluster has been added to the map.
      */
     protected void onClusterRendered(Cluster<T> cluster, Marker marker) {
+        STClusterUtil.addClusterSearchBoundsOverlay(mMap, cluster);
     }
 
     /**

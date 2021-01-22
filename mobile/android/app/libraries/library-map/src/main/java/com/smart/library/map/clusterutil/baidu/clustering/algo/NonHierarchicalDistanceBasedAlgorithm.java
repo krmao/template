@@ -37,8 +37,8 @@ import java.util.Set;
  * Clusters have the center of the first element (not the centroid of the items within it).
  */
 public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implements Algorithm<T> {
-    // 代表着多远的距离可以聚合
-    public static final int MAX_DISTANCE_AT_ZOOM = 100; // essentially 100 dp.
+    // marker 之间聚合的距离
+    public static final int MAX_DISTANCE_AT_ZOOM = 150; // essentially 100 dp.
 
     /**
      * Any modifications should be synchronized on mQuadTree.
@@ -92,7 +92,6 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
     public Set<? extends Cluster<T>> getClusters(double zoom) {
         final int discreteZoom = (int) zoom;
 
-        // 表明marker之间聚合的距离，如果 zoomSpecificSpan 越大越容易聚合，反之越不容易聚合
         final double zoomSpecificSpan = MAX_DISTANCE_AT_ZOOM / Math.pow(2, discreteZoom) / 256;
 
         final Set<QuadItem<T>> visitedCandidates = new HashSet<>();

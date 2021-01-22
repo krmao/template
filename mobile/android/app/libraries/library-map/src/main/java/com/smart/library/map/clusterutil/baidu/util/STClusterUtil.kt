@@ -9,12 +9,27 @@ import com.smart.library.map.clusterutil.baidu.clustering.Cluster
 import com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDistanceBasedAlgorithm
 import com.smart.library.map.clusterutil.baidu.projection.Bounds
 import com.smart.library.map.clusterutil.baidu.projection.Point
+import com.smart.library.util.STLogUtil
 import java.util.*
 
+/**
+ * 相关研究   https://blog.csdn.net/javine/article/details/51195014
+ * 四叉树算法 http://www.cocoachina.com/articles/21265
+ *
+ * DefaultClusterRenderer
+ *      private static final int MIN_CLUSTER_SIZE = 2; // todo default is 4
+ * NonHierarchicalDistanceBasedAlgorithm
+ *      public static final int MAX_DISTANCE_AT_ZOOM = 100; // essentially 100 dp.
+ */
 @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
 object STClusterUtil {
     private const val debug = true
     private val hashMap: HashMap<LatLng, Overlay?> = hashMapOf()
+
+    @JvmStatic
+    fun log(msg: String) {
+        if (debug) STLogUtil.d("[cluster]", msg)
+    }
 
     /**
      * 在地图上绘制 cluster 范围矩形框

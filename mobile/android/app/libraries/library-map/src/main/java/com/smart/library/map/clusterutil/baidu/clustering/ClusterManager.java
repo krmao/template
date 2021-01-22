@@ -17,6 +17,7 @@ import com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDi
 import com.smart.library.map.clusterutil.baidu.clustering.algo.PreCachingAlgorithmDecorator;
 import com.smart.library.map.clusterutil.baidu.clustering.view.ClusterRenderer;
 import com.smart.library.map.clusterutil.baidu.clustering.view.DefaultClusterRenderer;
+import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.Collection;
 import java.util.Set;
@@ -28,9 +29,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <p/>
  * ClusterManager should be added to the map
  * <li>
- *
- * 相关研究   https://blog.csdn.net/javine/article/details/51195014
- * 四叉树算法 http://www.cocoachina.com/articles/21265
+ * <p>
  */
 public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStatusChangeListener, BaiduMap.OnMarkerClickListener {
     private final MarkerManager mMarkerManager;
@@ -154,6 +153,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
             mClusterTask = new ClusterTask();
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                STClusterUtil.log("cluster ClusterTask execute ...");
                 mClusterTask.execute(mMap.getMapStatus().zoom);
             } else {
                 mClusterTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mMap.getMapStatus().zoom);
@@ -187,6 +187,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         }
         mPreviousCameraPosition = mMap.getMapStatus();
 
+        STClusterUtil.log("onMapStatusChange zoom=" + position.zoom + " will do cluster ...");
         cluster();
     }
 
@@ -208,6 +209,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         protected Set<? extends Cluster<T>> doInBackground(Float... zoom) {
             mAlgorithmLock.readLock().lock();
             try {
+                STClusterUtil.log("ClusterTask doInBackground getClusters ...");
                 return mAlgorithm.getClusters(zoom[0]);
             } finally {
                 mAlgorithmLock.readLock().unlock();
@@ -216,6 +218,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
 
         @Override
         protected void onPostExecute(Set<? extends Cluster<T>> clusters) {
+            STClusterUtil.log("ClusterTask onPostExecute onClustersChanged ...");
             mRenderer.onClustersChanged(clusters);
         }
     }

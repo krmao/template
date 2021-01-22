@@ -92,7 +92,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     /**
      * If cluster size is less than this size, display individual markers.
      */
-    private static final int MIN_CLUSTER_SIZE = 4;
+    private static final int MIN_CLUSTER_SIZE = 1; // todo default is 4
 
     /**
      * The currently displayed set of clusters.
@@ -264,6 +264,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                 // Overwrite any pending cluster tasks - we don't care about intermediate states.
                 mNextClusters = new RenderTask(clusters);
             }
+            STClusterUtil.log("mViewModifier.queue do RenderTask ...");
             sendEmptyMessage(RUN_TASK);
         }
     }
@@ -324,7 +325,9 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
         @SuppressLint("NewApi")
         public void run() {
+            STClusterUtil.log("RenderTask run ...");
             if (clusters.equals(DefaultClusterRenderer.this.mClusters)) {
+                STClusterUtil.log("RenderTask run clusters not changed return");
                 mCallback.run();
                 return;
             }
@@ -343,6 +346,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
             // markers to animate from.
             List<Point> existingClustersOnScreen = null;
             if (DefaultClusterRenderer.this.mClusters != null && SHOULD_ANIMATE) {
+                STClusterUtil.log("RenderTask run calculate existingClustersOnScreen(已经绘制好的)");
                 existingClustersOnScreen = new ArrayList<Point>();
                 for (Cluster<T> c : DefaultClusterRenderer.this.mClusters) {
                     if (shouldRenderAsCluster(c) && visibleBounds.contains(c.getPosition())) {
@@ -356,16 +360,21 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
             final Set<MarkerWithPosition> newMarkers = Collections.newSetFromMap(new ConcurrentHashMap<MarkerWithPosition, Boolean>());
             for (Cluster<T> c : clusters) {
                 boolean onScreen = visibleBounds.contains(c.getPosition());
+                STClusterUtil.log("RenderTask run CreateMarkerTask for new clusters");
                 if (zoomingIn && onScreen && SHOULD_ANIMATE) {
                     Point point = mSphericalMercatorProjection.toPoint(c.getPosition());
                     Point closest = findClosestCluster(existingClustersOnScreen, point);
                     if (closest != null) {
                         LatLng animateTo = mSphericalMercatorProjection.toLatLng(closest);
+
+                        STClusterUtil.log("RenderTask run CreateMarkerTask add new cluster to exist closest cluster with animation");
                         markerModifier.add(true, new CreateMarkerTask(c, newMarkers, animateTo));
                     } else {
+                        STClusterUtil.log("RenderTask run CreateMarkerTask add new cluster with high priority because onScreen==true");
                         markerModifier.add(true, new CreateMarkerTask(c, newMarkers, null));
                     }
                 } else {
+                    STClusterUtil.log("RenderTask run CreateMarkerTask add new cluster with lower priority because onScreen==false");
                     markerModifier.add(onScreen, new CreateMarkerTask(c, newMarkers, null));
                 }
             }
@@ -421,6 +430,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
     @Override
     public void onClustersChanged(Set<? extends Cluster<T>> clusters) {
+        STClusterUtil.log("onClustersChanged mViewModifier.queue ...");
         mViewModifier.queue(clusters);
     }
 
@@ -785,6 +795,8 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         private void perform(MarkerModifier markerModifier) {
             // Don't show small clusters. Render the markers inside, instead.
             if (!shouldRenderAsCluster(cluster)) {
+                STClusterUtil.log("CreateMarkerTask add cluster items to map (not cluster self)");
+
                 for (T item : cluster.getItems()) {
                     Marker marker = mMarkerCache.get(item);
                     MarkerWithPosition markerWithPosition;
@@ -807,15 +819,20 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                     } else {
                         markerWithPosition = new MarkerWithPosition(marker);
                     }
+                    STClusterUtil.log("CreateMarkerTask onClusterItemRendered");
                     onClusterItemRendered(item, marker);
                     newMarkers.add(markerWithPosition);
                 }
+
                 return;
             }
 
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(animateFrom == null ? cluster.getPosition() : animateFrom);
 
+            STClusterUtil.log("CreateMarkerTask add clusters to map");
+
+            MarkerOptions markerOptions = new MarkerOptions().position(animateFrom == null ? cluster.getPosition() : animateFrom);
+
+            STClusterUtil.log("CreateMarkerTask onBeforeClusterRendered");
             onBeforeClusterRendered(cluster, markerOptions);
 
             Marker marker = mClusterManager.getClusterMarkerCollection().addMarker(markerOptions);
@@ -825,6 +842,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
             if (animateFrom != null) {
                 markerModifier.animate(markerWithPosition, animateFrom, cluster.getPosition());
             }
+            STClusterUtil.log("CreateMarkerTask onClusterRendered");
             onClusterRendered(cluster, marker);
             newMarkers.add(markerWithPosition);
         }

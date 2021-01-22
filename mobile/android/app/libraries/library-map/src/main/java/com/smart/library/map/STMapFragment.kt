@@ -108,8 +108,8 @@ class STMapFragment : STBaseFragment() {
         // 添加Marker点
         val random = Random(1)
         clusterManager.addItems(
-            (0..100).mapIndexed { index, i ->
-                MyItem(LatLng(39.96 + (random.nextFloat() / 1f), 116.40 + random.nextFloat() / 1f))
+            (0..100).mapIndexed { _, _ ->
+                MyItem(LatLng(39.96 + (random.nextFloat() / 0.5f), 116.40 + random.nextFloat() / 0.5f))
             }
         )
     }

@@ -81,6 +81,10 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     private var oldMoveDuration: Long = 250
     private var oldChangeDuration: Long = 250
     private var oldItemAnimator: RecyclerView.ItemAnimator? = null
+
+    /**
+     * 注意: notifyDataSetChanged 依然会有闪动问题, 该方法不起作用, 详见第二种设置方法 {@link "https://stackoverflow.com/a/32488059/4348530"}
+     */
     fun enableChangeAnimations(enableChangeAnimations: Boolean) {
         if (enableChangeAnimations) {
             recyclerView?.post {
@@ -110,5 +114,14 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
         super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    /**
+     * fix blinking step 0 need set adapter.setHasStableIds(true)
+     * fix blinking step 1 override getItemId and return same id if content is equal
+     * @see "https://stackoverflow.com/a/32488059/4348530"
+     */
+    override fun getItemId(position: Int): Long {
+        return dataList[position].hashCode().toLong()
     }
 }

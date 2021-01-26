@@ -2,7 +2,11 @@ package com.smart.template.home.test
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ImageSpan
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STToastUtil
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 import com.smart.template.R
@@ -23,7 +28,7 @@ class FinalRoundLayoutFragment : STBaseFragment() {
         return inflater.inflate(R.layout.final_round_fragment, container, false)
     }
 
-    fun onClick(v:View) {
+    fun onClick(v: View) {
         button.setOnClickListener {
             STToastUtil.show("hehe")
         }
@@ -32,6 +37,19 @@ class FinalRoundLayoutFragment : STBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //region margin
+        val marginString = "[  ]"
+        val spannableString = SpannableString("01${marginString}234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950")
+        val startInclusiveIndex = 2
+        val transparentDrawable = ColorDrawable(Color.TRANSPARENT)
+        transparentDrawable.setBounds(0, 0, 10.toPxFromDp(), 0)
+        spannableString.setSpan(ImageSpan(transparentDrawable), startInclusiveIndex, startInclusiveIndex + marginString.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        //endregion
+
+        textViewTest.text = spannableString
+
+
         edit1.setOnClickListener {
             STToastUtil.show("clicked")
         }

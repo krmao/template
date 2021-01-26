@@ -33,6 +33,16 @@
             android:fitsSystemWindows="true"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textViewTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/green_100"
+                android:text="很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好"
+                android:textColor="#333"
+                android:textSize="15sp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -154,8 +164,8 @@
                 android:orientation="horizontal">
 
                 <com.smart.library.widget.shapeable.STShapeableButton
-                    android:layout_width="0dp"
                     android:id="@+id/edit1"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
@@ -163,7 +173,7 @@
                     android:background="#1946B04A"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    
+
                     android:padding="0dp"
                     android:text="编辑"
                     android:textColor="#79c17b"
@@ -183,7 +193,7 @@
                     android:backgroundTint="#1946B04A"
                     android:text="编辑"
                     android:textColor="#79c17b"
-                    
+
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
             </LinearLayout>
@@ -201,7 +211,7 @@
                     android:layout_weight="1"
                     android:background="#46B04A"
                     android:gravity="center"
-                    
+
                     android:text="编辑"
                     android:textColor="#fff"
                     android:textSize="10sp"
@@ -221,7 +231,7 @@
                     android:layout_weight="1"
                     android:backgroundTint="#46B04A"
                     android:text="编辑"
-                    
+
                     android:textColor="#fff"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
@@ -382,7 +392,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    
+
                     android:text="shapeable layout text view"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -390,8 +400,8 @@
                 <TableRow android:gravity="center_vertical">
 
                     <com.smart.library.widget.shapeable.STShapeableLinearLayout
-                        android:layout_width="0dp"
                         android:id="@+id/layout_1"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:background="@color/yellow"
@@ -586,7 +596,7 @@
                         android:layout_margin="5dp"
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        
+
                         android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
@@ -664,7 +674,7 @@
                         android:padding="3dp"
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
-                        
+
                         android:textSize="12sp"
                         app:cornerFamily="cut"
                         app:cornerSize="15dp"
@@ -684,7 +694,7 @@
                         app:cornerFamily="rounded"
                         app:cornerSize="3dp"
                         app:strokeColor="#F44336"
-                        
+
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
@@ -698,7 +708,7 @@
                         android:textColor="#333"
                         android:textSize="12sp"
                         app:cornerFamily="rounded"
-                        
+
                         app:cornerSize="50%"
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
@@ -713,7 +723,7 @@
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp"
-                        
+
                         app:cornerFamilyBottomLeft="rounded"
                         app:cornerFamilyBottomRight="rounded"
                         app:cornerFamilyTopLeft="rounded"
@@ -737,7 +747,7 @@
                         android:src="@drawable/st_image"
                         app:cornerFamily="cut"
                         app:cornerSize="15dp"
-                        
+
                         app:strokeColor="#F44336"
                         app:strokeWidth="2dp" />
 
@@ -754,13 +764,13 @@
                         app:strokeWidth="2dp" />
 
                     <com.smart.library.widget.shapeable.STShapeableTextView
-                        android:layout_width="60dp"
                         android:id="@+id/txt3"
+                        android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:layout_margin="5dp"
                         android:background="@color/yellow"
                         android:ellipsize="end"
-                        
+
                         android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
                         android:textColor="#333"
                         android:textSize="12sp" />

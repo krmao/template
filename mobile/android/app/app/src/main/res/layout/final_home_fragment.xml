@@ -362,6 +362,18 @@
                             app:backgroundTint="@color/blue_600" />
 
                     </TableRow>
+
+                    <TableRow>
+
+                        <Button
+                            android:id="@+id/crashTestBtn"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="crash test"
+                            app:backgroundTint="@color/blue_600" />
+
+                    </TableRow>
                 </TableLayout>
             </LinearLayout>
         </ScrollView>

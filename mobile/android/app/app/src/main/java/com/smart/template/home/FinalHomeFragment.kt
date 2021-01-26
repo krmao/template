@@ -20,6 +20,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageUtil
 import com.smart.library.widget.colorpicker.STColorPickerUtil
+import com.smart.module.crash.STCrashActivity
 import com.smart.template.R
 import com.smart.template.home.tab.FinalHomeTabActivity
 import com.smart.template.home.test.*
@@ -73,6 +74,9 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         }
         wifiBtn.setOnClickListener {
             FinalWifiFragment.goTo(context)
+        }
+        crashTestBtn.setOnClickListener {
+            STCrashActivity.goTo(context)
         }
         var lastSelectedAlpha = 1.0
         var lastSelectedColor: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

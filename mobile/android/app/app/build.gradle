@@ -268,6 +268,7 @@ dependencies {
     if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
         implementation project(":module_algorithm_debug");
     }
+    implementation project(":module-test");
 
     if (gradle.ext.modules.library_livestreaming.enable == true) {
         implementation project(':library-livestreaming')

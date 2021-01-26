@@ -301,6 +301,7 @@ object STInitializer {
     fun attachApplicationBaseContext(base: Context?): STInitializer {
         val startTime = System.currentTimeMillis()
         MultiDex.install(base)
+        STCrashManager.attachBaseContext(base)
         println("MultiDex.install 耗时:${System.currentTimeMillis() - startTime}ms")
         return this
     }

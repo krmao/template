@@ -121,6 +121,8 @@ dependencies {
     api "com.airbnb.android:lottie:3.2.2"
     api "com.smart.library.util:bspatch:0.0.2" // api(name: "bspatch-0.0.2", ext: "aar") // must not dependency local if upload to JCenter
 
+    api 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+
     // region wifi util https://github.com/ThanosFisherman/WifiUtils
     // api "com.thanosfisherman.wifiutils:wifiutils:1.6.4"
     // api 'com.thanosfisherman.elvis:elvis:3.0'

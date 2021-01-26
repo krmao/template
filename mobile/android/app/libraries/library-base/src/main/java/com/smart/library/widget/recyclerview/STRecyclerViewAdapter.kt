@@ -117,6 +117,10 @@ abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolde
     }
 
     /**
+     * 备忘: 当 RecyclerView 固定高度(xx dp)时, 调用 notifyDataSetChanged 以及设置 enableChangeAnimations(false) 可能已经解决了闪动问题
+     * 但是当 RecyclerView 的高度为 match_parent 时, 调用 notifyDataSetChanged 发现 enableChangeAnimations(false) 已经不起作用, 有闪动问题(父布局为 FrameLayout, FrameLayout 父布局为 ConstraintLayout)
+     * 此时终极方案是 setHasStableIds(true) 以及重写 getItemId 返回 "相同数据的相同id" 解决
+     *
      * fix blinking step 0 need set adapter.setHasStableIds(true)
      * fix blinking step 1 override getItemId and return same id if content is equal
      * @see "https://stackoverflow.com/a/32488059/4348530"

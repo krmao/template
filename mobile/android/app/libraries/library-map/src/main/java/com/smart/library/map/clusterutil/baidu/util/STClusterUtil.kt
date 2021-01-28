@@ -7,7 +7,7 @@ import com.baidu.mapapi.map.PolygonOptions
 import com.baidu.mapapi.map.Stroke
 import com.baidu.mapapi.model.LatLng
 import com.smart.library.map.clusterutil.baidu.clustering.Cluster
-import com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDistanceBasedAlgorithm
+import com.smart.library.map.clusterutil.baidu.clustering.algo.STNonHierarchicalDistanceBasedAlgorithm
 import com.smart.library.map.clusterutil.baidu.projection.Point
 import com.smart.library.util.STLogUtil
 import java.util.*
@@ -16,7 +16,7 @@ import java.util.*
  * 1. 相关研究 {@link https://blog.csdn.net/javine/article/details/51195014}
  * 2. 四叉树算法 {@link http://www.cocoachina.com/articles/21265}
  * 3. DefaultClusterRenderer.MIN_CLUSTER_SIZE = 2;                         // 至少大于多少个 markers 才能聚合
- * 4. NonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM = 100;    // 两个 marker 之间满足多少距离可以聚合
+ * 4. STNonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM = 100;    // 两个 marker 之间满足多少距离可以聚合
  */
 @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
 object STClusterUtil {
@@ -39,10 +39,10 @@ object STClusterUtil {
         hashMap[cluster.position] = null
 
         val searchBounds = cluster.searchBounds ?: return
-        val latLngLT = NonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.minX, searchBounds.minY))
-        val latLngRT = NonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.maxX, searchBounds.minY))
-        val latLngLB = NonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.minX, searchBounds.maxY))
-        val latLngRB = NonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.maxX, searchBounds.maxY))
+        val latLngLT = STNonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.minX, searchBounds.minY))
+        val latLngRT = STNonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.maxX, searchBounds.minY))
+        val latLngLB = STNonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.minX, searchBounds.maxY))
+        val latLngRB = STNonHierarchicalDistanceBasedAlgorithm.PROJECTION.toLatLng(Point(searchBounds.maxX, searchBounds.maxY))
 
         val points: MutableList<LatLng> = ArrayList()
         points.add(latLngLT)

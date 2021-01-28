@@ -17,6 +17,7 @@ import com.baidu.mapapi.model.LatLngBounds;
 import com.smart.library.map.clusterutil.baidu.clustering.Cluster;
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterItem;
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterManager;
+import com.smart.library.map.clusterutil.baidu.clustering.algo.STNonHierarchicalDistanceBasedAlgorithm;
 import com.smart.library.map.clusterutil.baidu.projection.Point;
 import com.smart.library.map.clusterutil.baidu.projection.SphericalMercatorProjection;
 import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
@@ -32,8 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM;
 
 /**
  * The default view for a ClusterManager. Markers are animated in and out of clusters.
@@ -324,7 +323,7 @@ public class LessMoreClusterRenderer<T extends ClusterItem> implements ClusterRe
         }
 
         // TODO: make this configurable.
-        double minDistSquared = MAX_DISTANCE_AT_ZOOM * MAX_DISTANCE_AT_ZOOM;
+        double minDistSquared = STNonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM * STNonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM;
         Point closest = null;
         for (Point candidate : markers) {
             double dist = distanceSquared(candidate, point);

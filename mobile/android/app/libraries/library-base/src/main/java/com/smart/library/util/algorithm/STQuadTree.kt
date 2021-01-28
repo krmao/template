@@ -29,7 +29,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
      * Insert an item. 在当前节点添加一条数据, 如果已拆分, 添加到子节点中, 如果未拆分, 添加到当前节点中(添加后如果符合拆分条件, 则拆分并重新添加所有数据到四个子节点中)
      */
     fun add(item: T) {
-        val point = item.point
+        val point = item.getPoint()
         if (bounds.contains(point.x, point.y)) {
             insert(point.x, point.y, item)
         }
@@ -86,7 +86,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
         if (tmpItems != null) {
             for (item in tmpItems) {
                 // re-insert items into child quads.
-                insert(item.point.x, item.point.y, item)
+                insert(item.getPoint().x, item.getPoint().y, item)
             }
         }
         //endregion
@@ -100,7 +100,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
      * @return whether the item was removed.
      */
     fun remove(item: T): Boolean {
-        val point = item.point
+        val point = item.getPoint()
         return if (bounds.contains(point.x, point.y)) {
             remove(point.x, point.y, item)
         } else {
@@ -171,7 +171,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
             } else {
                 // 搜索范围不包含整个当前节点的范围, 但是有部分区域相重叠, 则遍历查询在搜索范围内的数据
                 for (item in tmpItems) {
-                    if (searchBounds.contains(item.point)) {
+                    if (searchBounds.contains(item.getPoint())) {
                         results.add(item)
                     }
                 }
@@ -232,7 +232,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
     }
 
     interface Item {
-        val point: Point
+        fun getPoint(): Point
     }
     //endregion
 

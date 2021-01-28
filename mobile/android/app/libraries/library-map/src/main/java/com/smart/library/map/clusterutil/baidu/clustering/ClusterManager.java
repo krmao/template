@@ -12,12 +12,11 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.Marker;
 import com.smart.library.map.clusterutil.baidu.MarkerManager;
-import com.smart.library.map.clusterutil.baidu.clustering.algo.Algorithm;
-import com.smart.library.map.clusterutil.baidu.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
-import com.smart.library.map.clusterutil.baidu.clustering.algo.PreCachingAlgorithmDecorator;
+import com.smart.library.map.clusterutil.baidu.clustering.algo.STAlgorithm;
+import com.smart.library.map.clusterutil.baidu.clustering.algo.STNonHierarchicalDistanceBasedAlgorithm;
+import com.smart.library.map.clusterutil.baidu.clustering.algo.STPreCachingAlgorithmDecorator;
 import com.smart.library.map.clusterutil.baidu.clustering.view.ClusterRenderer;
 import com.smart.library.map.clusterutil.baidu.clustering.view.DefaultClusterRenderer;
-import com.smart.library.map.clusterutil.baidu.clustering.view.LessMoreClusterRenderer;
 import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.Collection;
@@ -37,7 +36,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
     private final MarkerManager.Collection mMarkers;
     private final MarkerManager.Collection mClusterMarkers;
 
-    private Algorithm<T> mAlgorithm;
+    private STAlgorithm<T> mAlgorithm;
     private final ReadWriteLock mAlgorithmLock = new ReentrantReadWriteLock();
     private ClusterRenderer<T> mRenderer;
 
@@ -61,7 +60,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         mClusterMarkers = markerManager.newCollection();
         mMarkers = markerManager.newCollection();
         mRenderer = new DefaultClusterRenderer<>(context, map, this);
-        mAlgorithm = new PreCachingAlgorithmDecorator<T>(new NonHierarchicalDistanceBasedAlgorithm<T>());
+        mAlgorithm = new STPreCachingAlgorithmDecorator<T>(new STNonHierarchicalDistanceBasedAlgorithm<T>());
         mClusterTask = new ClusterTask();
         mRenderer.onAdd();
     }
@@ -93,13 +92,13 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         cluster();
     }
 
-    public void setAlgorithm(Algorithm<T> algorithm) {
+    public void setAlgorithm(STAlgorithm<T> algorithm) {
         mAlgorithmLock.writeLock().lock();
         try {
             if (mAlgorithm != null) {
                 algorithm.addItems(mAlgorithm.getItems());
             }
-            mAlgorithm = new PreCachingAlgorithmDecorator<T>(algorithm);
+            mAlgorithm = new STPreCachingAlgorithmDecorator<T>(algorithm);
         } finally {
             mAlgorithmLock.writeLock().unlock();
         }

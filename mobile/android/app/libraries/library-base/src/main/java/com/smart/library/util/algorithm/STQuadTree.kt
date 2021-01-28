@@ -1,4 +1,4 @@
-package com.smart.library.map.clusterutil.baidu.quadtree
+package com.smart.library.util.algorithm
 
 import java.util.*
 
@@ -207,8 +207,9 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
         }
 
         /**
-         * 范围是否重叠
+         * [ˌɪntərˈsekts] 范围是否重叠
          */
+        @Suppress("KDocUnresolvedReference")
         fun intersects(bounds: Bounds): Boolean {
             return intersects(bounds.minX, bounds.maxX, bounds.minY, bounds.maxY)
         }

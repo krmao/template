@@ -221,6 +221,9 @@ public class LessMoreClusterRenderer<T extends ClusterItem> implements ClusterRe
         public void setMapZoom(float zoom) {
             this.currentZoom = zoom;
             this.mSphericalMercatorProjection = new SphericalMercatorProjection(256 * Math.pow(2, Math.min(zoom, LessMoreClusterRenderer.this.currentZoom)));
+            // zoom         4.0     -   21.0
+            // mWorldWidth  4096.0  -   6123391.062294675
+            STClusterUtil.log("setMapZoom zoom=" + zoom + ", mWorldWidth=" + mSphericalMercatorProjection.mWorldWidth);
         }
 
         @SuppressLint("NewApi")

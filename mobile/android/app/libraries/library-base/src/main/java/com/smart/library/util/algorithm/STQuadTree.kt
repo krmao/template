@@ -9,6 +9,9 @@ import java.util.*
  * See http://en.wikipedia.org/wiki/Quadtree for details on the data structure.
  * See https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374 for more details.
  * This class is not thread safe.
+ *
+ * 特征:
+ * 1. 所有的数据都存放在叶子节点中
  */
 @Suppress("unused")
 class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(

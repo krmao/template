@@ -47,4 +47,13 @@ public class Bounds {
         return intersects(bounds.minX, bounds.maxX, bounds.minY, bounds.maxY);
     }
 
+    @Override
+    public String toString() {
+        return "Bounds{" +
+                "(minX=" + minX +
+                ", minY=" + minY +
+                "), (maxX=" + maxX +
+                ", maxY=" + maxY +
+                ")}";
+    }
 }

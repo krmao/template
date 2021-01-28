@@ -13,6 +13,7 @@ import com.smart.library.map.clusterutil.baidu.projection.Bounds;
 import com.smart.library.map.clusterutil.baidu.projection.Point;
 import com.smart.library.map.clusterutil.baidu.projection.SphericalMercatorProjection;
 import com.smart.library.map.clusterutil.baidu.quadtree.PointQuadTree;
+import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,16 +91,18 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
      */
     @Override
     public Set<? extends Cluster<T>> getClusters(double zoom) {
-        final int discreteZoom = (int) zoom;
+        final double zoomSpecificSpan = MAX_DISTANCE_AT_ZOOM / Math.pow(2, zoom) / 256;  // 根据 zoom 计算每一个 marker 所占的范围跨度(正方形边宽)
 
-        final double zoomSpecificSpan = MAX_DISTANCE_AT_ZOOM / Math.pow(2, discreteZoom) / 256;
+        final Set<QuadItem<T>> visitedCandidates = new HashSet<>(); // 本次 getClusters 过程中是否已经访问过
 
-        final Set<QuadItem<T>> visitedCandidates = new HashSet<>();
         final Set<Cluster<T>> results = new HashSet<>();
         final Map<QuadItem<T>, Double> distanceToCluster = new HashMap<>();
         final Map<QuadItem<T>, StaticCluster<T>> itemToCluster = new HashMap<>();
 
         synchronized (mQuadTree) {
+
+            STClusterUtil.log("getClusters zoom=" + zoom + ", zoomSpecificSpan=" + zoomSpecificSpan + ", mQuadTree.bounds=" + mQuadTree.mBounds);
+
             for (QuadItem<T> candidate : mItems) {
                 if (visitedCandidates.contains(candidate)) {
                     // Candidate is already part of another cluster.
@@ -107,6 +110,7 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
                 }
 
                 Bounds searchBounds = createBoundsFromSpan(candidate.getPoint(), zoomSpecificSpan);
+                STClusterUtil.log("-------- searchBounds=" + searchBounds);
                 Collection<QuadItem<T>> clusterItems;
                 // search 某边界范围内的clusterItems
                 clusterItems = mQuadTree.search(searchBounds);

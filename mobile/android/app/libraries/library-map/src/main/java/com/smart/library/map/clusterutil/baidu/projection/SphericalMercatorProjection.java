@@ -7,7 +7,7 @@ package com.smart.library.map.clusterutil.baidu.projection;
 import com.baidu.mapapi.model.LatLng;
 
 public class SphericalMercatorProjection {
-    final double mWorldWidth;
+    public final double mWorldWidth;
 
     public SphericalMercatorProjection(final double worldWidth) {
         mWorldWidth = worldWidth;

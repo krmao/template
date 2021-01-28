@@ -22,7 +22,7 @@ public class PointQuadTree<T extends PointQuadTree.Item> {
     /**
      * The bounds of this quad.
      */
-    private final Bounds mBounds;
+    public final Bounds mBounds;
 
     /**
      * The depth of this quad in the tree.

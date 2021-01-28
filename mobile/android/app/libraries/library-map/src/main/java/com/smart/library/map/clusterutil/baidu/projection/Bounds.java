@@ -36,6 +36,9 @@ public class Bounds {
         return bounds.minX >= minX && bounds.maxX <= maxX && bounds.minY >= minY && bounds.maxY <= maxY;
     }
 
+    /**
+     * 两个矩形是否重叠
+     */
     public boolean intersects(double minX, double maxX, double minY, double maxY) {
         return minX < this.maxX && this.minX < maxX && minY < this.maxY && this.minY < maxY;
     }

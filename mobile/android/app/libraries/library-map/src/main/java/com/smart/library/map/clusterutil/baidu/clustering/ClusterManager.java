@@ -153,7 +153,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
             mClusterTask = new ClusterTask();
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                STClusterUtil.log("cluster ClusterTask execute ...");
+                STClusterUtil.log("2 cluster ClusterTask execute ...");
                 mClusterTask.execute(mMap.getMapStatus().zoom);
             } else {
                 mClusterTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mMap.getMapStatus().zoom);
@@ -187,7 +187,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
         }
         mPreviousCameraPosition = mMap.getMapStatus();
 
-        STClusterUtil.log("onMapStatusChange zoom=" + position.zoom + " will do cluster ...");
+        STClusterUtil.log("1 onMapStatusChange zoom=" + position.zoom + " will do cluster ...");
         cluster();
     }
 
@@ -218,7 +218,7 @@ public class ClusterManager<T extends ClusterItem> implements BaiduMap.OnMapStat
 
         @Override
         protected void onPostExecute(Set<? extends Cluster<T>> clusters) {
-            STClusterUtil.log("ClusterTask onPostExecute onClustersChanged ...");
+            STClusterUtil.log("3 ClusterTask onPostExecute onClustersChanged ...");
             mRenderer.onClustersChanged(clusters);
         }
     }

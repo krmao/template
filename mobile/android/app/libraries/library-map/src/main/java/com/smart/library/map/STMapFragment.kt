@@ -16,7 +16,7 @@ import com.smart.library.base.STBaseFragment
 import com.smart.library.map.clusterutil.baidu.clustering.Cluster
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterItem
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterManager
-import com.smart.library.map.clusterutil.baidu.clustering.view.LessMoreClusterRenderer
+import com.smart.library.map.clusterutil.baidu.clustering.view.STLessMoreClusterRenderer
 import com.smart.library.map.layer.STMapView
 import com.smart.library.map.model.STMapType
 import com.smart.library.util.STStatusBarUtil
@@ -96,8 +96,7 @@ class STMapFragment : STBaseFragment() {
                 return false
             }
         })
-        clusterManager.setRenderer(LessMoreClusterRenderer(context, realBaiduMap, clusterManager));
-        // mapView.setMapCenter(true, 11f, STLatLng(39.9655, 116.4055, STLatLngType.BD09))
+        clusterManager.setRenderer(STLessMoreClusterRenderer(realBaiduMap, clusterManager));
     }
 
 

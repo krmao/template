@@ -21,45 +21,24 @@ import java.util.concurrent.locks.ReentrantLock
 
 @Suppress("unused")
 class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, private val clusterManager: ClusterManager<T>) : ClusterRenderer<T> {
-    /**
-     * Markers that are currently on the map.
-     */
-    private var currentMarkers = Collections.newSetFromMap(ConcurrentHashMap<MarkerWithPosition, Boolean>())
+    private var currentMarkers = Collections.newSetFromMap(ConcurrentHashMap<MarkerWithPosition, Boolean>())    // Markers that are currently on the map.
+    private var currentClusters: Set<Cluster<T>>? = null                                                        // The currently displayed set of clusters.
+    private val markerCache = MarkerCache<T>()                                                                  // Markers for single ClusterItems.
 
-    /**
-     * Markers for single ClusterItems.
-     */
-    private val markerCache = MarkerCache<T>()
-
-    /**
-     * The currently displayed set of clusters.
-     */
-    private var currentClusters: Set<Cluster<T>>? = null
-
-    /**
-     * Lookup between markers and the associated cluster.
-     */
-    private val markerToCluster: MutableMap<Marker, Cluster<T>> = HashMap()
-    private val clusterToMarker: MutableMap<Cluster<T>, Marker> = HashMap()
-
-    /**
-     * The target zoom level for the current set of clusters.
-     */
     private var currentZoom = 0f
     private val viewModifier: ViewModifier = ViewModifier()
-    private var clickListener: OnClusterClickListener<T>? = null
-    private var infoWindowClickListener: OnClusterInfoWindowClickListener<T>? = null
     private var itemClickListener: OnClusterItemClickListener<T>? = null
-    private var itemInfoWindowClickListener: OnClusterItemInfoWindowClickListener<T>? = null
+
+    // private var clickListener: OnClusterClickListener<T>? = null
+    // private var infoWindowClickListener: OnClusterInfoWindowClickListener<T>? = null
+    // private var itemInfoWindowClickListener: OnClusterItemInfoWindowClickListener<T>? = null
 
     override fun onAdd() {
         clusterManager.markerCollection.setOnMarkerClickListener { marker -> itemClickListener != null && itemClickListener?.onClusterItemClick(markerCache[marker]) ?: false }
-        clusterManager.clusterMarkerCollection.setOnMarkerClickListener { marker -> clickListener != null && clickListener?.onClusterClick(markerToCluster[marker]) ?: false }
     }
 
     override fun onRemove() {
         clusterManager.markerCollection.setOnMarkerClickListener(null)
-        clusterManager.clusterMarkerCollection.setOnMarkerClickListener(null)
     }
 
     /**
@@ -68,24 +47,26 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
     private fun shouldRenderAsCluster(cluster: Cluster<T>): Boolean = cluster.size > MIN_CLUSTER_SIZE
 
     override fun onClustersChanged(clusters: Set<Cluster<T>>) {
-        log("onClustersChanged mViewModifier.queue ...")
+        log("4 onClustersChanged mViewModifier.queue ...")
         viewModifier.queue(clusters)
     }
 
-    override fun setOnClusterClickListener(listener: OnClusterClickListener<T>) {
-        clickListener = listener
-    }
-
-    override fun setOnClusterInfoWindowClickListener(listener: OnClusterInfoWindowClickListener<T>) {
-        infoWindowClickListener = listener
-    }
-
-    override fun setOnClusterItemClickListener(listener: OnClusterItemClickListener<T>) {
+    override fun setOnClusterItemClickListener(listener: OnClusterItemClickListener<T>?) {
         itemClickListener = listener
     }
 
-    override fun setOnClusterItemInfoWindowClickListener(listener: OnClusterItemInfoWindowClickListener<T>) {
-        itemInfoWindowClickListener = listener
+    //region no need
+    override fun setOnClusterClickListener(listener: OnClusterClickListener<T>?) {
+        // clickListener = listener
+    }
+
+    override fun setOnClusterInfoWindowClickListener(listener: OnClusterInfoWindowClickListener<T>?) {
+        // infoWindowClickListener = listener
+    }
+
+
+    override fun setOnClusterItemInfoWindowClickListener(listener: OnClusterItemInfoWindowClickListener<T>?) {
+        // itemInfoWindowClickListener = listener
     }
 
     /**
@@ -97,75 +78,61 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
     fun getMarker(clusterItem: T): Marker? = markerCache[clusterItem]
 
     /**
-     * Get the marker from a Cluster
-     *
-     * @param cluster which you will obtain its marker
-     * @return a marker from a cluster or null if it does not exists
-     */
-    fun getMarker(cluster: Cluster<T>): Marker? = clusterToMarker[cluster]
-
-    /**
      * Get the ClusterItem from a marker
      *
      * @param marker which you will obtain its ClusterItem
      * @return a ClusterItem from a marker or null if it does not exists
      */
     fun getClusterItem(marker: Marker?): T? = if (marker != null) markerCache[marker] else null
+    //endregion
 
     /**
-     * Get the Cluster from a marker
+     * 序列化进行渲染地图, 一次只渲染一次, 结束后会检查有没有新的 nextClustersRenderTask, 如果有继续执行
      *
-     * @param marker which you will obtain its Cluster
-     * @return a Cluster from a marker or null if it does not exists
-     */
-    fun getCluster(marker: Marker): Cluster<T>? = markerToCluster[marker]
-
-    /**
-     * 确保一次只渲染一次视图, 进行调度重新渲染
      * ViewModifier ensures only one re-rendering of the view occurs at a time, and schedules
      * re-rendering, which is performed by the RenderTask.
      */
     @SuppressLint("HandlerLeak")
     private inner class ViewModifier : Handler() {
-        private var mViewModificationInProgress = false
-        private var mNextClusters: RenderTask? = null
+        private var viewModificationInProgress = false
+        private var nextClustersRenderTask: RenderTask? = null
         override fun handleMessage(msg: Message) {
             if (msg.what == Companion.TASK_FINISHED) {
-                mViewModificationInProgress = false
-                if (mNextClusters != null) {
+                viewModificationInProgress = false
+                if (nextClustersRenderTask != null) {
                     // Run the task that was queued up.
                     sendEmptyMessage(Companion.RUN_TASK)
                 }
                 return
             }
             removeMessages(Companion.RUN_TASK)
-            if (mViewModificationInProgress) {
+            if (viewModificationInProgress) {
                 // Busy - wait for the callback.
                 return
             }
-            if (mNextClusters == null) {
+            if (nextClustersRenderTask == null) {
                 // Nothing to do.
                 return
             }
             val renderTask: RenderTask?
             synchronized(this) {
-                renderTask = mNextClusters
-                mNextClusters = null
-                mViewModificationInProgress = true
+                renderTask = nextClustersRenderTask
+                nextClustersRenderTask = null
+                viewModificationInProgress = true
             }
             if (renderTask != null) {
                 renderTask.setCallback(Runnable { sendEmptyMessage(Companion.TASK_FINISHED) })
                 renderTask.setMapZoom(map.mapStatus.zoom)
+                log("6 Thread(renderTask).start() ...")
                 Thread(renderTask).start()
             }
         }
 
         fun queue(clusters: Set<Cluster<T>>) {
             synchronized(this) {
-                // Overwrite any pending cluster tasks - we don't care about intermediate states.
-                mNextClusters = RenderTask(clusters)
+                nextClustersRenderTask = RenderTask(clusters) // Overwrite any pending cluster tasks - we don't care about intermediate states.
             }
-            log("mViewModifier.queue do RenderTask ...")
+            log("5 mViewModifier.queue do RenderTask ...")
             sendEmptyMessage(Companion.RUN_TASK)
         }
     }
@@ -196,9 +163,9 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
      * When zooming in, markers are animated out from the nearest existing cluster. When zooming
      * out, existing clusters are animated to the nearest new cluster.
      */
-    private inner class RenderTask(val clusters: Set<Cluster<T>>) : Runnable {
+    private inner class RenderTask(val newClusters: Set<Cluster<T>>) : Runnable {
         private var callback: Runnable? = null
-        private var currentZoom = 0f
+        private var newZoom = 0f
 
         /**
          * A callback to be run when all work has been completed.
@@ -208,30 +175,30 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
         }
 
         fun setMapZoom(zoom: Float) {
-            this.currentZoom = zoom
+            this.newZoom = zoom
         }
 
         @SuppressLint("NewApi")
         override fun run() {
             log("RenderTask run ...")
-            if (clusters == currentClusters) {
+            if (newClusters == currentClusters) {
                 log("RenderTask run clusters not changed return")
                 callback?.run()
                 return
             }
             val markerModifier = MarkerModifier()
             val markersToRemove = currentMarkers // 默认当前所有已显示的 markers 都将要被删除
-            val zoom = currentZoom
+            val zoom = newZoom
             val zoomingIn = zoom > this@STLessMoreClusterRenderer.currentZoom
             val zoomDelta = zoom - this@STLessMoreClusterRenderer.currentZoom
-            val visibleBounds = map.mapStatus.bound
+            val newVisibleBounds = map.mapStatus.bound
 
             //region 添加新的 marker/clusters
             // Create the new markers and animate them to their new positions.
             // 添加的新的 marker/clusters, 在屏幕范围内的优先处理
             val newMarkers = Collections.newSetFromMap(ConcurrentHashMap<MarkerWithPosition, Boolean>())
-            for (clusterAdding in clusters) {
-                val onScreen = visibleBounds.contains(clusterAdding.position)
+            for (clusterAdding in newClusters) {
+                val onScreen = newVisibleBounds.contains(clusterAdding.position)
                 log("RenderTask run CreateMarkerTask for new clusters")
                 if (zoomingIn && onScreen) {
                     markerModifier.add(true, CreateMarkerTask(clusterAdding, newMarkers))
@@ -250,7 +217,7 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
             markersToRemove.removeAll(newMarkers)
             // Remove the old markers, animating them into clusters if zooming out.
             for (marker in markersToRemove) {
-                val onScreen = visibleBounds.contains(marker.position)
+                val onScreen = newVisibleBounds.contains(marker.position)
                 // Don't animate when zooming out more than 3 zoom levels.
                 if (!zoomingIn && zoomDelta > -3 && onScreen) {
                     markerModifier.remove(true, marker.marker)
@@ -263,10 +230,10 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
 
             //region 更新当前变量
             currentMarkers = newMarkers
-            currentClusters = clusters
+            currentClusters = newClusters
             this@STLessMoreClusterRenderer.currentZoom = zoom
             //endregion
-            callback!!.run()
+            callback?.run()
         }
     }
 
@@ -289,7 +256,7 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
         /**
          * Whether the idle listener has been added to the UI thread's MessageQueue.
          */
-        private var listenerAdded = false
+        private var isIdleHandlerAdded = false
 
         /**
          * Creates markers for a cluster some time in the future.
@@ -325,9 +292,9 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
         }
 
         override fun handleMessage(msg: Message) {
-            if (!listenerAdded) {
+            if (!isIdleHandlerAdded) {
                 Looper.myQueue().addIdleHandler(this)
-                listenerAdded = true
+                isIdleHandlerAdded = true
             }
             removeMessages(Companion.BLANK)
             lock.lock()
@@ -339,7 +306,7 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
                     performNextTask()
                 }
                 if (!isBusy) {
-                    listenerAdded = false
+                    isIdleHandlerAdded = false
                     Looper.myQueue().removeIdleHandler(this)
                     // Signal any other threads that are waiting.
                     busyCondition.signalAll()
@@ -371,10 +338,7 @@ class STLessMoreClusterRenderer<T : ClusterItem>(private val map: BaiduMap, priv
 
         private fun removeMarker(marker: Marker?) {
             marker ?: return
-            val cluster = markerToCluster[marker]
-            clusterToMarker.remove(cluster)
             markerCache.remove(marker)
-            markerToCluster.remove(marker)
             clusterManager.markerManager.remove(marker)
         }
 

@@ -24,7 +24,7 @@ import java.util.Set;
 public class MarkerManager implements BaiduMap.OnMarkerClickListener, BaiduMap.OnMarkerDragListener {
     private final BaiduMap mMap;
 
-    private final Map<String, Collection> mNamedCollections = new HashMap<String, Collection>();
+    protected final Map<String, Collection> mNamedCollections = new HashMap<String, Collection>();
     private final Map<Marker, Collection> mAllMarkers = new HashMap<Marker, Collection>();
 
     public MarkerManager(BaiduMap map) {

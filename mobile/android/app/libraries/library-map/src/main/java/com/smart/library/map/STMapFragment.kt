@@ -13,6 +13,7 @@ import com.baidu.mapapi.map.TextureMapView
 import com.baidu.mapapi.model.LatLng
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
+import com.smart.library.map.clusterutil.baidu.STMarkerManager
 import com.smart.library.map.clusterutil.baidu.clustering.Cluster
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterItem
 import com.smart.library.map.clusterutil.baidu.clustering.ClusterManager
@@ -40,7 +41,7 @@ class STMapFragment : STBaseFragment() {
 
     private val realMapView: TextureMapView by lazy { mapView.mapView() as TextureMapView }
     private val realBaiduMap: BaiduMap by lazy { realMapView.map }
-    private val clusterManager: ClusterManager<MyItem> by lazy { ClusterManager<MyItem>(context, realBaiduMap) }
+    private val clusterManager: ClusterManager<MyItem> by lazy { ClusterManager<MyItem>(context, realBaiduMap, STMarkerManager(realBaiduMap)) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.st_map_fragment, container, false)

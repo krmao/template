@@ -28,6 +28,6 @@ class STStaticCluster<T : ClusterItem?>(private val center: LatLng) : Cluster<T>
     }
 
     override fun toString(): String {
-        return "STStaticCluster{mCenter=$center, mItems.size=${items.size}}"
+        return "STStaticCluster{center=$center, items.size=${items.size}}"
     }
 }

@@ -42,6 +42,7 @@ import com.smart.library.map.clusterutil.baidu.clustering.algo.STNonHierarchical
 import com.smart.library.map.clusterutil.baidu.projection.Point;
 import com.smart.library.map.clusterutil.baidu.projection.SphericalMercatorProjection;
 import com.smart.library.map.clusterutil.baidu.ui.IconGenerator;
+import com.smart.library.map.clusterutil.baidu.ui.SquareTextView;
 import com.smart.library.map.clusterutil.baidu.util.STClusterUtil;
 
 import java.util.ArrayList;
@@ -159,8 +160,8 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements ClusterRen
         return background;
     }
 
-    private com.smart.library.map.clusterutil.baidu.ui.SquareTextView makeSquareTextView(Context context) {
-        com.smart.library.map.clusterutil.baidu.ui.SquareTextView squareTextView = new com.smart.library.map.clusterutil.baidu.ui.SquareTextView(context);
+    private SquareTextView makeSquareTextView(Context context) {
+        SquareTextView squareTextView = new SquareTextView(context);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         squareTextView.setLayoutParams(layoutParams);
         squareTextView.setId(R.id.text);
@@ -181,7 +182,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements ClusterRen
         if (bucket < BUCKETS[0]) {
             return String.valueOf(bucket);
         }
-        return String.valueOf(bucket) + "+";
+        return bucket + "+";
     }
 
     /**
@@ -314,6 +315,9 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements ClusterRen
         public void setMapZoom(float zoom) {
             this.mMapZoom = zoom;
             this.mSphericalMercatorProjection = new SphericalMercatorProjection(256 * Math.pow(2, Math.min(zoom, mZoom)));
+            // zoom         4.0     -   21.0
+            // mWorldWidth  4096.0  -   6123391.062294675
+            STClusterUtil.log("setMapZoom zoom=" + zoom + ", mWorldWidth=" + mSphericalMercatorProjection.mWorldWidth);
         }
 
         @SuppressLint("NewApi")

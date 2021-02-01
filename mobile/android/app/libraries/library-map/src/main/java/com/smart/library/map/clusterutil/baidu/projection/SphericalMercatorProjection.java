@@ -22,7 +22,7 @@ public class SphericalMercatorProjection {
         return new Point(x * mWorldWidth, y * mWorldWidth);
     }
 
-    public LatLng toLatLng(com.smart.library.map.clusterutil.baidu.projection.Point point) {
+    public LatLng toLatLng(Point point) {
         final double x = point.x / mWorldWidth - 0.5;
         final double lng = x * 360;
 

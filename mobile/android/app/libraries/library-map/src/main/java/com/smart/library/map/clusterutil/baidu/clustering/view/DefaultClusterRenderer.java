@@ -60,8 +60,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * The default view for a ClusterManager. Markers are animated in and out of clusters.
  */
-public class DefaultClusterRenderer<T extends ClusterItem> implements
-        com.smart.library.map.clusterutil.baidu.clustering.view.ClusterRenderer<T> {
+public class DefaultClusterRenderer<T extends ClusterItem> implements ClusterRenderer<T> {
+    @SuppressLint("ObsoleteSdkInt")
     private static final boolean SHOULD_ANIMATE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     private final BaiduMap mMap;
     private final IconGenerator mIconGenerator;
@@ -74,8 +74,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     /**
      * Markers that are currently on the map.
      */
-    private Set<MarkerWithPosition> mMarkers = Collections.newSetFromMap(
-            new ConcurrentHashMap<MarkerWithPosition, Boolean>());
+    private Set<MarkerWithPosition> mMarkers = Collections.newSetFromMap(new ConcurrentHashMap<MarkerWithPosition, Boolean>());
 
     /**
      * Icons for each bucket.
@@ -161,10 +160,8 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     }
 
     private com.smart.library.map.clusterutil.baidu.ui.SquareTextView makeSquareTextView(Context context) {
-        com.smart.library.map.clusterutil.baidu.ui.SquareTextView squareTextView =
-                new com.smart.library.map.clusterutil.baidu.ui.SquareTextView(context);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        com.smart.library.map.clusterutil.baidu.ui.SquareTextView squareTextView = new com.smart.library.map.clusterutil.baidu.ui.SquareTextView(context);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         squareTextView.setLayoutParams(layoutParams);
         squareTextView.setId(R.id.text);
         int twelveDpi = (int) (12 * mDensity);
@@ -177,9 +174,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         final float sizeRange = 300;
         final float size = Math.min(clusterSize, sizeRange);
         final float hue = (sizeRange - size) * (sizeRange - size) / (sizeRange * sizeRange) * hueRange;
-        return Color.HSVToColor(new float[]{
-                hue, 1f, .6f
-        });
+        return Color.HSVToColor(new float[]{hue, 1f, .6f});
     }
 
     protected String getClusterText(int bucket) {

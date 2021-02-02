@@ -43,17 +43,6 @@
                     android:text="flutter_settings"
                     android:textAllCaps="true"
                     app:backgroundTint="@color/blue_600" />
-
-                <Button
-                    android:id="@+id/flutterPageMine"
-                    style="@style/STButton.Default"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="native_mine"
-                    android:textAllCaps="true"
-                    app:backgroundTint="@color/deep_orange_500" />
-
             </TableRow>
 
             <TableRow

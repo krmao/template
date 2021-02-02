@@ -2,9 +2,7 @@ package com.smart.library.flutter
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import com.smart.library.STInitializer
-import com.smart.library.flutter.test.MineActivity
 import com.smart.library.util.bus.STBusManager
 
 class FlutterBusHandler : STBusManager.IBusHandler {
@@ -28,9 +26,6 @@ class FlutterBusHandler : STBusManager.IBusHandler {
                     val schemaUrl = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
                     STFlutterRouter.openBySchema(context, schemaUrl)
                 }
-            }
-            "flutter/mine" -> {
-                context?.startActivity(Intent(context, MineActivity::class.java))
             }
         }
     }

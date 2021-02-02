@@ -276,6 +276,23 @@ dependencies {
     }
 
     if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
+            if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+                debugApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+                    changing = true
+                }
+            }
+            /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+                profileApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+                    changing = true
+                }
+            }*/
+            if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+                releaseApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+                    changing = true
+                }
+            }
+        }
         implementation project(':library-flutter')
     }
     if (gradle.ext.modules.library_pictureviewer.enable == true) {

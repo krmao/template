@@ -13,7 +13,7 @@ gradle.ext {
             'library_livestreaming': ['enable': false],
             'library_base'         : [
                     'repository_remote': [
-                            'enable'    : false,
+                            'enable'    : true,
                             'dependency': 'com.codesdancing.libraries:library-base:0.0.1.37', // base utils
                     ]
             ],

@@ -35,11 +35,15 @@ android {
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
-    api project(':library-base')
+    if (gradle.ext.modules.library_base.repository_remote.enable == true) {
+        api gradle.ext.modules.library_base.repository_remote.dependency
+    } else {
+        api project(':library-base')
+    }
 
     if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
         if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
-            debugApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+            compileOnly(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
                 changing = true
             }
         }
@@ -49,7 +53,7 @@ dependencies {
             }
         }*/
         if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
-            releaseApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+            compileOnly(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
                 changing = true
             }
         }

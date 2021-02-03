@@ -32,6 +32,12 @@
         <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
+
+    <style name="STAppTheme.Home.Transparent" parent="STAppTheme.Home">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/st_transparent</item>
+    </style>
+
     <!--endregion-->
 
     <!--region login-->

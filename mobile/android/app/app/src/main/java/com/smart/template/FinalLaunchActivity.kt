@@ -2,8 +2,10 @@ package com.smart.template
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseLaunchActivity
+import com.smart.library.flutter.STFlutterRouter
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
@@ -28,7 +30,8 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
                     finish()
                     return@ensureBusInitialized
                 } else {
-                    goToHome()
+                    goToFlutterHome()
+                    // goToHome()
                 }
                 //endregion
             }
@@ -43,6 +46,11 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
         }
 
         STToastUtil.show(STSystemUtil.getScreenInfo())
+    }
+
+    private fun goToFlutterHome() {
+        STFlutterRouter.openHomeByName(this, "flutter_bridge")
+        Handler().postDelayed({ finish() }, 1000)
     }
 
     private fun goToHome() {

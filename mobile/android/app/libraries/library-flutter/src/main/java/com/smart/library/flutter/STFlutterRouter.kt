@@ -27,6 +27,11 @@ object STFlutterRouter {
         if (context is Activity) context.startActivityForResult(intent, requestCode) else context.startActivity(intent)
     }
 
+    private fun openHomeFlutterActivity(context: Context, pageName: String, pageParams: MutableMap<String, Any>, requestCode: Int, exts: MutableMap<String, Any>? = null) {
+        val intent = STFlutterBoostHomeActivity.withNewEngine().url(pageName).params(pageParams).backgroundMode(BoostFlutterActivity.BackgroundMode.opaque).build(context)
+        if (context is Activity) context.startActivityForResult(intent, requestCode) else context.startActivity(intent)
+    }
+
     /**
      * @param schemaUrl "smart://template/flutter?page=flutter_order&params=jsonString"
      */
@@ -50,6 +55,15 @@ object STFlutterRouter {
         STLogUtil.d("openByName pageName=$pageName, params$pageName, requestCode$requestCode, exts=$exts")
         if (context != null) {
             openNewFlutterActivity(context, pageName ?: "", pageParams ?: hashMapOf(), requestCode, exts)
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun openHomeByName(context: Context?, pageName: String?, pageParams: MutableMap<String, Any>? = null, requestCode: Int = 0, exts: MutableMap<String, Any>? = null) {
+        STLogUtil.d("openHomeByName pageName=$pageName, params$pageName, requestCode$requestCode, exts=$exts")
+        if (context != null) {
+            openHomeFlutterActivity(context, pageName ?: "", pageParams ?: hashMapOf(), requestCode, exts)
         }
     }
 }

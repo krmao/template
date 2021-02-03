@@ -6,6 +6,12 @@ import getopt
 import os.path
 import shutil
 import sys
+from os.path import expanduser
+
+git_android_url = "https://gitee.com/krmao/android_app_template.git"
+git_android_branch = ""
+git_ios_url = ""
+git_ios_branch = ""
 
 # xxx/xxx/.run
 root_path = os.path.dirname(os.path.abspath(__file__))
@@ -15,6 +21,7 @@ app_ios_path = os.path.abspath(app_path + '/ios')
 flutter_project_path = os.path.abspath(root_path + '/../')
 dest_host_path_android = os.path.abspath(root_path + '/.app/android/gradle')
 dest_host_path_android_repo = os.path.abspath(dest_host_path_android + '/host')
+home = expanduser("~")
 
 
 def clone_pure_app():
@@ -27,13 +34,53 @@ def clone_pure_app():
 
     if platform == "android":
         if not os.path.exists(app_android_path):
-            os.system("git clone https://gitee.com/krmao/android_app_template.git " + platform)
+            os.system("git clone " + git_android_url + " " + platform)
         os.chdir(app_android_path)
         print "current path ->", os.getcwd()
-        os.system("git checkout flutter_pure && git pull && git checkout . && git log -1")
+        if not git_android_branch:
+            os.system("git checkout " + git_android_branch)
+        os.system("git pull && git checkout . && git log -1")
     elif platform == "ios":
-        os.system("git clone https://gitee.com/krmao/ios_app_template.git " + platform)
-        # todo
+        os.system("git clone " + git_ios_url + " " + platform)
+        if not git_ios_branch:
+            os.system("git checkout " + git_ios_branch)
+        os.system("git pull && git checkout . && git log -1")
+
+
+def install_brew():
+    os.chdir(home)
+    if not os.path.exists("/usr/local/bin/brew"):
+        print "==========>>>>>>>>>> install brew start"
+        print "current path ->", os.getcwd()
+        os.system('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+        print "==========>>>>>>>>>> install brew end"
+    os.system("which brew")
+
+
+def install_dart():
+    os.chdir(home)
+    if not os.path.exists("/usr/local/bin/dart"):
+        print "==========>>>>>>>>>> install dart start"
+        print "current path ->", os.getcwd()
+        os.system("brew tap dart-lang/dart")
+        os.system("brew install dart")
+        os.system("brew switch dart 2.10.4")
+        os.system("brew info dart")
+        os.system('export PATH="$PATH":"~/.pub-cache/bin"')
+        print "==========>>>>>>>>>> install dart end"
+    os.system("which dart")
+
+
+def install_fvm():
+    os.chdir(home)
+    if not os.path.exists(".pub-cache/bin/fvm"):
+        print "==========>>>>>>>>>> install fvm start"
+        print "current path ->", os.getcwd()
+        os.system("pub global activate fvm")
+        os.system('export PATH="$PATH":"~/fvm/default/bin"')
+        os.system("fvm install")
+        print "==========>>>>>>>>>> install fvm end"
+    os.system("which fvm")
 
 
 def install_flutter_sdk():
@@ -43,6 +90,7 @@ def install_flutter_sdk():
         print "current path ->", os.getcwd()
         os.system("fvm install")
         print "==========>>>>>>>>>> install flutter sdk end"
+    os.system("which flutter")
 
 
 def build_flutter_module_aar():
@@ -124,11 +172,17 @@ if __name__ == '__main__':
     print 'arguments -> clean:', clean, 'release:', release
 
     if platform == "android" or platform == "ios":
+        # install environment
+        install_brew()
+        install_dart()
+        install_fvm()
+
         # mkdir .app
         clone_pure_app()
+
         # build flutter module(aar/framework)
         build_flutter_module_aar()
         # build and run app
         build_app_android()
         # flutter attach
-        # flutter_attach()
+        flutter_attach()

@@ -9,7 +9,7 @@ import sys
 from os.path import expanduser
 
 git_android_url = "https://gitee.com/krmao/android_app_template.git"
-git_android_branch = ""
+git_android_branch = "flutter_pure"
 git_ios_url = ""
 git_ios_branch = ""
 
@@ -38,11 +38,13 @@ def clone_pure_app():
         os.chdir(app_android_path)
         print "current path ->", os.getcwd()
         if not git_android_branch:
+            print "checkout branch ->", git_android_branch
             os.system("git checkout " + git_android_branch)
         os.system("git pull && git checkout . && git log -1")
     elif platform == "ios":
         os.system("git clone " + git_ios_url + " " + platform)
         if not git_ios_branch:
+            print "checkout branch ->", git_ios_branch
             os.system("git checkout " + git_ios_branch)
         os.system("git pull && git checkout . && git log -1")
 

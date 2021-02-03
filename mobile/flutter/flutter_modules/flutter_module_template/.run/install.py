@@ -10,7 +10,7 @@ from os.path import expanduser
 
 git_android_url = "https://gitee.com/krmao/android_app_template.git"
 git_android_branch = "flutter_pure"
-git_ios_url = ""
+git_ios_url = "https://github.com/codesdancing/app_mixpanel_ios.git"
 git_ios_branch = ""
 
 # xxx/xxx/.run
@@ -137,6 +137,28 @@ def build_app_android():
     print("==========>>>>>>>>>> install end")
 
 
+def build_flutter_module_framework():
+    install_flutter_sdk()
+
+    os.chdir(flutter_project_path)
+    print "==========>>>>>>>>>> build flutter lib framework start"
+    # 参考
+    # https://github.com/codesdancing/app_mixpanel_business_flutter/blob/master/flutter_modules/flutter_module_template/README_FLUTTER.md
+
+    print "==========>>>>>>>>>> build flutter lib framework end"
+
+
+def build_app_ios():
+    print "==========>>>>>>>>>> install ios app start"
+    os.chdir(app_ios_path)
+    print "current path ->", os.getcwd()
+    # 参考
+    # https://github.com/codesdancing/app_mixpanel_business_flutter/blob/master/flutter_modules/flutter_module_template/README_FLUTTER.md
+
+    print "==========>>>>>>>>>> auto open ios app end"
+    print("==========>>>>>>>>>> install end")
+
+
 def flutter_attach():
     os.chdir(flutter_project_path)
     os.system("flutter attach")
@@ -181,10 +203,13 @@ if __name__ == '__main__':
 
         # mkdir .app
         clone_pure_app()
-
         # build flutter module(aar/framework)
-        build_flutter_module_aar()
-        # build and run app
-        build_app_android()
+        if platform == "android":
+            build_flutter_module_aar()
+            # build and run app
+            build_app_android()
+        elif platform == "ios":
+            build_flutter_module_framework()
+            build_app_ios()
         # flutter attach
         flutter_attach()

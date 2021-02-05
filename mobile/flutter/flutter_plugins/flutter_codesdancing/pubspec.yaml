@@ -31,10 +31,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.idlefish.flutterboost
-        pluginClass: FlutterBoostPlugin
+        package: com.codesdancing.flutter
+        pluginClass: CodesDancingPlugin
       ios:
-        pluginClass: FlutterBoostPlugin
+        pluginClass: CodesDancingPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

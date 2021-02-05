@@ -1,6 +1,6 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint flutter_codesdancing.podspec' to validate before publishing.
+# Run 'pod lib lint flutter_codesdancing.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_codesdancing'
@@ -13,17 +13,19 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*.{h,m,mm}'
+  s.source_files = 'Classes/**/**/*.{h,m,mm}'
 
   s.public_header_files =
-    'Classes/Boost/FlutterBoostPlugin.h',
-    'Classes/Boost/FLBPlatform.h',
-    'Classes/Boost/FLBFlutterContainer.h',
-    'Classes/Boost/FLBFlutterAppDelegate.h',
-    'Classes/Boost/FLBTypes.h',
-    'Classes/Boost/FlutterBoost.h',
-    'Classes/Boost/BoostChannel.h',
-    'Classes/container/FLBFlutterViewContainer.h'
+    'Classes/CodesDancingPlugin.h',
+    'Classes/FlutterBoost/Boost/FlutterBoostPlugin.h',
+    'Classes/FlutterBoost/Boost/FLBPlatform.h',
+    'Classes/FlutterBoost/Boost/FLBFlutterContainer.h',
+    'Classes/FlutterBoost/Boost/FLBFlutterAppDelegate.h',
+    'Classes/FlutterBoost/Boost/FLBTypes.h',
+    'Classes/FlutterBoost/Boost/FlutterBoost.h',
+    'Classes/FlutterBoost/Boost/BoostChannel.h',
+    'Classes/FlutterBoost/container/FLBFlutterViewContainer.h'
+
   s.dependency 'Flutter'
   s.libraries = 'c++'
   s.xcconfig = {

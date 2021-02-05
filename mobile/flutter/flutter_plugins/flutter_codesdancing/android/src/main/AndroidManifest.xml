@@ -1,3 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.codesdancing.flutter">
+
+    <application>
+        <activity
+            android:name="com.codesdancing.flutter.STFlutterBoostActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.codesdancing.flutter.STFlutterBoostHomeActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+    </application>
+
 </manifest>

@@ -96,6 +96,8 @@ allprojects {
             force "com.squareup.okio:okio:$rootProject.ext.okioVersion"
             force "com.facebook.soloader:soloader:$rootProject.ext.soLoaderVersion"
 
+            force "androidx.core:core-ktx:$rootProject.ext.androidXCoreVersion"
+            force "androidx.core:core:$rootProject.ext.androidXCoreVersion"
             force "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
             force "androidx.fragment:fragment:$rootProject.ext.androidXFragmentVersion"
             force "androidx.viewpager:viewpager:$rootProject.ext.androidXVersion"

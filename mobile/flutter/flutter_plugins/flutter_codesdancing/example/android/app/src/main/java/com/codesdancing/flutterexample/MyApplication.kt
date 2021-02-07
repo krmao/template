@@ -16,6 +16,7 @@ import io.flutter.plugin.common.StandardMessageCodec
 
 class MyApplication : Application() {
     public override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
         STInitializer.attachApplicationBaseContext(base)
     }
 

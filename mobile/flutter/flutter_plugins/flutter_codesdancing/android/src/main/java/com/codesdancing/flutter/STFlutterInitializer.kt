@@ -2,13 +2,12 @@ package com.codesdancing.flutter
 
 import android.app.Activity
 import android.app.Application
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import androidx.annotation.UiThread
+import com.codesdancing.flutter.plugins.*
 import com.idlefish.flutterboost.FlutterBoost
+import com.idlefish.flutterboost.Utils
 import com.idlefish.flutterboost.interfaces.INativeRouter
 import com.smart.library.STInitializer
-import com.codesdancing.flutter.plugins.*
+import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterEngineProvider
@@ -17,8 +16,6 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.FlutterJNI
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterMain
 
 @Suppress("unused")
@@ -44,7 +41,10 @@ object STFlutterInitializer {
 
         val router = INativeRouter { context, url, urlParams, requestCode, exts ->
             STLogUtil.w(TAG, "INativeRouter#openContainer, url=$url, urlParams=$urlParams, requestCode=$requestCode, exts=$exts")
-            STFlutterRouter.openByName(context, url, urlParams, requestCode, exts)
+            // STFlutterRouter.openByName(context, url, urlParams, requestCode, exts)
+            val schemaUrl = "smart://template/flutter?page=$url&params=${STJsonUtil.toJson(urlParams)}"
+            STLogUtil.w(TAG, "INativeRouter#openContainer, schemaUrl=$schemaUrl, requestCode=$requestCode, exts=$exts")
+            STInitializer.openSchema(context as? Activity, schemaUrl) // 确保所有跳转都走 handleBridge
         }
 
         val initialRoute = "flutter_settings"
@@ -77,27 +77,27 @@ object STFlutterInitializer {
         // 生成Platform配置
         @Suppress("DEPRECATION")
         val platform = FlutterBoost.ConfigBuilder(application, router)
-            .isDebug(debug)
-            .dartEntrypoint("main") //dart入口，默认为main函数，这里可以根据native的环境自动选择Flutter的入口函数来统一Native和Flutter的执行环境，（比如debugMode == true ? "mainDev" : "mainProd"，Flutter的main.dart里也要有这两个对应的入口函数）
-            .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
-            .renderMode(FlutterView.RenderMode.texture)
-            .lifecycleListener(boostLifecycleListener)
-            .initialRoute(initialRoute)
-            .flutterEngineProvider(flutterEngineProvider)
-            .shellArgs(listOf())
-            .build()
+                .isDebug(debug)
+                .dartEntrypoint("main") //dart入口，默认为main函数，这里可以根据native的环境自动选择Flutter的入口函数来统一Native和Flutter的执行环境，（比如debugMode == true ? "mainDev" : "mainProd"，Flutter的main.dart里也要有这两个对应的入口函数）
+                .whenEngineStart(FlutterBoost.ConfigBuilder.ANY_ACTIVITY_CREATED)
+                .renderMode(FlutterView.RenderMode.texture)
+                .lifecycleListener(boostLifecycleListener)
+                .initialRoute(initialRoute)
+                .flutterEngineProvider(flutterEngineProvider)
+                .shellArgs(listOf())
+                .build()
         // 初始化
 
         STFlutterBridgeChannel.INSTANCE().registerPlugins(
-            mutableListOf(
-                STFlutterBridgeCompactPlugin(),
-                STFlutterPagePlugin(),
-                STFlutterToastPlugin(),
-                STFlutterURLPlugin(),
-                STFlutterEnvPlugin(),
-                STFlutterEventPlugin(),
-                STFlutterApplicationPlugin()
-            )
+                mutableListOf(
+                        STFlutterBridgeCompactPlugin(),
+                        STFlutterPagePlugin(),
+                        STFlutterToastPlugin(),
+                        STFlutterURLPlugin(),
+                        STFlutterEnvPlugin(),
+                        STFlutterEventPlugin(),
+                        STFlutterApplicationPlugin()
+                )
         )
 
         FlutterBoost.instance().init(platform)

@@ -3,8 +3,9 @@ package com.taobao.idlefish.flutterboostexample;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
 import com.idlefish.flutterboost.containers.BoostFlutterActivity;
+import com.smart.library.util.STLogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,17 +33,16 @@ public class PageRouter {
     public static boolean openPageByUrl(Context context, String url, Map params, int requestCode) {
 
         String path = url.split("\\?")[0];
-
-        Log.i("openPageByUrl",path);
+        STLogUtil.d("openPageByUrl", "url=" + path + ", params=" + params);
 
         try {
             if (pageName.containsKey(path)) {
                 Intent intent = BoostFlutterActivity.withNewEngine().url(pageName.get(path)).params(params)
                         .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque).build(context);
-                if(context instanceof Activity){
-                    Activity activity=(Activity)context;
-                    activity.startActivityForResult(intent,requestCode);
-                }else{
+                if (context instanceof Activity) {
+                    Activity activity = (Activity) context;
+                    activity.startActivityForResult(intent, requestCode);
+                } else {
                     context.startActivity(intent);
                 }
                 return true;

@@ -11,6 +11,7 @@
 #import "PlatformRouterImp.h"
 #import "NativeViewController.h"
 #import <flutter_codesdancing/FlutterBoost.h>
+#import <flutter_codesdancing/STFlutterBridge.h>
 
 @interface AppDelegate ()
 
@@ -21,10 +22,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     PlatformRouterImp *router = [PlatformRouterImp new];
-    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router
-                                                        onStart:^(FlutterEngine *engine) {
-                                                            
-                                                        }];
+    [FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:router onStart:^(FlutterEngine *engine) {
+        NSLog(@"FlutterBoostPlugin onStart");
+        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
+    }];
     
     self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
     

@@ -15,3 +15,6 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Versions
 * flutter_boost origin/v1.22.4-hotfixes
+
+## publish
+* https://flutter.dev/docs/development/packages-and-plugins/developing-packages

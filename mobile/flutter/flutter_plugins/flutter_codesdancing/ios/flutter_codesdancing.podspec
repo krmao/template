@@ -13,10 +13,24 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/**/*.{h,m,mm}'
+  s.source_files = 'Classes/**/**/**/*.{h,m,mm}'
 
   s.public_header_files =
     'Classes/CodesDancingPlugin.h',
+    'Classes/CodesDancing/STFlutterViewController.h',
+    'Classes/CodesDancing/STFlutterRouterHandler.h',
+    'Classes/CodesDancing/STFlutterRouter.h',
+    'Classes/CodesDancing/STFlutterEmbedIntoNativeViewController.h',
+    'Classes/CodesDancing/Plugins/Application/STFlutterApplicationPlugin.h',
+    'Classes/CodesDancing/Plugins/Base/STFlutterBridge.h',
+    'Classes/CodesDancing/Plugins/Base/STFlutterPlugin.h',
+    'Classes/CodesDancing/Plugins/Base/STFlutterPluginManager.h',
+    'Classes/CodesDancing/Plugins/BridgeCompact/STFlutterBridgeCompactPlugin.h',
+    'Classes/CodesDancing/Plugins/Env/STFlutterEnvPlugin.h',
+    'Classes/CodesDancing/Plugins/Event/STFlutterEventPlugin.h',
+    'Classes/CodesDancing/Plugins/Page/STFlutterPagePlugin.h',
+    'Classes/CodesDancing/Plugins/Toast/STFlutterToastPlugin.h',
+    'Classes/CodesDancing/Plugins/URL/STFlutterURLPlugin.h',
     'Classes/FlutterBoost/Boost/FlutterBoostPlugin.h',
     'Classes/FlutterBoost/Boost/FLBPlatform.h',
     'Classes/FlutterBoost/Boost/FLBFlutterContainer.h',
@@ -27,6 +41,7 @@ A new flutter plugin project.
     'Classes/FlutterBoost/container/FLBFlutterViewContainer.h'
 
   s.dependency 'Flutter'
+  s.dependency 'CodesDancing', '~>0.0.1'
   s.libraries = 'c++'
   s.xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',

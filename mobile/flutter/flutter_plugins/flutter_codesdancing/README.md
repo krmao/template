@@ -13,8 +13,40 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-## Versions
+## Depend On Versions
 * flutter_boost origin/v1.22.4-hotfixes
 
-## publish
-* https://flutter.dev/docs/development/packages-and-plugins/developing-packages
+## Create Flutter Plugin [Steps](https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin)
+* Create flutter plugin
+    ```shell script
+    flutter create --org com.codesdancing.flutter  --template=plugin --platforms=android,ios -i objc -a kotlin flutter_codesdancing
+    ```
+* Implement
+    * Define API flutter_codesdancing/lib/flutter_codesdancing.dart # file name must be same as plugin name
+    * Add android/IOS platform code
+    * Add document and licenses file
+* Publish
+    ```shell script
+    flutter pub publish
+    ```
+* [Search packages](https://pub.dartlang.org) will find [uploaded flutter plugin](https://pub.dev/packages/flutter_codesdancing)
+* How to use
+    ```shell script
+    # depend on
+    dependencies:
+      flutter_codesdancing: ^0.0.2
+  
+    # install
+    flutter pub get
+  
+    # import  
+    import 'package:flutter_codesdancing/flutter_codesdancing.dart';
+   ```
+* Example Test
+    ```shell script
+    # flutter_codesdancing:
+    #   path: ../
+    
+    # change local dependency to remote
+    flutter_codesdancing: ^0.0.2
+    ```

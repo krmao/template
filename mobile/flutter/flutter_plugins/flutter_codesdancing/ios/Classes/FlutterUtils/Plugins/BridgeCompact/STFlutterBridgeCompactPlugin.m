@@ -9,6 +9,7 @@
 #import "STFlutterBridgeCompactPlugin.h"
 #import "STToastUtil.h"
 #import "STCommunication.h"
+#import "STValueUtil.h"
 
 @implementation STFlutterBridgeCompactPlugin
 

@@ -7,7 +7,6 @@
 //
 
 #import "STFlutterRouterHandler.h"
-#import "STListViewController.h"
 #import <FlutterBoost.h>
 
 @interface STFlutterRouterHandler()
@@ -20,9 +19,9 @@
                 exts:(NSDictionary *)exts{
     UIViewController *vc = nil;
     
-    if([name isEqualToString:@"native_mine"]){
-        vc = [STListViewController new];
-    }
+    //if([name isEqualToString:@"native_mine"]){
+    //    vc = [STListViewController new];
+    //}
     
     BOOL animated = [exts[@"animated"] boolValue];
     if([params[@"present"] boolValue]){

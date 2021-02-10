@@ -41,7 +41,7 @@ A new flutter plugin project.
     'Classes/FlutterBoost/container/FLBFlutterViewContainer.h'
 
   s.dependency 'Flutter'
-  s.dependency 'CodesDancing', '~>0.0.1'
+  s.dependency 'CodesDancing', '~>0.0.2'
   s.libraries = 'c++'
   s.xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',

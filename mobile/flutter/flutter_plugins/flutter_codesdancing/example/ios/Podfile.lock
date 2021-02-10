@@ -14,9 +14,9 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - CodesDancing (0.0.1):
-    - CodesDancing/LibraryBase (= 0.0.1)
-  - CodesDancing/LibraryBase (0.0.1):
+  - CodesDancing (0.0.2):
+    - CodesDancing/LibraryBase (= 0.0.2)
+  - CodesDancing/LibraryBase (0.0.2):
     - AFNetworking (~> 4.0)
     - MBProgressHUD (~> 1.2.0)
     - SDWebImage (~> 5.0)
@@ -55,7 +55,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
-  CodesDancing: 499af797f3d8541910b38e1c24b4aeacc635ecc4
+  CodesDancing: 319bc583dada1f5af8e275c9c0e1af8aaa3602c6
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_codesdancing: 2bbe8112a4f95e8bff7c64f1d0e6a0c214e7445f
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406

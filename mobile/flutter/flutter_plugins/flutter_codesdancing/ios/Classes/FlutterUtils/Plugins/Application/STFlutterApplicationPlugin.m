@@ -22,7 +22,6 @@
     return constantsToExport;
 }
 
-
 - (NSDictionary *)deviceInfo {
     return @{
          @"osVersion":[NSString stringWithFormat:@"iOS_%@", [UIDevice currentDevice].systemVersion],
@@ -33,7 +32,9 @@
 
 - (NSDictionary *)applicationInfo {
     return @{
-        @"version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],//显示版本号
+        @"debug": [NSNumber numberWithBool:TRUE],
+        @"versionCode": @"0.0.1",
+        @"versionName": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],//显示版本号
     };
 }
 @end

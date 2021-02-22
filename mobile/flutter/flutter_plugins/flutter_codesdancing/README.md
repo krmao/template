@@ -27,14 +27,14 @@ samples, guidance on mobile development, and a full API reference.
     * Add document and licenses file
 * Publish
     ```shell script
-    flutter pub publish
+    flutter pub publish``
     ```
 * [Search packages](https://pub.dartlang.org) will find [uploaded flutter plugin](https://pub.dev/packages/flutter_codesdancing)
 * How to use
     ```shell script
     # depend on
     dependencies:
-      flutter_codesdancing: ^0.0.4
+      flutter_codesdancing: ^0.0.6
   
     # install
     flutter pub get
@@ -48,5 +48,5 @@ samples, guidance on mobile development, and a full API reference.
     #   path: ../
     
     # change local dependency to remote
-    flutter_codesdancing: ^0.0.4
+    flutter_codesdancing: ^0.0.6
     ```

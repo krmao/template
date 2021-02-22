@@ -1,6 +1,8 @@
 source 'https://cdn.cocoapods.org/'
 source 'https://github.com/krmao/libsforios.git'
 
+pod 'CodesDancing', '~>0.0.3'
+
 # Uncomment this line to define a global platform for your project
 # platform :ios, '9.0'
 

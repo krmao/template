@@ -9,6 +9,7 @@
 #import "NativeViewController.h"
 #import <Flutter/Flutter.h>
 #import <flutter_codesdancing/FlutterBoost.h>
+#import "STJsonUtil.h"
 
 @interface NativeViewController ()
 @property(nonatomic, strong)FLBFlutterViewContainer *flutterContainer;

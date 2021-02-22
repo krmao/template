@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_codesdancing'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -41,7 +41,7 @@ A new flutter plugin project.
     'Classes/FlutterBoost/container/FLBFlutterViewContainer.h'
 
   s.dependency 'Flutter'
-  s.dependency 'CodesDancing', '~>0.0.2'
+  s.dependency 'CodesDancing', '~>0.0.3'
   s.libraries = 'c++'
   s.xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',

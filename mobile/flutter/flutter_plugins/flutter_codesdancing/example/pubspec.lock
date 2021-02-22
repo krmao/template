@@ -75,7 +75,7 @@ packages:
       name: flutter_codesdancing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter

@@ -12,7 +12,7 @@ from os.path import expanduser
 git_android_url = "https://github.com/codesdancing/app_mixpanel_android.git"
 git_android_branch = "flutter_pure"
 git_ios_url = "https://github.com/codesdancing/app_mixpanel_ios.git"
-git_ios_branch = ""
+git_ios_branch = "withoutbase"
 
 # xxx/xxx/.run
 root_path = os.path.dirname(os.path.abspath(__file__))
@@ -50,8 +50,7 @@ def clone_pure_app():
         if not git_ios_branch:
             print "checkout branch ->", git_ios_branch
             os.system("git checkout " + git_ios_branch)
-        # os.system("git pull && git checkout . && git log -1")
-
+        os.system("git pull && git checkout . && git log -1")
 
 def install_brew():
     os.chdir(home)

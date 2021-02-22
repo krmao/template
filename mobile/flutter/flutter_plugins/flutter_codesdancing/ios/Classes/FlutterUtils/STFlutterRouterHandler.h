@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <FlutterBoost.h>
+#import "FlutterBoost.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface STFlutterRouterHandler : NSObject<FLBPlatform>
 @property (nonatomic,strong) UINavigationController *navigationController;
+
++ (UIViewController *)open:(UINavigationController *)from
+        name:(NSString *)name
+   urlParams:(NSDictionary *)params
+        exts:(NSDictionary *)exts
+  completion:(void (^)(BOOL))completion;
+
++ (UIViewController *)createViewController:(nullable NSString *)name
+   urlParams:(nullable NSDictionary *)params
+        exts:(nullable NSDictionary *)exts;
 @end
 
 NS_ASSUME_NONNULL_END

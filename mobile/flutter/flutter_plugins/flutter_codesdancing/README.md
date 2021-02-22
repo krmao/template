@@ -34,7 +34,7 @@ samples, guidance on mobile development, and a full API reference.
     ```shell script
     # depend on
     dependencies:
-      flutter_codesdancing: ^0.0.3
+      flutter_codesdancing: ^0.0.4
   
     # install
     flutter pub get
@@ -48,5 +48,5 @@ samples, guidance on mobile development, and a full API reference.
     #   path: ../
     
     # change local dependency to remote
-    flutter_codesdancing: ^0.0.3
+    flutter_codesdancing: ^0.0.4
     ```

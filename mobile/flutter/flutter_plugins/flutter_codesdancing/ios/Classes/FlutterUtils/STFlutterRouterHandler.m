@@ -7,30 +7,12 @@
 //
 
 #import "STFlutterRouterHandler.h"
-#import <FlutterBoost.h>
+#import "FlutterBoost.h"
 
 @interface STFlutterRouterHandler()
 @end
 
 @implementation STFlutterRouterHandler
-
-- (void)openNativeVC:(NSString *)name
-           urlParams:(NSDictionary *)params
-                exts:(NSDictionary *)exts{
-    UIViewController *vc = nil;
-    
-    //if([name isEqualToString:@"native_mine"]){
-    //    vc = [STListViewController new];
-    //}
-    
-    BOOL animated = [exts[@"animated"] boolValue];
-    if([params[@"present"] boolValue]){
-        [self.navigationController presentViewController:vc animated:animated completion:^{
-        }];
-    }else{
-        [self.navigationController pushViewController:vc animated:animated];
-    }
-}
 
 #pragma mark - Boost 1.5
 - (void)open:(NSString *)name
@@ -38,17 +20,7 @@
         exts:(NSDictionary *)exts
   completion:(void (^)(BOOL))completion
 {
-    if ([name containsString:@"native_"]) {//打开native页面
-        [self openNativeVC:name urlParams:params exts:exts];
-        return;
-    }
-    
-    BOOL animated = [exts[@"animated"] boolValue];
-    FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
-    [vc setName:name params:params];
-    [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
-    [self.navigationController pushViewController:vc animated:animated];
-    if(completion) completion(YES);
+    [STFlutterRouterHandler open:self.navigationController name:name urlParams:params exts:exts completion:completion];
 }
 
 - (void)present:(NSString *)name
@@ -79,4 +51,44 @@
         [self.navigationController popViewControllerAnimated:animated];
     }
 }
+
++ (UIViewController *)open:(UINavigationController *)from
+        name:(NSString *)name
+   urlParams:(NSDictionary *)params
+        exts:(NSDictionary *)exts
+  completion:(void (^)(BOOL))completion
+{
+    BOOL animated = [exts[@"animated"] boolValue];
+    UIViewController *viewController = [STFlutterRouterHandler createViewController:name urlParams:params exts:exts];
+    if([params[@"present"] boolValue]){
+        [from presentViewController:viewController animated:animated completion:^{
+            if(completion) completion(YES);
+        }];
+    }else{
+        [from pushViewController:viewController animated:animated];
+        if(completion) completion(YES);
+    }
+
+    return viewController;
+}
+
++ (UIViewController *)createViewController:(nullable NSString *)name
+   urlParams:(nullable NSDictionary *)params
+        exts:(nullable NSDictionary *)exts
+{
+    UIViewController * viewController;
+    if ([name containsString:@"native_"]) {
+        // if([name isEqualToString:@"native_mine"]){
+        //     viewController = [STListViewController new];
+        // }
+    }else{
+        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+        [vc setName:name params:params];
+        [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
+        viewController = vc;
+    }
+    return viewController;
+}
+
 @end
+

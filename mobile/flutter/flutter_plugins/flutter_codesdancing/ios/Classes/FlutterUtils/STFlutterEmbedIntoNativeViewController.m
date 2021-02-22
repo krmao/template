@@ -8,7 +8,7 @@
 
 #import "STFlutterEmbedIntoNativeViewController.h"
 #import <Flutter/Flutter.h>
-#import <FlutterBoost.h>
+#import "FlutterBoost.h"
 
 @interface STFlutterEmbedIntoNativeViewController ()
 @property(nonatomic, strong)FLBFlutterViewContainer *flutterContainer;

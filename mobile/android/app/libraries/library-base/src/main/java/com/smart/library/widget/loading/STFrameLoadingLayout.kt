@@ -180,41 +180,48 @@ class STFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: At
         }
     }
 
+    @Deprecated("不适用 pt 适配")
     fun enableUseSmallStyle(enableUseSmallStyle: Boolean, scaleFactor: Float) = try {
-        for ((key, view) in viewMaps) {
-            var imageView: View? = null
-            var textView: TextView? = null
-            when (key) {
-                ViewType.NO_DATA -> {
-                    textView = view.findViewById(R.id.text_empty) as? TextView
-                    imageView = view.findViewById(R.id.imageView_empty)
-                }
-                ViewType.LOADING -> {
-                    textView = view.findViewById(R.id.text_loading) as? TextView
-                    imageView = view.findViewById(R.id.imageView_loading)
-                }
-                ViewType.FAILURE -> {
-                    textView = view.findViewById(R.id.text_failure) as? TextView
-                    imageView = view.findViewById(R.id.imageView_failure)
+        when {
+            enableUseSmallStyle -> {
+                for ((key, view) in viewMaps) {
+                    var imageView: View? = null
+                    var textView: TextView? = null
+                    when (key) {
+                        ViewType.NO_DATA -> {
+                            textView = view.findViewById(R.id.text_empty) as? TextView
+                            imageView = view.findViewById(R.id.imageView_empty)
+                        }
+                        ViewType.LOADING -> {
+                            textView = view.findViewById(R.id.text_loading) as? TextView
+                            imageView = view.findViewById(R.id.imageView_loading)
+                        }
+                        ViewType.FAILURE -> {
+                            textView = view.findViewById(R.id.text_failure) as? TextView
+                            imageView = view.findViewById(R.id.imageView_failure)
+                        }
+                    }
+
+                    if (imageView != null) {
+                        val layoutParams = imageView.layoutParams as LinearLayout.LayoutParams
+                        layoutParams.height = getPxFromDp(if (enableUseSmallStyle) 60 * scaleFactor else 60F)
+                        layoutParams.width = getPxFromDp(if (enableUseSmallStyle) 60 * scaleFactor else 60F)
+                        imageView.layoutParams = layoutParams
+                    }
+
+                    textView?.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (if (enableUseSmallStyle) 10 else 14).toFloat())
+                    textView?.setTypeface(null, if (enableUseSmallStyle) Typeface.NORMAL else Typeface.BOLD)
+                    textView?.paint?.isFakeBoldText = !enableUseSmallStyle
+                    textView?.setPadding(
+                        getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
+                        getPxFromDp((if (enableUseSmallStyle) 3 else 15).toFloat()),
+                        getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
+                        getPxFromDp((if (enableUseSmallStyle) 3 else 15).toFloat())
+                    )
                 }
             }
-
-            if (imageView != null) {
-                val layoutParams = imageView.layoutParams as LinearLayout.LayoutParams
-                layoutParams.height = getPxFromDp(if (enableUseSmallStyle) 60 * scaleFactor else 60F)
-                layoutParams.width = getPxFromDp(if (enableUseSmallStyle) 60 * scaleFactor else 60F)
-                imageView.layoutParams = layoutParams
+            else -> {
             }
-
-            textView?.setTextSize(TypedValue.COMPLEX_UNIT_DIP, (if (enableUseSmallStyle) 10 else 14).toFloat())
-            textView?.setTypeface(null, if (enableUseSmallStyle) Typeface.NORMAL else Typeface.BOLD)
-            textView?.paint?.isFakeBoldText = !enableUseSmallStyle
-            textView?.setPadding(
-                getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
-                getPxFromDp((if (enableUseSmallStyle) 3 else 15).toFloat()),
-                getPxFromDp((if (enableUseSmallStyle) 10 else 30).toFloat()),
-                getPxFromDp((if (enableUseSmallStyle) 3 else 15).toFloat())
-            )
         }
     } catch (e: Exception) {
         e.printStackTrace()

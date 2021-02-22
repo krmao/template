@@ -19,6 +19,28 @@ import java.util.List;
  *
  * https://blankj.com/2018/12/18/android-adapt-screen-killer/
  *
+ *
+ * 适配 1920x1080 15.6 inch 的平板/TV
+ * Tools -> AVD Manager -> Create Virtual Device -> New Hardware Profile
+ * Device Name(新建两个, 一个是真实尺寸, 用于运行模拟器, 一个是预览尺寸, 通过计算获取)
+ * 	tv_1920x1080_15.6_simulator API 22 模拟器运行使用, 尺寸与目标平板真实尺寸一致
+ * 	tv_1920x1080_30.6_preview   开发时 android studio 预览使用
+ * Device Type
+ * 	Phone/Tablet
+ * Screen
+ *  Screen size 模拟器运行与目标平板尺寸一致 15.6 inch / Android Studio 预览 sqrt(1080*1080 + 1920*1920)/72 = 30.6 inch
+ *  Resolution 1920x1080 px tv/平板只开启横向, 关闭竖向
+ *
+ * 适配 750x1334 4.7 inch 的 iphone6
+ * Tools -> AVD Manager -> Create Virtual Device -> New Hardware Profile
+ * Device Name(新建两个, 一个是真实尺寸, 用于运行模拟器, 一个是预览尺寸, 通过计算获取)
+ * 	iphone6_750_1334_4.7_simulator API 22 模拟器运行使用, 尺寸与目标平板真实尺寸一致
+ * 	iphone6_750x1334_18.3_preview 开发时 android studio 预览使用
+ * Device Type
+ * 	Phone/Tablet
+ * Screen
+ * 	Screen size 模拟器运行与目标真机尺寸一致 4.7 inch / Android Studio 预览 sqrt(750*750 + 1080*1080)/72 = 18.3 inch
+ * 	Resolution 750x1334 px
  */
 public final class STAdaptScreenUtils {
 

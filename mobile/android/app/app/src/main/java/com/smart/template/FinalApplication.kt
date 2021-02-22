@@ -36,7 +36,13 @@ class FinalApplication : Application() {
                         "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
                         "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
                     )
-                )
+                ),
+                configLoading = STInitializer.ConfigLoading(
+                    layoutLoadingID = R.layout.final_widget_frameloading_loading,
+                    layoutNoDataID = R.layout.final_widget_frameloading_failure,
+                    layoutFailureID = R.layout.final_widget_frameloading_empty
+                ),
+                configAdapterDesign = STInitializer.ConfigAdapterDesign(enableAdapterDesign = true, adapterDesignWidth = 750)
             )
         )
     }

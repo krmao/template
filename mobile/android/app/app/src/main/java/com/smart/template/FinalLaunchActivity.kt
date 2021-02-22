@@ -30,8 +30,8 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
                     finish()
                     return@ensureBusInitialized
                 } else {
-                    goToFlutterHome()
-                    // goToHome()
+                    // goToFlutterHome()
+                    goToHome()
                 }
                 //endregion
             }

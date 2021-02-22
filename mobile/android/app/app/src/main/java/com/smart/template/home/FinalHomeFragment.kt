@@ -69,6 +69,9 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         roundLayout.setOnClickListener {
             FinalRoundLayoutFragment.goTo(context)
         }
+        frameLoadingBtn.setOnClickListener {
+            FinalFrameLoadingFragment.goTo(context)
+        }
         btnSwipe.setOnClickListener {
             FinalSwipeMenuFragment.goTo(context)
         }

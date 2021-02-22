@@ -373,6 +373,14 @@
                             android:text="crash test"
                             app:backgroundTint="@color/blue_600" />
 
+                        <Button
+                            android:id="@+id/frameLoadingBtn"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="frame loading"
+                            app:backgroundTint="@color/blue_600" />
+
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

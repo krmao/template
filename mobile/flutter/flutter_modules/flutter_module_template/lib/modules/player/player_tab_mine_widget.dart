@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 
 class PlayerTabMineWidget extends StatefulWidget {
   @override

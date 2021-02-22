@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 
 class PlayerTabHomeWidget extends StatefulWidget {
   @override

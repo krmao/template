@@ -1,6 +1,5 @@
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
 import 'package:flutter_module_template/modules/bridge/bridge_widget.dart';
 import 'package:flutter_module_template/modules/order/order_widget.dart';
 import 'package:flutter_module_template/modules/player/player_tab_widget_state.dart';

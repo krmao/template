@@ -5,7 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_module_template/modules/bridge/bridge_widget.dart';
 import 'package:flutter_test/flutter_test.dart';

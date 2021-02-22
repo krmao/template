@@ -6,9 +6,10 @@ import getopt
 import os.path
 import shutil
 import sys
+import json
 from os.path import expanduser
 
-git_android_url = "https://gitee.com/krmao/android_app_template.git"
+git_android_url = "https://github.com/codesdancing/app_mixpanel_android.git"
 git_android_branch = "flutter_pure"
 git_ios_url = "https://github.com/codesdancing/app_mixpanel_ios.git"
 git_ios_branch = ""
@@ -21,8 +22,11 @@ app_ios_path = os.path.abspath(app_path + '/ios')
 flutter_project_path = os.path.abspath(root_path + '/../')
 dest_host_path_android = os.path.abspath(root_path + '/.app/android/gradle')
 dest_host_path_android_repo = os.path.abspath(dest_host_path_android + '/host')
+dest_host_path_ios = os.path.abspath(root_path + '/.app/ios/Template/Pods/mixpanelFlutter/mixpanelFlutter/Classes')
+dest_host_path_ios_repo = os.path.abspath(dest_host_path_android + '/host')
+dest_ios_symroot = os.path.abspath(root_path + '/.app/build/')
 home = expanduser("~")
-
+ios_mixpod_path = home + "/.cocoapods/repos/mixinpod"
 
 def clone_pure_app():
     if not os.path.exists(app_path):
@@ -46,7 +50,7 @@ def clone_pure_app():
         if not git_ios_branch:
             print "checkout branch ->", git_ios_branch
             os.system("git checkout " + git_ios_branch)
-        os.system("git pull && git checkout . && git log -1")
+        # os.system("git pull && git checkout . && git log -1")
 
 
 def install_brew():
@@ -108,7 +112,9 @@ def build_flutter_module_aar():
         if os.path.exists(dest_host_path_android_repo):
             shutil.rmtree(dest_host_path_android_repo)
 
-    shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile" if release else "debug --no-profile") + " --build-number 0.0.1-SNAPSHOT --pub " + ("--verbose " if info else "") + "--output-dir " + dest_host_path_android
+    os.system(".fvm/flutter_sdk/bin/flutter packages get")
+    change_android_code()
+    shell_build_flutter_aar = ".fvm/flutter_sdk/bin/flutter build aar --" + ("release --no-profile" if release else "debug --no-profile") + " --build-number 0.0.1-SNAPSHOT " + ("--verbose " if info else "") + "--output-dir " + dest_host_path_android
     print shell_build_flutter_aar
     os.system(shell_build_flutter_aar)
     print "==========>>>>>>>>>> build flutter lib aar end"
@@ -136,7 +142,6 @@ def build_app_android():
     print "==========>>>>>>>>>> auto open android app end"
     print("==========>>>>>>>>>> install end")
 
-
 def build_flutter_module_framework():
     install_flutter_sdk()
 
@@ -145,8 +150,18 @@ def build_flutter_module_framework():
     # 参考
     # https://github.com/codesdancing/app_mixpanel_business_flutter/blob/master/flutter_modules/flutter_module_template/README_FLUTTER.md
 
+    if not os.path.exists(dest_host_path_ios):
+        os.makedirs(dest_host_path_ios)
+    else:
+        if os.path.exists(dest_host_path_ios):
+            shutil.rmtree(dest_host_path_ios)
+    os.chdir(flutter_project_path)
+    print "current path ->", os.getcwd()
+    os.system(".fvm/flutter_sdk/bin/flutter packages get")
+    change_ios_code()
+    shell_build_flutter_framework = ".fvm/flutter_sdk/bin/flutter build ios-framework --" + ("release --no-profile --no-debug" if release else "debug --no-profile --no-release") + (" --verbose" if info else "") + " --output=" + dest_host_path_ios
+    os.system(shell_build_flutter_framework)
     print "==========>>>>>>>>>> build flutter lib framework end"
-
 
 def build_app_ios():
     print "==========>>>>>>>>>> install ios app start"
@@ -154,18 +169,107 @@ def build_app_ios():
     print "current path ->", os.getcwd()
     # 参考
     # https://github.com/codesdancing/app_mixpanel_business_flutter/blob/master/flutter_modules/flutter_module_template/README_FLUTTER.md
+    if not os.path.exists(dest_host_path_ios):
+        build_flutter_module_framework()
+    install_ios_cocoapods_mixinrepo()
+    os.chdir(app_ios_path + "/Template")
+    os.system("pod install")
+    device = getiossimulator()
+    shell_install_iosapp = "xcodebuild -workspace Template.xcworkspace -scheme Template -configuration Debug -destination "  + "'platform=iOS Simulator,name=" + device["name"]  + "'"  + " SYMROOT=" + dest_ios_symroot
+    # os.chdir(app_ios_path + "/Template")
+    if not os.path.exists(dest_ios_symroot):
+        os.makedirs(dest_ios_symroot)
+    os.system(shell_install_iosapp)
+    iosapp_realpath = dest_ios_symroot + '/Debug-iphonesimulator/Template.app'
+    deviceudid = device["udid"]
+    os.system("xcrun instruments -w " + deviceudid)
+    os.chdir(flutter_project_path)
+    os.system("flutter run --use-application-binary " + iosapp_realpath + " -d " + deviceudid)
 
     print "==========>>>>>>>>>> auto open ios app end"
     print("==========>>>>>>>>>> install end")
 
+def getiossimulator():
+
+    simulators = execCmd(' xcrun simctl list --json devices available  -v iPhone')
+    devices = json.loads(simulators)
+    # print devices
+    devicesDic = devices["devices"]
+    devicesList = list(devicesDic.values())
+    realDevices = []
+    for device in devicesList:
+        if len(device) > 0:
+            for subDevice in device:
+                if subDevice["isAvailable"] == True and subDevice["deviceTypeIdentifier"].find("com.apple.CoreSimulator.SimDeviceType.iPhone") != -1:
+                    realDevices.append({"udid": subDevice["udid"],"name":subDevice["name"]})
+                    continue
+
+    #优先取iPhone 12
+    userDevice = {}
+    for device in realDevices:
+        if device["name"] == "iPhone 12":
+            userDevice = device
+            break
+    if len(userDevice["name"]) <= 0:
+        userDevice = realDevices[0]
+
+    return userDevice
+
+def install_ios_cocoapods_mixinrepo():
+    if not os.path.exists(ios_mixpod_path):
+        shellCmd =  "pod repo add mixinpod https://github.com/codesdancing/org_cocoapods.git"
+        os.system(shellCmd)
+
+def execCmd(cmd):
+    r = os.popen(cmd)
+    text = r.read()
+    r.close()
+    return text
 
 def flutter_attach():
     os.chdir(flutter_project_path)
     os.system("flutter attach")
 
+# flutter pub get will revert .android code
+def change_android_code():
+    android_build_gradle_file_path = os.path.abspath(flutter_project_path + '/.android/build.gradle')
+
+    # https://www.zhihu.com/question/50986375/answer/154758405
+    lines = []
+    with open(android_build_gradle_file_path, 'r') as f:
+        lines = f.readlines()
+    length = len(lines)
+    if length > 0 :
+        if lines[length-1].startswith('apply') :
+            print 'ignore'
+        else:
+            print 'add source'
+            lines.append('\napply from: "../.run/tools/build_aar_extra.gradle"')
+
+            with open(android_build_gradle_file_path, 'w') as n:
+                n.writelines(lines)
+
+# flutter pub get will revert .ios code
+def change_ios_code():
+    ios_pod_file_path = os.path.abspath(flutter_project_path + '/.ios/Podfile')
+
+    # https://www.zhihu.com/question/50986375/answer/154758405
+    lines = []
+    with open(ios_pod_file_path, 'r') as f:
+        lines = f.readlines()
+    if len(lines) > 0 :
+        if lines[0].startswith('source') :
+            print 'ignore'
+        else:
+            print 'add source'
+            lines.insert(0, "source 'https://github.com/krmao/libsforios.git'\n\n")
+            lines.insert(0, "source 'https://cdn.cocoapods.org/'\n")
+
+            with open(ios_pod_file_path, 'w') as n:
+                n.writelines(lines)
 
 if __name__ == '__main__':
-    opts, args = getopt.getopt(sys.argv[1:], 'hrun:c:release:i:', ['run=', 'c=', 'release=', 'i=', 'help'])
+    opts, args = getopt.getopt(sys.argv[1:], 'hp:c:r:i:', ['p=', 'c=', 'r=', 'i=', 'help'])
 
     platform = 'android'
     clean = False
@@ -173,16 +277,17 @@ if __name__ == '__main__':
     info = False
 
     for key, value in opts:
+        print 'key=', key, 'value=', value
         if key in ['-h', '--help']:
             print ''
             print 'arguments:'
             print '-h \t\t show help'
-            print '-run \t\t run android/ios'
+            print '-p \t\t run android/ios'
             print '-c \t\t clean'
-            print '-release \t install release'
+            print '-r \t install release'
             print '-i \t\t show log'
             sys.exit(0)
-        if key in ['-run']:
+        if key in ['-p']:
             platform = value
         if key in ['-c', '--clean']:
             clean = value == "true" or value == "True" or value == "1"
@@ -193,7 +298,8 @@ if __name__ == '__main__':
 
     print "root_path=", root_path
     print "==========>>>>>>>>>> install start"
-    print 'arguments -> clean:', clean, 'release:', release
+    print 'arguments -> clean:', clean, 'release:', release, 'platform:', platform
+
 
     if platform == "android" or platform == "ios":
         # install environment
@@ -205,11 +311,14 @@ if __name__ == '__main__':
         clone_pure_app()
         # build flutter module(aar/framework)
         if platform == "android":
+            print 'android'
             build_flutter_module_aar()
             # build and run app
             build_app_android()
         elif platform == "ios":
+            print 'ios'
             build_flutter_module_framework()
             build_app_ios()
         # flutter attach
         flutter_attach()
+

@@ -1,4 +1,4 @@
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_module_template/settings/router/flutter_router.dart';

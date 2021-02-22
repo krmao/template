@@ -42,8 +42,9 @@ dependencies:
   #  # banner
   #  # flutter_swiper: ^1.0.6
   # https://flutter.dev/docs/development/packages-and-plugins/using-packages
-  codesdancing_bridge:
-    path: ../../flutter_packages/flutter_package_bridge/
+  # codesdancing_bridge:
+  #   path: ../../flutter_packages/flutter_package_bridge/
+  flutter_codesdancing: ^0.0.6
 
   # shared_preferences
   shared_preferences: 0.5.12+4

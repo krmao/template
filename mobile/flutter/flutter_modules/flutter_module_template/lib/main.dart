@@ -1,4 +1,4 @@
-import 'package:codesdancing_bridge/codesdancing_bridge.dart';
+import 'package:flutter_codesdancing/flutter_codesdancing.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:ui' as ui;
 

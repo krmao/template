@@ -225,6 +225,12 @@
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_boost/example_swift/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_boost/example_swift/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_boost/example_swift/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_codesdancing/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/path_provider/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/path_provider/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/path_provider/build" />

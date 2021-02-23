@@ -10,7 +10,7 @@ import json
 from os.path import expanduser
 
 git_android_url = "https://github.com/codesdancing/app_mixpanel_android.git"
-git_android_branch = "flutter_pure"
+git_android_branch = ""
 git_ios_url = "https://github.com/codesdancing/app_mixpanel_ios.git"
 git_ios_branch = "withoutbase"
 

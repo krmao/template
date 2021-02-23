@@ -46,7 +46,10 @@ def clone_pure_app():
             os.system("git checkout " + git_android_branch)
         os.system("git pull && git checkout . && git log -1")
     elif platform == "ios":
-        os.system("git clone " + git_ios_url + " " + platform)
+        if not os.path.exists(app_ios_path):
+            os.system("git clone " + git_ios_url + " " + platform)
+        os.chdir(app_ios_path)
+        print "current path ->", os.getcwd()
         if not git_ios_branch:
             print "checkout branch ->", git_ios_branch
             os.system("git checkout " + git_ios_branch)

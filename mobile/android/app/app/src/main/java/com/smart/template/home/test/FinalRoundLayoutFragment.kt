@@ -49,6 +49,18 @@ class FinalRoundLayoutFragment : STBaseFragment() {
 
         textViewTest.text = spannableString
 
+        textViewTest.setOnClickListener {
+            Thread(Runnable {
+                textViewTest.text = "haha${Thread.currentThread().name}"
+            }).start()
+        }
+
+        textViewTest.setOnLongClickListener {
+            var a :String? = null
+            textViewTest.text = "haha${Thread.currentThread().name}" + a!!.length
+            true
+        }
+
 
         edit1.setOnClickListener {
             STToastUtil.show("clicked")

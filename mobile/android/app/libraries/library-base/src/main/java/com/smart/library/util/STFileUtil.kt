@@ -1,12 +1,14 @@
 package com.smart.library.util
 
 import android.graphics.Bitmap
+import android.os.Process
 import android.text.TextUtils
 import com.smart.library.STInitializer
 import com.smart.library.util.cache.STCacheManager
 import java.io.*
 import java.nio.channels.FileChannel
 import java.util.*
+import kotlin.system.exitProcess
 
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
@@ -327,12 +329,15 @@ object STFileUtil {
 
     @JvmStatic
     fun saveUncaughtException(thread: Thread?, throwable: Throwable?) {
-        STLogUtil.e("crash", "app crash, thread=${thread?.name}\n", throwable)
-        writeTextToFile(
-            "app crash, thread=${thread?.name}\n",
-            throwable,
-            File(STCacheManager.getCacheCrashDir(), STTimeUtil.yMdHmsSWithoutSeparator() + ".txt")
-        )
+        try {
+            writeTextToFile("app crash, thread=${thread?.name}\n", throwable, File(STCacheManager.getCacheCrashDir(), STTimeUtil.yMdHmsSWithoutSeparator() + ".txt"))
+        } catch (error: Throwable) {
+            STLogUtil.e("crash", "app crash, 保存奔溃信息出错, thread=${thread?.name}\n", error)
+        } finally {
+            STLogUtil.e("crash", "app crash, 强制杀死 app (否则如果是非主线程奔溃, 则不影响 app 的继续使用, 且 app 没有明显的示警信息, 只有查看控制台才能发现错误, 比如 CalledFromWrongThreadWException(子线程操作 UI)), thread=${thread?.name}\n", throwable)
+            Process.killProcess(Process.myPid())
+            exitProcess(10)
+        }
     }
 
     @JvmStatic

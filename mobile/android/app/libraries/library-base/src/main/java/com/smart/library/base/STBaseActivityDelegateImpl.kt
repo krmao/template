@@ -128,8 +128,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             statusBar?.init()
         }
 
-        if (enableSwipeBack) {
-            enableSwipeBack(true)
+        // if (enableSwipeBack) {
+        enableSwipeBack(enableSwipeBack)
             /*SwipeBackHelper.onCreate(activity)
             SwipeBackHelper.getCurrentPage(activity)//get current instance
                 .setSwipeBackEnable(enableSwipeBack)//on-off
@@ -152,7 +152,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             }
         })*/
 
-        }
+        // }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -241,6 +241,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
                 } else {
                     swipeBackHelper?.swipeBackLayout?.setEnableGesture(false)
                 }
+                this.enableSwipeBack = enable
                 // SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
             } catch (_: RuntimeException) {
             }

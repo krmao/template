@@ -35,11 +35,12 @@ open class STBaseLoginActivity : STBaseActivity(), STBaseLoginActivityDelegate {
     }
 
     init {
-        enableActivityFeatureNoTitle(true)
+        enableActivityFeatureNoTitle(false)
         activityDecorViewBackgroundResource(R.drawable.st_launch)
-        enableActivityFullScreenAndExpandLayout(true)
+        enableActivityFullScreenAndExpandLayout(false)
         enableSwipeBack(false)
-        enableImmersionStatusBar(false)
+        enableImmersionStatusBar(true)
+        enableImmersionStatusBarWithDarkFont(true)
         enableExitWithDoubleBackPressed(false)
     }
 }

@@ -35,11 +35,11 @@ import java.util.List;
  * Tools -> AVD Manager -> Create Virtual Device -> New Hardware Profile
  * Device Name(新建两个, 一个是真实尺寸, 用于运行模拟器, 一个是预览尺寸, 通过计算获取)
  * 	iphone6_750_1334_4.7_simulator API 22 模拟器运行使用, 尺寸与目标平板真实尺寸一致
- * 	iphone6_750x1334_18.3_preview 开发时 android studio 预览使用
+ * 	iphone6_750x1334_21.255_preview 开发时 android studio 预览使用
  * Device Type
  * 	Phone/Tablet
  * Screen
- * 	Screen size 模拟器运行与目标真机尺寸一致 4.7 inch / Android Studio 预览 sqrt(750*750 + 1080*1080)/72 = 18.3 inch
+ * 	Screen size 模拟器运行与目标真机尺寸一致 4.7 inch / Android Studio 预览 sqrt(750*750 + 1334*1334)/72 = 21.255 inch
  * 	Resolution 750x1334 px
  */
 public final class STAdaptScreenUtils {

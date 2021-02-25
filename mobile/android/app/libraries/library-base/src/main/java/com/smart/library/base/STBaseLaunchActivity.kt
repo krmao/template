@@ -1,7 +1,6 @@
 package com.smart.library.base
 
 import android.os.Bundle
-import com.smart.library.R
 
 /**
  * 检测 App 冷启动到 LaunchActivity 成功渲染耗时:
@@ -28,7 +27,7 @@ open class STBaseLaunchActivity : STBaseActivity() {
 
     init {
         enableActivityFeatureNoTitle(true)
-        activityDecorViewBackgroundResource(R.drawable.st_launch)
+        // activityDecorViewBackgroundResource(R.drawable.st_launch)
         enableActivityFullScreenAndExpandLayout(true)
         enableSwipeBack(false)
         enableImmersionStatusBar(false)

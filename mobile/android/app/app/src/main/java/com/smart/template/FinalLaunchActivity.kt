@@ -3,6 +3,7 @@ package com.smart.template
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseLaunchActivity
 import com.smart.library.flutter.STFlutterRouter

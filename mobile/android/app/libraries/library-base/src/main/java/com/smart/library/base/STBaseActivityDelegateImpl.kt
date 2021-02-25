@@ -96,9 +96,9 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         if (enableActivityFeatureNoTitle) {
             activity.requestWindowFeature(Window.FEATURE_NO_TITLE)
         }
-        if (activityDecorViewBackgroundResource > 0) {
+        /*if (activityDecorViewBackgroundResource > 0) {
             activity.window.decorView.setBackgroundResource(activityDecorViewBackgroundResource)
-        }
+        }*/
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -130,27 +130,27 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
         // if (enableSwipeBack) {
         enableSwipeBack(enableSwipeBack)
-            /*SwipeBackHelper.onCreate(activity)
-            SwipeBackHelper.getCurrentPage(activity)//get current instance
-                .setSwipeBackEnable(enableSwipeBack)//on-off
-                .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
-                .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-                .setClosePercent(0.7f)//close activity when swipe over activity
-                .setDisallowInterceptTouchEvent(false)*///your view can hand the events first.default false;
-            //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-            /*.addListener(object : SwipeListener {
-            override fun onScrollToClose() {
-            }
+        /*SwipeBackHelper.onCreate(activity)
+        SwipeBackHelper.getCurrentPage(activity)//get current instance
+            .setSwipeBackEnable(enableSwipeBack)//on-off
+            .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
+            .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
+            .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
+            .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
+            .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
+            .setClosePercent(0.7f)//close activity when swipe over activity
+            .setDisallowInterceptTouchEvent(false)*///your view can hand the events first.default false;
+        //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+        /*.addListener(object : SwipeListener {
+        override fun onScrollToClose() {
+        }
 
-            override fun onEdgeTouch() {
-            }
+        override fun onEdgeTouch() {
+        }
 
-            override fun onScroll(p0: Float, p1: Int) {
-            }
-        })*/
+        override fun onScroll(p0: Float, p1: Int) {
+        }
+    })*/
 
         // }
     }

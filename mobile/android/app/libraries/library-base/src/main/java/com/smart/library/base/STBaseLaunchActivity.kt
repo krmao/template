@@ -27,7 +27,6 @@ open class STBaseLaunchActivity : STBaseActivity() {
 
     init {
         enableActivityFeatureNoTitle(true)
-        // activityDecorViewBackgroundResource(R.drawable.st_launch)
         enableActivityFullScreenAndExpandLayout(true)
         enableSwipeBack(false)
         enableImmersionStatusBar(false)

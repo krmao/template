@@ -87,6 +87,8 @@ public class STSwipeBackLayout extends FrameLayout {
 
     private boolean mEnable = true;
 
+    private boolean mDisallowIntercept = false;
+
     private View mContentView;
 
     private final STSwipeBacViewDragHelper mDragHelper;
@@ -226,6 +228,10 @@ public class STSwipeBackLayout extends FrameLayout {
         mDragHelper.setEdgeSize(size);
     }
 
+    public void setEdgeSizePercent(float swipeEdgePercent) {
+        mDragHelper.setEdgeSize((int) (getResources().getDisplayMetrics().widthPixels * swipeEdgePercent));
+    }
+
     /**
      * Register a callback to be invoked when a swipe event is sent to this
      * view.
@@ -329,7 +335,7 @@ public class STSwipeBackLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (!mEnable) {
+        if (!mEnable || mDisallowIntercept) {
             return false;
         }
         try {
@@ -350,6 +356,10 @@ public class STSwipeBackLayout extends FrameLayout {
         }
         mDragHelper.processTouchEvent(event);
         return true;
+    }
+
+    public void setDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        mDisallowIntercept = disallowIntercept;
     }
 
     @Override
@@ -425,6 +435,9 @@ public class STSwipeBackLayout extends FrameLayout {
     }
 
     public void attachToActivity(Activity activity) {
+        if (getParent() != null) {
+            return;
+        }
         mActivity = activity;
         TypedArray a = activity.getTheme().obtainStyledAttributes(new int[]{
                 android.R.attr.windowBackground
@@ -433,13 +446,24 @@ public class STSwipeBackLayout extends FrameLayout {
         a.recycle();
 
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-        ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
+        View decorChild = decor.findViewById(android.R.id.content);
+        while (decorChild.getParent() != decor) {
+            decorChild = (View) decorChild.getParent();
+        }
         decorChild.setBackgroundResource(background);
         decor.removeView(decorChild);
         addView(decorChild);
         setContentView(decorChild);
-        addSwipeListener(new STSwipeBackListenerAdapter(activity, this, toChangeWindowTranslucent));
         decor.addView(this);
+    }
+
+    public void removeFromActivity(Activity activity) {
+        if (getParent() == null) return;
+        ViewGroup decorChild = (ViewGroup) getChildAt(0);
+        ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+        decor.removeView(this);
+        removeView(decorChild);
+        decor.addView(decorChild);
     }
 
     @Override

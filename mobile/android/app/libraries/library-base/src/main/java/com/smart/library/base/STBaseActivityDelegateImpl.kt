@@ -15,8 +15,8 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STAdaptScreenUtils
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.STToastUtil
-import com.smart.library.util.swipeback.STSwipeBackActivityHelper
-import com.smart.library.util.swipeback.STSwipeBackUtils
+import com.smart.library.util.swipeback.STSwipeBackLayout
+import com.smart.library.util.swipeback.relate.STSwipeBackHelper
 import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.debug.STDebugManager
 import io.reactivex.disposables.CompositeDisposable
@@ -45,9 +45,6 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var adapterDesignWidth: Int = -1
     protected var adapterDesignHeight: Int = -1
     protected var isActivityThemeTranslucent: Boolean = false
-
-    // protected var swipeBackHelper: SwipeBackHelper? = null
-    protected var swipeBackHelper: STSwipeBackActivityHelper? = null
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
         //region read params
@@ -128,55 +125,42 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             statusBar?.init()
         }
 
-        // if (enableSwipeBack) {
-        enableSwipeBack(enableSwipeBack)
-        /*SwipeBackHelper.onCreate(activity)
-        SwipeBackHelper.getCurrentPage(activity)//get current instance
-            .setSwipeBackEnable(enableSwipeBack)//on-off
-            .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
-            .setSwipeRelateOffset(500)//the Offset of following Activity when setSwipeRelateEnable(true)
-            .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-            .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-            .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-            .setClosePercent(0.7f)//close activity when swipe over activity
-            .setDisallowInterceptTouchEvent(false)*///your view can hand the events first.default false;
-        //.setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-        /*.addListener(object : SwipeListener {
-        override fun onScrollToClose() {
-        }
+        if (enableSwipeBack) {
+            STSwipeBackHelper.onCreate(activity)
+            STSwipeBackHelper.getCurrentPage(activity)//get current instance
+                .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)//on-off
+                .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
+                .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())//the Offset of following Activity when setSwipeRelateEnable(true)
+                // .setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
+                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
+                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
+                .setClosePercent(0.7f)//close activity when swipe over activity
+                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+                .addListener(object : STSwipeBackLayout.SwipeListener {
+                    override fun onScrollStateChange(state: Int, scrollPercent: Float) {
+                    }
 
-        override fun onEdgeTouch() {
-        }
+                    override fun onEdgeTouch(edgeFlag: Int) {
+                    }
 
-        override fun onScroll(p0: Float, p1: Int) {
+                    override fun onScrollOverThreshold() {
+                    }
+                })
         }
-    })*/
-
-        // }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        if (enableSwipeBack) swipeBackHelper?.onPostCreate()
+        if (enableSwipeBack) STSwipeBackHelper.onPostCreate(activity)
     }
 
     override fun onResume() {
         STDebugManager.showActivityInfo(activity)
     }
 
-    /*override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        return enableSwipeBack() && swipeBackHelper?.dispatchTouchEvent(event) == true
-    }
-
-    override fun onTouchEvent(event: MotionEvent?):Boolean {
-        if (enableSwipeBack()) {
-            swipeBackHelper?.onTouchEvent(event)
-        }
-        return false
-    }*/
-
     override fun onDestroy() {
         disposables.dispose()
-        // if (enableSwipeBack) SwipeBackHelper.onDestroy(activity)
+        if (enableSwipeBack) STSwipeBackHelper.onDestroy(activity)
     }
 
     override fun finishAfter() {
@@ -223,26 +207,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         if (!enableExitWithDoubleBackPressed) {
             //endregion
             try {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                // swipeBackHelper = SwipeBackHelper(activity)
-//                    this.enableSwipeBack = enable
-//                }
-                if (enable) {
-                    swipeBackHelper = STSwipeBackActivityHelper(activity)
-                    swipeBackHelper?.onActivityCreate()
-                    if (!isActivityThemeTranslucent) {
-                        val opaque = STSwipeBackUtils.convertActivityFromTranslucent(activity)
-                        swipeBackHelper?.swipeBackLayout?.isPageTranslucent = !opaque
-                        swipeBackHelper?.swipeBackLayout?.setToChangeWindowTranslucent(true)
-                    } else {
-                        swipeBackHelper?.swipeBackLayout?.setToChangeWindowTranslucent(false)
-                    }
-                    swipeBackHelper?.swipeBackLayout?.setEnableGesture(true)
-                } else {
-                    swipeBackHelper?.swipeBackLayout?.setEnableGesture(false)
-                }
                 this.enableSwipeBack = enable
-                // SwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable)
+                STSwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable, isActivityThemeTranslucent)
             } catch (_: RuntimeException) {
             }
         }

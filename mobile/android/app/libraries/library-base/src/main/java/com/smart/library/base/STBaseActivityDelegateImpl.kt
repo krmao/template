@@ -127,16 +127,16 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
         if (enableSwipeBack) {
             STSwipeBackHelper.onCreate(activity)
-            STSwipeBackHelper.getCurrentPage(activity)//get current instance
-                .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)//on-off
-                .setSwipeRelateEnable(enableSwipeBack)//if should move together with the following Activity
-                .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())//the Offset of following Activity when setSwipeRelateEnable(true)
-                // .setSwipeEdge(200)//set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-                .setSwipeEdgePercent(0.1f)//0.2 mean left 20% of screen can touch to begin swipe.
-                .setSwipeSensitivity(0.7f)//sensitiveness of the gesture。0:slow  1:sensitive
-                .setScrimColor(Color.parseColor("#EE000000"))//color of Scrim below the activity
-                .setClosePercent(0.7f)//close activity when swipe over activity
-                .setDisallowInterceptTouchEvent(false)//your view can hand the events first.default false;
+            STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
+                .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
+                .setSwipeRelateEnable(enableSwipeBack)                      // if should move together with the following Activity
+                .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
+                // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+                .setSwipeEdgePercent(0.1f)                                  // 0.2 mean left 20% of screen can touch to begin swipe.
+                .setSwipeSensitivity(0.7f)                                  // sensitiveness of the gesture。0:slow  1:sensitive
+                .setScrimColor(Color.parseColor("#99000000"))    // 50%==7f 60%=99 color of Scrim below the activity
+                .setClosePercent(0.7f)                                      // close activity when swipe over activity
+                .setDisallowInterceptTouchEvent(false)                      // your view can hand the events first.default false;
                 .addListener(object : STSwipeBackLayout.SwipeListener {
                     override fun onScrollStateChange(state: Int, scrollPercent: Float) {
                     }

@@ -122,7 +122,7 @@ open class STActivity : STBaseActivity() {
             fragmentClass: Any?,
             fragmentArguments: Bundle = Bundle(),
             requestCode: Int = 0,
-            @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
+            @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL.id,
             enableSwipeBack: Boolean = true,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,

@@ -11,7 +11,7 @@ import com.smart.library.util.swipeback.STSwipeBackUtils;
  * Created by Mr.Jude on 2015/8/3.
  * 每个滑动页面的管理
  */
-@SuppressWarnings({"UnusedReturnValue", "unused", "RedundantSuppression"})
+@SuppressWarnings({"UnusedReturnValue", "unused", "RedundantSuppression", "IfStatementWithIdenticalBranches"})
 public class STSwipeBackPage {
     //仅为判断是否需要将mSwipeBackLayout注入进去
     private boolean mEnable = true;
@@ -20,10 +20,6 @@ public class STSwipeBackPage {
     Activity mActivity;
     STSwipeBackActivityHelper swipeBackHelper;
     STSwipeBackRelateListenerAdapter relateListenerAdapter;
-    /**
-     * 默认滑动过程中动态改变主题透明度（当有popupWindow的时候）,当有videoPlayer的时候不改变，一直为透明，不随互动改变，防止变黑
-     */
-    private boolean toChangeWindowTranslucent = true;
 
     STSwipeBackPage(Activity activity) {
         this.mActivity = activity;
@@ -33,15 +29,11 @@ public class STSwipeBackPage {
     void onCreate() {
         swipeBackHelper = new STSwipeBackActivityHelper(mActivity);
         swipeBackHelper.onActivityCreate();
-        relateListenerAdapter = new STSwipeBackRelateListenerAdapter(this, swipeBackHelper.getSwipeBackLayout(), toChangeWindowTranslucent);
+        relateListenerAdapter = new STSwipeBackRelateListenerAdapter(this, swipeBackHelper.getSwipeBackLayout(), swipeBackHelper.getSwipeBackLayout().toChangeWindowTranslucent);
     }
 
     void onPostCreate() {
         handleLayout();
-    }
-
-    public void setToChangeWindowTranslucent(boolean toChangeWindowTranslucent) {
-        this.toChangeWindowTranslucent = toChangeWindowTranslucent;
     }
 
     @TargetApi(11)
@@ -62,19 +54,18 @@ public class STSwipeBackPage {
         return this;
     }
 
-    /**
-     * isActivityThemeTranslucent 是否需要转换 translucent 状态? null 不需要处理, true 不需要通过代码反射转变 translucent 状态, false 需要通过代码反射转变(需要时转变为 translucent, 不需要时再设置回来 !translucent)
-     */
     public STSwipeBackPage setSwipeBackEnable(boolean enable, Boolean isActivityThemeTranslucent) {
         mEnable = enable;
         swipeBackHelper.getSwipeBackLayout().setEnableGesture(enable);
         handleLayout();
         if (enable && isActivityThemeTranslucent != null) {
             if (!isActivityThemeTranslucent) {
+                // 如果 activity theme 是不透明的, 增加该行代码将会使得 activity 打开或者关闭时, 上一个页面有位移动画; 不加该行代码则上一个页面没有位移动画
                 boolean opaque = STSwipeBackUtils.convertActivityFromTranslucent(mActivity);
-                swipeBackHelper.getSwipeBackLayout().setPageTranslucent(!opaque);
                 swipeBackHelper.getSwipeBackLayout().setToChangeWindowTranslucent(true);
             } else {
+                // 如果 activity theme 是透明的, 增加该行代码将会使得 activity 打开或者关闭时, 上一个页面有位移动画, 但是 activity 将变成不透明效果; 不加该行代码则上一个页面没有位移动画, 且 activity 是透明效果
+                boolean opaque = STSwipeBackUtils.convertActivityFromTranslucent(mActivity);
                 swipeBackHelper.getSwipeBackLayout().setToChangeWindowTranslucent(false);
             }
         }

@@ -13,13 +13,13 @@ public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListen
     private final WeakReference<Activity> mActivity;
     private final STSwipeBackLayout mLayout;
     private final boolean toChangeWindowTranslucent;
-    
+
     public STSwipeBackListenerAdapter(@NonNull Activity activity, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
         mActivity = new WeakReference<>(activity);
         mLayout = layout;
         this.toChangeWindowTranslucent = toChangeWindowTranslucent;
     }
-    
+
     @Override
     public void onContentViewSwipedBack() {
         Activity activity = mActivity.get();
@@ -28,19 +28,19 @@ public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListen
             activity.overridePendingTransition(0, 0);
         }
     }
-    
+
     @Override
     public void onScrollStateChange(int state, float scrollPercent) {
         if (state == STSwipeBacViewDragHelper.STATE_IDLE) {// 侧滑未退出页面，切换至透明
             if (null != mActivity.get()) {
                 if (toChangeWindowTranslucent) {
-                    //判断侧滑未退出页面是否改变主题透明
+                    // 将透明的 activity 转换成不透明
                     STSwipeBackUtils.convertActivityFromTranslucent(mActivity.get());
                 }
             }
         }
     }
-    
+
     @Override
     public void onEdgeTouch(int edgeFlag) {
         // 侧滑切换至透明
@@ -55,10 +55,10 @@ public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListen
             });
         }
     }
-    
+
     @Override
     public void onScrollOverThreshold() {
-        
+
     }
-    
+
 }

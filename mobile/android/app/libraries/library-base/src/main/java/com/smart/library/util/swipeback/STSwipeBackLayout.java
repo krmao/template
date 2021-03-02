@@ -128,7 +128,7 @@ public class STSwipeBackLayout extends FrameLayout {
     /**
      * 默认滑动过程中动态改变主题透明度（当有popupWindow的时候）,当有videoPlayer的时候不改变，一直为透明，不随互动改变，防止变黑
      */
-    private boolean toChangeWindowTranslucent = true;
+    public boolean toChangeWindowTranslucent = true;
 
     public STSwipeBackLayout(Context context) {
         this(context, null);

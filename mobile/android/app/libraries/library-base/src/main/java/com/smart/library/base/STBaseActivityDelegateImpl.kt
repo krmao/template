@@ -31,6 +31,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var exitTime: Long = 0
     protected var enableSwipeBack = true
     protected var enableSwipeBackRelate: Boolean = true
+    protected var enableSwipeBackShadow: Boolean = true
     protected var enableImmersionStatusBar = true
     protected var enableImmersionStatusBarWithDarkFont = false
     protected var statusBarAlphaForDarkFont: Float = 0.8f
@@ -72,6 +73,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
             //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
             enableSwipeBackRelate = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK_RELATE, !isActivityThemeTransparent)
+            enableSwipeBackShadow = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK_SHADOW, !isActivityThemeTransparent)
             enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
             enableExitWithDoubleBackPressed = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
             if (enableExitWithDoubleBackPressed) {
@@ -136,6 +138,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         STSwipeBackHelper.onCreate(activity)
         STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
             .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
+            .setSwipeBackShadowEnable(enableSwipeBackShadow)
             .setSwipeRelateEnable(enableSwipeBackRelate)                  // 如果是透明主题背景, 当位移时, 前一个页面的前一个页面是黑色背景, 因此透明背景关闭位移功能 if should move together with the following Activity
             .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.4).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
             // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
@@ -227,6 +230,17 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         try {
             this.enableSwipeBackRelate = enable
             STSwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable)
+        } catch (_: RuntimeException) {
+        }
+    }
+
+    override fun enableSwipeBackShadow(): Boolean = enableSwipeBackShadow
+
+    @SuppressLint("ObsoleteSdkInt")
+    override fun enableSwipeBackShadow(enable: Boolean) {
+        try {
+            this.enableSwipeBackShadow = enable
+            STSwipeBackHelper.getCurrentPage(activity).setSwipeBackShadowEnable(enable)
         } catch (_: RuntimeException) {
         }
     }

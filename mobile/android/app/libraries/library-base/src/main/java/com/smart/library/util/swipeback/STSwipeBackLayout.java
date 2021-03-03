@@ -87,6 +87,7 @@ public class STSwipeBackLayout extends FrameLayout {
     private Activity mActivity;
 
     private boolean mEnable = true;
+    private boolean mEnableShadow = true;
 
     private boolean mDisallowIntercept = false;
 
@@ -188,6 +189,11 @@ public class STSwipeBackLayout extends FrameLayout {
 
     public void setEnableGesture(boolean enable) {
         mEnable = enable;
+    }
+
+    public void setSwipeBackShadowEnable(boolean enable) {
+        mEnableShadow = enable;
+        invalidate();
     }
 
     /**
@@ -397,6 +403,7 @@ public class STSwipeBackLayout extends FrameLayout {
     }
 
     private void drawScrim(Canvas canvas, View child) {
+        if (!mEnableShadow) return;
         final int baseAlpha = (mScrimColor & 0xff000000) >>> 24;
         final int alpha = (int) (baseAlpha * mScrimOpacity);
         final int color = alpha << 24 | (mScrimColor & 0xffffff);
@@ -412,6 +419,7 @@ public class STSwipeBackLayout extends FrameLayout {
     }
 
     private void drawShadow(Canvas canvas, View child) {
+        if (!mEnableShadow) return;
         final Rect childRect = mTmpRect;
         child.getHitRect(childRect);
 

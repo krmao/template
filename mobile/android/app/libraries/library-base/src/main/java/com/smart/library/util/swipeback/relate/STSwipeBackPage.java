@@ -119,6 +119,14 @@ public class STSwipeBackPage {
         return this;
     }
 
+    public STSwipeBackPage setSwipeBackShadowEnable(boolean enable) {
+        Activity activity = mActivity.get();
+        if (null != activity && !activity.isFinishing()) {
+            mSwipeBackLayout.setSwipeBackShadowEnable(enable);
+        }
+        return this;
+    }
+
     //底层阴影颜色
     public STSwipeBackPage setScrimColor(int color) {
         mSwipeBackLayout.setScrimColor(color);

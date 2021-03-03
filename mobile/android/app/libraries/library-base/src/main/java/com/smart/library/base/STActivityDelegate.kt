@@ -39,6 +39,8 @@ interface STActivityDelegate {
     fun enableSwipeBack(enable: Boolean)
     fun enableSwipeBackRelate(): Boolean
     fun enableSwipeBackRelate(enable: Boolean)
+    fun enableSwipeBackShadow(): Boolean
+    fun enableSwipeBackShadow(enable: Boolean)
     fun enableImmersionStatusBar(): Boolean
     fun enableImmersionStatusBar(enable: Boolean)
     fun enableImmersionStatusBarWithDarkFont(): Boolean
@@ -91,6 +93,7 @@ interface STActivityDelegate {
         const val KEY_ACTIVITY_THEME = "KEY_ACTIVITY_THEME"
         const val KEY_ACTIVITY_ENABLE_SWIPE_BACK = "KEY_ACTIVITY_ENABLE_SWIPE_BACK"
         const val KEY_ACTIVITY_ENABLE_SWIPE_BACK_RELATE = "KEY_ACTIVITY_ENABLE_SWIPE_BACK_RELATE"
+        const val KEY_ACTIVITY_ENABLE_SWIPE_BACK_SHADOW = "KEY_ACTIVITY_ENABLE_SWIPE_BACK_SHADOW"
         const val KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR = "KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR"
         const val KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT = "KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT"
         const val KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT = "KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT"

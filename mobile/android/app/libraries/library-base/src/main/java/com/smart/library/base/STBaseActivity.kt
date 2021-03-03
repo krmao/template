@@ -90,6 +90,8 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
     override fun enableSwipeBack(enable: Boolean) = delegate.enableSwipeBack(enable)
     override fun enableSwipeBackRelate(): Boolean = delegate.enableSwipeBackRelate()
     override fun enableSwipeBackRelate(enable: Boolean) = delegate.enableSwipeBackRelate(enable)
+    override fun enableSwipeBackShadow(): Boolean = delegate.enableSwipeBackShadow()
+    override fun enableSwipeBackShadow(enable: Boolean) = delegate.enableSwipeBackShadow(enable)
 
     override fun enableImmersionStatusBar(): Boolean = delegate.enableImmersionStatusBar()
     override fun enableImmersionStatusBar(enable: Boolean) = delegate.enableImmersionStatusBar(enable)

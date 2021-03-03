@@ -72,6 +72,7 @@ open class STActivity : STBaseActivity() {
             @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
             enableSwipeBack: Boolean = true,
             enableSwipeBackRelate: Boolean? = null,
+            enableSwipeBackShadow: Boolean? = null,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
             @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
@@ -95,6 +96,7 @@ open class STActivity : STBaseActivity() {
                 activityThem = activityTheme,
                 enableSwipeBack = enableSwipeBack,
                 enableSwipeBackRelate = enableSwipeBackRelate,
+                enableSwipeBackShadow = enableSwipeBackShadow,
                 enableImmersionStatusBar = enableImmersionStatusBar,
                 enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
                 statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
@@ -127,6 +129,7 @@ open class STActivity : STBaseActivity() {
             @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL.id,
             enableSwipeBack: Boolean = true,
             enableSwipeBackRelate: Boolean? = null,
+            enableSwipeBackShadow: Boolean? = null,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
             @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
@@ -151,6 +154,7 @@ open class STActivity : STBaseActivity() {
                     activityThem = activityTheme,
                     enableSwipeBack = enableSwipeBack,
                     enableSwipeBackRelate = enableSwipeBackRelate,
+                    enableSwipeBackShadow = enableSwipeBackShadow,
                     enableImmersionStatusBar = enableImmersionStatusBar,
                     enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
                     statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
@@ -185,6 +189,7 @@ open class STActivity : STBaseActivity() {
             @StyleRes activityThem: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
             enableSwipeBack: Boolean = true,
             enableSwipeBackRelate: Boolean? = null,
+            enableSwipeBackShadow: Boolean? = null,
             enableImmersionStatusBar: Boolean = true,
             enableImmersionStatusBarWithDarkFont: Boolean = false,
             @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
@@ -203,6 +208,7 @@ open class STActivity : STBaseActivity() {
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_THEME, activityThem)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
             if (enableSwipeBackRelate != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK_RELATE, enableSwipeBackRelate)
+            if (enableSwipeBackShadow != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK_SHADOW, enableSwipeBackShadow)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
             intent.putExtra(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
             if (statusBarAlphaForDarkFont != null) intent.putExtra(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)

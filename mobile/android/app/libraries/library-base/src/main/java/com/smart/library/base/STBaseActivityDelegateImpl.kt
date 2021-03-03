@@ -125,33 +125,31 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             statusBar?.init()
         }
 
-        if (enableSwipeBack) {
-            STSwipeBackHelper.onCreate(activity)
-            STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
-                .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
-                .setSwipeRelateEnable(enableSwipeBack)                      // if should move together with the following Activity
-                .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
-                // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
-                .setSwipeEdgePercent(0.1f)                                  // 0.2 mean left 20% of screen can touch to begin swipe.
-                .setSwipeSensitivity(0.7f)                                  // sensitiveness of the gesture。0:slow  1:sensitive
-                .setScrimColor(Color.parseColor("#99000000"))    // 50%==7f 60%=99 color of Scrim below the activity
-                .setClosePercent(0.7f)                                      // close activity when swipe over activity
-                .setDisallowInterceptTouchEvent(false)                      // your view can hand the events first.default false;
-                .addListener(object : STSwipeBackLayout.SwipeListener {
-                    override fun onScrollStateChange(state: Int, scrollPercent: Float) {
-                    }
+        STSwipeBackHelper.onCreate(activity)
+        STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
+            .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
+            .setSwipeRelateEnable(true)                                 // if should move together with the following Activity
+            .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
+            // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
+            .setSwipeEdgePercent(0.1f)                                  // 0.2 mean left 20% of screen can touch to begin swipe.
+            .setSwipeSensitivity(0.7f)                                  // sensitiveness of the gesture。0:slow  1:sensitive
+            .setScrimColor(Color.parseColor("#99000000"))    // 50%==7f 60%=99 color of Scrim below the activity
+            .setClosePercent(0.7f)                                      // close activity when swipe over activity
+            .setDisallowInterceptTouchEvent(false)                      // your view can hand the events first.default false;
+            .addListener(object : STSwipeBackLayout.SwipeListener {
+                override fun onScrollStateChange(state: Int, scrollPercent: Float) {
+                }
 
-                    override fun onEdgeTouch(edgeFlag: Int) {
-                    }
+                override fun onEdgeTouch(edgeFlag: Int) {
+                }
 
-                    override fun onScrollOverThreshold() {
-                    }
-                })
-        }
+                override fun onScrollOverThreshold() {
+                }
+            })
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        if (enableSwipeBack) STSwipeBackHelper.onPostCreate(activity)
+        STSwipeBackHelper.onPostCreate(activity)
     }
 
     override fun onResume() {
@@ -160,7 +158,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
     override fun onDestroy() {
         disposables.dispose()
-        if (enableSwipeBack) STSwipeBackHelper.onDestroy(activity)
+        STSwipeBackHelper.onDestroy(activity)
     }
 
     override fun finishAfter() {
@@ -204,11 +202,11 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     @SuppressLint("ObsoleteSdkInt")
     override fun enableSwipeBack(enable: Boolean) {
         //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
-        if (!enableExitWithDoubleBackPressed) {
+        if (!enableExitWithDoubleBackPressed || (enableExitWithDoubleBackPressed && !enable)) {
             //endregion
             try {
                 this.enableSwipeBack = enable
-                STSwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable).setSwipeBackEnable(enable, isActivityThemeTranslucent)
+                STSwipeBackHelper.getCurrentPage(activity).setSwipeBackEnable(enable, isActivityThemeTranslucent)
             } catch (_: RuntimeException) {
             }
         }

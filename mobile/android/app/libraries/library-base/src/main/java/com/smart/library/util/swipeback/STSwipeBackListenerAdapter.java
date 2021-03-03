@@ -12,16 +12,10 @@ import java.lang.ref.WeakReference;
 public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListenerEx {
     private final WeakReference<Activity> mActivity;
     private final STSwipeBackLayout mLayout;
-    private final boolean toChangeWindowTranslucent;
 
-    public STSwipeBackListenerAdapter(@NonNull Activity activity, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
-        this(new WeakReference<>(activity), layout, toChangeWindowTranslucent);
-    }
-
-    public STSwipeBackListenerAdapter(@NonNull WeakReference<Activity> activity, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
+    public STSwipeBackListenerAdapter(@NonNull WeakReference<Activity> activity, STSwipeBackLayout layout) {
         mActivity = activity;
         mLayout = layout;
-        this.toChangeWindowTranslucent = toChangeWindowTranslucent;
     }
 
     @Override
@@ -35,26 +29,25 @@ public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListen
 
     @Override
     public void onScrollStateChange(int state, float scrollPercent) {
-        if (state == STSwipeBacViewDragHelper.STATE_IDLE) {// 侧滑未退出页面，切换至透明
-            if (null != mActivity.get()) {
-                if (toChangeWindowTranslucent) {
-                    // 将透明的 activity 转换成不透明
-                    STSwipeBackUtils.convertActivityFromTranslucent(mActivity.get());
-                }
+        // 侧滑未退出页面，切换至透明
+        if (state == STSwipeBacViewDragHelper.STATE_IDLE) {
+            if (null != mActivity.get() && null != mLayout && mLayout.toChangeWindowTranslucent) {
+                // 将透明的 activity 转换成不透明
+                STSwipeBackUtils.convertActivityFromTranslucent(mActivity.get());
             }
         }
     }
 
+    @SuppressWarnings("Convert2Lambda")
     @Override
     public void onEdgeTouch(int edgeFlag) {
         // 侧滑切换至透明
-        if (null != mActivity.get()) {
+        if (null != mActivity.get() && null != mLayout && mLayout.toChangeWindowTranslucent) {
+            // 将不透明的 activity 转换成透明
             STSwipeBackUtils.convertActivityToTranslucent(mActivity.get(), new STSwipeBackUtils.TranslucentListener() {
                 @Override
                 public void onTranslucent() {
-                    if (null != mLayout) {
-                        mLayout.setPageTranslucent(true);
-                    }
+                    mLayout.setPageTranslucent(true);
                 }
             });
         }

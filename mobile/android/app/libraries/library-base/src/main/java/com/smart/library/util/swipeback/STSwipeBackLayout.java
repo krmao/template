@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 
 import com.smart.library.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,6 +125,8 @@ public class STSwipeBackLayout extends FrameLayout {
     private int mTrackingEdge;
 
     private boolean mPageTranslucent = true;
+
+    private STSwipeBackListenerAdapter listenerAdapter = null;
 
     /**
      * 默认滑动过程中动态改变主题透明度（当有popupWindow的时候）,当有videoPlayer的时候不改变，一直为透明，不随互动改变，防止变黑
@@ -454,11 +457,19 @@ public class STSwipeBackLayout extends FrameLayout {
         decor.removeView(decorChild);
         addView(decorChild);
         setContentView(decorChild);
+        if (listenerAdapter == null) {
+            listenerAdapter = new STSwipeBackListenerAdapter(new WeakReference<>(activity), this);
+            addSwipeListener(listenerAdapter);
+        }
         decor.addView(this);
     }
 
     public void removeFromActivity(Activity activity) {
         if (getParent() == null) return;
+        if (listenerAdapter != null) {
+            removeSwipeListener(listenerAdapter);
+            listenerAdapter = null;
+        }
         ViewGroup decorChild = (ViewGroup) getChildAt(0);
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         decor.removeView(this);

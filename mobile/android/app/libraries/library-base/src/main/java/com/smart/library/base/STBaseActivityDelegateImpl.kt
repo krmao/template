@@ -30,6 +30,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
 
     protected var exitTime: Long = 0
     protected var enableSwipeBack = true
+    protected var enableSwipeBackRelate: Boolean = true
     protected var enableImmersionStatusBar = true
     protected var enableImmersionStatusBarWithDarkFont = false
     protected var statusBarAlphaForDarkFont: Float = 0.8f
@@ -45,17 +46,32 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
     protected var adapterDesignWidth: Int = -1
     protected var adapterDesignHeight: Int = -1
     protected var isActivityThemeTranslucent: Boolean = false
+    protected var isActivityThemeTransparent: Boolean = false
 
     override fun onCreateBefore(savedInstanceState: Bundle?) {
         //region read params
         val bundle: Bundle? = activity.intent?.extras
         if (bundle != null) {
             activityTheme = bundle.getInt(STActivityDelegate.KEY_ACTIVITY_THEME, activityTheme)
+            isActivityThemeTransparent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
+            isActivityThemeTranslucent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
+
             enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
             enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)
             statusBarAlphaForDarkFont = bundle.getFloat(STActivityDelegate.KEY_ACTIVITY_STATUS_BAR_ALPHA_FOR_DARK_FONT, statusBarAlphaForDarkFont)
 
             //region can't enableSwipeBack if enableExitWithDoubleBackPressed == true
+            enableSwipeBackRelate = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK_RELATE, !isActivityThemeTransparent)
             enableSwipeBack = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_SWIPE_BACK, enableSwipeBack)
             enableExitWithDoubleBackPressed = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_EXIT_WITH_DOUBLE_BACK_PRESSED, enableExitWithDoubleBackPressed)
             if (enableExitWithDoubleBackPressed) {
@@ -80,14 +96,6 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             // https://blog.csdn.net/qq_43278826/article/details/107557784
             // https://medium.com/pxhouse/runtime-theming-of-translucent-activities-640013ad40d0
             activity.setTheme(activityTheme)
-            isActivityThemeTranslucent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT_FADE.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT_FADE.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT_FADE.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
         }
         // 代码设置可以看到状态栏动画, theme.xml 中设置全屏比较突兀
         if (enableActivityFeatureNoTitle) {
@@ -128,8 +136,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         STSwipeBackHelper.onCreate(activity)
         STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
             .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
-            .setSwipeRelateEnable(true)                                 // if should move together with the following Activity
-            .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.3).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
+            .setSwipeRelateEnable(enableSwipeBackRelate)                  // 如果是透明主题背景, 当位移时, 前一个页面的前一个页面是黑色背景, 因此透明背景关闭位移功能 if should move together with the following Activity
+            .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.4).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
             // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
             .setSwipeEdgePercent(0.1f)                                  // 0.2 mean left 20% of screen can touch to begin swipe.
             .setSwipeSensitivity(0.7f)                                  // sensitiveness of the gesture。0:slow  1:sensitive
@@ -209,6 +217,17 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
                 STSwipeBackHelper.getCurrentPage(activity).setSwipeBackEnable(enable, isActivityThemeTranslucent)
             } catch (_: RuntimeException) {
             }
+        }
+    }
+
+    override fun enableSwipeBackRelate(): Boolean = enableSwipeBackRelate
+
+    @SuppressLint("ObsoleteSdkInt")
+    override fun enableSwipeBackRelate(enable: Boolean) {
+        try {
+            this.enableSwipeBackRelate = enable
+            STSwipeBackHelper.getCurrentPage(activity).setSwipeRelateEnable(enable)
+        } catch (_: RuntimeException) {
         }
     }
 

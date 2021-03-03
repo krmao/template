@@ -41,7 +41,7 @@ public class STSwipeBackPage {
             activity.getWindow().getDecorView().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             mSwipeBackLayout = (STSwipeBackLayout) LayoutInflater.from(activity).inflate(R.layout.st_swipeback_layout, null);
         }
-        mRelateListenerAdapter = new STSwipeBackRelateListenerAdapter(this, mSwipeBackLayout, mSwipeBackLayout.toChangeWindowTranslucent);
+        mRelateListenerAdapter = new STSwipeBackRelateListenerAdapter(this);
     }
 
     void onPostCreate() {

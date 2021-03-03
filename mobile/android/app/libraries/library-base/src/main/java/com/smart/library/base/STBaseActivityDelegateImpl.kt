@@ -129,7 +129,7 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
         STSwipeBackHelper.getCurrentPage(activity)                      // get current instance
             .setSwipeBackEnable(enableSwipeBack, isActivityThemeTranslucent)    // on-off
             .setSwipeRelateEnable(true)                                 // if should move together with the following Activity
-            .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.5).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
+            .setSwipeRelateOffset((STSystemUtil.screenWidth() * 0.3).toInt())   // the Offset of following Activity when setSwipeRelateEnable(true)
             // .setSwipeEdge(200)                                       // set the touch area。200 mean only the left 200px of screen can touch to begin swipe.
             .setSwipeEdgePercent(0.1f)                                  // 0.2 mean left 20% of screen can touch to begin swipe.
             .setSwipeSensitivity(0.7f)                                  // sensitiveness of the gesture。0:slow  1:sensitive

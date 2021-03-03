@@ -85,6 +85,7 @@ object STSystemUtil {
     }
 
     @JvmStatic
+    @JvmOverloads
     fun screenWidth(application: Application? = STInitializer.application()): Int = displayMetrics(application)?.widthPixels ?: 0
 
     /**
@@ -96,6 +97,7 @@ object STSystemUtil {
      * 假定肯定不包含虚拟导航栏高度
      */
     @JvmStatic
+    @JvmOverloads
     fun screenHeight(application: Application? = STInitializer.application()): Int = displayMetrics(application)?.heightPixels ?: 0
 
     /**

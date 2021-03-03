@@ -14,8 +14,7 @@ import com.smart.library.util.swipeback.STSwipeBackListenerAdapter;
 @SuppressLint("ObsoleteSdkInt")
 public class STSwipeBackRelateListenerAdapter extends STSwipeBackListenerAdapter {
     public STSwipeBackPage currentPage;
-    private static final int DEFAULT_OFFSET = 40;
-    private int offset = 500;
+    private int offset = 360;
 
     public STSwipeBackRelateListenerAdapter(@NonNull STSwipeBackPage currentSwipeBackPage, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
         super(currentSwipeBackPage.mActivity, layout, toChangeWindowTranslucent);
@@ -37,7 +36,7 @@ public class STSwipeBackRelateListenerAdapter extends STSwipeBackListenerAdapter
         if (Build.VERSION.SDK_INT > 11) {
             STSwipeBackPage prePage = STSwipeBackHelper.getPrePage(currentPage);
             if (prePage != null) {
-                prePage.getSwipeBackLayout().setX((int) Math.min(-offset * Math.max(1 - scrollPercent, 0) + DEFAULT_OFFSET, 0));
+                prePage.getSwipeBackLayout().setX((int) Math.min(-offset * Math.max(1 - scrollPercent, 0), 0));
                 if (scrollPercent == 0) {
                     prePage.getSwipeBackLayout().setX(0);
                 }

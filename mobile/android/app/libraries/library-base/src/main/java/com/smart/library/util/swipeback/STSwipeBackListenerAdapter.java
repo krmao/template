@@ -15,7 +15,11 @@ public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListen
     private final boolean toChangeWindowTranslucent;
 
     public STSwipeBackListenerAdapter(@NonNull Activity activity, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
-        mActivity = new WeakReference<>(activity);
+        this(new WeakReference<>(activity), layout, toChangeWindowTranslucent);
+    }
+
+    public STSwipeBackListenerAdapter(@NonNull WeakReference<Activity> activity, STSwipeBackLayout layout, boolean toChangeWindowTranslucent) {
+        mActivity = activity;
         mLayout = layout;
         this.toChangeWindowTranslucent = toChangeWindowTranslucent;
     }

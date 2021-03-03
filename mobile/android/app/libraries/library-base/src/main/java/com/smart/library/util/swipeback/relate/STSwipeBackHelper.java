@@ -14,7 +14,7 @@ public class STSwipeBackHelper {
 
     private static STSwipeBackPage findHelperByActivity(Activity activity) {
         for (STSwipeBackPage swipeBackPage : mPageStack) {
-            if (swipeBackPage.mActivity == activity) return swipeBackPage;
+            if (swipeBackPage.mActivity.get() == activity) return swipeBackPage;
         }
         return null;
     }

@@ -65,18 +65,18 @@ def install_brew():
     os.system("which brew")
 
 
-def install_dart():
-    os.chdir(home)
-    if not os.path.exists("/usr/local/bin/dart"):
-        print "==========>>>>>>>>>> install dart start"
-        print "current path ->", os.getcwd()
-        os.system("brew tap dart-lang/dart")
-        os.system("brew install dart")
-        os.system("brew switch dart 2.10.4")
-        os.system("brew info dart")
-        os.system('export PATH="$PATH":"~/.pub-cache/bin"')
-        print "==========>>>>>>>>>> install dart end"
-    os.system("which dart")
+# def install_dart():
+#     os.chdir(home)
+#     if not os.path.exists("/usr/local/bin/dart"):
+#         print "==========>>>>>>>>>> install dart start"
+#         print "current path ->", os.getcwd()
+#         os.system("brew tap dart-lang/dart")
+#         os.system("brew install dart")
+#         os.system("brew switch dart 2.10.4")
+#         os.system("brew info dart")
+#         os.system('export PATH="$PATH":"~/.pub-cache/bin"')
+#         print "==========>>>>>>>>>> install dart end"
+#     os.system("which dart")
 
 
 def install_fvm():
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     if platform == "android" or platform == "ios":
         # install environment
         install_brew()
-        install_dart()
+        # install_dart()
         install_fvm()
 
         # mkdir .app

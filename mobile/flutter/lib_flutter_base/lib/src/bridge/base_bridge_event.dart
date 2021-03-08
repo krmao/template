@@ -1,8 +1,8 @@
-import 'bridge.dart';
+import 'base_bridge.dart';
 
 typedef EventCallBack = void Function(String eventName, Map eventData);
 
-class Event extends Bridge {
+class Event extends BaseBridge {
   // ignore: non_constant_identifier_names
   static String BRIDGE_EVENT_NAME = "__codesdancing_flutter_event__";
   static Map<String, Map> eventListeners = new Map();
@@ -12,7 +12,7 @@ class Event extends Bridge {
       {String containerId}) {
     String containerIdInner = containerId;
     if (!registerMethodCall) {
-      Bridge.registerMethodCallBack(BRIDGE_EVENT_NAME,
+      BaseBridge.registerMethodCallBack(BRIDGE_EVENT_NAME,
           (String methodName, dynamic arguments) {
         if (arguments['eventName'] != null && arguments['eventInfo'] != null) {
           _invokeEvent(arguments['eventName'], arguments['eventInfo']);
@@ -29,7 +29,7 @@ class Event extends Bridge {
     }
     eventListeners[eventName][containerIdInner].add(eventCallBack);
 
-    Bridge.callNativeStatic("Event", "addEventListener",
+    BaseBridge.callNativeStatic("Event", "addEventListener",
         {"eventName": eventName, "containerId": containerIdInner});
   }
 
@@ -41,12 +41,12 @@ class Event extends Bridge {
         eventListeners.remove(eventName);
       }
     }
-    Bridge.callNativeStatic("Event", "removeEventListener",
+    BaseBridge.callNativeStatic("Event", "removeEventListener",
         {"eventName": eventName, "containerId": containerId});
   }
 
   static void sendEvent(String eventName, Map eventData) {
-    Bridge.callNativeStatic(
+    BaseBridge.callNativeStatic(
         "Event", "sendEvent", {"eventName": eventName, "eventInfo": eventData});
   }
 

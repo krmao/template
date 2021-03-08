@@ -1,6 +1,6 @@
-import 'bridge.dart';
+import 'base_bridge.dart';
 
-class Application extends Bridge {
+class BaseBridgeApplication extends BaseBridge {
   static bool debug = true;
 
   static String versionName;
@@ -10,12 +10,13 @@ class Application extends Bridge {
   static Map configInfo;
 
   static Future<Map> getApplicationConstants() async {
-    Map applicationConstants = await Bridge.callNativeStatic("Application", "getApplicationConstants", {});
+    Map applicationConstants = await BaseBridge.callNativeStatic(
+        "Application", "getApplicationConstants", {});
     if (applicationConstants.containsKey("applicationInfo")) {
       Map applicationInfo = applicationConstants["applicationInfo"];
-      Application.debug = applicationInfo["debug"];
-      Application.versionCode = applicationInfo["versionCode"];
-      Application.versionName = applicationInfo["versionName"];
+      BaseBridgeApplication.debug = applicationInfo["debug"];
+      BaseBridgeApplication.versionCode = applicationInfo["versionCode"];
+      BaseBridgeApplication.versionName = applicationInfo["versionName"];
     }
 
     if (applicationConstants.containsKey("deviceInfo")) {

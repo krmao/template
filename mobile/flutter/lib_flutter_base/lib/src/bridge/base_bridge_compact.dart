@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'bridge.dart';
+import 'base_bridge.dart';
 
-class BridgeCompact extends Bridge {
+class BaseBridgeCompact extends BaseBridge {
   static Future<dynamic> open(String url) async {
     return await _callNativeStatic("open", {"url": url});
   }
@@ -35,8 +35,10 @@ class BridgeCompact extends Bridge {
     return await _callNativeStatic("getDeviceInfo", {});
   }
 
-  static Future<dynamic> _callNativeStatic(String functionName, Object paramsJsonObject) async {
-    return await Bridge.callNativeStatic("BridgeCompact", "callNative", {"functionName": functionName, "params": jsonEncode(paramsJsonObject)});
+  static Future<dynamic> _callNativeStatic(
+      String functionName, Object paramsJsonObject) async {
+    return await BaseBridge.callNativeStatic("BridgeCompact", "callNative",
+        {"functionName": functionName, "params": jsonEncode(paramsJsonObject)});
   }
 
   @override

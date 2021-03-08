@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'widgets/widget_loading.dart';
-import 'widgets/widget_titlebar.dart';
+import 'widgets/base_widget_loading.dart';
+import 'widgets/base_widget_title_bar.dart';
 
 typedef WidgetBuildFunction = Widget Function(BuildContext context);
 
-mixin PageMixinVariables {
+mixin BasePageVariables {
   WidgetBuildFunction child;
   bool keepAlive = false;
-  Loading loadingWidget;
-  TitleBar titleBarWidget;
+  BaseWidgetLoading loadingWidget;
+  BaseWidgetTitleBar titleBarWidget;
   Color statusBarColor;
+
   // BuildContext context;
   BuildContext scaffoldContext;
 

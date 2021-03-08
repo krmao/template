@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Constants {
+class BaseAppConstants {
   static const double DEFAULT_TITLE_HEIGHT = 48.0;
   static const String DEFAULT_IMAGE = "images/default.jpg";
   static const String DEFAULT_AVATAR = "images/default_avatar.jpeg";

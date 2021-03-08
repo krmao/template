@@ -1,8 +1,8 @@
-import 'bridge.dart';
+import 'base_bridge.dart';
 
-class PageBridge extends Bridge {
+class PageBridge extends BaseBridge {
   static Future<T> enableExitWithDoubleBackPressed<T>(bool enable) async {
-    return await Bridge.callNativeStatic(
+    return await BaseBridge.callNativeStatic(
         "Page", "enableExitWithDoubleBackPressed", {"enable": enable});
   }
 

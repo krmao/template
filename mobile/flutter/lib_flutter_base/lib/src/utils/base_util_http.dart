@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class HttpUtil {
+class BaseHttpUtil {
   static Dio _dio;
 
   static Dio getClient() {
@@ -10,9 +10,11 @@ class HttpUtil {
       _dio.options.connectTimeout = 5000; //5s
       _dio.options.receiveTimeout = 3000;
 
-      _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+      _dio.interceptors
+          .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
         // Do something before request is sent
-        print("\n[request]\n-------------------------------------------------------->\n${options.baseUrl}${options.path}\n${options.method}\t${options.contentType}\n${options.data}");
+        print(
+            "\n[request]\n-------------------------------------------------------->\n${options.baseUrl}${options.path}\n${options.method}\t${options.contentType}\n${options.data}");
         return options; //continue
         // If you want to resolve the request with some custom data，
         // you can return a `Response` object or return `dio.resolve(data)`.
@@ -20,11 +22,13 @@ class HttpUtil {
         // you can return a `DioError` object or return `dio.reject(errMsg)`
       }, onResponse: (Response response) {
         // Do something with response data
-        print("\n[response]\n-------------------------------------------------------->\n$response");
+        print(
+            "\n[response]\n-------------------------------------------------------->\n$response");
         return response; // continue
       }, onError: (DioError e) {
         // Do something with response error
-        print("\n[error]\n-------------------------------------------------------->\n$e");
+        print(
+            "\n[error]\n-------------------------------------------------------->\n$e");
         return e; //continue
       }));
     }

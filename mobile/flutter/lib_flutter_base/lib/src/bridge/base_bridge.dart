@@ -1,12 +1,14 @@
 import 'package:flutter/services.dart';
 
-typedef NativeToDartMethodCallCallBack = void Function(String methodName, dynamic arguments);
+typedef NativeToDartMethodCallCallBack = void Function(
+    String methodName, dynamic arguments);
 
-abstract class Bridge {
+abstract class BaseBridge {
   static const String CHANNEL_NAME = "codesdancing.flutter.bridge/callNative";
 
   static MethodChannel _globalBridgeMethodChannel;
-  static Map<String, NativeToDartMethodCallCallBack> _globalNativeToDartMethodMap = new Map();
+  static Map<String, NativeToDartMethodCallCallBack>
+      _globalNativeToDartMethodMap = new Map();
 
   static void _invokeNativeToDartMethod(String methodName, dynamic arguments) {
     if (_globalNativeToDartMethodMap.containsKey(methodName)) {
@@ -16,7 +18,8 @@ abstract class Bridge {
 
   static void _initGlobalBridgeMethodChannel() {
     if (_globalBridgeMethodChannel == null) {
-      _globalBridgeMethodChannel = MethodChannel(CHANNEL_NAME, JSONMethodCodec());
+      _globalBridgeMethodChannel =
+          MethodChannel(CHANNEL_NAME, JSONMethodCodec());
       // ignore: missing_return
       _globalBridgeMethodChannel.setMethodCallHandler((MethodCall call) {
         _invokeNativeToDartMethod(call.method, call.arguments);
@@ -24,7 +27,8 @@ abstract class Bridge {
     }
   }
 
-  static void registerMethodCallBack(String methodName, NativeToDartMethodCallCallBack callBack) {
+  static void registerMethodCallBack(
+      String methodName, NativeToDartMethodCallCallBack callBack) {
     _initGlobalBridgeMethodChannel();
     _globalNativeToDartMethodMap[methodName] = callBack;
   }
@@ -34,9 +38,11 @@ abstract class Bridge {
   }
 
   /// 调用Native Plugin方法
-  static Future<T> callNativeStatic<T>(String pluginName, String methodName, [dynamic arguments]) async {
+  static Future<T> callNativeStatic<T>(String pluginName, String methodName,
+      [dynamic arguments]) async {
     _initGlobalBridgeMethodChannel();
-    return await _globalBridgeMethodChannel.invokeMethod("$pluginName-$methodName", arguments);
+    return await _globalBridgeMethodChannel.invokeMethod(
+        "$pluginName-$methodName", arguments);
   }
 
   Future<T> callNative<T>(String methodName, [dynamic arguments]) async {

@@ -6,15 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'app_constants.dart';
-import 'bridge_application.dart';
-import 'bridge_url.dart';
+import 'base_app_constants.dart';
+import 'base_state_default.dart';
+import 'bridge/base_bridge_application.dart';
+import 'bridge/base_bridge_url.dart';
 import 'flutter_boost/boost_navigator.dart';
-import 'page_state.dart';
 
 typedef void OnInitStateCallback();
 
-class App extends StatefulWidget {
+class BaseApp extends StatefulWidget {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
@@ -24,10 +24,10 @@ class App extends StatefulWidget {
       enableSafeAreaLeft,
       enableSafeAreaRight;
 
-  App(
+  BaseApp(
       {Key key,
       @required this.child,
-      this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+      this.statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
       this.enableSafeArea = true,
       this.enableSafeAreaTop = true,
       this.enableSafeAreaBottom = true,
@@ -37,7 +37,7 @@ class App extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => AppState(
+  State<StatefulWidget> createState() => BaseAppState(
       child: this.child,
       statusBarColor: this.statusBarColor,
       enableSafeArea: this.enableSafeArea,
@@ -48,7 +48,7 @@ class App extends StatefulWidget {
       onInitStateCallback: this.onInitStateCallback);
 }
 
-class AppState extends State<App> {
+class BaseAppState extends State<BaseApp> {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
@@ -58,9 +58,9 @@ class AppState extends State<App> {
       enableSafeAreaLeft,
       enableSafeAreaRight;
 
-  AppState(
+  BaseAppState(
       {@required this.child,
-      this.statusBarColor = Constants.DEFAULT_STATUS_BAR_COLOR,
+      this.statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
       this.enableSafeArea = true,
       this.enableSafeAreaTop = true,
       this.enableSafeAreaBottom = true,
@@ -113,14 +113,14 @@ class AppState extends State<App> {
             // the app on. For desktop platforms, the controls will be smaller and
             // closer together (more dense) than on mobile platforms.
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            primaryColor: Constants.PRIMARY_COLOR,
-            accentColor: Constants.ACCENT_COLOR,
+            primaryColor: BaseAppConstants.PRIMARY_COLOR,
+            accentColor: BaseAppConstants.ACCENT_COLOR,
             primaryColorBrightness: Brightness.light,
-            hintColor: Constants.HINT_COLOR,
-            highlightColor: Constants.HIGHLIGHT_COLOR,
+            hintColor: BaseAppConstants.HINT_COLOR,
+            highlightColor: BaseAppConstants.HIGHLIGHT_COLOR,
             inputDecorationTheme: InputDecorationTheme(
-                labelStyle:
-                    TextStyle(color: Constants.INPUT_DECORATION_COLOR))));
+                labelStyle: TextStyle(
+                    color: BaseAppConstants.INPUT_DECORATION_COLOR))));
   }
 }
 
@@ -189,7 +189,7 @@ void _onZoneGlobalError(Object error, StackTrace stackTrace) {
   // send log to UBT
   var errorMsg = error.toString();
   var stackTraceStr = stackTrace.toString();
-  if (Application.debug) {
+  if (BaseBridgeApplication.debug) {
     if (BoostNavigator.of().getTopPageInfo().pageName == '_error_page') {
       BoostNavigator.of().pop();
     }
@@ -297,7 +297,7 @@ class PageNotFoundHomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _PageNotFoundHomeState();
 }
 
-class _PageNotFoundHomeState extends PageState<PageNotFoundHomePage> {
+class _PageNotFoundHomeState extends BaseStateDefault<PageNotFoundHomePage> {
   _PageNotFoundHomeState();
 
   @override
@@ -369,11 +369,11 @@ void appRun(app, {OnInitStateCallback onInitStateCallback}) {
 
   runZoned<Future<Null>>(() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    Application.getApplicationConstants().then((value) {
+    BaseBridgeApplication.getApplicationConstants().then((value) {
       // ignore: invalid_use_of_protected_member
-      widgetsBinding.scheduleAttachRootWidget(App(
+      widgetsBinding.scheduleAttachRootWidget(BaseApp(
         enableSafeArea: false,
-        statusBarColor: Constants.DEFAULT_STATUS_BAR_COLOR,
+        statusBarColor: BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
         child: app,
         onInitStateCallback: () {
           if (onInitStateCallback != null) onInitStateCallback();
@@ -386,7 +386,7 @@ void appRun(app, {OnInitStateCallback onInitStateCallback}) {
   }, zoneSpecification: ZoneSpecification(
       print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
     try {
-      if (Application.debug) {
+      if (BaseBridgeApplication.debug) {
         parent.print(zone, line);
       }
     } catch (e, _) {

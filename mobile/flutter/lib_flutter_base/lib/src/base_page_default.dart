@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'page_mixin_variables.dart';
-import 'page_state.dart';
+import 'package:lib_flutter_base/src/base_state_default.dart';
+
+import 'base_page.dart';
+import 'base_page_variables.dart';
 
 // ignore: must_be_immutable
-class PageWidget extends StatefulWidget with PageMixinVariables {
+class BasePageDefault extends BasePage with BasePageVariables {
   State state;
 
-  PageWidget(
+  BasePageDefault(
       {child,
       state,
       statusBarColor,
@@ -35,7 +36,7 @@ class PageWidget extends StatefulWidget with PageMixinVariables {
             enableSafeAreaLeft: enableSafeAreaLeft,
             enableSafeAreaRight: enableSafeAreaRight);
 
-  PageWidget.initWithChild(child,
+  BasePageDefault.initWithChild(child,
       {statusBarColor,
       state,
       loadingWidget,
@@ -66,7 +67,7 @@ class PageWidget extends StatefulWidget with PageMixinVariables {
   @override
   State createState() {
     if (this.state == null) {
-      this.state = PageState(
+      this.state = BaseStateDefault(
         child: this.child,
         statusBarColor: this.statusBarColor,
         loadingWidget: this.loadingWidget,

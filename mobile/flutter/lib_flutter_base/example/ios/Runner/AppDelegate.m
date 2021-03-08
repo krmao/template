@@ -10,8 +10,8 @@
 #import "UIViewControllerDemo.h"
 #import "NativeViewController.h"
 #import "MyFlutterBoostDelegate.h"
-
-#import <flutter_boost/FlutterBoost.h>
+#import <lib_flutter_base/FlutterBoost.h>
+#import <lib_flutter_base/STFlutterBridge.h>
 
 @interface AppDelegate ()
 
@@ -23,16 +23,14 @@
 {
     
     self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    
-    
     [self.window makeKeyAndVisible];
     
     MyFlutterBoostDelegate* delegate=[[MyFlutterBoostDelegate alloc ] init];
         
     [[FlutterBoost instance] setup:application delegate:delegate callback:^(FlutterEngine *engine) {
-        
-    } ];
-    
+        NSLog(@"FlutterBoostPlugin onStart");
+        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
+    }];
     
     UIViewControllerDemo *vc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
     vc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"hybrid" image:nil tag:0];

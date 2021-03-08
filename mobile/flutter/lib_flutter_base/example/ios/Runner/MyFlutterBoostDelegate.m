@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "MyFlutterBoostDelegate.h"
 #import "UIViewControllerDemo.h"
-#import <flutter_boost/FlutterBoost.h>
+#import <lib_flutter_base/FlutterBoost.h>
 
 @implementation MyFlutterBoostDelegate
 
 
 - (void) pushNativeRoute:(NSString *) pageName arguments:(NSDictionary *) arguments {
+    NSLog(@"pushNativeRoute");
     BOOL animated = [arguments[@"animated"] boolValue];
     BOOL present= [arguments[@"present"] boolValue];
     UIViewControllerDemo *nvc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
@@ -27,7 +28,7 @@
 }
 
 - (void) pushFlutterRoute:(NSString *) pageName arguments:(NSDictionary *) arguments {
-    
+    NSLog(@"pushFlutterRoute");
     FlutterEngine* engine =  [[FlutterBoost instance ] engine];
     engine.viewController = nil;
     
@@ -47,7 +48,7 @@
 }
 
 - (void) popRoute:(NSString *)uniqueId {
-    
+    NSLog(@"popRoute");
     FBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
     
     if([vc isKindOfClass:FBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uniqueId]){

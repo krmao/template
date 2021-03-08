@@ -1,0 +1,81 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - CodesDancing (0.0.3):
+    - CodesDancing/LibraryBase (= 0.0.3)
+  - CodesDancing/LibraryBase (0.0.3):
+    - AFNetworking (~> 4.0)
+    - MBProgressHUD (~> 1.2.0)
+    - SDWebImage (~> 5.0)
+    - SSZipArchive
+    - YYModel
+  - Flutter (1.0.0)
+  - image_picker (0.0.1):
+    - Flutter
+  - lib_flutter_base (0.0.1):
+    - CodesDancing (~> 0.0.3)
+    - Flutter
+  - MBProgressHUD (1.2.0)
+  - SDWebImage (5.9.4):
+    - SDWebImage/Core (= 5.9.4)
+  - SDWebImage/Core (5.9.4)
+  - SSZipArchive (2.2.3)
+  - video_player (0.0.1):
+    - Flutter
+  - YYModel (1.0.4)
+
+DEPENDENCIES:
+  - CodesDancing (~> 0.0.3)
+  - Flutter (from `Flutter`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - lib_flutter_base (from `.symlinks/plugins/lib_flutter_base/ios`)
+  - video_player (from `.symlinks/plugins/video_player/ios`)
+
+SPEC REPOS:
+  https://github.com/krmao/libsforios.git:
+    - CodesDancing
+  trunk:
+    - AFNetworking
+    - MBProgressHUD
+    - SDWebImage
+    - SSZipArchive
+    - YYModel
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  lib_flutter_base:
+    :path: ".symlinks/plugins/lib_flutter_base/ios"
+  video_player:
+    :path: ".symlinks/plugins/video_player/ios"
+
+SPEC CHECKSUMS:
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  CodesDancing: 6622cead19f134f9fa5d3eb2c662e32fa6e352dd
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  lib_flutter_base: a8b598f59b2372ff4a4afb821b681b60fda9c9e0
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+
+PODFILE CHECKSUM: 586e360902134f586c3a6c1bc10dbbcd09fc3ce2
+
+COCOAPODS: 1.10.0

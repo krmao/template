@@ -28,7 +28,7 @@
 }
 
 - (UIViewController *)currentViewController{
-    UIViewController *currentViewController = [[FlutterBoostPlugin sharedInstance] currentViewController];
+    UIViewController *currentViewController = [[FlutterBoost instance] currentViewController];
     if (!currentViewController) {
         currentViewController = [STSystemUtil topViewController];
     }
@@ -36,7 +36,7 @@
 }
 
 - (UIViewController *)currentFlutterViewController{
-    UIViewController *currentViewController = [[FlutterBoostPlugin sharedInstance] currentViewController];
+    UIViewController *currentViewController = [[FlutterBoost instance] currentViewController];
     return currentViewController;
 }
 

@@ -11,14 +11,14 @@
 #import "FlutterBoost.h"
 
 @interface STFlutterEmbedIntoNativeViewController ()
-@property(nonatomic, strong)FLBFlutterViewContainer *flutterContainer;
+@property(nonatomic, strong)FBFlutterViewContainer *flutterContainer;
 @end
 
 @implementation STFlutterEmbedIntoNativeViewController
 
 - (instancetype)init{
     if (self = [super init]) {
-        _flutterContainer = [[FLBFlutterViewContainer alloc]init];
+        _flutterContainer = [[FBFlutterViewContainer alloc]init];
         [_flutterContainer setName:@"embedded" params:@{}];
     }
     return self;

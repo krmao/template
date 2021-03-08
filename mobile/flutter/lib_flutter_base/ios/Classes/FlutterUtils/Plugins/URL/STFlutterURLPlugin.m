@@ -16,11 +16,11 @@
         NSDictionary * urlParams = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"urlParams"]];
         NSDictionary * exts = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"exts"]];
         
-        [FlutterBoostPlugin open:url urlParams:urlParams exts:exts onPageFinished:^(NSDictionary *result) {
-            NSLog(@"call me when page finished, and your result is:%@", result);
-        } completion:^(BOOL f) {
-            NSLog(@"page is opened");
-        }];
+//        [FlutterBoostPlugin open:url urlParams:urlParams exts:exts onPageFinished:^(NSDictionary *result) {
+//            NSLog(@"call me when page finished, and your result is:%@", result);
+//        } completion:^(BOOL f) {
+//            NSLog(@"page is opened");
+//        }];
     }
     else {
         result(FlutterMethodNotImplemented);

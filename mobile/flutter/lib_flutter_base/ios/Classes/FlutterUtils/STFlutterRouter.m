@@ -13,43 +13,23 @@
 @implementation STFlutterRouter
 
 + (void)openNativeMine:(NSDictionary * _Nullable)urlParams {
-    [FlutterBoostPlugin open:@"native_mine" urlParams:urlParams ?: @{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-        NSLog(@"call me when page finished, and your result is:%@", result);
-    } completion:^(BOOL f) {
-        NSLog(@"page is opened");
-    }];
+    [[FlutterBoost instance] open:@"native_mine" arguments:urlParams];
 }
 
 + (void)openFlutterOrder:(NSDictionary * _Nullable)urlParams {
-    [FlutterBoostPlugin open:@"flutter_order" urlParams:urlParams ?: @{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-        NSLog(@"call me when page finished, and your result is:%@", result);
-    } completion:^(BOOL f) {
-        NSLog(@"page is opened");
-    }];
+    [[FlutterBoost instance] open:@"flutter_order" arguments:urlParams];
 }
 
 + (void)openFlutterPlayer:(NSDictionary * _Nullable)urlParams {
-    [FlutterBoostPlugin open:@"flutter_player" urlParams:urlParams ?: @{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-        NSLog(@"call me when page finished, and your result is:%@", result);
-    } completion:^(BOOL f) {
-        NSLog(@"page is opened");
-    }];
+    [[FlutterBoost instance] open:@"flutter_player" arguments:urlParams];
 }
 
 + (void)openFlutterSettings:(NSDictionary * _Nullable)urlParams {
-    [FlutterBoostPlugin open:@"flutter_settings" urlParams:urlParams ?: @{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-        NSLog(@"call me when page finished, and your result is:%@", result);
-    } completion:^(BOOL f) {
-        NSLog(@"page is opened");
-    }];
+    [[FlutterBoost instance] open:@"flutter_settings" arguments:urlParams];
 }
 
 + (void)openFlutterBridge:( NSDictionary * _Nullable) urlParams {
-    [FlutterBoostPlugin open:@"flutter_bridge" urlParams:urlParams ?: @{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-        NSLog(@"call me when page finished, and your result is:%@", result);
-    } completion:^(BOOL f) {
-        NSLog(@"page is opened");
-    }];
+    [[FlutterBoost instance] open:@"flutter_bridge" arguments:urlParams];
 }
 
 @end

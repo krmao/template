@@ -8,7 +8,7 @@
 
 #import "NativeViewController.h"
 #import <Flutter/Flutter.h>
-#import <flutter_boost/FlutterBoost.h>
+#import <lib_flutter_base/FlutterBoost.h>
 
 @interface NativeViewController ()
 @property(nonatomic, strong)FBFlutterViewContainer *flutterContainer;

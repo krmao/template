@@ -53,7 +53,7 @@
 }
 
 + (FlutterBoostPlugin* )getPlugin:(FlutterEngine*)engine{
-    NSObject *published = [engine valuePublishedByPlugin:@"FlutterBoostPlugin"];
+    NSObject *published = [engine valuePublishedByPlugin:@"LibFlutterBasePlugin"];
     if ([published isKindOfClass:[FlutterBoostPlugin class]]) {
         FlutterBoostPlugin *plugin = (FlutterBoostPlugin *)published;
         return plugin;

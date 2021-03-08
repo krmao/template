@@ -1,6 +1,6 @@
-#import "FLBFlutterViewContainer.h"
+#import "FBFlutterViewContainer.h"
 
-@interface STFlutterViewController : FLBFlutterViewContainer
+@interface STFlutterViewController : FBFlutterViewContainer
 @end
 
 

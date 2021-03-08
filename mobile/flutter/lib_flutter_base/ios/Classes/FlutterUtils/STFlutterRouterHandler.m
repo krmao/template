@@ -29,7 +29,7 @@
   completion:(void (^)(BOOL))completion
 {
     BOOL animated = [exts[@"animated"] boolValue];
-    FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+    FBFlutterViewContainer *vc = FBFlutterViewContainer.new;
     [vc setName:name params:params];
     [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
     [self.navigationController presentViewController:vc animated:animated completion:^{
@@ -44,8 +44,8 @@
 {
     BOOL animated = [exts[@"animated"] boolValue];
     animated = YES;
-    FLBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
-    if([vc isKindOfClass:FLBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
+    FBFlutterViewContainer *vc = (id)self.navigationController.presentedViewController;
+    if([vc isKindOfClass:FBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uid]){
         [vc dismissViewControllerAnimated:animated completion:^{}];
     }else{
         [self.navigationController popViewControllerAnimated:animated];
@@ -82,7 +82,7 @@
         //     viewController = [STListViewController new];
         // }
     }else{
-        FLBFlutterViewContainer *vc = FLBFlutterViewContainer.new;
+        FBFlutterViewContainer *vc = FBFlutterViewContainer.new;
         [vc setName:name params:params];
         [vc.view setBackgroundColor:UIColor.clearColor]; // 背景透明
         viewController = vc;

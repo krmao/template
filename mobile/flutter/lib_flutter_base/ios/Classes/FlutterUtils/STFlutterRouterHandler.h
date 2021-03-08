@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 实现平台侧的页面打开和关闭，不建议直接使用用于页面打开，建议使用FlutterBoostPlugin中的open和close方法来打开或关闭页面；
  * FlutterBoostPlugin带有页面返回数据的能力
  */
-@interface STFlutterRouterHandler : NSObject<FLBPlatform>
+@interface STFlutterRouterHandler : NSObject
 @property (nonatomic,strong) UINavigationController *navigationController;
 
 + (UIViewController *)open:(UINavigationController *)from

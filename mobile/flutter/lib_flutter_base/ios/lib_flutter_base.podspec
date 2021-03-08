@@ -36,17 +36,17 @@ A new flutter plugin project.
     'Classes/FlutterBoost/FlutterBoostPlugin.h',
     'Classes/FlutterBoost/container/FBFlutterViewContainer.h',
     'Classes/FlutterBoost/container/FBFlutterContainer.h',
+    'Classes/FlutterBoost/container/FBLifecycle.h',
+    'Classes/FlutterBoost/container/FBFlutterContainerManager.h',
     'Classes/FlutterBoost/messages.h'
 
-  s.dependency 'Flutter'
   s.dependency 'CodesDancing', '~>0.0.3'
+  s.dependency 'Flutter'
   s.libraries = 'c++'
   s.xcconfig = {
-    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
-    'CLANG_CXX_LIBRARY' => 'libc++'
+      'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
+      'CLANG_CXX_LIBRARY' => 'libc++'
   }
-  s.platform = :ios, '8.0'
 
-  # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.ios.deployment_target = '8.0'
 end

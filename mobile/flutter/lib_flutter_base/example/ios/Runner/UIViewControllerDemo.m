@@ -8,7 +8,7 @@
 
 #import "UIViewControllerDemo.h"
 #import <Flutter/Flutter.h>
-#import <flutter_boost/FlutterBoost.h>
+#import <lib_flutter_base/FlutterBoost.h>
 
 
 @interface UIViewControllerDemo ()
@@ -24,29 +24,13 @@
 }
 
 - (IBAction)pushFlutterPage:(id)sender {
-    
-    
+    NSLog(@"pushFlutterPage");
     [[FlutterBoost instance] open:@"flutterPage" arguments:@{@"animated":@(YES)}  ];
-    
-
-//    [FlutterBoostPlugin open:@"first" urlParams:@{kPageCallBackId:@"MycallbackId#1"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-//        NSLog(@"call me when page finished, and your result is:%@", result);
-//    } completion:^(BOOL f) {
-//        NSLog(@"page is opened");
-//    }];
-    
-    
 }
 
 - (IBAction)present:(id)sender {
-    
+    NSLog(@"present");
     [[FlutterBoost instance] open:@"secondStateful" arguments:@{@"present":@(YES)}];
-
-//    [FlutterBoostPlugin open:@"second" urlParams:@{@"present":@(YES),kPageCallBackId:@"MycallbackId#2"} exts:@{@"animated":@(YES)} onPageFinished:^(NSDictionary *result) {
-//        NSLog(@"call me when page finished, and your result is:%@", result);
-//    } completion:^(BOOL f) {
-//        NSLog(@"page is presented");
-//    }];
 }
 
 /*

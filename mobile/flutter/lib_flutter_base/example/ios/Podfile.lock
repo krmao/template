@@ -69,7 +69,7 @@ SPEC CHECKSUMS:
   CodesDancing: 6622cead19f134f9fa5d3eb2c662e32fa6e352dd
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  lib_flutter_base: a8b598f59b2372ff4a4afb821b681b60fda9c9e0
+  lib_flutter_base: cec969bb90420c8f21588ebc96025e063e570b0f
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9

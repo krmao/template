@@ -18,9 +18,6 @@ A new flutter plugin project.
   s.public_header_files =
     'Classes/LibFlutterBasePlugin.h',
     'Classes/FlutterUtils/STFlutterViewController.h',
-    'Classes/FlutterUtils/STFlutterRouterHandler.h',
-    'Classes/FlutterUtils/STFlutterRouter.h',
-    'Classes/FlutterUtils/STFlutterEmbedIntoNativeViewController.h',
     'Classes/FlutterUtils/Plugins/Application/STFlutterApplicationPlugin.h',
     'Classes/FlutterUtils/Plugins/Base/STFlutterBridge.h',
     'Classes/FlutterUtils/Plugins/Base/STFlutterPlugin.h',

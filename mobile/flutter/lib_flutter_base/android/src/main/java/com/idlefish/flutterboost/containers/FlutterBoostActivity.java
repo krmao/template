@@ -79,8 +79,8 @@ public class FlutterBoostActivity extends FlutterActivity implements FlutterView
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         this.getFlutterEngine().getLifecycleChannel().appIsResumed();
+        super.onDestroy();
         observer.onDestroyView();
     }
 

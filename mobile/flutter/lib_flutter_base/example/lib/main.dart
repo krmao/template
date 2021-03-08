@@ -24,7 +24,9 @@ class _MyAppState extends State<MyApp> {
   static Map<String, FlutterBoostRouteFactory> routerMap = {
     '/': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => Container());
+          settings: settings, pageBuilder: (_, __, ___) => Container(
+          color: Colors.blue,
+      ));
     },
     'embedded': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(

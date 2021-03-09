@@ -14,20 +14,20 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - CodesDancing (0.0.3):
-    - CodesDancing/LibraryBase (= 0.0.3)
-  - CodesDancing/LibraryBase (0.0.3):
+  - Flutter (1.0.0)
+  - image_picker (0.0.1):
+    - Flutter
+  - lib_flutter_base (0.0.1):
+    - Flutter
+    - LibIosBase (~> 0.0.2)
+  - LibIosBase (0.0.2):
+    - LibIosBase/LibraryBase (= 0.0.2)
+  - LibIosBase/LibraryBase (0.0.2):
     - AFNetworking (~> 4.0)
     - MBProgressHUD (~> 1.2.0)
     - SDWebImage (~> 5.0)
     - SSZipArchive
     - YYModel
-  - Flutter (1.0.0)
-  - image_picker (0.0.1):
-    - Flutter
-  - lib_flutter_base (0.0.1):
-    - CodesDancing (~> 0.0.3)
-    - Flutter
   - MBProgressHUD (1.2.0)
   - SDWebImage (5.9.4):
     - SDWebImage/Core (= 5.9.4)
@@ -38,7 +38,6 @@ PODS:
   - YYModel (1.0.4)
 
 DEPENDENCIES:
-  - CodesDancing (~> 0.0.3)
   - Flutter (from `Flutter`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - lib_flutter_base (from `.symlinks/plugins/lib_flutter_base/ios`)
@@ -46,7 +45,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/krmao/libsforios.git:
-    - CodesDancing
+    - LibIosBase
   trunk:
     - AFNetworking
     - MBProgressHUD
@@ -66,16 +65,16 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
-  CodesDancing: 6622cead19f134f9fa5d3eb2c662e32fa6e352dd
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  lib_flutter_base: cec969bb90420c8f21588ebc96025e063e570b0f
+  lib_flutter_base: cb05009383845bb1ac0fb28960871d62b7389926
+  LibIosBase: 4aaf6a71bc1da507b16efd0e400b1a55d0c0cac8
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 586e360902134f586c3a6c1bc10dbbcd09fc3ce2
+PODFILE CHECKSUM: bf8bbef00c755f46b84361055912e0396087a2e3
 
 COCOAPODS: 1.10.0

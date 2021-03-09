@@ -13,7 +13,7 @@
 
 @implementation STFlutterUtils
 
-+(void) openBySchema:(UIViewController* _Nullabl   e)fromViewController schemaUrl:(NSString* _Nullable) schemaUrl{
++(void) openBySchema:(UIViewController* _Nullable)fromViewController schemaUrl:(NSString* _Nullable) schemaUrl{
     if ([schemaUrl hasPrefix:@"smart://template/flutter"]){
         NSMutableDictionary *urlParamsDic = [[NSMutableDictionary alloc]init];
         NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:schemaUrl];

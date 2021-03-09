@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs;
 import com.codesdancing.flutterexample.R;
+import com.codesdancing.flutter.STFlutterUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,13 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == mOpenNative) {
             NativeRouter.openPageByUrl(this, NativeRouter.NATIVE_PAGE_URL , params);
         } else if (v == mOpenFlutter) {
-            Intent intent = new FlutterBoostActivity.CachedEngineIntentBuilder(FlutterBoostActivity.class, FlutterBoost.ENGINE_ID)
-                    .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.opaque)
-                    .destroyEngineWithActivity(false)
-                    .url("/")
-                    .urlParams(params)
-                    .build(this);
-            startActivity(intent);
+            STFlutterUtils.openFlutterPageByName("flutterPage", null, params);
         } else if (v == mOpenFlutterFragment) {
             NativeRouter.openPageByUrl(this, NativeRouter.FLUTTER_FRAGMENT_PAGE_URL,params);
         } else if (v == mOpenCustomViewTab) {

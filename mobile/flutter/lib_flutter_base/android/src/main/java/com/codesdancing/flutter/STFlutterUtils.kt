@@ -22,7 +22,7 @@ object STFlutterUtils {
      * bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
      * https://github.com/flutter/flutter/issues/46060
      */
-    private fun openNewFlutterActivity(pageName: String, uniqueId: String, pageParams: HashMap<String, String>) {
+    private fun openNewFlutterActivity(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>?) {
         val intent = CachedEngineIntentBuilder(STFlutterActivity::class.java, FlutterBoost.ENGINE_ID)
                 .backgroundMode(io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.opaque)
                 .destroyEngineWithActivity(false)
@@ -33,7 +33,7 @@ object STFlutterUtils {
         FlutterBoost.instance().currentActivity().startActivity(intent)
     }
 
-    private fun openNewFlutterHomeActivity(pageName: String, uniqueId: String, pageParams: HashMap<String, String>) {
+    private fun openNewFlutterHomeActivity(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>?) {
         val intent = CachedEngineIntentBuilder(STFlutterHomeActivity::class.java, FlutterBoost.ENGINE_ID)
                 .backgroundMode(io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.opaque)
                 .destroyEngineWithActivity(false)
@@ -58,7 +58,7 @@ object STFlutterUtils {
             val pageParamsJson: String? = uri?.getQueryParameter("params")
             val uniqueId: String? = uri?.getQueryParameter("uniqueId")
             @Suppress("UNCHECKED_CAST")
-            openFlutterPageByName(pageName, uniqueId, STJsonUtil.toMapOrNull(pageParamsJson) as? HashMap<String, String> ?: hashMapOf())
+            openFlutterPageByName(pageName, uniqueId, STJsonUtil.toMapOrNull(pageParamsJson) as? HashMap<String, String>)
         }
     }
 
@@ -66,13 +66,13 @@ object STFlutterUtils {
     @JvmOverloads
     fun openFlutterPageByName(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>? = null) {
         STLogUtil.d("openFlutterPageByName pageName=$pageName, params$pageName")
-        openNewFlutterActivity(pageName ?: "", uniqueId ?: "", pageParams ?: hashMapOf())
+        openNewFlutterActivity(pageName, uniqueId, pageParams)
     }
 
     @JvmStatic
     @JvmOverloads
     fun openFlutterHomePageByName(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>? = null) {
         STLogUtil.d("openFlutterHomePageByName pageName=$pageName, params$pageName")
-        openNewFlutterHomeActivity(pageName ?: "", uniqueId ?: "", pageParams ?: hashMapOf())
+        openNewFlutterHomeActivity(pageName, uniqueId, pageParams)
     }
 }

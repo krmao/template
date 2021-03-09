@@ -53,7 +53,7 @@ class BoostContainerState<T> extends State<BoostContainer<T>>
       onPointerUp: _handlePointerUpOrCancel,
       onPointerCancel: _handlePointerUpOrCancel,
       child: Navigator(
-        key: widget._navKey,
+        // key: widget._navKey,
         pages: List<Page<dynamic>>.of(widget._pages),
         onPopPage: (Route<dynamic> route, dynamic result) {
           if (route.didPop(result)) {

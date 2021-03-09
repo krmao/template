@@ -16,10 +16,7 @@ class STFlutterURLPlugin : STFlutterBasePlugin() {
             val params = requestData.optJSONObject("urlParams")
             val exts = requestData.optJSONObject("exts")
 
-            STFlutterUtils.openFlutterPageBySchema(activity,url)
-            /*FlutterBoost.instance().containerManager().currentTopRecord.container.contextActivity.apply {
-                FlutterBoost.instance().platform().openContainer(this, url, STJsonUtil.toMapOrNull(params?.toString()), 0, STJsonUtil.toMapOrNull(exts?.toString()))
-            }*/
+            STFlutterUtils.openFlutterPageBySchema(url)
             result.success("OK")
         } else {
             result.error("1", "url is empty", requestData)

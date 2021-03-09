@@ -23,8 +23,8 @@ class STFlutterBusHandler : STBusManager.IBusHandler {
         when (busFunctionName) {
             "flutter/open" -> {
                 if (context != null) {
-                    val schemaUrl = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
-                    STFlutterUtils.openFlutterPageBySchema(context, schemaUrl)
+                    val schemaUrl:String = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
+                    STFlutterUtils.openFlutterPageBySchema(schemaUrl)
                 }
             }
         }

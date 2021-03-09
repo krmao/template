@@ -11,17 +11,14 @@
 #import <STFlutterInitializer.h>
 #import <LibIosBase/STInitializer.h>
 
-@interface STFlutterBusHandler() {
-    NSString *bizNamePrefix;
-    NSString *urlHost;
-}
+@interface STFlutterBusHandler()
 @end
 
 @implementation STFlutterBusHandler
 
 - (id)initWithHost:(NSString *)host{
-    if (self = [super init]) {
-        urlHost = [host lowercaseString];
+    if (self = [super initWithHost:host]) {
+        NSLog(@"STFlutterBusHandler initWithHost host=%@", host);
         [[STFlutterInitializer sharedInstance] initial:[STInitializer sharedInstance].config.application debug:YES];
     }
     return self;

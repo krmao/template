@@ -11,6 +11,7 @@
 #import <LibIosBase/STJsonUtil.h>
 #import "STFlutterViewController.h"
 #import "STFlutterBridge.h"
+#import "STFlutterUtils.h"
 
 @interface BoostDelegete : NSObject<FlutterBoostDelegate>
 
@@ -32,18 +33,13 @@
     NSLog(@"pushNativeRoute pageName=%@, schemaUrl=%@, arguments=%@", pageName, schemaUrl, arguments);
     
     [STInitializer openSchema:[FlutterBoost instance].currentViewController  url:schemaUrl callback:^(NSString * _Nullable callBackId, NSString * _Nullable resultJsonString) {
-        NSLog(@"pushNativeRoute callback ignore");
+        NSLog(@"pushFlutterRoute callback ignore");
     }];
 }
 
 - (void) popRoute:(NSString *)uniqueId {
-    NSLog(@"popRoute");
-    STFlutterViewController *vc = (id)[FlutterBoost instance].currentViewController.navigationController.presentedViewController;
-    if([vc isKindOfClass:FBFlutterViewContainer.class] && [vc.uniqueIDString isEqual: uniqueId]){
-        [vc dismissViewControllerAnimated:YES completion:^{}];
-    }else{
-        [[FlutterBoost instance].currentViewController.navigationController popViewControllerAnimated:YES];
-    }
+    NSLog(@"popRoute uniqueId=%@", uniqueId);
+    [STFlutterUtils popRoute:[FlutterBoost instance].currentViewController uniqueId:uniqueId];
 }
 
 @end
@@ -61,6 +57,8 @@ static STFlutterInitializer *instance = nil;
 }
 
 -(void) initial:(UIApplication*)application debug:(BOOL)debug{
+    NSLog(@"STFlutterInitializer initial application=%@ _isInitialized=%d", application, _isInitialized);
+    
     if(_isInitialized == YES){
         return;
     }

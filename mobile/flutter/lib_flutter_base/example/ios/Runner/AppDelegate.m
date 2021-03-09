@@ -31,13 +31,14 @@
     //region config bridge
     ConfigBridge *configBridge = [ConfigBridge new];
     configBridge.bridgeHandler = ^(UIViewController * _Nullable viewController, NSString * _Nullable functionName, NSString * _Nullable params, NSString * _Nullable callBackId, BridgeHandlerCallback _Nullable callback){
+        NSLog(@"bridgeHandler functionName=%@, params=%@", functionName, params);
         [STBridgeDefaultCommunication handleBridge:viewController functionName:functionName params:params callBackId:callBackId callback:callback];
     };
     //endregion
     
     //region config
     Config *config = [Config new];
-    config.application = self;
+    config.application = application;
     config.appDebug = TRUE;
     config.configBridge = configBridge;
     config.configBundle = ConfigBundle.new;

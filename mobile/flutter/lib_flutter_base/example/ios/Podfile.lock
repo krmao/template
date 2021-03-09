@@ -19,10 +19,10 @@ PODS:
     - Flutter
   - lib_flutter_base (0.0.1):
     - Flutter
-    - LibIosBase (~> 0.0.2)
-  - LibIosBase (0.0.4):
-    - LibIosBase/LibraryBase (= 0.0.4)
-  - LibIosBase/LibraryBase (0.0.4):
+    - LibIosBase (~> 0.0.5)
+  - LibIosBase (0.0.5):
+    - LibIosBase/LibraryBase (= 0.0.5)
+  - LibIosBase/LibraryBase (0.0.5):
     - AFNetworking (~> 4.0)
     - MBProgressHUD (~> 1.2.0)
     - SDWebImage (~> 5.0)
@@ -67,8 +67,8 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  lib_flutter_base: cb05009383845bb1ac0fb28960871d62b7389926
-  LibIosBase: 0b7a8dadb4c8d72b8c95fb4eb9d3ce381b5da5eb
+  lib_flutter_base: f8db85f503f6606523eff1c71b2fd99e8ce22560
+  LibIosBase: cc83893f9677cdc9a3d3f374d7716ed92a5bc118
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9

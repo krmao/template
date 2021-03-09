@@ -12,6 +12,9 @@
 #import "MyFlutterBoostDelegate.h"
 #import <lib_flutter_base/FlutterBoost.h>
 #import <lib_flutter_base/STFlutterBridge.h>
+#import <lib_flutter_base/STFlutterViewController.h>
+#import <LibIosBase/STInitializer.h>
+#import <LibIosBase/STBridgeDefaultCommunication.h>
 
 @interface AppDelegate ()
 
@@ -25,31 +28,44 @@
     self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     
-    MyFlutterBoostDelegate* delegate=[[MyFlutterBoostDelegate alloc ] init];
-        
-    [[FlutterBoost instance] setup:application delegate:delegate callback:^(FlutterEngine *engine) {
-        NSLog(@"FlutterBoostPlugin onStart");
-        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
-    }];
+    //region config bridge
+    ConfigBridge *configBridge = [ConfigBridge new];
+    configBridge.bridgeHandler = ^(UIViewController * _Nullable viewController, NSString * _Nullable functionName, NSString * _Nullable params, NSString * _Nullable callBackId, BridgeHandlerCallback _Nullable callback){
+        [STBridgeDefaultCommunication handleBridge:viewController functionName:functionName params:params callBackId:callBackId callback:callback];
+    };
+    //endregion
+    
+    //region config
+    Config *config = [Config new];
+    config.application = self;
+    config.appDebug = TRUE;
+    config.configBridge = configBridge;
+    config.configBundle = ConfigBundle.new;
+    config.configBundle.bundleBusHandlerClassMap = @{
+        @"flutter" : @"STFlutterBusHandler"
+    };
+    //endregion
+
+    [STInitializer initialApplication:config];
+    
+//    MyFlutterBoostDelegate* delegate=[[MyFlutterBoostDelegate alloc ] init];
+//    [[FlutterBoost instance] setup:application delegate:delegate callback:^(FlutterEngine *engine) {
+//        NSLog(@"FlutterBoostPlugin onStart");
+//        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
+//    }];
     
     UIViewControllerDemo *vc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
     vc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"hybrid" image:nil tag:0];
    
-    FBFlutterViewContainer *fvc = FBFlutterViewContainer.new ;
-
+    STFlutterViewController *fvc = STFlutterViewController.new ;
     [fvc setName:@"tab_friend" params:@{}];
     fvc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"flutter_tab" image:nil tag:1];
 
-
     UITabBarController *tabVC = [[UITabBarController alloc] init];
     tabVC.viewControllers = @[vc,fvc];
-
     
     UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:tabVC];
     
-    delegate.navigationController=rvc;
-
-
     self.window.rootViewController = rvc;
     
     UIButton *nativeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -65,9 +81,6 @@
     [pushEmbeded setTitle:@"push embedded" forState:UIControlStateNormal];
     [pushEmbeded addTarget:self action:@selector(pushEmbeded) forControlEvents:UIControlEventTouchUpInside];
     [self.window addSubview:pushEmbeded];
-    
-
-
     return YES;
 }
 

@@ -6,10 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <LibIosBase/STBusManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface STFlutterBusHandler : NSObject
+@interface STFlutterBusHandler : IBusHandler
 
 @end
 

@@ -23,23 +23,6 @@
 		FA32AEF623B4A56E00449D68 /* NativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA32AEF523B4A56D00449D68 /* NativeViewController.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		FA32AEEF23B4685B00449D68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA32AEEA23B4685A00449D68 /* products.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EDB8DD4E9A4BE1510409988F;
-			remoteInfo = sources;
-		};
-		FA32AEF123B4686E00449D68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA32AEEA23B4685A00449D68 /* products.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 7EE23C83374079D8D3916ACE;
-			remoteInfo = All;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -78,7 +61,6 @@
 		DF544AA52177253600931378 /* UIViewControllerDemo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UIViewControllerDemo.xib; sourceTree = "<group>"; };
 		DF544ACF217836F600931378 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		DF544AD3217838EF00931378 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		FA32AEEA23B4685A00449D68 /* products.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = products.xcodeproj; path = ../../../engine_github/src/out/ios_debug_unopt/products.xcodeproj; sourceTree = "<group>"; };
 		FA32AEF423B4A56D00449D68 /* NativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeViewController.h; sourceTree = "<group>"; };
 		FA32AEF523B4A56D00449D68 /* NativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,7 +111,6 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
-				FA32AEEA23B4685A00449D68 /* products.xcodeproj */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -177,14 +158,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		FA32AEEB23B4685A00449D68 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FA32AEF023B4685B00449D68 /* sources */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -203,7 +176,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FA32AEF223B4686E00449D68 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -237,28 +209,12 @@
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = FA32AEEB23B4685A00449D68 /* Products */;
-					ProjectRef = FA32AEEA23B4685A00449D68 /* products.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		FA32AEF023B4685B00449D68 /* sources */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = sources;
-			remoteRef = FA32AEEF23B4685B00449D68 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		97C146EC1CF9000F007C117D /* Resources */ = {
@@ -340,14 +296,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FA32AEF223B4686E00449D68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = All;
-			targetProxy = FA32AEF123B4686E00449D68 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {

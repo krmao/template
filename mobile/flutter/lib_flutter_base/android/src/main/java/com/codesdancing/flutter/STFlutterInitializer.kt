@@ -20,7 +20,6 @@ import java.util.*
 object STFlutterInitializer {
 
     const val TAG = "[flutter]"
-    const val CHANNEL_METHOD = "smart.template.flutter/method"
 
     private var application: Application? = null
 

@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.codesdancing.flutter.STFlutterBoostActivity"
+            android:name="com.codesdancing.flutter.STFlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
@@ -11,7 +11,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name="com.codesdancing.flutter.STFlutterBoostHomeActivity"
+            android:name="com.codesdancing.flutter.STFlutterHomeActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:launchMode="singleTask"
             android:theme="@style/STAppTheme.Home.Transparent"

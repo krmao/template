@@ -1,9 +1,7 @@
 package com.codesdancing.flutter.plugins
 
 import android.app.Activity
-import com.idlefish.flutterboost.FlutterBoost
-import com.codesdancing.flutter.STFlutterRouter
-import com.smart.library.util.STJsonUtil
+import com.codesdancing.flutter.STFlutterUtils
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -18,7 +16,7 @@ class STFlutterURLPlugin : STFlutterBasePlugin() {
             val params = requestData.optJSONObject("urlParams")
             val exts = requestData.optJSONObject("exts")
 
-            STFlutterRouter.openBySchema(activity,url)
+            STFlutterUtils.openFlutterPageBySchema(activity,url)
             /*FlutterBoost.instance().containerManager().currentTopRecord.container.contextActivity.apply {
                 FlutterBoost.instance().platform().openContainer(this, url, STJsonUtil.toMapOrNull(params?.toString()), 0, STJsonUtil.toMapOrNull(exts?.toString()))
             }*/

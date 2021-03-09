@@ -42,7 +42,7 @@ import com.smart.library.util.swipeback.STSwipeBackUtils
  * https://flutter.cn/docs/development/ui/splash-screen/android-splash-screen
  */
 @Suppress("unused", "PrivatePropertyName")
-open class STFlutterBoostHomeActivity : STFlutterBoostActivity() {
+open class STFlutterHomeActivity : STFlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack(false)

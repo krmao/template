@@ -17,7 +17,7 @@ import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.SplashScreen
 import io.reactivex.disposables.CompositeDisposable
 
-open class STFlutterBoostActivity : FlutterBoostActivity(), STActivityDelegate {
+open class STFlutterActivity : FlutterBoostActivity(), STActivityDelegate {
 
     protected open val activityDelegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
 

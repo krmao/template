@@ -51,27 +51,23 @@ object STFlutterInitializer {
 
         FlutterBoost.instance().setup(application, object : FlutterBoostDelegate {
             override fun pushNativeRoute(pageName: String, arguments: HashMap<String, String>) {
-//                STLogUtil.w(TAG, "INativeRouter#openContainer, pageName=$pageName, arguments=$arguments")
-//                // STFlutterRouter.openByName(context, url, urlParams, requestCode, exts)
-//                val schemaUrl = "smart://template/flutter?page=$pageName&params=${STJsonUtil.toJson(arguments)}"
-//                STLogUtil.w(TAG, "INativeRouter#openContainer, schemaUrl=$schemaUrl, arguments=$arguments")
-//                STInitializer.openSchema(FlutterBoost.instance().currentActivity(), schemaUrl) // 确保所有跳转都走 handleBridge
+                STLogUtil.w(TAG, "pushNativeRoute pageName=$pageName, arguments=$arguments")
+                val schemaUrl = "smart://template/flutter?page=$pageName&params=${STJsonUtil.toJson(arguments)}"  // native page 没有 uniqueId 字段
+                STLogUtil.w(TAG, "pushNativeRoute schemaUrl=$schemaUrl, arguments=$arguments")
+                STInitializer.openSchema(FlutterBoost.instance().currentActivity(), schemaUrl) // 确保所有跳转都走 handleBridge
             }
 
             override fun pushFlutterRoute(pageName: String?, uniqueId: String?, arguments: HashMap<String, String>?) {
-                STFlutterRouter.openByName(FlutterBoost.instance().currentActivity(), pageName, arguments)
-//                STLogUtil.w(TAG, "INativeRouter#openContainer, pageName=$pageName, uniqueId=$uniqueId, arguments=$arguments")
-//                // STFlutterRouter.openByName(context, url, urlParams, requestCode, exts)
-//                val schemaUrl = "smart://template/flutter?page=$pageName&uniqueId=$uniqueId&params=${STJsonUtil.toJson(arguments)}"
-//                STLogUtil.w(TAG, "INativeRouter#openContainer, schemaUrl=$schemaUrl, uniqueId=$uniqueId, arguments=$arguments")
-//                STInitializer.openSchema(FlutterBoost.instance().currentActivity(), schemaUrl) // 确保所有跳转都走 handleBridge
+                STFlutterUtils.openFlutterPageByName(FlutterBoost.instance().currentActivity(), pageName, arguments)
+                STLogUtil.w(TAG, "pushFlutterRoute pageName=$pageName, uniqueId=$uniqueId, arguments=$arguments")
+                val schemaUrl = "smart://template/flutter?page=$pageName&params=${STJsonUtil.toJson(arguments)}&uniqueId=$uniqueId" // flutter page 有 uniqueId 字段
+                STLogUtil.w(TAG, "pushFlutterRoute schemaUrl=$schemaUrl, uniqueId=$uniqueId, arguments=$arguments")
+                STInitializer.openSchema(FlutterBoost.instance().currentActivity(), schemaUrl) // 确保所有跳转都走 handleBridge
             }
-        }, FlutterBoost.Callback { engine: FlutterEngine ->
-            engine.getPlugins()
-            // 引擎创建后的操作，比如自定义MethodChannel，PlatformView等
-            STLogUtil.w(TAG, "onEngineCreated")
+        }) { engine: FlutterEngine ->
+            STLogUtil.w(TAG, "onEngineCreated") // 引擎创建后的操作，比如自定义MethodChannel，PlatformView等
             STFlutterPluginRegistrant.registerWith(engine)
-        })
+        }
 
         isInitialized = true
     }

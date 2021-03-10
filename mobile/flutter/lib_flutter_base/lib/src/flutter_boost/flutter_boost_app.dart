@@ -161,8 +161,7 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
         refresh();
       }
     }
-    Logger.log(
-        'push page, uniqueId=$uniqueId, existed=$existed, withContainer=$withContainer, arguments:$arguments, $containers');
+    Logger.log('push page, uniqueId=$uniqueId, existed=$existed, withContainer=$withContainer, arguments:$arguments, $containers');
   }
 
   void popWithResult<T extends Object>([T result]) {
@@ -190,6 +189,9 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
     }
 
     final bool handled = await container?.navigator?.maybePop();
+
+    Logger.log('pop container, handled=$handled, container=$container, navigator=${container?.navigator}');
+
     if (handled != null && !handled) {
       if (_getCurrentPage() == container?.pageInfo?.uniqueId) {
         PageVisibilityBinding.instance
@@ -209,12 +211,13 @@ class FlutterBoostAppState extends State<FlutterBoostApp> {
         ..pageName = container.pageInfo.pageName
         ..uniqueId = container.pageInfo.uniqueId
         ..arguments = arguments;
+
+      Logger.log('pop container, uniqueId=$uniqueId, arguments:$arguments, $container _nativeRouterApi.popRoute');
       _nativeRouterApi.popRoute(params);
     }
     _pendingResult.remove(uniqueId);
 
-    Logger.log(
-        'pop container, uniqueId=$uniqueId, arguments:$arguments, $container');
+    Logger.log('pop container, uniqueId=$uniqueId, arguments:$arguments, $container');
   }
 
   void _removeContainer(BoostContainer<dynamic> page) {

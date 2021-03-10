@@ -86,8 +86,7 @@ class BaseAppState extends State<BaseApp> {
     return MaterialApp(
         localizationsDelegates: [DefaultMaterialLocalizations.delegate],
         home: Scaffold(
-            backgroundColor: this
-                .statusBarColor, // android status bar and iphone X top and bottom edges color
+            backgroundColor: this.statusBarColor, // android status bar and iphone X top and bottom edges color
             body: Builder(builder: (BuildContext context) {
               return SafeArea(
                   top: this.enableSafeArea && this.enableSafeAreaTop,
@@ -271,27 +270,6 @@ class ErrorApp extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
-class PageRouteObserverProvider extends InheritedWidget {
-  dynamic data;
-  PageRouteObserverProvider({
-    Key key,
-    this.data,
-    @required Widget child,
-  }) : super(key: key, child: child);
-
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) {
-    return false;
-  }
-
-  static PageRouteObserverProvider of(BuildContext context) {
-    // return context.inheritFromWidgetOfExactType(PageRouteObserverProvider);
-    return context
-        .dependOnInheritedWidgetOfExactType<PageRouteObserverProvider>();
-  }
-}
-
 class PageNotFoundHomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _PageNotFoundHomeState();
@@ -299,11 +277,6 @@ class PageNotFoundHomePage extends StatefulWidget {
 
 class _PageNotFoundHomeState extends BaseStateDefault<PageNotFoundHomePage> {
   _PageNotFoundHomeState();
-
-  @override
-  String getPageId() {
-    return 'PageNotFound';
-  }
 
   @override
   Widget buildBaseChild(BuildContext context) {

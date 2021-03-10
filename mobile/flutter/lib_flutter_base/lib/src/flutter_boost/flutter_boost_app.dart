@@ -18,10 +18,7 @@ typedef FlutterBoostRouteFactory = Route<dynamic> Function(
     RouteSettings settings, String uniqueId);
 
 class FlutterBoostApp extends StatefulWidget {
-  const FlutterBoostApp(this.routeFactory,
-      {FlutterBoostAppBuilder appBuilder, String initialRoute, this.observers})
-      : appBuilder = appBuilder ?? _materialAppBuilder,
-        initialRoute = initialRoute ?? '/';
+  const FlutterBoostApp(this.routeFactory, {FlutterBoostAppBuilder appBuilder, String initialRoute, this.observers}): appBuilder = appBuilder ?? _materialAppBuilder, initialRoute = initialRoute ?? '/';
 
   final FlutterBoostRouteFactory routeFactory;
   final FlutterBoostAppBuilder appBuilder;

@@ -1,9 +1,5 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
-
 import './case/flutter_to_flutter_sample.dart';
 import './case/image_pick.dart';
 import './case/media_query.dart';
@@ -12,35 +8,31 @@ import './case/willpop.dart';
 import './flutter_page.dart';
 import './simple_page_widgets.dart';
 import './tab/simple_widget.dart';
-import 'custom/settings/router/flutter_router.dart';
 
+void main() {
+  runApp(MyApp());
+}
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void main() {
-  // https://flutter.dev/docs/development/add-to-app/debugging
-  // https://flutter.cn/docs/development/add-to-app/debugging
-  // flutter attach
-  // flutter attach -d deviceId # AKC7N19118000852
-  // flutter attach --isolate-filter='debug'
-  ui.window.setIsolateDebugName("debug isolate");
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-  debugPaintSizeEnabled = false;
-  debugPaintBaselinesEnabled = false;
-  debugPrintLayouts = false;
-  debugPaintLayerBordersEnabled = false;
-  debugPaintPointersEnabled = false;
-  debugRepaintRainbowEnabled = false;
-  debugRepaintTextRainbowEnabled = false;
-
-  Map<String, FlutterBoostRouteFactory> routerMap = {
+class _MyAppState extends State<MyApp> {
+  static Map<String, FlutterBoostRouteFactory> routerMap = {
     '/': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(
           settings: settings, pageBuilder: (_, __, ___) => Container(
-        color: Colors.blue,
+
       ));
     },
-    'embedded':  (settings, uniqueId) => PageRouteBuilder<dynamic>(settings: settings, pageBuilder: (_, __, ___) => EmbeddedFirstRouteWidget()),
+    'embedded': (settings, uniqueId) {
+      return PageRouteBuilder<dynamic>(
+          settings: settings,
+          pageBuilder: (_, __, ___) => EmbeddedFirstRouteWidget());
+    },
     'presentFlutterPage': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(
           settings: settings,
@@ -148,30 +140,56 @@ void main() {
           ));
     },
   };
-  routerMap.addAll(FlutterRouter.getRouters1());
-  routerMap.addAll(FlutterRouter.getRouters2());
-  Widget appBuilder(Widget home) {
-      return MaterialApp(
-          home: home,
-      );
+
+  Route<dynamic> routeFactory(RouteSettings settings, String uniqueId) {
+    FlutterBoostRouteFactory func = routerMap[settings.name];
+    if (func == null) {
+      return null;
+    }
+    return func(settings, uniqueId);
   }
-  Widget appBuilder2(Widget home) {
-    return BaseApp(
-      child: home,
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterBoostApp(
+      routeFactory,
+      observers: [routeObserver],
     );
   }
-  appRun(FlutterBoostApp(
-    (RouteSettings settings, String uniqueId) {
-      FlutterBoostRouteFactory func = routerMap[settings.name];
-      if (func == null) {
-        return null;
-      }
-      return func(settings, uniqueId);
-    },
-    observers: [routeObserver],
-    appBuilder: (Widget home) {
-      return appBuilder2(home);
-    },
-    initialRoute: "/",
-  ));
+
+  static Widget appBuilder(Widget home) {
+    return MaterialApp(
+      home: home,
+    );
+  }
+
+  void _onRoutePushed(
+      String pageName, String uniqueId, Map params, Route route, Future _) {}
+}
+
+class BoostNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print('boost-didPush' + route.settings.name);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print('boost-didPop' + route.settings.name);
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print('boost-didRemove' + route.settings.name);
+  }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print('boost-didStartUserGesture' + route.settings.name);
+  }
 }

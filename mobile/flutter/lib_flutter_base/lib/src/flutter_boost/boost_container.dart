@@ -26,7 +26,7 @@ class BoostContainer<T> extends StatefulWidget {
   int get size => pages.length;
 
   NavigatorState get navigator => _navKey.currentState;
-  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _navKey;
 
   @override
   State<StatefulWidget> createState() => BoostContainerState<T>();
@@ -44,6 +44,7 @@ class BoostContainerState<T> extends State<BoostContainer<T>>
   void initState() {
     // PageVisibilityBinding.instance.addObserver(this, ModalRoute.of(context));
     super.initState();
+    widget._navKey = GlobalKey<NavigatorState>();
   }
 
   @override
@@ -92,5 +93,6 @@ class BoostContainerState<T> extends State<BoostContainer<T>>
   void dispose() {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle());
     super.dispose();
+    widget._navKey = null;
   }
 }

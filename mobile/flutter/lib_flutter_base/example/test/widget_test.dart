@@ -6,12 +6,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lib_flutter_base_example/flutter_page.dart';
 import 'package:lib_flutter_base_example/main_old.dart';
 
 void main() {
   testWidgets('Verify Platform version', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(new MyApp());
+    await tester.pumpWidget(new FlutterRouteWidget());
 
     // Verify that platform version is retrieved.
     expect(

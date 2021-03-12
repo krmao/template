@@ -2,6 +2,8 @@ package com.codesdancing.flutter
 
 import android.app.Application
 import android.content.Context
+import com.codesdancing.flutter.boost.STFlutterBoostUtils
+import com.codesdancing.flutter.multiple.STFlutterMultipleUtils
 import com.smart.library.STInitializer
 import com.smart.library.util.bus.STBusManager
 
@@ -23,8 +25,12 @@ class STFlutterBusHandler : STBusManager.IBusHandler {
         when (busFunctionName) {
             "flutter/open" -> {
                 if (context != null) {
-                    val schemaUrl:String = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
-                    STFlutterUtils.openFlutterPageBySchema(schemaUrl)
+                    val schemaUrl: String = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
+                    if (STFlutterInitializer.enableMultiple) {
+                        STFlutterMultipleUtils.openNewFlutterActivityBySchemaUrl(context, schemaUrl)
+                    } else {
+                        STFlutterBoostUtils.openFlutterPageBySchema(schemaUrl)
+                    }
                 }
             }
         }

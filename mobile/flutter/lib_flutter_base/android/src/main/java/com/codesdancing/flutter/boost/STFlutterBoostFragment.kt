@@ -1,6 +1,6 @@
-package com.codesdancing.flutter
+package com.codesdancing.flutter.boost
 
 import com.idlefish.flutterboost.containers.FlutterBoostFragment
 
 @Suppress("UNCHECKED_CAST", "unused")
-class STFlutterFragment : FlutterBoostFragment()
+class STFlutterBoostFragment : FlutterBoostFragment()

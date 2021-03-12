@@ -1,4 +1,4 @@
-package com.codesdancing.flutter
+package com.codesdancing.flutter.boost
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -17,7 +17,7 @@ import io.flutter.embedding.android.DrawableSplashScreen
 import io.flutter.embedding.android.SplashScreen
 import io.reactivex.disposables.CompositeDisposable
 
-open class STFlutterActivity : FlutterBoostActivity(), STActivityDelegate {
+open class STFlutterBoostActivity : FlutterBoostActivity(), STActivityDelegate {
 
     protected open val activityDelegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
 

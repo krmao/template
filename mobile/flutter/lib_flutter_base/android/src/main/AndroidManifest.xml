@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.codesdancing.flutter">
+    package="com.codesdancing.flutter">
 
     <application>
         <activity
-            android:name="com.codesdancing.flutter.STFlutterActivity"
+            android:name="com.codesdancing.flutter.boost.STFlutterBoostActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
@@ -11,15 +11,43 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name="com.codesdancing.flutter.STFlutterHomeActivity"
+            android:name="com.codesdancing.flutter.boost.STFlutterBoostHomeActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
             android:launchMode="singleTask"
             android:theme="@style/STAppTheme.Home.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <meta-data android:name="flutterEmbedding"
-            android:value="2">
-        </meta-data>
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleFragmentActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleHomeActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleFragmentHomeActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
     </application>
 
 </manifest>

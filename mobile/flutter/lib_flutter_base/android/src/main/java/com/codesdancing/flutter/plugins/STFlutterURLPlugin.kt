@@ -1,7 +1,7 @@
 package com.codesdancing.flutter.plugins
 
 import android.app.Activity
-import com.codesdancing.flutter.STFlutterUtils
+import com.codesdancing.flutter.boost.STFlutterBoostUtils
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -16,7 +16,7 @@ class STFlutterURLPlugin : STFlutterBasePlugin() {
             val params = requestData.optJSONObject("urlParams")
             val exts = requestData.optJSONObject("exts")
 
-            STFlutterUtils.openFlutterPageBySchema(url)
+            STFlutterBoostUtils.openFlutterPageBySchema(url)
             result.success("OK")
         } else {
             result.error("1", "url is empty", requestData)

@@ -4,25 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
 
-import './case/flutter_to_flutter_sample.dart';
-import './case/image_pick.dart';
-import './case/media_query.dart';
-import './case/return_data.dart';
-import './case/willpop.dart';
-import './flutter_page.dart';
-import './simple_page_widgets.dart';
-import './tab/simple_widget.dart';
-import 'custom/settings/router/flutter_router.dart';
+import 'router_manager.dart';
 
-
-RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
-void main() {
-  // https://flutter.dev/docs/development/add-to-app/debugging
-  // https://flutter.cn/docs/development/add-to-app/debugging
-  // flutter attach
-  // flutter attach -d deviceId # AKC7N19118000852
-  // flutter attach --isolate-filter='debug'
+/// https://flutter.dev/docs/development/add-to-app/debugging
+/// https://flutter.cn/docs/development/add-to-app/debugging
+/// flutter attach
+/// flutter attach -d deviceId # AKC7N19118000852
+/// flutter attach --isolate-filter='debug'
+void initAndRunApp(String initialRoute) {
   ui.window.setIsolateDebugName("debug isolate");
 
   debugPaintSizeEnabled = false;
@@ -33,145 +22,14 @@ void main() {
   debugRepaintRainbowEnabled = false;
   debugRepaintTextRainbowEnabled = false;
 
-  Map<String, FlutterBoostRouteFactory> routerMap = {
-    '/': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => Container(
-        color: Colors.blue,
-      ));
-    },
-    'embedded':  (settings, uniqueId) => PageRouteBuilder<dynamic>(settings: settings, pageBuilder: (_, __, ___) => EmbeddedFirstRouteWidget()),
-    'presentFlutterPage': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => FlutterRouteWidget(
-            params: settings.arguments,
-            uniqueId: uniqueId,
-          ));
-    },
-    'imagepick': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) =>
-              ImagePickerPage(title: "xxx", uniqueId: uniqueId));
-    },
-    'firstFirst': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => FirstFirstRouteWidget());
-    },
-    'willPop': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => WillPopRoute());
-    },
-    'returnData': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => ReturnDataWidget());
-    },
-    'secondStateful': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => SecondStatefulRouteWidget());
-    },
-    'platformView': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => PlatformRouteWidget());
-    },
-
-    ///可以在native层通过 getContainerParams 来传递参数
-    'flutterPage': (settings, uniqueId) {
-      print('flutterPage settings:$settings, uniqueId:$uniqueId');
-      return PageRouteBuilder<dynamic>(
-        settings: settings,
-        pageBuilder: (_, __, ___) => FlutterRouteWidget(
-          params: settings.arguments,
-          uniqueId: uniqueId,
-        ),
-        // transitionsBuilder: (BuildContext context, Animation<double> animation,
-        //     Animation<double> secondaryAnimation, Widget child) {
-        //   return SlideTransition(
-        //     position: Tween<Offset>(
-        //       begin: const Offset(1.0, 0),
-        //       end: Offset.zero,
-        //     ).animate(animation),
-        //     child: SlideTransition(
-        //       position: Tween<Offset>(
-        //         begin: Offset.zero,
-        //         end: const Offset(-1.0, 0),
-        //       ).animate(secondaryAnimation),
-        //       child: child,
-        //     ),
-        //   );
-        // },
-      );
-    },
-    'tab_friend': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => SimpleWidget(
-              uniqueId, settings.arguments, "This is a flutter fragment"));
-    },
-    'tab_message': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => SimpleWidget(
-              uniqueId, settings.arguments, "This is a flutter fragment"));
-    },
-    'tab_flutter1': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => SimpleWidget(
-              uniqueId, settings.arguments, "This is a custom FlutterView"));
-    },
-    'tab_flutter2': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => SimpleWidget(
-              uniqueId, settings.arguments, "This is a custom FlutterView"));
-    },
-
-    'f2f_first': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => F2FFirstPage());
-    },
-    'f2f_second': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings, pageBuilder: (_, __, ___) => F2FSecondPage());
-    },
-    'mediaquery': (settings, uniqueId) {
-      return PageRouteBuilder<dynamic>(
-          settings: settings,
-          pageBuilder: (_, __, ___) => MediaQueryRouteWidget(
-            params: settings.arguments,
-            uniqueId: uniqueId,
-          ));
-    },
-  };
-  routerMap.addAll(FlutterRouter.getRouters1());
-  routerMap.addAll(FlutterRouter.getRouters2());
-  Widget appBuilder(Widget home) {
-      return MaterialApp(
-          home: home,
-      );
-  }
-  Widget appBuilder2(Widget home) {
-    return BaseApp(
-      child: home,
-    );
-  }
-  appRun(FlutterBoostApp(
-    (RouteSettings settings, String uniqueId) {
-      FlutterBoostRouteFactory func = routerMap[settings.name];
-      if (func == null) {
-        return null;
-      }
-      return func(settings, uniqueId);
-    },
-    observers: [routeObserver],
-    appBuilder: (Widget home) {
-      return appBuilder2(home);
-    },
-    initialRoute: "/",
-  ));
+  appRun(MaterialApp(routes: {'/': RouterManager.instance.routeMap[initialRoute]}));
 }
+
+//region dartEntrypointFunctionName 仅比 initialRoute 多一个 main 前缀, 方便以后灵活的切换 '多引擎单路由' / '单引擎多路由'
+@pragma('vm:entry-point') void mainFlutterBridge() => initAndRunApp("FlutterBridge");
+@pragma('vm:entry-point') void mainFlutterSettings() => initAndRunApp("FlutterSettings");
+@pragma('vm:entry-point') void mainFlutterOrder() => initAndRunApp("FlutterOrder");
+@pragma('vm:entry-point') void mainFlutterPlayer() => initAndRunApp("FlutterPlayer");
+//endregion
+
+void main() => initAndRunApp("/");

@@ -7,21 +7,34 @@ import '../../modules/player/player_tab_widget_state.dart';
 import '../../modules/settings/settings_widget.dart';
 
 class FlutterRouter {
-  static const String URL_NATIVE_MINE = "native_mine";
-  static const String URL_FLUTTER_ORDER = "flutter_order";
-  static const String URL_FLUTTER_SETTINGS = "flutter_settings";
-  static const String URL_FLUTTER_PLAYER = "flutter_player";
-  static const String URL_FLUTTER_BRIDGE = "flutter_bridge";
+  static Map<String, WidgetBuilder> getRouters3() {
+    Map<String, WidgetBuilder> routers = {
+      "FlutterSettings": (BuildContext context) =>
+          BasePageDefault(state: SettingsState({})),
+      "FlutterOrder": (BuildContext context) => OrderWidget()
+    };
+    return routers;
+  }
+
+  static Map<String, WidgetBuilder> getRouters4() {
+    Map<String, WidgetBuilder> routers = {
+      "FlutterPlayer": (BuildContext context) =>
+          BasePageDefault(state: MainTabWidgetState()),
+      "FlutterBridge": (BuildContext context) =>
+          BasePageDefault(state: BridgeWidgetState())
+    };
+    return routers;
+  }
 
   static Map<String, FlutterBoostRouteFactory> getRouters1() {
     Map<String, FlutterBoostRouteFactory> routers = {
-      FlutterRouter.URL_FLUTTER_SETTINGS: (settings, uniqueId) {
+      "FlutterSettings": (settings, uniqueId) {
         return PageRouteBuilder<dynamic>(
             settings: settings,
             pageBuilder: (_, __, ___) =>
                 BasePageDefault(state: SettingsState({})));
       },
-      FlutterRouter.URL_FLUTTER_ORDER: (settings, uniqueId) {
+      "FlutterOrder": (settings, uniqueId) {
         return PageRouteBuilder<dynamic>(
             settings: settings, pageBuilder: (_, __, ___) => OrderWidget());
       },
@@ -31,13 +44,13 @@ class FlutterRouter {
 
   static Map<String, FlutterBoostRouteFactory> getRouters2() {
     Map<String, FlutterBoostRouteFactory> routers = {
-      FlutterRouter.URL_FLUTTER_PLAYER: (settings, uniqueId) {
+      "FlutterPlayer": (settings, uniqueId) {
         return PageRouteBuilder<dynamic>(
             settings: settings,
             pageBuilder: (_, __, ___) =>
                 BasePageDefault(state: MainTabWidgetState()));
       },
-      FlutterRouter.URL_FLUTTER_BRIDGE: (settings, uniqueId) {
+      "FlutterBridge": (settings, uniqueId) {
         return PageRouteBuilder<dynamic>(
             settings: settings,
             pageBuilder: (_, __, ___) =>

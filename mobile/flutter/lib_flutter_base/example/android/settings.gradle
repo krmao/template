@@ -1,3 +1,4 @@
+rootProject.name = "lib_flutter_base_example"
 include ':app'
 
 def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()

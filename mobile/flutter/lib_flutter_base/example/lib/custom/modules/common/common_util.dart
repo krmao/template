@@ -21,7 +21,7 @@ class CommonUtils {
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () => {
-              BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_PLAYER,withContainer: true)
+              BoostNavigator.of().push("FlutterPlayer",withContainer: true)
           }),
       InkWell(
           child: Container(
@@ -31,7 +31,7 @@ class CommonUtils {
                 'open native mine',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_PLAYER, arguments:{"urlParams": "1"},withContainer: true) ),
+          onTap: () => BoostNavigator.of().push("FlutterPlayer", arguments:{"urlParams": "1"},withContainer: true) ),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -40,7 +40,7 @@ class CommonUtils {
                 'open flutter order',
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
-          onTap: () => BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_ORDER, arguments:{"urlParams": "1"},withContainer: true) ),
+          onTap: () => BoostNavigator.of().push("FlutterOrder", arguments:{"urlParams": "1"},withContainer: true) ),
       InkWell(
           child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -50,7 +50,7 @@ class CommonUtils {
                 style: TextStyle(fontSize: 15.0, color: Colors.black),
               )),
           onTap: () {
-              BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_SETTINGS, arguments:{"urlParams": "1"},withContainer: true);
+              BoostNavigator.of().push("FlutterSettings", arguments:{"urlParams": "1"},withContainer: true);
           }),
       InkWell(
           child: Container(

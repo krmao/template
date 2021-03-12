@@ -1,12 +1,8 @@
 package com.codesdancing.flutter
 
-import android.net.Uri
-import android.text.TextUtils
-import com.idlefish.flutterboost.FlutterBoost
-import com.idlefish.flutterboost.containers.FlutterBoostActivity.CachedEngineIntentBuilder
-import com.smart.library.util.STJsonUtil
-import com.smart.library.util.STLogUtil
-
+import android.content.Context
+import com.codesdancing.flutter.boost.STFlutterBoostUtils
+import com.codesdancing.flutter.multiple.STFlutterMultipleUtils
 
 /**
  * @see {@link "https://github.com/alibaba/flutter_boost/blob/master/INTEGRATION.md"}
@@ -14,65 +10,39 @@ import com.smart.library.util.STLogUtil
  * 然后pageName.get(path)这里path是sample://flutterPage，这样pageName.get(path)获取到的是flutterPage，对应的就是main.dart里registerPageBuilders注册的flutterPage对应的FlutterRouteWidget(params: params)，
  * 进入这个页面同时把params传到这个页面
  *
- * @param url 为 Native和Flutter的 page 映射，通过Boost提供的open方法在Flutter打开Native和Flutter页面并传参，或者通过openPageByUrl方法在Native打开Native和Flutter页面并传参。一定要确保Flutter端registerPageBuilders里注册的路由的key和这里能够一一映射，否则会报page != null的红屏错误
+ * @param 'url' 为 Native和Flutter的 page 映射，通过Boost提供的open方法在Flutter打开Native和Flutter页面并传参，或者通过openPageByUrl方法在Native打开Native和Flutter页面并传参。一定要确保Flutter端registerPageBuilders里注册的路由的key和这里能够一一映射，否则会报page != null的红屏错误
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object STFlutterUtils {
     /**
-     * bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
-     * https://github.com/flutter/flutter/issues/46060
-     */
-    private fun openNewFlutterActivity(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>?) {
-        val intent = CachedEngineIntentBuilder(STFlutterActivity::class.java, FlutterBoost.ENGINE_ID)
-                .backgroundMode(io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.opaque)
-                .destroyEngineWithActivity(false)
-                .uniqueId(uniqueId)
-                .url(pageName)
-                .urlParams(pageParams)
-                .build(FlutterBoost.instance().currentActivity())
-        FlutterBoost.instance().currentActivity().startActivity(intent)
-    }
-
-    private fun openNewFlutterHomeActivity(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>?) {
-        val intent = CachedEngineIntentBuilder(STFlutterHomeActivity::class.java, FlutterBoost.ENGINE_ID)
-                .backgroundMode(io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.opaque)
-                .destroyEngineWithActivity(false)
-                .uniqueId(uniqueId)
-                .url(pageName)
-                .urlParams(pageParams)
-                .build(FlutterBoost.instance().currentActivity())
-        FlutterBoost.instance().currentActivity().startActivity(intent)
-    }
-
-    /**
      * @param schemaUrl "smart://template/flutter?page=flutter_order&params=jsonString"
      */
     @JvmStatic
-    fun openFlutterPageBySchema(schemaUrl: String?) {
-        STLogUtil.d("openFlutterPageBySchema schemaUrl=$schemaUrl")
-
-        val uri: Uri? = if (TextUtils.isEmpty(schemaUrl)) null else Uri.parse(schemaUrl)
-        val lastPath = schemaUrl?.substringBefore("?")?.substringAfterLast("/")
-        if (schemaUrl?.startsWith("smart://template/flutter") == true && lastPath == "flutter") {
-            val pageName: String? = uri?.getQueryParameter("page")
-            val pageParamsJson: String? = uri?.getQueryParameter("params")
-            val uniqueId: String? = uri?.getQueryParameter("uniqueId")
-            @Suppress("UNCHECKED_CAST")
-            openFlutterPageByName(pageName, uniqueId, STJsonUtil.toMapOrNull(pageParamsJson) as? HashMap<String, String>)
+    fun openFlutterPageBySchema(context: Context?, schemaUrl: String?) {
+        if (STFlutterInitializer.enableMultiple) {
+            STFlutterMultipleUtils.openNewFlutterActivityBySchemaUrl(context, schemaUrl)
+        } else {
+            STFlutterBoostUtils.openFlutterPageBySchema(schemaUrl)
         }
     }
 
     @JvmStatic
     @JvmOverloads
-    fun openFlutterPageByName(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>? = null) {
-        STLogUtil.d("openFlutterPageByName pageName=$pageName, params$pageName")
-        openNewFlutterActivity(pageName, uniqueId, pageParams)
+    fun openNewFlutterActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, boostPageParams: HashMap<String, String>? = null) {
+        if (STFlutterInitializer.enableMultiple) {
+            STFlutterMultipleUtils.openNewFlutterActivityByName(context, pageName)
+        } else {
+            STFlutterBoostUtils.openFlutterPageByName(pageName, boostPageUniqueId, boostPageParams)
+        }
     }
 
     @JvmStatic
     @JvmOverloads
-    fun openFlutterHomePageByName(pageName: String?, uniqueId: String?, pageParams: HashMap<String, String>? = null) {
-        STLogUtil.d("openFlutterHomePageByName pageName=$pageName, params$pageName")
-        openNewFlutterHomeActivity(pageName, uniqueId, pageParams)
+    fun openNewFlutterHomeActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, boostPageParams: HashMap<String, String>? = null) {
+        if (STFlutterInitializer.enableMultiple) {
+            STFlutterMultipleUtils.openNewFlutterHomeActivityByName(context, pageName)
+        } else {
+            STFlutterBoostUtils.openFlutterHomePageByName(pageName, boostPageUniqueId, boostPageParams)
+        }
     }
 }

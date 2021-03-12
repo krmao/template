@@ -5,12 +5,12 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lib_flutter_base/lib_flutter_base.dart';
 
 import 'base_app_constants.dart';
 import 'base_state_default.dart';
 import 'bridge/base_bridge_application.dart';
 import 'bridge/base_bridge_url.dart';
-import 'flutter_boost/boost_navigator.dart';
 
 typedef void OnInitStateCallback();
 
@@ -86,7 +86,8 @@ class BaseAppState extends State<BaseApp> {
     return MaterialApp(
         localizationsDelegates: [DefaultMaterialLocalizations.delegate],
         home: Scaffold(
-            backgroundColor: this.statusBarColor, // android status bar and iphone X top and bottom edges color
+            backgroundColor: this
+                .statusBarColor, // android status bar and iphone X top and bottom edges color
             body: Builder(builder: (BuildContext context) {
               return SafeArea(
                   top: this.enableSafeArea && this.enableSafeAreaTop,
@@ -141,7 +142,7 @@ Future<bool> _processExit(BuildContext context) {
   _lastTime = now;
   if (duration > 1500) {
     print("_processExit -> context==null?${context == null}");
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
     return Future.value(false);
   } else {
@@ -189,9 +190,9 @@ void _onZoneGlobalError(Object error, StackTrace stackTrace) {
   var errorMsg = error.toString();
   var stackTraceStr = stackTrace.toString();
   if (BaseBridgeApplication.debug) {
-    if (BoostNavigator.of().getTopPageInfo().pageName == '_error_page') {
-      BoostNavigator.of().pop();
-    }
+    // if (BoostNavigator.of().getTopPageInfo().pageName == '_error_page') {
+    //   BoostNavigator.of().pop();
+    // }
 
     // show error page
     URL.openURL<dynamic>('smart://template/flutter?page=_error_page',
@@ -294,7 +295,7 @@ class _PageNotFoundHomeState extends BaseStateDefault<PageNotFoundHomePage> {
                 color: Colors.blue,
                 textColor: Colors.white,
                 onPressed: () {
-                  BoostNavigator.of().pop();
+                  PageBridge.popPage();
                 },
               ),
             )

@@ -10,8 +10,8 @@
 @import image_picker;
 #endif
 
-#if __has_include(<lib_flutter_base/LibFlutterBasePlugin.h>)
-#import <lib_flutter_base/LibFlutterBasePlugin.h>
+#if __has_include(<lib_flutter_base/STFlutterBridge.h>)
+#import <lib_flutter_base/STFlutterBridge.h>
 #else
 @import lib_flutter_base;
 #endif
@@ -44,7 +44,7 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
-  [LibFlutterBasePlugin registerWithRegistrar:[registry registrarForPlugin:@"LibFlutterBasePlugin"]];
+  [STFlutterBridge registerWithRegistrar:[registry registrarForPlugin:@"STFlutterBridge"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];

@@ -2,7 +2,7 @@ package com.idlefish.flutterboost.example;
 
 import android.content.Intent;
 
-import com.codesdancing.flutter.STFlutterUtils;
+import com.codesdancing.flutter.boost.STFlutterBoostUtils;
 import com.idlefish.flutterboost.FlutterBoost;
 import com.idlefish.flutterboost.FlutterBoostDelegate;
 
@@ -17,6 +17,6 @@ public class MyFlutterBoostDelegate implements FlutterBoostDelegate {
 
     @Override
     public void pushFlutterRoute(String pageName, String uniqueId, HashMap<String, String> arguments) {
-        STFlutterUtils.openFlutterPageByName(pageName, uniqueId, arguments);
+        STFlutterBoostUtils.openFlutterPageByName(pageName, uniqueId, arguments);
     }
 }

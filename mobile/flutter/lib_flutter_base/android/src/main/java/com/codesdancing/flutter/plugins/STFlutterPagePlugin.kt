@@ -1,7 +1,7 @@
 package com.codesdancing.flutter.plugins
 
 import android.app.Activity
-import com.codesdancing.flutter.STFlutterActivity
+import com.codesdancing.flutter.boost.STFlutterBoostActivity
 import com.smart.library.util.STLogUtil
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -13,7 +13,7 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
     fun enableExitWithDoubleBackPressed(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
         STLogUtil.w("FlutterToastPlugin", "requestData=$requestData")
         val enable = requestData?.optBoolean("enable") ?: false
-        (activity as? STFlutterActivity)?.enableExitWithDoubleBackPressed(enable)
+        (activity as? STFlutterBoostActivity)?.enableExitWithDoubleBackPressed(enable)
         callbackSuccess(result)
     }
 

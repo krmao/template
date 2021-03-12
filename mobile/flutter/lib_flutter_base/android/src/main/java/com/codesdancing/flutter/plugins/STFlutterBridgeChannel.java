@@ -1,6 +1,7 @@
 package com.codesdancing.flutter.plugins;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,6 +38,18 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
 
     private MethodChannel methodChannel;
     private static Map<String, CTFlutterPluginMethodHolder> flutterBridgeMethodMap = new ConcurrentHashMap<>();
+
+    public STFlutterBridgeChannel() {
+        ArrayList<STFlutterBasePlugin> innerPlugins = new ArrayList<>();
+        innerPlugins.add(new STFlutterBridgeCompactPlugin());
+        innerPlugins.add(new STFlutterPagePlugin());
+        innerPlugins.add(new STFlutterToastPlugin());
+        innerPlugins.add(new STFlutterURLPlugin());
+        innerPlugins.add(new STFlutterEnvPlugin());
+        innerPlugins.add(new STFlutterEventPlugin());
+        innerPlugins.add(new STFlutterApplicationPlugin());
+        registerPlugins(innerPlugins);
+    }
 
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
@@ -156,6 +170,7 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
     }
 
     private void invokeMethodCall(FlutterEngine flutterEngine, MethodCall call, MethodChannel.Result result) {
+        Log.e("invokeMethodCall", "call.method=" + call.method);
         if (flutterBridgeMethodMap.containsKey(call.method)) {
             try {
                 CTFlutterPluginMethodHolder holder = flutterBridgeMethodMap.get(call.method);

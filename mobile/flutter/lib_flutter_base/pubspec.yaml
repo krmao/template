@@ -33,9 +33,11 @@ flutter:
     platforms:
       android:
         package: com.codesdancing.flutter
-        pluginClass: LibFlutterBasePlugin
+        # pluginClass: LibFlutterBaseBoostPlugin
+        pluginClass: LibFlutterBaseMultiplePlugin
       ios:
-        pluginClass: LibFlutterBasePlugin
+        # pluginClass: LibFlutterBasePlugin
+        pluginClass: STFlutterBridge
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

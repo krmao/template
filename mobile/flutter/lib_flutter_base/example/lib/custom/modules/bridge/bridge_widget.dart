@@ -26,27 +26,11 @@ class BridgeWidgetState extends BaseStateDefault {
     return ListView(
       children: <Widget>[
         getItemWidget(
-          'open new page',
-          () => {
-            BaseBridgeCompact.open(
-                "smart://template/flutter?page=flutter_settings&params="),
-          },
-        ),
+            'open new page',
+            () => BaseBridgeCompact.open(
+                "smart://template/flutter?page=flutter_settings&params=")),
         getItemWidget(
-          'close current page with result',
-          () => {
-            BoostNavigator.of().pop([
-              {
-                "result": {
-                  "name": "mm",
-                  "params": "aa",
-                  "login": 1,
-                  "token": "kkk"
-                }
-              }
-            ])
-          },
-        ),
+            'close current page', () => PageBridge.popPage()),
         getItemWidget(
             'show toast',
             () =>
@@ -94,33 +78,14 @@ class BridgeWidgetState extends BaseStateDefault {
         ),
         getItemWidget('show toast by Toast plugin',
             () => {Toast.show("I am native Toast!!!")}),
-        getItemWidget(
-            'open flutter-player by boost',
-            () => {
-                  BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_PLAYER,
-                      withContainer: true)
-                }),
-        getItemWidget(
-          'open native-mine by boost',
-          () => {
-            BoostNavigator.of().push(FlutterRouter.URL_NATIVE_MINE,
-                arguments: {"urlParams": "1"}, withContainer: true)
-          },
-        ),
-        getItemWidget(
-          'open flutter-order by boost',
-          () => {
-            BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_ORDER,
-                arguments: {"urlParams": "1"}, withContainer: true)
-          },
-        ),
-        getItemWidget(
-          'open flutter-settings by boost',
-          () => {
-            BoostNavigator.of().push(FlutterRouter.URL_FLUTTER_SETTINGS,
-                arguments: {"urlParams": "1"}, withContainer: true)
-          },
-        ),
+        getItemWidget('open flutter bridge',
+            () => PageBridge.pushPage("FlutterBridge")),
+        getItemWidget('open flutter player',
+            () => PageBridge.pushPage("FlutterPlayer")),
+        getItemWidget('open flutter order',
+            () => PageBridge.pushPage("FlutterOrder")),
+        getItemWidget('open flutter settings',
+            () => PageBridge.pushPage("FlutterSettings")),
       ],
     );
   }

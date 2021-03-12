@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
-import '../main.dart';
+import '../main_old.dart';
 
 class SimpleWidget extends StatefulWidget {
   final Map params;

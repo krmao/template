@@ -142,7 +142,7 @@ public class FlutterBoost {
         if (engine != null) {
             try {
                 // Class<? extends FlutterPlugin> pluginClass = (Class<? extends FlutterPlugin>) Class.forName("com.idlefish.flutterboost.FlutterBoostPlugin");
-                Class<? extends FlutterPlugin> pluginClass = (Class<? extends FlutterPlugin>) Class.forName("com.codesdancing.flutter.LibFlutterBasePlugin");
+                Class<? extends FlutterPlugin> pluginClass = (Class<? extends FlutterPlugin>) Class.forName("com.codesdancing.flutter.LibFlutterBaseBoostPlugin");
                 return (FlutterBoostPlugin) engine.getPlugins().get(pluginClass);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

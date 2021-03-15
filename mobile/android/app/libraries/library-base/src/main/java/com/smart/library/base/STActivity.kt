@@ -81,10 +81,10 @@ open class STActivity : STBaseActivity() {
             enableActivityFullScreenAndExpandLayout: Boolean? = null,
             enableActivityFeatureNoTitle: Boolean? = null,
             activityDecorViewBackgroundResource: Int? = null,
-            @AnimRes activityOpenEnterAnimation: Int = R.anim.st_anim_left_right_open_enter,
-            @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
-            @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
-            @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
+            @AnimRes activityOpenEnterAnimation: Int? = R.anim.st_anim_left_right_open_enter,
+            @AnimRes activityOpenExitAnimation: Int? = R.anim.st_anim_left_right_open_exit,
+            @AnimRes activityCloseEnterAnimation: Int? = R.anim.st_anim_left_right_close_enter,
+            @AnimRes activityCloseExitAnimation: Int? = R.anim.st_anim_left_right_close_exit,
             adapterDesignWidth: Int? = null,
             adapterDesignHeight: Int? = null,
             enableAdapterDesign: Boolean? = null
@@ -198,8 +198,8 @@ open class STActivity : STBaseActivity() {
             enableActivityFullScreenAndExpandLayout: Boolean? = null,
             enableActivityFeatureNoTitle: Boolean? = null,
             activityDecorViewBackgroundResource: Int? = null,
-            @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
-            @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
+            @AnimRes activityCloseEnterAnimation: Int? = R.anim.st_anim_left_right_close_enter,
+            @AnimRes activityCloseExitAnimation: Int? = R.anim.st_anim_left_right_close_exit,
             adapterDesignWidth: Int? = null,
             adapterDesignHeight: Int? = null,
             enableAdapterDesign: Boolean? = null
@@ -240,7 +240,10 @@ open class STActivity : STBaseActivity() {
         @UiThread
         @JvmStatic
         @JvmOverloads
-        fun overrideWindowAnim(context: Context?, @AnimRes enterAnimation: Int = R.anim.st_anim_left_right_open_enter, @AnimRes exitAnimation: Int = R.anim.st_anim_left_right_close_exit, intent: Intent? = null) {
+        fun overrideWindowAnim(context: Context?, @AnimRes enterAnimation: Int? = R.anim.st_anim_left_right_open_enter, @AnimRes exitAnimation: Int? = R.anim.st_anim_left_right_close_exit, intent: Intent? = null) {
+            enterAnimation ?: return
+            exitAnimation ?: return
+
             //region home class 无需重写动画
             try {
                 if (intent != null && intent.component != null) {

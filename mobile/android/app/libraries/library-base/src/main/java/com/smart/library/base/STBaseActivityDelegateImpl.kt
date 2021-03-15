@@ -57,7 +57,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
             isActivityThemeTransparent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT_FADE.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_HOME_TRANSLUCENT.id
             isActivityThemeTranslucent = activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSLUCENT_FADE.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id ||
@@ -65,7 +66,8 @@ open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelega
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSLUCENT_FADE.id ||
                     activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT.id ||
-                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_NORMAL_ACTIONBAR_TRANSPARENT_FADE.id ||
+                    activityTheme == STActivityDelegate.Theme.APP_THEME_HOME_TRANSLUCENT.id
 
             enableImmersionStatusBar = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR, enableImmersionStatusBar)
             enableImmersionStatusBarWithDarkFont = bundle.getBoolean(STActivityDelegate.KEY_ACTIVITY_ENABLE_IMMERSION_STATUS_BAR_WITH_DARK_FONT, enableImmersionStatusBarWithDarkFont)

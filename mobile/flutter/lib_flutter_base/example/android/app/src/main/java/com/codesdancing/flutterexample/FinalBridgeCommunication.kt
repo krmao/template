@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import com.idlefish.flutterboost.example.NativeRouter
 import com.smart.library.base.STActivity
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
@@ -39,10 +38,8 @@ object FinalBridgeCommunication {
                             val pageName: String? = uri?.getQueryParameter("page")
                             val pageParamsJson: String? = uri?.getQueryParameter("params")
                             val paramsMap = STJsonUtil.toMapOrNull(pageParamsJson) ?: hashMapOf()
-                            if (!NativeRouter.openPageByUrl(activity, pageName, paramsMap)) {
-                                STLogUtil.d("bus call", "pageName=$pageName, paramsMap=$paramsMap")
-                                STBusManager.call(activity, "flutter/open", url)
-                            }
+                            STLogUtil.d("bus call", "pageName=$pageName, paramsMap=$paramsMap")
+                            STBusManager.call(activity, "flutter/open", url)
                             result.put("result", true)
                         } else {
                             result.put("result", false)

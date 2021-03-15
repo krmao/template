@@ -5,15 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.annotation.AnimRes
 import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
 import com.smart.library.R
-import com.smart.library.base.STActivity
-import com.smart.library.base.STActivityDelegate
 import com.smart.library.util.STLogUtil
+import com.smart.library.util.rx.RxBus
 import com.smart.library.util.swipeback.STSwipeBackUtils
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 
 /*
 <activity
@@ -60,13 +59,34 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
         enableImmersionStatusBar(true)
         enableExitWithDoubleBackPressed(true)
         super.onCreate(null)
-
-        // xml 中 theme 为透明, 则 flutter 加载期间可以看到 launch activity, 700ms 后转为不透明, 是因为如果不设置会看到 launch activity 1s 后的 finish 动画
-        Handler().postDelayed({ STSwipeBackUtils.convertActivityFromTranslucent(this) }, 700)
     }
 
+    override fun getBackgroundMode(): BackgroundMode {
+        return BackgroundMode.transparent
+    }
+
+    override fun onFlutterUiDisplayed() {
+        super.onFlutterUiDisplayed()
+        STLogUtil.d(TAG, "onFlutterUiDisplayed needNotifyOnFlutterUiDisplayedEvent=$needNotifyOnFlutterUiDisplayedEvent, ${Thread.currentThread().name}")
+        if (needNotifyOnFlutterUiDisplayedEvent) {
+            Handler().post {
+                STSwipeBackUtils.convertActivityFromTranslucent(this)
+                Handler().post {
+                    STLogUtil.d(TAG, "onFlutterUiDisplayed post OnFlutterUiDisplayedEvent")
+                    RxBus.post(OnFlutterUiDisplayedEvent(initialRoute))
+                }
+            }
+        }
+    }
+
+    class OnFlutterUiDisplayedEvent(val initialRoute: String?)
+
     companion object {
+
         private const val TAG = "[STFlutterMultipleHomeActivity]"
+
+        @JvmStatic
+        var needNotifyOnFlutterUiDisplayedEvent: Boolean = true
 
         /**
          * 由 fragment 跳转, 由 fragment 接收结果
@@ -78,8 +98,8 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
                 requestCode: Int = 0,
-                @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
-                enableSwipeBack: Boolean = true,
+                @StyleRes activityTheme: Int = R.style.STAppTheme_Home_Transparent,
+                enableSwipeBack: Boolean = false,
                 enableSwipeBackRelate: Boolean? = null,
                 enableSwipeBackShadow: Boolean? = null,
                 enableImmersionStatusBar: Boolean = true,
@@ -90,10 +110,6 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                 enableActivityFullScreenAndExpandLayout: Boolean? = null,
                 enableActivityFeatureNoTitle: Boolean? = null,
                 activityDecorViewBackgroundResource: Int? = null,
-                @AnimRes activityOpenEnterAnimation: Int = R.anim.st_anim_left_right_open_enter,
-                @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
-                @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
-                @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
                 adapterDesignWidth: Int? = null,
                 adapterDesignHeight: Int? = null,
                 enableAdapterDesign: Boolean? = null
@@ -115,14 +131,11 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                     enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
                     enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,
                     activityDecorViewBackgroundResource = activityDecorViewBackgroundResource,
-                    activityCloseEnterAnimation = activityCloseEnterAnimation,
-                    activityCloseExitAnimation = activityCloseExitAnimation,
                     adapterDesignWidth = adapterDesignWidth,
                     adapterDesignHeight = adapterDesignHeight,
                     enableAdapterDesign = enableAdapterDesign
             )
             from.startActivityForResult(intent, requestCode)
-            STActivity.overrideWindowAnim(from.activity, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
         }
 
         /**
@@ -135,8 +148,8 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
                 requestCode: Int = 0,
-                @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL.id,
-                enableSwipeBack: Boolean = true,
+                @StyleRes activityTheme: Int = R.style.STAppTheme_Home_Transparent,
+                enableSwipeBack: Boolean = false,
                 enableSwipeBackRelate: Boolean? = null,
                 enableSwipeBackShadow: Boolean? = null,
                 enableImmersionStatusBar: Boolean = true,
@@ -147,10 +160,6 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                 enableActivityFullScreenAndExpandLayout: Boolean? = null,
                 enableActivityFeatureNoTitle: Boolean? = null,
                 activityDecorViewBackgroundResource: Int? = null,
-                @AnimRes activityOpenEnterAnimation: Int = R.anim.st_anim_left_right_open_enter,
-                @AnimRes activityOpenExitAnimation: Int = R.anim.st_anim_left_right_open_exit,
-                @AnimRes activityCloseEnterAnimation: Int = R.anim.st_anim_left_right_close_enter,
-                @AnimRes activityCloseExitAnimation: Int = R.anim.st_anim_left_right_close_exit,
                 adapterDesignWidth: Int? = null,
                 adapterDesignHeight: Int? = null,
                 enableAdapterDesign: Boolean? = null
@@ -173,8 +182,6 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                         enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
                         enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,
                         activityDecorViewBackgroundResource = activityDecorViewBackgroundResource,
-                        activityCloseEnterAnimation = activityCloseEnterAnimation,
-                        activityCloseExitAnimation = activityCloseExitAnimation,
                         adapterDesignWidth = adapterDesignWidth,
                         adapterDesignHeight = adapterDesignHeight,
                         enableAdapterDesign = enableAdapterDesign
@@ -184,7 +191,6 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
                 } else {
                     from.startActivity(intent)
                 }
-                STActivity.overrideWindowAnim(from, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
             } else {
                 STLogUtil.e(TAG, "context is null !")
             }

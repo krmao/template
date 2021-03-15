@@ -1,7 +1,6 @@
 package com.codesdancing.flutter.multiple
 
 import android.app.Application
-import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.STFlutterEngineGroup
 
 

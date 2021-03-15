@@ -50,3 +50,6 @@ samples, guidance on mobile development, and a full API reference.
     # change local dependency to remote
     lib_flutter_base: ^0.0.6
     ```
+
+* Example Test Release
+> flutter run --release --verbose

@@ -19,29 +19,28 @@ internal object STFlutterMultipleUtils {
         val lastPath = schemaUrl?.substringBefore("?")?.substringAfterLast("/")
         if (schemaUrl?.startsWith("smart://template/flutter") == true && lastPath == "flutter") {
             val pageName: String? = uri?.getQueryParameter("page")
-            // val pageParamsJson: String? = uri?.getQueryParameter("params")
-            // val uniqueId: String? = uri?.getQueryParameter("uniqueId")
+            val pageParamsJson: String? = uri?.getQueryParameter("params")
             if (pageName == null) {
                 STLogUtil.e("openFlutterPageBySchema schemaUrl=$schemaUrl pageName is null!!!")
             } else {
-                openNewFlutterActivityByName(context, pageName)
+                openNewFlutterActivityByName(context, pageName, argumentsJsonString = pageParamsJson)
             }
         }
     }
 
     @JvmStatic
-    fun openNewFlutterActivityByName(context: Context?, initialRoute: String = "/", enableMultiEnginesWithSingleRoute: Boolean = true) {
-        STLogUtil.d("openNewFlutterActivityByName", "initialRoute=$initialRoute, enableMultiEnginesWithSingleRoute=$enableMultiEnginesWithSingleRoute")
+    fun openNewFlutterActivityByName(context: Context?, initialRoute: String = "/", argumentsJsonString: String? = null, enableMultiEnginesWithSingleRoute: Boolean = true) {
+        STLogUtil.d("openNewFlutterActivityByName", "initialRoute=$initialRoute, enableMultiEnginesWithSingleRoute=$enableMultiEnginesWithSingleRoute, argumentsJsonString=$argumentsJsonString")
         val dartEntrypointFunctionName = if (!enableMultiEnginesWithSingleRoute || initialRoute == "/") "main" else "main$initialRoute"
         val finalInitialRoute = if (!enableMultiEnginesWithSingleRoute) initialRoute else "/"
-        STFlutterMultipleActivity.startActivity(context, dartEntrypointFunctionName, finalInitialRoute)
+        STFlutterMultipleActivity.startActivity(context, dartEntrypointFunctionName, finalInitialRoute, argumentsJsonString = argumentsJsonString)
     }
 
     @JvmStatic
-    fun openNewFlutterHomeActivityByName(context: Context?, initialRoute: String = "/", enableMultiEnginesWithSingleRoute: Boolean = true) {
-        STLogUtil.d("openNewFlutterHomeActivityByName", "initialRoute=$initialRoute, enableMultiEnginesWithSingleRoute=$enableMultiEnginesWithSingleRoute")
+    fun openNewFlutterHomeActivityByName(context: Context?, initialRoute: String = "/", argumentsJsonString: String? = null, enableMultiEnginesWithSingleRoute: Boolean = true) {
+        STLogUtil.d("openNewFlutterHomeActivityByName", "initialRoute=$initialRoute, enableMultiEnginesWithSingleRoute=$enableMultiEnginesWithSingleRoute, argumentsJsonString=$argumentsJsonString")
         val dartEntrypointFunctionName = if (!enableMultiEnginesWithSingleRoute || initialRoute == "/") "main" else "main$initialRoute"
         val finalInitialRoute = if (!enableMultiEnginesWithSingleRoute) initialRoute else "/"
-        STFlutterMultipleHomeActivity.startActivity(context, dartEntrypointFunctionName, finalInitialRoute)
+        STFlutterMultipleHomeActivity.startActivity(context, dartEntrypointFunctionName, finalInitialRoute, argumentsJsonString = argumentsJsonString)
     }
 }

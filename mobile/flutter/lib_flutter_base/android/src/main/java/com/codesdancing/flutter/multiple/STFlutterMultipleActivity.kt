@@ -16,6 +16,7 @@ import androidx.annotation.AnimRes
 import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
+import com.codesdancing.flutter.LibFlutterBaseMultiplePlugin
 import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.R
 import com.smart.library.base.STActivity
@@ -29,6 +30,7 @@ import io.flutter.embedding.android.SplashScreen
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.reactivex.disposables.CompositeDisposable
+import org.json.JSONObject
 
 open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
 
@@ -58,6 +60,20 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     override fun onResume() {
         super.onResume()
         activityDelegate.onResume()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        STLogUtil.w(TAG, "onActivityResult requestCode=$requestCode, resultCode=$resultCode, data=$data")
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE) {
+                val argumentsJsonString = data?.getStringExtra(KEY_ARGUMENTS_JSON_STRING)
+                STLogUtil.w(TAG, "onActivityResult requestCode=$requestCode, resultCode=$resultCode, argumentsJsonString=$argumentsJsonString")
+                val eventKey: String = KEY_ARGUMENTS_JSON_STRING
+                val eventInfo: JSONObject? = if (!argumentsJsonString.isNullOrBlank() && argumentsJsonString.startsWith("{") && argumentsJsonString.endsWith("}")) JSONObject(argumentsJsonString) else null
+                LibFlutterBaseMultiplePlugin.getFlutterBaseMultiplePlugin(flutterEngine)?.sendEventToDart(eventKey, eventInfo)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -150,8 +166,10 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
 
     companion object {
         private const val TAG = "[STFlutterMultipleActivity]"
+        const val REQUEST_CODE = 20210316
         const val KEY_DART_ENTRYPOINT_FUNCTION_NAME = "KEY_DART_ENTRYPOINT_FUNCTION_NAME"
         const val KEY_INITIAL_ROUTE = "KEY_INITIAL_ROUTE"
+        const val KEY_ARGUMENTS_JSON_STRING = "KEY_ARGUMENTS_JSON_STRING"
 
         /**
          * 由 fragment 跳转, 由 fragment 接收结果
@@ -162,7 +180,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 from: Fragment,
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
-                requestCode: Int = 0,
+                argumentsJsonString: String? = null,
                 @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
                 enableSwipeBack: Boolean = true,
                 enableSwipeBackRelate: Boolean? = null,
@@ -188,6 +206,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                     activityClass = STFlutterMultipleActivity::class.java,
                     dartEntrypointFunctionName = dartEntrypointFunctionName,
                     initialRoute = initialRoute,
+                    argumentsJsonString = argumentsJsonString,
                     activityThem = activityTheme,
                     enableSwipeBack = enableSwipeBack,
                     enableSwipeBackRelate = enableSwipeBackRelate,
@@ -206,7 +225,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                     adapterDesignHeight = adapterDesignHeight,
                     enableAdapterDesign = enableAdapterDesign
             )
-            from.startActivityForResult(intent, requestCode)
+            from.startActivityForResult(intent, REQUEST_CODE)
             STActivity.overrideWindowAnim(from.activity, activityOpenEnterAnimation, activityOpenExitAnimation, intent)
         }
 
@@ -219,7 +238,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 from: Context?,
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
-                requestCode: Int = 0,
+                argumentsJsonString: String? = null,
                 @StyleRes activityTheme: Int = STActivityDelegate.Theme.APP_THEME_NORMAL.id,
                 enableSwipeBack: Boolean = true,
                 enableSwipeBackRelate: Boolean? = null,
@@ -246,6 +265,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                         activityClass = STFlutterMultipleActivity::class.java,
                         dartEntrypointFunctionName = dartEntrypointFunctionName,
                         initialRoute = initialRoute,
+                        argumentsJsonString = argumentsJsonString,
                         activityThem = activityTheme,
                         enableSwipeBack = enableSwipeBack,
                         enableSwipeBackRelate = enableSwipeBackRelate,
@@ -265,7 +285,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                         enableAdapterDesign = enableAdapterDesign
                 )
                 if (from is Activity) {
-                    from.startActivityForResult(intent, requestCode)
+                    from.startActivityForResult(intent, REQUEST_CODE)
                 } else {
                     from.startActivity(intent)
                 }
@@ -282,6 +302,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 activityClass: Class<*>?,
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
+                argumentsJsonString: String? = null,
                 @StyleRes activityThem: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
                 enableSwipeBack: Boolean = false,
                 enableSwipeBackRelate: Boolean? = null,
@@ -323,6 +344,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
 
             intent.putExtra(KEY_DART_ENTRYPOINT_FUNCTION_NAME, dartEntrypointFunctionName)
             intent.putExtra(KEY_INITIAL_ROUTE, initialRoute)
+            if (argumentsJsonString != null) intent.putExtra(KEY_ARGUMENTS_JSON_STRING, argumentsJsonString)
             if (context !is Activity || context is Application) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

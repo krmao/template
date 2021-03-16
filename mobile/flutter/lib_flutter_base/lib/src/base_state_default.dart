@@ -106,29 +106,37 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     //endregion
     print(
         "[page] enableSafeArea && enableSafeAreaTop = ${enableSafeArea && enableSafeAreaTop}");
-    return Scaffold(
-      backgroundColor: statusBarColor,
-      body: Builder(
-        builder: (BuildContext context) {
-          scaffoldContext = context;
-          print("[page] $runtimeType - build scaffoldContext=$scaffoldContext");
-          // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
-          // https://github.com/flutter/flutter/issues/46060
-          return SafeArea(
-            top: enableSafeArea && enableSafeAreaTop,
-            left: enableSafeArea && enableSafeAreaLeft,
-            right: enableSafeArea && enableSafeAreaRight,
-            bottom: enableSafeArea && enableSafeAreaBottom,
-            child: Container(
-              color: statusBarColor,
-              width: double.infinity,
-              height: double.infinity,
-              child: Stack(children: children),
-            ),
-          );
-        },
-      ),
-    );
+    return WillPopScope(
+        child: Scaffold(
+          backgroundColor: statusBarColor,
+          body: Builder(
+            builder: (BuildContext context) {
+              scaffoldContext = context;
+              print(
+                  "[page] $runtimeType - build scaffoldContext=$scaffoldContext");
+              // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
+              // https://github.com/flutter/flutter/issues/46060
+              return SafeArea(
+                top: enableSafeArea && enableSafeAreaTop,
+                left: enableSafeArea && enableSafeAreaLeft,
+                right: enableSafeArea && enableSafeAreaRight,
+                bottom: enableSafeArea && enableSafeAreaBottom,
+                child: Container(
+                  color: statusBarColor,
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Stack(children: children),
+                ),
+              );
+            },
+          ),
+        ),
+        onWillPop: onBackPressed);
+  }
+
+  Future<bool> onBackPressed() {
+    print("onBackPressed");
+    return Future.value(true);
   }
 
   @protected

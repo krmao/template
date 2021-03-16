@@ -1,6 +1,7 @@
 //import 'package:flutter/cupertino.dart';
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -195,11 +196,10 @@ void _onZoneGlobalError(Object error, StackTrace stackTrace) {
     // }
 
     // show error page
-    URL.openURL<dynamic>('smart://template/flutter?page=_error_page',
-        urlParams: {
-          "error": errorMsg,
-          "stacktrace": stackTraceStr,
-        });
+    URL.openURL<dynamic>('smart://template/flutter?page=_error_page&params='+json.encode({
+        "error": errorMsg,
+        "stacktrace": stackTraceStr,
+    }));
   }
 }
 //endregion

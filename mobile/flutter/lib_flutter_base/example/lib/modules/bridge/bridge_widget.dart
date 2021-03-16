@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
@@ -5,11 +7,30 @@ import 'package:lib_flutter_base/lib_flutter_base.dart';
 class BridgeWidgetState extends BaseStateDefault {
   TextEditingController textEditingController;
 
+  String currentPageInitArguments;
+  String willReturnToPrePageData;
+  String onNextPageReturnData;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
+    print("initState time=${DateTime.now()}");
+    PageBridge.getCurrentPageInitArguments().then((value) {
+      print("getCurrentPageInitArguments return value=$value time=${DateTime.now()}");
+      setState(() {
+        this.currentPageInitArguments = "$value";
+      });
+    });
+
+    willReturnToPrePageData = json.encode({
+      "name": "Jack",
+      "age": 10,
+      "gender": "boy",
+      "from": pageUniqueId,
+    });
+
     loadingWidget = BaseWidgetLoading(isShow: false);
     statusBarColor = Color(0xff00008b);
     super.initState();
@@ -20,9 +41,31 @@ class BridgeWidgetState extends BaseStateDefault {
   }
 
   @override
+  void onPageResult(data) {
+    super.onPageResult(data);
+    setState(() {
+      willReturnToPrePageData = data;
+    });
+  }
+
+  @override
+  Future<bool> onBackPressed() {
+    print("onBackPressed willReturnToPrePageData=$willReturnToPrePageData");
+    PageBridge.popPage(arguments: willReturnToPrePageData);
+    return Future.value(false);
+  }
+
+  @override
   Widget buildBaseChild(BuildContext context) {
+    print("buildBaseChild time=${DateTime.now()}");
     return ListView(
       children: <Widget>[
+        getItemWidget('currentPageInitArguments=$currentPageInitArguments',
+            () => BaseBridgeCompact.showToast("$currentPageInitArguments")),
+        getItemWidget('onNextPageReturnData=$onNextPageReturnData',
+            () => BaseBridgeCompact.showToast("$onNextPageReturnData")),
+        getItemWidget('willReturnToPrePageData=$willReturnToPrePageData',
+            () => BaseBridgeCompact.showToast("$willReturnToPrePageData")),
         getItemWidget(
             'open new page',
             () => BaseBridgeCompact.open(
@@ -76,7 +119,15 @@ class BridgeWidgetState extends BaseStateDefault {
         getItemWidget('show toast by Toast plugin',
             () => {Toast.show("I am native Toast!!!")}),
         getItemWidget(
-            'open flutter bridge', () => PageBridge.pushPage("FlutterBridge")),
+            'open flutter bridge',
+            () =>
+                PageBridge.pushPage("FlutterBridge", argument: currentPageInitArguments)),
+        getItemWidget(
+            'open flutter bridge 2',
+            () => URL.openURL<dynamic>('smart://template/flutter?page=FlutterBridge&params='+json.encode({
+              "name": "mate",
+            }))
+        ),
         getItemWidget(
             'open flutter player', () => PageBridge.pushPage("FlutterPlayer")),
         getItemWidget(

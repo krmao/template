@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 abstract class STFlutterBasePlugin {
 
     private var flutterBridgeChannel: STFlutterBridgeChannel? = null
-    
+
     fun setFlutterBridgeChannel(flutterBridgeChannel1: STFlutterBridgeChannel?) {
         this.flutterBridgeChannel = flutterBridgeChannel1
     }
@@ -17,7 +17,7 @@ abstract class STFlutterBasePlugin {
 
     abstract fun getPluginName(): String?
 
-    protected fun callbackSuccess(result: MethodChannel.Result, successData: Any? = "success") {
+    protected fun callbackSuccess(result: MethodChannel.Result, successData: Any? = null) {
         if (STThreadUtils.isMainThread()) {
             result.success(successData)
         } else {

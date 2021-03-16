@@ -3,6 +3,8 @@ package com.codesdancing.flutter
 import android.content.Context
 import com.codesdancing.flutter.boost.STFlutterBoostUtils
 import com.codesdancing.flutter.multiple.STFlutterMultipleUtils
+import com.smart.library.util.STJsonUtil
+import org.json.JSONObject
 
 /**
  * @see {@link "https://github.com/alibaba/flutter_boost/blob/master/INTEGRATION.md"}
@@ -28,21 +30,21 @@ object STFlutterUtils {
 
     @JvmStatic
     @JvmOverloads
-    fun openNewFlutterActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, boostPageParams: HashMap<String, String>? = null) {
+    fun openNewFlutterActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, argumentsJsonString: String? = null) {
         if (STFlutterInitializer.enableMultiple) {
-            STFlutterMultipleUtils.openNewFlutterActivityByName(context, pageName)
+            STFlutterMultipleUtils.openNewFlutterActivityByName(context, pageName, argumentsJsonString = argumentsJsonString)
         } else {
-            STFlutterBoostUtils.openFlutterPageByName(pageName, boostPageUniqueId, boostPageParams)
+            STFlutterBoostUtils.openFlutterPageByName(pageName, boostPageUniqueId, (if (argumentsJsonString != null) STJsonUtil.toMap(JSONObject(argumentsJsonString)) else null) as HashMap<String, String>?)
         }
     }
 
     @JvmStatic
     @JvmOverloads
-    fun openNewFlutterHomeActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, boostPageParams: HashMap<String, String>? = null) {
+    fun openNewFlutterHomeActivityByName(context: Context?, pageName: String, boostPageUniqueId: String? = null, argumentsJsonString: String? = null) {
         if (STFlutterInitializer.enableMultiple) {
-            STFlutterMultipleUtils.openNewFlutterHomeActivityByName(context, pageName)
+            STFlutterMultipleUtils.openNewFlutterHomeActivityByName(context, pageName, argumentsJsonString = argumentsJsonString)
         } else {
-            STFlutterBoostUtils.openFlutterHomePageByName(pageName, boostPageUniqueId, boostPageParams)
+            STFlutterBoostUtils.openFlutterHomePageByName(pageName, boostPageUniqueId, (if (argumentsJsonString != null) STJsonUtil.toMap(JSONObject(argumentsJsonString)) else null) as HashMap<String, String>?)
         }
     }
 }

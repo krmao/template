@@ -18,7 +18,8 @@ class BridgeWidgetState extends BaseStateDefault {
   void initState() {
     print("initState time=${DateTime.now()}");
     PageBridge.getCurrentPageInitArguments().then((value) {
-      print("getCurrentPageInitArguments return value=$value time=${DateTime.now()}");
+      print(
+          "getCurrentPageInitArguments return value=$value time=${DateTime.now()}");
       setState(() {
         this.currentPageInitArguments = "$value";
       });
@@ -120,18 +121,29 @@ class BridgeWidgetState extends BaseStateDefault {
             () => {Toast.show("I am native Toast!!!")}),
         getItemWidget(
             'open flutter bridge',
-            () =>
-                PageBridge.pushPage("FlutterBridge", argument: currentPageInitArguments)),
+            () => PageBridge.pushPage("FlutterBridge", argument: {
+                  "pageUniqueId": pageUniqueId,
+                  "name": "li bridge",
+                })),
         getItemWidget(
             'open flutter bridge 2',
-            () => URL.openURL<dynamic>('smart://template/flutter?page=FlutterBridge&params='+json.encode({
-              "name": "mate",
-            }))
-        ),
+            () => URL.openURL<dynamic>(
+                'smart://template/flutter?page=FlutterBridge&params=' +
+                    json.encode({
+                      "name": "mate",
+                    }))),
         getItemWidget(
-            'open flutter player', () => PageBridge.pushPage("FlutterPlayer")),
+            'open flutter player',
+            () => PageBridge.pushPage("FlutterPlayer", argument: {
+                  "pageUniqueId": pageUniqueId,
+                  "name": "li player",
+                })),
         getItemWidget(
-            'open flutter order', () => PageBridge.pushPage("FlutterOrder")),
+            'open flutter order',
+            () => PageBridge.pushPage("FlutterOrder", argument: {
+                  "pageUniqueId": pageUniqueId,
+                  "name": "li order",
+                })),
         getItemWidget('open flutter settings',
             () => PageBridge.pushPage("FlutterSettings")),
       ],

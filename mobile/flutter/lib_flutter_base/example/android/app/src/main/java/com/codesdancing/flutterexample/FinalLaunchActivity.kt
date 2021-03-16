@@ -44,7 +44,7 @@ class FinalLaunchActivity : STBaseLaunchActivity() {
             disposable?.dispose() // unsubscribe
         }
         STFlutterMultipleHomeActivity.needNotifyOnFlutterUiDisplayedEvent = true
-        // STFlutterUtils.openNewFlutterHomeActivityByName(this, "FlutterBridge")
-        STFlutterUtils.openNewFlutterHomeActivityByName(this, "/")
+        STFlutterUtils.openNewFlutterHomeActivityByName(this, "FlutterBridge")
+        // STFlutterUtils.openNewFlutterHomeActivityByName(this, "/")
     }
 }

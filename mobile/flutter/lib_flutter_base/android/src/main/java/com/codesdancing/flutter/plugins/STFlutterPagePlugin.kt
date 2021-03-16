@@ -18,6 +18,7 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
         activity?.setResult(Activity.RESULT_OK, Intent().apply {
             putExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING, argumentsJsonString)
         })
+        activity?.finish()
         callbackSuccess(result, null)
     }
 

@@ -19,8 +19,8 @@ class PageBridge extends BaseBridge {
   }
 
   static Future<dynamic> getCurrentPageInitArguments() async {
-    String argumentsJsonString =
-        await BaseBridge.callNativeStatic("Page", "getCurrentPageInitArguments", {});
+    String argumentsJsonString = await BaseBridge.callNativeStatic(
+        "Page", "getCurrentPageInitArguments", {});
 
     print("getArguments argumentsJsonString=$argumentsJsonString");
 
@@ -36,11 +36,11 @@ class PageBridge extends BaseBridge {
     return arguments;
   }
 
-  static void popPage({Object arguments}) {
+  static void popPage({String argumentsJsonString}) {
     if (enableMultiple) {
-      print("popPage arguments=$arguments");
+      print("popPage argumentsJsonString=$argumentsJsonString");
       BaseBridge.callNativeStatic(
-          "Page", "popPage", {"argumentsJsonString": jsonEncode(arguments)});
+          "Page", "popPage", {"argumentsJsonString": argumentsJsonString});
     } else {
       BoostNavigator.of().pop();
     }

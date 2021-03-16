@@ -14,6 +14,8 @@ class Event extends BaseBridge {
     if (!registerMethodCall) {
       BaseBridge.registerMethodCallBack(BRIDGE_EVENT_NAME,
           (String methodName, dynamic arguments) {
+        print(
+            "[page] $BRIDGE_EVENT_NAME method callback methodName=$methodName, arguments=$arguments");
         if (arguments['eventName'] != null && arguments['eventInfo'] != null) {
           _invokeEvent(arguments['eventName'], arguments['eventInfo']);
         }
@@ -52,12 +54,14 @@ class Event extends BaseBridge {
 
   static void _invokeEvent(String eventName, Map eventData) {
     String containerId = eventData['containerId'] ?? "";
+    print("[page] _invokeEvent eventName=$eventName, eventData=$eventData, containerId=$containerId");
     eventListeners[eventName].forEach((key, value) {
-      if (key == containerId) {
+      print("[page] _invokeEvent eventName=$eventName, key=$key, value=$value");
+      // if (key == containerId) { // todo
         (value as List)?.forEach((eventCallBack) {
           eventCallBack(eventName, eventData);
         });
-      }
+      // }
     });
   }
 

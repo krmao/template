@@ -22,20 +22,24 @@ void initAndRunApp(String initialRoute) {
   debugRepaintRainbowEnabled = false;
   debugRepaintTextRainbowEnabled = false;
 
-  appRun(MaterialApp(routes: {'/': RouterManager.instance.routeMap[initialRoute]}));
+  appRun(MaterialApp(
+      routes: {'/': RouterManager.instance.routeMap[initialRoute]}));
 }
 
 //region dartEntrypointFunctionName 仅比 initialRoute 多一个 main 前缀, 方便以后灵活的切换 '多引擎单路由' / '单引擎多路由'
-@pragma('vm:entry-point') void mainFlutterBridge() => initAndRunApp("FlutterBridge");
-@pragma('vm:entry-point') void mainFlutterSettings() => initAndRunApp("FlutterSettings");
-@pragma('vm:entry-point') void mainFlutterOrder() => initAndRunApp("FlutterOrder");
-@pragma('vm:entry-point') void mainFlutterPlayer() => initAndRunApp("FlutterPlayer");
+@pragma('vm:entry-point')
+void mainFlutterBridge() => initAndRunApp("FlutterBridge");
+@pragma('vm:entry-point')
+void mainFlutterSettings() => initAndRunApp("FlutterSettings");
+@pragma('vm:entry-point')
+void mainFlutterOrder() => initAndRunApp("FlutterOrder");
+@pragma('vm:entry-point')
+void mainFlutterPlayer() => initAndRunApp("FlutterPlayer");
 //endregion
 
-// void main() => initAndRunApp("/");
+void main() => initAndRunApp("/");
 
-
-void main() => runApp(const MyApp());
+// void main() => runApp(const MyApp());
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
@@ -93,7 +97,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: Text('shouldPop: $shouldPop'),
                 onPressed: () {
                   setState(
-                        () {
+                    () {
                       shouldPop = !shouldPop;
                     },
                   );
@@ -110,4 +114,3 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
-

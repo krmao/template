@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
@@ -7,6 +5,8 @@ import 'package:uuid/uuid.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final String pageUniqueId = Uuid().v1();
+  // ignore: non_constant_identifier_names
+  final String KEY_ARGUMENTS_JSON_STRING = "KEY_ARGUMENTS_JSON_STRING";
 
   @override
   @mustCallSuper
@@ -15,16 +15,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     print(
         "[page] pageUniqueId=$pageUniqueId, $runtimeType - initState ${this.toStringShort()}");
 
-    BaseBridge.registerMethodCallBack("$pageUniqueId-listen-page-result",
-        (methodName, arguments) {
+    Event.addEventListener(KEY_ARGUMENTS_JSON_STRING,
+        (eventName, eventData) {
       print(
-          "[page] pageUniqueId=$pageUniqueId, $runtimeType - onMethodCallBack methodName=$methodName, arguments=$arguments");
+          "[page] pageUniqueId=$pageUniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
 
-      if (methodName == pageUniqueId) {
-        dynamic eventData = json.decode(arguments);
+      if (KEY_ARGUMENTS_JSON_STRING == eventName) {
         onPageResult(eventData);
       }
-    });
+    }, containerId: pageUniqueId);
   }
 
   @mustCallSuper
@@ -71,7 +70,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void dispose() {
     super.dispose();
-    BaseBridge.unregisterMethodCallBack("$pageUniqueId-listen-page-result");
+    Event.removeEventListener(KEY_ARGUMENTS_JSON_STRING,
+        containerId: pageUniqueId);
     print("[page] pageUniqueId=$pageUniqueId, $runtimeType - dispose");
   }
 

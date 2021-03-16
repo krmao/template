@@ -48,7 +48,7 @@ class BridgeWidgetState extends BaseStateDefault {
   void onPageResult(data) {
     super.onPageResult(data);
     setState(() {
-      willReturnToPrePageData = data;
+      onNextPageReturnData = "received -> $data";
     });
   }
 
@@ -58,12 +58,12 @@ class BridgeWidgetState extends BaseStateDefault {
     super.dispose();
   }
 
-  /*@override
-  Future<bool> onBackPressed() {
+  @override
+  Future<bool> onBackPressed(BuildContext context) {
     print("onBackPressed willReturnToPrePageData=$willReturnToPrePageData");
-    PageBridge.popPage(arguments: willReturnToPrePageData);
+    PageBridge.popPage(argumentsJsonString: willReturnToPrePageData);
     return Future.value(false);
-  }*/
+  }
 
   @override
   Widget buildBaseChild(BuildContext context) {

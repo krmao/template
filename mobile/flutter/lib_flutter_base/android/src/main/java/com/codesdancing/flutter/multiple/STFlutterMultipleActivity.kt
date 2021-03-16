@@ -73,7 +73,18 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 val argumentsJsonString = data?.getStringExtra(KEY_ARGUMENTS_JSON_STRING)
                 STLogUtil.w("[page]", "$TAG onActivityResult requestCode=$requestCode, resultCode=$resultCode, argumentsJsonString=$argumentsJsonString")
                 val eventKey: String = KEY_ARGUMENTS_JSON_STRING
-                val eventInfo: JSONObject? = if (!argumentsJsonString.isNullOrBlank() && argumentsJsonString.startsWith("{") && argumentsJsonString.endsWith("}")) JSONObject(argumentsJsonString) else null
+                fun getErrorInfoJsonObject(errorMessage: String): JSONObject {
+                    return JSONObject().apply {
+                        put("JsonParseError", errorMessage)
+                    }
+                }
+
+                val eventInfo: JSONObject = try {
+                    if (argumentsJsonString != null) JSONObject(argumentsJsonString) else JSONObject()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    getErrorInfoJsonObject(e.localizedMessage ?: "json parse error argumentsJsonString=$argumentsJsonString")
+                }
                 LibFlutterBaseMultiplePlugin.getFlutterBaseMultiplePlugin(flutterEngine)?.sendEventToDart(eventKey, eventInfo)
             }
         }
@@ -83,6 +94,21 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
         STLogUtil.d("[page]", "$TAG onDestroy")
         super.onDestroy()
         activityDelegate.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        STLogUtil.d("[page]", "$TAG onBackPressed")
+        super.onBackPressed()
+    }
+
+    override fun onBackPressedIntercept(): Boolean = activityDelegate.onBackPressedIntercept()
+
+    /**
+     * delegate.onKeyDown(keyCode, event) 会导致 flutter WillPopScope#onWillPop 不触发
+     */
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        STLogUtil.d("[page]", "$TAG onKeyDown")
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun finish() {
@@ -125,17 +151,6 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
             if (splashUntilFirstFrame == true && splashScreenId != null) (if (VERSION.SDK_INT > 21) this.resources.getDrawable(splashScreenId, this.theme) else this.resources.getDrawable(splashScreenId)) else null
         } catch (var4: PackageManager.NameNotFoundException) {
             null
-        }
-    }
-
-    override fun onBackPressedIntercept(): Boolean = activityDelegate.onBackPressedIntercept()
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        STLogUtil.d("[page]", "$TAG onKeyDown")
-        return if (activityDelegate.onKeyDown(keyCode, event)) {
-            true
-        } else {
-            super.onKeyDown(keyCode, event)
         }
     }
 
@@ -197,7 +212,6 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 enableImmersionStatusBar: Boolean = true,
                 enableImmersionStatusBarWithDarkFont: Boolean = false,
                 @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
-                enableExitWithDoubleBackPressed: Boolean = false,
                 enableFinishIfIsNotTaskRoot: Boolean? = null,
                 enableActivityFullScreenAndExpandLayout: Boolean? = null,
                 enableActivityFeatureNoTitle: Boolean? = null,
@@ -223,7 +237,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                     enableImmersionStatusBar = enableImmersionStatusBar,
                     enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
                     statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
-                    enableExitWithDoubleBackPressed = enableExitWithDoubleBackPressed,
+                    enableExitWithDoubleBackPressed = false,
                     enableFinishIfIsNotTaskRoot = enableFinishIfIsNotTaskRoot,
                     enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
                     enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,
@@ -255,7 +269,6 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 enableImmersionStatusBar: Boolean = true,
                 enableImmersionStatusBarWithDarkFont: Boolean = false,
                 @FloatRange(from = 0.0, to = 1.0) statusBarAlphaForDarkFont: Float? = null,
-                enableExitWithDoubleBackPressed: Boolean = false,
                 enableFinishIfIsNotTaskRoot: Boolean? = null,
                 enableActivityFullScreenAndExpandLayout: Boolean? = null,
                 enableActivityFeatureNoTitle: Boolean? = null,
@@ -282,7 +295,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                         enableImmersionStatusBar = enableImmersionStatusBar,
                         enableImmersionStatusBarWithDarkFont = enableImmersionStatusBarWithDarkFont,
                         statusBarAlphaForDarkFont = statusBarAlphaForDarkFont,
-                        enableExitWithDoubleBackPressed = enableExitWithDoubleBackPressed,
+                        enableExitWithDoubleBackPressed = false,
                         enableFinishIfIsNotTaskRoot = enableFinishIfIsNotTaskRoot,
                         enableActivityFullScreenAndExpandLayout = enableActivityFullScreenAndExpandLayout,
                         enableActivityFeatureNoTitle = enableActivityFeatureNoTitle,

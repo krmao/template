@@ -71,22 +71,25 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
         }
     }
 
-    public void sendEventToDart(final String eventKey, final JSONObject eventInfo) {
+    public void sendEventToDart(@NonNull final String eventKey, @NonNull final JSONObject eventInfo) {
+        STLogUtil.d(TAG, "sendEventToDart eventKey=" + eventKey + ", eventInfo=" + eventInfo);
         Runnable sendEventToDart = new Runnable() {
             @Override
             public void run() {
+                STLogUtil.d(TAG, "sendEventToDart methodChannel=" + methodChannel);
                 if (methodChannel != null) {
                     JSONObject eventData = new JSONObject();
                     try {
-                        eventData.put("eventKey", eventKey);
+                        eventData.put("eventName", eventKey);
                         eventData.put("eventInfo", eventInfo);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    STLogUtil.d(TAG, "sendEventToDart invokeMethod start BRIDGE_EVENT_NAME=" + BRIDGE_EVENT_NAME);
                     methodChannel.invokeMethod(BRIDGE_EVENT_NAME, eventData, new MethodChannel.Result() {
                         @Override
                         public void success(@Nullable Object result) {
-                            STLogUtil.d(TAG, "invokeMethod success result=$result");
+                            STLogUtil.d(TAG, "invokeMethod success result=" + result);
                         }
 
                         @Override

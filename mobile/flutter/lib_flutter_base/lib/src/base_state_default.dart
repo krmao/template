@@ -100,18 +100,18 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
             // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
             // https://github.com/flutter/flutter/issues/46060
             return SafeArea(
-                child: buildBaseChild(
-                    context) /*Stack(
-                      children:
-                          children)*/
-                ); // 不加 SafeArea 列表可以向上滚动至 状态栏**后面**, 加 SafeArea 则只能向上滚动至 状态栏**下面**
+                child: Stack(
+                    children:
+                        children)); // 不加 SafeArea 列表可以向上滚动至 状态栏**后面**, 加 SafeArea 则只能向上滚动至 状态栏**下面**
           },
         ),
       ), // onWillPop: () => _processExit(context));
-      onWillPop: () async {
-        return false;
-      },
+      onWillPop: () => onBackPressed(context),
     );
+  }
+
+  Future<bool> onBackPressed(BuildContext context) {
+    return Future.value(true);
   }
 
   var _lastTime = 0;

@@ -22,6 +22,7 @@ abstract class BaseBridge {
           MethodChannel(CHANNEL_NAME, JSONMethodCodec());
       // ignore: missing_return
       _globalBridgeMethodChannel.setMethodCallHandler((MethodCall call) {
+        print("[page] onMethodCallHandler call.method=${call.method}, call.arguments=${call.arguments}");
         _invokeNativeToDartMethod(call.method, call.arguments);
       });
     }

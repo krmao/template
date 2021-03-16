@@ -61,11 +61,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun onDestroy() {
-        try {
-            super.onDestroy()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        super.onDestroy()
         activityDelegate.onDestroy()
     }
 
@@ -287,7 +283,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
                 dartEntrypointFunctionName: String = "main",
                 initialRoute: String = "/",
                 @StyleRes activityThem: Int = STActivityDelegate.Theme.APP_THEME_NORMAL_TRANSPARENT.id,
-                enableSwipeBack: Boolean = true,
+                enableSwipeBack: Boolean = false,
                 enableSwipeBackRelate: Boolean? = null,
                 enableSwipeBackShadow: Boolean? = null,
                 enableImmersionStatusBar: Boolean = true,

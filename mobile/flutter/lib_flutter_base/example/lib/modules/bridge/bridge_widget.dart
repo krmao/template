@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,9 @@ class BridgeWidgetState extends BaseStateDefault {
     });
 
     loadingWidget = BaseWidgetLoading(isShow: false);
-    statusBarColor = Color(0xff00008b);
+    // statusBarColor =  Color(0xff00008b);
+    statusBarColor =
+        Colors.primaries[Random().nextInt(Colors.primaries.length)];
     super.initState();
     textEditingController = TextEditingController();
     textEditingController.addListener(() {
@@ -50,11 +53,17 @@ class BridgeWidgetState extends BaseStateDefault {
   }
 
   @override
+  void dispose() {
+    print("[page] dispose ...");
+    super.dispose();
+  }
+
+  /*@override
   Future<bool> onBackPressed() {
     print("onBackPressed willReturnToPrePageData=$willReturnToPrePageData");
     PageBridge.popPage(arguments: willReturnToPrePageData);
     return Future.value(false);
-  }
+  }*/
 
   @override
   Widget buildBaseChild(BuildContext context) {

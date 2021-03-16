@@ -11,49 +11,37 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     with
         AutomaticKeepAliveClientMixin<T>,
         WidgetsBindingObserver,
-        WidgetsBindingObserver,
         BasePageVariables {
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  BaseStateDefault(
-      {child,
-      statusBarColor,
-      loadingWidget,
-      enableTitleBar = false,
-      enableLoading = false,
-      titleBarWidget,
-      keepAlive = false,
-      enableSafeArea = true,
-      enableSafeAreaTop = true,
-      enableSafeAreaBottom = true,
-      enableSafeAreaLeft = true,
-      enableSafeAreaRight = true})
-      : this.initWithChild(child,
-            statusBarColor: statusBarColor,
-            loadingWidget: loadingWidget,
-            enableTitleBar: enableTitleBar,
-            enableLoading: enableLoading,
-            titleBarWidget: titleBarWidget,
-            keepAlive: keepAlive,
-            enableSafeArea: enableSafeArea,
-            enableSafeAreaTop: enableSafeAreaTop,
-            enableSafeAreaBottom: enableSafeAreaBottom,
-            enableSafeAreaLeft: enableSafeAreaLeft,
-            enableSafeAreaRight: enableSafeAreaRight);
+  BaseStateDefault({
+    child,
+    statusBarColor,
+    loadingWidget,
+    enableTitleBar = false,
+    enableLoading = false,
+    titleBarWidget,
+    keepAlive = false,
+  }) : this.initWithChild(
+          child,
+          statusBarColor: statusBarColor,
+          loadingWidget: loadingWidget,
+          enableTitleBar: enableTitleBar,
+          enableLoading: enableLoading,
+          titleBarWidget: titleBarWidget,
+          keepAlive: keepAlive,
+        );
 
-  BaseStateDefault.initWithChild(child,
-      {statusBarColor,
-      loadingWidget,
-      enableTitleBar = false,
-      enableLoading = false,
-      titleBarWidget,
-      keepAlive = false,
-      enableSafeArea = true,
-      enableSafeAreaTop = true,
-      enableSafeAreaBottom = true,
-      enableSafeAreaLeft = true,
-      enableSafeAreaRight = true}) {
+  BaseStateDefault.initWithChild(
+    child, {
+    statusBarColor,
+    loadingWidget,
+    enableTitleBar = false,
+    enableLoading = false,
+    titleBarWidget,
+    keepAlive = false,
+  }) {
     this.child = child;
     this.statusBarColor = statusBarColor;
     this.loadingWidget = loadingWidget;
@@ -61,11 +49,6 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     this.enableLoading = enableLoading;
     this.titleBarWidget = titleBarWidget;
     this.keepAlive = keepAlive;
-    this.enableSafeArea = enableSafeArea;
-    this.enableSafeAreaTop = enableSafeAreaTop;
-    this.enableSafeAreaBottom = enableSafeAreaBottom;
-    this.enableSafeAreaLeft = enableSafeAreaLeft;
-    this.enableSafeAreaRight = enableSafeAreaRight;
   }
 
   //region build
@@ -75,7 +58,8 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     super.build(context);
     print("[page] $runtimeType - build context=$context");
 
-    if (statusBarColor == null) statusBarColor = Colors.blueGrey;
+    if (statusBarColor == null)
+      statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR;
 
     //endregion
 
@@ -85,7 +69,8 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
   Widget buildBase(BuildContext context) {
     print("[page] $runtimeType - build context=$context");
 
-    if (statusBarColor == null) statusBarColor = Colors.blueGrey;
+    if (statusBarColor == null)
+      statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR;
 
     //region common body
     if (child == null) child = (context) => Container();
@@ -104,39 +89,46 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
       children.add(titleBarWidget);
     }
     //endregion
-    print(
-        "[page] enableSafeArea && enableSafeAreaTop = ${enableSafeArea && enableSafeAreaTop}");
-    return WillPopScope(
-        child: Scaffold(
-          backgroundColor: statusBarColor,
-          body: Builder(
-            builder: (BuildContext context) {
-              scaffoldContext = context;
-              print(
-                  "[page] $runtimeType - build scaffoldContext=$scaffoldContext");
-              // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
-              // https://github.com/flutter/flutter/issues/46060
-              return SafeArea(
-                top: enableSafeArea && enableSafeAreaTop,
-                left: enableSafeArea && enableSafeAreaLeft,
-                right: enableSafeArea && enableSafeAreaRight,
-                bottom: enableSafeArea && enableSafeAreaBottom,
-                child: Container(
-                  color: statusBarColor,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(children: children),
-                ),
-              );
-            },
-          ),
+    return new WillPopScope(
+      child: Scaffold(
+        backgroundColor: statusBarColor,
+        body: Builder(
+          builder: (BuildContext context) {
+            scaffoldContext = context;
+            print(
+                "[page] $runtimeType - build scaffoldContext=$scaffoldContext");
+            // bug 如果 android backgroundMode(BoostFlutterActivity.BackgroundMode.transparent) 则 SafeArea 不起作用
+            // https://github.com/flutter/flutter/issues/46060
+            return SafeArea(
+                child: buildBaseChild(
+                    context) /*Stack(
+                      children:
+                          children)*/
+                ); // 不加 SafeArea 列表可以向上滚动至 状态栏**后面**, 加 SafeArea 则只能向上滚动至 状态栏**下面**
+          },
         ),
-        onWillPop: onBackPressed);
+      ), // onWillPop: () => _processExit(context));
+      onWillPop: () async {
+        return false;
+      },
+    );
   }
 
-  Future<bool> onBackPressed() {
-    print("onBackPressed");
-    return Future.value(true);
+  var _lastTime = 0;
+
+  Future<bool> _processExit(BuildContext context) {
+    int now = DateTime.now().millisecondsSinceEpoch;
+    var duration = now - _lastTime;
+    print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
+    _lastTime = now;
+    if (duration > 1500) {
+      print("_processExit -> context==null?${context == null}");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 
   @protected

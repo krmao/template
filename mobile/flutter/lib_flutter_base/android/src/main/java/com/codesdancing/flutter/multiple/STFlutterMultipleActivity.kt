@@ -39,6 +39,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     override fun disposables(): CompositeDisposable = activityDelegate.disposables()
     override fun statusBar(): ImmersionBar? = activityDelegate.statusBar()
     override fun onCreate(savedInstanceState: Bundle?) {
+        STLogUtil.d("[page]", "$TAG onCreate")
         onCreateBefore(savedInstanceState)
         super.onCreate(savedInstanceState)
         onCreateAfter(savedInstanceState)
@@ -53,22 +54,24 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
+        STLogUtil.d("[page]", "$TAG onPostCreate")
         super.onPostCreate(savedInstanceState)
         activityDelegate.onPostCreate(savedInstanceState)
     }
 
     override fun onResume() {
+        STLogUtil.d("[page]", "$TAG onResume")
         super.onResume()
         activityDelegate.onResume()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        STLogUtil.d("[page]", "$TAG onActivityResult requestCode=$requestCode, resultCode=$resultCode, data=$data")
         super.onActivityResult(requestCode, resultCode, data)
-        STLogUtil.w(TAG, "onActivityResult requestCode=$requestCode, resultCode=$resultCode, data=$data")
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE) {
                 val argumentsJsonString = data?.getStringExtra(KEY_ARGUMENTS_JSON_STRING)
-                STLogUtil.w(TAG, "onActivityResult requestCode=$requestCode, resultCode=$resultCode, argumentsJsonString=$argumentsJsonString")
+                STLogUtil.w("[page]", "$TAG onActivityResult requestCode=$requestCode, resultCode=$resultCode, argumentsJsonString=$argumentsJsonString")
                 val eventKey: String = KEY_ARGUMENTS_JSON_STRING
                 val eventInfo: JSONObject? = if (!argumentsJsonString.isNullOrBlank() && argumentsJsonString.startsWith("{") && argumentsJsonString.endsWith("}")) JSONObject(argumentsJsonString) else null
                 LibFlutterBaseMultiplePlugin.getFlutterBaseMultiplePlugin(flutterEngine)?.sendEventToDart(eventKey, eventInfo)
@@ -77,20 +80,24 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun onDestroy() {
+        STLogUtil.d("[page]", "$TAG onDestroy")
         super.onDestroy()
         activityDelegate.onDestroy()
     }
 
     override fun finish() {
+        STLogUtil.d("[page]", "$TAG finish")
         super.finish()
         finishAfter()
     }
 
     override fun finishAfter() {
+        STLogUtil.d("[page]", "$TAG finishAfter")
         activityDelegate.finishAfter()
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
+        STLogUtil.d("[page]", "$TAG provideFlutterEngine")
         val dartEntrypointFunctionName = intent.extras?.getString(KEY_DART_ENTRYPOINT_FUNCTION_NAME) ?: "main"
         val initialRoute = intent.extras?.getString(KEY_INITIAL_ROUTE) ?: "/"
         val dartEntryPoint = DartExecutor.DartEntrypoint(FlutterInjector.instance().flutterLoader().findAppBundlePath(), dartEntrypointFunctionName)
@@ -98,6 +105,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun getInitialRoute(): String? {
+        STLogUtil.d("[page]", "$TAG getInitialRoute")
         return intent.extras?.getString(KEY_INITIAL_ROUTE) ?: "/" // no need
     }
 
@@ -123,6 +131,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     override fun onBackPressedIntercept(): Boolean = activityDelegate.onBackPressedIntercept()
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        STLogUtil.d("[page]", "$TAG onKeyDown")
         return if (activityDelegate.onKeyDown(keyCode, event)) {
             true
         } else {

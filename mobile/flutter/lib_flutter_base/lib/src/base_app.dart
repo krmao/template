@@ -17,56 +17,24 @@ typedef void OnInitStateCallback();
 
 class BaseApp extends StatefulWidget {
   final Widget child;
-  final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea,
-      enableSafeAreaTop,
-      enableSafeAreaBottom,
-      enableSafeAreaLeft,
-      enableSafeAreaRight;
 
-  BaseApp(
-      {Key key,
-      @required this.child,
-      this.statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
-      this.enableSafeArea = true,
-      this.enableSafeAreaTop = true,
-      this.enableSafeAreaBottom = true,
-      this.enableSafeAreaLeft = true,
-      this.enableSafeAreaRight = true,
-      this.onInitStateCallback})
+  BaseApp({Key key, @required this.child, this.onInitStateCallback})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() => BaseAppState(
-      child: this.child,
-      statusBarColor: this.statusBarColor,
-      enableSafeArea: this.enableSafeArea,
-      enableSafeAreaTop: this.enableSafeAreaTop,
-      enableSafeAreaBottom: this.enableSafeAreaBottom,
-      enableSafeAreaLeft: this.enableSafeAreaLeft,
-      enableSafeAreaRight: this.enableSafeAreaRight,
-      onInitStateCallback: this.onInitStateCallback);
+      child: this.child, onInitStateCallback: this.onInitStateCallback);
 }
 
 class BaseAppState extends State<BaseApp> {
   final Widget child;
   final Color statusBarColor;
   final OnInitStateCallback onInitStateCallback;
-  final bool enableSafeArea,
-      enableSafeAreaTop,
-      enableSafeAreaBottom,
-      enableSafeAreaLeft,
-      enableSafeAreaRight;
 
   BaseAppState(
       {@required this.child,
       this.statusBarColor = BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
-      this.enableSafeArea = true,
-      this.enableSafeAreaTop = true,
-      this.enableSafeAreaBottom = true,
-      this.enableSafeAreaLeft = true,
-      this.enableSafeAreaRight = true,
       this.onInitStateCallback})
       : super();
 
@@ -86,19 +54,7 @@ class BaseAppState extends State<BaseApp> {
     ));
     return MaterialApp(
         localizationsDelegates: [DefaultMaterialLocalizations.delegate],
-        home: Scaffold(
-            backgroundColor: this
-                .statusBarColor, // android status bar and iphone X top and bottom edges color
-            body: Builder(builder: (BuildContext context) {
-              return SafeArea(
-                  top: this.enableSafeArea && this.enableSafeAreaTop,
-                  left: this.enableSafeArea && this.enableSafeAreaLeft,
-                  right: this.enableSafeArea && this.enableSafeAreaRight,
-                  bottom: this.enableSafeArea && this.enableSafeAreaBottom,
-                  child: WillPopScope(
-                      child: this.child,
-                      onWillPop: () => _processExit(context)));
-            })),
+        home: this.child,
         theme: ThemeData(
             // This is the theme of your application.
             //
@@ -131,23 +87,6 @@ class _NoOverScrollBehavior extends ScrollBehavior {
   Widget buildViewportChrome(
       BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
-  }
-}
-
-var _lastTime = 0;
-
-Future<bool> _processExit(BuildContext context) {
-  int now = DateTime.now().millisecondsSinceEpoch;
-  var duration = now - _lastTime;
-  print("_processExit -> now:$now, _lastTime:$_lastTime, duration:$duration");
-  _lastTime = now;
-  if (duration > 1500) {
-    print("_processExit -> context==null?${context == null}");
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("再按一次退出"), duration: Duration(milliseconds: 2000)));
-    return Future.value(false);
-  } else {
-    return Future.value(true);
   }
 }
 
@@ -196,10 +135,11 @@ void _onZoneGlobalError(Object error, StackTrace stackTrace) {
     // }
 
     // show error page
-    URL.openURL<dynamic>('smart://template/flutter?page=_error_page&params='+json.encode({
-        "error": errorMsg,
-        "stacktrace": stackTraceStr,
-    }));
+    URL.openURL<dynamic>('smart://template/flutter?page=_error_page&params=' +
+        json.encode({
+          "error": errorMsg,
+          "stacktrace": stackTraceStr,
+        }));
   }
 }
 //endregion
@@ -346,8 +286,6 @@ void appRun(app, {OnInitStateCallback onInitStateCallback}) {
     BaseBridgeApplication.getApplicationConstants().then((value) {
       // ignore: invalid_use_of_protected_member
       widgetsBinding.scheduleAttachRootWidget(BaseApp(
-        enableSafeArea: false,
-        statusBarColor: BaseAppConstants.DEFAULT_STATUS_BAR_COLOR,
         child: app,
         onInitStateCallback: () {
           if (onInitStateCallback != null) onInitStateCallback();

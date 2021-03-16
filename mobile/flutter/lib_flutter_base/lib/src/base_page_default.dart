@@ -57,11 +57,6 @@ class BasePageDefault extends BasePage with BasePageVariables {
     this.enableLoading = enableLoading;
     this.titleBarWidget = titleBarWidget;
     this.keepAlive = keepAlive;
-    this.enableSafeArea = enableSafeArea;
-    this.enableSafeAreaTop = enableSafeAreaTop;
-    this.enableSafeAreaBottom = enableSafeAreaBottom;
-    this.enableSafeAreaLeft = enableSafeAreaLeft;
-    this.enableSafeAreaRight = enableSafeAreaRight;
   }
 
   @override
@@ -73,11 +68,6 @@ class BasePageDefault extends BasePage with BasePageVariables {
         loadingWidget: this.loadingWidget,
         titleBarWidget: this.titleBarWidget,
         keepAlive: this.keepAlive,
-        enableSafeArea: this.enableSafeArea,
-        enableSafeAreaTop: this.enableSafeAreaTop,
-        enableSafeAreaBottom: this.enableSafeAreaBottom,
-        enableSafeAreaLeft: this.enableSafeAreaLeft,
-        enableSafeAreaRight: this.enableSafeAreaRight,
       );
     }
     return this.state;

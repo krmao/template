@@ -16,11 +16,6 @@ mixin BasePageVariables {
   // BuildContext context;
   BuildContext scaffoldContext;
 
-  bool enableSafeArea = true;
-  bool enableSafeAreaTop = true;
-  bool enableSafeAreaBottom = true;
-  bool enableSafeAreaLeft = true;
-  bool enableSafeAreaRight = true;
   bool enableTitleBar = false;
   bool enableLoading = false;
 }

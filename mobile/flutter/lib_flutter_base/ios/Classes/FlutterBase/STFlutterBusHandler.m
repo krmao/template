@@ -25,7 +25,7 @@
 }
 
 - (id)doDataJob:(NSString *)businessName params:(NSArray *)params{
-    NSLog(@"flutter doDataJob businessName=%@, params=%@", businessName, params);
+    NSLog(@"STFlutterBusHandler doDataJob businessName=%@, params=%@", businessName, params);
     if ([businessName isEqual:@"flutter/open"] ) {
         NSString * schemaUrl = (NSString *)params.firstObject;
         if(schemaUrl == nil){

@@ -49,7 +49,7 @@
 
     [STInitializer initialApplication:config];
     
-    STFlutterMultipleHomeViewController *homeVC = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+    STFlutterMultipleHomeViewController *homeVC = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
         NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
     }];
 

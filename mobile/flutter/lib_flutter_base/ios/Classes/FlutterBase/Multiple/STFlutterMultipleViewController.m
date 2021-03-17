@@ -8,8 +8,9 @@
 
 @implementation STFlutterMultipleViewController
 
-- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName onViewControllerResult:(OnViewControllerResult _Nullable )onViewControllerResult;{
+- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName argumentsJsonString:(NSString * _Nullable)argumentsJsonString onViewControllerResult:(OnViewControllerResult _Nullable )onViewControllerResult {
     _onViewControllerResult = onViewControllerResult;
+    _argumentsJsonString = argumentsJsonString;
     
     NSString *finalDartEntrypointFunctionName = [STStringUtil emptyOrNull:dartEntrypointFunctionName] ? @"main" : dartEntrypointFunctionName;
     

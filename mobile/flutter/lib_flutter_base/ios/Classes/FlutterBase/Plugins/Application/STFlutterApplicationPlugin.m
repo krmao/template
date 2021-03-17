@@ -1,5 +1,6 @@
 #import "STFlutterApplicationPlugin.h"
 #import "STSystemUtil.h"
+#import "STFlutterPagePlugin.h"
 
 @implementation STFlutterApplicationPlugin
 
@@ -19,6 +20,8 @@
     NSMutableDictionary *constantsToExport = [NSMutableDictionary dictionary];
     [constantsToExport setValue:[self deviceInfo] forKey:@"deviceInfo"];
     [constantsToExport setValue:[self applicationInfo] forKey:@"applicationInfo"];
+    [constantsToExport setValue:[STFlutterPagePlugin getUniqueId:[self currentViewController]] forKey:@"uniqueId"];
+    [constantsToExport setValue:[STFlutterPagePlugin getCurrentPageInitArguments:[self currentViewController]] forKey:@"argumentsJsonString"];
     return constantsToExport;
 }
 

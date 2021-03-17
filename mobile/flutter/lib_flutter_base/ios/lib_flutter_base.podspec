@@ -52,7 +52,7 @@ A new flutter plugin project.
     'Classes/FlutterBoost/container/FBFlutterContainerManager.h',
     'Classes/FlutterBoost/messages.h'
 
-  s.dependency 'LibIosBase', '~>0.0.5'
+  s.dependency 'LibIosBase', '~>0.0.6'
   s.dependency 'Flutter'
   s.libraries = 'c++'
   s.xcconfig = {

@@ -32,7 +32,9 @@
         NSLog(@"pageName=%@",pageName);
         NSLog(@"pageParamsJson=%@",pageParamsJson);
         NSLog(@"uniqueId=%@",uniqueId);
-        [self openNewFlutterViewControllerByName:fromViewController pageName:pageName pageParams: (NSDictionary*)[STJsonUtil jsonStringToArrayOrDictionary:pageParamsJson]];
+        [self openNewFlutterViewControllerByName:fromViewController pageName:pageName pageParams: @{
+            @"argumentsJsonString":pageParamsJson
+        }];
     }else{
         NSLog(@"openBySchema false");
     }

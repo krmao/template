@@ -15,6 +15,14 @@
     NSString *finalDartEntrypointFunctionName = [STStringUtil emptyOrNull:dartEntrypointFunctionName] ? @"main" : dartEntrypointFunctionName;
     
     FlutterEngine * newEngine = [[STFlutterMultipleInitializer sharedInstance].flutterEngineGroup makeEngineWithEntrypoint:finalDartEntrypointFunctionName libraryURI:nil];
+    
+    Class clazz = NSClassFromString(@"GeneratedPluginRegistrant");
+    if (clazz) {
+        if ([clazz respondsToSelector:NSSelectorFromString(@"registerWithRegistry:")]) {
+            [clazz performSelector:NSSelectorFromString(@"registerWithRegistry:") withObject:newEngine];
+        }
+    }
+    
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
     }
     return self;

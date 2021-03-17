@@ -8,9 +8,12 @@
                                      methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
                                      binaryMessenger:[registrar messenger]
                                      codec:[FlutterJSONMethodCodec sharedInstance]];
+    NSLog(@"STFlutterBridge registerWithRegistrar start");
     STFlutterBridge* instance = [STFlutterBridge sharedInstance];
     instance.methodChannel = channel;
+    
     [registrar addMethodCallDelegate:instance channel:channel];
+    NSLog(@"STFlutterBridge registerWithRegistrar end");
 }
 
 

@@ -1,6 +1,6 @@
 #import "STFlutterPagePlugin.h"
-#import "STFlutterViewController.h"
 #import "STThreadUtil.h"
+#import "STFlutterMultipleViewController.h"
 
 @implementation STFlutterPagePlugin
 
@@ -12,7 +12,7 @@
     if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
         [STThreadUtil runInMainThread:^{
            UIViewController *vc = [self currentViewController];
-           if ([vc isKindOfClass:[STFlutterViewController class]]) {
+           if ([vc isKindOfClass:[STFlutterMultipleViewController class]]) {
                BOOL enable = [parameters valueForKey:@"enable"];
                vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
            }

@@ -6,9 +6,7 @@
 //
 
 #import "STFlutterMultipleUtils.h"
-#import "FlutterBoost.h"
-#import "STFlutterViewController.h"
-#import "STFlutterHomeViewController.h"
+#import "STFlutterInitializer.h"
 #import "STJsonUtil.h"
 #import "STFlutterMultipleInitializer.h"
 #import "STFlutterMultipleViewController.h"
@@ -45,7 +43,11 @@
     NSLog(@"openNewFlutterViewControllerByName pageName=%@, pageParams=%@", pageName, pageParams);
     UINavigationController *navigationController = [fromViewController isKindOfClass:[UINavigationController class]] ? (UINavigationController*)fromViewController : fromViewController.navigationController;
     
-    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:@"main" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+    NSString* initialRoute = pageName;
+    NSString* finalDartEntrypointFunctionName = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute || [initialRoute isEqualToString: @"/"]) ? @"main" : [NSString stringWithFormat:@"main%@",initialRoute];
+    NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
+    
+    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
         NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
     }];
     [navigationController pushViewController:flutterViewController animated:YES];

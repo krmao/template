@@ -1,6 +1,5 @@
 #import "STFlutterEventPlugin.h"
 #import "STFlutterBridge.h"
-#import "STFlutterViewController.h"
 #import "STValueUtil.h"
 #import "STEventManager.h"
 

@@ -1,8 +1,6 @@
 #import "STFlutterPlugin.h"
 #import "STFlutterPluginManager.h"
 #import <Flutter/Flutter.h>
-#import "FlutterBoost.h"
-#import "FlutterBoostPlugin.h"
 #import "STSystemUtil.h"
 
 @implementation STFlutterPlugin
@@ -28,15 +26,12 @@
 }
 
 - (UIViewController *)currentViewController{
-    UIViewController *currentViewController = [[FlutterBoost instance] currentViewController];
-    if (!currentViewController) {
-        currentViewController = [STSystemUtil topViewController];
-    }
+    UIViewController *currentViewController = [STSystemUtil topViewController];
     return currentViewController;
 }
 
 - (UIViewController *)currentFlutterViewController{
-    UIViewController *currentViewController = [[FlutterBoost instance] currentViewController];
+    UIViewController *currentViewController = [STSystemUtil topViewController];
     return currentViewController;
 }
 

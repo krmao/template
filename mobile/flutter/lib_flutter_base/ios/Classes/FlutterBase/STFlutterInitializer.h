@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, readonly) BOOL debug;
 @property(nonatomic, readonly) BOOL enableMultiple;
+@property(nonatomic, readonly) BOOL enableMultiEnginesWithSingleRoute;
 @property(nonatomic, strong, nullable, readonly) UIApplication* application;
 @property(nonatomic, readonly) BOOL isInitialized;
 

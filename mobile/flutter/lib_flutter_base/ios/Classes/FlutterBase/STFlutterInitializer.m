@@ -30,6 +30,7 @@ static STFlutterInitializer *instance = nil;
     _debug = debug;
     _application = application;
     _enableMultiple = YES;
+    _enableMultiEnginesWithSingleRoute = YES;
     
     if(_enableMultiple){
         [[STFlutterMultipleInitializer sharedInstance] initial:application debug:debug];

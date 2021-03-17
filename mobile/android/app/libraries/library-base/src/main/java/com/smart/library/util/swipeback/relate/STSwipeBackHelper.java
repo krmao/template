@@ -12,56 +12,39 @@ public class STSwipeBackHelper {
 
     private static final Stack<STSwipeBackPage> mPageStack = new Stack<>();
 
-    private static STSwipeBackPage findHelperByActivity(Activity activity) {
+    public static STSwipeBackPage findPageByActivity(Activity activity) {
         for (STSwipeBackPage swipeBackPage : mPageStack) {
             if (swipeBackPage.mActivity.get() == activity) return swipeBackPage;
         }
         return null;
     }
 
-    public static STSwipeBackPage getCurrentPage(Activity activity) {
+    public static STSwipeBackPage onCreate(Activity activity) {
         STSwipeBackPage page;
-        if ((page = findHelperByActivity(activity)) == null) {
-            throw new RuntimeException("You Should call STSwipeBackHelper.onCreate(activity) first");
-        }
-        return page;
-    }
-
-    public static void onCreate(Activity activity) {
-        STSwipeBackPage page;
-        if ((page = findHelperByActivity(activity)) == null) {
+        if ((page = findPageByActivity(activity)) == null) {
             page = mPageStack.push(new STSwipeBackPage(activity));
         }
         page.onCreate();
+        return page;
     }
 
-    public static void onPostCreate(Activity activity) {
-        STSwipeBackPage page;
-        if ((page = findHelperByActivity(activity)) == null) {
-            throw new RuntimeException("You Should call STSwipeBackHelper.onCreate(activity) first");
+    public static void onPostCreate(STSwipeBackPage page) {
+        if (page != null) page.onPostCreate();
+    }
+
+    public static void onDestroy(STSwipeBackPage page) {
+        if (page != null) {
+            mPageStack.remove(page);
+            page.mActivity = null;
         }
-        page.onPostCreate();
     }
 
-    public static void onDestroy(Activity activity) {
-        STSwipeBackPage page;
-        if ((page = findHelperByActivity(activity)) == null) {
-            throw new RuntimeException("You Should call STSwipeBackHelper.onCreate(activity) first");
-        }
-        mPageStack.remove(page);
-        page.mActivity = null;
+    public static void finish(STSwipeBackPage page) {
+        if (page != null) page.scrollToFinishActivity();
     }
 
-    public static void finish(Activity activity) {
-        STSwipeBackPage page;
-        if ((page = findHelperByActivity(activity)) == null) {
-            throw new RuntimeException("You Should call STSwipeBackHelper.onCreate(activity) first");
-        }
-        page.scrollToFinishActivity();
-    }
-
-    static STSwipeBackPage getPrePage(STSwipeBackPage activity) {
-        int index = mPageStack.indexOf(activity);
+    static STSwipeBackPage getPrePage(STSwipeBackPage page) {
+        int index = mPageStack.indexOf(page);
         if (index > 0) return mPageStack.get(index - 1);
         else return null;
     }

@@ -83,6 +83,9 @@ class BridgeWidgetState extends BaseStateDefault {
     print("buildBaseChild time=${DateTime.now()}");
     return ListView(
       children: <Widget>[
+        getItemWidget('[current-page-uniqueId]=${this.uniqueId}',
+            () => BaseBridgeCompact.showToast("$uniqueId"),
+            fontSize: 12.0, edge: 2),
         getItemWidget(
             '[arguments-Constructor]=(${this.argumentsFromConstructorTime})\n$argumentsFromConstructor',
             () => BaseBridgeCompact.showToast("$argumentsFromConstructor"),

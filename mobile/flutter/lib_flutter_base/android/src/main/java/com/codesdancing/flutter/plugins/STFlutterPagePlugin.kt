@@ -9,7 +9,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "unused")
 class STFlutterPagePlugin : STFlutterBasePlugin() {
 
     @STFlutterPluginMethod
@@ -33,7 +33,7 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
     @STFlutterPluginMethod
     fun getCurrentPageInitArguments(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
         STLogUtil.w("STFlutterPagePlugin", "getCurrentPageInitArguments requestData=$requestData")
-        val argumentsJsonString: String? = getCurrentPageInitArguments(activity)
+        val argumentsJsonString: String = getCurrentPageInitArguments(activity)
         callbackSuccess(result, argumentsJsonString)
     }
 
@@ -52,12 +52,16 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
     companion object {
         @JvmStatic
         fun getCurrentPageInitArguments(activity: Activity?): String {
-            return activity?.intent?.getStringExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING) ?: "{}"
+            val argumentsJsonString = activity?.intent?.getStringExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING) ?: "{}"
+            STLogUtil.d("[page]", "STFlutterPagePlugin getCurrentPageInitArguments argumentsJsonString=${argumentsJsonString}")
+            return argumentsJsonString
         }
 
         @STFlutterPluginMethod
         fun genUniqueId(activity: Activity?): String? {
-            return (activity as? STFlutterMultipleActivity)?.genUniqueId()
+            val uniqueId = (activity as? STFlutterMultipleActivity)?.genUniqueId()
+            STLogUtil.d("[page]", "STFlutterPagePlugin genUniqueId=${uniqueId}")
+            return uniqueId
         }
     }
 }

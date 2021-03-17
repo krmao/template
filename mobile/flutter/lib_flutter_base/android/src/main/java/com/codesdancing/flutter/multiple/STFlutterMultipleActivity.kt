@@ -33,18 +33,21 @@ import io.flutter.embedding.engine.dart.DartExecutor
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
 
+@Suppress("MemberVisibilityCanBePrivate", "unused", "RemoveRedundantQualifierName", "UNUSED_PARAMETER")
 open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
 
     protected open val activityDelegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
-
+    protected var canBack: Boolean = false
+    private var uniqueId: String = "${SystemClock.elapsedRealtime()}-}"
     fun genUniqueId(): String {
-        return "${SystemClock.elapsedRealtime()}-${hashCode()}"
+        return uniqueId
     }
 
     override fun disposables(): CompositeDisposable = activityDelegate.disposables()
     override fun statusBar(): ImmersionBar? = activityDelegate.statusBar()
     override fun onCreate(savedInstanceState: Bundle?) {
-        STLogUtil.d("[page]", "$TAG onCreate")
+        uniqueId = "${SystemClock.elapsedRealtime()}-${hashCode()}"
+        STLogUtil.d("[page]", "$TAG onCreate uniqueId=${uniqueId}")
         onCreateBefore(savedInstanceState)
         super.onCreate(savedInstanceState)
         onCreateAfter(savedInstanceState)
@@ -59,19 +62,35 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        STLogUtil.d("[page]", "$TAG onPostCreate")
+        STLogUtil.d("[page]", "$TAG onPostCreate uniqueId=${uniqueId}")
         super.onPostCreate(savedInstanceState)
         activityDelegate.onPostCreate(savedInstanceState)
     }
 
     override fun onResume() {
-        STLogUtil.d("[page]", "$TAG onResume")
+        STLogUtil.d("[page]", "$TAG onResume uniqueId=${uniqueId}")
         super.onResume()
         activityDelegate.onResume()
     }
 
+    override fun onPause() {
+        super.onPause()
+        STLogUtil.d("[page]", "$TAG onPause uniqueId=${uniqueId}")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        STLogUtil.d("[page]", "$TAG onStop uniqueId=${uniqueId}")
+    }
+
+    override fun onFlutterUiDisplayed() {
+        super.onFlutterUiDisplayed()
+        canBack = true
+        STLogUtil.d("[page]", "$TAG onFlutterUiDisplayed uniqueId=${uniqueId}, canBack=$canBack")
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        STLogUtil.d("[page]", "$TAG onActivityResult requestCode=$requestCode, resultCode=$resultCode, data=$data")
+        STLogUtil.d("[page]", "$TAG onActivityResult uniqueId=${uniqueId}, requestCode=$requestCode, resultCode=$resultCode, data=$data")
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE) {
@@ -96,13 +115,13 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun onDestroy() {
-        STLogUtil.d("[page]", "$TAG onDestroy")
+        STLogUtil.d("[page]", "$TAG onDestroy uniqueId=${uniqueId}")
         super.onDestroy()
         activityDelegate.onDestroy()
     }
 
     override fun onBackPressed() {
-        STLogUtil.d("[page]", "$TAG onBackPressed")
+        STLogUtil.d("[page]", "$TAG onBackPressed uniqueId=${uniqueId}, canBack=$canBack")
         super.onBackPressed()
     }
 
@@ -112,23 +131,26 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
      * delegate.onKeyDown(keyCode, event) 会导致 flutter WillPopScope#onWillPop 不触发
      */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        STLogUtil.d("[page]", "$TAG onKeyDown")
+        STLogUtil.d("[page]", "$TAG onKeyDown uniqueId=${uniqueId}, canBack=$canBack")
+        if (keyCode == KeyEvent.KEYCODE_BACK && !canBack) {
+            return true
+        }
         return super.onKeyDown(keyCode, event)
     }
 
     override fun finish() {
-        STLogUtil.d("[page]", "$TAG finish")
+        STLogUtil.d("[page]", "$TAG finish uniqueId=${uniqueId}")
         super.finish()
         finishAfter()
     }
 
     override fun finishAfter() {
-        STLogUtil.d("[page]", "$TAG finishAfter")
+        STLogUtil.d("[page]", "$TAG finishAfter uniqueId=${uniqueId}")
         activityDelegate.finishAfter()
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        STLogUtil.d("[page]", "$TAG provideFlutterEngine")
+        STLogUtil.d("[page]", "$TAG provideFlutterEngine uniqueId=${uniqueId}")
         val dartEntrypointFunctionName = intent.extras?.getString(KEY_DART_ENTRYPOINT_FUNCTION_NAME) ?: "main"
         val initialRoute = intent.extras?.getString(KEY_INITIAL_ROUTE) ?: "/"
         val dartEntryPoint = DartExecutor.DartEntrypoint(FlutterInjector.instance().flutterLoader().findAppBundlePath(), dartEntrypointFunctionName)
@@ -136,7 +158,7 @@ open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
     }
 
     override fun getInitialRoute(): String? {
-        STLogUtil.d("[page]", "$TAG getInitialRoute")
+        STLogUtil.d("[page]", "$TAG getInitialRoute  uniqueId=${uniqueId}")
         return intent.extras?.getString(KEY_INITIAL_ROUTE) ?: "/" // no need
     }
 

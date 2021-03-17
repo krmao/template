@@ -61,11 +61,6 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
         super.onCreate(null)
     }
 
-    override fun onStop() {
-        super.onStop()
-        STLogUtil.d(TAG, "onStop")
-    }
-
     /**
      * Sets this `Activity`'s `Window` background to be transparent, and hides the status
      * bar, if this `Activity`'s desired [BackgroundMode] is [BackgroundMode.transparent].

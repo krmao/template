@@ -71,8 +71,10 @@ class BridgeWidgetState extends BaseStateDefault {
     print("onBackPressed dataReturnPre=$dataReturnPreOnBackPressed");
     this.dataReturnPreOnBackPressedTime = DateTime.now();
     PageBridge.popPage(
-        argumentsJsonString: json
-            .encode({"returnTime": dataReturnPreOnBackPressedTime, "data": dataReturnPreOnBackPressed}));
+        argumentsJsonString: json.encode({
+      "returnTime": dataReturnPreOnBackPressedTime.toString(),
+      "data": dataReturnPreOnBackPressed
+    }));
     return Future.value(false);
   }
 

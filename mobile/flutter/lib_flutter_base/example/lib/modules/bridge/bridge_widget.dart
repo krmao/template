@@ -8,17 +8,19 @@ import 'package:lib_flutter_base/lib_flutter_base.dart';
 class BridgeWidgetState extends BaseStateDefault {
   TextEditingController textEditingController;
 
-  String currentPageInitArgumentsFromConstructor;
-  DateTime currentPageInitArgumentsFromConstructorGetTime;
-  String currentPageInitArgumentsFromAsyncBridgeGet;
-  DateTime currentPageInitArgumentsFromAsyncBridgeGetTime;
-  String willReturnToPrePageData;
-  String onNextPageReturnData;
+  String argumentsFromConstructor;
+  DateTime argumentsFromConstructorTime;
+  String argumentsFromAsyncGet;
+  DateTime argumentsFromAsyncGetTime;
+  String dataReturnPreOnBackPressed;
+  DateTime dataReturnPreOnBackPressedTime;
+  String dataFromNext;
+  DateTime dataFromNextTime;
 
   BridgeWidgetState({String argumentsJsonString})
       : super(argumentsJsonString: argumentsJsonString) {
-    this.currentPageInitArgumentsFromConstructor = argumentsJsonString;
-    this.currentPageInitArgumentsFromConstructorGetTime = DateTime.now();
+    this.argumentsFromConstructor = argumentsJsonString;
+    this.argumentsFromConstructorTime = DateTime.now();
     print(
         "[page] ---- BridgeWidgetState constructor argumentsJsonString=$argumentsJsonString");
   }
@@ -30,20 +32,14 @@ class BridgeWidgetState extends BaseStateDefault {
   void initState() {
     print("initState time=${DateTime.now()}");
     PageBridge.getCurrentPageInitArguments().then((value) {
-      print(
-          "getCurrentPageInitArguments return value=$value time=${DateTime.now()}");
+      print("argumentsFromAsyncGet return value=$value time=${DateTime.now()}");
       setState(() {
-        this.currentPageInitArgumentsFromAsyncBridgeGet = "$value";
-        this.currentPageInitArgumentsFromAsyncBridgeGetTime = DateTime.now();
+        this.argumentsFromAsyncGet = "$value";
+        this.argumentsFromAsyncGetTime = DateTime.now();
       });
     });
 
-    willReturnToPrePageData = json.encode({
-      "name": "Jack",
-      "age": 10,
-      "gender": "boy",
-      "from": pageUniqueId,
-    });
+    dataReturnPreOnBackPressed = json.encode({"fromPage-next": pageUniqueId});
 
     loadingWidget = BaseWidgetLoading(isShow: false);
     // statusBarColor =  Color(0xff00008b);
@@ -60,7 +56,7 @@ class BridgeWidgetState extends BaseStateDefault {
   void onPageResult(data) {
     super.onPageResult(data);
     setState(() {
-      onNextPageReturnData = "received -> $data";
+      dataFromNext = "received -> $data";
     });
   }
 
@@ -72,8 +68,11 @@ class BridgeWidgetState extends BaseStateDefault {
 
   @override
   Future<bool> onBackPressed(BuildContext context) {
-    print("onBackPressed willReturnToPrePageData=$willReturnToPrePageData");
-    PageBridge.popPage(argumentsJsonString: willReturnToPrePageData);
+    print("onBackPressed dataReturnPre=$dataReturnPreOnBackPressed");
+    this.dataReturnPreOnBackPressedTime = DateTime.now();
+    PageBridge.popPage(
+        argumentsJsonString: json
+            .encode({"returnTime": dataReturnPreOnBackPressedTime, "data": dataReturnPreOnBackPressed}));
     return Future.value(false);
   }
 
@@ -83,23 +82,25 @@ class BridgeWidgetState extends BaseStateDefault {
     return ListView(
       children: <Widget>[
         getItemWidget(
-            'currentPageInitArgumentsFromConstructor=(${this.currentPageInitArgumentsFromConstructorGetTime})\n$currentPageInitArgumentsFromConstructor',
-            () => BaseBridgeCompact.showToast(
-                "$currentPageInitArgumentsFromConstructor"),
+            '[arguments-Constructor]=(${this.argumentsFromConstructorTime})\n$argumentsFromConstructor',
+            () => BaseBridgeCompact.showToast("$argumentsFromConstructor"),
             fontSize: 10.0,
             edge: 2),
         getItemWidget(
-            'currentPageInitArgumentsFromAsyncBridgeGet=(${this.currentPageInitArgumentsFromAsyncBridgeGetTime})\n$currentPageInitArgumentsFromAsyncBridgeGet',
-            () => BaseBridgeCompact.showToast(
-                "$currentPageInitArgumentsFromAsyncBridgeGet"),
+            '[arguments-AsyncGet]=(${this.argumentsFromAsyncGetTime})\n$argumentsFromAsyncGet',
+            () => BaseBridgeCompact.showToast("$argumentsFromAsyncGet"),
             fontSize: 10.0,
             edge: 2),
-        getItemWidget('onNextPageReturnData=\n$onNextPageReturnData',
-            () => BaseBridgeCompact.showToast("$onNextPageReturnData"),
-            fontSize: 10.0, edge: 2),
-        getItemWidget('willReturnToPrePageData=\n$willReturnToPrePageData',
-            () => BaseBridgeCompact.showToast("$willReturnToPrePageData"),
-            fontSize: 10.0, edge: 2),
+        getItemWidget(
+            '[data-fromNext]=(${this.dataFromNextTime})\n$dataFromNext',
+            () => BaseBridgeCompact.showToast("$dataFromNext"),
+            fontSize: 10.0,
+            edge: 2),
+        getItemWidget(
+            '[data-returnOnBackPressed]=(${this.dataReturnPreOnBackPressedTime})\n$dataReturnPreOnBackPressed',
+            () => BaseBridgeCompact.showToast("$dataReturnPreOnBackPressed"),
+            fontSize: 10.0,
+            edge: 2),
         getItemWidget(
             'open new page',
             () => BaseBridgeCompact.open(
@@ -154,31 +155,25 @@ class BridgeWidgetState extends BaseStateDefault {
             () => {Toast.show("I am native Toast!!!")}),
         getItemWidget(
             'open flutter bridge',
-            () => PageBridge.pushPage("FlutterBridge", argument: {
-                  "pageUniqueId": pageUniqueId,
-                  "name": "li bridge",
-                })),
+            () => PageBridge.pushPage("FlutterBridge",
+                argument: {"fromPage-pre": pageUniqueId})),
         getItemWidget(
             'open flutter bridge 2',
             () => URL.openURL<dynamic>(
                 'smart://template/flutter?page=FlutterBridge&params=' +
-                    json.encode({
-                      "name": "mate",
-                    }))),
+                    json.encode({"fromPage-pre": pageUniqueId}))),
         getItemWidget(
             'open flutter player',
-            () => PageBridge.pushPage("FlutterPlayer", argument: {
-                  "pageUniqueId": pageUniqueId,
-                  "name": "li player",
-                })),
+            () => PageBridge.pushPage("FlutterPlayer",
+                argument: {"fromPage-pre": pageUniqueId})),
         getItemWidget(
             'open flutter order',
-            () => PageBridge.pushPage("FlutterOrder", argument: {
-                  "pageUniqueId": pageUniqueId,
-                  "name": "li order",
-                })),
-        getItemWidget('open flutter settings',
-            () => PageBridge.pushPage("FlutterSettings")),
+            () => PageBridge.pushPage("FlutterOrder",
+                argument: {"fromPage-pre": pageUniqueId})),
+        getItemWidget(
+            'open flutter settings',
+            () => PageBridge.pushPage("FlutterSettings",
+                argument: {"fromPage-pre": pageUniqueId})),
       ],
     );
   }

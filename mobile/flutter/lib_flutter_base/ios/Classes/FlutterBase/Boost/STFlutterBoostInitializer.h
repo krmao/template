@@ -1,5 +1,5 @@
 //
-//  STFlutterInitializer.h
+//  STFlutterBoostInitializer.h
 //  lib_flutter_base
 //
 //  Created by krmao on 2021/3/9.
@@ -9,10 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface STFlutterInitializer : NSObject
+@interface STFlutterBoostInitializer : NSObject
 
 @property(nonatomic, readonly) BOOL debug;
-@property(nonatomic, readonly) BOOL enableMultiple;
 @property(nonatomic, strong, nullable, readonly) UIApplication* application;
 @property(nonatomic, readonly) BOOL isInitialized;
 

@@ -1,5 +1,5 @@
 //
-//  STFlutterUtils.h
+//  STFlutterMultipleUtils.h
 //  lib_flutter_base
 //
 //  Created by krmao on 2021/3/9.
@@ -9,12 +9,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface STFlutterUtils : NSObject
+@interface STFlutterMultipleUtils : NSObject
 
 +(void) openNewFlutterViewControllerBySchema:(UIViewController* _Nullable)fromViewController schemaUrl:(NSString* _Nullable) schemaUrl;
 +(void) openNewFlutterViewControllerByName:(UIViewController* _Nullable)fromViewController pageName:(NSString* _Nullable) pageName pageParams:(NSDictionary* _Nullable) pageParams;
 +(void) openNewFlutterHomeViewControllerByName:(UIViewController* _Nullable)fromViewController pageName:(NSString* _Nullable) pageName pageParams:(NSDictionary* _Nullable) pageParams;
-+ (void) popRoute:(UIViewController* _Nullable)fromViewController uniqueId:(NSString * _Nullable)uniqueId;
++(void) popRoute:(UIViewController* _Nullable)fromViewController;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <lib_flutter_base/FlutterBoost.h>
+#import <lib_flutter_base/STFlutterInitializer.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 @property (nullable, nonatomic, strong) UIWindow *window;

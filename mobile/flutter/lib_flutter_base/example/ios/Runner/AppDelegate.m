@@ -12,7 +12,7 @@
 #import "MyFlutterBoostDelegate.h"
 #import <lib_flutter_base/FlutterBoost.h>
 #import <lib_flutter_base/STFlutterBridge.h>
-#import <lib_flutter_base/STFlutterViewController.h>
+#import <lib_flutter_base/STFlutterMultipleHomeViewController.h>
 #import <LibIosBase/STInitializer.h>
 #import <LibIosBase/STBridgeDefaultCommunication.h>
 
@@ -58,14 +58,13 @@
     UIViewControllerDemo *vc = [[UIViewControllerDemo alloc] initWithNibName:@"UIViewControllerDemo" bundle:[NSBundle mainBundle]];
     vc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"hybrid" image:nil tag:0];
    
-    STFlutterViewController *fvc = STFlutterViewController.new ;
-    [fvc setName:@"tab_friend" params:@{}];
-    fvc.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"flutter_tab" image:nil tag:1];
-
-    UITabBarController *tabVC = [[UITabBarController alloc] init];
-    tabVC.viewControllers = @[vc,fvc];
+    [[STFlutterInitializer sharedInstance] initial:application debug:YES];
     
-    UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:tabVC];
+    STFlutterMultipleHomeViewController *homeVC = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"main" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+        NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
+    }];
+    
+    UINavigationController *rvc = [[UINavigationController alloc] initWithRootViewController:homeVC];
     
     self.window.rootViewController = rvc;
     

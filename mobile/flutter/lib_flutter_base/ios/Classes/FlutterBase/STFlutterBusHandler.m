@@ -31,7 +31,7 @@
         if(schemaUrl == nil){
             schemaUrl= @"smart://template/flutter?page=flutter_settings&params=";
         }
-        [STFlutterUtils openBySchema:[STSystemUtil topViewController] schemaUrl:schemaUrl];
+        [STFlutterUtils openNewFlutterViewControllerBySchema:[STSystemUtil topViewController] schemaUrl:schemaUrl];
     }
     return NULL;
 }

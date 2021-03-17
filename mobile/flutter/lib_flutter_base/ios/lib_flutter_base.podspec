@@ -16,12 +16,22 @@ A new flutter plugin project.
   s.source_files = 'Classes/**/**/**/*.{h,m,mm}'
 
   s.public_header_files =
-    'Classes/FlutterBase/LibFlutterBasePlugin.h',
+    'Classes/FlutterBase/LibFlutterBaseBoostPlugin.h',
+    'Classes/FlutterBase/LibFlutterBaseMultiplePlugin.h',
     'Classes/FlutterBase/STFlutterUtils.h',
-    'Classes/FlutterBase/STFlutterHomeViewController.h',
     'Classes/FlutterBase/STFlutterInitializer.h',
     'Classes/FlutterBase/STFlutterBusHandler.h',
-    'Classes/FlutterBase/STFlutterViewController.h',
+    
+    'Classes/FlutterBase/Boost/STFlutterBoostUtils.h',
+    'Classes/FlutterBase/Boost/STFlutterBoostInitializer.h',
+    'Classes/FlutterBase/Boost/STFlutterBoostHomeViewController.h',
+    'Classes/FlutterBase/Boost/STFlutterBoostViewController.h',
+    
+    'Classes/FlutterBase/Multiple/STFlutterMultipleUtils.h',
+    'Classes/FlutterBase/Multiple/STFlutterMultipleInitializer.h',
+    'Classes/FlutterBase/Multiple/STFlutterMultipleHomeViewController.h',
+    'Classes/FlutterBase/Multiple/STFlutterMultipleViewController.h',
+    
     'Classes/FlutterBase/Plugins/Application/STFlutterApplicationPlugin.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterBridge.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterPlugin.h',
@@ -32,6 +42,7 @@ A new flutter plugin project.
     'Classes/FlutterBase/Plugins/Page/STFlutterPagePlugin.h',
     'Classes/FlutterBase/Plugins/Toast/STFlutterToastPlugin.h',
     'Classes/FlutterBase/Plugins/URL/STFlutterURLPlugin.h',
+    
     'Classes/FlutterBoost/FlutterBoost.h',
     'Classes/FlutterBoost/FlutterBoostDelegate.h',
     'Classes/FlutterBoost/FlutterBoostPlugin.h',

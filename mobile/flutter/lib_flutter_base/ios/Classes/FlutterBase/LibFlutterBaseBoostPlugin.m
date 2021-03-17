@@ -1,10 +1,10 @@
-#import "LibFlutterBasePlugin.h"
+#import "LibFlutterBaseBoostPlugin.h"
 #import "FlutterBoostPlugin.h"
 
-@interface LibFlutterBasePlugin()
+@interface LibFlutterBaseBoostPlugin()
 @end
 
-@implementation LibFlutterBasePlugin
+@implementation LibFlutterBaseBoostPlugin
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     [FlutterBoostPlugin registerWithRegistrar:registrar];

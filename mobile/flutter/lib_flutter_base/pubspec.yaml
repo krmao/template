@@ -36,7 +36,7 @@ flutter:
         pluginClass: LibFlutterBaseMultiplePlugin
       ios:
         # pluginClass: LibFlutterBasePlugin
-        pluginClass: STFlutterBridge
+        pluginClass: LibFlutterBaseMultiplePlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -458,7 +458,7 @@
 
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:35
 -keep class androidx.core.app.CoreComponentFactory { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:121
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:108
 -keep class androidx.core.content.FileProvider { <init>(); }
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:82
 -keep class com.codesdancing.flutter.boost.STFlutterBoostActivity { <init>(); }
@@ -467,22 +467,18 @@
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:95
 -keep class com.codesdancing.flutter.multiple.STFlutterMultipleActivity { <init>(); }
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:102
--keep class com.codesdancing.flutter.multiple.STFlutterMultipleFragmentActivity { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:115
--keep class com.codesdancing.flutter.multiple.STFlutterMultipleFragmentHomeActivity { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:109
 -keep class com.codesdancing.flutter.multiple.STFlutterMultipleHomeActivity { <init>(); }
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:35
 -keep class com.codesdancing.flutterexample.FinalApplication { <init>(); }
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:42
 -keep class com.codesdancing.flutterexample.FinalLaunchActivity { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:130
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:117
 -keep class com.smart.library.base.STActivity { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:144
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:131
 -keep class com.smart.library.util.accessibility.STActivityTrackerService { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:159
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:146
 -keep class com.smart.library.util.accessibility.STActivityTrackerService$Companion$ActivityTrackerBroadcastReceiver { <init>(); }
-# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:135
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:122
 -keep class com.smart.library.widget.debug.STDebugActivity { <init>(); }
 # Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:72
 -keep class io.flutter.plugins.imagepicker.ImagePickerFileProvider { <init>(); }

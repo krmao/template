@@ -7,8 +7,8 @@ import '../../modules/common/common_util.dart';
 class SettingsState extends BaseStateDefault {
   final Map params;
 
-  SettingsState(this.params, {String argumentsJsonString})
-      : super(argumentsJsonString: argumentsJsonString) {
+  SettingsState(this.params, {uniqueId, argumentsJsonString})
+      : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
     print(
         "[page] ---- SettingsState constructor argumentsJsonString=$argumentsJsonString");
   }

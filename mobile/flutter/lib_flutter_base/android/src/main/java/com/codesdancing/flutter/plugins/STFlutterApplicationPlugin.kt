@@ -21,6 +21,7 @@ class STFlutterApplicationPlugin : STFlutterBasePlugin() {
         jsonObject.put("deviceInfo", getDeviceInfo())
         jsonObject.put("applicationInfo", getApplicationInfo())
         jsonObject.put("argumentsJsonString", STFlutterPagePlugin.getCurrentPageInitArguments(activity))
+        jsonObject.put("uniqueId", STFlutterPagePlugin.genUniqueId(activity))
         callbackSuccess(result, jsonObject)
     }
 

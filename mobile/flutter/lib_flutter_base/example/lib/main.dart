@@ -30,32 +30,39 @@ void initAndRunApp(RoutesBuilder routesBuilder) {
 
 //region dartEntrypointFunctionName 仅比 initialRoute 多一个 main 前缀, 方便以后灵活的切换 '多引擎单路由' / '单引擎多路由'
 @pragma('vm:entry-point')
-void mainFlutterBridge() => initAndRunApp((String argumentsJsonString) => {
-      '/': (BuildContext context) => BasePageDefault(
-          state: BridgeWidgetState(argumentsJsonString: argumentsJsonString))
-    });
+void mainFlutterBridge() =>
+    initAndRunApp((String uniqueId, String argumentsJsonString) => {
+          '/': (BuildContext context) => BasePageDefault(
+              state: BridgeWidgetState(
+                  uniqueId: uniqueId, argumentsJsonString: argumentsJsonString))
+        });
 
 @pragma('vm:entry-point')
-void mainFlutterSettings() => initAndRunApp((String argumentsJsonString) => {
-      '/': (BuildContext context) => BasePageDefault(
-          state: SettingsState({}, argumentsJsonString: argumentsJsonString))
-    });
+void mainFlutterSettings() =>
+    initAndRunApp((String uniqueId, String argumentsJsonString) => {
+          '/': (BuildContext context) => BasePageDefault(
+              state: SettingsState({},
+                  uniqueId: uniqueId, argumentsJsonString: argumentsJsonString))
+        });
 
 @pragma('vm:entry-point')
-void mainFlutterOrder() => initAndRunApp((String argumentsJsonString) => {
-      '/': (BuildContext context) =>
-          OrderWidget(argumentsJsonString: argumentsJsonString)
-    });
+void mainFlutterOrder() =>
+    initAndRunApp((String uniqueId, String argumentsJsonString) => {
+          '/': (BuildContext context) => OrderWidget(
+              uniqueId: uniqueId, argumentsJsonString: argumentsJsonString)
+        });
 
 @pragma('vm:entry-point')
-void mainFlutterPlayer() => initAndRunApp((String argumentsJsonString) => {
-      '/': (BuildContext context) => BasePageDefault(
-          state: MainTabWidgetState(argumentsJsonString: argumentsJsonString))
-    });
+void mainFlutterPlayer() =>
+    initAndRunApp((String uniqueId, String argumentsJsonString) => {
+          '/': (BuildContext context) => BasePageDefault(
+              state: MainTabWidgetState(
+                  uniqueId: uniqueId, argumentsJsonString: argumentsJsonString))
+        });
 
-void main() => initAndRunApp((String argumentsJsonString) => {
-      '/': (BuildContext context) =>
-          MyTestApp(argumentsJsonString: argumentsJsonString)
+void main() => initAndRunApp((String uniqueId, String argumentsJsonString) => {
+      '/': (BuildContext context) => MyTestApp(
+          uniqueId: uniqueId, argumentsJsonString: argumentsJsonString)
     });
 //endregion
 
@@ -64,8 +71,11 @@ void main() => initAndRunApp((String argumentsJsonString) => {
 
 /// This is the main application widget.
 class MyTestApp extends BasePageStateless {
-  const MyTestApp({Key key, String argumentsJsonString})
-      : super(key: key, argumentsJsonString: argumentsJsonString);
+  const MyTestApp({Key key, uniqueId, argumentsJsonString})
+      : super(
+            key: key,
+            uniqueId: uniqueId,
+            argumentsJsonString: argumentsJsonString);
 
   static const String _title = 'Flutter Code Sample';
 

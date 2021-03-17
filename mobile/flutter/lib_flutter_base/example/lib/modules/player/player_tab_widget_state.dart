@@ -11,10 +11,10 @@ class MainTabWidgetState extends BaseState<StatefulWidget> {
   var currentIndex = 0;
   var firstTime = true;
 
-  MainTabWidgetState({String argumentsJsonString})
-      : super(argumentsJsonString: argumentsJsonString){
-      print(
-          "[page] ---- MainTabWidgetState constructor argumentsJsonString=$argumentsJsonString");
+  MainTabWidgetState({uniqueId, argumentsJsonString})
+      : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
+    print(
+        "[page] ---- MainTabWidgetState constructor argumentsJsonString=$argumentsJsonString");
   }
 
   @override

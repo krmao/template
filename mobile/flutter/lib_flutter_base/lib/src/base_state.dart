@@ -1,38 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
-  final String pageUniqueId = Uuid().v1();
+  final String uniqueId;
 
   // ignore: non_constant_identifier_names
   final String KEY_ARGUMENTS_JSON_STRING = "KEY_ARGUMENTS_JSON_STRING";
   final String argumentsJsonString;
 
-  BaseState({this.argumentsJsonString}) : super();
+  BaseState({this.uniqueId, this.argumentsJsonString}) : super();
 
   @override
   @mustCallSuper
   void initState() {
     super.initState();
     print(
-        "[page] pageUniqueId=$pageUniqueId, $runtimeType - initState ${this.toStringShort()}");
+        "[page] uniqueId=$uniqueId, $runtimeType - initState ${this.toStringShort()}");
 
     Event.addEventListener(KEY_ARGUMENTS_JSON_STRING, (eventName, eventData) {
       print(
-          "[page] pageUniqueId=$pageUniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
+          "[page] uniqueId=$uniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
 
       if (KEY_ARGUMENTS_JSON_STRING == eventName) {
         onPageResult(eventData);
       }
-    }, containerId: pageUniqueId);
+    }, containerId: uniqueId);
   }
 
   @mustCallSuper
   void onPageResult(dynamic data) {
-    print(
-        "[page] pageUniqueId=$pageUniqueId, $runtimeType - onPageResult data=$data");
+    print("[page] uniqueId=$uniqueId, $runtimeType - onPageResult data=$data");
   }
 
   //region did change
@@ -41,8 +39,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print(
-        "[page] pageUniqueId=$pageUniqueId, $runtimeType - didChangeDependencies");
+    print("[page] uniqueId=$uniqueId, $runtimeType - didChangeDependencies");
   }
 
   //endregion
@@ -51,14 +48,14 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void didUpdateWidget(Widget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print("[page] pageUniqueId=$pageUniqueId, $runtimeType - didUpdateWidget");
+    print("[page] uniqueId=$uniqueId, $runtimeType - didUpdateWidget");
   }
 
   @override
   @mustCallSuper
   void reassemble() {
     super.reassemble();
-    print("[page] pageUniqueId=$pageUniqueId, $runtimeType - reassemble");
+    print("[page] uniqueId=$uniqueId, $runtimeType - reassemble");
   }
 
   //当State对象从树中被移除时，会调用此回调
@@ -66,16 +63,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void deactivate() {
     super.deactivate();
-    print("[page] pageUniqueId=$pageUniqueId, $runtimeType - deactivate");
+    print("[page] uniqueId=$uniqueId, $runtimeType - deactivate");
   }
 
   @override
   @mustCallSuper
   void dispose() {
     super.dispose();
-    Event.removeEventListener(KEY_ARGUMENTS_JSON_STRING,
-        containerId: pageUniqueId);
-    print("[page] pageUniqueId=$pageUniqueId, $runtimeType - dispose");
+    Event.removeEventListener(KEY_ARGUMENTS_JSON_STRING, containerId: uniqueId);
+    print("[page] uniqueId=$uniqueId, $runtimeType - dispose");
   }
 
 //endregion
@@ -97,7 +93,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     final bool canPop = parentRoute?.canPop ?? false;
     if (canPop) {
       Navigator.pop<T>(context, result);
-      print("[page] pageUniqueId=$pageUniqueId, pop, call pageDidDisappear");
+      print("[page] uniqueId=$uniqueId, pop, call pageDidDisappear");
     } else {
       return BoostNavigator.of().pop([result]);
     }

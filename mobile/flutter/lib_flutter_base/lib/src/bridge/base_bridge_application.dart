@@ -6,6 +6,7 @@ class BaseBridgeApplication extends BaseBridge {
   static String versionName;
   static String versionCode;
   static String argumentsJsonString;
+  static String uniqueId;
 
   static Map deviceInfo;
   static Map configInfo;
@@ -29,6 +30,9 @@ class BaseBridgeApplication extends BaseBridge {
     }
     if (applicationConstants.containsKey("argumentsJsonString")) {
       argumentsJsonString = applicationConstants['argumentsJsonString'];
+    }
+    if (applicationConstants.containsKey("uniqueId")) {
+      uniqueId = applicationConstants['uniqueId'];
     }
     return applicationConstants;
   }

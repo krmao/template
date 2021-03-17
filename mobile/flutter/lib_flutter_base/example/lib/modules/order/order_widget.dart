@@ -8,8 +8,8 @@ import '../../modules/common/common_util.dart';
 class OrderWidget extends BasePageStateless {
   final String message;
 
-  OrderWidget({this.message, String argumentsJsonString})
-      : super(argumentsJsonString: argumentsJsonString){
+  OrderWidget({this.message, uniqueId, argumentsJsonString})
+      : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
     print(
         "[page] ---- OrderWidget constructor argumentsJsonString=$argumentsJsonString");
   }

@@ -9,7 +9,15 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 
+@Suppress("UNUSED_PARAMETER")
 class STFlutterPagePlugin : STFlutterBasePlugin() {
+
+    @STFlutterPluginMethod
+    fun genUniqueId(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
+        val uniqueId = (activity as? STFlutterMultipleActivity)?.genUniqueId()
+        STLogUtil.w("STFlutterPagePlugin", "genUniqueId uniqueId=$uniqueId")
+        callbackSuccess(result, uniqueId)
+    }
 
     @STFlutterPluginMethod
     fun popPage(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
@@ -45,6 +53,11 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
         @JvmStatic
         fun getCurrentPageInitArguments(activity: Activity?): String {
             return activity?.intent?.getStringExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING) ?: "{}"
+        }
+
+        @STFlutterPluginMethod
+        fun genUniqueId(activity: Activity?): String? {
+            return (activity as? STFlutterMultipleActivity)?.genUniqueId()
         }
     }
 }

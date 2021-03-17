@@ -17,7 +17,8 @@ class BasePageDefault extends BasePage with BasePageVariables {
       enableLoading = false,
       titleBarWidget,
       keepAlive = false,
-      String argumentsJsonString})
+      uniqueId,
+      argumentsJsonString})
       : this.initWithChild(
           child,
           state: state,
@@ -27,6 +28,7 @@ class BasePageDefault extends BasePage with BasePageVariables {
           enableLoading: enableLoading,
           titleBarWidget: titleBarWidget,
           keepAlive: keepAlive,
+          uniqueId: uniqueId,
           argumentsJsonString: argumentsJsonString,
         );
 
@@ -38,8 +40,9 @@ class BasePageDefault extends BasePage with BasePageVariables {
       enableLoading = false,
       titleBarWidget,
       keepAlive = false,
-      String argumentsJsonString})
-      : super(argumentsJsonString: argumentsJsonString) {
+      uniqueId,
+      argumentsJsonString})
+      : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
     this.child = child;
     this.statusBarColor = statusBarColor;
     this.state = state;
@@ -59,6 +62,8 @@ class BasePageDefault extends BasePage with BasePageVariables {
         loadingWidget: this.loadingWidget,
         titleBarWidget: this.titleBarWidget,
         keepAlive: this.keepAlive,
+        uniqueId: this.uniqueId,
+        argumentsJsonString: this.argumentsJsonString,
       );
     }
     return this.state;

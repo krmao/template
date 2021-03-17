@@ -79,7 +79,7 @@ class BaseAppState extends State<BaseApp> {
 }
 
 typedef RoutesBuilder = Map<String, WidgetBuilder> Function(
-    String argumentsJsonString);
+    String uniqueId, String argumentsJsonString);
 
 void appRun(RoutesBuilder routesBuilder,
     {OnInitStateCallback onInitStateCallback}) {
@@ -91,11 +91,13 @@ void appRun(RoutesBuilder routesBuilder,
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     BaseBridgeApplication.getApplicationConstants().then((value) {
       String argumentsJsonString = value['argumentsJsonString'];
+      String uniqueId = value['uniqueId'];
 
-      print("[page] runZoned-getApplicationConstants value=$value, argumentsJsonString=$argumentsJsonString");
+      print(
+          "[page] runZoned-getApplicationConstants value=$value, argumentsJsonString=$argumentsJsonString");
       // ignore: invalid_use_of_protected_member
       widgetsBinding.scheduleAttachRootWidget(BaseApp(
-        routes: routesBuilder(argumentsJsonString),
+        routes: routesBuilder(uniqueId, argumentsJsonString),
         onInitStateCallback: () {
           if (onInitStateCallback != null) onInitStateCallback();
         },

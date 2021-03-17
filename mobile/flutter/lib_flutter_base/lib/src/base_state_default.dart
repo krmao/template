@@ -23,6 +23,7 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
       enableLoading = false,
       titleBarWidget,
       keepAlive = false,
+      uniqueId,
       argumentsJsonString})
       : this.initWithChild(
           child,
@@ -32,6 +33,7 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
           enableLoading: enableLoading,
           titleBarWidget: titleBarWidget,
           keepAlive: keepAlive,
+          uniqueId: uniqueId,
           argumentsJsonString: argumentsJsonString,
         );
 
@@ -43,8 +45,9 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     enableLoading = false,
     titleBarWidget,
     keepAlive = false,
+    uniqueId,
     argumentsJsonString,
-  }) : super(argumentsJsonString: argumentsJsonString) {
+  }) : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
     this.child = child;
     this.statusBarColor = statusBarColor;
     this.loadingWidget = loadingWidget;

@@ -17,8 +17,8 @@ class BridgeWidgetState extends BaseStateDefault {
   String dataFromNext;
   DateTime dataFromNextTime;
 
-  BridgeWidgetState({String argumentsJsonString})
-      : super(argumentsJsonString: argumentsJsonString) {
+  BridgeWidgetState({uniqueId, argumentsJsonString})
+      : super(uniqueId: uniqueId, argumentsJsonString: argumentsJsonString) {
     this.argumentsFromConstructor = argumentsJsonString;
     this.argumentsFromConstructorTime = DateTime.now();
     print(
@@ -39,7 +39,7 @@ class BridgeWidgetState extends BaseStateDefault {
       });
     });
 
-    dataReturnPreOnBackPressed = json.encode({"fromPage-next": pageUniqueId});
+    dataReturnPreOnBackPressed = json.encode({"fromPage-next": uniqueId});
 
     loadingWidget = BaseWidgetLoading(isShow: false);
     // statusBarColor =  Color(0xff00008b);
@@ -158,24 +158,24 @@ class BridgeWidgetState extends BaseStateDefault {
         getItemWidget(
             'open flutter bridge',
             () => PageBridge.pushPage("FlutterBridge",
-                argument: {"fromPage-pre": pageUniqueId})),
+                argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter bridge 2',
             () => URL.openURL<dynamic>(
                 'smart://template/flutter?page=FlutterBridge&params=' +
-                    json.encode({"fromPage-pre": pageUniqueId}))),
+                    json.encode({"fromPage-pre": uniqueId}))),
         getItemWidget(
             'open flutter player',
             () => PageBridge.pushPage("FlutterPlayer",
-                argument: {"fromPage-pre": pageUniqueId})),
+                argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter order',
             () => PageBridge.pushPage("FlutterOrder",
-                argument: {"fromPage-pre": pageUniqueId})),
+                argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter settings',
             () => PageBridge.pushPage("FlutterSettings",
-                argument: {"fromPage-pre": pageUniqueId})),
+                argument: {"fromPage-pre": uniqueId})),
       ],
     );
   }

@@ -10,6 +10,7 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.KeyEvent
 import android.widget.ImageView
 import androidx.annotation.AnimRes
@@ -35,6 +36,10 @@ import org.json.JSONObject
 open class STFlutterMultipleActivity : FlutterActivity(), STActivityDelegate {
 
     protected open val activityDelegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }
+
+    fun genUniqueId(): String {
+        return "${SystemClock.elapsedRealtime()}-${hashCode()}"
+    }
 
     override fun disposables(): CompositeDisposable = activityDelegate.disposables()
     override fun statusBar(): ImmersionBar? = activityDelegate.statusBar()

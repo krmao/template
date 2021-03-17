@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../modules/common/common_util.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
+
+import '../../modules/common/common_util.dart';
 
 class SettingsState extends BaseStateDefault {
   final Map params;
 
-  SettingsState(this.params);
+  SettingsState(this.params, {String argumentsJsonString})
+      : super(argumentsJsonString: argumentsJsonString) {
+    print(
+        "[page] ---- SettingsState constructor argumentsJsonString=$argumentsJsonString");
+  }
 
   @override
   Widget buildBase(BuildContext context) {

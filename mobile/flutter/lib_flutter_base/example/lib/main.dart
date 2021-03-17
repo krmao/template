@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
 
-import 'router_manager.dart';
+import 'modules/bridge/bridge_widget.dart';
+import 'modules/order/order_widget.dart';
+import 'modules/player/player_tab_widget_state.dart';
+import 'modules/settings/settings_widget.dart';
 
 /// https://flutter.dev/docs/development/add-to-app/debugging
 /// https://flutter.cn/docs/development/add-to-app/debugging
 /// flutter attach
 /// flutter attach -d deviceId # AKC7N19118000852
 /// flutter attach --isolate-filter='debug'
-void initAndRunApp(String initialRoute) {
+void initAndRunApp(RoutesBuilder routesBuilder) {
   ui.window.setIsolateDebugName("debug isolate");
 
   debugPaintSizeEnabled = false;
@@ -22,50 +25,70 @@ void initAndRunApp(String initialRoute) {
   debugRepaintRainbowEnabled = false;
   debugRepaintTextRainbowEnabled = false;
 
-  appRun(MaterialApp(
-      routes: {'/': RouterManager.instance.routeMap[initialRoute]}));
+  appRun(routesBuilder);
 }
 
 //region dartEntrypointFunctionName 仅比 initialRoute 多一个 main 前缀, 方便以后灵活的切换 '多引擎单路由' / '单引擎多路由'
 @pragma('vm:entry-point')
-void mainFlutterBridge() => initAndRunApp("FlutterBridge");
+void mainFlutterBridge() => initAndRunApp((String argumentsJsonString) => {
+      '/': (BuildContext context) => BasePageDefault(
+          state: BridgeWidgetState(argumentsJsonString: argumentsJsonString))
+    });
+
 @pragma('vm:entry-point')
-void mainFlutterSettings() => initAndRunApp("FlutterSettings");
+void mainFlutterSettings() => initAndRunApp((String argumentsJsonString) => {
+      '/': (BuildContext context) => BasePageDefault(
+          state: SettingsState({}, argumentsJsonString: argumentsJsonString))
+    });
+
 @pragma('vm:entry-point')
-void mainFlutterOrder() => initAndRunApp("FlutterOrder");
+void mainFlutterOrder() => initAndRunApp((String argumentsJsonString) => {
+      '/': (BuildContext context) =>
+          OrderWidget(argumentsJsonString: argumentsJsonString)
+    });
+
 @pragma('vm:entry-point')
-void mainFlutterPlayer() => initAndRunApp("FlutterPlayer");
+void mainFlutterPlayer() => initAndRunApp((String argumentsJsonString) => {
+      '/': (BuildContext context) => BasePageDefault(
+          state: MainTabWidgetState(argumentsJsonString: argumentsJsonString))
+    });
+
+void main() => initAndRunApp((String argumentsJsonString) => {
+      '/': (BuildContext context) =>
+          MyTestApp(argumentsJsonString: argumentsJsonString)
+    });
 //endregion
 
-void main() => initAndRunApp("/");
-
+//region test app
 // void main() => runApp(const MyApp());
 
 /// This is the main application widget.
-class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+class MyTestApp extends BasePageStateless {
+  const MyTestApp({Key key, String argumentsJsonString})
+      : super(key: key, argumentsJsonString: argumentsJsonString);
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
+    print("[page] argumentsJsonString=${this.argumentsJsonString}");
     return const MaterialApp(
       title: _title,
-      home: MyStatefulWidget(),
+      home: MyTestStatefulWidget(),
     );
   }
 }
 
 /// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key key}) : super(key: key);
+class MyTestStatefulWidget extends StatefulWidget {
+  const MyTestStatefulWidget({Key key}) : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _MyTestStatefulWidgetState createState() => _MyTestStatefulWidgetState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _MyTestStatefulWidgetState extends State<MyTestStatefulWidget> {
   bool shouldPop = true;
   @override
   Widget build(BuildContext context) {
@@ -87,7 +110,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   Navigator.of(context).push<void>(
                     MaterialPageRoute<void>(
                       builder: (BuildContext context) {
-                        return const MyStatefulWidget();
+                        return const MyTestStatefulWidget();
                       },
                     ),
                   );
@@ -114,3 +137,4 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+//endregion

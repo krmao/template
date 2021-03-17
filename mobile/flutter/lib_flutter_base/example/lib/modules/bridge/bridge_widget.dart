@@ -8,9 +8,20 @@ import 'package:lib_flutter_base/lib_flutter_base.dart';
 class BridgeWidgetState extends BaseStateDefault {
   TextEditingController textEditingController;
 
-  String currentPageInitArguments;
+  String currentPageInitArgumentsFromConstructor;
+  DateTime currentPageInitArgumentsFromConstructorGetTime;
+  String currentPageInitArgumentsFromAsyncBridgeGet;
+  DateTime currentPageInitArgumentsFromAsyncBridgeGetTime;
   String willReturnToPrePageData;
   String onNextPageReturnData;
+
+  BridgeWidgetState({String argumentsJsonString})
+      : super(argumentsJsonString: argumentsJsonString) {
+    this.currentPageInitArgumentsFromConstructor = argumentsJsonString;
+    this.currentPageInitArgumentsFromConstructorGetTime = DateTime.now();
+    print(
+        "[page] ---- BridgeWidgetState constructor argumentsJsonString=$argumentsJsonString");
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -22,7 +33,8 @@ class BridgeWidgetState extends BaseStateDefault {
       print(
           "getCurrentPageInitArguments return value=$value time=${DateTime.now()}");
       setState(() {
-        this.currentPageInitArguments = "$value";
+        this.currentPageInitArgumentsFromAsyncBridgeGet = "$value";
+        this.currentPageInitArgumentsFromAsyncBridgeGetTime = DateTime.now();
       });
     });
 
@@ -70,12 +82,24 @@ class BridgeWidgetState extends BaseStateDefault {
     print("buildBaseChild time=${DateTime.now()}");
     return ListView(
       children: <Widget>[
-        getItemWidget('currentPageInitArguments=$currentPageInitArguments',
-            () => BaseBridgeCompact.showToast("$currentPageInitArguments")),
-        getItemWidget('onNextPageReturnData=$onNextPageReturnData',
-            () => BaseBridgeCompact.showToast("$onNextPageReturnData")),
-        getItemWidget('willReturnToPrePageData=$willReturnToPrePageData',
-            () => BaseBridgeCompact.showToast("$willReturnToPrePageData")),
+        getItemWidget(
+            'currentPageInitArgumentsFromConstructor=(${this.currentPageInitArgumentsFromConstructorGetTime})\n$currentPageInitArgumentsFromConstructor',
+            () => BaseBridgeCompact.showToast(
+                "$currentPageInitArgumentsFromConstructor"),
+            fontSize: 10.0,
+            edge: 2),
+        getItemWidget(
+            'currentPageInitArgumentsFromAsyncBridgeGet=(${this.currentPageInitArgumentsFromAsyncBridgeGetTime})\n$currentPageInitArgumentsFromAsyncBridgeGet',
+            () => BaseBridgeCompact.showToast(
+                "$currentPageInitArgumentsFromAsyncBridgeGet"),
+            fontSize: 10.0,
+            edge: 2),
+        getItemWidget('onNextPageReturnData=\n$onNextPageReturnData',
+            () => BaseBridgeCompact.showToast("$onNextPageReturnData"),
+            fontSize: 10.0, edge: 2),
+        getItemWidget('willReturnToPrePageData=\n$willReturnToPrePageData',
+            () => BaseBridgeCompact.showToast("$willReturnToPrePageData"),
+            fontSize: 10.0, edge: 2),
         getItemWidget(
             'open new page',
             () => BaseBridgeCompact.open(
@@ -159,7 +183,8 @@ class BridgeWidgetState extends BaseStateDefault {
     );
   }
 
-  static Widget getItemWidget(String label, GestureTapCallback onTap) {
+  static Widget getItemWidget(String label, GestureTapCallback onTap,
+      {double fontSize = 12.0, double edge = 7.0, double height = 40.0}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2.5),
       child: Material(
@@ -167,25 +192,29 @@ class BridgeWidgetState extends BaseStateDefault {
         child: Ink(
             color: Color(0xff4169e1),
             child: InkWell(
-                onTap: () => Future.delayed(Duration(milliseconds: 200),
-                    () => onTap()), // 打开页面看不到水波纹效果, 加延时就可以
+                onTap: () =>
+                    Future.delayed(Duration(milliseconds: 200), () => onTap()),
+                // 打开页面看不到水波纹效果, 加延时就可以
                 splashColor: Color(0xff191970),
                 borderRadius: new BorderRadius.all(new Radius.circular(0.0)),
                 child: Container(
                     width: double.infinity,
+                    height: height,
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.all(15.0),
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, top: edge, bottom: edge),
                     child: Text(label,
                         style: TextStyle(
-                            fontSize: 15.0,
+                            fontSize: fontSize,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold))))),
+                            fontWeight: FontWeight.normal))))),
       ),
     );
   }
 
-  static Widget getItemWidgetWithInput(TextEditingController controller,
-      String label, GestureTapCallback onTap) {
+  static Widget getItemWidgetWithInput(
+      TextEditingController controller, String label, GestureTapCallback onTap,
+      {double fontSize = 12.0, double edge = 7.0, double height = 40.0}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2.5),
       child: Row(
@@ -197,20 +226,23 @@ class BridgeWidgetState extends BaseStateDefault {
               child: Ink(
                 color: Color(0xff4169e1),
                 child: InkWell(
-                  onTap: () => Future.delayed(Duration(milliseconds: 200),
-                      () => onTap()), // 打开页面看不到水波纹效果, 加延时就可以
+                  onTap: () => Future.delayed(
+                      Duration(milliseconds: 200), () => onTap()),
+                  // 打开页面看不到水波纹效果, 加延时就可以
                   splashColor: Color(0xff191970),
                   borderRadius: new BorderRadius.all(new Radius.circular(0.0)),
                   child: Container(
                     width: double.infinity,
+                    height: height,
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.all(15.0),
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, top: edge, bottom: edge),
                     child: Text(
                       label,
                       style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 12.0,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.normal),
                     ),
                   ),
                 ),
@@ -220,22 +252,24 @@ class BridgeWidgetState extends BaseStateDefault {
           Expanded(
             flex: 2,
             child: Container(
+              height: height,
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              padding:
+                  EdgeInsets.only(left: 10, right: 10, top: edge, bottom: edge),
               child: TextField(
                 controller: controller,
                 keyboardType: TextInputType.text,
                 maxLines: 1,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.normal),
                 decoration: InputDecoration.collapsed(
                   hintText: '请输入',
                   hintStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.normal),
                 ),
                 onChanged: (value) => {print("onChanged $value")},
                 autofocus: false,

@@ -5,8 +5,12 @@ import 'package:uuid/uuid.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final String pageUniqueId = Uuid().v1();
+
   // ignore: non_constant_identifier_names
   final String KEY_ARGUMENTS_JSON_STRING = "KEY_ARGUMENTS_JSON_STRING";
+  final String argumentsJsonString;
+
+  BaseState({this.argumentsJsonString}) : super();
 
   @override
   @mustCallSuper
@@ -15,8 +19,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     print(
         "[page] pageUniqueId=$pageUniqueId, $runtimeType - initState ${this.toStringShort()}");
 
-    Event.addEventListener(KEY_ARGUMENTS_JSON_STRING,
-        (eventName, eventData) {
+    Event.addEventListener(KEY_ARGUMENTS_JSON_STRING, (eventName, eventData) {
       print(
           "[page] pageUniqueId=$pageUniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
 

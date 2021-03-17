@@ -17,26 +17,27 @@ class STFlutterApplicationPlugin : STFlutterBasePlugin() {
 
     @STFlutterPluginMethod
     fun getApplicationConstants(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
-        val cons = JSONObject()
-        cons.put("deviceInfo", getDeviceInfo())
-        cons.put("applicationInfo", getApplicationInfo())
-        callbackSuccess(result, cons)
+        val jsonObject = JSONObject()
+        jsonObject.put("deviceInfo", getDeviceInfo())
+        jsonObject.put("applicationInfo", getApplicationInfo())
+        jsonObject.put("argumentsJsonString", STFlutterPagePlugin.getCurrentPageInitArguments(activity))
+        callbackSuccess(result, jsonObject)
     }
 
     private fun getDeviceInfo(): JSONObject {
-        val cons = JSONObject()
-        cons.put("osVersion", "Android_" + Build.VERSION.SDK_INT)
-        cons.put("deviceType", Build.BRAND + "_" + Build.MODEL)
-        cons.put("deviceName", STSystemUtil.MANUFACTURER)
-        return cons;
+        val jsonObject = JSONObject()
+        jsonObject.put("osVersion", "Android_" + Build.VERSION.SDK_INT)
+        jsonObject.put("deviceType", Build.BRAND + "_" + Build.MODEL)
+        jsonObject.put("deviceName", STSystemUtil.MANUFACTURER)
+        return jsonObject;
     }
 
 
     private fun getApplicationInfo(): JSONObject {
-        val cons = JSONObject()
-        cons.put("debug", STInitializer.debug())
-        cons.put("versionCode", "${STSystemUtil.getAppVersionCode(STInitializer.application())}")
-        cons.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
-        return cons;
+        val jsonObject = JSONObject()
+        jsonObject.put("debug", STInitializer.debug())
+        jsonObject.put("versionCode", "${STSystemUtil.getAppVersionCode(STInitializer.application())}")
+        jsonObject.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
+        return jsonObject;
     }
 }

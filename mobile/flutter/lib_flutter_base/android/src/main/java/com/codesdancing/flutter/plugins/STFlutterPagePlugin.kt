@@ -25,7 +25,7 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
     @STFlutterPluginMethod
     fun getCurrentPageInitArguments(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
         STLogUtil.w("STFlutterPagePlugin", "getCurrentPageInitArguments requestData=$requestData")
-        val argumentsJsonString: String? = activity?.intent?.getStringExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING)
+        val argumentsJsonString: String? = getCurrentPageInitArguments(activity)
         callbackSuccess(result, argumentsJsonString)
     }
 
@@ -41,4 +41,10 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
         return "Page"
     }
 
+    companion object {
+        @JvmStatic
+        fun getCurrentPageInitArguments(activity: Activity?): String {
+            return activity?.intent?.getStringExtra(STFlutterMultipleActivity.KEY_ARGUMENTS_JSON_STRING) ?: "{}"
+        }
+    }
 }

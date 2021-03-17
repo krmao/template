@@ -15,15 +15,16 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
   @override
   bool get wantKeepAlive => this.keepAlive;
 
-  BaseStateDefault({
-    child,
-    statusBarColor,
-    loadingWidget,
-    enableTitleBar = false,
-    enableLoading = false,
-    titleBarWidget,
-    keepAlive = false,
-  }) : this.initWithChild(
+  BaseStateDefault(
+      {child,
+      statusBarColor,
+      loadingWidget,
+      enableTitleBar = false,
+      enableLoading = false,
+      titleBarWidget,
+      keepAlive = false,
+      argumentsJsonString})
+      : this.initWithChild(
           child,
           statusBarColor: statusBarColor,
           loadingWidget: loadingWidget,
@@ -31,6 +32,7 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
           enableLoading: enableLoading,
           titleBarWidget: titleBarWidget,
           keepAlive: keepAlive,
+          argumentsJsonString: argumentsJsonString,
         );
 
   BaseStateDefault.initWithChild(
@@ -41,7 +43,8 @@ class BaseStateDefault<T extends StatefulWidget> extends BaseState<T>
     enableLoading = false,
     titleBarWidget,
     keepAlive = false,
-  }) {
+    argumentsJsonString,
+  }) : super(argumentsJsonString: argumentsJsonString) {
     this.child = child;
     this.statusBarColor = statusBarColor;
     this.loadingWidget = loadingWidget;

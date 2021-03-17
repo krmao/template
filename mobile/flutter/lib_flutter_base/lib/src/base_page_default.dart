@@ -17,24 +17,18 @@ class BasePageDefault extends BasePage with BasePageVariables {
       enableLoading = false,
       titleBarWidget,
       keepAlive = false,
-      enableSafeArea = true,
-      enableSafeAreaTop = true,
-      enableSafeAreaBottom = true,
-      enableSafeAreaLeft = true,
-      enableSafeAreaRight = true})
-      : this.initWithChild(child,
-            state: state,
-            statusBarColor: statusBarColor,
-            loadingWidget: loadingWidget,
-            enableTitleBar: enableTitleBar,
-            enableLoading: enableLoading,
-            titleBarWidget: titleBarWidget,
-            keepAlive: keepAlive,
-            enableSafeArea: enableSafeArea,
-            enableSafeAreaTop: enableSafeAreaTop,
-            enableSafeAreaBottom: enableSafeAreaBottom,
-            enableSafeAreaLeft: enableSafeAreaLeft,
-            enableSafeAreaRight: enableSafeAreaRight);
+      String argumentsJsonString})
+      : this.initWithChild(
+          child,
+          state: state,
+          statusBarColor: statusBarColor,
+          loadingWidget: loadingWidget,
+          enableTitleBar: enableTitleBar,
+          enableLoading: enableLoading,
+          titleBarWidget: titleBarWidget,
+          keepAlive: keepAlive,
+          argumentsJsonString: argumentsJsonString,
+        );
 
   BasePageDefault.initWithChild(child,
       {statusBarColor,
@@ -44,11 +38,8 @@ class BasePageDefault extends BasePage with BasePageVariables {
       enableLoading = false,
       titleBarWidget,
       keepAlive = false,
-      enableSafeArea = true,
-      enableSafeAreaTop = true,
-      enableSafeAreaBottom = true,
-      enableSafeAreaLeft = true,
-      enableSafeAreaRight = true}) {
+      String argumentsJsonString})
+      : super(argumentsJsonString: argumentsJsonString) {
     this.child = child;
     this.statusBarColor = statusBarColor;
     this.state = state;

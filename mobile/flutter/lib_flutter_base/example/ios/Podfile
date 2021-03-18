@@ -4,6 +4,9 @@ source 'https://github.com/krmao/libsforios.git'
 # Uncomment this line to define a global platform for your project
 platform :ios, '9.0'
 
+# [!] Podspecs cannot specify the source of dependencies. The `:path` option is not supported. `:path` can be used in the Podfile instead to override global dependencies..
+pod 'LibIosBase', :path => '~/workspace/lib_ios_base'
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 

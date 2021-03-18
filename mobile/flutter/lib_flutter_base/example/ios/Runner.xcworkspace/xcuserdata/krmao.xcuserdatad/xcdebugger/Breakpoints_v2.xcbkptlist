@@ -30,8 +30,8 @@
             filePath = "Pods/LibIosBase/LibIosBase/Classes/LibraryBase/Util/Communication/STBridgeDefaultCommunication.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "+handleBridge:functionName:params:callBackId:callback:"
             landmarkType = "7">
             <Locations>

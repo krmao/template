@@ -51,14 +51,13 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - lib_flutter_base (from `.symlinks/plugins/lib_flutter_base/ios`)
+  - LibIosBase (from `~/workspace/lib_ios_base`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
 
 SPEC REPOS:
-  https://github.com/krmao/libsforios.git:
-    - LibIosBase
   trunk:
     - AFNetworking
     - FMDB
@@ -74,6 +73,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker/ios"
   lib_flutter_base:
     :path: ".symlinks/plugins/lib_flutter_base/ios"
+  LibIosBase:
+    :path: "~/workspace/lib_ios_base"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
@@ -89,7 +90,7 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   lib_flutter_base: 4ab73a5a27b442ccb0a8d18e6c6af788f568e69b
-  LibIosBase: b0d24bb4ef1867609a5f2f36e431b4f9ae4e1b98
+  LibIosBase: 770cb091a49baa78abfedbb95494fbd0a5587889
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
@@ -99,6 +100,6 @@ SPEC CHECKSUMS:
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: bf8bbef00c755f46b84361055912e0396087a2e3
+PODFILE CHECKSUM: 0979c91e6ba63e207facab6b11929f0b9d804e94
 
 COCOAPODS: 1.10.0

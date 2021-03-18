@@ -52,7 +52,7 @@
     
     STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"] onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
         NSLog(@"on home onViewControllerResult jsonObjectString=%@", jsonObjectString);
-        NSDictionary * eventInfo = (jsonObjectString != nil && ![jsonObjectString isKindOfClass:[NSNull class]] && [jsonObjectString hasPrefix:@"{"]) ? [STJsonUtil dictionaryWithJsonString:jsonObjectString] : nil;
+        NSDictionary * eventInfo = [STJsonUtil dictionaryWithJsonString:jsonObjectString];
         if (eventInfo == nil) {
             eventInfo = NSMutableDictionary.new;
         }

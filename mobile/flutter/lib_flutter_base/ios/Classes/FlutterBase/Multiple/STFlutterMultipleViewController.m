@@ -32,14 +32,10 @@
     [super viewDidLoad];
     _uniqueId  = [NSString stringWithFormat:@"%f-%lu", [[NSDate date] timeIntervalSince1970]*1000, (unsigned long)self.hash]; // *1000 是精确到毫秒，不乘就是精确到秒
     NSLog(@"[page] viewDidLoad uniqueId=%@, self=%@", _uniqueId, self);
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    NSLog(@"[page] viewWillAppear uniqueId=%@, self=%@", _uniqueId, self);
     // [self setInitialRoute:@"/"];
     __weak typeof(self)weakSelf = self;
     [self setFlutterViewDidRenderCallback:^{
+        NSLog(@"[page] viewDidLoad uniqueId=%@ onFlutterViewDidRenderCallback", _uniqueId);
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf) {
             [strongSelf onFlutterUiDisplayed];
@@ -48,6 +44,11 @@
             return;
         }
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"[page] viewWillAppear uniqueId=%@, self=%@", _uniqueId, self);
 }
 
 - (void)viewDidAppear:(BOOL)animated{

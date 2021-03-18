@@ -22,12 +22,7 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    
-    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    [self.window makeKeyAndVisible];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     //region config bridge
     ConfigBridge *configBridge = [ConfigBridge new];
     configBridge.bridgeHandler = ^(UIViewController * _Nullable viewController, NSString * _Nullable functionName, NSString * _Nullable params, NSString * _Nullable callBackId, BridgeHandlerCallback _Nullable callback){
@@ -49,11 +44,18 @@
 
     [STInitializer initialApplication:config];
     
-    STFlutterMultipleHomeViewController *homeVC = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+    STFlutterMultipleHomeViewController *homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
         NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
     }];
 
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+    rootViewController.navigationBarHidden = YES;
+    rootViewController.view.backgroundColor = UIColor.clearColor;
+    
+    self.window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    self.window.backgroundColor = UIColor.whiteColor;
+    self.window.rootViewController = rootViewController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

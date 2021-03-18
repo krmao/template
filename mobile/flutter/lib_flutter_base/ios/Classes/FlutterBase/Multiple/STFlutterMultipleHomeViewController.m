@@ -6,8 +6,11 @@
 //
 
 #import "STFlutterMultipleHomeViewController.h"
+#import "STThreadUtil.h"
 
-@interface STFlutterMultipleHomeViewController ()
+@interface STFlutterMultipleHomeViewController (){
+    UIImageView *splashScreen;
+}
 @end
 
 @implementation STFlutterMultipleHomeViewController
@@ -15,6 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
+    splashScreen = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"final_launch.9.png"]];
+    splashScreen.contentMode = UIViewContentModeScaleAspectFill;
+    splashScreen.frame = [UIScreen mainScreen].bounds;
+    [self.view addSubview:splashScreen];
+}
+
+- (void)onFlutterUiDisplayed{
+    [super onFlutterUiDisplayed];
+    [self->splashScreen removeFromSuperview];
 }
 
 @end

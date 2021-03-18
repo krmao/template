@@ -25,7 +25,7 @@ class STFlutterBusHandler : STBusManager.IBusHandler {
         when (busFunctionName) {
             "flutter/open" -> {
                 if (context != null) {
-                    val schemaUrl: String = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=flutter_settings&params="
+                    val schemaUrl: String = (params.getOrNull(0) as? String) ?: "smart://template/flutter?page=FlutterSettings&params="
                     if (STFlutterInitializer.enableMultiple) {
                         STFlutterMultipleUtils.openNewFlutterActivityBySchemaUrl(context, schemaUrl)
                     } else {

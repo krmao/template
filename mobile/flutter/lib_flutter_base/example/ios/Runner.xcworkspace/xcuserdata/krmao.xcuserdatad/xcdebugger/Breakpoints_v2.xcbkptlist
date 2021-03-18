@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "83687FA9-242B-456F-8D8A-F5CC5B01DFEF"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/LibIosBase/LibIosBase/Classes/LibraryBase/Util/Communication/STBridgeDefaultCommunication.m"

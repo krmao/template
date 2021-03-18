@@ -21,19 +21,28 @@
         UIViewController *vc = [self currentViewController];
         result([STFlutterPagePlugin getUniqueId:vc]);
     }else if ([functionName isEqualToString:@"popPage"]) {
-        UIViewController *vc = [self currentViewController];
-        
-        UIViewController *preVc = [vc.navigationController.viewControllers objectAtIndex:vc.navigationController.viewControllers.count -1];
-        if ([preVc isKindOfClass:[STFlutterMultipleViewController class]]){
-            ((STFlutterMultipleViewController*) preVc).onViewControllerResult(arguments[@"argumentsJsonString"]);
-        }
-        [vc.navigationController popViewControllerAnimated:YES];
+        [STFlutterPagePlugin popPage:[self currentViewController] argumentsJsonString:arguments[@"argumentsJsonString"]];
     }else if ([functionName isEqualToString:@"getCurrentPageInitArguments"]) {
         UIViewController *vc = [self currentViewController];
         result([STFlutterPagePlugin getCurrentPageInitArguments:vc]);
     }else {
         result(FlutterMethodNotImplemented);
     }
+}
+
+/**
+ * Never quit an iOS application programmatically because people tend to interpret this as a crash. https://stackoverflow.com/a/8197043/4348530
+ * Not support present viewController.
+ */
++ (void)popPage:(UIViewController * _Nullable) currentViewController argumentsJsonString:(NSString * _Nullable)argumentsJsonString{
+    UINavigationController *currentNavigationController = [currentViewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *)currentViewController) : currentViewController.navigationController;
+    
+    UIViewController *preViewController = [currentNavigationController.viewControllers objectAtIndex:currentNavigationController.viewControllers.count -1];
+    
+    if ([preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
+        ((STFlutterMultipleViewController*) preViewController).onViewControllerResult(argumentsJsonString);
+    }
+    [currentNavigationController popViewControllerAnimated:YES];
 }
 
 + (NSString *)getUniqueId:(UIViewController *) viewController{

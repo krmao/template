@@ -14,8 +14,10 @@
 #import <lib_flutter_base/STFlutterBridge.h>
 #import <lib_flutter_base/STFlutterMultipleHomeViewController.h>
 #import <LibIosBase/STInitializer.h>
+#import <LibIosBase/STJsonUtil.h>
 #import <LibIosBase/STBridgeDefaultCommunication.h>
-
+#import "lib_flutter_base/LibFlutterBaseMultiplePlugin.h"
+#import "FinalBridgeCommunication.h"
 @interface AppDelegate ()
 
 @end
@@ -27,7 +29,8 @@
     ConfigBridge *configBridge = [ConfigBridge new];
     configBridge.bridgeHandler = ^(UIViewController * _Nullable viewController, NSString * _Nullable functionName, NSString * _Nullable params, NSString * _Nullable callBackId, BridgeHandlerCallback _Nullable callback){
         NSLog(@"bridgeHandler functionName=%@, params=%@", functionName, params);
-        [STBridgeDefaultCommunication handleBridge:viewController functionName:functionName params:params callBackId:callBackId callback:callback];
+        // [STBridgeDefaultCommunication handleBridge:viewController functionName:functionName params:params callBackId:callBackId callback:callback];
+        [FinalBridgeCommunication handleBridge:viewController functionName:functionName params:params callBackId:callBackId callback:callback];
     };
     //endregion
     
@@ -44,7 +47,16 @@
 
     [STInitializer initialApplication:config];
     
-    STFlutterMultipleHomeViewController *homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+    STFlutterMultipleHomeViewController *homeViewController = nil;
+    homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
+        
+
+        NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:jsonObjectString];
+        if (eventInfo == nil) {
+            eventInfo = NSMutableDictionary.new;
+        }
+        [LibFlutterBaseMultiplePlugin sendEventToDart:homeViewController.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
+        
         NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
     }];
 

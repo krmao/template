@@ -24,6 +24,7 @@
     }
     
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
+        NSLog(@"initWithDartEntrypointFunctionName success");
     }
     return self;
 }
@@ -32,15 +33,16 @@
     [super viewDidLoad];
     _uniqueId  = [NSString stringWithFormat:@"%f-%lu", [[NSDate date] timeIntervalSince1970]*1000, (unsigned long)self.hash]; // *1000 是精确到毫秒，不乘就是精确到秒
     NSLog(@"[page] viewDidLoad uniqueId=%@, self=%@", _uniqueId, self);
+    
     // [self setInitialRoute:@"/"];
     __weak typeof(self)weakSelf = self;
     [self setFlutterViewDidRenderCallback:^{
-        NSLog(@"[page] viewDidLoad uniqueId=%@ onFlutterViewDidRenderCallback", _uniqueId);
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf) {
+            NSLog(@"[page] viewDidLoad uniqueId=%@ onFlutterViewDidRenderCallback", strongSelf->_uniqueId);
             [strongSelf onFlutterUiDisplayed];
         } else {
-            // released
+            NSLog(@"[page] viewDidLoad onFlutterViewDidRenderCallback released strongSelf==nil");
             return;
         }
     }];

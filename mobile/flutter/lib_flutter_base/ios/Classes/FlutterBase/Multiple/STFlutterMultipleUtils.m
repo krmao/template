@@ -50,16 +50,7 @@
     NSString* finalDartEntrypointFunctionName = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute || [initialRoute isEqualToString: @"/"]) ? @"main" : [NSString stringWithFormat:@"main%@",initialRoute];
     NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
     
-    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"] onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
-        NSLog(@"on home onViewControllerResult jsonObjectString=%@", jsonObjectString);
-        NSDictionary * eventInfo = [STJsonUtil dictionaryWithJsonString:jsonObjectString];
-        if (eventInfo == nil) {
-            eventInfo = NSMutableDictionary.new;
-        }
-        [LibFlutterBaseMultiplePlugin sendEventToDart:flutterViewController.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
-        
-        NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
-    }];
+    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"]];
     [navigationController pushViewController:flutterViewController animated:YES];
 }
 
@@ -67,16 +58,7 @@
     NSLog(@"openNewFlutterViewControllerByName pageName=%@, pageParams=%@", pageName, pageParams);
     UINavigationController *navigationController = [fromViewController isKindOfClass:[UINavigationController class]] ? (UINavigationController*)fromViewController : fromViewController.navigationController;
     
-    STFlutterMultipleHomeViewController *flutterViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"main" argumentsJsonString:pageParams[@"argumentsJsonString"] onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
-        
-        NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:jsonObjectString];
-        if (eventInfo == nil) {
-            eventInfo = NSMutableDictionary.new;
-        }
-        [LibFlutterBaseMultiplePlugin sendEventToDart:flutterViewController.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
-        
-        NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
-    }];
+    STFlutterMultipleHomeViewController *flutterViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"main" argumentsJsonString:pageParams[@"argumentsJsonString"]];
     [navigationController pushViewController:flutterViewController animated:YES];
 }
 

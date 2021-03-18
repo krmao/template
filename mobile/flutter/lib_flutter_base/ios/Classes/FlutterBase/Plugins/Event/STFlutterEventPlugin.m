@@ -2,6 +2,7 @@
 #import "STFlutterBridge.h"
 #import "STValueUtil.h"
 #import "STEventManager.h"
+#import "LibFlutterBaseMultiplePlugin.h"
 
 @implementation STFlutterEventPlugin
 
@@ -28,8 +29,7 @@
                 
                 [resultInfo setValue:eventKey forKey:@"eventKey"];
                 [resultInfo setValue:eventInfo forKey:@"eventInfo"];
-
-                [[STFlutterBridge sharedInstance].methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
+                [[LibFlutterBaseMultiplePlugin sharedInstance].methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
             }
         }];
     }

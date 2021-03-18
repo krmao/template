@@ -33,7 +33,7 @@ class PageBridge extends BaseBridge {
 
     static void popPage({String argumentsJsonString}) {
         if (enableMultiple) {
-            print("[page] popPage argumentsJsonString=$argumentsJsonString");
+            print("[page-flutter] popPage argumentsJsonString=$argumentsJsonString");
             BaseBridge.callNativeStatic("Page", "popPage", {"argumentsJsonString": argumentsJsonString});
         } else {
             BoostNavigator.of().pop();

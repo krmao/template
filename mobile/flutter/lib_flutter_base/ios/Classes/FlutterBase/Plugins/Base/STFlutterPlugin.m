@@ -9,6 +9,7 @@
           function:(NSString *)functionName
          arguments:(id)arguments
             result:(FlutterResult)result {
+    NSLog(@"[page]-[STFlutterPlugin] callModule functionName=%@, arguments=%@", functionName, arguments);
     NSString *moduleClassName = [[@"STFlutter" stringByAppendingString:moduleName] stringByAppendingString:@"Plugin"];
     STFlutterPlugin *object = [STFlutterPluginManager pluginObjectForModuleClass:moduleClassName];
     if (object){

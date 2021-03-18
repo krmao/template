@@ -48,17 +48,7 @@
     [STInitializer initialApplication:config];
     
     STFlutterMultipleHomeViewController *homeViewController = nil;
-    homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:@"{}" onViewControllerResult:^(NSString * _Nullable jsonObjectString) {
-        
-
-        NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:jsonObjectString];
-        if (eventInfo == nil) {
-            eventInfo = NSMutableDictionary.new;
-        }
-        [LibFlutterBaseMultiplePlugin sendEventToDart:homeViewController.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
-        
-        NSLog(@"openNewFlutterViewControllerByName onViewControllerResult jsonObjectString=%@", jsonObjectString);
-    }];
+    homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:nil];
 
     UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
     rootViewController.navigationBarHidden = YES;

@@ -110,7 +110,7 @@ class BridgeWidgetState extends BaseStateDefault {
             'open new page',
             () => BaseBridgeCompact.open(
                 "smart://template/flutter?page=FlutterSettings&params=")),
-        getItemWidget('close current page', () => PageBridge.popPage()),
+        getItemWidget('close current page', () => onBackPressed(context)),
         getItemWidget(
             'show toast',
             () =>

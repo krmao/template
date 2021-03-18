@@ -7,6 +7,8 @@
 - (void)callFunction:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
+    NSLog(@"[page]-[STFlutterPagePlugin] functionName=%@, arguments=%@", functionName, arguments);
+    
     NSDictionary *parameters = arguments;
     
     if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
@@ -37,12 +39,17 @@
 + (void)popPage:(UIViewController * _Nullable) currentViewController argumentsJsonString:(NSString * _Nullable)argumentsJsonString{
     UINavigationController *currentNavigationController = [currentViewController isKindOfClass:[UINavigationController class]] ? ((UINavigationController *)currentViewController) : currentViewController.navigationController;
     
-    UIViewController *preViewController = [currentNavigationController.viewControllers objectAtIndex:currentNavigationController.viewControllers.count -1];
+    UIViewController *preViewController = (currentNavigationController.viewControllers.count>=2)? [currentNavigationController.viewControllers objectAtIndex:currentNavigationController.viewControllers.count -2] : nil;
     
-    if ([preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
-        ((STFlutterMultipleViewController*) preViewController).onViewControllerResult(argumentsJsonString);
-    }
+    NSLog(@"[page]-[STFlutterPagePlugin] popPage viewControllers.count=%lu, viewControllers=%@", (unsigned long)currentNavigationController.viewControllers.count, currentNavigationController.viewControllers);
+    NSLog(@"[page]-[STFlutterPagePlugin] popPage currentViewController=%@, argumentsJsonString=%@", currentViewController, argumentsJsonString);
+    NSLog(@"[page]-[STFlutterPagePlugin] popPage currentNavigationController=%@, preViewController=%@", currentNavigationController, preViewController);
+    
     [currentNavigationController popViewControllerAnimated:YES];
+    
+    if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] && [preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
+        [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
+    }
 }
 
 + (NSString *)getUniqueId:(UIViewController *) viewController{

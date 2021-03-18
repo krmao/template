@@ -1,6 +1,8 @@
 #import "STFlutterMultipleViewController.h"
 #import "STFlutterMultipleInitializer.h"
 #import "STStringUtil.h"
+#import "LibFlutterBaseMultiplePlugin.h"
+#import <LibIosBase/STJsonUtil.h>
 
 @interface STFlutterMultipleViewController (){
 }
@@ -8,8 +10,7 @@
 
 @implementation STFlutterMultipleViewController
 
-- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName argumentsJsonString:(NSString * _Nullable)argumentsJsonString onViewControllerResult:(OnViewControllerResult _Nullable )onViewControllerResult {
-    _onViewControllerResult = onViewControllerResult;
+- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName argumentsJsonString:(NSString * _Nullable)argumentsJsonString {
     _argumentsJsonString = argumentsJsonString;
     
     NSString *finalDartEntrypointFunctionName = [STStringUtil emptyOrNull:dartEntrypointFunctionName] ? @"main" : dartEntrypointFunctionName;
@@ -46,6 +47,20 @@
             return;
         }
     }];
+    
+    
+    BOOL hasPlugin = [self.engine hasPlugin:@"LibFlutterBaseMultiplePlugin"];
+    
+    NSObject *published = [self.engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin"];
+    
+    NSLog(@"[page] viewDidLoad getPlugin hasPlugin=%d, engine=%@, published=%@",hasPlugin, self.engine, published);
+    
+    LibFlutterBaseMultiplePlugin* plugin = [LibFlutterBaseMultiplePlugin getPlugin:self.engine];
+    FlutterMethodChannel * methodChannel = plugin.methodChannel;
+    if (methodChannel == nil || [methodChannel isKindOfClass:[NSNull class]]) {
+        methodChannel = [LibFlutterBaseMultiplePlugin sharedInstance].methodChannel;
+    }
+    NSLog(@"sendEventToDart install plugin=%@, methodChannel=%@",[LibFlutterBaseMultiplePlugin sharedInstance], methodChannel);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -56,6 +71,15 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     NSLog(@"[page] viewDidAppear uniqueId=%@, self=%@", _uniqueId, self);
+}
+
+- (void)onViewControllerResult:(NSString * _Nullable) argumentsJsonString{
+    NSLog(@"[page] onViewControllerResult uniqueId=%@, self=%@, argumentsJsonString=%@", _uniqueId, self, argumentsJsonString);
+    NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString];
+    if (eventInfo == nil) {
+        eventInfo = NSMutableDictionary.new;
+    }
+    [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{

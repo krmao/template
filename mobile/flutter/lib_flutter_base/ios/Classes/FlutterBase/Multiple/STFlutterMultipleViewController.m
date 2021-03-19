@@ -79,7 +79,7 @@
     if (eventInfo == nil) {
         eventInfo = NSMutableDictionary.new;
     }
-    [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"argumentsJsonString" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{

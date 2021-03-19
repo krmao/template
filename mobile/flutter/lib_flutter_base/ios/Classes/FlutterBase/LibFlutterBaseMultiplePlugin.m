@@ -31,10 +31,7 @@
 
 + (LibFlutterBaseMultiplePlugin* )getPlugin:(FlutterEngine*)engine{
     BOOL hasPlugin = [engine hasPlugin:@"LibFlutterBaseMultiplePlugin"];
-    
     NSObject *published = [engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin"];
-
-    
     NSLog(@"getPlugin hasPlugin=%d, engine=%@, published=%@",hasPlugin, engine, published);
     
     if ([published isKindOfClass:[LibFlutterBaseMultiplePlugin class]]) {

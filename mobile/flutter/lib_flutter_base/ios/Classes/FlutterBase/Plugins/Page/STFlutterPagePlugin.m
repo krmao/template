@@ -46,9 +46,15 @@
     NSLog(@"[page]-[STFlutterPagePlugin] popPage currentNavigationController=%@, preViewController=%@", currentNavigationController, preViewController);
     
     [currentNavigationController popViewControllerAnimated:YES];
-    
-    if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] && [preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
-        [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
+                   
+    if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] &&
+        [preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
+        
+        // 可以通过改变队列来改变线程
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                   // 需要延迟执行的代码
+            [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
+        });
     }
 }
 

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, readonly) BOOL debug;
 @property(nonatomic, strong, nullable, readonly) UIApplication* application;
-@property(nonatomic, strong, nullable, readonly) FlutterEngineGroup* flutterEngineGroup;
+@property(nonatomic, strong, nullable, readonly) FlutterEngineGroup * flutterEngineGroup;
 @property(nonatomic, readonly) BOOL isInitialized;
 
 -(void) initial:(UIApplication*)application debug:(BOOL)debug;

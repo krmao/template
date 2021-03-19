@@ -27,7 +27,7 @@
                                      binaryMessenger:[registrar messenger]
                                      codec:[FlutterJSONMethodCodec sharedInstance]];
     NSLog(@"STFlutterBridge registerWithRegistrar start");
-    LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin sharedInstance];
+    LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin new]; // 没有必要使用 sharedInstance, 因为下一步 methodChannel 已经被替换, 当前页面回收后, 上一个页面的 methodChannel 将为 nil
     instance.methodChannel = channel;
     
     [registrar addMethodCallDelegate:instance channel:channel];

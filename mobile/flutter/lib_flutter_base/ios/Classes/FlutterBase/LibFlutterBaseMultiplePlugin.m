@@ -20,6 +20,21 @@
     NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar end");
 }
 
++ (FlutterMethodChannel *)registerWithRegistrar2:(NSObject<FlutterPluginRegistrar>*)registrar {
+    NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar start");
+    FlutterMethodChannel* channel = [FlutterMethodChannel
+                                     methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
+                                     binaryMessenger:[registrar messenger]
+                                     codec:[FlutterJSONMethodCodec sharedInstance]];
+    NSLog(@"STFlutterBridge registerWithRegistrar start");
+    LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin sharedInstance];
+    instance.methodChannel = channel;
+    
+    [registrar addMethodCallDelegate:instance channel:channel];
+    NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar end");
+    return channel;
+}
+
 + (instancetype)sharedInstance{
     static id _instance = nil;
     static dispatch_once_t onceToken;
@@ -70,6 +85,24 @@
         }];
     } else {
         NSLog(@"invokeMethod methodChannel == null");
+    }
+}
+
++ (void) sendEventToDart2:(FlutterMethodChannel *)methodChannel eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
+    NSLog(@"sendEventToDart2 methodChannel=%@, eventKey=%@, eventInfo=%@", methodChannel, eventKey, eventInfo);
+    NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
+    if (methodChannel != nil) {
+        NSMutableDictionary* eventData = NSMutableDictionary.new;
+        [eventData setValue:eventKey forKey:@"eventName"];
+        [eventData setValue:eventInfo forKey:@"eventInfo"];
+  
+        NSLog(@"sendEventToDart2 invokeMethod start BRIDGE_EVENT_NAME=%@",BRIDGE_EVENT_NAME);
+        
+        [methodChannel invokeMethod:BRIDGE_EVENT_NAME arguments:eventData result:^(id  _Nullable result) {
+                    NSLog(@"invokeMethod2 success result=%@", result);
+        }];
+    } else {
+        NSLog(@"invokeMethod2 methodChannel == null");
     }
 }
 @end

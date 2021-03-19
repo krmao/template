@@ -11,8 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 
 + (void) sendEventToDart:(FlutterEngine*)engine eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo;
++ (void) sendEventToDart2:(FlutterMethodChannel *)methodChannel eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo ;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 + (LibFlutterBaseMultiplePlugin* )getPlugin:(FlutterEngine*)engine;
-
++ (FlutterMethodChannel *)registerWithRegistrar2:(NSObject<FlutterPluginRegistrar>*)registrar;
 @end
 NS_ASSUME_NONNULL_END

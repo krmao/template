@@ -5,6 +5,7 @@
 #import <LibIosBase/STJsonUtil.h>
 
 @interface STFlutterMultipleViewController (){
+    FlutterMethodChannel * methodChannel;
 }
 @end
 
@@ -23,6 +24,9 @@
             [clazz performSelector:NSSelectorFromString(@"registerWithRegistry:") withObject:newEngine];
         }
     }
+    
+    NSObject<FlutterPluginRegistrar>* registrar = [newEngine registrarForPlugin:@"LibFlutterBaseMultiplePlugin2"];
+    self->methodChannel = [LibFlutterBaseMultiplePlugin registerWithRegistrar2:registrar];
     
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
         NSLog(@"initWithDartEntrypointFunctionName success");
@@ -50,17 +54,19 @@
     
     
     BOOL hasPlugin = [self.engine hasPlugin:@"LibFlutterBaseMultiplePlugin"];
-    
     NSObject *published = [self.engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin"];
-    
     NSLog(@"[page] viewDidLoad getPlugin hasPlugin=%d, engine=%@, published=%@",hasPlugin, self.engine, published);
     
-    LibFlutterBaseMultiplePlugin* plugin = [LibFlutterBaseMultiplePlugin getPlugin:self.engine];
-    FlutterMethodChannel * methodChannel = plugin.methodChannel;
-    if (methodChannel == nil || [methodChannel isKindOfClass:[NSNull class]]) {
-        methodChannel = [LibFlutterBaseMultiplePlugin sharedInstance].methodChannel;
-    }
-    NSLog(@"sendEventToDart install plugin=%@, methodChannel=%@",[LibFlutterBaseMultiplePlugin sharedInstance], methodChannel);
+    BOOL hasPlugin2 = [self.engine hasPlugin:@"LibFlutterBaseMultiplePlugin2"];
+    NSObject *published2 = [self.engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin2"];
+    NSLog(@"[page] viewDidLoad getPlugin2 hasPlugin=%d, engine=%@, published=%@, methodChannel=%@",hasPlugin2, self.engine, published2, self->methodChannel);
+
+//    LibFlutterBaseMultiplePlugin* plugin = [LibFlutterBaseMultiplePlugin getPlugin:self.engine];
+//    FlutterMethodChannel * methodChannel = plugin.methodChannel;
+//    if (methodChannel == nil || [methodChannel isKindOfClass:[NSNull class]]) {
+//        methodChannel = [LibFlutterBaseMultiplePlugin sharedInstance].methodChannel;
+//    }
+//    NSLog(@"sendEventToDart install plugin=%@, methodChannel=%@",[LibFlutterBaseMultiplePlugin sharedInstance], methodChannel);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,7 +85,8 @@
     if (eventInfo == nil) {
         eventInfo = NSMutableDictionary.new;
     }
-    [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    // [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->methodChannel eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{

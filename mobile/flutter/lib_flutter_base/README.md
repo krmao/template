@@ -51,5 +51,46 @@ samples, guidance on mobile development, and a full API reference.
     lib_flutter_base: ^0.0.6
     ```
 
-* Example Test Release
+* Example Test Release (only can android, not ios)
 > flutter run --release --verbose
+
+* Switch boost/multiple
+1. ./lib_flutter_base/pubspec.yaml
+```shell script
+flutter:
+  # This section identifies this Flutter project as a plugin project.
+  # The 'pluginClass' and Android 'package' identifiers should not ordinarily
+  # be modified. They are used by the tooling to maintain consistency when
+  # adding or updating assets for this project.
+  plugin:
+    platforms:
+      android:
+        package: com.codesdancing.flutter
+        # pluginClass: LibFlutterBaseBoostPlugin
+        pluginClass: LibFlutterBaseMultiplePlugin
+      ios:
+        # pluginClass: LibFlutterBaseBoostPlugin
+        pluginClass: LibFlutterBaseMultiplePlugin
+```
+
+2. ./lib_flutter_base/android
+```kotlin
+// STFlutterInitializer.kt
+enableMultiple = false/true
+```
+
+```kotlin
+// STFlutterMultipleUtils.kt
+enableMultiEnginesWithSingleRoute = false/true
+```
+
+3. ./lib_flutter_base/ios
+```objectivec
+_enableMultiple = YES/NO
+_enableMultiEnginesWithSingleRoute = YES/NO
+```
+3. ./lib_flutter_base/lib
+```dart
+// base_bridge_page.dart
+enableMultiple = false/true
+```

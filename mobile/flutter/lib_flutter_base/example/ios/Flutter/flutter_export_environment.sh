@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/krmao/fvm/versions/2.0.1"
+export "FLUTTER_ROOT=/Users/krmao/fvm/versions/2.0.2"
 export "FLUTTER_APPLICATION_PATH=/Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example"
 export "FLUTTER_TARGET=/Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

@@ -1,6 +1,10 @@
 #import <Flutter/Flutter.h>
 #import "STFlutterBridge.h"
 
+@protocol STProtocolViewControllerResult
+- (void) onViewControllerResult:(NSString *_Nullable) requestCode resultCode:(NSString *_Nullable) resultCode data:(NSMutableDictionary *_Nullable) data;
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 @interface LibFlutterBaseMultiplePlugin : STFlutterBridge
 

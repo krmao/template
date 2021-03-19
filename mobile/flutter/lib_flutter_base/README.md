@@ -54,6 +54,17 @@ samples, guidance on mobile development, and a full API reference.
 * Example Test Release (only can android, not ios)
 > flutter run --release --verbose
 
+* Flutter upgrade
+0. remove example/.fvm/flutter_sdk/
+1. change example/.fvm/fvm_config.json flutter version and then execute the command **fvm install** and **fvm use 2.0.2 --global --force**
+2. change Android Studio -> Preference -> Language && Frameworks -> Flutter sdk path
+3. delete pubspec.lock 
+4. delete example/pubspec.lock 
+5. delete example/ios/Podfile.lock
+6. delete example/ios/Pods
+7. delete example/ios/Pods/.symlinks/
+8. flutter --no-color pub get && flutter run --verbose
+
 * Switch boost/multiple
 1. ./lib_flutter_base/pubspec.yaml
 ```shell script
@@ -89,7 +100,7 @@ enableMultiEnginesWithSingleRoute = false/true
 _enableMultiple = YES/NO
 _enableMultiEnginesWithSingleRoute = YES/NO
 ```
-3. ./lib_flutter_base/lib
+4. ./lib_flutter_base/lib
 ```dart
 // base_bridge_page.dart
 enableMultiple = false/true

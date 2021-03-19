@@ -52,6 +52,7 @@ class BaseAppState extends State<BaseApp> {
     return MaterialApp(
         localizationsDelegates: [DefaultMaterialLocalizations.delegate],
         routes: this.routes,
+        // debugShowCheckedModeBanner:false,
         theme: ThemeData(
             // This is the theme of your application.
             //

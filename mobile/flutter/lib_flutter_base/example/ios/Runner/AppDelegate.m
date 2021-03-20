@@ -11,7 +11,6 @@
 #import "NativeViewController.h"
 #import "MyFlutterBoostDelegate.h"
 #import <lib_flutter_base/FlutterBoost.h>
-#import <lib_flutter_base/STFlutterBridge.h>
 #import <lib_flutter_base/STFlutterMultipleHomeViewController.h>
 #import <LibIosBase/STInitializer.h>
 #import <LibIosBase/STJsonUtil.h>

@@ -1,10 +1,19 @@
 #import "LibFlutterBaseMultiplePlugin.h"
 #import "FlutterBoostPlugin.h"
+#import "STFlutterPlugin.h"
 
 @interface LibFlutterBaseMultiplePlugin()
 @end
 
 @implementation LibFlutterBaseMultiplePlugin
+
+- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSArray *array = [call.method componentsSeparatedByString:@"-"];
+    NSString *moduleName = [array firstObject];
+    NSString *functionName = [call.method stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@-",moduleName] withString:@""];
+    NSLog(@"handleMethodCall moduleName=%@, functionName=%@, arguments=%@", moduleName, functionName, call.arguments);
+    [STFlutterPlugin callModule:moduleName function:functionName arguments:call.arguments result:result];
+}
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar start");
@@ -12,7 +21,7 @@
                                      methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
                                      binaryMessenger:[registrar messenger]
                                      codec:[FlutterJSONMethodCodec sharedInstance]];
-    NSLog(@"STFlutterBridge registerWithRegistrar start");
+    NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar start");
     LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin sharedInstance];
     instance.methodChannel = channel;
     
@@ -20,19 +29,19 @@
     NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar end");
 }
 
-+ (FlutterMethodChannel *)registerWithRegistrar2:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (LibFlutterBaseMultiplePlugin *)registerWithRegistrar2:(NSObject<FlutterPluginRegistrar>*)registrar {
     NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar start");
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
                                      binaryMessenger:[registrar messenger]
                                      codec:[FlutterJSONMethodCodec sharedInstance]];
-    NSLog(@"STFlutterBridge registerWithRegistrar start");
-    LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin new]; // 没有必要使用 sharedInstance, 因为下一步 methodChannel 已经被替换, 当前页面回收后, 上一个页面的 methodChannel 将为 nil
-    instance.methodChannel = channel;
+    NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar start");
+    LibFlutterBaseMultiplePlugin* newPlugin = [LibFlutterBaseMultiplePlugin new]; // 没有必要使用 sharedInstance, 因为下一步 methodChannel 已经被替换, 当前页面回收后, 上一个页面的 methodChannel 将为 nil
+    newPlugin.methodChannel = channel;
     
-    [registrar addMethodCallDelegate:instance channel:channel];
+    [registrar addMethodCallDelegate:newPlugin channel:channel];
     NSLog(@"LibFlutterBaseMultiplePlugin registerWithRegistrar end");
-    return channel;
+    return newPlugin;
 }
 
 + (instancetype)sharedInstance{
@@ -88,7 +97,8 @@
     }
 }
 
-+ (void) sendEventToDart2:(FlutterMethodChannel *)methodChannel eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
++ (void) sendEventToDart2:(LibFlutterBaseMultiplePlugin *)bridgePlugin eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
+    FlutterMethodChannel *methodChannel = bridgePlugin.methodChannel;
     NSLog(@"sendEventToDart2 methodChannel=%@, eventKey=%@, eventInfo=%@", methodChannel, eventKey, eventInfo);
     NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
     if (methodChannel != nil) {

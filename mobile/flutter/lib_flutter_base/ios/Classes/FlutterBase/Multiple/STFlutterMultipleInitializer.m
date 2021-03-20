@@ -9,7 +9,6 @@
 #import <lib_flutter_base/FlutterBoost.h>
 #import <LibIosBase/STInitializer.h>
 #import <LibIosBase/STJsonUtil.h>
-#import "STFlutterBridge.h"
 #import "STFlutterUtils.h"
 
 static STFlutterMultipleInitializer *instance = nil;

@@ -9,8 +9,8 @@
 #import <lib_flutter_base/FlutterBoost.h>
 #import <LibIosBase/STInitializer.h>
 #import <LibIosBase/STJsonUtil.h>
-#import "STFlutterBridge.h"
 #import "STFlutterUtils.h"
+#import "LibFlutterBaseMultiplePlugin.h"
 
 @interface BoostDelegete : NSObject<FlutterBoostDelegate>
 
@@ -67,7 +67,7 @@ static STFlutterBoostInitializer *instance = nil;
     BoostDelegete* delegate=[[BoostDelegete alloc ] init];
     [[FlutterBoost instance] setup:application delegate:delegate callback:^(FlutterEngine *engine) {
         NSLog(@"FlutterBoostPlugin onStart");
-        [STFlutterBridge registerWithRegistrar:[engine registrarForPlugin:@"STFlutterBridge"]];
+        [LibFlutterBaseMultiplePlugin registerWithRegistrar:[engine registrarForPlugin:@"LibFlutterBaseMultiplePlugin"]];
     }];
     
     _isInitialized = YES;

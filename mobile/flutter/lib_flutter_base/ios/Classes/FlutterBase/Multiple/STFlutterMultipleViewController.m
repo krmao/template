@@ -5,7 +5,7 @@
 #import <LibIosBase/STJsonUtil.h>
 
 @interface STFlutterMultipleViewController (){
-    FlutterMethodChannel * methodChannel;
+    LibFlutterBaseMultiplePlugin * bridgePlugin;
 }
 @end
 
@@ -15,18 +15,22 @@
     _argumentsJsonString = argumentsJsonString;
     
     NSString *finalDartEntrypointFunctionName = [STStringUtil emptyOrNull:dartEntrypointFunctionName] ? @"main" : dartEntrypointFunctionName;
-    
     FlutterEngine * newEngine = [[STFlutterMultipleInitializer sharedInstance].flutterEngineGroup makeEngineWithEntrypoint:finalDartEntrypointFunctionName libraryURI:nil];
     
+    // register plugins
     Class clazz = NSClassFromString(@"GeneratedPluginRegistrant");
     if (clazz) {
         if ([clazz respondsToSelector:NSSelectorFromString(@"registerWithRegistry:")]) {
-            [clazz performSelector:NSSelectorFromString(@"registerWithRegistry:") withObject:newEngine];
+            SEL selector = NSSelectorFromString(@"registerWithRegistry:");
+            IMP methodForSelectorIMP = [clazz methodForSelector:selector];
+            void (*performSelector)(id, SEL, FlutterEngine *) = (void *)methodForSelectorIMP;
+            performSelector(clazz, selector, newEngine);
+            // PerformSelector may cause a leak because its selector is unknown
+            // [clazz performSelector:NSSelectorFromString(@"registerWithRegistry:") withObject:newEngine];
         }
     }
     
-    NSObject<FlutterPluginRegistrar>* registrar = [newEngine registrarForPlugin:@"LibFlutterBaseMultiplePlugin2"];
-    self->methodChannel = [LibFlutterBaseMultiplePlugin registerWithRegistrar2:registrar];
+    self->bridgePlugin = [LibFlutterBaseMultiplePlugin registerWithRegistrar2:[newEngine registrarForPlugin:@"LibFlutterBaseMultiplePlugin2"]];
     
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
         NSLog(@"initWithDartEntrypointFunctionName success");
@@ -51,22 +55,6 @@
             return;
         }
     }];
-    
-    
-    BOOL hasPlugin = [self.engine hasPlugin:@"LibFlutterBaseMultiplePlugin"];
-    NSObject *published = [self.engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin"];
-    NSLog(@"[page] viewDidLoad getPlugin hasPlugin=%d, engine=%@, published=%@",hasPlugin, self.engine, published);
-    
-    BOOL hasPlugin2 = [self.engine hasPlugin:@"LibFlutterBaseMultiplePlugin2"];
-    NSObject *published2 = [self.engine valuePublishedByPlugin:@"LibFlutterBaseMultiplePlugin2"];
-    NSLog(@"[page] viewDidLoad getPlugin2 hasPlugin=%d, engine=%@, published=%@, methodChannel=%@",hasPlugin2, self.engine, published2, self->methodChannel);
-
-//    LibFlutterBaseMultiplePlugin* plugin = [LibFlutterBaseMultiplePlugin getPlugin:self.engine];
-//    FlutterMethodChannel * methodChannel = plugin.methodChannel;
-//    if (methodChannel == nil || [methodChannel isKindOfClass:[NSNull class]]) {
-//        methodChannel = [LibFlutterBaseMultiplePlugin sharedInstance].methodChannel;
-//    }
-//    NSLog(@"sendEventToDart install plugin=%@, methodChannel=%@",[LibFlutterBaseMultiplePlugin sharedInstance], methodChannel);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -86,7 +74,7 @@
         eventInfo = NSMutableDictionary.new;
     }
     // [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
-    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->methodChannel eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{

@@ -1,5 +1,4 @@
 #import "STFlutterEventPlugin.h"
-#import "STFlutterBridge.h"
 #import "STValueUtil.h"
 #import "STEventManager.h"
 #import "LibFlutterBaseMultiplePlugin.h"

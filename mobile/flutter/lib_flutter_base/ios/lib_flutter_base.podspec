@@ -33,7 +33,6 @@ A new flutter plugin project.
     'Classes/FlutterBase/Multiple/STFlutterMultipleViewController.h',
     
     'Classes/FlutterBase/Plugins/Application/STFlutterApplicationPlugin.h',
-    'Classes/FlutterBase/Plugins/Base/STFlutterBridge.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterPlugin.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterPluginManager.h',
     'Classes/FlutterBase/Plugins/BridgeCompact/STFlutterBridgeCompactPlugin.h',

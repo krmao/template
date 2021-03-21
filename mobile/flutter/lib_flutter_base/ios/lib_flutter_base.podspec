@@ -31,6 +31,8 @@ A new flutter plugin project.
     'Classes/FlutterBase/Multiple/STFlutterMultipleInitializer.h',
     'Classes/FlutterBase/Multiple/STFlutterMultipleHomeViewController.h',
     'Classes/FlutterBase/Multiple/STFlutterMultipleViewController.h',
+    'Classes/FlutterBase/Multiple/STViewControllerDelegete.h',
+    'Classes/FlutterBase/Multiple/STViewControllerDelegeteImpl.h',
     
     'Classes/FlutterBase/Plugins/Application/STFlutterApplicationPlugin.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterPlugin.h',

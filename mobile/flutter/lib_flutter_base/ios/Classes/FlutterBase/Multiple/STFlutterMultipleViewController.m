@@ -3,9 +3,12 @@
 #import "STStringUtil.h"
 #import "LibFlutterBaseMultiplePlugin.h"
 #import <LibIosBase/STJsonUtil.h>
+#import "STViewControllerDelegete.h"
 
 @interface STFlutterMultipleViewController (){
-    LibFlutterBaseMultiplePlugin * bridgePlugin;
+    LibFlutterBaseMultiplePlugin *bridgePlugin;
+    int requestCode;
+    NSDictionary *requestData;
 }
 @end
 
@@ -36,6 +39,31 @@
         NSLog(@"initWithDartEntrypointFunctionName success");
     }
     return self;
+}
+
+- (void)setRequestData:(int)requestCode requestData:(NSDictionary *)requestData{
+    NSLog(@"[page] setRequestData uniqueId=%@, self=%@, requestCode=%d, requestData=%@", _uniqueId, self, requestCode, requestData);
+    self->requestCode = requestCode;
+    self->requestData = requestData;
+}
+
+- (int)getRequestCode{
+    return self->requestCode;
+}
+
+- (NSDictionary *)getRequestData{
+    return self->requestData;
+}
+
+- (void)onViewControllerResult:(int)requestCode resultCode:(int)resultCode resultData:(NSDictionary *)resultData{
+    NSLog(@"[page] onViewControllerResult uniqueId=%@, self=%@, requestCode=%d, resultCode=%d, resultData=%@", _uniqueId, self, requestCode, resultCode, resultData);
+    NSString *argumentsJsonString = resultData[@"KEY_JSON_OBJECT_STRING"];
+    NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString];
+    if (eventInfo == nil) {
+        eventInfo = NSMutableDictionary.new;
+    }
+    // [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)viewDidLoad {

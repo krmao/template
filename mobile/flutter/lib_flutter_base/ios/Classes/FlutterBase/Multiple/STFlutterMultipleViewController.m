@@ -4,8 +4,10 @@
 #import "LibFlutterBaseMultiplePlugin.h"
 #import <LibIosBase/STJsonUtil.h>
 #import "STViewControllerDelegete.h"
+#import "STViewControllerDelegeteImpl.h"
 
 @interface STFlutterMultipleViewController (){
+    STViewControllerDelegeteImpl *viewControllerDelegete;
     LibFlutterBaseMultiplePlugin *bridgePlugin;
     int requestCode;
     NSDictionary *requestData;
@@ -34,7 +36,7 @@
     }
     
     self->bridgePlugin = [LibFlutterBaseMultiplePlugin registerWithRegistrar2:[newEngine registrarForPlugin:@"LibFlutterBaseMultiplePlugin2"]];
-    
+    // viewControllerDelegete =
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
         NSLog(@"initWithDartEntrypointFunctionName success");
     }

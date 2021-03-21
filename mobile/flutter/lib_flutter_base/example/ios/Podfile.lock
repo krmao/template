@@ -89,7 +89,7 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  lib_flutter_base: 4ab73a5a27b442ccb0a8d18e6c6af788f568e69b
+  lib_flutter_base: 517be4d0ae474aac4354062eca54fece87ffdf52
   LibIosBase: 770cb091a49baa78abfedbb95494fbd0a5587889
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c

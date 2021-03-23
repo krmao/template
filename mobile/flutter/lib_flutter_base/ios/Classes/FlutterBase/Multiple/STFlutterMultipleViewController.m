@@ -103,6 +103,13 @@
             return;
         }
     }];
+    
+    #if defined(DEBUG)
+        NSLog(@"BUILD-TYPE -> DEBUG");
+    #else
+        NSLog(@"BUILD-TYPE -> RELEASE");
+    #endif
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

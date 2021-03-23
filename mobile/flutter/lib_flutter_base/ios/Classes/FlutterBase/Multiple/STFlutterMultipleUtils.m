@@ -56,7 +56,15 @@
     
     // 如果不加延时, push 的 viewController 还没有开始加载 flutter 代码(引擎尚未初始化成功), 此时会看到 viewController 的背景, 如果背景为透明将看到 window 的背景,
     // 加一个短暂的延时使得 flutter 引擎初始化成功, 再 push 则可以实现无缝切换, 不需要 splash 或者 loading 去加载 flutter 代码, 此处效果同 android 一致
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+    int delta = 20 * NSEC_PER_MSEC;
+    #if defined(DEBUG)
+        NSLog(@"BUILD-TYPE -> DEBUG");
+        delta = 300 * NSEC_PER_MSEC; // DEBUG >= 300
+    #else
+        NSLog(@"BUILD-TYPE -> RELEASE");
+        delta = 20 * NSEC_PER_MSEC; // RELEASE >= 20
+    #endif
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
         [navigationController pushViewController:flutterViewController animated:YES];
     });
 }

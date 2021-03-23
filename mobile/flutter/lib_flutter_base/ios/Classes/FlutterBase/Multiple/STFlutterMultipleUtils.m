@@ -51,7 +51,23 @@
     // NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
     
     STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"]];
+    
+//    CATransition *transition = [CATransition animation];
+//    transition.duration = 0.9;
+//    transition.type = kCATransitionFade;
+//    //transition.subtype = kCATransitionFromTop;
+//    [navigationController.view.layer addAnimation:transition forKey:kCATransition];
+//    [navigationController pushViewController:flutterViewController animated:NO];
+    
+//    [UIView animateWithDuration:0.75
+//                             animations:^{
+//                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//                                 [navigationController pushViewController:flutterViewController animated:NO];
+//                                 [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:navigationController.view cache:NO];
+//                             }];
+    
     [navigationController pushViewController:flutterViewController animated:YES];
+    // [fromViewController presentViewController:flutterViewController animated:YES completion:nil];
 }
 
 +(void) openNewFlutterHomeViewControllerByName:(UIViewController* _Nullable)fromViewController pageName:(NSString* _Nullable) pageName pageParams:(NSDictionary* _Nullable) pageParams{

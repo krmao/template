@@ -40,6 +40,7 @@
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
         NSLog(@"initWithDartEntrypointFunctionName success");
     }
+    
     return self;
 }
 

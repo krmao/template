@@ -52,22 +52,11 @@
     
     STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"]];
     
-//    CATransition *transition = [CATransition animation];
-//    transition.duration = 0.9;
-//    transition.type = kCATransitionFade;
-//    //transition.subtype = kCATransitionFromTop;
-//    [navigationController.view.layer addAnimation:transition forKey:kCATransition];
-//    [navigationController pushViewController:flutterViewController animated:NO];
-    
-//    [UIView animateWithDuration:0.75
-//                             animations:^{
-//                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//                                 [navigationController pushViewController:flutterViewController animated:NO];
-//                                 [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:navigationController.view cache:NO];
-//                             }];
-    
-    [navigationController pushViewController:flutterViewController animated:YES];
-    // [fromViewController presentViewController:flutterViewController animated:YES completion:nil];
+    // 如果不加延时, push 的 viewController 还没有开始加载 flutter 代码(引擎尚未初始化成功), 此时会看到 viewController 的背景, 如果背景为透明将看到 window 的背景,
+    // 加一个短暂的延时使得 flutter 引擎初始化成功, 再 push 则可以实现无缝切换, 不需要 splash 或者 loading 去加载 flutter 代码, 此处效果同 android 一致
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        [navigationController pushViewController:flutterViewController animated:YES];
+    });
 }
 
 +(void) openNewFlutterHomeViewControllerByName:(UIViewController* _Nullable)fromViewController pageName:(NSString* _Nullable) pageName pageParams:(NSDictionary* _Nullable) pageParams{

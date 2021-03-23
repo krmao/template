@@ -48,7 +48,7 @@
     
     NSString* initialRoute = pageName;
     NSString* finalDartEntrypointFunctionName = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute || [initialRoute isEqualToString: @"/"]) ? @"main" : [NSString stringWithFormat:@"main%@",initialRoute];
-    NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
+    // NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
     
     STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"]];
     [navigationController pushViewController:flutterViewController animated:YES];

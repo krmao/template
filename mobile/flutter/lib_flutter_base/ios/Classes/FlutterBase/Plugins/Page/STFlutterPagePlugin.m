@@ -1,6 +1,6 @@
 #import "STFlutterPagePlugin.h"
 #import "STThreadUtil.h"
-#import "STFlutterMultipleViewController.h"
+#import "STViewControllerDelegete.h"
 
 @implementation STFlutterPagePlugin
 
@@ -15,10 +15,8 @@
     if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
         [STThreadUtil runInMainThread:^{
            UIViewController *vc = currentViewController;
-           if ([vc isKindOfClass:[STFlutterMultipleViewController class]]) {
-               BOOL enable = [parameters valueForKey:@"enable"];
-               vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
-           }
+           BOOL enable = [parameters valueForKey:@"enable"];
+           vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
         }];
     }else if ([functionName isEqualToString:@"genUniqueId"]) {
         UIViewController *vc = currentViewController;
@@ -47,34 +45,35 @@
     NSLog(@"[page]-[STFlutterPagePlugin] popPage currentNavigationController=%@, preViewController=%@", currentNavigationController, preViewController);
     
     int requestCode = 0;
+    
+    
     if (currentViewController != nil && ![currentViewController isKindOfClass:[NSNull class]] &&
-        [currentViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
-        requestCode = [((STFlutterMultipleViewController*) currentViewController) getRequestCode];
+        [currentViewController conformsToProtocol:@protocol(STViewControllerDelegete)]){
+        requestCode = [((id<STViewControllerDelegete>) currentViewController) getRequestCode];
     }
     
     if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] &&
-        [preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
+        [preViewController conformsToProtocol:@protocol(STViewControllerDelegete)]){
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *resultData = NSMutableDictionary.new;
             [resultData setValue:argumentsJsonString forKey:@"argumentsJsonString"];
-            [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:requestCode resultCode:RESULT_OK resultData:resultData];
-            // [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
+            [((id<STViewControllerDelegete>) preViewController) onViewControllerResult:requestCode resultCode:RESULT_OK resultData:resultData];
         });
     }
     [currentNavigationController popViewControllerAnimated:YES];
 }
 
 + (NSString *)getUniqueId:(UIViewController *) viewController{
-    if ([viewController isKindOfClass:[STFlutterMultipleViewController class]]) {
-        return [((STFlutterMultipleViewController*) viewController) getUniqueId];
+    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegete)]) {
+        return [((id<STViewControllerDelegete>) viewController) getUniqueId];
     }else{
         return nil;
     }
 }
 
 + (NSString *)getCurrentPageInitArguments:(UIViewController *) viewController{
-    if ([viewController isKindOfClass:[STFlutterMultipleViewController class]]) {
-        NSString * argumentsJsonString =[((STFlutterMultipleViewController*) viewController) getRequestData][@"argumentsJsonString"];
+    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegete)]) {
+        NSString * argumentsJsonString =[((id<STViewControllerDelegete>) viewController) getRequestData][@"argumentsJsonString"];
         return argumentsJsonString;
     }else{
         return nil;

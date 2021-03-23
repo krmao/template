@@ -1,9 +1,12 @@
 #import "LibFlutterBaseMultiplePlugin.h"
 #import "FlutterBoostPlugin.h"
 #import "STFlutterPlugin.h"
+#import "STSystemUtil.h"
 
 static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
-@interface LibFlutterBaseMultiplePlugin()
+@interface LibFlutterBaseMultiplePlugin(){
+    UIViewController * currentViewController;
+}
 @end
 
 @implementation LibFlutterBaseMultiplePlugin
@@ -12,8 +15,9 @@ static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
     NSArray *array = [call.method componentsSeparatedByString:@"-"];
     NSString *moduleName = [array firstObject];
     NSString *functionName = [call.method stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@-",moduleName] withString:@""];
-    NSLog(@"[page] handleMethodCall moduleName=%@, functionName=%@, arguments=%@", moduleName, functionName, call.arguments);
-    [STFlutterPlugin callModule:moduleName function:functionName arguments:call.arguments result:result];
+    NSLog(@"[page] handleMethodCall self.viewController=%@, moduleName=%@, functionName=%@, arguments=%@", [self currentViewController], moduleName, functionName, call.arguments);
+    
+    [STFlutterPlugin callModule:[self currentViewController] moduleName:moduleName function:functionName arguments:call.arguments result:result];
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -22,36 +26,12 @@ static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
                                      methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
                                      binaryMessenger:[registrar messenger]
                                      codec:[FlutterJSONMethodCodec sharedInstance]];
-    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar start");
-    LibFlutterBaseMultiplePlugin* instance = [LibFlutterBaseMultiplePlugin sharedInstance];
-    instance.methodChannel = channel;
-    
-    [registrar addMethodCallDelegate:instance channel:channel];
-    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar end");
-}
-
-+ (LibFlutterBaseMultiplePlugin *)registerWithRegistrar2:(NSObject<FlutterPluginRegistrar>*)registrar {
-    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar start");
-    FlutterMethodChannel* channel = [FlutterMethodChannel
-                                     methodChannelWithName:@"codesdancing.flutter.bridge/callNative"
-                                     binaryMessenger:[registrar messenger]
-                                     codec:[FlutterJSONMethodCodec sharedInstance]];
-    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar2 start");
-    LibFlutterBaseMultiplePlugin* newPlugin = [LibFlutterBaseMultiplePlugin new]; // 没有必要使用 sharedInstance, 因为下一步 methodChannel 已经被替换, 当前页面回收后, 上一个页面的 methodChannel 将为 nil
+    LibFlutterBaseMultiplePlugin* newPlugin = [LibFlutterBaseMultiplePlugin new];
     newPlugin.methodChannel = channel;
     
+    [registrar publish:newPlugin];
     [registrar addMethodCallDelegate:newPlugin channel:channel];
-    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar2 end");
-    return newPlugin;
-}
-
-+ (instancetype)sharedInstance{
-    static id _instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _instance = [self.class new];
-    });
-    return _instance;
+    NSLog(@"[page] LibFlutterBaseMultiplePlugin registerWithRegistrar end");
 }
 
 + (LibFlutterBaseMultiplePlugin* )getPlugin:(FlutterEngine*)engine{
@@ -69,33 +49,7 @@ static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
     return nil;
 }
 
-+ (void) sendEventToDart:(FlutterEngine*)engine eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
-    LibFlutterBaseMultiplePlugin* plugin = [LibFlutterBaseMultiplePlugin getPlugin:engine];
-    FlutterMethodChannel * methodChannel = plugin.methodChannel;
-    
-    NSLog(@"[page] sendEventToDart methodChannel=%@, eventKey=%@, eventInfo=%@", methodChannel, eventKey, eventInfo);
-    
-    if (methodChannel == nil || [methodChannel isKindOfClass:[NSNull class]]) {
-        methodChannel = [LibFlutterBaseMultiplePlugin sharedInstance].methodChannel;
-    }
-    NSLog(@"[page] sendEventToDart install plugin=%@, methodChannel=%@",[LibFlutterBaseMultiplePlugin sharedInstance], methodChannel);
-    
-    if (methodChannel != nil) {
-        NSMutableDictionary* eventData = NSMutableDictionary.new;
-        [eventData setValue:eventKey forKey:@"eventName"];
-        [eventData setValue:eventInfo forKey:@"eventInfo"];
-  
-        NSLog(@"[page] sendEventToDart invokeMethod start BRIDGE_EVENT_NAME=%@",BRIDGE_EVENT_NAME);
-        
-        [methodChannel invokeMethod:BRIDGE_EVENT_NAME arguments:eventData result:^(id  _Nullable result) {
-            NSLog(@"[page] sendEventToDart invokeMethod success result=%@", result);
-        }];
-    } else {
-        NSLog(@"[page] sendEventToDart invokeMethod methodChannel == null");
-    }
-}
-
-+ (void) sendEventToDart2:(LibFlutterBaseMultiplePlugin *)bridgePlugin eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
++ (void) sendEventToDart:(LibFlutterBaseMultiplePlugin *)bridgePlugin eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
     FlutterMethodChannel *methodChannel = bridgePlugin.methodChannel;
     NSLog(@"[page] sendEventToDart2 methodChannel=%@, eventKey=%@, eventInfo=%@", methodChannel, eventKey, eventInfo);
     if (methodChannel != nil) {
@@ -111,5 +65,13 @@ static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
     } else {
         NSLog(@"[page] sendEventToDart2 invokeMethod2 methodChannel == null");
     }
+}
+
+- (void)setCurrentViewController:(UIViewController *_Nullable)currentViewController {
+    self->currentViewController = currentViewController;
+}
+
+- (UIViewController *)currentViewController{
+    return (self->currentViewController == nil || [self->currentViewController isKindOfClass:[NSNull class]] )? [STSystemUtil topViewController]: self->currentViewController;
 }
 @end

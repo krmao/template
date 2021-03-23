@@ -3,7 +3,8 @@
 #import "STNetworkUtil.h"
 @implementation STFlutterEnvPlugin
 
-- (void)callFunction:(NSString *)functionName
+- (void)callFunction:(UIViewController *)currentViewController
+        functionName:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
     if ([functionName isEqualToString:@"getEnv"]) {

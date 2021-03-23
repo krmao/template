@@ -4,7 +4,8 @@
 
 @implementation STFlutterToastPlugin
 
-- (void)callFunction:(NSString *)functionName
+- (void)callFunction:(UIViewController *)currentViewController
+        functionName:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
     NSDictionary *parameters = arguments;

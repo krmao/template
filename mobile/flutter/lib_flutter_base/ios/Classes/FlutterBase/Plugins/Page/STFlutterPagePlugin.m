@@ -4,7 +4,8 @@
 
 @implementation STFlutterPagePlugin
 
-- (void)callFunction:(NSString *)functionName
+- (void)callFunction:(UIViewController *)currentViewController
+        functionName:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
     NSLog(@"[page]-[STFlutterPagePlugin] functionName=%@, arguments=%@", functionName, arguments);
@@ -13,19 +14,19 @@
     
     if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
         [STThreadUtil runInMainThread:^{
-           UIViewController *vc = [self currentViewController];
+           UIViewController *vc = currentViewController;
            if ([vc isKindOfClass:[STFlutterMultipleViewController class]]) {
                BOOL enable = [parameters valueForKey:@"enable"];
                vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
            }
         }];
     }else if ([functionName isEqualToString:@"genUniqueId"]) {
-        UIViewController *vc = [self currentViewController];
+        UIViewController *vc = currentViewController;
         result([STFlutterPagePlugin getUniqueId:vc]);
     }else if ([functionName isEqualToString:@"popPage"]) {
-        [STFlutterPagePlugin popPage:[self currentViewController] argumentsJsonString:arguments[@"argumentsJsonString"]];
+        [STFlutterPagePlugin popPage:currentViewController argumentsJsonString:arguments[@"argumentsJsonString"]];
     }else if ([functionName isEqualToString:@"getCurrentPageInitArguments"]) {
-        UIViewController *vc = [self currentViewController];
+        UIViewController *vc = currentViewController;
         result([STFlutterPagePlugin getCurrentPageInitArguments:vc]);
     }else {
         result(FlutterMethodNotImplemented);

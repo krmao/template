@@ -8,7 +8,6 @@
 
 @interface STFlutterMultipleViewController (){
     STViewControllerDelegeteImpl *viewControllerDelegete;
-    LibFlutterBaseMultiplePlugin *bridgePlugin;
     int requestCode;
     NSDictionary *requestData;
 }
@@ -35,8 +34,9 @@
         }
     }
     
-    self->bridgePlugin = [LibFlutterBaseMultiplePlugin registerWithRegistrar2:[newEngine registrarForPlugin:@"LibFlutterBaseMultiplePlugin2"]];
-    // viewControllerDelegete =
+    _bridgePlugin = [LibFlutterBaseMultiplePlugin getPlugin:newEngine];
+    [_bridgePlugin setCurrentViewController:self];
+
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
         NSLog(@"initWithDartEntrypointFunctionName success");
     }
@@ -64,14 +64,14 @@
     if (eventInfo == nil) {
         eventInfo = NSMutableDictionary.new;
     }
-    // [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
-    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart:_bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _uniqueId  = [NSString stringWithFormat:@"%f-%lu", [[NSDate date] timeIntervalSince1970]*1000, (unsigned long)self.hash]; // *1000 是精确到毫秒，不乘就是精确到秒
     NSLog(@"[page] viewDidLoad uniqueId=%@, self=%@", _uniqueId, self);
+    self.view.backgroundColor = [UIColor clearColor];
     
     // [self setInitialRoute:@"/"];
     __weak typeof(self)weakSelf = self;
@@ -103,8 +103,7 @@
     if (eventInfo == nil) {
         eventInfo = NSMutableDictionary.new;
     }
-    // [LibFlutterBaseMultiplePlugin sendEventToDart:self.engine eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
-    [LibFlutterBaseMultiplePlugin sendEventToDart2:self->bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart:_bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{
@@ -132,6 +131,8 @@
 
 - (void)dealloc{
     NSLog(@"[page] dealloc uniqueId=%@, self=%@", _uniqueId, self);
+    [_bridgePlugin setCurrentViewController:nil];
+    _bridgePlugin = nil;
 }
 
 @end

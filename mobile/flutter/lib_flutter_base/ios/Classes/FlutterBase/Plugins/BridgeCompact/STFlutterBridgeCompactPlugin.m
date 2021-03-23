@@ -14,7 +14,7 @@
 
 @implementation STFlutterBridgeCompactPlugin
 
-- (void)callFunction:(NSString *)functionName arguments:(id)arguments result:(FlutterResult)result{
+- (void)callFunction:(UIViewController *)currentViewController functionName:(NSString *)functionName arguments:(id)arguments result:(FlutterResult)result{
     NSDictionary *parameters = arguments;
 
     if ([functionName isEqualToString:@"callNative"]) {

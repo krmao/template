@@ -2,10 +2,12 @@
 #import "STValueUtil.h"
 #import "STEventManager.h"
 #import "LibFlutterBaseMultiplePlugin.h"
+#import "STFlutterMultipleViewController.h"
 
 @implementation STFlutterEventPlugin
 
-- (void)callFunction:(NSString *)functionName
+- (void)callFunction:(UIViewController *)currentViewController
+        functionName:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result{
     NSDictionary *parameters = arguments;
@@ -28,7 +30,18 @@
                 
                 [resultInfo setValue:eventKey forKey:@"eventKey"];
                 [resultInfo setValue:eventInfo forKey:@"eventInfo"];
-                [[LibFlutterBaseMultiplePlugin sharedInstance].methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
+                
+                if ([currentViewController isKindOfClass:[STFlutterMultipleViewController class]]) {
+                    STFlutterMultipleViewController *flutterViewController = (STFlutterMultipleViewController *)currentViewController;
+                    FlutterMethodChannel * methodChannel = flutterViewController.bridgePlugin.methodChannel;
+                    if(methodChannel){
+                        [methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
+                    }else{
+                        NSLog(@"callFunction methodChannel == nil");
+                    }
+                }else{
+                    NSLog(@"callFunction currentViewController != STFlutterMultipleViewController");
+                }
             }
         }];
     }

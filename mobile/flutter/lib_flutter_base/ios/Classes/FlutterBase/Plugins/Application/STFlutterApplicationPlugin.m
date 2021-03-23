@@ -4,11 +4,12 @@
 
 @implementation STFlutterApplicationPlugin
 
-- (void)callFunction:(NSString *)functionName
+- (void)callFunction:(UIViewController *)currentViewController
+        functionName:(NSString *)functionName
            arguments:(id)arguments
               result:(FlutterResult)result {
     if ([functionName isEqualToString:@"getApplicationConstants"]) {
-        result([self getApplicationConstants]);
+        result([self getApplicationConstants:currentViewController]);
     } else if ([functionName isEqualToString:@"getDeviceInfo"]) {
         result([self deviceInfo]);
     } else {
@@ -16,12 +17,12 @@
     }
 }
 
-- (NSDictionary *)getApplicationConstants {
+- (NSDictionary *)getApplicationConstants:(UIViewController *)currentViewController {
     NSMutableDictionary *constantsToExport = [NSMutableDictionary dictionary];
     [constantsToExport setValue:[self deviceInfo] forKey:@"deviceInfo"];
     [constantsToExport setValue:[self applicationInfo] forKey:@"applicationInfo"];
-    [constantsToExport setValue:[STFlutterPagePlugin getUniqueId:[self currentViewController]] forKey:@"uniqueId"];
-    [constantsToExport setValue:[STFlutterPagePlugin getCurrentPageInitArguments:[self currentViewController]] forKey:@"argumentsJsonString"];
+    [constantsToExport setValue:[STFlutterPagePlugin getUniqueId:currentViewController] forKey:@"uniqueId"];
+    [constantsToExport setValue:[STFlutterPagePlugin getCurrentPageInitArguments:currentViewController] forKey:@"argumentsJsonString"];
     return constantsToExport;
 }
 

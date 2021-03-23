@@ -12,13 +12,7 @@
     
     NSDictionary *parameters = arguments;
     
-    if ([functionName isEqualToString:@"enableExitWithDoubleBackPressed"]) {
-        [STThreadUtil runInMainThread:^{
-           UIViewController *vc = currentViewController;
-           BOOL enable = [parameters valueForKey:@"enable"];
-           vc.navigationController.interactivePopGestureRecognizer.enabled = enable;
-        }];
-    }else if ([functionName isEqualToString:@"genUniqueId"]) {
+    if ([functionName isEqualToString:@"genUniqueId"]) {
         UIViewController *vc = currentViewController;
         result([STFlutterPagePlugin getUniqueId:vc]);
     }else if ([functionName isEqualToString:@"popPage"]) {

@@ -37,14 +37,6 @@ class STFlutterPagePlugin : STFlutterBasePlugin() {
         callbackSuccess(result, argumentsJsonString)
     }
 
-    @STFlutterPluginMethod
-    fun enableExitWithDoubleBackPressed(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject?, result: MethodChannel.Result) {
-        STLogUtil.w("STFlutterPagePlugin", "enableExitWithDoubleBackPressed requestData=$requestData")
-        val enable = requestData?.optBoolean("enable") ?: false
-        (activity as? STBaseActivity)?.enableExitWithDoubleBackPressed(enable)
-        callbackSuccess(result, null)
-    }
-
     override fun getPluginName(): String {
         return "Page"
     }

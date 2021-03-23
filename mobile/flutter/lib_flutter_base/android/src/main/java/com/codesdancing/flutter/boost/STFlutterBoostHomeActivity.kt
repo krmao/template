@@ -47,7 +47,7 @@ open class STFlutterBoostHomeActivity : STFlutterBoostActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack(false)
         enableImmersionStatusBar(true)
-        enableExitWithDoubleBackPressed(true)
+        enableExitWithDoubleBackPressed(false)
         super.onCreate(null)
 
         // xml 中 theme 为透明, 则 flutter 加载期间可以看到 launch activity, 700ms 后转为不透明, 是因为如果不设置会看到 launch activity 1s 后的 finish 动画

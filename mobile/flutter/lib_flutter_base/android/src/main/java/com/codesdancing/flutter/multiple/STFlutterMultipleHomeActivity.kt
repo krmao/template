@@ -57,7 +57,7 @@ open class STFlutterMultipleHomeActivity : STFlutterMultipleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableSwipeBack(false)
         enableImmersionStatusBar(true)
-        enableExitWithDoubleBackPressed(true)
+        enableExitWithDoubleBackPressed(false)
         super.onCreate(null)
     }
 

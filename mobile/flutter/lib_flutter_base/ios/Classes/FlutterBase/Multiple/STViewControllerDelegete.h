@@ -14,6 +14,12 @@
 @protocol STViewControllerDelegete
 
 @required
+- (UIViewController *_Nonnull) currentViewController;
+
+@required
+- (NSString *_Nonnull)getUniqueId;
+
+@required
 - (void)setRequestData:(int)requestCode requestData:(NSDictionary *_Nullable)requestData;
 
 @required
@@ -46,9 +52,6 @@
 
 @required
 - (void)didReceiveMemoryWarning;
-
-@required
-- (void)dealloc;
 
 @end
 

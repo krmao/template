@@ -33,7 +33,7 @@
                 
                 if ([currentViewController isKindOfClass:[STFlutterMultipleViewController class]]) {
                     STFlutterMultipleViewController *flutterViewController = (STFlutterMultipleViewController *)currentViewController;
-                    FlutterMethodChannel * methodChannel = flutterViewController.bridgePlugin.methodChannel;
+                    FlutterMethodChannel * methodChannel = [flutterViewController getBridgePlugin].methodChannel;
                     if(methodChannel){
                         [methodChannel invokeMethod:@"__codesdancing_flutter_event__" arguments:resultInfo];
                     }else{

@@ -46,10 +46,19 @@
     NSLog(@"[page]-[STFlutterPagePlugin] popPage currentViewController=%@, argumentsJsonString=%@", currentViewController, argumentsJsonString);
     NSLog(@"[page]-[STFlutterPagePlugin] popPage currentNavigationController=%@, preViewController=%@", currentNavigationController, preViewController);
     
+    int requestCode = 0;
+    if (currentViewController != nil && ![currentViewController isKindOfClass:[NSNull class]] &&
+        [currentViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
+        requestCode = [((STFlutterMultipleViewController*) currentViewController) getRequestCode];
+    }
+    
     if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] &&
         [preViewController isKindOfClass:[NSClassFromString(@"STFlutterMultipleViewController") class]]){
         dispatch_async(dispatch_get_main_queue(), ^{
-            [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
+            NSDictionary *resultData = NSMutableDictionary.new;
+            [resultData setValue:argumentsJsonString forKey:@"argumentsJsonString"];
+            [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:requestCode resultCode:RESULT_OK resultData:resultData];
+            // [((STFlutterMultipleViewController*) preViewController) onViewControllerResult:argumentsJsonString];
         });
     }
     [currentNavigationController popViewControllerAnimated:YES];
@@ -57,8 +66,7 @@
 
 + (NSString *)getUniqueId:(UIViewController *) viewController{
     if ([viewController isKindOfClass:[STFlutterMultipleViewController class]]) {
-        NSString * uniqueId =((STFlutterMultipleViewController*) viewController).uniqueId;
-        return uniqueId;
+        return [((STFlutterMultipleViewController*) viewController) getUniqueId];
     }else{
         return nil;
     }
@@ -66,7 +74,7 @@
 
 + (NSString *)getCurrentPageInitArguments:(UIViewController *) viewController{
     if ([viewController isKindOfClass:[STFlutterMultipleViewController class]]) {
-        NSString * argumentsJsonString =((STFlutterMultipleViewController*) viewController).argumentsJsonString;
+        NSString * argumentsJsonString =[((STFlutterMultipleViewController*) viewController) getRequestData][@"argumentsJsonString"];
         return argumentsJsonString;
     }else{
         return nil;

@@ -50,7 +50,9 @@
     NSString* finalDartEntrypointFunctionName = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute || [initialRoute isEqualToString: @"/"]) ? @"main" : [NSString stringWithFormat:@"main%@",initialRoute];
     // NSString* finalInitialRoute = (![STFlutterInitializer sharedInstance].enableMultiEnginesWithSingleRoute)? initialRoute : @"/";
     
-    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName argumentsJsonString:pageParams[@"argumentsJsonString"]];
+    STFlutterMultipleViewController *flutterViewController = [[STFlutterMultipleViewController alloc] initWithDartEntrypointFunctionName:finalDartEntrypointFunctionName];
+    
+    [flutterViewController setRequestData:0 requestData: @{@"argumentsJsonString":pageParams[@"argumentsJsonString"]}];
     
     // 如果不加延时, push 的 viewController 还没有开始加载 flutter 代码(引擎尚未初始化成功), 此时会看到 viewController 的背景, 如果背景为透明将看到 window 的背景,
     // 加一个短暂的延时使得 flutter 引擎初始化成功, 再 push 则可以实现无缝切换, 不需要 splash 或者 loading 去加载 flutter 代码, 此处效果同 android 一致
@@ -63,7 +65,8 @@
     NSLog(@"openNewFlutterViewControllerByName pageName=%@, pageParams=%@", pageName, pageParams);
     UINavigationController *navigationController = [fromViewController isKindOfClass:[UINavigationController class]] ? (UINavigationController*)fromViewController : fromViewController.navigationController;
     
-    STFlutterMultipleHomeViewController *flutterViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"main" argumentsJsonString:pageParams[@"argumentsJsonString"]];
+    STFlutterMultipleHomeViewController *flutterViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"main"];
+    [flutterViewController setRequestData:0 requestData: @{@"argumentsJsonString":pageParams[@"argumentsJsonString"]}];
     [navigationController pushViewController:flutterViewController animated:YES];
 }
 

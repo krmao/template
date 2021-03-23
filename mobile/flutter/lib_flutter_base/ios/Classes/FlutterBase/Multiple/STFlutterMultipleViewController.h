@@ -4,12 +4,8 @@
 
 @interface STFlutterMultipleViewController : FlutterViewController<STViewControllerDelegete>
 
-@property(nonatomic, strong, nullable, readonly) NSString* uniqueId;
-@property(nonatomic, strong, nullable, readonly) NSString* argumentsJsonString;
-@property(nonatomic, strong, nullable, readonly) LibFlutterBaseMultiplePlugin *bridgePlugin;
-
-- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName argumentsJsonString:(NSString * _Nullable)argumentsJsonString;
-- (void)onViewControllerResult:(NSString * _Nullable) argumentsJsonString;
+- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName;
 - (void)onFlutterUiDisplayed;
+- (LibFlutterBaseMultiplePlugin *_Nonnull)getBridgePlugin;
 
 @end

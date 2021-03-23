@@ -47,7 +47,7 @@
     [STInitializer initialApplication:config];
     
     STFlutterMultipleHomeViewController *homeViewController = nil;
-    homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge" argumentsJsonString:nil];
+    homeViewController = [[STFlutterMultipleHomeViewController alloc] initWithDartEntrypointFunctionName:@"mainFlutterBridge"];
 
     UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
     rootViewController.navigationBarHidden = YES;

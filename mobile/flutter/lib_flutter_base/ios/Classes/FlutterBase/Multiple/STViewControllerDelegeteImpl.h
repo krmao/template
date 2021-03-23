@@ -16,10 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface STViewControllerDelegeteImpl : NSObject<STViewControllerDelegete>
 
-@property(nonatomic, readonly) int requestCode;
-@property(nonatomic, strong, nullable, readonly) UIViewController* viewController;
-@property(nonatomic, strong, nullable, readonly) NSDictionary* requestData;
-@property(nonatomic, strong, nullable, readonly) NSString* uniqueId;
+- (instancetype _Nonnull)initWithCurrentViewController:(UIViewController *_Nonnull)currentViewController;
+- (void)onDealloc;
 
 @end
 

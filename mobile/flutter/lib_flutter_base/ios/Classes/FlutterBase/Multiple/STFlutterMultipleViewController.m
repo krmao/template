@@ -8,16 +8,13 @@
 
 @interface STFlutterMultipleViewController (){
     STViewControllerDelegeteImpl *viewControllerDelegete;
-    int requestCode;
-    NSDictionary *requestData;
+    LibFlutterBaseMultiplePlugin *bridgePlugin;
 }
 @end
 
 @implementation STFlutterMultipleViewController
 
-- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName argumentsJsonString:(NSString * _Nullable)argumentsJsonString {
-    _argumentsJsonString = argumentsJsonString;
-    
+- (instancetype _Nonnull) initWithDartEntrypointFunctionName:(NSString *_Nullable)dartEntrypointFunctionName{
     NSString *finalDartEntrypointFunctionName = [STStringUtil emptyOrNull:dartEntrypointFunctionName] ? @"main" : dartEntrypointFunctionName;
     FlutterEngine * newEngine = [[STFlutterMultipleInitializer sharedInstance].flutterEngineGroup makeEngineWithEntrypoint:finalDartEntrypointFunctionName libraryURI:nil];
     
@@ -34,44 +31,64 @@
         }
     }
     
-    _bridgePlugin = [LibFlutterBaseMultiplePlugin getPlugin:newEngine];
-    [_bridgePlugin setCurrentViewController:self];
+    self->bridgePlugin = [LibFlutterBaseMultiplePlugin getPlugin:newEngine];
+    [self->bridgePlugin setCurrentViewController:self];
 
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
+        self->viewControllerDelegete = [[STViewControllerDelegeteImpl alloc] initWithCurrentViewController:self];
         NSLog(@"initWithDartEntrypointFunctionName success");
     }
     
     return self;
 }
 
+- (UIViewController *_Nonnull) currentViewController{
+    return [self->viewControllerDelegete currentViewController];
+}
+
+- (NSString *)getUniqueId{
+    return [self->viewControllerDelegete getUniqueId];
+}
+
 - (void)setRequestData:(int)requestCode requestData:(NSDictionary *)requestData{
-    NSLog(@"[page] setRequestData uniqueId=%@, self=%@, requestCode=%d, requestData=%@", _uniqueId, self, requestCode, requestData);
-    self->requestCode = requestCode;
-    self->requestData = requestData;
+    [self->viewControllerDelegete setRequestData:requestCode requestData:requestData];
 }
 
 - (int)getRequestCode{
-    return self->requestCode;
+    return [self->viewControllerDelegete getRequestCode];
 }
 
 - (NSDictionary *)getRequestData{
-    return self->requestData;
+    return [self->viewControllerDelegete getRequestData];
 }
 
-- (void)onViewControllerResult:(int)requestCode resultCode:(int)resultCode resultData:(NSDictionary *)resultData{
-    NSLog(@"[page] onViewControllerResult uniqueId=%@, self=%@, requestCode=%d, resultCode=%d, resultData=%@", _uniqueId, self, requestCode, resultCode, resultData);
-    NSString *argumentsJsonString = resultData[@"KEY_JSON_OBJECT_STRING"];
+- (void)onViewControllerResult:(int)requestCode resultCode:(int)resultCode resultData:(NSDictionary *_Nullable)resultData{
+    [self->viewControllerDelegete onViewControllerResult:requestCode resultCode:resultCode resultData:resultData];
+
+    NSString *argumentsJsonString = resultData[@"argumentsJsonString"];
     NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString];
     if (eventInfo == nil) {
         eventInfo = NSMutableDictionary.new;
     }
-    [LibFlutterBaseMultiplePlugin sendEventToDart:_bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    [LibFlutterBaseMultiplePlugin sendEventToDart:[self getBridgePlugin] eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+}
+
+- (void)onFlutterUiDisplayed{
+    NSLog(@"[page] onFlutterUiDisplayed uniqueId=%@, self=%@", [self getUniqueId], self);
+}
+
+- (LibFlutterBaseMultiplePlugin *)getBridgePlugin{
+    return self->bridgePlugin;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _uniqueId  = [NSString stringWithFormat:@"%f-%lu", [[NSDate date] timeIntervalSince1970]*1000, (unsigned long)self.hash]; // *1000 是精确到毫秒，不乘就是精确到秒
-    NSLog(@"[page] viewDidLoad uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete viewDidLoad];
+    NSString *uniqueId = [self getUniqueId];
+    int requestCode = [self getRequestCode];
+    NSDictionary *requestData = [self getRequestData];
+    NSLog(@"[page] viewDidLoad uniqueId=%@, requestCode=%d, requestData=%@", uniqueId, requestCode, requestData);
+    
     self.view.backgroundColor = [UIColor clearColor];
     
     // [self setInitialRoute:@"/"];
@@ -79,7 +96,7 @@
     [self setFlutterViewDidRenderCallback:^{
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf) {
-            NSLog(@"[page] viewDidLoad uniqueId=%@ onFlutterViewDidRenderCallback", strongSelf->_uniqueId);
+            NSLog(@"[page] viewDidLoad uniqueId=%@ onFlutterViewDidRenderCallback", [strongSelf getUniqueId]);
             [strongSelf onFlutterUiDisplayed];
         } else {
             NSLog(@"[page] viewDidLoad onFlutterViewDidRenderCallback released strongSelf==nil");
@@ -90,50 +107,33 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"[page] viewWillAppear uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSLog(@"[page] viewDidAppear uniqueId=%@, self=%@", _uniqueId, self);
-}
-
-- (void)onViewControllerResult:(NSString * _Nullable) argumentsJsonString{
-    NSLog(@"[page] onViewControllerResult uniqueId=%@, self=%@, argumentsJsonString=%@", _uniqueId, self, argumentsJsonString);
-    NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString];
-    if (eventInfo == nil) {
-        eventInfo = NSMutableDictionary.new;
-    }
-    [LibFlutterBaseMultiplePlugin sendEventToDart:_bridgePlugin eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
-}
-
-- (void)onFlutterUiDisplayed{
-    NSLog(@"[page] onFlutterUiDisplayed uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    NSLog(@"[page] viewWillDisappear uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete viewWillDisappear:animated];
 }
 
-/**
- * 生命周期
- * https://seniorzhai.github.io/2014/12/11/Android%E3%80%81iOS%E5%A4%A7%E4%B8%8D%E5%90%8C%E2%80%94%E2%80%94%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/
- */
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    NSLog(@"[page] viewDidDisappear uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-    NSLog(@"[page] didReceiveMemoryWarning uniqueId=%@, self=%@", _uniqueId, self);
+    [self->viewControllerDelegete didReceiveMemoryWarning];
 }
 
 - (void)dealloc{
-    NSLog(@"[page] dealloc uniqueId=%@, self=%@", _uniqueId, self);
-    [_bridgePlugin setCurrentViewController:nil];
-    _bridgePlugin = nil;
+    [self->viewControllerDelegete onDealloc];
+    self->viewControllerDelegete = nil;
+    [[self getBridgePlugin] setCurrentViewController:nil];
+    self->bridgePlugin = nil;
 }
-
 @end

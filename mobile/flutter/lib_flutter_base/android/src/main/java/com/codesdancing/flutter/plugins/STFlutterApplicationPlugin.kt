@@ -17,19 +17,19 @@ class STFlutterApplicationPlugin : STFlutterBasePlugin() {
 
     @STFlutterPluginMethod
     fun getAppInfo(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
-        val appInfojsonObject = JSONObject()
-        appInfojsonObject.put("debug", STInitializer.debug())
-        appInfojsonObject.put("osVersion", "ANDROID_" + Build.VERSION.SDK_INT)
-        appInfojsonObject.put("deviceType", "ANDROID_" + Build.BRAND + "_" + Build.MODEL)
-        appInfojsonObject.put("deviceName", "ANDROID_" + STSystemUtil.MANUFACTURER)
-        appInfojsonObject.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
+        val appInfoJsonObject = JSONObject()
+        appInfoJsonObject.put("debug", STInitializer.debug())
+        appInfoJsonObject.put("osVersion", "ANDROID_" + Build.VERSION.SDK_INT)
+        appInfoJsonObject.put("deviceType", "ANDROID_" + Build.BRAND + "_" + Build.MODEL)
+        appInfoJsonObject.put("deviceName", "ANDROID_" + STSystemUtil.MANUFACTURER)
+        appInfoJsonObject.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
 
         val pageInfoJsonObject = JSONObject()
         pageInfoJsonObject.put("uniqueId", STFlutterPagePlugin.genUniqueId(activity) ?: "")
         pageInfoJsonObject.put("paramsJsonObjectString", STFlutterPagePlugin.getCurrentPageInitArguments(activity))
 
-        appInfojsonObject.put("pageInfo", pageInfoJsonObject)
+        appInfoJsonObject.put("pageInfo", pageInfoJsonObject)
 
-        callbackSuccess(result, appInfojsonObject)
+        callbackSuccess(result, appInfoJsonObject)
     }
 }

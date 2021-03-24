@@ -4,7 +4,10 @@ version: 0.0.1
 homepage: https://github.com/krmao/template
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
+  # Flutter versions prior to 1.12 did not support the
+  # flutter.plugin.platforms map.
+  flutter: ">=2.0.1"
 
 dependencies:
   flutter:

@@ -6,14 +6,14 @@ version: 0.0.1
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
   flutter: ">=2.0.1"
 
 dependencies:
   flutter:
     sdk: flutter
 
-#  lib_flutter_base: ^0.0.6
+#  lib_flutter_base: ^0.0.1
   lib_flutter_base:
 #    # When depending on this package from a real application you should use:
 #    #   lib_flutter_base: ^x.y.z

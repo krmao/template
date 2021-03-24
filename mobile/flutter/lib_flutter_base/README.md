@@ -27,14 +27,14 @@ samples, guidance on mobile development, and a full API reference.
     * Add document and licenses file
 * Publish
     ```shell script
-    flutter pub publish``
+    flutter pub publish
     ```
 * [Search packages](https://pub.dartlang.org) will find [uploaded flutter plugin](https://pub.dev/packages/lib_flutter_base)
 * How to use
     ```shell script
     # depend on
     dependencies:
-      lib_flutter_base: ^0.0.6
+      lib_flutter_base: ^0.0.1
   
     # install
     flutter pub get
@@ -48,7 +48,7 @@ samples, guidance on mobile development, and a full API reference.
     #   path: ../
     
     # change local dependency to remote
-    lib_flutter_base: ^0.0.6
+    lib_flutter_base: ^0.0.1
     ```
 
 * Example Test Release (only can android, not ios)

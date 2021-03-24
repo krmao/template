@@ -9,3 +9,16 @@ example/.fvm/flutter_sdk
 
 .symlinks/
 Podfile.lock
+
+Pods/
+**/xcuserdata/**/UserInterfaceState.xcuserstate
+.gradle/
+
+*.iml
+.gradle
+**/local.properties
+**/.idea/workspace.xml
+**/.idea/libraries
+**/build
+**/captures
+**/flutter_sdk

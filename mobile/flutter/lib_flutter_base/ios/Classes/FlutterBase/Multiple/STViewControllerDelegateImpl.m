@@ -1,13 +1,13 @@
 //
-//  STViewControllerDelegeteImpl.m
+//  STViewControllerDelegateImpl.m
 //  lib_flutter_base
 //
 //  Created by krmao on 2021/3/21.
 //
 
-#import "STViewControllerDelegeteImpl.h"
+#import "STViewControllerDelegateImpl.h"
 
-@interface STViewControllerDelegeteImpl(){
+@interface STViewControllerDelegateImpl(){
     NSString *uniqueId;
     int requestCode;
     UIViewController *currentViewController;
@@ -15,7 +15,7 @@
 }
 @end
 
-@implementation STViewControllerDelegeteImpl
+@implementation STViewControllerDelegateImpl
 
 - (instancetype _Nonnull)initWithCurrentViewController:(UIViewController *_Nonnull)currentViewController{
     if(self = [super init]){

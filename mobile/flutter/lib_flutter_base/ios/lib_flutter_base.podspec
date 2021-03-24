@@ -31,8 +31,8 @@ A new flutter plugin project.
     'Classes/FlutterBase/Multiple/STFlutterMultipleInitializer.h',
     'Classes/FlutterBase/Multiple/STFlutterMultipleHomeViewController.h',
     'Classes/FlutterBase/Multiple/STFlutterMultipleViewController.h',
-    'Classes/FlutterBase/Multiple/STViewControllerDelegete.h',
-    'Classes/FlutterBase/Multiple/STViewControllerDelegeteImpl.h',
+    'Classes/FlutterBase/Multiple/STViewControllerDelegate.h',
+    'Classes/FlutterBase/Multiple/STViewControllerDelegateImpl.h',
     
     'Classes/FlutterBase/Plugins/Application/STFlutterAppInfoPlugin.h',
     'Classes/FlutterBase/Plugins/Base/STFlutterPlugin.h',
@@ -53,7 +53,7 @@ A new flutter plugin project.
     'Classes/FlutterBoost/container/FBFlutterContainerManager.h',
     'Classes/FlutterBoost/messages.h'
 
-  s.dependency 'LibIosBase', '~>0.0.6'
+  s.dependency 'LibIosBase', '~>0.0.7'
   s.dependency 'Flutter'
   s.libraries = 'c++'
   s.xcconfig = {

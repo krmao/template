@@ -1,6 +1,6 @@
 #import "STFlutterPagePlugin.h"
 #import "STThreadUtil.h"
-#import "STViewControllerDelegete.h"
+#import "STViewControllerDelegate.h"
 
 @implementation STFlutterPagePlugin
 
@@ -39,32 +39,32 @@
     int requestCode = 0;
     
     if (currentViewController != nil && ![currentViewController isKindOfClass:[NSNull class]] &&
-        [currentViewController conformsToProtocol:@protocol(STViewControllerDelegete)]){
-        requestCode = [((id<STViewControllerDelegete>) currentViewController) getRequestCode];
+        [currentViewController conformsToProtocol:@protocol(STViewControllerDelegate)]){
+        requestCode = [((id<STViewControllerDelegate>) currentViewController) getRequestCode];
     }
     
     if (preViewController != nil && ![preViewController isKindOfClass:[NSNull class]] &&
-        [preViewController conformsToProtocol:@protocol(STViewControllerDelegete)]){
+        [preViewController conformsToProtocol:@protocol(STViewControllerDelegate)]){
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *resultData = NSMutableDictionary.new;
             [resultData setValue:argumentsJsonString forKey:@"argumentsJsonString"];
-            [((id<STViewControllerDelegete>) preViewController) onViewControllerResult:requestCode resultCode:RESULT_OK resultData:resultData];
+            [((id<STViewControllerDelegate>) preViewController) onViewControllerResult:requestCode resultCode:RESULT_OK resultData:resultData];
         });
     }
     [currentNavigationController popViewControllerAnimated:YES];
 }
 
 + (NSString *)getUniqueId:(UIViewController *) viewController{
-    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegete)]) {
-        return [((id<STViewControllerDelegete>) viewController) getUniqueId];
+    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegate)]) {
+        return [((id<STViewControllerDelegate>) viewController) getUniqueId];
     }else{
         return nil;
     }
 }
 
 + (NSString *)getCurrentPageInitArguments:(UIViewController *) viewController{
-    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegete)]) {
-        NSString * argumentsJsonString =[((id<STViewControllerDelegete>) viewController) getRequestData][@"argumentsJsonString"];
+    if ([viewController conformsToProtocol:@protocol(STViewControllerDelegate)]) {
+        NSString * argumentsJsonString =[((id<STViewControllerDelegate>) viewController) getRequestData][@"argumentsJsonString"];
         return argumentsJsonString;
     }else{
         return nil;

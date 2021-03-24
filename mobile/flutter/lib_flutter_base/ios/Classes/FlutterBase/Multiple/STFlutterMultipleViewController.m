@@ -3,12 +3,12 @@
 #import "STStringUtil.h"
 #import "LibFlutterBaseMultiplePlugin.h"
 #import <LibIosBase/STJsonUtil.h>
-#import "STViewControllerDelegete.h"
-#import "STViewControllerDelegeteImpl.h"
+#import "STViewControllerDelegate.h"
+#import "STViewControllerDelegateImpl.h"
 #import "STFlutterEventPlugin.h"
 
 @interface STFlutterMultipleViewController (){
-    STViewControllerDelegeteImpl *viewControllerDelegete;
+    STViewControllerDelegateImpl *viewControllerDelegete;
     LibFlutterBaseMultiplePlugin *bridgePlugin;
 }
 @end
@@ -36,7 +36,7 @@
     [self->bridgePlugin setCurrentViewController:self];
 
     if(self = [super initWithEngine:newEngine nibName:nil bundle:nil]){
-        self->viewControllerDelegete = [[STViewControllerDelegeteImpl alloc] initWithCurrentViewController:self];
+        self->viewControllerDelegete = [[STViewControllerDelegateImpl alloc] initWithCurrentViewController:self];
         NSLog(@"initWithDartEntrypointFunctionName success");
     }
     

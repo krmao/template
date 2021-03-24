@@ -1,17 +1,17 @@
 //
-//  STViewControllerDelegete.h
+//  STViewControllerDelegate.h
 //  Pods
 //
 //  Created by krmao on 2021/3/22.
 //
 
-#ifndef STViewControllerDelegete_h
-#define STViewControllerDelegete_h
+#ifndef STViewControllerDelegate_h
+#define STViewControllerDelegate_h
 
 #define RESULT_OK 0
 #define RESULT_CANCEL -1
 
-@protocol STViewControllerDelegete
+@protocol STViewControllerDelegate
 
 @required
 - (UIViewController *_Nonnull) currentViewController;
@@ -55,4 +55,4 @@
 
 @end
 
-#endif /* STViewControllerDelegete_h */
+#endif /* STViewControllerDelegate_h */

@@ -1,0 +1,42 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.codesdancing.flutter">
+
+    <application>
+        <activity
+            android:name="com.codesdancing.flutter.boost.STFlutterBoostActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.codesdancing.flutter.boost.STFlutterBoostHomeActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.codesdancing.flutter.multiple.STFlutterMultipleHomeActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!-- This sets the app to use the v2 embedding. -->
+        <!-- https://flutter.dev/docs/development/packages-and-plugins/plugin-api-migration -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+</manifest>

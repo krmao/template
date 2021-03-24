@@ -1,0 +1,5 @@
+Pods/
+.symlinks/
+Podfile.lock
+**/xcuserdata/**/UserInterfaceState.xcuserstate
+

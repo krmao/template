@@ -73,6 +73,7 @@ interface STActivityDelegate {
         APP_THEME(R.style.STAppTheme),
         APP_THEME_LAUNCH(R.style.STAppTheme_Launch),
         APP_THEME_HOME(R.style.STAppTheme_Home),
+        APP_THEME_HOME_TRANSLUCENT(R.style.STAppTheme_Home_Transparent),
         APP_THEME_LOGIN(R.style.STAppTheme_Login),
         APP_THEME_NORMAL(R.style.STAppTheme_Normal),
         APP_THEME_NORMAL_FADE(R.style.STAppTheme_Normal_Fade),

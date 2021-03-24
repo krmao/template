@@ -9,6 +9,7 @@ example/.fvm/flutter_sdk
 
 .symlinks/
 Podfile.lock
+pubspec.lock
 
 Pods/
 **/xcuserdata/**/UserInterfaceState.xcuserstate

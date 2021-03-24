@@ -2,6 +2,7 @@ package com.codesdancing.flutter.plugins
 
 import android.app.Activity
 import com.smart.library.util.STEventManager
+import com.smart.library.util.STJsonUtil
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -45,7 +46,7 @@ class STFlutterEventPlugin : STFlutterBasePlugin() {
         val eventKey = requestData.optString("eventKey")
         val eventInfo = requestData.optJSONObject("eventInfo")
 
-        STEventManager.sendEvent(eventKey, eventInfo)
+        STEventManager.sendEvent(eventKey, STJsonUtil.toMapOrNull(STJsonUtil.toJson(eventInfo)))
         callbackSuccess(result, null)
     }
 

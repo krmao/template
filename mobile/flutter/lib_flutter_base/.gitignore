@@ -6,3 +6,6 @@
 
 build/
 example/.fvm/flutter_sdk
+
+.symlinks/
+Podfile.lock

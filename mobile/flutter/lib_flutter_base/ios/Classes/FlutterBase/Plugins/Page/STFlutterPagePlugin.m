@@ -10,8 +10,6 @@
               result:(FlutterResult)result{
     NSLog(@"[page]-[STFlutterPagePlugin] functionName=%@, arguments=%@", functionName, arguments);
     
-    NSDictionary *parameters = arguments;
-    
     if ([functionName isEqualToString:@"genUniqueId"]) {
         UIViewController *vc = currentViewController;
         result([STFlutterPagePlugin getUniqueId:vc]);
@@ -39,7 +37,6 @@
     NSLog(@"[page]-[STFlutterPagePlugin] popPage currentNavigationController=%@, preViewController=%@", currentNavigationController, preViewController);
     
     int requestCode = 0;
-    
     
     if (currentViewController != nil && ![currentViewController isKindOfClass:[NSNull class]] &&
         [currentViewController conformsToProtocol:@protocol(STViewControllerDelegete)]){

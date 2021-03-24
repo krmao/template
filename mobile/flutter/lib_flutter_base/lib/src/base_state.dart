@@ -18,14 +18,18 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     print(
         "[page] uniqueId=$uniqueId, $runtimeType - initState ${this.toStringShort()}");
 
-    BaseBridgeEvent.addEventListener(KEY_ARGUMENTS_JSON_STRING, (eventName, eventData) {
+    BaseBridgeEvent.addEventListener(uniqueId, KEY_ARGUMENTS_JSON_STRING,
+        (eventKey, eventInfo) {
       print(
-          "[page] uniqueId=$uniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
+          "------------------------ callback [page] initState onEventListener uniqueId=$uniqueId, $runtimeType - onMethodCallBack eventKey=$eventKey, eventInfo=$eventInfo");
 
-      if (KEY_ARGUMENTS_JSON_STRING == eventName) {
-        onPageResult(eventData);
+      if (KEY_ARGUMENTS_JSON_STRING == eventKey) {
+        print(
+            "[page] initState onEventListener onPageResult eventInfo=$eventInfo");
+
+        onPageResult(eventInfo);
       }
-    }, containerId: uniqueId);
+    });
   }
 
   @mustCallSuper
@@ -70,7 +74,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void dispose() {
     super.dispose();
-    BaseBridgeEvent.removeEventListener(KEY_ARGUMENTS_JSON_STRING, containerId: uniqueId);
+    BaseBridgeEvent.removeEventListener(uniqueId, KEY_ARGUMENTS_JSON_STRING);
     print("[page] uniqueId=$uniqueId, $runtimeType - dispose");
   }
 

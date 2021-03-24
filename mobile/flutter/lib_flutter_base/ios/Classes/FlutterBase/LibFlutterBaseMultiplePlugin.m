@@ -49,24 +49,6 @@ static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
     return nil;
 }
 
-+ (void) sendEventToDart:(LibFlutterBaseMultiplePlugin *)bridgePlugin eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo {
-    FlutterMethodChannel *methodChannel = bridgePlugin.methodChannel;
-    NSLog(@"[page] sendEventToDart2 methodChannel=%@, eventKey=%@, eventInfo=%@", methodChannel, eventKey, eventInfo);
-    if (methodChannel != nil) {
-        NSMutableDictionary* eventData = NSMutableDictionary.new;
-        [eventData setValue:eventKey forKey:@"eventName"];
-        [eventData setValue:eventInfo forKey:@"eventInfo"];
-  
-        NSLog(@"[page] sendEventToDart2 invokeMethod start BRIDGE_EVENT_NAME=%@",BRIDGE_EVENT_NAME);
-        
-        [methodChannel invokeMethod:BRIDGE_EVENT_NAME arguments:eventData result:^(id  _Nullable result) {
-            NSLog(@"[page] sendEventToDart2 invokeMethod2 success result=%@", result);
-        }];
-    } else {
-        NSLog(@"[page] sendEventToDart2 invokeMethod2 methodChannel == null");
-    }
-}
-
 - (void)setCurrentViewController:(UIViewController *_Nullable)currentViewController {
     self->currentViewController = currentViewController;
 }

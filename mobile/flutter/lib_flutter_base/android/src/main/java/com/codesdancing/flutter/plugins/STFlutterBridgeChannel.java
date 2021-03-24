@@ -80,7 +80,7 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
                 if (methodChannel != null) {
                     JSONObject eventData = new JSONObject();
                     try {
-                        eventData.put("eventName", eventKey);
+                        eventData.put("eventKey", eventKey);
                         eventData.put("eventInfo", eventInfo);
                     } catch (JSONException e) {
                         e.printStackTrace();

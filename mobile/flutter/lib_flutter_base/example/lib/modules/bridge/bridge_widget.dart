@@ -166,8 +166,9 @@ class BridgeWidgetState extends BaseStateDefault {
             'open flutter bridge 2',
             () => BaseBridgeURL.openURL<dynamic>(
                 'smart://template/flutter?page=FlutterBridge&params=' +
-                    json.encode({"fromPage-pre": uniqueId}))),
-        getItemWidget(
+                    json.encode({
+                      "fromPage-pre": uniqueId
+                    }))), /*getItemWidget(
             'open flutter player',
             () => BaseBridgePage.pushPage("FlutterPlayer",
                 argument: {"fromPage-pre": uniqueId})),
@@ -178,7 +179,7 @@ class BridgeWidgetState extends BaseStateDefault {
         getItemWidget(
             'open flutter settings',
             () => BaseBridgePage.pushPage("FlutterSettings",
-                argument: {"fromPage-pre": uniqueId})),
+                argument: {"fromPage-pre": uniqueId})),*/
       ],
     );
   }

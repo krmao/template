@@ -1,68 +1,79 @@
 import 'base_bridge.dart';
 
-typedef EventCallBack = void Function(String eventName, Map eventData);
+typedef EventCallBack = void Function(String eventKey, Map eventInfo);
 
 class BaseBridgeEvent extends BaseBridge {
-  // ignore: non_constant_identifier_names
-  static String BRIDGE_EVENT_NAME = "__codesdancing_flutter_event__";
-  static Map<String, Map> eventListeners = new Map();
+  static const String BRIDGE_EVENT_NAME = "__codesdancing_flutter_event__";
+  static Map<String, Map> eventMap = new Map();
   static bool registerMethodCall = false;
 
-  static void addEventListener<T>(String eventName, EventCallBack eventCallBack,
-      {String containerId}) {
-    String containerIdInner = containerId;
+  static void addEventListener<T>(
+      String eventId, String eventKey, EventCallBack eventCallBack) {
     if (!registerMethodCall) {
       BaseBridge.registerMethodCallBack(BRIDGE_EVENT_NAME,
           (String methodName, dynamic arguments) {
         print(
             "[page] $BRIDGE_EVENT_NAME method callback methodName=$methodName, arguments=$arguments");
-        if (arguments['eventName'] != null && arguments['eventInfo'] != null) {
-          _invokeEvent(arguments['eventName'], arguments['eventInfo']);
+        print(
+            "[page] $BRIDGE_EVENT_NAME method callback arguments['eventKey']=${arguments['eventKey']}, arguments['eventInfo']=${arguments['eventInfo']}");
+
+        print(
+            "[page] $BRIDGE_EVENT_NAME arguments['eventKey'] != null=${arguments['eventKey'] != null}, arguments['eventInfo'] != null=${arguments['eventInfo'] != null}");
+
+        if (arguments['eventKey'] != null && arguments['eventInfo'] != null) {
+
+          dynamic returnEventKey = arguments['eventKey'];
+          dynamic returnEventInfo = arguments['eventInfo'];
+
+          print(
+              "[page] _invokeEvent returnEventKey=$returnEventKey, returnEventInfo=$returnEventInfo");
+
+          eventMap.forEach((itemEventId, itemMap) {
+            print(
+                "[page] _invokeEvent ---- itemEventId=$itemEventId, itemMap=$itemMap");
+            itemMap.forEach((itemEventKey, listener) {
+              print(
+                  "[page] _invokeEvent -------- itemEventKey=$itemEventKey, listener=$listener");
+              if (returnEventKey == itemEventKey) {
+                (listener as List)?.forEach((callback) {
+                  print(
+                      "[page] _invokeEvent **** do listener eventCallBack=$eventCallBack, callback=$callback");
+                  callback(returnEventKey, returnEventInfo);
+                });
+              }
+            });
+          });
         }
       });
       registerMethodCall = true;
     }
 
-    if (!eventListeners.containsKey(eventName)) {
-      eventListeners[eventName] = {};
+    if (!eventMap.containsKey(eventId)) {
+      eventMap[eventId] = {};
     }
-    if (!eventListeners[eventName].containsKey(containerIdInner)) {
-      eventListeners[eventName][containerIdInner] = [];
+    if (!eventMap[eventId].containsKey(eventKey)) {
+      eventMap[eventId][eventKey] = [];
     }
-    eventListeners[eventName][containerIdInner].add(eventCallBack);
+    eventMap[eventId][eventKey].add(eventCallBack);
 
     BaseBridge.callNativeStatic("Event", "addEventListener",
-        {"eventName": eventName, "containerId": containerIdInner});
+        {"eventId": eventId, "eventKey": eventKey});
   }
 
-  static void removeEventListener<T>(String eventName, {String containerId}) {
-    String containerIdInner = containerId;
-    if (eventListeners.containsKey(eventName)) {
-      eventListeners[eventName].remove(containerIdInner);
-      if (eventListeners[eventName].isEmpty) {
-        eventListeners.remove(eventName);
+  static void removeEventListener<T>(String eventId, String eventKey) {
+    if (eventMap.containsKey(eventId)) {
+      eventMap[eventId].remove(eventKey);
+      if (eventMap[eventId].isEmpty) {
+        eventMap.remove(eventId);
       }
     }
     BaseBridge.callNativeStatic("Event", "removeEventListener",
-        {"eventName": eventName, "containerId": containerId});
+        {"eventId": eventId, "eventKey": eventKey});
   }
 
-  static void sendEvent(String eventName, Map eventData) {
+  static void sendEvent(String eventKey, Map eventInfo) {
     BaseBridge.callNativeStatic(
-        "Event", "sendEvent", {"eventName": eventName, "eventInfo": eventData});
-  }
-
-  static void _invokeEvent(String eventName, Map eventData) {
-    String containerId = eventData['containerId'] ?? "";
-    print("[page] _invokeEvent eventName=$eventName, eventData=$eventData, containerId=$containerId");
-    eventListeners[eventName].forEach((key, value) {
-      print("[page] _invokeEvent eventName=$eventName, key=$key, value=$value");
-      // if (key == containerId) { // todo
-        (value as List)?.forEach((eventCallBack) {
-          eventCallBack(eventName, eventData);
-        });
-      // }
-    });
+        "Event", "sendEvent", {"eventKey": eventKey, "eventInfo": eventInfo});
   }
 
   @override

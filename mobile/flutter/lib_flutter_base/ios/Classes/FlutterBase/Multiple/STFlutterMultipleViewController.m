@@ -5,6 +5,7 @@
 #import <LibIosBase/STJsonUtil.h>
 #import "STViewControllerDelegete.h"
 #import "STViewControllerDelegeteImpl.h"
+#import "STFlutterEventPlugin.h"
 
 @interface STFlutterMultipleViewController (){
     STViewControllerDelegeteImpl *viewControllerDelegete;
@@ -66,11 +67,9 @@
     [self->viewControllerDelegete onViewControllerResult:requestCode resultCode:resultCode resultData:resultData];
 
     NSString *argumentsJsonString = resultData[@"argumentsJsonString"];
-    NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString];
-    if (eventInfo == nil) {
-        eventInfo = NSMutableDictionary.new;
-    }
-    [LibFlutterBaseMultiplePlugin sendEventToDart:[self getBridgePlugin] eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
+    NSDictionary * eventInfo =  [STJsonUtil dictionaryWithJsonString:argumentsJsonString] ?: NSMutableDictionary.new;
+    
+    [STFlutterEventPlugin sendEventToDart:self eventKey:@"KEY_ARGUMENTS_JSON_STRING" eventInfo:eventInfo];
 }
 
 - (void)onFlutterUiDisplayed{

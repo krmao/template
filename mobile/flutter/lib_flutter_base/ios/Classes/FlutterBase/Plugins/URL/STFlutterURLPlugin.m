@@ -3,6 +3,7 @@
 #import "STValueUtil.h"
 #import "FlutterBoostPlugin.h"
 #import "STFlutterUtils.h"
+#import <LibIosBase/STInitializer.h>
 
 @implementation STFlutterURLPlugin
 
@@ -14,8 +15,11 @@
     
     if ([functionName isEqualToString:@"openURL"]) {
         NSString * schemaUrl = [STValueUtil convertToNilIfNull: [parameters valueForKey:@"url"]];
-        [STFlutterUtils openNewFlutterViewControllerBySchema:currentViewController schemaUrl:schemaUrl];
-        result(@"OK");
+        [STInitializer openSchema:currentViewController url:schemaUrl callback:^(NSString * _Nullable callBackId, NSString * _Nullable resultJsonString) {
+            result(resultJsonString);
+        }];
+        // [STFlutterUtils openNewFlutterViewControllerBySchema:currentViewController schemaUrl:schemaUrl];
+        // result(@"OK");
     }
     else {
         result(FlutterMethodNotImplemented);

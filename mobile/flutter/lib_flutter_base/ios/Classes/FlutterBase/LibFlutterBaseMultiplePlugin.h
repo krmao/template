@@ -7,8 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) FlutterMethodChannel *methodChannel;
 
-+ (void)sendEventToDart:(LibFlutterBaseMultiplePlugin *)bridgePlugin eventKey:(NSString*) eventKey eventInfo:(NSDictionary*) eventInfo;
-
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 
 + (LibFlutterBaseMultiplePlugin* )getPlugin:(FlutterEngine*)engine;

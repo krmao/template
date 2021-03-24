@@ -1,7 +1,6 @@
 package com.codesdancing.flutter.plugins
 
 import android.app.Activity
-import com.idlefish.flutterboost.FlutterBoost
 import com.smart.library.util.STEventManager
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -14,7 +13,7 @@ class STFlutterEventPlugin : STFlutterBasePlugin() {
     fun addEventListener(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
         if (activity != null) {
             val eventId = requestData.optString("eventId")
-            val eventKey = requestData.optString("eventKey", "")
+            val eventKey = requestData.optString("eventKey")
             STEventManager.register(eventId, eventKey) { key: String, value: Any? ->
                 val jsonObject = (value as? JSONObject) ?: JSONObject()
                 flutterBridgeChannel()?.apply {
@@ -31,18 +30,22 @@ class STFlutterEventPlugin : STFlutterBasePlugin() {
     fun removeEventListener(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
         if (activity != null) {
             val eventId = requestData.optString("eventId")
-            val eventKey = requestData.optString("eventKey", "")
-            STEventManager.unregister(eventId, eventKey)
+            val eventKey = requestData.optString("eventKey")
+            if (eventKey.isNullOrBlank()) {
+                STEventManager.unregisterAll(eventId)
+            } else {
+                STEventManager.unregister(eventId, eventKey)
+            }
         }
         callbackSuccess(result, null)
     }
 
     @STFlutterPluginMethod
     fun sendEvent(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
-        val eventName = requestData.optString("eventName")
-        val eventData = requestData.optJSONObject("eventInfo")
+        val eventKey = requestData.optString("eventKey")
+        val eventInfo = requestData.optJSONObject("eventInfo")
 
-        STEventManager.sendEvent(eventName, eventData)
+        STEventManager.sendEvent(eventKey, eventInfo)
         callbackSuccess(result, null)
     }
 

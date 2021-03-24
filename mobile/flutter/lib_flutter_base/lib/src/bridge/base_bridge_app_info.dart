@@ -5,7 +5,7 @@ class BaseBridgeAppInfo extends BaseBridge {
 
   static Future<BaseAppInfo> getAppInfo() async {
     Map appInfoMap =
-        await BaseBridge.callNativeStatic("Application", "getAppInfo", {});
+        await BaseBridge.callNativeStatic("AppInfo", "getAppInfo", {});
 
     BaseAppInfo appInfo = BaseAppInfo();
 

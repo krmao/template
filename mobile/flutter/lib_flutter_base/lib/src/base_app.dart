@@ -51,8 +51,7 @@ class BaseAppState extends State<BaseApp> {
     ));
     return MaterialApp(
         localizationsDelegates: [DefaultMaterialLocalizations.delegate],
-        routes: this.routes,
-        // debugShowCheckedModeBanner:false,
+        routes: this.routes, // debugShowCheckedModeBanner:false,
         theme: ThemeData(
             // This is the theme of your application.
             //
@@ -90,15 +89,14 @@ void appRun(RoutesBuilder routesBuilder,
 
   runZoned<Future<Null>>(() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    BaseBridgeApplication.getApplicationConstants().then((value) {
-      String argumentsJsonString = value['argumentsJsonString'];
-      String uniqueId = value['uniqueId'];
-
+    BaseBridgeApplication.getAppInfo().then((appInfo) {
+      String uniqueId = appInfo.pageInfo.uniqueId;
+      String paramsJsonObjectString = appInfo.pageInfo.paramsJsonObjectString;
       print(
-          "[page] runZoned-getApplicationConstants value=$value, argumentsJsonString=$argumentsJsonString");
+          "[page] runZoned-getAppInfo uniqueId=$uniqueId, paramsJsonObjectString=$paramsJsonObjectString");
       // ignore: invalid_use_of_protected_member
       widgetsBinding.scheduleAttachRootWidget(BaseApp(
-        routes: routesBuilder(uniqueId, argumentsJsonString),
+        routes: routesBuilder(uniqueId, paramsJsonObjectString),
         onInitStateCallback: () {
           if (onInitStateCallback != null) onInitStateCallback();
         },
@@ -112,7 +110,7 @@ void appRun(RoutesBuilder routesBuilder,
   }, zoneSpecification: ZoneSpecification(
       print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
     try {
-      if (BaseBridgeApplication.debug) {
+      if (BaseBridgeApplication.appInfo.debug) {
         parent.print(zone, line);
       }
     } catch (e, _) {

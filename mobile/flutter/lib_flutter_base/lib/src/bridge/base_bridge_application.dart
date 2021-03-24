@@ -1,44 +1,63 @@
 import 'base_bridge.dart';
 
 class BaseBridgeApplication extends BaseBridge {
-  static bool debug = true;
+  static BaseAppInfo appInfo;
 
-  static String versionName;
-  static String versionCode;
-  static String argumentsJsonString;
-  static String uniqueId;
+  static Future<BaseAppInfo> getAppInfo() async {
+    Map appInfoMap =
+        await BaseBridge.callNativeStatic("Application", "getAppInfo", {});
 
-  static Map deviceInfo;
-  static Map configInfo;
+    BaseAppInfo appInfo = BaseAppInfo();
 
-  static Future<Map> getApplicationConstants() async {
-    Map applicationConstants = await BaseBridge.callNativeStatic(
-        "Application", "getApplicationConstants", {});
-    if (applicationConstants.containsKey("applicationInfo")) {
-      Map applicationInfo = applicationConstants["applicationInfo"];
-      BaseBridgeApplication.debug = applicationInfo["debug"];
-      BaseBridgeApplication.versionCode = applicationInfo["versionCode"];
-      BaseBridgeApplication.versionName = applicationInfo["versionName"];
+    if (appInfoMap.containsKey("debug")) {
+      appInfo.debug = appInfoMap['debug'];
     }
+    if (appInfoMap.containsKey("deviceType")) {
+      appInfo.deviceType = appInfoMap['deviceType'];
+    }
+    if (appInfoMap.containsKey("deviceName")) {
+      appInfo.deviceName = appInfoMap['deviceName'];
+    }
+    if (appInfoMap.containsKey("versionName")) {
+      appInfo.versionName = appInfoMap['versionName'];
+    }
+    if (appInfoMap.containsKey("pageInfo")) {
+      Map pageInfoMap = appInfoMap['pageInfo'];
 
-    if (applicationConstants.containsKey("deviceInfo")) {
-      deviceInfo = applicationConstants['deviceInfo'];
+      if (pageInfoMap.containsKey("uniqueId")) {
+        appInfo.pageInfo.uniqueId = pageInfoMap['uniqueId'];
+      }
+      if (pageInfoMap.containsKey("paramsJsonObjectString")) {
+        appInfo.pageInfo.paramsJsonObjectString =
+            pageInfoMap['paramsJsonObjectString'];
+      }
     }
-
-    if (applicationConstants.containsKey("configInfo")) {
-      configInfo = applicationConstants['configInfo'];
-    }
-    if (applicationConstants.containsKey("argumentsJsonString")) {
-      argumentsJsonString = applicationConstants['argumentsJsonString'];
-    }
-    if (applicationConstants.containsKey("uniqueId")) {
-      uniqueId = applicationConstants['uniqueId'];
-    }
-    return applicationConstants;
+    BaseBridgeApplication.appInfo = appInfo;
+    return appInfo;
   }
 
   @override
   String getPluginName() {
     return "Application";
   }
+}
+
+class BaseAppInfo {
+  BaseAppInfo();
+
+  bool debug = true;
+
+  String osVersion = "";
+  String deviceType = "";
+  String deviceName = "";
+  String versionName = "";
+
+  BasePageInfo pageInfo = BasePageInfo();
+}
+
+class BasePageInfo {
+  BasePageInfo();
+
+  String uniqueId;
+  String paramsJsonObjectString;
 }

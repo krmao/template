@@ -16,29 +16,20 @@ class STFlutterApplicationPlugin : STFlutterBasePlugin() {
     }
 
     @STFlutterPluginMethod
-    fun getApplicationConstants(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
-        val jsonObject = JSONObject()
-        jsonObject.put("deviceInfo", getDeviceInfo())
-        jsonObject.put("applicationInfo", getApplicationInfo())
-        jsonObject.put("argumentsJsonString", STFlutterPagePlugin.getCurrentPageInitArguments(activity))
-        jsonObject.put("uniqueId", STFlutterPagePlugin.genUniqueId(activity))
-        callbackSuccess(result, jsonObject)
-    }
+    fun getAppInfo(activity: Activity?, flutterEngineWrapper: FlutterEngine, requestData: JSONObject, result: MethodChannel.Result) {
+        val appInfojsonObject = JSONObject()
+        appInfojsonObject.put("debug", STInitializer.debug())
+        appInfojsonObject.put("osVersion", "ANDROID_" + Build.VERSION.SDK_INT)
+        appInfojsonObject.put("deviceType", "ANDROID_" + Build.BRAND + "_" + Build.MODEL)
+        appInfojsonObject.put("deviceName", "ANDROID_" + STSystemUtil.MANUFACTURER)
+        appInfojsonObject.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
 
-    private fun getDeviceInfo(): JSONObject {
-        val jsonObject = JSONObject()
-        jsonObject.put("osVersion", "Android_" + Build.VERSION.SDK_INT)
-        jsonObject.put("deviceType", Build.BRAND + "_" + Build.MODEL)
-        jsonObject.put("deviceName", STSystemUtil.MANUFACTURER)
-        return jsonObject;
-    }
+        val pageInfoJsonObject = JSONObject()
+        pageInfoJsonObject.put("uniqueId", STFlutterPagePlugin.genUniqueId(activity) ?: "")
+        pageInfoJsonObject.put("paramsJsonObjectString", STFlutterPagePlugin.getCurrentPageInitArguments(activity))
 
+        appInfojsonObject.put("pageInfo", pageInfoJsonObject)
 
-    private fun getApplicationInfo(): JSONObject {
-        val jsonObject = JSONObject()
-        jsonObject.put("debug", STInitializer.debug())
-        jsonObject.put("versionCode", "${STSystemUtil.getAppVersionCode(STInitializer.application())}")
-        jsonObject.put("versionName", STSystemUtil.getAppVersionName(STInitializer.application()))
-        return jsonObject;
+        callbackSuccess(result, appInfojsonObject)
     }
 }

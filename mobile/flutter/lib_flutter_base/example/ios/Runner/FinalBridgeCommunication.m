@@ -10,6 +10,7 @@
 #import <LibIosBase/UIViewController+TopMostViewController.h>
 #import <LibIosBase/STBusManager.h>
 #import <lib_flutter_base/STFlutterPagePlugin.h>
+#import <LibIosBase/STToastUtil.h>
 
 @implementation FinalBridgeCommunication
 +(void) handleBridge:(nullable UIViewController *) viewController functionName:(nullable NSString *) functionName params:(nullable NSString *) params callBackId:(nullable NSString *) callBackId callback: (nullable BridgeHandlerCallback) callback{
@@ -29,7 +30,6 @@
             // url.rnModuleName =  [bridgeParamsDict valueForKey:@"component"];
             // url.rnBundleURL = [NSURL fileURLWithPath:[[STRNFileManager fileNameBaseUnzip] stringByAppendingPathComponent:@"ios/index.ios.bundle"]];
             // STRNViewController *rnVc = [[STRNViewController alloc] initWithURL:url andInitialProperties:@{@"page":[bridgeParamsDict valueForKey:@"page"]}];
-
             // [viewController.navigationController pushViewController:rnVc animated:true];
         }
     }else if ([@"close" isEqual: functionName]) {
@@ -40,13 +40,7 @@
     }else if ([@"showToast" isEqual: functionName]) {
         [resultDict setValue:@"true" forKey:@"result"];
         NSLog(@"Current method: %@",NSStringFromSelector(_cmd));
-        UIAlertAction *okAlert = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            //todo
-        }];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"OC提示框" message:params preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:okAlert];
-        UIViewController *topRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-        [topRootVC presentViewController:alert animated:YES completion:nil];
+        [STToastUtil show:params];
     }else if ([@"put" isEqual: functionName]) {
         NSUserDefaults *defatult = [NSUserDefaults standardUserDefaults];
         if ([bridgeParamsDict valueForKey:@"value"]) {

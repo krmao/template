@@ -1,9 +1,9 @@
-#import "STFlutterApplicationPlugin.h"
+#import "STFlutterAppInfoPlugin.h"
 #import "STSystemUtil.h"
 #import "STFlutterPagePlugin.h"
 #import "STJsonUtil.h"
 
-@implementation STFlutterApplicationPlugin
+@implementation STFlutterAppInfoPlugin
 
 - (void)callFunction:(UIViewController *)currentViewController
         functionName:(NSString *)functionName

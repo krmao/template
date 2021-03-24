@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../../lib_flutter_base.dart';
 import 'base_bridge.dart';
 
-class PageBridge extends BaseBridge {
+class BaseBridgePage extends BaseBridge {
     static bool enableMultiple = true;
 
     static void pushPage(String name, {Object argument}) {

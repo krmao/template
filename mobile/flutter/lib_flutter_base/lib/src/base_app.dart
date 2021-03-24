@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:lib_flutter_base/lib_flutter_base.dart';
 
 import 'base_app_constants.dart';
-import 'bridge/base_bridge_application.dart';
+import 'bridge/base_bridge_app_info.dart';
 
 typedef void OnInitStateCallback();
 
@@ -89,7 +89,7 @@ void appRun(RoutesBuilder routesBuilder,
 
   runZoned<Future<Null>>(() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    BaseBridgeApplication.getAppInfo().then((appInfo) {
+    BaseBridgeAppInfo.getAppInfo().then((appInfo) {
       String uniqueId = appInfo.pageInfo.uniqueId;
       String paramsJsonObjectString = appInfo.pageInfo.paramsJsonObjectString;
       print(
@@ -110,7 +110,7 @@ void appRun(RoutesBuilder routesBuilder,
   }, zoneSpecification: ZoneSpecification(
       print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
     try {
-      if (BaseBridgeApplication.appInfo.debug) {
+      if (BaseBridgeAppInfo.appInfo.debug) {
         parent.print(zone, line);
       }
     } catch (e, _) {

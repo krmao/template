@@ -47,7 +47,7 @@ public class STFlutterBridgeChannel implements FlutterPlugin {
         innerPlugins.add(new STFlutterURLPlugin());
         innerPlugins.add(new STFlutterEnvPlugin());
         innerPlugins.add(new STFlutterEventPlugin());
-        innerPlugins.add(new STFlutterApplicationPlugin());
+        innerPlugins.add(new STFlutterAppInfoPlugin());
         registerPlugins(innerPlugins);
     }
 

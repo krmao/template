@@ -31,7 +31,7 @@ class BridgeWidgetState extends BaseStateDefault {
   @override
   void initState() {
     print("initState time=${DateTime.now()}");
-    PageBridge.getCurrentPageInitArguments().then((value) {
+    BaseBridgePage.getCurrentPageInitArguments().then((value) {
       print("argumentsFromAsyncGet return value=$value time=${DateTime.now()}");
       setState(() {
         this.argumentsFromAsyncGet = "$value";
@@ -70,7 +70,7 @@ class BridgeWidgetState extends BaseStateDefault {
   Future<bool> onBackPressed(BuildContext context) {
     print("onBackPressed dataReturnPre=$dataReturnPreOnBackPressed");
     this.dataReturnPreOnBackPressedTime = DateTime.now();
-    PageBridge.popPage(
+    BaseBridgePage.popPage(
         argumentsJsonString: json.encode({
       "returnTime": dataReturnPreOnBackPressedTime.toString(),
       "data": dataReturnPreOnBackPressed
@@ -157,27 +157,27 @@ class BridgeWidgetState extends BaseStateDefault {
           },
         ),
         getItemWidget('show toast by Toast plugin',
-            () => {Toast.show("I am native Toast!!!")}),
+            () => {BaseBridgeToast.show("I am native Toast!!!")}),
         getItemWidget(
             'open flutter bridge',
-            () => PageBridge.pushPage("FlutterBridge",
+            () => BaseBridgePage.pushPage("FlutterBridge",
                 argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter bridge 2',
-            () => URL.openURL<dynamic>(
+            () => BaseBridgeURL.openURL<dynamic>(
                 'smart://template/flutter?page=FlutterBridge&params=' +
                     json.encode({"fromPage-pre": uniqueId}))),
         getItemWidget(
             'open flutter player',
-            () => PageBridge.pushPage("FlutterPlayer",
+            () => BaseBridgePage.pushPage("FlutterPlayer",
                 argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter order',
-            () => PageBridge.pushPage("FlutterOrder",
+            () => BaseBridgePage.pushPage("FlutterOrder",
                 argument: {"fromPage-pre": uniqueId})),
         getItemWidget(
             'open flutter settings',
-            () => PageBridge.pushPage("FlutterSettings",
+            () => BaseBridgePage.pushPage("FlutterSettings",
                 argument: {"fromPage-pre": uniqueId})),
       ],
     );

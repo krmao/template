@@ -44,7 +44,7 @@ object STFlutterBoostInitializer {
                         STFlutterURLPlugin(),
                         STFlutterEnvPlugin(),
                         STFlutterEventPlugin(),
-                        STFlutterApplicationPlugin()
+                        STFlutterAppInfoPlugin()
                 )
         )
 

@@ -18,7 +18,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     print(
         "[page] uniqueId=$uniqueId, $runtimeType - initState ${this.toStringShort()}");
 
-    Event.addEventListener(KEY_ARGUMENTS_JSON_STRING, (eventName, eventData) {
+    BaseBridgeEvent.addEventListener(KEY_ARGUMENTS_JSON_STRING, (eventName, eventData) {
       print(
           "[page] uniqueId=$uniqueId, $runtimeType - onMethodCallBack eventName=$eventName, eventData=$eventData");
 
@@ -70,7 +70,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   void dispose() {
     super.dispose();
-    Event.removeEventListener(KEY_ARGUMENTS_JSON_STRING, containerId: uniqueId);
+    BaseBridgeEvent.removeEventListener(KEY_ARGUMENTS_JSON_STRING, containerId: uniqueId);
     print("[page] uniqueId=$uniqueId, $runtimeType - dispose");
   }
 

@@ -1,6 +1,6 @@
 import 'base_bridge.dart';
 
-class BaseBridgeApplication extends BaseBridge {
+class BaseBridgeAppInfo extends BaseBridge {
   static BaseAppInfo appInfo;
 
   static Future<BaseAppInfo> getAppInfo() async {
@@ -32,13 +32,13 @@ class BaseBridgeApplication extends BaseBridge {
             pageInfoMap['paramsJsonObjectString'];
       }
     }
-    BaseBridgeApplication.appInfo = appInfo;
+    BaseBridgeAppInfo.appInfo = appInfo;
     return appInfo;
   }
 
   @override
   String getPluginName() {
-    return "Application";
+    return "AppInfo";
   }
 }
 

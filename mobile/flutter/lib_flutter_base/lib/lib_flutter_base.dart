@@ -13,7 +13,7 @@ export 'src/base_state.dart';
 export 'src/base_state_default.dart';
 export 'src/base_state_default.dart';
 export 'src/bridge/base_bridge.dart';
-export 'src/bridge/base_bridge_application.dart';
+export 'src/bridge/base_bridge_app_info.dart';
 export 'src/bridge/base_bridge_compact.dart';
 export 'src/bridge/base_bridge_env.dart';
 export 'src/bridge/base_bridge_event.dart';

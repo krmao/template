@@ -9,10 +9,10 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 
 @Suppress("unused", "UNUSED_PARAMETER")
-class STFlutterApplicationPlugin : STFlutterBasePlugin() {
+class STFlutterAppInfoPlugin : STFlutterBasePlugin() {
 
     override fun getPluginName(): String {
-        return "Application"
+        return "AppInfo"
     }
 
     @STFlutterPluginMethod

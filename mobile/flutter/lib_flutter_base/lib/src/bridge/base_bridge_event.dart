@@ -2,7 +2,7 @@ import 'base_bridge.dart';
 
 typedef EventCallBack = void Function(String eventName, Map eventData);
 
-class Event extends BaseBridge {
+class BaseBridgeEvent extends BaseBridge {
   // ignore: non_constant_identifier_names
   static String BRIDGE_EVENT_NAME = "__codesdancing_flutter_event__";
   static Map<String, Map> eventListeners = new Map();

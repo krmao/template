@@ -12,32 +12,15 @@ class BaseBridgeEvent extends BaseBridge {
     if (!registerMethodCall) {
       BaseBridge.registerMethodCallBack(BRIDGE_EVENT_NAME,
           (String methodName, dynamic arguments) {
+        dynamic returnEventKey = arguments['eventKey'];
+        dynamic returnEventInfo = arguments['eventInfo'];
         print(
-            "[page] $BRIDGE_EVENT_NAME method callback methodName=$methodName, arguments=$arguments");
-        print(
-            "[page] $BRIDGE_EVENT_NAME method callback arguments['eventKey']=${arguments['eventKey']}, arguments['eventInfo']=${arguments['eventInfo']}");
-
-        print(
-            "[page] $BRIDGE_EVENT_NAME arguments['eventKey'] != null=${arguments['eventKey'] != null}, arguments['eventInfo'] != null=${arguments['eventInfo'] != null}");
-
-        if (arguments['eventKey'] != null && arguments['eventInfo'] != null) {
-
-          dynamic returnEventKey = arguments['eventKey'];
-          dynamic returnEventInfo = arguments['eventInfo'];
-
-          print(
-              "[page] _invokeEvent returnEventKey=$returnEventKey, returnEventInfo=$returnEventInfo");
-
+            "[page] $BRIDGE_EVENT_NAME method callback methodName=$methodName, arguments=$arguments, returnEventKey=$returnEventKey, returnEventInfo=$returnEventInfo");
+        if (returnEventKey != null && returnEventInfo != null) {
           eventMap.forEach((itemEventId, itemMap) {
-            print(
-                "[page] _invokeEvent ---- itemEventId=$itemEventId, itemMap=$itemMap");
             itemMap.forEach((itemEventKey, listener) {
-              print(
-                  "[page] _invokeEvent -------- itemEventKey=$itemEventKey, listener=$listener");
               if (returnEventKey == itemEventKey) {
                 (listener as List)?.forEach((callback) {
-                  print(
-                      "[page] _invokeEvent **** do listener eventCallBack=$eventCallBack, callback=$callback");
                   callback(returnEventKey, returnEventInfo);
                 });
               }

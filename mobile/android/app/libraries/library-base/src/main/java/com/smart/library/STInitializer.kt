@@ -53,7 +53,7 @@ object STInitializer {
             if (!onRNFirstScreenAttachedCallbacks.contains(callback)) onRNFirstScreenAttachedCallbacks.add(callback)
             notifyOnRNFirstScreenAttachedCallback()
 
-            val eventId: Any = this
+            val eventId = "$this-${this.hashCode()}"
             STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
                 STEventManager.unregisterAll(eventId)
                 if ("react-native-inited" == eventKey) {

@@ -7,11 +7,13 @@
 
 #import "STFlutterMultipleUtils.h"
 #import "STFlutterInitializer.h"
-#import "STJsonUtil.h"
 #import "STFlutterMultipleInitializer.h"
 #import "STFlutterMultipleViewController.h"
 #import "STFlutterMultipleHomeViewController.h"
 #import "LibFlutterBaseMultiplePlugin.h"
+#import <LibIosBase/STInitializer.h>
+#import <LibIosBase/STJsonUtil.h>
+#import <LibIosBase/STThreadUtil.h>
 
 @implementation STFlutterMultipleUtils
 

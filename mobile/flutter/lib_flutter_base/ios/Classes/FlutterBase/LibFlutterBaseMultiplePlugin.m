@@ -1,7 +1,7 @@
 #import "LibFlutterBaseMultiplePlugin.h"
 #import "FlutterBoostPlugin.h"
 #import "STFlutterPlugin.h"
-#import "STSystemUtil.h"
+#import <LibIosBase/STSystemUtil.h>
 
 static NSString * BRIDGE_EVENT_NAME = @"__codesdancing_flutter_event__";
 @interface LibFlutterBaseMultiplePlugin(){

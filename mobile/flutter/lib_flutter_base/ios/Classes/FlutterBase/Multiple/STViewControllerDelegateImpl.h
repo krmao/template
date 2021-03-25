@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "STFlutterMultipleInitializer.h"
-#import "STStringUtil.h"
+#import <LibIosBase/STStringUtil.h>
 #import "LibFlutterBaseMultiplePlugin.h"
 #import <LibIosBase/STJsonUtil.h>
 #import "STViewControllerDelegate.h"

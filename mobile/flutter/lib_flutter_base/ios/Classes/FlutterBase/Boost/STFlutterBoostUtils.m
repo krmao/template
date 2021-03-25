@@ -9,7 +9,7 @@
 #import "FlutterBoost.h"
 #import "STFlutterBoostViewController.h"
 #import "STFlutterBoostHomeViewController.h"
-#import "STJsonUtil.h"
+#import <LibIosBase/STJsonUtil.h>
 
 @implementation STFlutterBoostUtils
 

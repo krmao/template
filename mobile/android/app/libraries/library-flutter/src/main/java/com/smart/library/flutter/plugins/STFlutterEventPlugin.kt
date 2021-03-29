@@ -1,8 +1,8 @@
 package com.smart.library.flutter.plugins
 
 import android.app.Activity
-import com.idlefish.flutterboost.FlutterBoost
 import com.smart.library.util.STEventManager
+import com.smart.library.util.STJsonUtil
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
@@ -42,7 +42,7 @@ class STFlutterEventPlugin : STFlutterBasePlugin() {
         val eventName = requestData.optString("eventName")
         val eventData = requestData.optJSONObject("eventInfo")
 
-        STEventManager.sendEvent(eventName, eventData)
+        STEventManager.sendEvent(eventName, STJsonUtil.toMap(eventData))
         callbackSuccess(result, null)
     }
 

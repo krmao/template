@@ -36,6 +36,10 @@ class STCrashActivity : AppCompatActivity() {
         setContentView(R.layout.st_crash_activity)
     }
 
+    fun testJavaCrashNullPointerInMainThread_onClick(view: View?) {
+        val text:String? = null
+        text!!.toString()
+    }
     fun testNativeCrashInMainThread_onClick(view: View?) {
         XCrash.testNativeCrash(false)
     }

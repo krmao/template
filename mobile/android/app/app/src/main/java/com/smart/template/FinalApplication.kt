@@ -13,7 +13,7 @@ class FinalApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        STInitializer.attachApplicationBaseContext(base)
+        // STInitializer.attachApplicationBaseContext(base)
     }
 
     override fun onCreate() {

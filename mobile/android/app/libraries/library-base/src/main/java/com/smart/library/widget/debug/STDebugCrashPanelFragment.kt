@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smart.library.R
-import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
+import kotlin.system.exitProcess
 
 class STDebugCrashPanelFragment : STBaseFragment() {
 
@@ -51,7 +51,7 @@ class STDebugCrashPanelFragment : STBaseFragment() {
             jsonObjectString: String
         ) {
             if (from != null) {
-                val intent: Intent = STActivity.createIntent(
+                val intent: Intent = STDebugCrashActivity.createIntent(
                     context = from,
                     fragmentClass = STDebugCrashPanelFragment::class.java,
                     fragmentArguments = Bundle().apply {
@@ -62,8 +62,23 @@ class STDebugCrashPanelFragment : STBaseFragment() {
                     activityCloseEnterAnimation = R.anim.st_anim_fade_enter,
                     activityCloseExitAnimation = R.anim.st_anim_fade_exit
                 )
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+
+                // https://github.com/Ereza/CustomActivityOnCrash/blob/master/library/src/main/java/cat/ereza/customactivityoncrash/CustomActivityOnCrash.java
+                if (intent.component != null) {
+                    //If the class name has been set, we force it to simulate a Launcher launch.
+                    //If we don't do this, if you restart from the error activity, then press home,
+                    //and then launch the activity from the launcher, the main activity appears twice on the back stack.
+                    //This will most likely not have any detrimental effect because if you set the Intent component,
+                    //if will always be launched regardless of the actions specified here.
+                    intent.action = Intent.ACTION_MAIN
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                }
                 from.startActivity(intent)
+
+                // https://stackoverflow.com/a/34356589/4348530
+                android.os.Process.killProcess(android.os.Process.myPid())
+                exitProcess(10)
             } else {
                 STLogUtil.e(TAG, "context is null !")
             }

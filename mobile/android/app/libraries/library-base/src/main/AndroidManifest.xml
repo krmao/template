@@ -15,6 +15,7 @@
 
     <application
         android:allowBackup="true"
+        android:clearTaskOnLaunch="true"
         android:taskAffinity="${applicationId}">
         <!--region 安卓 N 文件访问方式适配 -->
         <provider
@@ -31,6 +32,15 @@
         <activity
             android:name=".base.STActivity"
             android:theme="@style/STAppTheme.Normal.Transparent"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <activity
+            android:name=".widget.debug.STDebugCrashActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:process=":CrashPanel"
+            android:taskAffinity=""
+            android:theme="@style/STAppTheme.Normal.Translucent.Fade"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->

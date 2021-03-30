@@ -27,7 +27,7 @@ class STRecyclerViewStickyHeaderUtil(layoutManager: RecyclerView.LayoutManager, 
 
         override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            val currentMinVisiblePosition: Int = firstVisibleItemPositions.min() ?: Int.MAX_VALUE
+            val currentMinVisiblePosition: Int = firstVisibleItemPositions.minOrNull() ?: Int.MAX_VALUE
             if (dy == 0) { // the first time show the recyclerView items
                 findFirstVisibleItemPositions(firstVisibleItemPositions)
 
@@ -38,7 +38,7 @@ class STRecyclerViewStickyHeaderUtil(layoutManager: RecyclerView.LayoutManager, 
             } else if (dy != 0) { //  pull down the recyclerView then dy<0 , pull up the recyclerView then dy>0
                 findFirstVisibleItemPositions(firstVisibleItemPositions)
                 findLastVisibleItemPositions(lastVisibleItemPositions)
-                val currentMaxVisiblePosition: Int = lastVisibleItemPositions.max() ?: Int.MIN_VALUE
+                val currentMaxVisiblePosition: Int = lastVisibleItemPositions.maxOrNull() ?: Int.MIN_VALUE
                 if (currentMinVisiblePosition < 0) return
 
                 val headerPositionBeforeCurrentMinVisiblePosition: Int = findHeaderPositionBeforeCurrentMinVisiblePosition(currentMinVisiblePosition) // get one header position before current minimum visible item position

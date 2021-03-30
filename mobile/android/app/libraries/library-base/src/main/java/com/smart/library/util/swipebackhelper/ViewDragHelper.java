@@ -31,7 +31,7 @@ import java.util.Arrays;
  * number of useful operations and state tracking for allowing a user to drag
  * and reposition views within their parent ViewGroup.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings({"deprecation", "Convert2Lambda", "unused", "RedundantSuppression", "PointlessBitwiseExpression"})
 public class ViewDragHelper {
     private static final String TAG = "ViewDragHelper";
 
@@ -140,7 +140,7 @@ public class ViewDragHelper {
 
     private int mTrackingEdges;
 
-    private androidx.core.widget.ScrollerCompat mScroller;
+    private final androidx.core.widget.ScrollerCompat mScroller;
 
     private final Callback mCallback;
 
@@ -158,6 +158,7 @@ public class ViewDragHelper {
      * view upon request. The callback also makes decisions governing the range
      * and draggability of child views.
      */
+    @SuppressWarnings("unused")
     public static abstract class Callback {
         /**
          * Called when the drag state changes. See the <code>STATE_*</code>
@@ -1002,6 +1003,7 @@ public class ViewDragHelper {
      * @param y      Y coordinate of the active touch point
      * @return true if child views of v can be scrolled by delta of dx.
      */
+    @SuppressWarnings("SameParameterValue")
     protected boolean canScroll(View v, boolean checkV, int dx, int dy, int x, int y) {
         if (v instanceof ViewGroup) {
             final ViewGroup group = (ViewGroup) v;

@@ -303,6 +303,7 @@ object STWifiUtil {
     @Deprecated("Starting with Build.VERSION_CODES#Q, applications are not allowed to")
     @RequiresPermission(allOf = [permission.ACCESS_NETWORK_STATE, permission.ACCESS_WIFI_STATE, permission.CHANGE_WIFI_STATE, permission.ACCESS_FINE_LOCATION])
     private fun setWifiEnabledPreAndroidQ(application: Application? = STInitializer.application(), enable: Boolean, wifiManager: WifiManager? = getWifiManager(application), wifiStateListener: WifiStateListener? = null) {
+        STLogUtil.d(TAG, "enable=$enable, wifiStateListener=$wifiStateListener")
         if (!isAndroidQOrLater()) {
             wifiManager ?: return
             if (wifiManager.isWifiEnabled) {
@@ -408,7 +409,7 @@ object STWifiUtil {
             }
 
             disconnectAllCachedWifi(true)
-            
+
             STLogUtil.w(TAG, "connectWifiPreAndroidQ -> disconnect")
             wifiManager.disconnect()
             // remove last configuration
@@ -845,7 +846,7 @@ object STWifiUtil {
     }
 
     @JvmStatic
-    fun getSummary(context: Context, ssid: String?, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String? {
+    fun getSummary(context: Context, ssid: String?, state: NetworkInfo.DetailedState?, isEphemeral: Boolean, passpointProvider: String?): String {
         if (state == NetworkInfo.DetailedState.CONNECTED && ssid == null) {
             if (!TextUtils.isEmpty(passpointProvider)) {
                 return String.format(context.getString(R.string.connected_via_passpoint), passpointProvider)
@@ -871,7 +872,7 @@ object STWifiUtil {
     //so cachedConnectionResultMap only need valid while the calling application exits
     data class CachedWifiModel(var scanResult: ScanResult? = null, var wifiConfiguration: WifiConfiguration? = null, var connectionResult: ConnectionResult? = null)
 
-    fun getCachedWifiModelUniqueKey(scanResult: ScanResult?): String? = if (scanResult == null) "" else "${scanResult.SSID}-${scanResult.BSSID}-${scanResult.capabilities}-${scanResult.frequency}"
+    fun getCachedWifiModelUniqueKey(scanResult: ScanResult?): String = if (scanResult == null) "" else "${scanResult.SSID}-${scanResult.BSSID}-${scanResult.capabilities}-${scanResult.frequency}"
     val cachedConnectionResultMap: MutableMap<String, CachedWifiModel> = mutableMapOf()
     fun cacheWifiModel(scanResult: ScanResult?, wifiConfiguration: WifiConfiguration?, connectionResult: ConnectionResult?) {
         val key: String? = getCachedWifiModelUniqueKey(scanResult)

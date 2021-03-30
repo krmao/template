@@ -146,8 +146,8 @@ object STSystemUtil {
     fun statusBarHeight(): Int {
         val resources: Resources = Resources.getSystem()
         var statusBarHeight = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) statusBarHeight = resources.getDimensionPixelSize(resourceId) ?: 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) statusBarHeight = resources.getDimensionPixelSize(resourceId)
         return statusBarHeight
     }
 
@@ -166,8 +166,8 @@ object STSystemUtil {
     fun navigationBarHeight(): Int {
         val resources: Resources = Resources.getSystem()
         var navigationBarHeight = 0
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android") ?: 0
-        if (resourceId > 0) navigationBarHeight = resources.getDimensionPixelSize(resourceId) ?: 0
+        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (resourceId > 0) navigationBarHeight = resources.getDimensionPixelSize(resourceId)
         return navigationBarHeight
     }
 

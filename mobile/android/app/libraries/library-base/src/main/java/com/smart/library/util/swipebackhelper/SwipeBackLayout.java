@@ -20,10 +20,9 @@ import com.smart.library.R;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("RedundantSuppression")
 @SuppressLint("UseCompatLoadingForDrawables")
 public class SwipeBackLayout extends FrameLayout {
-    private static final String TAG = "ViewDragHelper";
 
     /**
      * Minimum velocity that will be detected as a fling
@@ -68,7 +67,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     private View mContentView;
 
-    private ViewDragHelper mDragHelper;
+    private final ViewDragHelper mDragHelper;
 
     private float mScrollPercent;
 
@@ -87,7 +86,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     private boolean mInLayout;
 
-    private Rect mTmpRect = new Rect();
+    private final Rect mTmpRect = new Rect();
 
     /**
      * Edge being dragged
@@ -102,6 +101,7 @@ public class SwipeBackLayout extends FrameLayout {
         this(context, attrs, 0);
     }
 
+    @SuppressWarnings("unused")
     public SwipeBackLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         mDragHelper = ViewDragHelper.create(this, new ViewDragCallback());
@@ -130,8 +130,6 @@ public class SwipeBackLayout extends FrameLayout {
 
     /**
      * Set up contentView which will be moved by user gesture
-     *
-     * @param view
      */
     private void setContentView(View view) {
         mContentView = view;
@@ -189,15 +187,13 @@ public class SwipeBackLayout extends FrameLayout {
      */
     public void addSwipeListener(SwipeListener listener) {
         if (mListeners == null) {
-            mListeners = new ArrayList<SwipeListener>();
+            mListeners = new ArrayList<>();
         }
         mListeners.add(listener);
     }
 
     /**
      * Removes a listener from the set of listeners
-     *
-     * @param listener
      */
     public void removeSwipeListener(SwipeListener listener) {
         if (mListeners == null) {
@@ -210,8 +206,6 @@ public class SwipeBackLayout extends FrameLayout {
     /**
      * Set scroll threshold, we will close the activity, when scrollPercent over
      * this value
-     *
-     * @param threshold
      */
     public void setScrollThreshold(float threshold) {
         if (threshold >= 1.0f || threshold <= 0) {
@@ -226,6 +220,7 @@ public class SwipeBackLayout extends FrameLayout {
         invalidate();
     }
 
+    @SuppressWarnings("deprecation")
     public void setShadow(int resId) {
         setShadow(getResources().getDrawable(resId));
     }
@@ -235,7 +230,7 @@ public class SwipeBackLayout extends FrameLayout {
      */
     public void scrollToFinishActivity() {
         final int childWidth = mContentView.getWidth();
-        int left = 0, top = 0;
+        int left, top = 0;
         left = childWidth + mShadowLeft.getIntrinsicWidth() + OVERSCROLL_DISTANCE;
         mDragHelper.smoothSlideViewTo(mContentView, left, top);
         invalidate();
@@ -254,6 +249,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!mEnable) {
@@ -422,7 +418,7 @@ public class SwipeBackLayout extends FrameLayout {
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             final int childWidth = releasedChild.getWidth();
 
-            int left = 0, top = 0;
+            int left, top = 0;
             //判断释放以后是应该滑到最右边(关闭)，还是最左边（还原）
             left = xvel > 0 || xvel == 0 && mScrollPercent > mScrollThreshold ? childWidth
                     + mShadowLeft.getIntrinsicWidth() + OVERSCROLL_DISTANCE : 0;

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.smart.library.widget.loading
 
 import android.content.Context

@@ -179,6 +179,7 @@ class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: Att
     /**
      * 状态改变的情况下 必然触发 updateViewOnCheckChanged
      */
+    @Suppress("DEPRECATION")
     fun setCheckedWithUpdateViewStatus(itemView: View?, checked: Boolean) {
         STLogUtil.sync { STLogUtil.e(TAG, "setCheckedWithUpdateViewStatus start, thread=${Thread.currentThread().name}") }
         if (itemView != null) {

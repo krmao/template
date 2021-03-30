@@ -1,3 +1,5 @@
+@file:Suppress("NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER")
+
 package com.smart.library.util.retrofit
 
 import com.smart.library.STInitializer
@@ -28,6 +30,7 @@ object STApiManager {
         return ObservableTransformer { changeObservable(it, transformerDataFromResponseOrThrowRetrofitException) }
     }
 
+    @Suppress("NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER")
     @JvmStatic
     fun <Response, T> changeObservable(observable: Observable<Response?>, transformerDataFromResponseOrThrowRetrofitException: (response: Response?) -> T?): Observable<T?> {
         return wrapObservable(observable.map { transformerDataFromResponseOrThrowRetrofitException.invoke(it) })

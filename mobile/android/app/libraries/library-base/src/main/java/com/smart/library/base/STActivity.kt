@@ -62,6 +62,7 @@ open class STActivity : STBaseActivity() {
         /**
          * 由 fragment 跳转, 由 fragment 接收结果
          */
+        @Suppress("DEPRECATION")
         @JvmStatic
         @JvmOverloads
         fun startActivity(

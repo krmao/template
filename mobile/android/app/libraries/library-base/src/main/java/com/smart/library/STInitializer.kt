@@ -394,7 +394,7 @@ object STInitializer {
 
                     STDebugFragment.showDebugNotification()
                     @Suppress("UNUSED_VARIABLE")
-                    val ignoreResultV2 = RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { changeEvent ->
+                    val ignoreResultV2 = RxBus.toObservable(STApplicationVisibleChangedEvent::class.java).subscribe { _ ->
                         // if (changeEvent.isApplicationVisible) STDebugFragment.showDebugNotification() else STDebugFragment.cancelDebugNotification()
                     }
                 }

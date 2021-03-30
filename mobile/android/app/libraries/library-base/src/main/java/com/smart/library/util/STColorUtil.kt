@@ -35,6 +35,7 @@ object STColorUtil {
         return darkness >= 0.5
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @ColorInt
     fun getRipplePressedColor(context: Context, @ColorInt normalColor: Int): Int {
         return ContextCompat.getColor(context, R.color.st_pressed)

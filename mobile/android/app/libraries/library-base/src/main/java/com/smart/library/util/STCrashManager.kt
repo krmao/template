@@ -95,6 +95,7 @@ object STCrashManager {
         }.start()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun sendThenDeleteCrashLog(logPath: String, emergency: String?) {
         // Parse
         //Map<String, String> map = TombstoneParser.parse(logPath, emergency);

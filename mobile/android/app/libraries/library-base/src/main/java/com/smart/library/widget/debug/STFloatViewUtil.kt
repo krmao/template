@@ -19,7 +19,7 @@ import com.smart.library.util.STSystemUtil
 <!--悬浮窗-->
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
-@Suppress("DEPRECATION", "unused", "ClickableViewAccessibility", "PrivatePropertyName")
+@Suppress("DEPRECATION", "unused", "ClickableViewAccessibility", "PrivatePropertyName", "ReplaceJavaStaticMethodWithKotlinAnalog")
 enum class STFloatViewUtil {
     @SuppressLint("StaticFieldLeak")
     INSTANCE;
@@ -47,14 +47,15 @@ enum class STFloatViewUtil {
         windowLayoutParams.width = defaultWH
         windowLayoutParams.height = defaultWH
         windowLayoutParams.gravity = Gravity.START or Gravity.TOP
-        windowLayoutParams.x = STPreferencesUtil.getInt(KEY_LAST_X, defaultX) ?: 0
-        windowLayoutParams.y = STPreferencesUtil.getInt(KEY_LAST_Y, defaultY) ?: 0
+        windowLayoutParams.x = STPreferencesUtil.getInt(KEY_LAST_X, defaultX)
+        windowLayoutParams.y = STPreferencesUtil.getInt(KEY_LAST_Y, defaultY)
         floatView.setOnTouchListener(object : View.OnTouchListener {
             private var x: Float = 0.toFloat()
             private var y: Float = 0.toFloat()
             private var rawX: Float = 0.toFloat()
             private var rawY: Float = 0.toFloat()
 
+            @Suppress("ControlFlowWithEmptyBody")
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -101,9 +102,10 @@ enum class STFloatViewUtil {
         this.listener = listener
     }
 
+    @Suppress("ControlFlowWithEmptyBody")
     fun show() = try {
         hide()
-        if (isAwaysHide == true) {
+        if (isAwaysHide) {
         } else {
             windowManager.addView(floatView, windowLayoutParams)
         }
@@ -117,6 +119,7 @@ enum class STFloatViewUtil {
         STPreferencesUtil.putInt(KEY_LAST_Y, defaultY)
     }
 
+    @Suppress("ControlFlowWithEmptyBody")
     fun hide() = try {
         if (!floatView.isAttachedToWindow) {
         } else windowManager.removeViewImmediate(floatView)

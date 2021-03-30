@@ -23,6 +23,7 @@ package com.smart.library.util
 
 import android.content.Context
 import android.util.Log
+import com.smart.library.BuildConfig
 import com.smart.library.STInitializer
 import com.smart.library.widget.debug.STDebugCrashPanelFragment
 import org.json.JSONObject
@@ -119,7 +120,12 @@ object STCrashManager {
             writer = FileWriter(debug, false)
             val desc = JSONObject(TombstoneParser.parse(logPath, emergency) as Map<String, String>).toString()
             Log.e(TAG, desc)
-            STDebugCrashPanelFragment.startActivity(base, desc)
+
+            // 仅在调试模式下启动
+            if (BuildConfig.DEBUG) {
+                STDebugCrashPanelFragment.startActivity(base, desc)
+            }
+
             writer.write(desc)
         } catch (e: Exception) {
             Log.d(TAG, "debug failed", e)

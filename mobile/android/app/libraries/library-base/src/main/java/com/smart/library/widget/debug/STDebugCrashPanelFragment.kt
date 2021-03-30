@@ -50,6 +50,7 @@ class STDebugCrashPanelFragment : STBaseFragment() {
             from: Context?,
             jsonObjectString: String
         ) {
+
             if (from != null) {
                 val intent: Intent = STDebugCrashActivity.createIntent(
                     context = from,

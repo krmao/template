@@ -22,10 +22,12 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/st_provider_paths" />
+                android:resource="@xml/st_provider_paths"
+                tools:replace="name,resource" />
         </provider>
         <!--endregion-->
 

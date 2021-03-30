@@ -298,10 +298,13 @@ object STInitializer {
      * http://androidxref.com/4.4.4_r1/xref/dalvik/libdex/DexFile.cpp
      * https://github.com/lanshifu/MultiDexTest
      */
-    fun attachApplicationBaseContext(base: Context?): STInitializer {
+    @JvmStatic
+    fun attachApplicationBaseContext(base: Context?, enableCrashManager: Boolean = true): STInitializer {
         val startTime = System.currentTimeMillis()
         MultiDex.install(base)
-        STCrashManager.attachBaseContext(base)
+        if (enableCrashManager) {
+            STCrashManager.attachBaseContext(base)
+        }
         println("MultiDex.install 耗时:${System.currentTimeMillis() - startTime}ms")
         return this
     }

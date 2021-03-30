@@ -24,6 +24,7 @@ package com.smart.library.util
 import android.content.Context
 import android.util.Log
 import com.smart.library.STInitializer
+import com.smart.library.widget.debug.STDebugCrashPanelFragment
 import org.json.JSONObject
 import xcrash.ICrashCallback
 import xcrash.TombstoneManager
@@ -43,7 +44,7 @@ object STCrashManager {
         val callback = ICrashCallback { logPath, emergency ->
             Log.d(TAG, "log path: " + (logPath ?: "(null)") + ", emergency: " + (emergency ?: "(null)"))
             if (emergency != null) {
-                debug(logPath, emergency)
+                debug(base, logPath, emergency)
 
                 // Disk is exhausted, send crash report immediately.
                 sendThenDeleteCrashLog(logPath, emergency)
@@ -51,12 +52,12 @@ object STCrashManager {
                 // Add some expanded sections. Send crash report at the next time APP startup.
 
                 // OK
-                TombstoneManager.appendSection(logPath, "expanded_key_1", "expanded_content")
-                TombstoneManager.appendSection(logPath, "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2")
+                TombstoneManager.appendSection(logPath, "from", "---- codesdancing.com ----")
+                // TombstoneManager.appendSection(logPath, "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2")
 
                 // Invalid. (Do NOT include multiple consecutive newline characters ("\n\n") in the content string.)
                 // TombstoneManager.appendSection(logPath, "expanded_key_3", "expanded_content_row_1\n\nexpanded_content_row_2");
-                debug(logPath, null)
+                debug(base, logPath, null)
             }
         }
         Log.d(TAG, "xCrash SDK init: start")
@@ -109,7 +110,7 @@ object STCrashManager {
         //TombstoneManager.deleteTombstone(logPath);
     }
 
-    private fun debug(logPath: String, emergency: String?) {
+    private fun debug(base: Context?, logPath: String, emergency: String?) {
         // Parse and save the crash info to a JSON file for debugging.
         var writer: FileWriter? = null
         try {
@@ -118,6 +119,7 @@ object STCrashManager {
             writer = FileWriter(debug, false)
             val desc = JSONObject(TombstoneParser.parse(logPath, emergency) as Map<String, String>).toString()
             Log.e(TAG, desc)
+            STDebugCrashPanelFragment.startActivity(base, desc)
             writer.write(desc)
         } catch (e: Exception) {
             Log.d(TAG, "debug failed", e)

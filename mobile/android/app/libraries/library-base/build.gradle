@@ -51,21 +51,22 @@ api('org.hibernate:hibernate:3.1') {
 }*/
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
+    api 'com.yuyh.json:jsonviewer:1.0.6'
 
     /******* 官方支持库 ****************************************************************************/
     api "androidx.core:core-ktx:$rootProject.ext.androidXCoreVersion"
     api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
     // api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
-    api "androidx.viewpager:viewpager:$rootProject.ext.androidXVersion"
+    api "androidx.viewpager:viewpager:$rootProject.ext.androidXViewPagerVersion"
     api "androidx.viewpager2:viewpager2:1.1.0-alpha01"
-    api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXVersion"
+    api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXLegacySupportV4Version"
     api "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
     api "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintlayoutVersion"
     api "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
     api "androidx.recyclerview:recyclerview-selection:$rootProject.ext.androidXVersion"
     api "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"
-    api "androidx.cardview:cardview:$rootProject.ext.androidXVersion"
+    api "androidx.cardview:cardview:$rootProject.ext.androidXCardViewVersion"
     api "androidx.vectordrawable:vectordrawable-animated:$rootProject.ext.androidXVectorDrawableVersion"
     api "androidx.multidex:multidex:$rootProject.ext.androidXMultidexVersion"
 

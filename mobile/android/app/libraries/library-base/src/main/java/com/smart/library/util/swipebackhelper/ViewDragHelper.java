@@ -24,11 +24,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.VelocityTrackerCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.ScrollerCompat;
-
 import java.util.Arrays;
 
 /**
@@ -145,7 +140,7 @@ public class ViewDragHelper {
 
     private int mTrackingEdges;
 
-    private ScrollerCompat mScroller;
+    private androidx.core.widget.ScrollerCompat mScroller;
 
     private final Callback mCallback;
 
@@ -429,7 +424,7 @@ public class ViewDragHelper {
         mTouchSlop = vc.getScaledTouchSlop();
         mMaxVelocity = vc.getScaledMaximumFlingVelocity();
         mMinVelocity = vc.getScaledMinimumFlingVelocity();
-        mScroller = ScrollerCompat.create(context, sInterpolator);
+        mScroller = androidx.core.widget.ScrollerCompat.create(context, sInterpolator);
     }
 
     /**
@@ -653,8 +648,8 @@ public class ViewDragHelper {
         }
 
         return forceSettleCapturedViewAt(finalLeft, finalTop,
-                (int) VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
-                (int) VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId));
+                (int) androidx.core.view.VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
+                (int) androidx.core.view.VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId));
     }
 
     /**
@@ -791,8 +786,8 @@ public class ViewDragHelper {
         }
 
         mScroller.fling(mCapturedView.getLeft(), mCapturedView.getTop(),
-                (int) VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
-                (int) VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId),
+                (int) androidx.core.view.VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
+                (int) androidx.core.view.VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId),
                 minLeft, maxLeft, minTop, maxTop);
 
         setDragState(STATE_SETTLING);
@@ -933,11 +928,11 @@ public class ViewDragHelper {
     }
 
     private void saveLastMotion(MotionEvent ev) {
-        final int pointerCount = MotionEventCompat.getPointerCount(ev);
+        final int pointerCount = androidx.core.view.MotionEventCompat.getPointerCount(ev);
         for (int i = 0; i < pointerCount; i++) {
-            final int pointerId = MotionEventCompat.getPointerId(ev, i);
-            final float x = MotionEventCompat.getX(ev, i);
-            final float y = MotionEventCompat.getY(ev, i);
+            final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, i);
+            final float x = androidx.core.view.MotionEventCompat.getX(ev, i);
+            final float y = androidx.core.view.MotionEventCompat.getY(ev, i);
             mLastMotionX[pointerId] = x;
             mLastMotionY[pointerId] = y;
         }
@@ -1031,7 +1026,7 @@ public class ViewDragHelper {
         }
 
         return checkV
-                && (ViewCompat.canScrollHorizontally(v, -dx) || ViewCompat.canScrollVertically(v,
+                && (androidx.core.view.ViewCompat.canScrollHorizontally(v, -dx) || androidx.core.view.ViewCompat.canScrollVertically(v,
                 -dy));
     }
 
@@ -1045,8 +1040,8 @@ public class ViewDragHelper {
      * onInterceptTouchEvent
      */
     public boolean shouldInterceptTouchEvent(MotionEvent ev) {
-        final int action = MotionEventCompat.getActionMasked(ev);
-        final int actionIndex = MotionEventCompat.getActionIndex(ev);
+        final int action = androidx.core.view.MotionEventCompat.getActionMasked(ev);
+        final int actionIndex = androidx.core.view.MotionEventCompat.getActionIndex(ev);
 
         if (action == MotionEvent.ACTION_DOWN) {
             // Reset things for a new event stream, just in case we didn't get
@@ -1058,7 +1053,7 @@ public class ViewDragHelper {
             case MotionEvent.ACTION_DOWN: {
                 final float x = ev.getX();
                 final float y = ev.getY();
-                final int pointerId = MotionEventCompat.getPointerId(ev, 0);
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, 0);
                 saveInitialMotion(x, y, pointerId);
 
                 final View toCapture = findTopChildUnder((int) x, (int) y);
@@ -1066,9 +1061,9 @@ public class ViewDragHelper {
                 // Catch a settling view if possible.
                 tryCaptureViewForDrag(toCapture, pointerId);
 
-                if (mDragState == STATE_SETTLING){
+                if (mDragState == STATE_SETTLING) {
                     setDragState(STATE_DRAGGING);
-                }else if (mDragState == STATE_IDLE){
+                } else if (mDragState == STATE_IDLE) {
                     final int edgesTouched = mInitialEdgeTouched[pointerId];
                     if ((edgesTouched & mTrackingEdges) != 0) {
                         mCallback.onEdgeTouched(edgesTouched & mTrackingEdges, pointerId);
@@ -1077,10 +1072,10 @@ public class ViewDragHelper {
                 }
                 break;
             }
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int pointerId = MotionEventCompat.getPointerId(ev, actionIndex);
-                final float x = MotionEventCompat.getX(ev, actionIndex);
-                final float y = MotionEventCompat.getY(ev, actionIndex);
+            case androidx.core.view.MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, actionIndex);
+                final float x = androidx.core.view.MotionEventCompat.getX(ev, actionIndex);
+                final float y = androidx.core.view.MotionEventCompat.getY(ev, actionIndex);
                 saveInitialMotion(x, y, pointerId);
                 break;
             }
@@ -1089,12 +1084,12 @@ public class ViewDragHelper {
                     if (mVelocityTracker == null) {
                         mVelocityTracker = VelocityTracker.obtain();
                     }
-                    if(mDragState == STATE_DRAGGING)
+                    if (mDragState == STATE_DRAGGING)
                         mVelocityTracker.addMovement(ev);
-                    final int i = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                    final int i = androidx.core.view.MotionEventCompat.findPointerIndex(ev, mActivePointerId);
 
-                    final float x = MotionEventCompat.getX(ev, i);
-                    final float y = MotionEventCompat.getY(ev, i);
+                    final float x = androidx.core.view.MotionEventCompat.getX(ev, i);
+                    final float y = androidx.core.view.MotionEventCompat.getY(ev, i);
                     final float dx = x - mInitialMotionX[mActivePointerId];
                     final float dy = y - mInitialMotionY[mActivePointerId];
 
@@ -1104,15 +1099,15 @@ public class ViewDragHelper {
                     int slop = checkTouchSlop(toCapture, dx, dy);
 
                     if (slop == -1) cancel();
-                        else if (slop > 0 && tryCaptureViewForDrag(toCapture, mActivePointerId)) {
-                            break;
-                        }
+                    else if (slop > 0 && tryCaptureViewForDrag(toCapture, mActivePointerId)) {
+                        break;
+                    }
                     saveLastMotion(ev);
                 }
                 break;
             }
-            case MotionEventCompat.ACTION_POINTER_UP: {
-                final int pointerId = MotionEventCompat.getPointerId(ev, actionIndex);
+            case androidx.core.view.MotionEventCompat.ACTION_POINTER_UP: {
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, actionIndex);
                 clearMotionHistory(pointerId);
                 break;
             }
@@ -1142,8 +1137,8 @@ public class ViewDragHelper {
      */
     public void processTouchEvent(MotionEvent ev) {
 
-        final int action = MotionEventCompat.getActionMasked(ev);
-        final int actionIndex = MotionEventCompat.getActionIndex(ev);
+        final int action = androidx.core.view.MotionEventCompat.getActionMasked(ev);
+        final int actionIndex = androidx.core.view.MotionEventCompat.getActionIndex(ev);
 
         if (action == MotionEvent.ACTION_DOWN) {
             // Reset things for a new event stream, just in case we didn't get
@@ -1152,12 +1147,11 @@ public class ViewDragHelper {
         }
 
 
-
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 final float x = ev.getX();
                 final float y = ev.getY();
-                final int pointerId = MotionEventCompat.getPointerId(ev, 0);
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, 0);
                 saveInitialMotion(x, y, pointerId);
 
                 final View toCapture = findTopChildUnder((int) x, (int) y);
@@ -1165,9 +1159,9 @@ public class ViewDragHelper {
                 // Catch a settling view if possible.
                 tryCaptureViewForDrag(toCapture, pointerId);
 
-                if (mDragState == STATE_SETTLING){
+                if (mDragState == STATE_SETTLING) {
                     setDragState(STATE_DRAGGING);
-                }else if (mDragState == STATE_IDLE){
+                } else if (mDragState == STATE_IDLE) {
                     final int edgesTouched = mInitialEdgeTouched[pointerId];
                     if ((edgesTouched & mTrackingEdges) != 0) {
                         mCallback.onEdgeTouched(edgesTouched & mTrackingEdges, pointerId);
@@ -1177,10 +1171,10 @@ public class ViewDragHelper {
                 break;
             }
 
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int pointerId = MotionEventCompat.getPointerId(ev, actionIndex);
-                final float x = MotionEventCompat.getX(ev, actionIndex);
-                final float y = MotionEventCompat.getY(ev, actionIndex);
+            case androidx.core.view.MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, actionIndex);
+                final float x = androidx.core.view.MotionEventCompat.getX(ev, actionIndex);
+                final float y = androidx.core.view.MotionEventCompat.getY(ev, actionIndex);
 
                 saveInitialMotion(x, y, pointerId);
                 break;
@@ -1189,9 +1183,9 @@ public class ViewDragHelper {
             case MotionEvent.ACTION_MOVE: {
                 if (mDragState == STATE_JUDGING) {
 
-                    final int i = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
-                    final float x = MotionEventCompat.getX(ev, i);
-                    final float y = MotionEventCompat.getY(ev, i);
+                    final int i = androidx.core.view.MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                    final float x = androidx.core.view.MotionEventCompat.getX(ev, i);
+                    final float y = androidx.core.view.MotionEventCompat.getY(ev, i);
                     final float dx = x - mInitialMotionX[mActivePointerId];
                     final float dy = y - mInitialMotionY[mActivePointerId];
 
@@ -1215,15 +1209,15 @@ public class ViewDragHelper {
                     if (mVelocityTracker == null) {
                         mVelocityTracker = VelocityTracker.obtain();
                     }
-                    if(mDragState == STATE_DRAGGING)
+                    if (mDragState == STATE_DRAGGING)
                         mVelocityTracker.addMovement(ev);
 
-                    final int index = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                    final int index = androidx.core.view.MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     //如果触发手势已经结束，不做处理。等待所有手势结束再关闭
-                    if (index == -1)break;
+                    if (index == -1) break;
 
-                    final float x = MotionEventCompat.getX(ev, index);
-                    final float y = MotionEventCompat.getY(ev, index);
+                    final float x = androidx.core.view.MotionEventCompat.getX(ev, index);
+                    final float y = androidx.core.view.MotionEventCompat.getY(ev, index);
                     final int idx = (int) (x - mLastMotionX[mActivePointerId]);
                     final int idy = (int) (y - mLastMotionY[mActivePointerId]);
                     dragTo(mCapturedView.getLeft() + idx, mCapturedView.getTop() + idy, idx, idy);
@@ -1232,20 +1226,20 @@ public class ViewDragHelper {
                 break;
             }
 
-            case MotionEventCompat.ACTION_POINTER_UP: {
-                final int pointerId = MotionEventCompat.getPointerId(ev, actionIndex);
+            case androidx.core.view.MotionEventCompat.ACTION_POINTER_UP: {
+                final int pointerId = androidx.core.view.MotionEventCompat.getPointerId(ev, actionIndex);
                 clearMotionHistory(pointerId);
                 break;
             }
 
             case MotionEvent.ACTION_UP: {
-                    releaseViewForPointerUp();
+                releaseViewForPointerUp();
                 cancel();
                 break;
             }
 
             case MotionEvent.ACTION_CANCEL: {
-                    dispatchViewReleased(0, 0);
+                dispatchViewReleased(0, 0);
                 cancel();
                 break;
             }
@@ -1299,22 +1293,20 @@ public class ViewDragHelper {
      * @param dx    Motion since initial position along X axis
      * @param dy    Motion since initial position along Y axis
      * @return 1 if the touch slop has been crossed on horizontal
-     *          0 if the touch slop has not cross
-     *          -1 if the touch slop has been crossed on vertical
-     *          2 if the touch slop has been crossed on both
+     * 0 if the touch slop has not cross
+     * -1 if the touch slop has been crossed on vertical
+     * 2 if the touch slop has been crossed on both
      */
     private int checkTouchSlop(View child, float dx, float dy) {
         if (child == null) {
             return 0;
         }
-        if (dx<=mTouchSlop&&Math.abs(dy) <= mTouchSlop){
+        if (dx <= mTouchSlop && Math.abs(dy) <= mTouchSlop) {
             return 0;
-        }
-        else if (dx>mTouchSlop&&Math.abs(dy) <= mTouchSlop){
+        } else if (dx > mTouchSlop && Math.abs(dy) <= mTouchSlop) {
             mDragState = STATE_DRAGGING;
             return 1;
-        }
-        else if (dx<=mTouchSlop&&Math.abs(dy) > mTouchSlop){
+        } else if (dx <= mTouchSlop && Math.abs(dy) > mTouchSlop) {
             mDragState = STATE_IDLE;
             cancel();
             return -1;
@@ -1362,10 +1354,10 @@ public class ViewDragHelper {
     private void releaseViewForPointerUp() {
         mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
         final float xvel = clampMag(
-                VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
+                androidx.core.view.VelocityTrackerCompat.getXVelocity(mVelocityTracker, mActivePointerId),
                 mMinVelocity, mMaxVelocity);
         final float yvel = clampMag(
-                VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId),
+                androidx.core.view.VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId),
                 mMinVelocity, mMaxVelocity);
         if (getViewDragState() == STATE_DRAGGING)
             dispatchViewReleased(xvel, yvel);

@@ -4,11 +4,13 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.annotation.FloatRange
+import androidx.annotation.Keep
 import androidx.annotation.StyleRes
 import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.R
 import io.reactivex.disposables.CompositeDisposable
 
+@Keep
 interface STActivityDelegate {
 
     fun disposables(): CompositeDisposable

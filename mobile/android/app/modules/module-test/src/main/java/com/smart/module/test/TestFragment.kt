@@ -49,7 +49,7 @@ class TestFragment : STBaseFragment(), TestContract.View {
             tv_city_list.text = null
             presenter.loadData(true)
         }
-        loading_view.setOnRefreshClickListener(View.OnClickListener {
+        loading_view.setOnRefreshClickListener({
             presenter.loadData(true)
         })
         presenter.subscribe()

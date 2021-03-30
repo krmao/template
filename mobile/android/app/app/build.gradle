@@ -132,8 +132,6 @@ android {
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
-            // proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
-            // testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
         }
 
         /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
@@ -145,11 +143,11 @@ android {
         release {
             buildConfigField "int", "VERSION_RN", "$rootProject.ext.versionRN"
 
-            debuggable true
-            jniDebuggable true
-            minifyEnabled false
-            shrinkResources false
-            zipAlignEnabled false
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
             testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"

@@ -1,16 +1,19 @@
 package com.smart.module.test
 
-import com.smart.library.base.mvp.STBasePresenter
-import com.smart.library.base.mvp.STBaseView
+import com.smart.library.base.STMvpContract
 
 interface TestContract {
 
-    interface View : STBaseView<Presenter> {
+    interface View : STMvpContract.View {
         fun showData(cityList: List<Any>)
         fun showException(message: String)
+        fun showLoading()
+        fun hideLoading()
     }
 
-    interface Presenter : STBasePresenter {
+    interface Presenter : STMvpContract.Presenter {
         fun loadData(forceUpdate: Boolean)
+        fun subscribe()
+        fun unSubscribe()
     }
 }

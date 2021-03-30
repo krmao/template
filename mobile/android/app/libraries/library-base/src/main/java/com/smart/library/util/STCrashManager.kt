@@ -116,7 +116,9 @@ object STCrashManager {
             val debug = File(XCrash.getLogDir() + "/debug.json")
             debug.createNewFile()
             writer = FileWriter(debug, false)
-            writer.write(JSONObject(TombstoneParser.parse(logPath, emergency) as Map<String, String>).toString())
+            val desc = JSONObject(TombstoneParser.parse(logPath, emergency) as Map<String, String>).toString()
+            Log.e(TAG, desc)
+            writer.write(desc)
         } catch (e: Exception) {
             Log.d(TAG, "debug failed", e)
         } finally {

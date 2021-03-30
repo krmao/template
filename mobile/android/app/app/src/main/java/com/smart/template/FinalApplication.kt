@@ -3,7 +3,6 @@ package com.smart.template
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import com.simple.spiderman.SpiderMan
 import com.smart.library.STInitializer
 import com.smart.library.util.STReflectUtil
 import com.smart.template.home.tab.FinalHomeTabActivity
@@ -13,12 +12,11 @@ class FinalApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        // STInitializer.attachApplicationBaseContext(base)
+        STInitializer.attachApplicationBaseContext(base)
     }
 
     override fun onCreate() {
         super.onCreate()
-        SpiderMan.setTheme(R.style.SpiderManTheme_Dark)
 
         STInitializer.initialApplication(
             STInitializer.Config(

@@ -252,10 +252,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':library-base')
 
-    // https://github.com/simplepeng/SpiderMan
-    debugImplementation "com.simple:spiderman:1.1.7"
-    releaseImplementation "com.simple:spiderman-no-op:1.1.5"
-
     // <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     // <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     // <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>

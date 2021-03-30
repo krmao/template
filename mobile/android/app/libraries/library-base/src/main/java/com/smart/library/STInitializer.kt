@@ -342,7 +342,7 @@ object STInitializer {
         //endregion
 
         //region defaultUncaughtExceptionHandler
-        Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
+        // Thread.setDefaultUncaughtExceptionHandler { t, e -> STFileUtil.saveUncaughtException(t, e) }
         //endregion
 
         //region init rn and flutter immediately

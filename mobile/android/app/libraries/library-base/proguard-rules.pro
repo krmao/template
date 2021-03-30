@@ -9,21 +9,8 @@
 # -keepclassmembers      保留类成员名称和内容
 # -keepclassmembernames  保留类成员名称, 混淆内容
 
-# 关闭混淆
-# -dontobfuscate
-
-# 混淆时是否记录日志
-# -verbose
-# -dontshrink
-
-# 混淆时是否做预校验
-# -dontpreverify
 # 混淆时应用侵入式重载
 # -overloadaggressively
-# 是否使用大小写混合
-# -dontusemixedcaseclassnames
-# 指定不去忽略非公共的库类
-# -dontskipnonpubliclibraryclasses
 # -printseeds
 # -printconfiguration proguardConfiguration.txt
 # -printmapping proguardMapping.txt
@@ -32,10 +19,8 @@
 # 重新包装所有重命名的包并放在给定的单一包中
 -flattenpackagehierarchy 'codesdancing'
 -repackageclasses 'codesdancing'
-# 优化时允许访问并修改有修饰符的类和类的成员
--allowaccessmodification
 -keepparameternames
--keepattributes JavascriptInterface,Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,Annotation,EnclosingMethod
+-keepattributes JavascriptInterface,Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
 -renamesourcefileattribute SourceFile
 
 -keepclassmembers class * implements java.io.Serializable {

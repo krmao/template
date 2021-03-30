@@ -9,15 +9,9 @@
 # -keepclassmembers      保留类成员名称和内容
 # -keepclassmembernames  保留类成员名称, 混淆内容
 
-# 混淆时应用侵入式重载
-# -overloadaggressively
 # -printseeds
 # -printconfiguration proguardConfiguration.txt
 # -printmapping proguardMapping.txt
-# 确定统一的混淆类的成员名称来增加混淆
--useuniqueclassmembernames
-# 重新包装所有重命名的包并放在给定的单一包中
--flattenpackagehierarchy 'codesdancing'
 -repackageclasses 'codesdancing'
 -keepparameternames
 -keepattributes JavascriptInterface,Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod

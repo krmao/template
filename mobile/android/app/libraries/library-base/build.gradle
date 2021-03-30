@@ -35,18 +35,12 @@ android {
 
     buildTypes {
         debug {
-            debuggable true
-            jniDebuggable true
             minifyEnabled false
             zipAlignEnabled false
-            shrinkResources false
         }
 
         release {
-            debuggable false
-            jniDebuggable false
             minifyEnabled true
-            shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

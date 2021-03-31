@@ -16,9 +16,15 @@ android {
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
-    api project(':library-base')
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
 
-    api "androidx.preference:preference:1.1.0"
+    api "androidx.preference:preference:1.1.1"
 
     // required, enough for most devices.
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'

@@ -12,9 +12,16 @@ gradle.ext {
             'library_pictureviewer': ['enable': false],
             'library_livestreaming': ['enable': false],
             'library_base'         : [
-                    'repository_remote': [
-                            'enable'    : true,
-                            'dependency': 'com.codesdancing.libraries:library-base:0.0.1.52', // base utils
+                    'dependency_local'  : [
+                            'enable'    : false,
+                            'dependency': 'library-base-release',
+                    ],
+                    'dependency_remote' : [
+                            'enable'    : false,
+                            'dependency': 'com.codesdancing.libraries:library-base:0.0.2.0',
+                    ],
+                    'dependency_project': [
+                            'dependency': ':library-base',
                     ]
             ],
             'library_flutter'      : [
@@ -28,7 +35,7 @@ gradle.ext {
                                     'dependencyRelease': 'com.codesdancing.flutter_module:flutter_release:0.0.1-SNAPSHOT'
                             ]
                     ],
-                    'library_baseflutterutils'   : [
+                    'library_baseflutterutils'       : [
                             'enable'    : false,
                             'dependency': 'com.codesdancing.libraries:library-base-flutterutils:0.0.0.1', // base flutter utils // todo
                     ]

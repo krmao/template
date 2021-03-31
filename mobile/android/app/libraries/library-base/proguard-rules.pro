@@ -4,17 +4,17 @@
 # http://proguard.sourceforge.net/index.html#manual/usage.html
 # 成员 = 变量+方法
 
-# -keep                  保留指定的类和成员名称和内容
-# -keepnames             保留类和成员名称, 混淆内容
+# -keep
+# -keepnames             保留类名称/方法名称, 混淆成员变量/方法参数
 # -keepclassmembers      保留类成员名称和内容
-# -keepclassmembernames  保留类成员名称, 混淆内容
+# -keepclassmembernames  保留类名称
 
 # -printseeds
 # -printconfiguration proguardConfiguration.txt
 # -printmapping proguardMapping.txt
 -repackageclasses 'codesdancing'
 -keepparameternames
--keepattributes JavascriptInterface,Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
+-keepattributes MethodParameters,JavascriptInterface,Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
 -renamesourcefileattribute SourceFile
 
 -keepclassmembers class * implements java.io.Serializable {
@@ -59,12 +59,48 @@
 #    public static *** wtf(...);
 #}
 
-##############################################
 # databinding https://android.googlesource.com/platform/frameworks/data-binding/+/studio-master-dev/proguard.cfg
 #-keep class android.databinding.** { *; }
 #-keep class * extends androidx.databinding.DataBinderMapper { *; }
 #-keepattributes javax.xml.bind.annotation.*
 #-keepattributes javax.annotation.processing.*
 
--keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
-#-keep public class * extends android.app.Activity
+####################################################
+# 混淆 library
+# ** 代表包下的所有类文件
+# 保留所有类名/嵌套类名
+# 保留所有接口/嵌套接口
+# public/protexted 变量名/方法名/方法参数名
+# public/protexted static 变量名/方法名/方法参数名
+# public/protexted static final 变量名/方法名/方法参数名
+####################################################
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-keep, allowobfuscation class com.smart.library.*
+-keepclassmembers, allowobfuscation class * {
+    *;
+}
+-keep interface com.smart.library.**
+-keepnames class com.smart.library.**
+-keepclassmembernames class com.smart.library.** {
+    public <init>(...);
+    protected <init>(...);
+    public <fields>;
+    protected <fields>;
+    public <methods>;
+    protected <methods>;
+    public final <fields>;
+    protected final <fields>;
+    public final <methods>;
+    protected final <methods>;
+    public static <fields>;
+    protected static <fields>;
+    public static <methods>;
+    protected static <methods>;
+    public static final <fields>;
+    protected static final <fields>;
+    public static final <methods>;
+    protected static final <methods>;
+    native <methods>;
+}
+####################################################

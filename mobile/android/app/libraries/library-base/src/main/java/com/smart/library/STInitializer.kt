@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Process
 import android.util.Log
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.annotation.LayoutRes
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
@@ -22,6 +23,7 @@ import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import org.json.JSONObject
 
+@Keep
 @Suppress("unused", "SpellCheckingInspection", "MemberVisibilityCanBePrivate")
 object STInitializer {
 

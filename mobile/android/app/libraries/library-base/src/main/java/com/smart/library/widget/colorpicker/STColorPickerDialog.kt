@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
+import androidx.annotation.Keep
 import androidx.fragment.app.DialogFragment
 import com.smart.library.R
 import com.smart.library.widget.colorpicker.STColorPickerSwatch.OnColorSelectedListener
@@ -31,6 +32,7 @@ import com.smart.library.widget.colorpicker.STColorPickerSwatch.OnColorSelectedL
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
  * select a specific color swatch, which invokes a listener.
  */
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceArrayEqualityOpWithArraysEquals", "DEPRECATION")
 class STColorPickerDialog : DialogFragment(), OnColorSelectedListener {
     private var mAlertDialog: AlertDialog? = null

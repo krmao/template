@@ -17,6 +17,7 @@ package com.smart.library.widget.colorpicker
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentActivity
 import com.smart.library.util.STLogUtil
@@ -28,6 +29,7 @@ import com.smart.library.util.STLogUtil
         lastSelectedColor = it
     }
  */
+@Keep
 @Suppress("unused", "LiftReturnOrAssignment")
 object STColorPickerUtil {
 

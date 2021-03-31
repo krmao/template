@@ -7,9 +7,11 @@ import android.content.DialogInterface
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.annotation.Keep
 import com.smart.library.R
 
 @Suppress("unused")
+@Keep
 object STDialogManager {
 
     private val dpTranslation by lazy { STSystemUtil.getPxFromDp(6f) }

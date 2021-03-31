@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
 
@@ -17,6 +18,7 @@ import com.smart.library.util.animation.STInterpolatorFactory
  * @see {@link https://github.com/xinlyun/CaptureView}
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
+@Keep
 class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var progress = 0f

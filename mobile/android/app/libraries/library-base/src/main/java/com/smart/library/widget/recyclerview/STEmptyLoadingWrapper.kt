@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -132,6 +133,7 @@ import com.smart.library.util.STSystemUtil
  */
 @Suppress("unused", "unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("SetTextI18n")
+@Keep
 class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val tag = "STEmptyLoadingWrapper:${hashCode()}"

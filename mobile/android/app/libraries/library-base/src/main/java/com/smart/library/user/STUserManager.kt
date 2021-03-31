@@ -3,6 +3,7 @@ package com.smart.library.user
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
@@ -11,7 +12,7 @@ import com.smart.library.util.cache.STCacheManager
 import com.smart.library.util.rx.RxBus
 import org.json.JSONObject
 
-
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate", "unused", "PrivatePropertyName")
 object STUserManager {
 

@@ -1,5 +1,6 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -9,6 +10,7 @@ import java.net.URL
 import java.util.*
 
 @Suppress("unused", "LocalVariableName")
+@Keep
 object STHttpUrlConnectionUtil {
     private var TAG = javaClass.name
 

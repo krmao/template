@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 /**
@@ -34,6 +35,7 @@ import androidx.annotation.NonNull;
  * @see TextView#setCompoundDrawablesRelativeWithIntrinsicBounds(int, int, int, int)
  */
 @SuppressWarnings("WeakerAccess")
+@Keep
 public abstract class STEdgeDrawableTouchListener implements View.OnTouchListener {
 
     @SuppressWarnings("FieldCanBeLocal")

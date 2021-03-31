@@ -9,6 +9,7 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
+import androidx.annotation.Keep
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.smart.library.R
@@ -57,6 +58,7 @@ import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
  * xml 中使用 Button 会被自动替换为 AppCompactButton
  * 所以自定义 Button 的时候需要继承 AppCompactButton(AppCompactButton 实现了 backgroundTint/backgroundTintMode)
  */
+@Keep
 class STShapeableMaterialButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : com.google.android.material.button.MaterialButton(context, attrs, defStyleAttr), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
     private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }

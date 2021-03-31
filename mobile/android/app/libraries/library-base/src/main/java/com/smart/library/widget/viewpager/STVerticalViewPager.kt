@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.Keep
 
 
 /**
@@ -15,6 +16,7 @@ import android.view.View
  * Requires API 11+
  */
 @Suppress("unused")
+@Keep
 class STVerticalViewPager : ViewPager {
 
     constructor(context: Context) : super(context) {

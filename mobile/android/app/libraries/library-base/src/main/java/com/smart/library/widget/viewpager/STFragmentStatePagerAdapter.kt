@@ -1,6 +1,7 @@
 package com.smart.library.widget.viewpager
 
 import android.content.Context
+import androidx.annotation.Keep
 import  androidx.fragment.app.Fragment
 import  androidx.fragment.app.FragmentManager
 import java.util.*
@@ -17,6 +18,7 @@ import java.util.*
  * switching between pages.
  */
 @Suppress("unused", "DEPRECATION")
+@Keep
 class STFragmentStatePagerAdapter(var context: Context, fragmentManager: FragmentManager, var dataList: ArrayList<Fragment>) : androidx.fragment.app.FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

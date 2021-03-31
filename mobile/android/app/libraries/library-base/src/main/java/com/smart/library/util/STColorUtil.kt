@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.annotation.StyleableRes
 import androidx.core.content.ContextCompat
 import com.smart.library.R
@@ -17,6 +18,7 @@ import java.util.*
 
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "LiftReturnOrAssignment")
+@Keep
 object STColorUtil {
 
     @JvmStatic

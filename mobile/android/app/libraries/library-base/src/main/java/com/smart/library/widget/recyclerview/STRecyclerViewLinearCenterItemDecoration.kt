@@ -4,11 +4,13 @@ import android.graphics.Rect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.Keep
 
 /**
  * 左右两边各绘制一半 divider padding 有利于 snap center 的 计算
  */
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 class STRecyclerViewLinearCenterItemDecoration @JvmOverloads constructor(private val dividerPadding: Int = 0, private val startPadding: Int = 0, private val enableWrapperLoading: Boolean = false) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

@@ -7,8 +7,10 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewOutlineProvider
 import android.widget.LinearLayout
+import androidx.annotation.Keep
 
 @Suppress("unused")
+@Keep
 class STRoundableLinearLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support

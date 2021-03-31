@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.annotation.ColorRes
+import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatImageView
 import com.smart.library.R
 import kotlin.math.max
@@ -16,6 +17,7 @@ import kotlin.math.min
  * 自定义的圆角矩形ImageView
  */
 @Suppress("unused")
+@Keep
 class STRoundImageView : AppCompatImageView {
 
     companion object {

@@ -1,9 +1,11 @@
 package com.smart.library.base
 
 import android.os.Bundle
+import androidx.annotation.Keep
 import com.smart.library.R
 
 @Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
+@Keep
 open class STBaseLoginActivity : STBaseActivity(), STBaseLoginActivityDelegate {
 
     protected var loginActivityDelegate: STBaseLoginActivityDelegate? = null

@@ -14,12 +14,14 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 @Deprecated("no need now")
 @SuppressLint("DiscouragedPrivateApi")
+@Keep
 object STIMMLeaksUtil {
 
     private val inputMethodManager = STInitializer.application()?.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager

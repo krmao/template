@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
+import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +42,7 @@ import com.smart.library.widget.recyclerview.snap.STSnapHelper
  * reverseLayout==false,  Snap.END,   滚动到尾部时, 应该 onSnap(findLastCompletelyVisibleItemPosition-1)
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused", "UNUSED_ANONYMOUS_PARAMETER", "DEPRECATION")
+@Keep
 class STRecyclerPagerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
     @RecyclerView.Orientation

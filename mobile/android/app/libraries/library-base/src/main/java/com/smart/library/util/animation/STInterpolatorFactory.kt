@@ -1,6 +1,7 @@
 package com.smart.library.util.animation
 
 import android.view.animation.*
+import androidx.annotation.Keep
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
@@ -10,6 +11,7 @@ import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
  * https://www.jianshu.com/p/639efa7762a1
  */
 @Suppress("unused")
+@Keep
 object STInterpolatorFactory {
 
     /**

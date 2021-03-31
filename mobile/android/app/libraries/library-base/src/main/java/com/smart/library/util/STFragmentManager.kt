@@ -3,12 +3,14 @@ package com.smart.library.util
 import androidx.annotation.AnimRes
 import androidx.annotation.AnimatorRes
 import androidx.annotation.IdRes
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.smart.library.R
 
 @Suppress("unused")
+@Keep
 object STFragmentManager {
 
     @JvmStatic

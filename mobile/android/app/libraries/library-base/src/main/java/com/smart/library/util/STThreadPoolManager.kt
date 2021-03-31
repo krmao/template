@@ -1,9 +1,11 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import java.util.concurrent.*
 
 
 @Suppress("unused")
+@Keep
 open class STThreadPoolManager {
 
     private var blockingQueue: BlockingQueue<Runnable>

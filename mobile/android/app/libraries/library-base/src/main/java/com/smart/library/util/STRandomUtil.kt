@@ -1,6 +1,7 @@
 package com.smart.library.util
 
 import android.graphics.Color
+import androidx.annotation.Keep
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -14,6 +15,7 @@ import kotlin.math.min
  * </pre>
  */
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 object STRandomUtil {
     /**
      * must be start>0 end>0

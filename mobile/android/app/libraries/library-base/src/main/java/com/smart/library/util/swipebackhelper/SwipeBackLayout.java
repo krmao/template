@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Keep;
 import androidx.core.view.ViewCompat;
 
 import com.smart.library.R;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @SuppressWarnings("RedundantSuppression")
 @SuppressLint("UseCompatLoadingForDrawables")
+@Keep
 public class SwipeBackLayout extends FrameLayout {
 
     /**

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.OverScroller;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -17,6 +18,7 @@ import androidx.core.view.ViewCompat;
 
 import java.util.Arrays;
 
+@Keep
 public class STViewDragHelper {
     private static final String TAG = "STViewDragHelper";
     public static final int INVALID_POINTER = -1;

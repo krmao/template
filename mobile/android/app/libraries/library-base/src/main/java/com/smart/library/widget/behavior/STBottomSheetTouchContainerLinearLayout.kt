@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.Keep
 
+@Keep
 @Suppress("unused")
 class STBottomSheetTouchContainerLinearLayout @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr), STBottomSheetViewPagerBehavior.OnInterceptTouchEventHandler {
 

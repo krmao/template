@@ -1,6 +1,7 @@
 package com.smart.library.base
 
 import android.os.Bundle
+import androidx.annotation.Keep
 
 /**
  * 检测 App 冷启动到 LaunchActivity 成功渲染耗时:
@@ -12,6 +13,7 @@ import android.os.Bundle
  *  华为 P20 初始化代码在 LaunchActivity     980ms, 但需要注意 activityLifecycle 注册时机(LaunchActivity 已启动了再注册会出现问题)
  */
 @Suppress("LeakingThis")
+@Keep
 open class STBaseLaunchActivity : STBaseActivity() {
 
     companion object {

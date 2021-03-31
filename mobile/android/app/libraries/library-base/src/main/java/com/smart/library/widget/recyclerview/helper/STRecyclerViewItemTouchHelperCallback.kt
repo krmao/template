@@ -1,9 +1,10 @@
 package com.smart.library.widget.recyclerview.helper
 
 import android.graphics.Canvas
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.AlertDialogBuilder
 import kotlin.math.abs
 
@@ -21,6 +22,7 @@ ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, onDragListen
 
 */
 @Suppress("DEPRECATION")
+@Keep
 class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private val mAdapter: STRecyclerViewItemTouchHelperAdapter, private var enableConfirmDialogBeforeSwiped: Boolean = true, private var onDragListener: OnDragListener? = null) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean = true
@@ -28,15 +30,15 @@ class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private va
     override fun isItemViewSwipeEnabled(): Boolean = true
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int =
-            if (recyclerView.layoutManager is GridLayoutManager) {
-                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                val swipeFlags = 0
-                makeMovementFlags(dragFlags, swipeFlags)
-            } else {
-                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-                val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-                makeMovementFlags(dragFlags, swipeFlags)
-            }
+        if (recyclerView.layoutManager is GridLayoutManager) {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val swipeFlags = 0
+            makeMovementFlags(dragFlags, swipeFlags)
+        } else {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            makeMovementFlags(dragFlags, swipeFlags)
+        }
 
     override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         if (source.itemViewType != target.itemViewType) {
@@ -69,13 +71,13 @@ class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private va
 
 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) =
-            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                val alpha = 1.0f - abs(dX) / viewHolder.itemView.width.toFloat()
-                viewHolder.itemView.alpha = alpha
-                viewHolder.itemView.translationX = dX
-            } else {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            }
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val alpha = 1.0f - abs(dX) / viewHolder.itemView.width.toFloat()
+            viewHolder.itemView.alpha = alpha
+            viewHolder.itemView.translationX = dX
+        } else {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
@@ -91,11 +93,9 @@ class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private va
         viewHolder.itemView.alpha = 1.0f
     }
 
+    @Keep
     interface OnDragListener {
-
         fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int)
         fun onDragEnd(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder)
-
     }
-
 }

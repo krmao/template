@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.annotation.Keep
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate", "PropertyName")
+@Keep
 abstract class STListAdapter<ItemEntity, ViewHolder : RecyclerView.ViewHolder> : BaseAdapter {
     protected var TAG: String? = STListAdapter::class.java.simpleName
     protected var dataList: List<ItemEntity> = arrayListOf()

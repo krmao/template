@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
+import androidx.annotation.Keep
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.smart.library.R
@@ -61,6 +62,7 @@ import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
  */
 @Suppress("UnnecessaryVariable")
 @SuppressLint("AppCompatCustomView")
+@Keep
 class STShapeableButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.buttonBarButtonStyle, defStyleRes: Int = R.style.STButton_Default_None) : Button(context, attrs, defStyleAttr, defStyleRes), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
     private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }

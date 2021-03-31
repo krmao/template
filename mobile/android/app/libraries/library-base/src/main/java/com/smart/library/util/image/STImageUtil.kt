@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
 import android.view.View.MeasureSpec
+import androidx.annotation.Keep
 import androidx.annotation.RawRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -21,6 +22,7 @@ import java.io.InputStream
 
 
 @Suppress("unused")
+@Keep
 object STImageUtil {
     const val TAG = "[IMAGE_UTIL]"
 

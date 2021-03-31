@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.annotation.Keep
 
 /*
     设置引导页面全屏, 状态栏消失并整体页面顶上去, 不是仅仅的隐藏但是占位
@@ -50,6 +51,7 @@ import android.view.WindowManager
 
 // 重点是设置引导页根布局的 background, 而不是在根布局容器里面加个 ImageView, 缩放方式不一样, 可能是 FIT_XY
 */
+@Keep
 object STFullScreenUtil {
 
     @JvmStatic

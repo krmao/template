@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
@@ -18,6 +19,7 @@ import com.smart.library.widget.webview.client.STWebViewClient
 import kotlinx.android.synthetic.main.st_fragment_webview.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListener {
 
     companion object {

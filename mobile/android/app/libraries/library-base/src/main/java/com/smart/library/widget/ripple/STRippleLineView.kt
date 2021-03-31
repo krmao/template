@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Interpolator
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import java.util.*
 import kotlin.math.min
@@ -17,6 +18,7 @@ import kotlin.math.min
  * https://github.com/hackware1993/WaveView
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
+@Keep
 class STRippleLineView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
     var durationMs: Long = 2000                  // 一个波纹从创建到消失的持续时间

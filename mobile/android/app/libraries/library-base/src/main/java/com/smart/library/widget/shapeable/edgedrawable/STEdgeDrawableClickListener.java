@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
+
 /**
  * https://gist.github.com/amaksoft/dbfb0fa827619dcb64b6a587efde34d9#file-compounddrawableclicklistener-java
  * https://github.com/yongtiger/android-CompoundDrawable/blob/dcee83b71c00f843c9acf8b28fc6985c593cff6b/app/src/main/java/cc/brainbook/compounddrawable/app/MainActivity.java
@@ -32,6 +34,7 @@ import android.widget.TextView;
  * @see STEdgeDrawableTouchListener
  */
 @SuppressWarnings("WeakerAccess")
+@Keep
 public abstract class STEdgeDrawableClickListener extends STEdgeDrawableTouchListener {
 
     /**

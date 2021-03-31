@@ -1,5 +1,8 @@
 package com.smart.library.util.retrofit.exception
 
+import androidx.annotation.Keep
+
+@Keep
 object STRetrofitError {
     //未知错误
     const val UNKNOWN = 1000

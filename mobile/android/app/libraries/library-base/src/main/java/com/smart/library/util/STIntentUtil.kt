@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Parcelable
 import android.provider.Settings
 import android.text.TextUtils
+import androidx.annotation.Keep
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import com.smart.library.STInitializer
@@ -18,6 +19,7 @@ import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
+@Keep
 object STIntentUtil {
 
     @JvmStatic

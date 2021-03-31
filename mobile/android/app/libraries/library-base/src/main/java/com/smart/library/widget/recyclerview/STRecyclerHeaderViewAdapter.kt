@@ -2,6 +2,7 @@ package com.smart.library.widget.recyclerview
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
+@Keep
 class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>(innerAdapter.context, innerAdapter.dataList) {
 
     private val headerViewDataList: MutableList<HeaderFooterViewData> = ArrayList()

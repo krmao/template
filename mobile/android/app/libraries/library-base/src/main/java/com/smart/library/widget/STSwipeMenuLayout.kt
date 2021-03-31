@@ -8,6 +8,7 @@ import android.content.Context
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.*
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.animation.STInterpolatorFactory
@@ -21,6 +22,7 @@ import kotlin.math.abs
  * @see {@link https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md}
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
+@Keep
 class STSwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     var enableSwipe = true                      // 是否开启滑动删除功能

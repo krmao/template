@@ -27,6 +27,7 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.fragment.app.DialogFragment
 import com.smart.library.R
@@ -35,6 +36,7 @@ import com.smart.library.R
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
  * select a specific color swatch, which invokes a listener.
  */
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceArrayEqualityOpWithArraysEquals")
 class STColorAlphaDialog : DialogFragment() {
     private var mAlertDialog: AlertDialog? = null

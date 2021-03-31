@@ -1,5 +1,6 @@
 package com.smart.library.util.algorithm
 
+import androidx.annotation.Keep
 import java.util.*
 
 /**
@@ -185,6 +186,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
      * Represents an area in the cartesian plane. 面积/范围
      */
     @Suppress("MemberVisibilityCanBePrivate")
+    @Keep
     class Bounds(val minX: Double, val maxX: Double, val minY: Double, val maxY: Double) {
 
         val midX: Double = (minX + maxX) / 2
@@ -225,6 +227,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
     /**
      * 坐标
      */
+    @Keep
     class Point(val x: Double, val y: Double) {
         override fun toString(): String {
             return "Point{x=$x, y=$y}"

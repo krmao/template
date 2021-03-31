@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.Keep
 import com.smart.library.base.ensureOnGlobalLayoutListener
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -28,6 +29,7 @@ import com.smart.library.util.STSystemUtil
  * 支持同时设置选中/非选中 只触发一次监听
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SameParameterValue", "LiftReturnOrAssignment")
+@Keep
 class STCheckBoxGroupView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
 
     /**

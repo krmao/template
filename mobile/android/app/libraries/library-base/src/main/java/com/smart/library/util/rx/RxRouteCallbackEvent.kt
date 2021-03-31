@@ -1,6 +1,7 @@
 package com.smart.library.util.rx
 
 import android.os.Bundle
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 
 /**
@@ -14,6 +15,7 @@ import com.smart.library.util.STLogUtil
  * </pre>
  */
 @Suppress("unused")
+@Keep
 open class RxRouteCallbackEvent {
     var id: String = ""
     var bundle: Bundle? = null

@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.GridView
+import androidx.annotation.Keep
 
 @Suppress("unused")
+@Keep
 class STGridView : GridView {
 
     constructor(context: Context) : super(context)

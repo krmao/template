@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import com.smart.library.R
 
 /*
@@ -39,6 +40,7 @@ class STRoundConstraintLayout @JvmOverloads constructor(context: Context, attrs:
 }
 */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
+@Keep
 class STRoundableLayoutHelper(val view: View) : STRoundableDelegate {
 
     private val path: Path = Path()

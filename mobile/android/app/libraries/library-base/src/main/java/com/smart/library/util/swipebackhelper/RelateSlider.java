@@ -3,10 +3,13 @@ package com.smart.library.util.swipebackhelper;
 import android.annotation.SuppressLint;
 import android.os.Build;
 
+import androidx.annotation.Keep;
+
 /**
  * Created by Mr.Jude on 2015/8/26.
  */
 @SuppressLint("ObsoleteSdkInt")
+@Keep
 public class RelateSlider implements SwipeListener {
     public SwipeBackPage curPage;
     private static final int DEFAULT_OFFSET = 40;

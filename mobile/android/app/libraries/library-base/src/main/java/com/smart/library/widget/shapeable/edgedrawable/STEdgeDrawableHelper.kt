@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 
 
@@ -16,6 +17,7 @@ import com.smart.library.util.STLogUtil
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
+@Keep
 class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
 
     enum class Position(val value: Int) {

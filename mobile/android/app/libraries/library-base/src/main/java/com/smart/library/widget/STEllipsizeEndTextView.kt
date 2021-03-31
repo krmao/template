@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.text.*
 import android.text.TextUtils.TruncateAt
 import android.util.AttributeSet
+import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatTextView
 import com.smart.library.R
 import kotlin.math.min
@@ -14,6 +15,7 @@ import kotlin.math.min
  * 多行文本, 最后一行的省略号右侧部分手机存在空白
  * https://github.com/chenshi011/EllipsizeEndTextView/blob/master/src/com/cs/ellipsizetextview/ui/EllipsizeEndTextView.java
  */
+@Keep
 class STEllipsizeEndTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     var isEllipsized = false

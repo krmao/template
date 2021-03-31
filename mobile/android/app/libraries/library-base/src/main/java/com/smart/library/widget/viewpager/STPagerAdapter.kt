@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.viewpager.widget.PagerAdapter
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 abstract class STPagerAdapter<ItemEntity> : PagerAdapter {
 
     protected var TAG: String? = STPagerAdapter::class.java.simpleName

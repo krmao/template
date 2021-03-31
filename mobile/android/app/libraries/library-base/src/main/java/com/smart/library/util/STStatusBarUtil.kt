@@ -12,11 +12,13 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
+@Keep
 @Suppress("SpellCheckingInspection", "unused", "MemberVisibilityCanBePrivate", "SameParameterValue")
 object STStatusBarUtil {
 

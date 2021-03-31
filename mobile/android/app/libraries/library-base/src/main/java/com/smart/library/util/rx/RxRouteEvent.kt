@@ -2,6 +2,7 @@ package com.smart.library.util.rx
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 
 /**
@@ -13,6 +14,7 @@ import com.smart.library.util.STLogUtil
  * bundle    - 数据载体
  */
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 open class RxRouteEvent {
     var activity: Activity? = null
     var targetUrl: String = ""

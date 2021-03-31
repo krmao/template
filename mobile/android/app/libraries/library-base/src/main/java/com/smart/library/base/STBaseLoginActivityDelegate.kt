@@ -1,5 +1,8 @@
 package com.smart.library.base
 
+import androidx.annotation.Keep
+
+@Keep
 interface STBaseLoginActivityDelegate {
 
     fun onLoginSuccess(dataJson: String)

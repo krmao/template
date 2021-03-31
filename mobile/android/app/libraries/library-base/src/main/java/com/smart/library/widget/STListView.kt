@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ListView
+import androidx.annotation.Keep
 
+@Keep
 open class STListView : ListView {
 
     constructor(context: Context) : super(context)

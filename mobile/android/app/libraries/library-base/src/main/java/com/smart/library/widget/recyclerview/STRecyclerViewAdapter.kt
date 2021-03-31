@@ -2,16 +2,23 @@ package com.smart.library.widget.recyclerview
 
 import android.content.Context
 import android.view.View
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.*
 import com.smart.library.widget.recyclerview.helper.STRecyclerViewItemTouchHelperAdapter
 import java.util.*
 import kotlin.math.abs
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
+@Keep
 abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context?, var dataList: MutableList<Entity>) : RecyclerView.Adapter<ViewHolder>(), STRecyclerViewItemTouchHelperAdapter {
 
+    @Keep
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    @Keep
     class ExtrasViewHolder(itemView: View, val extras: Any? = null) : RecyclerView.ViewHolder(itemView)
+
+    @Keep
     class BindingViewHolder<T>(val binding: T, rootView: View) : RecyclerView.ViewHolder(rootView)
 
     fun resetDataList(dataList: MutableList<Entity>) {

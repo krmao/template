@@ -9,12 +9,14 @@ import android.widget.RelativeLayout
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
+import androidx.annotation.Keep
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.Shapeable
 import com.google.android.material.theme.overlay.MaterialThemeOverlay
 import com.smart.library.R
 
 /** An TextView that draws the bitmap with the provided Shape.  */
+@Keep
 class STShapeableRelativeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
 

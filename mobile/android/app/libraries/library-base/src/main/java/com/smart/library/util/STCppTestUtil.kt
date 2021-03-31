@@ -1,5 +1,8 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
+
+@Keep
 object STCppTestUtil {
 
     /**

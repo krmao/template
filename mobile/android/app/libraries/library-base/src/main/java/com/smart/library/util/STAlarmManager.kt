@@ -4,9 +4,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 
 @Suppress("unused")
+@Keep
 object STAlarmManager {
 
     /*

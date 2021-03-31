@@ -6,8 +6,10 @@ import android.graphics.Canvas
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewOutlineProvider
+import androidx.annotation.Keep
 
 @Suppress("unused")
+@Keep
 class STRoundableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support

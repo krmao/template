@@ -1,5 +1,6 @@
 package com.smart.library.widget.viewpager
 
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager
  * {@link FragmentStatePagerAdapter}.
  */
 @Suppress("unused", "DEPRECATION")
+@Keep
 class STFragmentPagerAdapter(fragmentManager: FragmentManager, var dataList: List<Fragment>) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

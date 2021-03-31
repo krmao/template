@@ -1,8 +1,11 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
+@Suppress("unused")
+@Keep
 object STRegexManager {
 
     @JvmStatic

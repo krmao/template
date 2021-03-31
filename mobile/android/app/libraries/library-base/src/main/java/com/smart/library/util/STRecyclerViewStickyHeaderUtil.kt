@@ -1,6 +1,7 @@
 package com.smart.library.util
 
 import android.view.View
+import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @reference https://github.com/eggsywelsh/RecyclerStaggeredStickyHeaderView
  */
 @Suppress("unused")
+@Keep
 class STRecyclerViewStickyHeaderUtil(layoutManager: RecyclerView.LayoutManager, val stickyHeaderView: View, onUpdateStickyHeaderView: (stickyHeaderView: View, currentMinVisiblePosition: Int) -> Unit, findHeaderPositionBeforeCurrentMinVisiblePosition: (minVisiblePosition: Int) -> Int, findHeaderPositionAfterCurrentMinVisiblePosition: (minVisiblePosition: Int) -> Int) {
 
     init {

@@ -2,11 +2,13 @@ package com.smart.library.util
 
 import android.database.sqlite.SQLiteDatabase
 import android.text.TextUtils
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("unused")
+@Keep
 object STDatabaseUtil {
 
     fun getDatabase(dbName: String): File? = STInitializer.application()?.getDatabasePath(dbName)

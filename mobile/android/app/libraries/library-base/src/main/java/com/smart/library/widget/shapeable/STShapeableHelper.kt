@@ -14,6 +14,7 @@ import android.widget.EditText
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
+import androidx.annotation.Keep
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.shape.*
 import com.smart.library.R
@@ -29,6 +30,7 @@ import org.jetbrains.anko.displayMetrics
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
+@Keep
 class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     private val pathProvider = ShapeAppearancePathProvider()
     private val destination: RectF = RectF()

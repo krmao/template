@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
 import com.smart.library.R
 import com.smart.library.STInitializer
@@ -23,6 +24,7 @@ import com.smart.library.util.STWifiUtil
  */
 @SuppressLint("InflateParams")
 @Suppress("unused", "DEPRECATION")
+@Keep
 class STWifiDialog @JvmOverloads constructor(context: Context, private val scanResult: ScanResult, private val mode: Int = STWifiConfigUiBase.MODE_CONNECT, style: Int, private val hideSubmitButton: Boolean, private val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {}) : AlertDialog(context, style), STWifiConfigUiBase, DialogInterface.OnClickListener {
 
     private val view: View by lazy { layoutInflater.inflate(R.layout.wifi_dialog, null) }

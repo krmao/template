@@ -3,7 +3,6 @@ package com.smart.library.util.bus
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
@@ -29,43 +28,47 @@ object STBusManager {
 
     private var initializedCount: AtomicInteger = AtomicInteger()
 
-    fun initOnce(application: Application?, busHandlerClassMap: MutableMap<String, String>, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null) {
+    fun initOnce(application: Application?, busHandlerClassMap: MutableMap<String, String>?, onCallback: ((key: String, success: Boolean) -> Unit)? = null, onCompletely: (() -> Unit)? = null) {
         if (!isInit) {
             initializedCount.set(0)
 
             fun handleOnComplete() {
-                if (initializedCount.get() == busHandlerClassMap.keys.size) {
+                if (initializedCount.get() == (busHandlerClassMap?.keys?.size ?: 0)) {
                     onCompletely?.invoke()
                 }
             }
 
-            busHandlerClassMap.forEach { entry ->
-                val key: String = entry.key
-                val value: String = entry.value
+            if (busHandlerClassMap != null && busHandlerClassMap.isNotEmpty()) {
+                busHandlerClassMap.forEach { entry ->
+                    val key: String = entry.key
+                    val value: String = entry.value
 
-                try {
-                    if (STLogUtil.debug) STLogUtil.v(TAG, "init bus key:$key, value:$value start")
-                    val busClass = Class.forName(value)
-                    if (IBusHandler::class.javaObjectType.isAssignableFrom(busClass)) { // isAssignableFrom 检查 busClass 是否是 IBusHandler 的子类
-                        val busHandler = busClass.newInstance() as IBusHandler
-                        busHandlerMap[key] = busHandler
-                        // init once here
-                        busHandler.onInitOnce(application) { success: Boolean ->
-                            onCallback?.invoke(key, success)
+                    try {
+                        if (STLogUtil.debug) STLogUtil.v(TAG, "init bus key:$key, value:$value start")
+                        val busClass = Class.forName(value)
+                        if (IBusHandler::class.javaObjectType.isAssignableFrom(busClass)) { // isAssignableFrom 检查 busClass 是否是 IBusHandler 的子类
+                            val busHandler = busClass.newInstance() as IBusHandler
+                            busHandlerMap[key] = busHandler
+                            // init once here
+                            busHandler.onInitOnce(application) { success: Boolean ->
+                                onCallback?.invoke(key, success)
 
-                            initializedCount.incrementAndGet()
-                            if (STLogUtil.debug) STLogUtil.v(TAG, "---- init bus key:$key, value:$value callback initializedCount=${initializedCount.get()}, busHandlerClassMap.keys.size=${busHandlerClassMap.keys.size}")
-                            handleOnComplete()
+                                initializedCount.incrementAndGet()
+                                if (STLogUtil.debug) STLogUtil.v(TAG, "---- init bus key:$key, value:$value callback initializedCount=${initializedCount.get()}, busHandlerClassMap.keys.size=${busHandlerClassMap.keys.size}")
+                                handleOnComplete()
+                            }
+                            if (STLogUtil.debug) STLogUtil.v(TAG, "init bus end $key:$value\n")
+                        } else {
+                            throw java.lang.Exception("init bus end $key:$value failure, class is not IBusHandler")
                         }
-                        if (STLogUtil.debug) STLogUtil.v(TAG, "init bus end $key:$value\n")
-                    } else {
-                        throw java.lang.Exception("init bus end $key:$value failure, class is not IBusHandler")
+                    } catch (e: Exception) {
+                        initializedCount.incrementAndGet()
+                        STLogUtil.e(TAG, "---- init bus exception key:$key, value:$value callback initializedCount=${initializedCount.get()}, busHandlerClassMap.keys.size=${busHandlerClassMap.keys.size}", e)
+                        handleOnComplete()
                     }
-                } catch (e: Exception) {
-                    initializedCount.incrementAndGet()
-                    STLogUtil.e(TAG, "---- init bus exception key:$key, value:$value callback initializedCount=${initializedCount.get()}, busHandlerClassMap.keys.size=${busHandlerClassMap.keys.size}", e)
-                    handleOnComplete()
                 }
+            } else {
+                handleOnComplete()
             }
             isInit = true
         }

@@ -23,8 +23,6 @@ package com.smart.library.util
 
 import android.content.Context
 import android.util.Log
-import androidx.annotation.Keep
-import com.smart.library.BuildConfig
 import com.smart.library.STInitializer
 import com.smart.library.widget.debug.STDebugCrashPanelFragment
 import org.json.JSONObject
@@ -39,15 +37,16 @@ import java.io.FileWriter
 //@Keep
 object STCrashManager {
     private const val TAG = "[xcrash]"
+    private const val LAST_CRASH_LOG_PATH = ""
 
     @JvmStatic
-    fun attachBaseContext(base: Context?) {
-
+    fun init(base: Context?) {
         // callback for java crash, native crash and ANR
         val callback = ICrashCallback { logPath, emergency ->
             Log.d(TAG, "log path: " + (logPath ?: "(null)") + ", emergency: " + (emergency ?: "(null)"))
+            STPreferencesUtil.putString(LAST_CRASH_LOG_PATH, logPath)
             if (emergency != null) {
-                debug(base, logPath, emergency)
+                debug(logPath, emergency)
 
                 // Disk is exhausted, send crash report immediately.
                 sendThenDeleteCrashLog(logPath, emergency)
@@ -60,7 +59,7 @@ object STCrashManager {
 
                 // Invalid. (Do NOT include multiple consecutive newline characters ("\n\n") in the content string.)
                 // TombstoneManager.appendSection(logPath, "expanded_key_3", "expanded_content_row_1\n\nexpanded_content_row_2");
-                debug(base, logPath, null)
+                debug(logPath, null)
             }
         }
         Log.d(TAG, "xCrash SDK init: start")
@@ -94,7 +93,28 @@ object STCrashManager {
             for (file in TombstoneManager.getAllTombstones()) {
                 sendThenDeleteCrashLog(file.absolutePath, null)
             }
+
+            val lastCrashLogPath = STPreferencesUtil.getString(LAST_CRASH_LOG_PATH)
+            STPreferencesUtil.putString(LAST_CRASH_LOG_PATH, null)
+            if (!lastCrashLogPath.isNullOrBlank() && STInitializer.debug()) {
+                STThreadUtils.runOnUiThread(object : Runnable {
+                    override fun run() {
+                        STDebugCrashPanelFragment.startActivity(base, lastCrashLogPath)
+                    }
+                })
+            }
         }.start()
+    }
+
+    @JvmStatic
+    fun getJsonStringFromLogPath(crashLogPath: String?, emergency: String? = null): String? {
+        if (crashLogPath.isNullOrBlank()) return null
+        return JSONObject(TombstoneParser.parse(crashLogPath, emergency) as Map<String, String>).toString()
+    }
+
+    @JvmStatic
+    fun clearLastCrashLogFlag() {
+        STPreferencesUtil.putString(LAST_CRASH_LOG_PATH, null)
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -114,21 +134,15 @@ object STCrashManager {
         //TombstoneManager.deleteTombstone(logPath);
     }
 
-    private fun debug(base: Context?, logPath: String, emergency: String?) {
+    private fun debug(logPath: String, emergency: String?) {
         // Parse and save the crash info to a JSON file for debugging.
         var writer: FileWriter? = null
         try {
             val debug = File(XCrash.getLogDir() + "/debug.json")
             debug.createNewFile()
             writer = FileWriter(debug, false)
-            val desc = JSONObject(TombstoneParser.parse(logPath, emergency) as Map<String, String>).toString()
+            val desc = getJsonStringFromLogPath(logPath, emergency) ?: ""
             Log.e(TAG, desc)
-
-            // 仅在调试模式下启动
-            if (BuildConfig.DEBUG) {
-                STDebugCrashPanelFragment.startActivity(base, desc)
-            }
-
             writer.write(desc)
         } catch (e: Exception) {
             Log.d(TAG, "debug failed", e)

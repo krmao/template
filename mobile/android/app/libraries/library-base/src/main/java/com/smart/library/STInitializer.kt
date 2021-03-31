@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Process
 import android.util.Log
 import androidx.annotation.ColorInt
-import androidx.annotation.Keep
 import androidx.annotation.LayoutRes
 import androidx.multidex.MultiDex
 import com.smart.library.base.STActivityLifecycleCallbacks
@@ -114,6 +113,7 @@ object STInitializer {
     data class Config(
         var application: Application,
         var appDebug: Boolean = false,
+        var appCrashManager: Boolean = true,
         var configAppInfo: ConfigAppInfo = ConfigAppInfo(),
         var configChannel: ConfigChannel = ConfigChannel(),
         var configName: ConfigName = ConfigName(),
@@ -301,12 +301,9 @@ object STInitializer {
      * https://github.com/lanshifu/MultiDexTest
      */
     @JvmStatic
-    fun attachApplicationBaseContext(base: Context?, enableCrashManager: Boolean = true): STInitializer {
+    fun attachApplicationBaseContext(base: Context?): STInitializer {
         val startTime = System.currentTimeMillis()
         MultiDex.install(base)
-        if (enableCrashManager) {
-            STCrashManager.attachBaseContext(base)
-        }
         println("MultiDex.install 耗时:${System.currentTimeMillis() - startTime}ms")
         return this
     }
@@ -327,6 +324,10 @@ object STInitializer {
         Log.w(TAG, "appDebug=${debug()}")
 
         STLogUtil.debug = debug()
+
+        if (config?.appCrashManager == true) {
+            STCrashManager.init(config.application)
+        }
 
         //region register activityLifecycleCallbacks
         val application: Application? = config?.application
@@ -351,26 +352,24 @@ object STInitializer {
         //endregion
 
         //region init rn and flutter immediately
-        val bundleBusHandlerClassMap = config?.configBundle?.bundleBusHandlerClassMap
-        if (bundleBusHandlerClassMap != null) {
-            STBusManager.initOnce(
-                config.application,
-                bundleBusHandlerClassMap,
-                onCallback = { key: String, success: Boolean ->
-                    STLogUtil.d(TAG, "-- init bus $key, $success")
-                    if (key == "reactnative") {
-                        state.isRNInitialized = true
-                        state.isRNInitializedSuccess = success
-                        state.notifyOnRNInitializedCallback()
-                    }
-                },
-                onCompletely = {
-                    STLogUtil.w(TAG, "-- init bus onCompletely")
-                    state.isBusInitialized = true
-                    state.notifyOnBusInitializedCallback()
+        STBusManager.initOnce(
+            config?.application,
+            config?.configBundle?.bundleBusHandlerClassMap,
+            onCallback = { key: String, success: Boolean ->
+                STLogUtil.d(TAG, "-- init bus $key, $success")
+                if (key == "reactnative") {
+                    state.isRNInitialized = true
+                    state.isRNInitializedSuccess = success
+                    state.notifyOnRNInitializedCallback()
                 }
-            )
-        }
+            },
+            onCompletely = {
+                STLogUtil.w(TAG, "-- init bus onCompletely")
+                state.isBusInitialized = true
+                state.notifyOnBusInitializedCallback()
+            }
+        )
+
         //endregion
 
         // 重置屏幕适配

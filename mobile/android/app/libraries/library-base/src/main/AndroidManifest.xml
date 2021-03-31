@@ -34,9 +34,8 @@
             android:name=".widget.debug.STDebugCrashActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
-            android:process=":CrashPanel"
             android:taskAffinity=""
-            android:theme="@style/STAppTheme.Normal.Translucent.Fade"
+            android:theme="@style/STAppTheme.Normal.Transparent.Fade"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->

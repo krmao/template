@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Message
 import android.util.Log
 import android.webkit.*
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.hybird.STHybirdBridge
@@ -34,13 +35,9 @@ function addJsHack(cmdArgs){
 addJsHack("")
 
  */
+@Keep
 @Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride", "UseExpressionBody")
 open class STWebViewClient : WebViewClient() {
-
-    init {
-        //每次浏览器启动
-        //Log.e(STHybirdBridge.TAG, "检测到浏览器初始化")
-    }
 
     open fun onDestroy() {
         //Log.d(STHybirdBridge.TAG, "每次浏览器关闭，提前删除 webView 的强引用,避免内存泄露")

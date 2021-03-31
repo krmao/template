@@ -3,6 +3,7 @@ package com.smart.library.bundle
 import android.annotation.SuppressLint
 import android.util.Log
 import android.webkit.WebViewClient
+import androidx.annotation.Keep
 import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.bundle.manager.STHybirdBundleInfoManager
 import com.smart.library.bundle.manager.STHybirdDownloadManager
@@ -25,6 +26,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference", "MemberVisibilityCanBePrivate")
+@Keep
 object STHybird {
 
     @JvmStatic
@@ -37,19 +39,24 @@ object STHybird {
     @JvmStatic
     var enable = false
         private set
+
     @JvmStatic
     var enableCheckUpdate = false
         private set
 
     @JvmStatic
     val assetsDirName = "hybird"
+
     @JvmStatic
     var indexPath = "index.shtml"
         private set
+
     @JvmStatic
     val bundleSuffix = ".zip"
+
     @JvmStatic
     val configSuffix = ".json"
+
     @JvmStatic
     val localRootDir = STCacheManager.getFilesHotPatchChildDir(assetsDirName)
 
@@ -60,12 +67,15 @@ object STHybird {
     @JvmStatic
     var downloader: ((downloadUrl: String, file: File?, callback: (File?) -> Unit?) -> Unit?)? = null
         internal set
+
     @JvmStatic
     var configer: ((configUrl: String, callback: (STHybirdModuleConfigModel?) -> Unit?) -> Unit?)? = null
         internal set
+
     @JvmStatic
     var allConfiger: ((allConfigUrl: String, callback: (configList: MutableList<STHybirdModuleConfigModel>?) -> Unit?) -> Unit?)? = null
         internal set
+
     @JvmStatic
     var allConfigUrl: String = ""
         internal set
@@ -273,8 +283,7 @@ object STHybird {
             Observable.zip(
                 configList.map { config ->
                     Observable.fromCallable { initModuleManager(config) }.subscribeOn(Schedulers.io())
-                }
-                ,
+                },
                 ({
                 })
             ).subscribe {
@@ -498,5 +507,4 @@ object STHybird {
 
         return STHybirdLifecycleManager.isModuleOpened(moduleName)
     }
-
 }

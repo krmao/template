@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
+import androidx.annotation.Keep
 import com.facebook.drawee.backends.pipeline.Fresco
 import java.io.File
 
@@ -18,6 +19,8 @@ interface STIImageHandler {
     fun type(): Type
     fun clearMemoryCaches()
 
+    @Suppress("unused")
+    @Keep
     enum class Type {
         FRESCO,
         GLIDE

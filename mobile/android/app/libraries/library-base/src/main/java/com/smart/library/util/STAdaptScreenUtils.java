@@ -3,6 +3,8 @@ package com.smart.library.util;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
+import androidx.annotation.Keep;
+
 import com.smart.library.STInitializer;
 
 import java.lang.reflect.Field;
@@ -42,6 +44,7 @@ import java.util.List;
  * 	Screen size 模拟器运行与目标真机尺寸一致 4.7 inch / Android Studio 预览 sqrt(750*750 + 1334*1334)/72 = 21.255 inch
  * 	Resolution 750x1334 px
  */
+@Keep
 public final class STAdaptScreenUtils {
 
     private static List<Field> sMetricsFields;

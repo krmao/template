@@ -3,10 +3,12 @@ package com.smart.library.util.bus
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STBusManager {
     private val TAG: String = "[bus]"

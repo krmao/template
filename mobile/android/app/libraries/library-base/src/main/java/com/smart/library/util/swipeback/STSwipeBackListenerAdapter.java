@@ -2,6 +2,7 @@ package com.smart.library.util.swipeback;
 
 import android.app.Activity;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
@@ -9,6 +10,7 @@ import java.lang.ref.WeakReference;
 /**
  * https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
  */
+@Keep
 public class STSwipeBackListenerAdapter implements STSwipeBackLayout.SwipeListenerEx {
     private final WeakReference<Activity> mActivity;
     private final STSwipeBackLayout mLayout;

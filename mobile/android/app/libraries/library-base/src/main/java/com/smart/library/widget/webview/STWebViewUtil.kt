@@ -9,13 +9,14 @@ import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird.TAG
 import com.smart.library.util.STLogUtil
 import com.smart.library.widget.webview.client.STWebChromeClient
 import com.smart.library.widget.webview.client.STWebViewClient
 
-
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STWebViewUtil {
 

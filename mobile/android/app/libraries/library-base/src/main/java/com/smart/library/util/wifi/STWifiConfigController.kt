@@ -25,6 +25,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.TextView.OnEditorActionListener
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
@@ -41,6 +42,7 @@ import java.util.regex.Pattern
  * http://androidxref.com/5.0.0_r2/xref/packages/apps/Settings/src/com/android/settings/wifi/WifiConfigController.java
  * http://androidxref.com/9.0.0_r3/xref/packages/apps/Settings/src/com/android/settings/wifi/WifiConfigController.java
  */
+@Keep
 @Suppress("MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection", "unused")
 class STWifiConfigController(private val configUi: STWifiConfigUiBase, private val contentView: View, val scanResult: ScanResult?, val mode: Int) : TextWatcher, OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, OnEditorActionListener, View.OnKeyListener {
 

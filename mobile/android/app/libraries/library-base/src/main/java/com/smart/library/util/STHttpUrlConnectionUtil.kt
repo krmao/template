@@ -41,8 +41,8 @@ object STHttpUrlConnectionUtil {
         conn.useCaches = false // 不允许使用缓存
         conn.requestMethod = "POST"
         conn.setRequestProperty("connection", "keep-alive")
-        conn.setRequestProperty("Charsert", "UTF-8")
-        conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY)
+        conn.setRequestProperty("Charset", "UTF-8")
+        conn.setRequestProperty("Content-Type", "$MULTIPART_FROM_DATA;boundary=$BOUNDARY")
 
         // 首先组拼文本类型的参数
         val textStringBuilder = StringBuilder()
@@ -50,9 +50,9 @@ object STHttpUrlConnectionUtil {
             textStringBuilder.append(PREFIX)
             textStringBuilder.append(BOUNDARY)
             textStringBuilder.append(LINE_END)
-            textStringBuilder.append("Content-Disposition: form-data; name=\"" + key + "\"" + LINE_END)
-            textStringBuilder.append("Content-Type: text/plain; charset=" + CHARSET + LINE_END)
-            textStringBuilder.append("Content-Transfer-Encoding: 8bit" + LINE_END)
+            textStringBuilder.append("Content-Disposition: form-data; name=\"$key\"$LINE_END")
+            textStringBuilder.append("Content-Type: text/plain; charset=$CHARSET$LINE_END")
+            textStringBuilder.append("Content-Transfer-Encoding: 8bit$LINE_END")
             textStringBuilder.append(LINE_END)
             textStringBuilder.append(value)
             textStringBuilder.append(LINE_END)
@@ -69,7 +69,7 @@ object STHttpUrlConnectionUtil {
                 fileStringBuilder.append(LINE_END)
                 // name是post中传参的键 filename是文件的名称
                 fileStringBuilder.append("Content-Disposition: form-data; name=\"file\"; filename=\"$key\"$LINE_END")
-                fileStringBuilder.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINE_END)
+                fileStringBuilder.append("Content-Type: application/octet-stream; charset=$CHARSET$LINE_END")
                 fileStringBuilder.append(LINE_END)
                 outStream.write(fileStringBuilder.toString().toByteArray())
 
@@ -106,7 +106,7 @@ object STHttpUrlConnectionUtil {
                 ch = inputStream.read()
             }
         }
-        STLogUtil.d(TAG, "responseCode:" + responseCode)
+        STLogUtil.d(TAG, "responseCode:$responseCode")
         STLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
         outStream.close()
         conn.disconnect()
@@ -141,7 +141,7 @@ object STHttpUrlConnectionUtil {
                 ch = inputStream.read()
             }
         }
-        STLogUtil.d(TAG, "responseCode:" + responseCode)
+        STLogUtil.d(TAG, "responseCode:$responseCode")
         STLogUtil.d(TAG, "responseMessage:" + conn.responseMessage)
         try {
             val content = responseStringBuilder.substring(0, 200)

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AbsListView
+import androidx.annotation.Keep
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.shape.CornerSize
@@ -23,6 +24,7 @@ import org.jetbrains.anko.AnkoAsyncContext
 /**
  * drawable to bitmap
  */
+@Keep
 fun Drawable.toBitmap(): Bitmap {
     val bmp = Bitmap.createBitmap(this.intrinsicWidth, this.intrinsicHeight, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bmp)
@@ -31,18 +33,22 @@ fun Drawable.toBitmap(): Bitmap {
     return bmp
 }
 
+@Keep
 fun Float.toPxFromDp(): Float {
     return STSystemUtil.getPxFromDp(this)
 }
 
+@Keep
 fun Int.toPxFromDp(): Int {
     return STSystemUtil.getPxFromDp(this.toFloat()).toInt()
 }
 
+@Keep
 fun Int.toDpFromPx(): Float {
     return STSystemUtil.getDpFromPx(this)
 }
 
+@Keep
 fun <T : Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit) {
     val fragment = weakRef.get() ?: return
     if (fragment.isDetached) return
@@ -50,6 +56,7 @@ fun <T : Fragment> AnkoAsyncContext<T>.fragmentUiThread(f: (T) -> Unit) {
     activity.runOnUiThread { f(fragment) }
 }
 
+@Keep
 fun <T : Fragment> AnkoAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T) -> Unit) {
     val fragment = weakRef.get() ?: return
     if (fragment.isDetached) return
@@ -57,6 +64,7 @@ fun <T : Fragment> AnkoAsyncContext<T>.fragmentUiThreadWithContext(f: Context.(T
     activity.runOnUiThread { activity.f(fragment) }
 }
 
+@Keep
 fun AbsListView.performItemClick(position: Int) {
     STViewUtil.performItemClick(this, position)
 }
@@ -64,15 +72,18 @@ fun AbsListView.performItemClick(position: Int) {
 /**
  * @param debug true 返回自身, false 返回 md5
  */
+@Keep
 @JvmOverloads
 fun String.md5(debug: Boolean = false): String = if (debug) this else STChecksumUtil.genMD5ForCharSequence(this)
 
+@Keep
 fun Fragment.uiThread(fn: () -> Unit) {
     if (this.isDetached) return
     val activity = this.activity ?: return
     activity.runOnUiThread { fn() }
 }
 
+@Keep
 @JvmOverloads
 fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnimationEnd: (() -> Unit)? = null) {
     animate().alpha(if (visibility == View.VISIBLE) 1.0f else 0.0f).setDuration(duration).setListener(object : Animator.AnimatorListener {
@@ -111,6 +122,7 @@ fun View.animateAlphaToVisibility(visibility: Int, duration: Long = 300, onAnima
  * @see View.doOnNextLayout
  * @see View.doOnLayout
  */
+@Keep
 @Deprecated(message = "this function is deprecated !", replaceWith = ReplaceWith("doOnLayout{}", "androidx.core.view.doOnLayout"))
 fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
     STLogUtil.w("ensureOnGlobalLayoutListener start")
@@ -129,6 +141,7 @@ fun View.ensureOnGlobalLayoutListener(onLayout: (view: View) -> Unit) {
     requestLayout() // 加 requestLayout 会必然触发 onGlobalLayout
 }
 
+@Keep
 fun CornerSize.description(): String {
     return STCustomViewUtil.getCornerSizeDescription(this)
 }

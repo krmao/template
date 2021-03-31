@@ -1,6 +1,7 @@
 package com.smart.library.bundle.manager
 
 import android.util.Log
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.model.STHybirdModuleBundleModel
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
@@ -9,6 +10,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
 
 @Suppress("MemberVisibilityCanPrivate", "PrivatePropertyName", "unused")
+@Keep
 object STHybirdBundleInfoManager {
     private val TAG: String = STHybirdBundleInfoManager::class.java.name
 

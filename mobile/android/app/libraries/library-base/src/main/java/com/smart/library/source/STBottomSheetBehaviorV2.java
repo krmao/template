@@ -47,6 +47,7 @@ import android.view.WindowInsets;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -99,6 +100,7 @@ import static java.lang.Math.min;
  */
 @SuppressWarnings("ALL")
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef"})
+@Keep
 public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.Behavior<V> {
 
 

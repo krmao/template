@@ -14,5 +14,4 @@ class STDividerItemDecoration(context: Context?, orientation: Int) : DividerItem
             super.onDraw(c, parent, state)
         }
     }
-
 }

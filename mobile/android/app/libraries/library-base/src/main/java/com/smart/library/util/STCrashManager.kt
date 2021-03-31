@@ -23,6 +23,7 @@ package com.smart.library.util
 
 import android.content.Context
 import android.util.Log
+import androidx.annotation.Keep
 import com.smart.library.BuildConfig
 import com.smart.library.STInitializer
 import com.smart.library.widget.debug.STDebugCrashPanelFragment
@@ -35,6 +36,7 @@ import xcrash.XCrash.InitParameters
 import java.io.File
 import java.io.FileWriter
 
+@Keep
 object STCrashManager {
     private const val TAG = "[xcrash]"
 

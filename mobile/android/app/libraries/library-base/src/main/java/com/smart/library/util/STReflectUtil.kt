@@ -1,6 +1,7 @@
 package com.smart.library.util
 
 import android.text.TextUtils
+import androidx.annotation.Keep
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
@@ -8,6 +9,7 @@ import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredFunctions
 
+@Keep
 @Suppress("unused")
 object STReflectUtil {
     private const val TAG = "[reflect]"
@@ -21,10 +23,10 @@ object STReflectUtil {
         var result: Any? = null
         try {
             val clazz: Class<*> = Class.forName(className)
-            val method: Method? = clazz.getMethod(functionName, *parameterTypes)
-            method?.isAccessible = true
-            STLogUtil.w(TAG, "invoke start ${method?.toGenericString()}")
-            result = method?.invoke(null, *params)
+            val method: Method = clazz.getMethod(functionName, *parameterTypes)
+            method.isAccessible = true
+            STLogUtil.w(TAG, "invoke start ${method.toGenericString()}")
+            result = method.invoke(null, *params)
             STLogUtil.w(TAG, "invoke end $result")
         } catch (e: InstantiationException) {
             STLogUtil.e(TAG, "invoke failure", e)

@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntDef
+import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,6 +37,7 @@ import kotlin.math.min
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehaviorV2] located.
  */
+@Keep
 @Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused", "UsePropertyAccessSyntax", "RedundantOverride", "ProtectedInFinal", "DEPRECATION")
 class STBottomSheetViewPagerBehaviorV2<V : View> @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : STBottomSheetBehaviorV2<V>(context, attrs) {
 

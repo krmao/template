@@ -20,6 +20,7 @@ import com.smart.library.util.STLogUtil
 @Keep
 class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
 
+    @Keep
     enum class Position(val value: Int) {
         LEFT(0),
         TOP(1),

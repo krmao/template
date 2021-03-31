@@ -1,5 +1,6 @@
 package com.smart.library.deploy.model
 
+import androidx.annotation.Keep
 import com.smart.library.base.md5
 import com.smart.library.deploy.STDeployConstants
 import com.smart.library.deploy.STDeployManager
@@ -16,8 +17,10 @@ import java.io.File
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
+@Keep
 class STPatchHelper(type: STDeployManager, val info: STPatchInfo) {
 
+    @Suppress("PropertyName")
     val TAG: String by lazy { type.TAG }
     val debug: Boolean by lazy { type.isDebug() }
     val rootDir: File? by lazy { type.getRootDir() }

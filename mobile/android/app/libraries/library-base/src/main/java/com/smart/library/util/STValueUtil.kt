@@ -2,6 +2,7 @@ package com.smart.library.util
 
 import android.app.Activity
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import org.jetbrains.anko.AnkoAsyncContext
 import java.math.BigDecimal
@@ -9,6 +10,7 @@ import java.text.DecimalFormat
 import kotlin.math.cos
 import kotlin.math.sin
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceCallWithBinaryOperator")
 object STValueUtil {
     private val TAG = STValueUtil::class.java.name

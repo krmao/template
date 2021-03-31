@@ -1,6 +1,7 @@
 package com.smart.library.util.okhttp
 
 
+import androidx.annotation.Keep
 import com.smart.library.util.STTimeUtil
 import okhttp3.*
 import okhttp3.internal.http.HttpHeaders
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit
  * this class should not be considered stable and may change slightly between releases. If you need
  * a stable logging format, use your own interceptor.
  */
+@Keep
 class STHttpLoggingInterceptor(private var level: Level = Level.NONE, private val logger: Logger = Logger.DEFAULT) : Interceptor {
 
     enum class Level {

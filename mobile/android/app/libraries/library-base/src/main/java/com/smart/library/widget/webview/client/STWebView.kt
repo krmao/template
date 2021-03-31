@@ -5,12 +5,14 @@ import android.util.AttributeSet
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.widget.webview.STWebViewUtil
 
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "PropertyName")
 open class STWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : WebView(context, attrs, defStyleAttr) {
 

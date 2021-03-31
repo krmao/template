@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
@@ -18,8 +19,10 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.declaredFunctions
 
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MoveLambdaOutsideParentheses", "ReplacePutWithAssignment")
 object STHybirdBridge {
+    @Suppress("MayBeConstant")
     val TAG = "[hybird]"
 
     private val classMap: HashMap<String, KClass<*>> = hashMapOf()

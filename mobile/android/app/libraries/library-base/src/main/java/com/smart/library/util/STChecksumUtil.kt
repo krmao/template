@@ -1,10 +1,12 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import java.io.File
 import java.io.FileInputStream
 import java.math.BigInteger
 import java.security.MessageDigest
 
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STChecksumUtil {
     fun genMD5ForByteArray(buffer: ByteArray): String {

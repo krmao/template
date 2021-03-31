@@ -2,6 +2,7 @@ package com.smart.library.widget.recyclerview.snap
 
 import android.graphics.Rect
 import android.view.View
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.*
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -9,6 +10,7 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import kotlin.math.abs
 import kotlin.math.min
 
+@Keep
 interface STSnapHelper {
 
     fun attachToRecyclerView(recyclerView: RecyclerView?)
@@ -27,12 +29,14 @@ interface STSnapHelper {
     fun enableDebug(enable: Boolean)
     fun debugLog(logHandler: () -> Unit)
 
+    @Keep
     enum class Snap {
         START,
         CENTER,
         END
     }
 
+    @Keep
     class STSnapGravityDelegate(private val enableLoadingFooterView: Boolean, var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
 
         private val tag = "Gravity-Snap"

@@ -2,6 +2,7 @@ package com.smart.library.user
 
 import androidx.annotation.Keep
 
+@Suppress("unused")
 @Keep
 data class STUserModel(
     var id: Int = 0,

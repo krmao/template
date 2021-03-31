@@ -3,6 +3,7 @@ package com.smart.library.base
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.util.rx.RxBus
@@ -10,6 +11,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate")
+@Keep
 open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     companion object {

@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.manager.STHybirdBundleInfoManager
@@ -28,6 +29,7 @@ import java.util.*
 import java.util.zip.ZipException
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
+@Keep
 object STHybirdUtil {
 
     @JvmStatic
@@ -279,8 +281,7 @@ object STHybirdUtil {
                             }
                         }
                     }.onErrorReturnItem(STHybirdModuleConfigModel.invalidConfigModel)
-                }
-                ,
+                },
                 ({
                     it.map { it as STHybirdModuleConfigModel }.filter { it != STHybirdModuleConfigModel.invalidConfigModel }.toMutableList()
                 })

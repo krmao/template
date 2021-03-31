@@ -2,6 +2,7 @@
 
 package com.smart.library.util.retrofit
 
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STURLManager
@@ -22,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 import java.io.Serializable
 
+@Keep
 @Suppress("UNCHECKED_CAST", "unused")
 object STApiManager {
 

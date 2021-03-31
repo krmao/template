@@ -1,6 +1,7 @@
 package com.smart.library.util
 
 import android.os.CountDownTimer
+import androidx.annotation.Keep
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,6 +34,7 @@ import java.util.*
  *       z 时区
  * </p>
  */
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "FunctionName", "MemberVisibilityCanBePrivate")
 object STTimeUtil {
 

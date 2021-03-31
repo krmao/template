@@ -5,9 +5,11 @@ import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.hybird.STHybirdBridge
 
+@Keep
 open class STWebChromeClient : WebChromeClient() {
 
     override fun onReceivedTitle(view: WebView?, title: String?) {
@@ -25,5 +27,4 @@ open class STWebChromeClient : WebChromeClient() {
         STLogUtil.v(STHybirdBridge.TAG, "onShowFileChooser")
         return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
     }
-
 }

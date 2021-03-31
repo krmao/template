@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 
+import androidx.annotation.Keep;
+
 import com.smart.library.R;
 import com.smart.library.util.swipeback.STSwipeBackLayout;
 import com.smart.library.util.swipeback.STSwipeBackUtils;
@@ -18,6 +20,7 @@ import java.lang.ref.WeakReference;
  * 每个滑动页面的管理
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "RedundantSuppression", "IfStatementWithIdenticalBranches"})
+@Keep
 public class STSwipeBackPage {
     //仅为判断是否需要将mSwipeBackLayout注入进去
     private boolean mEnable = true;

@@ -8,6 +8,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
+import androidx.annotation.Keep;
+
 import java.util.Arrays;
 
 /**
@@ -18,6 +20,7 @@ import java.util.Arrays;
  * and reposition views within their parent ViewGroup.
  */
 @SuppressWarnings("deprecation")
+@Keep
 public class STSwipeBacViewDragHelper {
     /**
      * A null/invalid pointer ID.

@@ -1,5 +1,6 @@
 package com.smart.library.util.rx
 
+import androidx.annotation.Keep
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap
  *      //当前页面退出的时候调用 比如 fragment/activity 的 onDestroy 方法里面调用
  *      compositeDisposable.dispose()
  */
+@Keep
 @Suppress("unused")
 object RxBus {
 

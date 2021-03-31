@@ -3,7 +3,9 @@ package com.smart.library.widget.recyclerview.snap
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.Keep
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class STSnapGravityPagerHelper @JvmOverloads constructor(enableLoadingFooterView: Boolean, snap: STSnapHelper.Snap, onSnap: ((position: Int) -> Unit)? = null) : PagerSnapHelper(), STSnapHelper {
 

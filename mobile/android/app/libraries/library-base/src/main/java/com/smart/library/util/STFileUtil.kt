@@ -3,6 +3,7 @@ package com.smart.library.util
 import android.graphics.Bitmap
 import android.os.Process
 import android.text.TextUtils
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.cache.STCacheManager
 import java.io.*
@@ -10,7 +11,7 @@ import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.system.exitProcess
 
-
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 object STFileUtil {
 

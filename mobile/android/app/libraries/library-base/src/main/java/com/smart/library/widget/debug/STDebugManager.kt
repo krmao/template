@@ -3,10 +3,12 @@ package com.smart.library.widget.debug
 import android.app.Activity
 import android.view.Gravity
 import android.widget.Toast
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STViewUtil
 
+@Keep
 object STDebugManager {
 
     /**

@@ -1,7 +1,9 @@
 package com.smart.library.deploy.model
 
+import androidx.annotation.Keep
 import java.io.File
 
+@Keep
 data class STDeployConfigModel(
     val baseBundle: STBundleInfo,
     val baseBundlePathInAssets: String,

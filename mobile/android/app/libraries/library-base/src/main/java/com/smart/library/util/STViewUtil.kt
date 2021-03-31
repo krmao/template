@@ -11,10 +11,12 @@ import android.view.ViewTreeObserver
 import android.webkit.WebView
 import android.widget.AbsListView
 import android.widget.TextView
+import androidx.annotation.Keep
 import androidx.annotation.UiThread
 import com.smart.library.base.animateAlphaToVisibility
 import org.jetbrains.anko.forEachChild
 
+@Keep
 @Suppress("MemberVisibilityCanBePrivate")
 object STViewUtil {
     private val TAG = STViewUtil::class.java.simpleName

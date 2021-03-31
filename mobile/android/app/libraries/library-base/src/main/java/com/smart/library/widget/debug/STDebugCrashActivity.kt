@@ -7,11 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.AnimRes
 import androidx.annotation.FloatRange
+import androidx.annotation.Keep
 import androidx.annotation.StyleRes
 import com.smart.library.R
 import com.smart.library.base.STActivity
 import com.smart.library.base.STActivityDelegate
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugCrashActivity : STActivity() {
 

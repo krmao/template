@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.Keep
 import androidx.core.app.TaskStackBuilder
 import com.smart.library.STInitializer
 
@@ -164,6 +165,7 @@ import com.smart.library.STInitializer
  * @see @link{https://blog.csdn.net/u013706904/article/details/51912634}
  * @see @link{https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead}
  */
+@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object STNotificationManager {
 

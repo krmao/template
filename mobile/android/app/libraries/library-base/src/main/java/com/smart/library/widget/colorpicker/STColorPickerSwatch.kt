@@ -15,6 +15,7 @@
  */
 package com.smart.library.widget.colorpicker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -22,11 +23,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.Keep
 import com.smart.library.R
 
 /**
  * Creates a circular swatch of a specified color.  Adds a checkmark if marked as checked.
  */
+@Keep
 @Suppress("MemberVisibilityCanBePrivate")
 class STColorPickerSwatch @JvmOverloads constructor(context: Context, attribute: AttributeSet? = null, var mColor: Int = Color.WHITE, var mChecked: Boolean = false, var mOnColorSelectedListener: OnColorSelectedListener? = null) : FrameLayout(context, attribute), View.OnClickListener {
     private val mSwatchImage: ImageView by lazy { findViewById<View>(R.id.color_picker_swatch) as ImageView }
@@ -42,6 +45,7 @@ class STColorPickerSwatch @JvmOverloads constructor(context: Context, attribute:
         fun onColorSelected(color: Int)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Suppress("DEPRECATION")
     fun setColor(color: Int) {
         mColor = color

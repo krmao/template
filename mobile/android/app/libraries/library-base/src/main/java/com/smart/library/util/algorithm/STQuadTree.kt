@@ -14,6 +14,7 @@ import java.util.*
  * 特征:
  * 1. 所有的数据都存放在叶子节点中
  */
+@Keep
 @Suppress("unused")
 class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
     private val bounds: Bounds,                                 // The bounds of this quad. 当前节点占用的 2D 空间/范围

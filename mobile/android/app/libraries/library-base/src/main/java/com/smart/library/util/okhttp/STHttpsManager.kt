@@ -1,5 +1,7 @@
 package com.smart.library.util.okhttp
 
+import android.annotation.SuppressLint
+import androidx.annotation.Keep
 import java.io.IOException
 import java.io.InputStream
 import java.security.*
@@ -8,19 +10,24 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
+@Keep
 class STHttpsManager {
+    @Keep
     class SSLParams(var ssLSocketFactory: SSLSocketFactory, var trustManager: X509TrustManager)
 
     @Suppress("unused")
     private inner class UnSafeHostnameVerifier : HostnameVerifier {
+        @SuppressLint("BadHostnameVerifier")
         override fun verify(hostname: String, session: SSLSession): Boolean = true
     }
 
     private class UnSafeTrustManager : X509TrustManager {
+        @SuppressLint("TrustAllX509TrustManager")
         @Throws(CertificateException::class)
         override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
         }
 
+        @SuppressLint("TrustAllX509TrustManager")
         @Throws(CertificateException::class)
         override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
         }
@@ -40,6 +47,7 @@ class STHttpsManager {
         }
 
 
+        @SuppressLint("TrustAllX509TrustManager")
         @Throws(CertificateException::class)
         override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
 
@@ -88,7 +96,7 @@ class STHttpsManager {
                 val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
                 keyStore.load(null)
                 for ((index, certificate) in certificates.withIndex()) {
-                    val certificateAlias = Integer.toString(index)
+                    val certificateAlias = index.toString()
                     keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate))
                     try {
                         certificate.close()

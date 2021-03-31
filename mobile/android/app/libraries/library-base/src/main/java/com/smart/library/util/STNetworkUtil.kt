@@ -12,6 +12,7 @@ import android.net.NetworkInfo
 import android.net.wifi.WifiManager
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import java.net.Inet4Address
 import java.net.InetAddress
@@ -20,6 +21,7 @@ import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Keep
 @Suppress("unused", "DEPRECATION")
 object STNetworkUtil {
 

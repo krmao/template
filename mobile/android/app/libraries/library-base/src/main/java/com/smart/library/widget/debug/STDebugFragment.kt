@@ -18,6 +18,7 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.annotation.Keep
 import androidx.core.app.NotificationCompat
 import com.smart.library.R
 import com.smart.library.STInitializer
@@ -28,6 +29,7 @@ import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.st_fragment_debug.*
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugFragment : STBaseFragment() {
 
@@ -325,8 +327,10 @@ open class STDebugFragment : STBaseFragment() {
 
     }
 
+    @Keep
     data class HostChangeEvent(var hostModel: HostModel)
 
+    @Keep
     data class HostModel(var label: String, var url: String, var isSelected: Boolean) {
         override fun equals(other: Any?): Boolean {
             return if (other is HostModel) !TextUtils.isEmpty(label) && label == other.label else false

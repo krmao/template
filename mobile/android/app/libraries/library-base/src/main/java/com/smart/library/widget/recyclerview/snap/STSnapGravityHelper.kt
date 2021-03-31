@@ -3,6 +3,7 @@ package com.smart.library.widget.recyclerview.snap
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.annotation.Keep
 
 /**
  * 实验证明: START/END 与 reverseLayout 强相关
@@ -31,6 +32,7 @@ import android.view.View
     // gravity snap
     snapGravityHelper.attachToRecyclerView(recyclerView)
  */
+@Keep
 @Suppress("unused")
 class STSnapGravityHelper @JvmOverloads constructor(enableLoadingFooterView: Boolean, snap: STSnapHelper.Snap, onSnap: ((position: Int) -> Unit)? = null) : LinearSnapHelper(), STSnapHelper {
     private val delegate: STSnapHelper.STSnapGravityDelegate = STSnapHelper.STSnapGravityDelegate(enableLoadingFooterView, snap, onSnap)

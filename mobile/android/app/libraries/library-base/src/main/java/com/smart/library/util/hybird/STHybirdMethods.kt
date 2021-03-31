@@ -1,5 +1,6 @@
 package com.smart.library.util.hybird
 
+import androidx.annotation.Keep
 import com.smart.library.util.STPreferencesUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
@@ -8,6 +9,7 @@ import com.smart.library.util.STNetworkUtil
 /**
  * getAppInfo/getDeviceInfo 放到 userAgent
  */
+@Keep
 @Suppress("unused")
 class STHybirdMethods {
 

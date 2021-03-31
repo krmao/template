@@ -1,5 +1,6 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import java.io.*
 import java.util.zip.ZipEntry
@@ -7,6 +8,7 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object STZipUtil {
     private const val BUFFER = 2048

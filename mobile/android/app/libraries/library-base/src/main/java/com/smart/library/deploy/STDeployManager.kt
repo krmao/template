@@ -1,6 +1,7 @@
 package com.smart.library.deploy
 
 import android.app.Activity
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.deploy.client.STIDeployClient
 import com.smart.library.deploy.client.impl.STDeployClientForReactNative
@@ -15,6 +16,7 @@ import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
+@Keep
 enum class STDeployManager(private var debug: Boolean, private var rootDir: File?, private val checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, private val applyTypes: MutableSet<STDeployApplyType>) : STIDeployClient {
 
     ANDROID(STInitializer.debug(), STCacheManager.getFilesHotPatchAndroidDir(), mutableSetOf(), mutableSetOf()),

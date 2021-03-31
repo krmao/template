@@ -1,8 +1,10 @@
 package com.smart.library.deploy.client
 
+import androidx.annotation.Keep
 import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
 import java.io.File
 
+@Keep
 interface STIDeployClient {
 
     fun getRootDir(): File?
@@ -14,5 +16,4 @@ interface STIDeployClient {
     fun checkUpdate()
 
     fun checkUpdate(checkUpdateCallback: STIDeployCheckUpdateCallback?)
-
 }

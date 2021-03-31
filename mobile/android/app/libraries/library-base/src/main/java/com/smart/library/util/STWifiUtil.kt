@@ -17,13 +17,13 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.library.util.wifi.STWifiUtils
-
 
 /**
  *
@@ -34,6 +34,7 @@ import com.smart.library.util.wifi.STWifiUtils
  * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
  * <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
  */
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "KDocUnresolvedReference")
 object STWifiUtil {
 

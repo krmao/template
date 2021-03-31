@@ -3,10 +3,12 @@ package com.smart.library.util.wifi
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Button
+import androidx.annotation.Keep
 
 /**
  * Foundation interface glues between Activities and UIs like [STWifiDialog].
  */
+@Keep
 interface STWifiConfigUiBase {
     fun getContext(): Context
     fun getController(): STWifiConfigController

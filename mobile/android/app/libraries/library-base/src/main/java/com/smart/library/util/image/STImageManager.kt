@@ -4,11 +4,13 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
+import androidx.annotation.Keep
 import com.facebook.drawee.backends.pipeline.Fresco
 import java.io.File
 
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
+@Keep
 object STImageManager {
 
     private var imageHandler: STIImageHandler? = null

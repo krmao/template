@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,6 +39,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
  */
 @SuppressWarnings("unused")
+@Keep
 public class STCacheFileManager {
     private static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;

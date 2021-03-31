@@ -1,11 +1,12 @@
 package com.smart.library.deploy
 
+import androidx.annotation.Keep
 import com.smart.library.deploy.model.STBundleInfo
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
 
-
 @Suppress("PrivatePropertyName", "unused", "LiftReturnOrAssignment")
+@Keep
 class STDeployPreferenceManager internal constructor(private val type: STDeployManager) {
 
     private val TAG = "[deploy-${type.name}-preference]"

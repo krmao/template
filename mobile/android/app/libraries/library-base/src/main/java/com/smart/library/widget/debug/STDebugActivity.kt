@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.FrameLayout
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
+@Keep
 open class STDebugActivity : STBaseActivity() {
 
     @Suppress("PrivatePropertyName", "PropertyName")

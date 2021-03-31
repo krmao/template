@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
+import androidx.annotation.Keep
 import com.facebook.binaryresource.BinaryResource
 import com.facebook.binaryresource.FileBinaryResource
 import com.facebook.cache.disk.DiskCacheConfig
@@ -41,6 +42,7 @@ import java.io.File
  *
  * @see <a href="https://www.fresco-cn.org/docs/using-drawees-xml.html">https://www.fresco-cn.org/docs/using-drawees-xml.html</a>
  */
+@Keep
 @Suppress("MemberVisibilityCanBeprotected", "protectedPropertyName", "unused", "MemberVisibilityCanBePrivate", "PropertyName")
 open class STImageFrescoHandler(val config: ImagePipelineConfig) : STIImageHandler {
 

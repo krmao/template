@@ -13,9 +13,11 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.util.STLogUtil
 
+@Keep
 @Suppress("DEPRECATION", "MemberVisibilityCanBePrivate")
 class STDotsIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : STBaseDotsIndicator(context, attrs, defStyleAttr) {
 

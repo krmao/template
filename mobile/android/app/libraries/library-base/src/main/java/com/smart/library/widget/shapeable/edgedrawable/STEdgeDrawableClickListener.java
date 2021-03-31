@@ -33,7 +33,7 @@ import androidx.annotation.Keep;
  * @see TextView#setCompoundDrawablesRelativeWithIntrinsicBounds(int, int, int, int)
  * @see STEdgeDrawableTouchListener
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings("ALL")
 @Keep
 public abstract class STEdgeDrawableClickListener extends STEdgeDrawableTouchListener {
 

@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.annotation.FloatRange
+import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import com.gyf.immersionbar.ImmersionBar
 import io.reactivex.disposables.CompositeDisposable
@@ -26,6 +27,7 @@ import io.reactivex.disposables.CompositeDisposable
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
 @Suppress("MemberVisibilityCanBePrivate")
+@Keep
 open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
 
     protected open val delegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }

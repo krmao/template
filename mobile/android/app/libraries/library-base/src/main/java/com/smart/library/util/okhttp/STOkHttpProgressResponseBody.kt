@@ -1,10 +1,12 @@
 package com.smart.library.util.okhttp
 
+import androidx.annotation.Keep
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import okio.*
 import java.io.IOException
 
+@Keep
 class STOkHttpProgressResponseBody(private var requestUrl: String? = null, private val responseBody: ResponseBody, private val onProgress: ((url: String, current: Long, total: Long) -> Unit?)? = null) : ResponseBody() {
 
     class OnProgressEvent(val requestUrl: String, val current: Long, val total: Long)

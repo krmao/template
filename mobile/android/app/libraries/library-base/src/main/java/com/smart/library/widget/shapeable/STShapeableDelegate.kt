@@ -3,12 +3,10 @@ package com.smart.library.widget.shapeable
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.view.View
-import androidx.annotation.ColorRes
-import androidx.annotation.DimenRes
-import androidx.annotation.Dimension
-import androidx.annotation.StyleableRes
+import androidx.annotation.*
 import com.google.android.material.shape.ShapeAppearanceModel
 
+@Keep
 interface STShapeableDelegate {
     fun view(): View
     fun onDetachedFromWindow()

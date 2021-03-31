@@ -1,11 +1,13 @@
 package com.smart.library.util
 
+import androidx.annotation.Keep
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "LiftReturnOrAssignment")
 object STJsonUtil {
     private val gson: Gson by lazy { Gson() }

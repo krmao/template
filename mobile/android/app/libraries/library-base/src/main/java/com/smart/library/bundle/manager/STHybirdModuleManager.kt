@@ -1,10 +1,12 @@
 package com.smart.library.bundle.manager
 
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.bundle.util.STHybirdUtil
 import com.smart.library.util.STLogUtil
 
+@Keep
 class STHybirdModuleManager private constructor(config: STHybirdModuleConfigModel) {
 
     companion object {

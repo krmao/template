@@ -3,10 +3,9 @@ package com.smart.library.widget.behavior
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.Keep
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.smart.library.base.toPxFromDp
 import com.smart.library.source.STBottomSheetBehavior
-import kotlin.math.max
 
 /*
 
@@ -46,6 +45,8 @@ java/kotlin->
     }
 
 */
+@Suppress("unused", "KDocUnresolvedReference")
+@Keep
 class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 
     private var lastChildY: Float = 0f
@@ -59,7 +60,7 @@ class STBottomSheetBackdropBehavior<V : View>(context: Context, attrs: Attribute
     override fun layoutDependsOn(parent: CoordinatorLayout, child: V, dependency: View): Boolean {
         if (bottomSheetBehaviorClass?.isInstance(dependency) == true) {
             try {
-                STBottomSheetBehavior.from<View>(dependency)
+                STBottomSheetBehavior.from(dependency)
                 return true
             } catch (e: IllegalArgumentException) {
             }

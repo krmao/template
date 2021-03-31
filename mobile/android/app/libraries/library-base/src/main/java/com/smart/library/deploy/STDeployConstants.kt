@@ -15,5 +15,4 @@ object STDeployConstants {
     const val FILE_NAME_TEMP_ZIP = "temp-%d.zip"    // 合并压缩包, %d为版本号
     const val FILE_NAME_APPLY_ZIP = "apply-%d.zip"  // 目标压缩包, %d为版本号
     const val DIR_NAME_BASE_UNZIP = "base-%d"       // 基础包解压目录, %d为版本号
-
 }

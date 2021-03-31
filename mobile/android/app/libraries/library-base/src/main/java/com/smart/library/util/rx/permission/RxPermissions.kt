@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
+import androidx.annotation.Keep
 import androidx.core.content.PermissionChecker
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
@@ -16,6 +17,7 @@ import io.reactivex.functions.Function
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
+@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 class RxPermissions(activity: Activity) {
 

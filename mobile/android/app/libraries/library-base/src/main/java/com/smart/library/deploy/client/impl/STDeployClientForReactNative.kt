@@ -3,6 +3,7 @@
 package com.smart.library.deploy.client.impl
 
 import android.annotation.SuppressLint
+import androidx.annotation.Keep
 import com.smart.library.base.STApplicationVisibleChangedEvent
 import com.smart.library.deploy.STDeployManager
 import com.smart.library.deploy.STDeployPreferenceManager
@@ -30,6 +31,7 @@ import java.util.*
  */
 @Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate", "KDocUnresolvedReference")
 @SuppressLint("CheckResult")
+@Keep
 internal class STDeployClientForReactNative(
     private val debug: Boolean,
     private val rootDir: File?,

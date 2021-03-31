@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -21,6 +22,7 @@ import com.smart.library.util.STLogUtil
 /**
  * 参考 https://github.com/tommybuonomo/dotsindicator
  */
+@Keep
 @Suppress("unused", "PropertyName")
 abstract class STBaseDotsIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
     @Suppress("PrivatePropertyName", "unused")

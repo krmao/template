@@ -3,6 +3,7 @@ package com.smart.library.util.swipeback.relate;
 import android.annotation.SuppressLint;
 import android.os.Build;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.smart.library.util.swipeback.STSwipeBackLayout;
@@ -11,6 +12,7 @@ import com.smart.library.util.swipeback.STSwipeBackLayout;
  * Created by Mr.Jude on 2015/8/26.
  */
 @SuppressLint("ObsoleteSdkInt")
+@Keep
 public class STSwipeBackRelateListenerAdapter implements STSwipeBackLayout.SwipeListenerEx {
     public STSwipeBackPage currentPage;
     private static final int DEFAULT_OFFSET = 40;

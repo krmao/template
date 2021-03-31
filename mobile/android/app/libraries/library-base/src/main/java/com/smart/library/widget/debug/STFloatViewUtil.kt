@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.STPreferencesUtil
@@ -19,6 +20,7 @@ import com.smart.library.util.STSystemUtil
 <!--悬浮窗-->
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
+@Keep
 @Suppress("DEPRECATION", "unused", "ClickableViewAccessibility", "PrivatePropertyName", "ReplaceJavaStaticMethodWithKotlinAnalog")
 enum class STFloatViewUtil {
     @SuppressLint("StaticFieldLeak")

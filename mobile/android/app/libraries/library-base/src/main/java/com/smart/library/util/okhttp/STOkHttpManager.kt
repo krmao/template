@@ -1,5 +1,6 @@
 package com.smart.library.util.okhttp
 
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.cache.STCacheManager
@@ -10,7 +11,7 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-
+@Keep
 @Suppress("unused")
 object STOkHttpManager {
     private const val CONNECT_TIMEOUT_SECONDS = 20

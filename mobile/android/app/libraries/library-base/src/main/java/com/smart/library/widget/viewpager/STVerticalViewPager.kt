@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.Keep
 
-
 /**
  * Uses a combination of a PageTransformer and swapping X & Y coordinates
  * of touch events to create the illusion of a vertically scrolling ViewPager.

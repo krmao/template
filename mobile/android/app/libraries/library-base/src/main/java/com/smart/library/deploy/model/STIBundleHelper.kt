@@ -1,8 +1,10 @@
 package com.smart.library.deploy.model
 
+import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import java.io.File
 
+@Keep
 abstract class STIBundleHelper(val info: STBundleInfo, val rootDir: File?, val TAG: String) {
 
     fun checkUnzipDirValid(): Boolean {
@@ -19,5 +21,4 @@ abstract class STIBundleHelper(val info: STBundleInfo, val rootDir: File?, val T
     }
 
     abstract fun getIndexFile(): File
-
 }

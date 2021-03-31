@@ -2,11 +2,13 @@ package com.smart.library.bundle.manager
 
 import android.util.Log
 import android.webkit.WebViewClient
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.util.STHybirdUtil
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 
+@Keep
 object STHybirdLifecycleManager {
     private val lifecycleMap: MutableMap<String, MutableSet<Int>> = mutableMapOf()
 

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Window
 import androidx.annotation.FloatRange
+import androidx.annotation.Keep
 import androidx.fragment.app.FragmentActivity
 import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.STInitializer
@@ -24,6 +25,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 @Suppress("MemberVisibilityCanBePrivate", "IfThenToSafeAccess")
+@Keep
 open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelegate {
 
     protected val disposables: CompositeDisposable by lazy { CompositeDisposable() }

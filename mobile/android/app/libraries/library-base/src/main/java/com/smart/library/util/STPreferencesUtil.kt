@@ -3,6 +3,7 @@ package com.smart.library.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.Keep
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
@@ -24,6 +25,7 @@ import java.util.*
  * import com.fasterxml.jackson.databind.type.TypeFactory
  * import com.fasterxml.jackson.module.kotlin.registerKotlinModule
  */
+@Keep
 object STPreferencesUtil {
 
     private val sharedPreferences: SharedPreferences? by lazy { STInitializer.application()?.getSharedPreferences(STInitializer.config?.configName?.appSPName ?: "com.codesdancing.shared_preferences", Context.MODE_PRIVATE) }

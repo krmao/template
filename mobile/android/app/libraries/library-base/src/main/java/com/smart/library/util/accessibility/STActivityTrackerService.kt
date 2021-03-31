@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
@@ -14,6 +15,7 @@ import com.smart.library.util.rx.RxBus
 /**
  * https://github.com/fashare2015/ActivityTracker
  */
+@Keep
 class STActivityTrackerService : AccessibilityService() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

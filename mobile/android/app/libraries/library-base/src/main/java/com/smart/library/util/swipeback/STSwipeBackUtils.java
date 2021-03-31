@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.os.Build;
 
+import androidx.annotation.Keep;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -14,6 +16,7 @@ import java.lang.reflect.Proxy;
  * https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
  */
 @SuppressWarnings("JavaReflectionMemberAccess")
+@Keep
 public class STSwipeBackUtils {
     private STSwipeBackUtils() {
     }

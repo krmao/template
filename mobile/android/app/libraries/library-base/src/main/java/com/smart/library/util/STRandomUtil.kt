@@ -14,7 +14,7 @@ import kotlin.math.min
  * desc   : 获取随机的测试图片地址以及随机的颜色值
  * </pre>
  */
-@Suppress("unused", "MemberVisibilityCanPrivate")
+@Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 @Keep
 object STRandomUtil {
     /**

@@ -6,16 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.FrameLayout
-import androidx.annotation.AnimRes
-import androidx.annotation.FloatRange
-import androidx.annotation.StyleRes
-import androidx.annotation.UiThread
+import androidx.annotation.*
 import androidx.fragment.app.Fragment
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
+@Keep
 open class STActivity : STBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

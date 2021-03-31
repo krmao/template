@@ -2,6 +2,7 @@ package com.smart.library.util
 
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.cache.STCacheManager
 import io.reactivex.Flowable
@@ -48,6 +49,7 @@ import java.util.*
  *      改用 set 方法 以及 getName 方法
  *
  */
+@Keep
 @Suppress("unused", "MemberVisibilityCan", "MemberVisibilityCan", "MemberVisibilityCanPrivate")
 object STLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"

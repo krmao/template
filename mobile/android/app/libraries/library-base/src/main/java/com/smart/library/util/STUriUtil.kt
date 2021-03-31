@@ -3,6 +3,7 @@ package com.smart.library.util
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.annotation.Keep
 import androidx.core.content.FileProvider
 import com.smart.library.STInitializer
 import java.io.File
@@ -29,6 +30,7 @@ import java.io.File
  *
  * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
  */
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STUriUtil {
     private val TAG = STUriUtil::class.java.simpleName

@@ -16,6 +16,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
@@ -32,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+@Keep
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt"})
 @SuppressWarnings({"WeakerAccess", "unused", "Convert2Lambda", "unchecked", "SpellCheckingInspection", "ConstantConditions"})
 public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {

@@ -1,6 +1,7 @@
 package com.smart.library.util.cache
 
 import android.text.TextUtils
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.base.md5
 import com.smart.library.util.STSystemUtil
@@ -10,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * 管理应用程序全局的 entity cache
  */
+@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STCacheManager {
 

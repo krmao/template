@@ -3,6 +3,7 @@ package com.smart.library.widget.behavior
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.Keep
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.smart.library.base.toPxFromDp
 import com.smart.library.util.STSystemUtil
@@ -45,6 +46,7 @@ java/kotlin->
     }
 
 */
+@Keep
 @Suppress("KDocUnresolvedReference", "unused")
 class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 

@@ -22,13 +22,14 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.Keep
 import androidx.core.content.PermissionChecker
 import com.smart.library.R
 import com.smart.library.STInitializer
 import com.smart.library.base.toBitmap
 import kotlin.math.sqrt
 
-
+@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection")
 object STSystemUtil {
 

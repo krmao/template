@@ -1,5 +1,6 @@
 package com.smart.library.bundle.manager
 
+import androidx.annotation.Keep
 import com.smart.library.bundle.STHybird
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.bundle.util.STHybirdUtil
@@ -8,6 +9,7 @@ import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
+@Keep
 object STHybirdDownloadManager {
 
     private val downloadMap: ConcurrentHashMap<STHybirdModuleConfigModel, Boolean> = ConcurrentHashMap()

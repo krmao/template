@@ -2,12 +2,15 @@ package com.smart.library.util.swipeback.relate;
 
 import android.app.Activity;
 
+import androidx.annotation.Keep;
+
 import java.util.Stack;
 
 /**
  * 滑动的全局管理类
  */
 @SuppressWarnings({"unused", "RedundantSuppression"})
+@Keep
 public class STSwipeBackHelper {
 
     private static final Stack<STSwipeBackPage> mPageStack = new Stack<>();

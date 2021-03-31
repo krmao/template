@@ -1,7 +1,7 @@
 package com.smart.library.util.retrofit.exception
 
-
 import android.util.Log
+import androidx.annotation.Keep
 import com.google.gson.JsonIOException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
@@ -13,6 +13,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
 
+@Keep
 object STRetrofitException {
     private const val TAG = "[ok http]"
 

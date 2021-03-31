@@ -3,8 +3,10 @@ package com.smart.library.widget.shapeable.edgedrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StyleableRes
 
+@Keep
 interface STEdgeDrawableDelegate {
     fun view(): View
     fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int)

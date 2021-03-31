@@ -19,6 +19,7 @@ import android.view.TouchDelegate
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnLayout
@@ -26,7 +27,7 @@ import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.CornerSize
 import com.google.android.material.shape.RelativeCornerSize
 
-
+@Keep
 @Suppress("unused", "ControlFlowWithEmptyBody")
 object STCustomViewUtil {
 

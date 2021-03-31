@@ -7,11 +7,13 @@ import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
+@Keep
 @Suppress("unused")
 class RxPermissionsFragment : Fragment() {
 

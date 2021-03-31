@@ -4,6 +4,7 @@ import android.content.Context
 import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 import android.widget.Toast
+import androidx.annotation.Keep
 import com.smart.library.util.STIntentUtil
 import com.smart.library.util.STSystemUtil
 import java.util.*
@@ -11,6 +12,7 @@ import java.util.*
 /**
  * https://github.com/fashare2015/ActivityTracker
  */
+@Keep
 object STAccessibilityUtil {
 
     @JvmStatic

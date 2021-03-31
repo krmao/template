@@ -3,6 +3,7 @@ package com.smart.library.util.retrofit
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.Keep
 import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.util.okhttp.STOkHttpProgressResponseBody
 import com.smart.library.util.rx.RxBus
@@ -87,6 +88,7 @@ private fun request() {
 }
 
 */
+@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 interface STApi {
 

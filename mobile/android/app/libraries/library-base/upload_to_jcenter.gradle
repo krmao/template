@@ -30,13 +30,16 @@ apply plugin: 'maven-publish'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+def enableJavadoc = false       // upload javadoc.jar to repository if set true
+def enableSourcesJar = false    // upload java/kotlin source.jar to repository if set true
+
 def BINTRAY_REPOSITORY = 'maven'
 def BINTRAY_USER = 'krmao'
 def BINTRAY_APIKEY = properties.getProperty("bintray.apikey")
 // def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
 
 def LIBRARY_NAME = 'library-base'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
-def LIBRARY_VERSION = '0.0.2.5'
+def LIBRARY_VERSION = '0.0.2.7'
 def LIBRARY_GROUP_ID = 'com.codesdancing.libraries'
 def LIBRARY_LABELS = ['library-base']
 def LIBRARY_ARTIFACT_ID = "library-base"
@@ -93,8 +96,12 @@ afterEvaluate {
             release(MavenPublication) {
                 // Applies the component for the release build variant.
                 from components.release
-                artifact sourcesJar
-                artifact javadocJar
+                if (enableSourcesJar) {
+                    artifact sourcesJar
+                }
+                if (enableJavadoc) {
+                    artifact javadocJar
+                }
                 // You can then customize attributes of the publication as shown below.
                 groupId = LIBRARY_GROUP_ID
                 artifactId = LIBRARY_ARTIFACT_ID
@@ -134,16 +141,20 @@ task javadoc(type: Javadoc) {
     failOnError false
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    //noinspection GrDeprecatedAPIUsage
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+if (enableJavadoc) {
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        //noinspection GrDeprecatedAPIUsage
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    //noinspection GrDeprecatedAPIUsage
-    classifier = 'sources'
+if (enableSourcesJar) {
+    task sourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        //noinspection GrDeprecatedAPIUsage
+        classifier = 'sources'
+    }
 }
 
 javadoc {
@@ -154,8 +165,12 @@ javadoc {
 }
 
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+    if (enableJavadoc) {
+        archives javadocJar
+    }
+    if (enableSourcesJar) {
+        archives sourcesJar
+    }
 }
 
 bintray {

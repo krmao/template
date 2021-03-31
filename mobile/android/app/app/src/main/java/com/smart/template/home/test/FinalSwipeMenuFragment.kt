@@ -21,6 +21,7 @@ import com.smart.library.widget.viewpager.STPagerAdapter
 import com.smart.template.R
 import kotlinx.android.synthetic.main.final_swipe_menu_fragment.*
 
+@Suppress("DEPRECATION")
 class FinalSwipeMenuFragment : STBaseFragment() {
 
     companion object {
@@ -53,7 +54,7 @@ class FinalSwipeMenuFragment : STBaseFragment() {
         recyclerPagerView.adapter = object : STRecyclerViewAdapter<Int, STRecyclerViewAdapter.ViewHolder>(context, arrayListOf(0, 1)) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.final_swipe_menu_item, parent, false))
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                initRecyclerView(holder.itemView.findViewById<RecyclerView>(R.id.recyclerView))
+                initRecyclerView(holder.itemView.findViewById(R.id.recyclerView))
             }
         }
     }

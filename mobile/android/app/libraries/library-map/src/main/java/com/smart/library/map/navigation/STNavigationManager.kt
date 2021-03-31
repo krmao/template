@@ -32,7 +32,7 @@ object STNavigationManager {
         BMAP("百度地图", "com.baidu.BaiduMap", MapSupportScope.CHINA),
         GOOGLE("系统地图", "com.google.android.apps.maps", MapSupportScope.OVERSEA);
 
-        fun isAppInstalled(): Boolean = STSystemUtil.isAppInstalled(STInitializer.application(), packageName ?: "")
+        fun isAppInstalled(): Boolean = STSystemUtil.isAppInstalled(STInitializer.application(), packageName)
 
         /**
          * AMAP/BMAP 使用火星坐标系 GCJ02

@@ -149,8 +149,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             signingConfig signingConfigs.release
-            proguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
-            testProguardFiles "$rootDir/readme/scripts/proguard_base.pro", "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

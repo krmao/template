@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smart.module.test.R
 import xcrash.XCrash
 
-@Suppress("FunctionName")
+@Suppress("FunctionName", "UNUSED_PARAMETER")
 class STCrashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

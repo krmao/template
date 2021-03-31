@@ -48,6 +48,7 @@ import com.smart.template.R
 import kotlinx.android.synthetic.main.final_wifi_fragment.*
 import kotlinx.android.synthetic.main.final_wifi_fragment_item.view.*
 
+@Suppress("DEPRECATION")
 class FinalWifiFragment : STBaseFragment() {
 
     private val loadingDialog: Dialog? by lazy { STDialogManager.createLoadingDialog(context) }

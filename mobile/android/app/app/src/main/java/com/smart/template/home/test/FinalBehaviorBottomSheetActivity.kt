@@ -28,7 +28,7 @@ import com.smart.library.widget.behavior.STNestedScrollView
 import com.smart.template.R
 import kotlinx.android.synthetic.main.final_behavior_bottom_sheet_activity.*
 
-@Suppress("UNUSED_ANONYMOUS_PARAMETER")
+@Suppress("UNUSED_ANONYMOUS_PARAMETER", "DEPRECATION")
 class FinalBehaviorBottomSheetActivity : STBaseActivity() {
     @Suppress("PrivatePropertyName", "unused")
     private val TAG = "[BottomSheet]"

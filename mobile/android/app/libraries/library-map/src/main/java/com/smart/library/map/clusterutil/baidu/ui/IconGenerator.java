@@ -4,6 +4,7 @@
 
 package com.smart.library.map.clusterutil.baidu.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,27 +27,29 @@ import com.smart.library.map.R;
  * <p/>
  * This class is not thread safe.
  */
+@SuppressWarnings({"IntegerDivisionInFloatingPointContext", "unused", "RedundantSuppression"})
 public class IconGenerator {
     private final Context mContext;
 
-    private ViewGroup mContainer;
-    private RotationLayout mRotationLayout;
+    private final ViewGroup mContainer;
+    private final RotationLayout mRotationLayout;
     private TextView mTextView;
     private View mContentView;
 
     private int mRotation;
 
-    private float mAnchorU = 0.5f;
-    private float mAnchorV = 1f;
+    private final float mAnchorU = 0.5f;
+    private final float mAnchorV = 1f;
 
     /**
      * Creates a new IconGenerator with the default style.
      */
+    @SuppressLint("InflateParams")
     public IconGenerator(Context context) {
         mContext = context;
         mContainer = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.st_text_bubble, null);
         mRotationLayout = (RotationLayout) mContainer.getChildAt(0);
-        mContentView = mTextView = (TextView) mRotationLayout.findViewById(R.id.text);
+        mContentView = mTextView = mRotationLayout.findViewById(R.id.text);
         setStyle(STYLE_DEFAULT);
     }
 
@@ -175,6 +178,7 @@ public class IconGenerator {
      *
      * @param resid the identifier of the resource.
      */
+    @SuppressWarnings("deprecation")
     public void setTextAppearance(Context context, int resid) {
         if (mTextView != null) {
             mTextView.setTextAppearance(context, resid);

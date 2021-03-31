@@ -8,7 +8,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 
-@Suppress("unused", "UNUSED_PARAMETER")
+@Suppress("unused", "UNUSED_PARAMETER", "UNUSED_VARIABLE")
 class STFlutterURLPlugin : STFlutterBasePlugin() {
 
     @STFlutterPluginMethod

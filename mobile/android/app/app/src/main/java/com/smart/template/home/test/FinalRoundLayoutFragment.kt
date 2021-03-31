@@ -21,7 +21,7 @@ import com.smart.template.R
 import kotlinx.android.synthetic.main.final_round_fragment.*
 
 
-@Suppress("unused", "DEPRECATION")
+@Suppress("unused", "DEPRECATION", "UNUSED_PARAMETER")
 class FinalRoundLayoutFragment : STBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

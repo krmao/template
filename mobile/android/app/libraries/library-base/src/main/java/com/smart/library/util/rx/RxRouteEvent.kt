@@ -14,7 +14,7 @@ import com.smart.library.util.STLogUtil
  * bundle    - 数据载体
  */
 @Suppress("unused", "MemberVisibilityCanPrivate")
-@Keep
+//@Keep
 open class RxRouteEvent {
     var activity: Activity? = null
     var targetUrl: String = ""

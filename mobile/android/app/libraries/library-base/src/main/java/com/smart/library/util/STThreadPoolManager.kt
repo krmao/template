@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.util.concurrent.*
 
 @Suppress("unused")
-@Keep
+//@Keep
 open class STThreadPoolManager {
 
     private var blockingQueue: BlockingQueue<Runnable>

@@ -26,7 +26,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "KDocUnresolvedReference", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STHybird {
 
     @JvmStatic

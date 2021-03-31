@@ -25,7 +25,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 @Suppress("MemberVisibilityCanBePrivate", "IfThenToSafeAccess")
-@Keep
+//@Keep
 open class STBaseActivityDelegateImpl(val activity: Activity) : STActivityDelegate {
 
     protected val disposables: CompositeDisposable by lazy { CompositeDisposable() }

@@ -29,7 +29,7 @@ import java.util.*
 import java.util.zip.ZipException
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
-@Keep
+//@Keep
 object STHybirdUtil {
 
     @JvmStatic

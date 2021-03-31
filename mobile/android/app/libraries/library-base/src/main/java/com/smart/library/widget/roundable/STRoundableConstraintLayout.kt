@@ -10,7 +10,7 @@ import androidx.annotation.Keep
 import androidx.constraintlayout.widget.ConstraintLayout
 
 @Suppress("unused")
-@Keep
+//@Keep
 class STRoundableConstraintLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support

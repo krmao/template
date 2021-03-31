@@ -25,7 +25,7 @@ import java.util.*
  * import com.fasterxml.jackson.databind.type.TypeFactory
  * import com.fasterxml.jackson.module.kotlin.registerKotlinModule
  */
-@Keep
+//@Keep
 object STPreferencesUtil {
 
     private val sharedPreferences: SharedPreferences? by lazy { STInitializer.application()?.getSharedPreferences(STInitializer.config?.configName?.appSPName ?: "com.codesdancing.shared_preferences", Context.MODE_PRIVATE) }

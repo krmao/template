@@ -22,7 +22,7 @@ import kotlin.math.abs
  * @see {@link https://github.com/mcxtzhang/SwipeDelMenuLayout/blob/master/README-cn.md}
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 class STSwipeMenuLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     var enableSwipe = true                      // 是否开启滑动删除功能

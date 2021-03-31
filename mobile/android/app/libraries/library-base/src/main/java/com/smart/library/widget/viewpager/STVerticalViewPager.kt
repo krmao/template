@@ -15,7 +15,7 @@ import androidx.annotation.Keep
  * Requires API 11+
  */
 @Suppress("unused")
-@Keep
+//@Keep
 class STVerticalViewPager : ViewPager {
 
     constructor(context: Context) : super(context) {

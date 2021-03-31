@@ -42,7 +42,7 @@ import java.io.File
  *
  * @see <a href="https://www.fresco-cn.org/docs/using-drawees-xml.html">https://www.fresco-cn.org/docs/using-drawees-xml.html</a>
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBeprotected", "protectedPropertyName", "unused", "MemberVisibilityCanBePrivate", "PropertyName")
 open class STImageFrescoHandler(val config: ImagePipelineConfig) : STIImageHandler {
 

@@ -3,7 +3,7 @@ package com.smart.library.deploy
 import androidx.annotation.Keep
 
 @Suppress("MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STDeployConstants {
 
     const val DIR_NAME_APPLY = "apply"              // 已经成功应用的目录

@@ -27,7 +27,7 @@ import io.reactivex.disposables.CompositeDisposable
  * sdk >= 4.1 < 4.4 则不起任何作用,不影响工程的使用
  */
 @Suppress("MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
 
     protected open val delegate: STActivityDelegate by lazy { STBaseActivityDelegateImpl(this) }

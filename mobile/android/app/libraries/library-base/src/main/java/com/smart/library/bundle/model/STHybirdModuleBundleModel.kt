@@ -2,7 +2,7 @@ package com.smart.library.bundle.model
 
 import androidx.annotation.Keep
 
-@Keep
+//@Keep
 data class STHybirdModuleBundleModel(
     var moduleName: String,
     var moduleConfigList: MutableList<STHybirdModuleConfigModel> = mutableListOf(),

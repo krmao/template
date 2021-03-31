@@ -15,7 +15,7 @@ import kotlin.math.min
  * </pre>
  */
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STRandomUtil {
     /**
      * must be start>0 end>0

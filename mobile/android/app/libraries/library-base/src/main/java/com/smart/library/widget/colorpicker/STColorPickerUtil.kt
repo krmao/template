@@ -29,7 +29,7 @@ import com.smart.library.util.STLogUtil
         lastSelectedColor = it
     }
  */
-@Keep
+//@Keep
 @Suppress("unused", "LiftReturnOrAssignment")
 object STColorPickerUtil {
 

@@ -18,7 +18,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
-@Keep
+//@Keep
 @Suppress("SpellCheckingInspection", "unused", "MemberVisibilityCanBePrivate", "SameParameterValue")
 object STStatusBarUtil {
 

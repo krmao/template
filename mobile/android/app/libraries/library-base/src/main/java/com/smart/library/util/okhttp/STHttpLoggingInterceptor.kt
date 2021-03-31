@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * this class should not be considered stable and may change slightly between releases. If you need
  * a stable logging format, use your own interceptor.
  */
-@Keep
+//@Keep
 class STHttpLoggingInterceptor(private var level: Level = Level.NONE, private val logger: Logger = Logger.DEFAULT) : Interceptor {
 
     enum class Level {

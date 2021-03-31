@@ -12,7 +12,7 @@ import java.io.File
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
-@Keep
+//@Keep
 class STDeployBundleHelper(val debug: Boolean, info: STBundleInfo, rootDir: File?, TAG: String) : STIBundleHelper(info, rootDir, TAG) {
 
     fun getApplyZipFile(): File = File(getApplyDir(), String.format(STDeployConstants.FILE_NAME_APPLY_ZIP, info.version).md5(debug))

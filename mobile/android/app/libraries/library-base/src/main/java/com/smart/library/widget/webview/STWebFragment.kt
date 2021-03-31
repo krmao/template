@@ -19,7 +19,7 @@ import com.smart.library.widget.webview.client.STWebViewClient
 import kotlinx.android.synthetic.main.st_fragment_webview.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
-@Keep
+//@Keep
 open class STWebFragment : STBaseFragment(), STBaseFragment.OnBackPressedListener {
 
     companion object {

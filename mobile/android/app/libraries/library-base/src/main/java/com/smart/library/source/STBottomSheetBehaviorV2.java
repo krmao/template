@@ -100,7 +100,7 @@ import static java.lang.Math.min;
  */
 @SuppressWarnings("ALL")
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt", "SwitchIntDef"})
-@Keep
+//@Keep
 public class STBottomSheetBehaviorV2<V extends View> extends CoordinatorLayout.Behavior<V> {
 
 

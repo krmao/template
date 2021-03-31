@@ -17,10 +17,10 @@ import com.smart.library.util.STLogUtil
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STEdgeDrawableHelper(val delegate: STEdgeDrawableDelegate) {
 
-    @Keep
+    //@Keep
     enum class Position(val value: Int) {
         LEFT(0),
         TOP(1),

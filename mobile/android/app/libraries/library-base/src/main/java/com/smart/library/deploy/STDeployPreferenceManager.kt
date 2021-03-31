@@ -6,7 +6,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
 
 @Suppress("PrivatePropertyName", "unused", "LiftReturnOrAssignment")
-@Keep
+//@Keep
 class STDeployPreferenceManager internal constructor(private val type: STDeployManager) {
 
     private val TAG = "[deploy-${type.name}-preference]"

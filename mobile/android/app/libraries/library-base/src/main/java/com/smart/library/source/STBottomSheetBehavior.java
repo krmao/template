@@ -33,7 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-@Keep
+//@Keep
 @SuppressLint({"PrivateResource", "ObsoleteSdkInt"})
 @SuppressWarnings({"WeakerAccess", "unused", "Convert2Lambda", "unchecked", "SpellCheckingInspection", "ConstantConditions"})
 public class STBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {

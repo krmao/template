@@ -11,7 +11,7 @@ import androidx.annotation.RequiresPermission
 import com.smart.library.util.STStorageUtil.LocalPictureTimeSlotInfo.Companion.DATA_TYPE_TITLE
 import java.util.*
 
-@Keep
+//@Keep
 @Suppress("unused")
 object STStorageUtil {
     const val TAG = "STStorageUtil"

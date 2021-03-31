@@ -9,7 +9,7 @@ import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
-@Keep
+//@Keep
 object STHybirdDownloadManager {
 
     private val downloadMap: ConcurrentHashMap<STHybirdModuleConfigModel, Boolean> = ConcurrentHashMap()

@@ -45,7 +45,7 @@ import java.util.*
  *
  * 默认要向上一点点不是居中的,因为titlebar占有一定的高度 宽高必须大于等于 120dp
  */
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 class STFrameLoadingLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
 

@@ -30,7 +30,7 @@ import org.jetbrains.anko.displayMetrics
  */
 /** An TextView that draws the bitmap with the provided Shape.  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STShapeableHelper(val delegate: STShapeableDelegate) : Shapeable {
     private val pathProvider = ShapeAppearancePathProvider()
     private val destination: RectF = RectF()

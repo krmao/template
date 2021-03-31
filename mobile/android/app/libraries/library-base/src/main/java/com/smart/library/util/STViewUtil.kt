@@ -16,7 +16,7 @@ import androidx.annotation.UiThread
 import com.smart.library.base.animateAlphaToVisibility
 import org.jetbrains.anko.forEachChild
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate")
 object STViewUtil {
     private val TAG = STViewUtil::class.java.simpleName

@@ -12,7 +12,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 import com.smart.library.widget.webview.STWebViewUtil
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "PropertyName")
 open class STWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : WebView(context, attrs, defStyleAttr) {
 

@@ -34,7 +34,7 @@ import java.util.Arrays;
  * and reposition views within their parent ViewGroup.
  */
 @SuppressWarnings({"deprecation", "Convert2Lambda", "unused", "RedundantSuppression", "PointlessBitwiseExpression"})
-@Keep
+//@Keep
 public class ViewDragHelper {
     private static final String TAG = "ViewDragHelper";
 

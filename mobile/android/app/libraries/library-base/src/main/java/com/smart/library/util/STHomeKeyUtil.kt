@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.annotation.Keep
 
-@Keep
+//@Keep
 @Suppress("unused")
 class STHomeKeyUtil(private val context: Context, listener: OnClickListener) {
     private val intentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)

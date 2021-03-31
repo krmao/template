@@ -13,7 +13,7 @@ import com.smart.library.util.STLogUtil
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-@Keep
+//@Keep
 @Suppress("unused")
 class RxPermissionsFragment : Fragment() {
 

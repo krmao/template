@@ -31,7 +31,7 @@ import java.util.*
  */
 @Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate", "KDocUnresolvedReference")
 @SuppressLint("CheckResult")
-@Keep
+//@Keep
 internal class STDeployClientForReactNative(
     private val debug: Boolean,
     private val rootDir: File?,

@@ -6,7 +6,7 @@ import com.smart.library.bundle.model.STHybirdModuleConfigModel
 import com.smart.library.bundle.util.STHybirdUtil
 import com.smart.library.util.STLogUtil
 
-@Keep
+//@Keep
 class STHybirdModuleManager private constructor(config: STHybirdModuleConfigModel) {
 
     companion object {

@@ -2,7 +2,7 @@ package com.smart.library.util.swipebackhelper;
 
 import androidx.annotation.Keep;
 
-@Keep
+//@Keep
 public interface SwipeListener {
     void onScroll(float percent, int px);
 

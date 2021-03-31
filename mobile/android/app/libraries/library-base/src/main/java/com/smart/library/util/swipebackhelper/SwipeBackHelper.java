@@ -10,7 +10,7 @@ import java.util.Stack;
  * 滑动的全局管理类
  */
 @SuppressWarnings({"unused", "RedundantSuppression"})
-@Keep
+//@Keep
 public class SwipeBackHelper {
 
     private static final Stack<SwipeBackPage> mPageStack = new Stack<>();

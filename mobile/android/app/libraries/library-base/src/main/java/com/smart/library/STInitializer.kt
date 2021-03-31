@@ -23,7 +23,7 @@ import com.smart.library.widget.debug.STDebugFragment
 import com.smart.library.widget.titlebar.STTitleBar
 import org.json.JSONObject
 
-@Keep
+//@Keep
 @Suppress("unused", "SpellCheckingInspection", "MemberVisibilityCanBePrivate")
 object STInitializer {
 

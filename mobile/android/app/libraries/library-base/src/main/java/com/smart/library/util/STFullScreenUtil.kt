@@ -52,7 +52,7 @@ import androidx.annotation.Keep
 // 重点是设置引导页根布局的 background, 而不是在根布局容器里面加个 ImageView, 缩放方式不一样, 可能是 FIT_XY
 */
 @Suppress("unused")
-@Keep
+//@Keep
 object STFullScreenUtil {
 
     @JvmStatic

@@ -10,7 +10,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STPreferencesUtil
 
 @Suppress("MemberVisibilityCanPrivate", "PrivatePropertyName", "unused")
-@Keep
+//@Keep
 object STHybirdBundleInfoManager {
     private val TAG: String = STHybirdBundleInfoManager::class.java.name
 

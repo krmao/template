@@ -17,7 +17,7 @@ import kotlin.math.*
  * https://github.com/NanBox/RippleLayout
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STRippleView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
     //图片横向、纵向的格数
     private val meshWidth = 20

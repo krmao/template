@@ -17,7 +17,7 @@ import androidx.annotation.Keep
 import com.smart.library.R
 import com.smart.library.util.STLogUtil
 
-@Keep
+//@Keep
 @Suppress("DEPRECATION", "MemberVisibilityCanBePrivate")
 class STDotsIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : STBaseDotsIndicator(context, attrs, defStyleAttr) {
 

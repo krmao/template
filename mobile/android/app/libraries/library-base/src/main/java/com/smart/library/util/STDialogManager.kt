@@ -11,7 +11,7 @@ import androidx.annotation.Keep
 import com.smart.library.R
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STDialogManager {
 
     private val dpTranslation by lazy { STSystemUtil.getPxFromDp(6f) }

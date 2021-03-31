@@ -12,7 +12,7 @@ import com.smart.library.util.swipeback.STSwipeBackLayout;
  * Created by Mr.Jude on 2015/8/26.
  */
 @SuppressLint("ObsoleteSdkInt")
-@Keep
+//@Keep
 public class STSwipeBackRelateListenerAdapter implements STSwipeBackLayout.SwipeListenerEx {
     public STSwipeBackPage currentPage;
     private static final int DEFAULT_OFFSET = 40;

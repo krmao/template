@@ -18,7 +18,7 @@ import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableDelegate
 import com.smart.library.widget.shapeable.edgedrawable.STEdgeDrawableHelper
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-@Keep
+//@Keep
 class STShapeableEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatEditText(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate, STEdgeDrawableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
     private val edgeDrawableHelper: STEdgeDrawableHelper by lazy { STEdgeDrawableHelper(this) }

@@ -9,7 +9,7 @@ import com.smart.library.util.STNetworkUtil
 /**
  * getAppInfo/getDeviceInfo 放到 userAgent
  */
-@Keep
+//@Keep
 @Suppress("unused")
 class STHybirdMethods {
 

@@ -40,7 +40,7 @@ class STRoundConstraintLayout @JvmOverloads constructor(context: Context, attrs:
 }
 */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STRoundableLayoutHelper(val view: View) : STRoundableDelegate {
 
     private val path: Path = Path()

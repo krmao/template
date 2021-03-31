@@ -15,7 +15,7 @@ import com.smart.library.util.STLogUtil
  * </pre>
  */
 @Suppress("unused")
-@Keep
+//@Keep
 open class RxRouteCallbackEvent {
     var id: String = ""
     var bundle: Bundle? = null

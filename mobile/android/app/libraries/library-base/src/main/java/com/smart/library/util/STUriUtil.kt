@@ -30,7 +30,7 @@ import java.io.File
  *
  * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STUriUtil {
     private val TAG = STUriUtil::class.java.simpleName

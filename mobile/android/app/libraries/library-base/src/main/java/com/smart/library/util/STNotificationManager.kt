@@ -165,7 +165,7 @@ import com.smart.library.STInitializer
  * @see @link{https://blog.csdn.net/u013706904/article/details/51912634}
  * @see @link{https://stackoverflow.com/questions/30795431/icon-not-displaying-in-notification-white-square-shown-instead}
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object STNotificationManager {
 

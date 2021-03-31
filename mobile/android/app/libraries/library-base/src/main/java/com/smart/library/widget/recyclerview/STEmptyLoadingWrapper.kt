@@ -133,7 +133,7 @@ import com.smart.library.util.STSystemUtil
  */
 @Suppress("unused", "unused", "MemberVisibilityCanBePrivate")
 @SuppressLint("SetTextI18n")
-@Keep
+//@Keep
 class STEmptyLoadingWrapper<Entity>(private val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val tag = "STEmptyLoadingWrapper:${hashCode()}"

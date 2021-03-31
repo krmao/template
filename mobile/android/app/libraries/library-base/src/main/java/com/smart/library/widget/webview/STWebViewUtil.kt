@@ -16,7 +16,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.widget.webview.client.STWebChromeClient
 import com.smart.library.widget.webview.client.STWebViewClient
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STWebViewUtil {
 

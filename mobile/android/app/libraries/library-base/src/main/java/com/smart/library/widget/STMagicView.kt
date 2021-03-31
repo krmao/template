@@ -18,7 +18,7 @@ import com.smart.library.util.animation.STInterpolatorFactory
  * @see {@link https://github.com/xinlyun/CaptureView}
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STMagicView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var progress = 0f

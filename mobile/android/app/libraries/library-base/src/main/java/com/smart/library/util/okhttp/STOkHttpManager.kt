@@ -11,7 +11,7 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-@Keep
+//@Keep
 @Suppress("unused")
 object STOkHttpManager {
     private const val CONNECT_TIMEOUT_SECONDS = 20

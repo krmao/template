@@ -9,7 +9,7 @@ import androidx.core.widget.NestedScrollView
 import com.smart.library.util.STLogUtil
 
 @Suppress("unused")
-@Keep
+//@Keep
 class STNestedScrollView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : NestedScrollView(context, attrs), STBottomSheetViewPagerBehavior.OnInterceptTouchEventHandler {
 
     private var onInterceptTouchEventHandler: ((ev: MotionEvent?) -> Unit)? = null

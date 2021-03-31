@@ -9,16 +9,16 @@ import java.util.*
 import kotlin.math.abs
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
-@Keep
+//@Keep
 abstract class STRecyclerViewAdapter<Entity, ViewHolder : RecyclerView.ViewHolder>(var context: Context?, var dataList: MutableList<Entity>) : RecyclerView.Adapter<ViewHolder>(), STRecyclerViewItemTouchHelperAdapter {
 
-    @Keep
+    //@Keep
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    @Keep
+    //@Keep
     class ExtrasViewHolder(itemView: View, val extras: Any? = null) : RecyclerView.ViewHolder(itemView)
 
-    @Keep
+    //@Keep
     class BindingViewHolder<T>(val binding: T, rootView: View) : RecyclerView.ViewHolder(rootView)
 
     fun resetDataList(dataList: MutableList<Entity>) {

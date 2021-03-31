@@ -18,7 +18,7 @@ import java.util.*
 
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "LiftReturnOrAssignment")
-@Keep
+//@Keep
 object STColorUtil {
 
     @JvmStatic

@@ -7,7 +7,7 @@ import android.view.View
 import androidx.annotation.Keep
 import androidx.constraintlayout.widget.ConstraintLayout
 
-@Keep
+//@Keep
 @Suppress("unused")
 class STBottomSheetTouchContainerConstrainLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), STBottomSheetViewPagerBehavior.OnInterceptTouchEventHandler {
 

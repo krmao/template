@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
 
-@Keep
+//@Keep
 object STRetrofitException {
     private const val TAG = "[ok http]"
 

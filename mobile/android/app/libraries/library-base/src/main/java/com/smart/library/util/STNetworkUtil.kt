@@ -21,7 +21,7 @@ import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Keep
+//@Keep
 @Suppress("unused", "DEPRECATION")
 object STNetworkUtil {
 

@@ -10,7 +10,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.smart.library.R
 import io.reactivex.disposables.CompositeDisposable
 
-@Keep
+//@Keep
 interface STActivityDelegate {
 
     fun disposables(): CompositeDisposable

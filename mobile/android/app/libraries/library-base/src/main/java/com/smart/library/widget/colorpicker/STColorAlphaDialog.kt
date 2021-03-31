@@ -36,7 +36,7 @@ import com.smart.library.R
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
  * select a specific color swatch, which invokes a listener.
  */
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceArrayEqualityOpWithArraysEquals")
 class STColorAlphaDialog : DialogFragment() {
     private var mAlertDialog: AlertDialog? = null

@@ -20,7 +20,7 @@ interface STIImageHandler {
     fun clearMemoryCaches()
 
     @Suppress("unused")
-    @Keep
+    //@Keep
     enum class Type {
         FRESCO,
         GLIDE

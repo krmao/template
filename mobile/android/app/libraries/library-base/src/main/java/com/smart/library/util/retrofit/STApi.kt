@@ -88,7 +88,7 @@ private fun request() {
 }
 
 */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 interface STApi {
 

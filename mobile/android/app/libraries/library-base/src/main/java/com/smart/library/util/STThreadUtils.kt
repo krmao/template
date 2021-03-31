@@ -5,7 +5,7 @@ import android.os.Looper
 import androidx.annotation.Keep
 import java.util.concurrent.*
 
-@Keep
+//@Keep
 @Suppress("unused")
 object STThreadUtils {
 

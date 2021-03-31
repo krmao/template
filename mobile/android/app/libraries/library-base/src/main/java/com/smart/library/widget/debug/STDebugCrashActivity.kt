@@ -13,7 +13,7 @@ import com.smart.library.R
 import com.smart.library.base.STActivity
 import com.smart.library.base.STActivityDelegate
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugCrashActivity : STActivity() {
 

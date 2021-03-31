@@ -27,7 +27,7 @@ import java.util.List;
  * https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
  */
 @SuppressWarnings("ALL")
-@Keep
+//@Keep
 public class STSwipeBackLayout extends FrameLayout {
     /**
      * Edge flag indicating that the left edge should be affected.

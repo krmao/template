@@ -23,7 +23,7 @@ import java.util.List;
 
 @SuppressWarnings("RedundantSuppression")
 @SuppressLint("UseCompatLoadingForDrawables")
-@Keep
+//@Keep
 public class SwipeBackLayout extends FrameLayout {
 
     /**

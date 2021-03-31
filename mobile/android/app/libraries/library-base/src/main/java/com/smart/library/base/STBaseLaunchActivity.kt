@@ -13,7 +13,7 @@ import androidx.annotation.Keep
  *  华为 P20 初始化代码在 LaunchActivity     980ms, 但需要注意 activityLifecycle 注册时机(LaunchActivity 已启动了再注册会出现问题)
  */
 @Suppress("LeakingThis")
-@Keep
+//@Keep
 open class STBaseLaunchActivity : STBaseActivity() {
 
     companion object {

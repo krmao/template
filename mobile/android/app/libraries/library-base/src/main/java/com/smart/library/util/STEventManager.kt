@@ -2,7 +2,7 @@ package com.smart.library.util
 
 import androidx.annotation.Keep
 
-@Keep
+//@Keep
 @Suppress("unused")
 object STEventManager {
 

@@ -14,7 +14,7 @@ import java.util.*
  * 特征:
  * 1. 所有的数据都存放在叶子节点中
  */
-@Keep
+//@Keep
 @Suppress("unused")
 class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
     private val bounds: Bounds,                                 // The bounds of this quad. 当前节点占用的 2D 空间/范围
@@ -187,7 +187,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
      * Represents an area in the cartesian plane. 面积/范围
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    @Keep
+    //@Keep
     class Bounds(val minX: Double, val maxX: Double, val minY: Double, val maxY: Double) {
 
         val midX: Double = (minX + maxX) / 2
@@ -228,7 +228,7 @@ class STQuadTree<T : STQuadTree.Item> @JvmOverloads constructor(
     /**
      * 坐标
      */
-    @Keep
+    //@Keep
     class Point(val x: Double, val y: Double) {
         override fun toString(): String {
             return "Point{x=$x, y=$y}"

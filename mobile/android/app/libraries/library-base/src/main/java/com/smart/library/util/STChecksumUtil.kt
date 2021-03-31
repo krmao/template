@@ -6,7 +6,7 @@ import java.io.FileInputStream
 import java.math.BigInteger
 import java.security.MessageDigest
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STChecksumUtil {
     fun genMD5ForByteArray(buffer: ByteArray): String {

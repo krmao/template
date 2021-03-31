@@ -30,7 +30,7 @@ import com.smart.library.widget.colorpicker.STColorPickerSwatch.OnColorSelectedL
  * A color picker custom view which creates an grid of color squares.  The number of squares per
  * row (and the padding between the squares) is determined by the user.
  */
-@Keep
+//@Keep
 class STColorPickerPalette @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) : TableLayout(context, attrs) {
     private var mOnColorSelectedListener: OnColorSelectedListener? = null
     private var mDescription: String = "色彩"

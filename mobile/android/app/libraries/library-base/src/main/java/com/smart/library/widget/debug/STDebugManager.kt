@@ -8,7 +8,7 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.STViewUtil
 
-@Keep
+//@Keep
 object STDebugManager {
 
     /**

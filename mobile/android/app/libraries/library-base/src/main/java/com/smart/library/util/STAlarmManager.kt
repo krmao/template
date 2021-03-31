@@ -8,7 +8,7 @@ import androidx.annotation.Keep
 import com.smart.library.STInitializer
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STAlarmManager {
 
     /*

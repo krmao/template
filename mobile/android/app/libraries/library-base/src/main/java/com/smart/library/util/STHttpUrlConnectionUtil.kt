@@ -10,7 +10,7 @@ import java.net.URL
 import java.util.*
 
 @Suppress("unused", "LocalVariableName")
-@Keep
+//@Keep
 object STHttpUrlConnectionUtil {
     private var TAG = javaClass.name
 

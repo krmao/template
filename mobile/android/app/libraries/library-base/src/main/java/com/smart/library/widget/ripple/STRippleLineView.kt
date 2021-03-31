@@ -18,7 +18,7 @@ import kotlin.math.min
  * https://github.com/hackware1993/WaveView
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 class STRippleLineView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
     var durationMs: Long = 2000                  // 一个波纹从创建到消失的持续时间

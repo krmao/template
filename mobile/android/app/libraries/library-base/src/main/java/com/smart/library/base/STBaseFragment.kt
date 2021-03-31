@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 
 @Suppress("unused")
-@Keep
+//@Keep
 open class STBaseFragment : Fragment() {
 
     private val disposables: CompositeDisposable by lazy { CompositeDisposable() }
@@ -19,7 +19,7 @@ open class STBaseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    @Keep
+    //@Keep
     interface OnBackPressedListener {
         /**
          *  @return true表示事件不再传播，false表示事件继续传播

@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ListView
 import androidx.annotation.Keep
 
-@Keep
+//@Keep
 open class STListView : ListView {
 
     constructor(context: Context) : super(context)

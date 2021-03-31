@@ -20,7 +20,7 @@ import java.util.Arrays;
  * and reposition views within their parent ViewGroup.
  */
 @SuppressWarnings("deprecation")
-@Keep
+//@Keep
 public class STSwipeBacViewDragHelper {
     /**
      * A null/invalid pointer ID.

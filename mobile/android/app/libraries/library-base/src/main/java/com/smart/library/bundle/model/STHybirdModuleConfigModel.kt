@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.smart.library.STInitializer
 import com.smart.library.bundle.strategy.STHybirdUpdateStrategy
 
-@Keep
+//@Keep
 data class STHybirdModuleConfigModel(
     var moduleName: String = "",
     var moduleVersion: String = "", //只分当前版本与线上最新版本

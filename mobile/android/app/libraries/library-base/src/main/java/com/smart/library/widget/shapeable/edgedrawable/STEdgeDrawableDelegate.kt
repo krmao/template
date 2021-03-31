@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StyleableRes
 
-@Keep
+//@Keep
 interface STEdgeDrawableDelegate {
     fun view(): View
     fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int)

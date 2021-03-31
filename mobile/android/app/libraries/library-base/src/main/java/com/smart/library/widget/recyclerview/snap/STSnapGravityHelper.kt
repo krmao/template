@@ -32,7 +32,7 @@ import androidx.annotation.Keep
     // gravity snap
     snapGravityHelper.attachToRecyclerView(recyclerView)
  */
-@Keep
+//@Keep
 @Suppress("unused")
 class STSnapGravityHelper @JvmOverloads constructor(enableLoadingFooterView: Boolean, snap: STSnapHelper.Snap, onSnap: ((position: Int) -> Unit)? = null) : LinearSnapHelper(), STSnapHelper {
     private val delegate: STSnapHelper.STSnapGravityDelegate = STSnapHelper.STSnapGravityDelegate(enableLoadingFooterView, snap, onSnap)

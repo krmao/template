@@ -15,7 +15,7 @@ import com.google.android.material.theme.overlay.MaterialThemeOverlay
 import com.smart.library.R
 
 /** An TextView that draws the bitmap with the provided Shape.  */
-@Keep
+//@Keep
 class STShapeableLinearLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.LinearLayoutCompat(MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, STShapeableHelper.DEF_STYLE_RES), attrs, defStyleAttr), Shapeable, STShapeableDelegate {
     private val shapeableHelper: STShapeableHelper by lazy { STShapeableHelper(this) }
 

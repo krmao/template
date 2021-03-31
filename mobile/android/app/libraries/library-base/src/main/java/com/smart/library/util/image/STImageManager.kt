@@ -10,7 +10,7 @@ import java.io.File
 
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STImageManager {
 
     private var imageHandler: STIImageHandler? = null

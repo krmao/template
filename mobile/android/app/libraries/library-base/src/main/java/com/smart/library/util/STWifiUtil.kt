@@ -34,7 +34,7 @@ import com.smart.library.util.wifi.STWifiUtils
  * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
  * <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
  */
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "KDocUnresolvedReference")
 object STWifiUtil {
 

@@ -22,7 +22,7 @@ import com.smart.library.util.STLogUtil
 /**
  * 参考 https://github.com/tommybuonomo/dotsindicator
  */
-@Keep
+//@Keep
 @Suppress("unused", "PropertyName")
 abstract class STBaseDotsIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
     @Suppress("PrivatePropertyName", "unused")

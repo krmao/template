@@ -29,7 +29,7 @@ import com.smart.library.R
 /**
  * Creates a circular swatch of a specified color.  Adds a checkmark if marked as checked.
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate")
 class STColorPickerSwatch @JvmOverloads constructor(context: Context, attribute: AttributeSet? = null, var mColor: Int = Color.WHITE, var mChecked: Boolean = false, var mOnColorSelectedListener: OnColorSelectedListener? = null) : FrameLayout(context, attribute), View.OnClickListener {
     private val mSwatchImage: ImageView by lazy { findViewById<View>(R.id.color_picker_swatch) as ImageView }

@@ -27,7 +27,7 @@ import com.google.android.material.shape.AbsoluteCornerSize
 import com.google.android.material.shape.CornerSize
 import com.google.android.material.shape.RelativeCornerSize
 
-@Keep
+//@Keep
 @Suppress("unused", "ControlFlowWithEmptyBody")
 object STCustomViewUtil {
 

@@ -17,7 +17,7 @@ import java.io.File
  * 装饰模式, 在不改变原类和继承的情况下, 动态的扩展一个对象的功能
  */
 @Suppress("MemberVisibilityCanBePrivate", "PrivatePropertyName")
-@Keep
+//@Keep
 class STPatchHelper(type: STDeployManager, val info: STPatchInfo) {
 
     @Suppress("PropertyName")

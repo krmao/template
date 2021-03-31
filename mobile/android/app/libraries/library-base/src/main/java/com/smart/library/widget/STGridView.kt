@@ -7,7 +7,7 @@ import android.widget.GridView
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 class STGridView : GridView {
 
     constructor(context: Context) : super(context)

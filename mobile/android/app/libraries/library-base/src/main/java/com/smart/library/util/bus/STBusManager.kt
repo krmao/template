@@ -8,7 +8,7 @@ import com.smart.library.util.STLogUtil
 import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate")
 object STBusManager {
     private val TAG: String = "[bus]"

@@ -3,7 +3,7 @@ package com.smart.library.user
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 data class STUserModel(
     var id: Int = 0,
     var nickName: String,

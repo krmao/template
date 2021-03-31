@@ -9,7 +9,7 @@ import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredFunctions
 
-@Keep
+//@Keep
 @Suppress("unused")
 object STReflectUtil {
     private const val TAG = "[reflect]"

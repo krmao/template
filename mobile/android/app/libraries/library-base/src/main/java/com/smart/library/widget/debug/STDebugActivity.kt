@@ -11,7 +11,7 @@ import com.smart.library.base.STBaseActivity
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.STSystemUtil
 
-@Keep
+//@Keep
 open class STDebugActivity : STBaseActivity() {
 
     @Suppress("PrivatePropertyName", "PropertyName")

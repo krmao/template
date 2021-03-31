@@ -9,7 +9,7 @@ import androidx.annotation.Keep;
  * Created by Mr.Jude on 2015/8/26.
  */
 @SuppressLint("ObsoleteSdkInt")
-@Keep
+//@Keep
 public class RelateSlider implements SwipeListener {
     public SwipeBackPage curPage;
     private static final int DEFAULT_OFFSET = 40;

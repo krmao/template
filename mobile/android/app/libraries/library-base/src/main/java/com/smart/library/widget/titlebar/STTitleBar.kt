@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.st_widget_titlebar.view.*
  * “左0--左1(hide)--Title--右1(hide)--右0”
  * “图片、颜色、文字”
  */
-@Keep
+//@Keep
 class STTitleBar(val mContext: Context, attrs: AttributeSet?) : RelativeLayout(mContext, attrs) {
 
     companion object {

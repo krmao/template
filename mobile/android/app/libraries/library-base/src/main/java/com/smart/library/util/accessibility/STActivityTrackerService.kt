@@ -15,7 +15,7 @@ import com.smart.library.util.rx.RxBus
 /**
  * https://github.com/fashare2015/ActivityTracker
  */
-@Keep
+//@Keep
 class STActivityTrackerService : AccessibilityService() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

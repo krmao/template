@@ -3,7 +3,7 @@ package com.smart.library.util
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STCppTestUtil {
 
     /**

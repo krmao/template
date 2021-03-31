@@ -29,7 +29,7 @@ import com.smart.library.util.accessibility.STActivityTrackerService
 import com.smart.library.util.rx.RxBus
 import kotlinx.android.synthetic.main.st_fragment_debug.*
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 open class STDebugFragment : STBaseFragment() {
 
@@ -327,10 +327,10 @@ open class STDebugFragment : STBaseFragment() {
 
     }
 
-    @Keep
+    //@Keep
     data class HostChangeEvent(var hostModel: HostModel)
 
-    @Keep
+    //@Keep
     data class HostModel(var label: String, var url: String, var isSelected: Boolean) {
         override fun equals(other: Any?): Boolean {
             return if (other is HostModel) !TextUtils.isEmpty(label) && label == other.label else false

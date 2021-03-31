@@ -31,7 +31,7 @@ import kotlin.math.min
  * By the way, In order to override package level method and field.
  * This class put in the same package path where [STBottomSheetBehavior] located.
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate", "ReplaceJavaStaticMethodWithKotlinAnalog", "LiftReturnOrAssignment", "unused", "UsePropertyAccessSyntax", "RedundantOverride", "ProtectedInFinal")
 class STBottomSheetViewPagerBehavior<V : View> @JvmOverloads constructor(context: Context? = null, attrs: AttributeSet? = null) : STBottomSheetBehavior<V>(context, attrs) {
 

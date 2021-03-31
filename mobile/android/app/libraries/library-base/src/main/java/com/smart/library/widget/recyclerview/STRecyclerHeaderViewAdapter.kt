@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@Keep
+//@Keep
 class STRecyclerHeaderViewAdapter<Entity>(@NonNull val innerAdapter: STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>) : STRecyclerViewAdapter<Entity, RecyclerView.ViewHolder>(innerAdapter.context, innerAdapter.dataList) {
 
     private val headerViewDataList: MutableList<HeaderFooterViewData> = ArrayList()

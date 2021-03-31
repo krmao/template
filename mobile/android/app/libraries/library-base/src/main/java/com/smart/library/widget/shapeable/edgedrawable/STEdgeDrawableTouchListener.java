@@ -35,7 +35,7 @@ import androidx.annotation.NonNull;
  * @see TextView#setCompoundDrawablesRelativeWithIntrinsicBounds(int, int, int, int)
  */
 @SuppressWarnings("WeakerAccess")
-@Keep
+//@Keep
 public abstract class STEdgeDrawableTouchListener implements View.OnTouchListener {
 
     @SuppressWarnings("FieldCanBeLocal")

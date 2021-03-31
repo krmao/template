@@ -10,9 +10,9 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
-@Keep
+//@Keep
 class STHttpsManager {
-    @Keep
+    //@Keep
     class SSLParams(var ssLSocketFactory: SSLSocketFactory, var trustManager: X509TrustManager)
 
     @Suppress("unused")

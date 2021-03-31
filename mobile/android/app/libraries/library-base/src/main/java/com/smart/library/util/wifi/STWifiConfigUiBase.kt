@@ -8,7 +8,7 @@ import androidx.annotation.Keep
 /**
  * Foundation interface glues between Activities and UIs like [STWifiDialog].
  */
-@Keep
+//@Keep
 interface STWifiConfigUiBase {
     fun getContext(): Context
     fun getController(): STWifiConfigController

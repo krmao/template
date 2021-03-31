@@ -19,7 +19,7 @@ import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STIntentUtil {
 
     @JvmStatic

@@ -8,7 +8,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STDatabaseUtil {
 
     fun getDatabase(dbName: String): File? = STInitializer.application()?.getDatabasePath(dbName)

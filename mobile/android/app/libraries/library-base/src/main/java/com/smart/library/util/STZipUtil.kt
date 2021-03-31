@@ -8,7 +8,7 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused")
 object STZipUtil {
     private const val BUFFER = 2048

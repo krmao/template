@@ -3,14 +3,14 @@ package com.smart.library.base
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 interface STMvpContract {
-    @Keep
+    //@Keep
     interface View
 
-    @Keep
+    //@Keep
     interface Presenter
 
-    @Keep
+    //@Keep
     interface Repository
 }

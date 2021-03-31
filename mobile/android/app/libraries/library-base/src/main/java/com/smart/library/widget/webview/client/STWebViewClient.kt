@@ -35,7 +35,7 @@ function addJsHack(cmdArgs){
 addJsHack("")
 
  */
-@Keep
+//@Keep
 @Suppress("unused", "OverridingDeprecatedMember", "DEPRECATION", "RedundantOverride", "UseExpressionBody")
 open class STWebViewClient : WebViewClient() {
 

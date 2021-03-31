@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat;
 
 import java.util.Arrays;
 
-@Keep
+//@Keep
 public class STViewDragHelper {
     private static final String TAG = "STViewDragHelper";
     public static final int INVALID_POINTER = -1;

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * 管理应用程序全局的 entity cache
  */
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MemberVisibilityCanBePrivate")
 object STCacheManager {
 

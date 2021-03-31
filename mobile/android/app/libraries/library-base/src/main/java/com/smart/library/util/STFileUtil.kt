@@ -11,7 +11,7 @@ import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.system.exitProcess
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
 object STFileUtil {
 

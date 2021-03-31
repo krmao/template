@@ -29,7 +29,7 @@ import com.smart.library.STInitializer
 import com.smart.library.base.toBitmap
 import kotlin.math.sqrt
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION", "SpellCheckingInspection")
 object STSystemUtil {
 

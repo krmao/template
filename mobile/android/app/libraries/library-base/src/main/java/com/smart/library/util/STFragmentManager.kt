@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager
 import com.smart.library.R
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STFragmentManager {
 
     @JvmStatic

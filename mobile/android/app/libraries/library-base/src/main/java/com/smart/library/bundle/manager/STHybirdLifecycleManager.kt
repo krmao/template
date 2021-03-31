@@ -8,7 +8,7 @@ import com.smart.library.bundle.util.STHybirdUtil
 import com.smart.library.util.STJsonUtil
 import com.smart.library.util.STLogUtil
 
-@Keep
+//@Keep
 object STHybirdLifecycleManager {
     private val lifecycleMap: MutableMap<String, MutableSet<Int>> = mutableMapOf()
 

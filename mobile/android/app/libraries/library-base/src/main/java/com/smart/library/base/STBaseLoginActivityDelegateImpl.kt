@@ -3,7 +3,7 @@ package com.smart.library.base
 import androidx.annotation.Keep
 import com.smart.library.user.STUserManager
 
-@Keep
+//@Keep
 class STBaseLoginActivityDelegateImpl : STBaseLoginActivityDelegate {
 
     override fun onLoginSuccess(dataJson: String) {

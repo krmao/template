@@ -16,7 +16,7 @@ import java.io.File
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "PropertyName")
-@Keep
+//@Keep
 enum class STDeployManager(private var debug: Boolean, private var rootDir: File?, private val checkUpdateTypes: MutableSet<STDeployCheckUpdateType>, private val applyTypes: MutableSet<STDeployApplyType>) : STIDeployClient {
 
     ANDROID(STInitializer.debug(), STCacheManager.getFilesHotPatchAndroidDir(), mutableSetOf(), mutableSetOf()),

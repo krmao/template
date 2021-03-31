@@ -9,7 +9,7 @@ import android.view.ViewOutlineProvider
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 class STRoundableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : androidx.appcompat.widget.AppCompatTextView(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support

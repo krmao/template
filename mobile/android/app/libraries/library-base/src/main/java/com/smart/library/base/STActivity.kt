@@ -13,7 +13,7 @@ import com.smart.library.STInitializer
 import com.smart.library.util.STLogUtil
 
 @Suppress("unused", "MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 open class STActivity : STBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

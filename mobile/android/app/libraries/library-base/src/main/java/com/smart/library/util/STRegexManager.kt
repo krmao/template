@@ -5,7 +5,7 @@ import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STRegexManager {
 
     @JvmStatic

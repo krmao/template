@@ -20,7 +20,7 @@ import com.smart.library.util.STSystemUtil
 <!--悬浮窗-->
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 */
-@Keep
+//@Keep
 @Suppress("DEPRECATION", "unused", "ClickableViewAccessibility", "PrivatePropertyName", "ReplaceJavaStaticMethodWithKotlinAnalog")
 enum class STFloatViewUtil {
     @SuppressLint("StaticFieldLeak")

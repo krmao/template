@@ -11,7 +11,7 @@ import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
  * https://www.jianshu.com/p/639efa7762a1
  */
 @Suppress("unused")
-@Keep
+//@Keep
 object STInterpolatorFactory {
 
     /**

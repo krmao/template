@@ -36,7 +36,7 @@ import xcrash.XCrash.InitParameters
 import java.io.File
 import java.io.FileWriter
 
-@Keep
+//@Keep
 object STCrashManager {
     private const val TAG = "[xcrash]"
 

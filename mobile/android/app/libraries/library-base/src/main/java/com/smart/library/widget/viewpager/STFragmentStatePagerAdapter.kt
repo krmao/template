@@ -18,7 +18,7 @@ import java.util.*
  * switching between pages.
  */
 @Suppress("unused", "DEPRECATION")
-@Keep
+//@Keep
 class STFragmentStatePagerAdapter(var context: Context, fragmentManager: FragmentManager, var dataList: ArrayList<Fragment>) : androidx.fragment.app.FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

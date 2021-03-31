@@ -6,7 +6,7 @@ import androidx.annotation.Keep
  * 尝试应用热部署的时机
  */
 @Suppress("unused")
-@Keep
+//@Keep
 enum class STDeployApplyType {
     APP_START,
     APP_FOREGROUND_TO_BACKGROUND,

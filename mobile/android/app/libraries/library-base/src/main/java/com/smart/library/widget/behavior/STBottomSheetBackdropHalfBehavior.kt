@@ -46,7 +46,7 @@ java/kotlin->
     }
 
 */
-@Keep
+//@Keep
 @Suppress("KDocUnresolvedReference", "unused")
 class STBottomSheetBackdropHalfBehavior<V : View>(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<V>(context, attrs) {
 

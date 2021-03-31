@@ -16,7 +16,7 @@ import kotlin.math.min
  * https://github.com/chenshi011/EllipsizeEndTextView/blob/master/src/com/cs/ellipsizetextview/ui/EllipsizeEndTextView.java
  */
 @Suppress("unused")
-@Keep
+//@Keep
 class STEllipsizeEndTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     var isEllipsized = false

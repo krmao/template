@@ -12,7 +12,7 @@ import java.util.*
 /**
  * https://github.com/fashare2015/ActivityTracker
  */
-@Keep
+//@Keep
 object STAccessibilityUtil {
 
     @JvmStatic

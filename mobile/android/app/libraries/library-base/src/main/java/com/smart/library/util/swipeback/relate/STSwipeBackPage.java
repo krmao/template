@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
  * 每个滑动页面的管理
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "RedundantSuppression", "IfStatementWithIdenticalBranches"})
-@Keep
+//@Keep
 public class STSwipeBackPage {
     //仅为判断是否需要将mSwipeBackLayout注入进去
     private boolean mEnable = true;

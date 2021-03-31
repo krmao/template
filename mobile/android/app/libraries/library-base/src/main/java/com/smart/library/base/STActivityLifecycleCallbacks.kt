@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 open class STActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     companion object {

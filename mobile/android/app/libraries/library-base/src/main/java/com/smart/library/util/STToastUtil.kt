@@ -11,7 +11,7 @@ import androidx.annotation.StringRes
 import com.smart.library.R
 import com.smart.library.STInitializer
 
-@Keep
+//@Keep
 @SuppressLint("InflateParams")
 @Suppress("unused", "MemberVisibilityCanPrivate", "StaticFieldLeak", "MemberVisibilityCanBePrivate")
 object STToastUtil {

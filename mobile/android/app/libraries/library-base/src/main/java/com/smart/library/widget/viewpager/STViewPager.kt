@@ -15,7 +15,7 @@ import androidx.annotation.Keep
  * Requires API 11+
  */
 @Suppress("unused")
-@Keep
+//@Keep
 class STViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
     private var disableScroll: Boolean = true

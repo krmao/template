@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 
-@Keep
+//@Keep
 class STDividerItemDecoration(context: Context?, orientation: Int) : DividerItemDecoration(context, orientation) {
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {

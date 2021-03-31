@@ -12,7 +12,7 @@ import com.smart.library.util.cache.STCacheManager
 import com.smart.library.util.rx.RxBus
 import org.json.JSONObject
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "MemberVisibilityCanBePrivate", "unused", "PrivatePropertyName")
 object STUserManager {
 

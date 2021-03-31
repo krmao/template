@@ -22,7 +22,7 @@ ItemTouchHelper(STRecyclerViewItemTouchHelperCallback(usersAdapter, onDragListen
 
 */
 @Suppress("DEPRECATION", "unused")
-@Keep
+//@Keep
 class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private val mAdapter: STRecyclerViewItemTouchHelperAdapter, private var enableConfirmDialogBeforeSwiped: Boolean = true, private var onDragListener: OnDragListener? = null) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean = true
@@ -93,7 +93,7 @@ class STRecyclerViewItemTouchHelperCallback @JvmOverloads constructor(private va
         viewHolder.itemView.alpha = 1.0f
     }
 
-    @Keep
+    //@Keep
     interface OnDragListener {
         fun onDragBegin(viewHolder: RecyclerView.ViewHolder, actionState: Int)
         fun onDragEnd(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder)

@@ -12,7 +12,7 @@ import com.smart.library.base.STBaseFragment
 import com.smart.library.util.STLogUtil
 import kotlin.system.exitProcess
 
-@Keep
+//@Keep
 class STDebugCrashPanelFragment : STBaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

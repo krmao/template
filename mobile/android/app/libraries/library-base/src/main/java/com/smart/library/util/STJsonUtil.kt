@@ -7,7 +7,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "LiftReturnOrAssignment")
 object STJsonUtil {
     private val gson: Gson by lazy { Gson() }

@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 import java.io.Serializable
 
-@Keep
+//@Keep
 @Suppress("UNCHECKED_CAST", "unused")
 object STApiManager {
 

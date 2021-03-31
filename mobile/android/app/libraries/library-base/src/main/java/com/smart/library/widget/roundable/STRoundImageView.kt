@@ -17,7 +17,7 @@ import kotlin.math.min
  * 自定义的圆角矩形ImageView
  */
 @Suppress("unused")
-@Keep
+//@Keep
 class STRoundImageView : AppCompatImageView {
 
     companion object {

@@ -19,7 +19,7 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.declaredFunctions
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanPrivate", "unused", "MoveLambdaOutsideParentheses", "ReplacePutWithAssignment")
 object STHybirdBridge {
     @Suppress("MayBeConstant")

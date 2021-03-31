@@ -6,7 +6,7 @@ import androidx.annotation.Keep
  * 检查更新的时机
  */
 @Suppress("unused")
-@Keep
+//@Keep
 enum class STDeployCheckUpdateType {
     APP_START,
     APP_FOREGROUND_TO_BACKGROUND,

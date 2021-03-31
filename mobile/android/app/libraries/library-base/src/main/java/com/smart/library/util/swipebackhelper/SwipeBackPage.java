@@ -13,7 +13,7 @@ import androidx.annotation.Keep;
  * 每个滑动页面的管理
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "RedundantSuppression"})
-@Keep
+//@Keep
 public class SwipeBackPage {
     //仅为判断是否需要将mSwipeBackLayout注入进去
     private boolean mEnable = true;

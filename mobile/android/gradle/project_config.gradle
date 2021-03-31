@@ -18,7 +18,7 @@ gradle.ext {
                     ],
                     'dependency_remote' : [
                             'enable'    : true,
-                            'dependency': 'com.codesdancing.libraries:library-base:0.0.2.3',
+                            'dependency': 'com.codesdancing.libraries:library-base:0.0.2.4',
                     ],
                     'dependency_project': [
                             'dependency': ':library-base',

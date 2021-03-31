@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import java.io.File
 
-@Keep
+//@Keep
 abstract class STIBundleHelper(val info: STBundleInfo, val rootDir: File?, val TAG: String) {
 
     fun checkUnzipDirValid(): Boolean {

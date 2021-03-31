@@ -9,7 +9,7 @@ import androidx.annotation.Keep
 import com.smart.library.util.STLogUtil
 import com.smart.library.util.hybird.STHybirdBridge
 
-@Keep
+//@Keep
 open class STWebChromeClient : WebChromeClient() {
 
     override fun onReceivedTitle(view: WebView?, title: String?) {

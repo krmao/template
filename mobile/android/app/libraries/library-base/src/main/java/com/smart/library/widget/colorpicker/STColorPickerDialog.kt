@@ -32,7 +32,7 @@ import com.smart.library.widget.colorpicker.STColorPickerSwatch.OnColorSelectedL
  * A dialog which takes in as input an array of colors and creates a palette allowing the user to
  * select a specific color swatch, which invokes a listener.
  */
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceArrayEqualityOpWithArraysEquals", "DEPRECATION")
 class STColorPickerDialog : DialogFragment(), OnColorSelectedListener {
     private var mAlertDialog: AlertDialog? = null

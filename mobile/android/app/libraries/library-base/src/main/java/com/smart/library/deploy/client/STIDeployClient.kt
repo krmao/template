@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.smart.library.deploy.model.STIDeployCheckUpdateCallback
 import java.io.File
 
-@Keep
+//@Keep
 interface STIDeployClient {
 
     fun getRootDir(): File?

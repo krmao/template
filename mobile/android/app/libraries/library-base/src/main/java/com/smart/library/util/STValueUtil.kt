@@ -10,7 +10,7 @@ import java.text.DecimalFormat
 import kotlin.math.cos
 import kotlin.math.sin
 
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ReplaceCallWithBinaryOperator")
 object STValueUtil {
     private val TAG = STValueUtil::class.java.name

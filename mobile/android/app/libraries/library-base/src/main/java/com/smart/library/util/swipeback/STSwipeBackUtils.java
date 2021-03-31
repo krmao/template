@@ -16,7 +16,7 @@ import java.lang.reflect.Proxy;
  * https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
  */
 @SuppressWarnings("JavaReflectionMemberAccess")
-@Keep
+//@Keep
 public class STSwipeBackUtils {
     private STSwipeBackUtils() {
     }

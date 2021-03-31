@@ -17,7 +17,7 @@ import io.reactivex.functions.Function
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-@Keep
+//@Keep
 @Suppress("MemberVisibilityCanBePrivate", "unused", "DEPRECATION")
 class RxPermissions(activity: Activity) {
 

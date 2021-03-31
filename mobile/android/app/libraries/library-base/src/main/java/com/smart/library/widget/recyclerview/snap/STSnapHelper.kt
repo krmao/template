@@ -10,7 +10,7 @@ import com.smart.library.widget.recyclerview.STEmptyLoadingWrapper
 import kotlin.math.abs
 import kotlin.math.min
 
-@Keep
+//@Keep
 interface STSnapHelper {
 
     fun attachToRecyclerView(recyclerView: RecyclerView?)
@@ -29,14 +29,14 @@ interface STSnapHelper {
     fun enableDebug(enable: Boolean)
     fun debugLog(logHandler: () -> Unit)
 
-    @Keep
+    //@Keep
     enum class Snap {
         START,
         CENTER,
         END
     }
 
-    @Keep
+    //@Keep
     class STSnapGravityDelegate(private val enableLoadingFooterView: Boolean, var snap: Snap, private val onSnap: ((position: Int) -> Unit)? = null) {
 
         private val tag = "Gravity-Snap"

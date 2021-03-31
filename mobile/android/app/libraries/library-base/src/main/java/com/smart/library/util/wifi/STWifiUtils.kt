@@ -3,7 +3,7 @@ package com.smart.library.util.wifi
 import androidx.annotation.Keep
 
 @Suppress("MemberVisibilityCanBePrivate")
-@Keep
+//@Keep
 object STWifiUtils {
     const val TAG = "[wifi]"
 

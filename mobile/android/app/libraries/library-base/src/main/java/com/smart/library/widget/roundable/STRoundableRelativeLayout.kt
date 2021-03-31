@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 class STRoundableRelativeLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr), STRoundableDelegate {
 
     //region round layout support

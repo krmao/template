@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.annotation.Keep
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STEditTextUtil {
 
     fun setTextWithLastCursor(editText: EditText?, text: String) {

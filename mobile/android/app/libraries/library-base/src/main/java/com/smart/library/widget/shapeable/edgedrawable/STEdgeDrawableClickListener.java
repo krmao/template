@@ -34,7 +34,7 @@ import androidx.annotation.Keep;
  * @see STEdgeDrawableTouchListener
  */
 @SuppressWarnings("ALL")
-@Keep
+//@Keep
 public abstract class STEdgeDrawableClickListener extends STEdgeDrawableTouchListener {
 
     /**

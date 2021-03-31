@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentManager
  * {@link FragmentStatePagerAdapter}.
  */
 @Suppress("unused", "DEPRECATION")
-@Keep
+//@Keep
 class STFragmentPagerAdapter(fragmentManager: FragmentManager, var dataList: List<Fragment>) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment = dataList[position]

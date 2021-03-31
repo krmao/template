@@ -22,7 +22,7 @@ import java.io.InputStream
 
 
 @Suppress("unused")
-@Keep
+//@Keep
 object STImageUtil {
     const val TAG = "[IMAGE_UTIL]"
 

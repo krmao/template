@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.*
 import com.google.android.material.shape.ShapeAppearanceModel
 
-@Keep
+//@Keep
 interface STShapeableDelegate {
     fun view(): View
     fun onDetachedFromWindow()

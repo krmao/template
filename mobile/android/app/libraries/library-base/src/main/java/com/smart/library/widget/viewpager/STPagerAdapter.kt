@@ -9,7 +9,7 @@ import androidx.viewpager.widget.PagerAdapter
 import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanPrivate")
-@Keep
+//@Keep
 abstract class STPagerAdapter<ItemEntity> : PagerAdapter {
 
     protected var TAG: String? = STPagerAdapter::class.java.simpleName

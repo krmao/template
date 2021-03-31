@@ -21,7 +21,7 @@ import java.lang.reflect.Method
 
 @Deprecated("no need now")
 @SuppressLint("DiscouragedPrivateApi")
-@Keep
+//@Keep
 object STIMMLeaksUtil {
 
     private val inputMethodManager = STInitializer.application()?.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager

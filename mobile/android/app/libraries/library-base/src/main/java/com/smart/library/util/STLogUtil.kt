@@ -49,7 +49,7 @@ import java.util.*
  *      改用 set 方法 以及 getName 方法
  *
  */
-@Keep
+//@Keep
 @Suppress("unused", "MemberVisibilityCan", "MemberVisibilityCan", "MemberVisibilityCanPrivate")
 object STLogUtil {
     private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\n"

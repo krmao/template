@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import okio.*
 import java.io.IOException
 
-@Keep
+//@Keep
 class STOkHttpProgressResponseBody(private var requestUrl: String? = null, private val responseBody: ResponseBody, private val onProgress: ((url: String, current: Long, total: Long) -> Unit?)? = null) : ResponseBody() {
 
     class OnProgressEvent(val requestUrl: String, val current: Long, val total: Long)

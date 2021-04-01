@@ -23,11 +23,14 @@
  * 5. clean build and upload
  *    ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
  * 6. 关闭暂存以及发布(每次一上传都需要执行该步骤) https://central.sonatype.org/pages/releasing-the-deployment.html
- *    上传以后 到 https://s01.oss.sonatype.org/ 访问左侧导航中的Build Promotion菜单，然后选择Staging Repositories项目 中的 cincidesdabcubf-1000,
+ *    上传以后 到 https://s01.oss.sonatype.org/ 访问左侧导航中的Build Promotion菜单，然后选择Staging Repositories项目 中的 codesdancingbase-1000,
  *    可以在底部 Content 选项卡中查看已上传的文件内容, 如果没问题, 需要关闭它, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明, 如果签名没有问题(签名需要在发布之前), 在底部 Activity 中将看到
  *    All rules passed: Central Sync Requirements/Repository closed
  *    接下来有两个选项, 在顶部工具栏中点击 Drop将丢弃存储库，并取消发布过程, Release会将登台存储库的内容发布到MavenCentral。同样，您将获得一个确认对话框，您可以选择“自动删除”，以便在发行完成后清理登台存储库。
  *    此过程花费的时间可能会有所不同。如果幸运的话，工件将在10到15分钟内显示在MavenCentral上，但在其他情况下可能还需要一个小时或更长时间。
+ *    https://issues.sonatype.org/browse/OSSRH-66550?focusedCommentId=1036771&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-1036771
+ *    your component will be published to Central https://repo1.maven.org/maven2/, typically within 10 minutes,
+ *    though updates to https://search.maven.org can take up to two hours.
  * 7. 访问 https://repo1.maven.org/maven2/并进行浏览来检查工件是否可用。比如: https://repo1.maven.org/maven2/com/codesdancing/libraries/library-base/
  *    访问 https://search.maven.org/  搜索 codesdancing 搜索索引编制是一个单独的过程，甚至是更长的过程，因此工件可能需要大约两个小时才能显示在search.maven.org上。
  *    访问 https://mvnrepository.com/ 搜索 codesdancing

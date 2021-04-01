@@ -1,14 +1,15 @@
 /**
  * 上传 android library aar files to maven central
  *
- * 1. 注册账户 https://issues.sonatype.org/secure/Dashboard.jspa
+ * 1. 注册账户 https://issues.sonatype.org/secure/Dashboard.jspa // 可以切换语言
  * 2. 创建Jira问题验证并域名所有权 https://issues.sonatype.org/browse/OSSRH-66550
  *    2.1 在域名解析里添加一条 TXT 内容为 'https://issues.sonatype.org/browse/OSSRH-66550' 字符串
  *    2.2 回到Jira问题并评论告知自己已添加, 可以开始验证了
  * 3. create new RSA secret keys by GPG https://gpgtools.org/
  *    3.1 gpg --full-gen-key // 1->0->y
  *    3.2 gpg --list-keys 查看已生成的 keys
- *    3.3 gpg --keyserver hkp：//pool.sks-keyservers.net --send-keys 12345678 // keyId=the last eight digits of the gpg fingerprint
+ *    3.3 gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 12345678 // keyId=the last eight digits of the gpg fingerprint
+ *        > gpg: 正在发送密钥 1234567812345678Z 到 hkp://pool.sks-keyservers.net
  *    3.4 gpg --export-secret-keys $keyId> $keyId.gpg
  * 4. local.properties
  *    android.ndkVersion=21.3.6528147
@@ -21,9 +22,12 @@
  *    sonatypeStagingProfileId=
  * 5. clean build and upload
  *    ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
- * 6. 确认发布
- *    上传以后 到 https://s01.oss.sonatype.org/ 查看左侧菜单, 选择 Staging Repositories 暂存存储库, 如果没问题, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明
- *    最后选择丢弃取消发布或者发布到 MavenCentral, 可以选择自动删除完成发布后的自动清理暂存存储库, 将在10到15分钟内显示在MavenCentral上, 但在其他情况下可能还需要一个小时或更长时间
+ * 6. 确认发布 https://central.sonatype.org/pages/releasing-the-deployment.html
+ *    上传以后 到 https://s01.oss.sonatype.org/ 访问左侧导航中的Build Promotion菜单，然后选择Staging Repositories项目 中的 cincidesdabcubf-1000,
+ *    可以在底部 Content 选项卡中查看已上传的文件内容, 如果没问题, 需要关闭它, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明, 如果签名没有问题(签名需要在发布之前), 在底部 Activity 中将看到
+ *    All rules passed: Central Sync Requirements/Repository closed
+ *    接下来有两个选项, 在顶部工具栏中点击 Drop将丢弃存储库，并取消发布过程, Release会将登台存储库的内容发布到MavenCentral。同样，您将获得一个确认对话框，您可以选择“自动删除”，以便在发行完成后清理登台存储库。
+ *    此过程花费的时间可能会有所不同。如果幸运的话，工件将在10到15分钟内显示在MavenCentral上，但在其他情况下可能还需要一个小时或更长时间。可以通过转到https://repo1.maven.org/maven2/并进行浏览来检查工件是否可用。
  * 7. 访问 https://repo1.maven.org/maven2/ 并查找已发布的库
  * 8. android gradle 中添加库依赖, 可能需要大约两个小时才能显示在 search.maven.org 上
  * 9. 如果这是第一个版本，则此时应返回并评论原始的Jira问题，以使他们知道您的存储库设置和发布正在工作
@@ -38,6 +42,10 @@
  * 1. Could not PUT 'https://oss.sonatype.org/service/local/staging/deploy/maven2/com/codesdancing/libraries/library-base/0.0.2.7/library-base-0.0.2.7.aar'. Received status code 403 from server: Forbidden
  *    解决方案: Github packages 403 forbidden error is thrown when the version number of the package is already on Github
  *    参考链接: https://github.community/t/gradle-publish-returns-http-403-even-after-package-is-uploaded/15587/2
+ * 2. 上传成功后 Close 发布过程中遇到 Event: Failed: Signature Validation Missing Signature: '/com/codesdancing/libraries/library-base/0.0.2.8/library-base-0.0.2.8.aar.asc' does not exist for 'library-base-0.0.2.8.aar'.
+ *    解决方案:
+ * 3. Task with name 'publishReleasePublicationToSonatypeRepository' not found
+ *    解决方案: set repositories.maven.name = "sonatype"
  */
 
 apply plugin: 'maven-publish'
@@ -153,7 +161,7 @@ publishing {
     }
     repositories {
         maven {
-            name = "maven"
+            name = "sonatype" // must be "sonatype" or will get error -> Caused by: org.gradle.api.UnknownTaskException: Task with name 'publishReleasePublicationToSonatypeRepository' not found in project ':library-base'.
 
             def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
@@ -229,7 +237,11 @@ afterEvaluate {
     assembleReleaseTask.dependsOn cleanTask.path
     assembleReleaseTask.mustRunAfter cleanTask.path
 
+    def signTask = project.tasks.getByName('signReleasePublication')
+    signTask.dependsOn assembleReleaseTask.path
+    signTask.mustRunAfter assembleReleaseTask.path
+
     def publishTask = project.tasks.getByName('publishReleasePublicationToSonatypeRepository')
-    publishTask.dependsOn assembleReleaseTask.path
-    publishTask.mustRunAfter assembleReleaseTask.path
+    publishTask.dependsOn signTask.path
+    publishTask.mustRunAfter signTask.path
 }

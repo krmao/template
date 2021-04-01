@@ -2,40 +2,36 @@
  * 上传 android library aar files to maven central
  *
  * 1. 注册账户 https://issues.sonatype.org/secure/Dashboard.jspa
- * 2. 创建问题验证域名所有权 https://issues.sonatype.org/browse/OSSRH-66550
+ * 2. 创建Jira问题验证并域名所有权 https://issues.sonatype.org/browse/OSSRH-66550
+ *    2.1 在域名解析里添加一条 TXT 内容为 'https://issues.sonatype.org/browse/OSSRH-66550' 字符串
+ *    2.2 回到Jira问题并评论告知自己已添加, 可以开始验证了
  * 3. create new RSA secret keys by GPG https://gpgtools.org/
- *    3.1 gpg --list-keys 查看已生成的 keys
- *
- * 第一步:
- * local.properties
- *      android.ndkVersion=21.3.6528147
- *      sdk.dir=
- *      signing.keyId=the last eight digits of the gpg fingerprint
- *      signing.password=m
- *      signing.secretKeyRingFile=absolute_path/xxx.gpg
- *      ossrhUsername=k
- *      ossrhPassword=S
- *      sonatypeStagingProfileId=
- *
- * 第二步:
- * ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
- *
- * 第三步:
- * 上传以后 到 https://oss.sonatype.org/ 查看左侧菜单, 选择 Staging Repositories 暂存存储库, 如果没问题, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明
- *         最后选择丢弃取消发布或者发布到 MavenCentral, 可以选择自动删除完成发布后的自动清理暂存存储库, 将在10到15分钟内显示在MavenCentral上, 但在其他情况下可能还需要一个小时或更长时间
- *
- * 第四部:
- * 浏览 https://repo1.maven.org/maven2/
- *
- * 第五步:
- * mavenCentral 依赖, 可能需要大约两个小时才能显示在search.maven.org上
- *
- * 第六步:
- * 如果这是第一个版本，则此时应返回并评论原始的Jira问题，以使他们知道您的存储库设置和发布正在工作
+ *    3.1 gpg --full-gen-key // 1->0->y
+ *    3.2 gpg --list-keys 查看已生成的 keys
+ *    3.3 gpg --keyserver hkp：//pool.sks-keyservers.net --send-keys 12345678 // keyId=the last eight digits of the gpg fingerprint
+ *    3.4 gpg --export-secret-keys $keyId> $keyId.gpg
+ * 4. local.properties
+ *    android.ndkVersion=21.3.6528147
+ *    sdk.dir=
+ *    signing.keyId=$keyId
+ *    signing.password=m //keyId password
+ *    signing.secretKeyRingFile=xxx/xxx.gpg // $keyId.gpg absolute path
+ *    ossrhUsername=k // https://oss.sonatype.org/#welcome
+ *    ossrhPassword=S
+ *    sonatypeStagingProfileId=
+ * 5. clean build and upload
+ *    ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
+ * 6. 确认发布
+ *    上传以后 到 https://oss.sonatype.org/ 查看左侧菜单, 选择 Staging Repositories 暂存存储库, 如果没问题, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明
+ *    最后选择丢弃取消发布或者发布到 MavenCentral, 可以选择自动删除完成发布后的自动清理暂存存储库, 将在10到15分钟内显示在MavenCentral上, 但在其他情况下可能还需要一个小时或更长时间
+ * 7. 访问 https://repo1.maven.org/maven2/ 并查找已发布的库
+ * 8. android gradle 中添加库依赖, 可能需要大约两个小时才能显示在 search.maven.org 上
+ * 9. 如果这是第一个版本，则此时应返回并评论原始的Jira问题，以使他们知道您的存储库设置和发布正在工作
  *
  * 参考:
- * @see "https://proandroiddev.com/publishing-android-libraries-to-mavencentral-in-2021-8ac9975c3e52"
+ * @see "https://oss.sonatype.org/#welcome"
  * @see "https://issues.sonatype.org/browse/OSSRH-66550"
+ * @see "https://proandroiddev.com/publishing-android-libraries-to-mavencentral-in-2021-8ac9975c3e52"
  * @see "https://github.com/GetStream/stream-chat-android/blob/384da564037b8268720c2be22133dd08c1f584ee/stream-chat-android-ui-common/build.gradle"
  *
  * 问题:

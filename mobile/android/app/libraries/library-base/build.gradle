@@ -196,4 +196,5 @@ uploadArchives {
     }
 }*/
 
-apply from: "./upload_to_jcenter.gradle"
+// apply from: "./upload_to_jcenter.gradle"
+apply from: "./upload_to_maven_central.gradle"

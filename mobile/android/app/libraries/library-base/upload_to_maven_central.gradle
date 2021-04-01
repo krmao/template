@@ -1,0 +1,233 @@
+/**
+ * 上传 android library aar files to maven central
+ *
+ * 1. 注册账户 https://issues.sonatype.org/secure/Dashboard.jspa
+ * 2. 创建问题验证域名所有权 https://issues.sonatype.org/browse/OSSRH-66550
+ * 3. create new RSA secret keys by GPG https://gpgtools.org/
+ *    3.1 gpg --list-keys 查看已生成的 keys
+ *
+ * 第一步:
+ * local.properties
+ *      android.ndkVersion=21.3.6528147
+ *      sdk.dir=
+ *      signing.keyId=the last eight digits of the gpg fingerprint
+ *      signing.password=m
+ *      signing.secretKeyRingFile=absolute_path/xxx.gpg
+ *      ossrhUsername=k
+ *      ossrhPassword=S
+ *      sonatypeStagingProfileId=
+ *
+ * 第二步:
+ * ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
+ *
+ * 第三步:
+ * 上传以后 到 https://oss.sonatype.org/ 查看左侧菜单, 选择 Staging Repositories 暂存存储库, 如果没问题, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明
+ *         最后选择丢弃取消发布或者发布到 MavenCentral, 可以选择自动删除完成发布后的自动清理暂存存储库, 将在10到15分钟内显示在MavenCentral上, 但在其他情况下可能还需要一个小时或更长时间
+ *
+ * 第四部:
+ * 浏览 https://repo1.maven.org/maven2/
+ *
+ * 第五步:
+ * mavenCentral 依赖, 可能需要大约两个小时才能显示在search.maven.org上
+ *
+ * 第六步:
+ * 如果这是第一个版本，则此时应返回并评论原始的Jira问题，以使他们知道您的存储库设置和发布正在工作
+ *
+ * 参考:
+ * @see "https://proandroiddev.com/publishing-android-libraries-to-mavencentral-in-2021-8ac9975c3e52"
+ * @see "https://issues.sonatype.org/browse/OSSRH-66550"
+ * @see "https://github.com/GetStream/stream-chat-android/blob/384da564037b8268720c2be22133dd08c1f584ee/stream-chat-android-ui-common/build.gradle"
+ *
+ * 问题:
+ * 1. Could not PUT 'https://oss.sonatype.org/service/local/staging/deploy/maven2/com/codesdancing/libraries/library-base/0.0.2.7/library-base-0.0.2.7.aar'. Received status code 403 from server: Forbidden
+ *    解决方案: Github packages 403 forbidden error is thrown when the version number of the package is already on Github
+ *    参考链接: https://github.community/t/gradle-publish-returns-http-403-even-after-package-is-uploaded/15587/2
+ */
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'org.jetbrains.dokka' // https://github.com/Kotlin/dokka // classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30" // maven { url("https://dl.bintray.com/kotlin/dokka") }
+
+def PUBLISH_JAVA_DOC_ENABLE = false     // upload javadoc.jar to repository if set true
+def PUBLISH_SOURCE_JAR_ENABLE = false   // upload java/kotlin source.jar to repository if set true
+
+def PUBLISH_GROUP_ID = 'com.codesdancing.libraries'
+def PUBLISH_ARTIFACT_ID = "library-base"
+def PUBLISH_VERSION = '0.0.2.8'
+def PUBLISH_DESCRIPTION = 'library-base for android'
+
+def PUBLISH_URL = 'https://github.com/krmao/template'
+def PUBLISH_URL_GIT = 'github.com/krmao/template.git'
+
+def PUBLISH_DEVELOPER_ID = 'krmao'
+def PUBLISH_DEVELOPER_NAME = 'krmao'
+def PUBLISH_DEVELOPER_EMAIL = '767709667@qq.com'
+
+def PUBLISH_LICENSE_NAME = 'Apache License, Version 2.0'
+def PUBLISH_LICENSE_URL = 'https://opensource.org/licenses/Apache-2.0'
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+ext["sonatypeStagingProfileId"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+    ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+    ext["signing.secretKeyRingFile"] = System.getenv('SIGNING_SECRET_KEY_RING_FILE')
+    ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+    ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+    ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+            if (project.plugins.findPlugin("com.android.library")) {
+                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            } else {
+                artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+            }
+
+            if (PUBLISH_SOURCE_JAR_ENABLE) {
+                artifact androidSourcesJar
+            }
+
+            if (PUBLISH_JAVA_DOC_ENABLE) {
+                artifact javadocJar
+            }
+
+            pom {
+                name = PUBLISH_ARTIFACT_ID
+                description = PUBLISH_DESCRIPTION
+                url = PUBLISH_URL
+                licenses {
+                    license {
+                        name = PUBLISH_LICENSE_NAME
+                        url = PUBLISH_LICENSE_URL
+                    }
+                }
+                developers {
+                    developer {
+                        id = PUBLISH_DEVELOPER_ID
+                        name = PUBLISH_DEVELOPER_NAME
+                        email = PUBLISH_DEVELOPER_EMAIL
+                    }
+                }
+                scm {
+                    connection = 'scm:git:' + PUBLISH_URL_GIT
+                    developerConnection = 'scm:git:ssh://' + PUBLISH_URL_GIT
+                    url = PUBLISH_URL
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    def allDependencies = new ArrayList()
+                    allDependencies.addAll(project.configurations.implementation.allDependencies.findAll())
+                    allDependencies.addAll(project.configurations.api.allDependencies.findAll())
+                    allDependencies.addAll(project.configurations.compile.allDependencies)
+
+                    allDependencies.each {
+                        // Ensure dependencies such as fileTree are not included.
+                        if (it.name != 'unspecified') {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "sonatype"
+
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+    }
+}
+
+// https://github.com/Codearte/gradle-nexus-staging-plugin
+/*nexusStaging {
+    packageGroup = PUBLISH_GROUP_ID
+    stagingProfileId = sonatypeStagingProfileId
+    username = ossrhUsername
+    password = ossrhPassword
+}*/
+
+signing {
+    sign publishing.publications
+}
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
+    pluginsMapConfiguration.set(
+            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+    )
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set('javadoc')
+    from dokkaJavadoc.outputDirectory
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+project.task('uploadToMavenCentral', group: "codesdancing", description: "upload to Jcenter", dependsOn: ["clean", "publishReleasePublicationToSonatypeRepository"]) {
+    doFirst {
+        println "*************** upload to MavenCentral start ***************"
+    }
+    doLast {
+        println "*************** upload to MavenCentral finish ***************"
+    }
+}
+
+afterEvaluate {
+    println "**** publishReleasePublicationToSonatypeRepository dependsOn & mustRunAfter assembleRelease"
+    def cleanTask = project.tasks.getByName('clean')
+
+    def assembleReleaseTask = project.tasks.getByName('assembleRelease')
+    assembleReleaseTask.dependsOn cleanTask.path
+    assembleReleaseTask.mustRunAfter cleanTask.path
+
+    def publishTask = project.tasks.getByName('publishReleasePublicationToSonatypeRepository')
+    publishTask.dependsOn assembleReleaseTask.path
+    publishTask.mustRunAfter assembleReleaseTask.path
+}

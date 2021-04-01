@@ -157,7 +157,7 @@ publishing {
     }
     repositories {
         maven {
-            name = "sonatype"
+            name = "maven"
 
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"

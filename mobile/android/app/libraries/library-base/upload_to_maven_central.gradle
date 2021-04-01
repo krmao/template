@@ -22,14 +22,16 @@
  *    sonatypeStagingProfileId=
  * 5. clean build and upload
  *    ../../../gradlew :library-base:uploadToMavenCentral  --info --stacktrace
- * 6. 确认发布 https://central.sonatype.org/pages/releasing-the-deployment.html
+ * 6. 关闭暂存以及发布(每次一上传都需要执行该步骤) https://central.sonatype.org/pages/releasing-the-deployment.html
  *    上传以后 到 https://s01.oss.sonatype.org/ 访问左侧导航中的Build Promotion菜单，然后选择Staging Repositories项目 中的 cincidesdabcubf-1000,
  *    可以在底部 Content 选项卡中查看已上传的文件内容, 如果没问题, 需要关闭它, 点击顶部工具栏中的 "关闭" 按钮, 弹出的对话框无需提供说明, 如果签名没有问题(签名需要在发布之前), 在底部 Activity 中将看到
  *    All rules passed: Central Sync Requirements/Repository closed
  *    接下来有两个选项, 在顶部工具栏中点击 Drop将丢弃存储库，并取消发布过程, Release会将登台存储库的内容发布到MavenCentral。同样，您将获得一个确认对话框，您可以选择“自动删除”，以便在发行完成后清理登台存储库。
- *    此过程花费的时间可能会有所不同。如果幸运的话，工件将在10到15分钟内显示在MavenCentral上，但在其他情况下可能还需要一个小时或更长时间。可以通过转到https://repo1.maven.org/maven2/并进行浏览来检查工件是否可用。
- * 7. 访问 https://repo1.maven.org/maven2/ 并查找已发布的库
- * 8. android gradle 中添加库依赖, 可能需要大约两个小时才能显示在 search.maven.org 上
+ *    此过程花费的时间可能会有所不同。如果幸运的话，工件将在10到15分钟内显示在MavenCentral上，但在其他情况下可能还需要一个小时或更长时间。
+ * 7. 访问 https://repo1.maven.org/maven2/并进行浏览来检查工件是否可用。比如: https://repo1.maven.org/maven2/com/codesdancing/libraries/library-base/
+ *    访问 https://search.maven.org/  搜索 codesdancing 搜索索引编制是一个单独的过程，甚至是更长的过程，因此工件可能需要大约两个小时才能显示在search.maven.org上。
+ *    访问 https://mvnrepository.com/ 搜索 codesdancing
+ * 8. android rootProject build.gradle 中 buildscript.repositories 中添加 mavenCentral()
  * 9. 如果这是第一个版本，则此时应返回并评论原始的Jira问题，以使他们知道您的存储库设置和发布正在工作
  *
  * 参考:
@@ -57,7 +59,7 @@ def PUBLISH_SOURCE_JAR_ENABLE = false   // upload java/kotlin source.jar to repo
 
 def PUBLISH_GROUP_ID = 'com.codesdancing.libraries'
 def PUBLISH_ARTIFACT_ID = "library-base"
-def PUBLISH_VERSION = '0.0.2.8'
+def PUBLISH_VERSION = '0.0.2.9'
 def PUBLISH_DESCRIPTION = 'library-base for android'
 
 def PUBLISH_URL = 'https://github.com/krmao/template'
@@ -179,7 +181,7 @@ publishing {
 // https://github.com/Codearte/gradle-nexus-staging-plugin
 /*nexusStaging {
     packageGroup = PUBLISH_GROUP_ID
-    stagingProfileId = sonatypeStagingProfileId
+    stagingProfileId = sonatypeStagingProfileId // when not defined will be got from server using "packageGroup"
     username = ossrhUsername
     password = ossrhPassword
 }*/

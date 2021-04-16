@@ -54,10 +54,6 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        ndk {
-            abiFilters 'armeabi-v7a', 'x86', 'x86_64' //, 'arm64-v8a', 'armeabi',
-        }
-
         println "\ndebug=${rootProject.ext.debug}, \n" +
                 "VERSION_RN=${rootProject.ext.versionRN}, \n" +
                 "MAP_ENABLE=${gradle.ext.modules.library_map.enable}, \n" +
@@ -132,6 +128,10 @@ android {
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
+
+            ndk {
+                abiFilters 'armeabi-v7a', 'x86', 'x86_64' //, 'arm64-v8a', 'armeabi',
+            }
         }
 
         /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
@@ -150,6 +150,10 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            ndk {
+                abiFilters 'armeabi-v7a' //, 'x86', 'x86_64' //, 'arm64-v8a', 'armeabi',
+            }
         }
     }
 

@@ -62,7 +62,6 @@ open class STBaseActivity : AppCompatActivity(), STActivityDelegate {
     override fun onDestroy() {
         super.onDestroy()
         delegate.onDestroy()
-        javaClass.canonicalName
     }
 
     override fun finish() {

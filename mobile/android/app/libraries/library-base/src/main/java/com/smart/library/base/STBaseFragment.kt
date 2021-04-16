@@ -19,6 +19,11 @@ open class STBaseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables().dispose()
+    }
+
     //@Keep
     interface OnBackPressedListener {
         /**

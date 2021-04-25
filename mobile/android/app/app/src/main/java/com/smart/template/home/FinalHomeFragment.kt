@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.smart.library.base.STActivity
@@ -37,18 +36,21 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         return inflater.inflate(R.layout.final_home_fragment, container, false)
     }
 
-    private fun read() {
+    private fun getLocalImageCount(): Int {
         Log.v(TAG, "---- read start")
         val mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val mContentResolver: ContentResolver = requireContext().contentResolver
 
+        var imageCount = 0
         val mCursor = mContentResolver.query(mImageUri, null, MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?", arrayOf("image/jpeg", "image/png"), MediaStore.Images.Media.DATE_MODIFIED)
         while (mCursor!!.moveToNext()) {
             val path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA))
             Log.v(TAG, path)
+            imageCount++
         }
         mCursor.close()
-        Log.v(TAG, "---- read end")
+        Log.v(TAG, "---- read end imageCount=$imageCount")
+        return imageCount
     }
 
     @SuppressLint("SetTextI18n")
@@ -59,17 +61,22 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
         STLogUtil.w("mergedBitmap=$mergedBitmap")
         imageView.setImageBitmap(mergedBitmap)
 
-        isSDCardAvailableSize.setOnClickListener {
-            STToastUtil.show("${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, isSDCardAvailableSize=${STSystemUtil.isSDCardAvailableSize()}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
-        }
         read.setOnClickListener {
-            read()
-            STToastUtil.show("${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
+            val memoryStr: LongArray = STSystemUtil.getSDCardMemory()
+            val total = "${memoryStr[0] / 1024.0 / 1024.0} MB"
+            val free = "${memoryStr[1] / 1024.0 / 1024.0} MB"
+            val log = "getLocalImageCount()=${getLocalImageCount()}\nREAD_EXTERNAL_STORAGE=${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}\nisSDCardAvailableSize=${STSystemUtil.isSDCardAvailableSize()}\ngetSDCardMemory=$total/$free"
+            Log.v(TAG, "---- $log")
+            STToastUtil.show(log)
         }
-        read2.setOnClickListener {
+        requestRead.setOnClickListener {
             RxPermissions.ensurePermissions(activity, {
-                read()
-                STToastUtil.show("it=$it, ${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
+                val memoryStr: LongArray = STSystemUtil.getSDCardMemory()
+                val total = "${memoryStr[0] / 1024.0 / 1024.0} MB"
+                val free = "${memoryStr[1] / 1024.0 / 1024.0} MB"
+                val log = "granted=$it\ngetLocalImageCount()=${getLocalImageCount()}\nREAD_EXTERNAL_STORAGE=${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}\nisSDCardAvailableSize=${STSystemUtil.isSDCardAvailableSize()}\ngetSDCardMemory=$total/$free"
+                Log.v(TAG, "---- $log")
+                STToastUtil.show(log)
             }, Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         roundLayout.setOnClickListener {

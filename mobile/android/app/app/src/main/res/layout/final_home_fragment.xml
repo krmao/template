@@ -133,14 +133,6 @@
                     <TableRow>
 
                         <Button
-                            android:id="@+id/isSDCardAvailableSize"
-                            style="@style/STButton.Default"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="isSDCardAvailableSize"
-                            android:textAllCaps="true" />
-
-                        <Button
                             android:id="@+id/read"
                             style="@style/STButton.Default"
                             android:layout_width="0dp"
@@ -148,16 +140,12 @@
                             android:text="read sdcard"
                             android:textAllCaps="true" />
 
-                    </TableRow>
-
-                    <TableRow>
-
                         <Button
-                            android:id="@+id/read2"
+                            android:id="@+id/requestRead"
                             style="@style/STButton.Default"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:text="read sdcard2"
+                            android:text="request read sdcard"
                             android:textAllCaps="true" />
 
                     </TableRow>

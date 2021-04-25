@@ -133,6 +133,38 @@
                     <TableRow>
 
                         <Button
+                            android:id="@+id/isSDCardAvailableSize"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="isSDCardAvailableSize"
+                            android:textAllCaps="true" />
+
+                        <Button
+                            android:id="@+id/read"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="read sdcard"
+                            android:textAllCaps="true" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <Button
+                            android:id="@+id/read2"
+                            style="@style/STButton.Default"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="read sdcard2"
+                            android:textAllCaps="true" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <Button
                             android:id="@+id/fragments"
                             style="@style/STButton.Default"
                             android:layout_width="0dp"

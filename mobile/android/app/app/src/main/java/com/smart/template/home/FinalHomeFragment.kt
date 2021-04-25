@@ -1,24 +1,27 @@
 package com.smart.template.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.smart.library.base.STActivity
 import com.smart.library.base.STBaseFragment
-import com.smart.library.util.STDialogManager
-import com.smart.library.util.STFragmentManager
-import com.smart.library.util.STLogUtil
+import com.smart.library.util.*
 import com.smart.library.util.bus.STBusManager
 import com.smart.library.util.image.STImageUtil
+import com.smart.library.util.rx.permission.RxPermissions
 import com.smart.library.widget.colorpicker.STColorPickerUtil
 import com.smart.module.crash.STCrashActivity
 import com.smart.template.R
@@ -26,46 +29,49 @@ import com.smart.template.home.tab.FinalHomeTabActivity
 import com.smart.template.home.test.*
 import kotlinx.android.synthetic.main.final_home_fragment.*
 
+
 class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedListener {
+    private val TAG = "FinalHomeFragment"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.final_home_fragment, container, false)
+    }
+
+    private fun read() {
+        Log.v(TAG, "---- read start")
+        val mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val mContentResolver: ContentResolver = requireContext().contentResolver
+
+        val mCursor = mContentResolver.query(mImageUri, null, MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?", arrayOf("image/jpeg", "image/png"), MediaStore.Images.Media.DATE_MODIFIED)
+        while (mCursor!!.moveToNext()) {
+            val path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            Log.v(TAG, path)
+        }
+        mCursor.close()
+        Log.v(TAG, "---- read end")
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemWindows = false
-        /*label1TV.ensureOnGlobalLayoutListener {
-            val text = label1TV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 1 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 1 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}, calculateWidth=${STSystemUtil.measuringTextWidth(text, 16f.toPxFromDp(), typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD))}")
-        }
-        label2TV.ensureOnGlobalLayoutListener {
-            val text = label2TV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 2 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 2 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
-        }
-        label3TV.ensureOnGlobalLayoutListener {
-            val text = label3TV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 3 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 3 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
-        }
-        label4TV.ensureOnGlobalLayoutListener {
-            val text = label4TV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 4 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 4 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
-        }
-        label5TV.ensureOnGlobalLayoutListener {
-            val text = label5TV.text.toString().trim()
-            STLogUtil.w("[SYS] LABEL 5 realHeight=${it.height}, realWidth=${it.width}, measuredHeight=${it.measuredHeight}, measuredWidth=${it.measuredWidth}")
-            STLogUtil.w("[SYS] LABEL 5 calculateHeight=${STSystemUtil.measuringMultiLineTextHeight(text, 16f.toPxFromDp(), STSystemUtil.screenWidth.toFloat())}")
-        }*/
-
         val mergedBitmap: Bitmap? = STImageUtil.mergeBitmap(STImageUtil.getBitmapFromResourceVector(R.drawable.st_launch_background, context), STImageUtil.getBitmapFromResource(R.drawable.st_image, context?.resources))
         STLogUtil.w("mergedBitmap=$mergedBitmap")
         imageView.setImageBitmap(mergedBitmap)
 
+        isSDCardAvailableSize.setOnClickListener {
+            STToastUtil.show("${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, isSDCardAvailableSize=${STSystemUtil.isSDCardAvailableSize()}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
+        }
+        read.setOnClickListener {
+            read()
+            STToastUtil.show("${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
+        }
+        read2.setOnClickListener {
+            RxPermissions.ensurePermissions(activity, {
+                read()
+                STToastUtil.show("it=$it, ${ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)}, ${RxPermissions.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)}, ${STSystemUtil.getSDCardMemory().map { m -> "$m" }}")
+            }, Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
         roundLayout.setOnClickListener {
             FinalRoundLayoutFragment.goTo(context)
         }
@@ -202,17 +208,17 @@ class FinalHomeFragment : STBaseFragment(), FragmentManager.OnBackStackChangedLi
 
     override fun onStart() {
         super.onStart()
-        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStart");
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStart")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStop");
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onDestroy");
+        Log.w(FinalHomeTabActivity.TAG, "HomeFragment:onDestroy")
     }
 
     override fun onBackStackChanged() {

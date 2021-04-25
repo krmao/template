@@ -8,8 +8,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- 读写 SDCard -->
+    <!-- 读权限必须在 AndroidManifest.xml 中申明, 否则即使在代码中动态申请也是失败的 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 写权限必须在 AndroidManifest.xml 中申明, 否则即使在代码中动态申请也是失败的 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <!-- 相机 -->
     <uses-permission android:name="android.permission.CAMERA" />

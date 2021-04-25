@@ -22,7 +22,6 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.Keep
 import androidx.core.content.PermissionChecker
 import com.smart.library.R
 import com.smart.library.STInitializer
@@ -378,6 +377,25 @@ object STSystemUtil {
             sdCardInfo[1] = bSize * availBlocks
         }
         return sdCardInfo
+    }
+
+    @Suppress("DEPRECATION")
+    @JvmStatic
+    fun isSDCardAvailableSize(): Boolean {
+        return try {
+            val state = Environment.getExternalStorageState()
+            if (Environment.MEDIA_MOUNTED == state) {
+                val path = Environment.getExternalStorageDirectory() // 取得sdcard文件路径
+                val stat = StatFs(path.path)
+                val blockSize = stat.blockSize.toLong()
+                val availableBlocks = stat.availableBlocks.toLong()
+                availableBlocks * blockSize > 30 * 1024 * 1024
+            } else {
+                false
+            }
+        } catch (ex: Exception) {
+            false
+        }
     }
 
     @JvmStatic

@@ -28,22 +28,28 @@ dependencies {
     embed project(path: ':react-native-gesture-handler', configuration: 'default')
     embed project(path: ':react-native-safe-area-context', configuration: 'default')
 
+    //noinspection GradleDependency
     api "androidx.transition:transition:1.1.0"
     embed project(path: ':react-native-reanimated', configuration: 'default')
     embed project(path: ':react-native-vector-icons', configuration: 'default')
 
     // react-native/ReactAndroid/gradle.properties
     def FRESCO_VERSION = "2.0.0"
-    def OKHTTP_VERSION = "3.12.1"
+    def OK_HTTP_VERSION = "3.12.1"
     def SO_LOADER_VERSION = "0.8.0"
 
+    api 'com.codesdancing.libraries:library-base:0.0.2.9'
+
+    //noinspection GradleDependency
     api "androidx.appcompat:appcompat:1.0.2"
 
     api("javax.inject:javax.inject:1")
     api("com.google.code.findbugs:jsr305:3.0.2")
 
-    api("com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}")
-    api("com.squareup.okhttp3:okhttp-urlconnection:${OKHTTP_VERSION}")
+    //noinspection GradleDependency
+    api("com.squareup.okhttp3:okhttp:${OK_HTTP_VERSION}")
+    api("com.squareup.okhttp3:okhttp-urlconnection:${OK_HTTP_VERSION}")
+    //noinspection GradleDependency
     api("com.squareup.okio:okio:1.15.0")
 
     api("com.facebook.infer.annotation:infer-annotation:0.11.2")
@@ -83,4 +89,4 @@ uploadArchives {
     }
 }
 
-apply from: "$rootProject.projectDir/gradle/upload_to_jcenter.gradle"
+apply from: "./upload_to_maven_central.gradle"

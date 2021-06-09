@@ -1,7 +1,7 @@
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import React from "react";
-import {TweenMax, TweenLite, Linear, Sine} from "gsap";
+import {Linear, Sine, TweenLite, TweenMax} from "gsap";
 import css from "./index.scss";
 import {withRouter} from "next/router";
 
@@ -36,10 +36,10 @@ class Sakura extends React.Component {
         console.log("[LIFECYCLE](Sakura) componentDidMount");
         let falling = true;
 
-        let total = 1000;
-        let container = document.getElementById("container"), w = window.innerWidth/2, h = window.innerHeight;
+        let total = 300;
+        let container = document.getElementById("container"), w = window.innerWidth*0.8, h = window.innerHeight*0.6;
 
-        console.log("[LIFECYCLE](Sakura) componentDidMount",container);
+        console.log("[LIFECYCLE](Sakura) componentDidMount", container);
         TweenLite.set(container, {perspective: 600});
 
         function R(min, max) {
@@ -47,14 +47,14 @@ class Sakura extends React.Component {
         }
 
         function anim(element) {
-            TweenMax.to(element, R(6, 15), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -15});
-            TweenMax.to(element, R(4, 8), {x: "+=100", rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
-            TweenMax.to(element, R(2, 8), {rotationX: R(0, 360), rotationY: R(0, 360), repeat: -1, yoyo: true, ease: Sine.easeInOut, delay: -5});
+            TweenMax.to(element, R(10, 30), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -10});
+            TweenMax.to(element, R(8, 20), {x: "-=200", rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
+            TweenMax.to(element, R(4, 10), {rotationX: R(0, 360), rotationY: R(0, 360), repeat: -1, yoyo: true, ease: Sine.easeInOut, delay: -5});
         }
 
         for (let i = 0; i < total; i++) {
             let Div = document.createElement("div");
-            TweenLite.set(Div, {attr: {class: i%2===0?css.dot_a:css.dot_b}, x: R(0, w), y: R(-200, -150), z: R(-200, 200)});
+            TweenLite.set(Div, {attr: {class: i % 2 === 0 ? css.dot_a : css.dot_b}, x: R(0, w), y: R(-100, 0), z: R(-200, 200)});
             container.appendChild(Div);
             anim(Div);
         }

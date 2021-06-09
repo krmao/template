@@ -5,7 +5,7 @@
 debug: ${server_debug}
 
 server:
-    port: 5381
+    # port: 5382 # http://localhost:5386/apps-app-b-dev.yml
     servlet:
         context-path: /app-b
 
@@ -88,11 +88,6 @@ feign:
                 readTimeout: 5000
                 loggerLevel: full
 
-security:
-    user:
-        name: root
-        password: root
-
 spring:
     main:
         # if call multi time @EnableFeignClients, will cause error bellow, set allow-bean-definition-overriding will avoid error, so try ony call once @EnableFeignClients
@@ -102,36 +97,17 @@ spring:
     application:
         # name in eureka-server
         name: APP-B
-    jpa:
-        hibernate:
-            ddl-auto: none
-        show-sql: false
-    datasource:
-        type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://${server_sql_ip}:${server_sql_port}/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: ${server_sql_user}
-        password: ${server_sql_password}
-        schema: classpath:/sql/schema-mysql.sql
-        data: classpath:/sql/data-mysql.sql
-
-        druid:
-            filters: stat,wall,log4j2
-            maxActive: 20
-            initialSize: 0
-            maxWait: 60000
-            minIdle: 1
-            timeBetweenEvictionRunsMillis: 60000
-            minEvictableIdleTimeMillis: 300000
-            validationQuery: select 'x'
-            testWhileIdle: true
-            testOnBorrow: false
-            testOnReturn: false
-            poolPreparedStatements: true
-            maxPoolPreparedStatementPerConnectionSize: 20
-            connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-            maxOpenPreparedStatements: 20
-            useGlobalDataSourceStat: true
+    cloud:
+        config:
+            allow-override: true
+            override-none: true
+            override-system-properties: true
+            label: master # 配置仓库的分支
+            profile: dev # 环境 env
+            name: apps-app-b # Name of application used to fetch remote properties.
+            discovery:  # 配置服务发现
+                enabled: true  # 是否启动服务发现
+                serviceId: CONFIG-SERVER # 服务发现(eureka)中，配置中心(config server)的服务名
     resources:
         cache:
             # https://www.twblogs.net/a/5b8c454a2b7177188331c861
@@ -149,12 +125,6 @@ spring:
             max-file-size: 10MB
             max-request-size: 10MB
 
-mybatis:
-    configuration:
-        mapUnderscoreToCamelCase: true
-    type-aliases-package: com.smart.springcloud.appa.background.model
-    mapper-locations: classpath:mapper/**/*.xml
-
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:
     level:
@@ -164,18 +134,3 @@ logging:
         org.springframework:
             data: WARN
             security: WARN
-
-# JWT http://www.jianshu.com/p/6307c89fe3fa
-# https://stackoverflow.com/questions/27416327/configurationproperties-prefix-not-working
-jwt:
-    secret: ${server_jwt_secret}
-    tokenPrefix: "Bearer "
-    header: "Authorization"
-    accessToken:
-        expiration: 1800
-    refreshToken:
-        expiration: 7200
-    authRoute:
-        login: "auth/login"
-        register: "auth/register"
-        refreshToken: "auth/refreshToken"

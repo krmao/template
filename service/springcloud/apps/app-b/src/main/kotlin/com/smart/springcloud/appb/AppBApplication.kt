@@ -17,14 +17,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @ServletComponentScan
 @SpringBootApplication
-//@EnableResourceServer
-//@EnableAuthorizationServer
-
 @EnableEurekaClient // 开启 Eureka
 @EnableFeignClients(basePackages = ["com.smart.springcloud.appb.http.controller"]) // 开启 Feign
-
 @EnableConfigurationProperties
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class AppBApplication : SpringBootServletInitializer() {
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder {

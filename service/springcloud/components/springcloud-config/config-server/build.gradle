@@ -23,6 +23,22 @@ jib {
     }
 }
 
+version = rootProject.ext.spingcloud_config_server_version
+
+//region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
+// https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/howto-properties-and-configuration.html
+// https://github.com/spring-projects/spring-boot/commit/c0c67f2593dbfd17aa304b43f4da3a3678fa58eb
+processResources {
+    inputs.file("${rootProject.projectDir}/local.properties")
+    filesMatching("application.yml") {
+        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+        logger.error("\n[processResources](filesMatched) ${it.path}\n")
+        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
+        expand(rootProject.properties)
+    }
+}
+//endregion
+
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation("org.springframework.cloud:spring-cloud-config-server")

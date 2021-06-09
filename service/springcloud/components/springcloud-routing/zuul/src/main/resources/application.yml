@@ -15,7 +15,7 @@ eureka:
         # https://www.jianshu.com/p/5ad8317961b7
         # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
         # https://stackoverflow.com/a/29194250/4348530
-        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${app_a_version}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${spingcloud_routing_zuul_version}
 
 spring:
     application:

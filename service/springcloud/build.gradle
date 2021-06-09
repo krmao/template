@@ -101,6 +101,7 @@ ext {
     app_a_version = "0.0.1-SNAPSHOT"
     app_b_version = "0.0.1-SNAPSHOT"
     spingcloud_routing_zuul_version = "0.0.1-SNAPSHOT"
+    spingcloud_config_server_version = "0.0.1-SNAPSHOT"
     //endregion
 
     server_debug = false

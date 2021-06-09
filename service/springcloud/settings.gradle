@@ -10,3 +10,7 @@ include(":app-b"); project(":app-b").projectDir = new File(settingsDir, "apps/ap
 // components
 include(":eureka-server"); project(":eureka-server").projectDir = new File(settingsDir, "components/springcloud-discovery/eureka-server")
 include(":zuul"); project(":zuul").projectDir = new File(settingsDir, "components/springcloud-routing/zuul")
+
+// config
+include(":config-server"); project(":config-server").projectDir = new File(settingsDir, "components/springcloud-config/config-server")
+

@@ -44,8 +44,8 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.5.0'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
 
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
 
     // https://stackoverflow.com/a/16478509/4348530
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8'

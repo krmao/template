@@ -8,14 +8,14 @@ server:
 spring:
     application:
         name: APP-B
-    config:
-        name: APP-B
-    profiles:
+        #    config:
+        #        name: APP-B
+        #    profiles:
         # /{application}/{profile}[/{label}]
         # /{application}-{profile}.yml
         # /{application}-{profile}.properties
         # /{label}/{application}-{profile}.properties
-        active: dev # http://localhost:5386/APP-B/dev http://localhost:5386/APP-B-dev.yml http://localhost:5386/APP-B/dev/master http://localhost:5386/master/APP-B-dev.yml
+    #        active: dev # http://localhost:5386/APP-B/dev http://localhost:5386/APP-B-dev.yml http://localhost:5386/APP-B/dev/master http://localhost:5386/master/APP-B-dev.yml
     cloud:
         config:
             # You can override all of them by setting spring.cloud.config.* (where * is name, profile or label).
@@ -23,22 +23,23 @@ spring:
             # https://cloud.spring.io/spring-cloud-static/spring-cloud-config/2.0.1.RELEASE/single/spring-cloud-config.html#_locating_remote_configuration_resources
             label: master # 配置仓库的分支
             profile: dev  # 环境 env
-            name: APP-B   # Name of application used to fetch remote properties.
+            # name: APP-B   # 注意此属性将覆盖spring.application.name，若两者不一致则会导致不能从config-server读取PropertySources
+            # name: apps-app-b   # Name of application used to fetch remote properties.
 
             discovery:  # 配置服务发现
                 enabled: true
                 serviceId: CONFIG-SERVER
 
-            uri: http://localhost:5386
+            uri: http://localhost:8888/
 
-            enabled: true
+            # enabled: true
+            # username: # HTTP Basic security
+            # password: # HTTP Basic security
+            # allow-override: true
+            # override-none: true
+            # override-system-properties: true
+            # fail-fast: false
 
-              # username: # HTTP Basic security
-              # password: # HTTP Basic security
-              # allow-override: true
-              # override-none: true
-              # override-system-properties: true
-              # fail-fast: false
             # server:
             # bootstrap: true
 
@@ -59,12 +60,12 @@ eureka:
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:
     level:
-        root: WARN
-        com.smart: DEBUG
-        static: WARN
+        root: TRACE
+        com.smart: TRACE
+        static: TRACE
         org.springframework:
-            autoconfigure: WARN
-            data: WARN
-            security: WARN
+            autoconfigure: TRACE
+            data: TRACE
+            security: TRACE
 
 # testName: kr.maom # 经测试放在 application.yml 不生效

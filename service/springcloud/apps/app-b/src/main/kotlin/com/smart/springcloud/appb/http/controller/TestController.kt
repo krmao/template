@@ -34,7 +34,7 @@ class TestController {
     }
 
     @Value("\${testName}")
-    private var testName: String? = null
+    var testName: String? = null
 
     @RequestMapping("/remoteConfig", method = arrayOf(RequestMethod.GET))
     fun remoteConfig(): String? {

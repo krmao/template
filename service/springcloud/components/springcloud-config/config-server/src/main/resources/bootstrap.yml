@@ -1,6 +1,6 @@
 # 运行好后访问 http://localhost:5386/apps-app-a.yml 测试
 server:
-    port: 5386
+    port: 8888
 
 spring:
     application:

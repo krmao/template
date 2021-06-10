@@ -1,5 +1,5 @@
 def finalName = 'spingcloud-config-server'
-def finalPort = "5386"
+def finalPort = "8888"
 
 apply plugin: "com.google.cloud.tools.jib"
 jib {
@@ -26,6 +26,6 @@ jib {
 version = rootProject.ext.spingcloud_config_server_version
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation("org.springframework.cloud:spring-cloud-config-server")
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
 }

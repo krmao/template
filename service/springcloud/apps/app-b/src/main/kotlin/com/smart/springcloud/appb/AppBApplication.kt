@@ -10,6 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 
 @SpringBootApplication
 @EnableEurekaClient // 开启 Eureka
@@ -23,6 +24,13 @@ class AppBApplication : SpringBootServletInitializer() {
     fun objectMapper(): ObjectMapper {
         return CXJsonUtil.JSON
     }
+
+    /*@Bean
+    fun placeholderConfigurer(): PropertySourcesPlaceholderConfigurer? {
+        val c = PropertySourcesPlaceholderConfigurer()
+        c.setIgnoreUnresolvablePlaceholders(true)
+        return c
+    }*/
 }
 
 fun main(args: Array<String>) {

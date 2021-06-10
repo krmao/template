@@ -3,25 +3,25 @@ import org.gradle.internal.logging.slf4j.OutputEventListenerBackedLogger
 buildscript {
     ext {
         springCloudVersion = "Hoxton.SR7"
-        springBootVersion = "2.3.3.RELEASE"
-        springBootDevToolsVersion = "2.3.3.RELEASE"
-        springBootStarterWebVersion = "2.3.3.RELEASE"
-        springBootStarterNetflixEurekaClientVersion = "2.2.4.RELEASE"
-        springBootStarterNetflixHystrixVersion = "2.2.4.RELEASE"
-        springBootStarterOpenFeignVersion = "2.2.4.RELEASE"
-        springSecurityOauth2Version = "2.3.3.RELEASE"
-        springCloudCommonsVersion = "2.2.4.RELEASE"
-        springBootManagementVersion = "1.0.10.RELEASE"
-        kotlinVersion = '1.3.72'
+        springBootVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootDevToolsVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterWebVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterNetflixEurekaClientVersion = "3.0.3"
+        springBootStarterNetflixHystrixVersion = "2.2.8.RELEASE"
+        springBootStarterOpenFeignVersion = "3.0.3"
+        springSecurityOauth2Version = "2.5.1.RELEASE"
+        springCloudCommonsVersion = "3.0.3"
+        springBootManagementVersion = "1.0.11.RELEASE"
+        kotlinVersion = '1.4.0'
     }
 
     repositories {
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url = "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         mavenCentral()
-        maven { url "http://maven.dds.com/nexus/content/groups/public" }
-        maven { url "https://jitpack.io" }
-        maven { url "https://repo1.maven.org/maven2/" }
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
+        maven { url = "https://jitpack.io"; allowInsecureProtocol = true }
+        maven { url = "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
+        maven { url = "https://plugins.gradle.org/m2/"; allowInsecureProtocol = true }
         jcenter()
     }
     dependencies {
@@ -63,14 +63,15 @@ subprojects {
         enabled = true
     }
     bootJar {
+        //noinspection GrDeprecatedAPIUsage
         classifier = 'boot'
     }
     repositories {
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         mavenCentral()
-        maven { url "http://maven.dds.com/nexus/content/groups/public" }
-        maven { url "https://jitpack.io" }
-        maven { url "https://repo1.maven.org/maven2/" }
+        maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
+        maven { url "https://jitpack.io"; allowInsecureProtocol = true }
+        maven { url "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
         jcenter()
     }
 

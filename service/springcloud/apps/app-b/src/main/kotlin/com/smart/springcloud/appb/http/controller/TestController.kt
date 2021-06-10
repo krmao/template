@@ -4,9 +4,11 @@ import com.smart.springcloud.appb.http.model.HKCode
 import com.smart.springcloud.appb.http.model.HKResponse
 import com.smart.springcloud.library.common.base.util.STEnvironmentUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 
@@ -29,5 +31,14 @@ class TestController {
     fun callA(): ResponseEntity<HKResponse<String>>? {
         STEnvironmentUtil.toString(environment)
         return serviceAFeignClient?.testAController()
+    }
+
+    @Value("\${testName}")
+    private var testName: String? = null
+
+    @RequestMapping("/remoteConfig", method = arrayOf(RequestMethod.GET))
+    fun remoteConfig(): String? {
+        System.out.println(testName)
+        return testName
     }
 }

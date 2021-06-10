@@ -1,4 +1,4 @@
-def finalName= 'spingcloud-app-b'
+def finalName = 'spingcloud-app-b'
 def finalPort = "5381"
 
 apply plugin: "com.google.cloud.tools.jib"
@@ -26,59 +26,27 @@ jib {
 version = rootProject.ext.app_b_version
 
 //region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
-processResources {
-    inputs.file("${rootProject.projectDir}/local.properties")
-    filesMatching("application.yml") {
-        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
-        logger.error("\n[processResources](filesMatched) ${it.path}\n")
-        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
-        expand(rootProject.properties)
-    }
-}
+//processResources {
+//    inputs.file("${rootProject.projectDir}/local.properties")
+//    filesMatching("application.yml") {
+//        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+//        logger.error("\n[processResources](filesMatched) ${it.path}\n")
+//        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
+//        expand(rootProject.properties)
+//    }
+//}
 //endregion
 
 dependencies {
     implementation project(":library-common")
-
-    // https://www.cnblogs.com/jpfss/p/12011661.html
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
-    // 不加版本号报错, 找不到这个包
-    // https://www.jianshu.com/p/37f4ef87efbf
-    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
-    implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
-
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
-
-    // implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-log4j2")
-
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config', version: '2.2.8.RELEASE'//version: '3.0.4'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.5.0'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
 
-    implementation "com.google.guava:guava:23.0"
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
 
-    //spring security
-    // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
-    implementation("org.springframework.boot:spring-boot-starter-security")
-
-    // java.net.BindException: Address already in use (Bind failed)
-    // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
-    // runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version: rootProject.ext.springBootDevToolsVersion
-
-    // testCompile("org.springframework.boot:spring-boot-starter-test")
-
-    // 这里切换是否发布
-    runtimeOnly("org.springframework.boot:spring-boot-starter-tomcat")
-
-    // http://www.jianshu.com/p/39f145c6eb29
-    implementation group: "io.springfox", name: "springfox-swagger2", version: rootProject.ext.springfoxSwaggerVersion
-    implementation group: "io.springfox", name: "springfox-swagger-ui", version: rootProject.ext.springfoxSwaggerVersion
-
-    // https://bbs.huaweicloud.com/blogs/102630
-    // https://mvnrepository.com/artifact/javax.validation/validation-api
-    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    // https://stackoverflow.com/a/16478509/4348530
+    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8'
 }

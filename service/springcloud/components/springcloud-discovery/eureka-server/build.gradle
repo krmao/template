@@ -24,5 +24,6 @@ jib {
 }
 
 dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
 }

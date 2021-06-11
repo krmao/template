@@ -26,6 +26,7 @@ jib {
 version = rootProject.ext.spingcloud_config_server_version
 
 dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
 }

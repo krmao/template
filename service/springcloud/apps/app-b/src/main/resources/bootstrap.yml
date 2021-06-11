@@ -60,12 +60,21 @@ eureka:
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:
     level:
-        root: TRACE
-        com.smart: TRACE
-        static: TRACE
-        org.springframework:
-            autoconfigure: TRACE
-            data: TRACE
-            security: TRACE
+        root: WARN
+        com.smart: WARN
+        static: WARN
+        org:
+            springframework:
+                boot:
+                    context:
+                        logging:
+                            ClasspathLoggingApplicationListener: INFO
+                    autoconfigure:
+                        logging: INFO
+                    env:
+                        PropertySourcesLoader: INFO
+                    data: WARN
+                    security: WARN
+                    web: WARN
 
 # testName: kr.maom # 经测试放在 application.yml 不生效

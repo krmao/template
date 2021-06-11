@@ -49,4 +49,6 @@ dependencies {
 
     // https://stackoverflow.com/a/16478509/4348530
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8'
+
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 }

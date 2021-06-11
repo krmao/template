@@ -49,9 +49,21 @@ allprojects {
             // exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
             exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
 
+            //region
+            // 不使用 spring-boot 自带的依赖管理, 自己处理
+            // https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
+            // https://plugins.gradle.org/plugin/io.spring.dependency-management
+            // 需要做如下处理
+            // exclude group: 'javax.servlet', module: 'servlet-api'
+            // exclude group: 'com.google.code.gson', module: 'gson'
+            // exclude group: 'org.springframework', module: 'spring-web'
+            // exclude group: 'org.springframework', module: 'spring-webmvc'
+            //endregion
+
+            // force not working https://stackoverflow.com/questions/56849729/forcing-deep-transitive-dependency-in-gradle#comment104203623_56849729
             resolutionStrategy {
-                cacheChangingModulesFor 0, "seconds"
-                cacheDynamicVersionsFor 0, "seconds"
+                cacheChangingModulesFor 30, "seconds"
+                cacheDynamicVersionsFor 30, "seconds"
 
                 force "com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.ext.jacksonModuleKotlinVersion"
                 force "com.fasterxml.jackson.module:jackson-module-parameter-names:$rootProject.ext.jacksonModuleKotlinVersion"
@@ -71,7 +83,16 @@ subprojects {
     apply plugin: 'eclipse'
     // apply plugin: 'war' // https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828
     apply plugin: 'org.springframework.boot'
+
+    //region 至关重要, 插件 dependency-management 帮助我们自动处理 spring-boot 与 spring-cloud 的版本兼容
+    // 将会导致 gradle resolutionStrategy force 不起作用
     apply plugin: 'io.spring.dependency-management'
+    dependencyManagement {
+        imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+        imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
+    }
+    //endregion
+
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     compileKotlin { kotlinOptions.jvmTarget = "1.8" }
@@ -90,17 +111,12 @@ subprojects {
         maven { url "https://jitpack.io"; allowInsecureProtocol = true }
         maven { url "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
     }
-
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect", "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("org.springframework:spring-test", "junit:junit:4.12")
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
-    }
-    dependencyManagement {
-        imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
-        imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
     }
 }
 

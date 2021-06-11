@@ -7,5 +7,4 @@ apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
 dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: rootProject.ext.springBootStarterNetflixZuulVersion
-
 }

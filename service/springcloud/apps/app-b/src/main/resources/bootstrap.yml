@@ -30,7 +30,7 @@ spring:
                 enabled: true
                 serviceId: CONFIG-SERVER
 
-            uri: http://localhost:8888/
+            # uri: http://localhost:8888/
 
             # enabled: true
             # username: # HTTP Basic security

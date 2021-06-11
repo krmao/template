@@ -1,4 +1,5 @@
 dependencies {
     compileOnly group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
     compileOnly group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: rootProject.ext.jacksonModuleKotlinVersion
+    compileOnly group: 'org.springframework', name: 'spring-test', version: '5.3.8'
 }

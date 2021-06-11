@@ -1,0 +1,21 @@
+apply plugin: "com.google.cloud.tools.jib"
+jib {
+    from {
+        image = 'java:8'
+    }
+    to {
+        image = "docker.io/krmao/${finalName}"  // 上传后在 https://hub.docker.com/repositories 中查看
+        auth {
+            username = rootProject.ext.docker_io_user
+            password = rootProject.ext.docker_io_password
+        }
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        jvmFlags = ['-Xms512m', '-Xdebug', '-Dfile.encoding=utf-8', '-Duser.timezone=Asia/Shanghai']
+        ports = [finalPort]
+    }
+    dockerClient {
+        executable = "/usr/local/bin/docker"
+    }
+}

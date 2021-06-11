@@ -16,18 +16,17 @@ buildscript {
         springCloudCommonsVersion = "3.0.3"
         springCloudConfigVersion = "2.2.4.RELEASE"
         springBootManagementVersion = "1.0.11.RELEASE"
-        jacksonModuleKotlinVersion = '2.9.0'
-        kotlinVersion = '1.5.0'
+        jacksonModuleKotlinVersion = '2.10.2' // https://github.com/FasterXML/jackson-module-kotlin/issues/133#issuecomment-371159421
+        kotlinVersion = '1.5.10'
     }
 
     repositories {
-        maven { url = "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         mavenCentral()
+        maven { url = "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
         maven { url = "https://jitpack.io"; allowInsecureProtocol = true }
         maven { url = "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
         maven { url = "https://plugins.gradle.org/m2/"; allowInsecureProtocol = true }
-        // jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${rootProject.ext.springBootVersion}")
@@ -55,9 +54,11 @@ allprojects {
                 cacheDynamicVersionsFor 0, "seconds"
 
                 force "com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.ext.jacksonModuleKotlinVersion"
-                force "com.fasterxml.jackson.core:jackson-core:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.module:jackson-module-parameter-names:$rootProject.ext.jacksonModuleKotlinVersion"
                 force "com.fasterxml.jackson.core:jackson-databind:$rootProject.ext.jacksonModuleKotlinVersion"
                 force "com.fasterxml.jackson.core:jackson-annotations:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$rootProject.ext.jacksonModuleKotlinVersion"
             }
         }
     }
@@ -83,23 +84,16 @@ subprojects {
         classifier = 'boot'
     }
     repositories {
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         mavenCentral()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
         maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
         maven { url "https://jitpack.io"; allowInsecureProtocol = true }
         maven { url "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
-        jcenter()
     }
 
     dependencies {
-        implementation(
-            "org.jetbrains.kotlin:kotlin-reflect",
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-        )
-        implementation(
-            "org.springframework:spring-test",
-            "junit:junit:4.12"
-        )
+        implementation("org.jetbrains.kotlin:kotlin-reflect", "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        implementation("org.springframework:spring-test", "junit:junit:4.12")
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }

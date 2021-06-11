@@ -82,7 +82,7 @@ dependencies {
     implementation group: "io.springfox", name: "springfox-swagger2", version: rootProject.ext.springfoxSwaggerVersion
     implementation group: "io.springfox", name: "springfox-swagger-ui", version: rootProject.ext.springfoxSwaggerVersion
 
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
+    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: rootProject.ext.jacksonModuleKotlinVersion
 
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'

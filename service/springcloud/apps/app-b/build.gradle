@@ -39,16 +39,13 @@ version = rootProject.ext.app_b_version
 
 dependencies {
     implementation project(":library-common")
+
+    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8' // https://stackoverflow.com/a/16478509/4348530
+
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config', version: '2.2.8.RELEASE'//version: '3.0.4'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.5.0'
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
-
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config', version: rootProject.ext.springCloudConfigVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
 
-    // https://stackoverflow.com/a/16478509/4348530
-    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8'
-
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: rootProject.ext.jacksonModuleKotlinVersion
 }

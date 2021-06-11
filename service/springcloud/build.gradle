@@ -9,10 +9,13 @@ buildscript {
         springBootStarterNetflixEurekaClientVersion = "3.0.3"
         springBootStarterNetflixHystrixVersion = "2.2.8.RELEASE"
         springBootStarterOpenFeignVersion = "3.0.3"
+        springBootStarterLog4j2Version = "2.5.0"
         springSecurityOauth2Version = "2.5.1.RELEASE"
         springCloudCommonsVersion = "3.0.3"
+        springCloudConfigVersion = "2.2.4.RELEASE"
         springBootManagementVersion = "1.0.11.RELEASE"
-        kotlinVersion = '1.4.0'
+        jacksonModuleKotlinVersion = '2.9.0'
+        kotlinVersion = '1.5.0'
     }
 
     repositories {
@@ -22,7 +25,7 @@ buildscript {
         maven { url = "https://jitpack.io"; allowInsecureProtocol = true }
         maven { url = "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
         maven { url = "https://plugins.gradle.org/m2/"; allowInsecureProtocol = true }
-        jcenter()
+        // jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${rootProject.ext.springBootVersion}")
@@ -42,7 +45,18 @@ allprojects {
         // all*.exclude module: "spring-boot-starter-logging" 不起作用
         all {
             // https://stackoverflow.com/questions/59629214/caused-by-org-apache-logging-log4j-loggingexception-log4j-slf4j-impl-cannot-be
-            exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+            // exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+            exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+
+            resolutionStrategy {
+                cacheChangingModulesFor 0, "seconds"
+                cacheDynamicVersionsFor 0, "seconds"
+
+                force "com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.core:jackson-core:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.core:jackson-databind:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.core:jackson-annotations:$rootProject.ext.jacksonModuleKotlinVersion"
+            }
         }
     }
 }

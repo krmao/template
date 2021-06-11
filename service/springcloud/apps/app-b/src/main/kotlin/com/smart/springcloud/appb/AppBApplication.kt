@@ -2,15 +2,13 @@ package com.smart.springcloud.appb
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smart.springcloud.appb.base.util.CXJsonUtil
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 
 @SpringBootApplication
 @EnableEurekaClient // 开启 Eureka
@@ -34,7 +32,7 @@ class AppBApplication : SpringBootServletInitializer() {
 }
 
 fun main(args: Array<String>) {
-    val logger: Logger = LogManager.getLogger(AppBApplication::class.java.name)
+    val logger: org.slf4j.Logger = LoggerFactory.getLogger(AppBApplication::class.java.name)
     logger.error("🔵▶️ >>>>>>>>>>==============================>>>>>>>>>>️")
     logger.error("🔵▶️ 入口第一步️")
     logger.error("🔵▶️ a. 创建/初始化/配置并运行应用程序 new SpringApplication('com.smart.springcloud.appb.CXApplication').run()")

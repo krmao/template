@@ -1,9 +1,6 @@
 package com.smart.springcloud.appa.base.config.config
 
 import com.smart.springcloud.appa.base.config.security.auth.token.jwt.JWTConfig
-import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.core.config.Configurator
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
@@ -20,22 +17,11 @@ object CXConfigProperties {
 
     var jwt: JWTConfig = JWTConfig()
 
-    var logging: LoggingConfig = LoggingConfig()
-        set(value) {
-            field = value
-            Configurator.setAllLevels(LogManager.getRootLogger().name, Level.valueOf(value.level.root))
-        }
-
     override fun toString(): String {
         return """
             --
             jwt:$jwt
-            logging:$logging
             --
             """
     }
-
-    data class LoggingConfig(val level: LoggingLevelConfig = LoggingLevelConfig())
-
-    data class LoggingLevelConfig(val root: String = "WARN")
 }

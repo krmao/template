@@ -3,8 +3,22 @@ debug: true
 
 server:
     port: 5381 # http://localhost:5381/app-b/test/remoteConfig http://localhost:5386/apps-app-b-dev.yml
-    servlet:
-        context-path: /app-b
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+# 自定义信息
+info:
+    author: krmao
+# 通过下面的配置启用所有的监控端点，默认情况下，这些端点是禁用的；
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+# 配置 actuator end
+#======================================================================
+
 spring:
     application:
         name: APP-B
@@ -42,6 +56,22 @@ spring:
 
             # server:
             # bootstrap: true
+    boot:
+        admin:
+            client:
+                url: http://localhost:5385
+#                # 配置连接到监测管理平台的Security安全密码
+#                username: admin
+#                password: admin
+#                instance:
+#                    metadata:
+#                        # 配置发送到SBA Server的SBA Client的端点安全密码
+#                        user.name: ${spring.security.user.name}
+#                        user.password: ${spring.security.user.password}
+#        security:
+#            user:
+#                name: root
+#                password: root
 
 eureka:
     client:
@@ -60,9 +90,9 @@ eureka:
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:
     level:
-        root: WARN
-        com.smart: WARN
-        static: WARN
+        root: INFO
+        com.smart: INFO
+        static: INFO
         org:
             springframework:
                 boot:
@@ -73,8 +103,8 @@ logging:
                         logging: INFO
                     env:
                         PropertySourcesLoader: INFO
-                    data: WARN
-                    security: WARN
-                    web: WARN
+                    data: INFO
+                    security: INFO
+                    web: INFO
 
 # testName: kr.maom # 经测试放在 application.yml 不生效

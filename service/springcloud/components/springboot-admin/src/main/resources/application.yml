@@ -1,0 +1,21 @@
+server:
+    port: 5385
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://10.32.33.15:5388/eureka
+    instance:
+        hostname: ${spring.cloud.client.ip-address}
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        leaseRenewalIntervalInSeconds: 15
+
+spring:
+    application:
+        name: ADMIN-SERVER
+    boot:
+        admin:
+            context-path: /admin # 务必与 server.servlet.context-path 不一样, 不然总是报错
+            ui:
+                title: "Admin SpringBoot Apps 管理中心"

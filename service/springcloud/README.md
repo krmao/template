@@ -177,3 +177,4 @@ docker-compose ps
   > <br/>
   > Because it is IDEA self spring-boot **run configuration** not use **gradle bootRun**
     * different [https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun](https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun)
+    * 现在莫名其妙又好了, 没准试试删除多余的 idea 老版本, 这是好 preference -> gradle 里面的 jdk, 重启电脑试试

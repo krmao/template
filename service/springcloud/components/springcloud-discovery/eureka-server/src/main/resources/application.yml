@@ -5,7 +5,7 @@ eureka:
     client:
         service-url:
             # 配置 eureka 服务器地址
-            defaultZone: http://10.32.33.21:5388/eureka
+            defaultZone: http://10.32.33.15:5388/eureka
         # 是否需要将自己注册到注册中心, 不需要, 设置为 false
         register-with-eureka: false
         # 是否需要搜索服务信息, 由于自己就是注册中心, 设置为 false

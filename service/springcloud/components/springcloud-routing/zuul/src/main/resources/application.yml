@@ -7,7 +7,7 @@ eureka:
     client:
         service-url:
             # 配置 eureka 服务器地址
-            defaultZone: http://10.32.33.21:5388/eureka
+            defaultZone: http://10.32.33.15:5388/eureka
     instance:
         hostname: ${spring.cloud.client.ip-address}
         # 使用ip地址注册到注册中心

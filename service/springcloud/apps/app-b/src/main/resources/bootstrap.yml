@@ -47,7 +47,7 @@ eureka:
     client:
         service-url:
             # eureka-server address
-            defaultZone: http://10.32.33.21:5388/eureka
+            defaultZone: http://10.32.33.15:5388/eureka
         register-with-eureka: true
         fetch-registry: true
     instance:

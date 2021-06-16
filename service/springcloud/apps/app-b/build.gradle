@@ -22,7 +22,6 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.8' // https://stackoverflow.com/a/16478509/4348530
 
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
-    implementation group: "org.springframework.boot", name: "spring-boot-starter-actuator", version: rootProject.ext.springBootStarterActuatorVersion
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config', version: rootProject.ext.springCloudConfigVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion

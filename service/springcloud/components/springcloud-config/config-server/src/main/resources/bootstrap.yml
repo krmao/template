@@ -45,7 +45,13 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-config-server              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-config-server
+
     instance:
+        initial-status: UP
         prefer-ip-address: true
         hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}

@@ -15,7 +15,7 @@ spring:
 # 配置 actuator start https://stackoverflow.com/a/24868636/4348530
 #======================================================================
 info:
-    application-name: CONFIG-SERVER
+    application-name: ADMIN-SERVER
 management:
     endpoints:
         web:
@@ -38,7 +38,13 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-admin-server              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-admin-server
+
     instance:
+        initial-status: UP
         prefer-ip-address: true
         hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}

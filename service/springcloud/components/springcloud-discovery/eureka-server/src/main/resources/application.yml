@@ -24,17 +24,24 @@ management:
 #======================================================================
 #======================================================================
 # 配置 eureka start
+# https://www.sakuratears.top/blog/Eureka%E8%AF%A6%E8%A7%A3.html
 #======================================================================
 eureka:
     client:
         healthcheck:
             enabled: true                          # 开启健康检查（依赖spring-boot-starter-actuator）
-        service-url:
+        serviceUrl:
             defaultZone: http://10.32.33.15:5388/eureka
-        register-with-eureka: true                 # 是否将自己注册到 Eureka Server
+        register-with-eureka: false                # 是否将自己注册到 Eureka Server, 不要注册自己到自己 https://cloud.spring.io/spring-cloud-static/spring-cloud.html#_peer_awareness
         fetch-registry: false                      # 是否从 Eureka Server 获取注册的服务信息
         registry-fetch-interval-seconds: 15        # 客户端每隔指定时间向服务端拉取/更新服务地址清单
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-erureka-server              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-erureka-server
+
     instance:
+        initial-status: UP
         prefer-ip-address: true
         hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}

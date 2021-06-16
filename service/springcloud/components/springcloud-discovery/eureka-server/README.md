@@ -49,6 +49,9 @@ kill -9 $(lsof -nP -iTCP:5388 |grep LISTEN|awk '{print $2;}')
 kill -9 $(sudo lsof -nP -iTCP -sTCP:LISTEN | grep java | awk '{print $2}')
 ```
 
+### 接口
+* http://localhost:5388/eureka/apps
+
 ### 参考
 
 * https://www.jianshu.com/p/9734ba34ec4b

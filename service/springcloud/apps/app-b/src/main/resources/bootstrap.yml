@@ -2,7 +2,7 @@
 debug: true
 
 server:
-    port: 5381 # http://localhost:5381/app-b/test/remoteConfig http://localhost:5386/apps-app-b-dev.yml
+    port: 5384 # http://localhost:5381/app-b/test/remoteConfig http://localhost:5386/apps-app-b-dev.yml
     servlet:
         context-path: /app-b
 
@@ -43,23 +43,6 @@ spring:
 
             # server:
             # bootstrap: true
-    boot:
-        admin:
-            client:
-                url: http://localhost:5385
-#                # 配置连接到监测管理平台的Security安全密码
-#                username: admin
-#                password: admin
-#                instance:
-#                    metadata:
-#                        # 配置发送到SBA Server的SBA Client的端点安全密码
-#                        user.name: ${spring.security.user.name}
-#                        user.password: ${spring.security.user.password}
-#        security:
-#            user:
-#                name: root
-#                password: root
-
 
 #======================================================================
 # 配置 actuator start https://stackoverflow.com/a/24868636/4348530
@@ -88,7 +71,13 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-app-b              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-app-b
+
     instance:
+        initial-status: UP
         prefer-ip-address: true
         hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}

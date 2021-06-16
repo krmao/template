@@ -7,14 +7,12 @@ ext.finalPort = "5380"
 apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
 
 //region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
-// https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/howto-properties-and-configuration.html
-// https://github.com/spring-projects/spring-boot/commit/c0c67f2593dbfd17aa304b43f4da3a3678fa58eb
+// 同时引用外部自定义属性与 spring 专属属性可能造成问题, processResources FAILED / Missing property / Could not copy file
+// https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.properties-and-configuration.expand-properties
+// https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
 processResources {
     inputs.file("${rootProject.projectDir}/local.properties")
     filesMatching("application.yml") {
-        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
-        logger.error("\n[processResources](filesMatched) ${it.path}\n")
-        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
         expand(rootProject.properties)
     }
 }
@@ -26,11 +24,7 @@ dependencies {
     // https://www.jianshu.com/p/5ad8317961b7
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-commons
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: rootProject.ext.springCloudCommonsVersion
-
-
     implementation project(":library-common")
-
-    // https://github.com/spring-projects/spring-boot/releases/tag/v1.5.8.RELEASE
 
     // https://www.cnblogs.com/jpfss/p/12011661.html
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
@@ -39,7 +33,6 @@ dependencies {
     // https://www.jianshu.com/p/37f4ef87efbf
     // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
     implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
-
 
     /*+--- org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.4.RELEASE
         |    +--- org.springframework.cloud:spring-cloud-netflix-hystrix:2.2.4.RELEASE
@@ -107,11 +100,13 @@ dependencies {
     // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    runtime("mysql:mysql-connector-java:8.0.21")
+    runtimeOnly("mysql:mysql-connector-java:8.0.21")
 
     // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
     // runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version: rootProject.ext.springBootDevToolsVersion
     // 这里切换是否发布
     // providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: rootProject.ext.springBootStarterAdminVersion
 }

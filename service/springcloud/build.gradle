@@ -2,6 +2,8 @@ import org.gradle.internal.logging.slf4j.OutputEventListenerBackedLogger
 
 buildscript {
     ext {
+        // spring cloud 与 spring boot 与 其他 依赖的第三方库 版本需要一一对应
+        // https://spring.io/projects/spring-cloud
         springCloudVersion = "Hoxton.SR7"
         springBootVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootDevToolsVersion = "2.2.4.RELEASE"// "2.5.0"
@@ -11,11 +13,10 @@ buildscript {
         springBootStarterNetflixEurekaServerVersion = "3.0.3"
         springBootStarterNetflixHystrixVersion = "2.2.8.RELEASE"
         springBootStarterNetflixZuulVersion = "2.2.8.RELEASE"
-        springBootStarterOpenFeignVersion = "3.0.3"
-        springBootStarterLog4j2Version = "2.5.0"
+        springBootStarterOpenFeignVersion = "2.2.4.RELEASE"
         springBootStarterAdminVersion = "2.2.4"
-        springSecurityOauth2Version = "2.5.1.RELEASE"
-        springCloudCommonsVersion = "3.0.3"
+        springSecurityOauth2Version = "2.2.4.RELEASE"
+        springCloudCommonsVersion = "2.2.4.RELEASE"
         springCloudConfigVersion = "2.2.4.RELEASE"
         springBootManagementVersion = "1.0.11.RELEASE"
         jacksonModuleKotlinVersion = '2.12.3' // https://github.com/FasterXML/jackson-module-kotlin/issues/133#issuecomment-371159421

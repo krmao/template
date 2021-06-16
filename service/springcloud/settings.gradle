@@ -4,7 +4,7 @@ rootProject.name = "springcloud"
 include(":library-common"); project(":library-common").projectDir = new File(settingsDir, "apps/libraries/library-common")
 
 // apps
-//include(":app-a"); project(":app-a").projectDir = new File(settingsDir, "apps/app-a")
+include(":app-a"); project(":app-a").projectDir = new File(settingsDir, "apps/app-a")
 include(":app-b"); project(":app-b").projectDir = new File(settingsDir, "apps/app-b")
 
 // components

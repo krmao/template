@@ -1,7 +1,14 @@
 # Chinese comments will call Caused by: org.yaml.snakeyaml.error.YAMLException: java.nio.charset.MalformedInputException: Input length = 2
 # error on Windows system, but well on Mac system
 
+# 同时引用外部自定义属性与 spring 专属属性可能造成问题
+# processResources FAILED
+# Missing property (spring) for Groovy template expansion
+# Could not copy file '../app-a/src/main/resources/application.yml' to '../app-a/build/resources/main/application.yml'.
 # https://stackoverflow.com/a/29194250/4348530
+# https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
+# 报错请看以上链接
+# 同时使用 自定义的扩展属性和 spring 自带的属性, 则 spring 自带的属性需要加转义 \${}
 debug: ${server_debug}
 
 server:
@@ -9,19 +16,56 @@ server:
     servlet:
         context-path: /app-a
 
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: APP-B
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
 eureka:
     client:
         service-url:
-            # eureka-server address
             defaultZone: http://10.32.33.15:5388/eureka
         register-with-eureka: true
         fetch-registry: true
+        registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-app-b              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-app-b
+
     instance:
-        hostname: \${spring.cloud.client.ip-address}
+        initial-status: UP
         prefer-ip-address: true
-        # https://www.jianshu.com/p/5ad8317961b7
-        # https://stackoverflow.com/a/29194250/4348530
+        hostname: \${spring.cloud.client.ip-address}
         instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${app_a_version}
+        lease-renewal-interval-in-seconds: 15
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: \${server.servlet.context-path}/actuator/health
+        status-page-url-path: \${server.servlet.context-path}/actuator/info
+        metadata-map:
+            management:
+                context-path: \${server.servlet.context-path}/actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================
 
 # eureka-client-a call eureka-client-b , config in eureka-client-a
 # https://www.cnblogs.com/zhainan-blog/p/11634621.html
@@ -158,12 +202,23 @@ mybatis:
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:
     level:
-        root: WARN
-        com.smart: DEBUG
-        static: WARN
-        org.springframework:
-            data: WARN
-            security: WARN
+        root: INFO
+        com.smart: INFO
+        static: INFO
+        org:
+            springframework:
+                boot:
+                    context:
+                        logging:
+                            ClasspathLoggingApplicationListener: INFO
+                    autoconfigure:
+                        logging: INFO
+                    env:
+                        PropertySourcesLoader: INFO
+                    data: INFO
+                    security: INFO
+                    web: INFO
+
 
 # JWT http://www.jianshu.com/p/6307c89fe3fa
 # https://stackoverflow.com/questions/27416327/configurationproperties-prefix-not-working

@@ -47,13 +47,12 @@ eureka:
             defaultZone: http://10.32.33.15:5388/eureka
         register-with-eureka: true
         fetch-registry: true
-        registry-fetch-interval-seconds: 5        # eureka client 间隔多久去拉取服务注册信息, 默认为30秒
+        registry-fetch-interval-seconds: 15
     instance:
         prefer-ip-address: true
         hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}
-        lease-renewal-interval-in-seconds: 5      # 心跳时间，即服务续约间隔时间（缺省为30s）
-        lease-expiration-duration-in-seconds: 10  # 发呆时间，即服务续约到期时间（缺省为90s）
+        lease-renewal-interval-in-seconds: 15
 
         # config with actuator start
         # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性

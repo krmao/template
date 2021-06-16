@@ -3,6 +3,8 @@ debug: true
 
 server:
     port: 5381 # http://localhost:5381/app-b/test/remoteConfig http://localhost:5386/apps-app-b-dev.yml
+    servlet:
+        context-path: /app-b
 
 #======================================================================
 # 配置 actuator start https://stackoverflow.com/a/24868636/4348530
@@ -40,7 +42,7 @@ spring:
             # name: APP-B   # 注意此属性将覆盖spring.application.name，若两者不一致则会导致不能从config-server读取PropertySources
             # name: apps-app-b   # Name of application used to fetch remote properties.
 
-            discovery:  # 配置服务发现
+            discovery: # 配置服务发现
                 enabled: true
                 serviceId: CONFIG-SERVER
 

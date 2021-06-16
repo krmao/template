@@ -3,20 +3,6 @@ server:
     servlet:
         context-path: /api-gateway
 
-eureka:
-    client:
-        service-url:
-            # 配置 eureka 服务器地址
-            defaultZone: http://10.32.33.15:5388/eureka
-    instance:
-        hostname: ${spring.cloud.client.ip-address}
-        # 使用ip地址注册到注册中心
-        prefer-ip-address: true
-        # https://www.jianshu.com/p/5ad8317961b7
-        # 注册中心列表中显示的状态参数, 对应 eureka-server 控制面板中的 Status 参数
-        # https://stackoverflow.com/a/29194250/4348530
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}
-
 spring:
     application:
         # 服务名称 - 服务之间使用名称进行通讯
@@ -33,3 +19,49 @@ zuul:
             path: /service-b/**
             # 这里写b服务的注册名字
             serviceId: APP-B
+
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: API-GATEWAY
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
+eureka:
+    client:
+        service-url:
+            defaultZone: http://10.32.33.15:5388/eureka
+        register-with-eureka: true
+        fetch-registry: true
+        registry-fetch-interval-seconds: 30
+    instance:
+        prefer-ip-address: true
+        hostname: ${spring.cloud.client.ip-address}
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}
+        lease-renewal-interval-in-seconds: 30
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: ${server.servlet.context-path}/actuator/health
+        status-page-url-path: ${server.servlet.context-path}/actuator/info
+        metadata-map:
+            management:
+                context-path: ${server.servlet.context-path}/actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================

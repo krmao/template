@@ -28,6 +28,6 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: rootProject.ext.springBootStarterOpenFeignVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
 
-    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.2.4'
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: rootProject.ext.springBootStarterAdminVersion
     implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: rootProject.ext.jacksonModuleKotlinVersion
 }

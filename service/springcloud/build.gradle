@@ -13,6 +13,7 @@ buildscript {
         springBootStarterNetflixZuulVersion = "2.2.8.RELEASE"
         springBootStarterOpenFeignVersion = "3.0.3"
         springBootStarterLog4j2Version = "2.5.0"
+        springBootStarterAdminVersion = "2.2.4"
         springSecurityOauth2Version = "2.5.1.RELEASE"
         springCloudCommonsVersion = "3.0.3"
         springCloudConfigVersion = "2.2.4.RELEASE"

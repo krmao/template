@@ -6,21 +6,6 @@ server:
     servlet:
         context-path: /app-b
 
-#======================================================================
-# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
-#======================================================================
-# 自定义信息
-info:
-    author: krmao
-# 通过下面的配置启用所有的监控端点，默认情况下，这些端点是禁用的；
-management:
-    endpoints:
-        web:
-            exposure:
-                include: '*'
-# 配置 actuator end
-#======================================================================
-
 spring:
     application:
         name: APP-B
@@ -75,19 +60,51 @@ spring:
 #                name: root
 #                password: root
 
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: APP-B
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
 eureka:
     client:
         service-url:
-            # eureka-server address
             defaultZone: http://10.32.33.15:5388/eureka
         register-with-eureka: true
         fetch-registry: true
+        registry-fetch-interval-seconds: 30
     instance:
-        hostname: ${spring.cloud.client.ip-address}
         prefer-ip-address: true
-        # https://www.jianshu.com/p/5ad8317961b7
-        # https://stackoverflow.com/a/29194250/4348530
+        hostname: ${spring.cloud.client.ip-address}
         instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}
+        lease-renewal-interval-in-seconds: 30
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: ${server.servlet.context-path}/actuator/health
+        status-page-url-path: ${server.servlet.context-path}/actuator/info
+        metadata-map:
+            management:
+                context-path: ${server.servlet.context-path}/actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================
 
 # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging:

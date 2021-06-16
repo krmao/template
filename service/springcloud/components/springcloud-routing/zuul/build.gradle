@@ -5,6 +5,8 @@ ext.finalPort = "5389"
 apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
 
 dependencies {
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: rootProject.ext.springBootStarterNetflixZuulVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: "org.springframework.boot", name: "spring-boot-starter-actuator", version: rootProject.ext.springBootStarterActuatorVersion
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: rootProject.ext.springBootStarterAdminVersion
 }

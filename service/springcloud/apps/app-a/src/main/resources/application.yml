@@ -74,7 +74,7 @@ ribbon:
     ConnectTimeout: 5000
     eager-load:
         enabled: false
-        clients:  http://10.32.33.15:5388/eureka
+        clients: http://10.32.33.15:5388/eureka
         MaxTotalConnections: 5
         MaxConnectionsPerHost: 5
         maxAutoRetries: 2
@@ -122,7 +122,7 @@ feign:
     compression:
         request:
             enabled: true
-            mime-types: ["text/xml", "application/xml","application/json"]
+            mime-types: [ "text/xml", "application/xml","application/json" ]
         response:
             enabled: true
     client:
@@ -131,11 +131,6 @@ feign:
                 connectTimeout: 50
                 readTimeout: 50
                 loggerLevel: full
-
-security:
-    user:
-        name: root
-        password: root
 
 spring:
     main:
@@ -149,18 +144,23 @@ spring:
     jpa:
         hibernate:
             ddl-auto: none
-        show-sql: false
+        show-sql: true
+        generate-ddl: true
+        database-platform: org.hibernate.dialect.MySQLDialect
     datasource:
+        initialization-mode: always # https://stackoverflow.com/questions/49438517/why-spring-boot-2-0-application-does-not-run-schema-sql
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://${server_sql_ip}:${server_sql_port}/springboot?useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true
+        #url: jdbc:mysql://${server_sql_ip}:${server_sql_port}/springboot?createDatabaseIfNotExist=true&autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${server_sql_ip}:${server_sql_port}?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: ${server_sql_user}
         password: ${server_sql_password}
         schema: classpath:/sql/schema-mysql.sql
         data: classpath:/sql/data-mysql.sql
+        sql-script-encoding: utf-8
 
         druid:
-            filters: stat,wall,log4j2
+            filters: stat,wall #,log4j2
             maxActive: 20
             initialSize: 0
             maxWait: 60000
@@ -188,10 +188,14 @@ spring:
         default-property-inclusion: non_null
         date-format: yyyy-MM-dd HH:mm:ss
         time-zone: GMT+8
-    http:
+    servlet:
         multipart:
             max-file-size: 10MB
             max-request-size: 10MB
+    security:
+        user:
+            name: root
+            password: root
 
 mybatis:
     configuration:

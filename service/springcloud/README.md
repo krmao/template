@@ -141,6 +141,27 @@ docker-compose ps
     # mysql> flush privileges;
     # Query OK, 0 rows affected (0.01 sec)
     ```
+   mac MySQL Server 启动无效
+
+51. mac 从系统偏好设置启动MySQL时，多次点击start无效
+
+> 开启
+
+```
+sudo chown -RL root:mysql /usr/local/mysql
+sudo chown -RL mysql:mysql /usr/local/mysql/data
+sudo /usr/local/mysql/support-files/mysql.server start
+sudo mysqld_safe
+```
+
+> 关闭
+
+```
+sudo /usr/local/mysql/support-files/mysql.server stop
+```
+
+> 管理工具 http://www.pc6.com/mac/111878.html
+
 6. yml 配置文件不能设置 中文注释, 在 windows 操作系统解析报错
 7. 关于负载均衡
     1. 物理负载均衡 nginx

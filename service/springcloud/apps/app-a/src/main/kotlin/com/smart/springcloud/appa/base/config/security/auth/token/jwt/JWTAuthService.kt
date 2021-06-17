@@ -40,7 +40,7 @@ class JWTAuthService {
     private var userDetailsService: CXUserDetailService? = null
 
     @Suppress("SpringKotlinAutowiring")
-    @Autowired
+    @Autowired(required = false)
     private var userMapper: UserMapper? = null
 
     fun register(userToAdd: UserModel?): Int? {

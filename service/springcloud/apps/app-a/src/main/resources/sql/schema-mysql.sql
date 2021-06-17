@@ -1,4 +1,10 @@
-DROP TABLE IF EXISTS springboot.user;
+CREATE DATABASE IF NOT EXISTS springboot DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+SHOW CREATE DATABASE springboot;
+
+USE springboot;
+
+# DROP TABLE IF EXISTS springboot.user;
 
 CREATE TABLE IF NOT EXISTS springboot.user
 (
@@ -29,7 +35,8 @@ CREATE TABLE IF NOT EXISTS springboot.user
     COMMENT '上一次密码修改时间',
     status                INT DEFAULT '0'                                                    NULL
     COMMENT '当前状态'
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+SHOW TABLES;
 # ================================================================================
 # ================================================================================

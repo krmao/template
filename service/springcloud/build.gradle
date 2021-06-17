@@ -11,6 +11,7 @@ buildscript {
         springBootStarterActuatorVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootStarterNetflixEurekaClientVersion = "3.0.3"
         springBootStarterNetflixEurekaServerVersion = "3.0.3"
+        springBootStarterNetflixRibbonVersion = "2.2.4.RELEASE"
         springBootStarterNetflixHystrixVersion = "2.2.8.RELEASE"
         springBootStarterNetflixZuulVersion = "2.2.8.RELEASE"
         springBootStarterOpenFeignVersion = "2.2.4.RELEASE"

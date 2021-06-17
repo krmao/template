@@ -25,7 +25,8 @@ interface UserMapper {
     @Select("select * from user where userName = #{userName}")
     fun findByUserName(userName: String?): UserModel?
 
-    @Insert(""" INSERT INTO cloud_housekeeper.user
+    @Insert(
+        """ INSERT INTO cloud_housekeeper.user
                     (userName, roleId, password, email, birthday, phone, identityNo, sex, image, joinTime, loginTime)
                 VALUES (
                     #{userName},
@@ -40,7 +41,8 @@ interface UserMapper {
                     #{joinTime},
                     #{loginTime}
                 )
-            """)
+            """
+    )
     @Options(useGeneratedKeys = true, keyProperty = "userId", keyColumn = "userId")
     fun createUser(userModel: UserModel?): Int
 
@@ -53,7 +55,8 @@ interface UserMapper {
     /**
      * @return 受影响的行数
      */
-    @Update(""" UPDATE cloud_housekeeper.user
+    @Update(
+        """ UPDATE cloud_housekeeper.user
                     SET
                         userName = #{userName},
                         roleId = #{roleId},
@@ -69,7 +72,8 @@ interface UserMapper {
                         status = #{status}
                     WHERE
                         userId = #{userId}
-            """)
+            """
+    )
     fun updateUser(userModel: UserModel?): Int
 }
 

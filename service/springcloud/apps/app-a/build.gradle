@@ -46,8 +46,8 @@ dependencies {
     // 依赖中已经集成了 eureka-client/hystrix/ribbon/ribbon-eureka
     // Eureka 实现了服务的注册发现
     // Eureka 只是维护了服务生产者、注册中心、服务消费者三者之间的关系
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: rootProject.ext.springBootStarterNetflixRibbonVersion
 
     // https://www.cnblogs.com/amunote/p/10428594.html
     // 真正的服务消费者调用服务生产者提供的数据是通过 Spring Cloud Ribbon 来实现的。

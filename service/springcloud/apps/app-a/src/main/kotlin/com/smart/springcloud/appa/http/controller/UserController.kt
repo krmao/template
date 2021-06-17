@@ -29,12 +29,11 @@ class UserController(val userMapper: UserMapper) {
         val count = (request.data?.pageSize ?: 1).let { if (it > 0) it else CXConfig.DEFAULT_PAGE_SIZE }
         val start = ((pageIndex - 1) * count).let { if (it >= 0) it else 0 }
 
-        logger.error("pageIndex:" + pageIndex)
-        logger.error("start:" + start)
-        logger.error("count:" + count)
+        logger.error("pageIndex:$pageIndex")
+        logger.error("start:$start")
+        logger.error("count:$count")
 
-        return HKResponse(userMapper.findAllUsersByRoleId(roleId = request.data?.roleId
-            ?: CXConfig.DEFAULT_SQL_ID, start = start, count = count))
+        return HKResponse(userMapper.findAllUsersByRoleId(roleId = request.data?.roleId ?: CXConfig.DEFAULT_SQL_ID, start = start, count = count))
     }
 
     @ApiOperation("更新用户", notes = "返回 受影响的行数")

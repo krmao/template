@@ -223,9 +223,9 @@ logging:
                     security: INFO
                     web: INFO
 
-
 # JWT http://www.jianshu.com/p/6307c89fe3fa
 # https://stackoverflow.com/questions/27416327/configurationproperties-prefix-not-working
+# CXConfigProperties.kt 自定义属性
 jwt:
     secret: ${server_jwt_secret}
     tokenPrefix: "Bearer "

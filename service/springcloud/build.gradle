@@ -139,8 +139,17 @@ subprojects {
     }
     //endregion
 
+    apply plugin: 'kotlin-kapt' // https://kotlinlang.org/docs/kapt.html#using-in-gradle
+    kapt {
+        useBuildCache = false
+    }
+
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-reflect", "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+        kapt "org.springframework.boot:spring-boot-configuration-processor:${rootProject.ext.springBootConfigurationProcessorVersion}"
+
         implementation("org.springframework:spring-test", "junit:junit:4.12")
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

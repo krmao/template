@@ -43,8 +43,8 @@ eureka:
     instance:
         initial-status: UP
         prefer-ip-address: true
-        hostname: ${spring.cloud.client.ip-address}
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}
         lease-renewal-interval-in-seconds: 15      # 客户端每隔指定时间向服务端发送心跳, 更新自己的状态
         lease-expiration-duration-in-seconds: 30   # 指定时间内没有收到某个实例的心跳, 则注销该实例(缺省为90s)
 

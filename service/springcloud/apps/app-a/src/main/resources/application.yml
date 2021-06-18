@@ -1,14 +1,9 @@
 # Chinese comments will call Caused by: org.yaml.snakeyaml.error.YAMLException: java.nio.charset.MalformedInputException: Input length = 2
 # error on Windows system, but well on Mac system
 
-# 同时引用外部自定义属性与 spring 专属属性可能造成问题
-# processResources FAILED
-# Missing property (spring) for Groovy template expansion
-# Could not copy file '../app-a/src/main/resources/application.yml' to '../app-a/build/resources/main/application.yml'.
-# https://stackoverflow.com/a/29194250/4348530
-# https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
-# 报错请看以上链接
 # 同时使用 自定义的扩展属性和 spring 自带的属性, 则 spring 自带的属性需要加转义 \${}
+# processResources FAILED / Missing property (spring) for Groovy template expansion / Could not copy file '../app-a/src/main/resources/application.yml' to '../app-a/build/resources/main/application.yml'.
+# https://stackoverflow.com/a/29194250/4348530 / https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
 debug: ${server_debug}
 
 server:
@@ -20,7 +15,7 @@ server:
 # 配置 actuator start https://stackoverflow.com/a/24868636/4348530
 #======================================================================
 info:
-    application-name: APP-B
+    application-name: APP-A
 management:
     endpoints:
         web:
@@ -79,11 +74,16 @@ ribbon:
         MaxConnectionsPerHost: 5
         maxAutoRetries: 2
         maxAutoRetriesNextServer: 2
-        okToRetryOnAllOperations: true
+        okToRetryOnAllOperations: trueNameOfTheConfigClass
         retryableStatusCodes: 500,404,502
         ###eureka-provider:
         ### ribbon:
         ###   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    http:
+        client:
+            enabled: true
+    eureka:
+        enabled: true
 
 hystrix:
     command:

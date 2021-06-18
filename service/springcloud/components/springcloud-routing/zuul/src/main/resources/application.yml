@@ -56,17 +56,17 @@ eureka:
     instance:
         initial-status: UP
         prefer-ip-address: true
-        hostname: ${spring.cloud.client.ip-address}
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}${server.servlet.context-path}
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}
         lease-renewal-interval-in-seconds: 15
 
         # config with actuator start
         # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
-        health-check-url-path: ${server.servlet.context-path}/actuator/health
-        status-page-url-path: ${server.servlet.context-path}/actuator/info
+        health-check-url-path: \${server.servlet.context-path}/actuator/health
+        status-page-url-path: \${server.servlet.context-path}/actuator/info
         metadata-map:
             management:
-                context-path: ${server.servlet.context-path}/actuator
+                context-path: \${server.servlet.context-path}/actuator
         # config with actuator end
 #======================================================================
 # 配置 eureka end

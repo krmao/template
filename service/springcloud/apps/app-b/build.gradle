@@ -4,18 +4,6 @@ ext.finalName = 'spingcloud-app-b'
 ext.finalPort = "5384"
 apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
 
-//region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
-//processResources {
-//    inputs.file("${rootProject.projectDir}/local.properties")
-//    filesMatching("application.yml") {
-//        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
-//        logger.error("\n[processResources](filesMatched) ${it.path}\n")
-//        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
-//        expand(rootProject.properties)
-//    }
-//}
-//endregion
-
 dependencies {
     implementation project(":library-common")
 

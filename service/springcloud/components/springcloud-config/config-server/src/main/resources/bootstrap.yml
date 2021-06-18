@@ -53,8 +53,8 @@ eureka:
     instance:
         initial-status: UP
         prefer-ip-address: true
-        hostname: ${spring.cloud.client.ip-address}
-        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}
         lease-renewal-interval-in-seconds: 15
 
         # config with actuator start

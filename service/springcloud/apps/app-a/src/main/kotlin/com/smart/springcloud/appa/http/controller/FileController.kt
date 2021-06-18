@@ -30,7 +30,7 @@ class FileController() {
         val filePathMap = mutableMapOf<String, String>()
 
         for (file in files) {
-            val oldName = file.originalFilename
+            val oldName = file.originalFilename ?: ""
             val newName = CXChecksumUtil.genMD5Checksum(oldName + "-" + System.currentTimeMillis())
             CXFileUtil.copy(file.inputStream, File(CXConfig.DEFAULT_FILES_DIR, newName))
             filePathMap[oldName] = newName

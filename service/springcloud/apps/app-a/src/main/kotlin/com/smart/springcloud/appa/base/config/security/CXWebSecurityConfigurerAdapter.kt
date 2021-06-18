@@ -74,8 +74,10 @@ class CXWebSecurityConfigurerAdapter : WebSecurityConfigurerAdapter() {
                 "/**/*.css",
                 "/**/*.js"
             ).permitAll()
+            .antMatchers("/").permitAll()
             .antMatchers("/user", "/api/**").permitAll()
             .antMatchers("/api", "/api/**").permitAll()
+            .antMatchers("/actuator/**").permitAll()
             .antMatchers("/developer/**").permitAll()
             .antMatchers("/file/upload").permitAll() //TODO 正式环境删除
             .antMatchers("/test/**").permitAll() //TODO 正式环境删除

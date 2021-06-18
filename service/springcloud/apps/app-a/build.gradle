@@ -6,32 +6,16 @@ ext.finalName = 'spingcloud-app-a'
 ext.finalPort = "5380"
 apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
 
-//region 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
-// 同时引用外部自定义属性与 spring 专属属性可能造成问题, processResources FAILED / Missing property / Could not copy file
-// https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.properties-and-configuration.expand-properties
-// https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
-processResources {
-    inputs.file("${rootProject.projectDir}/local.properties")
-    filesMatching("application.yml") {
-        expand(rootProject.properties)
-    }
-}
-//endregion
-
 dependencies {
-
-    // 解决 Eureka instance-id 中找不到 ${spring.cloud.client.ip-address} 属性的问题
-    // https://www.jianshu.com/p/5ad8317961b7
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-commons
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: rootProject.ext.springCloudCommonsVersion
     implementation project(":library-common")
 
+    // 解决 Eureka instance-id 中找不到 ${spring.cloud.client.ip-address} 属性的问题 // https://www.jianshu.com/p/5ad8317961b7
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-commons', version: rootProject.ext.springCloudCommonsVersion
+
     // https://www.cnblogs.com/jpfss/p/12011661.html
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
-    // 不加版本号报错, 找不到这个包
-    // https://www.jianshu.com/p/37f4ef87efbf
-    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+
+    // 不加版本号报错, 找不到这个包 // https://www.jianshu.com/p/37f4ef87efbf
     implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
 
     /*+--- org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.4.RELEASE
@@ -43,9 +27,7 @@ dependencies {
         |    +--- org.springframework.cloud:spring-cloud-starter-netflix-ribbon:2.2.4.RELEASE
         |    +--- org.springframework.cloud:spring-cloud-starter-loadbalancer:2.2.4.RELEASE
         |    +--- com.netflix.ribbon:ribbon-eureka:2.3.0*/
-    // 依赖中已经集成了 eureka-client/hystrix/ribbon/ribbon-eureka
-    // Eureka 实现了服务的注册发现
-    // Eureka 只是维护了服务生产者、注册中心、服务消费者三者之间的关系
+    // 依赖中已经集成了 eureka-client/hystrix/ribbon/ribbon-eureka // Eureka 实现了服务的注册发现 // Eureka 只是维护了服务生产者、注册中心、服务消费者三者之间的关系
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: rootProject.ext.springBootStarterNetflixRibbonVersion
 

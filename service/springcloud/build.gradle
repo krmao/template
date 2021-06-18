@@ -16,6 +16,7 @@ buildscript {
         springBootStarterNetflixZuulVersion = "2.2.8.RELEASE"
         springBootStarterOpenFeignVersion = "2.2.4.RELEASE"
         springBootStarterAdminVersion = "2.2.4"
+        springBootConfigurationProcessorVersion = "2.2.4.RELEASE"
         springSecurityOauth2Version = "2.2.4.RELEASE"
         springCloudCommonsVersion = "2.2.4.RELEASE"
         springCloudConfigVersion = "2.2.4.RELEASE"
@@ -97,6 +98,15 @@ subprojects {
     }
     //endregion
 
+    apply plugin: 'idea'
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = compileJava.destinationDir
+            testOutputDir = compileTestJava.destinationDir
+        }
+    }
+
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     compileKotlin { kotlinOptions.jvmTarget = "1.8" }
@@ -115,6 +125,20 @@ subprojects {
         maven { url "https://jitpack.io"; allowInsecureProtocol = true }
         maven { url "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
     }
+
+    //region
+    // 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
+    // 同时引用外部自定义属性与 spring 专属属性可能造成问题, processResources FAILED / Missing property / Could not copy file
+    // https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.properties-and-configuration.expand-properties
+    // https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
+    processResources {
+        inputs.file("${rootProject.projectDir}/local.properties")
+        filesMatching(["application.yml", "bootstrap.yml"]) {
+            expand(rootProject.properties)
+        }
+    }
+    //endregion
+
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect", "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("org.springframework:spring-test", "junit:junit:4.12")

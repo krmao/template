@@ -27,11 +27,11 @@ import org.springframework.util.StringUtils
 class JWTAuthService {
     private val logger: Logger = LogManager.getLogger(JWTAuthService::class.java.name)
 
-    @Autowired
+    @Autowired(required = false)
     private var authenticationManager: AuthenticationManager? = null
 
     @Suppress("PrivatePropertyName", "SpringKotlinAutowiring")
-    @Autowired
+    @Autowired(required = false)
     @Value("\${jwt.tokenPrefix}")
     private var token_prefix: String? = null
 
@@ -83,7 +83,7 @@ class JWTAuthService {
             val token = oldToken?.substring(token_prefix?.length ?: 0)
             val username = jwtUtil.getUsernameFromToken(token)
             val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
-            if (jwtUtil.canTokenBeRefreshed(token, userDetails?.userModel?.lastPasswordResetTime) == true) {
+            if (jwtUtil.canTokenBeRefreshed(token, userDetails?.userModel?.lastPasswordResetTime)) {
                 return jwtUtil.refreshToken(token)
             }
         }

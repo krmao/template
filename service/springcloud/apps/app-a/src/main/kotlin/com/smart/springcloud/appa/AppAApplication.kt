@@ -1,14 +1,13 @@
 package com.smart.springcloud.appa
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smart.springcloud.appa.base.util.CXJsonUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletComponentScan
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
@@ -25,6 +24,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableFeignClients(basePackages = ["com.smart.springcloud.appa.http.controller"]) // 开启 Feign
 @ServletComponentScan           // 开启 自动扫描 Component
 @SpringBootApplication
+@ConfigurationPropertiesScan
 /*(exclude = arrayOf(DataSourceAutoConfiguration::class, DruidDataSourceAutoConfigure::class))*/ // 开启 SpringBoot
 @EnableConfigurationProperties  // 开启 local.properties 中读取的变量自动绑定到 application.yml 中
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) // 开启 安全策略

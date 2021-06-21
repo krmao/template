@@ -1,9 +1,7 @@
 package com.smart.springcloud.appa.base.config.security.auth.token.jwt
 
-import com.smart.springcloud.appa.base.config.config.CXConfig
 import com.smart.springcloud.appa.base.config.config.CXConfigProperties
 import com.smart.springcloud.appa.base.config.security.user.CXUserDetailService
-import com.smart.springcloud.appa.base.util.CXContextManager
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,19 +34,25 @@ class JWTAuthenticationFilter : OncePerRequestFilter() {
     @Autowired
     private var userService: CXUserDetailService? = null
 
+    @Autowired
+    private lateinit var configProperties: CXConfigProperties
+
+    @Autowired
+    private lateinit var jwtUtil: JWTUtil
+
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         log.debug(">>>>doFilterInternal start")
-        var token: String? = request.getHeader(CXConfigProperties.jwt.header)
+        var token: String? = request.getHeader(configProperties.jwt.header)
 
-        if (token?.startsWith(CXConfigProperties.jwt.tokenPrefix) == true) {
-            token = token.substring(CXConfigProperties.jwt.tokenPrefix.length)
+        if (token?.startsWith(configProperties.jwt.tokenPrefix) == true) {
+            token = token.substring(configProperties.jwt.tokenPrefix.length)
         }
 
         if (token?.isNotEmpty() == true) {
             var username: String? = null
             try {
-                username = JWTUtil.getUsernameFromToken(token)
+                username = jwtUtil.getUsernameFromToken(token)
                 log.warn("success to getUsernameFromToken : $username")
             } catch (exception: Exception) {
                 log.warn("failure to getUsernameFromToken : ${exception.message}")
@@ -60,7 +64,7 @@ class JWTAuthenticationFilter : OncePerRequestFilter() {
                 log.warn("loadUserByUsername: userDetails=$userDetails")
                 // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
                 // the database compellingly. Again it's up to you ;)
-                if (userDetails != null && JWTUtil.validateToken(token, userDetails) == true) {
+                if (userDetails != null && jwtUtil.validateToken(token, userDetails) == true) {
                     val authentication = UsernamePasswordAuthenticationToken(userDetails, userDetails.password)
                     authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                     SecurityContextHolder.getContext().authentication = authentication

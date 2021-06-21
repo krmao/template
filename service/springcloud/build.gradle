@@ -140,9 +140,6 @@ subprojects {
     //endregion
 
     apply plugin: 'kotlin-kapt' // https://kotlinlang.org/docs/kapt.html#using-in-gradle
-    kapt {
-        useBuildCache = false
-    }
 
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib")

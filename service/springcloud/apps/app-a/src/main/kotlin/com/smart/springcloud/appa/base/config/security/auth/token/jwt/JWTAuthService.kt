@@ -43,6 +43,9 @@ class JWTAuthService {
     @Autowired(required = false)
     private var userMapper: UserMapper? = null
 
+    @Autowired
+    private lateinit var jwtUtil: JWTUtil
+
     fun register(userToAdd: UserModel?): Int? {
         if (userToAdd == null)
             return 0
@@ -66,7 +69,7 @@ class JWTAuthService {
         val authentication = authenticationManager?.authenticate(UsernamePasswordAuthenticationToken(username, password))
         SecurityContextHolder.getContext().authentication = authentication
         val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
-        return if (userDetails != null) UserModelWithToken(userDetails.userModel, JWTUtil.generateAccessToken(userDetails)) else null
+        return if (userDetails != null) UserModelWithToken(userDetails.userModel, jwtUtil.generateAccessToken(userDetails)) else null
     }
 
     @Throws(AuthenticationException::class)
@@ -78,10 +81,10 @@ class JWTAuthService {
     fun refresh(oldToken: String?): String? {
         if (token_prefix != null && !StringUtils.isEmpty(oldToken)) {
             val token = oldToken?.substring(token_prefix?.length ?: 0)
-            val username = JWTUtil.getUsernameFromToken(token)
+            val username = jwtUtil.getUsernameFromToken(token)
             val userDetails = userDetailsService?.loadUserByUsername(username) as? CXUserDetails
-            if (JWTUtil.canTokenBeRefreshed(token, userDetails?.userModel?.lastPasswordResetTime) == true) {
-                return JWTUtil.refreshToken(token)
+            if (jwtUtil.canTokenBeRefreshed(token, userDetails?.userModel?.lastPasswordResetTime) == true) {
+                return jwtUtil.refreshToken(token)
             }
         }
         return null

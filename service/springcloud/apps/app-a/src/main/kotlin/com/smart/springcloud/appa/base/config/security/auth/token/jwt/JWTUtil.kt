@@ -7,13 +7,16 @@ import com.smart.springcloud.appa.database.model.UserModel
 import io.jsonwebtoken.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.stereotype.Component
 import java.util.*
 
 @Suppress("MemberVisibilityCanPrivate", "unused")
-object JWTUtil {
+@Component
+class JWTUtil {
 
     private val ROLE_REFRESH_TOKEN = "ROLE_REFRESH_TOKEN"
 
@@ -25,6 +28,9 @@ object JWTUtil {
 
     private val logger: Logger = LogManager.getLogger(JWTUtil::class.java.name)
     private var SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256
+
+    @Autowired
+    private lateinit var configProperties: CXConfigProperties
 
     @Throws(ExpiredJwtException::class, IllegalArgumentException::class, MalformedJwtException::class, SignatureException::class, UnsupportedJwtException::class)
     fun getUserFromToken(token: String?): CXUserDetails? {
@@ -68,7 +74,7 @@ object JWTUtil {
     fun getCreatedDateFromToken(token: String?) = getClaimsFromToken(token)?.issuedAt
 
     @Throws(ExpiredJwtException::class, IllegalArgumentException::class, MalformedJwtException::class, SignatureException::class, UnsupportedJwtException::class)
-    private fun getClaimsFromToken(token: String?) = if (token?.isNotBlank() == true) Jwts.parser().setSigningKey(CXConfigProperties.jwt.secret).parseClaimsJws(token).body else null
+    private fun getClaimsFromToken(token: String?) = if (token?.isNotBlank() == true) Jwts.parser().setSigningKey(configProperties.jwt.secret).parseClaimsJws(token).body else null
 
     fun getUserIdFromToken(token: String?) = getClaimsFromToken(token)?.get(CLAIM_KEY_USER_ID) as? Int
 
@@ -107,7 +113,7 @@ object JWTUtil {
         return claims
     }
 
-    private fun generateAccessToken(subject: String?, claims: Map<String, Any>?) = generateToken(subject, claims, CXConfigProperties.jwt.accessToken.expiration)
+    private fun generateAccessToken(subject: String?, claims: Map<String, Any>?) = generateToken(subject, claims, configProperties.jwt.accessToken.expiration)
 
     private fun authoritiesToArray(authorities: Collection<GrantedAuthority>): List<*> = authorities.map { it.authority }
 
@@ -129,9 +135,9 @@ object JWTUtil {
         return generateRefreshToken(user.username, claims)
     }
 
-    fun generateRefreshToken(subject: String, claims: Map<String, Any>) = generateToken(subject, claims, CXConfigProperties.jwt.refreshToken.expiration)
+    fun generateRefreshToken(subject: String, claims: Map<String, Any>) = generateToken(subject, claims, configProperties.jwt.refreshToken.expiration)
 
-    fun canTokenBeRefreshed(token: String?, lastPasswordReset: Date?): Boolean? = !isCreatedBeforeLastPasswordReset(getCreatedDateFromToken(token), lastPasswordReset) && !isTokenExpired(token)
+    fun canTokenBeRefreshed(token: String?, lastPasswordReset: Date?): Boolean = !isCreatedBeforeLastPasswordReset(getCreatedDateFromToken(token), lastPasswordReset) && !isTokenExpired(token)
 
     fun refreshToken(token: String?): String? {
         val claims = getClaimsFromToken(token)
@@ -146,11 +152,11 @@ object JWTUtil {
             .setIssuedAt(Date())
             .setExpiration(generateExpirationDate(expiration))
             .compressWith(CompressionCodecs.DEFLATE)
-            .signWith(SIGNATURE_ALGORITHM, CXConfigProperties.jwt.secret)
+            .signWith(SIGNATURE_ALGORITHM, configProperties.jwt.secret)
             .compact()
     }
 
-    fun validateToken(token: String?, userDetails: UserDetails?): Boolean? {
+    fun validateToken(token: String?, userDetails: UserDetails?): Boolean {
         val user = userDetails as? CXUserDetails
         val userId = getUserIdFromToken(token)
         val username = getUsernameFromToken(token)

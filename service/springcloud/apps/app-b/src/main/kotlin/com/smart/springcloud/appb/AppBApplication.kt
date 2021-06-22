@@ -2,6 +2,7 @@ package com.smart.springcloud.appb
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smart.springcloud.appb.base.util.CXJsonUtil
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -32,7 +33,7 @@ class AppBApplication : SpringBootServletInitializer() {
 }
 
 fun main(args: Array<String>) {
-    val logger: org.slf4j.Logger = LoggerFactory.getLogger(AppBApplication::class.java.name)
+    val logger: Logger = LoggerFactory.getLogger(AppBApplication::class.java.name)
     logger.error("🔵▶️ >>>>>>>>>>==============================>>>>>>>>>>️")
     logger.error("🔵▶️ 入口第一步️")
     logger.error("🔵▶️ a. 创建/初始化/配置并运行应用程序 new SpringApplication('com.smart.springcloud.appb.CXApplication').run()")

@@ -2,8 +2,8 @@ package com.smart.springcloud.appa
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smart.springcloud.appa.base.util.CXJsonUtil
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
@@ -43,7 +43,7 @@ class AppAApplication : SpringBootServletInitializer() {
 //@EnableAuthorizationServer
 
 fun main(args: Array<String>) {
-    val logger: Logger = LogManager.getLogger(AppAApplication::class.java.name)
+    val logger: Logger = LoggerFactory.getLogger(AppAApplication::class.java.name)
     logger.error("🔵▶️ >>>>>>>>>>==============================>>>>>>>>>>️")
     logger.error("🔵▶️ 入口第一步️")
     logger.error("🔵▶️ a. 创建/初始化/配置并运行应用程序 new SpringApplication('com.smart.springcloud.appa.CXApplication').run()")

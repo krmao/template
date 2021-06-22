@@ -15,3 +15,7 @@ include(":zuul"); project(":zuul").projectDir = new File(settingsDir, "component
 // config
 include(":config-server"); project(":config-server").projectDir = new File(settingsDir, "components/springcloud-config/config-server")
 
+// security
+include(":auth-client"); project(":auth-client").projectDir = new File(settingsDir, "components/springcloud-security/auth-client")
+include(":auth-server"); project(":auth-server").projectDir = new File(settingsDir, "components/springcloud-security/auth-server")
+include(":resource-server"); project(":resource-server").projectDir = new File(settingsDir, "components/springcloud-security/resource-server")

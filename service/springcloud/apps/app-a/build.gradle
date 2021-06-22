@@ -15,9 +15,6 @@ dependencies {
     // https://www.cnblogs.com/jpfss/p/12011661.html
     implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
 
-    // 不加版本号报错, 找不到这个包 // https://www.jianshu.com/p/37f4ef87efbf
-    implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
-
     /*+--- org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.4.RELEASE
         |    +--- org.springframework.cloud:spring-cloud-netflix-hystrix:2.2.4.RELEASE
         |    +--- org.springframework.cloud:spring-cloud-netflix-eureka-client:2.2.4.RELEASE
@@ -78,9 +75,15 @@ dependencies {
 
     implementation "com.google.guava:guava:23.0"
 
-    //spring security
     // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    // The Spring Security OAuth project is deprecated.
+    // https://spring.io/projects/spring-security-oauth https://blog.csdn.net/qq_35425070/article/details/104180112
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-security', version: rootProject.ext.springCloudOauth2Version
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.4.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: rootProject.ext.springBootStarterSecurityVersion
+    // https://www.jianshu.com/p/37f4ef87efbf 不加版本号报错, 找不到这个包
+    implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
 
     runtimeOnly("mysql:mysql-connector-java:8.0.21")
 

@@ -1,0 +1,21 @@
+ext.finalName = 'spingcloud-security-auth-server'
+ext.finalPort = "9000"
+apply from: "$rootProject.projectDir/gradle/script/docker.gradle"
+
+dependencies {
+    implementation group: "org.springframework.boot", name: "spring-boot-starter-web", version: rootProject.ext.springBootStarterWebVersion
+
+    // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
+    // The Spring Security OAuth project is deprecated.
+    // https://spring.io/projects/spring-security-oauth https://blog.csdn.net/qq_35425070/article/details/104180112
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-security', version: rootProject.ext.springCloudOauth2Version
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.4.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: rootProject.ext.springBootStarterSecurityVersion
+    // https://www.jianshu.com/p/37f4ef87efbf 不加版本号报错, 找不到这个包
+    implementation group: "org.springframework.security.oauth", name: "spring-security-oauth2", version: rootProject.ext.springSecurityOauth2Version
+    implementation group: 'org.springframework.security.experimental', name: 'spring-security-oauth2-authorization-server', version: rootProject.ext.springSecurityOauth2AuthorizationServerVersion
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: rootProject.ext.springBootStarterNetflixEurekaClientVersion
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: rootProject.ext.springBootStarterAdminVersion
+}

@@ -8,6 +8,9 @@ buildscript {
         springBootVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootDevToolsVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootStarterWebVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterSecurityVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterOauth2ResourceServerVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterOauth2ClientVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootStarterActuatorVersion = "2.2.4.RELEASE"// "2.5.0"
         springBootStarterNetflixEurekaClientVersion = "3.0.3"
         springBootStarterNetflixEurekaServerVersion = "3.0.3"
@@ -18,8 +21,11 @@ buildscript {
         springBootStarterAdminVersion = "2.2.4"
         springBootConfigurationProcessorVersion = "2.2.4.RELEASE"
         springSecurityOauth2Version = "2.2.4.RELEASE"
+        springSecurityOauth2AuthorizationServerVersion = "0.1.1"
         springCloudCommonsVersion = "2.2.4.RELEASE"
         springCloudConfigVersion = "2.2.4.RELEASE"
+        springCloudSecurityVersion = "2.2.4.RELEASE"
+        springCloudOauth2Version = "2.2.4.RELEASE"
         springBootManagementVersion = "1.0.11.RELEASE"
         jacksonModuleKotlinVersion = '2.12.3' // https://github.com/FasterXML/jackson-module-kotlin/issues/133#issuecomment-371159421
         kotlinVersion = '1.5.10'
@@ -96,6 +102,7 @@ subprojects {
         imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
         imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
     }
+    ext['spring-security.version'] = '5.5.1'
     //endregion
 
     apply plugin: 'idea'

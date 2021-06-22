@@ -200,3 +200,12 @@ sudo /usr/local/mysql/support-files/mysql.server stop
     * different [https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun](https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun)
     * 现在莫名其妙又好了, 没准试试删除多余的 idea 老版本, 这是好 preference -> gradle 里面的 jdk, 重启电脑试试
     * 试试 refresh gradle dependencies
+
+### springboot 实现控制反转的方式, 即依赖注入
+
+> 依赖注入之前, 程序员使用变量之前需要自己 new, 负责变量生成的整个过程, 这是自己控制一切, 控制权在自己, 自己控制可能导致强耦合, 难维护
+>
+> 依赖注入之后, 程序员直接使用变量就行了, 变量的生成过程 new 交由造物主 springboot 决定, 控制权在 springboot, 这就是控制反转
+
+* [如何用最简单的方式解释依赖注入？依赖注入是如何实现解耦的](https://www.zhihu.com/question/32108444/answer/309208647)
+

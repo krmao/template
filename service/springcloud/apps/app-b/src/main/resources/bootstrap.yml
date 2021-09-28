@@ -7,6 +7,10 @@ server:
         context-path: /app-b
 
 spring:
+#    security:
+#      user:
+#          name: admin
+#          password: admin
     application:
         name: APP-B
         #    config:
@@ -67,7 +71,7 @@ management:
 eureka:
     client:
         service-url:
-            defaultZone: http://10.32.33.15:5388/eureka
+            defaultZone: http://10.32.33.19:5388/eureka
         register-with-eureka: true
         fetch-registry: true
         registry-fetch-interval-seconds: 15
@@ -103,6 +107,8 @@ logging:
         static: INFO
         org:
             springframework:
+                security:
+                    web: debug
                 boot:
                     context:
                         logging:

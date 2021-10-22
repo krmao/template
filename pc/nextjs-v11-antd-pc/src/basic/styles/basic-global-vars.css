@@ -1,0 +1,7 @@
+:root {
+    --background-color: #f7f7f7;
+    --font-family: PingFangSC-Regular, "Microsoft YaHei", serif;
+    --font-family-bold: PingFangSC-Medium, "Microsoft YaHei", serif;
+    --font-weight: normal; /*normal === 400*/
+    --font-weight-bold: bold; /*bold === 700*/
+}

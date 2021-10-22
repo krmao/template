@@ -1,0 +1,186 @@
+//
+// 总高度 1024px
+//
+.layout-root {
+    width: 100%;
+    min-width: 1440px;
+    min-height: 600px;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background: blue;
+
+    .layout-header {
+        height: 80px;
+        max-height: 80px;
+        min-height: 80px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+
+        .logo {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                align-self: center;
+                font-size: 18px;
+                color: green;
+                margin-left: 8px;
+                font-weight: var(--font-weight-bold);
+                font-family: var(--font-family-bold);
+                width: 162px;
+                white-space: nowrap;
+                cursor: default;
+                user-select: none;
+            }
+
+            .logoImgDiv {
+                width: 40px;
+                height: 40px;
+                background-image: url("~@public/logo.png");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
+        }
+    }
+
+    .layout-content-sider {
+        min-height: 0 !important; // 控制 header bar 是否可以跟随内容滚动, 默认可以滚动, 因为 min-height: 100vh
+        height: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        background: #e8eaec !important;
+
+        //noinspection ALL
+        .sidebar {
+            width: 192px !important;
+            min-width: 192px !important;
+            min-height: 195px;
+            max-width: 192px !important;
+            margin-left: 78px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            margin-right: 20px;
+            border-radius: 8px !important;
+            overflow-y: hidden;
+
+            .menu {
+                border-top-right-radius: 8px !important;
+                border-top-left-radius: 8px !important;
+
+                svg {
+                    color: #4c5a75;
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                }
+
+                .menu-item-first {
+                    display: flex !important;
+                    flex-direction: row !important;
+                    align-items: center !important;
+                    height: 52px !important;
+                    margin: 0 !important;
+                    font-size: 14px;
+                    color: #102247;
+                    letter-spacing: 0;
+                    border-top-right-radius: 8px;
+                    border-top-left-radius: 8px;
+                    user-select: none;
+                }
+
+                .menu-item {
+                    @extend .menu-item-first;
+                    border-top-right-radius: 0 !important;
+                    border-top-left-radius: 0 !important;
+                }
+
+                .ant-menu-item:after {
+                    border-right-color: #1658dc !important;
+                    border-right-width: 4px !important;
+                }
+            }
+
+            .feedback {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-top: 1px solid #e7e8ec;
+                font-size: 12px;
+                margin: 0 12px;
+                height: 40px;
+                color: #c3c8d1;
+                letter-spacing: 0;
+                line-height: 20px;
+                user-select: none;
+            }
+        }
+
+        .layout-content-breadcrumb {
+            display: flex;
+            width: 1087px; // 15px 为垂直滚动条宽度预留
+            max-width: 1087px;
+            min-width: 1087px;
+            flex-direction: column;
+            padding-top: 20px;
+            margin-right: 78px;
+            padding-bottom: 40px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            //noinspection CssUnknownProperty
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
+            // border-radius: 8px !important;
+
+            .breadcrumb {
+                width: 1072px;
+                max-width: 1072px;
+                min-width: 1072px;
+                padding-left: 40px;
+                padding-right: 40px;
+                //@extend .base_font_normal_important;
+                font-size: 14px !important;
+                color: #8790a3 !important;
+                letter-spacing: 0;
+                line-height: 22px !important;
+                background: white;
+                border-top-right-radius: 8px !important;
+                border-top-left-radius: 8px !important;
+            }
+
+            .layout-content {
+                width: 1072px;
+                max-width: 1072px;
+                min-width: 1072px;
+                flex: 1;
+            }
+        }
+
+        .layout-content-breadcrumb::-webkit-scrollbar {
+            display: none; /* Safari and Chrome */
+            width: 0;
+            height: 0;
+            background: transparent;
+        }
+
+        .layout-content-breadcrumb::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+    }
+}

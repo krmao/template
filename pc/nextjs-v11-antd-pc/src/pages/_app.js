@@ -1,7 +1,7 @@
 //region 全局样式一次引入
-import 'antd/dist/antd.css'
-import '@styles/basic-global-vars.css'
-import '@styles/basic-global.css'
+import "antd/dist/antd.css";
+import "@styles/basic-global-vars.css";
+import "@styles/basic-global.css";
 //endregion
 
 //region 全局一次配置
@@ -16,14 +16,16 @@ import BasicLayout from "@components/basic-layout";
 
 // noinspection JSUnusedGlobalSymbols
 export default function MyApp({Component, pageProps}) {
-    return <ConfigProvider locale={zhCN}>
-        <div>
-            <Head>
-                <title>TEST</title>
-            </Head>
-            <BasicLayout>
-                <Component {...pageProps} />
-            </BasicLayout>
-        </div>
-    </ConfigProvider>
+    return (
+        <ConfigProvider locale={zhCN}>
+            <div>
+                <Head>
+                    <title>TEST</title>
+                </Head>
+                <BasicLayout>
+                    <Component {...pageProps} />
+                </BasicLayout>
+            </div>
+        </ConfigProvider>
+    );
 }

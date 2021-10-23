@@ -2,31 +2,21 @@ import React, {Component} from "react";
 
 import styles from "./index.module.scss";
 import {Select, Space, Avatar, Spin, notification} from "antd";
-// import Icon from "@ant-design/icons";
 import logoImage from "@public/logo.png";
-import {UpOutlined} from "@ant-design/icons";
-import Image from 'next/image'
+import Image from "next/image";
 import BasicLoginUtil from "@utils/basic-login-util";
 
 export default class BasicHeaderBar extends Component {
-
     constructor(props) {
         super(props);
     }
 
     render() {
-        let that = this;
         return (
             <div className={styles["header-content"]}>
                 <ul>
                     <li style={{marginLeft: "49px", cursor: "pointer"}}>
-                        <Image width={60} height={60} alt={""} src={logoImage}/>
-                    </li>
-                    <li style={{marginLeft: "49px", cursor: "pointer"}}>
-                        <img style={{width: 60, height: 60, backgroundColor: "blue"}} alt={""} src={logoImage.src}/>
-                    </li>
-                    <li style={{marginLeft: "49px", cursor: "pointer"}}>
-                        <img style={{width: 60, height: 60, backgroundColor: "green"}} alt={""} src="/logo.png"/>
+                        <Image width={60} height={60} alt={""} src={logoImage} />
                     </li>
                     <li
                         style={{marginLeft: "49px", cursor: "pointer"}}
@@ -81,7 +71,7 @@ export default class BasicHeaderBar extends Component {
                             </Select>
                         ) : (
                             <Space style={{marginLeft: "28px"}} size="middle">
-                                <Spin size="small"/>
+                                <Spin size="small" />
                             </Space>
                         )}
                     </li>

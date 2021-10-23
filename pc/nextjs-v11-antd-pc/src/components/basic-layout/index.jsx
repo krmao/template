@@ -3,13 +3,13 @@
 import React from "react";
 import {Layout, Menu} from "antd";
 import styles from "./index.module.scss";
-import {Icon} from '@ant-design/compatible';
+import {Icon} from "@ant-design/compatible";
 import BasicHeaderBar from "@components/basic-headerbar";
 import BasicBreadcrumb from "@components/basic-breadcrumb";
 import BasicImageSvgs from "@utils/basic-image-svgs";
-import MapSvg from '@public/map.svg';
+import MapSvg from "@public/map.svg";
 
-import stylesLess from './index.module.less';
+import stylesLess from "./index.module.less";
 
 const menuData = [
     {
@@ -23,7 +23,7 @@ const menuData = [
         icon: MapSvg,
         key: "/monitor",
         titleAlias: "数据监控"
-    },
+    }
 ];
 
 export default class BasicLayout extends React.Component {
@@ -73,7 +73,7 @@ export default class BasicLayout extends React.Component {
             if (BasicLayout._ENABLE_SUBMENU && item.children) {
                 return (
                     <Menu.SubMenu
-                        icon={item.icon ? <Icon component={item.icon}/> : ""}
+                        icon={item.icon ? <Icon component={item.icon} /> : ""}
                         title={item.titleAlias || item.title}
                         key={item.key}>
                         {this.renderMenu(item.children)}
@@ -83,7 +83,7 @@ export default class BasicLayout extends React.Component {
             return (
                 <Menu.Item
                     className={index === 0 ? "menu-item-first" : "menu-item"}
-                    icon={item.icon ? <Icon component={item.icon}/> : ""}
+                    icon={item.icon ? <Icon component={item.icon} /> : ""}
                     title={item.titleAlias || item.title}
                     onClick={() => {
                         that.goto(item.key);
@@ -103,11 +103,14 @@ export default class BasicLayout extends React.Component {
                 <div className={styles["layout-root"]}>
                     <div className={styles["layout-header"]} style={{padding: 0, backgroundColor: "white"}}>
                         <div className={styles.logo} style={{height: that.state.headerHeight}}>
-                            <div className={styles.logoImgDiv}/>
+                            <div className={styles.logoImgDiv} />
                             <span>TEST</span>
-                            <span> <MapSvg/></span>
+                            <span>
+                                {" "}
+                                <MapSvg />
+                            </span>
                         </div>
-                        <BasicHeaderBar userName={that.props.userName} user={that.props.user}/>
+                        <BasicHeaderBar userName={that.props.userName} user={that.props.user} />
                     </div>
 
                     <Layout className={styles["layout-content-sider"]} hasSider style={{minHeight: "100vh"}}>
@@ -122,18 +125,10 @@ export default class BasicLayout extends React.Component {
                                 mode="inline">
                                 {that.renderMenu(menuData)}
                             </Menu>
-                            <a
-                                className={styles.feedback}
-                                target="_blank"
-                                rel="noreferrer"
-                                href={""}>
+                            <a className={styles.feedback} target="_blank" rel="noreferrer" href={""}>
                                 意见反馈
                             </a>
-                            <a
-                                className={stylesLess.layoutRootLess}
-                                target="_blank"
-                                rel="noreferrer"
-                                href={""}>
+                            <a className={stylesLess.layoutRootLess} target="_blank" rel="noreferrer" href={""}>
                                 意见反馈2
                             </a>
                         </Layout.Sider>

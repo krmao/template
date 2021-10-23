@@ -12,9 +12,7 @@ import React from "react";
 React.useLayoutEffect = React.useEffect;
 
 class MyDocument extends Document {
-
     static async getInitialProps(ctx) {
-        console.log("[LIFECYCLE](Document) getInitialProps");
         const initialProps = await Document.getInitialProps(ctx);
         return {...initialProps};
     }
@@ -29,16 +27,16 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head nonce={""} crossOrigin={""}>
-                    <link rel="icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon"/>
-                    <link rel="shortcut icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon"/>
+                    <link rel="icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon" />
+                    <link rel="shortcut icon" href={"/static/favicon/favicon-1-blue.png"} type="image/x-icon" />
 
-                    <link rel="stylesheet" href={"/static/plugins/hybrid-console/hybird-console.css"}/>
+                    <link rel="stylesheet" href={"/static/plugins/hybrid-console/hybird-console.css"} />
                 </Head>
                 <body>
-                <Main/>
-                <NextScript nonce={""} crossOrigin={""}/>
+                    <Main />
+                    <NextScript nonce={""} crossOrigin={""} />
                 </body>
-                <script type="text/javascript" src={"/static/plugins/hybrid-console/hybird-console.js"}/>
+                {/*<script type="text/javascript" src={"/static/plugins/hybrid-console/hybird-console.js"} />*/}
             </Html>
         );
     }

@@ -7,7 +7,6 @@ import {withRouter} from "next/router";
 
 // https://codepen.io/MAW/pen/KdmwMb
 class Sakura extends React.Component {
-
     static async getInitialProps(context) {
         console.log("[LIFECYCLE](Sakura) getInitialProps");
         const {id} = context.query;
@@ -34,10 +33,10 @@ class Sakura extends React.Component {
 
     componentDidMount() {
         console.log("[LIFECYCLE](Sakura) componentDidMount");
-        let falling = true;
-
         let total = 300;
-        let container = document.getElementById("container"), w = window.innerWidth*0.8, h = window.innerHeight*0.6;
+        let container = document.getElementById("container"),
+            w = window.innerWidth * 0.8,
+            h = window.innerHeight * 0.6;
 
         console.log("[LIFECYCLE](Sakura) componentDidMount", container);
         TweenLite.set(container, {perspective: 600});
@@ -48,13 +47,31 @@ class Sakura extends React.Component {
 
         function anim(element) {
             TweenMax.to(element, R(10, 30), {y: h + 100, ease: Linear.easeNone, repeat: -1, delay: -10});
-            TweenMax.to(element, R(8, 20), {x: "-=200", rotationZ: R(0, 180), repeat: -1, yoyo: true, ease: Sine.easeInOut});
-            TweenMax.to(element, R(4, 10), {rotationX: R(0, 360), rotationY: R(0, 360), repeat: -1, yoyo: true, ease: Sine.easeInOut, delay: -5});
+            TweenMax.to(element, R(8, 20), {
+                x: "-=200",
+                rotationZ: R(0, 180),
+                repeat: -1,
+                yoyo: true,
+                ease: Sine.easeInOut
+            });
+            TweenMax.to(element, R(4, 10), {
+                rotationX: R(0, 360),
+                rotationY: R(0, 360),
+                repeat: -1,
+                yoyo: true,
+                ease: Sine.easeInOut,
+                delay: -5
+            });
         }
 
         for (let i = 0; i < total; i++) {
             let Div = document.createElement("div");
-            TweenLite.set(Div, {attr: {class: i % 2 === 0 ? css.dot_a : css.dot_b}, x: R(0, w), y: R(-100, 0), z: R(-200, 200)});
+            TweenLite.set(Div, {
+                attr: {class: i % 2 === 0 ? css.dot_a : css.dot_b},
+                x: R(0, w),
+                y: R(-100, 0),
+                z: R(-200, 200)
+            });
             container.appendChild(Div);
             anim(Div);
         }
@@ -62,7 +79,16 @@ class Sakura extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         let shouldComponentUpdate = this.state !== nextState;
-        console.log("[LIFECYCLE](Sakura) shouldComponentUpdate=", shouldComponentUpdate, "nextProps=", nextProps, "currentState=", this.state, "nextState=", nextState);
+        console.log(
+            "[LIFECYCLE](Sakura) shouldComponentUpdate=",
+            shouldComponentUpdate,
+            "nextProps=",
+            nextProps,
+            "currentState=",
+            this.state,
+            "nextState=",
+            nextState
+        );
         return shouldComponentUpdate;
     }
 
@@ -95,8 +121,7 @@ class Sakura extends React.Component {
                 <Head>
                     <title>SAKURA</title>
                 </Head>
-                <div className={css.page} id="container">
-                </div>
+                <div className={css.page} id="container"></div>
             </React.Fragment>
         );
     }

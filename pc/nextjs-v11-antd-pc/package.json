@@ -7,6 +7,8 @@
         "uat": "cross-env APP_ENV=UAT node server",
         "prod": "cross-env APP_ENV=PROD node server",
         "analyze": "cross-env ANALYZE=true next build",
+        "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+        "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
         "dev-default": "cross-env APP_ENV=DEV next -p 5388",
         "upload": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export && cp -rf ./build/out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
         "clean": "rm -rf ./build && rm -rf ./wedding",
@@ -14,6 +16,7 @@
         "export": "npm run build && next export -o ./build/out",
         "start": "npm run build && next start -p 5388",
         "eslint": "eslint --fix src/ --fix public/",
+        "lint": "next lint",
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {
@@ -55,10 +58,14 @@
         "@babel/runtime": "^7.15.4",
         "@koa/router": "^10.1.1",
         "@next/bundle-analyzer": "^9.1.4",
+        "@next/eslint-plugin-next": "^11.1.2",
         "@svgr/webpack": "^5.5.0",
+        "babel-eslint": "10.1.0",
         "babel-loader": "^8.2.3",
         "babel-plugin-import": "^1.13.3",
-        "eslint": "^8.0.1",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "eslint": "^7.0.0",
+        "eslint-config-next": "^11.1.2",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -74,6 +81,7 @@
         "lint-staged": "^11.2.3",
         "next-compose-plugins": "^2.1.1",
         "next-plugin-antd-less": "^1.4.4",
+        "postcss": "^8.3.11",
         "prettier": "2.3.1"
     },
     "husky": {

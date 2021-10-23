@@ -1,7 +1,7 @@
 # NextJs 项目学习与使用
 
-- [英文官方文档](https://nextjs.org/docs)
-- [中文文档](http://nextjs.frontendx.cn/docs)
+-   [英文官方文档](https://nextjs.org/docs)
+-   [中文文档](http://nextjs.frontendx.cn/docs)
 
 #### 配置 eslint
 
@@ -47,24 +47,24 @@
 
 #### css 水平居中
 
-- 使用 inline-block 和 text-align 实现
+-   使用 inline-block 和 text-align 实现
 
-  ```scss
-  .parent {
-      text-align: center;
-  }
-  .child {
-      display: inline-block;
-  }
-  ```
+    ```scss
+    .parent {
+        text-align: center;
+    }
+    .child {
+        display: inline-block;
+    }
+    ```
 
-- 使用 margin:0 auto 来实现
-  ```scss
-  .child {
-      width: 200px;
-      margin: 0 auto;
-  } // 要指定宽度
-  ```
+-   使用 margin:0 auto 来实现
+    ```scss
+    .child {
+        width: 200px;
+        margin: 0 auto;
+    } // 要指定宽度
+    ```
 
 #### css 垂直居中
 

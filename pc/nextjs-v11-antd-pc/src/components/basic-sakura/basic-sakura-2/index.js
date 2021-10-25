@@ -121,7 +121,7 @@ class Sakura extends React.Component {
                 <Head>
                     <title>SAKURA</title>
                 </Head>
-                <div className={css.page} id="container"></div>
+                <div className={css.page} id="container"/>
             </React.Fragment>
         );
     }

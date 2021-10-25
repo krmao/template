@@ -82,4 +82,4 @@ const lessPlugin = withAntdLess({
     ...nextConfig
 });
 
-module.exports = withPlugins([[withBundleAnalyzer], lessPlugin], nextConfig);
+module.exports = withPlugins([withBundleAnalyzer, lessPlugin], nextConfig); // npm run analyze failure no output

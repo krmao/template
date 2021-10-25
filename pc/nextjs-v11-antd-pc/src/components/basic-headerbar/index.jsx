@@ -2,8 +2,6 @@ import React, {Component} from "react";
 
 import styles from "./index.module.scss";
 import {Select, Space, Avatar, Spin, notification} from "antd";
-import logoImage from "@public/logo.png";
-import Image from "next/image";
 import BasicLoginUtil from "@utils/basic-login-util";
 
 export default class BasicHeaderBar extends Component {
@@ -15,12 +13,10 @@ export default class BasicHeaderBar extends Component {
         return (
             <div className={styles["header-content"]}>
                 <ul>
-                    <li style={{marginLeft: "49px", cursor: "pointer"}}>
-                        <Image width={60} height={60} alt={""} src={logoImage} />
-                    </li>
                     <li
                         style={{marginLeft: "49px", cursor: "pointer"}}
                         onClick={() => {
+                            // noinspection JSCheckFunctionSignatures
                             notification.open({title: "提示", description: "功能暂未上线", duration: 1});
                         }}>
                         <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>

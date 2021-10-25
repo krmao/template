@@ -68,7 +68,19 @@ module.exports = {
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/no-autofocus": "off",
         "jsx-a11y/anchor-is-valid": "off",
-        "jsx-a11y/no-static-element-interactions": "off"
+        "jsx-a11y/no-static-element-interactions": "off",
+        "import/no-anonymous-default-export": [
+            "error",
+            {
+                allowArray: false,
+                allowArrowFunction: false,
+                allowAnonymousClass: false,
+                allowAnonymousFunction: false,
+                allowCallExpression: true, // The true value here is for backward compatibility
+                allowLiteral: false,
+                allowObject: true
+            }
+        ]
     },
     settings: {
         "import/ignore": ["node_modules"],

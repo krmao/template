@@ -8,8 +8,10 @@ import BasicHeaderBar from "@components/basic-headerbar";
 import BasicBreadcrumb from "@components/basic-breadcrumb";
 import BasicImageSvgs from "@utils/basic-image-svgs";
 import MapSvg from "@public/map.svg";
-
 import stylesLess from "./index.module.less";
+import Image from "next/image";
+import logoImage from "@public/logo.png";
+import BasicNavigator from "@basic/basic-navigator";
 
 const menuData = [
     {
@@ -19,10 +21,10 @@ const menuData = [
         titleAlias: "数据监控"
     },
     {
-        title: "数据监控",
+        title: "数据概览",
         icon: MapSvg,
-        key: "/monitor",
-        titleAlias: "数据监控"
+        key: "/data2",
+        titleAlias: "数据概览"
     }
 ];
 
@@ -68,7 +70,6 @@ export default class BasicLayout extends React.Component {
     }
 
     renderMenu(data) {
-        let that = this;
         return data.map((item, index) => {
             if (BasicLayout._ENABLE_SUBMENU && item.children) {
                 return (
@@ -86,7 +87,7 @@ export default class BasicLayout extends React.Component {
                     icon={item.icon ? <Icon component={item.icon} /> : ""}
                     title={item.titleAlias || item.title}
                     onClick={() => {
-                        that.goto(item.key);
+                        BasicNavigator.push(item.key);
                     }}
                     key={item.key}>
                     {item.title}
@@ -106,8 +107,16 @@ export default class BasicLayout extends React.Component {
                             <div className={styles.logoImgDiv} />
                             <span>TEST</span>
                             <span>
-                                {" "}
                                 <MapSvg />
+                            </span>
+                            <span>
+                                <Image
+                                    className={stylesLess.layoutRootLess}
+                                    width={60}
+                                    height={60}
+                                    alt={""}
+                                    src={logoImage}
+                                />
                             </span>
                         </div>
                         <BasicHeaderBar userName={that.props.userName} user={that.props.user} />
@@ -127,9 +136,6 @@ export default class BasicLayout extends React.Component {
                             </Menu>
                             <a className={styles.feedback} target="_blank" rel="noreferrer" href={""}>
                                 意见反馈
-                            </a>
-                            <a className={stylesLess.layoutRootLess} target="_blank" rel="noreferrer" href={""}>
-                                意见反馈2
                             </a>
                         </Layout.Sider>
                         <Layout.Content className={styles["layout-content-breadcrumb"]}>

@@ -20,6 +20,7 @@
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {
+        "@ant-design/charts": "^1.2.14",
         "@ant-design/compatible": "^1.0.8",
         "@ant-design/icons": "^4.7.0",
         "animated": "^0.2.2",

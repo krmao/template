@@ -1,5 +1,5 @@
 //region 全局样式一次引入
-import "antd/dist/antd.css";
+import "antd/dist/antd.less";
 import "@styles/basic-global-vars.css";
 import "@styles/basic-global.css";
 //endregion

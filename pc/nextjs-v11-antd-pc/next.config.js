@@ -2,7 +2,7 @@ const path = require("path");
 const webpackRules = require("./webpack.config.js");
 const withPlugins = require("next-compose-plugins");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({enabled: process.env.ANALYZE === "true"});
-const withAntdLess = require("next-plugin-antd-less");
+const withLess = require("next-with-less");
 
 const IS_PRODUCTION_ENV = process.env.NODE_ENV === "production";
 console.log(
@@ -34,7 +34,7 @@ const nextConfig = {
     publicRuntimeConfig: {
         testPublicRuntimeConfig: "testPublicRuntimeConfig" // 在服务端渲染和客户端渲染都可获取的配置
     },
-    webpack(config, {buildId, dev, isServer, defaultLoaders}) {
+    webpack(config, {buildId, dev, isServer}) {
         console.log("webpack config buildId:", buildId, "dev:", dev, "isServer:", isServer);
 
         config.module.rules.push({
@@ -63,12 +63,22 @@ const nextConfig = {
     webpack5: true
 };
 
-const lessPlugin = withAntdLess({
-    modifyVars: {"@primary-color": "#f74a49"},
-    lessVarsFilePathAppendToEndOfContent: false,
-    cssModules: true, // https://github.com/webpack-contrib/css-loader#object
-    cssLoaderOptions: {sourceMap: true}, // https://github.com/webpack-contrib/css-loader#object
-    ...nextConfig
-});
-
-module.exports = withPlugins([withBundleAnalyzer, lessPlugin], nextConfig); // npm run analyze failure no output
+module.exports = withPlugins(
+    [
+        [withBundleAnalyzer, {}],
+        [
+            withLess,
+            {
+                lessLoaderOptions: {
+                    lessOptions: {
+                        modifyVars: {
+                            "primary-color": "#ff0000",
+                            "border-radius-base": "2px"
+                        }
+                    }
+                }
+            }
+        ]
+    ],
+    nextConfig
+);

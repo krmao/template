@@ -3,10 +3,9 @@
 import React from "react";
 import {Layout, Menu} from "antd";
 import styles from "./index.module.scss";
-import {Icon} from "@ant-design/compatible";
 import BasicHeaderBar from "@components/basic-headerbar";
 import BasicBreadcrumb from "@components/basic-breadcrumb";
-import BasicImageSvgs from "@utils/basic-image-svgs";
+import BasicSvgDataStatistic from "@basic/svg/basic-svg-data-statistic";
 import MapSvg from "@public/map.svg";
 import stylesLess from "./index.module.less";
 import Image from "next/image";
@@ -16,13 +15,13 @@ import BasicNavigator from "@basic/basic-navigator";
 const menuData = [
     {
         title: "数据监控",
-        icon: BasicImageSvgs.dataStatistic,
+        icon: <BasicSvgDataStatistic />,
         key: "/monitor",
         titleAlias: "数据监控"
     },
     {
         title: "数据概览",
-        icon: MapSvg,
+        icon: <MapSvg />,
         key: "/data2",
         titleAlias: "数据概览"
     }
@@ -73,10 +72,7 @@ export default class BasicLayout extends React.Component {
         return data.map((item, index) => {
             if (BasicLayout._ENABLE_SUBMENU && item.children) {
                 return (
-                    <Menu.SubMenu
-                        icon={item.icon ? <Icon component={item.icon} /> : ""}
-                        title={item.titleAlias || item.title}
-                        key={item.key}>
+                    <Menu.SubMenu icon={item.icon} title={item.titleAlias || item.title} key={item.key}>
                         {this.renderMenu(item.children)}
                     </Menu.SubMenu>
                 );
@@ -84,7 +80,7 @@ export default class BasicLayout extends React.Component {
             return (
                 <Menu.Item
                     className={index === 0 ? "menu-item-first" : "menu-item"}
-                    icon={item.icon ? <Icon component={item.icon} /> : ""}
+                    icon={item.icon}
                     title={item.titleAlias || item.title}
                     onClick={() => {
                         BasicNavigator.push(item.key);

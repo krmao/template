@@ -1,6 +1,3 @@
-const webpackRules = require("./webpack.config.js");
-const path = require("path");
-
 module.exports = function (api) {
     api.cache(true);
 
@@ -16,24 +13,11 @@ module.exports = function (api) {
                 style: false
             },
             "@ant-design/icons"
-        ]/*,
-        [
-            require.resolve("babel-plugin-module-resolver"),
-            {
-                root: ["./src/"],
-                alias: {
-                    "@public": path.resolve(__dirname, "./public"),
-                    "@basic": path.resolve(__dirname, "./src/basic"),
-                    "@styles": path.resolve(__dirname, "./src/basic/styles"),
-                    "@utils": path.resolve(__dirname, "./src/basic/utils"),
-                    "@components": path.resolve(__dirname, "./src/components")
-                }
-            }
-        ]*/
+        ]
     ];
 
     return {
-        presets,
-        plugins
+        presets: presets,
+        plugins: plugins
     };
 };

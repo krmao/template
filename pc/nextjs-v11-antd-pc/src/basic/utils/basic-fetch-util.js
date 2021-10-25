@@ -8,11 +8,11 @@ export default class BasicFetchUtil {
     static fetchByFullUrl = (fullUrl, param, extension = []) => {
         console.log("--[request](start)", fullUrl, param);
         return new Promise((resolve, reject) => {
-            let body = {
+            /*let body = {
                 body: param,
                 extension: extension
-            };
-            new CModel()
+            };*/
+           /* new HttpClient()
                 .fetch(fullUrl, body)
                 .then((result) => {
                     console.log("--[response](success)", fullUrl, result);
@@ -21,7 +21,7 @@ export default class BasicFetchUtil {
                 .catch((error) => {
                     console.log("--[response](failure)", fullUrl, error);
                     reject(error);
-                });
+                });*/
         });
     };
 

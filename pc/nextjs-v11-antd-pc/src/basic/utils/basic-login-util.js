@@ -2,7 +2,9 @@
 
 import BasicConstants from "../basic-constants";
 import BasicEnvUtil from "./basic-env-util";
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from "uuid";
+
+import {getCookies, setCookies, removeCookies} from "cookies-next";
 
 export default class BasicLoginUtil {
     static _debug = false;
@@ -17,8 +19,8 @@ export default class BasicLoginUtil {
         const exp = new Date();
         exp.setTime(exp.getTime() - 1);
         const options = {timeout: exp, domain: BasicLoginUtil._domain};
-        removeCookie(BasicConstants.LOGIN_COOKIE_PRINCIPAL, options);
-        removeCookie(BasicConstants.LOGIN_COOKIE_USERINFO, options);
+        removeCookies(BasicConstants.LOGIN_COOKIE_PRINCIPAL, options);
+        removeCookies(BasicConstants.LOGIN_COOKIE_USERINFO, options);
         window.location.href = logoutUrl + encodeURIComponent("" + window.location.origin + window.location.pathname);
     };
 
@@ -34,19 +36,13 @@ export default class BasicLoginUtil {
         const timeout = new Date();
         timeout.setTime(timeout.getTime() - 1);
         const options = {timeout: timeout, domain: BasicLoginUtil._domain};
-        removeCookie(BasicConstants.LOGIN_COOKIE_PRINCIPAL, options);
-        removeCookie(BasicConstants.LOGIN_COOKIE_USERINFO, options);
-        const loginUrl =
-            BasicEnvUtil.getEnv() === BasicEnvUtil.PROD
-                ? "xxx"
-                : "xxx";
+        removeCookies(BasicConstants.LOGIN_COOKIE_PRINCIPAL, options);
+        removeCookies(BasicConstants.LOGIN_COOKIE_USERINFO, options);
+        const loginUrl = BasicEnvUtil.getEnv() === BasicEnvUtil.PROD ? "xxx" : "xxx";
         window.location.href = loginUrl + window.location.origin + window.location.pathname;
     };
     static validateLogin = (ticket) => {
-        let validateUrl =
-            BasicEnvUtil.getEnv() === BasicEnvUtil.PROD
-                ? "xxx"
-                : "hxxx";
+        let validateUrl = BasicEnvUtil.getEnv() === BasicEnvUtil.PROD ? "xxx" : "hxxx";
         validateUrl =
             validateUrl +
             "?ticket=" +
@@ -76,14 +72,11 @@ export default class BasicLoginUtil {
      * 未登录会直接跳转登录
      */
     static isLogin = () => {
-        const principal = getCookie(BasicConstants.LOGIN_COOKIE_PRINCIPAL);
+        const principal = getCookies(BasicConstants.LOGIN_COOKIE_PRINCIPAL);
         if (BasicLoginUtil._debug) {
             console.log("check login start principal", principal);
         }
-        let checkLoginUrl =
-            BasicEnvUtil.getEnv() === BasicEnvUtil.PROD
-                ? "xxx"
-                : "xxx";
+        let checkLoginUrl = BasicEnvUtil.getEnv() === BasicEnvUtil.PROD ? "xxx" : "xxx";
         checkLoginUrl =
             checkLoginUrl + "?principalId=" + principal + "&callback=" + encodeURIComponent(window.location);
         fetch(checkLoginUrl, {credentials: "include", method: "GET"})
@@ -114,10 +107,7 @@ export default class BasicLoginUtil {
      * @return {principal,userName,user}
      */
     static pushLoginVoucher = (appId, path, principal) => {
-        let pushUrl =
-            BasicEnvUtil.getEnv() === BasicEnvUtil.PROD
-                ? "xxx"
-                : "xxx";
+        let pushUrl = BasicEnvUtil.getEnv() === BasicEnvUtil.PROD ? "xxx" : "xxx";
         const uuid = uuidv4();
         const body = {
             id: appId + "_" + uuid,
@@ -148,14 +138,14 @@ export default class BasicLoginUtil {
 
                         //region save info to cookie
                         const timeout = new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000);
-                        setCookie(
+                        setCookies(
                             BasicConstants.LOGIN_COOKIE_PRINCIPAL,
                             appId + "_" + uuid,
                             timeout,
                             path,
                             BasicLoginUtil._domain
                         );
-                        setCookie(BasicConstants.LOGIN_COOKIE_USERINFO, user, timeout, path, BasicLoginUtil._domain);
+                        setCookies(BasicConstants.LOGIN_COOKIE_USERINFO, user, timeout, path, BasicLoginUtil._domain);
                         //endregion
 
                         resolve({
@@ -180,8 +170,8 @@ export default class BasicLoginUtil {
      * @param callback({principal, userName, user})
      */
     static handleLogin(appId, ticket, path, callback) {
-        const principal = getCookie(BasicConstants.LOGIN_COOKIE_PRINCIPAL);
-        const userInfo = decodeURIComponent(getCookie(BasicConstants.LOGIN_COOKIE_USERINFO));
+        const principal = getCookies(BasicConstants.LOGIN_COOKIE_PRINCIPAL);
+        const userInfo = decodeURIComponent(getCookies(BasicConstants.LOGIN_COOKIE_USERINFO));
         if (BasicLoginUtil._debug) {
             console.log("handleLogin start principal=", principal, ", userInfo=", userInfo);
         }
@@ -268,7 +258,7 @@ export default class BasicLoginUtil {
     }
 
     static getUserInfo() {
-        let userInfoString = decodeURIComponent(getCookie(BasicConstants.LOGIN_COOKIE_USERINFO));
+        let userInfoString = decodeURIComponent(getCookies(BasicConstants.LOGIN_COOKIE_USERINFO));
         let userInfo = JSON.parse(userInfoString);
         console.log("getUserInfo", userInfo);
         return userInfo;

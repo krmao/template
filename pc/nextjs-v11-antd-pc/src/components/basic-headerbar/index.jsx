@@ -24,7 +24,7 @@ export default class BasicHeaderBar extends Component {
                         }}>
                         <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <div className={stylesLess.layoutRootLess}>
-                                <Image width={20} height={20} alt={""} src={logoImage} />
+                                <Image width={40} height={40} alt={""} src={logoImage} />
                             </div>
                             <span
                                 style={{

@@ -6,7 +6,7 @@ const withLess = require("next-with-less");
 
 const IS_PRODUCTION_ENV = process.env.NODE_ENV === "production";
 console.log(
-    "\n[ ENV  ]  NODE_ENV:'" + process.env.NODE_ENV + "',",
+    "info  - NODE_ENV:'" + process.env.NODE_ENV + "',",
     "APP_ENV:'" + process.env.APP_ENV + "',",
     "IS_PRODUCTION_ENV:'" + IS_PRODUCTION_ENV + "'\n"
 );
@@ -35,12 +35,11 @@ const nextConfig = {
         testPublicRuntimeConfig: "testPublicRuntimeConfig" // 在服务端渲染和客户端渲染都可获取的配置
     },
     webpack(config, {buildId, dev, isServer}) {
-        console.log("webpack config buildId:", buildId, "dev:", dev, "isServer:", isServer);
+        console.log("info  - Webpack config buildId:", buildId, "dev:", dev, "isServer:", isServer);
 
-        config.module.rules.push({
-            ...webpackRules
-        });
+        config.module.rules.push({...webpackRules});
 
+        //region *.svg file support
         // https://react-svgr.com/docs/webpack/
         // https://ant.design/components/icon-cn/#%E8%87%AA%E5%AE%9A%E4%B9%89-SVG-%E5%9B%BE%E6%A0%87
         config.module.rules.push({
@@ -58,6 +57,8 @@ const nextConfig = {
                 }
             ]
         });
+        //endregion
+
         return config;
     },
     webpack5: true
@@ -66,19 +67,18 @@ const nextConfig = {
 module.exports = withPlugins(
     [
         [withBundleAnalyzer, {}],
+        //region https://github.com/elado/next-with-less
         [
             withLess,
             {
                 lessLoaderOptions: {
-                    lessOptions: {
-                        modifyVars: {
-                            "primary-color": "#ff0000",
-                            "border-radius-base": "2px"
-                        }
-                    }
+                    additionalData: (content) =>
+                        `${content}\n\n@import '${path.resolve("./src/basic/styles/basic-global-vars-antd.less")}';`,
+                    lessOptions: {modifyVars: {}}
                 }
             }
         ]
+        //endregion
     ],
     nextConfig
 );

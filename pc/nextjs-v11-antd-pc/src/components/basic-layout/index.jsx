@@ -7,9 +7,6 @@ import BasicHeaderBar from "@components/basic-headerbar";
 import BasicBreadcrumb from "@components/basic-breadcrumb";
 import BasicSvgDataStatistic from "@basic/svg/basic-svg-data-statistic";
 import MapSvg from "@public/map.svg";
-import stylesLess from "./index.module.less";
-import Image from "next/image";
-import logoImage from "@public/logo.png";
 import BasicNavigator from "@basic/basic-navigator";
 
 const menuData = [
@@ -79,7 +76,7 @@ export default class BasicLayout extends React.Component {
             }
             return (
                 <Menu.Item
-                    className={index === 0 ? "menu-item-first" : "menu-item"}
+                    className={styles[index === 0 ? "sidebar-menu-item-first" : "sidebar-menu-item"]}
                     icon={item.icon}
                     title={item.titleAlias || item.title}
                     onClick={() => {
@@ -102,18 +99,6 @@ export default class BasicLayout extends React.Component {
                         <div className={styles.logo} style={{height: that.state.headerHeight}}>
                             <div className={styles.logoImgDiv} />
                             <span>TEST</span>
-                            <span>
-                                <MapSvg />
-                            </span>
-                            <span>
-                                <Image
-                                    className={stylesLess.layoutRootLess}
-                                    width={60}
-                                    height={60}
-                                    alt={""}
-                                    src={logoImage}
-                                />
-                            </span>
                         </div>
                         <BasicHeaderBar userName={that.props.userName} user={that.props.user} />
                     </div>
@@ -125,7 +110,7 @@ export default class BasicLayout extends React.Component {
                                 openKeys={that.state.currentSelectedKeysForFinalLevel} // 当前打开的最终页面对应的菜单, 修改有效
                                 defaultOpenKeys={that.state.defaultOpenKeysForOneLevel} // 默认打开的一级菜单, 只有初次有效
                                 selectedKeys={that.state.currentOpenKeysForOneLevel} // 当前打开的一级菜单, 修改有效
-                                className="menu"
+                                className={styles["sidebar-menu"]}
                                 theme="light"
                                 mode="inline">
                                 {that.renderMenu(menuData)}

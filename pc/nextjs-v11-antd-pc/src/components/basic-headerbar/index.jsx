@@ -3,6 +3,9 @@ import React, {Component} from "react";
 import styles from "./index.module.scss";
 import {Select, Space, Avatar, Spin, notification} from "antd";
 import BasicLoginUtil from "@utils/basic-login-util";
+import Image from "next/image";
+import stylesLess from "./index.module.less";
+import logoImage from "@public/logo.png";
 
 export default class BasicHeaderBar extends Component {
     constructor(props) {
@@ -20,7 +23,9 @@ export default class BasicHeaderBar extends Component {
                             notification.open({title: "提示", description: "功能暂未上线", duration: 1});
                         }}>
                         <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                            {/*<Icon component={UpOutlined}/>*/}
+                            <div className={stylesLess.layoutRootLess}>
+                                <Image width={20} height={20} alt={""} src={logoImage} />
+                            </div>
                             <span
                                 style={{
                                     marginLeft: "7px",

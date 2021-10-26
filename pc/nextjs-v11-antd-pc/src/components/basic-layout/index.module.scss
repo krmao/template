@@ -76,18 +76,11 @@
             border-radius: 8px !important;
             overflow-y: hidden;
 
-            .menu {
+            .sidebar-menu {
                 border-top-right-radius: 8px !important;
                 border-top-left-radius: 8px !important;
 
-                svg {
-                    color: #4c5a75;
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 8px;
-                }
-
-                .menu-item-first {
+                .sidebar-menu-item-first {
                     display: flex !important;
                     flex-direction: row !important;
                     align-items: center !important;
@@ -99,10 +92,22 @@
                     border-top-right-radius: 8px;
                     border-top-left-radius: 8px;
                     user-select: none;
+
+                    svg {
+                        color: #4c5a75 !important;
+                        width: 20px !important;
+                        font-size: 14px !important;
+                        height: 20px !important;
+                        margin-right: 8px !important;
+                    }
+
+                    span {
+                        margin-left: 0px !important;
+                    }
                 }
 
-                .menu-item {
-                    @extend .menu-item-first;
+                .sidebar-menu-item {
+                    @extend .sidebar-menu-item-first;
                     border-top-right-radius: 0 !important;
                     border-top-left-radius: 0 !important;
                 }

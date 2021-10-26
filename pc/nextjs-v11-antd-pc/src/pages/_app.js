@@ -1,4 +1,5 @@
 //region 全局样式一次引入
+import "antd/lib/style/themes/default.less";
 import "antd/dist/antd.less";
 import "@styles/basic-global-vars.css";
 import "@styles/basic-global.css";

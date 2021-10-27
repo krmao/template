@@ -9,6 +9,8 @@
         "analyze": "cross-env ANALYZE=true next build",
         "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
         "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+        "nrm:taobao": "npm install -g nrm && nrm ls && nrm use taobao && npm config get registry",
+        "install:taobao": "npm install --registry https://registry.npm.taobao.org",
         "clean": "rm -rf ./build",
         "build": "npm run clean && next build",
         "export": "npm run build && next export -o ./build/out",

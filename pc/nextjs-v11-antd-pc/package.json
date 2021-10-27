@@ -32,6 +32,7 @@
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
         "next": "^11.1.2",
+        "prop-types": "^15.7.2",
         "rc-banner-anim": "^2.4.5",
         "rc-queue-anim": "^2.0.0",
         "rc-tween-one": "^2.7.3",

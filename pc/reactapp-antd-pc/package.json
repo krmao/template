@@ -1,0 +1,51 @@
+{
+    "name": "reactapp-pc",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@ant-design/charts": "^1.2.14",
+        "@ant-design/icons": "^4.7.0",
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "antd": "^4.16.13",
+        "axios": "^0.24.0",
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-bmapgl": "0.1.22",
+        "react-dom": "^17.0.2",
+        "react-scripts": "4.0.3",
+        "web-vitals": "^1.0.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "nrm:taobao": "npm install -g nrm && nrm ls && nrm use taobao && npm config get registry",
+        "install:taobao": "npm install --registry https://registry.npm.taobao.org",
+        "lint": "eslint --fix src/ --fix ./*.js",
+        "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "prettier": "^2.4.1"
+    }
+}

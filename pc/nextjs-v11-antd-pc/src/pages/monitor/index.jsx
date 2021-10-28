@@ -29,8 +29,6 @@ export default class MonitorPage extends React.Component {
         };
     }
 
-    async getInitialState(ctx) {}
-
     componentDidMount() {
         this.props.handleBreadcrumbData(this.state.breadcrumbData);
     }

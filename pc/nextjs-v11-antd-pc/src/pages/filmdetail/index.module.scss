@@ -1,0 +1,62 @@
+.page {
+    background-color: cadetblue;
+    height: 100vh;
+}
+
+.title {
+    width: 100%;
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 24px;
+    background-color: rebeccapurple;
+}
+
+.content {
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    background-color: cadetblue;
+}
+
+.image_container {
+    display: block;
+    position: relative;
+    background-color: red;
+    width: 200px;
+}
+
+.image_content {
+    background-color: #AAAAAA;
+    /**
+     * https://caniuse.com/?search=object-fit
+     * https://www.w3.org/TR/css-images-3/#the-object-fit
+     */
+    object-fit: cover;
+    -o-object-fit: cover;
+    width: 200px;
+}
+
+.image_qr_code {
+    position: absolute;
+    z-index: 99;
+    left: 200px;
+    width: 150px;
+    border: 1px solid cadetblue;
+    border-radius: 1px;
+
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: top left;
+    -webkit-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.image_container:hover .image_qr_code {
+    transform: scale(1);
+    opacity: 1;
+}

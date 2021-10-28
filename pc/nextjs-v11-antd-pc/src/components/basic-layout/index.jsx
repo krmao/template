@@ -17,6 +17,18 @@ const menuData = [
         titleAlias: "数据监控"
     },
     {
+        title: "filmlist",
+        icon: <BasicSvgDataStatistic />,
+        key: "/filmlist",
+        titleAlias: "电影列表"
+    },
+    {
+        title: "filmdetail",
+        icon: <BasicSvgDataStatistic />,
+        key: "/filmdetail",
+        titleAlias: "电影详情"
+    },
+    {
         title: "数据概览",
         icon: <MapSvg />,
         key: "/data2",

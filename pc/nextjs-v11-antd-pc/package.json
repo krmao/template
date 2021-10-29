@@ -12,6 +12,7 @@
         "nrm:taobao": "npm install -g nrm && nrm ls && nrm use taobao && npm config get registry",
         "install:taobao": "npm install --registry https://registry.npm.taobao.org",
         "clean": "rm -rf ./build",
+        "clean:full": "rm -rf ./build && rm -rf .next && rm -rf ./node_modules",
         "build": "npm run clean && next build",
         "export": "npm run build && next export -o ./build/out",
         "lint": "eslint --fix src/ --fix ./*.js",

@@ -1,15 +1,15 @@
-const path = require("path");
 const webpackRules = require("./webpack.config.js");
 const withPlugins = require("next-compose-plugins");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({enabled: process.env.ANALYZE === "true"});
 const withLess = require("next-with-less");
-
+const BasicConstants = require("./src/components/basic/basic-constants");
 const IS_PRODUCTION_ENV = process.env.NODE_ENV === "production";
-console.log(
-    "info  - NODE_ENV:'" + process.env.NODE_ENV + "',",
-    "APP_ENV:'" + process.env.APP_ENV + "',",
-    "IS_PRODUCTION_ENV:'" + IS_PRODUCTION_ENV + "'\n"
-);
+
+console.log("info  - NODE_ENV:'" + process.env.NODE_ENV);
+console.log("info  - APP_ENV:'" + process.env.APP_ENV);
+console.log("info  - IS_PRODUCTION_ENV:'" + IS_PRODUCTION_ENV);
+console.log("info  - APP_BASIC_STYLES_PATH:'" + BasicConstants.APP_BASIC_STYLES_PATH());
+console.log("info  - APP_BASIC_ANTD_LESS_PATH:'" + BasicConstants.APP_BASIC_ANTD_LESS_PATH());
 
 const nextConfig = {
     distDir: "./build/.next",
@@ -26,7 +26,7 @@ const nextConfig = {
         testEnv: "testEnv" // 可以在页面上通过 process.env.testEnv 获取 value
     },
     sassOptions: {
-        includePaths: [path.join(__dirname, "src/basic/styles")] // https://github.com/YutHelloWorld/Blog/issues/12#issue-254066318
+        includePaths: [BasicConstants.APP_BASIC_STYLES_PATH()] // https://github.com/YutHelloWorld/Blog/issues/12#issue-254066318
     },
     serverRuntimeConfig: {
         testServerRuntimeConfig: "testServerRuntimeConfig" // 通过 'next/config' 来读取, 只有在服务端渲染时才会获取的配置
@@ -73,7 +73,7 @@ module.exports = withPlugins(
             {
                 lessLoaderOptions: {
                     additionalData: (content) =>
-                        `${content}\n\n@import '${path.resolve("./src/basic/styles/basic-global-vars-antd.less")}';`,
+                        `${content}\n\n@import '${BasicConstants.APP_BASIC_ANTD_LESS_PATH()}';`,
                     lessOptions: {modifyVars: {}}
                 }
             }

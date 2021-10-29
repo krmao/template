@@ -2,20 +2,22 @@
 
 import React from "react";
 import {DatePicker, Divider, Popover, Tabs} from "antd";
-import AsyncComponent from "@components/basic-async-component";
-import BasicMonitorData from "@components/basic-monitor/basic-monitor-data";
+import AsyncComponent from "@basic-utils/basic-async-component";
+import BasicMonitorData from "@business/business-monitor/business-monitor-data";
 import moment from "moment";
-import textUtil from "@utils/basic-text-util";
+import textUtil from "@basic-utils/basic-text-util";
 import Image from "next/image";
 import logoImage from "@public/logo.png";
 import style from "./index.module.scss";
 
 const {TabPane} = Tabs;
-const ChartsPoiCount = AsyncComponent(() => import("@components/basic-monitor/basic-monitor-charts-poi-count"));
-const ChartsWordCloud = AsyncComponent(() => import("@components/basic-monitor/basic-monitor-charts-word-cloud"));
-const ChartsPoiLanguage = AsyncComponent(() => import("@components/basic-monitor/basic-monitor-charts-poi-language"));
+const ChartsPoiCount = AsyncComponent(() => import("@business/business-monitor/business-monitor-charts-poi-count"));
+const ChartsWordCloud = AsyncComponent(() => import("@business/business-monitor/business-monitor-charts-word-cloud"));
+const ChartsPoiLanguage = AsyncComponent(() =>
+    import("@business/business-monitor/business-monitor-charts-poi-language")
+);
 const ChartsPoiCategoryNoteProgress = AsyncComponent(() =>
-    import("@components/basic-monitor/basic-monitor-charts-poi-category-note-progress")
+    import("@business/business-monitor/business-monitor-charts-poi-category-note-progress")
 );
 
 export default class MonitorPage extends React.Component {

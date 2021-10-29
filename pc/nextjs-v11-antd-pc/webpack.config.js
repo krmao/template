@@ -7,12 +7,12 @@ const path = require("path");
 module.exports = {
     resolve: {
         alias: {
-            // "@": path.resolve(__dirname),
             "@public": path.resolve(__dirname, "./public"),
-            "@basic": path.resolve(__dirname, "./src/basic"),
-            "@styles": path.resolve(__dirname, "./src/basic/styles"),
-            "@utils": path.resolve(__dirname, "./src/basic/utils"),
-            "@components": path.resolve(__dirname, "./src/components")
+            "@basic": path.resolve(__dirname, "./src/components/basic"),
+            "@basic-styles": path.resolve(__dirname, "./src/components/basic/basic-styles"),
+            "@basic-utils": path.resolve(__dirname, "./src/components/basic/basic-utils"),
+            "@components": path.resolve(__dirname, "./src/components"),
+            "@business": path.resolve(__dirname, "./src/components/business")
         }
     }
 };

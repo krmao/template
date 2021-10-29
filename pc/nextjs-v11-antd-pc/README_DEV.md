@@ -65,3 +65,8 @@ serve -s build/out -p 5387
     > 点击设置 -> Languages&Frameworks -> Javascript -> libraries -> Add
     > 然后选择 Node.js Core Modules 点击确定
     > 重启 idea 即可消除 **require 警告**
+
+### [nextjs + spa](https://colinhacks.com/essays/building-a-spa-with-nextjs)
+* [Vercel, Next.js, and the war on SPAs](https://colinhacks.com/essays/vercel-nextjs-spa)
+* [Replacing Create React App with the Next.js CLI](https://gist.github.com/tannerlinsley/65ac1f0175d79d19762cf06650707830)
+* [Nextjs page always reloads after browsers back button clicked](https://stackoverflow.com/questions/69763380/nextjs-page-always-reloads-after-browsers-back-button-clicked?noredirect=1#comment123315604_69763380)

@@ -2,7 +2,6 @@ import Link from "next/link";
 import Head from "next/head";
 import React from "react";
 import css from "./index.module.scss";
-import {withRouter} from "next/router";
 import {Carousel} from "antd";
 
 /**
@@ -62,14 +61,14 @@ class Film extends React.Component {
      *
      * @return 将返回的数据存放到 props 中传递给构造函数 constructor
      */
-    // static async getInitialProps(context) {
-    //     console.log("[LIFECYCLE](Film) getInitialProps");
-    //     const res = await fetch("https://api.tvmaze.com/search/shows?q=marvel");
-    //     const data = await res.json();
-    //     return {
-    //         shows: data
-    //     };
-    // }
+    static async getInitialProps(context) {
+        console.log("[LIFECYCLE](Film) getInitialProps");
+        const res = await fetch("https://api.tvmaze.com/search/shows?q=marvel");
+        const data = await res.json();
+        return {
+            shows: data
+        };
+    }
 
     constructor(props) {
         super(props);
@@ -94,16 +93,16 @@ class Film extends React.Component {
      * @param nextProps
      * @param prevState
      */
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     console.log("[LIFECYCLE](Film) getDerivedStateFromProps");
-    //     if (!prevState || prevState.shows !== nextProps.shows) {
-    //         return {
-    //             shows: nextProps.shows
-    //         };
-    //     } else {
-    //         return null;
-    //     }
-    // }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        console.log("[LIFECYCLE](Film) getDerivedStateFromProps");
+        if (!prevState || prevState.shows !== nextProps.shows) {
+            return {
+                shows: nextProps.shows
+            };
+        } else {
+            return null;
+        }
+    }
 
     componentDidMount() {
         console.log("[LIFECYCLE](Film) componentDidMount");
@@ -129,18 +128,18 @@ class Film extends React.Component {
         return shouldComponentUpdate;
     }
 
-    // getSnapshotBeforeUpdate() {
-    //     console.log("[LIFECYCLE](Film) getSnapshotBeforeUpdate");
-    //     return null;
-    // }
+    getSnapshotBeforeUpdate() {
+        console.log("[LIFECYCLE](Film) getSnapshotBeforeUpdate");
+        return null;
+    }
 
     componentDidUpdate(prevProps, prevState) {
         console.log("[LIFECYCLE](Film) prevProps=", prevProps, "prevState=", prevState);
     }
 
-    // static getDerivedStateFromError() {
-    //     console.log("[LIFECYCLE](Film) getDerivedStateFromError");
-    // }
+    static getDerivedStateFromError() {
+        console.log("[LIFECYCLE](Film) getDerivedStateFromError");
+    }
 
     componentDidCatch() {
         console.log("[LIFECYCLE](Film) componentDidCatch");
@@ -168,9 +167,8 @@ class Film extends React.Component {
                             beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
                             afterChange={(index) => console.log("slide to", index)}>
                             {this.state.data.map((val) => (
-                                <a
+                                <div
                                     key={val}
-                                    href=""
                                     style={{display: "inline-block", width: "100%", height: this.state.imgHeight}}>
                                     <img
                                         src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
@@ -182,7 +180,7 @@ class Film extends React.Component {
                                             this.setState({imgHeight: "auto"});
                                         }}
                                     />
-                                </a>
+                                </div>
                             ))}
                         </Carousel>
                     </div>
@@ -205,4 +203,4 @@ class Film extends React.Component {
     }
 }
 
-export default withRouter(Film);
+export default Film;

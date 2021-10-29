@@ -8,7 +8,7 @@ const koa = require("koa"); // 开启一个本地服务
 const kos2Connect = require("koa2-connect"); // 使得在 Koa 中可以使用 express 社区的中间件(比如 http-proxy-middleware), 起到了一个中转或者适配的作用
 const {createProxyMiddleware} = require("http-proxy-middleware"); // 代理: 使得所有指向 localhost:3000/api 的请求全部重新指向 xxx.com/api
 const nextApp = next({dev: process.env.NODE_ENV !== "production"});
-const {APP_DOMAIN_PROD, APP_REQUEST_PATH_PREFIX} = require("./src/basic/basic-constants");
+const {APP_DOMAIN_PROD, APP_REQUEST_PATH_PREFIX} = require("./src/components/basic/basic-constants");
 
 const port = process.argv[2] === "-p" && !!process.argv[3] ? process.argv[3] : 8000;
 

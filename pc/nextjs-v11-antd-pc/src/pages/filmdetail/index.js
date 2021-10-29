@@ -2,6 +2,7 @@ import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import React from "react";
 import css from "./index.module.scss";
+import BasicEnv from "@basic/basic-env";
 
 class FilmDetail extends React.Component {
     static async getInitialProps(context) {
@@ -30,7 +31,7 @@ class FilmDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log("[LIFECYCLE](FilmDetail) componentDidMount");
+        console.log("[LIFECYCLE](FilmDetail) componentDidMount", BasicEnv.getApiEnv());
     }
 
     shouldComponentUpdate(nextProps, nextState) {

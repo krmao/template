@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,JSUnresolvedVariable
 
-const FAT = "FAT";
+const BasicConstants = require("./basic-constants");
 const UAT = "UAT";
 const PROD = "PROD";
 
@@ -8,21 +8,24 @@ let _apiEnv = "";
 let _didLog = false;
 
 const getApiEnvByURL = () => {
-    let origin = window.location.origin;
+    const originUrl = new URL(window.location.origin);
+    const prodUrl = new URL(BasicConstants.APP_DOMAIN_PROD);
+    const uatUrl = new URL(BasicConstants.APP_DOMAIN_UAT);
+
     let env;
-    if (origin.match(/([\s\S]*)localhost|([\s\S]*)127\.0/i) || origin.match(/a.uat.qa.nt.xxx.com/)) {
+    if (originUrl.hostname === prodUrl.hostname) {
+        env = PROD;
+    } else if (originUrl.hostname === uatUrl.hostname) {
         env = UAT;
     } else {
-        if (origin.match(/([\s\S]*)\.fat\d*\.qa\.nt\.xxx\.com/i)) {
-            env = FAT;
-        } else if (origin.match(/([\s\S]*)\.uat\d*\.qa\.nt\.xxx\.com/i)) {
-            env = UAT;
-        } else {
-            env = PROD;
-        }
+        env = UAT;
     }
     if (!_didLog) {
-        console.log("ENV:", env);
+        console.log("env originUrl =", originUrl);
+        console.log("env prodUrl =", prodUrl);
+        console.log("env uatUrl =", uatUrl);
+        console.log("env window.ENV=", window.ENV);
+        console.log("env", env);
         _didLog = true;
     }
     return env;
@@ -31,8 +34,7 @@ const getApiEnvByURL = () => {
 const getApiEnv = () => {
     if (_apiEnv === "") {
         if (typeof window !== "undefined") {
-            console.log("window.ENV=", window.ENV);
-            _apiEnv = window.ENV === undefined ? getApiEnvByURL() : window.ENV;
+            _apiEnv = getApiEnvByURL();
         } else {
             _apiEnv = PROD;
         }
@@ -43,7 +45,6 @@ const getApiEnv = () => {
 module.exports = {
     getApiEnv: getApiEnv, // 网络请求环境
     getDeploymentEnv: () => process.env.APP_ENV, // 部署环境
-    FAT: FAT,
     UAT: UAT,
     PROD: PROD
 };

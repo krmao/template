@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-export default {
+module.exports = {
     isValid: function (input) {
         return input !== undefined && typeof input !== undefined && input !== null;
     },

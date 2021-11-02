@@ -59,3 +59,11 @@ npm install @ant-design/compatible --registry https://registry.npm.taobao.org
 
 -   如果 scss 中类名带中横线, 则 js/jsx 中引用时不可以使用小驼峰命名法引用，必须使用字符串引用，否则样式不生效
 -   scss 中类名使用小驼峰命名不带中横线，则 js/jsx 中可以直径变量引用
+
+## husky not work
+
+```shell
+npm run install:taobao
+rm -rf .git/hooks
+npm i -D husky --registry https://registry.npm.taobao.org
+```

@@ -12,7 +12,7 @@ BasicHttpClient.timeout = 15 * 1000;
  */
 export default class BasicApi {
     static baseUrl = (serverContext) => {
-                return `${
+                  return `${
             BasicEnvUtil.getApiEnv(serverContext) !== BasicEnvUtil.PROD ? APP_DOMAIN_UAT : APP_DOMAIN_PROD
         }${APP_REQUEST_PATH_PREFIX}`;
     };

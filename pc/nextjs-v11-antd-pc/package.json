@@ -15,7 +15,8 @@
         "clean:full": "rm -rf ./build && rm -rf .next && rm -rf ./node_modules",
         "build": "npm run clean && next build",
         "export": "npm run build && next export -o ./build/out",
-        "lint": "eslint --fix src/ --fix ./*.js",
+        "lint": "next lint",
+        "eslint": "eslint --fix src/ --fix ./*.js",
         "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
     },
     "dependencies": {
@@ -86,10 +87,10 @@
         }
     },
     "lint-staged": {
-        "pages/**/*.jsx": [
-            "eslint --fix"
+        "*.jsx": [
+            "next lint"
         ],
-        "**/*.{js,jsx,md,json,html,css,yml}": [
+        ".{js,jsx,md,json,html,css,yml}": [
             "prettier --ignore-path .prettierignore --write"
         ]
     }

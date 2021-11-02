@@ -1,7 +1,7 @@
 /**
  * 所有页面 URL 统一放在这里定义
  */
-import BasicTextUtil from "./basic-text-util";
+import BasicValueUtil from "./basic-value-util";
 
 export default class BasicPageUrlUtil {
 
@@ -33,7 +33,7 @@ export default class BasicPageUrlUtil {
      */
     static changeHrefParams = (paramKey, paramValue) => {
         console.log("changeHrefParams start", window.location.href);
-        if (BasicTextUtil.isBlank(paramKey)) return;
+        if (BasicValueUtil.isStringBlank(paramKey)) return;
         let encodedParamValue = encodeURIComponent(paramValue);
 
         try {
@@ -51,7 +51,7 @@ export default class BasicPageUrlUtil {
                     }
                 });
                 if (oldIndex > -1) paramsArray.splice(oldIndex, 1);
-                if (!BasicTextUtil.isBlank(encodedParamValue)) paramsArray.push(paramKey + "=" + encodedParamValue);
+                if (!BasicValueUtil.isStringBlank(encodedParamValue)) paramsArray.push(paramKey + "=" + encodedParamValue);
                 paramsString = paramsArray.join("&");
             }
             console.log("changeHrefParams paramsString", paramsString);

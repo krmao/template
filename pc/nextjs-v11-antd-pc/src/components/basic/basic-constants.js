@@ -13,6 +13,8 @@ module.exports = {
     APP_DOMAIN_PROD: _APP_DOMAIN_PROD,
     APP_DOMAIN_UAT: _APP_DOMAIN_UAT,
     APP_REQUEST_PATH_PREFIX: _APP_REQUEST_PATH_PREFIX,
+    //region only config for node server on compile code, so must be es5
     APP_BASIC_STYLES_PATH: () => require("path").join(__dirname, "basic-styles"),
     APP_BASIC_ANTD_LESS_PATH: () => require("path").join(__dirname, "basic-styles/basic-global-vars-antd.less")
+    //endregion
 };

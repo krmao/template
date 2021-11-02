@@ -2,8 +2,6 @@
 
 import BasicSvgDataStatistic from "@basic-utils/basic-svg/basic-svg-data-statistic";
 import MapSvg from "@public/map.svg";
-import BasicEnvUtil from "./basic-env";
-import {APP_DOMAIN_UAT, APP_DOMAIN_PROD, APP_REQUEST_PATH_PREFIX} from "./basic-constants";
 
 const _APP_MENU_DATA = [
     {

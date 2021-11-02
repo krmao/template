@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,JSUnresolvedVariable
 
 const BasicConstants = require("./basic-constants");
-const BasicTextUtil = require("./basic-utils/basic-text-util");
+const BasicValueUtil = require("./basic-utils/basic-value-util");
 const UAT = "UAT";
 const PROD = "PROD";
 
@@ -23,7 +23,7 @@ const getApiEnvByURL = (currentHostname = window?.location?.hostname ?? "") => {
     } else if (currentHostname === uatHostName) {
         currentApiEnv = UAT;
     } else {
-        currentApiEnv = UAT;
+        currentApiEnv = UAT; // 服务端渲染时调用, 务必传入正确的 currentHostname, 不能使用 window 变量
     }
     if (!_didLog) {
         console.log("env currentHostname =", currentHostname);
@@ -43,9 +43,9 @@ const getApiEnv = (serverContext) => {
             _apiEnv = getApiEnvByURL(currentHostName);
         } else {
             let currentHost = serverContext?.req?.headers?.host ?? "";
-            currentHost = BasicTextUtil.startsWith(currentHost, "http") ? "" : "https://" + currentHost;
+            currentHost = BasicValueUtil.stringStartsWith(currentHost, "http") ? "" : "https://" + currentHost;
             console.log("> call on server side", new URL(currentHost));
-            const currentHostName = BasicTextUtil.isNotBlank(currentHost) ? new URL(currentHost).hostname : "";
+            const currentHostName = BasicValueUtil.isStringNotBlank(currentHost) ? new URL(currentHost).hostname : "";
             _apiEnv = getApiEnvByURL(currentHostName);
         }
     }

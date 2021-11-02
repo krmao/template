@@ -5,7 +5,7 @@ import {DatePicker, Divider, Popover, Tabs} from "antd";
 import AsyncComponent from "@basic-utils/basic-async-component";
 import BasicMonitorData from "@business/business-monitor/business-monitor-data";
 import moment from "moment";
-import textUtil from "@basic-utils/basic-text-util";
+import BasicValueUtil from "@basic-utils/basic-value-util";
 import Image from "next/image";
 import logoImage from "@public/logo.png";
 import style from "./index.module.scss";
@@ -108,7 +108,7 @@ export default class MonitorPage extends React.Component {
                                         showTime={false}
                                         value={
                                             this.state.poiCountType === "range" &&
-                                            textUtil.isNotBlank(this.state.poiCountTypeDateRangeString)
+                                            BasicValueUtil.isStringNotBlank(this.state.poiCountTypeDateRangeString)
                                                 ? [
                                                       moment(this.state.poiCountTypeDateRangeString?.[0], "YYYY-MM-DD"),
                                                       moment(this.state.poiCountTypeDateRangeString?.[1], "YYYY-MM-DD")

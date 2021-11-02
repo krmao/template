@@ -2,7 +2,6 @@ import React, {Component} from "react";
 
 import styles from "./index.module.scss";
 import {Select, Space, Avatar, Spin, notification} from "antd";
-import BasicLoginUtil from "../../basic-utils/basic-login-util";
 import Image from "next/image";
 import stylesLess from "./index.module.less";
 import logoImage from "@public/logo.png";
@@ -51,7 +50,7 @@ export default class BasicHeaderBar extends Component {
                         />
                         {this.props.userName ? (
                             <Select
-                                onChange={() => BasicLoginUtil.loginOut()}
+                                onChange={() => console.log("onChange")}
                                 value={this.props.userName}
                                 style={{
                                     fontFamily: "PingFangSC-Medium, Microsoft YaHei, serif",

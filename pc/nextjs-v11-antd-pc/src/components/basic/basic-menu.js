@@ -1,9 +1,8 @@
 // noinspection SpellCheckingInspection
 
-import BasicSvgDataStatistic from "@basic-utils/basic-svg/basic-svg-data-statistic";
-import MapSvg from "@public/map.svg";
+import BasicSvgDataStatistic from "@basic/basic-svg/basic-svg-data-statistic";
 
-const _APP_MENU_DATA = [
+const menuData = [
     {
         title: "数据监控",
         icon: <BasicSvgDataStatistic />,
@@ -21,15 +20,7 @@ const _APP_MENU_DATA = [
         icon: <BasicSvgDataStatistic />,
         key: "/filmdetail",
         titleAlias: "电影详情"
-    },
-    {
-        title: "数据概览",
-        icon: <MapSvg />,
-        key: "/data2",
-        titleAlias: "数据概览"
     }
 ];
 
-module.exports = {
-    APP_MENU_DATA: _APP_MENU_DATA
-};
+module.exports = menuData;

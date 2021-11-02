@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 import BasicHeaderBar from "./basic-headerbar";
 import BasicBreadcrumb from "./basic-breadcrumb";
 import BasicNavigator from "../basic-utils/basic-navigator";
-import {APP_MENU_DATA} from "../basic-config";
+import menuData from "../basic-menu";
 
 export default class BasicLayout extends React.Component {
     static _DEBUG = false;
@@ -95,7 +95,7 @@ export default class BasicLayout extends React.Component {
                                 className={styles["sidebar-menu"]}
                                 theme="light"
                                 mode="inline">
-                                {that.renderMenu(APP_MENU_DATA)}
+                                {that.renderMenu(menuData)}
                             </Menu>
                             <a className={styles.feedback} target="_blank" rel="noreferrer" href={""}>
                                 意见反馈

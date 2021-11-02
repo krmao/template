@@ -2,11 +2,10 @@ import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import React from "react";
 import css from "./index.module.scss";
-import BasicEnv from "@basic/basic-env";
 
 class FilmDetail extends React.Component {
     static async getInitialProps(context) {
-        // console.log("[LIFECYCLE](FilmDetail) getInitialProps");
+        console.log("[LIFECYCLE](FilmDetail) getInitialProps");
         const {id} = context.query;
         const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
         const show = await res.json();
@@ -31,7 +30,7 @@ class FilmDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log("[LIFECYCLE](FilmDetail) componentDidMount", BasicEnv.getApiEnv());
+        console.log("[LIFECYCLE](FilmDetail) componentDidMount");
     }
 
     shouldComponentUpdate(nextProps, nextState) {

@@ -1,42 +1,52 @@
 // noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,JSUnresolvedVariable
 
 const BasicConstants = require("./basic-constants");
+const BasicTextUtil = require("./basic-utils/basic-text-util");
 const UAT = "UAT";
 const PROD = "PROD";
 
 let _apiEnv = "";
 let _didLog = false;
 
-const getApiEnvByURL = () => {
-    const originUrl = new URL(window.location.origin);
-    const prodUrl = new URL(BasicConstants.APP_DOMAIN_PROD);
-    const uatUrl = new URL(BasicConstants.APP_DOMAIN_UAT);
+/**
+ * https://github.com/vercel/next.js/issues/1553#issuecomment-290062887
+ * @param currentHostname
+ * @return {string}
+ */
+const getApiEnvByURL = (currentHostname = window?.location?.hostname ?? "") => {
+    const prodHostName = new URL(BasicConstants.APP_DOMAIN_PROD).hostname;
+    const uatHostName = new URL(BasicConstants.APP_DOMAIN_UAT).hostname;
 
-    let env;
-    if (originUrl.hostname === prodUrl.hostname) {
-        env = PROD;
-    } else if (originUrl.hostname === uatUrl.hostname) {
-        env = UAT;
+    let currentApiEnv;
+    if (currentHostname === prodHostName) {
+        currentApiEnv = PROD;
+    } else if (currentHostname === uatHostName) {
+        currentApiEnv = UAT;
     } else {
-        env = UAT;
+        currentApiEnv = UAT;
     }
     if (!_didLog) {
-        console.log("env originUrl =", originUrl);
-        console.log("env prodUrl =", prodUrl);
-        console.log("env uatUrl =", uatUrl);
-        console.log("env window.ENV=", window.ENV);
-        console.log("env", env);
+        console.log("env currentHostname =", currentHostname);
+        console.log("env prodHostName =", prodHostName);
+        console.log("env uatHostName =", uatHostName);
+        console.log("env", currentApiEnv);
         _didLog = true;
     }
-    return env;
+    return currentApiEnv;
 };
 
-const getApiEnv = () => {
+const getApiEnv = (serverContext) => {
     if (_apiEnv === "") {
         if (typeof window !== "undefined") {
-            _apiEnv = getApiEnvByURL();
+            console.log("> call on client side");
+            const currentHostName = window?.location?.hostname ?? "";
+            _apiEnv = getApiEnvByURL(currentHostName);
         } else {
-            _apiEnv = PROD;
+            let currentHost = serverContext?.req?.headers?.host ?? "";
+            currentHost = BasicTextUtil.startsWith(currentHost, "http") ? "" : "https://" + currentHost;
+            console.log("> call on server side", new URL(currentHost));
+            const currentHostName = BasicTextUtil.isNotBlank(currentHost) ? new URL(currentHost).hostname : "";
+            _apiEnv = getApiEnvByURL(currentHostName);
         }
     }
     return _apiEnv;

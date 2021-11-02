@@ -1,16 +1,14 @@
-require("es6-promise").polyfill(); // 安卓4.3以下不兼容 promise, 无法使用 axios, 该库可以解决这个问题, 必须在使用 axios 之前执行
-
 import fetch from "isomorphic-unfetch";
 
 class BasicHttpClient {
-    static axiosClient() {
+    static axiosClient({timeout}) {
         if (!!BasicHttpClient.__axiosClient) {
             return BasicHttpClient.__axiosClient;
         }
         // noinspection JSUnresolvedFunction
         // baseURL 将自动加在 url 前面(get/post 里面的 url 填写 ip:port 后面的 path), 除非 url 是一个绝对 URL
         // 不设 baseUrl, 则 package.json 里面的 proxy 才会生效
-        const innerAxios = require("axios").create({timeout: BasicHttpClient.timeout}); // `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
+        const innerAxios = require("axios").create({timeout: timeout ?? BasicHttpClient.timeout}); // `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
 
         // 添加请求拦截器
         innerAxios.interceptors.request.use(
@@ -73,10 +71,10 @@ class BasicHttpClient {
         return this.request(url, data, {method: "post"});
     }
 
-    static request(url, data, {method}) {
+    static request(url, data, {method, timeout}) {
         console.log("--[request](start)", url, data);
         return new Promise((resolve, reject) => {
-            BasicHttpClient.axiosClient()
+            BasicHttpClient.axiosClient({timeout})
                 .request({
                     url: url,
                     method: method,
@@ -110,7 +108,7 @@ class BasicHttpClient {
         });
     }
 
-    static fetch = (url, data, {method}) => {
+    static fetch = (url, data, {method, timeout}) => {
         console.log("--[request](start)", url, data);
         return new Promise((resolve, reject) => {
             // noinspection JSCheckFunctionSignatures
@@ -118,6 +116,7 @@ class BasicHttpClient {
                 url,
                 {
                     method: method,
+                    timeout: timeout,
                     body: JSON.stringify(data),
                     headers: {"Content-Type": "application/json;charset=UTF-8"}
                 },

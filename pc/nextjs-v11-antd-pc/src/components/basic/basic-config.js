@@ -33,9 +33,5 @@ const _APP_MENU_DATA = [
 ];
 
 module.exports = {
-    APP_MENU_DATA: _APP_MENU_DATA,
-    APP_REQUEST_BASE_URL: (serverContext) =>
-        `${
-            BasicEnvUtil.getApiEnv(serverContext) !== BasicEnvUtil.PROD ? APP_DOMAIN_UAT : APP_DOMAIN_PROD
-        }${APP_REQUEST_PATH_PREFIX}`
+    APP_MENU_DATA: _APP_MENU_DATA
 };

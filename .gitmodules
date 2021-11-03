@@ -1,0 +1,3 @@
+[submodule "pc/nextjs-v11-antd-pc"]
+	path = pc/nextjs-v11-antd-pc
+	url = https://github.com/krmao/nextjs-v11-antd-pc

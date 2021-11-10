@@ -119,3 +119,35 @@ Sizes (px)	        Format and naming	Notes
  *
  */
 ```
+
+### Android Preview
+```
+自定义设备:竖屏大屏低屏幕密度显示屏
+
+设备参数
+————
+分辨率		1080x1920
+屏幕尺寸	 	6.88inch(实际21.5inch)
+屏幕密度 		160dpi
+屏幕像素密度 	320ppi(ppi = Math.sqrt(1080 * 1080 + 1920 * 1920) / 6.88 = 2202.9 / 6.88)
+https://zhuanlan.zhihu.com/p/158099749
+
+
+Android Preview Hardware
+————
+Resolution 1080x1920
+
+Screen size = (6.88 = Math.sqrt(1080 * 1080 + 1920 * 1920) / 320 = 2202.9 / 320)
+填写15inch时, density 为 mdpi, 在设备上显示刚好
+填写21.5inch时, density 为 ldpi, 未在设备上验证
+————
+
+
+Density
+————
+ldpi=120
+mdpi=160
+hdpi=240
+xhdpi=320
+xxhdpi=480
+```

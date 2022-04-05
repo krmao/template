@@ -283,84 +283,55 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0)
-  - DoubleConversion (= 1.1.6)
+  - DoubleConversion (from `../../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - DZNEmptyDataSet
-  - FBLazyVector (= 0.62.2)
-  - FBReactNativeSpec (= 0.62.2)
+  - FBLazyVector (from `../../react_native/node_modules/react-native/Libraries/FBLazyVector`)
+  - FBReactNativeSpec (from `../../react_native/node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FlutterBusiness/FlutterBusinessDebug (= 0.1.0)
   - FlutterEngineDebug (= 1.22.400)
-  - Folly (= 2018.10.22.00)
-  - glog (= 0.3.5)
+  - Folly (from `../../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../../react_native/node_modules/react-native/third-party-podspecs/glog.podspec`)
   - IQKeyboardManager
   - lottie-ios (= 2.5.3)
   - Masonry (from `https://github.com/warpling/Masonry.git`)
   - MBProgressHUD (~> 1.2.0)
   - MJRefresh
-  - RCTRequired (= 0.62.2)
-  - RCTTypeSafety (= 0.62.2)
-  - React (= 0.62.2)
-  - React-Core (= 0.62.2)
-  - React-Core/DevSupport (= 0.62.2)
-  - React-Core/RCTWebSocket (= 0.62.2)
-  - React-CoreModules (= 0.62.2)
-  - React-cxxreact (= 0.62.2)
-  - React-jsi (= 0.62.2)
-  - React-jsiexecutor (= 0.62.2)
-  - React-jsinspector (= 0.62.2)
-  - react-native-safe-area-context (= 0.6.4)
-  - React-RCTActionSheet (= 0.62.2)
-  - React-RCTAnimation (= 0.62.2)
-  - React-RCTBlob (= 0.62.2)
-  - React-RCTImage (= 0.62.2)
-  - React-RCTLinking (= 0.62.2)
-  - React-RCTNetwork (= 0.62.2)
-  - React-RCTSettings (= 0.62.2)
-  - React-RCTText (= 0.62.2)
-  - React-RCTVibration (= 0.62.2)
-  - ReactCommon/callinvoker (= 0.62.2)
-  - ReactCommon/turbomodule/core (= 0.62.2)
-  - RNGestureHandler (= 1.5.3)
-  - RNReanimated (= 1.13.1)
-  - RNVectorIcons (= 6.7.0)
+  - RCTRequired (from `../../react_native/node_modules/react-native/Libraries/RCTRequired`)
+  - RCTTypeSafety (from `../../react_native/node_modules/react-native/Libraries/TypeSafety`)
+  - React (from `../../react_native/node_modules/react-native/`)
+  - React-Core (from `../../react_native/node_modules/react-native/`)
+  - React-Core/DevSupport (from `../../react_native/node_modules/react-native/`)
+  - React-Core/RCTWebSocket (from `../../react_native/node_modules/react-native/`)
+  - React-CoreModules (from `../../react_native/node_modules/react-native/React/CoreModules`)
+  - React-cxxreact (from `../../react_native/node_modules/react-native/ReactCommon/cxxreact`)
+  - React-jsi (from `../../react_native/node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `../../react_native/node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `../../react_native/node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-safe-area-context (from `../../react_native/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec`)
+  - React-RCTActionSheet (from `../../react_native/node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `../../react_native/node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `../../react_native/node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `../../react_native/node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `../../react_native/node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `../../react_native/node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `../../react_native/node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `../../react_native/node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `../../react_native/node_modules/react-native/Libraries/Vibration`)
+  - ReactCommon/callinvoker (from `../../react_native/node_modules/react-native/ReactCommon`)
+  - ReactCommon/turbomodule/core (from `../../react_native/node_modules/react-native/ReactCommon`)
+  - RNGestureHandler (from `../../react_native/node_modules/react-native-gesture-handler/RNGestureHandler.podspec`)
+  - RNReanimated (from `../../react_native/node_modules/react-native-reanimated/RNReanimated.podspec`)
+  - RNVectorIcons (from `../../react_native/node_modules/react-native-vector-icons/RNVectorIcons.podspec`)
   - SDCycleScrollView (>= 1.80)
   - SDWebImage (~> 5.0)
   - SSZipArchive
-  - Yoga (= 1.14.0)
+  - Yoga (from `../../react_native/node_modules/react-native/ReactCommon/yoga`)
   - YYModel
 
 SPEC REPOS:
   https://github.com/krmao/libsforios.git:
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
     - FlutterBusiness
     - FlutterEngineDebug
-    - Folly
-    - glog
-    - RCTRequired
-    - RCTTypeSafety
-    - React
-    - React-Core
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - react-native-safe-area-context
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
-    - React-RCTVibration
-    - ReactCommon
-    - RNGestureHandler
-    - RNReanimated
-    - RNVectorIcons
-    - Yoga
   trunk:
     - AFNetworking
     - boost-for-react-native
@@ -375,8 +346,66 @@ SPEC REPOS:
     - YYModel
 
 EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  FBLazyVector:
+    :path: "../../react_native/node_modules/react-native/Libraries/FBLazyVector"
+  FBReactNativeSpec:
+    :path: "../../react_native/node_modules/react-native/Libraries/FBReactNativeSpec"
+  Folly:
+    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../../react_native/node_modules/react-native/third-party-podspecs/glog.podspec"
   Masonry:
     :git: https://github.com/warpling/Masonry.git
+  RCTRequired:
+    :path: "../../react_native/node_modules/react-native/Libraries/RCTRequired"
+  RCTTypeSafety:
+    :path: "../../react_native/node_modules/react-native/Libraries/TypeSafety"
+  React:
+    :path: "../../react_native/node_modules/react-native/"
+  React-Core:
+    :path: "../../react_native/node_modules/react-native/"
+  React-CoreModules:
+    :path: "../../react_native/node_modules/react-native/React/CoreModules"
+  React-cxxreact:
+    :path: "../../react_native/node_modules/react-native/ReactCommon/cxxreact"
+  React-jsi:
+    :path: "../../react_native/node_modules/react-native/ReactCommon/jsi"
+  React-jsiexecutor:
+    :path: "../../react_native/node_modules/react-native/ReactCommon/jsiexecutor"
+  React-jsinspector:
+    :path: "../../react_native/node_modules/react-native/ReactCommon/jsinspector"
+  react-native-safe-area-context:
+    :path: "../../react_native/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec"
+  React-RCTActionSheet:
+    :path: "../../react_native/node_modules/react-native/Libraries/ActionSheetIOS"
+  React-RCTAnimation:
+    :path: "../../react_native/node_modules/react-native/Libraries/NativeAnimation"
+  React-RCTBlob:
+    :path: "../../react_native/node_modules/react-native/Libraries/Blob"
+  React-RCTImage:
+    :path: "../../react_native/node_modules/react-native/Libraries/Image"
+  React-RCTLinking:
+    :path: "../../react_native/node_modules/react-native/Libraries/LinkingIOS"
+  React-RCTNetwork:
+    :path: "../../react_native/node_modules/react-native/Libraries/Network"
+  React-RCTSettings:
+    :path: "../../react_native/node_modules/react-native/Libraries/Settings"
+  React-RCTText:
+    :path: "../../react_native/node_modules/react-native/Libraries/Text"
+  React-RCTVibration:
+    :path: "../../react_native/node_modules/react-native/Libraries/Vibration"
+  ReactCommon:
+    :path: "../../react_native/node_modules/react-native/ReactCommon"
+  RNGestureHandler:
+    :path: "../../react_native/node_modules/react-native-gesture-handler/RNGestureHandler.podspec"
+  RNReanimated:
+    :path: "../../react_native/node_modules/react-native-reanimated/RNReanimated.podspec"
+  RNVectorIcons:
+    :path: "../../react_native/node_modules/react-native-vector-icons/RNVectorIcons.podspec"
+  Yoga:
+    :path: "../../react_native/node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Masonry:
@@ -388,8 +417,8 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  FBLazyVector: df77f919684572e9de6dd003065ac9e92e019a54
-  FBReactNativeSpec: 282e43ccfc5f907f7ff7fa52b053b1509ada9dbd
+  FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
+  FBReactNativeSpec: 5465d51ccfeecb7faa12f9ae0024f2044ce4044e
   FlutterBusiness: 18136f1b54095aeb410be71784ec2bc2415f7dfd
   FlutterEngineDebug: 79a6f9bf183a98f3a037a2da941254130bd32412
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -399,35 +428,35 @@ SPEC CHECKSUMS:
   Masonry: 890751a1008d6f33a97b032f4ecad4870d7eed3a
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
-  RCTRequired: 11a42a6e6af7cb6f77d0c296264401ffe1ebe901
-  RCTTypeSafety: e0891ae6b4641f8ecae4733ee48a88926bb323fa
+  RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
+  RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
   React-Core: b12bffb3f567fdf99510acb716ef1abd426e0e05
-  React-CoreModules: ec6edc89d44f152012af926ec0a6942bbc104e87
-  React-cxxreact: cb296cada79d2525fdee31576f7ed7e0a6252418
-  React-jsi: 21783cc8f4197a08bd70c13037f5ba6d3983a170
-  React-jsiexecutor: 44bb5b71d9c9c99978d7fc88c27cf95103de7891
-  React-jsinspector: 20517cdc3065fb5c6702a0d4f24f4d20858a2558
+  React-CoreModules: 4a9b87bbe669d6c3173c0132c3328e3b000783d0
+  React-cxxreact: e65f9c2ba0ac5be946f53548c1aaaee5873a8103
+  React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
+  React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
+  React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
-  React-RCTActionSheet: 80a1f24bd3535d49796364629a7b7440a24e82f6
-  React-RCTAnimation: 47926a2f2d358b420c51cfb7e7599152cebfba8e
-  React-RCTBlob: d910bbec679eb27028e85e84c447ca2073f43e9f
-  React-RCTImage: 852f03c4048780ac01ca619d9622a223fa23a0c5
-  React-RCTLinking: fd51ac1fca82e40003d716fbe8f7720244f8c5f3
-  React-RCTNetwork: 480dfe8267b0b308b55387f795d7f0c32dcfee8c
-  React-RCTSettings: 90d5b263d3fd194ff8acd40fa82ee045fcd6e072
-  React-RCTText: 4259d20445898f0f7afb3cd03d66126f30439cde
-  React-RCTVibration: c5730c991d36bf8ba213aa29d5108beb325a57ba
-  ReactCommon: 31e528fca9bca2191809119f23421c86946add1b
+  React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
+  React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
+  React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
+  React-RCTImage: e70be9b9c74fe4e42d0005f42cace7981c994ac3
+  React-RCTLinking: c1b9739a88d56ecbec23b7f63650e44672ab2ad2
+  React-RCTNetwork: 73138b6f45e5a2768ad93f3d57873c2a18d14b44
+  React-RCTSettings: 6e3738a87e21b39a8cb08d627e68c44acf1e325a
+  React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
+  React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
+  ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
   SDCycleScrollView: a0d74c3384caa72bdfc81470bdbc8c14b3e1fbcf
   SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
-  Yoga: fc3de651ef92c6df19a93b1a65a527c3dcda02b2
+  Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 4b2cd951c42f5fb0a12db16e1f5d8796ffdcd3a0
+PODFILE CHECKSUM: fe54a8a1b1441eb92e06dd2259f7ed274bb04299
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.3

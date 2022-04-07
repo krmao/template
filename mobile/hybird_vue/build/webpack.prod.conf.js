@@ -115,9 +115,7 @@ var webpackConfig = merge(baseWebpackConfig, {
                 moduleDebug: false,
                 moduleUpdateStrategy: "OFFLINE", // ONLINE=在线  , OFFLINE=离线
 
-                //https://h.jia.chexiangpre.com/cx/cxj/cxjappweb/buyMealCard/index.shtml#/cardList
                 moduleMainUrl: "/cx/cxj/cxjappweb/" + moduleName + "/",
-                //"https://s1.chexiangpre.com/msweb02/cx/cxj/cxjappweb/" + moduleName + "/"
                 moduleScriptUrl: "/cx/cxj/cxjappweb/" + moduleName + "/",
                 moduleConfigUrl: "http://10.47.58.14:8080/background/files/" + moduleName + ".json",
                 moduleDownloadUrl: "http://10.47.58.14:8080/background/files/" + moduleName + "-" + moduleVersion + ".zip"

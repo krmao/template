@@ -1,0 +1,65 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+
+group = "com.template"
+version = "1.0.0"
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+    resourcePrefix "flutter_"
+
+    sourceSets {
+        main {
+            manifest.srcFile "src/main/AndroidManifest.xml"
+            res.srcDir "src/main/res"
+            java { srcDirs = ["src/main/java"] }
+        }
+    }
+
+    /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+        // ERROR: Unable to resolve dependency for @profile/compileClasspath
+        buildTypes {
+            profile {
+                initWith debug
+            }
+        }
+    }*/
+}
+
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
+
+    if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+            compileOnly(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+                changing = true
+            }
+        }
+        /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+            profileApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+                changing = true
+            }
+        }*/
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+            compileOnly(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+                changing = true
+            }
+        }
+    }
+}
+
+apply from: "./upload_to_jcenter.gradle"

@@ -1,0 +1,78 @@
+<!--index.wxml-->
+<view class="container">
+	<view class='list'>
+		<block wx:for="{{orderList}}" wx:key="index">
+			<view class='.common-list-item'>
+				<view class='list-item'>
+					<image class='list-item-image' mode='aspectFill' src="{{item.imageUrl}}"></image>
+					<view class='list-item-content'>
+						<!-- <view class='list-item-title'>
+						订单ID: {{item.id}}
+					</view> -->
+						<view class='list-item-time'>
+							订单编号: {{item.orderCode}}
+						</view>
+						<view class='list-item-time'>
+							下单时间: {{item.createdDate}}
+						</view>
+						<view class='list-item-time'>
+							数量 {{item.goodsNumber}} 总价 {{item.totalAmount}}元
+						</view>
+						<view class='list-item-time'>
+							提成金额: {{item.separateAmount}}元
+						</view>
+						<view class='list-item-time'>
+							收货人: {{item.consignee}}
+						</view>
+						<view class='list-item-time'>
+							手机: {{item.consignPhone}}
+						</view>
+						<view wx:if="{{item.deliveryType==1}}" class='list-item-time'>
+							收货人地址: 自提不显示地址
+						</view>
+						<view wx:else class='list-item-time'>
+							收货人地址: {{item.consignAddress}}
+						</view>
+					</view>
+					<view class='list-item-tip'>
+						<view wx:if="{{item.orderStatus==0}}" class='list-item-time'>
+							待支付
+						</view>
+						<view wx:elif="{{item.orderStatus==1}}" class='list-item-time'>
+							待成团
+						</view>
+						<view wx:elif="{{item.orderStatus==2}}" class='list-item-time'>
+							待发货
+						</view>
+						<view wx:elif="{{item.orderStatus==3}}" class='list-item-time'>
+							已发货
+						</view>
+						<view wx:elif="{{item.orderStatus==4}}" class='list-item-time'>
+							已完成
+						</view>
+						<view wx:elif="{{item.orderStatus==5}}" class='list-item-time'>
+							已取消
+						</view>
+						<view wx:elif="{{item.orderStatus==6}}" class='list-item-time'>
+							已退货
+						</view>
+						<view wx:elif="{{item.orderStatus==7}}" class='list-item-time'>
+							待退款
+						</view>
+						<view wx:elif="{{item.orderStatus==8}}" class='list-item-time'>
+							已退款
+						</view>
+						<view wx:else class='list-item-time'>
+						</view>
+
+						<view wx:if="{{item.orderStatus==2 || item.orderStatus==3 || item.orderStatus==4}}" class='list-item-time'>
+							<image class='list-item-image-phone' mode='aspectFill' src="../../image/icon_phone.png" bindtap="callPhone" data-phone="{{item.consignPhone}}"></image>
+						</view>
+						<view wx:else class='list-item-time'>
+						</view>
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
+</view>

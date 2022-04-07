@@ -1,0 +1,78 @@
+// https://github.com/vinint/Android-BluetoothPrinter/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadInternalMaven.gradle
+
+apply plugin: "maven"
+
+// local Maven account info
+def NEXUS_USERNAME=''
+def NEXUS_PASSWORD=''
+def NEXUS_REPOSITORY_URL=''
+
+// pom info
+def POM_NAME=''
+def POM_VERSION=''
+def POM_ARTIFACTID=""
+def POM_GROUPID=''
+def POM_PACKAGING=''
+def POM_DESCRIPTION=''
+
+// read property from local.properties file
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+NEXUS_USERNAME = properties.getProperty("NEXUS_USERNAME").trim();
+NEXUS_PASSWORD = properties.getProperty("NEXUS_PASSWORD").trim();
+NEXUS_REPOSITORY_URL = properties.getProperty("NEXUS_REPOSITORY_URL").trim();
+
+POM_NAME= properties.getProperty("POM_NAME").trim();
+POM_VERSION=properties.getProperty("POM_VERSION").trim();
+POM_ARTIFACTID=properties.getProperty("POM_ARTIFACTID").trim();
+POM_GROUPID=properties.getProperty("POM_GROUPID").trim();
+POM_PACKAGING=properties.getProperty("POM_PACKAGING").trim();
+POM_DESCRIPTION=properties.getProperty("POM_DESCRIPTION").trim();
+
+task androidJavadocs(type: Javadoc) {
+    options.encoding = "utf-8"
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+// package java docs
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc' //分类器，区分jar
+    from androidJavadocs.destinationDir
+}
+
+// package source
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'//分类器，区分jar
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+//    archives androidJavadocsJar
+}
+
+// upload to internal maven
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_REPOSITORY_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            pom.project {
+                name POM_NAME
+                version POM_VERSION
+                artifactId POM_ARTIFACTID
+                groupId POM_GROUPID
+                packaging POM_PACKAGING
+                description POM_DESCRIPTION
+            }
+        }
+    }
+}
+
+// use new task name
+project.task('upload2InternalMaven', group: "vin", description: "upload to internal maven", dependsOn: ["uploadArchives"] ).doLast {
+    println "***************upload to internal maven finish!***************"
+}

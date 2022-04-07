@@ -1,0 +1,7 @@
+.idea/
+.gradle/
+.DS_Store
+# 注意提交时邮箱信息
+node_modules/
+# 注意提交时邮箱信息
+package-lock.json

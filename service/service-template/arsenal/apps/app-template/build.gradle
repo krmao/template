@@ -1,0 +1,137 @@
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'org.hidetake.ssh'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.housekeeper'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+compileKotlin { kotlinOptions.jvmTarget = "1.8" }
+compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
+
+configurations {
+    all*.exclude module: 'spring-boot-starter-logging'
+}
+
+war {
+    archiveName 'template.war'
+}
+
+processResources {
+    filesMatching('application.yml') {
+        logger.error(">>>>>>>>>>==============================>>>>>>>>>>")
+        logger.error("\n[processResources](filesMatched) ${it.path}\n")
+        logger.error("<<<<<<<<<<==============================<<<<<<<<<<")
+        expand(project.properties)
+    }
+}
+
+//======================================================================================================================
+// deploy by ssh
+//======================================================================================================================
+task deployBySSH(type: Exec) {
+    //noinspection GroovyAssignabilityCheck
+    executable("sh")
+    //noinspection GroovyAssignabilityCheck
+    args "-c", "/usr/local/bin/sshpass -p ${server_password} scp $buildDir/libs/template.war ${server_user}@${server_ip}:/usr/software/tomcat/apache-tomcat-8.5.24/webapps/"
+}
+deployBySSH.dependsOn("clean", "war")
+//======================================================================================================================
+// deploy by gradle-ssh-plugin
+//======================================================================================================================
+remotes {
+    serverHousekeeper {
+        host = server_ip
+        user = server_user
+        password = server_password
+    }
+}
+
+/**
+ * 部署 war -> remote tomcat and restart tomcat
+ * ./gradlew clean deploy --info
+ */
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+task deploy {
+    doLast {
+        ssh.runInOrder {
+            session(remotes.serverHousekeeper) {
+                put from: "$buildDir/libs/template.war", into: '/usr/software/tomcat/apache-tomcat-8.5.24/webapps/'
+                execute("rm -rf /usr/software/tomcat/apache-tomcat-8.5.24/webapps/template") { result -> println result }
+                execute("service tomcat stop 10 -force") { result -> println result }
+                execute("service tomcat start") { result -> println result }
+            }
+        }
+    }
+}
+deploy.dependsOn("clean", "war")
+
+task deployLocal(type: Copy) {
+    doLast{
+        from "$buildDir/libs/template.war"
+        into '/Users/maokangren/software/apache-tomcat-8.5.29/webapps/'
+        rename('template.war', 'template.war')
+    }
+}
+deployLocal.dependsOn("clean", "war")
+
+task copyConfigFile(type: Copy) {
+    doLast{
+        print "copyConfigFile start\n"
+        from "$buildDir/resources/main/application.yml"
+        into "$buildDir/libs/template.war/WEB-INF/classes"
+        into "$projectDir/out/production/resources/"
+        rename('application.yml', 'application.yml')
+        print "copyConfigFile end"
+    }
+}
+copyConfigFile.dependsOn("clean", "war")
+//======================================================================================================================
+// deploy end
+//======================================================================================================================
+
+dependencies {
+
+    // https://github.com/spring-projects/spring-boot/releases/tag/v1.5.8.RELEASE
+
+    //  :: Spring Boot ::        (v1.5.8.RELEASE)
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    // compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-log4j2')
+
+    compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
+
+    // compile 'org.springframework:spring-jdbc:5.2.7.RELEASE'
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.5' // 1.1.23
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+    runtime('mysql:mysql-connector-java:8.0.21')
+
+    compile 'com.google.guava:guava:23.0'
+
+    //spring security
+    // https://gigsterous.github.io/engineering/2017/03/01/spring-boot-4.html
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.security.oauth:spring-security-oauth2')
+
+    // 热部署, 加这个依赖会导致 项目启动时 除 main 线程外多一个 restartedMain 线程, 暂时关闭
+    // runtime('org.springframework.boot:spring-boot-devtools')
+
+    // testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    compile 'io.jsonwebtoken:jjwt:0.9.0'
+
+    // 这里切换是否发布
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+
+    // http://www.jianshu.com/p/39f145c6eb29
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: rootProject.ext.springfox_swagger_version
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: rootProject.ext.springfox_swagger_version
+}

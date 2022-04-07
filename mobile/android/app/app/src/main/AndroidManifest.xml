@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.smart.template">
+
+    <!-- 网络 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 读写 SDCard -->
+    <!-- 读权限必须在 AndroidManifest.xml 中申明, 否则即使在代码中动态申请也是失败的 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 写权限必须在 AndroidManifest.xml 中申明, 否则即使在代码中动态申请也是失败的 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!-- 相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- 定位 -->
+    <!--<uses-permission android:name="android.permission.LOCATION_HARDWARE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+
+    <!-- WIFI -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    　　
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name="com.smart.template.FinalApplication"
+        android:allowBackup="true"
+        android:allowTaskReparenting="false"
+        android:fullBackupContent="@xml/final_backup_descriptor"
+        android:icon="@mipmap/final_launcher"
+        android:label="@string/final_app_name"
+        android:maxAspectRatio="2.1"
+        android:networkSecurityConfig="@xml/final_network_security_config"
+        android:resizeableActivity="false"
+        android:supportsRtl="false"
+        android:theme="@style/STAppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
+        tools:replace="android:label,android:allowBackup,android:supportsRtl">
+
+        <!-- SDK >= 26 android:maxAspectRatio="2.4" -->
+        <!-- meta-data SDK <= 25, must be set android:resizeableActivity="false" -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+
+        <!-- 适配华为（HUA_WEI）刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+
+        <!-- 适配小米（XIAO_MI）刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+        <activity
+            android:name="com.smart.template.home.tab.FinalHomeTabActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTask"
+            android:theme="@style/STAppTheme.Home"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.template.FinalLaunchActivity"
+            android:configChanges="locale|fontScale|orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Launch"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <!-- 隐式Intent启动的activity，需要都要加上DEFAULT才可以匹配，如果category加了LAUNCHER则可选 -->
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <!-- 浏览器在特定情况下可以打开这个页面 -->
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="template"
+                    android:scheme="smart" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.smart.template.home.test.FinalBehaviorBottomSheetActivity"
+            android:configChanges="orientation"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.smart.template.home.test.FinalBehaviorBottomSheetV2Activity"
+            android:configChanges="orientation"
+            android:launchMode="standard"
+            android:theme="@style/STAppTheme.Normal.Translucent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+    </application>
+
+</manifest>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:id="@+id/dummy_framelayout_replacing_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/final_beauty"
+        android:fitsSystemWindows="true" />
+    <!--</FrameLayout>-->
+    <!--<fragment-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/support_map"-->
+    <!--android:name="com.google.android.gms.maps.SupportMapFragment"/>-->
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/FinalBehaviorAppTheme.AppBarOverlay"
+        app:layout_behavior="@string/final_ScrollingAppBarLayoutBehavior">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/FinalBehaviorAppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/final_anchor_point"
+        android:background="@color/finalColorAccent"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/final_BackDropBottomSheetBehavior" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:finalAnchorPoint="@dimen/final_anchor_point"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/final_bottom_sheet_peek_height"
+        app:layout_behavior="@string/final_BottomSheetBehaviorGoogleMapsLike">
+
+        <include
+            layout="@layout/final_behavior_bottom_sheet_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true" />
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/final_fab_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/final_behavior_ic_action_go"
+        app:layout_anchor="@id/bottom_sheet"
+        app:layout_anchorGravity="top|right|end"
+        app:layout_behavior="@string/final_ScrollAwareFABBehavior" />
+
+    <com.smart.template.home.test.behavior.FinalMergedAppBarLayout
+        android:id="@+id/mergedappbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/final_MergedAppBarLayoutBehavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

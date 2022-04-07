@@ -1,0 +1,1200 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6194A03B0CD254EA9E34ADD2 /* STCommunicationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A267B83D8BAB47B85286 /* STCommunicationPlugin.m */; };
+		6194A0DAB76F194AD7CA4C91 /* STRNView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AEE19397E401C3C96C9F /* STRNView.m */; };
+		6194A10E9D19FFE053EBD767 /* NSString+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A810D0E2435AEB12E3C0 /* NSString+STExtension.m */; };
+		6194A134C4FB52C6E3583F65 /* STBusObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AFBEFDC16444B6AEF795 /* STBusObject.m */; };
+		6194A138D9DB6A5933E6A0BA /* STRNURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A29C63B26E7F128361D4 /* STRNURL.m */; };
+		6194A16AE9062FEF56A95031 /* STBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AAF766A9DDBDDF61EE2B /* STBus.m */; };
+		6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AE1E44E843730E602584 /* UIView+STExtension.m */; };
+		6194A308C4BA44F042EDC022 /* ReactBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9DCF4569D456916A923 /* ReactBridgeModule.m */; };
+		6194A34A71A9E797DD255FD8 /* NSNotificationCenter+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0A1ED412B95FED6F0E4 /* NSNotificationCenter+STExtension.m */; };
+		6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD7A3B59E5179562FE5E /* UIDevice+STExtension.m */; };
+		6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */; };
+		6194A4584A1A69F5FEFBF776 /* STLeftDragPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A8E731AD66F7CEC432C5 /* STLeftDragPanGestureRecognizer.m */; };
+		6194A465937AC68B6490EDCA /* STHybirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD65AED130D6F828999D /* STHybirdViewController.m */; };
+		6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A0994C02CAD7478308B2 /* STBaseViewController.m */; };
+		6194A4F3F4F4C52F5479675C /* STRNBusObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A02394B4C94652239CF8 /* STRNBusObject.m */; };
+		6194A576DD8C3CB488BD7295 /* NSArray+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ADD069521D561EE38BB8 /* NSArray+STExtension.m */; };
+		6194A648C1D0ED37EB17217F /* STBSPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ACAFB645E70822B7B204 /* STBSPatch.m */; };
+		6194A6654994E6476E46069A /* STRNUnZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A4F06AF4B3CFB53A0ABF /* STRNUnZip.m */; };
+		6194A6A7F1E7C5A13FE9729C /* STNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A7339A1B22D2E1AD9D86 /* STNavViewController.m */; };
+		6194A71EEB9DDE620D31C006 /* STRNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A21280CD66F0C661A4A6 /* STRNViewController.m */; };
+		6194A7243D18D0DE4BCA9890 /* STSchemalRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AF603C08DB6935EB87B9 /* STSchemalRule.m */; };
+		6194A796992B4E05C83C9347 /* STRNDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A988F6B751FB150CB58D /* STRNDispatcher.m */; };
+		6194A826E8DDEF58C2DAB371 /* STThredUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A9B2E54EE8A8F3A22C02 /* STThredUtil.m */; };
+		6194A93645DDE2D2B819897D /* NSFileManager+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ACAF5B5DAD759962E638 /* NSFileManager+STExtension.m */; };
+		6194A966B327855320B250D6 /* NSString+Md5.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A71A42DD8F53C156DD73 /* NSString+Md5.m */; };
+		6194A96A9D036B38AA9D109E /* NSUserDefaults+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AEE4B594774BBEDCD629 /* NSUserDefaults+STExtension.m */; };
+		6194A96CE4392CB522BDC4DE /* STRNFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AC16EE9B1867B91154C1 /* STRNFileManager.m */; };
+		6194A9C5665E37AA84F8AF95 /* ReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A1DE0809717C7C9DCD41 /* ReactBridge.m */; };
+		6194AA633C671D5397B2C340 /* NSDate+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AB51924E3F3EB7E09E3D /* NSDate+STExtension.m */; };
+		6194AAE92D9CAAD4127D0BC6 /* NSData+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ABCCBBC406FB6B4CE667 /* NSData+STExtension.m */; };
+		6194AB931E45F44AEEC24DFC /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A29FCE5CA1324E12E6F2 /* StringUtil.m */; };
+		6194ABFF21C0635695DA878D /* STCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A7EF18A4D50A24DC996E /* STCommunication.m */; };
+		6194AC9FD4CF9F794934516D /* UIViewController+TopMostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194ABEE796806A03C4C6B8E /* UIViewController+TopMostViewController.m */; };
+		6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */; };
+		6194AE32877AD84955D2C33B /* STDragNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A3E07FC3B89915E735F8 /* STDragNavigationController.m */; };
+		6194AEAEA654E7EDDECB4F79 /* STWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A1C0B15E5C83BD0FC021 /* STWKWebViewController.m */; };
+		6194AEBF2EED5C0F00E733A9 /* NSDictionary+STExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194A87E235D8946004A5966 /* NSDictionary+STExtension.m */; };
+		6194AFA7411C6DC05E75ECCB /* STJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 6194AB9545E013CE714D3F6D /* STJSONSerialization.m */; };
+		6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238F29E3F09DAEC521EB271C /* libPods-Template.a */; };
+		F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */; };
+		F86803DD247670A400D29159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DC247670A400D29159 /* AppDelegate.m */; };
+		F86803E0247670A400D29159 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803DF247670A400D29159 /* SceneDelegate.m */; };
+		F86803E8247670A500D29159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86803E7247670A500D29159 /* Assets.xcassets */; };
+		F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86803E9247670A500D29159 /* LaunchScreen.storyboard */; };
+		F86803EE247670A500D29159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F86803ED247670A500D29159 /* main.m */; };
+		F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */; };
+		F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */; };
+		F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = F87A5D272591D9EB00993772 /* STFlutterRouter.m */; };
+		F8851B3F2595852E001F2FBA /* STEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B3E2595852E001F2FBA /* STEventManager.m */; };
+		F8851B44259589E6001F2FBA /* STValueUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B43259589E6001F2FBA /* STValueUtil.m */; };
+		F8851B482595968F001F2FBA /* STURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B472595968F001F2FBA /* STURLManager.m */; };
+		F8851B4C25959A99001F2FBA /* STNetworkUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8851B4B25959A99001F2FBA /* STNetworkUtil.m */; };
+		F88C1E5B2592E66800C3FFBE /* STFlutterPagePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */; };
+		F88C1E5E2592E66800C3FFBE /* STFlutterToastPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */; };
+		F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */; };
+		F88C1E612592E66800C3FFBE /* STFlutterEnvPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */; };
+		F88C1E652592E66800C3FFBE /* STFlutterApplicationPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */; };
+		F88C1E662592E66800C3FFBE /* STFlutterEventPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */; };
+		F88C1E682592E66800C3FFBE /* STFlutterPluginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */; };
+		F88C1E692592E66800C3FFBE /* STFlutterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E582592E66800C3FFBE /* STFlutterBridge.m */; };
+		F88C1E6A2592E66800C3FFBE /* STFlutterPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */; };
+		F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */; };
+		F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */; };
+		F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1E952593213B00C3FFBE /* STToastUtil.m */; };
+		F88C1F152594690400C3FFBE /* STThreadUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F88C1F142594690400C3FFBE /* STThreadUtil.m */; };
+		F89B7D1A249B4C4000B2FDC7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D19249B4C4000B2FDC7 /* libz.tbd */; };
+		F89B7D1E249B4D1800B2FDC7 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */; };
+		F89B7D20249B5AA000B2FDC7 /* bundle-rn.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */; };
+		F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */; };
+		F8DB3E232477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */; };
+		F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */; };
+		F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */; };
+		F8DB3E2C2477CD7C00B3B5A0 /* STMainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */; };
+		F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */; };
+		F8F85E3C247BBAB500C6BFFA /* STSystemUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */; };
+		F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F85E3F247BCFF900C6BFFA /* STListViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		238F29E3F09DAEC521EB271C /* libPods-Template.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Template.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6194A02394B4C94652239CF8 /* STRNBusObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNBusObject.m; sourceTree = "<group>"; };
+		6194A0994C02CAD7478308B2 /* STBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseViewController.m; sourceTree = "<group>"; };
+		6194A0A1ED412B95FED6F0E4 /* NSNotificationCenter+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+STExtension.m"; sourceTree = "<group>"; };
+		6194A0BD01F3F0A25E0CB4B6 /* STNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STNavViewController.h; sourceTree = "<group>"; };
+		6194A0F7BFA20438CA85EC75 /* ReactBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactBridge.h; sourceTree = "<group>"; };
+		6194A104CB169EF33BA2A378 /* NSString+Md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Md5.h"; sourceTree = "<group>"; };
+		6194A10EA9F5D5DD6CE09C4E /* STDragNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STDragNavigationController.h; sourceTree = "<group>"; };
+		6194A18176B91F0E858C0711 /* NSNotificationCenter+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+STExtension.h"; sourceTree = "<group>"; };
+		6194A1C0B15E5C83BD0FC021 /* STWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STWKWebViewController.m; sourceTree = "<group>"; };
+		6194A1DE0809717C7C9DCD41 /* ReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBridge.m; sourceTree = "<group>"; };
+		6194A21280CD66F0C661A4A6 /* STRNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNViewController.m; sourceTree = "<group>"; };
+		6194A267B83D8BAB47B85286 /* STCommunicationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCommunicationPlugin.m; sourceTree = "<group>"; };
+		6194A28D515ED7A2CC687D11 /* STRNBusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNBusObject.h; sourceTree = "<group>"; };
+		6194A29C63B26E7F128361D4 /* STRNURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNURL.m; sourceTree = "<group>"; };
+		6194A29FCE5CA1324E12E6F2 /* StringUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringUtil.m; sourceTree = "<group>"; };
+		6194A2FCAC06176AE4484F6B /* STWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STWKWebViewController.h; sourceTree = "<group>"; };
+		6194A36FEA3CCB60E3B4A97E /* STBSPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBSPatch.h; sourceTree = "<group>"; };
+		6194A3E07FC3B89915E735F8 /* STDragNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STDragNavigationController.m; sourceTree = "<group>"; };
+		6194A49170EECF238B787AC6 /* NSDate+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+STExtension.h"; sourceTree = "<group>"; };
+		6194A4BDA63EAEC4B93654A0 /* STRNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNViewController.h; sourceTree = "<group>"; };
+		6194A4C4F5E0737ED9DA5C08 /* STThredUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STThredUtil.h; sourceTree = "<group>"; };
+		6194A4DD4DE9611969EC7CB7 /* NSUserDefaults+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+STExtension.h"; sourceTree = "<group>"; };
+		6194A4F06AF4B3CFB53A0ABF /* STRNUnZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNUnZip.m; sourceTree = "<group>"; };
+		6194A53174A31319E5887269 /* UIColor+ARGB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ARGB.h"; sourceTree = "<group>"; };
+		6194A571693F942629A109A7 /* STBusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBusObject.h; sourceTree = "<group>"; };
+		6194A63A7CE2FB281EEC5EA9 /* STCommunicationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCommunicationPlugin.h; sourceTree = "<group>"; };
+		6194A6676B156FDA92EA2AFA /* NSFileManager+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+STExtension.h"; sourceTree = "<group>"; };
+		6194A71A42DD8F53C156DD73 /* NSString+Md5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Md5.m"; sourceTree = "<group>"; };
+		6194A7281B1B4E3235104DFA /* STRNURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNURL.h; sourceTree = "<group>"; };
+		6194A7339A1B22D2E1AD9D86 /* STNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STNavViewController.m; sourceTree = "<group>"; };
+		6194A7A261B6CB4709540F77 /* STRNView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNView.h; sourceTree = "<group>"; };
+		6194A7EF18A4D50A24DC996E /* STCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STCommunication.m; sourceTree = "<group>"; };
+		6194A810D0E2435AEB12E3C0 /* NSString+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+STExtension.m"; sourceTree = "<group>"; };
+		6194A8429BDAC7CF7EBDEC9A /* NSData+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+STExtension.h"; sourceTree = "<group>"; };
+		6194A87AC89E2DFB549B4803 /* STRNUnZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNUnZip.h; sourceTree = "<group>"; };
+		6194A87E235D8946004A5966 /* NSDictionary+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+STExtension.m"; sourceTree = "<group>"; };
+		6194A8B87B944A077B5D9D7E /* STRNDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNDispatcher.h; sourceTree = "<group>"; };
+		6194A8E731AD66F7CEC432C5 /* STLeftDragPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STLeftDragPanGestureRecognizer.m; sourceTree = "<group>"; };
+		6194A91F0B76B38533D90D22 /* STHybirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STHybirdViewController.h; sourceTree = "<group>"; };
+		6194A9711A1A5553E3BD012B /* NSArray+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+STExtension.h"; sourceTree = "<group>"; };
+		6194A9798B4A10786167307E /* NSDictionary+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+STExtension.h"; sourceTree = "<group>"; };
+		6194A988F6B751FB150CB58D /* STRNDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNDispatcher.m; sourceTree = "<group>"; };
+		6194A9B2E54EE8A8F3A22C02 /* STThredUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STThredUtil.m; sourceTree = "<group>"; };
+		6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseTabBarController.m; sourceTree = "<group>"; };
+		6194A9DCF4569D456916A923 /* ReactBridgeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBridgeModule.m; sourceTree = "<group>"; };
+		6194AA4AF488C6408F48F6A5 /* STCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STCommunication.h; sourceTree = "<group>"; };
+		6194AAE6C2E195D2C6C0EF83 /* STLeftDragPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STLeftDragPanGestureRecognizer.h; sourceTree = "<group>"; };
+		6194AAEACE540AEEE5121D40 /* UIDevice+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+STExtension.h"; sourceTree = "<group>"; };
+		6194AAF766A9DDBDDF61EE2B /* STBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBus.m; sourceTree = "<group>"; };
+		6194AB3C3052EE9E2B22D0DF /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		6194AB51924E3F3EB7E09E3D /* NSDate+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+STExtension.m"; sourceTree = "<group>"; };
+		6194AB9545E013CE714D3F6D /* STJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STJSONSerialization.m; sourceTree = "<group>"; };
+		6194ABACD2322A1526AE7A48 /* UIView+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+STExtension.h"; sourceTree = "<group>"; };
+		6194ABCCBBC406FB6B4CE667 /* NSData+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+STExtension.m"; sourceTree = "<group>"; };
+		6194ABEE796806A03C4C6B8E /* UIViewController+TopMostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TopMostViewController.m"; sourceTree = "<group>"; };
+		6194AC0533252ACDE06ECA93 /* STRNFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STRNFileManager.h; sourceTree = "<group>"; };
+		6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseTabBarController.h; sourceTree = "<group>"; };
+		6194AC16EE9B1867B91154C1 /* STRNFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNFileManager.m; sourceTree = "<group>"; };
+		6194ACAF5B5DAD759962E638 /* NSFileManager+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+STExtension.m"; sourceTree = "<group>"; };
+		6194ACAFB645E70822B7B204 /* STBSPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBSPatch.m; sourceTree = "<group>"; };
+		6194AD062D94D28BFE6667FA /* STBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBus.h; sourceTree = "<group>"; };
+		6194AD12AA71819671BEFFEB /* NSString+STExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+STExtension.h"; sourceTree = "<group>"; };
+		6194AD65AED130D6F828999D /* STHybirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHybirdViewController.m; sourceTree = "<group>"; };
+		6194AD7A3B59E5179562FE5E /* UIDevice+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+STExtension.m"; sourceTree = "<group>"; };
+		6194AD85A7ACC89E9507FD76 /* STMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMacros.h; sourceTree = "<group>"; };
+		6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ARGB.m"; sourceTree = "<group>"; };
+		6194AD9CC972FAE9FE5CF17C /* STJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STJSONSerialization.h; sourceTree = "<group>"; };
+		6194ADD069521D561EE38BB8 /* NSArray+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+STExtension.m"; sourceTree = "<group>"; };
+		6194AE1E44E843730E602584 /* UIView+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+STExtension.m"; sourceTree = "<group>"; };
+		6194AE9C4D03B6EACFEA87B0 /* STSchemalRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSchemalRule.h; sourceTree = "<group>"; };
+		6194AEE19397E401C3C96C9F /* STRNView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STRNView.m; sourceTree = "<group>"; };
+		6194AEE4B594774BBEDCD629 /* NSUserDefaults+STExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+STExtension.m"; sourceTree = "<group>"; };
+		6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseViewController.h; sourceTree = "<group>"; };
+		6194AF603C08DB6935EB87B9 /* STSchemalRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSchemalRule.m; sourceTree = "<group>"; };
+		6194AF936873BC76BC17E4E6 /* ReactBridgeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactBridgeModule.h; sourceTree = "<group>"; };
+		6194AFBEFDC16444B6AEF795 /* STBusObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBusObject.m; sourceTree = "<group>"; };
+		6194AFCF1620F87F9C4D0750 /* STSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSingleton.h; sourceTree = "<group>"; };
+		6194AFF8048405730A756298 /* UIViewController+TopMostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TopMostViewController.h"; sourceTree = "<group>"; };
+		9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.release.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.release.xcconfig"; sourceTree = "<group>"; };
+		C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
+		F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STBaseNavigationController.m; sourceTree = "<group>"; };
+		F81FAFF7247677E800CF4FC8 /* STBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STBaseNavigationController.h; sourceTree = "<group>"; };
+		F86803D8247670A400D29159 /* Template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Template.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F86803DB247670A400D29159 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F86803DC247670A400D29159 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F86803DE247670A400D29159 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		F86803DF247670A400D29159 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		F86803E7247670A500D29159 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F86803EA247670A500D29159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F86803EC247670A500D29159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F86803ED247670A500D29159 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F87A5D0E2591C80900993772 /* STFlutterRouterHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouterHandler.h; sourceTree = "<group>"; };
+		F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouterHandler.m; sourceTree = "<group>"; };
+		F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEmbedIntoNativeViewController.m; sourceTree = "<group>"; };
+		F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEmbedIntoNativeViewController.h; sourceTree = "<group>"; };
+		F87A5D262591D9EB00993772 /* STFlutterRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterRouter.h; sourceTree = "<group>"; };
+		F87A5D272591D9EB00993772 /* STFlutterRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterRouter.m; sourceTree = "<group>"; };
+		F8851B3D2595852E001F2FBA /* STEventManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STEventManager.h; sourceTree = "<group>"; };
+		F8851B3E2595852E001F2FBA /* STEventManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STEventManager.m; sourceTree = "<group>"; };
+		F8851B42259589E6001F2FBA /* STValueUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STValueUtil.h; sourceTree = "<group>"; };
+		F8851B43259589E6001F2FBA /* STValueUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STValueUtil.m; sourceTree = "<group>"; };
+		F8851B462595968F001F2FBA /* STURLManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STURLManager.h; sourceTree = "<group>"; };
+		F8851B472595968F001F2FBA /* STURLManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STURLManager.m; sourceTree = "<group>"; };
+		F8851B4A25959A99001F2FBA /* STNetworkUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STNetworkUtil.h; sourceTree = "<group>"; };
+		F8851B4B25959A99001F2FBA /* STNetworkUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STNetworkUtil.m; sourceTree = "<group>"; };
+		F88C1E2C2592E66800C3FFBE /* STFlutterPagePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPagePlugin.h; sourceTree = "<group>"; };
+		F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPagePlugin.m; sourceTree = "<group>"; };
+		F88C1E352592E66800C3FFBE /* STFlutterToastPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterToastPlugin.h; sourceTree = "<group>"; };
+		F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterToastPlugin.m; sourceTree = "<group>"; };
+		F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterURLPlugin.m; sourceTree = "<group>"; };
+		F88C1E392592E66800C3FFBE /* STFlutterURLPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterURLPlugin.h; sourceTree = "<group>"; };
+		F88C1E3E2592E66800C3FFBE /* STFlutterEnvPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEnvPlugin.h; sourceTree = "<group>"; };
+		F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEnvPlugin.m; sourceTree = "<group>"; };
+		F88C1E4A2592E66800C3FFBE /* STFlutterApplicationPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterApplicationPlugin.h; sourceTree = "<group>"; };
+		F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterApplicationPlugin.m; sourceTree = "<group>"; };
+		F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterEventPlugin.m; sourceTree = "<group>"; };
+		F88C1E4E2592E66800C3FFBE /* STFlutterEventPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterEventPlugin.h; sourceTree = "<group>"; };
+		F88C1E532592E66800C3FFBE /* STFlutterPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPluginManager.h; sourceTree = "<group>"; };
+		F88C1E542592E66800C3FFBE /* STFlutterPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterPlugin.h; sourceTree = "<group>"; };
+		F88C1E552592E66800C3FFBE /* STFlutterBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterBridge.h; sourceTree = "<group>"; };
+		F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPluginManager.m; sourceTree = "<group>"; };
+		F88C1E582592E66800C3FFBE /* STFlutterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterBridge.m; sourceTree = "<group>"; };
+		F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterPlugin.m; sourceTree = "<group>"; };
+		F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STFlutterViewController.m; sourceTree = "<group>"; };
+		F88C1E7F2592EA2700C3FFBE /* STFlutterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFlutterViewController.h; sourceTree = "<group>"; };
+		F88C1E8F25931E8600C3FFBE /* STFlutterBridgeCompactPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STFlutterBridgeCompactPlugin.h; sourceTree = "<group>"; };
+		F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STFlutterBridgeCompactPlugin.m; sourceTree = "<group>"; };
+		F88C1E942593213B00C3FFBE /* STToastUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STToastUtil.h; sourceTree = "<group>"; };
+		F88C1E952593213B00C3FFBE /* STToastUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STToastUtil.m; sourceTree = "<group>"; };
+		F88C1F132594690400C3FFBE /* STThreadUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STThreadUtil.h; sourceTree = "<group>"; };
+		F88C1F142594690400C3FFBE /* STThreadUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STThreadUtil.m; sourceTree = "<group>"; };
+		F89B7D19249B4C4000B2FDC7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		F89B7D1B249B4C6B00B2FDC7 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
+		F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "bundle-rn.zip"; sourceTree = "<group>"; };
+		F8DB3C9024768DED00B3B5A0 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		F8DB3E1E2477CC3000B3B5A0 /* STMainItemHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemHomeViewController.h; sourceTree = "<group>"; };
+		F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemHomeViewController.m; sourceTree = "<group>"; };
+		F8DB3E212477CC7A00B3B5A0 /* STMainItemReactNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemReactNativeViewController.h; sourceTree = "<group>"; };
+		F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemReactNativeViewController.m; sourceTree = "<group>"; };
+		F8DB3E242477CC9700B3B5A0 /* STMainItemHybirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemHybirdViewController.h; sourceTree = "<group>"; };
+		F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemHybirdViewController.m; sourceTree = "<group>"; };
+		F8DB3E272477CCDC00B3B5A0 /* STMainItemFlutterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainItemFlutterViewController.h; sourceTree = "<group>"; };
+		F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainItemFlutterViewController.m; sourceTree = "<group>"; };
+		F8DB3E2A2477CD7C00B3B5A0 /* STMainTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STMainTabBarViewController.h; sourceTree = "<group>"; };
+		F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STMainTabBarViewController.m; sourceTree = "<group>"; };
+		F8F85E36247B6C0C00C6BFFA /* UIView+OnClickListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+OnClickListener.h"; sourceTree = "<group>"; };
+		F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+OnClickListener.m"; sourceTree = "<group>"; };
+		F8F85E3A247BBAB500C6BFFA /* STSystemUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STSystemUtil.h; sourceTree = "<group>"; };
+		F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STSystemUtil.m; sourceTree = "<group>"; };
+		F8F85E3E247BCFF900C6BFFA /* STListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STListViewController.h; sourceTree = "<group>"; };
+		F8F85E3F247BCFF900C6BFFA /* STListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STListViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F86803D5247670A400D29159 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F89B7D1E249B4D1800B2FDC7 /* libbz2.1.0.tbd in Frameworks */,
+				F89B7D1A249B4C4000B2FDC7 /* libz.tbd in Frameworks */,
+				6A1C73961E4FCE90780F767E /* libPods-Template.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		358852C8F05D11ADB9D30C53 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */,
+				9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		6194A04A299EF9BC209E47EC /* Thread */ = {
+			isa = PBXGroup;
+			children = (
+				6194A36FEA3CCB60E3B4A97E /* STBSPatch.h */,
+				6194ACAFB645E70822B7B204 /* STBSPatch.m */,
+				6194A4C4F5E0737ED9DA5C08 /* STThredUtil.h */,
+				6194A9B2E54EE8A8F3A22C02 /* STThredUtil.m */,
+			);
+			path = Thread;
+			sourceTree = "<group>";
+		};
+		6194A0D0FC67020B12C9FD93 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6194A7A261B6CB4709540F77 /* STRNView.h */,
+				6194AEE19397E401C3C96C9F /* STRNView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6194A12ADB4D8889892AE293 /* other */ = {
+			isa = PBXGroup;
+			children = (
+				6194AA7DEE22F53622E8CADE /* Bus */,
+				6194A218F7376166EE6E9607 /* Communication */,
+				6194AC7B5D2031E517FCF6B0 /* FileManager */,
+				6194AFC1E35D598568E9169F /* Foundation */,
+				6194AFFB52517717E0131083 /* Navigation */,
+				6194AD062D94D28BFE6667FA /* STBus.h */,
+				6194AAF766A9DDBDDF61EE2B /* STBus.m */,
+				6194A571693F942629A109A7 /* STBusObject.h */,
+				6194AFBEFDC16444B6AEF795 /* STBusObject.m */,
+				6194A1A36AFA9779FA570DC7 /* STExtensions */,
+				6194A91F0B76B38533D90D22 /* STHybirdViewController.h */,
+				6194AD65AED130D6F828999D /* STHybirdViewController.m */,
+				6194A2FCAC06176AE4484F6B /* STWKWebViewController.h */,
+				6194A1C0B15E5C83BD0FC021 /* STWKWebViewController.m */,
+				6194A04A299EF9BC209E47EC /* Thread */,
+				6194AD30739BF58350C6B3B2 /* Tools */,
+				6194AF7DFD3B3C9FB0302547 /* UIKit */,
+			);
+			path = other;
+			sourceTree = "<group>";
+		};
+		6194A1A36AFA9779FA570DC7 /* STExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				6194AD85A7ACC89E9507FD76 /* STMacros.h */,
+				6194AB3C3052EE9E2B22D0DF /* StringUtil.h */,
+				6194A29FCE5CA1324E12E6F2 /* StringUtil.m */,
+				6194AFCF1620F87F9C4D0750 /* STSingleton.h */,
+				6194A8429BDAC7CF7EBDEC9A /* NSData+STExtension.h */,
+				6194ABCCBBC406FB6B4CE667 /* NSData+STExtension.m */,
+				6194A49170EECF238B787AC6 /* NSDate+STExtension.h */,
+				6194AB51924E3F3EB7E09E3D /* NSDate+STExtension.m */,
+				6194ABACD2322A1526AE7A48 /* UIView+STExtension.h */,
+				6194AE1E44E843730E602584 /* UIView+STExtension.m */,
+				6194A9711A1A5553E3BD012B /* NSArray+STExtension.h */,
+				6194ADD069521D561EE38BB8 /* NSArray+STExtension.m */,
+				6194AD12AA71819671BEFFEB /* NSString+STExtension.h */,
+				6194A810D0E2435AEB12E3C0 /* NSString+STExtension.m */,
+				6194AAEACE540AEEE5121D40 /* UIDevice+STExtension.h */,
+				6194AD7A3B59E5179562FE5E /* UIDevice+STExtension.m */,
+				6194A9798B4A10786167307E /* NSDictionary+STExtension.h */,
+				6194A87E235D8946004A5966 /* NSDictionary+STExtension.m */,
+				6194A6676B156FDA92EA2AFA /* NSFileManager+STExtension.h */,
+				6194ACAF5B5DAD759962E638 /* NSFileManager+STExtension.m */,
+				6194A4DD4DE9611969EC7CB7 /* NSUserDefaults+STExtension.h */,
+				6194AEE4B594774BBEDCD629 /* NSUserDefaults+STExtension.m */,
+				6194A18176B91F0E858C0711 /* NSNotificationCenter+STExtension.h */,
+				6194A0A1ED412B95FED6F0E4 /* NSNotificationCenter+STExtension.m */,
+			);
+			path = STExtensions;
+			sourceTree = "<group>";
+		};
+		6194A20A653B18BCB65BBB3F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6194A4BDA63EAEC4B93654A0 /* STRNViewController.h */,
+				6194A21280CD66F0C661A4A6 /* STRNViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6194A218F7376166EE6E9607 /* Communication */ = {
+			isa = PBXGroup;
+			children = (
+				6194AE9C4D03B6EACFEA87B0 /* STSchemalRule.h */,
+				6194AF603C08DB6935EB87B9 /* STSchemalRule.m */,
+				6194AA4AF488C6408F48F6A5 /* STCommunication.h */,
+				6194A7EF18A4D50A24DC996E /* STCommunication.m */,
+				6194A63A7CE2FB281EEC5EA9 /* STCommunicationPlugin.h */,
+				6194A267B83D8BAB47B85286 /* STCommunicationPlugin.m */,
+			);
+			path = Communication;
+			sourceTree = "<group>";
+		};
+		6194A3FAA9C6B96654B88CDB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6194A7281B1B4E3235104DFA /* STRNURL.h */,
+				6194A29C63B26E7F128361D4 /* STRNURL.m */,
+				6194AF936873BC76BC17E4E6 /* ReactBridgeModule.h */,
+				6194A9DCF4569D456916A923 /* ReactBridgeModule.m */,
+				6194A0F7BFA20438CA85EC75 /* ReactBridge.h */,
+				6194A1DE0809717C7C9DCD41 /* ReactBridge.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6194AA7DEE22F53622E8CADE /* Bus */ = {
+			isa = PBXGroup;
+			children = (
+				6194A28D515ED7A2CC687D11 /* STRNBusObject.h */,
+				6194A02394B4C94652239CF8 /* STRNBusObject.m */,
+				6194A8B87B944A077B5D9D7E /* STRNDispatcher.h */,
+				6194A988F6B751FB150CB58D /* STRNDispatcher.m */,
+			);
+			path = Bus;
+			sourceTree = "<group>";
+		};
+		6194AC7B5D2031E517FCF6B0 /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				6194AC0533252ACDE06ECA93 /* STRNFileManager.h */,
+				6194AC16EE9B1867B91154C1 /* STRNFileManager.m */,
+			);
+			path = FileManager;
+			sourceTree = "<group>";
+		};
+		6194AD30739BF58350C6B3B2 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				6194A87AC89E2DFB549B4803 /* STRNUnZip.h */,
+				6194A4F06AF4B3CFB53A0ABF /* STRNUnZip.m */,
+				6194AD9CC972FAE9FE5CF17C /* STJSONSerialization.h */,
+				6194AB9545E013CE714D3F6D /* STJSONSerialization.m */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		6194AE517356617A78FDCA3D /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				F89B7D1F249B5AA000B2FDC7 /* bundle-rn.zip */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
+		6194AF7DFD3B3C9FB0302547 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				6194A0BD01F3F0A25E0CB4B6 /* STNavViewController.h */,
+				6194A7339A1B22D2E1AD9D86 /* STNavViewController.m */,
+				6194AFF8048405730A756298 /* UIViewController+TopMostViewController.h */,
+				6194ABEE796806A03C4C6B8E /* UIViewController+TopMostViewController.m */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		6194AFC1E35D598568E9169F /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				6194A104CB169EF33BA2A378 /* NSString+Md5.h */,
+				6194A71A42DD8F53C156DD73 /* NSString+Md5.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		6194AFE630C8ABCA47751214 /* LibraryReactNative */ = {
+			isa = PBXGroup;
+			children = (
+				6194A20A653B18BCB65BBB3F /* ViewController */,
+				6194A0D0FC67020B12C9FD93 /* View */,
+				6194A3FAA9C6B96654B88CDB /* Model */,
+				6194AE517356617A78FDCA3D /* assets */,
+			);
+			path = LibraryReactNative;
+			sourceTree = "<group>";
+		};
+		6194AFFB52517717E0131083 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				6194A10EA9F5D5DD6CE09C4E /* STDragNavigationController.h */,
+				6194A3E07FC3B89915E735F8 /* STDragNavigationController.m */,
+				6194AAE6C2E195D2C6C0EF83 /* STLeftDragPanGestureRecognizer.h */,
+				6194A8E731AD66F7CEC432C5 /* STLeftDragPanGestureRecognizer.m */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		A6735F12AD2E183378EB61DD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F89B7D1D249B4D1800B2FDC7 /* libbz2.1.0.tbd */,
+				F89B7D1B249B4C6B00B2FDC7 /* libbz2.1.0.5.tbd */,
+				F89B7D19249B4C4000B2FDC7 /* libz.tbd */,
+				238F29E3F09DAEC521EB271C /* libPods-Template.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F81FAFEF247677E800CF4FC8 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F87A5D0D2591C7D600993772 /* LibraryFlutter */,
+				F81FAFF5247677E800CF4FC8 /* LibraryBase */,
+				6194AFE630C8ABCA47751214 /* LibraryReactNative */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		F81FAFF5247677E800CF4FC8 /* LibraryBase */ = {
+			isa = PBXGroup;
+			children = (
+				F8F85E39247BBA9A00C6BFFA /* Util */,
+				F81FAFF6247677E800CF4FC8 /* STBaseNavigationController.m */,
+				F81FAFF7247677E800CF4FC8 /* STBaseNavigationController.h */,
+				F81FAFF8247677E800CF4FC8 /* Categories */,
+				6194A0994C02CAD7478308B2 /* STBaseViewController.m */,
+				6194AF496EF2C5BB72CFB14A /* STBaseViewController.h */,
+				6194A9C8B53670E50A43AAF8 /* STBaseTabBarController.m */,
+				6194AC14731E4DFA1849E3C7 /* STBaseTabBarController.h */,
+				6194A12ADB4D8889892AE293 /* other */,
+			);
+			path = LibraryBase;
+			sourceTree = "<group>";
+		};
+		F81FAFF8247677E800CF4FC8 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F8F85E36247B6C0C00C6BFFA /* UIView+OnClickListener.h */,
+				F8F85E37247B6C0C00C6BFFA /* UIView+OnClickListener.m */,
+				6194AD9A5E858441478C1D5F /* UIColor+ARGB.m */,
+				6194A53174A31319E5887269 /* UIColor+ARGB.h */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		F86803CF247670A400D29159 = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E152477CB0F00B3B5A0 /* Modules */,
+				F81FAFEF247677E800CF4FC8 /* Libraries */,
+				F86803DA247670A400D29159 /* Template */,
+				F86803D9247670A400D29159 /* Products */,
+				358852C8F05D11ADB9D30C53 /* Pods */,
+				A6735F12AD2E183378EB61DD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F86803D9247670A400D29159 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F86803D8247670A400D29159 /* Template.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F86803DA247670A400D29159 /* Template */ = {
+			isa = PBXGroup;
+			children = (
+				F86803DB247670A400D29159 /* AppDelegate.h */,
+				F86803DC247670A400D29159 /* AppDelegate.m */,
+				F86803DE247670A400D29159 /* SceneDelegate.h */,
+				F86803DF247670A400D29159 /* SceneDelegate.m */,
+				F86803E7247670A500D29159 /* Assets.xcassets */,
+				F86803E9247670A500D29159 /* LaunchScreen.storyboard */,
+				F86803EC247670A500D29159 /* Info.plist */,
+				F86803ED247670A500D29159 /* main.m */,
+				F8DB3C9024768DED00B3B5A0 /* PrefixHeader.pch */,
+			);
+			path = Template;
+			sourceTree = "<group>";
+		};
+		F87A5D0D2591C7D600993772 /* LibraryFlutter */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E7F2592EA2700C3FFBE /* STFlutterViewController.h */,
+				F88C1E7E2592EA2700C3FFBE /* STFlutterViewController.m */,
+				F88C1E252592E35C00C3FFBE /* Plugins */,
+				F87A5D192591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.h */,
+				F87A5D182591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m */,
+				F87A5D0E2591C80900993772 /* STFlutterRouterHandler.h */,
+				F87A5D0F2591C80900993772 /* STFlutterRouterHandler.m */,
+				F87A5D262591D9EB00993772 /* STFlutterRouter.h */,
+				F87A5D272591D9EB00993772 /* STFlutterRouter.m */,
+			);
+			path = LibraryFlutter;
+			sourceTree = "<group>";
+		};
+		F88C1E252592E35C00C3FFBE /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E8E25931E6500C3FFBE /* BridgeCompact */,
+				F88C1E2B2592E66800C3FFBE /* Page */,
+				F88C1E342592E66800C3FFBE /* Toast */,
+				F88C1E372592E66800C3FFBE /* URL */,
+				F88C1E3D2592E66800C3FFBE /* Env */,
+				F88C1E4C2592E66800C3FFBE /* Event */,
+				F88C1E522592E66800C3FFBE /* Base */,
+				F88C1E492592E66800C3FFBE /* Application */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		F88C1E2B2592E66800C3FFBE /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E2C2592E66800C3FFBE /* STFlutterPagePlugin.h */,
+				F88C1E2D2592E66800C3FFBE /* STFlutterPagePlugin.m */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
+		F88C1E342592E66800C3FFBE /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E352592E66800C3FFBE /* STFlutterToastPlugin.h */,
+				F88C1E362592E66800C3FFBE /* STFlutterToastPlugin.m */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		F88C1E372592E66800C3FFBE /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E382592E66800C3FFBE /* STFlutterURLPlugin.m */,
+				F88C1E392592E66800C3FFBE /* STFlutterURLPlugin.h */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
+		F88C1E3D2592E66800C3FFBE /* Env */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E3E2592E66800C3FFBE /* STFlutterEnvPlugin.h */,
+				F88C1E3F2592E66800C3FFBE /* STFlutterEnvPlugin.m */,
+			);
+			path = Env;
+			sourceTree = "<group>";
+		};
+		F88C1E492592E66800C3FFBE /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E4A2592E66800C3FFBE /* STFlutterApplicationPlugin.h */,
+				F88C1E4B2592E66800C3FFBE /* STFlutterApplicationPlugin.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		F88C1E4C2592E66800C3FFBE /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E4D2592E66800C3FFBE /* STFlutterEventPlugin.m */,
+				F88C1E4E2592E66800C3FFBE /* STFlutterEventPlugin.h */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		F88C1E522592E66800C3FFBE /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E532592E66800C3FFBE /* STFlutterPluginManager.h */,
+				F88C1E542592E66800C3FFBE /* STFlutterPlugin.h */,
+				F88C1E552592E66800C3FFBE /* STFlutterBridge.h */,
+				F88C1E572592E66800C3FFBE /* STFlutterPluginManager.m */,
+				F88C1E582592E66800C3FFBE /* STFlutterBridge.m */,
+				F88C1E592592E66800C3FFBE /* STFlutterPlugin.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		F88C1E8E25931E6500C3FFBE /* BridgeCompact */ = {
+			isa = PBXGroup;
+			children = (
+				F88C1E8F25931E8600C3FFBE /* STFlutterBridgeCompactPlugin.h */,
+				F88C1E9025931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m */,
+			);
+			path = BridgeCompact;
+			sourceTree = "<group>";
+		};
+		F8DB3E152477CB0F00B3B5A0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F8F85E3D247BCFED00C6BFFA /* List */,
+				F8DB3E162477CB2100B3B5A0 /* Main */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		F8DB3E162477CB2100B3B5A0 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E1D2477CC0E00B3B5A0 /* Flutter */,
+				F8DB3E1C2477CC0800B3B5A0 /* Hybird */,
+				F8DB3E1B2477CBFF00B3B5A0 /* ReactNative */,
+				F8DB3E1A2477CBF500B3B5A0 /* Home */,
+				F8DB3E2A2477CD7C00B3B5A0 /* STMainTabBarViewController.h */,
+				F8DB3E2B2477CD7C00B3B5A0 /* STMainTabBarViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		F8DB3E1A2477CBF500B3B5A0 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E1E2477CC3000B3B5A0 /* STMainItemHomeViewController.h */,
+				F8DB3E1F2477CC3000B3B5A0 /* STMainItemHomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F8DB3E1B2477CBFF00B3B5A0 /* ReactNative */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E212477CC7A00B3B5A0 /* STMainItemReactNativeViewController.h */,
+				F8DB3E222477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m */,
+			);
+			path = ReactNative;
+			sourceTree = "<group>";
+		};
+		F8DB3E1C2477CC0800B3B5A0 /* Hybird */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E242477CC9700B3B5A0 /* STMainItemHybirdViewController.h */,
+				F8DB3E252477CC9700B3B5A0 /* STMainItemHybirdViewController.m */,
+			);
+			path = Hybird;
+			sourceTree = "<group>";
+		};
+		F8DB3E1D2477CC0E00B3B5A0 /* Flutter */ = {
+			isa = PBXGroup;
+			children = (
+				F8DB3E272477CCDC00B3B5A0 /* STMainItemFlutterViewController.h */,
+				F8DB3E282477CCDC00B3B5A0 /* STMainItemFlutterViewController.m */,
+			);
+			path = Flutter;
+			sourceTree = "<group>";
+		};
+		F8F85E39247BBA9A00C6BFFA /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				F8F85E3A247BBAB500C6BFFA /* STSystemUtil.h */,
+				F8F85E3B247BBAB500C6BFFA /* STSystemUtil.m */,
+				F88C1E942593213B00C3FFBE /* STToastUtil.h */,
+				F88C1E952593213B00C3FFBE /* STToastUtil.m */,
+				F88C1F132594690400C3FFBE /* STThreadUtil.h */,
+				F88C1F142594690400C3FFBE /* STThreadUtil.m */,
+				F8851B3D2595852E001F2FBA /* STEventManager.h */,
+				F8851B3E2595852E001F2FBA /* STEventManager.m */,
+				F8851B42259589E6001F2FBA /* STValueUtil.h */,
+				F8851B43259589E6001F2FBA /* STValueUtil.m */,
+				F8851B462595968F001F2FBA /* STURLManager.h */,
+				F8851B472595968F001F2FBA /* STURLManager.m */,
+				F8851B4A25959A99001F2FBA /* STNetworkUtil.h */,
+				F8851B4B25959A99001F2FBA /* STNetworkUtil.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		F8F85E3D247BCFED00C6BFFA /* List */ = {
+			isa = PBXGroup;
+			children = (
+				F8F85E3E247BCFF900C6BFFA /* STListViewController.h */,
+				F8F85E3F247BCFF900C6BFFA /* STListViewController.m */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F86803D7247670A400D29159 /* Template */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F86803F1247670A500D29159 /* Build configuration list for PBXNativeTarget "Template" */;
+			buildPhases = (
+				D2369938B217BB9796D00D5A /* [CP] Check Pods Manifest.lock */,
+				F86803D4247670A400D29159 /* Sources */,
+				F86803D5247670A400D29159 /* Frameworks */,
+				F86803D6247670A400D29159 /* Resources */,
+				9D497019375F63F449DE99CB /* [CP] Copy Pods Resources */,
+				BC1F540D5E4627BA6731AAAB /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Template;
+			productName = Template;
+			productReference = F86803D8247670A400D29159 /* Template.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F86803D0247670A400D29159 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = smart;
+				TargetAttributes = {
+					F86803D7247670A400D29159 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = F86803D3247670A400D29159 /* Build configuration list for PBXProject "Template" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F86803CF247670A400D29159;
+			productRefGroup = F86803D9247670A400D29159 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F86803D7247670A400D29159 /* Template */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F86803D6247670A400D29159 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F86803EB247670A500D29159 /* LaunchScreen.storyboard in Resources */,
+				F86803E8247670A500D29159 /* Assets.xcassets in Resources */,
+				F89B7D20249B5AA000B2FDC7 /* bundle-rn.zip in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9D497019375F63F449DE99CB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC1F540D5E4627BA6731AAAB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Template/Pods-Template-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D2369938B217BB9796D00D5A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Template-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F86803D4247670A400D29159 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F88C1E962593213B00C3FFBE /* STToastUtil.m in Sources */,
+				F8851B3F2595852E001F2FBA /* STEventManager.m in Sources */,
+				F8851B44259589E6001F2FBA /* STValueUtil.m in Sources */,
+				F86803DD247670A400D29159 /* AppDelegate.m in Sources */,
+				F86803EE247670A500D29159 /* main.m in Sources */,
+				F8F85E38247B6C0C00C6BFFA /* UIView+OnClickListener.m in Sources */,
+				F8DB3E232477CC7A00B3B5A0 /* STMainItemReactNativeViewController.m in Sources */,
+				F86803E0247670A400D29159 /* SceneDelegate.m in Sources */,
+				F8DB3E262477CC9700B3B5A0 /* STMainItemHybirdViewController.m in Sources */,
+				F8DB3E2C2477CD7C00B3B5A0 /* STMainTabBarViewController.m in Sources */,
+				F8F85E3C247BBAB500C6BFFA /* STSystemUtil.m in Sources */,
+				F8DB3E202477CC3000B3B5A0 /* STMainItemHomeViewController.m in Sources */,
+				F8DB3E292477CCDC00B3B5A0 /* STMainItemFlutterViewController.m in Sources */,
+				F8851B482595968F001F2FBA /* STURLManager.m in Sources */,
+				F81FAFFE247677E800CF4FC8 /* STBaseNavigationController.m in Sources */,
+				F88C1E5F2592E66800C3FFBE /* STFlutterURLPlugin.m in Sources */,
+				F8F85E40247BCFF900C6BFFA /* STListViewController.m in Sources */,
+				6194A4CAFD9F60F4084051B3 /* STBaseViewController.m in Sources */,
+				6194A41225F8EB92C2694788 /* STBaseTabBarController.m in Sources */,
+				F87A5D102591C80900993772 /* STFlutterRouterHandler.m in Sources */,
+				6194ADF98A19AE7B928BAE96 /* UIColor+ARGB.m in Sources */,
+				6194A71EEB9DDE620D31C006 /* STRNViewController.m in Sources */,
+				6194A0DAB76F194AD7CA4C91 /* STRNView.m in Sources */,
+				6194A138D9DB6A5933E6A0BA /* STRNURL.m in Sources */,
+				F87A5D282591D9EB00993772 /* STFlutterRouter.m in Sources */,
+				6194A308C4BA44F042EDC022 /* ReactBridgeModule.m in Sources */,
+				F88C1E5B2592E66800C3FFBE /* STFlutterPagePlugin.m in Sources */,
+				6194A9C5665E37AA84F8AF95 /* ReactBridge.m in Sources */,
+				6194A4F3F4F4C52F5479675C /* STRNBusObject.m in Sources */,
+				6194A796992B4E05C83C9347 /* STRNDispatcher.m in Sources */,
+				6194A7243D18D0DE4BCA9890 /* STSchemalRule.m in Sources */,
+				F88C1F152594690400C3FFBE /* STThreadUtil.m in Sources */,
+				F88C1E9125931E8600C3FFBE /* STFlutterBridgeCompactPlugin.m in Sources */,
+				6194ABFF21C0635695DA878D /* STCommunication.m in Sources */,
+				6194A03B0CD254EA9E34ADD2 /* STCommunicationPlugin.m in Sources */,
+				6194A96CE4392CB522BDC4DE /* STRNFileManager.m in Sources */,
+				6194A966B327855320B250D6 /* NSString+Md5.m in Sources */,
+				6194AE32877AD84955D2C33B /* STDragNavigationController.m in Sources */,
+				6194A4584A1A69F5FEFBF776 /* STLeftDragPanGestureRecognizer.m in Sources */,
+				6194A16AE9062FEF56A95031 /* STBus.m in Sources */,
+				F88C1E6A2592E66800C3FFBE /* STFlutterPlugin.m in Sources */,
+				6194A134C4FB52C6E3583F65 /* STBusObject.m in Sources */,
+				6194AB931E45F44AEEC24DFC /* StringUtil.m in Sources */,
+				6194AAE92D9CAAD4127D0BC6 /* NSData+STExtension.m in Sources */,
+				F88C1E692592E66800C3FFBE /* STFlutterBridge.m in Sources */,
+				6194AA633C671D5397B2C340 /* NSDate+STExtension.m in Sources */,
+				6194A18DD8575FD65EC639A3 /* UIView+STExtension.m in Sources */,
+				6194A576DD8C3CB488BD7295 /* NSArray+STExtension.m in Sources */,
+				F87A5D1A2591CA2C00993772 /* STFlutterEmbedIntoNativeViewController.m in Sources */,
+				F8851B4C25959A99001F2FBA /* STNetworkUtil.m in Sources */,
+				6194A10E9D19FFE053EBD767 /* NSString+STExtension.m in Sources */,
+				6194A3C468F57DD04190407C /* UIDevice+STExtension.m in Sources */,
+				F88C1E802592EA2700C3FFBE /* STFlutterViewController.m in Sources */,
+				F88C1E652592E66800C3FFBE /* STFlutterApplicationPlugin.m in Sources */,
+				6194AEBF2EED5C0F00E733A9 /* NSDictionary+STExtension.m in Sources */,
+				6194A93645DDE2D2B819897D /* NSFileManager+STExtension.m in Sources */,
+				F88C1E612592E66800C3FFBE /* STFlutterEnvPlugin.m in Sources */,
+				6194A96A9D036B38AA9D109E /* NSUserDefaults+STExtension.m in Sources */,
+				6194A34A71A9E797DD255FD8 /* NSNotificationCenter+STExtension.m in Sources */,
+				6194A465937AC68B6490EDCA /* STHybirdViewController.m in Sources */,
+				6194AEAEA654E7EDDECB4F79 /* STWKWebViewController.m in Sources */,
+				6194A648C1D0ED37EB17217F /* STBSPatch.m in Sources */,
+				6194A826E8DDEF58C2DAB371 /* STThredUtil.m in Sources */,
+				6194A6654994E6476E46069A /* STRNUnZip.m in Sources */,
+				6194AFA7411C6DC05E75ECCB /* STJSONSerialization.m in Sources */,
+				F88C1E5E2592E66800C3FFBE /* STFlutterToastPlugin.m in Sources */,
+				F88C1E662592E66800C3FFBE /* STFlutterEventPlugin.m in Sources */,
+				6194A6A7F1E7C5A13FE9729C /* STNavViewController.m in Sources */,
+				F88C1E682592E66800C3FFBE /* STFlutterPluginManager.m in Sources */,
+				6194AC9FD4CF9F794934516D /* UIViewController+TopMostViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F86803E9247670A500D29159 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F86803EA247670A500D29159 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F86803EF247670A500D29159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Template/PrefixHeader.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		F86803F0247670A500D29159 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Template/PrefixHeader.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F86803F2247670A500D29159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C13517C33FBB42FE493024DC /* Pods-Template.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T295MMEZ9W;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/DZNEmptyDataSet\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/IQKeyboardManager\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/SDCycleScrollView\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SSZipArchive\"",
+					"\"${PODS_ROOT}/Headers/Public/YYModel\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact/React-cxxreact\"",
+				);
+				INFOPLIST_FILE = Template/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.Template;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
+			};
+			name = Debug;
+		};
+		F86803F3247670A500D29159 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E3406830F9D830F9D90426A /* Pods-Template.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T295MMEZ9W;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/DZNEmptyDataSet\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/IQKeyboardManager\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/SDCycleScrollView\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SSZipArchive\"",
+					"\"${PODS_ROOT}/Headers/Public/YYModel\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-ios\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact/React-cxxreact\"",
+				);
+				INFOPLIST_FILE = Template/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.Template;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F86803D3247670A400D29159 /* Build configuration list for PBXProject "Template" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F86803EF247670A500D29159 /* Debug */,
+				F86803F0247670A500D29159 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F86803F1247670A500D29159 /* Build configuration list for PBXNativeTarget "Template" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F86803F2247670A500D29159 /* Debug */,
+				F86803F3247670A500D29159 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F86803D0247670A400D29159 /* Project object */;
+}

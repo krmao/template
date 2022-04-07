@@ -1,0 +1,38 @@
+<!--index.wxml-->
+<view class="container">
+	<view class='list-header'>
+
+		<view class='list-item-index' style="font-weight:bold;color:#333;">
+			订单数量
+		</view>
+		<view class='list-item-name' style="font-weight:bold;color:#333;">
+			订单金额
+		</view>
+		<view class='list-item-phone' style="font-weight:bold;color:#333;">
+			分成金额
+		</view>
+		<view class='list-item-address' style="font-weight:bold;color:#333;">
+			订单时间
+		</view>
+	</view>
+	<view class='list'>
+		<block wx:for="{{orderIncomeList}}" wx:key="index">
+			<view class='.common-list-item'>
+				<view class='list-item'>
+					<view class='list-item-index'>
+						{{item.orderNumber}}
+					</view>
+					<view class='list-item-name'>
+						{{item.totalAmount}}元
+					</view>
+					<view class='list-item-phone'>
+						{{item.separateAmount}}元
+					</view>
+					<view class='list-item-address'>
+						{{item.createdDate}}
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
+</view>

@@ -1,0 +1,20 @@
+/**index.wxss**/
+@import "../../common.wxss";
+
+page {
+  background-color: #efefef;
+}
+
+.desc{
+  display: block;
+  color: #666;
+  font-size: 28rpx;
+  font-weight: normal;
+  font-style: normal;
+  margin-top: 20rpx;
+  width: auto;
+  height: 100%;
+  margin-left: 5rpx;
+  padding: 10rpx;
+  text-align: left;
+}

@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/blue_grey_500"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <EditText
+            android:id="@+id/et_rtmp_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="center"
+            android:hint="your rtmp address"
+            android:maxLines="1"
+            android:text="rtmp://10.32.33.157:5387/live/mm"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/STButton.Default"
+            android:layout_width="78dp"
+            android:layout_height="60dp"
+            android:text="Start\nRecorder"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <Button
+            android:id="@+id/buttonCapture"
+            style="@style/STButton.Default"
+            android:layout_width="78dp"
+            android:layout_height="60dp"
+            android:text="Start\nCapture"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+    </LinearLayout>
+
+    <SurfaceView
+        android:id="@+id/mSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="NestedWeights" />
+    <TextureView
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="NestedWeights" />
+
+</LinearLayout>

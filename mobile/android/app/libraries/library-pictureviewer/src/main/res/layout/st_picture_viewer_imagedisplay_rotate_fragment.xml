@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/fill">
+
+    <RelativeLayout style="@style/footer" android:id="@+id/footer">
+
+        <ImageView style="@style/previousButton" android:id="@+id/previous" android:contentDescription="@string/button.previous"/>
+
+        <ImageView style="@style/nextButton" android:id="@+id/next" android:contentDescription="@string/button.next"/>
+
+        <ImageView style="@style/footerButton"
+                android:id="@+id/rotate"
+                android:layout_toStartOf="@id/next"
+                android:src="@drawable/st_picture_viewer_rotate"
+                android:contentDescription="@string/button.rotate"
+            android:layout_toLeftOf="@id/next" />
+
+        <TextView style="@style/footerNote"
+                android:id="@+id/note"
+                android:text="@string/display.p2.text"
+                android:layout_toStartOf="@id/rotate"
+                android:layout_toEndOf="@id/previous"
+            android:layout_toLeftOf="@id/rotate"
+            android:layout_toRightOf="@id/previous" />
+
+    </RelativeLayout>
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView style="@style/mainPanel" android:id="@+id/imageView"/>
+
+</RelativeLayout>

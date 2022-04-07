@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.smart.library">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:clearTaskOnLaunch="true"
+        android:taskAffinity="${applicationId}">
+        <!--region 安卓 N 文件访问方式适配 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/st_provider_paths"
+                tools:replace="name,resource" />
+        </provider>
+        <!--endregion-->
+
+        <activity
+            android:name=".base.STActivity"
+            android:theme="@style/STAppTheme.Normal.Transparent"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <activity
+            android:name=".widget.debug.STDebugCrashActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@style/STAppTheme.Normal.Transparent.Fade"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <!-- [notification] HomeTabActivity is the parent for STDebugActivity -->
+        <!-- android:parentActivityName="com.smart.template.home.HomeTabActivity" -->
+        <activity
+            android:name=".widget.debug.STDebugActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:theme="@style/STAppTheme.Normal.Translucent.Fade"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="UnusedAttribute" />
+
+        <service
+            android:name=".util.accessibility.STActivityTrackerService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+                <action android:name="com.codesdancing.service.activity.tracker" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/st_accessibility_service_config" />
+
+        </service>
+
+        <receiver
+            android:name=".util.accessibility.STActivityTrackerService$Companion$ActivityTrackerBroadcastReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.codesdancing.broadcast.receiver.accessibility.open" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

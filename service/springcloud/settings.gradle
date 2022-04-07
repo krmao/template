@@ -1,0 +1,21 @@
+rootProject.name = "springcloud"
+
+// libraries
+include(":library-common"); project(":library-common").projectDir = new File(settingsDir, "apps/libraries/library-common")
+
+// apps
+include(":app-a"); project(":app-a").projectDir = new File(settingsDir, "apps/app-a")
+include(":app-b"); project(":app-b").projectDir = new File(settingsDir, "apps/app-b")
+
+// components
+include(":eureka-server"); project(":eureka-server").projectDir = new File(settingsDir, "components/springcloud-discovery/eureka-server")
+include(":springboot-admin"); project(":springboot-admin").projectDir = new File(settingsDir, "components/springboot-admin")
+include(":zuul"); project(":zuul").projectDir = new File(settingsDir, "components/springcloud-routing/zuul")
+
+// config
+include(":config-server"); project(":config-server").projectDir = new File(settingsDir, "components/springcloud-config/config-server")
+
+// security
+include(":auth-client"); project(":auth-client").projectDir = new File(settingsDir, "components/springcloud-security/auth-client")
+include(":auth-server"); project(":auth-server").projectDir = new File(settingsDir, "components/springcloud-security/auth-server")
+include(":resource-server"); project(":resource-server").projectDir = new File(settingsDir, "components/springcloud-security/resource-server")

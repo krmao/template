@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/fill"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/basicFeatures"
+                style="@style/indexLink"
+                android:text="@string/basic.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/imageDisplay"
+                style="@style/indexLink"
+                android:text="@string/display.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/eventHandling"
+                style="@style/indexLink"
+                android:text="@string/event.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/advancedEventHandling"
+                style="@style/indexLink"
+                android:text="@string/advancedevent.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/viewPagerGalleries"
+                style="@style/indexLink"
+                android:text="@string/pager.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/animation"
+                style="@style/indexLink"
+                android:text="@string/animation.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/extension"
+                style="@style/indexLink"
+                android:text="@string/extension.link" />
+
+            <View style="@style/indexDivider" />
+
+            <TextView
+                android:id="@+id/configuration"
+                style="@style/indexLink"
+                android:text="@string/configuration.link" />
+
+            <View style="@style/indexDivider" />
+            <TextView
+                android:id="@+id/cppTest"
+                style="@style/indexLink"
+                android:text="@string/st_picture_viewer_cpp" />
+            <TextView
+                android:id="@+id/cppTest2"
+                style="@style/indexLink"
+                android:text="@string/st_picture_viewer_cpp_2" />
+
+            <View style="@style/indexDivider" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,67 @@
+apply plugin: "org.hidetake.ssh"
+
+//======================================================================================================================
+// deploy by ssh
+//======================================================================================================================
+task deployBySSH(type: Exec) {
+    //noinspection GroovyAssignabilityCheck
+    executable("sh")
+    //noinspection GroovyAssignabilityCheck
+    args "-c", "/usr/local/bin/sshpass -p ${server_password} scp $buildDir/libs/template.war ${server_user}@${server_ip}:/usr/software/tomcat/apache-tomcat-8.5.24/webapps/"
+}
+deployBySSH.dependsOn("clean", "war")
+//======================================================================================================================
+// deploy by gradle-ssh-plugin
+//======================================================================================================================
+remotes {
+    serverHousekeeper {
+        host = server_ip
+        user = server_user
+        password = server_password
+    }
+}
+
+/**
+ * 部署 war -> remote tomcat and restart tomcat
+ * ./gradlew clean deploy --info
+ */
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+task deploy {
+    doLast {
+        ssh.runInOrder {
+            session(remotes.serverHousekeeper) {
+                put from: "$buildDir/libs/template.war", into: "/usr/software/tomcat/apache-tomcat-8.5.24/webapps/"
+                execute("rm -rf /usr/software/tomcat/apache-tomcat-8.5.24/webapps/template") { result -> println result }
+                execute("service tomcat stop 10 -force") { result -> println result }
+                execute("service tomcat start") { result -> println result }
+            }
+        }
+    }
+}
+deploy.dependsOn("clean", "war")
+
+task deployLocal(type: Copy) {
+    doLast {
+        from "$buildDir/libs/template.war"
+        into "/Users/maokangren/software/apache-tomcat-8.5.29/webapps/"
+        rename("template.war", "template.war")
+    }
+}
+deployLocal.dependsOn("clean", "war")
+
+task copyConfigFile(type: Copy) {
+    doLast {
+        print "copyConfigFile start\n"
+        from "$buildDir/resources/main/application.yml"
+        into "$buildDir/libs/template.war/WEB-INF/classes"
+        into "$projectDir/out/production/resources/"
+        rename("application.yml", "application.yml")
+        print "copyConfigFile end"
+    }
+}
+copyConfigFile.dependsOn("clean", "war")
+//======================================================================================================================
+// deploy end
+//======================================================================================================================

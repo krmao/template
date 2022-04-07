@@ -1,0 +1,42 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+group = 'com.template'
+version = '1.0.0'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+    resourcePrefix "rn_"
+}
+
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
+
+    if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_remote.enable == true) {
+        api gradle.ext.modules.library_reactnative.lib_reactnative.repository_remote.dependency
+    }else if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.enable == true) {
+        api gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.dependency
+    } else {
+        api project(':react-native-gesture-handler')
+        api project(':react-native-safe-area-context')
+        api project(':react-native-reanimated')
+        api project(':react-native-vector-icons')
+        api "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}" // From node_modules. cd react && npm install
+    }
+}
+
+apply from: "./upload_to_jcenter.gradle"

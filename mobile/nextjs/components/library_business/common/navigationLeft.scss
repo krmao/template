@@ -1,0 +1,49 @@
+@import "components/library_business/styles/base";
+
+.root {
+    color: white;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    min-width: 175px;
+
+    h4 {
+        font-size: 16px;
+        background: darkblue;
+        line-height: 36px;
+    }
+
+    .typeNavigation {
+        margin-top: 10px;
+        margin-right: 50px;
+        width: 175px;
+        float: right;
+
+        ul {
+            background: $base-background-color;
+        }
+
+        li {
+            line-height: 40px;
+            font-size: 15px;
+            color: black;
+            list-style-type: none;
+            border-bottom: 1px solid gray;
+        }
+    }
+
+    .typeContact {
+        margin-right: 50px;
+        width: 175px;
+        float: right;
+        background-color: #efefef;
+
+        p {
+            margin: 10px;
+            font-size: 14px;
+            color: #222222;
+            line-height: 25px;
+        }
+    }
+}

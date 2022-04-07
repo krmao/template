@@ -1,0 +1,110 @@
+gradle.ext {
+
+    configs = [
+            'bugly'     : ['enable': false],
+            'tinker'    : ['enable': false],
+            'walle'     : ['enable': false],
+            'test'      : ['enable': false],
+            'leakcanary': ['enable': false]
+    ]
+
+    modules = [
+            'library_pictureviewer': ['enable': false],
+            'library_livestreaming': ['enable': false],
+            'library_base'         : [
+                    'dependency_local'  : [
+                            'enable'    : false,
+                            'dependency': 'library-base-release',
+                    ],
+                    'dependency_remote' : [
+                            'enable'    : false,
+                            'dependency': 'com.codesdancing.libraries:library-base:0.0.2.9',
+                    ],
+                    'dependency_project': [
+                            'dependency': ':library-base',
+                    ]
+            ],
+            'library_flutter'      : [
+                    'library_pureflutterwithbusiness': [
+                            'enable'          : true,
+                            'repository_local': [
+                                    'enable'           : true,
+                                    'url'              : "${rootProject.projectDir}/gradle/host/outputs/repo",
+                                    'dependencyDebug'  : 'com.codesdancing.flutter_module:flutter_debug:0.0.1-SNAPSHOT', // flutter libs + business
+                                    'dependencyProfile': 'com.codesdancing.flutter_module:flutter_profile:0.0.1-SNAPSHOT',
+                                    'dependencyRelease': 'com.codesdancing.flutter_module:flutter_release:0.0.1-SNAPSHOT'
+                            ]
+                    ],
+                    'library_baseflutterutils'       : [
+                            'enable'    : false,
+                            'dependency': 'com.codesdancing.libraries:library-base-flutterutils:0.0.0.1', // base flutter utils // todo
+                    ]
+            ],
+            'library_reactnative'  : [
+                    'repository_remote': [
+                            'enable'    : false,
+                            'dependency': 'com.smart.library:libs-rn:0.0.1.1',
+                    ],
+                    'lib_reactnative'  : [
+                            'enable'           : false,
+                            'enableHermes'     : false,
+                            'nodeModulesPath'  : "$rootDir/../react_native/node_modules",
+                            'repository_remote': [
+                                    'enable'    : true,
+                                    'url'       : 'https://bintray.com/krmao/maven/libs-reactnative',
+                                    'dependency': 'com.smart.library:libs-reactnative:0.62.2.1'
+                            ],
+                            'repository_local' : [
+                                    'enable'    : false,
+                                    'url'       : '/Users/krmao/workspace/template/mobile/react_native/tools/libsforandroid/repo',
+                                    'dependency': 'com.smart.library:libs-reactnative:0.62.2.1-SNAPSHOT'
+                            ]
+                    ],
+            ],
+            'library_hybird'       : ['enable': false],
+            'library_map'          : [
+                    'enable'        : true,
+                    'enableMapNames': 'baidu', // baidu,gaode,google 支持多个, 逗号分隔
+                    'baiduKey'      : 'A2SNanQqBaGEtIrLgqlaMgU8VqiZvuEh',
+                    'gaodeKey'      : 'f0117d654e20c9b29aad6431f69103c3',
+                    'googleKey'     : ''
+            ],
+            'library_videoplayer'  : [
+                    'enable'         : false,
+                    'enableSamples'  : false,
+                    'enableExoPlayer': false,
+            ],
+            'module_algorithm'     : [
+                    'module_algorithm_main' : [
+                            'enable'              : true,
+                            'load'                : 'lazy', // default/lazy
+                            'remote'              : false,
+                            'dependency_libraries': [
+                                    'library-base'
+                            ],
+                            'dependency_modules'  : [
+                            ]
+                    ],
+                    'module_algorithm_debug': [
+                            'enable'    : true,
+                            'dependency': [
+                                    'dependency_libraries': [
+                                            'library_base'
+                                    ],
+                                    'dependency_modules'  : [
+                                            'module_algorithm_main'
+                                    ]
+                            ]
+                    ]
+            ]
+    ]
+
+    versions = [
+
+    ]
+
+}
+
+println("> gradle.ext.configs=${gradle.ext.configs}")
+println("> gradle.ext.modules=${gradle.ext.modules}")
+println("> gradle.ext.versions=${gradle.ext.versions}")

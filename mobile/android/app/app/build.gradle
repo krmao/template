@@ -1,0 +1,386 @@
+apply plugin: 'com.android.application'
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+/**
+ * walle
+ */
+if (gradle.ext.configs.walle.enable == true) {
+    apply plugin: 'walle'
+
+    walle {
+        apkOutputFolder = new File("${buildDir}/outputs/channels")// 指定渠道包的输出路径
+        apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
+        channelFile = new File("${projectDir}/channels.txt")// 渠道配置文件
+    }
+}
+
+/**
+ * bugly
+ */
+if (gradle.ext.configs.bugly.enable == true) {
+    apply plugin: 'bugly'
+    bugly {
+        appId = ''
+        appKey = ''
+    }
+}
+
+/**
+ * tinker
+ */
+if (gradle.ext.configs.tinker.enable == true) {
+    apply from: 'tinker-support.gradle'
+}
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.smart.template"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        archivesBaseName = "${applicationId}_V${versionName}_${versionCode}_${new Date().format('yyyyMMddHHmmss')}"
+
+        /**
+         * 分包，指定某个类在main dex
+         * https://juejin.im/post/5d95f4a4f265da5b8f10714b
+         */
+        multiDexEnabled true
+        multiDexKeepFile file('maindexlist.txt') // 指定哪些类要放到main dex
+        multiDexKeepProguard file('multiDexKeep.pro') // 打包到main dex的这些类的混淆规制，没特殊需求就给个空文件
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        println "\ndebug=${rootProject.ext.debug}, \n" +
+                "VERSION_RN=${rootProject.ext.versionRN}, \n" +
+                "MAP_ENABLE=${gradle.ext.modules.library_map.enable}, \n" +
+                "ENABLE_MAP_NAMES=${gradle.ext.modules.library_map.enableMapNames}, \n" +
+                "BAIDU_MAP_KEY=${gradle.ext.modules.library_map.baiduKey}, \n" +
+                "GAODE_MAP_KEY=${gradle.ext.modules.library_map.gaodeKey} \n"
+
+        manifestPlaceholders = [:]
+
+        if (gradle.ext.modules.library_map.enable == true) {
+            manifestPlaceholders.put('ENABLE_MAP_NAMES', gradle.ext.modules.library_map.enableMapNames)
+            if (gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
+                manifestPlaceholders.put('BAIDU_MAP_KEY', gradle.ext.modules.library_map.baiduKey)
+            } else {
+                manifestPlaceholders.put('BAIDU_MAP_KEY', '')
+            }
+            if (gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
+                manifestPlaceholders.put('GAODE_MAP_KEY', gradle.ext.modules.library_map.gaodeKey)
+            } else {
+                manifestPlaceholders.put('GAODE_MAP_KEY', '')
+            }
+        }
+
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+    resourcePrefix "final_"
+
+    //region https://stackoverflow.com/questions/48988778/cannot-inline-bytecode-built-with-jvm-target-1-8-into-bytecode-that-is-being-bui
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    //endregion
+
+    signingConfigs {
+
+        /**
+         *  MD5:  48:96:96:D2:39:CA:C7:0B:1F:10:F4:4D:0D:23:32:09
+         *  SHA1: 31:FB:96:47:CB:48:76:99:B3:FE:00:BA:0E:AB:71:1D:EE:DC:58:77
+         *  SHA256: CE:AB:57:F5:1F:BB:71:5F:7C:C2:4F:89:CF:81:01:75:56:02:C1:1E:12:72:E3:44:1B:4A:EA:67:9E:F9:00:B1
+         */
+        debug {
+            keyAlias 'debug'
+            keyPassword '123456'
+            storeFile file('debug.keystore')
+            storePassword '123456'
+            v2SigningEnabled true
+        }
+
+        release {
+            keyAlias 'debug'
+            keyPassword '123456'
+            storeFile file('debug.keystore')
+            storePassword '123456'
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "int", "VERSION_RN", "$rootProject.ext.versionRN"
+
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+
+            ndk {
+                abiFilters 'armeabi-v7a', 'x86', 'x86_64' //, 'arm64-v8a', 'armeabi',
+            }
+        }
+
+        /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
+            profile {
+                initWith debug
+            }
+        }*/
+
+        release {
+            buildConfigField "int", "VERSION_RN", "$rootProject.ext.versionRN"
+
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            ndk {
+                abiFilters 'armeabi-v7a' //, 'x86', 'x86_64' //, 'arm64-v8a', 'armeabi',
+            }
+        }
+    }
+
+
+    testOptions {
+        unitTests.returnDefaultValues = false
+        resultsDir = "${buildDir}/test-reports"
+
+        // Always show the result of every unit test, even if it passes.
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/NOTICE.TXT'
+        exclude 'META-INF/LICENSE.TXT'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
+
+    lintOptions {
+        fatal 'UnusedResources'
+        warning 'ResourceType'
+        checkReleaseBuilds false
+        abortOnError false
+        lintConfig file("$rootDir/lint.xml")
+        showAll true
+        absolutePaths true
+        textReport true
+        textOutput file("$buildDir/outputs/lint/${project.name}_lint-report.txt")
+        xmlReport true
+        xmlOutput file("$buildDir/outputs/lint/${project.name}_lint-report.xml")
+        htmlReport true
+        htmlOutput file("$buildDir/outputs/lint/${project.name}_lint-report.html")
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            /*output.processManifest.doLast {
+                def manifestOutFile = output.processManifest.manifestOutputFile
+                def manifestContents = manifestOutFile.getText('UTF-8')
+                def newFileContents = manifestContents.replaceAll("${debug}", rootProject.ext.debug)
+                manifestOutFile.write(newFileContents, 'UTF-8')
+            }*/
+
+            if (variant.getBuildType().isMinifyEnabled()) {
+                variant.getAssembleProvider().get().doLast {
+                    def fileList = variant.mappingFile.parentFile.listFiles()
+                    println("output:mappingfilepath:" + variant.mappingFile.path)
+                    println("output:mappingfile.parentFile.listFiles:" + fileList)
+                    println("output:mappingfile.exists:" + variant.mappingFile.exists())
+
+                    if (!fileList.every { it.name == "mapping.txt" }) {
+                        fileList.each {
+                            if (it.name.contains("-mapping.txt")) {
+                                println("output:copy from:${it.path}")
+                                println("output:copy to:${it.parent}" + "/mapping.txt")
+                                def fromFile = it
+                                def toDir = it.parent
+                                copy {
+                                    println("output:copy from:${fromFile}")
+                                    println("output:copy to:${toDir}" + "/mapping.txt")
+
+                                    from fromFile
+                                    into toDir
+                                    rename { String fileName ->
+                                        "mapping.txt"
+                                    }
+                                }
+                                println("output:copy end")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * implementation          :   常规的打包配置，会将依赖代码打入到dex中去
+ * bundleCompile    :   bundle中的代码不会打入dex中去，bundle将以libxxx.so文件的形式，放在apk的lib目录下，随包发布
+ * outOfApkBundles  :   指定远程bundle，不会打入apk中
+ */
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
+
+    // <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    // <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    // <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    implementation "com.thanosfisherman.wifiutils:wifiutils:1.6.4" // https://github.com/ThanosFisherman/WifiUtils
+    implementation 'com.thanosfisherman.elvis:elvis:3.0'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0' // https://github.com/afollestad/material-dialogs
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0' // https://github.com/afollestad/material-dialogs
+    implementation 'com.afollestad.material-dialogs:datetime:3.3.0' // https://github.com/afollestad/material-dialogs
+    implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0' // https://github.com/afollestad/material-dialogs
+
+    if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+        implementation project(":module_algorithm_main");
+    }
+    if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+        implementation project(":module_algorithm_debug");
+    }
+    implementation project(":module-test");
+
+    if (gradle.ext.modules.library_livestreaming.enable == true) {
+        implementation project(':library-livestreaming')
+        implementation project(':library-livestreaming-push')
+    }
+
+    if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
+        if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.enable == true) {
+            if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+                debugApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyDebug) {
+                    changing = true
+                }
+            }
+            /*if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+                profileApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyProfile) {
+                    changing = true
+                }
+            }*/
+            if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+                releaseApi(gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.repository_local.dependencyRelease) {
+                    changing = true
+                }
+            }
+        }
+        implementation project(':library-flutter')
+    }
+    if (gradle.ext.modules.library_pictureviewer.enable == true) {
+        implementation project(':library-pictureviewer')
+    }
+
+    if (gradle.ext.modules.library_hybird.enable == true) {
+        implementation project(':library-hybird')
+    }
+
+    if (gradle.ext.modules.library_map.enable == true) {
+        implementation project(':library-map')
+    }
+
+    if (gradle.ext.modules.library_reactnative.lib_reactnative.enable == true) {
+        implementation project(':library-reactnative')
+
+        if (gradle.ext.modules.library_reactnative.lib_reactnative.enableHermes == true) {
+            /**
+             * Hermes集成
+             * Hermes的启用对ReactNative应用提升明显,减小了启动时间和安装包大小还有运行内存的占用。
+             *
+             * hermes官网：https://hermesengine.dev/
+             * github地址：https://github.com/facebook/hermes
+             */
+            react = [
+                    entryFile    : "index.js",
+                    // jsBundleDirRelease: "$buildDir/intermediates/merged_assets/release/out",
+                    enableHermes : false,  // clean and rebuild if changing
+                    hermesCommand: "$rootDir/../../web/react_native/node_modules/hermes-engine/%OS-BIN%/hermes",
+            ]
+            hermesPath = "$rootDir/../../web/react_native/node_modules/hermes-engine/android/"
+
+            debugImplementation files(rootProject.ext.hermesPath + "hermes-debug.aar")
+            releaseImplementation files(rootProject.ext.hermesPath + "hermes-release.aar")
+        } else {
+            implementation 'org.webkit:android-jsc:+'
+        }
+    }
+
+    if (gradle.ext.modules.library_videoplayer.enable == true) {
+        if (gradle.ext.modules.library_videoplayer.enableSamples == true) {
+            implementation project(':library-videoplayer-samples')
+        } else {
+            implementation project(':library-videoplayer')
+        }
+    }
+
+    implementation project(':module-template-mine')
+
+    if (gradle.ext.configs.leakcanary.enable == true) {
+        debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanaryVersion"
+    }
+
+    if (gradle.ext.configs.test.enable == true) {
+        // Dependencies for local unit tests
+        testImplementation "junit:junit:$rootProject.ext.junitVersion"
+        testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+        testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+
+        // Android Testing Support Library's runner and rules
+        androidTestImplementation "androidx.test:runner:$rootProject.ext.runnerVersion"
+        androidTestImplementation "androidx.test:rules:$rootProject.ext.rulesVersion"
+
+        // Dependencies for Android unit tests
+        androidTestImplementation "junit:junit:$rootProject.ext.junitVersion"
+        androidTestImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+        androidTestImplementation "com.google.dexmaker:dexmaker:$rootProject.ext.dexmakerVersion"
+        androidTestImplementation "com.google.dexmaker:dexmaker-mockito:$rootProject.ext.dexmakerVersion"
+
+        // Set this dependency to build and run UI Automator tests
+        androidTestImplementation 'androidx.test.uiautomator:uiautomator-v18:1.0.0'
+
+        // Espresso UI Testing
+        androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+        androidTestImplementation("androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"/*, {
+            exclude group: "com.google.code.findbugs"
+        }*/)
+    }
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_grey"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables,HardcodedText">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        android:fitsSystemWindows="true"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/removeAll"
+                style="@style/STButton.Default"
+                android:text="removeAll" />
+
+            <Button
+                android:id="@+id/removeOne"
+                style="@style/STButton.Default"
+                android:text="removeOne" />
+
+            <Button
+                android:id="@+id/disable"
+                style="@style/STButton.Default"
+                android:text="disable/enable" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/addAll"
+                style="@style/STButton.Default"
+                android:text="addAll" />
+
+            <Button
+                android:id="@+id/addEnd"
+                style="@style/STButton.Default"
+                android:text="addEnd" />
+
+
+            <Button
+                android:id="@+id/showFailure"
+                style="@style/STButton.Default"
+                android:text="showFailure" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/pink">
+
+            <Button
+                android:id="@+id/showNoMore"
+                style="@style/STButton.Default"
+                android:text="showNoMore" />
+
+            <Button
+                android:id="@+id/showLoading"
+                style="@style/STButton.Default"
+                android:text="showLoading" />
+
+            <Button
+                android:id="@+id/addAt0"
+                style="@style/STButton.Default"
+                android:text="add at 0" />
+        </TableRow>
+
+    </TableLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:background="@color/yellow"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:reverseLayout="false"
+        tools:ignore="UseCompoundDrawables" />
+</LinearLayout>

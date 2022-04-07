@@ -1,0 +1,63 @@
+server:
+    port: 5388
+
+spring:
+    application:
+        name: ERUREKA-SERVER
+    profiles:
+        active: dev
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: EUREKA-SERVER
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+# https://www.sakuratears.top/blog/Eureka%E8%AF%A6%E8%A7%A3.html
+#======================================================================
+eureka:
+    client:
+        healthcheck:
+            enabled: true                          # 开启健康检查（依赖spring-boot-starter-actuator）
+        serviceUrl:
+            defaultZone: http://10.32.33.19:5388/eureka
+        register-with-eureka: false                # 是否将自己注册到 Eureka Server, 不要注册自己到自己 https://cloud.spring.io/spring-cloud-static/spring-cloud.html#_peer_awareness
+        fetch-registry: false                      # 是否从 Eureka Server 获取注册的服务信息
+        registry-fetch-interval-seconds: 15        # 客户端每隔指定时间向服务端拉取/更新服务地址清单
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-erureka-server              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-erureka-server
+
+    instance:
+        initial-status: UP
+        prefer-ip-address: true
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}
+        lease-renewal-interval-in-seconds: 15      # 客户端每隔指定时间向服务端发送心跳, 更新自己的状态
+        lease-expiration-duration-in-seconds: 30   # 指定时间内没有收到某个实例的心跳, 则注销该实例(缺省为90s)
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: /actuator/health
+        status-page-url-path: /actuator/info
+        metadata-map:
+            management:
+                context-path: /actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================

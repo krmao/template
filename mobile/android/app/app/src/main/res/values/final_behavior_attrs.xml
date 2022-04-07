@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FinalCustomBottomSheetBehavior">
+        <attr name="finalAnchorPoint" format="dimension" />
+        <attr name="finalDefaultBehaviorState" format="enum">
+            <enum name="stateAnchorPoint" value="3" />
+            <enum name="stateExpanded" value="4" />
+            <enum name="stateCollapsed" value="5" />
+            <enum name="stateHidden" value="6" />
+        </attr>
+    </declare-styleable>
+    <!--<declare-styleable name="MergedAppBarLayout">-->
+    <!--<attr name="mergedAppBarLayoutStyle" format="reference"/>-->
+    <!--</declare-styleable>-->
+</resources>

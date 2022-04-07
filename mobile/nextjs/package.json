@@ -1,0 +1,45 @@
+{
+    "name": "nextjs-9.5.3",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "next -p 5388",
+        "upload": "rm -rf ./build/out && rm -rf ./wedding/ && next build && next export && cp -rf ./build/out/ ./wedding/ && ssh root@47.98.184.193 \"rm -rf /home/webapps/wedding\" && scp -r ./wedding/ root@47.98.184.193:/home/webapps/ && rm -rf ./wedding/",
+        "clean": "rm -rf ./build && rm -rf ./wedding",
+        "build": "npm run clean && next build",
+        "export": "npm run build && next export -o ./build/out",
+        "start": "npm run build && next start -p 5389",
+        "eslint": "eslint --fix pages/ --fix components/",
+        "format": "prettier --write \"**/*.{js,jsx,md,json,html,css,yml}\" --ignore-path .gitignore"
+    },
+    "dependencies": {
+        "animated": "^0.2.2",
+        "antd": "^4.16.13",
+        "antd-mobile": "^2.3.3",
+        "axios": "^0.19.0",
+        "babel-plugin-import": "^1.13.0",
+        "es6-promise": "^4.2.8",
+        "gsap": "^3.6.1",
+        "isomorphic-unfetch": "^3.0.0",
+        "lodash": "^4.17.21",
+        "next": "^9.5.3",
+        "rc-banner-anim": "^2.2.5",
+        "rc-queue-anim": "^1.6.12",
+        "rc-tween-one": "^2.4.1",
+        "react": "^16.10.0",
+        "react-dom": "^16.10.0",
+        "react-gsap": "^3.2.1"
+    },
+    "devDependencies": {
+        "@zeit/next-css": "^1.0.1",
+        "@zeit/next-sass": "^1.0.1",
+        "@zeit/next-typescript": "^1.1.1",
+        "eslint": "^5.16.0",
+        "eslint-plugin-react": "^7.14.2",
+        "next-compose-plugins": "^2.1.1",
+        "next-images": "^1.1.1",
+        "node-sass": "^4.11.0",
+        "prettier": "^1.18.2",
+        "sass-loader": "^7.1.0"
+    }
+}

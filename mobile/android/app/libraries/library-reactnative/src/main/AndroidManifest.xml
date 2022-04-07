@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smart.library.reactnative">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+
+        <activity
+            android:name=".RNActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:taskAffinity="${applicationId}"
+            android:theme="@style/STAppTheme.Normal.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="${applicationId}"
+            android:theme="@style/STAppTheme.Normal.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+    </application>
+
+</manifest>

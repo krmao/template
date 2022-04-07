@@ -1,0 +1,27 @@
+@import "components/library_business/styles/base";
+
+.page {
+    display: block;
+    background-color: cadetblue;
+    height: 100vh;
+}
+
+.dot_b {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    background: url("../../public/static/sakura/b.png");
+    //background: url(http://www.clipartqueen.com/image-files/red-lobed-fall-clipart-leaf.png);
+    background-size: 36px 36px;
+}
+
+.dot_a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: url("../../public/static/sakura/a.png");
+    //background: url(http://www.clipartqueen.com/image-files/red-lobed-fall-clipart-leaf.png);
+    background-size: 30px 30px;
+}

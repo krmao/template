@@ -1,0 +1,70 @@
+# 运行好后访问 http://localhost:5386/apps-app-a.yml 测试
+server:
+    port: 8888
+
+spring:
+    application:
+        name: CONFIG-SERVER             # 服务名称 - 服务之间使用名称进行通讯
+    cloud:
+        config:
+            server:
+                encrypt:
+                    enabled: false
+                git:
+                    uri: https://github.com/krmao/springcloud-config-repo # 配置git仓库地址
+                    search-paths: files # 配置仓库路径
+                    username:           # 访问git仓库的用户名, 如果Git仓库为公开仓库，可以不填写用户名和密码
+                    password:           # 访问git仓库的用户密码, 如果Git仓库为公开仓库，可以不填写用户名和密码
+                bootstrap: true
+            label: master               # 配置仓库的分支
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: CONFIG-SERVER
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
+eureka:
+    client:
+        service-url:
+            defaultZone: http://10.32.33.19:5388/eureka
+        register-with-eureka: true
+        fetch-registry: true
+        registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-config-server              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-config-server
+
+    instance:
+        initial-status: UP
+        prefer-ip-address: true
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}
+        lease-renewal-interval-in-seconds: 15
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: /actuator/health
+        status-page-url-path: /actuator/info
+        metadata-map:
+            management:
+                context-path: /actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================

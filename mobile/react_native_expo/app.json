@@ -1,0 +1,15 @@
+{
+    "expo": {
+        "sdkVersion": "25.0.0",
+        "name": "template",
+        "icon": "./image.png",
+        "version": "1.0.0",
+        "slug": "your-app-slug",
+        "ios": {
+            "bundleIdentifier": "com.smart.template"
+        },
+        "android": {
+            "package": "com.smart.template"
+        }
+    }
+}

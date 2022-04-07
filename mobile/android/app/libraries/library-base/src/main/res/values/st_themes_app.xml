@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- @see http://www.gadgetsaint.com/tips/change-statusbar-color-android/#.Wt6yf1OFPVo -->
+    <!-- 深色主题 https://weibo.com/ttarticle/p/show?id=2309634551925650554887 -->
+    <!--region app-->
+    <style name="STAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/st_primary</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/st_primary_dark</item>
+        <item name="colorAccent">@color/st_accent</item>
+    </style>
+    <!--endregion-->
+
+    <!--region launch-->
+    <style name="STAppTheme.Launch" parent="STAppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Launch</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 在代码中设置全屏, 可以看到状态栏文字向上退出的动画 -->
+        <item name="android:windowFullscreen">false</item>
+        <!-- 只有设置为true, 才能改变状态栏颜色 -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="colorPrimaryDark">@color/st_launch_bg_color</item>
+        <item name="android:windowBackground">@drawable/st_launch</item>
+    </style>
+    <!--endregion-->
+
+    <!--region home-->
+    <style name="STAppTheme.Home" parent="STAppTheme">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Home</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="STAppTheme.Home.Transparent" parent="STAppTheme.Home">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/st_transparent</item>
+    </style>
+
+    <!--endregion-->
+
+    <!--region login-->
+    <style name="STAppTheme.Login" parent="STAppTheme">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Login</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+    <!--endregion-->
+
+    <!--region normal-->
+    <style name="STAppTheme.Normal" parent="STAppTheme">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.LeftRight</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="STAppTheme.Normal.Fade" parent="STAppTheme.Normal">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Fade</item>
+    </style>
+
+    <style name="STAppTheme.Normal.FullScreen" parent="STAppTheme.Normal">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <!--endregion-->
+
+    <!--region normal actionBar translucent/transparent/fade-->
+    <style name="STAppTheme.Normal.ActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="drawerArrowStyle">@style/STWidget.App.DrawerArrowToggle</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.LeftRight</item>
+        <item name="colorPrimary">@color/st_primary</item>
+        <item name="colorPrimaryDark">@color/st_primary_dark</item> <!-- this is the statusBar color -->
+        <item name="colorAccent">@color/st_accent</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="STAppTheme.Normal.ActionBar.Translucent" parent="STAppTheme.Normal.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="STAppTheme.Normal.ActionBar.Translucent.Fade" parent="STAppTheme.Normal.ActionBar.Translucent">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Fade</item>
+    </style>
+
+    <style name="STAppTheme.Normal.ActionBar.Transparent" parent="STAppTheme.Normal.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/st_transparent</item>
+    </style>
+
+    <style name="STAppTheme.Normal.ActionBar.Transparent.Fade" parent="STAppTheme.Normal.ActionBar.Transparent">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Fade</item>
+    </style>
+    <!--endregion-->
+
+    <!--region normal translucent/transparent/fade-->
+    <!--translucent for 侧滑退出-->
+    <style name="STAppTheme.Normal.Translucent" parent="STAppTheme.Normal">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="STAppTheme.Normal.Transparent" parent="STAppTheme.Normal.Translucent">
+        <item name="android:windowBackground">@color/st_transparent</item>
+    </style>
+
+    <style name="STAppTheme.Normal.Transparent.Fade" parent="STAppTheme.Normal.Translucent">
+        <item name="android:windowBackground">@color/st_transparent</item>
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Fade</item>
+    </style>
+
+    <style name="STAppTheme.Normal.Translucent.Fade" parent="STAppTheme.Normal.Translucent">
+        <item name="android:windowAnimationStyle">@style/STAnimation.Activity.Fade</item>
+    </style>
+    <!--endregion-->
+</resources>

@@ -1,0 +1,64 @@
+/**index.wxss**/
+@import "../../common.wxss";
+
+.common-image{
+  margin-bottom: 140rpx;
+}
+
+.login_form {
+  width: 60%;
+  height: 500rpx;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 80rpx;
+}
+
+.login_username {
+  width: 100%;
+  height: 80rpx;
+  font-size: 24rpx;
+}
+
+.login_pwd {
+  width: 100%;
+  height: 80rpx;
+  font-size: 24rpx;
+  margin-top: 60rpx;
+}
+
+.login_submit {
+  display: block;
+  margin-top: 150rpx;
+  width: 100%;
+  background-color: transparent;
+  height: 80rpx;
+}
+
+.login_desc {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+.login_desc_button {
+  display: flex;
+  color: #666;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  margin-right: 0;
+  background-color: #d3d7d4;
+  border: none;
+  padding: 12rpx;
+  margin-right: 0;
+  line-height: 1;
+}
+button::after {
+  border: none;
+}

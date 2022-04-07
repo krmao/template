@@ -1,0 +1,149 @@
+@import "../../common.wxss";
+
+/**index.wxss**/
+page {
+    background-color: white;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+
+    /* ---- flex start ----*/
+    display: flex;
+
+    /* 方向 */
+    flex-direction: column;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+}
+
+.list-header {
+    /* 吸顶 */
+    position: fixed;
+    top: 0;
+    z-index: 1;
+
+    /* ---- flex start ----*/
+    display: flex;
+
+    height: 96rpx;
+
+    /* 方向 */
+    flex-direction: row;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+    margin: 0;
+    padding: 10;
+    width: 100%;
+    border-bottom: 1rpx solid #F5F5F5;
+    background-color: #FFFFFF
+}
+
+.list {
+    margin-top: 96rpx;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-item {
+    /* ---- flex start ----*/
+    display: flex;
+
+    /* 方向 */
+    flex-direction: row;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+    margin: 0;
+    padding: 10rpx;
+    width: 100%;
+    border-bottom: 1rpx solid #F5F5F5;
+    background-color: #FFFFFF
+}
+
+.list-item-index {
+    display: flex;
+    color: #333333;
+    min-width: 70rpx;
+    font-size: 26rpx;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-item-name {
+    display: flex;
+    color: #999999;
+    min-width: 110rpx;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 26rpx;
+}
+
+.list-item-phone {
+    display: flex;
+    color: #999999;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    font-size: 24rpx;
+    width: 140rpx;
+}
+
+.list-item-address {
+    display: flex;
+    flex: 1;
+    color: #999999;
+    padding-right: 10rpx;
+    font-size: 24rpx;
+    padding: 10rpx;
+}

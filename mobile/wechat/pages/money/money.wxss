@@ -1,0 +1,159 @@
+@import "../../common.wxss";
+
+/**index.wxss**/
+page {
+    background-color: white;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    /* ---- flex start ----*/
+    display: flex;
+
+    /* 方向 */
+    flex-direction: column;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+}
+
+.list-header {
+    /* 吸顶 */
+    position: fixed;
+    top: 0;
+    z-index: 1;
+
+    /* ---- flex start ----*/
+    display: flex;
+
+    height: 96rpx;
+
+    /* 方向 */
+    flex-direction: row;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+    margin: 0;
+    padding: 10;
+    width: 100%;
+    border-bottom: 1rpx solid #F5F5F5;
+    background-color: #FFFFFF
+}
+
+.list {
+    display: flex;
+    flex: 1;
+    margin-top: 96rpx;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-item {
+    /* ---- flex start ----*/
+    display: flex;
+
+    min-height: 96rpx;
+
+    /* 方向 */
+    flex-direction: row;
+
+    /* 换行 */
+    flex-wrap: nowrap;
+
+    /* 主轴上的对齐方式 */
+    justify-content: flex-start;
+
+    /* 交叉轴上的对齐方式 */
+    align-items: center;
+
+    /* 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用 */
+    /* align-content: center; */
+
+    /* 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch */
+    /* align-self: center; */
+
+    /* ---- flex end ----*/
+    margin: 0;
+    padding: 10;
+    width: 100%;
+    border-bottom: 1rpx solid #F5F5F5;
+    background-color: #FFFFFF
+}
+
+.list-item-index {
+    display: flex;
+    color: #333333;
+    min-width: 40rpx;
+    font-size: 26rpx;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.list-item-name {
+    display: flex;
+    color: #999999;
+    min-width: 120rpx;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 26rpx;
+    flex: 1;
+}
+
+.list-item-phone {
+    display: flex;
+    color: #999999;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+    flex: 1;
+}
+
+.list-item-address {
+    display: flex;
+    flex: 2;
+    align-items: center;
+    justify-content: center;
+    color: #999999;
+    padding-right: 10rpx;
+    font-size: 24rpx;
+}

@@ -1,0 +1,19 @@
+<!--index.wxml-->
+<view class=".common-container">
+	<image class='.common-image' mode='aspectFill' src='../../image/logo_caicang_white.png'></image>
+	<view class="login_form">
+		<view class="login_username">
+			<input class=".common-input" value="{{userName}}" name="userName" placeholder="用户名" placeholder-class=".common-input-placeholder"  bindinput="userNameInput" />
+		</view>
+		<view class="login_pwd">
+			<input class=".common-input" password='true' value="{{password}}"  name="password"  placeholder-class=".common-input-placeholder" 
+            placeholder="密码" bindinput="passwordInput" />
+		</view>
+		<view class="login_submit">
+			<button class=".common-button" bindtap="bindViewTap">欢迎加入</button>
+		</view>
+		<view class=".login_desc">
+			<button class=".login_desc_button" bindtap="bindViewTapForDesc">登录描述</button>
+		</view>
+	</view>
+</view>

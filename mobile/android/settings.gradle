@@ -1,0 +1,83 @@
+apply from: "$settingsDir/gradle/project_config.gradle"
+
+rootProject.name = "template"
+//app
+include(':app'); project(":app").projectDir = new File(settingsDir, "app/app")
+
+//libraries
+include(":library-base"); project(":library-base").projectDir = new File(settingsDir, "app/libraries/library-base")
+// include(":library-support"); project(":library-support").projectDir = new File(settingsDir, "app/libraries/library-support")
+
+if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+    include(":module_algorithm_main"); project(":module_algorithm_main").projectDir = new File(settingsDir, "app/modules/module_algorithm/module_algorithm_main")
+}
+if (gradle.ext.modules.module_algorithm.module_algorithm_main.enable == true) {
+    include(":module_algorithm_debug"); project(":module_algorithm_debug").projectDir = new File(settingsDir, "app/modules/module_algorithm/module_algorithm_debug")
+}
+
+if (gradle.ext.modules.library_map.enable == true) {
+    include(":library-map"); project(":library-map").projectDir = new File(settingsDir, "app/libraries/library-map")
+}
+
+if (gradle.ext.modules.library_hybird.enable == true) {
+    include(":library-hybird"); project(":library-hybird").projectDir = new File(settingsDir, "app/libraries/library-hybird")
+}
+
+if (gradle.ext.modules.library_flutter.library_pureflutterwithbusiness.enable == true) {
+    include(":library-flutter"); project(":library-flutter").projectDir = new File(settingsDir, "app/libraries/library-flutter")
+}
+
+if (gradle.ext.modules.library_pictureviewer.enable == true) {
+    include(":library-pictureviewer"); project(":library-pictureviewer").projectDir = new File(settingsDir, "app/libraries/library-pictureviewer")
+}
+
+if (gradle.ext.modules.library_livestreaming.enable == true) {
+    include(":library-livestreaming"); project(":library-livestreaming").projectDir = new File(settingsDir, "app/libraries/library-livestreaming")
+    include(":library-livestreaming-push"); project(":library-livestreaming-push").projectDir = new File(settingsDir, "app/libraries/library-livestreaming-push")
+}
+
+if (gradle.ext.modules.library_reactnative.lib_reactnative.enable == true) {
+    include(":library-reactnative"); project(":library-reactnative").projectDir = new File(settingsDir, "app/libraries/library-reactnative")
+
+    if (gradle.ext.modules.library_reactnative.lib_reactnative.repository_remote.enable != true && gradle.ext.modules.library_reactnative.lib_reactnative.repository_local.enable != true) {
+        def nodeModulesDir = new File(gradle.ext.modules.library_reactnative.lib_reactnative.nodeModulesPath)
+        include(':node_modules'); project(":node_modules").projectDir = nodeModulesDir
+        include(":react-native-gesture-handler"); project(':react-native-gesture-handler').projectDir = new File(nodeModulesDir, 'react-native-gesture-handler/android')
+        include(":react-native-safe-area-context"); project(':react-native-safe-area-context').projectDir = new File(nodeModulesDir, 'react-native-safe-area-context/android')
+        include(":react-native-reanimated"); project(':react-native-reanimated').projectDir = new File(nodeModulesDir, 'react-native-reanimated/android')
+        include(":react-native-vector-icons"); project(':react-native-vector-icons').projectDir = new File(nodeModulesDir, 'react-native-vector-icons/android')
+    }
+}
+
+if (gradle.ext.modules.library_videoplayer.enable == true) {
+    def videoPlayerDir = new File(settingsDir, "app/libraries/library-videoplayer")
+    def videoPlayerLibsJavaDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-java")
+    def videoPlayerLibsJniDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni")
+    def videoPlayerLibsJniAllDir = new File(settingsDir, "app/libraries/library-videoplayer/libs/libs-jni-all")
+
+    if (gradle.ext.modules.library_videoplayer.enableSamples == true) {
+        include(":library-videoplayer-samples"); project(':library-videoplayer-samples').projectDir = new File(videoPlayerDir, 'library-videoplayer-samples')
+    }
+
+    if (gradle.ext.modules.library_videoplayer.enableExoPlayer == true) {
+        include(":library-videoplayer-exoplayer"); project(':library-videoplayer-exoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer-exoplayer')
+    }
+
+    include(":library-videoplayer"); project(':library-videoplayer').projectDir = new File(videoPlayerDir, 'library-videoplayer')
+
+    include(":library-videoplayer-libs-armv5"); project(':library-videoplayer-libs-armv5').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv5')
+    include(":library-videoplayer-libs-armv7a"); project(':library-videoplayer-libs-armv7a').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv7a')
+    include(":library-videoplayer-libs-armv64"); project(':library-videoplayer-libs-armv64').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-armv64')
+    include(":library-videoplayer-libs-x86"); project(':library-videoplayer-libs-x86').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-x86')
+    include(":library-videoplayer-libs-x86_64"); project(':library-videoplayer-libs-x86_64').projectDir = new File(videoPlayerLibsJniDir, 'library-videoplayer-libs-x86_64')
+    include(":library-videoplayer-libs-all-extra"); project(':library-videoplayer-libs-all-extra').projectDir = new File(videoPlayerLibsJniAllDir, 'library-videoplayer-libs-all-extra')
+
+    include(":library-videoplayer-libs-java"); project(':library-videoplayer-libs-java').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-java')
+    include(":library-videoplayer-libs-java-base"); project(':library-videoplayer-libs-java-base').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-java-base')
+    include(":library-videoplayer-libs-cache"); project(':library-videoplayer-libs-cache').projectDir = new File(videoPlayerLibsJavaDir, 'library-videoplayer-libs-cache')
+}
+
+//modules
+include(":module-template-mine"); project(":module-template-mine").projectDir = new File(settingsDir, "app/modules/module-template-mine")
+
+include(":module-test"); project(":module-test").projectDir = new File(settingsDir, "app/modules/module-test")

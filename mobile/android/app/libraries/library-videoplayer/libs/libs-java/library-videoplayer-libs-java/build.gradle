@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+}
+
+dependencies {
+    api "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
+
+    api "tv.danmaku.ijk.media:ijkplayer-exo:0.8.8"
+    api "com.andkulikov:transitionseverywhere:2.0.0-beta01"
+    api project(':library-videoplayer-libs-java-base')
+    api project(':library-videoplayer-libs-cache')
+}

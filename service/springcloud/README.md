@@ -1,0 +1,211 @@
+# Spring-Cloud Template Project
+
+### 1. 微服务运行顺序
+
+1. springcloud-discovery/eureka-server (or Cannot execute request on any known server)
+2. app-a
+3. app-b
+4. springcloud-routing/zuul
+
+### 2. 微服务编排生成 DOCKER 镜像并运行
+
+```shell script
+docker images
+docker ps -a
+
+docker-compose ps
+docker-compose -f docker-compose.yml down
+docker-compose ps
+
+docker rm spingcloud-discovery-eureka-server --force
+docker rmi krmao/spingcloud-discovery-eureka-server --force
+docker rm spingcloud-routing-zuul --force
+docker rmi krmao/spingcloud-routing-zuul --force
+docker rm spingcloud-app-a --force
+docker rmi krmao/spingcloud-app-a --force
+docker rm spingcloud-app-b --force
+docker rmi krmao/spingcloud-app-b --force
+
+./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+./gradlew zuul:clean zuul:jibDockerBuild --info --stacktrace
+./gradlew app-a:clean app-a:jibDockerBuild --info --stacktrace
+./gradlew app-b:clean app-b:jibDockerBuild --info --stacktrace
+
+docker-compose -f docker-compose.yml up -d
+docker-compose ps
+```
+
+### 3. 微服务生成单个 DOCKER 镜像并运行
+
+```shell script
+/**
+ * create docker image by jib
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jibDockerBuild --info --stacktrace
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ * > docker rm spingcloud-discovery-eureka-server --force
+ * > docker rmi krmao/spingcloud-discovery-eureka-server --force
+ *
+ * > ./gradlew eureka-server:clean eureka-server:jib --info --stacktrace
+ * > docker pull krmao/spingcloud-discovery-eureka-server
+ * > docker run --rm -p5388:5388 -d --name spingcloud-discovery-eureka-server krmao/spingcloud-discovery-eureka-server
+ * > curl localhost:5388
+ *
+ * @see "https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828"
+ */
+```
+
+### 4. 其他
+
+1. [IDEA Tools Services Windows](https://www.cnblogs.com/javalbb/p/12922238.html)
+   > View->Tool Windows->Services
+2. 压测工具 [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
+    * https://jmeter.apache.org/download_jmeter.cgi
+3. 解决端口被占用问题
+   > org.springframework.boot.web.server.PortInUseException: Port 5388 is already in use
+    ```shell script
+    lsof -i tcp:5388
+    kill -9 PID
+    ```
+4. MAC 修改 mysql 端口
+   > 系统偏好设置->MYSQL->Configuration->Configuration File->vi ~/.mysql.conf->Apply->重启电脑
+    ```.mysql.conf
+    cat ~/.mysql.conf
+    [mysqld]
+    port=5382
+    ```
+    ```shell script
+    # 查询端口号命令：
+    # % mysql -uroot -p
+    # Enter password:
+    # Welcome to the MySQL monitor.  Commands end with ; or \g.
+    # Your MySQL connection id is 8
+    # Server version: 8.0.21 MySQL Community Server - GPL
+    #
+    # Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+    # Oracle is a registered trademark of Oracle Corporation and/or its
+    # affiliates. Other names may be trademarks of their respective
+    # owners.
+    #
+    # Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    #
+    # mysql> show global variables like 'port';
+    # +---------------+-------+
+    # | Variable_name | Value |
+    # +---------------+-------+
+    # | port          | 5382  |
+    # +---------------+-------+
+    # 1 row in set (0.01 sec)
+    #
+    # mysql> exit;
+    # Bye
+    ```
+5. mysql 允许其它主机以 root 用户登录
+    ```shell script
+    # mysql -uroot -p
+    # Enter password:
+    # Welcome to the MySQL monitor.  Commands end with ; or \g.
+    # Your MySQL connection id is 75
+    # Server version: 8.0.21 MySQL Community Server - GPL
+    #
+    # Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+    #
+    # Oracle is a registered trademark of Oracle Corporation and/or its
+    # affiliates. Other names may be trademarks of their respective
+    # owners.
+    #
+    # Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    #
+    # mysql> use mysql;
+    # Reading table information for completion of table and column names
+    # You can turn off this feature to get a quicker startup with -A
+    #
+    # Database changed
+    # mysql> update user set host = '%' where user = 'root';
+    # Query OK, 1 row affected (0.01 sec)
+    # Rows matched: 1  Changed: 1  Warnings: 0
+    #
+    # mysql> select host, user from user;
+    # +-----------+------------------+
+    # | host      | user             |
+    # +-----------+------------------+
+    # | %         | root             |
+    # | localhost | mysql.infoschema |
+    # | localhost | mysql.session    |
+    # | localhost | mysql.sys        |
+    # +-----------+------------------+
+    # 4 rows in set (0.00 sec)
+    #
+    # mysql> flush privileges;
+    # Query OK, 0 rows affected (0.01 sec)
+    ```
+   mac MySQL Server 启动无效
+
+51. mac 从系统偏好设置启动MySQL时，多次点击start无效
+
+> 开启
+
+```
+sudo chown -RL root:mysql /usr/local/mysql
+sudo chown -RL mysql:mysql /usr/local/mysql/data
+sudo /usr/local/mysql/support-files/mysql.server start
+sudo mysqld_safe
+```
+
+> 关闭
+
+```
+sudo /usr/local/mysql/support-files/mysql.server stop
+```
+
+> 管理工具 http://www.pc6.com/mac/111878.html
+
+6. yml 配置文件不能设置 中文注释, 在 windows 操作系统解析报错
+7. 关于负载均衡
+    1. 物理负载均衡 nginx
+       > 当浏览器向后台发出请求的时候，会首先向反向代理服务器发送请求，反向代理服务器会根据客户端部署的ip：port映射表以及负载均衡策略，来决定向哪台服务器发送请求，一般会使用到nginx反向代理技术。
+    2. 网关负载均衡 外部访问内部 zuul
+    3. 内部服务之间互相调用的负载均衡 ribbon + eureka
+    5. 参考 a. https://www.cnblogs.com/smiledada/p/10607923.html
+       b. https://blog.csdn.net/qq_38386438/article/details/107353718
+
+### 5. TODO LIST
+
+> [高可用](https://zhuanlan.zhihu.com/p/43723276)（High Availability）是分布式系统架构设计中必须考虑的因素之一，它通常是指，通过设计减少系统不能提供服务的时间。
+
+* 高可用 eureka-client 集群, zuul 已经实现了
+* 高可用 eureka-server 集群(eureka-server 本身是可能宕机的)
+* 高可用 zuul 集群(zuul 本身是可能宕机的)
+* nginx 是如何负载均衡的
+
+### 6. 参考文档
+
+* https://blog.eiyouhe.com/articles/2020/01/06/1578318104295.html
+* https://www.cnblogs.com/huoli/p/11864959.html
+* https://www.springcloud.cc/
+* https://www.cnblogs.com/zhainan-blog/p/11634621.html
+* [Kubernetes 部署 SpringCloud 网关 Zuul 1.x + Eureka 动态路由](http://www.mydlq.club/article/44/)
+
+### tips
+
+* [IDEA self spring-boot run configuration is really different use gradle bootRun](https://github.com/spring-cloud/spring-cloud-config/issues/1905#issuecomment-859285955)
+  > IDEA -> View -> Tools Windows -> Services -> run
+  > <br/>
+  > <br/>
+  > Caused by: java.lang.NoClassDefFoundError: com/fasterxml/jackson/module/kotlin/KotlinModule<br/><br/>gradle resolutionStrategy force 不起作用, 比如 jackson IDEA 报依赖错误, bootRun 则没问题
+  > <br/>
+  > Because it is IDEA self spring-boot **run configuration** not use **gradle bootRun**
+    * different [https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun](https://stackoverflow.com/questions/59002432/intellij-spring-boot-run-not-working-gradle-bootrun)
+    * 现在莫名其妙又好了, 没准试试删除多余的 idea 老版本, 这是好 preference -> gradle 里面的 jdk, 重启电脑试试
+    * 试试 refresh gradle dependencies
+
+### springboot 实现控制反转的方式, 即依赖注入
+
+> 依赖注入之前, 程序员使用变量之前需要自己 new, 负责变量生成的整个过程, 这是自己控制一切, 控制权在自己, 自己控制可能导致强耦合, 难维护
+>
+> 依赖注入之后, 程序员直接使用变量就行了, 变量的生成过程 new 交由造物主 springboot 决定, 控制权在 springboot, 这就是控制反转
+
+* [如何用最简单的方式解释依赖注入？依赖注入是如何实现解耦的](https://www.zhihu.com/question/32108444/answer/309208647)
+

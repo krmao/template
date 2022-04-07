@@ -1,0 +1,95 @@
+@import "components/library_business/styles/base";
+
+.root {
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    height: 710px;
+    text-align: center;
+
+    .header {
+        margin: 0 auto;
+        width: $base-page-width;
+        height: 100px;
+
+        .logo {
+            margin-left: 120px;
+            width: 100px;
+            height: 100px;
+            float: left;
+        }
+
+        .title {
+            margin-top: 20px;
+            margin-left: 30px;
+            float: left;
+            font-size: 35px;
+            color: $base-color;
+            font-weight: bold;
+        }
+
+        .tip {
+            text-align: end;
+            margin-top: 15px;
+            margin-left: 340px;
+            line-height: 35px;
+            float: left;
+        }
+
+        .tel {
+            margin-left: 50px;
+            float: left;
+            margin-top: 25px;
+            color: $base-color;
+            font-style: italic;
+            font-weight: bold;
+        }
+    }
+
+    .menu {
+        min-width: $base-page-width;
+        background-color: $base-background-color;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        height: 60px;
+
+        .menuTable {
+            margin: 0 auto;
+            width: $base-page-width;
+            height: 60px;
+            color: white;
+
+            a {
+                display: block;
+            }
+
+            .menuSelected {
+                background-color: darkblue;
+
+                a:link, a:visited, a:hover {
+                    color: white;
+                    font-weight: bold;
+                }
+            }
+
+            .menuNormal {
+                background-color: transparent;
+
+                a:link, a:visited, a:hover {
+                    color: white;
+                    font-weight: bold;
+                }
+            }
+
+            .menuNormal:hover {
+                background-color: #00008b55;
+            }
+        }
+    }
+
+    .banner {
+        min-width: $base-page-width;
+        height: 550px;
+    }
+}

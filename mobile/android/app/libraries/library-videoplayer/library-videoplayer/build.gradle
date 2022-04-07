@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+}
+
+dependencies {
+    api project(':library-videoplayer-libs-java')
+    api project(':library-videoplayer-libs-all-extra')
+
+    if (gradle.ext.modules.library_videoplayer.enableExoPlayer == true) {
+        api project(':library-videoplayer-exoplayer')
+    }
+}

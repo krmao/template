@@ -1,0 +1,25 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+    resourcePrefix "algorithm_debug_"
+}
+
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
+}

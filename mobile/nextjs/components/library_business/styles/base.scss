@@ -1,0 +1,17 @@
+@import "components/library/styles/reset";
+
+$base-background-color: #EFEFEF;
+$base-color: #333333;
+$base-page-width: 100%;
+$base-page-height: 100vh;
+$base-font-size: 12px;
+
+.page {
+    display: flex;
+    flex-direction: column;
+    width: $base-page-width;
+    height: $base-page-height;
+    font-size: $base-font-size;
+    background-color: $base-background-color;
+    color: $base-color;
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smart.module.test">
+
+    <application>
+        <activity android:name="com.smart.module.crash.STCrashActivity" />
+
+        <activity android:name="com.smart.module.crash.STCrashTestActivity" />
+
+        <service
+            android:name="com.smart.module.crash.STCrashTestService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":bg" />
+    </application>
+
+</manifest>

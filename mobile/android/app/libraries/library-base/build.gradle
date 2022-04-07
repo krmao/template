@@ -1,0 +1,200 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    // ndkVersion = "21.3.6528147"
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        /*externalNativeBuild {
+            cmake {
+                cppFlags ""
+                abiFilters 'armeabi-v7a', 'x86', 'x86_64', 'arm64-v8a'
+                path "src/main/cpp/CMakeLists.txt"
+                version "3.10.2"
+            }
+        }*/
+    }
+    resourcePrefix "st_"
+
+    //region https://stackoverflow.com/questions/48988778/cannot-inline-bytecode-built-with-jvm-target-1-8-into-bytecode-that-is-being-bui
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    //endregion
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+        }
+
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+/* 依赖配置综合示例
+api('org.hibernate:hibernate:3.1') {
+    // 冲突时优先使用该版本, 默认 false
+    force = true
+
+    // 依据构建名称排除
+    exclude module: 'cglib'
+    // 依据组织名称排除
+    exclude group: 'org.jmock'
+    // 依据组织名称+构件名称排除
+    exclude group: 'org.unwanted', module: 'iAmBuggy'
+
+    // 为本依赖关闭依赖传递特性, 默认 true
+    transitive = false
+}*/
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+    api 'com.yuyh.json:jsonviewer:1.0.6'
+
+    /******* 官方支持库 ****************************************************************************/
+    api "androidx.core:core-ktx:$rootProject.ext.androidXCoreVersion"
+    api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
+    // api "androidx.fragment:fragment-ktx:$rootProject.ext.androidXFragmentVersion"
+    api "androidx.viewpager:viewpager:$rootProject.ext.androidXViewPagerVersion"
+    api "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+    api "androidx.legacy:legacy-support-v4:$rootProject.ext.androidXLegacySupportV4Version"
+    api "androidx.appcompat:appcompat:$rootProject.ext.androidXAppCompatVersion"
+    api "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
+    api "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintlayoutVersion"
+    api "androidx.recyclerview:recyclerview:$rootProject.ext.androidXRecyclerViewVersion"
+    api "androidx.recyclerview:recyclerview-selection:$rootProject.ext.androidXVersion"
+    api "com.google.android.material:material:$rootProject.ext.androidXMaterialVersion"
+    api "androidx.cardview:cardview:$rootProject.ext.androidXCardViewVersion"
+    api "androidx.vectordrawable:vectordrawable-animated:$rootProject.ext.androidXVectorDrawableVersion"
+    api "androidx.multidex:multidex:$rootProject.ext.androidXMultidexVersion"
+
+    /******* kotlin支持 ***************************************************************************/
+    api "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-reflect:$rootProject.ext.kotlinVersion"
+    api "org.jetbrains.anko:anko-common:$rootProject.ext.ankoVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinxCoroutinesVersion"
+
+    /******* 必备工具库 ****************************************************************************/
+    api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"    //1.3MB [EventBus]
+    api "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxkotlinVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion" //8KB
+    api "com.jakewharton.rxbinding2:rxbinding-kotlin:$rootProject.ext.rxbindingVersion"
+    api "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rootProject.ext.rxbindingVersion"
+    api "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rootProject.ext.rxbindingVersion"
+    api "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rootProject.ext.rxbindingVersion"
+    api "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rootProject.ext.rxbindingVersion"
+
+    /******* 网络请求库 ****************************************************************************/
+    //noinspection GradleDependency
+    api "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttpVersion"
+    //noinspection GradleDependency
+    api "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.ext.okhttpVersion"
+
+    api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    // api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion" //STHttpLoggingInterceptor
+    // api "org.ligboy.retrofit2:converter-fastjson-android:$rootProject.ext.converterfastjsonandroidVersion"
+    // api "com.squareup.retrofit2:converter-jackson:$rootProject.ext.retrofitVersion"
+
+    /******* 网络图片库 ****************************************************************************/
+    //noinspection GradleDependency
+    api "com.facebook.fresco:fresco:$rootProject.ext.frescoVersion"
+    //noinspection GradleDependency
+    api "com.facebook.fresco:imagepipeline-okhttp3:$rootProject.ext.frescoVersion"
+    /******* 其它常用库 ****************************************************************************/
+
+    // api "com.jude:swipebackhelper:3.1.2"
+    // https://www.jianshu.com/p/b6d682e301c2
+    // https://github.com/wya-team/wya-android-kit/blob/a3082d47ce295c555c008951fcf328039d9a2fa4/wyauikit/uikit/src/main/java/com/wya/uikit/toolbar/swipeback/SwipeBackLayout.java
+    api 'cn.simonlee.widget:swipeback:1.1.1'
+
+    api "com.gyf.immersionbar:immersionbar:3.0.0"
+    api "com.andkulikov:transitionseverywhere:1.7.8"
+    api "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0" // https://github.com/davemorrissey/subsampling-scale-image-view
+
+    api "com.scwang.smart:refresh-layout-kernel:$rootProject.ext.smartRefreshLayoutVersion"         // https://github.com/scwang90/SmartRefreshLayout
+    api "com.scwang.smart:refresh-header-classics:$rootProject.ext.smartRefreshLayoutVersion"       // 经典刷新头
+    api "com.scwang.smart:refresh-footer-classics:$rootProject.ext.smartRefreshLayoutVersion"       // 经典加载
+
+    api "com.airbnb.android:lottie:3.2.2"
+    api "com.smart.library.util:bspatch:0.0.2" // api(name: "bspatch-0.0.2", ext: "aar") // must not dependency local if upload to JCenter
+
+    api 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+
+    // region wifi util https://github.com/ThanosFisherman/WifiUtils
+    // api "com.thanosfisherman.wifiutils:wifiutils:1.6.4"
+    // api 'com.thanosfisherman.elvis:elvis:3.0'
+    // endregion
+
+    //region lifecycle https://developer.android.google.cn/topic/libraries/architecture/lifecycle
+    /*
+    def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
+    // ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // Saved state module for ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    // LiveData
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // Lifecycles only (without ViewModel or LiveData)
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // Annotation processor
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    api "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    // optional - helpers for implementing LifecycleOwner in a Service
+    api "androidx.lifecycle:lifecycle-service:$lifecycle_version"
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    api "androidx.lifecycle:lifecycle-process:$lifecycle_version"
+    // optional - ReactiveStreams support for LiveData
+    api "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
+    // optional - Test helpers for LiveData
+    testApi "androidx.arch.core:core-testing:$arch_version"
+    */
+    //endregion
+}
+
+/*apply plugin: "maven"
+
+group = "com.smart.android"
+def artifactID = "library-base"
+version = rootProject.ext.libraryBaseVersion
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: "") {
+                authentication(userName: "", password: "")
+            }
+            repository(url: rootProject.ext.prepository_url) {
+                authentication(userName: "", password: "")
+            }
+            pom.packaging = "aar"
+            pom.groupId = project.group
+            pom.artifactId = artifactID
+            pom.version = project.version
+        }
+    }
+}*/
+
+// apply from: "./upload_to_jcenter.gradle"
+apply from: "./upload_to_maven_central.gradle"

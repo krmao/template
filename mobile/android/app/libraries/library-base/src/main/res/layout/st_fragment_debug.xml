@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,SmallSp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#efefef">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.smart.library.widget.titlebar.STTitleBar
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/st_titlebar_height"
+                android:background="#000"
+                app:stTitleText="配置环境"
+                app:stTitleTxtColor="#fff" />
+
+            <com.smart.library.widget.STListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pink"
+                android:cacheColorHint="@color/st_transparent"
+                android:divider="@color/st_transparent"
+                android:dividerHeight="0dp"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="15dp"
+                android:scrollbars="none">
+
+                <requestFocus />
+            </com.smart.library.widget.STListView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/blue_500"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@null"
+                    android:padding="5dp"
+                    android:src="@android:drawable/ic_menu_add" />
+
+                <EditText
+                    android:id="@+id/editLabel"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="标签"
+                    android:inputType="textUri"
+                    android:maxLength="4"
+                    android:padding="10dp"
+                    android:textColor="#333"
+                    android:textColorHint="#909090"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/editUrl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="服务地址"
+                    android:inputType="textUri"
+                    android:padding="10dp"
+                    android:textColor="#333"
+                    android:textColorHint="#909090"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/addCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/st_selector"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="点击添加"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="切换环境后请注意上下文, 必要时 **重启** app"
+                android:textColor="@color/grey_400"
+                android:textSize="10sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/activity_info_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:button="@drawable/st_check_button"
+                    android:checked="false"
+                    android:text="页面信息提示"
+                    android:textSize="10sp" />
+
+                <CheckBox
+                    android:id="@+id/trace_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:button="@drawable/st_check_button"
+                    android:checked="false"
+                    android:text="埋点提示"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#8DDDEE"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:divider="@drawable/st_line_vertical_white"
+        app:dividerPadding="10dp"
+        app:showDividers="middle">
+
+        <TextView
+            android:id="@+id/hideTV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/st_selector"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="永久隐藏悬浮窗"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/clearCacheTV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/st_selector"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="程序详细信息"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

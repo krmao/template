@@ -1,0 +1,1141 @@
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+#
+# Starting with version 2.2 of the Android plugin for Gradle, this file is distributed together with
+# the plugin and unpacked at build-time. The files in $ANDROID_HOME are no longer maintained and
+# will be ignored by new version of the Android plugin for Gradle.
+
+# Optimization is turned off by default. Dex does not like code run
+# through the ProGuard optimize steps (and performs some
+# of these optimizations on its own).
+# Note that if you want to enable optimization, you cannot just
+# include optimization flags in your own project configuration file;
+# instead you will need to point to the
+# "proguard-android-optimize.txt" file instead of this one from your
+# project.properties file.
+-dontoptimize
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# Preserve some attributes that may be required for reflection.
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+-keep public class com.google.android.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.google.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep setters in Views so that animations can still work.
+-keepclassmembers public class * extends android.view.View {
+    void set*(***);
+    *** get*();
+}
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick.
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# Preserve annotated Javascript interface methods.
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# The support libraries contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version. We know about them, and they are safe.
+-dontnote android.support.**
+-dontnote androidx.**
+-dontwarn android.support.**
+-dontwarn androidx.**
+
+# This class is deprecated, but remains for backward compatibility.
+-dontwarn android.util.FloatMath
+
+# Understand the @Keep support annotation.
+-keep class android.support.annotation.Keep
+-keep class androidx.annotation.Keep
+
+-keep @android.support.annotation.Keep class * {*;}
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+# These classes are duplicated between android.jar and org.apache.http.legacy.jar.
+-dontnote org.apache.http.**
+-dontnote android.net.http.**
+
+# These classes are duplicated between android.jar and core-lambda-stubs.jar.
+-dontnote java.lang.invoke.**
+
+# Build the ephemeral app in a module project.
+# Prevents: Warning: library class <plugin-package> depends on program class io.flutter.plugin.**
+# This is due to plugins (libraries) depending on the embedding (the program jar)
+-dontwarn io.flutter.plugin.**
+
+# The android.** package is provided by the OS at runtime.
+-dontwarn android.**
+
+-dontnote com.google.**
+-dontwarn com.google.**
+-keep class com.google.** { *; }
+
+-dontnote com.tbruyelle.**
+-dontwarn com.tbruyelle.**
+-keep class com.tbruyelle.** { *; }
+
+-dontnote com.facebook.**
+-dontwarn com.facebook.**
+-keep class com.facebook.** { *; }
+
+-dontnote org.jetbrains.**
+-dontwarn org.jetbrains.**
+-keep class org.jetbrains.** { *; }
+
+-dontnote kotlin.**
+-dontwarn kotlin.**
+-keep class kotlin.** { *; }
+
+-dontnote io.reactivex.**
+-dontwarn io.reactivex.**
+-keep class io.reactivex.** { *; }
+
+-dontnote com.gyf.**
+-dontwarn com.gyf.**
+-keep class com.gyf.** { *; }
+
+-dontnote com.transitionseverywhere.**
+-dontwarn com.transitionseverywhere.**
+-keep class com.transitionseverywhere.** { *; }
+
+-dontnote okhttp3.**
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+
+-dontnote okio.**
+-dontwarn okio.**
+-keep class okio.** { *; }
+
+-dontnote retrofit2.**
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+
+-dontnote com.jude.**
+-dontwarn com.jude.**
+-keep class com.jude.** { *; }
+
+# 百度地图
+-keep class com.baidu.** {*;}
+-keep class mapsdkvi.com.** {*;}
+-dontwarn com.baidu.**
+
+# 高德地图
+# 高德地图 3D 地图 V5.0.0之前：
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.amap.mapcore.*{*;}
+-keep   class com.amap.api.trace.**{*;}
+# 高德地图 3D 地图 V5.0.0之后：
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.**{*;}
+-keep   class com.amap.api.trace.**{*;}
+# 高德地图 定位
+-keep class com.amap.api.location.**{*;}
+-keep class com.amap.api.fence.**{*;}
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+# 高德地图 搜索
+-keep   class com.amap.api.services.**{*;}
+# 高德地图 2D地图
+-keep class com.amap.api.maps2d.**{*;}
+-keep class com.amap.api.mapcore2d.**{*;}
+# 高德地图 导航
+-keep class com.amap.api.navi.**{*;}
+-keep class com.autonavi.**{*;}
+
+# support
+-keep class com.smart.library.widget.behavior.STBottomSheetBackdropBehavior{*;}
+-keep class com.smart.library.reactnative.RNBusHandler{*;}
+
+# GSYVideoPlayer
+-keep class com.shuyu.gsyvideoplayer.video.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.**
+-keep class com.shuyu.gsyvideoplayer.video.base.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.base.**
+-keep class com.shuyu.gsyvideoplayer.utils.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.utils.**
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+
+## Flutter wrapper
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.**  { *; }
+-keep class io.flutter.util.**  { *; }
+-keep class io.flutter.view.**  { *; }
+-keep class io.flutter.**  { *; }
+-keep class io.flutter.plugins.**  { *; }
+-dontwarn io.flutter.embedding.**
+
+## Base Plugin
+-keep class com.codesdancing.** { *; }
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+#成员 = 变量+方法
+
+#-keep                  保留指定的类和成员名称和内容
+#-keepnames             保留类和成员名称，混淆内容
+#-keepclassmembers      保留指定的类成员名称和内容
+#-keepclassmembernames  保留成员名称，混淆内容
+
+#关闭混淆
+#-dontobfuscate
+
+# 混淆时是否记录日志
+-verbose
+-dontshrink
+
+##############################################
+#https://mp.weixin.qq.com/s/DE4gr8cTRQp2jQq3c6wGHQ
+#-dontoptimize
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** e(...);
+    public static *** i(...);
+    public static *** v(...);
+    public static *** println(...);
+    public static *** w(...);
+    public static *** wtf(...);
+}
+##############################################
+
+#混淆时是否做预校验
+-dontpreverify
+#指定代码的压缩级别
+-optimizationpasses 5
+#混淆时应用侵入式重载
+-overloadaggressively
+#确定统一的混淆类的成员名称来增加混淆
+-useuniqueclassmembernames
+#重新包装所有重命名的包并放在给定的单一包中
+-flattenpackagehierarchy 'M'
+-repackageclasses 'template'
+#优化时允许访问并修改有修饰符的类和类的成员
+-allowaccessmodification
+#是否使用大小写混合
+-dontusemixedcaseclassnames
+#指定不去忽略非公共的库类
+-dontskipnonpubliclibraryclasses
+-renamesourcefileattribute SourceFile
+#混淆时所采用的算法
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-optimizations !code/allocation/variable
+
+-printseeds
+-printconfiguration proguardConfiguration.txt
+-printmapping proguardMapping.txt
+
+#保护属性 start
+-keepparameternames
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+-renamesourcefileattribute SourceFile
+#保护属性 end
+
+#保护指定的类和类的成员的名称 start
+#假如指定的类成员存在的话
+-keep class !android.support.v4.widget.**,* {
+    native <methods>;
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    void set*(...);
+    *** get*();
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+#保护指定的类和类的成员的名称 end
+
+#保护指定类成员的名称 start
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.content.Context {
+   public void *(android.view.View);
+   public void *(android.view.MenuItem);
+}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
+}
+#保护指定类成员的名称 end
+#Serializable start
+#-keepnames class * implements java.io.Serializable
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    !private <fields>;
+    !private <methods>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+#Serializable end
+#不进行混淆保持原样 start
+#绝对保护类和类成员在shrinking期间不被删除,并且在obfuscation期间不被重命名
+#system start
+-keep class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep class * implements java.lang.Comparable {
+    int compareTo(***);
+}
+-keepclassmembers class * implements java.lang.annotation.Annotation {
+    ** *();
+}
+#system end
+# The support library contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version.  We know about them, and they are safe.
+-dontwarn android.support.**
+
+# Understand the @Keep support annotation.
+-keep class androidx.annotation.Keep
+
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+#
+#
+# normal
+# ======================================================================
+
+# ======================================================================
+# custom
+#
+#
+
+-dontwarn android.support.**
+-dontnote android.net.http.*
+-dontnote org.apache.commons.codec.**
+-dontnote org.apache.http.**
+
+#保护lambda start
+-keepclassmembers class * {
+    private static synthetic java.lang.Object $deserializeLambda$(java.lang.invoke.SerializedLambda);
+}
+-dontnote java.lang.invoke.SerializedLambda
+
+-keepclassmembernames class * {
+    private static synthetic *** lambda$*(...);
+}
+-adaptclassstrings com.example.Test
+#保护lambda end
+
+#通用 start
+#如果确保警告是安全的,则可以忽略该警告 start
+-dontwarn freemarker.**
+#如果确保警告是安全的,则可以忽略该警告 end
+
+#问题 start
+#该指令解决了一个困扰很久的问题
+#java.lang.IllegalArgumentException: name already added: string{"b"}
+#while processing android/support/a/n.class
+-keep class android.support.** { *; }
+-dontnote android.support.**
+#问题 end
+
+
+#javascript interface webview start
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
+-dontwarn fqcn.of.**
+-dontnote fqcn.of.**
+#javascript interface webview end
+
+-keepclassmembers class * extends android.webkit.WebChromeClient{
+       public void openFileChooser(...);
+}
+
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+
+#databinding start
+#https://android.googlesource.com/platform/frameworks/data-binding/+/studio-master-dev/proguard.cfg
+-keep class android.databinding.** { *; }
+#-keepattributes javax.xml.bind.annotation.*
+#-keepattributes javax.annotation.processing.*
+-keepclassmembers class * extends java.lang.Enum { *; }
+-keep class android.**
+-dontnote android.**
+-keep interface android.**
+
+#-libraryjars  <java.home>/lib/rt.jar
+#-libraryjars  <java.home>/lib/jce.jar
+
+
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:35
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:108
+-keep class androidx.core.content.FileProvider { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:82
+-keep class com.codesdancing.flutter.boost.STFlutterBoostActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:89
+-keep class com.codesdancing.flutter.boost.STFlutterBoostHomeActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:95
+-keep class com.codesdancing.flutter.multiple.STFlutterMultipleActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:102
+-keep class com.codesdancing.flutter.multiple.STFlutterMultipleHomeActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:35
+-keep class com.codesdancing.flutterexample.FinalApplication { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:42
+-keep class com.codesdancing.flutterexample.FinalLaunchActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:117
+-keep class com.smart.library.base.STActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:131
+-keep class com.smart.library.util.accessibility.STActivityTrackerService { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:146
+-keep class com.smart.library.util.accessibility.STActivityTrackerService$Companion$ActivityTrackerBroadcastReceiver { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:122
+-keep class com.smart.library.widget.debug.STDebugActivity { <init>(); }
+# Referenced at /Users/krmao/workspace/template/mobile/flutter/lib_flutter_base/example/build/app/intermediates/merged_manifests/release/AndroidManifest.xml:72
+-keep class io.flutter.plugins.imagepicker.ImagePickerFileProvider { <init>(); }
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout-watch-v20/abc_alert_dialog_title_material.xml:53
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog_title.xml:41
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog_actions.xml:45
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog.xml:51
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_title_material.xml:57
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_material.xml:52
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_button_bar_material.xml:43
+-keep class android.widget.Space { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_select_dialog_material.xml:23
+-keep class androidx.appcompat.app.AlertController$RecycleListView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_action_menu_item_layout.xml:17
+-keep class androidx.appcompat.view.menu.ActionMenuItemView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_expanded_menu_layout.xml:17
+-keep class androidx.appcompat.view.menu.ExpandedMenuView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_popup_menu_item_layout.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_list_menu_item_layout.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_cascading_menu_item_layout.xml:20
+-keep class androidx.appcompat.view.menu.ListMenuItemView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_toolbar.xml:27
+-keep class androidx.appcompat.widget.ActionBarContainer { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_toolbar.xml:43
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_action_mode_bar.xml:19
+-keep class androidx.appcompat.widget.ActionBarContextView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_toolbar.xml:17
+-keep class androidx.appcompat.widget.ActionBarOverlayLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_action_menu_layout.xml:17
+-keep class androidx.appcompat.widget.ActionMenuView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_activity_chooser_view.xml:19
+-keep class androidx.appcompat.widget.ActivityChooserView$InnerLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_material.xml:18
+-keep class androidx.appcompat.widget.AlertDialogLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_color_alpha_dialog.xml:42
+-keep class androidx.appcompat.widget.AppCompatSeekBar { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog_actions.xml:26
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_button_bar_material.xml:26
+-keep class androidx.appcompat.widget.ButtonBarLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_content_include.xml:19
+-keep class androidx.appcompat.widget.ContentFrameLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog_title.xml:36
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_title_material.xml:45
+-keep class androidx.appcompat.widget.DialogTitle { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_simple_overlay_action_mode.xml:23
+-keep class androidx.appcompat.widget.FitWindowsFrameLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_simple.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_dialog_title_material.xml:22
+-keep class androidx.appcompat.widget.FitWindowsLinearLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_fragment_debug.xml:154
+-keep class androidx.appcompat.widget.LinearLayoutCompat { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_search_view.xml:75
+-keep class androidx.appcompat.widget.SearchView$SearchAutoComplete { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_toolbar.xml:36
+-keep class androidx.appcompat.widget.Toolbar { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_simple_overlay_action_mode.xml:32
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_screen_simple.xml:25
+-keep class androidx.appcompat.widget.ViewStubCompat { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_dialog_progress_loading.xml:9
+-keep class androidx.cardview.widget.CardView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_bottom_sheet_dialog.xml:26
+-keep class androidx.coordinatorlayout.widget.CoordinatorLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_widget_titlebar.xml:135
+-keep class androidx.core.widget.ContentLoadingProgressBar { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_alert_dialog.xml:40
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/15d01e899b80ff1883395cb6652a74ba/appcompat-1.2.0/res/layout/abc_alert_dialog_material.xml:41
+-keep class androidx.core.widget.NestedScrollView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_calendar_months.xml:18
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_calendar_horizontal.xml:29
+-keep class androidx.recyclerview.widget.RecyclerView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_dialog_progress_loading.xml:27
+-keep class com.airbnb.lottie.LottieAnimationView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_toolbar_surface.xml:16
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_toolbar_elevation.xml:16
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_toolbar_custom_background.xml:16
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_toolbar.xml:16
+-keep class com.google.android.material.appbar.MaterialToolbar { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_header_fullscreen.xml:36
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_calendar_month_navigation.xml:32
+-keep class com.google.android.material.button.MaterialButton { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_reflow_chipgroup.xml:25
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_chip_zero_corner_radius.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_action_chip.xml:17
+-keep class com.google.android.material.chip.Chip { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/test_reflow_chipgroup.xml:19
+-keep class com.google.android.material.chip.ChipGroup { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_calendar_month.xml:18
+-keep class com.google.android.material.datepicker.MaterialCalendarGridView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_bottom_navigation_item.xml:27
+-keep class com.google.android.material.internal.BaselineLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_header_toggle.xml:18
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_text_input_start_icon.xml:18
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_text_input_end_icon.xml:18
+-keep class com.google.android.material.internal.CheckableImageButton { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_navigation_item.xml:17
+-keep class com.google.android.material.internal.NavigationMenuItemView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_navigation_menu.xml:17
+-keep class com.google.android.material.internal.NavigationMenuView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_layout_snackbar.xml:18
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_layout_snackbar.xml:18
+-keep class com.google.android.material.snackbar.Snackbar$SnackbarLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_layout_snackbar_include.xml:18
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/design_layout_snackbar_include.xml:18
+-keep class com.google.android.material.snackbar.SnackbarContentLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_text_input_date_range.xml:32
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_text_input_date.xml:31
+-keep class com.google.android.material.textfield.TextInputEditText { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_text_input_date_range.xml:26
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/mtrl_picker_text_input_date.xml:26
+-keep class com.google.android.material.textfield.TextInputLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/text_view_without_line_height.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/text_view_with_theme_line_height.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/text_view_with_line_height_from_style.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/text_view_with_line_height_from_layout.xml:17
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/66a0fb2bab480339a72a02f072882cd3/material-1.2.1/res/layout/text_view_with_line_height_from_appearance.xml:17
+-keep class com.google.android.material.textview.MaterialTextView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_swipeback_layout.xml:2
+-keep class com.smart.library.util.swipeback.STSwipeBackLayout { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_fragment_debug.xml:30
+-keep class com.smart.library.widget.STListView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_color_picker_dialog.xml:36
+-keep class com.smart.library.widget.colorpicker.STColorPickerPalette { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_color_alpha_dialog.xml:24
+-keep class com.smart.library.widget.colorpicker.STColorPickerSwatch { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_test.xml:17
+-keep class com.smart.library.widget.roundable.STRoundImageView { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_test.xml:11
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_fragment_webview.xml:9
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_fragment_debug.xml:23
+-keep class com.smart.library.widget.titlebar.STTitleBar { <init>(...); }
+
+# Referenced at /Users/krmao/.gradle/caches/transforms-2/files-2.1/01af63f1ba65942bffa0498fe389cc4e/library-base-0.0.1.49/res/layout/st_fragment_webview.xml:16
+-keep class com.smart.library.widget.webview.client.STWebView { <init>(...); }
+
+
+# When editing this file, update the following files as well:
+# - META-INF/com.android.tools/proguard/kotlin-reflect.pro
+# - META-INF/com.android.tools/r8-from-1.6.0/kotlin-reflect.pro
+# - META-INF/com.android.tools/r8-upto-1.6.0/kotlin-reflect.pro
+# Keep Metadata annotations so they can be parsed at runtime.
+-keep class kotlin.Metadata { *; }
+
+# Keep implementations of service loaded interfaces
+# R8 will automatically handle these these in 1.6+
+-keep interface kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader
+-keep class * implements kotlin.reflect.jvm.internal.impl.builtins.BuiltInsLoader { public protected *; }
+-keep interface kotlin.reflect.jvm.internal.impl.resolve.ExternalOverridabilityCondition
+-keep class * implements kotlin.reflect.jvm.internal.impl.resolve.ExternalOverridabilityCondition { public protected *; }
+
+# Keep generic signatures and annotations at runtime.
+# R8 requires InnerClasses and EnclosingMethod if you keepattributes Signature.
+-keepattributes InnerClasses,Signature,RuntimeVisible*Annotations,EnclosingMethod
+
+# Don't note on API calls from different JVM versions as they're gated properly at runtime.
+-dontnote kotlin.internal.PlatformImplementationsKt
+
+# Don't note on internal APIs, as there is some class relocating that shrinkers may unnecessarily find suspicious.
+-dontwarn kotlin.reflect.jvm.internal.**
+# Files in this directory will be ignored starting with Android Gradle Plugin 3.6.0+
+
+# When editing this file, update the following files as well for AGP 3.6.0+:
+# - META-INF/com.android.tools/proguard/coroutines.pro
+# - META-INF/com.android.tools/r8-upto-1.6.0/coroutines.pro
+
+-keep class kotlinx.coroutines.android.AndroidDispatcherFactory {*;}
+
+# ServiceLoader support
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+
+# Most of volatile fields are updated with AFU and should not be mangled
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# Same story for the standard library's SafeContinuation that also uses AtomicReferenceFieldUpdater
+-keepclassmembernames class kotlin.coroutines.SafeContinuation {
+    volatile <fields>;
+}
+
+# These classes are only required by kotlinx.coroutines.debug.AgentPremain, which is only loaded when
+# kotlinx-coroutines-core is used as a Java agent, so these are not needed in contexts where ProGuard is used.
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler
+-dontwarn java.lang.instrument.Instrumentation
+-dontwarn sun.misc.Signal
+
+# Copyright (C) 2015 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior
+-keepattributes RuntimeVisible*Annotation*
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# AppCompatViewInflater reads the viewInflaterClass theme attribute which then
+# reflectively instantiates MaterialComponentsViewInflater using the no-argument
+# constructor. We only need to keep this constructor and the class name if
+# AppCompatViewInflater is also being kept.
+-if class androidx.appcompat.app.AppCompatViewInflater
+-keep class com.google.android.material.theme.MaterialComponentsViewInflater {
+    <init>();
+}
+
+
+# Copyright (C) 2018 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# aapt is not able to read app::actionViewClass and app:actionProviderClass to produce proguard
+# keep rules. Add a commonly used SearchView to the keep list until b/109831488 is resolved.
+-keep class androidx.appcompat.widget.SearchView { <init>(...); }
+
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.appcompat.widget.AppCompatTextViewAutoSizeHelper$Impl* {
+  <methods>;
+}
+
+# Proguard rules specific to the hls module.
+
+# Constructors accessed via reflection in SegmentDownloadAction
+-dontnote com.google.android.exoplayer2.source.hls.offline.HlsDownloadAction
+-keepclassmembers class com.google.android.exoplayer2.source.hls.offline.HlsDownloadAction {
+  static ** DESERIALIZER;
+}
+
+# Proguard rules specific to the dash module.
+
+# Constructors accessed via reflection in SegmentDownloadAction
+-dontnote com.google.android.exoplayer2.source.dash.offline.DashDownloadAction
+-keepclassmembers class com.google.android.exoplayer2.source.dash.offline.DashDownloadAction {
+  static ** DESERIALIZER;
+}
+
+# Proguard rules specific to the smoothstreaming module.
+
+# Constructors accessed via reflection in SegmentDownloadAction
+-dontnote com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadAction
+-keepclassmembers class com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadAction {
+  static ** DESERIALIZER;
+}
+
+# Proguard rules specific to the core module.
+
+# Constructors accessed via reflection in DefaultRenderersFactory
+-dontnote com.google.android.exoplayer2.ext.vp9.LibvpxVideoRenderer
+-keepclassmembers class com.google.android.exoplayer2.ext.vp9.LibvpxVideoRenderer {
+  <init>(boolean, long, android.os.Handler, com.google.android.exoplayer2.video.VideoRendererEventListener, int);
+}
+-dontnote com.google.android.exoplayer2.ext.opus.LibopusAudioRenderer
+-keepclassmembers class com.google.android.exoplayer2.ext.opus.LibopusAudioRenderer {
+  <init>(android.os.Handler, com.google.android.exoplayer2.audio.AudioRendererEventListener, com.google.android.exoplayer2.audio.AudioProcessor[]);
+}
+-dontnote com.google.android.exoplayer2.ext.flac.LibflacAudioRenderer
+-keepclassmembers class com.google.android.exoplayer2.ext.flac.LibflacAudioRenderer {
+  <init>(android.os.Handler, com.google.android.exoplayer2.audio.AudioRendererEventListener, com.google.android.exoplayer2.audio.AudioProcessor[]);
+}
+-dontnote com.google.android.exoplayer2.ext.ffmpeg.FfmpegAudioRenderer
+-keepclassmembers class com.google.android.exoplayer2.ext.ffmpeg.FfmpegAudioRenderer {
+  <init>(android.os.Handler, com.google.android.exoplayer2.audio.AudioRendererEventListener, com.google.android.exoplayer2.audio.AudioProcessor[]);
+}
+
+# Constructors accessed via reflection in DefaultExtractorsFactory
+-dontnote com.google.android.exoplayer2.ext.flac.FlacExtractor
+-keepclassmembers class com.google.android.exoplayer2.ext.flac.FlacExtractor {
+  <init>();
+}
+
+# Constructors accessed via reflection in DefaultDataSource
+-dontnote com.google.android.exoplayer2.ext.rtmp.RtmpDataSource
+-keepclassmembers class com.google.android.exoplayer2.ext.rtmp.RtmpDataSource {
+  <init>();
+}
+
+# Constructors accessed via reflection in DownloadAction
+-dontnote com.google.android.exoplayer2.source.dash.offline.DashDownloadAction
+-dontnote com.google.android.exoplayer2.source.hls.offline.HlsDownloadAction
+-dontnote com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadAction
+
+# Don't warn about checkerframework
+-dontwarn org.checkerframework.**
+# Copyright (C) 2020 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The default FragmentFactory creates Fragment instances using reflection
+-if public class ** extends androidx.fragment.app.Fragment
+-keepclasseswithmembers,allowobfuscation public class <1> {
+    public <init>();
+}
+
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior and ViewPager's DecorView
+-keepattributes *Annotation*
+
+# Copyright (C) 2015 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# When layoutManager xml attribute is used, RecyclerView inflates
+#LayoutManagers' constructors using reflection.
+-keep public class * extends androidx.recyclerview.widget.RecyclerView$LayoutManager {
+    public <init>(android.content.Context, android.util.AttributeSet, int, int);
+    public <init>();
+}
+
+-keepclassmembers class androidx.recyclerview.widget.RecyclerView {
+    public void suppressLayout(boolean);
+    public boolean isLayoutSuppressed();
+}
+# Copyright (C) 2017 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class androidx.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+  androidx.transition.ChangeBounds$ViewBounds mViewBounds;
+}
+
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# keep setters in VectorDrawables so that animations can still work.
+-keepclassmembers class androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$* {
+   void set*(***);
+   *** get*();
+}
+
+# Copyright (C) 2017 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Prevent Parcelable objects from being removed or renamed.
+-keep class android.support.v4.media.** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+# Prevent Parcelable objects from being removed or renamed.
+-keep class androidx.media.** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.ViewCompat$Api* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.WindowInsetsCompat$Impl* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.WindowInsetsCompat$BuilderImpl* {
+  <methods>;
+}
+-keep class com.davemorrissey.labs.subscaleview.** { *; }
+
+-keepattributes *Annotation*
+
+-keepclassmembers enum androidx.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep !interface * implements androidx.lifecycle.LifecycleObserver {
+}
+
+-keep class * implements androidx.lifecycle.GeneratedAdapter {
+    <init>(...);
+}
+
+-keepclassmembers class ** {
+    @androidx.lifecycle.OnLifecycleEvent *;
+}
+
+# this rule is need to work properly when app is compiled with api 28, see b/142778206
+-keepclassmembers class androidx.lifecycle.ReportFragment$LifecycleCallbacks { *; }
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.ViewModel {
+    <init>(androidx.lifecycle.SavedStateHandle);
+}
+
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application,androidx.lifecycle.SavedStateHandle);
+}
+
+# Copyright (C) 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+-keepclassmembers,allowobfuscation class * implements androidx.savedstate.SavedStateRegistry$AutoRecreated {
+    <init>();
+}
+
+-keep public class * implements androidx.versionedparcelable.VersionedParcelable
+-keep public class android.support.**Parcelizer { *; }
+-keep public class androidx.**Parcelizer { *; }
+-keep public class androidx.versionedparcelable.ParcelImpl
+
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.ViewModel {
+    <init>();
+}
+
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application);
+}
+
+-keep,allowobfuscation @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+-dontwarn java.util.concurrent.Flow*
+# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
+# EnclosingMethod is required to use InnerClasses.
+-keepattributes Signature, InnerClasses, EnclosingMethod
+
+# Retrofit does reflection on method and parameter annotations.
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+
+# Retain service method parameters when optimizing.
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+# Ignore JSR 305 annotations for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
+-dontwarn kotlin.Unit
+
+# Top-level functions that can only be used by Kotlin.
+-dontwarn retrofit2.KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions$*
+
+# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
+# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface <1>
+
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+-keep class xcrash.NativeHandler {
+    native <methods>;
+    void crashCallback(...);
+    void traceCallback(...);
+}
+
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+-keep,allowobfuscation @interface com.facebook.soloader.DoNotOptimize
+
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+
+# Do not strip any method/class that is annotated with @DoNotOptimize
+-keep @com.facebook.soloader.DoNotOptimize class *
+-keepclassmembers class * {
+    @com.facebook.soloader.DoNotOptimize *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+-dontwarn com.facebook.infer.**
+-ignorewarnings

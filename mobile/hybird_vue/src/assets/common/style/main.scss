@@ -1,0 +1,35 @@
+[v-cloak] {
+    //display: none;
+}
+
+@function px2rem($px) {
+    @return $px / (750.0/375.0*10.0) * 1.0rem;
+}
+
+img, a {
+    display: block;
+}
+
+@import "./_reset.scss";
+
+html {
+    height: 100%;
+    word-wrap: break-word;
+    word-break: break-all;
+    text-size-adjust: 100%;
+}
+
+body {
+    position: static;
+    overflow-y: auto;
+    height: 100%;
+    font-family: Tahoma, Arial, Roboto, ”Droid Sans”, ”Helvetica Neue”, ”Droid Sans Fallback”, ”Heiti SC”, sans-self, serif;
+    -webkit-user-select: none;
+    user-select: none;
+    background: #fff;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/accent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <com.smart.library.widget.titlebar.STTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/st_titlebar_height"
+        android:background="#fefefe"
+        app:stTitleText="测试页面" />
+
+    <com.smart.library.widget.roundable.STRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/st_image"
+        app:stLeftBottomCornerRadius="15dp"
+        app:stLeftTopCornerRadius="30dp"
+        app:stRightBottomCornerRadius="30dp" />
+
+    <com.smart.library.widget.roundable.STRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/pink"
+        android:scaleType="centerCrop"
+        android:src="@drawable/st_image" />
+
+    <com.smart.library.widget.roundable.STRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/yellow"
+        android:scaleType="centerCrop"
+        android:src="@drawable/st_image"
+        app:stType="circle" />
+
+    <com.smart.library.widget.roundable.STRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/orange"
+        android:scaleType="centerCrop"
+        android:src="@drawable/st_image"
+        app:stBorderColor="@color/blue"
+        app:stBorderWidth="5dp"
+        app:stCornerRadius="30dp"
+        app:stType="round" />
+
+    <com.smart.library.widget.roundable.STRoundImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        android:src="@drawable/st_image"
+        app:stBorderColor="@color/light_blue"
+        app:stBorderWidth="10dp"
+        app:stProgressBorder="90"
+        app:stProgressColor="@color/blue"
+        app:stType="circle" />
+
+</LinearLayout>

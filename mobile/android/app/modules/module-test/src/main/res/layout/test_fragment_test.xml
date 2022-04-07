@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.smart.library.widget.titlebar.STTitleBar
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:stTitleText="测试模块" />
+
+        <com.smart.library.widget.loading.STFrameLoadingLayout
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/btn_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/st_selector"
+                    android:padding="15dp"
+                    android:text="点击获取城市列表"
+                    android:textColor="#333"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_city_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#333" />
+                </ScrollView>
+
+
+            </LinearLayout>
+
+        </com.smart.library.widget.loading.STFrameLoadingLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_test"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right|end"
+        android:layout_margin="10dp"
+        app:backgroundTint="@color/orange"
+        app:borderWidth="0dp"
+        app:elevation="8dp"
+        app:pressedTranslationZ="16dp"
+        app:rippleColor="#33728dff"
+        tools:ignore="RtlHardcoded" />
+</FrameLayout>

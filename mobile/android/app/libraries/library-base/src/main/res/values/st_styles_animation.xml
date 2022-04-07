@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <integer name="st_page_anim_time">300</integer>
+
+    <style name="STWidget.Animation.Activity.None" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+    </style>
+
+    <style name="STAnimation.Activity.LeftRight" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/st_anim_left_right_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_left_right_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/st_anim_left_right_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/st_anim_left_right_close_exit</item>
+    </style>
+
+    <style name="STAnimation.Activity.Fade" parent="@android:style/Animation.Activity">
+        <!-- A open B 时, B 的进入动画 -->
+        <item name="android:activityOpenEnterAnimation">@anim/st_anim_fade_enter</item>
+        <!-- A open B 时, A 的退出动画 -->
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
+        <!-- A open B 后, 返回到 A 时, A 的进入动画 -->
+        <item name="android:activityCloseEnterAnimation">@anim/st_anim_fade_enter</item>
+        <!-- A open B 后, 返回到 A 时, B 的退出动画 -->
+        <item name="android:activityCloseExitAnimation">@anim/st_anim_fade_exit</item>
+    </style>
+
+    <style name="STAnimation.Activity.Launch" parent="STAnimation.Activity.Fade">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+    </style>
+
+    <style name="STAnimation.Activity.Home" parent="STAnimation.Activity.LeftRight">
+        <item name="android:activityOpenEnterAnimation">@anim/st_anim_fade_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
+    </style>
+
+    <style name="STAnimation.Activity.Login" parent="STAnimation.Activity.LeftRight">
+        <item name="android:activityOpenEnterAnimation">@anim/st_anim_fade_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/st_anim_fade_exit</item>
+    </style>
+
+    <style name="STAnimation.Window.Bottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/st_anim_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/st_anim_bottom_exit</item>
+    </style>
+
+    <style name="STAnimation.Window.Fade" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/st_anim_fade_enter</item>
+        <item name="android:windowExitAnimation">@anim/st_anim_fade_exit</item>
+    </style>
+
+</resources>

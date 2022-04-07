@@ -1,0 +1,208 @@
+/**
+ * 上传 android library aar files to jcenter
+ *
+ * 第一步:
+ * local.properties
+ *      sdk.dir=
+ *      ndk.dir=
+ *      bintray.apikey=
+ *
+ * 第二步:
+ * ../../../gradlew clean :library-flutter:clean :library-flutter:uploadToJcenter --info --stacktrace
+ *
+ * 第三步:
+ * 上传以后 到 https://bintray.com/krmao/maven/libs-flutter 查看, 点击右下角 "Add to JCenter" 按钮请求添加, 接下来就是等待
+ *
+ * // implementation 'com.smart.library:libs-flutter:0.0.1.4'
+ *
+ * 参考:
+ * 仓库中心: {@link "https://bintray.com/bintray/jcenter"} Web@gmail
+ * 仓库中心: {@link "https://mvnrepository.com"}, {@link "https://issues.sonatype.org/browse/OSSRH-61823"} Web@krmao
+ * 上传插件: {@link "https://github.com/bintray/gradle-bintray-plugin"}
+ * 上传脚本: {@link "https://github.com/krmao/template/blob/c6cd89eec05c8e4ca527f70c3740437be04caf79/bluetoothprinter/uploadJcenter.gradle"}
+ * @see "https://github.com/bintray/gradle-bintray-plugin/issues/110"
+ * @see "https://developer.android.com/studio/build/maven-publish-plugin"
+ * @see "https://medium.com/devnibbles/publishing-your-first-android-library-to-bintray-da08c8a76e1a"
+ * @see "https://medium.com/prismapp/publishing-android-library-to-bintray-ba588184b690"
+ * @see "https://liungkejin.github.io/2016/03/27/Publish-AAR-jcenter.html"
+ */
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def BINTRAY_REPOSITORY = 'maven'
+def BINTRAY_USER = 'krmao'
+def BINTRAY_APIKEY = properties.getProperty("bintray.apikey")
+// def SONATYPE_PWD = properties.getProperty("sonatype.pwd").trim()
+
+def LIBRARY_NAME = 'libs-flutter'           // 无需提前在 bintray 网站创建, 脚本会自动在 BINTRAY_REPOSITORY 创建
+def LIBRARY_VERSION = '0.0.1.5'
+def LIBRARY_GROUP_ID = 'com.smart.library'
+def LIBRARY_LABELS = ['flutter']
+def LIBRARY_ARTIFACT_ID = "libs-flutter"
+def LIBRARY_DESCRIPTION = 'library-flutter'
+
+def LIBRARY_URL = 'https://github.com/krmao/template'
+def LIBRARY_URL_GIT = 'https://github.com/krmao/template.git'
+def LIBRARY_URL_ISSUE_TRACKER = 'https://github.com/krmao/template/issues'
+
+def LIBRARY_DEVELOPER_ID = 'krmao'
+def LIBRARY_DEVELOPER_NAME = 'krmao'
+def LIBRARY_DEVELOPER_EMAIL = '767709667@qq.com'
+
+def LIBRARY_LICENSE_NAME = 'Apache License, Version 2.0'
+def LIBRARY_LICENSE_URL = 'https://opensource.org/licenses/Apache-2.0'
+def LIBRARY_LICENSES_ALL = ["Apache-2.0"]
+
+group = LIBRARY_GROUP_ID
+version = LIBRARY_VERSION
+
+def pomConfig = {
+    name LIBRARY_NAME
+    url LIBRARY_URL
+    description LIBRARY_DESCRIPTION
+
+    licenses {
+        license {
+            name LIBRARY_LICENSE_NAME
+            url LIBRARY_LICENSE_URL
+        }
+    }
+
+    developers {
+        developer {
+            id LIBRARY_DEVELOPER_ID
+            name LIBRARY_DEVELOPER_NAME
+            email LIBRARY_DEVELOPER_EMAIL
+        }
+    }
+
+    scm {
+        url LIBRARY_URL
+        connection LIBRARY_URL_GIT
+        developerConnection LIBRARY_URL_GIT
+    }
+}
+
+// Because the components are created only during the afterEvaluate phase, you must
+// configure your publications using the afterEvaluate() lifecycle method.
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                artifact sourcesJar
+                artifact javadocJar
+                // You can then customize attributes of the publication as shown below.
+                groupId = LIBRARY_GROUP_ID
+                artifactId = LIBRARY_ARTIFACT_ID
+                version = LIBRARY_VERSION
+
+                // Define this explicitly if using implementation or api configurations
+                pom.withXml {
+                    def root = asNode()
+                    root.children().last() + pomConfig
+
+                    def allDependencies = new ArrayList()
+                    def dependenciesNode = root['dependencies'][0] ?: root.appendNode('dependencies')
+                    allDependencies.addAll(configurations.implementation.allDependencies.findAll())
+                    allDependencies.addAll(configurations.api.allDependencies.findAll())
+                    allDependencies.addAll(configurations.compile.allDependencies.findAll())
+                    // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                    /*configurations.implementation.*/ allDependencies.each {
+                        // Ensure dependencies such as fileTree are not included.
+                        if (it.name != 'unspecified') {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += configurations.compile
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    // destinationDir = file("../javadoc/")
+    failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    //noinspection GrDeprecatedAPIUsage
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    //noinspection GrDeprecatedAPIUsage
+    classifier = 'sources'
+}
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+    }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = BINTRAY_USER
+    key = BINTRAY_APIKEY
+    publications = ['release']
+    configurations = ['archives']
+    pkg {
+        repo = BINTRAY_REPOSITORY
+        name = LIBRARY_NAME
+        desc = LIBRARY_DESCRIPTION
+        userOrg = ''
+        websiteUrl = LIBRARY_URL
+        issueTrackerUrl = LIBRARY_URL_ISSUE_TRACKER
+        labels = LIBRARY_LABELS
+        vcsUrl = LIBRARY_URL_GIT
+        licenses = LIBRARY_LICENSES_ALL
+        publicDownloadNumbers = true
+        publish = true  //[Default: false] Whether version should be auto published after an upload
+        override = true //[Default: false] Whether to override version artifacts already published
+        dryRun = false  //[Default: false] Whether to run this as dry-run, without deploying
+
+        //Optional version descriptor
+        /*version {
+            name =                          //Bintray logical version name
+            desc =                          //Optional - Version-specific description'
+            released  =                     //Optional - Date of the version release. 2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
+            vcsTag =
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin'] //Optional version-level attributes
+            //Optional configuration for GPG signing
+            gpg {
+                sign = true                 //Determines whether to GPG sign the files. The default is false
+                passphrase = 'passphrase'   //Optional. The passphrase for GPG signing'
+            }
+            //Optional configuration for Maven Central sync of the version
+            mavenCentralSync {
+                sync = true                 //[Default: true] Determines whether to sync the version to Maven Central.
+                user = BINTRAY_USER         //OSS user token: mandatory
+                password = SONATYPE_PWD     //OSS user password: mandatory
+                close = '1'                 //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }*/
+    }
+}
+
+project.task('uploadToJcenter', group: "vin", description: "upload to Jcenter", dependsOn: ["bintrayUpload"]).doLast {
+    println "*************** upload to Jcenter finish! ***************"
+}

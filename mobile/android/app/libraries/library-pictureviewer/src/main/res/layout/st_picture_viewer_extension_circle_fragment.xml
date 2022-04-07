@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/fill">
+
+    <RelativeLayout style="@style/footer" android:id="@+id/footer">
+
+        <ImageView style="@style/previousButton" android:id="@+id/previous" android:contentDescription="@string/button.previous"/>
+
+        <ImageView style="@style/nextButton" android:id="@+id/next" android:contentDescription="@string/button.next"/>
+
+        <TextView style="@style/footerNote"
+                android:id="@+id/note"
+                android:text="@string/extension.p2.text"
+                android:layout_toStartOf="@id/next"
+                android:layout_toEndOf="@id/previous"
+            android:layout_toLeftOf="@id/next"
+            android:layout_toRightOf="@id/previous" />
+
+    </RelativeLayout>
+
+    <com.smart.library.pictureviewer.extension.views.STPictureViewerCircleView
+        style="@style/mainPanel" android:id="@+id/imageView"/>
+
+</RelativeLayout>

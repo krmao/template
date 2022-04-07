@@ -1,0 +1,32 @@
+{
+    "moduleName": "template",
+    "moduleVersion": "1.0",
+    "moduleDebug": false,
+    "moduleUpdateStrategy": "OFFLINE",
+    "moduleMainUrl": "/cx/cxj/cxjappweb/template/",
+    "moduleScriptUrl": "/cx/cxj/cxjappweb/template/",
+    "moduleConfigUrl": "http://10.47.58.14:8080/background/files/template.json",
+    "moduleDownloadUrl": "http://10.47.58.14:8080/background/files/template-1.0.zip",
+    "moduleZipMd5": "5a5600ee770d2729bbdc9ee1660131f6",
+    "moduleFilesMd5": {
+        "/favicon.ico": "6c2f5d4c5da961d1a53ba3da03d7c653",
+        "/index.html": "6e4b713b11dd4d3db425f87d9adc2caf",
+        "/static/css/app.c922ef49458d6d53ffea55fb9d7fc28a.css": "41114615289aaa746cb2ea3de8c8c20a",
+        "/static/css/app.c922ef49458d6d53ffea55fb9d7fc28a.css.map": "e7e5ae893cb869ab31405b59d354fe48",
+        "/static/js/app.e0637953d896825859b8.js": "aa393ed994d302c5d4002f6cbea1b3e2",
+        "/static/js/app.e0637953d896825859b8.js.map": "2274985410b55f2b668a7cf7def10b96",
+        "/static/js/manifest.ec863eb56465c92388e3.js": "3921c0323a1b8d29ab9016063474169e",
+        "/static/js/manifest.ec863eb56465c92388e3.js.map": "aa34cdebff226b481003c8512a56b493",
+        "/static/js/vendor.cf05df878324649fae95.js": "49a2b38a6c8d4bc24d206331ccc76df9",
+        "/static/js/vendor.cf05df878324649fae95.js.map": "ac4c36af3cf9a8b903b9d9ffc82e9346",
+        "/static/plugins/hybrid-console/README.md": "05ad212cf04530ddab95fd804dfb477f",
+        "/static/plugins/hybrid-console/hybird-console-menu-clear.svg": "f0ec5c8f891be103e9d6cae068806758",
+        "/static/plugins/hybrid-console/hybird-console-menu-toggleoff.svg": "a57c99e23ea4397452651deba1f95f06",
+        "/static/plugins/hybrid-console/hybird-console-menu-toggleon.svg": "7ac437492770cf82c9fc7001dee59278",
+        "/static/plugins/hybrid-console/hybird-console-menu.svg": "90a296e4948de64b4a77fcf5cc1ca778",
+        "/static/plugins/hybrid-console/hybird-console-menu_clear.svg": "788f8893dd77cf0fa41aad6dfdc799f4",
+        "/static/plugins/hybrid-console/hybird-console.css": "40a897597ff0bb301d1b487b790f3f24",
+        "/static/plugins/hybrid-console/hybird-console.js": "af1b976ea9414249527f9ab360d72859",
+        "/static/plugins/hybrid-console/test.html": "eaf106f5bcbc5ab48bd7021878220130"
+    }
+}

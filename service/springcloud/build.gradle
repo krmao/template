@@ -1,0 +1,235 @@
+import org.gradle.internal.logging.slf4j.OutputEventListenerBackedLogger
+
+buildscript {
+    ext {
+        // spring cloud 与 spring boot 与 其他 依赖的第三方库 版本需要一一对应
+        // https://spring.io/projects/spring-cloud
+        springCloudVersion = "Hoxton.SR7"
+        springBootVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootDevToolsVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterWebVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterSecurityVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterOauth2ResourceServerVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterOauth2ClientVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterActuatorVersion = "2.2.4.RELEASE"// "2.5.0"
+        springBootStarterNetflixEurekaClientVersion = "3.0.3"
+        springBootStarterNetflixEurekaServerVersion = "3.0.3"
+        springBootStarterNetflixRibbonVersion = "2.2.4.RELEASE"
+        springBootStarterNetflixHystrixVersion = "2.2.8.RELEASE"
+        springBootStarterNetflixZuulVersion = "2.2.8.RELEASE"
+        springBootStarterOpenFeignVersion = "2.2.4.RELEASE"
+        springBootStarterAdminVersion = "2.2.4"
+        springBootConfigurationProcessorVersion = "2.2.4.RELEASE"
+        springSecurityOauth2Version = "2.2.4.RELEASE"
+        springSecurityOauth2AuthorizationServerVersion = "0.1.1"
+        springCloudCommonsVersion = "2.2.4.RELEASE"
+        springCloudConfigVersion = "2.2.4.RELEASE"
+        springCloudSecurityVersion = "2.2.4.RELEASE"
+        springCloudOauth2Version = "2.2.4.RELEASE"
+        springBootManagementVersion = "1.0.11.RELEASE"
+        jacksonModuleKotlinVersion = '2.12.3' // https://github.com/FasterXML/jackson-module-kotlin/issues/133#issuecomment-371159421
+        kotlinVersion = '1.5.10'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url = "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
+        maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
+        maven { url = "https://jitpack.io"; allowInsecureProtocol = true }
+        maven { url = "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
+        maven { url = "https://plugins.gradle.org/m2/"; allowInsecureProtocol = true }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${rootProject.ext.springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${rootProject.ext.springBootManagementVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath 'org.hidetake:gradle-ssh-plugin:2.9.0'
+        classpath "gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:2.6.0"
+    }
+}
+
+allprojects {
+    group "com.smart.springcloud"
+    version "1.0.0"
+
+    configurations {
+        // all*.exclude module: "spring-boot-starter-logging" 不起作用
+        all {
+            // https://stackoverflow.com/questions/59629214/caused-by-org-apache-logging-log4j-loggingexception-log4j-slf4j-impl-cannot-be
+            // exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+            exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+
+            //region
+            // 不使用 spring-boot 自带的依赖管理, 自己处理
+            // https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
+            // https://plugins.gradle.org/plugin/io.spring.dependency-management
+            // 需要做如下处理
+            // exclude group: 'javax.servlet', module: 'servlet-api'
+            // exclude group: 'com.google.code.gson', module: 'gson'
+            // exclude group: 'org.springframework', module: 'spring-web'
+            // exclude group: 'org.springframework', module: 'spring-webmvc'
+            //endregion
+
+            // force not working https://stackoverflow.com/questions/56849729/forcing-deep-transitive-dependency-in-gradle#comment104203623_56849729
+            resolutionStrategy {
+                cacheChangingModulesFor 30, "seconds"
+                cacheDynamicVersionsFor 30, "seconds"
+
+                force "com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.module:jackson-module-parameter-names:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.core:jackson-databind:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.core:jackson-annotations:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$rootProject.ext.jacksonModuleKotlinVersion"
+                force "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$rootProject.ext.jacksonModuleKotlinVersion"
+            }
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'kotlin'
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    // apply plugin: 'war' // https://github.com/GoogleContainerTools/jib/issues/2891#issuecomment-725708828
+    apply plugin: 'org.springframework.boot'
+
+    //region 至关重要, 插件 dependency-management 帮助我们自动处理 spring-boot 与 spring-cloud 的版本兼容
+    // 将会导致 gradle resolutionStrategy force 不起作用
+    apply plugin: 'io.spring.dependency-management'
+    dependencyManagement {
+        imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+        imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
+    }
+    ext['spring-security.version'] = '5.5.1'
+    //endregion
+
+    apply plugin: 'idea'
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = compileJava.destinationDir
+            testOutputDir = compileTestJava.destinationDir
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    compileKotlin { kotlinOptions.jvmTarget = "1.8" }
+    compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
+    jar {
+        enabled = true
+    }
+    bootJar {
+        //noinspection GrDeprecatedAPIUsage
+        classifier = 'boot'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"; allowInsecureProtocol = true }
+        maven { url "http://maven.dds.com/nexus/content/groups/public"; allowInsecureProtocol = true }
+        maven { url "https://jitpack.io"; allowInsecureProtocol = true }
+        maven { url "https://repo1.maven.org/maven2/"; allowInsecureProtocol = true }
+    }
+
+    //region
+    // 将 local.properties 参数读取到 rootProject.ext, 在此绑定到 application.yml
+    // 同时引用外部自定义属性与 spring 专属属性可能造成问题, processResources FAILED / Missing property / Could not copy file
+    // https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.properties-and-configuration.expand-properties
+    // https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
+    processResources {
+        inputs.file("${rootProject.projectDir}/local.properties")
+        filesMatching(["application.yml", "bootstrap.yml"]) {
+            expand(rootProject.properties)
+        }
+    }
+    //endregion
+
+    apply plugin: 'kotlin-kapt' // https://kotlinlang.org/docs/kapt.html#using-in-gradle
+
+    dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+        kapt "org.springframework.boot:spring-boot-configuration-processor:${rootProject.ext.springBootConfigurationProcessorVersion}"
+
+        implementation("org.springframework:spring-test", "junit:junit:4.12")
+        testImplementation("org.springframework.boot:spring-boot-starter-test") {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+}
+
+ext {
+    logger.warn("\n>>>>>>>>>>==============================>>>>>>>>>>")
+    logger.warn(">>>>>>>>>>==============================>>>>>>>>>>")
+
+    //region versions
+    app_a_version = "0.0.1-SNAPSHOT"
+    app_b_version = "0.0.1-SNAPSHOT"
+    spingcloud_routing_zuul_version = "0.0.1-SNAPSHOT"
+    spingcloud_config_server_version = "0.0.1-SNAPSHOT"
+    //endregion
+
+    server_debug = false
+    server_port = 8080
+    server_ip = null
+    server_user = null
+    server_password = null
+    server_sql_ip = null
+    server_sql_port = null
+    server_sql_user = null
+    server_sql_password = null
+    server_jwt_secret = null
+    docker_io_user = null
+    docker_io_password = null
+    logger = Logging.getLogger("build-script") as OutputEventListenerBackedLogger
+
+    Properties properties = new Properties()
+
+    try {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    } catch (Exception ignore) {
+        logger.error("miss local.properties")
+    }
+    try {
+        server_debug = properties.get("server_debug")
+    } catch (Exception ignore) {
+        logger.error("miss server_debug in local.properties")
+    }
+    try {
+        server_port = properties.get("server_port")
+    } catch (Exception ignore) {
+        logger.error("miss server_port in local.properties")
+    }
+
+    server_ip = properties.get("server_ip")
+    server_user = properties.get("server_user")
+    server_password = properties.get("server_password")
+    server_sql_ip = properties.get("server_sql_ip")
+    server_sql_port = properties.get("server_sql_port")
+    server_sql_user = properties.get("server_sql_user")
+    server_sql_password = properties.get("server_sql_password")
+    server_jwt_secret = properties.get("server_jwt_secret")
+    docker_io_user = properties.get("docker_io_user")
+    docker_io_password = properties.get("docker_io_password")
+
+    logger.warn("    app_a_version:$app_a_version")
+    logger.warn("    server_debug:$server_debug")
+    logger.warn("    server_port:$server_port")
+    logger.warn("    server_ip:$server_ip")
+    logger.warn("    server_user:$server_user")
+    logger.warn("    server_password:$server_password")
+    logger.warn("    server_sql_ip:$server_sql_ip")
+    logger.warn("    server_sql_port:$server_sql_port")
+    logger.warn("    server_sql_user:$server_sql_user")
+    logger.warn("    server_sql_password:$server_sql_password")
+    logger.warn("    server_jwt_secret:$server_jwt_secret")
+    logger.warn("    docker_io_user:$docker_io_user")
+    logger.warn("    docker_io_password:$docker_io_password")
+    logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
+    logger.warn("<<<<<<<<<<==============================<<<<<<<<<<")
+
+    springfoxSwaggerVersion = "2.5.0" //2.6.0+ token 不更新
+}

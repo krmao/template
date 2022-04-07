@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+    <string name="final_app_name">CodesDancing</string>
+
+    <!-- Custom view example -->
+    <string name="signalStrength">Signal strength</string>
+    <string name="excellent">Excellent</string>
+    <string name="security">Security</string>
+    <string name="securityType">802.1x EAP</string>
+    <string name="identity">Identity</string>
+    <string name="password">Password</string>
+    <string name="ssid">SSID</string>
+    <string name="ssidLit">Material Dialogs</string>
+    <string name="showPassword">Show password</string>
+    <string name="googleWifi">Wifi</string>
+    <string name="connect">Connect</string>
+
+    <string-array name="menus">
+        <item>JAVA</item>
+        <item>C++</item>
+        <item>KOTLIN</item>
+    </string-array>
+</resources>

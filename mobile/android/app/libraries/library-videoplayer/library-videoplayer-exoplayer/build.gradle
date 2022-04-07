@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+}
+
+dependencies {
+    api project(':library-videoplayer-libs-java-base')
+    api "androidx.annotation:annotation:$rootProject.ext.androidXAnnotationVersion"
+    api "com.google.android.exoplayer:exoplayer:2.10.4"
+    api "com.google.android.exoplayer:extension-rtmp:2.10.4"
+}

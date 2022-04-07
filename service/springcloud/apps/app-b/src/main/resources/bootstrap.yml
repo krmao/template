@@ -1,0 +1,124 @@
+# https://stackoverflow.com/a/29194250/4348530
+debug: true
+
+server:
+    port: 5384 # http://localhost:5381/app-b/test/remoteConfig http://localhost:5386/apps-app-b-dev.yml
+    servlet:
+        context-path: /app-b
+
+spring:
+#    security:
+#      user:
+#          name: admin
+#          password: admin
+    application:
+        name: APP-B
+        #    config:
+        #        name: APP-B
+        #    profiles:
+        # /{application}/{profile}[/{label}]
+        # /{application}-{profile}.yml
+        # /{application}-{profile}.properties
+        # /{label}/{application}-{profile}.properties
+    #        active: dev # http://localhost:5386/APP-B/dev http://localhost:5386/APP-B-dev.yml http://localhost:5386/APP-B/dev/master http://localhost:5386/master/APP-B-dev.yml
+    cloud:
+        config:
+            # You can override all of them by setting spring.cloud.config.* (where * is name, profile or label).
+            # /{name}/{profile}/{label} http://localhost:5386/APP-B/dev/master
+            # https://cloud.spring.io/spring-cloud-static/spring-cloud-config/2.0.1.RELEASE/single/spring-cloud-config.html#_locating_remote_configuration_resources
+            label: master # 配置仓库的分支
+            profile: dev  # 环境 env
+            # name: APP-B   # 注意此属性将覆盖spring.application.name，若两者不一致则会导致不能从config-server读取PropertySources
+            # name: apps-app-b   # Name of application used to fetch remote properties.
+
+            discovery: # 配置服务发现
+                enabled: true
+                serviceId: CONFIG-SERVER
+
+            # uri: http://localhost:8888/
+
+            # enabled: true
+            # username: # HTTP Basic security
+            # password: # HTTP Basic security
+            # allow-override: true
+            # override-none: true
+            # override-system-properties: true
+            # fail-fast: false
+
+            # server:
+            # bootstrap: true
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: APP-B
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
+eureka:
+    client:
+        service-url:
+            defaultZone: http://10.32.33.19:5388/eureka
+        register-with-eureka: true
+        fetch-registry: true
+        registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-app-b              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-app-b
+
+    instance:
+        initial-status: UP
+        prefer-ip-address: true
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}
+        lease-renewal-interval-in-seconds: 15
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: \${server.servlet.context-path}/actuator/health
+        status-page-url-path: \${server.servlet.context-path}/actuator/info
+        metadata-map:
+            management:
+                context-path: \${server.servlet.context-path}/actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================
+
+# TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+logging:
+    level:
+        root: INFO
+        com.smart: INFO
+        static: INFO
+        org:
+            springframework:
+                security:
+                    web: debug
+                boot:
+                    context:
+                        logging:
+                            ClasspathLoggingApplicationListener: INFO
+                    autoconfigure:
+                        logging: INFO
+                    env:
+                        PropertySourcesLoader: INFO
+                    data: INFO
+                    security: INFO
+                    web: INFO
+
+# testName: kr.maom # 经测试放在 application.yml 不生效

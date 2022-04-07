@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:ignore="HardcodedText,UselessParent">
+    <!--
+        https://www.jianshu.com/p/e73d2f2556a8
+        https://juejin.cn/post/6913528967232225293
+        https://juejin.cn/post/6844903880854077454
+        <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:background="@color/blue"
+            android:checked="true"
+            android:text="enableSwipeBack"
+            android:textColor="#333"
+            android:textSize="12sp" />
+    -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/green_100"
+                android:text="很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好"
+                android:textColor="#333"
+                android:textSize="15sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="User ID"
+                android:textColorHint="@color/blue_900"
+                app:boxBackgroundColor="@color/amber_A100"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxStrokeColor="@color/pink"
+                app:boxStrokeErrorColor="@color/red"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
+                app:counterOverflowTextColor="@color/blue_grey"
+                app:counterTextColor="@color/green"
+                app:helperText="长度超过限制"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@color/grey_500"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:hintTextColor="@color/blue_100"
+                app:passwordToggleContentDescription="显示"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/orange"
+                app:placeholderTextColor="@color/green"
+                app:prefixTextColor="@color/blue_700"
+                app:startIconCheckable="true"
+                app:startIconContentDescription="hi"
+                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
+                app:startIconTint="@color/cyan_100">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    app:boxStrokeColor="@color/orange"
+                    app:textInputLayoutFocusedRectEnabled="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/autoCompleteInput"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:startIconCheckable="true"
+                app:startIconContentDescription="hi"
+                app:startIconDrawable="@drawable/st_emo_im_foot_in_mouth"
+                app:startIconTint="@color/cyan_100">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.smart.library.widget.shapeable.STShapeableEditText
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:hint="input"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/st_image"
+                    android:text="hello hello hello hello hello hello hello hello hello"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    app:strokeColor="#F44336"
+                    app:strokeWidth="2dp" />
+
+                <com.smart.library.widget.shapeable.STShapeableTextView
+                    android:id="@+id/textTest"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="asfasfasfasfasfafsafffffff"
+                    android:textColor="@color/blue"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    app:strokeColor="#F44336"
+                    app:strokeWidth="2dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.smart.library.widget.shapeable.STShapeableButton
+                    android:id="@+id/edit1"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#1946B04A"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+
+                    android:padding="0dp"
+                    android:text="编辑"
+                    android:textColor="#79c17b"
+                    android:textSize="10sp"
+                    android:textStyle="normal"
+                    android:visibility="visible"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    tools:ignore="SmallSp" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/STButton.MaterialComponents.Text.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#1946B04A"
+                    android:text="编辑"
+                    android:textColor="#79c17b"
+
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.smart.library.widget.shapeable.STShapeableButton
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#46B04A"
+                    android:gravity="center"
+
+                    android:text="编辑"
+                    android:textColor="#fff"
+                    android:textSize="10sp"
+                    android:textStyle="normal"
+                    android:visibility="visible"
+                    app:cornerFamily="rounded"
+                    app:cornerSize="10dp"
+                    app:strokeColor="#ff0000"
+                    app:strokeWidth="0dp"
+                    tools:ignore="SmallSp" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/STButton.MaterialComponents.Text.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#46B04A"
+                    android:text="编辑"
+
+                    android:textColor="#fff"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.smart.library.widget.shapeable.STShapeableTextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/yellow"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="1dp"
+                    android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                    android:textColor="#333"
+                    android:textSize="12sp"
+                    app:cornerFamilyBottomLeft="rounded"
+                    app:cornerFamilyBottomRight="cut"
+                    app:cornerFamilyTopLeft="rounded"
+                    app:cornerFamilyTopRight="cut"
+                    app:cornerSizeBottomLeft="50%"
+                    app:cornerSizeBottomRight="50%"
+                    app:cornerSizeTopLeft="50%"
+                    app:cornerSizeTopRight="50%"
+                    app:drawableRightCompat="@drawable/st_icon_arrow_down"
+                    app:drawableRightHeight="20dp"
+                    app:drawableRightWidth="20dp"
+                    app:strokeColor="#F44336"
+                    app:strokeInPadding="false"
+                    app:strokeWidth="2dp" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="100dp"
+                    android:entries="@array/menus"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/green"
+                android:dividerPadding="5dp"
+                android:fitsSystemWindows="true"
+                android:minHeight="1000dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="shapeable layout"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableRelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:clipToPadding="true"
+                        android:padding="1dp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableRelativeLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/st_shape_rectangle_solid_blue_corners_10dp"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/st_shape_rectangle_solid_blue_corners_10dp"
+                        android:padding="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </FrameLayout>
+
+                    <com.smart.library.widget.shapeable.STShapeableConstraintLayout
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="3dp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableConstraintLayout>
+
+                    <com.smart.library.widget.shapeable.STShapeableLinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/st_image" />
+                    </com.smart.library.widget.shapeable.STShapeableLinearLayout>
+
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+
+                    android:text="shapeable layout text view"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableLinearLayout
+                        android:id="@+id/layout_1"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#ff0000"
+                        app:strokeWidth="2dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ellipsize="end"
+                            android:text="aslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljkaslkjalljk"
+                            android:textColor="#333"
+                            android:textSize="12sp" />
+                    </com.smart.library.widget.shapeable.STShapeableLinearLayout>
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="shapeable text view"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="@color/blue_700"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="false"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="true"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="ShapeableImageView"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Tip"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/click_btn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Diamond"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_TopLeft"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Leaf"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Cut_15DP"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Rounded_10DP"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="2dp"
+                        android:text="STShapeableImageView and STShapeableEditText"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Circle"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:shapeAppearanceOverlay="@style/STShapeAppearanceOverlay_Water"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="ShapeableTextView"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow android:gravity="center_vertical">
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="cut"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="cut"
+                        app:cornerSizeBottomLeft="50%"
+                        app:cornerSizeBottomRight="50%"
+                        app:cornerSizeTopLeft="50%"
+                        app:cornerSizeTopRight="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeInPadding="false"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamily="cut"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerSizeTopLeft="100%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerSizeBottomRight="50%"
+                        app:cornerSizeTopLeft="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+
+                        android:textSize="12sp"
+                        app:cornerFamily="cut"
+                        app:cornerSize="15dp"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="3dp"
+                        app:strokeColor="#F44336"
+
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+                        app:cornerFamily="rounded"
+
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+                        android:padding="3dp"
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp"
+
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="5dp"
+                        app:cornerSizeBottomRight="5dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.smart.library.widget.shapeable.STShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="cut"
+                        app:cornerSize="15dp"
+
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:padding="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/st_image"
+                        app:cornerFamily="rounded"
+                        app:cornerSize="50%"
+                        app:strokeColor="#F44336"
+                        app:strokeWidth="2dp" />
+
+                    <com.smart.library.widget.shapeable.STShapeableTextView
+                        android:id="@+id/txt3"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:ellipsize="end"
+
+                        android:text="asfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdalsasfjalsdals"
+                        android:textColor="#333"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="STShapeableImageButton and STShapeableButton"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
+                    android:gravity="center_vertical">
+
+                    <!-- android:backgroundTint will be used only for api >= 21-->
+                    <!-- android:background="?attr/selectableItemBackground"-->
+                    <com.smart.library.widget.shapeable.STShapeableButton
+                        android:id="@+id/button"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/orange"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="button"
+                        android:textColor="@color/red"
+                        android:textSize="10sp"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="5dp"
+                        app:cornerSizeBottomRight="5dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:strokeColor="#0000ff"
+                        app:strokeWidth="2dp"
+                        tools:ignore="SmallSp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button2"
+                        style="@style/STButton.Default"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/orange"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textSize="10sp"
+                        app:backgroundTint="@color/orange"
+                        tools:ignore="SmallSp" />
+
+                    <!-- android:background="?attr/selectableItemBackground"-->
+                    <com.smart.library.widget.shapeable.STShapeableMaterialButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/yellow"
+                        android:backgroundTint="@color/yellow"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textSize="8sp"
+                        app:cornerFamilyBottomLeft="rounded"
+                        app:cornerFamilyBottomRight="rounded"
+                        app:cornerFamilyTopLeft="rounded"
+                        app:cornerFamilyTopRight="rounded"
+                        app:cornerSizeBottomLeft="15dp"
+                        app:cornerSizeBottomRight="15dp"
+                        app:cornerSizeTopLeft="70%"
+                        app:cornerSizeTopRight="70%"
+                        app:icon="@drawable/st_emo_im_happy"
+                        app:iconGravity="end"
+                        app:iconSize="10dp"
+                        app:iconTint="@color/red"
+                        app:strokeColor="#0000ff"
+                        app:strokeWidth="2dp"
+                        tools:ignore="SmallSp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/STButton.MaterialComponents.Text.Icon"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/orange"
+                        android:text="button"
+                        android:textColor="@color/blue_700"
+                        android:textSize="10sp"
+                        app:icon="@drawable/st_emo_im_happy"
+                        app:iconGravity="end"
+                        app:iconSize="15dp"
+                        app:iconTint="@color/red"
+                        app:iconTintMode="src_in"
+                        tools:ignore="SmallSp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

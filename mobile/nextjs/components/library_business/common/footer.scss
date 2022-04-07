@@ -1,0 +1,14 @@
+@import "components/library_business/styles/base";
+
+.root {
+    .desc {
+        height: 100px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 100px;
+        font-weight: bold;
+        color: black;
+        font-size: 20px;
+        min-width: $base-page-width;
+    }
+}

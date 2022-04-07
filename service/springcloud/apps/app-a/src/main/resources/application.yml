@@ -1,0 +1,239 @@
+# Chinese comments will call Caused by: org.yaml.snakeyaml.error.YAMLException: java.nio.charset.MalformedInputException: Input length = 2
+# error on Windows system, but well on Mac system
+
+# 同时使用 自定义的扩展属性和 spring 自带的属性, 则 spring 自带的属性需要加转义 \${}
+# processResources FAILED / Missing property (spring) for Groovy template expansion / Could not copy file '../app-a/src/main/resources/application.yml' to '../app-a/build/resources/main/application.yml'.
+# https://stackoverflow.com/a/29194250/4348530 / https://stackoverflow.com/questions/57577604/spring-conflict-when-using-property-expansion-processresources-and-use-prope
+debug: ${server_debug}
+
+server:
+    port: 5380
+    servlet:
+        context-path: /app-a
+
+#======================================================================
+# 配置 actuator start https://stackoverflow.com/a/24868636/4348530
+#======================================================================
+info:
+    application-name: APP-A
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+            base-path: /actuator
+    endpoint:
+        health:
+            show-details: always
+#======================================================================
+# 配置 actuator end
+#======================================================================
+#======================================================================
+# 配置 eureka start
+#======================================================================
+eureka:
+    client:
+        service-url:
+            defaultZone: http://10.32.33.19:5388/eureka
+        register-with-eureka: true
+        fetch-registry: true
+        registry-fetch-interval-seconds: 15
+        initialInstanceInfoReplicationIntervalSeconds: 40
+        region: region-app-b              # 默认为 "us-east-1"
+        availability-zones:
+            codes-dancing-region: zone-app-b
+
+    instance:
+        initial-status: UP
+        prefer-ip-address: true
+        hostname: \${spring.cloud.client.ip-address}
+        instance-id: \${spring.cloud.client.ip-address}:\${server.port}\${server.servlet.context-path}@${app_a_version}
+        lease-renewal-interval-in-seconds: 15
+
+        # config with actuator start
+        # 如果项目配置有 server.servlet.context-path 属性, 想要被 spring boot admin 监控, 就要配置以下属性
+        health-check-url-path: \${server.servlet.context-path}/actuator/health
+        status-page-url-path: \${server.servlet.context-path}/actuator/info
+        metadata-map:
+            management:
+                context-path: \${server.servlet.context-path}/actuator
+        # config with actuator end
+#======================================================================
+# 配置 eureka end
+#======================================================================
+
+# eureka-client-a call eureka-client-b , config in eureka-client-a
+# https://www.cnblogs.com/zhainan-blog/p/11634621.html
+ribbon:
+    ReadTimeout: 5000
+    ConnectTimeout: 5000
+    eager-load:
+        enabled: false
+        clients: http://10.32.33.19:5388/eureka
+        MaxTotalConnections: 5
+        MaxConnectionsPerHost: 5
+        maxAutoRetries: 2
+        maxAutoRetriesNextServer: 2
+        okToRetryOnAllOperations: trueNameOfTheConfigClass
+        retryableStatusCodes: 500,404,502
+        ###eureka-provider:
+        ### ribbon:
+        ###   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    http:
+        client:
+            enabled: true
+    eureka:
+        enabled: true
+
+hystrix:
+    command:
+        default:
+            circuitBreaker:
+                enabled: false
+                requestVolumeThreshold: 10
+                errorThresholdPercentage: 50
+                forceOpen: false
+                forceClosed: false
+            fallback:
+                enabled: true
+            execution:
+                timeout:
+                    # https://www.cnblogs.com/throwable/p/11961016.html
+                    enabled: false
+            isolation:
+                semaphore:
+                    maxConcurrentRequests: 4
+                strategy: THREAD
+                thread:
+                    timeoutInMilliseconds: 10
+                    # https://www.cnblogs.com/throwable/p/11961016.html
+                    interruptOnTimeout: true
+                    interruptOnCancel: true
+
+    # https://blog.csdn.net/weixin_33809981/article/details/88678620
+    threadpool:
+        default:
+            coreSize: 1
+            maxQueueSize: 4
+
+feign:
+    hystrix:
+        enabled: true
+    compression:
+        request:
+            enabled: true
+            mime-types: [ "text/xml", "application/xml","application/json" ]
+        response:
+            enabled: true
+    client:
+        config:
+            default:
+                connectTimeout: 50
+                readTimeout: 50
+                loggerLevel: full
+
+spring:
+    main:
+        # if call multi time @EnableFeignClients, will cause error bellow, set allow-bean-definition-overriding will avoid error, so try ony call once @EnableFeignClients
+        # org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'APP-TEMPLATE-B.FeignClientSpecification'
+        # defined in null: Cannot register bean definition [Generic bean: class [org.springframework.cloud.openfeign.FeignClientSpecification];
+        allow-bean-definition-overriding: false
+    application:
+        # name in eureka-server
+        name: APP-A
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+        generate-ddl: true
+        database-platform: org.hibernate.dialect.MySQLDialect
+    datasource:
+        initialization-mode: always # https://stackoverflow.com/questions/49438517/why-spring-boot-2-0-application-does-not-run-schema-sql
+        type: com.alibaba.druid.pool.DruidDataSource
+        #url: jdbc:mysql://${server_sql_ip}:${server_sql_port}/springboot?createDatabaseIfNotExist=true&autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${server_sql_ip}:${server_sql_port}?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF8&useCursorFetch=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${server_sql_user}
+        password: ${server_sql_password}
+        schema: classpath:/sql/schema-mysql.sql
+        data: classpath:/sql/data-mysql.sql
+        sql-script-encoding: utf-8
+
+        druid:
+            filters: stat,wall #,log4j2
+            maxActive: 20
+            initialSize: 0
+            maxWait: 60000
+            minIdle: 1
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            validationQuery: select 'x'
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            poolPreparedStatements: true
+            maxPoolPreparedStatementPerConnectionSize: 20
+            connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+            maxOpenPreparedStatements: 20
+            useGlobalDataSourceStat: true
+    resources:
+        cache:
+            # https://www.twblogs.net/a/5b8c454a2b7177188331c861
+            period: 15s
+        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,classpath:/static/
+    #    thymeleaf:
+    #        suffix: .html
+    #        prefix: classpath:/templates/
+    jackson:
+        default-property-inclusion: non_null
+        date-format: yyyy-MM-dd HH:mm:ss
+        time-zone: GMT+8
+    servlet:
+        multipart:
+            max-file-size: 10MB
+            max-request-size: 10MB
+    security:
+        user:
+            name: root
+            password: root
+
+mybatis:
+    configuration:
+        mapUnderscoreToCamelCase: true
+    type-aliases-package: com.smart.springcloud.appa.background.model
+    mapper-locations: classpath:mapper/**/*.xml
+
+# TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+logging:
+    config: classpath:logback-boot.xml
+    level:
+        root: INFO
+        com.smart: INFO
+        static: INFO
+        org:
+            springframework:
+                boot:
+                    context:
+                        logging:
+                            ClasspathLoggingApplicationListener: INFO
+                    autoconfigure:
+                        logging: INFO
+                    env:
+                        PropertySourcesLoader: INFO
+                    data: INFO
+                    security: INFO
+                    web: INFO
+
+codesdancing:
+    jwt:
+        secret: ${server_jwt_secret}
+        tokenPrefix: "Bearer "
+        header: "Authorization"
+        accessToken:
+            expiration: 1800
+        refreshToken:
+            expiration: 7200
+        authRoute:
+            login: "auth/login"
+            register: "auth/register"
+            refreshToken: "auth/refreshToken"

@@ -1,0 +1,66 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion = rootProject.ext.compileSdkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    def _jniLibsPath = []
+    def _ignoreAssetsPattern = ""
+
+    if (!gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
+        _ignoreAssetsPattern += "<dir>baidu:" // "<dir>dirName:file.txt:!*.*" 冒号分隔, 加 '!' 避免输出警告, '*' 匹配所有
+    } else {
+        _jniLibsPath.add('libsbaidu')
+    }
+    if (!gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
+        _ignoreAssetsPattern += "<dir>gaode:"
+    } else {
+        _jniLibsPath.add('libs')
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = _jniLibsPath
+        }
+    }
+
+    aaptOptions {
+        ignoreAssetsPattern _ignoreAssetsPattern
+    }
+
+    // resourcePrefix "st_"
+}
+
+dependencies {
+    if (gradle.ext.modules.library_base.dependency_local.enable == true) {
+        implementation(name: gradle.ext.modules.library_base.dependency_local.dependency, ext: "aar")
+    } else if (gradle.ext.modules.library_base.dependency_remote.enable == true) {
+        implementation gradle.ext.modules.library_base.dependency_remote.dependency
+    } else {
+        implementation project(gradle.ext.modules.library_base.dependency_project.dependency)
+    }
+
+    def amapType = "map3d"
+
+    if (gradle.ext.modules.library_map.enableMapNames.contains("baidu")) {
+        api files('libsbaidu/BaiduLBS_Android.jar')
+    } else {
+        compileOnly files('libsbaidu/BaiduLBS_Android.jar')
+    }
+    if (gradle.ext.modules.library_map.enableMapNames.contains("gaode")) {
+        // api 'com.amap.api:navi-3dmap:latest.integration'         // 导航
+        api "com.amap.api:${amapType}:latest.integration"           // 2D/3d地图
+        api 'com.amap.api:search:latest.integration'                // 搜索
+        api 'com.amap.api:location:latest.integration'              // 定位
+    } else {
+        compileOnly "com.amap.api:${amapType}:latest.integration"           // 2D/3d地图
+        compileOnly 'com.amap.api:search:latest.integration'                // 搜索
+        compileOnly 'com.amap.api:location:latest.integration'              // 定位
+    }
+}

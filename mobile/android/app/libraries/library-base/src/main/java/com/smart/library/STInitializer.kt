@@ -58,7 +58,7 @@ object STInitializer {
             STEventManager.register(eventId, "react-native-inited") { eventKey: String, value: Any? ->
                 STEventManager.unregisterAll(eventId)
                 if ("react-native-inited" == eventKey) {
-                    STPreferencesUtil.putBoolean("react-native-inited", "renderSuccess" == value)
+                    STPreferencesUtil.putBoolean("react-native-inited", "renderSuccess" == (value as Map<*, *>?)?.get("result"))
                     notifyOnRNFirstScreenAttachedCallback()
                 }
             }

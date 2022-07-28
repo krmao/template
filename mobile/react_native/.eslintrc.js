@@ -4,7 +4,7 @@ module.exports = {
         "es6": true,
         "react-native/react-native": true
     },
-    parser: "babel-eslint",
+    parser: "@babel/eslint-parser",
     extends: ["eslint:recommended", "plugin:react-native/all"],
     globals: {
         Atomics: "readonly",
@@ -15,7 +15,11 @@ module.exports = {
             jsx: true
         },
         ecmaVersion: 2018,
-        sourceType: "module"
+        sourceType: "module",
+        requireConfigFile: false,
+        babelOptions: {
+            presets: ["@babel/preset-react"]
+        }
     },
     plugins: ["react", "react-native"],
     rules: {

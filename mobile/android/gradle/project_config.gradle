@@ -36,7 +36,7 @@ gradle.ext {
                             ]
                     ],
                     'library_baseflutterutils'       : [
-                            'enable'    : false,
+                            'enable'    : true,
                             'dependency': 'com.codesdancing.libraries:library-base-flutterutils:0.0.0.1', // base flutter utils // todo
                     ]
             ],
@@ -46,7 +46,7 @@ gradle.ext {
                             'dependency': 'com.smart.library:libs-rn:0.0.1.1',
                     ],
                     'lib_reactnative'  : [
-                            'enable'           : false,
+                            'enable'           : true,
                             'enableHermes'     : false,
                             'nodeModulesPath'  : "$rootDir/../react_native/node_modules",
                             'repository_remote': [
@@ -56,14 +56,14 @@ gradle.ext {
                             ],
                             'repository_local' : [
                                     'enable'    : false,
-                                    'url'       : '/Users/krmao/workspace/template/mobile/react_native/tools/libsforandroid/repo',
+                                    'url'       : "$rootDir/../react_native/tools/libsforandroid/repo",
                                     'dependency': 'com.smart.library:libs-reactnative:0.62.2.1-SNAPSHOT'
                             ]
                     ],
             ],
             'library_hybird'       : ['enable': false],
             'library_map'          : [
-                    'enable'        : true,
+                    'enable'        : false,
                     'enableMapNames': 'baidu', // baidu,gaode,google 支持多个, 逗号分隔
                     'baiduKey'      : 'A2SNanQqBaGEtIrLgqlaMgU8VqiZvuEh',
                     'gaodeKey'      : 'f0117d654e20c9b29aad6431f69103c3',
@@ -76,7 +76,7 @@ gradle.ext {
             ],
             'module_algorithm'     : [
                     'module_algorithm_main' : [
-                            'enable'              : true,
+                            'enable'              : false,
                             'load'                : 'lazy', // default/lazy
                             'remote'              : false,
                             'dependency_libraries': [
@@ -86,7 +86,7 @@ gradle.ext {
                             ]
                     ],
                     'module_algorithm_debug': [
-                            'enable'    : true,
+                            'enable'    : false,
                             'dependency': [
                                     'dependency_libraries': [
                                             'library_base'

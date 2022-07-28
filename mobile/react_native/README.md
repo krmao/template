@@ -43,8 +43,9 @@ npm install -g cnpm --registry=https://registry.npm.taobao.org
 ### 0: 安装工具
 
 ```
-npm install -g react-native-cli
-npm install -g install-local
+npm install -g react-native-cli --registry=https://registry.npm.taobao.org
+npm install -g install-local --registry=https://registry.npm.taobao.org
+npm install --registry=https://registry.npm.taobao.org
 ```
 
 ### 1: 在线调试

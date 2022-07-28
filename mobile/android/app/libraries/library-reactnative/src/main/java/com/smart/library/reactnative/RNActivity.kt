@@ -169,7 +169,7 @@ class RNActivity : STBaseActivity(), DefaultHardwareBackBtnHandler {
 
                 // 首屏发送通知
                 if (STPreferencesUtil.getBoolean("react-native-inited", false) != true) {
-                    STEventManager.sendEvent("react-native-inited", "renderSuccess")
+                    STEventManager.sendEvent("react-native-inited", mapOf("result" to "renderSuccess"))
                 }
             }
         })

@@ -32,8 +32,8 @@ class FinalApplication : Application() {
                 configRN = STInitializer.ConfigRN(baseVersion = BuildConfig.VERSION_RN),
                 configBundle = STInitializer.ConfigBundle(
                     bundleBusHandlerClassMap = hashMapOf(
-//                        "reactnative" to "com.smart.library.reactnative.RNBusHandler",
-//                        "flutter" to "com.smart.library.flutter.FlutterBusHandler",
+                        "reactnative" to "com.smart.library.reactnative.RNBusHandler",
+                        "flutter" to "com.smart.library.flutter.FlutterBusHandler",
 //                        "livestreaming" to "com.smart.library.livestreaming.LiveStreamingBusHandler",
 //                        "livestreamingpush" to "com.smart.library.livestreaming.push.LiveStreamingPushBusHandler"
                     )

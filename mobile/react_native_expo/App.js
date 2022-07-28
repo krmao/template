@@ -5,7 +5,6 @@ import HomeComponent from "./home/HomeComponent";
 import MineComponent from "./mine/MineComponent";
 import OtherComponent from "./other/OtherComponent";
 
-// 携程优化策略
 // https://zhuanlan.zhihu.com/p/23715716
 
 const initialLayout = {

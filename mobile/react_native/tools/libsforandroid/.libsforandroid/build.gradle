@@ -5,6 +5,7 @@ buildscript {
     ext.godeyeVersion = "3.2.1"
     ext.godeyeMethodCanaryVersion = "0.15.2"
     ext.walleVersion = "1.1.6"
+    ext.reactNativeVersion = "0.69.3"
 
     repositories {
         google()
@@ -30,7 +31,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5" // https://github.com/bintray/gradle-bintray-plugin
-        classpath 'com.github.kezong:fat-aar:1.3.5' // https://github.com/kezong/fat-aar-android
+        classpath 'com.github.kezong:fat-aar:1.3.8' // https://github.com/kezong/fat-aar-android
     }
 }
 
@@ -41,6 +42,7 @@ allprojects {
         maven { url("${gradle.ext.modules.reactNative.nodeModulesPath}/jsc-android/dist") } // Android JSC is installed from npm
 
         flatDir { dirs "file://$rootProject.projectDir/../repo" }
+        flatDir { dirs "file://${gradle.ext.modules.reactNative.nodeModulesPath}/react-native/android/com/facebook/react/react-native/${reactNativeVersion}" }
 
         maven { url "https://jitpack.io" }
         mavenLocal()
@@ -105,9 +107,6 @@ ext {
     androidXConstraintlayoutVersion = "2.0.0-rc1"
     androidXMaterialVersion = "1.2.1"
     androidXLifecycleVersion = "2.3.0-beta01"
-
-    // React Native Version
-    reactNativeVersion = "0.69.3"
 
     smartRefreshLayoutVersion = "2.0.1"
     // guavaVersion = "24.1-jre"

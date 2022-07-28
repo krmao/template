@@ -38,6 +38,7 @@ dependencies {
     def OK_HTTP_VERSION = "3.12.1"
     def SO_LOADER_VERSION = "0.8.0"
 
+
     api 'com.codesdancing.libraries:library-base:0.0.2.9'
 
     //noinspection GradleDependency
@@ -58,7 +59,9 @@ dependencies {
     api("com.facebook.fresco:imagepipeline-okhttp3:${FRESCO_VERSION}")
     api("com.facebook.soloader:soloader:${SO_LOADER_VERSION}")
     api("com.facebook.fbjni:fbjni-java-only:0.0.3")
-    embed("com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}")
+    debugEmbed(name: "react-native-${rootProject.ext.reactNativeVersion}-debug", ext: 'aar')
+    releaseEmbed(name: "react-native-${rootProject.ext.reactNativeVersion}-release", ext: 'aar')
+    // embed("com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}")
 }
 
 apply plugin: "maven"

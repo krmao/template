@@ -16,7 +16,8 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.common.LifecycleState
 import com.facebook.react.devsupport.DevLoadingViewController
-import com.facebook.react.devsupport.RedBoxHandler
+import com.facebook.react.devsupport.interfaces.ErrorType
+import com.facebook.react.devsupport.interfaces.RedBoxHandler
 import com.facebook.react.devsupport.interfaces.StackFrame
 import com.facebook.react.shell.MainPackageConfig
 import com.facebook.react.shell.MainReactPackage
@@ -31,7 +32,7 @@ import com.smart.library.util.STLogUtil
 import com.smart.library.util.STReflectUtil
 import com.smart.library.util.STToastUtil
 import com.smart.library.util.cache.STCacheManager
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
+import com.swmansion.gesturehandler.RNGestureHandlerPackage
 import com.swmansion.reanimated.ReanimatedPackage
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage
 import io.reactivex.Flowable
@@ -302,7 +303,7 @@ object RNInstanceManager {
             .setApplication(application)
             .setUIImplementationProvider(UIImplementationProvider())
             .setRedBoxHandler(object : RedBoxHandler {
-                override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: RedBoxHandler.ErrorType?) {
+                override fun handleRedbox(title: String?, stack: Array<out StackFrame>?, errorType: ErrorType?) {
                     STLogUtil.e(TAG, "handleRedbox errorType:${errorType?.name}, title:$title, stack:$stack")
                 }
 

@@ -52,12 +52,12 @@ gradle.ext {
                             'repository_remote': [
                                     'enable'    : true,
                                     'url'       : 'https://bintray.com/krmao/maven/libs-reactnative',
-                                    'dependency': 'com.smart.library:libs-reactnative:0.62.2.1'
+                                    'dependency': 'com.smart.library:libs-reactnative:0.69.3.1'
                             ],
                             'repository_local' : [
                                     'enable'    : false,
                                     'url'       : "$rootDir/../react_native/tools/libsforandroid/repo",
-                                    'dependency': 'com.smart.library:libs-reactnative:0.62.2.1-SNAPSHOT'
+                                    'dependency': 'com.smart.library:libs-reactnative:0.69.3.1-SNAPSHOT'
                             ]
                     ],
             ],

@@ -122,7 +122,7 @@ object STHttpUrlConnectionUtil {
         conn.readTimeout = 10 * 1000 // 缓存的最长时间
         conn.connectTimeout = 10 * 1000 // 缓存的最长时间
         conn.requestMethod = "GET"
-        conn.setRequestProperty("Charsert", "UTF-8")
+        conn.setRequestProperty("Charset", "UTF-8")
         conn.setRequestProperty("Content-Type", "application/json")
         // 得到响应码
         var responseCode = 0

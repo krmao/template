@@ -4,16 +4,21 @@
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.4/docker.html#_set_vm_max_map_count_to_at_least_262144
 # rdctl shell sudo sysctl -w vm.max_map_count=262144
 #
-# http://localhost:5601
 #
-# docker-compose down    # stop the cluster
-# docker-compose down -v # To delete the network, containers, and volumes when stop the cluster
+# [START]
+# docker-compose -f docker-compose-elasticsearch.yml down -v # To delete the network, containers, and volumes when stop the cluster
+# docker-compose -f docker-compose-elasticsearch.yml up --remove-orphans --force-recreate && docker-compose restart es01
+# http://localhost:3309     elastic m12345
+# [END]
 #
 #
+# docker-compose -f docker-compose-elasticsearch.yml down                                                                # stop the cluster
+# docker-compose -f docker-compose-elasticsearch.yml down -v                                                             # To delete the network, containers, and volumes when stop the cluster
 # docker-compose -f docker-compose-elasticsearch.yml up --remove-orphans --force-recreate && docker-compose restart es01 # 一键启动 + 删除暂时未用到的容器(再次用到需要重新下载镜像)
 # docker-compose -f docker-compose-elasticsearch.yml up --force-recreate && docker-compose restart es01                  # 一键启动 + 不删除暂时未用到的容器(避免重新下载镜像)
 # docker-compose -f docker-compose-elasticsearch.yml up && docker-compose restart es01                                   # 非首次启动(插件等在之前已经安装好)
 # docker-compose -f docker-compose-elasticsearch.yml up -d && docker-compose restart es01                                # 非首次启动(插件等在之前已经安装好) + 后台运行
+#
 #
 services:
   setup:

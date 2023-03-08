@@ -1,8 +1,8 @@
 #
-# docker-compose -f docker-compose-dev.yml up --remove-orphans --force-recreate && docker-compose restart elasticsearch # 一键启动 + 删除暂时未用到的容器(再次用到需要重新下载镜像)
-# docker-compose -f docker-compose-dev.yml up --force-recreate && docker-compose restart elasticsearch                  # 一键启动 + 不删除暂时未用到的容器(避免重新下载镜像)
-# docker-compose -f docker-compose-dev.yml up && docker-compose restart elasticsearch                                   # 非首次启动(插件等在之前已经安装好)
-# docker-compose -f docker-compose-dev.yml up -d && docker-compose restart elasticsearch                                # 非首次启动(插件等在之前已经安装好) + 后台运行
+# docker-compose -f docker-compose-dev.yml up --remove-orphans --force-recreate # 一键启动 + 删除暂时未用到的容器(再次用到需要重新下载镜像)
+# docker-compose -f docker-compose-dev.yml up --force-recreate                  # 一键启动 + 不删除暂时未用到的容器(避免重新下载镜像)
+# docker-compose -f docker-compose-dev.yml up                                   # 非首次启动(插件等在之前已经安装好)
+# docker-compose -f docker-compose-dev.yml up -d                                # 非首次启动(插件等在之前已经安装好) + 后台运行
 #
 # docker-compose -f docker-compose-dev.yml down                                                                         # 关闭所有容器
 #
@@ -16,6 +16,7 @@
 # mysql-adminer         visit http://localhost:3307/
 # redis-commander       visit http://localhost:3308/
 # elasticsearch-kibana  visit http://localhost:3309/
+# rabbitmq              visit http://localhost:3310/
 #
 services:
   mysql:
@@ -97,11 +98,38 @@ services:
     networks:
       - default_network
 
+  rabbitmq01:
+    image: rabbitmq:management
+    container_name: rabbitmq01
+    hostname: rabbitmq01
+    restart: always
+    privileged: true
+    ports:
+      - 3310:15672
+      - 5672:5672
+    volumes:
+      - rabbitmq01_data:/var/lib/rabbitmq
+      - rabbitmq01_log:/var/log/rabbitmq
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - RABBITMQ_NODENAME=rabbitmq01
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=m12345
+      - RABBITMQ_ERLANG_COOKIE=rabbitcookie
+      - RABBITMQ_CLUSTERED=false                    # 如果容器身份是从, 会执行rabbitmqctl join_cluster命令加入到集群中去
+      - RABBITMQ_CLUSTER_WITH=                      # join的参数
+      - RABBITMQ_RAM_NODE=false                     # ram 是以内存方式加入, 忽略该参数默认为磁盘节点
+    networks:
+      - default_network
+
 # docker volume inspect [卷标名称]
 # docker volume ls
 volumes:
   mysql_data:
   redis_data:
+  rabbitmq01_data:
+  rabbitmq01_log:
 
 networks:
   default_network:
